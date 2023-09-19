@@ -2,7 +2,7 @@ import type { FastifyInstance } from 'fastify'
 import fastifyPlugin from 'fastify-plugin'
 
 import type { Server } from '../../types'
-// import { HermesInspectorProxy } from './servers/HermesInspectorProxy'
+import { HermesInspectorProxy } from './servers/HermesInspectorProxy'
 import { WebSocketApiServer } from './servers/WebSocketApiServer'
 import { WebSocketDebuggerServer } from './servers/WebSocketDebuggerServer'
 import { WebSocketDevClientServer } from './servers/WebSocketDevClientServer'
@@ -18,7 +18,7 @@ declare module 'fastify' {
       devClientServer: WebSocketDevClientServer
       messageServer: WebSocketMessageServer
       eventsServer: WebSocketEventsServer
-      // hermesInspectorProxy: HermesInspectorProxy
+      hermesInspectorProxy: HermesInspectorProxy
       apiServer: WebSocketApiServer
       hmrServer: WebSocketHMRServer
       router: WebSocketRouter
@@ -38,15 +38,13 @@ async function wssPlugin(
 ) {
   const router = new WebSocketRouter(instance)
 
-  console.log('setting up websocket')
-
   const debuggerServer = new WebSocketDebuggerServer(instance)
   const devClientServer = new WebSocketDevClientServer(instance)
   const messageServer = new WebSocketMessageServer(instance)
   const eventsServer = new WebSocketEventsServer(instance, {
     webSocketMessageServer: messageServer,
   })
-  // const hermesInspectorProxy = new HermesInspectorProxy(instance, options)
+  const hermesInspectorProxy = new HermesInspectorProxy(instance, options)
   const apiServer = new WebSocketApiServer(instance)
   const hmrServer = new WebSocketHMRServer(instance, delegate.hmr)
 
@@ -54,7 +52,7 @@ async function wssPlugin(
   router.registerServer(devClientServer)
   router.registerServer(messageServer)
   router.registerServer(eventsServer)
-  // router.registerServer(hermesInspectorProxy)
+  router.registerServer(hermesInspectorProxy)
   router.registerServer(apiServer)
   router.registerServer(hmrServer)
 
@@ -63,7 +61,7 @@ async function wssPlugin(
     devClientServer,
     messageServer,
     eventsServer,
-    // hermesInspectorProxy,
+    hermesInspectorProxy,
     apiServer,
     hmrServer,
     router,

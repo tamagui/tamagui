@@ -1,5 +1,6 @@
-import { useTint } from '@tamagui/logo'
+import { ThemeTintAlt, useTint } from '@tamagui/logo'
 import { NextLink } from 'components/NextLink'
+import Link from 'next/link'
 import { memo } from 'react'
 import {
   Button,
@@ -9,6 +10,8 @@ import {
   Spacer,
   Text,
   Theme,
+  ThemeParsed,
+  TooltipSimple,
   VisuallyHidden,
   XStack,
   YStack,
@@ -47,7 +50,7 @@ export function Hero() {
       <div className={`${name}-season _dsp-contents`}>
         {/* {element} */}
         <YStack
-          o={0.5}
+          o={0.75}
           zi={-1}
           pos="absolute"
           t={0}
@@ -62,14 +65,39 @@ export function Hero() {
   )
 }
 
-const HeroContents = memo(() => {
+const HeroSubTitle = memo(() => {
   const [hovered, setHovered] = useHeroHovered()
+  return (
+    <Subtitle>
+      <NextLink prefetch={false} href="/docs/core/configuration">
+        <Tag theme="green_alt2" onHoverIn={() => setHovered(0)} active={hovered === 0}>
+          styles
+        </Tag>
+      </NextLink>
+      ,{' '}
+      <NextLink prefetch={false} href="/docs/intro/why-a-compiler">
+        <Tag theme="blue_alt2" onHoverIn={() => setHovered(1)} active={hovered === 1}>
+          optimizing compiler
+        </Tag>
+      </NextLink>{' '}
+      &{' '}
+      <NextLink prefetch={false} href="/docs/components/stacks">
+        <Tag theme="purple_alt2" onHoverIn={() => setHovered(2)} active={hovered === 2}>
+          UI&nbsp;kit
+        </Tag>
+      </NextLink>{' '}
+      that&nbsp;unify&nbsp;React Native + Web
+    </Subtitle>
+  )
+})
 
+const HeroContents = memo(function HeroContents() {
   return (
     <ContainerLarge contain="layout" pos="relative">
       <YStack
         className="bg-grid mask-gradient-up"
         fullscreen
+        // @ts-ignore
         top="auto"
         height={521}
         left={-1000}
@@ -82,7 +110,7 @@ const HeroContents = memo(() => {
         ov="hidden"
         space="$3"
         position="relative"
-        pt="$13"
+        pt="$14"
         mb="$4"
         $sm={{
           maxWidth: '100%',
@@ -90,6 +118,26 @@ const HeroContents = memo(() => {
           pb: '$4',
         }}
       >
+        <XStack pos="absolute" als="center" y={-70}>
+          <Link prefetch={false} href="/takeout">
+            <ThemeTintAlt>
+              <Button
+                bw={2}
+                boc="$color5"
+                size="$3"
+                br="$10"
+                elevation="$1"
+                fontFamily="$silkscreen"
+              >
+                Introducing Takeout 🥡
+                <Text ff="$body" fontSize="$3" color="$color10" $sm={{ dsp: 'none' }}>
+                  our new pro starter kit
+                </Text>
+              </Button>
+            </ThemeTintAlt>
+          </Link>
+        </XStack>
+
         <YStack ai="flex-start" $gtSm={{ ai: 'center' }} space="$2">
           <H1
             ta="left"
@@ -139,38 +187,7 @@ const HeroContents = memo(() => {
               maw: 900,
             }}
           >
-            <Subtitle>
-              <NextLink href="/docs/core/configuration">
-                <Tag
-                  theme="green_alt2"
-                  onHoverIn={() => setHovered(0)}
-                  active={hovered === 0}
-                >
-                  styles
-                </Tag>
-              </NextLink>
-              ,{' '}
-              <NextLink href="/docs/intro/why-a-compiler">
-                <Tag
-                  theme="blue_alt2"
-                  onHoverIn={() => setHovered(1)}
-                  active={hovered === 1}
-                >
-                  optimizing compiler
-                </Tag>
-              </NextLink>{' '}
-              &{' '}
-              <NextLink href="/docs/components/stacks">
-                <Tag
-                  theme="purple_alt2"
-                  onHoverIn={() => setHovered(2)}
-                  active={hovered === 2}
-                >
-                  UI&nbsp;kit
-                </Tag>
-              </NextLink>{' '}
-              that&nbsp;unify&nbsp;React Native + Web
-            </Subtitle>
+            <HeroSubTitle />
           </YStack>
         </YStack>
 
@@ -180,12 +197,14 @@ const HeroContents = memo(() => {
 
         <XStack ai="center" jc="center" $xxs={{ ai: 'center', fw: 'wrap' }}>
           <NextLink target="_blank" href="https://twitter.com/tamagui_js">
-            <YStack p="$6" $sm={{ p: '$3' }} opacity={0.65} hoverStyle={{ opacity: 1 }}>
-              <VisuallyHidden>
-                <Text>Twitter</Text>
-              </VisuallyHidden>
-              <TwitterIcon width={23} />
-            </YStack>
+            <TooltipSimple placement="top" delay={0} restMs={25} label="Twitter">
+              <YStack p="$5" $sm={{ p: '$3' }} opacity={0.65} hoverStyle={{ opacity: 1 }}>
+                <VisuallyHidden>
+                  <Text>Twitter</Text>
+                </VisuallyHidden>
+                <TwitterIcon width={23} />
+              </YStack>
+            </TooltipSimple>
           </NextLink>
 
           <XStack
@@ -212,7 +231,7 @@ const HeroContents = memo(() => {
                 bw={2}
                 mx="$2"
                 tabIndex="0"
-                elevation="$2"
+                elevation="$1"
                 pressStyle={{
                   elevation: '$0',
                 }}
@@ -236,7 +255,7 @@ const HeroContents = memo(() => {
                 bw={2}
                 mx="$2"
                 tabIndex="0"
-                elevation="$2"
+                elevation="$1"
                 letterSpacing={-2}
                 pressStyle={{
                   elevation: '$0',
@@ -250,18 +269,20 @@ const HeroContents = memo(() => {
           </XStack>
 
           <NextLink target="_blank" href="https://discord.gg/4qh6tdcVDa">
-            <YStack
-              p="$6"
-              $sm={{ p: '$3' }}
-              ml="$-2"
-              opacity={0.65}
-              hoverStyle={{ opacity: 1 }}
-            >
-              <VisuallyHidden>
-                <Text>Discord</Text>
-              </VisuallyHidden>
-              <DiscordIcon plain width={23} />
-            </YStack>
+            <TooltipSimple placement="top" delay={0} restMs={25} label="Discord">
+              <YStack
+                p="$5"
+                $sm={{ p: '$3' }}
+                ml="$-2"
+                opacity={0.65}
+                hoverStyle={{ opacity: 1 }}
+              >
+                <VisuallyHidden>
+                  <Text>Discord</Text>
+                </VisuallyHidden>
+                <DiscordIcon plain width={23} />
+              </YStack>
+            </TooltipSimple>
           </NextLink>
         </XStack>
       </YStack>
@@ -281,22 +302,25 @@ const Subtitle = styled(Paragraph, {
   $gtSm: {
     ta: 'center',
     size: '$7',
+    ls: -1,
   },
 
   $gtMd: {
     size: '$8',
+    ls: -1,
   },
 
   $gtLg: {
     size: '$9',
     lh: 50,
+    ls: -1,
   },
 })
 
 const Tag = styled(Text, {
   className: 'hero-tag text-decoration-none',
-  fontFamily: 'inherit',
-  fontSize: 'inherit',
+  fontFamily: 'inherit' as any,
+  fontSize: 'inherit' as any,
   borderRadius: '$2',
   px: '$1',
   mx: '$-1',
@@ -321,5 +345,5 @@ const Tag = styled(Text, {
         },
       },
     },
-  },
+  } as const,
 })

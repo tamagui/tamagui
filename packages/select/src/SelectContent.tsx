@@ -1,9 +1,8 @@
 import { FloatingOverlay, FloatingPortal } from '@floating-ui/react'
 import { Theme, useIsTouchDevice, useThemeName } from '@tamagui/core'
-import { Dismissable } from '@tamagui/dismissable'
 import { FocusScope, FocusScopeProps } from '@tamagui/focus-scope'
 
-import { useSelectContext } from './context'
+import { useSelectContext, useSelectItemParentContext } from './context'
 import { SelectContentProps } from './types'
 import { useShowSelectSheet } from './useSelectBreakpointActive'
 
@@ -20,16 +19,19 @@ export const SelectContent = ({
   ...focusScopeProps
 }: SelectContentProps & FocusScopeProps) => {
   const context = useSelectContext(CONTENT_NAME, __scopeSelect)
+  const itemParentContext = useSelectItemParentContext(CONTENT_NAME, __scopeSelect)
   const themeName = useThemeName()
   const showSheet = useShowSelectSheet(context)
+
   const contents = (
     <Theme forceClassName name={themeName}>
       {children}
     </Theme>
   )
+
   const touch = useIsTouchDevice()
 
-  if (context.shouldRenderWebNative) {
+  if (itemParentContext.shouldRenderWebNative) {
     return <>{children}</>
   }
 
@@ -42,15 +44,14 @@ export const SelectContent = ({
 
   return (
     <FloatingPortal>
-      {context.open ? (
-        <FloatingOverlay style={{ zIndex }} lockScroll={!touch}>
-          <FocusScope loop trapped {...focusScopeProps}>
-            <Dismissable>{contents}</Dismissable>
-          </FocusScope>
-        </FloatingOverlay>
-      ) : (
-        <div style={{ display: 'none' }}>{contents}</div>
-      )}
+      <FloatingOverlay
+        style={{ zIndex, pointerEvents: context.open ? 'auto' : 'none' }}
+        lockScroll={!context.disablePreventBodyScroll && !!context.open && !touch}
+      >
+        <FocusScope loop enabled={!!context.open} trapped {...focusScopeProps}>
+          {contents}
+        </FocusScope>
+      </FloatingOverlay>
     </FloatingPortal>
   )
 }

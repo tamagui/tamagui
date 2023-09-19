@@ -6,77 +6,77 @@
 import { StyleObject, simpleHash } from '@tamagui/helpers'
 
 import { getConfig } from '../config'
-import type { TamaguiInternalConfig, ViewStyleWithPseudos } from '../types'
+import type { DebugProp, TamaguiInternalConfig, ViewStyleWithPseudos } from '../types'
 import { defaultOffset } from './defaultOffset'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
-import { PseudoDescriptor, pseudoDescriptors } from './pseudoDescriptors'
+import {
+  PseudoDescriptor,
+  pseudoDescriptors,
+  pseudoDescriptorsBase,
+} from './pseudoDescriptors'
 
 // refactor this file away next...
 
-// matching order of the below *0
-const pseudosOrdered = [
-  pseudoDescriptors.hoverStyle,
-  pseudoDescriptors.pressStyle,
-  pseudoDescriptors.focusStyle,
-]
-
-export function getStylesAtomic(stylesIn: ViewStyleWithPseudos) {
-  // performance optimization
-  if (!(stylesIn.hoverStyle || stylesIn.pressStyle || stylesIn.focusStyle)) {
-    return generateAtomicStyles(stylesIn)
-  }
-
-  // only for pseudos
-  const { hoverStyle, pressStyle, focusStyle, ...base } = stylesIn
+export function getStylesAtomic(stylesIn: ViewStyleWithPseudos, debug?: DebugProp) {
   let res: StyleObject[] = []
-  // *1 order matched to *0
-  for (const [index, style] of [hoverStyle, pressStyle, focusStyle, base].entries()) {
-    if (!style) continue
-    const pseudo = pseudosOrdered[index]
-    res = [...res, ...generateAtomicStyles(style, pseudo)]
+  for (const pseudoName in pseudoDescriptorsBase) {
+    const pseudoStyle = stylesIn[pseudoName]
+    if (pseudoStyle) {
+      res = [
+        ...res,
+        ...generateAtomicStyles(pseudoStyle, pseudoDescriptorsBase[pseudoName]),
+      ]
+    }
+  }
+  res = [...res, ...generateAtomicStyles(stylesIn)]
+
+  if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+    console.log(` 🪮 getStylesAtomic`, { stylesIn, res })
   }
   return res
 }
 
 let conf: TamaguiInternalConfig
 
+// mutates...
+
 export const generateAtomicStyles = (
-  styleIn: ViewStyleWithPseudos,
+  style: ViewStyleWithPseudos,
   pseudo?: PseudoDescriptor
 ): StyleObject[] => {
-  if (!styleIn) return []
+  if (!style) return []
 
   conf = conf || getConfig()
-
-  // were converting to css styles
-  const style = { ...styleIn } as Record<string, string | null | undefined>
-
-  // transform
-  if ('transform' in style && Array.isArray(style.transform)) {
-    style.transform = style.transform
-      .map(
-        // { scale: 2 } => 'scale(2)'
-        // { translateX: 20 } => 'translateX(20px)'
-        // { matrix: [1,2,3,4,5,6] } => 'matrix(1,2,3,4,5,6)'
-        (transform) => {
-          const type = Object.keys(transform)[0]
-          const value = transform[type]
-          if (type === 'matrix' || type === 'matrix3d') {
-            return `${type}(${value.join(',')})`
-          }
-          return `${type}(${normalizeValueWithProperty(value, type)})`
-        }
-      )
-      .join(' ')
-  }
 
   styleToCSS(style)
 
   const out: StyleObject[] = []
   for (const key in style) {
-    const value = normalizeValueWithProperty(style[key], key)
-    if (value == null || value == undefined) continue
+    if (key in pseudoDescriptors) continue
+    let val = style[key]
+    if (val == null) continue
 
+    // transform
+    if (key === 'transform' && Array.isArray(style.transform)) {
+      val = (val as any[])
+        .map(
+          // { scale: 2 } => 'scale(2)'
+          // { translateX: 20 } => 'translateX(20px)'
+          // { matrix: [1,2,3,4,5,6] } => 'matrix(1,2,3,4,5,6)'
+          (transform) => {
+            const type = Object.keys(transform)[0]
+            const value = transform[type]
+            if (type === 'matrix' || type === 'matrix3d') {
+              return `${type}(${value.join(',')})`
+            }
+            return `${type}(${normalizeValueWithProperty(value, type)})`
+          }
+        )
+        .join(' ')
+    }
+
+    const value = normalizeValueWithProperty(val, key)
     const hash = simpleHash(`${value}`)
     const pseudoPrefix = pseudo ? `0${pseudo.name}-` : ''
     const shortProp = conf.inverseShorthands[key] || key
@@ -87,9 +87,7 @@ export const generateAtomicStyles = (
       pseudo: pseudo?.name as any,
       identifier,
       rules,
-    }
-    if (process.env.NODE_ENV === 'test') {
-      styleObject.value = value
+      value,
     }
     out.push(styleObject)
   }
@@ -107,10 +105,10 @@ export function styleToCSS(style: Record<string, any>) {
     const radius = normalizeValueWithProperty(shadowRadius)
     const shadow = `${width} ${height} ${radius} ${shadowColor}`
     style.boxShadow = style.boxShadow ? `${style.boxShadow}, ${shadow}` : shadow
-    style.shadowOffset = undefined
-    style.shadowRadius = undefined
-    style.shadowColor = undefined
-    style.shadowOpacity = undefined
+    delete style.shadowOffset
+    delete style.shadowRadius
+    delete style.shadowColor
+    delete style.shadowOpacity
   }
 
   // text-shadow
@@ -125,9 +123,9 @@ export function styleToCSS(style: Record<string, any>) {
       const offsetY = normalizeValueWithProperty(height)
       style.textShadow = `${offsetX} ${offsetY} ${blurRadius} ${color}`
     }
-    style.textShadowColor = undefined
-    style.textShadowOffset = undefined
-    style.textShadowRadius = undefined
+    delete style.textShadowColor
+    delete style.textShadowOffset
+    delete style.textShadowRadius
   }
 }
 

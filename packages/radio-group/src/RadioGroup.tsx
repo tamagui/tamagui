@@ -1,7 +1,6 @@
 // forked from Radix UI
 // https://github.com/radix-ui/primitives/blob/main/packages/react/radio-group/src/RadioGroup.tsx
 
-import { usePrevious } from '@radix-ui/react-use-previous'
 import {
   GetProps,
   composeEventHandlers,
@@ -17,6 +16,7 @@ import { getSize } from '@tamagui/get-token'
 import { useLabelContext } from '@tamagui/label'
 import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
+import { usePrevious } from '@tamagui/use-previous'
 import * as React from 'react'
 import { View } from 'react-native'
 
@@ -140,11 +140,36 @@ const RadioGroupItemFrame = styled(ThemeableStack, {
         focusStyle: {
           borderColor: '$borderColorHover',
           backgroundColor: '$backgroundHover',
+          outlineStyle: 'solid',
+          outlineWidth: 2,
+          outlineColor: '$borderColorFocus',
         },
 
         pressStyle: {
           borderColor: '$borderColorFocus',
           backgroundColor: '$backgroundFocus',
+        },
+      },
+    },
+
+    disabled: {
+      true: {
+        pointerEvents: 'none',
+        userSelect: 'none',
+        cursor: 'not-allowed',
+
+        hoverStyle: {
+          borderColor: '$borderColor',
+          backgroundColor: '$background',
+        },
+
+        pressStyle: {
+          borderColor: '$borderColor',
+          backgroundColor: '$backgroundColor',
+        },
+
+        focusStyle: {
+          outlineWidth: 0,
         },
       },
     },

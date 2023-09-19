@@ -7,7 +7,6 @@ const shouldExtract = process.env.EXTRACT === '1'
 const tamaguiConfig = {
   components: ['@tamagui/sandbox-ui', 'tamagui'],
   config: 'tamagui.config.ts',
-  useReactNativeWebLite: true,
 }
 
 export default defineConfig({

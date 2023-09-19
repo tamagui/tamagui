@@ -16,8 +16,8 @@ export async function getDefaultTamaguiConfigPath({
     return cachedPath
   }
 
-  const defaultPaths = ['tamagui.config.ts', join('src', 'tamagui.config.ts')].map(
-    (p) => join(cwd, p),
+  const defaultPaths = ['tamagui.config.ts', join('src', 'tamagui.config.ts')].map((p) =>
+    join(cwd, p)
   )
   const existing = (
     await Promise.all(defaultPaths.map((path) => pathExists(path)))

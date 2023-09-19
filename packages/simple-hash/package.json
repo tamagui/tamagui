@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/simple-hash",
-  "version": "1.38.0",
+  "version": "1.68.2",
   "sideEffects": false,
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -13,8 +13,8 @@
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
-    "lint": "../../node_modules/.bin/rome check src",
-    "lint:fix": "../../node_modules/.bin/rome check --apply src"
+    "lint": "../../node_modules/.bin/biome check src",
+    "lint:fix": "../../node_modules/.bin/biome check --apply-unsafe src"
   },
   "exports": {
     "./package.json": "./package.json",
@@ -25,7 +25,7 @@
     }
   },
   "devDependencies": {
-    "@tamagui/build": "1.38.0"
+    "@tamagui/build": "1.68.2"
   },
   "publishConfig": {
     "access": "public"

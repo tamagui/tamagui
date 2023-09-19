@@ -1,24 +1,15 @@
+import { simpleHash } from '@tamagui/simple-hash'
 import { useRef } from 'react'
 
 import { StoreInfo } from './interfaces'
 
-const wkm = new WeakMap<any, string>()
-const weakKey = (obj: any, prefix = '') => {
-  if (wkm.has(obj)) return wkm.get(obj)!
-  const key = `${prefix}-${Math.random()}`
-  wkm.set(obj, key)
-  return key
-}
-
 export function getStoreUid(Constructor: any, props: string | Object | void) {
-  // in dev mode we can use name which gives us nice `allStores.StoreName` access
-  // in prod mode it usually is minified and mangled, unsafe to use name so use weakkey
-  const storeName =
-    process.env.NODE_ENV === 'development' ? Constructor.name : weakKey(Constructor)
-  const uid = `${storeName}${
-    !props ? '' : typeof props === 'string' ? props : getKey(props)
-  }`
-  return uid
+  return simpleHash(
+    `${Constructor}${
+      !props ? '' : typeof props === 'string' ? props : JSON.stringify(props)
+    }`,
+    'strict'
+  )
 }
 
 export const UNWRAP_STORE_INFO = Symbol('UNWRAP_STORE_INFO')
@@ -39,20 +30,6 @@ export function getStoreDescriptors(storeInstance: any) {
 
 export function get<A>(_: A, b?: any): A extends new (props?: any) => infer B ? B : A {
   return _ as any
-}
-
-export function getKey(props: Object) {
-  let s = ''
-  const sorted = Object.keys(props).sort()
-  for (const key of sorted) {
-    const v = props[key]
-    if (v && typeof v === 'object') {
-      s += getKey(v)
-    } else {
-      s += `.${key}:${v}`
-    }
-  }
-  return s
 }
 
 type ResultBox<T> = { v: T }

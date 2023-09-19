@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/text",
-  "version": "1.38.0",
+  "version": "1.68.2",
   "sideEffects": [
     "*.css"
   ],
@@ -17,8 +17,8 @@
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
-    "lint": "../../node_modules/.bin/rome check src",
-    "lint:fix": "../../node_modules/.bin/rome check --apply src",
+    "lint": "../../node_modules/.bin/biome check src",
+    "lint:fix": "../../node_modules/.bin/biome check --apply-unsafe src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
@@ -31,15 +31,15 @@
     }
   },
   "dependencies": {
-    "@tamagui/get-font-sized": "1.38.0",
-    "@tamagui/helpers-tamagui": "1.38.0",
-    "@tamagui/web": "1.38.0"
+    "@tamagui/get-font-sized": "1.68.2",
+    "@tamagui/helpers-tamagui": "1.68.2",
+    "@tamagui/web": "1.68.2"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.38.0",
+    "@tamagui/build": "1.68.2",
     "react": "^18.2.0"
   },
   "publishConfig": {

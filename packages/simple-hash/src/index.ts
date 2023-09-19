@@ -1,6 +1,6 @@
 const cache = new Map()
 
-export const simpleHash = (str: string, hashMin = 10) => {
+export const simpleHash = (str: string, hashMin: number | 'strict' = 10) => {
   if (cache.has(str)) {
     return cache.get(str)
   }
@@ -10,13 +10,17 @@ export const simpleHash = (str: string, hashMin = 10) => {
   for (let i = 0; i < len; i++) {
     const char = str.charCodeAt(i)
     // . => d0t
-    if (char === 46) valids += 'd0t'
-    // dont do more than 10 non-hashed to avoid getting too girthy
-    if (isValidCSSCharCode(char) && len <= hashMin) {
-      valids += str[i]
-    } else {
-      hash = hashChar(hash, str[i])
+    if (hashMin !== 'strict') {
+      if (char === 46) {
+        valids += 'd0t'
+      }
+      // dont do more than 10 non-hashed to avoid getting too girthy
+      if (isValidCSSCharCode(char) && len <= hashMin) {
+        valids += str[i]
+        continue
+      }
     }
+    hash = hashChar(hash, str[i])
   }
   const res = valids + (hash ? Math.abs(hash) : '')
   if (cache.size > 10_000) {

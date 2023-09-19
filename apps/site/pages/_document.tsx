@@ -1,9 +1,8 @@
 import NextDocument, { Head, Html, Main, NextScript } from 'next/document'
-import { Children } from 'react'
 import { StyleSheet } from 'react-native'
 
 import {
-  LoadGlusp,
+  LoadCherryBomb,
   LoadInter400,
   LoadInter700,
   LoadInter900,
@@ -50,6 +49,7 @@ export default class Document extends NextDocument {
 
           <meta name="docsearch:language" content="en" />
           <meta name="docsearch:version" content="1.0.0,latest" />
+          <meta id="theme-color" name="theme-color" />
 
           <LoadInter700 />
           <LoadInter400 />
@@ -63,7 +63,7 @@ export default class Document extends NextDocument {
 
           {this.props.dangerousAsPath === '/takeout' && (
             <>
-              <LoadGlusp />
+              <LoadCherryBomb />
               <LoadMunro />
             </>
           )}

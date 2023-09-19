@@ -3,13 +3,11 @@ import vm from 'vm'
 import generate from '@babel/generator'
 import { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
-import { createCSSVariable } from '@tamagui/core-node'
 import esbuild from 'esbuild'
 
 import { FAILED_EVAL } from '../constants'
 import { TamaguiOptionsWithFileInfo } from '../types'
 import { evaluateAstNode } from './evaluateAstNode'
-import { isValidThemeHook } from './extractHelpers'
 
 export function createEvaluator({
   props,
@@ -26,20 +24,6 @@ export function createEvaluator({
 }) {
   // called when evaluateAstNode encounters a dynamic-looking prop
   const evalFn = (n: t.Node) => {
-    // themes
-    if (
-      t.isMemberExpression(n) &&
-      t.isIdentifier(n.property) &&
-      traversePath &&
-      isValidThemeHook(props, traversePath, n, sourcePath)
-    ) {
-      const key = n.property.name
-      if (shouldPrintDebug) {
-        // rome-ignore lint/nursery/noConsoleLog: ok
-        console.log('    > found theme prop', key)
-      }
-      return createCSSVariable(key)
-    }
     // variable
     if (t.isIdentifier(n) && typeof staticNamespace[n.name] !== 'undefined') {
       return staticNamespace[n.name]
@@ -52,7 +36,7 @@ export function createEvaluator({
       .code.replace(/;\n$/, '')
 
     if (shouldPrintDebug) {
-      // rome-ignore lint/nursery/noConsoleLog: ok
+      // biome-ignore lint/suspicious/noConsoleLog: ok
       console.log('evaluating', code)
     }
     return vm.runInContext(code, evalContext)

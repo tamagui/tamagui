@@ -1,26 +1,27 @@
-import { startTransition, useLayoutEffect, useState } from 'react'
+import { startTransition, useState } from 'react'
 
 import { ColorScheme } from './types'
+import { useIsomorphicLayoutEffect } from './useIsomorphicLayoutEffect'
 
 export const useRootTheme = ({ fallback = 'light' }: { fallback?: ColorScheme } = {}) => {
   const [val, setVal] = useState<ColorScheme>(fallback)
 
-  if (typeof document !== 'undefined') {
-    useLayoutEffect(() => {
-      // @ts-ignore
-      const classes = [...document.documentElement.classList]
+  useIsomorphicLayoutEffect(() => {
+    // @ts-ignore
+    const classes = [...document.documentElement.classList]
 
-      const val: ColorScheme = classes.includes(`t_dark`)
-        ? 'dark'
-        : classes.includes(`t_light`)
-        ? 'light'
-        : fallback
+    const val: ColorScheme = classes.includes(`t_dark`)
+      ? 'dark'
+      : classes.includes(`t_light`)
+      ? 'light'
+      : fallback
 
-      startTransition(() => {
-        setVal(val)
-      })
-    }, [])
-  }
+    // this seems to prevent hydration errors, but not always so if you remove it and it doesn't error
+    // you may regress some peoples apps
+    startTransition(() => {
+      setVal(val)
+    })
+  }, [])
 
   return [val, setVal] as const
 }

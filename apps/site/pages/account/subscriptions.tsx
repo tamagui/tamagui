@@ -1,19 +1,29 @@
 import { Container } from '@components/Container'
+import { APIGuildMember, RESTGetAPIGuildMembersSearchResult } from '@discordjs/core'
 import { getDefaultLayout } from '@lib/getDefaultLayout'
-import { Json } from '@lib/supabase-types'
+import { Database, Json } from '@lib/supabase-types'
 import { getArray, getSingle } from '@lib/supabase-utils'
-import { ArrowUpRight } from '@tamagui/lucide-icons'
+import { Search } from '@tamagui/lucide-icons'
+import { ButtonLink } from 'components/Link'
 import { UserGuard, useUser } from 'hooks/useUser'
 import { NextSeo } from 'next-seo'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
+import type { DiscordChannelStatus } from 'pages/api/discord/channel'
 import { useState } from 'react'
-import { ButtonLink } from 'studio/Link'
-import { useSWRConfig } from 'swr'
+import useSWR, { mutate, useSWRConfig } from 'swr'
+import useSWRMutation from 'swr/mutation'
 import {
+  Avatar,
   Button,
+  Fieldset,
+  Form,
   H2,
   H3,
+  H6,
   Image,
+  Input,
+  Label,
   Paragraph,
   Separator,
   SizableText,
@@ -52,9 +62,15 @@ const Subscriptions = () => {
       <H2>Subscriptions</H2>
       <YStack gap="$8">
         {subscriptions.length === 0 && (
-          <Paragraph ta="center" theme="alt1">
-            You don't have any subscriptions.
-          </Paragraph>
+          <YStack gap="$1">
+            <Paragraph ta="center" theme="alt1">
+              You don't have any subscriptions.
+            </Paragraph>
+            <Paragraph ta="center" theme="alt2">
+              You may need to refresh your page after a few seconds to see the new
+              subscriptions.
+            </Paragraph>
+          </YStack>
         )}
         {subscriptions.map((sub) => {
           return <SubscriptionDetail key={sub.id} subscription={sub} />
@@ -143,6 +159,8 @@ const SubscriptionDetail = ({ subscription }: SubscriptionDetailProps) => {
       setIsLoading(false)
     }
   }
+  // override "trialing" cause we use it for handling several things but may get users confused so we just show "active"
+  const status = subscription.status === 'trialing' ? 'active' : subscription.status
 
   return (
     <YStack
@@ -197,9 +215,9 @@ const SubscriptionDetail = ({ subscription }: SubscriptionDetailProps) => {
             <SizableText>Status: </SizableText>
             <SizableText
               textTransform="capitalize"
-              color={subscription.status === 'active' ? '$green9' : '$yellow9'}
+              color={status === 'active' ? '$green9' : '$yellow9'}
             >
-              {subscription.status}
+              {status}
             </SizableText>
           </SizableText>
         </XStack>
@@ -233,6 +251,9 @@ const SubscriptionItem = ({
   >[number]
   subscription: SubscriptionDetailProps['subscription']
 }) => {
+  const hasDiscordInvites =
+    (item.price.product?.metadata as Record<string, any>).slug === 'universal-starter'
+
   // const { mutate } = useSWRConfig()
   const [isLoading, setIsLoading] = useState(false)
   const product = item.price.product
@@ -286,9 +307,12 @@ const SubscriptionItem = ({
         },
         method: 'POST',
       })
+
       const data = await res.json()
 
-      if (data.message) {
+      if (!res.ok) {
+        alert(data?.error || `Error, response ${res.status} ${res.statusText}`)
+      } else if (data.message) {
         alert(data.message)
       }
     } finally {
@@ -304,7 +328,7 @@ const SubscriptionItem = ({
       : null
 
   return (
-    <YStack key={product.id} gap="$2">
+    <YStack key={product.id} gap="$4">
       <XStack gap="$2" jc="space-between">
         <Image
           source={{
@@ -325,22 +349,7 @@ const SubscriptionItem = ({
           >
             {claimLabel}
           </Button>
-          {hasGithubApp && item.id && (
-            <ButtonLink
-              href={`/api/github/install-bot?${new URLSearchParams({
-                subscription_item_id: item.id.toString(),
-              })}`}
-              size="$2"
-              themeInverse
-            >
-              Install GitHub App
-            </ButtonLink>
-          )}
-          {/* {!!productSlug && ( */}
-          <ButtonLink href={`/takeout`} size="$2" iconAfter={ArrowUpRight}>
-            View Page
-          </ButtonLink>
-          {/* )} */}
+
           {/* <Button
             disabled={isLoading}
             {...(isLoading && { opacity: 0.5 })}
@@ -355,13 +364,251 @@ const SubscriptionItem = ({
       <YStack>
         <H3>{product.name}</H3>
         <Paragraph theme="alt1">{product.description}</Paragraph>
-        {installInstructions && (
-          <Paragraph mt="$2" theme="alt1">
-            {installInstructions}
-          </Paragraph>
+      </YStack>
+      <YStack gap="$4" separator={<Separator />}>
+        <YStack>
+          {installInstructions && (
+            <YStack>
+              <H6>How to use</H6>
+              <Paragraph mt="$2">{installInstructions}</Paragraph>
+            </YStack>
+          )}
+        </YStack>
+        {hasDiscordInvites && <DiscordPanel subscriptionId={subscription.id} />}
+        {hasGithubApp && item.id && (
+          <BotInstallPanel
+            subItemId={item.id}
+            appInstallations={getArray(item.app_installations ?? [])}
+          />
         )}
       </YStack>
     </YStack>
+  )
+}
+
+const BotInstallPanel = ({
+  subItemId,
+  appInstallations,
+}: {
+  subItemId: string
+  appInstallations: Database['public']['Tables']['app_installations']['Row'][]
+}) => {
+  const activeInstallations = appInstallations.filter(
+    (installation) => !!installation.installed_at
+  )
+  const installationUrl = `/api/github/install-bot?${new URLSearchParams({
+    subscription_item_id: subItemId,
+  })}`
+
+  return (
+    <YStack gap="$2">
+      <XStack jc="space-between" gap="$2" ai="center">
+        <H6>GitHub App</H6>
+      </XStack>
+      {activeInstallations.length > 0 ? (
+        <YStack gap="$1">
+          {activeInstallations.map((installation) => (
+            <Paragraph>
+              Installation ID: {installation.github_installation_id} -{' '}
+              <Link
+                style={{ textDecoration: 'underline' }}
+                target="_blank"
+                href={`https://github.com/settings/installations/${installation.github_installation_id}`}
+              >
+                Installation Settings
+              </Link>
+            </Paragraph>
+          ))}
+        </YStack>
+      ) : (
+        <>
+          <Paragraph>
+            No installation found. To receive updates, you need to install the Takeout
+            GitHub Bot on your repo.
+          </Paragraph>
+          <Paragraph theme="alt1">
+            If you have already installed the bot and don't see it here, *uninstall* the
+            bot from GitHub, come back to this page and try again.
+          </Paragraph>
+        </>
+      )}
+
+      <XStack>
+        <ButtonLink href={installationUrl} size="$2" themeInverse>
+          Install GitHub App
+        </ButtonLink>
+      </XStack>
+    </YStack>
+  )
+}
+
+const DiscordPanel = ({ subscriptionId }: { subscriptionId: string }) => {
+  const groupInfoSwr = useSWR<DiscordChannelStatus>(
+    `/api/discord/channel?${new URLSearchParams({ subscription_id: subscriptionId })}`,
+    (url) =>
+      fetch(url, { headers: { 'Content-Type': 'application/json' } }).then((res) =>
+        res.json()
+      )
+  )
+  const [draftQuery, setDraftQuery] = useState('')
+  const [query, setQuery] = useState(draftQuery)
+  const searchSwr = useSWR<RESTGetAPIGuildMembersSearchResult>(
+    query
+      ? `/api/discord/search-member?${new URLSearchParams({ query }).toString()}`
+      : null,
+    (url) =>
+      fetch(url, { headers: { 'Content-Type': 'application/json' } }).then((res) =>
+        res.json()
+      )
+  )
+
+  const resetChannelMutation = useSWRMutation(
+    [`/api/discord/channel`, 'DELETE', subscriptionId],
+    (url) =>
+      fetch(`/api/discord/channel`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          subscription_id: subscriptionId,
+        }),
+      }).then((res) => res.json()),
+    {
+      onSuccess: async () => {
+        await mutate(
+          `/api/discord/channel?${new URLSearchParams({
+            subscription_id: subscriptionId,
+          })}`
+        )
+        setDraftQuery('')
+        setQuery('')
+      },
+    }
+  )
+
+  const handleSearch = async () => {
+    setQuery(draftQuery)
+  }
+
+  return (
+    <YStack gap="$2">
+      <XStack jc="space-between" gap="$2" ai="center">
+        <H6>
+          Discord Access{' '}
+          {!!groupInfoSwr.data &&
+            `(${groupInfoSwr.data?.currentlyOccupiedSeats}/${groupInfoSwr.data?.discordSeats})`}
+        </H6>
+        <Button
+          size="$2"
+          onPress={() => resetChannelMutation.trigger()}
+          disabled={resetChannelMutation.isMutating}
+        >
+          {resetChannelMutation.isMutating ? 'Resetting...' : 'Reset'}
+        </Button>
+      </XStack>
+      <Form onSubmit={handleSearch} gap="$2" flexDirection="row" ai="flex-end">
+        <Fieldset>
+          <Label size="$2" htmlFor="discord-username">
+            Username / Nickname
+          </Label>
+          <Input
+            size="$2"
+            placeholder="Your username..."
+            id="discord-username"
+            value={draftQuery}
+            onChangeText={setDraftQuery}
+          />
+        </Fieldset>
+
+        <Form.Trigger>
+          <Button size="$2" icon={Search}>
+            Search
+          </Button>
+        </Form.Trigger>
+      </Form>
+
+      <YStack gap="$2">
+        {searchSwr.data?.map((member) => {
+          return (
+            <DiscordMember
+              key={member.user?.id}
+              member={member}
+              subscriptionId={subscriptionId}
+            />
+          )
+        })}
+      </YStack>
+    </YStack>
+  )
+}
+
+const DiscordMember = ({
+  member,
+  subscriptionId,
+}: {
+  member: APIGuildMember
+  subscriptionId: string
+}) => {
+  const { data, error, isMutating, trigger } = useSWRMutation(
+    ['/api/discord/channel', 'POST', member.user?.id],
+    async () => {
+      const res = await fetch('/api/discord/channel', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          subscription_id: subscriptionId,
+          discord_id: member.user?.id,
+        }),
+      })
+
+      if (res.status < 200 || res.status > 299) {
+        throw await res.json()
+      }
+      return await res.json()
+    },
+    {
+      onSuccess: async () => {
+        await mutate(
+          `/api/discord/channel?${new URLSearchParams({
+            subscription_id: subscriptionId,
+          })}`
+        )
+      },
+    }
+  )
+
+  const name = member.nick || member.user?.global_name
+
+  const username = `${member.user?.username}${
+    member.user?.discriminator !== '0' ? `#${member.user?.discriminator}` : ''
+  }`
+  const avatarSrc = member.user?.avatar
+    ? `https://cdn.discordapp.com/avatars/${member.user?.id}/${member.user?.avatar}.png`
+    : null
+  return (
+    <XStack gap="$2" ai="center" flexWrap="wrap">
+      <Button minWidth={70} size="$2" disabled={isMutating} onPress={() => trigger()}>
+        {isMutating ? 'Inviting...' : 'Add'}
+      </Button>
+      <Avatar circular size="$2">
+        <Avatar.Image accessibilityLabel={`avatar for ${username}`} src={avatarSrc!} />
+        <Avatar.Fallback backgroundColor="$blue10" />
+      </Avatar>
+      <Paragraph>{`${username}${name ? ` (${name})` : ''}`}</Paragraph>
+      {data && (
+        <Paragraph size="$1" theme="green_alt2">
+          {data.message}
+        </Paragraph>
+      )}
+      {error && (
+        <Paragraph size="$1" theme="red_alt2">
+          {error.message}
+        </Paragraph>
+      )}
+    </XStack>
   )
 }
 
@@ -369,12 +616,7 @@ const GithubAppMessage = () => {
   const router = useRouter()
   const githubAppInstalled = !!router.query.github_app_installed
   if (!githubAppInstalled) return null
-  return (
-    <Paragraph theme="green_alt2">
-      GitHub App installed successfully. We will create PRs to your fork as we ship new
-      updates.
-    </Paragraph>
-  )
+  return <Paragraph theme="green_alt2"></Paragraph>
 }
 
 Page.getLayout = getDefaultLayout

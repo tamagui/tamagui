@@ -36,7 +36,7 @@ describe('modules/useMergeRefs/index.js', () => {
       render(
         <TestComponent
           refs={[callbackRef1, callbackRef2, objectRef1, objectRef2, nullRef]}
-        />,
+        />
       )
     })
 

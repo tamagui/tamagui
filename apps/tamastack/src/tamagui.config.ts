@@ -1,24 +1,12 @@
-import { config } from '@tamagui/config'
-import { createTamagui } from 'tamagui'
+import { config as configOptions } from '@tamagui/config'
+import { createTamagui } from '@tamagui/core'
 
-// this is used by the button test...
-config.themes = {
-  ...config.themes,
-  light_green_Button: {
-    ...config.themes.light_green_Button,
-    background: 'green',
-  },
-}
+export const config = createTamagui(configOptions)
 
-const tamaConf = createTamagui({
-  ...config,
-  themeClassNameOnRoot: false,
-})
+export type Conf = typeof config
 
-export type Conf = typeof tamaConf
-
-declare module 'tamagui' {
+declare module '@tamagui/core' {
   interface TamaguiCustomConfig extends Conf {}
 }
 
-export default tamaConf
+export default config

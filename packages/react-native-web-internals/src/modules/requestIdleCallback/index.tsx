@@ -30,9 +30,7 @@ const requestIdleCallback = isSupported
   ? window.requestIdleCallback
   : _requestIdleCallback
 
-const cancelIdleCallback = isSupported
-  ? window.cancelIdleCallback
-  : _cancelIdleCallback
+const cancelIdleCallback = isSupported ? window.cancelIdleCallback : _cancelIdleCallback
 
 export default requestIdleCallback
 export { cancelIdleCallback }

@@ -1,7 +1,7 @@
 import { memo, useMemo, useState } from 'react'
 import { Button, Card, Square, Theme, YStack } from 'tamagui'
 
-export function ThemeChange () {
+export function ThemeChange() {
   return <Button themeInverse>inverse</Button>
 
   return (
@@ -56,7 +56,6 @@ const SandboxThemeChildStatic = memo(() => {
 })
 
 const SandboxThemeChildDynamic = memo(() => {
-  console.log('render dynamic')
   return (
     // @ts-ignore
     <Square animation="bouncy" size={20} backgroundColor="$color10" />

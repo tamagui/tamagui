@@ -5,6 +5,9 @@ export const getButtonSized = (
   val: SizeTokens | number,
   { tokens, props }: VariantSpreadExtras<any>
 ) => {
+  if (!val) {
+    return
+  }
   if (typeof val === 'number') {
     return {
       paddingHorizontal: val * 0.25,

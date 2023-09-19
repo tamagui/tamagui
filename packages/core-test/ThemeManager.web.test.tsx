@@ -1,4 +1,4 @@
-import { getDefaultTamaguiConfig } from '@tamagui/config-default-node'
+import { getDefaultTamaguiConfig } from '@tamagui/config-default'
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import { createTamagui } from '../web/src'
@@ -8,7 +8,7 @@ const conf = getDefaultTamaguiConfig()
 
 describe('ThemeManager', () => {
   beforeAll(() => {
-    createTamagui(conf)
+    createTamagui(conf as any)
   })
 
   test('Changes theme to dark', () => {
@@ -165,13 +165,14 @@ describe('ThemeManager', () => {
       },
       'root'
     )
-    const newState = parent.updateState({
+    const newState = parent.updateStateFromProps({
       name: 'dark',
     })
     expect(newState).toMatchInlineSnapshot(`
       {
         "className": "t_sub_theme t_dark",
         "componentName": undefined,
+        "inverse": undefined,
         "name": "dark",
         "parentName": "",
         "theme": {

@@ -21,39 +21,51 @@ const [ProgressProvider, useProgressContext] =
 
 const INDICATOR_NAME = 'ProgressIndicator'
 
-type ProgressIndicatorElement = TamaguiElement
-interface ProgressIndicatorProps extends YStackProps {}
-
 export const ProgressIndicatorFrame = styled(ThemeableStack, {
   name: INDICATOR_NAME,
-  height: '100%',
-  width: '100%',
-  backgrounded: true,
+
+  variants: {
+    unstyled: {
+      false: {
+        height: '100%',
+        width: '100%',
+        backgrounded: true,
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    unstyled: false,
+  },
 })
 
-const ProgressIndicator = ProgressIndicatorFrame.extractable(
-  React.forwardRef<ProgressIndicatorElement, ProgressIndicatorProps>(
-    (props: ScopedProps<ProgressIndicatorProps>, forwardedRef) => {
-      const { __scopeProgress, ...indicatorProps } = props
-      const context = useProgressContext(INDICATOR_NAME, __scopeProgress)
-      const pct = context.max - (context.value ?? 0)
-      const x = -context.width * (pct / 100)
-      return (
-        <ProgressIndicatorFrame
-          data-state={getProgressState(context.value, context.max)}
-          data-value={context.value ?? undefined}
-          data-max={context.max}
-          x={x}
-          width={context.width}
-          {...indicatorProps}
-          ref={forwardedRef}
-        />
-      )
-    }
-  )
-)
+type ProgressIndicatorProps = GetProps<typeof ProgressIndicatorFrame>
 
-ProgressIndicator.displayName = INDICATOR_NAME
+const ProgressIndicator = ProgressIndicatorFrame.styleable(function ProgressIndicator(
+  props: ScopedProps<ProgressIndicatorProps>,
+  forwardedRef
+) {
+  const { __scopeProgress, ...indicatorProps } = props
+  const context = useProgressContext(INDICATOR_NAME, __scopeProgress)
+  const pct = context.max - (context.value ?? 0)
+  // default somewhat far off
+  const x = -(context.width === 0 ? 300 : context.width) * (pct / 100)
+  return (
+    <ProgressIndicatorFrame
+      data-state={getProgressState(context.value, context.max)}
+      data-value={context.value ?? undefined}
+      data-max={context.max}
+      x={x}
+      width={context.width}
+      {...(!props.unstyled && {
+        animateOnly: ['transform'],
+        opacity: context.width === 0 ? 0 : 1,
+      })}
+      {...indicatorProps}
+      ref={forwardedRef}
+    />
+  )
+})
 
 /* ---------------------------------------------------------------------------------------------- */
 
@@ -104,17 +116,18 @@ type ScopedProps<P> = P & { __scopeProgress?: Scope }
 
 type ProgressState = 'indeterminate' | 'complete' | 'loading'
 
-type TamaguiElement = HTMLElement | View
-
-type ProgressElement = TamaguiElement
-
 export const ProgressFrame = styled(ThemeableStack, {
-  name: PROGRESS_NAME,
-  borderRadius: 100_000,
-  overflow: 'hidden',
-  backgrounded: true,
+  name: 'Progress',
 
   variants: {
+    unstyled: {
+      false: {
+        borderRadius: 100_000,
+        overflow: 'hidden',
+        backgrounded: true,
+      },
+    },
+
     size: {
       '...size': (val) => {
         const size = Math.round(getVariableValue(getSize(val)) * 0.25)
@@ -126,6 +139,10 @@ export const ProgressFrame = styled(ThemeableStack, {
       },
     },
   } as const,
+
+  defaultVariants: {
+    unstyled: false,
+  },
 })
 
 type ProgressProps = GetProps<typeof ProgressFrame> & {
@@ -135,74 +152,53 @@ type ProgressProps = GetProps<typeof ProgressFrame> & {
 }
 
 const Progress = withStaticProperties(
-  ProgressFrame.extractable(
-    React.forwardRef<ProgressElement, ProgressProps>(
-      (props: ScopedProps<ProgressProps>, forwardedRef) => {
-        const {
-          __scopeProgress,
-          value: valueProp,
-          max: maxProp,
-          getValueLabel = defaultGetValueLabel,
-          size = '$true',
-          ...progressProps
-        } = props
+  ProgressFrame.styleable<ProgressProps>(function Progress(
+    props: ScopedProps<ProgressProps>,
+    forwardedRef
+  ) {
+    const {
+      __scopeProgress,
+      value: valueProp,
+      max: maxProp,
+      getValueLabel = defaultGetValueLabel,
+      size = '$true',
+      ...progressProps
+    } = props
 
-        const max = isValidMaxNumber(maxProp) ? maxProp : DEFAULT_MAX
-        const value = isValidValueNumber(valueProp, max) ? valueProp : null
-        const valueLabel = isNumber(value) ? getValueLabel(value, max) : undefined
-        const [width, setWidth] = React.useState(0)
+    const max = isValidMaxNumber(maxProp) ? maxProp : DEFAULT_MAX
+    const value = isValidValueNumber(valueProp, max) ? valueProp : null
+    const valueLabel = isNumber(value) ? getValueLabel(value, max) : undefined
+    const [width, setWidth] = React.useState(0)
 
-        return (
-          <ProgressProvider scope={__scopeProgress} value={value} max={max} width={width}>
-            <ProgressFrame
-              size={size}
-              aria-valuemax={max}
-              aria-valuemin={0}
-              aria-valuenow={isNumber(value) ? value : undefined}
-              aria-valuetext={valueLabel}
-              // @ts-ignore
-              role="progressbar"
-              data-state={getProgressState(value, max)}
-              data-value={value ?? undefined}
-              data-max={max}
-              {...progressProps}
-              onLayout={(e) => {
-                setWidth(e.nativeEvent.layout.width)
-                progressProps.onLayout?.(e)
-              }}
-              ref={forwardedRef}
-            />
-          </ProgressProvider>
-        )
-      }
+    return (
+      <ProgressProvider scope={__scopeProgress} value={value} max={max} width={width}>
+        <ProgressFrame
+          aria-valuemax={max}
+          aria-valuemin={0}
+          aria-valuenow={isNumber(value) ? value : undefined}
+          aria-valuetext={valueLabel}
+          // @ts-ignore
+          role="progressbar"
+          data-state={getProgressState(value, max)}
+          data-value={value ?? undefined}
+          data-max={max}
+          {...(progressProps.unstyled !== true && {
+            size,
+          })}
+          {...progressProps}
+          onLayout={(e) => {
+            setWidth(e.nativeEvent.layout.width)
+            progressProps.onLayout?.(e)
+          }}
+          ref={forwardedRef}
+        />
+      </ProgressProvider>
     )
-  ),
+  }),
   {
     Indicator: ProgressIndicator,
   }
 )
-
-Progress.displayName = PROGRESS_NAME
-
-Progress.propTypes = {
-  max(props, propName, componentName) {
-    const propValue = props[propName]
-    const strVal = String(propValue)
-    if (propValue && !isValidMaxNumber(propValue)) {
-      return new Error(getInvalidMaxError(strVal, componentName))
-    }
-    return null
-  },
-  value(props, propName, componentName) {
-    const valueProp = props[propName]
-    const strVal = String(valueProp)
-    const max = isValidMaxNumber(props.max) ? props.max : DEFAULT_MAX
-    if (valueProp != null && !isValidValueNumber(valueProp, max)) {
-      return new Error(getInvalidValueError(strVal, componentName))
-    }
-    return null
-  },
-}
 
 export { createProgressScope, Progress, ProgressIndicator }
 export type { ProgressProps, ProgressIndicatorProps }

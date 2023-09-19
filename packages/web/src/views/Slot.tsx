@@ -2,6 +2,7 @@
 
 import { composeRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
+import { composeEventHandlers } from '@tamagui/helpers'
 import { Children, ReactNode, cloneElement, forwardRef, isValidElement } from 'react'
 
 /* -------------------------------------------------------------------------------------------------
@@ -16,11 +17,16 @@ export const Slot = forwardRef<any, SlotProps>(function Slot(props, forwardedRef
   const { children, ...slotProps } = props
 
   if (isValidElement(children)) {
-    const childProps = {
-      ...mergeSlotProps(children, slotProps),
-      ref: composeRefs(forwardedRef, (children as any).ref),
-    }
-    return cloneElement(children, childProps)
+    const mergedProps = mergeSlotProps(children, slotProps)
+    return cloneElement(
+      children,
+      children.type['avoidForwardRef']
+        ? mergedProps
+        : {
+            ...mergedProps,
+            ref: composeRefs(forwardedRef, (children as any).ref),
+          }
+    )
   }
 
   return Children.count(children) > 1 ? Children.only(null) : null
@@ -72,7 +78,7 @@ function mergeSlotProps(child: any, slotProps: Record<string, any>) {
     const isHandler = handleRegex.test(propName)
     // if it's a handler, modify the override by composing the base handler
     if (isHandler) {
-      overrideProps[propName] = mergeEvent(childPropValue, slotPropValue)
+      overrideProps[propName] = composeEventHandlers(childPropValue, slotPropValue)
     }
     // if it's `style`, we merge them
     else if (propName === 'style') {
@@ -86,10 +92,3 @@ function mergeSlotProps(child: any, slotProps: Record<string, any>) {
 }
 
 const handleRegex = /^on[A-Z]/
-
-export function mergeEvent(a?: Function, b?: Function) {
-  return (...args: unknown[]) => {
-    a?.(...args)
-    b?.(...args)
-  }
-}

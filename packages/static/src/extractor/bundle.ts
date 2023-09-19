@@ -3,6 +3,8 @@ import { basename, dirname, join } from 'path'
 import esbuild from 'esbuild'
 import { pathExists, stat, writeFile } from 'fs-extra'
 
+import { TamaguiPlatform } from '../types'
+import { esbuildAliasPlugin } from './esbuildAliasPlugin'
 import { resolveWebOrNativeSpecificEntry } from './loadTamagui'
 
 /**
@@ -17,11 +19,11 @@ type Props = Omit<Partial<esbuild.BuildOptions>, 'entryPoints'> & {
 
 function getESBuildConfig(
   { entryPoints, resolvePlatformSpecificEntries, ...options }: Props,
+  platform: TamaguiPlatform,
   aliases?: Record<string, string>
 ) {
-  const alias = require('@tamagui/core-node').aliasPlugin
   if (process.env.DEBUG?.startsWith('tamagui')) {
-    // rome-ignore lint/nursery/noConsoleLog: ok
+    // biome-ignore lint/suspicious/noConsoleLog: ok
     console.log(`Building`, entryPoints)
   }
   const tsconfig = join(__dirname, '..', '..', '..', 'tamagui.tsconfig.json')
@@ -34,7 +36,7 @@ function getESBuildConfig(
     bundle: true,
     entryPoints: resolvedEntryPoints,
     format: 'cjs',
-    target: 'node18',
+    target: 'node16',
     jsx: 'transform',
     jsxFactory: 'react',
     allowOverwrite: true,
@@ -52,6 +54,17 @@ function getESBuildConfig(
     tsconfig,
     loader: {
       '.js': 'jsx',
+      '.png': 'dataurl',
+      '.jpg': 'dataurl',
+      '.jpeg': 'dataurl',
+      '.svg': 'dataurl',
+      '.gif': 'dataurl',
+      '.webp': 'dataurl',
+      '.woff2': 'dataurl',
+      '.woff': 'dataurl',
+      '.eot': 'dataurl',
+      '.otf': 'dataurl',
+      '.ttf': 'dataurl',
     },
     logLevel: 'warning',
     plugins: [
@@ -60,14 +73,19 @@ function getESBuildConfig(
         setup(build) {
           build.onResolve({ filter: /@tamagui\/core/ }, (args) => {
             return {
-              path: '@tamagui/core-node',
+              path: platform === 'native' ? '@tamagui/core/native' : '@tamagui/core',
               external: true,
             }
           })
-
+          build.onResolve({ filter: /react-native\/package.json$/ }, (args) => {
+            return {
+              path: 'react-native/package.json',
+              external: true,
+            }
+          })
           build.onResolve({ filter: /@tamagui\/web/ }, (args) => {
             return {
-              path: '@tamagui/core-node',
+              path: platform === 'native' ? '@tamagui/core/native' : '@tamagui/core',
               external: true,
             }
           })
@@ -80,7 +98,7 @@ function getESBuildConfig(
           })
         },
       },
-      alias({
+      esbuildAliasPlugin({
         ...aliases,
       }),
     ],
@@ -90,13 +108,14 @@ function getESBuildConfig(
   return res
 }
 
-export async function bundle(props: Props, aliases?: Record<string, string>) {
+export async function bundle(
+  props: Props,
+  platform: TamaguiPlatform,
+  aliases?: Record<string, string>
+) {
   await asyncLock(props)
-  return esbuild.build(getESBuildConfig(props, aliases))
-}
-
-export function bundleSync(props: Props, aliases?: Record<string, string>) {
-  return esbuild.buildSync(getESBuildConfig(props, aliases))
+  const config = getESBuildConfig(props, platform, aliases)
+  return esbuild.build(config)
 }
 
 // until i do fancier things w plugins:
@@ -110,7 +129,7 @@ async function asyncLock(props: Props) {
     : new Date().getTime() - new Date(lockStat.mtime).getTime()
   if (lockedMsAgo < 500) {
     if (process.env.DEBUG?.startsWith('tamagui')) {
-      // rome-ignore lint/nursery/noConsoleLog: ok
+      // biome-ignore lint/suspicious/noConsoleLog: ok
       console.log(`Waiting for existing build`, props.entryPoints)
     }
     let tries = 5

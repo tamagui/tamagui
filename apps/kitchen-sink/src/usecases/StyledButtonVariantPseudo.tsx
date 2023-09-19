@@ -14,7 +14,7 @@ const StyledButton = styled(Button, {
         },
       },
     },
-  },
+  } as const,
 })
 
 export const StyledButtonVariantPseudo = () => (

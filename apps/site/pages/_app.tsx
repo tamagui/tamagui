@@ -1,6 +1,5 @@
 import '@tamagui/core/reset.css'
 
-// import '../lib/wdyr'
 import '../app.css'
 
 import { GetLayout } from '@lib/getDefaultLayout'
@@ -12,11 +11,13 @@ import {
 } from '@tamagui/next-theme'
 import { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { TamaguiProvider } from 'tamagui'
+import { useEffect, useMemo, useState } from 'react'
+import { TamaguiProvider, Text, useDebounceValue, useDidFinishSSR } from 'tamagui'
 
-import { LoadGlusp, LoadInter900, LoadMunro } from '../components/LoadFont'
+import { LoadCherryBomb, LoadInter900, LoadMunro } from '../components/LoadFont'
 import config from '../tamagui.config'
+
+// import '../lib/wdyr'
 
 Error.stackTraceLimit = Infinity
 
@@ -82,7 +83,10 @@ function AppContents(
     setTheme: React.Dispatch<React.SetStateAction<ColorScheme>>
   }
 ) {
+  const didHydrate = useDidFinishSSR()
+  const didHydrateDelayed = useDebounceValue(didHydrate, 500)
   const [didInteract, setDidInteract] = useState(false)
+  const didInteractDelayed = useDebounceValue(didInteract, 100)
 
   useEffect(() => {
     const onDown = () => {
@@ -109,14 +113,22 @@ function AppContents(
         }}
       />
 
-      {/* this will lazy load the font for /studio and /takeout pages */}
-      {didInteract && (
+      {didHydrateDelayed && (
         <>
-          <LoadInter900 />
-          <LoadGlusp />
-          <LoadMunro />
+          <LoadCherryBomb />
         </>
       )}
+
+      {/* this will lazy load the font for /studio and /takeout pages */}
+      {/* load it after first interaction to avoid clogging the first click even */}
+      {didInteractDelayed && (
+        <>
+          <LoadInter900 />
+          <LoadMunro />
+          <LoadCherryBomb />
+        </>
+      )}
+
       <TamaguiProvider
         config={config}
         disableInjectCSS

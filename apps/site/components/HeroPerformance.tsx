@@ -70,7 +70,7 @@ export function HeroPerformance() {
 const BenchmarksLink = () => {
   const { tint } = useTint()
   return (
-    <NextLink href="/docs/intro/benchmarks">
+    <NextLink prefetch={false} href="/docs/intro/benchmarks">
       <Button
         accessibilityLabel="Performance benchmarks"
         fontFamily="$silkscreen"
@@ -85,7 +85,7 @@ const BenchmarksLink = () => {
 const CompilerLink = () => {
   const { tint } = useTint()
   return (
-    <NextLink href="/docs/intro/why-a-compiler">
+    <NextLink prefetch={false} href="/docs/intro/why-a-compiler">
       <Button accessibilityLabel="Compiler" fontFamily="$silkscreen" theme={tint as any}>
         About &raquo;
       </Button>

@@ -23,7 +23,7 @@ const tamaguiDir = path.join(home, '.tamagui')
 
 export const generatedPackageTypes = ['font', 'icon'] as const
 export const installGeneratedPackage = async (type: string, packagesPath?: string) => {
-  packagesPath = packagesPath || 'packages'
+  packagesPath = packagesPath || path.join(process.cwd(), 'packages')
   if (!generatedPackageTypes.includes(type as (typeof generatedPackageTypes)[number])) {
     throw new Error(
       `${
@@ -40,13 +40,19 @@ export const installGeneratedPackage = async (type: string, packagesPath?: strin
     rmSync(tempDir, { recursive: true })
   }
   try {
-    execSync(
-      `cd ${tamaguiDir} &&
-      git clone -n --depth=1 --branch generated --filter=tree:0 https://github.com/tamagui/${repoName}
-      cd ${repoName}
-      git sparse-checkout set --no-cone meta
-      git checkout`
-    )
+    process.chdir(tamaguiDir)
+    try {
+      execSync(
+        `git clone -n --depth=1 --branch generated --filter=tree:0 https://github.com/tamagui/${repoName}`
+      )
+    } catch (error) {
+      execSync(
+        `git clone -n --depth=1 --branch generated --filter=tree:0 ssh://github.com/tamagui/${repoName}`
+      )
+    }
+
+    process.chdir(tempDir)
+    execSync([`git sparse-checkout set --no-cone meta`, `git checkout`].join(' && '))
   } catch (error) {
     if (error instanceof Error) {
       if ((error as any)?.stderr.includes('Repository not found')) {
@@ -70,11 +76,20 @@ export const installGeneratedPackage = async (type: string, packagesPath?: strin
     )
   )
 
+  console.log(
+    chalk.gray(
+      `Use ⇧/⇩ to navigate. Use tab to cycle the result. Use Page Up/Page Down (on Mac: fn + ⇧ / ⇩) to change page. Hit enter to select the highlighted item below the prompt.`
+    )
+  )
   const result = await prompts({
     name: 'packageName',
     type: 'autocomplete',
-    message: `Pick a ${type}:`,
-
+    message:
+      type === 'icon'
+        ? `Pick an icon pack:`
+        : type === 'font'
+        ? `Pick a font:`
+        : `Pick one:`,
     choices: Object.entries<any>(meta).map(([slug, data]) => ({
       title:
         type === 'font'
@@ -88,11 +103,11 @@ export const installGeneratedPackage = async (type: string, packagesPath?: strin
 
   const packageName = `${type}-${result.packageName}`
   const packageDir = path.join(tempDir, 'packages', packageName)
-
+  process.chdir(tempDir)
   execSync(
-    `cd ${tempDir} &&
-    git sparse-checkout set --no-cone packages/${packageName}
-    git checkout`
+    [`git sparse-checkout set --no-cone packages/${packageName}`, `git checkout`].join(
+      ' && '
+    )
   )
   const finalDir = path.join(packagesPath, packageName)
   await ensureDir(packagesPath)
@@ -107,3 +122,5 @@ export const installGeneratedPackage = async (type: string, packagesPath?: strin
     console.log(marked.parse(readFileSync(readmePath).toString()))
   }
 }
+
+function cloneGeneratedBranch(repoName: string) {}

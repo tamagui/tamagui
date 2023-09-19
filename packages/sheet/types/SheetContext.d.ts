@@ -12,7 +12,7 @@ export declare const createSheetContext: <ContextValueType extends object | null
 export declare const SheetProvider: {
     (props: {
         screenSize: number;
-        maxSnapPoint: number;
+        maxSnapPoint: string | number;
         removeScrollEnabled: boolean | undefined;
         scrollBridge: import("./types").ScrollBridge;
         modal: boolean;
@@ -26,15 +26,18 @@ export declare const SheetProvider: {
         dismissOnSnapToBottom: boolean;
         onOverlayComponent: ((comp: any) => void) | undefined;
         scope: import("@tamagui/create-context").Scope<any>;
+        hasFit: boolean;
         position: number;
-        snapPoints: number[];
+        snapPoints: (string | number)[];
+        snapPointsMode: import("./types").SnapPointsMode;
+        setMaxContentSize: import("react").Dispatch<import("react").SetStateAction<number>>;
         setPosition: (next: number) => void;
         setPositionImmediate: import("react").Dispatch<import("react").SetStateAction<number>>;
         onlyShowFrame: boolean;
     } & {
         scope: import("@tamagui/create-context").Scope<{
             screenSize: number;
-            maxSnapPoint: number;
+            maxSnapPoint: string | number;
             removeScrollEnabled: boolean | undefined;
             scrollBridge: import("./types").ScrollBridge;
             modal: boolean;
@@ -48,8 +51,11 @@ export declare const SheetProvider: {
             dismissOnSnapToBottom: boolean;
             onOverlayComponent: ((comp: any) => void) | undefined;
             scope: import("@tamagui/create-context").Scope<any>;
+            hasFit: boolean;
             position: number;
-            snapPoints: number[];
+            snapPoints: (string | number)[];
+            snapPointsMode: import("./types").SnapPointsMode;
+            setMaxContentSize: import("react").Dispatch<import("react").SetStateAction<number>>;
             setPosition: (next: number) => void;
             setPositionImmediate: import("react").Dispatch<import("react").SetStateAction<number>>;
             onlyShowFrame: boolean;
@@ -59,7 +65,7 @@ export declare const SheetProvider: {
     displayName: string;
 }, useSheetContext: (consumerName: string, scope: import("@tamagui/create-context").Scope<{
     screenSize: number;
-    maxSnapPoint: number;
+    maxSnapPoint: string | number;
     removeScrollEnabled: boolean | undefined;
     scrollBridge: import("./types").ScrollBridge;
     modal: boolean;
@@ -73,8 +79,11 @@ export declare const SheetProvider: {
     dismissOnSnapToBottom: boolean;
     onOverlayComponent: ((comp: any) => void) | undefined;
     scope: import("@tamagui/create-context").Scope<any>;
+    hasFit: boolean;
     position: number;
-    snapPoints: number[];
+    snapPoints: (string | number)[];
+    snapPointsMode: import("./types").SnapPointsMode;
+    setMaxContentSize: import("react").Dispatch<import("react").SetStateAction<number>>;
     setPosition: (next: number) => void;
     setPositionImmediate: import("react").Dispatch<import("react").SetStateAction<number>>;
     onlyShowFrame: boolean;
@@ -82,7 +91,7 @@ export declare const SheetProvider: {
     warn?: boolean | undefined;
     fallback?: Partial<{
         screenSize: number;
-        maxSnapPoint: number;
+        maxSnapPoint: string | number;
         removeScrollEnabled: boolean | undefined;
         scrollBridge: import("./types").ScrollBridge;
         modal: boolean;
@@ -96,15 +105,18 @@ export declare const SheetProvider: {
         dismissOnSnapToBottom: boolean;
         onOverlayComponent: ((comp: any) => void) | undefined;
         scope: import("@tamagui/create-context").Scope<any>;
+        hasFit: boolean;
         position: number;
-        snapPoints: number[];
+        snapPoints: (string | number)[];
+        snapPointsMode: import("./types").SnapPointsMode;
+        setMaxContentSize: import("react").Dispatch<import("react").SetStateAction<number>>;
         setPosition: (next: number) => void;
         setPositionImmediate: import("react").Dispatch<import("react").SetStateAction<number>>;
         onlyShowFrame: boolean;
     }> | undefined;
 } | undefined) => {
     screenSize: number;
-    maxSnapPoint: number;
+    maxSnapPoint: string | number;
     removeScrollEnabled: boolean | undefined;
     scrollBridge: import("./types").ScrollBridge;
     modal: boolean;
@@ -118,8 +130,11 @@ export declare const SheetProvider: {
     dismissOnSnapToBottom: boolean;
     onOverlayComponent: ((comp: any) => void) | undefined;
     scope: import("@tamagui/create-context").Scope<any>;
+    hasFit: boolean;
     position: number;
-    snapPoints: number[];
+    snapPoints: (string | number)[];
+    snapPointsMode: import("./types").SnapPointsMode;
+    setMaxContentSize: import("react").Dispatch<import("react").SetStateAction<number>>;
     setPosition: (next: number) => void;
     setPositionImmediate: import("react").Dispatch<import("react").SetStateAction<number>>;
     onlyShowFrame: boolean;

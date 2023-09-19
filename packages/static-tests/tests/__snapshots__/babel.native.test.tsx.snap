@@ -1,36 +1,24 @@
-// Vitest Snapshot v1
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`basic conditional extraction 1`] = `
 "import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
 const _sheet = ReactNativeStyleSheet.create({
   \\"0\\": {
     \\"alignItems\\": \\"stretch\\",
-    \\"flexShrink\\": 0,
-    \\"display\\": \\"flex\\",
-    \\"flexBasis\\": \\"auto\\",
-    \\"position\\": \\"relative\\",
-    \\"minHeight\\": 0,
-    \\"minWidth\\": 0,
     \\"flexDirection\\": \\"column\\"
   },
   \\"1\\": {
-    \\"backgroundColor\\": \\"rgba(255,0,0,1.00)\\"
+    \\"backgroundColor\\": \\"red\\"
   },
   \\"2\\": {
-    \\"backgroundColor\\": \\"rgba(0,0,255,1.00)\\"
+    \\"backgroundColor\\": \\"blue\\"
   },
   \\"3\\": {
     \\"alignItems\\": \\"stretch\\",
-    \\"flexShrink\\": 0,
-    \\"display\\": \\"flex\\",
-    \\"flexBasis\\": \\"auto\\",
-    \\"position\\": \\"relative\\",
-    \\"minHeight\\": 0,
-    \\"minWidth\\": 0,
     \\"flexDirection\\": \\"column\\"
   },
   \\"4\\": {
-    \\"backgroundColor\\": \\"rgba(255,0,0,1.00)\\"
+    \\"backgroundColor\\": \\"red\\"
   },
   \\"5\\": {}
 });
@@ -49,20 +37,14 @@ exports[`basic extraction 1`] = `
 const _sheet = ReactNativeStyleSheet.create({
   \\"0\\": {
     \\"alignItems\\": \\"stretch\\",
-    \\"flexShrink\\": 0,
-    \\"display\\": \\"flex\\",
-    \\"flexBasis\\": \\"auto\\",
-    \\"position\\": \\"relative\\",
-    \\"minHeight\\": 0,
-    \\"minWidth\\": 0,
     \\"flexDirection\\": \\"column\\",
-    \\"backgroundColor\\": \\"rgba(255,0,0,1.00)\\"
+    \\"backgroundColor\\": \\"red\\"
   }
 });
 import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
 import { YStack } from 'tamagui';
 export function Test() {
-  return <__ReactNativeView style={[_sheet[\\"0\\"]]} />;
+  return <__ReactNativeView style={_sheet[\\"0\\"]} />;
 }"
 `;
 
@@ -71,12 +53,6 @@ exports[`flat transform props 1`] = `
 const _sheet = ReactNativeStyleSheet.create({
   \\"0\\": {
     \\"alignItems\\": \\"stretch\\",
-    \\"flexShrink\\": 0,
-    \\"display\\": \\"flex\\",
-    \\"flexBasis\\": \\"auto\\",
-    \\"position\\": \\"relative\\",
-    \\"minHeight\\": 0,
-    \\"minWidth\\": 0,
     \\"flexDirection\\": \\"column\\"
   },
   \\"1\\": {
@@ -114,6 +90,26 @@ export function Test(props) {
 }"
 `;
 
+exports[`normalize ternaries flips the conditional properly 1`] = `
+"import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
+const _sheet = ReactNativeStyleSheet.create({
+  \\"0\\": {
+    \\"alignItems\\": \\"stretch\\"
+  },
+  \\"1\\": {
+    \\"marginBottom\\": 0
+  },
+  \\"2\\": {
+    \\"marginBottom\\": 12
+  }
+});
+import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
+import { Stack } from 'tamagui';
+export function Test(props) {
+  return <__ReactNativeView style={[_sheet[\\"0\\"], props === 123 ? _sheet[\\"1\\"] : _sheet[\\"2\\"]]} />;
+}"
+`;
+
 exports[`theme value extraction should NOT work when theme variables used 1`] = `
 "import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
 import { Paragraph } from 'tamagui';
@@ -126,9 +122,9 @@ exports[`theme value extraction should work when no theme variables used 1`] = `
 "import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
 const _sheet = ReactNativeStyleSheet.create({
   \\"0\\": {
-    \\"fontFamily\\": \\"Inter\\",
     \\"display\\": \\"flex\\",
-    \\"color\\": \\"rgba(255,0,0,1.00)\\",
+    \\"color\\": \\"red\\",
+    \\"fontFamily\\": \\"Inter\\",
     \\"letterSpacing\\": 0,
     \\"fontSize\\": 14,
     \\"lineHeight\\": 23
@@ -137,6 +133,6 @@ const _sheet = ReactNativeStyleSheet.create({
 import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
 import { Paragraph } from 'tamagui';
 export function Test() {
-  return <__ReactNativeText style={[_sheet[\\"0\\"]]}>hello world</__ReactNativeText>;
+  return <__ReactNativeText style={_sheet[\\"0\\"]}>hello world</__ReactNativeText>;
 }"
 `;

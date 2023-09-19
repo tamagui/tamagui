@@ -1,23 +1,28 @@
 import { createRequire } from 'module'
 import { AddressInfo } from 'net'
-import { dirname } from 'path'
+import { dirname, join } from 'path'
 
 import { watchTamaguiConfig } from '@tamagui/static'
 import { CLIResolvedOptions } from '@tamagui/types'
-import { tamaguiPlugin } from '@tamagui/vite-plugin'
+import { tamaguiExtractPlugin, tamaguiPlugin } from '@tamagui/vite-plugin'
 import viteReactPlugin from '@vitejs/plugin-react-swc'
 import chalk from 'chalk'
 import express from 'express'
-import proxy from 'express-http-proxy'
 import fs, { ensureDir } from 'fs-extra'
-import { createServer } from 'vite'
+import { createProxyMiddleware } from 'http-proxy-middleware'
+import { InlineConfig, build, createServer } from 'vite'
+import entryShakingPlugin from 'vite-plugin-entry-shaking'
+import viteInspect from 'vite-plugin-inspect'
+import viteTsConfigPaths from 'vite-tsconfig-paths'
 
 const resolve =
   'url' in import.meta ? createRequire(import.meta.url).resolve : require.resolve
 
-export const studio = async (options: CLIResolvedOptions, isRemote = true) => {
-  process.env.TAMAGUI_TARGET = 'web'
-
+export const studio = async (
+  options: CLIResolvedOptions,
+  isRemote = false,
+  isBuild = false
+) => {
   await ensureDir(options.paths.dotDir)
   const configWatchPromise = watchTamaguiConfig(options.tamaguiOptions)
 
@@ -30,9 +35,12 @@ export const studio = async (options: CLIResolvedOptions, isRemote = true) => {
         process.exit(0)
       }
     })
+
     const { default: getPort } = await import('get-port')
     const { paths } = options
-    const root = dirname(resolve('@takeout/studio/entry'))
+    const root = dirname(dirname(resolve('@tamagui/studio')))
+
+    console.log('root', root)
 
     const [serverPort, vitePort] = await Promise.all([
       getPort({
@@ -43,7 +51,12 @@ export const studio = async (options: CLIResolvedOptions, isRemote = true) => {
       }),
     ])
 
-    const server = await createServer({
+    const targets = [
+      resolve('@tamagui/lucide-icons').replace('/dist/cjs/index.js', ''),
+      resolve('@tamagui/demos').replace('/dist/cjs/index.js', ''),
+    ]
+
+    const viteConfig = {
       root,
       server: {
         host: options.host,
@@ -51,13 +64,43 @@ export const studio = async (options: CLIResolvedOptions, isRemote = true) => {
         hmr: true,
         cors: true,
       },
+      build: {
+        rollupOptions: {},
+      },
+      resolve: {
+        alias: {
+          '@tamagui/animations-moti': '@tamagui/animations-react-native',
+        },
+      },
       plugins: [
         tamaguiPlugin({
           components: ['tamagui'],
         }),
-        viteReactPlugin(),
+        tamaguiExtractPlugin({
+          config: './src/tamagui.config.ts',
+          disableExtraction: true,
+          components: ['tamagui'],
+        }),
+        viteReactPlugin({
+          tsDecorators: true,
+        }),
+        viteTsConfigPaths(),
+        await entryShakingPlugin({
+          targets,
+        }),
+        viteInspect(),
       ],
-    })
+      define: {
+        'process.env.TAMAGUI_KEEP_THEMES': 'true',
+        global: 'window',
+      },
+    } satisfies InlineConfig
+
+    if (isBuild) {
+      return await build(viteConfig)
+    }
+
+    const server = await createServer(viteConfig)
 
     // these can be lazy loaded (eventually should put in own process)
     await server.listen()
@@ -75,7 +118,40 @@ export const studio = async (options: CLIResolvedOptions, isRemote = true) => {
       res.status(200).json(conf)
     })
 
-    app.use('/', proxy(`${info.address}:${vitePort}`))
+    app.get('/pingz', async (req, res) => {
+      res.status(200).json({
+        hi: true,
+      })
+    })
+
+    app.get('/api/tamagui.config.json', async (req, res) => {
+      try {
+        res.status(200).json(await fs.readJSON(paths.conf))
+      } catch (err) {
+        res.status(500).json({
+          error: `${(err as any).message}`,
+        })
+      }
+    })
+
+    app.get('/api/tamagui.themes.json', async (req, res) => {
+      try {
+        res.status(200).json(await fs.readJSON(join(paths.dotDir, 'theme-builder.json')))
+      } catch (err) {
+        res.status(500).json({
+          error: `${(err as any).message}`,
+        })
+      }
+    })
+
+    const target = `http://${info.address}:${vitePort}`
+    app.use(
+      '/',
+      createProxyMiddleware({
+        target,
+        ws: true,
+      })
+    )
 
     const appServer = app.listen(serverPort)
 

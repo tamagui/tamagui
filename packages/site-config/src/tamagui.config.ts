@@ -1,18 +1,24 @@
-import { createGluspFont } from '@tamagui/font-glusp'
+import { createCherryBombFont } from '@tamagui/font-cherry-bomb'
 import { createInterFont } from '@tamagui/font-inter'
 import { createMunroFont } from '@tamagui/font-munro'
 import { createSilkscreenFont } from '@tamagui/font-silkscreen'
 import { shorthands } from '@tamagui/shorthands'
-import { themes, tokens } from '@tamagui/themes'
+import { tokens } from '@tamagui/themes/v2'
+import { themes as themesIn } from '@tamagui/themes/v2-themes'
+import { CreateTamaguiProps, setupDev } from '@tamagui/web'
 
-import { animations } from './animations'
+import { animations } from './animations.reanimated'
 import { createGenericFont } from './createGenericFont'
 import { media, mediaQueryDefaultActive } from './media'
 
-export * from './animations'
+export { animations } from './animations.reanimated'
 
-export const gluspFont = createGluspFont()
+export const cherryBombFont = createCherryBombFont()
 export const munroFont = createMunroFont()
+
+setupDev({
+  visualizer: true,
+})
 
 const silkscreenFont = createSilkscreenFont()
 const headingFont = createInterFont(
@@ -40,12 +46,12 @@ const headingFont = createInterFont(
       6: 1,
       7: 0,
       8: 0,
-      9: -0.5,
-      10: -0.75,
-      11: -1,
-      12: -1.25,
-      14: -1.75,
-      15: -3,
+      9: -0.1,
+      10: -0.25,
+      11: -0.5,
+      12: -0.75,
+      14: -1,
+      15: -2,
     },
     // for native
     face: {
@@ -99,6 +105,12 @@ const monoFont = createGenericFont(
   }
 )
 
+// avoid themes only on client bundle
+const themes =
+  process.env.TAMAGUI_IS_SERVER || process.env.TAMAGUI_KEEP_THEMES
+    ? themesIn
+    : ({} as typeof themesIn)
+
 export const config = {
   defaultFont: 'body',
   shouldAddPrefersColorThemes: true,
@@ -108,15 +120,20 @@ export const config = {
   media,
   shorthands,
   tokens,
+  settings: {
+    allowedStyleValues: 'somewhat-strict-web',
+    autocompleteSpecificTokens: 'except-special',
+    // mediaPropOrder: true,
+  },
   fonts: {
     heading: headingFont,
     body: bodyFont,
     mono: monoFont,
     silkscreen: silkscreenFont,
-    glusp: gluspFont,
     munro: munroFont,
+    cherryBomb: cherryBombFont,
   },
-}
+} satisfies CreateTamaguiProps
 
 // @ts-ignore
 config.selectionStyles = (theme) => ({

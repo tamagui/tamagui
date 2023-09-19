@@ -11,7 +11,7 @@ const outlined = {
     backgroundColor: 'transparent',
     borderColor: '$backgroundPress',
   },
-}
+} satisfies ButtonProps
 
 export function BuildAButtonDemo() {
   return (

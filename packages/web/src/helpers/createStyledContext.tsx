@@ -18,7 +18,7 @@ export type StyledContext<Props extends Object = any> = Omit<
 export function createStyledContext<VariantProps extends Record<string, any>>(
   props: VariantProps
 ): StyledContext<VariantProps> {
-  const OGContext = createContext<any>(null)
+  const OGContext = createContext<VariantProps>(props)
   const OGProvider = OGContext.Provider
   const Context = OGContext as any as StyledContext<VariantProps>
 
@@ -26,7 +26,12 @@ export function createStyledContext<VariantProps extends Record<string, any>>(
     children,
     ...values
   }: VariantProps & { children?: React.ReactNode }) => {
-    const value = useMemo(() => values, [objectIdentityKey(values)])
+    const value = useMemo(() => {
+      return {
+        ...props,
+        ...values,
+      }
+    }, [objectIdentityKey(values)])
     return <OGProvider value={value}>{children}</OGProvider>
   }
 

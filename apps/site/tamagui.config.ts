@@ -21,4 +21,8 @@ declare module 'tamagui' {
   interface TamaguiCustomConfig extends Conf {}
 }
 
+declare module '@tamagui/core' {
+  interface TamaguiCustomConfig extends Conf {}
+}
+
 export default tamaConf

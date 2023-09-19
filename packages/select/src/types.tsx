@@ -31,54 +31,67 @@ export interface SelectProps {
    * If passed, will render a native component instead of the custom one. Currently only `web` is supported.
    */
   native?: NativeValue<'web'>
+
+  /**
+   * When true, avoids removing the scrollbar from the body when open
+   */
+  disablePreventBodyScroll?: boolean
+}
+
+type DisposeFn = () => void
+export type EmitterSubscriber<Val> = (cb: (val: Val) => void) => DisposeFn
+
+export interface SelectItemParentContextValue {
+  initialValue?: any
+  setSelectedIndex: (index: number) => void
+  listRef?: MutableRefObject<Array<HTMLElement | null>>
+  setOpen: (open: boolean) => void
+  onChange: (value: string) => void
+  activeIndexSubscribe: EmitterSubscriber<number>
+  valueSubscribe: EmitterSubscriber<any>
+  allowSelectRef?: MutableRefObject<boolean>
+  allowMouseUpRef?: MutableRefObject<boolean>
+  setValueAtIndex: (index: number, value: string) => void
+  selectTimeoutRef?: MutableRefObject<any>
+  dataRef?: MutableRefObject<ContextData>
+  interactions?: {
+    getReferenceProps: (userProps?: HTMLProps<Element> | undefined) => any
+    getFloatingProps: (userProps?: HTMLProps<HTMLElement> | undefined) => any
+    getItemProps: (userProps?: HTMLProps<HTMLElement> | undefined) => any
+  }
+  shouldRenderWebNative?: boolean
+  size?: SizeTokens
 }
 
 export interface SelectContextValue {
   dir?: Direction
   scopeKey: string
   sheetBreakpoint: string | boolean | null
-  size?: SizeTokens
   value: any
   selectedItem: ReactNode
   setSelectedItem: (item: ReactNode) => void
   selectedIndex: number
-  setSelectedIndex: (index: number) => void
   activeIndex: number | null
   setActiveIndex: (index: number | null) => void
-  setValueAtIndex: (index: number, value: string) => void
   open: boolean
-  setOpen: (open: boolean) => void
-  onChange: (value: string) => void
   valueNode: Element | null
   onValueNodeChange(node: HTMLElement): void
   forceUpdate: DispatchWithoutAction
-
   // SheetImpl only:
   isInSheet?: boolean
-
   // InlineImpl only:
   fallback: boolean
   blockSelection: boolean
-  allowSelectRef?: MutableRefObject<boolean>
-  allowMouseUpRef?: MutableRefObject<boolean>
   upArrowRef?: MutableRefObject<HTMLDivElement | null>
   downArrowRef?: MutableRefObject<HTMLDivElement | null>
-  selectTimeoutRef?: MutableRefObject<any>
   setScrollTop?: Function
   setInnerOffset?: Function
-  dataRef?: MutableRefObject<ContextData>
   controlledScrolling?: boolean
-  listRef?: MutableRefObject<Array<HTMLElement | null>>
   canScrollUp?: boolean
   canScrollDown?: boolean
   floatingContext?: FloatingContext<ReferenceType>
-  interactions?: {
-    getReferenceProps: (userProps?: HTMLProps<Element> | undefined) => any
-    getFloatingProps: (userProps?: HTMLProps<HTMLElement> | undefined) => any
-    getItemProps: (userProps?: HTMLProps<HTMLElement> | undefined) => any
-  }
   native?: NativeValue
-  shouldRenderWebNative: boolean
+  disablePreventBodyScroll?: boolean
   /** update floating-ui to recalculate */
   update?: () => void
 }
@@ -86,6 +99,7 @@ export interface SelectContextValue {
 export type SelectViewportProps = ThemeableStackProps & {
   size?: SizeTokens
   disableScroll?: boolean
+  unstyled?: boolean
 }
 
 export type SelectContentProps = ScopedProps<{

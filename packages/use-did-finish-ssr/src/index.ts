@@ -1,38 +1,24 @@
-import { isRSC, isServer, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { startTransition, useState } from 'react'
+import { useSyncExternalStore } from 'react'
 
-export function useDidFinishSSR() {
-  // conditional hook because it never changes if already true
-  if (isServer || isRSC) {
-    return false
+const emptyFn = () => {}
+const emptyFnFn = () => emptyFn
+
+export function useDidFinishSSR<A = boolean>(value?: A): A | false {
+  if (process.env.TAMAGUI_TARGET === 'native') {
+    // @ts-expect-error
+    return value ?? true
   }
 
-  const [did, setDid] = useState<boolean>(false)
-
-  useIsomorphicLayoutEffect(() => {
-    startTransition(() => {
-      setDid(true)
-    })
-  }, [])
-
-  return did
+  return useSyncExternalStore(
+    emptyFnFn,
+    () => (value == undefined ? true : value),
+    () => false as any
+  )
 }
 
 type FunctionOrValue<Value> = Value extends () => infer X ? X : Value
 
-export function useClientValue<Value extends any>(
-  value?: Value
-): FunctionOrValue<Value> | undefined {
-  if (isServer || isRSC) {
-    return undefined
-  }
-
-  const [v, setV] = useState<FunctionOrValue<Value> | undefined>(undefined)
-
-  useIsomorphicLayoutEffect(() => {
-    // @ts-expect-error (this works with a function)
-    setV(value)
-  }, [])
-
-  return v
+export function useClientValue<Value>(value?: Value): FunctionOrValue<Value> | undefined {
+  const done = useDidFinishSSR()
+  return !done ? undefined : typeof value === 'function' ? value() : value
 }

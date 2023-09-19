@@ -7,11 +7,9 @@ const shouldExtract = process.env.EXTRACT === '1'
 const tamaguiConfig = {
   components: ['tamagui'],
   config: 'src/tamagui.config.ts',
-  useReactNativeWebLite: true,
 }
 
 export default defineConfig({
-  root: './src',
   clearScreen: true,
   plugins: [
     react(),

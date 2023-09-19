@@ -1,5 +1,4 @@
 import { throttle } from '@github/mini-throttle'
-import { demoMedia } from '@tamagui/config'
 import { useOnIntersecting } from '@tamagui/demos'
 import { useTint } from '@tamagui/logo'
 import {
@@ -10,6 +9,7 @@ import {
   Monitor,
   Star,
 } from '@tamagui/lucide-icons'
+import { demoMedia } from '@tamagui/site-config'
 import React, { startTransition, useMemo } from 'react'
 import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import {
@@ -203,7 +203,6 @@ export const HeroResponsive = memo(() => {
           <YStack
             zi={2}
             className="unselectable"
-            contain="paint layout"
             pe={isDragging ? 'none' : 'auto'}
             w={width}
             f={1}

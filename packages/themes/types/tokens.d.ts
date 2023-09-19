@@ -971,12 +971,12 @@ export declare const tokens: {
     radius: {
         0: Variable<number>;
         2: Variable<number>;
+        3: Variable<number>;
         1: Variable<number>;
         4: Variable<number>;
         8: Variable<number>;
         true: Variable<number>;
         12: Variable<number>;
-        3: Variable<number>;
         5: Variable<number>;
         7: Variable<number>;
         9: Variable<number>;
@@ -987,9 +987,9 @@ export declare const tokens: {
     zIndex: {
         0: Variable<number>;
         2: Variable<number>;
+        3: Variable<number>;
         1: Variable<number>;
         4: Variable<number>;
-        3: Variable<number>;
         5: Variable<number>;
     };
 } & Omit<{
@@ -1190,12 +1190,12 @@ export declare const tokens: {
     radius: {
         0: Variable<number>;
         2: Variable<number>;
+        3: Variable<number>;
         1: Variable<number>;
         4: Variable<number>;
         8: Variable<number>;
         true: Variable<number>;
         12: Variable<number>;
-        3: Variable<number>;
         5: Variable<number>;
         7: Variable<number>;
         9: Variable<number>;
@@ -1206,9 +1206,9 @@ export declare const tokens: {
     zIndex: {
         0: Variable<number>;
         2: Variable<number>;
+        3: Variable<number>;
         1: Variable<number>;
         4: Variable<number>;
-        3: Variable<number>;
         5: Variable<number>;
     };
     space: {

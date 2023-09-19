@@ -30,7 +30,7 @@ const PaletteExample = ({
     )}
     <XStack br="$5" ov="hidden" bw={1} boc="$borderColor">
       {new Array(12).fill(0).map((_, i) => (
-        <XStack key={i} h={40} f={1} bc={`$${theme || 'blue'}${i}`} />
+        <XStack key={i} h={40} f={1} bc={`$${theme || 'blue'}${i}` as any} />
       ))}
     </XStack>
     {showIndices && (

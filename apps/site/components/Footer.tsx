@@ -39,6 +39,7 @@ export const Footer = () => {
             <Paragraph mt="$2" size="$3">
               by{' '}
               <ParagraphLink
+                // @ts-ignore
                 fontSize="inherit"
                 href="https://twitter.com/natebirdman"
                 target="_blank"

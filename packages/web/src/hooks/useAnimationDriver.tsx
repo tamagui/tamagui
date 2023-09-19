@@ -1,10 +1,8 @@
 import { useContext } from 'react'
 
-import { AnimationDriverContext } from '../contexts/AnimationDriverContext'
+import { ComponentContext } from '../contexts/ComponentContext'
 import { getAnimationDriver } from '../helpers/getAnimationDriver'
-import { isRSC } from '@tamagui/constants'
 
 export const useAnimationDriver = () => {
-  if (isRSC) return getAnimationDriver()
-  return useContext(AnimationDriverContext) ?? getAnimationDriver()
+  return useContext(ComponentContext).animationDriver ?? getAnimationDriver()
 }

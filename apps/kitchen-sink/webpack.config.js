@@ -3,7 +3,7 @@ const webpack = require('webpack')
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { shouldExclude, TamaguiPlugin } = require('tamagui-loader')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const MiniCSSExtractPlugin = require('mini-css-extract-plugin')
 
 const NODE_ENV = process.env.NODE_ENV || 'development'
@@ -17,33 +17,28 @@ const boolVals = {
 const disableExtraction =
   boolVals[process.env.DISABLE_EXTRACTION] ?? process.env.NODE_ENV === 'development'
 
-const tamaguiOptions = {
-  config: './src/tamagui.config.ts',
-  components: ['tamagui', '@tamagui/sandbox-ui'],
-  importsWhitelist: ['constants.js'],
-  // disableExtraction,
-  // disableExtractFoundComponents: true,
-}
-
 /** @type { import('webpack').Configuration } */
 module.exports = {
   context: __dirname,
   stats: 'normal', // 'detailed'
   mode: NODE_ENV,
   entry: ['./src/index.web.tsx'],
-  devtool: 'source-map',
+  devtool: 'cheap-module-source-map',
   optimization: {
     concatenateModules: false,
     minimize: false,
   },
   resolve: {
     mainFields: ['module:jsx', 'browser', 'module', 'main'],
+    extensions: [
+      '.ts',
+      '.tsx',
+      '.js',
+    ],
     alias: {
-      'react-native$': 'react-native-web-lite',
-      // 'react-native/Libraries/Renderer/shims/ReactFabric': '@tamagui/proxy-worm',
-      'react-native-reanimated': require.resolve('react-native-reanimated'),
-      'react-native-reanimated$': require.resolve('react-native-reanimated'),
+      'react-native$': 'react-native-web',
       'react-native-svg': '@tamagui/react-native-svg',
+      '@expo/vector-icons': '@tamagui/proxy-worm'
     },
   },
   devServer: {
@@ -62,20 +57,6 @@ module.exports = {
     rules: [
       {
         oneOf: [
-          // fix reanimated :/
-          // {
-          //   test: /.*\.[tj]sx?$/,
-          //   use: [
-          //     {
-          //       loader: 'babel-loader',
-          //       options: {
-          //         plugins: ['@babel/plugin-transform-flow-strip-types'],
-          //         presets: ['@babel/preset-react', '@babel/preset-typescript'],
-          //       },
-          //     },
-          //   ],
-          // },
-
           {
             test: /\.(ts|js)x?$/,
             use: [
@@ -96,7 +77,7 @@ module.exports = {
           },
 
           {
-            test: /\.(png|jpg|gif|woff|woff2)$/i,
+            test: /\.(gif|jpe?g|png|svg|ttf|otf|woff2?|bmp|webp|png|jpg|gif|woff|woff2)$/i,
             use: [
               {
                 loader: 'url-loader',
@@ -112,7 +93,18 @@ module.exports = {
     ],
   },
   plugins: [
-    new TamaguiPlugin(tamaguiOptions),
+    new TamaguiPlugin({
+      config: './src/tamagui.config.ts',
+      components: ['tamagui', '@tamagui/sandbox-ui'],
+      importsWhitelist: ['constants.js'],
+      // enableDynamicEvaluation: true,
+      disableExtraction,
+      themeBuilder: {
+        input: '../../packages/themes/src/themes-new.ts',
+        output: path.join(require.resolve('@tamagui/themes/src/themes-new.ts'), '..', 'generated-new.ts'),
+      }
+      // disable: true,
+    }),
     // new BundleAnalyzerPlugin(),
     new MiniCSSExtractPlugin({
       filename: 'static/css/[name].[contenthash].css',
@@ -122,10 +114,8 @@ module.exports = {
     new webpack.DefinePlugin({
       process: {
         env: {
-          IS_STATIC: '""',
           NODE_ENV: JSON.stringify(NODE_ENV),
           __DEV__: NODE_ENV === 'development' ? 'true' : 'false',
-          TAMAGUI_TARGET: JSON.stringify(target),
           DEBUG: JSON.stringify(process.env.DEBUG || '0'),
         },
       },

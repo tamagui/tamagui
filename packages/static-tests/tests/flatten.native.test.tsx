@@ -5,7 +5,6 @@ import { extractForNative } from './lib/extract'
 
 Error.stackTraceLimit = Infinity
 process.env.TAMAGUI_TARGET = 'native'
-process.env.IS_STATIC = ''
 
 window['React'] = React
 
@@ -32,6 +31,7 @@ describe('flatten-tests', () => {
         )
       }
     `)
+
     const code = output?.code ?? ''
 
     expect(code).toMatchSnapshot()
@@ -55,13 +55,7 @@ describe('flatten-tests', () => {
         },
       ],
       flexDirection: 'column',
-      flexShrink: 0,
       alignItems: 'stretch',
-      minHeight: 0,
-      minWidth: 0,
-      position: 'relative',
-      display: 'flex',
-      flexBasis: 'auto',
     })
 
     expect(sheetStyles['1']).toEqual({
@@ -77,11 +71,11 @@ describe('flatten-tests', () => {
     })
 
     expect(sheetStyles['3']).toEqual({
-      backgroundColor: 'rgba(255,0,0,1.00)',
+      backgroundColor: 'red',
     })
 
     expect(sheetStyles['5']).toEqual({
-      backgroundColor: 'rgba(0,0,255,1.00)',
+      backgroundColor: 'blue',
     })
   })
 })

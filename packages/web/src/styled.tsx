@@ -2,8 +2,9 @@ import { stylePropsAll } from '@tamagui/helpers'
 
 import { createComponent } from './createComponent'
 import { StyledContext } from './helpers/createStyledContext'
-import { mergeVariants } from './helpers/extendStaticConfig'
-import { ReactNativeStaticConfigs } from './setupReactNative'
+import { mergeVariants } from './helpers/mergeVariants'
+import type { GetRef } from './interfaces/GetRef'
+import { getReactNativeConfig } from './setupReactNative'
 import type {
   GetProps,
   GetVariantValues,
@@ -12,7 +13,6 @@ import type {
   StaticConfig,
   StylableComponent,
   TamaguiComponent,
-  TamaguiElement,
   VariantDefinitions,
   VariantSpreadFunction,
 } from './types'
@@ -62,33 +62,27 @@ export function styled<
     if (!ComponentIn) {
       throw new Error(`No component given to styled()`)
     }
-    if (options?.variants) {
-      for (const key in options.variants) {
-        if (key in stylePropsAll) {
-          console.error(
-            `Invalid variant key overlaps with style key: ${key}. Tamagui prevents defining variants that use valid style keys to reduce complexity and confusion.`
-          )
-        }
-      }
-    }
   }
 
-  const parentStaticConfig =
-    'staticConfig' in ComponentIn ? (ComponentIn.staticConfig as StaticConfig) : null
+  const parentStaticConfig = ComponentIn['staticConfig'] as StaticConfig | undefined
 
   const isPlainStyledComponent =
     !!parentStaticConfig &&
     !(parentStaticConfig.isReactNative || parentStaticConfig.isHOC)
 
-  let Component: any = isPlainStyledComponent
-    ? ComponentIn
-    : parentStaticConfig?.Component || ComponentIn
+  const isNonStyledHOC = parentStaticConfig?.isHOC && !parentStaticConfig?.isStyledHOC
 
+  let Component: any =
+    isNonStyledHOC || isPlainStyledComponent
+      ? ComponentIn
+      : parentStaticConfig?.Component || ComponentIn
+
+  const reactNativeConfig = getReactNativeConfig(Component)
   const isReactNative = Boolean(
-    ReactNativeStaticConfigs.has(Component) ||
+    reactNativeConfig ||
       staticExtractionOptions?.isReactNative ||
-      ReactNativeStaticConfigs.has(parentStaticConfig?.Component) ||
-      parentStaticConfig?.isReactNative
+      parentStaticConfig?.isReactNative ||
+      getReactNativeConfig(parentStaticConfig?.Component)
   )
 
   const staticConfigProps = (() => {
@@ -102,34 +96,38 @@ export function styled<
         ...defaultProps
       } = options
 
+      if (defaultVariants) {
+        defaultProps = {
+          ...defaultVariants,
+          ...defaultProps,
+        }
+      }
+
       if (parentStaticConfig) {
         const avoid = parentStaticConfig.isHOC && !parentStaticConfig.isStyledHOC
         if (!avoid) {
           defaultProps = {
             ...parentStaticConfig.defaultProps,
             ...defaultProps,
-            ...defaultVariants,
+          }
+          if (parentStaticConfig.variants) {
+            variants = mergeVariants(parentStaticConfig.variants, variants)
           }
         }
       }
 
-      if (defaultVariants) {
-        defaultProps = {
-          ...defaultProps,
-          ...defaultVariants,
+      if (parentStaticConfig?.isHOC) {
+        // if HOC we map name => componentName as we have a difference in how we name prop vs styled() there
+        if (name) {
+          // @ts-ignore
+          defaultProps.componentName = name
         }
       }
-
-      if (parentStaticConfig?.isHOC) {
-        variants = mergeVariants(parentStaticConfig.variants, variants)
-      }
-
-      const nativeConf =
-        (isReactNative && ReactNativeStaticConfigs.get(Component)) || null
 
       const isText = Boolean(
         staticExtractionOptions?.isText || parentStaticConfig?.isText
       )
+
       const acceptsClassName =
         acceptsClassNameProp ??
         (isPlainStyledComponent ||
@@ -137,6 +135,7 @@ export function styled<
           (parentStaticConfig?.isHOC && parentStaticConfig?.acceptsClassName))
 
       const conf: Partial<StaticConfig> = {
+        ...parentStaticConfig,
         ...staticExtractionOptions,
         ...(!isPlainStyledComponent && {
           Component,
@@ -151,8 +150,9 @@ export function styled<
         isText,
         acceptsClassName,
         context,
-        ...nativeConf,
+        ...reactNativeConfig,
         isStyledHOC: Boolean(parentStaticConfig?.isHOC),
+        parentStaticConfig,
       }
 
       // bail on non className views as well
@@ -164,7 +164,7 @@ export function styled<
     }
   })()
 
-  const component = createComponent(staticConfigProps || {}, Component)
+  const component = createComponent(staticConfigProps || {})
 
   // get parent props without pseudos and medias so we can rebuild both with new variants
   // get parent props without pseudos and medias so we can rebuild both with new variants
@@ -174,16 +174,28 @@ export function styled<
   type OurVariantProps = Variants extends void ? {} : GetVariantAcceptedValues<Variants>
 
   type VariantProps = Omit<ParentVariants, keyof OurVariantProps> & OurVariantProps
-  type OurPropsBase = ParentPropsBase & VariantProps
+  type OurPropsBaseBase = ParentPropsBase & VariantProps
+
+  /**
+   * de-opting a bit of type niceness because were hitting depth issues too soon
+   * before we had:
+   *
+   * type OurPropsBase = OurPropsBaseBase & PseudoProps<Partial<OurPropsBaseBase>>
+   * and then below in type Props you would remove the PseudoProps line
+   * that would give you nicely merged pseudo sub-styles but its just too much for TS
+   * so now pseudos wont be nicely typed inside media queries, but at least we can nest
+   */
+
+  type OurPropsBase = OurPropsBaseBase
 
   type Props = Variants extends void
     ? GetProps<ParentComponent>
     : // start with base props
       OurPropsBase &
-        // add in media (+ pseudos nested)
-        MediaProps<Partial<OurPropsBase>> &
-        // add in pseudos
-        PseudoProps<Partial<OurPropsBase>>
+        // add in pseudo
+        PseudoProps<Partial<OurPropsBaseBase>> &
+        // add in media
+        MediaProps<Partial<OurPropsBase>>
 
   type ParentStaticProperties = {
     [Key in Exclude<
@@ -199,7 +211,7 @@ export function styled<
 
   type StyledComponent = TamaguiComponent<
     Props,
-    TamaguiElement,
+    GetRef<ParentComponent>,
     ParentPropsBase,
     ParentVariants & OurVariantProps,
     ParentStaticProperties

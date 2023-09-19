@@ -1,2 +1,2 @@
 export const Pressability = {} as any
-export const usePressability = {} as Function
+export const usePressability = (e: any) => ({})

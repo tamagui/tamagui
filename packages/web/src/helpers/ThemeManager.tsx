@@ -1,6 +1,7 @@
-import { getThemes, getTokens } from '../config'
+import { isWeb } from '@tamagui/constants'
+
+import { getThemes } from '../config'
 import { THEME_CLASSNAME_PREFIX, THEME_NAME_SEPARATOR } from '../constants/constants'
-import { getThemeUnwrapped } from '../hooks/getThemeUnwrapped'
 import { ThemeParsed, ThemeProps } from '../types'
 
 type ThemeListener = (
@@ -23,6 +24,7 @@ export type ThemeManagerState = {
   className?: string
   parentName?: string
   componentName?: string
+  inverse?: boolean
 }
 
 const emptyState: ThemeManagerState = { name: '' }
@@ -46,68 +48,60 @@ export class ThemeManager {
     parentManagerIn?: ThemeManager | 'root' | null | undefined
   ) {
     if (parentManagerIn === 'root') {
-      this.updateState(props, false)
+      this.updateStateFromProps(props, false)
       return
     }
 
     if (!parentManagerIn) {
       if (process.env.NODE_ENV !== 'production') {
         throw new Error(
-          `No parent manager given, this is likely due to duplicated Tamagui dependencies. Check your lockfile for mis-matched versions.`
+          `No parent manager given, this is likely due to duplicated Tamagui dependencies. Check your lockfile for mis-matched versions. It could also be from an error somewhere else in your stack causing Tamagui to recieve undefined context, you can try putting some ErrorBoundary components around other areas of your app, or a Suspense boundary.`
         )
       }
-      throw `❌`
-    }
-
-    // no change no props
-    if (!getHasThemeUpdatingProps(props)) {
-      return parentManagerIn
+      throw `❌ 0`
     }
 
     this.parentManager = parentManagerIn
 
-    if (this.updateState(props, false)) {
+    if (this.updateStateFromProps(props, false)) {
       return
     }
 
     return parentManagerIn || this
   }
 
-  updateState(
+  updateStateFromProps(
     props: ThemeProps & { forceTheme?: ThemeParsed } = this.props || {},
     shouldNotify = true
   ) {
-    const isChanging = (() => {
-      if (props.forceTheme) {
-        this.state.theme = props.forceTheme
-        this.state.name = props.name || ''
-        return true
-      }
-      const nextState = this.getStateIfChanged(props)
-      if (nextState) {
-        this.props = props
-        this.state = nextState
-        return true
-      }
-    })()
+    this.props = props
+    if (props.forceTheme) {
+      this.state.theme = props.forceTheme
+      this.state.name = props.name || ''
+      return true
+    }
+    const nextState = this.getStateIfChanged(props)
+    if (nextState) {
+      this.updateState(nextState, shouldNotify)
+      return nextState
+    }
+  }
 
-    if (isChanging) {
-      const names = this.state.name.split('_')
-      const lastName = names[names.length - 1][0]
-      this.isComponent = lastName[0] === lastName[0].toUpperCase()
-      this._allKeys = null
-      this.scheme = names[0] === 'light' ? 'light' : names[0] === 'dark' ? 'dark' : null
-
-      if (process.env.NODE_ENV === 'development') {
-        this['_numChangeEventsSent'] ??= 0
-        this['_numChangeEventsSent']++
-      }
-
-      if (shouldNotify) {
-        this.notify(!!props.forceTheme)
-      }
-
-      return this.state
+  updateState(nextState: ThemeManagerState, shouldNotify = true) {
+    this.state = nextState
+    const names = this.state.name.split('_')
+    const lastName = names[names.length - 1][0]
+    this.isComponent = lastName[0] === lastName[0].toUpperCase()
+    this._allKeys = null
+    this.scheme = names[0] === 'light' ? 'light' : names[0] === 'dark' ? 'dark' : null
+    if (process.env.NODE_ENV === 'development') {
+      this['_numChangeEventsSent'] ??= 0
+      this['_numChangeEventsSent']++
+    }
+    if (shouldNotify) {
+      queueMicrotask(() => {
+        this.notify()
+      })
     }
   }
 
@@ -117,6 +111,7 @@ export class ThemeManager {
     parentManager = this.parentManager
   ) {
     const _ = this.getState(props, parentManager)
+
     // is removing
     if (state && state !== emptyState && !_) {
       return parentManager?.state
@@ -137,10 +132,10 @@ export class ThemeManager {
   }
 
   getState(props = this.props, parentManager = this.parentManager) {
-    return (
+    const next =
       getState(props, parentManager) ||
       (process.env.TAMAGUI_TARGET === 'native' ? parentManager?.state || null : null)
-    )
+    return next
   }
 
   _allKeys: Set<string> | null = null
@@ -150,24 +145,6 @@ export class ThemeManager {
       ...Object.keys(this.state.theme || {}),
     ])
     return this._allKeys
-  }
-
-  // gets value going up to parents
-  getValue(key: string, state?: ThemeManagerState) {
-    if (!key) return
-    let theme = (state || this.state).theme
-    let manager = this as ThemeManager | null
-    while (theme && manager) {
-      if (key in theme) {
-        return theme[key]
-      }
-      manager = manager.parentManager
-      theme = manager?.state.theme
-    }
-    const tokens = getTokens()
-    if (key in tokens.color) {
-      return tokens.color[key]
-    }
   }
 
   notify(forced = false) {
@@ -260,7 +237,7 @@ function getState(
 
   if (process.env.NODE_ENV === 'development' && typeof props.debug === 'string') {
     console.groupCollapsed('ThemeManager.getState()')
-    // rome-ignore lint/nursery/noConsoleLog: <explanation>
+    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
     console.log({
       props,
       parentName,
@@ -316,23 +293,28 @@ function getState(
     const found = potentials.find((t) => t in themes)
 
     if (process.env.NODE_ENV === 'development' && typeof props.debug === 'string') {
-      // rome-ignore lint/nursery/noConsoleLog: <explanation>
+      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
       console.log(' - ', { found, potentials, parentManager })
     }
 
     if (found) {
       result = {
         name: found,
-        theme: getThemeUnwrapped(themes[found]),
-        className: getNextThemeClassName(found),
+        theme: themes[found],
+        className: isWeb ? getNextThemeClassName(found) : '',
         parentName,
         componentName,
+        inverse: props.inverse,
       }
       break
     }
   }
 
-  if (process.env.NODE_ENV === 'development' && typeof props.debug === 'string') {
+  if (
+    process.env.NODE_ENV === 'development' &&
+    typeof props.debug === 'string' &&
+    typeof window !== 'undefined'
+  ) {
     console.warn('ThemeManager.getState():', {
       result,
     })

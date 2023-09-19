@@ -1,7 +1,9 @@
 import { AdaptParentContext } from '@tamagui/adapt'
+import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   Theme,
+  getConfig,
   isTouchable,
   isWeb,
   themeable,
@@ -31,20 +33,23 @@ import {
   View,
 } from 'react-native'
 
-import { HIDDEN_SIZE, SHEET_HIDDEN_STYLESHEET } from './constants'
+import { SHEET_HIDDEN_STYLESHEET } from './constants'
 import { ParentSheetContext, SheetInsideSheetContext } from './contexts'
 import { resisted } from './helpers'
 import { SheetProvider } from './SheetContext'
-import { SheetProps } from './types'
+import { SheetProps, SnapPointsMode } from './types'
 import { useSheetOpenState } from './useSheetOpenState'
 import { useSheetProviderProps } from './useSheetProviderProps'
+
+let hiddenSize = 10_000.1
 
 export const SheetImplementationCustom = themeable(
   forwardRef<View, SheetProps>(function SheetImplementationCustom(props, forwardedRef) {
     const parentSheet = useContext(ParentSheetContext)
 
     const {
-      animationConfig,
+      animation,
+      animationConfig: animationConfigProp,
       modal = false,
       zIndex = parentSheet.zIndex + 1,
       moveOnKeyboardChange = false,
@@ -62,16 +67,37 @@ export const SheetImplementationCustom = themeable(
       frameSize,
       setFrameSize,
       snapPoints,
+      snapPointsMode,
+      hasFit,
       position,
       setPosition,
       scrollBridge,
       screenSize,
+      setMaxContentSize,
       maxSnapPoint,
     } = providerProps
     const { open, controller, isHidden } = state
 
     const sheetRef = useRef<View>(null)
     const ref = useComposedRefs(forwardedRef, sheetRef)
+
+    // TODO this can be extracted into a helper getAnimationConfig(animationProp as array | string)
+    const animationConfig = (() => {
+      const [animationProp, animationPropConfig] = !animation
+        ? []
+        : Array.isArray(animation)
+        ? animation
+        : ([animation] as const)
+      return (
+        animationConfigProp ??
+        (animationProp
+          ? {
+              ...(getConfig().animations.animations[animationProp as string] as Object),
+              ...animationPropConfig,
+            }
+          : null)
+      )
+    })()
 
     /**
      * This is a hacky workaround for native:
@@ -84,16 +110,18 @@ export const SheetImplementationCustom = themeable(
     }, [])
 
     const positions = useMemo(
-      () => snapPoints.map((point) => getPercentSize(point, screenSize)),
-      [frameSize, snapPoints]
+      () =>
+        snapPoints.map((point) =>
+          getYPositions(snapPointsMode, point, screenSize, frameSize)
+        ),
+      [screenSize, frameSize, snapPoints, snapPointsMode]
     )
 
     const driver = useAnimationDriver()
     const { useAnimatedNumber, useAnimatedNumberStyle, useAnimatedNumberReaction } =
       driver
 
-    // temp until reanimated useAnimatedNumber fix
-    const AnimatedView = (driver['NumberView'] ?? driver.View) as typeof Animated.View
+    const AnimatedView = driver.View as typeof Animated.View
 
     useIsomorphicLayoutEffect(() => {
       if (!(parentSheetContext && open)) return
@@ -110,19 +138,19 @@ export const SheetImplementationCustom = themeable(
       [zIndex]
     )
 
-    const animatedNumber = useAnimatedNumber(HIDDEN_SIZE)
-    const at = useRef(HIDDEN_SIZE)
+    const animatedNumber = useAnimatedNumber(hiddenSize)
+    const at = useRef(hiddenSize)
 
     useAnimatedNumberReaction(
       {
         value: animatedNumber,
         hostRef: sheetRef,
       },
-      (value) => {
+      useCallback((value) => {
         if (!driver.isReactNative) return
         at.current = value
         scrollBridge.paneY = value
-      }
+      }, [])
     )
 
     function stopSpring() {
@@ -133,13 +161,12 @@ export const SheetImplementationCustom = themeable(
       }
     }
 
-    const hasntMeasured = at.current === HIDDEN_SIZE
+    const hasntMeasured = at.current === hiddenSize
 
     const animateTo = useEvent((position: number) => {
       if (frameSize === 0) return
 
-      let toValue =
-         isHidden || position === -1 ? screenSize : positions[position]
+      let toValue = isHidden || position === -1 ? screenSize : positions[position]
 
       if (at.current === toValue) return
       at.current = toValue
@@ -162,8 +189,8 @@ export const SheetImplementationCustom = themeable(
       }
 
       animatedNumber.setValue(toValue, {
-        ...animationConfig,
         type: 'spring',
+        ...animationConfig,
       })
     })
 
@@ -177,11 +204,11 @@ export const SheetImplementationCustom = themeable(
     }, [hasntMeasured, screenSize])
 
     useIsomorphicLayoutEffect(() => {
-      if (!frameSize || isHidden || (hasntMeasured && !open)) {
+      if (!frameSize || !screenSize || isHidden || (hasntMeasured && !open)) {
         return
       }
       animateTo(position)
-    }, [isHidden, frameSize, open, position])
+    }, [isHidden, frameSize, screenSize, open, position])
 
     const disableDrag = props.disableDrag ?? controller?.disableDrag
     const themeName = useThemeName()
@@ -298,24 +325,25 @@ export const SheetImplementationCustom = themeable(
 
     const handleAnimationViewLayout = useCallback(
       (e: LayoutChangeEvent) => {
-        const next = (() => {
-          let _ = e.nativeEvent?.layout.height
-          if (isWeb && isTouchable && !open) {
-            // temp fix ios bug where it doesn't go below dynamic bottom...
-            _ += 100
-          }
-          return _
-        })()
-
+        const next = e.nativeEvent?.layout.height
         if (!next) return
         setFrameSize(next)
       },
       [keyboardIsVisible]
     )
 
+    const handleMaxContentViewLayout = useCallback(
+      (e: LayoutChangeEvent) => {
+        const next = e.nativeEvent?.layout.height
+        if (!next) return
+        setMaxContentSize(next)
+      },
+      [keyboardIsVisible]
+    )
+
     const animatedStyle = useAnimatedNumberStyle(animatedNumber, (val) => {
       'worklet'
-      const translateY = frameSize === 0 ? HIDDEN_SIZE : val
+      const translateY = frameSize === 0 ? hiddenSize : val
       return {
         transform: [{ translateY }],
       }
@@ -361,25 +389,46 @@ export const SheetImplementationCustom = themeable(
       }
     }, [open])
 
+    const forcedContentHeight = hasFit
+      ? undefined
+      : snapPointsMode === 'percent'
+      ? `${maxSnapPoint}%`
+      : maxSnapPoint
+
     const contents = (
       <ParentSheetContext.Provider value={nextParentContext}>
         <SheetProvider {...providerProps}>
-          {shouldHideParentSheet ? null : overlayComponent}
+          <AnimatePresence enterExitVariant="open">
+            {shouldHideParentSheet || !open ? null : overlayComponent}
+          </AnimatePresence>
 
+          {snapPointsMode !== 'percent' && (
+            <View
+              style={{
+                opacity: 0,
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                pointerEvents: 'none',
+              }}
+              pointerEvents="none"
+              onLayout={handleMaxContentViewLayout}
+            />
+          )}
           <AnimatedView
             ref={ref}
             {...panResponder?.panHandlers}
             onLayout={handleAnimationViewLayout}
             pointerEvents={open && !shouldHideParentSheet ? 'auto' : 'none'}
-            //  @ts-ignore
-            animation={props.animation}
             style={[
               {
                 position: 'absolute',
                 zIndex,
                 width: '100%',
-                height: `${maxSnapPoint}%`,
-                minHeight: `${maxSnapPoint}%`,
+                height: forcedContentHeight,
+                minHeight: forcedContentHeight,
                 opacity,
               },
               animatedStyle,
@@ -425,14 +474,48 @@ export const SheetImplementationCustom = themeable(
   })
 )
 
-function getPercentSize(point?: number, screenSize?: number) {
-  if (!screenSize) return 0
-  if (point === undefined) {
-    console.warn('No snapPoint')
+function getYPositions(
+  mode: SnapPointsMode,
+  point: string | number,
+  screenSize?: number,
+  frameSize?: number
+) {
+  if (!screenSize || !frameSize) return 0
+
+  if (mode === 'mixed') {
+    if (typeof point === 'number') {
+      return screenSize - Math.min(screenSize, Math.max(0, point))
+    }
+    if (point === 'fit') {
+      return screenSize - frameSize
+    }
+    if (point.endsWith('%')) {
+      const pct = Math.min(100, Math.max(0, Number(point.slice(0, -1)))) / 100
+      if (Number.isNaN(pct)) {
+        console.warn('Invalid snapPoint percentage string')
+        return 0
+      }
+      const next = Math.round(screenSize - pct * screenSize)
+      return next
+    }
+    console.warn('Invalid snapPoint unknown value')
     return 0
   }
-  const pct = point / 100
-  const next = Math.round(screenSize - pct * screenSize)
 
-  return next
+  if (mode === 'fit') {
+    if (point === 0) return screenSize
+    return screenSize - Math.min(screenSize, frameSize)
+  }
+
+  if (mode === 'constant' && typeof point === 'number') {
+    return screenSize - Math.min(screenSize, Math.max(0, point))
+  }
+
+  const pct = Math.min(100, Math.max(0, Number(point))) / 100
+  if (Number.isNaN(pct)) {
+    console.warn('Invalid snapPoint percentage')
+    return 0
+  }
+
+  return Math.round(screenSize - pct * screenSize)
 }

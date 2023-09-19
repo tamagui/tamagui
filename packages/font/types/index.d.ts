@@ -5,11 +5,11 @@ export declare function addFont(props: {
     insertCSS?: boolean;
     update?: boolean;
 }): {
-    fontFamily: import("@tamagui/web").GenericFont<string | number>;
+    fontFamily: import("@tamagui/web").GenericFont<string | number | symbol>;
     fontFamilyToken?: undefined;
     fontDeclaration?: undefined;
 } | {
-    fontFamilyToken: import("@tamagui/web").DeepVariableObject<import("@tamagui/web").GenericFont<string | number>>;
+    fontFamilyToken: import("@tamagui/web").DeepVariableObject<import("@tamagui/web").GenericFont<string | number | symbol>>;
     fontDeclaration: {
         [x: string]: {
             name: string;

@@ -1,11 +1,11 @@
-import { GenericFont, createFont, getVariableValue, isWeb } from '@tamagui/core'
+import type { FillInFont, GenericFont } from '@tamagui/core'
+import { createFont, getVariableValue, isWeb } from '@tamagui/core'
 
-export const createInterFont = <
-  A extends GenericFont = GenericFont<keyof typeof defaultSizes>
->(
-  font: {
-    [Key in keyof Partial<A>]?: Partial<A[Key]>
-  } = {},
+// fix type portability issue?
+export type { GenericFont, FillInFont } from '@tamagui/core'
+
+export const createInterFont = <A extends GenericFont>(
+  font: Partial<A> = {},
   {
     sizeLineHeight = (size) => size + 10,
     sizeSize = (size) => size * 1,
@@ -13,7 +13,7 @@ export const createInterFont = <
     sizeLineHeight?: (fontSize: number) => number
     sizeSize?: (size: number) => number
   } = {}
-): A => {
+): FillInFont<A, keyof typeof defaultSizes> => {
   // merge to allow individual overrides
   const size = Object.fromEntries(
     Object.entries({
@@ -21,7 +21,7 @@ export const createInterFont = <
       ...font.size,
     }).map(([k, v]) => [k, sizeSize(+v)])
   )
-  return createFont<A>({
+  return createFont({
     family: isWeb
       ? 'Inter, -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif'
       : 'Inter',

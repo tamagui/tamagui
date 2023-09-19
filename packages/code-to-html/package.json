@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/code-to-html",
-  "version": "1.38.0",
+  "version": "1.68.2",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -13,8 +13,8 @@
   "scripts": {
     "build": "tamagui-build --bundle",
     "watch": "tamagui-build --bundle --watch",
-    "lint": "../../node_modules/.bin/rome check src",
-    "lint:fix": "../../node_modules/.bin/rome check --apply src",
+    "lint": "../../node_modules/.bin/biome check src",
+    "lint:fix": "../../node_modules/.bin/biome check --apply-unsafe src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
@@ -30,7 +30,7 @@
     "url": "^0.11.0"
   },
   "devDependencies": {
-    "@tamagui/build": "1.38.0"
+    "@tamagui/build": "1.68.2"
   },
   "publishConfig": {
     "access": "public"

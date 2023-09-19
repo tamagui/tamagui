@@ -30,7 +30,23 @@ The classnames `is_Paragraph` and `font_body` will be output to DOM.
 
 ## Debugging
 
-Tamagui has two three of giving you a lot more insight into what's happening at compile-time.
+Tamagui has several ways of giving you more insight into what's happening at compile-time.
+
+### Visualizer
+
+You can setup a simple visualizer that shows a quick heads-up-display when you hold "Option" (or any key you define) after a short period of time, revealing the styled components names and even the file numbers and components they are in (if you have the compiler plugin installed) as an overlay over app in development mode.
+
+```tsx
+import { setupDev } from '@tamagui/core'
+
+setupDev({
+  // can just be true as well for defaulting to key: Alt + delay: 800
+  visualizer: {
+    key: 'Alt',
+    delay: 800
+  }
+})
+```
 
 ### Debug pragma
 

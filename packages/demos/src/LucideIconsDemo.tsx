@@ -1,9 +1,14 @@
 import * as LucideIcons from '@tamagui/lucide-icons'
 import { useMemo, useState } from 'react'
 import { ScrollView } from 'react-native'
-import { Grid, Input, Paragraph, Spacer, YStack, useDebounceValue } from 'tamagui'
+import { Input, Paragraph, Spacer, YStack, useDebounceValue } from 'tamagui'
 
-const lucideIcons = Object.keys(LucideIcons).map((name) => ({
+import { Grid } from './Grid'
+
+const lucideIcons = Object.keys(
+  // vite tree shaking workaround
+  typeof LucideIcons !== 'undefined' ? LucideIcons : {}
+).map((name) => ({
   key: name.toLowerCase(),
   name,
   Icon: LucideIcons[name],
@@ -18,7 +23,7 @@ export function LucideIconsDemo() {
   const iconsMemo = useMemo(
     () =>
       lucideIcons
-        .filter((x) => x.key.startsWith(search.toLowerCase()))
+        .filter((x) => x.key.includes(search.toLowerCase()))
         .map(({ Icon, name }) => (
           <YStack
             height={size + 20}

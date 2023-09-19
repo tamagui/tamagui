@@ -5,7 +5,7 @@ import { SizableText, Spacer, XStack, YStack } from 'tamagui'
 import { NavItemProps } from './DocsPage'
 import { ExternalIcon } from './ExternalIcon'
 
-export const DocsRouteNavItem = React.memo(function DocsRouteNavItem({
+export const DocsRouteNavItem = function DocsRouteNavItem({
   children,
   active,
   href,
@@ -14,7 +14,7 @@ export const DocsRouteNavItem = React.memo(function DocsRouteNavItem({
 }: NavItemProps) {
   const isExternal = href.startsWith('http')
   return (
-    <NextLink href={href}>
+    <NextLink prefetch={false} href={href}>
       <XStack
         className="docs-nav-item all ease-in ms150"
         {...props}
@@ -26,7 +26,7 @@ export const DocsRouteNavItem = React.memo(function DocsRouteNavItem({
         pressStyle={{
           backgroundColor: '$background',
         }}
-        pointerEvents={pending ? 'none' : 'auto'}
+        pointerEvents={pending ? 'none' : ('inherit' as any)}
         pos="relative"
         $sm={{
           py: '$1',
@@ -39,16 +39,20 @@ export const DocsRouteNavItem = React.memo(function DocsRouteNavItem({
           t={0}
           b={0}
           r={0}
-          w={1}
+          br="$2"
+          w={3}
           bc={active ? '$color' : '$backgroundHover'}
         />
         <SizableText
-          className="name"
           size="$4"
+          lh="$3"
           userSelect="none"
-          opacity={0.65}
-          theme={active ? null : 'alt1'}
+          opacity={active ? 1 : 0.65}
           ta="right"
+          w="100%"
+          hoverStyle={{
+            o: 0.85,
+          }}
           {...(active && {
             fow: '700',
             opacity: 1,
@@ -80,4 +84,4 @@ export const DocsRouteNavItem = React.memo(function DocsRouteNavItem({
       </XStack>
     </NextLink>
   )
-})
+}

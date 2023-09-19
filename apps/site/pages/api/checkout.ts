@@ -1,22 +1,11 @@
+import { apiRoute } from '@lib/apiRoute'
 import { getURL } from '@lib/helpers'
+import { protectApiRoute } from '@lib/protectApiRoute'
 import { stripe } from '@lib/stripe'
 import { createOrRetrieveCustomer } from '@lib/supabaseAdmin'
-import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
-import { NextApiHandler } from 'next'
 
-const handler: NextApiHandler = async (req, res) => {
-  const supabase = createServerSupabaseClient({ req, res })
-
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
-  const user = session?.user
-
-  if (!user) {
-    const params = new URLSearchParams({ redirect_to: req.url ?? '' })
-    res.redirect(303, `/login?${params.toString()}`)
-    return
-  }
+export default apiRoute(async (req, res) => {
+  const { user } = await protectApiRoute({ req, res, shouldRedirect: true })
   // let priceId: string
 
   // const quantity =
@@ -51,11 +40,27 @@ const handler: NextApiHandler = async (req, res) => {
       )
     }
   }
-  let coupon: string | undefined
+  let couponId: string | undefined
 
-  if (req.query.coupon && typeof req.query.coupon === 'string') {
-    coupon = req.query.coupon
+  if (req.query.coupon_id && typeof req.query.coupon_id === 'string') {
+    couponId = req.query.coupon_id
   }
+
+  let promoCode: string | undefined
+  let promoCodeId: string | undefined
+
+  if (req.query.promotion_code && typeof req.query.promotion_code === 'string') {
+    promoCode = req.query.promotion_code
+
+    const promoCodeRes = await stripe.promotionCodes.list({
+      code: promoCode,
+      active: true,
+    })
+    if (promoCodeRes.data.length > 0) {
+      promoCodeId = promoCodeRes.data[0].id
+    }
+  }
+
   // priceId =
   //   typeof product.default_price === 'string'
   //     ? product.default_price
@@ -90,9 +95,13 @@ const handler: NextApiHandler = async (req, res) => {
       }
     }),
     customer: stripeCustomerId,
-    mode: 'subscription',
-    discounts: coupon ? [{ coupon }] : undefined,
-    success_url: `${getURL()}/account/subscriptions`,
+    discounts: promoCodeId
+      ? [{ promotion_code: promoCodeId }]
+      : couponId
+      ? [{ coupon: couponId }]
+      : undefined,
+    mode: 'payment',
+    success_url: `${getURL()}/payment-finished`,
     cancel_url: `${getURL()}/takeout`,
   })
 
@@ -101,10 +110,8 @@ const handler: NextApiHandler = async (req, res) => {
   //   .upsert({ id: user.id, stripe_customer_id: stripeSession.customer })
 
   if (stripeSession.url) {
-    res.redirect(303, stripeSession.url)
+    return res.redirect(303, stripeSession.url)
   }
 
-  res.status(500)
-}
-
-export default handler
+  throw new Error(`No stripe session URL in: ${JSON.stringify(stripeSession)}`)
+})

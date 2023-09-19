@@ -12,7 +12,7 @@ import { processColor } from '../processColor/index'
 
 const normalizeColor = (
   color: number | string | null | undefined,
-  opacity = 1,
+  opacity = 1
 ): void | string => {
   if (color == null) return
 

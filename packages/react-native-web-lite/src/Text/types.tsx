@@ -33,11 +33,7 @@ export type TextStyle = {
   fontStyle?: 'italic' | 'normal'
   fontWeight?: FontWeightValue | null
   fontVariant?: ReadonlyArray<
-    | 'small-caps'
-    | 'oldstyle-nums'
-    | 'lining-nums'
-    | 'tabular-nums'
-    | 'proportional-nums'
+    'small-caps' | 'oldstyle-nums' | 'lining-nums' | 'tabular-nums' | 'proportional-nums'
   >
   letterSpacing?: NumberOrString | null
   lineHeight?: NumberOrString | null
@@ -52,19 +48,11 @@ export type TextStyle = {
     | 'start'
   textAlignVertical?: string | null
   textDecorationColor?: ColorValue | null
-  textDecorationLine?:
-    | 'none'
-    | 'underline'
-    | 'line-through'
-    | 'underline line-through'
+  textDecorationLine?: 'none' | 'underline' | 'line-through' | 'underline line-through'
   textDecorationStyle?: 'solid' | 'double' | 'dotted' | 'dashed'
   textIndent?: NumberOrString | null
   textOverflow?: string | null
-  textRendering?:
-    | 'auto'
-    | 'geometricPrecision'
-    | 'optimizeLegibility'
-    | 'optimizeSpeed'
+  textRendering?: 'auto' | 'geometricPrecision' | 'optimizeLegibility' | 'optimizeSpeed'
   textShadowColor?: ColorValue | null
   textShadowOffset?: {
     width?: number

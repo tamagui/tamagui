@@ -2,9 +2,9 @@ import type { IncomingMessage } from 'http'
 import { URL } from 'url'
 
 import type { FastifyInstance, FastifyReply, FastifyRequest, LogLevel } from 'fastify'
+import Device from 'metro-inspector-proxy/src/Device'
 import WebSocket from 'ws'
 
-import Device from '../../../../vendor/metro-inspector-proxy/src/Device'
 import { Server } from '../../../types'
 import { WebSocketServer } from '../WebSocketServer'
 

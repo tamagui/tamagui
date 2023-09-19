@@ -1,9 +1,30 @@
+import { createElement, forwardRef } from 'react'
+
+const Decorated = Symbol()
+
 export const withStaticProperties = function <A extends Function, B>(
   component: A,
   staticProps: B
 ): A & B {
-  // clone if object to stay immutable
-  const next = typeof component === 'function' ? component : { ...(component as any) }
+  // clone component if already wrapped once
+  const next = (() => {
+    if (component[Decorated]) {
+      const _ = forwardRef((props, ref) =>
+        createElement(component as any, { ...props, ref })
+      )
+      // attach existing things again
+      for (const key in component) {
+        const v = component[key]
+        // @ts-ignore
+        _[key] = v && typeof v === 'object' ? { ...v } : v
+      }
+    }
+    return component
+  })()
+
+  // add new things
   Object.assign(next, staticProps)
-  return next as A & B
+  next[Decorated] = true
+
+  return next as any as A & B
 }

@@ -1,76 +1,45 @@
-import { getConfig } from '../config'
 import { getVariableValue } from '../createVariable'
-import { GenericFonts } from '../types'
+import { GenericFonts, GetStyleState } from '../types'
 import { LanguageContextType } from '../views/FontLanguage.types'
 import { createProxy } from './createProxy'
 
-const extrasCache = new WeakMap()
-
-export function getVariantExtras(
-  props: any,
-  languageContext?: LanguageContextType,
-  theme?: any,
-  defaultProps?: any,
-  avoidDefaultProps = false,
-  fontFamily?: string
-) {
-  const conf = getConfig()
-
-  if (extrasCache.has(props)) {
-    return extrasCache.get(props)
-  }
-
+export function getVariantExtras(styleState: GetStyleState) {
+  const { curProps, conf, context, theme } = styleState
   let fonts = conf.fontsParsed
-  if (languageContext) {
-    fonts = getFontsForLanguage(conf.fontsParsed, languageContext)
+  if (context?.language) {
+    fonts = getFontsForLanguage(conf.fontsParsed, context.language)
   }
+
+  // should be able to just use styleState.fontFamily but no time to test for now
+  const fontFamily = getVariableValue(
+    styleState.fontFamily || styleState.curProps.fontFamily || styleState.conf.defaultFont
+  )
 
   const next = {
     fonts,
     tokens: conf.tokensParsed,
     theme,
-
-    get fontFamily() {
-      return getVariableValue(fontFamily || props.fontFamily)
-    },
-
-    get font() {
-      return fonts[this.fontFamily]
-    },
-
+    fontFamily,
+    font: fonts[fontFamily] || fonts[styleState.conf.defaultFont!],
     // TODO do this in splitstlye
     // we avoid passing in default props for media queries because that would confuse things like SizableText.size:
-    props: avoidDefaultProps
-      ? props
-      : createProxy(props, {
-          // handles shorthands
-          get(target, key) {
-            const shorthand = conf.inverseShorthands[key as any]
-            // shorthands before longhand because a styled() with longhand combined with inline shorthand
-            // shorthand will always be the overriding key
-            if (shorthand && Reflect.has(target, shorthand)) {
-              return Reflect.get(target, shorthand)
-            }
-            if (Reflect.has(target, key)) {
-              return Reflect.get(target, key)
-            }
-            // these props may be extracted into classNames, but we still want to access them
-            // at runtime, so we proxy back to defaultProps but don't pass them
-            if (defaultProps) {
-              if (shorthand && Reflect.has(defaultProps, shorthand)) {
-                return Reflect.get(defaultProps, shorthand)
-              }
-              if (Reflect.has(defaultProps, key)) {
-                return Reflect.get(defaultProps, key)
-              }
-            }
-          },
-        }),
+    props: createProxy(curProps, {
+      // handles shorthands
+      get(target, key) {
+        const shorthand = conf.inverseShorthands[key as any]
+        // shorthands before longhand because a styled() with longhand combined with inline shorthand
+        // shorthand will always be the overriding key
+        if (shorthand && Reflect.has(target, shorthand)) {
+          return Reflect.get(target, shorthand)
+        }
+        if (Reflect.has(target, key)) {
+          return Reflect.get(target, key)
+        }
+      },
+    }),
   }
 
-  extrasCache.set(props, next)
-
-  return next
+  return next as any
 }
 
 const fontLanguageCache = new WeakMap()

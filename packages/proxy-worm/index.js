@@ -13,7 +13,6 @@ function worm(root = false) {
           process.env.NODE_ENV === 'development' &&
           process.env.DEBUG?.startsWith('tamagui')
         ) {
-          // rome-ignore lint/nursery/noConsoleLog: ok
           console.warn(`
 
 This has been excluded via Tamagui!
@@ -29,6 +28,10 @@ ${new Error().stack}
 
   obj.displayName = `ProxyWorm - Check excludeReactNativeWebExports`
   obj._isProxyWorm = true
+
+  // reanimated tries to find component like things
+  obj.prototype = obj.prototype || {}
+  obj.prototype.isReactComponent = true
 
   return new Proxy(obj, {
     get(_, key) {

@@ -1,3 +1,5 @@
+import '@tamagui/polyfill-dev'
+
 import { setupReactNative } from '@tamagui/core'
 import * as React from 'react'
 import { Text, View } from 'react-native'
@@ -17,11 +19,17 @@ if (typeof requestAnimationFrame === 'undefined') {
 const cancelAnimationFrame = globalThis.cancelAnimationFrame
 
 // for vite / Animated.spring()
-global.cancelAnimationFrame = (x: number) => {
-  try {
-    cancelAnimationFrame(x)
-  } catch {
-    // illegal invocation :/
+if (typeof globalThis === 'undefined') {
+  console.warn(
+    `Warning: globalThis is undefined, are you overwriting it in your bundler?`
+  )
+} else {
+  globalThis.cancelAnimationFrame = (x: number) => {
+    try {
+      cancelAnimationFrame(x)
+    } catch {
+      // illegal invocation :/
+    }
   }
 }
 

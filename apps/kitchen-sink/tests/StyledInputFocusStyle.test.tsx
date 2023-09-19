@@ -1,7 +1,8 @@
 import { expect, test } from '@playwright/test'
+import { setupPage } from './test-utils'
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('/?test=StyledInputFocusStyle')
+  await setupPage(page, { name: "StyledInputFocusStyle", type: "useCase" })
 })
 
 test(`styled input + focusStyle`, async ({ page }) => {

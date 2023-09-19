@@ -13,13 +13,21 @@ export async function getOptions({
   host,
   debug,
 }: Partial<CLIUserOptions> = {}): Promise<CLIResolvedOptions> {
+  //
+  if (root.includes('tamagui/apps/studio')) {
+    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+    console.log(`Running in studio mode, loading the site config`)
+    root = root.replace('apps/studio', 'apps/site')
+  }
+
   const tsConfigFilePath = join(root, tsconfigPath)
   ensure(await fs.pathExists(tsConfigFilePath), `No tsconfig found: ${tsConfigFilePath}`)
   const dotDir = join(root, '.tamagui')
-  const pkgJson = await readJSON(join(root, 'package.json'))
+  let pkgJson = {}
   let config = ''
   try {
     config = await getDefaultTamaguiConfigPath()
+    pkgJson = await readJSON(join(root, 'package.json'))
   } catch {
     // ok
   }
@@ -32,6 +40,7 @@ export async function getOptions({
     debug,
     tsconfigPath,
     tamaguiOptions: {
+      platform: 'native',
       components: ['tamagui'],
       config,
       ...tamaguiOptions,

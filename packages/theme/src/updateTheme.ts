@@ -11,5 +11,3 @@ export function updateTheme({
 }) {
   return _mutateTheme({ name, theme, insertCSS: true, mutationType: 'update' })
 }
-
-globalThis['updateTheme'] = updateTheme

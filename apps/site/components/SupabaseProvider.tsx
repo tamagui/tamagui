@@ -1,5 +1,6 @@
 import { Database } from '@lib/supabase-types'
-import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
+import { supabaseCookieOptions } from '@lib/supabase-utils'
+import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs'
 import {
   SessionContextProvider,
   SessionContextProviderProps,
@@ -19,17 +20,9 @@ export const SupabaseProvider = ({
   isStudio?: boolean
 }) => {
   const [supabaseClient] = useState(() =>
-    createBrowserSupabaseClient<Database>({
+    createPagesBrowserClient<Database>({
       // supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
-      cookieOptions: isStudio
-        ? undefined
-        : {
-            domain: process.env.NODE_ENV === 'production' ? 'tamagui.dev' : 'localhost',
-            maxAge: 1000 * 60 * 60 * 24 * 365,
-            path: '/',
-            sameSite: 'lax',
-            secure: true,
-          },
+      cookieOptions: supabaseCookieOptions,
     })
   )
   return (
@@ -53,7 +46,7 @@ const SupabaseInside = ({ children }: { children: React.ReactNode }) => {
         if (session?.user.id === currentSession?.user.id) {
           return
         }
-        await fetch('/api/github-sync', { method: 'POST' })
+        await fetch('/api/account-sync', { method: 'POST' })
       }
 
       await swrClient.mutate('user')

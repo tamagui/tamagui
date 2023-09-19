@@ -1,23 +1,10 @@
+import { apiRoute } from '@lib/apiRoute'
+import { protectApiRoute } from '@lib/protectApiRoute'
 import { stripe } from '@lib/stripe'
-import { Database } from '@lib/supabase-types'
-import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
-import { NextApiHandler } from 'next'
 import Stripe from 'stripe'
 
-const handler: NextApiHandler = async (req, res) => {
-  const supabase = createServerSupabaseClient<Database>({ req, res })
-
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
-  const user = session?.user
-
-  if (!user) {
-    res.status(401).json({
-      error: 'The user is not authenticated',
-    })
-    return
-  }
+export default apiRoute(async (req, res) => {
+  const { supabase } = await protectApiRoute({ req, res })
   const subId = req.body['subscription_id']
   if (typeof subId === 'undefined') {
     res.status(400).json({
@@ -54,6 +41,4 @@ const handler: NextApiHandler = async (req, res) => {
       res.status(error.statusCode || 500).json({ message: error.message })
     }
   }
-}
-
-export default handler
+})

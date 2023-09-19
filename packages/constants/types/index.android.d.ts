@@ -1,13 +1,13 @@
 import { useLayoutEffect } from 'react';
-export declare const isWeb = false;
-export declare const isWindowDefined = false;
-export declare const isServer = false;
-export declare const isClient = false;
-export declare const isRSC = false;
+export declare const isWeb: boolean;
+export declare const isWindowDefined: boolean;
+export declare const isServer: boolean;
+export declare const isClient: boolean;
 export declare const useIsomorphicLayoutEffect: typeof useLayoutEffect;
-export declare const isChrome = false;
-export declare const isWebTouchable = false;
-export declare const isTouchable = true;
-export declare const isAndroid = true;
-export declare const isIos = false;
+export declare const isChrome: boolean;
+export declare const isWebTouchable: boolean;
+export declare const isTouchable: boolean;
+export declare const isAndroid: boolean;
+export declare const isIos: boolean;
+export declare const currentPlatform: 'web' | 'ios' | 'native' | 'android';
 //# sourceMappingURL=index.android.d.ts.map

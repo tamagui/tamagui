@@ -1,6 +1,5 @@
 import { isWeb } from '@tamagui/constants'
 
-import { getConfig } from '../config'
 import { expandStyle } from './expandStyle'
 import { normalizeShadow } from './normalizeShadow'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
@@ -14,14 +13,14 @@ import { pseudoDescriptors } from './pseudoDescriptors'
  *   3. Expands react-native shorthands, ie paddingHorizontal => paddingLeft, paddingRight
  */
 
-export function expandStyles(style: Record<string, any>, { shorthands } = getConfig()) {
+export function expandStylesAndRemoveNullishValues(style: Record<string, any>) {
   const res: Record<string, any> = {}
 
   for (let key in style) {
     const valIn = style[key]
-    key = shorthands?.[key] || key
+    if (valIn == null) continue
     if (key in pseudoDescriptors) {
-      res[key] = expandStyles(valIn)
+      res[key] = expandStylesAndRemoveNullishValues(valIn)
       continue
     }
     const val = normalizeValueWithProperty(valIn, key)
@@ -40,6 +39,15 @@ export function expandStyles(style: Record<string, any>, { shorthands } = getCon
 }
 
 export function fixStyles(style: Record<string, any>) {
+  if (process.env.TAMAGUI_TARGET === 'native') {
+    if ('elevationAndroid' in style) {
+      // @ts-ignore
+      style['elevation'] = style.elevationAndroid
+      // @ts-ignore
+      delete style.elevationAndroid
+    }
+  }
+
   if (
     style.shadowRadius ||
     style.shadowColor ||

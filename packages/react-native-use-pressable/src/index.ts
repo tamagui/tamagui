@@ -7,7 +7,6 @@
  *
  * @format
  */
-'use strict'
 
 import { useDebugValue, useEffect, useRef } from 'react'
 
@@ -16,7 +15,7 @@ import PressResponder from './PressResponder'
 // todo
 export type PressResponderConfig = any
 
-export function usePressEvents(config?: any) {
+export function usePressEvents(_, config?: any) {
   const pressResponderRef = useRef<any>(null)
 
   if (pressResponderRef.current == null) {

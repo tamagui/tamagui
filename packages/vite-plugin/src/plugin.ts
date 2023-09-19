@@ -1,3 +1,4 @@
+import { esbuildCommonjs } from '@originjs/vite-plugin-commonjs'
 import type { TamaguiOptions } from '@tamagui/static'
 import { watchTamaguiConfig } from '@tamagui/static'
 import type { Plugin } from 'vite'
@@ -7,14 +8,23 @@ import type { Plugin } from 'vite'
  */
 
 export function tamaguiPlugin(
-  options: TamaguiOptions & {
+  options: Partial<TamaguiOptions> & {
     useReactNativeWebLite?: boolean
     disableWatchTamaguiConfig?: boolean
   }
 ): Plugin {
-  const watcher = options.disableWatchTamaguiConfig ? null : watchTamaguiConfig(options)
+  const watcher = options.disableWatchTamaguiConfig
+    ? null
+    : watchTamaguiConfig({
+        platform: 'web',
+        components: ['tamagui'],
+        config: './src/tamagui.config.ts',
+        ...options,
+      })
 
-  const components = [...new Set([...options.components, 'tamagui', '@tamagui/core'])]
+  const components = [
+    ...new Set([...(options.components || []), 'tamagui', '@tamagui/core']),
+  ]
   const noExternalSSR = new RegExp(
     `${components.join('|')}|react-native|expo-linear-gradient`,
     'ig'
@@ -39,14 +49,10 @@ export function tamaguiPlugin(
         ],
         define: {
           // reanimated support
-          'global.__x': {},
           _frameTimestamp: undefined,
           _WORKLET: false,
           __DEV__: `${env.mode === 'development' ? true : false}`,
           'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || env.mode),
-          'process.env.TAMAGUI_TARGET': JSON.stringify(
-            process.env.TAMAGUI_TARGET || 'web'
-          ),
           'process.env.ENABLE_RSC': JSON.stringify(process.env.ENABLE_RSC || ''),
           'process.env.ENABLE_STEPS': JSON.stringify(process.env.ENABLE_STEPS || ''),
           'process.env.IS_STATIC': JSON.stringify(false),
@@ -61,7 +67,7 @@ export function tamaguiPlugin(
         },
         optimizeDeps: {
           // disabled: false,
-          include: ['styleq', 'react-native-reanimated'],
+          include: options.platform !== 'native' ? ['styleq'] : [],
           esbuildOptions: {
             jsx: 'transform',
             // plugins: [
@@ -70,10 +76,12 @@ export function tamaguiPlugin(
             //     'inline-style-prefixer',
             //     'create-react-class',
             //     'copy-to-clipboard',
+            //     'escape-string-regexp',
             //   ]),
             // ],
             resolveExtensions: [
               '.web.js',
+              '.web.jsx',
               '.web.ts',
               '.web.tsx',
               '.js',
@@ -93,6 +101,7 @@ export function tamaguiPlugin(
           // mainFields: ['module:jsx', 'module', 'jsnext:main', 'jsnext', 'main'],
           extensions: [
             '.web.js',
+            '.web.jsx',
             '.web.ts',
             '.web.tsx',
             '.js',
@@ -103,14 +112,16 @@ export function tamaguiPlugin(
             '.mjs',
           ],
           alias: {
-            'react-native/Libraries/Renderer/shims/ReactFabric': '@tamagui/proxy-worm',
-            'react-native/Libraries/Utilities/codegenNativeComponent':
-              '@tamagui/proxy-worm',
-            'react-native-svg': '@tamagui/react-native-svg',
-            'react-native': 'react-native-web',
-            ...(options.useReactNativeWebLite && {
-              'react-native': 'react-native-web-lite',
-              'react-native-web': 'react-native-web-lite',
+            ...(options.platform !== 'native' && {
+              'react-native/Libraries/Renderer/shims/ReactFabric': '@tamagui/proxy-worm',
+              'react-native/Libraries/Utilities/codegenNativeComponent':
+                '@tamagui/proxy-worm',
+              'react-native-svg': '@tamagui/react-native-svg',
+              'react-native': 'react-native-web',
+              ...(options.useReactNativeWebLite && {
+                'react-native': 'react-native-web-lite',
+                'react-native-web': 'react-native-web-lite',
+              }),
             }),
           },
         },

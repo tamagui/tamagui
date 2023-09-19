@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/separator",
-  "version": "1.38.0",
+  "version": "1.68.2",
   "sideEffects": [
     "*.css"
   ],
@@ -17,8 +17,8 @@
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
-    "lint": "../../node_modules/.bin/rome check src",
-    "lint:fix": "../../node_modules/.bin/rome check --apply src"
+    "lint": "../../node_modules/.bin/biome check src",
+    "lint:fix": "../../node_modules/.bin/biome check --apply-unsafe src"
   },
   "exports": {
     "./package.json": "./package.json",
@@ -29,13 +29,13 @@
     }
   },
   "dependencies": {
-    "@tamagui/core": "1.38.0"
+    "@tamagui/core": "1.68.2"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.38.0",
+    "@tamagui/build": "1.68.2",
     "react": "^18.2.0"
   },
   "publishConfig": {

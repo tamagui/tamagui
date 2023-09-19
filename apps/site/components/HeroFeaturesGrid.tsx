@@ -1,6 +1,7 @@
-import { EnsureFlexed, Grid, H4, Paragraph, YStack } from 'tamagui'
+import { EnsureFlexed, H4, Paragraph, YStack } from 'tamagui'
 
 import { ContainerLarge } from './Container'
+import { Grid } from './Grid'
 
 export function FeaturesGrid() {
   return (

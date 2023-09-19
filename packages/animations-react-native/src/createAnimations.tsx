@@ -7,9 +7,8 @@ import {
   isWeb,
   useEvent,
   useIsomorphicLayoutEffect,
-  useSafeRef,
 } from '@tamagui/web'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { Animated } from 'react-native'
 
 type AnimationsConfig<A extends Object = any> = {
@@ -73,7 +72,7 @@ export const AnimatedText = Animated.Text
 export function useAnimatedNumber(
   initial: number
 ): UniversalAnimatedNumber<Animated.Value> {
-  const state = useSafeRef(
+  const state = useRef(
     null as any as {
       val: Animated.Value
       composite: Animated.CompositeAnimation | null
@@ -173,14 +172,13 @@ export function createAnimations<A extends AnimationsConfig>(
     useAnimatedNumberReaction,
     useAnimatedNumberStyle,
     usePresence,
-    useAnimations: ({ props, onDidAnimate, style, state, presence }) => {
+    useAnimations: ({ props, onDidAnimate, style, componentState, presence }) => {
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
       /** store Animated value of each key e.g: color: AnimatedValue */
-      const animateStyles = useSafeRef<Record<string, Animated.Value>>({})
-      const animatedTranforms = useSafeRef<{ [key: string]: Animated.Value }[]>([])
-      const animatedUseNativeState = useSafeRef<Record<string, boolean>>({})
-      const animationsState = useSafeRef(
+      const animateStyles = useRef<Record<string, Animated.Value>>({})
+      const animatedTranforms = useRef<{ [key: string]: Animated.Value }[]>([])
+      const animationsState = useRef(
         new WeakMap<
           Animated.Value,
           {
@@ -195,7 +193,7 @@ export function createAnimations<A extends AnimationsConfig>(
       const animateOnly = (props.animateOnly as string[]) || []
       const hasAnimateOnly = !!props.animateOnly
 
-      const args = [JSON.stringify(style), state, isExiting, !!onDidAnimate]
+      const args = [JSON.stringify(style), componentState, isExiting, !!onDidAnimate]
 
       // check if there is any style that is not supported by native driver
       const isThereNoNativeStyleKeys = useMemo(() => {
@@ -332,6 +330,7 @@ export function createAnimations<A extends AnimationsConfig>(
                     getAnimation(),
                   ])
                 : getAnimation()
+
               animation.start(({ finished }) => {
                 if (finished) {
                   resolve()
@@ -343,7 +342,7 @@ export function createAnimations<A extends AnimationsConfig>(
           if (process.env.NODE_ENV === 'development') {
             if (props['debug'] === 'verbose') {
               // prettier-ignore
-              // rome-ignore lint/nursery/noConsoleLog: ok
+              // biome-ignore lint/suspicious/noConsoleLog: ok
               console.log(' 💠 animate',key,`from (${value['_value']}) to`, valIn, `(${val})`, 'type',type,'interpolate',interpolateArgs)
             }
           }
@@ -369,7 +368,7 @@ export function createAnimations<A extends AnimationsConfig>(
 
       if (process.env.NODE_ENV === 'development') {
         if (props['debug'] === 'verbose') {
-          // rome-ignore lint/nursery/noConsoleLog: ok
+          // biome-ignore lint/suspicious/noConsoleLog: ok
           console.log(`Returning animated`, res, 'given style', style)
         }
       }

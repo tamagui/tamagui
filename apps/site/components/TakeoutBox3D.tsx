@@ -1,7 +1,8 @@
 import { useGLTF } from '@react-three/drei'
-import { Canvas, useFrame } from '@react-three/fiber'
+import { Canvas, Object3DNode, useFrame } from '@react-three/fiber'
 import { useRouter } from 'next/router'
 import { Suspense, useEffect, useRef } from 'react'
+import { useMedia } from 'tamagui'
 
 import { Stage } from '../components/Stage'
 
@@ -9,18 +10,17 @@ const modelUrl = `${
   process.env.NEXT_PUBLIC_VERCEL_URL
     ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
     : `http://localhost:${process.env.NODE_ENV === 'production' ? '3333' : '5005'}`
-}/takeout.gltf`
+}/takeout-compressed-2.glb`
 
 let frameCount = 0
 
 export default (props) => (
   <Canvas
     style={{
-      width: 620,
-      height: 620,
+      width: 735,
+      height: 735,
     }}
     gl={{ preserveDrawingBuffer: true }}
-    shadows
     dpr={[1, 1]}
   >
     <Suspense fallback={null}>
@@ -30,8 +30,10 @@ export default (props) => (
 )
 
 function TakeoutBox3D(props) {
-  const ref = useRef<any>()
+  const ref = useRef<Object3DNode<any, any>>()
   const router = useRouter()
+  const media = useMedia()
+
   useEffect(() => {
     function resetFrameCount() {
       frameCount = 0
@@ -39,13 +41,16 @@ function TakeoutBox3D(props) {
     router.events.on('routeChangeComplete', resetFrameCount)
     return () => router.events.off('routeChangeComplete', resetFrameCount)
   }, [])
+
   const { nodes, materials } = useGLTF(modelUrl) as any
 
   useFrame((state, delta) => {
+    if (!ref.current) return
+
     const isSlow = frameCount > 40
 
     // ref.current!.rotation.z += delta * 0.1
-    ref.current!.rotation.y += delta * (isSlow ? 0.1 : 2)
+    ref.current.rotation.y += delta * (isSlow ? 0.1 : 0.8)
 
     // effect to spin faster on first entering
     if (frameCount <= 40) {
@@ -54,22 +59,27 @@ function TakeoutBox3D(props) {
     // ref.current!.rotation.x += delta * 0.1
   })
 
+  if (media.sm) {
+    return null
+  }
+
   return (
     <>
-      <Stage shadows="accumulative" scale={1} adjustCamera={1.2} intensity={1}>
+      <Stage scale={1} adjustCamera={1.55} preset="portrait" intensity={2}>
         <group ref={ref} dispose={null} {...props}>
           <mesh
+            castShadow
+            receiveShadow
             geometry={nodes.pack.geometry}
-            material={materials.Chinese_Takeout_Box_chinese}
-            position={[0.13, 0.01, 0.23]}
-            rotation={[-Math.PI, 0, -Math.PI]}
-            scale={0.1}
+            material={materials['Chinese_Takeout_Box_chinese.002']}
+            rotation={[0, 1.571, 0]}
           />
           <mesh
+            castShadow
+            receiveShadow
             geometry={nodes.handle.geometry}
-            material={materials.Material}
-            position={[-0.26, 0.08, 0.06]}
-            scale={0.1}
+            material={materials['Chinese_Takeout_Box_chinese.002']}
+            rotation={[0, 1.571, 0]}
           />
         </group>
       </Stage>

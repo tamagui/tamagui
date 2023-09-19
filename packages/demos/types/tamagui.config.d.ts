@@ -1,8 +1,7 @@
-import { config } from '@tamagui/config';
-import { InferTamaguiConfig } from '@tamagui/core';
-export { config } from '@tamagui/config';
+import { config } from '@tamagui/site-config';
+export { config } from '@tamagui/site-config';
 export default config;
-export type Conf = InferTamaguiConfig<typeof config>;
+export type Conf = typeof config;
 declare module 'tamagui' {
     interface TamaguiCustomConfig extends Conf {
     }

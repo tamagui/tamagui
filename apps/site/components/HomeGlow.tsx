@@ -1,6 +1,5 @@
 import { useTint } from '@tamagui/logo'
 import { memo, useMemo, useState } from 'react'
-import { Dimensions } from 'react-native'
 import { ThemeName, YStack, isClient, useDebounce } from 'tamagui'
 
 import { useTintSectionIndex } from './TintSection'
@@ -13,8 +12,7 @@ export const HomeGlow = memo(() => {
   const isOnHeroBelow = isAtTop && isHeroBelowColor
   const [scrollTop, setScrollTopRaw] = useState(0)
   const setScrollTop = useDebounce(setScrollTopRaw, 200)
-  const windowWidth = Dimensions.get('window').width
-  const xs = Math.min(400, windowWidth * 0.25)
+  const xs = 400
   const scale = isOnHeroBelow ? 0.5 : 1
 
   if (isClient) {

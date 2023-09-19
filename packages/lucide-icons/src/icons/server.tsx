@@ -1,3 +1,5 @@
+import type { IconProps } from '@tamagui/helpers-icon'
+import { themed } from '@tamagui/helpers-icon'
 import PropTypes from 'prop-types'
 import React, { memo } from 'react'
 import {
@@ -19,9 +21,6 @@ import {
   Text as _Text,
 } from 'react-native-svg'
 
-import type { IconProps } from '@tamagui/helpers-icon'
-import { themed } from '@tamagui/helpers-icon'
-
 const Icon = (props) => {
   const { color = 'black', size = 24, ...otherProps } = props
   return (
@@ -36,24 +35,8 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
-      <Rect
-        width="20"
-        height="8"
-        x="2"
-        y="2"
-        rx="2"
-        ry="2"
-        stroke={`${color}`}
-      />
-      <Rect
-        width="20"
-        height="8"
-        x="2"
-        y="14"
-        rx="2"
-        ry="2"
-        stroke={`${color}`}
-      />
+      <Rect width="20" height="8" x="2" y="2" rx="2" ry="2" stroke={`${color}`} />
+      <Rect width="20" height="8" x="2" y="14" rx="2" ry="2" stroke={`${color}`} />
       <Line x1="6" x2="6.01" y1="6" y2="6" stroke={`${color}`} />
       <Line x1="6" x2="6.01" y1="18" y2="18" stroke={`${color}`} />
     </Svg>

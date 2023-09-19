@@ -1,6 +1,6 @@
 process.env.TAMAGUI_TARGET = 'web'
 
-import { getDefaultTamaguiConfig } from '@tamagui/config-default-node'
+import { getDefaultTamaguiConfig } from '@tamagui/config-default'
 import { render } from '@testing-library/react'
 import { describe, expect, test } from 'vitest'
 

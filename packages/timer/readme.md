@@ -12,11 +12,11 @@ setTimeout(() => {
 function something() {
   const time = t.start()
   
-  // do stuff
+  // do stuff...
   
   time`firstTag`
 
-  // do stuff
+  // do stuff...
 
   time`second`
 }

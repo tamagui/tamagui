@@ -25,7 +25,11 @@ export function hoistClassNames(
     return t.logicalExpression(expr.operator, hoist(expr.left), hoist(expr.right))
   }
   if (t.isConditionalExpression(expr)) {
-    return t.conditionalExpression(expr.test, hoist(expr.consequent), hoist(expr.alternate))
+    return t.conditionalExpression(
+      expr.test,
+      hoist(expr.consequent),
+      hoist(expr.alternate)
+    )
   }
   return expr
 

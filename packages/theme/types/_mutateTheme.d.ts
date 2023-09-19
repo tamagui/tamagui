@@ -1,32 +1,27 @@
-import type { ThemeDefinition } from '@tamagui/web';
-export declare function _mutateTheme(props: {
-    name: string;
-    theme: Partial<Record<keyof ThemeDefinition, any>>;
+import type { ThemeDefinition, ThemeParsed } from '@tamagui/web';
+type MutateThemeOptions = {
+    mutationType: 'replace' | 'update' | 'add';
     insertCSS?: boolean;
-    mutationType?: 'replace' | 'update';
+    avoidUpdate?: boolean;
+};
+type PartialTheme = Partial<Record<keyof ThemeDefinition, any>>;
+export type MutateOneThemeProps = {
+    name: string;
+    theme: PartialTheme;
+};
+type Batch = boolean | string;
+export declare function mutateThemes({ themes, batch, insertCSS, ...props }: Omit<MutateThemeOptions, 'mutationType'> & {
+    themes: MutateOneThemeProps[];
+    batch?: Batch;
 }): {
-    theme: {
-        [x: string]: import("@tamagui/web").Variable<any>;
-        background?: import("@tamagui/web").Variable<any> | undefined;
-        backgroundHover?: import("@tamagui/web").Variable<any> | undefined;
-        backgroundPress?: import("@tamagui/web").Variable<any> | undefined;
-        backgroundFocus?: import("@tamagui/web").Variable<any> | undefined;
-        color?: import("@tamagui/web").Variable<any> | undefined;
-        colorHover?: import("@tamagui/web").Variable<any> | undefined;
-        colorPress?: import("@tamagui/web").Variable<any> | undefined;
-        colorFocus?: import("@tamagui/web").Variable<any> | undefined;
-        borderColor?: import("@tamagui/web").Variable<any> | undefined;
-        borderColorHover?: import("@tamagui/web").Variable<any> | undefined;
-        borderColorPress?: import("@tamagui/web").Variable<any> | undefined;
-        borderColorFocus?: import("@tamagui/web").Variable<any> | undefined;
-        shadowColor?: import("@tamagui/web").Variable<any> | undefined;
-        shadowColorHover?: import("@tamagui/web").Variable<any> | undefined;
-        shadowColorPress?: import("@tamagui/web").Variable<any> | undefined;
-        shadowColorFocus?: import("@tamagui/web").Variable<any> | undefined;
-    };
-    cssRules?: undefined;
-} | {
-    theme: any;
+    themes: Record<string, ThemeParsed>;
+    themesRaw: Record<string, ThemeParsed>;
+    cssRules: string[];
+};
+export declare function _mutateTheme(props: MutateThemeOptions & MutateOneThemeProps): {
+    themeRaw: ThemeParsed;
+    theme: ThemeParsed;
     cssRules: string[];
 } | undefined;
+export {};
 //# sourceMappingURL=_mutateTheme.d.ts.map

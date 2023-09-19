@@ -51,7 +51,7 @@ export function createSheet(root?: HTMLElement, id = defaultId): Sheet {
         const textContent = initialSheet != null ? initialSheet.getTextContent() : ''
         // Cast rootNode to 'any' because Flow types for getRootNode are wrong
         sheet = createOrderedCSSStyleSheet(
-          createCSSStyleSheet(id, rootNode as any, textContent),
+          createCSSStyleSheet(id, rootNode as any, textContent)
         )
         roots.set(rootNode, sheets.length)
         sheets.push(sheet)

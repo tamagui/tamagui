@@ -33,7 +33,7 @@ export function ThemeDebug({
         node.style.overflowY = 'scroll'
         node.style.position = 'fixed'
         node.style.zIndex = 10000000
-        node.style.top = '30px'
+        node.style.bottom = '30px'
         node.style.left = '30px'
         node.style.right = '30px'
         node.style.display = 'flex'
@@ -48,7 +48,7 @@ export function ThemeDebug({
       themeState.themeManager?.parentManager?.onChangeTheme((name, manager) => {
         setOnChangeCount((p) => ++p)
         console.warn(
-          `theme changed for ${themeState.themeManager?.id} from parent ${themeState.themeManager?.parentManager?.id}`,
+          `theme changed for ${themeState.themeManager?.id} from parent ${themeState.themeManager?.parentManager?.id} to new name`,
           name
         )
       })
@@ -71,8 +71,8 @@ export function ThemeDebug({
             &lt;Theme {id} /&gt;&nbsp;
             {JSON.stringify(
               {
-                name: themeState.name,
-                className: themeState.className,
+                name: themeState.state.name,
+                className: themeState.state.className,
                 inverse: themeProps.inverse,
                 forceClassName: themeProps.forceClassName,
                 parent: themeState.themeManager?.state.parentName,

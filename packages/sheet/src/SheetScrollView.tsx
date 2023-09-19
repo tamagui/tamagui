@@ -1,4 +1,4 @@
-import { TamaguiElement, composeRefs } from '@tamagui/core'
+import { GetRef, composeRefs } from '@tamagui/core'
 import { ScrollView, ScrollViewProps } from '@tamagui/scroll-view'
 import { forwardRef, useMemo, useRef } from 'react'
 import { ScrollView as RNScrollView } from 'react-native'
@@ -14,7 +14,7 @@ import { SheetScopedProps } from './types'
 
 const SHEET_SCROLL_VIEW_NAME = 'SheetScrollView'
 
-export const SheetScrollView = forwardRef<TamaguiElement, ScrollViewProps>(
+export const SheetScrollView = forwardRef<GetRef<typeof ScrollView>, ScrollViewProps>(
   ({ __scopeSheet, children, ...props }: SheetScopedProps<ScrollViewProps>, ref) => {
     const context = useSheetContext(SHEET_SCROLL_VIEW_NAME, __scopeSheet)
     const { scrollBridge } = context

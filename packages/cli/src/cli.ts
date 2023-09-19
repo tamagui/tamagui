@@ -109,24 +109,25 @@ const COMMAND_MAP = {
     },
   },
 
-  // studio: {
-  //   shorthands: ['s'],
-  //   description: `Studio`,
-  //   flags: {
-  //     '--help': Boolean,
-  //     '--debug': Boolean,
-  //     '--verbose': Boolean,
-  //     '--local': Boolean,
-  //   },
-  //   async run() {
-  //     const { _, ...flags } = arg(this.flags)
-  //     const { studio } = await import('./studio')
-  //     const options = await getOptions({
-  //       debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
-  //     })
-  //     await studio(options, !flags['--local'])
-  //   },
-  // },
+  studio: {
+    shorthands: ['s'],
+    description: `Studio`,
+    flags: {
+      '--help': Boolean,
+      '--debug': Boolean,
+      '--verbose': Boolean,
+      '--remote': Boolean,
+      '--build': Boolean,
+    },
+    async run() {
+      const { _, ...flags } = arg(this.flags)
+      const { studio } = require('./studio')
+      const options = await getOptions({
+        debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
+      })
+      await studio(options, flags['--remote'], flags['--build'])
+    },
+  },
 }
 
 type CommandDefinitions = typeof COMMAND_MAP
@@ -271,7 +272,7 @@ function showHelp(definition: CommandDefinition, flags: { '--help'?: boolean }) 
 //     default: {
 //       if (!command || flags['--help']) {
 //       }
-//       // rome-ignore lint/nursery/noConsoleLog: ok
+//       // biome-ignore lint/suspicious/noConsoleLog: ok
 //       console.warn(chalk.yellow(`No command found ${command}`))
 //       process.exit(1)
 //     }

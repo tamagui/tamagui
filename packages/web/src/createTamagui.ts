@@ -1,7 +1,7 @@
-import { isRSC, isWeb } from '@tamagui/constants'
+import { isWeb } from '@tamagui/constants'
 
-import { configListeners, setConfig } from './config'
-import { Variable, getVariableValue } from './createVariable'
+import { configListeners, setConfig, setTokens } from './config'
+import { Variable } from './createVariable'
 import { createVariables } from './createVariables'
 import { getThemeCSSRules } from './helpers/getThemeCSSRules'
 import {
@@ -9,17 +9,23 @@ import {
   listenForSheetChanges,
   scanAllSheets,
 } from './helpers/insertStyleRule'
+import { proxyThemesToParents } from './helpers/proxyThemeToParents'
 import { registerCSSVariable, variableToCSS } from './helpers/registerCSSVariable'
-import { ensureThemeVariable, proxyThemeToParents } from './helpers/themes'
+import { ensureThemeVariable } from './helpers/themes'
 import { configureMedia } from './hooks/useMedia'
 import { parseFont, registerFontVariables } from './insertFont'
 import { Tamagui } from './Tamagui'
 import {
   CreateTamaguiProps,
+  DedupedTheme,
+  DedupedThemes,
   GetCSS,
   InferTamaguiConfig,
   TamaguiInternalConfig,
   ThemeParsed,
+  ThemesLikeObject,
+  TokensMerged,
+  TokensParsed,
 } from './types'
 
 // config is re-run by the @tamagui/static, dont double validate
@@ -44,7 +50,28 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     }
   }
 
-  scanAllSheets()
+  // ensure variables
+  const tokens = createVariables(configIn.tokens)
+
+  // faster lookups
+  const tokensParsed: TokensParsed = {} as any
+  const tokensMerged: TokensMerged = {} as any
+  for (const cat in tokens) {
+    tokensParsed[cat] = {}
+    tokensMerged[cat] = {}
+    const tokenCat = tokens[cat]
+    for (const key in tokenCat) {
+      const val = tokenCat[key]
+      const prefixedKey = `$${key}`
+      tokensParsed[cat][prefixedKey] = val as any
+      tokensMerged[cat][prefixedKey] = val as any
+      tokensMerged[cat][key] = val as any
+    }
+  }
+  setTokens(tokensMerged)
+
+  const noThemes = Object.keys(configIn.themes).length === 0
+  const foundThemes = scanAllSheets(noThemes, tokensParsed)
   listenForSheetChanges()
 
   const fontTokens = Object.fromEntries(
@@ -71,19 +98,22 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   const specificTokens = {}
 
   const themeConfig = (() => {
-    const themes = { ...configIn.themes }
     const cssRuleSets: string[] = []
 
-    if (isWeb) {
+    if (
+      process.env.TAMAGUI_DOES_SSR_CSS !== 'true' &&
+      // we can leave this out if mutating, only need the js for getThemeCSSRules
+      process.env.TAMAGUI_DOES_SSR_CSS !== 'mutates-themes'
+    ) {
       const declarations: string[] = []
       const fontDeclarations: Record<
         string,
         { name: string; declarations: string[]; language?: string }
       > = {}
 
-      for (const key in configIn.tokens) {
-        for (const skey in configIn.tokens[key]) {
-          const variable = configIn.tokens[key][skey] as Variable
+      for (const key in tokens) {
+        for (const skey in tokens[key]) {
+          const variable = tokens[key][skey] as any as Variable
 
           // set specific tokens (like $size.sm)
           specificTokens[`$${key}.${skey}`] = variable
@@ -100,101 +130,53 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
             }
           }
 
-          registerCSSVariable(variable)
-          declarations.push(variableToCSS(variable, key === 'zIndex'))
+          if (isWeb) {
+            registerCSSVariable(variable)
+            declarations.push(variableToCSS(variable, key === 'zIndex'))
+          }
         }
       }
 
-      for (const key in fontsParsed) {
-        const fontParsed = fontsParsed[key]
-        const [name, language] = key.includes('_') ? key.split('_') : [key]
-        const fontVars = registerFontVariables(fontParsed)
-        fontDeclarations[key] = {
-          name: name.slice(1),
-          declarations: fontVars,
-          language,
+      if (isWeb) {
+        for (const key in fontsParsed) {
+          const fontParsed = fontsParsed[key]
+          const [name, language] = key.includes('_') ? key.split('_') : [key]
+          const fontVars = registerFontVariables(fontParsed)
+          fontDeclarations[key] = {
+            name: name.slice(1),
+            declarations: fontVars,
+            language,
+          }
+        }
+
+        const sep =
+          process.env.NODE_ENV === 'development' ? configIn.cssStyleSeparator || ' ' : ''
+
+        function declarationsToRuleSet(decs: string[], selector = '') {
+          return `:root${selector} {${sep}${[...decs].join(`;${sep}`)}${sep}}`
+        }
+
+        // non-font
+        cssRuleSets.push(declarationsToRuleSet(declarations))
+
+        // fonts
+        if (fontDeclarations) {
+          for (const key in fontDeclarations) {
+            const { name, declarations, language = 'default' } = fontDeclarations[key]
+            const fontSelector = `.font_${name}`
+            const langSelector = `:root .t_lang-${name}-${language} ${fontSelector}`
+            const selectors =
+              language === 'default' ? ` ${fontSelector}, ${langSelector}` : langSelector
+            const specificRuleSet = declarationsToRuleSet(declarations, selectors)
+            cssRuleSets.push(specificRuleSet)
+          }
         }
       }
-
-      const sep =
-        process.env.NODE_ENV === 'development' ? configIn.cssStyleSeparator || ' ' : ''
-
-      function declarationsToRuleSet(decs: string[], selector = '') {
-        return `:root${selector} {${sep}${[...decs].join(`;${sep}`)}${sep}}`
-      }
-
-      // non-font
-      cssRuleSets.push(declarationsToRuleSet(declarations))
-
-      // fonts
-      if (fontDeclarations) {
-        for (const key in fontDeclarations) {
-          const { name, declarations, language = 'default' } = fontDeclarations[key]
-          const fontSelector = `.font_${name}`
-          const langSelector = `:root .t_lang-${name}-${language} ${fontSelector}`
-          const selectors =
-            language === 'default' ? ` ${fontSelector}, ${langSelector}` : langSelector
-          const specificRuleSet = declarationsToRuleSet(declarations, selectors)
-          cssRuleSets.push(specificRuleSet)
-        }
-      }
     }
 
-    // dedupe themes to avoid duplicate CSS generation
-    type DedupedTheme = {
-      names: string[]
-      theme: ThemeParsed
-    }
-    const dedupedThemes: {
-      [key: string]: DedupedTheme
-    } = {}
-    const existing = new Map<string, DedupedTheme>()
-
-    // first, de-dupe and parse them
-    for (const themeName in themes) {
-      // forces us to separate the dark/light themes (otherwise we generate bad t_light prefix selectors)
-      const darkOrLightSpecificPrefix = themeName.startsWith('dark')
-        ? 'dark'
-        : themeName.startsWith('light')
-        ? 'light'
-        : ''
-
-      const rawTheme = themes[themeName] as ThemeParsed
-
-      // dont force referential equality but may need something more consistent than JSON.stringify
-      // separate between dark/light
-      const key = darkOrLightSpecificPrefix + JSON.stringify(rawTheme)
-
-      // if existing, avoid
-      if (existing.has(key)) {
-        const e = existing.get(key)!
-        themes[themeName] = e.theme
-        e.names.push(themeName)
-        continue
-      }
-
-      // ensure each theme object unique for dedupe
-      const theme = { ...rawTheme }
-      // parse into variables
-      for (const key in theme) {
-        // make sure properly names theme variables
-        ensureThemeVariable(theme, key)
-      }
-      themes[themeName] = theme
-
-      // set deduped
-      dedupedThemes[themeName] = {
-        names: [themeName],
-        theme,
-      }
-
-      existing.set(key, dedupedThemes[themeName])
-    }
-
-    // proxy upwards to get parent variables (themes are subset going down)
-    for (const themeName in themes) {
-      themes[themeName] = proxyThemeToParents(themeName, themes[themeName], themes)
-    }
+    const themesIn = { ...configIn.themes } as ThemesLikeObject
+    const dedupedThemes = foundThemes ?? getThemesDeduped(themesIn)
+    const themes = proxyThemesToParents(dedupedThemes)
 
     return {
       themes,
@@ -203,12 +185,13 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
         // then, generate CSS from de-duped
         let themeRuleSets: string[] = []
 
-        if (isWeb || isRSC) {
-          for (const themeName in dedupedThemes) {
+        if (isWeb) {
+          for (const { names, theme } of dedupedThemes) {
             const nextRules = getThemeCSSRules({
               config: configIn,
-              themeName,
-              ...dedupedThemes[themeName],
+              themeName: names[0],
+              names,
+              theme,
             })
             themeRuleSets = [...themeRuleSets, ...nextRules]
           }
@@ -218,14 +201,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       },
     }
   })()
-
-  // faster $lookups
-  const tokensParsed: any = Object.fromEntries(
-    Object.entries(configIn.tokens).map(([k, v]) => {
-      const val = Object.fromEntries(Object.entries(v).map(([k, v]) => [`$${k}`, v]))
-      return [k, val]
-    })
-  )
 
   const shorthands = configIn.shorthands || {}
 
@@ -249,7 +224,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     }
 
     const designSystem = `._ovs-contain {overscroll-behavior:contain;}
-.t_unmounted .t_will-mount {opacity:0;visibility:hidden;}
 .is_Text .is_Text {display:inline-flex;}
 ._dsp_contents {display:contents;}
 ${themeConfig.cssRuleSets.join(separator)}`
@@ -261,21 +235,32 @@ ${runtimeStyles}`
 
   const getNewCSS: GetCSS = (opts) => getCSS({ ...opts, sinceLastCall: true })
 
-  const defaultFont =
+  let defaultFontName =
     configIn.defaultFont ||
     // uses font named "body" if present for compat
-    ('body' in configIn.fonts ? 'body' : false) ||
+    ('body' in configIn.fonts ? 'body' : '')
+
+  if (!defaultFontName && configIn.fonts) {
     // defaults to the first font to make life easier
-    Object.keys(configIn.fonts)[0]
+    defaultFontName = Object.keys(configIn.fonts)[0]
+  }
+
+  if (defaultFontName[0] === '$') {
+    defaultFontName = defaultFontName.slice(1)
+  }
+
+  // ensure prefixed with $
+  const defaultFont = `$${defaultFontName}`
 
   const config: TamaguiInternalConfig = {
+    groupNames: [],
+    settings: {},
     onlyAllowShorthands: false,
     fontLanguages: [],
     animations: {} as any,
     media: {},
     ...configIn,
-    // already processed by createTokens()
-    tokens: configIn.tokens as any,
+    tokens: tokens as any,
     // vite made this into a function if it wasn't set
     shorthands,
     inverseShorthands: shorthands
@@ -284,7 +269,7 @@ ${runtimeStyles}`
     themes: themeConfig.themes as any,
     fontsParsed,
     themeConfig,
-    tokensParsed,
+    tokensParsed: tokensParsed as any,
     parsed: true,
     getNewCSS,
     getCSS,
@@ -307,7 +292,7 @@ ${runtimeStyles}`
 
   if (process.env.NODE_ENV === 'development') {
     if (process.env.DEBUG?.startsWith('tamagui')) {
-      // rome-ignore lint/nursery/noConsoleLog: ok
+      // biome-ignore lint/suspicious/noConsoleLog: ok
       console.log('Tamagui config:', config)
     }
     if (!globalThis['Tamagui']) {
@@ -316,4 +301,52 @@ ${runtimeStyles}`
   }
 
   return config as any
+}
+
+// dedupes the themes if given them via JS config
+function getThemesDeduped(themes: ThemesLikeObject): DedupedThemes {
+  const dedupedThemes: DedupedThemes = []
+  const existing = new Map<string, DedupedTheme>()
+
+  // first, de-dupe and parse them
+  for (const themeName in themes) {
+    // forces us to separate the dark/light themes (otherwise we generate bad t_light prefix selectors)
+    const darkOrLightSpecificPrefix = themeName.startsWith('dark')
+      ? 'dark'
+      : themeName.startsWith('light')
+      ? 'light'
+      : ''
+
+    const rawTheme = themes[themeName]
+
+    // dont force referential equality but may need something more consistent than JSON.stringify
+    // separate between dark/light
+    const key = darkOrLightSpecificPrefix + JSON.stringify(rawTheme)
+
+    // if existing, avoid
+    if (existing.has(key)) {
+      const e = existing.get(key)!
+      e.names.push(themeName)
+      continue
+    }
+
+    // ensure each theme object unique for dedupe
+    // is ThemeParsed because we call ensureThemeVariable
+    const theme = { ...rawTheme } as any as ThemeParsed
+    // parse into variables
+    for (const key in theme) {
+      // make sure properly names theme variables
+      ensureThemeVariable(theme, key)
+    }
+
+    // set deduped
+    const deduped: DedupedTheme = {
+      names: [themeName],
+      theme,
+    }
+    dedupedThemes.push(deduped)
+    existing.set(key, deduped)
+  }
+
+  return dedupedThemes
 }

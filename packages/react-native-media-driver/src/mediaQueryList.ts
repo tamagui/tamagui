@@ -1,6 +1,7 @@
 import type { MediaQueryList } from '@tamagui/web'
-import mediaQuery from 'css-mediaquery'
 import { Dimensions } from 'react-native'
+
+import { matchQuery } from './matchQuery'
 
 type Orientation = 'landscape' | 'portrait'
 
@@ -36,9 +37,18 @@ export class NativeMediaQueryList implements MediaQueryList {
     if (index !== -1) this.listeners.splice(index, 1)
   }
 
+  match(query: string, { width, height }: { width: number; height: number }) {
+    return matchQuery(query, {
+      type: 'screen',
+      orientation: height > width ? 'portrait' : 'landscape',
+      'device-width': width,
+      'device-height': height,
+    })
+  }
+
   get matches(): boolean {
     const windowDimensions = Dimensions.get('window')
-    const matches = mediaQuery.match(this.query, {
+    const matches = matchQuery(this.query, {
       type: 'screen',
       orientation: this.orientation,
       ...windowDimensions,

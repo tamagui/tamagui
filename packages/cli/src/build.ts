@@ -1,7 +1,6 @@
-import { writeFile } from 'fs'
-import { basename, dirname, join, resolve } from 'path'
+import { dirname, resolve } from 'path'
 
-import { createExtractor, extractToClassNames, loadTamagui } from '@tamagui/static'
+import { createExtractor, extractToClassNames } from '@tamagui/static'
 import { CLIResolvedOptions } from '@tamagui/types'
 import chokidar from 'chokidar'
 import { readFile } from 'fs-extra'

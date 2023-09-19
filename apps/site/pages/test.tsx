@@ -1,65 +1,36 @@
-import {
-  AnimationsDemo,
-  AnimationsPresenceDemo,
-  ListItemDemo,
-  ThemeInverseDemo,
-} from '@tamagui/demos'
-import { TabsAdvancedDemo } from '@tamagui/demos'
-import { LogoWords, TamaguiLogo, ThemeTint } from '@tamagui/logo'
-import { ListItem, Square, Stack, Theme, YStack, styled } from 'tamagui'
+// import '../lib/wdyr'
+
+import { SwitchDemo } from '@tamagui/demos'
+import { memo } from 'react'
+import { Theme } from 'tamagui'
 
 import { ThemeToggle } from '../components/ThemeToggle'
 
-const TabsRovingIndicator = styled(Stack, {
-  position: 'absolute',
-  backgroundColor: '$color5',
-  opacity: 0.7,
-  animation: '100ms',
-  enterStyle: {
-    opacity: 0,
-  },
-  exitStyle: {
-    opacity: 0,
-  },
-  variants: {
-    active: {
-      true: {
-        backgroundColor: '$color8',
-        opacity: 0.6,
-      },
-    },
-  },
+export default memo(() => {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100%',
+        flex: 1,
+      }}
+    >
+      <div style={{ position: 'absolute', top: 10, right: 10, zIndex: 1000 }}>
+        <ThemeToggle />
+      </div>
+
+      <Theme name="blue">
+        <SwitchDemo />
+      </Theme>
+    </div>
+  )
 })
 
-// export default () => <Square size={100} animation="quick" bc="$background" />
-export default () => (
-  <div
-    style={{
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      height: '100%',
-      flex: 1,
-    }}
-  >
-    <ThemeDemo />
-  </div>
-)
-
-const ThemeDemo = () => {
-  return (
-    <YStack ai="center" fullscreen jc="center">
-      <YStack scale={2} pos="absolute" t="$8" space>
-        <LogoWords animated />
-      </YStack>
-
-      <ThemeTint>
-        <ThemeInverseDemo />
-      </ThemeTint>
-
-      <YStack pos="absolute" t="$4" r="$4">
-        <ThemeToggle />
-      </YStack>
-    </YStack>
-  )
-}
+// export async function getStaticProps() {
+//   return {
+//     revalidate: 0.00001,
+//     props: {},
+//   }
+// }

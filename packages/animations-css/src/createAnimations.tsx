@@ -4,11 +4,10 @@ import {
   Text,
   UniversalAnimatedNumber,
   useIsomorphicLayoutEffect,
-  useSafeRef,
 } from '@tamagui/core'
 import { animate } from '@tamagui/cubic-bezier-animator'
 import { usePresence } from '@tamagui/use-presence'
-import { useMemo, useState } from 'react'
+import { useRef, useState } from 'react'
 
 export function createAnimations<A extends Object>(animations: A): AnimationDriver<A> {
   return {
@@ -16,6 +15,7 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
     Text: Text,
     animations,
     usePresence,
+    supportsCSSVars: true,
 
     useAnimatedNumber(initial): UniversalAnimatedNumber<number> {
       const [val, setVal] = useState(initial)
@@ -58,11 +58,11 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
       return getStyle(val.getValue())
     },
 
-    useAnimations: ({ props, presence, style, state, hostRef }) => {
-      const isEntering = !!state.unmounted
+    useAnimations: ({ props, presence, style, componentState, hostRef }) => {
+      const isEntering = !!componentState.unmounted
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
-      const initialPositionRef = useSafeRef<any>(null)
+      const initialPositionRef = useRef<any>(null)
       const animationKey = Array.isArray(props.animation)
         ? props.animation[0]
         : props.animation
@@ -129,7 +129,7 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
       }`
 
       if (process.env.NODE_ENV === 'development' && props['debug']) {
-        // rome-ignore lint/nursery/noConsoleLog: ok
+        // biome-ignore lint/suspicious/noConsoleLog: ok
         console.log('CSS animation', style, { isEntering, isExiting })
       }
 

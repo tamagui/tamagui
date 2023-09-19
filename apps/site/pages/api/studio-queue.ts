@@ -1,13 +1,10 @@
-import { Database } from '@lib/supabase-types'
+import { apiRoute } from '@lib/apiRoute'
+import { protectApiRoute } from '@lib/protectApiRoute'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
-import { sponsorshipDateMap } from '@protected/_utils/sponsorship'
-import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
-import { NextApiHandler } from 'next'
+import { sponsorshipDateMap } from 'protected/constants'
 
-
-
-const handler: NextApiHandler = async (req, res) => {
-  const supabase = createServerSupabaseClient<Database>({ req, res })
+export default apiRoute(async (req, res) => {
+  const { supabase } = await protectApiRoute({ req, res })
 
   const teamId = req.query.team_id
 
@@ -48,6 +45,4 @@ const handler: NextApiHandler = async (req, res) => {
     tierId: team.id,
     name: team.name,
   })
-}
-
-export default handler
+})

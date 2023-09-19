@@ -27,6 +27,7 @@ export function wrapChildrenInText(
     letterSpacing,
     textAlign,
     fontStyle,
+    maxFontSizeMultiplier,
   } = propsIn
 
   if (noTextWrap || !children) {
@@ -46,6 +47,7 @@ export function wrapChildrenInText(
   if (textAlign) props.textAlign = textAlign
   if (size) props.size = size
   if (fontStyle) props.fontStyle = fontStyle
+  if (maxFontSizeMultiplier) props.maxFontSizeMultiplier = maxFontSizeMultiplier
 
   return React.Children.toArray(children).map((child, index) => {
     return typeof child === 'string' ? (

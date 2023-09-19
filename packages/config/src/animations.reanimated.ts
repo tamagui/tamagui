@@ -1,6 +1,10 @@
-import { createAnimations } from '@tamagui/animations-reanimated'
+import { createAnimations } from '@tamagui/animations-moti'
 
 export const animations = createAnimations({
+  '100ms': {
+    type: 'timing',
+    duration: 100,
+  },
   bouncy: {
     type: 'spring',
     damping: 9,
@@ -11,6 +15,11 @@ export const animations = createAnimations({
     type: 'spring',
     damping: 18,
     stiffness: 50,
+  },
+  medium: {
+    damping: 15,
+    stiffness: 120,
+    mass: 1,
   },
   slow: {
     type: 'spring',

@@ -2,16 +2,21 @@ import React from 'react'
 
 export interface FocusScopeProps {
   /**
+   * @default true
+   */
+  enabled?: boolean
+
+  /**
    * When `true`, tabbing from last item will focus first tabbable
    * and shift+tab from first item will focus last tababble.
-   * @defaultValue false
+   * @default false
    */
   loop?: boolean
 
   /**
    * When `true`, focus cannot escape the focus scope via keyboard,
    * pointer, or a programmatic focus.
-   * @defaultValue false
+   * @default false
    */
   trapped?: boolean
 
@@ -32,5 +37,11 @@ export interface FocusScopeProps {
    */
   forceUnmount?: boolean
 
-  children?: React.ReactNode
+  children?:
+    | React.ReactNode
+    | ((props: {
+        onKeyDown: (event: React.KeyboardEvent) => void
+        tabIndex: number
+        ref: React.ForwardedRef<any>
+      }) => React.ReactNode)
 }

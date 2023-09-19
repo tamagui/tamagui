@@ -37,7 +37,7 @@ type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : neve
  * Popper
  * -----------------------------------------------------------------------------------------------*/
 
-type PopperContextValue = UseFloatingReturn & {
+export type PopperContextValue = UseFloatingReturn & {
   isMounted: boolean
   anchorRef: any
   size?: SizeTokens
@@ -98,20 +98,26 @@ export function Popper(props: PopperProps) {
     ].filter(Boolean),
   })
 
-  const { refs, middlewareData } = floating
+  const {
+    refs,
+    middlewareData,
+    // @ts-expect-error this comes from Tooltip for example
+    open,
+  } = floating
 
   useIsomorphicLayoutEffect(() => {
     floating.refs.setReference(anchorRef)
   }, [anchorRef])
 
   if (isWeb) {
-    React.useEffect(() => {
+    useIsomorphicLayoutEffect(() => {
+      if (!open) return
       if (!(refs.reference.current && refs.floating.current)) {
         return
       }
       // Only call this when the floating element is rendered
       return autoUpdate(refs.reference.current, refs.floating.current, floating.update)
-    }, [floating.update, refs.floating, refs.reference])
+    }, [open, floating.update, refs.floating, refs.reference])
   } else {
     // On Native there's no autoupdate so we call update() when necessary
 
@@ -139,19 +145,17 @@ export function Popper(props: PopperProps) {
     }, [dimensions, keyboardOpen])
   }
 
-  return (
-    <PopperContext.Provider
-      anchorRef={setAnchorRef}
-      size={size}
-      arrowRef={setArrow}
-      arrowStyle={middlewareData.arrow}
-      onArrowSize={setArrowSize}
-      isMounted={isMounted}
-      {...floating}
-    >
-      {children}
-    </PopperContext.Provider>
-  )
+  const popperContext = {
+    anchorRef: setAnchorRef,
+    size,
+    arrowRef: setArrow,
+    arrowStyle: middlewareData.arrow,
+    onArrowSize: setArrowSize,
+    isMounted,
+    ...floating,
+  }
+
+  return <PopperContext.Provider {...popperContext}>{children}</PopperContext.Provider>
 }
 
 /* -------------------------------------------------------------------------------------------------
@@ -236,6 +240,7 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
           key="popper-content-frame"
           data-placement={placement}
           data-strategy={strategy}
+          contain="layout"
           size={size}
           {...props}
         />

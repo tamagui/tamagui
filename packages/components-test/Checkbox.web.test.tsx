@@ -3,13 +3,11 @@ import 'vitest-axe/extend-expect'
 
 import { Checkbox } from '@tamagui/checkbox'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import { Stack, TamaguiProvider, createTamagui } from '@tamagui/core'
+import { Stack, TamaguiProvider, createTamagui, getTokenValue } from '@tamagui/core'
 import { RenderResult, fireEvent, render } from '@testing-library/react'
 import * as React from 'react'
 import { beforeEach, describe, expect, it, vitest } from 'vitest'
 import { axe } from 'vitest-axe'
-
-process.env.TAMAGUI_TARGET = 'web'
 
 const conf = createTamagui(getDefaultTamaguiConfig())
 
@@ -46,9 +44,16 @@ describe('given a default Checkbox', () => {
   let indicator: HTMLElement | null
 
   beforeEach(() => {
-    rendered = render(<CheckboxTest />)
+    rendered = render(<CheckboxTest scaleSize={0} size="$true" />)
     checkbox = rendered.getByRole(CHECKBOX_ROLE)
     indicator = rendered.queryByTestId(INDICATOR_TEST_ID)
+  })
+
+  it('should have the correct width and height depending on the theme', async () => {
+    expect(checkbox).toHaveStyle({
+      width: `${getTokenValue('$true', 'size')}px`,
+      height: `${getTokenValue('$true', 'size')}px`,
+    })
   })
 
   it('should have no accessibility violations', async () => {

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/linear-gradient",
-  "version": "1.38.0",
+  "version": "1.68.2",
   "sideEffects": [
     "*.css"
   ],
@@ -19,8 +19,8 @@
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
-    "lint": "../../node_modules/.bin/rome check src",
-    "lint:fix": "../../node_modules/.bin/rome check --apply src"
+    "lint": "../../node_modules/.bin/biome check src",
+    "lint:fix": "../../node_modules/.bin/biome check --apply-unsafe src"
   },
   "exports": {
     "./package.json": "./package.json",
@@ -31,15 +31,15 @@
     }
   },
   "dependencies": {
-    "@tamagui/core": "1.38.0",
-    "@tamagui/stacks": "1.38.0"
+    "@tamagui/core": "1.68.2",
+    "@tamagui/stacks": "1.68.2"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.38.0",
-    "expo-linear-gradient": "^12.0.1",
+    "@tamagui/build": "1.68.2",
+    "expo-linear-gradient": "~12.3.0",
     "react": "^18.2.0"
   },
   "publishConfig": {

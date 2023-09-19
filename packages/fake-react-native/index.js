@@ -13,6 +13,10 @@ function proxyWorm() {
       View: 'View',
       Text: 'Text',
       TextInput: 'TextInput',
+      ScrollView: 'ScrollView',
+      Dimensions: {
+        addEventListener(cb) {}
+      },
       addPoolingTo() {},
     },
     {

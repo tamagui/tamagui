@@ -1,5 +1,5 @@
-import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { authors } from '@data/authors'
+import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { getAllFrontmatter } from '@lib/mdx'
 import { useTint } from '@tamagui/logo'
 import { ChevronRight } from '@tamagui/lucide-icons'
@@ -157,6 +157,12 @@ export default function Community({ frontmatters }) {
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <XStack py="$2" space="$4">
               <StarterRepoCard
+                url="https://github.com/timothymiller/t4-app"
+                name="create-t4-app"
+                author="timothymiller"
+              />
+
+              <StarterRepoCard
                 url="https://github.com/srikanthkh/tamagui-cna"
                 name="create-next-app"
                 author="srikanthkh"
@@ -217,6 +223,20 @@ export default function Community({ frontmatters }) {
 
         <XStack space spaceDirection="both" flexWrap="wrap">
           <GoldSponsor
+            name="Uniswap"
+            link="https://uniswap.org"
+            image="/sponsors/uniswap.jpeg"
+            imageWidth={150}
+            imageHeight={150}
+          />
+          <GoldSponsor
+            name="Appfolio"
+            link="https://www.appfolio.com/"
+            image="/sponsors/appfolio.jpeg"
+            imageWidth={150}
+            imageHeight={150}
+          />
+          <GoldSponsor
             name="Manifold Finance"
             link="https://www.manifoldfinance.com"
             image="/sponsors/manifold.png"
@@ -238,6 +258,13 @@ export default function Community({ frontmatters }) {
             name="Bounty"
             link="https://bounty.co"
             image="/sponsors/bounty.png"
+            imageWidth={100}
+            imageHeight={100}
+          />
+          <GoldSponsor
+            name="Meteor"
+            link="https://meteorwallet.app"
+            image="/sponsors/meteor.png"
             imageWidth={100}
             imageHeight={100}
           />
@@ -351,7 +378,7 @@ function GoldSponsor(props: {
   imageHeight: number
 }) {
   return (
-    <FlatBubbleCard mb="$4" flat p={0}>
+    <FlatBubbleCard mb="$4" flat p={0} fb={0}>
       <NextLink href={props.link} target="_blank">
         <YStack
           ai="center"
@@ -371,7 +398,7 @@ function GoldSponsor(props: {
               width: props.imageWidth,
             }}
           />
-          <H5 cursor="inherit" als="center" letterSpacing={4} ai="center">
+          <H5 ta="center" cursor="inherit" als="center" letterSpacing={4} ai="center">
             {props.name}
           </H5>
         </YStack>

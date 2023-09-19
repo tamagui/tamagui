@@ -1,16 +1,10 @@
-// Vitest Snapshot v1
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`flatten-tests > flattened media queries 1`] = `
 "import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
 const _sheet = ReactNativeStyleSheet.create({
   \\"0\\": {
     \\"alignItems\\": \\"stretch\\",
-    \\"flexShrink\\": 0,
-    \\"display\\": \\"flex\\",
-    \\"flexBasis\\": \\"auto\\",
-    \\"position\\": \\"relative\\",
-    \\"minHeight\\": 0,
-    \\"minWidth\\": 0,
     \\"flexDirection\\": \\"column\\",
     \\"transform\\": [{
       \\"translateY\\": 10
@@ -31,11 +25,11 @@ const _sheet = ReactNativeStyleSheet.create({
   },
   \\"2\\": {},
   \\"3\\": {
-    \\"backgroundColor\\": \\"rgba(255,0,0,1.00)\\"
+    \\"backgroundColor\\": \\"red\\"
   },
   \\"4\\": {},
   \\"5\\": {
-    \\"backgroundColor\\": \\"rgba(0,0,255,1.00)\\"
+    \\"backgroundColor\\": \\"blue\\"
   },
   \\"6\\": {}
 });

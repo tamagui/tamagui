@@ -1,10 +1,10 @@
-import { stripe } from '@lib/stripe'
+import { apiRoute } from '@lib/apiRoute'
+import { protectApiRoute } from '@lib/protectApiRoute'
 import { Database } from '@lib/supabase-types'
 import { getArray, getSingle } from '@lib/supabase-utils'
-import { tiersPriority } from '@protected/_utils/sponsorship'
-import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
+import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { Session, SupabaseClient, User } from '@supabase/supabase-js'
-import { NextApiHandler } from 'next'
+import { tiersPriority } from 'protected/constants'
 
 export type UserContextType = {
   subscriptions?: Awaited<ReturnType<typeof getSubscriptions>> | null
@@ -17,17 +17,16 @@ export type UserContextType = {
     personal?: Database['public']['Tables']['teams']['Row'] | null
     main?: Database['public']['Tables']['teams']['Row'] | null
   }
+  connections: {
+    github: boolean
+    discord: boolean
+  }
 }
 
-const handler: NextApiHandler = async (req, res) => {
-  const supabase = createServerSupabaseClient<Database>({ req, res })
+export default apiRoute(async (req, res) => {
+  const { supabase, session } = await protectApiRoute({ req, res })
 
-  const [
-    {
-      data: { session },
-    },
-    userRes,
-  ] = await Promise.all([supabase.auth.getSession(), supabase.auth.getUser()])
+  const userRes = await supabase.auth.getUser()
 
   const user = userRes.data.user
   if (!user || !session) {
@@ -37,10 +36,11 @@ const handler: NextApiHandler = async (req, res) => {
     return
   }
 
-  const [userTeams, userDetails, subscriptions] = await Promise.all([
+  const [userTeams, userDetails, subscriptions, privateInfo] = await Promise.all([
     getUserTeams(supabase),
     getUserDetails(supabase),
     getSubscriptions(supabase),
+    getUserPrivateInfo(user.id),
   ])
 
   res.json({
@@ -50,17 +50,30 @@ const handler: NextApiHandler = async (req, res) => {
     subscriptions,
     teams: {
       all: userTeams,
-      personal: getPersonalTeam(userTeams),
+      personal: getPersonalTeam(userTeams, user.id),
       orgs: getOrgTeams(userTeams),
       main: getMainTeam(userTeams),
     },
+    connections: {
+      discord: !!privateInfo.discord_token,
+      github: !!privateInfo.github_token,
+    },
   } satisfies UserContextType)
-}
-
-export default handler
+})
 
 const getUserDetails = async (supabase: SupabaseClient<Database>) => {
   const result = await supabase.from('users').select('*').single()
+  if (result.error) throw new Error(result.error.message)
+  return result.data
+}
+
+const getUserPrivateInfo = async (userId: string) => {
+  const result = await supabaseAdmin
+    .from('users_private')
+    .upsert({ id: userId })
+    .select('*')
+    .single()
+
   if (result.error) throw new Error(result.error.message)
   return result.data
 }
@@ -74,7 +87,7 @@ const getUserTeams = async (supabase: SupabaseClient<Database>) => {
 const getSubscriptions = async (supabase: SupabaseClient<Database>) => {
   const result = await supabase
     .from('subscriptions')
-    .select('*, subscription_items(*, prices(*, products(*)))')
+    .select('*, subscription_items(*, prices(*, products(*)), app_installations(*))')
   if (result.error) throw new Error(result.error.message)
   return result.data.map((sub) => ({
     ...sub,
@@ -88,8 +101,11 @@ const getSubscriptions = async (supabase: SupabaseClient<Database>) => {
   }))
 }
 
-function getPersonalTeam(teams: Awaited<ReturnType<typeof getUserTeams>>) {
-  return getSingle(teams?.filter((team) => team.is_personal))
+function getPersonalTeam(
+  teams: Awaited<ReturnType<typeof getUserTeams>>,
+  userId: string
+) {
+  return getSingle(teams?.filter((team) => team.is_personal && team.owner_id === userId))
 }
 
 function getOrgTeams(teams: Awaited<ReturnType<typeof getUserTeams>>) {
@@ -97,8 +113,11 @@ function getOrgTeams(teams: Awaited<ReturnType<typeof getUserTeams>>) {
 }
 
 function getMainTeam(teams: Awaited<ReturnType<typeof getUserTeams>>) {
-  const sortedTeams = teams?.sort(
-    (a, b) => tiersPriority.indexOf(a.tier as any) - tiersPriority.indexOf(b.tier as any)
-  )
+  const sortedTeams = teams
+    ?.filter((t) => t.is_active)
+    .sort(
+      (a, b) =>
+        tiersPriority.indexOf(a.tier as any) - tiersPriority.indexOf(b.tier as any)
+    )
   return sortedTeams?.[0]
 }

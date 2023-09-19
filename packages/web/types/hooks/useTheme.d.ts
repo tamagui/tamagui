@@ -1,29 +1,21 @@
-import { ThemeManager } from '../helpers/ThemeManager';
-import type { ThemeParsed, ThemeProps } from '../types';
+import { Variable } from '../createVariable';
+import { ThemeManager, ThemeManagerState } from '../helpers/ThemeManager';
+import type { DebugProp, ThemeParsed, ThemeProps, VariableVal, VariableValGeneric } from '../types';
 export type ChangedThemeResponse = {
+    state: ThemeManagerState;
+    themeManager: ThemeManager;
     isNewTheme: boolean;
-    themeManager: ThemeManager | null;
-    name: string;
-    theme?: ThemeParsed | null;
-    className?: string;
+    mounted?: boolean;
 };
-type UseThemeResult = {
-    [key in keyof ThemeParsed]: ThemeParsed[key] & {
-        get: () => string | ThemeParsed[key]['val'];
-    };
+export type ThemeGettable<Val> = Val & {
+    get: () => string | (Val extends Variable<infer X> ? X extends VariableValGeneric ? any : Exclude<X, Variable> : Val extends VariableVal ? string | number : unknown);
+};
+export type UseThemeResult = {
+    [Key in keyof ThemeParsed]: ThemeGettable<ThemeParsed[Key]>;
 };
 export declare const useTheme: (props?: ThemeProps) => UseThemeResult;
-export declare const useThemeWithState: (props: ThemeProps) => {
-    theme: UseThemeResult;
-    isNewTheme: boolean;
-    themeManager: ThemeManager | null;
-    name: string;
-    className?: string | undefined;
-} | null;
-export declare function getThemeProxied({ theme, themeManager, }: Partial<ChangedThemeResponse> & {
-    theme: ThemeParsed;
-}, keys?: string[]): UseThemeResult;
+export declare const useThemeWithState: (props: ThemeProps) => [ChangedThemeResponse, ThemeParsed];
+export declare function getThemeProxied(theme: ThemeParsed, themeManager?: ThemeManager, keys?: string[], debug?: DebugProp): UseThemeResult;
 export declare const activeThemeManagers: Set<ThemeManager>;
-export declare const useChangeThemeEffect: (props: ThemeProps, root?: boolean, keys?: string[], disableUpdate?: () => boolean) => ChangedThemeResponse;
-export {};
+export declare const useChangeThemeEffect: (props: ThemeProps, root?: boolean, keys?: string[], shouldUpdate?: () => boolean | undefined) => ChangedThemeResponse;
 //# sourceMappingURL=useTheme.d.ts.map

@@ -1,8 +1,9 @@
 import { expect, test } from '@playwright/test'
 
+import { setupPage } from './test-utils'
+
 test.beforeEach(async ({ page }) => {
-  await page.goto('/?test=GroupUseCases', { waitUntil: 'networkidle' })
-  await new Promise((res) => setTimeout(res, 3000))
+  await setupPage(page, { name: 'GroupUseCases', type: 'useCase' })
 })
 
 test(`simple api passes border radius`, async ({ page }) => {
@@ -71,6 +72,48 @@ test(`composite api group item not using Group.Item will break`, async ({ page }
     })
   expect(brokenButtonStyles.borderTopLeftRadius).not.toBe('0px')
   expect(brokenButtonStyles.borderBottomLeftRadius).not.toBe('0px')
+  expect(brokenButtonStyles.borderTopRightRadius).not.toBe('0px')
+  expect(brokenButtonStyles.borderBottomRightRadius).not.toBe('0px')
+})
+
+test(`composite api items work with forcePlacement="first"`, async ({ page }) => {
+  const brokenButtonStyles = await page
+    .getByTestId('composite-api-group')
+    .getByTestId('composite-api-force-placement-first')
+    .first()
+    .evaluate((el) => {
+      return window.getComputedStyle(el)
+    })
+  expect(brokenButtonStyles.borderTopLeftRadius).not.toBe('0px')
+  expect(brokenButtonStyles.borderBottomLeftRadius).not.toBe('0px')
+  expect(brokenButtonStyles.borderTopRightRadius).toBe('0px')
+  expect(brokenButtonStyles.borderBottomRightRadius).toBe('0px')
+})
+
+test(`composite api items work with forcePlacement="center"`, async ({ page }) => {
+  const brokenButtonStyles = await page
+    .getByTestId('composite-api-group')
+    .getByTestId('composite-api-force-placement-center')
+    .first()
+    .evaluate((el) => {
+      return window.getComputedStyle(el)
+    })
+  expect(brokenButtonStyles.borderTopLeftRadius).toBe('0px')
+  expect(brokenButtonStyles.borderBottomLeftRadius).toBe('0px')
+  expect(brokenButtonStyles.borderTopRightRadius).toBe('0px')
+  expect(brokenButtonStyles.borderBottomRightRadius).toBe('0px')
+})
+
+test(`composite api items work with forcePlacement="last"`, async ({ page }) => {
+  const brokenButtonStyles = await page
+    .getByTestId('composite-api-group')
+    .getByTestId('composite-api-force-placement-last')
+    .first()
+    .evaluate((el) => {
+      return window.getComputedStyle(el)
+    })
+  expect(brokenButtonStyles.borderTopLeftRadius).toBe('0px')
+  expect(brokenButtonStyles.borderBottomLeftRadius).toBe('0px')
   expect(brokenButtonStyles.borderTopRightRadius).not.toBe('0px')
   expect(brokenButtonStyles.borderBottomRightRadius).not.toBe('0px')
 })

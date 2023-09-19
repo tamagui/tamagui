@@ -1,7 +1,7 @@
 export function getNextSortedValues(
   prevValues: number[] = [],
   nextValue: number,
-  atIndex: number,
+  atIndex: number
 ) {
   const nextValues = [...prevValues]
   nextValues[atIndex] = nextValue
@@ -46,11 +46,7 @@ export function getClosestValueIndex(values: number[], nextValue: number) {
  * Offsets the thumb centre point while sliding to ensure it remains
  * within the bounds of the slider when reaching the edges
  */
-export function getThumbInBoundsOffset(
-  width: number,
-  left: number,
-  direction: number,
-) {
+export function getThumbInBoundsOffset(width: number, left: number, direction: number) {
   const halfWidth = width / 2
   const halfPercent = 50
   const offset = linearScale([0, halfPercent], [0, halfWidth])
@@ -82,7 +78,7 @@ function getStepsBetweenValues(values: number[]) {
  */
 export function hasMinStepsBetweenValues(
   values: number[],
-  minStepsBetweenValues: number,
+  minStepsBetweenValues: number
 ) {
   if (minStepsBetweenValues > 0) {
     const stepsBetweenValues = getStepsBetweenValues(values)
@@ -95,7 +91,7 @@ export function hasMinStepsBetweenValues(
 // https://github.com/tmcw-up-for-adoption/simple-linear-scale/blob/master/index.js
 export function linearScale(
   input: readonly [number, number],
-  output: readonly [number, number],
+  output: readonly [number, number]
 ) {
   return (value: number) => {
     if (input[0] === input[1] || output[0] === output[1]) return output[0]
@@ -109,6 +105,6 @@ export function getDecimalCount(value: number) {
 }
 
 export function roundValue(value: number, decimalCount: number) {
-  const rounder = Math.pow(10, decimalCount)
+  const rounder = 10 ** decimalCount
   return Math.round(value * rounder) / rounder
 }

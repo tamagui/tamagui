@@ -4,10 +4,10 @@ import * as util from 'util'
 
 import generate from '@babel/generator'
 import * as t from '@babel/types'
-import { getStylesAtomic } from '@tamagui/core-node'
 import { concatClassName } from '@tamagui/helpers'
 import type { ViewStyle } from 'react-native'
 
+import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
 import type { ClassNameObject, StyleObject, TamaguiOptions, Ternary } from '../types'
 import { babelParse } from './babelParse'
 import { buildClassName } from './buildClassName'
@@ -18,6 +18,7 @@ import { extractMediaStyle } from './extractMediaStyle'
 import { getPrefixLogs } from './getPrefixLogs'
 import { hoistClassNames } from './hoistClassNames'
 import { logLines } from './logLines'
+import { getFontFamilyClassNameFromProps } from './propsToFontFamilyCache'
 import { timer } from './timer'
 
 const mergeStyleGroups = {
@@ -51,6 +52,11 @@ export async function extractToClassNames({
   shouldPrintDebug,
 }: ExtractToClassNamesProps): Promise<ExtractedResponse | null> {
   const tm = timer()
+  const { getStylesAtomic } = requireTamaguiCore('web')
+
+  if (sourcePath?.includes('node_modules')) {
+    return null
+  }
 
   if (shouldPrintDebug) {
     console.warn(`--- ${sourcePath} --- \n\n`)
@@ -82,7 +88,7 @@ export async function extractToClassNames({
   let ast: t.File
 
   try {
-    ast = babelParse(source)
+    ast = babelParse(source, sourcePath)
   } catch (err) {
     console.error('babel parse error:', sourcePath?.slice(0, 100))
     throw err
@@ -99,12 +105,11 @@ export async function extractToClassNames({
     shouldPrintDebug,
     ...options,
     sourcePath,
-    target: 'html',
     extractStyledDefinitions: true,
     onStyleRule(identifier, rules) {
       const css = rules.join(';')
       if (shouldPrintDebug) {
-        // rome-ignore lint/nursery/noConsoleLog: ok
+        // biome-ignore lint/suspicious/noConsoleLog: ok
         console.log(`adding styled() rule: .${identifier} ${css}`)
       }
       cssMap.set(`.${identifier}`, { css, commentTexts: [] })
@@ -131,7 +136,7 @@ export async function extractToClassNames({
       // bail out of views that don't accept className (falls back to runtime + style={})
       if (staticConfig.acceptsClassName === false) {
         if (shouldPrintDebug) {
-          // rome-ignore lint/nursery/noConsoleLog: ok
+          // biome-ignore lint/suspicious/noConsoleLog: ok
           console.log(`bail, acceptsClassName is false`)
         }
         return
@@ -172,7 +177,7 @@ export async function extractToClassNames({
       const addStyles = (style: ViewStyle | null): StyleObject[] => {
         if (!style) return []
         const styleWithPrev = ensureNeededPrevStyle(style)
-        const res = getStylesAtomic(styleWithPrev)
+        const res = getStylesAtomic(styleWithPrev as any)
         if (res.length) {
           finalStyles = [...finalStyles, ...res]
         }
@@ -185,7 +190,7 @@ export async function extractToClassNames({
         switch (attr.type) {
           case 'style': {
             if (!isFlattened) {
-              const styles = getStylesAtomic(attr.value)
+              const styles = getStylesAtomic(attr.value as any)
 
               finalStyles = [...finalStyles, ...styles]
 
@@ -200,15 +205,25 @@ export async function extractToClassNames({
               }
             } else {
               const styles = addStyles(attr.value)
+              const newFontFamily = getFontFamilyClassNameFromProps(attr.value) || ''
               const newClassNames = concatClassName(
-                styles.map((x) => x.identifier).join(' ')
+                styles.map((x) => x.identifier).join(' ') + newFontFamily
               )
               const existing = finalClassNames.find(
                 (x) => x.type == 'StringLiteral'
               ) as t.StringLiteral | null
 
               if (existing) {
-                existing.value = `${existing.value} ${newClassNames}`
+                let previous = existing.value
+                // replace existing font_ with new one
+                if (newFontFamily) {
+                  if (shouldPrintDebug) {
+                    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+                    console.log(` newFontFamily: ${newFontFamily}`)
+                  }
+                  previous = previous.replace(/font_[a-z]+/i, '')
+                }
+                existing.value = `${previous} ${newClassNames}`
               } else {
                 finalClassNames = [...finalClassNames, t.stringLiteral(newClassNames)]
               }
@@ -255,7 +270,7 @@ export async function extractToClassNames({
             )
             if (shouldPrintDebug) {
               if (mediaExtraction) {
-                // rome-ignore lint/nursery/noConsoleLog: ok
+                // biome-ignore lint/suspicious/noConsoleLog: ok
                 console.log(
                   'ternary (mediaStyles)',
                   mediaExtraction.ternaryWithoutMedia?.inlineMediaQuery ?? '',
@@ -316,7 +331,7 @@ export async function extractToClassNames({
       }
 
       if (shouldPrintDebug) {
-        // rome-ignore lint/nursery/noConsoleLog: ok
+        // biome-ignore lint/suspicious/noConsoleLog: ok
         console.log(
           '  finalClassNames\n',
           logLines(finalClassNames.map((x) => x['value']).join(' '))
@@ -340,14 +355,6 @@ export async function extractToClassNames({
           // add is_Component className
           if (staticConfig.componentName) {
             value += ` is_${staticConfig.componentName}`
-          }
-
-          if (staticConfig.isText) {
-            let family = completeProps.fontFamily || config.defaultFont || 'body'
-            if (family[0] === '$') {
-              family = family.slice(1)
-            }
-            value += ` font_${family}`
           }
 
           return value
@@ -407,7 +414,7 @@ export async function extractToClassNames({
 
   if (!res || (!res.modified && !res.optimized && !res.flattened && !res.styled)) {
     if (shouldPrintDebug) {
-      // rome-ignore lint/nursery/noConsoleLog: ok
+      // biome-ignore lint/suspicious/noConsoleLog: ok
       console.log('no res or none modified', res)
     }
     return null
@@ -433,7 +440,7 @@ export async function extractToClassNames({
   )
 
   if (shouldPrintDebug) {
-    // rome-ignore lint/nursery/noConsoleLog: ok
+    // biome-ignore lint/suspicious/noConsoleLog: ok
     console.log(
       '\n -------- output code ------- \n\n',
       result.code
@@ -441,7 +448,7 @@ export async function extractToClassNames({
         .filter((x) => !x.startsWith('//'))
         .join('\n')
     )
-    // rome-ignore lint/nursery/noConsoleLog: ok
+    // biome-ignore lint/suspicious/noConsoleLog: ok
     console.log('\n -------- output style -------- \n\n', styles)
   }
 
@@ -456,18 +463,17 @@ export async function extractToClassNames({
       .trim()
       .padStart(24)
 
-    const numStyled = `${res.styled}`.padStart(3)
-    const numOptimized = `${res.optimized}`.padStart(3)
-    const numFound = `${res.found}`.padStart(3)
+    const numOptimized = `${res.optimized + res.styled}`.padStart(3)
+    const numFound = `${res.found + res.styled}`.padStart(3)
     const numFlattened = `${res.flattened}`.padStart(3)
     const memory = memUsed ? ` ${memUsed}MB` : ''
     const timing = Date.now() - start
     const timingStr = `${timing}ms`.padStart(6)
     const pre = getPrefixLogs(options)
     const memStr = memory ? `(${memory})` : ''
-    // rome-ignore lint/nursery/noConsoleLog: ok
+    // biome-ignore lint/suspicious/noConsoleLog: ok
     console.log(
-      `${pre} ${path}  ${numFound} · ${numOptimized} · ${numFlattened} · ${numStyled}  ${timingStr} ${memStr}`
+      `${pre} ${path}   ·  ${numFound} found   ·  ${numOptimized} opt   ·  ${numFlattened} flat  ${timingStr} ${memStr}`
     )
   }
 

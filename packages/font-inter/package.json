@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/font-inter",
-  "version": "1.38.0",
+  "version": "1.68.2",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -16,16 +16,16 @@
     "build": "tamagui-build",
     "subset": "node -r esbuild-register subset.ts",
     "watch": "tamagui-build --watch",
-    "lint": "../../node_modules/.bin/rome check src",
-    "lint:fix": "../../node_modules/.bin/rome check --apply src",
+    "lint": "../../node_modules/.bin/biome check src",
+    "lint:fix": "../../node_modules/.bin/biome check --apply-unsafe src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/core": "1.38.0"
+    "@tamagui/core": "1.68.2"
   },
   "devDependencies": {
-    "@tamagui/build": "1.38.0",
+    "@tamagui/build": "1.68.2",
     "subset-font": "^1.6.1"
   },
   "publishConfig": {

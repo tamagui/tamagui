@@ -16,13 +16,16 @@ export const LogoWords = memo(
     const [mounted, setMounted] = useState<'start' | 'animate' | 'done'>('start')
 
     useEffect(() => {
-      setTimeout(() => {
-        setMounted('animate')
-      })
+      const idle = window.requestIdleCallback || setTimeout
+      idle(() => {
+        setTimeout(() => {
+          setMounted('animate')
+        }, 50)
 
-      setTimeout(() => {
-        setMounted('done')
-      }, 1500)
+        setTimeout(() => {
+          setMounted('done')
+        }, 1500)
+      })
     }, [])
 
     const getColor = (i: number) => {

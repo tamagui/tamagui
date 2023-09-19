@@ -1,6 +1,7 @@
 import {
   ColorStyleProp,
   GetProps,
+  isWeb,
   setupReactNative,
   styled,
   useTheme,
@@ -20,7 +21,15 @@ export const defaultStyles = {
   borderWidth: 1,
   outlineWidth: 0,
   color: '$color',
-  focusable: true,
+
+  ...(isWeb
+    ? {
+        tabIndex: 0,
+      }
+    : {
+        focusable: true,
+      }),
+
   borderColor: '$borderColor',
   backgroundColor: '$background',
 
@@ -89,6 +98,7 @@ export function useInputProps(props: InputProps, ref: any) {
 
   return {
     ref: combinedRef,
+    editable: !props.disabled,
     ...props,
     placeholderTextColor,
     onChangeText,

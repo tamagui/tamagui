@@ -16,32 +16,24 @@ import { pseudoDescriptors } from './pseudoDescriptors'
 
 type AnyRecord = Record<string, any>
 
-export const mergeProps = (
-  a: Object,
-  b?: Object,
-  leaveOutClassNames = false,
-  inverseShorthands?: AnyRecord
-) => {
+export const mergeProps = (a: Object, b?: Object, inverseShorthands?: AnyRecord) => {
   const out: AnyRecord = {}
-  const outCns: AnyRecord = leaveOutClassNames ? {} : (null as any)
   for (const key in a) {
-    mergeProp(out, outCns, a, b, key, leaveOutClassNames, inverseShorthands)
+    mergeProp(out, a, b, key, inverseShorthands)
   }
   if (b) {
     for (const key in b) {
-      mergeProp(out, outCns, b, undefined, key, leaveOutClassNames, inverseShorthands)
+      mergeProp(out, b, undefined, key, inverseShorthands)
     }
   }
-  return [out, outCns] as const
+  return out
 }
 
 function mergeProp(
   out: AnyRecord,
-  outCns: AnyRecord,
   a: Object,
   b: Object | undefined,
   key: string,
-  leaveOutClassNames: boolean,
   inverseShorthands?: AnyRecord
 ) {
   const shorthand = inverseShorthands?.[key] || null
@@ -56,12 +48,5 @@ function mergeProp(
     }
     return
   }
-  if (shorthand) {
-    key = shorthand
-  }
-  if (leaveOutClassNames && val?.[0] === '_') {
-    outCns[key] = val
-  } else {
-    out[key] = val
-  }
+  out[shorthand || key] = val
 }

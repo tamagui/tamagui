@@ -13,6 +13,7 @@ export type ThemeManagerState = {
     className?: string;
     parentName?: string;
     componentName?: string;
+    inverse?: boolean;
 };
 export declare function getHasThemeUpdatingProps(props: ThemeProps): string | boolean | undefined;
 export declare class ThemeManager {
@@ -24,15 +25,15 @@ export declare class ThemeManager {
     state: ThemeManagerState;
     scheme: 'light' | 'dark' | null;
     constructor(props?: ThemeProps, parentManagerIn?: ThemeManager | 'root' | null | undefined);
-    updateState(props?: ThemeProps & {
+    updateStateFromProps(props?: ThemeProps & {
         forceTheme?: ThemeParsed;
-    }, shouldNotify?: boolean): ThemeManagerState | undefined;
+    }, shouldNotify?: boolean): true | ThemeManagerState | undefined;
+    updateState(nextState: ThemeManagerState, shouldNotify?: boolean): void;
     getStateIfChanged(props?: ThemeProps, state?: ThemeManagerState | null, parentManager?: ThemeManager | null): ThemeManagerState | null | undefined;
     getStateShouldChange(nextState: ThemeManagerState | null, state?: ThemeManagerState | null): boolean;
     getState(props?: ThemeProps, parentManager?: ThemeManager | null): ThemeManagerState | null;
     _allKeys: Set<string> | null;
     get allKeys(): Set<string>;
-    getValue(key: string, state?: ThemeManagerState): string | number | import("..").Variable<any> | undefined;
     notify(forced?: boolean): void;
     onChangeTheme(cb: ThemeListener, debugId?: number): () => void;
 }

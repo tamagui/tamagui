@@ -11,7 +11,7 @@ export const getTemplateInfo = async (
         name: 'template',
         type: 'select',
         message: `Pick a template:`,
-        choices: templates.filter(t => !t.hidden),
+        choices: templates.filter((t) => !t.hidden),
       })
     ).template
   }

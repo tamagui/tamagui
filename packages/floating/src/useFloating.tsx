@@ -1,7 +1,8 @@
-import { useContext, createContext } from 'react';
+import { createContext, useContext } from 'react'
+
 import * as Floating from './Floating'
 
-export type UseFloatingFn = typeof Floating.useFloating;
+export type UseFloatingFn = typeof Floating.useFloating
 
 type InferFloatingProps = UseFloatingFn extends (props: infer Props) => any
   ? Props
@@ -19,7 +20,7 @@ export type UseFloatingReturn = Floating.UseFloatingReturn & {
 
 export const FloatingOverrideContext = createContext<UseFloatingFn | null>(null)
 
-export const useFloating = (props: UseFloatingProps):UseFloatingReturn => {
+export const useFloating = (props: UseFloatingProps): UseFloatingReturn => {
   const context = useContext(FloatingOverrideContext)
   return (context || Floating.useFloating)?.(props)
 }

@@ -1,6 +1,7 @@
 import NextLink, { LinkProps as NextLinkProps } from 'next/link'
 import React from 'react'
 import { Paragraph, SizableText, TextProps } from 'tamagui'
+import { Button, ButtonProps } from 'tamagui'
 
 export type LinkProps = Omit<NextLinkProps, 'passHref' | 'as'> &
   TextProps & {
@@ -53,6 +54,36 @@ export const ParagraphLink = ({
       >
         {allChildrenStrings ? children : children}
       </Paragraph>
+    </NextLink>
+  )
+}
+
+export type ButtonLinkProps = Pick<
+  NextLinkProps,
+  'href' | 'replace' | 'scroll' | 'shallow' | 'prefetch' | 'locale'
+> &
+  ButtonProps & {
+    target?: any
+    rel?: any
+    title?: any
+  }
+
+export const ButtonLink = ({
+  href = '',
+  replace,
+  scroll,
+  shallow,
+  prefetch,
+  locale,
+  children,
+  ...props
+}: ButtonLinkProps) => {
+  const linkProps = { href, replace, scroll, shallow, prefetch, locale }
+  return (
+    <NextLink style={{ textDecoration: 'none' }} {...linkProps}>
+      <Button tag="span" {...props}>
+        {children}
+      </Button>
     </NextLink>
   )
 }

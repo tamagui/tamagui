@@ -127,6 +127,34 @@ export interface Database {
           }
         ]
       }
+      discord_invites: {
+        Row: {
+          created_at: string | null
+          discord_user_id: string
+          id: number
+          subscription_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          discord_user_id: string
+          id?: number
+          subscription_id: string
+        }
+        Update: {
+          created_at?: string | null
+          discord_user_id?: string
+          id?: number
+          subscription_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "discord_invites_subscription_id_fkey"
+            columns: ["subscription_id"]
+            referencedRelation: "subscriptions"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       memberships: {
         Row: {
           created_at: string | null
@@ -237,6 +265,43 @@ export interface Database {
         }
         Relationships: []
       }
+      studio_themes: {
+        Row: {
+          created_at: string | null
+          data: Json | null
+          id: number
+          team_id: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          data?: Json | null
+          id: number
+          team_id: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          data?: Json | null
+          id?: number
+          team_id?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "studio_themes_team_id_fkey"
+            columns: ["team_id"]
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "studio_themes_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       subscription_items: {
         Row: {
           id: string
@@ -334,6 +399,7 @@ export interface Database {
           is_active: boolean
           is_personal: boolean
           name: string | null
+          owner_id: string | null
           studio_queued_at: string
           tier: string | null
         }
@@ -344,6 +410,7 @@ export interface Database {
           is_active: boolean
           is_personal: boolean
           name?: string | null
+          owner_id?: string | null
           studio_queued_at?: string
           tier?: string | null
         }
@@ -354,10 +421,18 @@ export interface Database {
           is_active?: boolean
           is_personal?: boolean
           name?: string | null
+          owner_id?: string | null
           studio_queued_at?: string
           tier?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "teams_owner_id_fkey"
+            columns: ["owner_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       users: {
         Row: {
@@ -392,15 +467,18 @@ export interface Database {
       }
       users_private: {
         Row: {
-          github_token: string
+          discord_token: string | null
+          github_token: string | null
           id: string
         }
         Insert: {
-          github_token: string
+          discord_token?: string | null
+          github_token?: string | null
           id: string
         }
         Update: {
-          github_token?: string
+          discord_token?: string | null
+          github_token?: string | null
           id?: string
         }
         Relationships: [
@@ -543,12 +621,6 @@ export interface Database {
             foreignKeyName: "objects_bucketId_fkey"
             columns: ["bucket_id"]
             referencedRelation: "buckets"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "objects_owner_fkey"
-            columns: ["owner"]
-            referencedRelation: "users"
             referencedColumns: ["id"]
           }
         ]

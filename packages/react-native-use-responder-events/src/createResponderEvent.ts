@@ -4,10 +4,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import {
-  ResponderTouchHistoryStore,
-  TouchHistory,
-} from './ResponderTouchHistoryStore'
+import { ResponderTouchHistoryStore, TouchHistory } from './ResponderTouchHistoryStore'
 import { getBoundingClientRect } from './utils'
 
 export type ResponderEvent = {
@@ -54,7 +51,7 @@ function normalizeIdentifier(identifier) {
  */
 export default function createResponderEvent(
   domEvent: any,
-  responderTouchHistoryStore: ResponderTouchHistoryStore,
+  responderTouchHistoryStore: ResponderTouchHistoryStore
 ): ResponderEvent {
   let rect
   let propagationWasStopped = false

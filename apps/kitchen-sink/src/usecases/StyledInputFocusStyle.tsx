@@ -1,12 +1,21 @@
 import { Input, styled } from 'tamagui'
 
-export function StyledInputFocusStyle() {
-  const StyledInput = styled(Input, {
-    focusStyle: {
-      borderWidth: 10,
-      borderColor: 'blue',
-    },
-  })
+const StyledInput = styled(Input, {
+  borderColor: 'red',
+  borderWidth: 5,
 
-  return <StyledInput />
+  variants: {
+    test: {
+      true: {
+        focusStyle: {
+          borderWidth: 10,
+          borderColor: 'blue',
+        },
+      },
+    },
+  } as const,
+})
+
+export function StyledInputFocusStyle() {
+  return <StyledInput test />
 }

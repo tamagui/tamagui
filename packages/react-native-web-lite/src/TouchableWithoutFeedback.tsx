@@ -69,7 +69,7 @@ function TouchableWithoutFeedback(props, forwardedRef) {
       onPressIn,
       onPressOut,
       rejectResponderTermination,
-    ],
+    ]
   )
 
   const pressEventHandlers = usePressEvents(hostRef, pressConfig)
@@ -87,7 +87,7 @@ function TouchableWithoutFeedback(props, forwardedRef) {
 }
 
 const MemoedTouchableWithoutFeedback = React.memo(
-  React.forwardRef(TouchableWithoutFeedback),
+  React.forwardRef(TouchableWithoutFeedback)
 )
 MemoedTouchableWithoutFeedback.displayName = 'TouchableWithoutFeedback'
 

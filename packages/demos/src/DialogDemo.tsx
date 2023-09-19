@@ -36,11 +36,15 @@ function DialogInstance() {
       </Dialog.Trigger>
 
       <Adapt when="sm" platform="touch">
-        <Sheet zIndex={200000} modal dismissOnSnapToBottom>
-          <Sheet.Frame padding="$4" space>
+        <Sheet animation="medium" zIndex={200000} modal dismissOnSnapToBottom>
+          <Sheet.Frame padding="$4" gap="$4">
             <Adapt.Contents />
           </Sheet.Frame>
-          <Sheet.Overlay />
+          <Sheet.Overlay
+            animation="lazy"
+            enterStyle={{ opacity: 0 }}
+            exitStyle={{ opacity: 0 }}
+          />
         </Sheet>
       </Adapt>
 
@@ -68,19 +72,19 @@ function DialogInstance() {
           ]}
           enterStyle={{ x: 0, y: -20, opacity: 0, scale: 0.9 }}
           exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
-          space
+          gap="$4"
         >
           <Dialog.Title>Edit profile</Dialog.Title>
           <Dialog.Description>
             Make changes to your profile here. Click save when you're done.
           </Dialog.Description>
-          <Fieldset space="$4" horizontal>
+          <Fieldset gap="$4" horizontal>
             <Label width={160} justifyContent="flex-end" htmlFor="name">
               Name
             </Label>
             <Input flex={1} id="name" defaultValue="Nate Wienert" />
           </Fieldset>
-          <Fieldset space="$4" horizontal>
+          <Fieldset gap="$4" horizontal>
             <Label width={160} justifyContent="flex-end" htmlFor="username">
               <TooltipSimple label="Pick your favorite" placement="bottom-start">
                 <Paragraph>Food</Paragraph>
@@ -89,7 +93,7 @@ function DialogInstance() {
             <SelectDemoItem />
           </Fieldset>
 
-          <XStack alignSelf="flex-end" space>
+          <XStack alignSelf="flex-end" gap="$4">
             <DialogInstance />
 
             <Dialog.Close displayWhenAdapted asChild>

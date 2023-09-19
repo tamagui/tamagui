@@ -1,0 +1,11 @@
+schema {
+  query: Query
+}
+
+directive @exported(filename: String!, functionName: String!) on FIELD_DEFINITION
+
+directive @methodName(name: String!) on FIELD_DEFINITION
+
+type Query {
+  hello(name: String!): String!
+}

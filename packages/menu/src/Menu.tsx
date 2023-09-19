@@ -64,5 +64,5 @@ export const Menu = withStaticProperties(
   {
     Item: MenuItem,
     // Provider: DrawerProvider,
-  },
+  }
 )

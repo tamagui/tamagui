@@ -1,18 +1,17 @@
 import { basename, dirname, extname, join, relative, resolve } from 'path'
 
 import { Color, colorLog } from '@tamagui/cli-color'
-import { getDefaultTamaguiConfig } from '@tamagui/config-default-node'
-import { createTamagui } from '@tamagui/core-node'
+import { getDefaultTamaguiConfig } from '@tamagui/config-default'
 import { CLIResolvedOptions, CLIUserOptions, TamaguiOptions } from '@tamagui/types'
 import type { TamaguiInternalConfig } from '@tamagui/web'
 import esbuild from 'esbuild'
-import fs, { existsSync, pathExists, readJSON, writeFile } from 'fs-extra'
+import { existsSync, pathExists, readJSON, writeFile } from 'fs-extra'
 
 import { SHOULD_DEBUG } from '../constants'
-import { getNameToPaths, registerRequire } from '../require'
+import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
+import { getNameToPaths, registerRequire } from '../registerRequire'
 import {
   TamaguiProjectInfo,
-  esbuildOptions,
   getBundledConfig,
   hasBundledConfigChanged,
   loadComponents,
@@ -26,20 +25,21 @@ import { getTamaguiConfigPathFromOptionsConfig } from './getTamaguiConfigPathFro
 
 const getFilledOptions = (propsIn: Partial<TamaguiOptions>): TamaguiOptions => ({
   // defaults
+  platform: (process.env.TAMAGUI_TARGET as any) || 'web',
   config: 'tamagui.config.ts',
   components: ['tamagui'],
   ...(propsIn as Partial<TamaguiOptions>),
 })
 
 export async function loadTamagui(
-  propsIn: TamaguiOptions
+  propsIn: Partial<TamaguiOptions>
 ): Promise<TamaguiProjectInfo | null> {
-  const options = getFilledOptions(propsIn)
+  const props = getFilledOptions(propsIn)
 
   // this affects the bundled config so run it first
-  await generateThemesAndLog(options)
+  await generateThemesAndLog(props)
 
-  const bundleInfo = await getBundledConfig(options)
+  const bundleInfo = await getBundledConfig(props)
   if (!bundleInfo) {
     console.warn(
       `No bundled config generated, maybe an error in bundling. Set DEBUG=tamagui and re-run to get logs.`
@@ -51,56 +51,93 @@ export async function loadTamagui(
     return bundleInfo
   }
 
-  await generateTamaguiStudioConfig(options, bundleInfo)
+  await generateTamaguiStudioConfig(props, bundleInfo)
 
   // this depends on the config so run it after
   if (bundleInfo) {
-    // init core-node
-    const config = createTamagui(bundleInfo.tamaguiConfig)
+    const { createTamagui } = requireTamaguiCore(props.platform)
 
-    if (options.outputCSS) {
-      colorLog(Color.FgYellow, `    ➡ [tamagui] outputCSS: ${options.outputCSS}\n`)
-      await writeFile(options.outputCSS, config.getCSS())
+    // init config
+    const config = createTamagui(bundleInfo.tamaguiConfig) as any
+
+    if (props.outputCSS) {
+      colorLog(Color.FgYellow, `    ➡ [tamagui] outputCSS: ${props.outputCSS}\n`)
+      const css = config.getCSS()
+      await writeFile(props.outputCSS, css)
     }
   }
 
   return bundleInfo
 }
 
-async function generateThemesAndLog(options: TamaguiOptions) {
-  if (options.themeBuilder) {
-    await generateTamaguiThemes(options)
-    colorLog(
-      Color.FgYellow,
-      `
-      ➡ [tamagui] Generated themes:`
-    )
-    colorLog(
-      Color.Dim,
-      `
-          ${relative(process.cwd(), options.themeBuilder.output)}`
-    )
+// debounce a bit
+let waiting = false
+let hasLoggedOnce = false
+
+const generateThemesAndLog = async (options: TamaguiOptions) => {
+  if (waiting) return
+  if (!options.themeBuilder) return
+  try {
+    waiting = true
+    await new Promise((res) => setTimeout(res, 30))
+    const didGenerate = await generateTamaguiThemes(options)
+    // only logs when changed
+    if (!hasLoggedOnce || didGenerate) {
+      hasLoggedOnce = true
+      const whitespaceBefore = `    `
+      colorLog(Color.FgYellow, `${whitespaceBefore}➡ [tamagui] Generated themes:`)
+      colorLog(
+        Color.Dim,
+        `\n${whitespaceBefore}${relative(process.cwd(), options.themeBuilder.output)}`
+      )
+    }
+  } finally {
+    waiting = false
   }
 }
 
-// loads in-process using esbuild-register
-export function loadTamaguiSync(propsIn: TamaguiOptions): TamaguiProjectInfo {
-  const props = getFilledOptions(propsIn)
-  const { unregister } = require('esbuild-register/dist/node').register(esbuildOptions)
+const last: Record<string, TamaguiProjectInfo | null> = {}
+const lastVersion: Record<string, string> = {}
 
-  const unregisterRequire = registerRequire()
+// loads in-process using esbuild-register
+export function loadTamaguiSync({
+  forceExports,
+  cacheKey,
+  ...propsIn
+}: Partial<TamaguiOptions> & {
+  forceExports?: boolean
+  cacheKey?: string
+}): TamaguiProjectInfo {
+  const key = JSON.stringify(propsIn)
+
+  if (last[key] && !hasBundledConfigChanged()) {
+    if (!lastVersion[key] || lastVersion[key] === cacheKey) {
+      return last[key]!
+    }
+  }
+
+  lastVersion[key] = cacheKey || ''
+
+  const props = getFilledOptions(propsIn)
+
+  // lets shim require and avoid importing react-native + react-native-web
+  // we just need to read the config around them
+  process.env.IS_STATIC = 'is_static'
+  process.env.TAMAGUI_IS_SERVER = 'true'
+
+  const { unregister } = registerRequire(props.platform, {
+    proxyWormImports: !!forceExports,
+  })
+
   try {
-    // lets shim require and avoid importing react-native + react-native-web
-    // we just need to read the config around them
-    process.env.IS_STATIC = 'is_static'
     const devValueOG = globalThis['__DEV__' as any]
     globalThis['__DEV__' as any] = process.env.NODE_ENV === 'development'
 
     try {
       // config
       let tamaguiConfig: TamaguiInternalConfig | null = null
-      if (props.config) {
-        const configPath = getTamaguiConfigPathFromOptionsConfig(props.config)
+      if (propsIn.config) {
+        const configPath = getTamaguiConfigPathFromOptionsConfig(propsIn.config)
         const exp = require(configPath)
         tamaguiConfig = (exp['default'] || exp) as TamaguiInternalConfig
         if (!tamaguiConfig || !tamaguiConfig.parsed) {
@@ -109,15 +146,21 @@ export function loadTamaguiSync(propsIn: TamaguiOptions): TamaguiProjectInfo {
           
   Be sure you "export default" the config.`)
         }
+
+        // set up core
+        if (tamaguiConfig) {
+          const { createTamagui } = requireTamaguiCore(props.platform)
+          createTamagui(tamaguiConfig as any)
+        }
       }
 
       // components
-      const components = loadComponents(props)
+      const components = loadComponents(props, forceExports)
       if (!components) {
         throw new Error(`No components loaded`)
       }
       if (process.env.DEBUG === 'tamagui') {
-        // rome-ignore lint/nursery/noConsoleLog: <explanation>
+        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
         console.log(`components`, components)
       }
 
@@ -125,43 +168,48 @@ export function loadTamaguiSync(propsIn: TamaguiOptions): TamaguiProjectInfo {
       process.env.IS_STATIC = undefined
       globalThis['__DEV__' as any] = devValueOG
 
-      // set up core-node
-      if (props.config && tamaguiConfig) {
-        createTamagui(tamaguiConfig as any)
-      }
-
       const info = {
         components,
         tamaguiConfig,
         nameToPaths: getNameToPaths(),
+      } satisfies TamaguiProjectInfo
+
+      if (propsIn.config) {
+        generateTamaguiStudioConfigSync(props, info)
       }
 
-      generateTamaguiStudioConfigSync(props, info)
+      last[key] = {
+        ...info,
+        cached: true,
+      }
 
       return info as any
     } catch (err) {
       if (err instanceof Error) {
-        console.warn(
-          `Error loading tamagui.config.ts (set DEBUG=tamagui to see full stack), running tamagui without custom config`
-        )
-        // rome-ignore lint/nursery/noConsoleLog: <explanation>
-        console.log(`\n\n    ${err.message}\n\n`)
-        if (SHOULD_DEBUG) {
-          console.error(err.stack)
+        if (!SHOULD_DEBUG && !forceExports) {
+          console.warn(
+            `Error loading tamagui.config.ts (set DEBUG=tamagui to see full stack), running tamagui without custom config`
+          )
+          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+          console.log(`\n\n    ${err.message}\n\n`)
+        } else {
+          if (SHOULD_DEBUG) {
+            console.error(err)
+          }
         }
       } else {
         console.error(`Error loading tamagui.config.ts`, err)
       }
 
+      const { createTamagui } = requireTamaguiCore(props.platform)
       return {
         components: [],
-        tamaguiConfig: getDefaultTamaguiConfig(),
+        tamaguiConfig: createTamagui(getDefaultTamaguiConfig()),
         nameToPaths: {},
       }
     }
   } finally {
     unregister()
-    unregisterRequire()
   }
 }
 
@@ -173,7 +221,13 @@ export async function getOptions({
   debug,
 }: Partial<CLIUserOptions> = {}): Promise<CLIResolvedOptions> {
   const dotDir = join(root, '.tamagui')
-  const pkgJson = await readJSON(join(root, 'package.json'))
+  let pkgJson = {}
+
+  try {
+    pkgJson = await readJSON(join(root, 'package.json'))
+  } catch (err) {
+    // ok
+  }
 
   return {
     mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
@@ -183,6 +237,7 @@ export async function getOptions({
     debug,
     tsconfigPath,
     tamaguiOptions: {
+      platform: (process.env.TAMAGUI_TARGET as any) || 'web',
       components: ['tamagui'],
       ...tamaguiOptions,
       config: await getDefaultTamaguiConfigPath(root, tamaguiOptions?.config),
@@ -241,6 +296,12 @@ export async function watchTamaguiConfig(tamaguiOptions: TamaguiOptions) {
     throw new Error(`No config`)
   }
 
+  if (process.env.NODE_ENV === 'production') {
+    return {
+      dispose() {},
+    }
+  }
+
   const disposeConfigWatcher = await esbuildWatchFiles(
     options.tamaguiOptions.config,
     () => {
@@ -248,11 +309,20 @@ export async function watchTamaguiConfig(tamaguiOptions: TamaguiOptions) {
     }
   )
 
-  const disposeThemesWatcher = options.tamaguiOptions.themeBuilder
-    ? await esbuildWatchFiles(options.tamaguiOptions.themeBuilder.input, () => {
-        void generateThemesAndLog(options.tamaguiOptions)
-      })
-    : null
+  const themeBuilderInput = options.tamaguiOptions.themeBuilder?.input
+  let disposeThemesWatcher: Function | undefined
+
+  if (themeBuilderInput) {
+    let inputPath = themeBuilderInput
+    try {
+      inputPath = require.resolve(themeBuilderInput)
+    } catch {
+      // ok
+    }
+    disposeThemesWatcher = await esbuildWatchFiles(inputPath, () => {
+      void generateThemesAndLog(options.tamaguiOptions)
+    })
+  }
 
   return {
     dispose() {
@@ -264,8 +334,17 @@ export async function watchTamaguiConfig(tamaguiOptions: TamaguiOptions) {
 
 async function esbuildWatchFiles(entry: string, onChanged: () => void) {
   let hasRunOnce = false
+
+  /**
+   * We're just (ab)using this as a file watcher, so bundle = true to follow paths
+   * and then write: false and logLevel silent to avoid all errors
+   */
+
   const context = await esbuild.context({
+    bundle: true,
     entryPoints: [entry],
+    resolveExtensions: ['.ts', '.tsx', '.js', '.jsx', '.mjs'],
+    logLevel: 'silent',
     write: false,
     plugins: [
       {

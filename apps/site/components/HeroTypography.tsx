@@ -167,7 +167,7 @@ const OverlayCard = () => {
           line-height, letter-spacing, color and more.
         </Paragraph>
 
-        <NextLink href="/docs/core/configuration">
+        <NextLink prefetch={false} href="/docs/core/configuration">
           <Button
             accessibilityLabel="Fonts docs"
             fontFamily="$silkscreen"
@@ -208,6 +208,7 @@ const AnimatedHeading = memo(
           $sm={{
             pr: 0,
           }}
+          // @ts-ignore
           fontFamily={`$${family}`}
           textShadowColor="$shadowColorFocus"
           textShadowRadius={3}

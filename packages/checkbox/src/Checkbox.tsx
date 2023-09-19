@@ -1,7 +1,6 @@
 // fork of radix
 // https://github.com/radix-ui/primitives/tree/main/packages/react/checkbox/src/Checkbox.tsx
 
-import { usePrevious } from '@radix-ui/react-use-previous'
 import {
   GetProps,
   SizeTokens,
@@ -25,6 +24,7 @@ import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { useLabelContext } from '@tamagui/label'
 import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
+import { usePrevious } from '@tamagui/use-previous'
 import * as React from 'react'
 
 export const CheckboxStyledContext = createStyledContext({
@@ -139,12 +139,17 @@ const CheckboxIndicator = CheckboxIndicatorFrame.extractable(
         disablePassStyles,
         ...indicatorProps
       } = props
+      if (process.env.NODE_ENV === 'development' && !childrenProp) {
+        console.warn(
+          `Warning: You created a Checkbox.Indicator without passing an child prop for it to use as an icon.`
+        )
+      }
       const context = useCheckboxContext(INDICATOR_NAME, __scopeCheckbox)
       const styledContext = React.useContext(CheckboxStyledContext)
       const iconSize =
         (typeof styledContext.size === 'number'
           ? styledContext.size * 0.65
-          : getFontSize(styledContext.size)) * styledContext.scaleIcon
+          : getFontSize(styledContext.size as any)) * styledContext.scaleIcon
       const theme = useTheme()
       const getThemedIcon = useGetThemedIcon({ size: iconSize, color: theme.color })
 
@@ -205,6 +210,31 @@ export const CheckboxFrame = styled(ThemeableStack, {
 
         focusStyle: {
           borderColor: '$borderColorFocus',
+          outlineStyle: 'solid',
+          outlineWidth: 2,
+          outlineColor: '$borderColorFocus',
+        },
+      },
+    },
+
+    disabled: {
+      true: {
+        pointerEvents: 'none',
+        userSelect: 'none',
+        cursor: 'not-allowed',
+
+        hoverStyle: {
+          borderColor: '$borderColor',
+          backgroundColor: '$background',
+        },
+
+        pressStyle: {
+          borderColor: '$borderColor',
+          backgroundColor: '$backgroundColor',
+        },
+
+        focusStyle: {
+          outlineWidth: 0,
         },
       },
     },
@@ -241,6 +271,10 @@ export interface CheckboxProps
   checked?: CheckedState
   defaultChecked?: CheckedState
   required?: boolean
+  /**
+   *
+   * @param checked Either boolean or "indeterminate" which is meant to allow for a third state that means "neither", usually indicated by a minus sign.
+   */
   onCheckedChange?(checked: CheckedState): void
   labelledBy?: string
   name?: string

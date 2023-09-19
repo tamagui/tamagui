@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/themes",
-  "version": "1.38.0",
+  "version": "1.68.2",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -11,38 +11,44 @@
     "dist"
   ],
   "scripts": {
-    "generate": "tamagui generate-themes ./src/themes-new.ts ./src/generated-new.ts",
+    "generate": "yarn generate:v1 && yarn generate:v2",
+    "generate:v1": "tamagui generate-themes ./src/themes-new.ts ./src/generated-new.ts",
+    "generate:v2": "tamagui generate-themes ./src/v2-themes.ts ./src/generated-v2.ts",
     "build": "tamagui-build",
     "watch": "yarn build --watch",
-    "lint": "../../node_modules/.bin/rome check src",
-    "lint:fix": "../../node_modules/.bin/rome check --apply src",
+    "lint": "../../node_modules/.bin/biome check src",
+    "lint:fix": "../../node_modules/.bin/biome check --apply-unsafe src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
   "exports": {
     "./package.json": "./package.json",
     "./src/themes-new.ts": "./src/themes-new.ts",
-    "./generated.json": {
-      "types": "./generated.d.ts",
-      "import": "./generated.json",
-      "require": "./generated.json"
-    },
     ".": {
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
+    },
+    "./v2": {
+      "types": "./types/v2.d.ts",
+      "import": "./dist/esm/v2.js",
+      "require": "./dist/cjs/v2.js"
+    },
+    "./v2-themes": {
+      "types": "./types/v2-themes.d.ts",
+      "import": "./dist/esm/v2-themes.js",
+      "require": "./dist/cjs/v2-themes.js"
     }
   },
   "dependencies": {
-    "@tamagui/colors": "1.38.0",
-    "@tamagui/create-theme": "1.38.0",
-    "@tamagui/theme-builder": "1.38.0",
-    "@tamagui/web": "1.38.0"
+    "@tamagui/colors": "1.68.2",
+    "@tamagui/create-theme": "1.68.2",
+    "@tamagui/web": "1.68.2"
   },
   "devDependencies": {
-    "@tamagui/build": "1.38.0",
-    "@tamagui/cli": "1.38.0",
-    "vitest": "^0.26.3"
+    "@tamagui/build": "1.68.2",
+    "@tamagui/cli": "1.68.2",
+    "vitest": "^0.34.3"
   },
   "publishConfig": {
     "access": "public"

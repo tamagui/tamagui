@@ -1,33 +1,32 @@
-import { H1, Square, YStack } from 'tamagui'
+// import './wdyr'
 
-// TODO this is a great test: media + animation + space (test without animation too)
-// <Stack
-//       animation="bouncy"
-//       space="$4"
-//       debug="verbose"
-//       backgroundColor="blue"
-//       $sm={{
-//         backgroundColor: 'yellow',
-//       }}
-//       $md={{
-//         space: '$5',
-//         backgroundColor: 'red',
-//       }}
-//     >
-//       <Square size={20} bc="red" />
-//       <Square size={20} bc="red" />
-//       <Square size={20} bc="red" />
-//     </Stack>
+import { CheckboxDemo, RadioGroupDemo, SwitchDemo } from '@tamagui/demos'
+import { Stack, styled } from '@tamagui/web'
+import { Anchor, SizableText, Switch, createSwitch } from 'tamagui'
+
+const X = styled(SizableText, {
+  size: '$10',
+})
+
+const ChangeWeight = styled(Stack, {
+  backgroundColor: 'red',
+})
+
+export const MyAnchor = styled(Anchor, {
+  name: 'Link',
+  cursor: 'pointer',
+  fontWeight: '700',
+  textDecorationLine: 'underline',
+})
+
+const StyledSwitch = createSwitch({})
 
 export const Sandbox = () => {
   return (
     <>
-      {[1, 2, 3].map((i) => (
-        <YStack debug="verbose" key={i}>
-          <Square size={100} bc="red" />
-        </YStack>
-      ))}
+      <StyledSwitch>
+        <StyledSwitch.Thumb animation="quick" />
+      </StyledSwitch>
     </>
   )
-  return <H1>test things here</H1>
 }

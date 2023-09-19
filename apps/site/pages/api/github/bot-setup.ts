@@ -1,23 +1,11 @@
-import { Database } from '@lib/supabase-types'
+import { apiRoute } from '@lib/apiRoute'
+import { protectApiRoute } from '@lib/protectApiRoute'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
-import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
-import { NextApiHandler } from 'next'
 
 // is called after bot is installed
-const handler: NextApiHandler = async (req, res) => {
-  const supabase = createServerSupabaseClient<Database>({ req, res })
+export default apiRoute(async (req, res) => {
+  const { supabase } = await protectApiRoute({ req, res })
 
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
-  const user = session?.user
-
-  if (!user) {
-    res.status(401).json({
-      error: 'The user is not authenticated',
-    })
-    return
-  }
   let state: number
   let installationId: number
   // example: installation_id=00000000&setup_action=install&state=foobar
@@ -42,7 +30,8 @@ const handler: NextApiHandler = async (req, res) => {
   const installation = await supabaseAdmin
     .from('app_installations')
     .select('id, subscription_item_id')
-    .eq('id', state).single()
+    .eq('id', state)
+    .single()
 
   if (installation.error) {
     res.status(404).json({ message: 'installation not found' })
@@ -79,6 +68,4 @@ const handler: NextApiHandler = async (req, res) => {
       github_app_installed: '1',
     })}`
   )
-}
-
-export default handler
+})

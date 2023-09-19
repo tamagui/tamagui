@@ -27,14 +27,17 @@ export const getConfig = () => {
   if (!conf) {
     throw new Error(
       process.env.NODE_ENV !== 'production'
-        ? `Missing tamagui config, you either have a duplicate config, or haven't set it up. Be sure createTamagui is called before rendering.`
+        ? `Missing tamagui config, you either have a duplicate config, or haven't set it up. Be sure createTamagui is called before rendering. Also, make sure all of your tamagui dependencies are on the same version (\`tamagui\`, \`@tamagui/package-name\`, etc.)`
         : 'Err0'
     )
   }
   return conf
 }
 
-let cached: TokensMerged
+let tokensMerged: TokensMerged
+export function setTokens(_: TokensMerged) {
+  tokensMerged = _
+}
 
 export const getTokens = ({
   prefixed,
@@ -48,21 +51,24 @@ export const getTokens = ({
     if (!conf) throw new Error(`Haven't called createTamagui yet`)
   }
   const { tokens, tokensParsed } = conf!
-  if (prefixed === false) return tokens
-  if (prefixed === true) return tokensParsed
-  if (cached) return cached
-  cached = Object.fromEntries(
-    Object.entries(tokens).map(([k, v]) => [k, { ...v, ...tokensParsed[k] }])
-  ) as any
-  return cached
+  if (prefixed === false) return tokens as any
+  if (prefixed === true) return tokensParsed as any
+  return tokensMerged
+}
+
+export const getTokenObject = (value: Token, group?: keyof Tokens) => {
+  return (
+    conf!.specificTokens[value] ??
+    (group
+      ? tokensMerged[group]?.[value]
+      : tokensMerged[
+          Object.keys(tokensMerged).find((cat) => tokensMerged[cat][value]) || ''
+        ]?.[value])
+  )
 }
 
 export const getToken = (value: Token, group?: keyof Tokens, useVariable = isWeb) => {
-  const tokens = getTokens()
-  const token =
-    value in conf!.specificTokens
-      ? conf!.specificTokens[value]
-      : (tokens[group as any]?.[value] as any)
+  const token = getTokenObject(value, group)
   return useVariable ? token?.variable : token?.val
 }
 
@@ -101,4 +107,21 @@ export const getFont = (name: string) => {
       ([k]) => conf.fontsParsed[k]?.family?.['val'] === name
     )?.[1]
   )
+}
+
+type DevConfig = {
+  visualizer?:
+    | boolean
+    | {
+        key?: string
+        delay?: number
+      }
+}
+
+export let devConfig: DevConfig | undefined
+
+export function setupDev(conf: DevConfig) {
+  if (process.env.NODE_ENV === 'development') {
+    devConfig = conf
+  }
 }

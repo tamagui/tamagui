@@ -9,7 +9,7 @@ Let's take a quick look through some of the useful other exports in `@tamagui/co
 
 [Constants are re-exported from @tamagui/constants](https://github.com/tamagui/tamagui/blob/master/packages/constants/src/index.ts):
 
-- `isWeb` - `process.env.TAMAGUI_TARGET === 'web'`. Should be true both for SSR and Client side web targets.
+- `isWeb` - True if targeting the web. Will be true both for SSR and client.
 - `isWindowDefined` - `typeof window === 'undefined'`
 - `isServer` - `isWeb && !isWindowDefined`.
 - `isClient` - `isWeb && isWindowDefined`.
@@ -133,11 +133,17 @@ function MyButton(props) {
 }
 ```
 
-You can pass a second option to disable the shorthands expansion
+You can pass an option to disable the shorthands expansion, and another option to resolve any token strings into their respective theme or token value:
 
 ```tsx
 function MyButton(props) {
-  const activeProps = useProps(props, { disableExpandShorthands: true })
+  const activeProps = useProps(props, {
+    disableExpandShorthands: true,
+    // 'value' resolves to the actual theme/token value on all platforms
+    // 'auto' resolves to CSS variable on web, value on native
+    // 'varaible' resolves to CSS variable on all platforms
+    resolveValues: 'value'
+  })
 }
 ```
 
@@ -152,3 +158,34 @@ SSR-friendly, only true on if native touchable or web touchable device (client s
 ### useDidFinishSSR
 
 SSR-friendly, returns true if SSR has completed on the client, false before hydration done. On server it's always false.
+
+---
+
+## Type Helpers
+
+### GetProps
+
+Fetches the type of props for a Tamagui component:
+
+```tsx
+import { Stack, GetProps, styled } from '@tamagui/core'
+
+const X = styled(Stack, {})
+
+type XProps = GetProps<typeof X>
+```
+
+### GetRef
+
+Fetches the type of a ref for a Tamagui component, or any React component:
+
+```tsx
+import { Stack, GetRef, styled } from '@tamagui/core'
+
+const X = styled(Stack, {})
+
+const MyComponent = () => {
+  const ref = useRef<GetRef<typeof X>>()
+  return <X ref={ref} />
+}
+```

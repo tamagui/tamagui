@@ -1,9 +1,11 @@
+import { join } from 'path'
 import { Writable } from 'stream'
 
 // import debuggerAppPath from '@callstack/repack-debugger-app'
 import fastifySensible from '@fastify/sensible'
 import fastifyStatic from '@fastify/static'
 import Fastify from 'fastify'
+import { pathExists } from 'fs-extra'
 
 import apiPlugin from './plugins/api'
 import compilerPlugin from './plugins/compiler'
@@ -39,6 +41,23 @@ export async function createServer(config: Server.Config) {
     ...(config.options.https ? { https: config.options.https } : undefined),
   })
 
+  async function startServer() {
+    const serverPath = join(config.options.rootDir, 'server.ts')
+    if (await pathExists(serverPath)) {
+      const { register } = require('esbuild-register/dist/node')
+      const { unregister } = register()
+      try {
+        const serverEndpoint = require(serverPath).default
+        serverEndpoint(instance)
+      } finally {
+        unregister()
+      }
+    }
+  }
+
+  // disable for demo
+  // void startServer()
+
   delegate = config.delegate({
     log: instance.log,
     notifyBuildStart: (platform) => {
@@ -59,6 +78,15 @@ export async function createServer(config: Server.Config) {
     broadcastToMessageClients: ({ method, params }) => {
       instance.wss.messageServer.broadcast(method, params)
     },
+  })
+
+  // fuck delegates
+  instance.register(async (inst) => {
+    inst.get('/file', async (req, reply) => {
+      const query = req.query as Record<string, string>
+      const source = delegate.hotFiles.getSource(query.file)
+      reply.send(source)
+    })
   })
 
   // Register plugins
@@ -82,12 +110,13 @@ export async function createServer(config: Server.Config) {
     options: config.options,
   })
 
-  console.warn('disable debugger-ui + favicon for now')
-  // await instance.register(fastifyStatic, {
-  //   root: debuggerAppPath,
-  //   prefix: '/debugger-ui',
-  //   prefixAvoidTrailingSlash: true,
-  // })
+  const debuggerAppPath = (await import('@callstack/repack-debugger-app')).default
+
+  await instance.register(fastifyStatic, {
+    root: debuggerAppPath,
+    prefix: '/debugger-ui',
+    prefixAvoidTrailingSlash: true,
+  })
 
   // below is to prevent showing `GET 400 /favicon.ico`
   // errors in console when requesting the bundle via browser
@@ -105,7 +134,6 @@ export async function createServer(config: Server.Config) {
   })
 
   // Register routes
-  instance.head('/', async () => '')
   instance.get('/', async () => delegate.messages.getHello())
   instance.get('/status', async () => delegate.messages.getStatus())
 

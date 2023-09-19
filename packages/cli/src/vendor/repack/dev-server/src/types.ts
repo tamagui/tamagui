@@ -53,6 +53,10 @@ export namespace Server {
    * A complete delegate with implementations for all server functionalities.
    */
   export interface Delegate {
+    hotFiles: {
+      getSource: (path: string) => string
+    }
+
     /** A compiler delegate. */
     compiler: CompilerDelegate
 

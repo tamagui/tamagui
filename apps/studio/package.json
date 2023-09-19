@@ -1,0 +1,46 @@
+{
+  "name": "@tamagui/studio",
+  "version": "1.68.2",
+  "private": true,
+  "type": "module",
+  "module": "dist",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": "./dist/index.js",
+    "./api": "./dist/api/index.js"
+  },
+  "scripts": {
+    "dev": "../../node_modules/.bin/tama studio",
+    "build": "tamagui-build",
+    "ci:build": "tama studio --build",
+    "watch": "tamagui-build --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "dependencies": {
+    "@supabase/auth-helpers-shared": "^0.4.1",
+    "@tamagui/cli": "1.68.2",
+    "@tamagui/linear-gradient": "1.68.2",
+    "@tamagui/lucide-icons": "1.68.2",
+    "@tamagui/theme": "1.68.2",
+    "@tamagui/theme-builder": "1.68.2",
+    "@tamagui/themes": "1.68.2",
+    "@tamagui/use-store": "1.68.2",
+    "color2k": "^2.0.2",
+    "prettier": "^2.8.1",
+    "react": "^18.2.0",
+    "react-color": "^2.19.3",
+    "react-dom": "^18.2.0",
+    "react-freeze": "^1.0.3",
+    "react-native-web": "^0.19.6",
+    "react-router-dom": "^6.14.1",
+    "tamagui": "1.68.2",
+    "tinybase": "^4.0.4",
+    "victory": "^36.6.11"
+  },
+  "devDependencies": {
+    "@tamagui/build": "1.68.2",
+    "@types/react-color": "^3.0.6",
+    "vite": "^4.4.9"
+  }
+}

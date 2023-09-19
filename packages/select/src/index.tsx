@@ -6,3 +6,5 @@ export type {
   SelectViewportProps,
 } from './types'
 export * from './context'
+export type { SelectItemProps } from './SelectItem'
+export type { SelectTriggerProps } from './SelectTrigger'

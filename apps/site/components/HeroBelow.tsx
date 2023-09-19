@@ -1,17 +1,18 @@
-import { ThemeTint } from '@tamagui/logo'
-import { ChevronRight, Code, Cpu, Layers } from '@tamagui/lucide-icons'
+import { ChevronRight, Code, Cpu, Layers, Star } from '@tamagui/lucide-icons'
 import { NextLink } from 'components/NextLink'
-import { memo, useEffect, useRef } from 'react'
-import { H3, Paragraph, XStack, YStack, YStackProps, debounce } from 'tamagui'
+import Link from 'next/link'
+import { memo } from 'react'
+import { Button, H3, Paragraph, Theme, XStack, YStack, YStackProps } from 'tamagui'
 
 import { CodeInline } from './Code'
 import { ContainerLarge } from './Container'
+import { GithubIcon } from './GithubIcon'
 import { useHeroHovered } from './heroState'
 import { IconStack } from './IconStack'
 
 const TitleLink = ({ href, children, ...props }: any) => {
   return (
-    <NextLink href={href}>
+    <NextLink prefetch={false} href={href}>
       <H3 cursor="pointer" color="$color" my="$2">
         <CodeInline
           cursor="pointer"
@@ -35,8 +36,19 @@ const TitleLink = ({ href, children, ...props }: any) => {
 export const HeroBelow = memo(() => {
   return (
     <>
-      <YStack pos="relative" zi={1000} elevation="$4" py="$4" pt="$6" pb="$10">
-        {/* <YStack fullscreen bc="$color3" zi={-1} o={0.33} /> */}
+      <YStack
+        pos="relative"
+        zi={1000}
+        elevation="$4"
+        // $theme-light={{
+        //   elevation: '$1',
+        // }}
+        py="$4"
+        pt="$6"
+        pb="$10"
+      >
+        <YStack fullscreen bc="$color3" zi={-1} o={0.25} btw={1} btc="$borderColor" />
+
         <HeroBelowContent />
       </YStack>
     </>
@@ -60,7 +72,7 @@ export const HeroBelowContent = memo(() => {
         flexWrap="nowrap"
         px="$2"
         mb={-8}
-        py="$4"
+        py="$1"
         $sm={{ flexDirection: 'column' }}
         $gtSm={{
           px: '$6',

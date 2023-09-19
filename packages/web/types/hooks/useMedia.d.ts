@@ -1,4 +1,4 @@
-import type { MediaQueries, MediaQueryKey, MediaQueryObject, MediaQueryState, TamaguiInternalConfig } from '../types';
+import type { MediaQueries, MediaQueryKey, MediaQueryObject, MediaQueryState, ResolveVariableAs, TamaguiInternalConfig } from '../types';
 export declare let mediaState: MediaQueryState;
 export declare const mediaQueryConfig: MediaQueries;
 export declare const getMedia: () => MediaQueryState;
@@ -17,7 +17,7 @@ type UpdateState = {
     keys: MediaQueryKey[];
 };
 export declare function setMediaShouldUpdate(ref: any, props: UpdateState): WeakMap<any, UpdateState>;
-export declare function useMedia(uid?: any, debug?: any): UseMediaState;
+export declare function useMedia(uid?: any): UseMediaState;
 /**
  *
  * @deprecated use useProps instead which is the same but also expands shorthands (which you can disable)
@@ -30,11 +30,17 @@ export declare function useMedia(uid?: any, debug?: any): UseMediaState;
  * */
 export declare function useMediaPropsActive<A extends Object>(props: A, opts?: {
     expandShorthands?: boolean;
+    resolveValues?: ResolveVariableAs;
 }): {
     [Key in keyof A extends `$${string}` ? never : keyof A]?: A[Key];
 };
-export declare const getMediaImportanceIfMoreImportant: (mediaKey: string, key: string, importancesUsed: Record<string, number>) => number | null;
-export declare function mergeMediaByImportance(onto: Record<string, any>, mediaKey: string, key: string, value: any, importancesUsed: Record<string, number>): boolean;
-export declare function mediaObjectToString(query: string | MediaQueryObject): string;
+export declare const getMediaImportanceIfMoreImportant: (mediaKey: string, key: string, importancesUsed: Record<string, number>, isSizeMedia: boolean) => number | null;
+export declare function mergeMediaByImportance(onto: Record<string, any>, mediaKey: string, key: string, value: any, importancesUsed: Record<string, number>, isSizeMedia: boolean, importanceBump?: number): boolean;
+export declare function mediaObjectToString(query: string | MediaQueryObject, key?: string): string;
+export declare function mediaKeyToQuery(key: string): string;
+export declare function mediaKeyMatch(key: string, dimensions: {
+    width: number;
+    height: number;
+}): boolean;
 export {};
 //# sourceMappingURL=useMedia.d.ts.map

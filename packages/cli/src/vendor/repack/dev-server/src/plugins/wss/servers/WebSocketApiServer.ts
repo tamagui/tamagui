@@ -60,7 +60,10 @@ export class WebSocketApiServer extends WebSocketServer {
       this.clients.delete(clientId)
     }
 
-    socket.addEventListener('error', onClose)
+    socket.addEventListener('error', () => {
+      console.log('error1')
+      onClose()
+    })
     socket.addEventListener('close', onClose)
   }
 }

@@ -9,18 +9,24 @@ export async function writeGeneratedThemes(
   outPath: string,
   generatedOutput: Awaited<ReturnType<typeof generateThemes>>
 ) {
+  if (!generatedOutput) return
+
   const { generated, state } = generatedOutput
+
+  const tamaguiDotDirExists = await fs.pathExists(tamaguiDotDir)
   const themeBuilderStatePath = join(tamaguiDotDir, `theme-builder.json`)
 
   if (process.env.DEBUG === 'tamagui') {
-    // rome-ignore lint/nursery/noConsoleLog: <explanation>
-    console.log(`Generated themes:`, JSON.stringify({ generated, state }, null, 2))
-    // rome-ignore lint/nursery/noConsoleLog: <explanation>
+    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+    console.log(`Generated themes:`, JSON.stringify(generatedOutput, null, 2))
+    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
     console.log(`Writing themes to`, { outPath, themeBuilderStatePath })
   }
 
   await Promise.all([
     fs.writeFile(outPath, generated),
-    state ? fs.writeFile(themeBuilderStatePath, JSON.stringify(state)) : null,
+    state && tamaguiDotDirExists
+      ? fs.writeFile(themeBuilderStatePath, JSON.stringify(state))
+      : null,
   ])
 }

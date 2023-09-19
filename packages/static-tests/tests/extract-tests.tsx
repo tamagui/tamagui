@@ -1,7 +1,11 @@
-import { createTamagui, expandStyles, getStylesAtomic } from '@tamagui/core-node'
+import {
+  createTamagui,
+  expandStylesAndRemoveNullishValues,
+  getStylesAtomic,
+} from '@tamagui/core'
 import { beforeAll, describe, expect, test } from 'vitest'
 
-import config from '../../config-default-node/dist'
+import config from '../../config-default/dist'
 
 beforeAll(() => {
   createTamagui(config.getDefaultTamaguiConfig())
@@ -41,7 +45,7 @@ describe('extract-tests', () => {
   })
 
   test('expands and resolves shorthand props', () => {
-    const style = expandStyles({
+    const style = expandStylesAndRemoveNullishValues({
       padding: 10,
       paddingVertical: 0,
     })
@@ -50,7 +54,7 @@ describe('extract-tests', () => {
     expect(pB.value).toBe('0px')
     expect(pL.value).toBe('10px')
     expect(pR.value).toBe('10px')
-    const style2 = expandStyles({
+    const style2 = expandStylesAndRemoveNullishValues({
       borderColor: 'yellow',
       borderWidth: 10,
     })

@@ -6,11 +6,8 @@
     "url": "https://github.com/tamagui/tamagui"
   },
   "workspaces": [
-    "apps/*",
-    "packages/*",
-    "apps/starter/apps/*",
-    "apps/starter/packages/*",
-    "takeout/*"
+    "./apps/*",
+    "./packages/*"
   ],
   "packageManager": "yarn@3.5.0",
   "scripts": {
@@ -34,6 +31,7 @@
     "kitchen-sink:extract": "yarn workspace @tamagui/kitchen-sink start:extract",
     "kitchen-sink:web": "yarn workspace @tamagui/kitchen-sink web",
     "kitchen-sink": "yarn workspace @tamagui/kitchen-sink start",
+    "kitchen-sink:prod": "yarn workspace @tamagui/kitchen-sink start:prod",
     "lighthouse:live": "npx lighthouse https://tamagui.dev --view --chrome-flags='--headless' --throttling.cpuSlowdownMultiplier=16 --output-path=/tmp/report.html",
     "lighthouse:prod": "npx lighthouse http://localhost:3333 --view --chrome-flags='--headless' --throttling.cpuSlowdownMultiplier=16 --output-path=/tmp/report.html",
     "lighthouse:vite:prod": "npx lighthouse http://localhost:8080 --view --chrome-flags='--headless' --throttling.cpuSlowdownMultiplier=16 --output-path=/tmp/report.html",
@@ -44,8 +42,10 @@
     "pretty": "pretty-quick",
     "release:canary": "yarn release --canary --ci",
     "release": "node -r esbuild-register ./scripts/release.ts",
-    "sandbox:extract": "yarn workspace @tamagui/sandbox dev:extract",
-    "sandbox": "yarn workspace @tamagui/kitchen-sink dev:web",
+    "sandbox:extract": "yarn workspace @tamagui/kitchen-sink dev:web:extract",
+    "sandbox:no-extract": "yarn workspace @tamagui/kitchen-sink dev:web",
+    "sandbox:prod": "yarn workspace @tamagui/kitchen-sink dev:web:prod",
+    "sandbox": "yarn workspace @tamagui/kitchen-sink dev:web:extract",
     "setup": "node -r esbuild-register ./scripts/setup.ts",
     "site:extract": "yarn workspace @tamagui/site dev:extract",
     "site:prod:analyze": "ANALYZE=true yarn site:prod",
@@ -57,27 +57,32 @@
     "starter:prod": "yarn workspace @tamagui/starter web:prod && yarn workspace @tamagui/starter web:prod:serve",
     "starter": "yarn workspace @tamagui/starter web",
     "starters:sync": "node ./starters/sync-next-expo-solito.js",
-    "studio": "yarn workspace @tamagui/site studio",
-    "tamastack": "yarn workspace @tamagui/stack dev",
+    "studio": "yarn workspace @tamagui/studio dev",
+    "tamastack": "SKIP_PREBUILD_RN=1 yarn workspace @tamagui/stack dev",
+    "tamastack:rebuild": "yarn workspace @tamagui/stack dev",
     "test:ci": "turbo test --concurrency=1",
     "test:demos": "yarn workspace @tamagui/demos test",
     "test": "CLEANUP=1 turbo run --concurrency=1 test",
     "upgrade:starters:next": "cd starters/next-expo-solito && yarn upgrade:tamagui",
     "upgrade:starters:simple-web": "cd starters/simple-web && yarn upgrade:tamagui",
     "upgrade:starters": "yarn upgrade:starters:next && yarn upgrade:starters:simple-web",
-    "vercel:build": "TAMAGUI_TARGET=web yarn build:js && cd apps/site && yarn ci:build",
+    "vercel:build": "yarn build:js && cd apps/site && yarn ci:build",
+    "vercel:build-studio": "yarn build:js && cd apps/studio && yarn ci:build",
     "watch:build": "SKIP_TYPES_INITIAL=1 ultra -r --no-pretty --concurrency 400 watch",
     "watch:js": "SKIP_TYPES=1 yarn watch:build",
     "watch:ts": "tsc -b -w --preserveWatchOutput tsconfig.build.json",
     "watch": "npm-run-all --parallel watch:ts watch:build"
   },
   "resolutions": {
-    "react-native-svg": "13.4.0",
+    "react-native-svg": "13.9.0",
+    "expo-modules-core": "1.7.0",
     "@types/node": "16.11.9",
-    "react-native-reanimated": "2.14.4",
-    "react-native": "0.71.7",
+    "react-native": "0.72.0",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "next": "13.4.4",
+    "react-dom": "18.2.0",
+    "react-native-reanimated@^3.3.0": "patch:react-native-reanimated@npm%3A3.4.1#./.yarn/patches/react-native-reanimated-npm-3.4.1-bf4ac7f6b3.patch",
+    "react-native-screens@~3.22.0": "patch:react-native-screens@npm%3A3.22.0#./.yarn/patches/react-native-screens-npm-3.22.0-9ada8582d1.patch"
   },
   "importSort": {
     ".js, .jsx, .ts, .tsx": {
@@ -86,8 +91,10 @@
     }
   },
   "dependencies": {
+    "@biomejs/biome": "^1.2.2",
     "@manypkg/cli": "^0.19.1",
-    "@vercel/og": "^0.5.4",
+    "@nderscore/tamagui-typescript-plugin": "^0.3.1",
+    "@vercel/og": "^0.5.8",
     "check-dependency-version-consistency": "^3.0.3",
     "import-sort-style-module": "^6.0.0",
     "npm-run-all": "^4.1.5",
@@ -95,9 +102,8 @@
     "prettier": "^2.8.1",
     "pretty-quick": "^3.1.2",
     "prompts": "2.1.0",
-    "rome": "^12.1.0",
-    "turbo": "^1.10.0",
-    "typescript": "^5.1.3",
+    "turbo": "^1.10.13",
+    "typescript": "^5.2.2",
     "ultra-runner": "^3.10.5"
   },
   "stableVersion": "0.0.0"

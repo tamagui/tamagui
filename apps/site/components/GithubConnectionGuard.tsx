@@ -1,9 +1,9 @@
 import { StudioQueueCard } from '@components/StudioQueueCard'
-import { isLocal } from '@protected/studio/constants'
 import { Lock } from '@tamagui/lucide-icons'
+import { ButtonLink } from 'components/Link'
 import { useUser } from 'hooks/useUser'
 import { useRouter } from 'next/router'
-import { ButtonLink } from 'studio/Link'
+import { isLocal } from 'protected/constants'
 import { H2, Paragraph, Spinner, YStack } from 'tamagui'
 
 export const GithubConnectionGuard = ({ children }: { children: React.ReactNode }) => {
@@ -28,6 +28,9 @@ export const SponsorshipGuard = ({ children }: { children: React.ReactNode }) =>
   const router = useRouter()
   const teams = data?.teams
   if (!teams) return null
+  const hasAccess = teams?.all?.some(
+    (team) => new Date(team.studio_queued_at) < new Date()
+  )
 
   if (!teams.main) {
     return <Spinner />
@@ -41,7 +44,7 @@ export const SponsorshipGuard = ({ children }: { children: React.ReactNode }) =>
   //   )
   // }
 
-  if (!isLocal && !router.query?.showStudio) {
+  if (!hasAccess && !isLocal && !router.query?.showStudio) {
     return <StudioQueueCard teamId={teams?.main?.id} />
   }
 

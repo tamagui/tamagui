@@ -1,4 +1,5 @@
-import { useDidFinishSSR, useForceUpdate, useIsomorphicLayoutEffect } from '@tamagui/web'
+import { useForceUpdate } from '@tamagui/use-force-update'
+import { useDidFinishSSR, useIsomorphicLayoutEffect } from '@tamagui/web'
 import React, {
   Children,
   ReactElement,
@@ -47,7 +48,7 @@ function onlyElements(children: ReactNode): ReactElement<any>[] {
   // We use forEach here instead of map as map mutates the component key by preprending `.$`
   Children.forEach(children, (child, index) => {
     if (isValidElement(child)) {
-      if (!child.key) {
+      if (!child.key && Children.count(children) > 1) {
         if (process.env.NODE_ENV === 'development') {
           console.warn('No key given to AnimatePresence child, assigning index as key')
         }
@@ -104,6 +105,7 @@ export const AnimatePresence: React.FunctionComponent<
   children,
   enterVariant,
   exitVariant,
+  enterExitVariant,
   initial = true,
   onExitComplete,
   exitBeforeEnter,
@@ -161,6 +163,7 @@ export const AnimatePresence: React.FunctionComponent<
           <PresenceChild
             key={getChildKey(child)}
             isPresent={Boolean(isClientMounted ? true : isMounted.current)}
+            enterExitVariant={enterExitVariant}
             exitVariant={exitVariant}
             enterVariant={enterVariant}
             initial={initial ? undefined : false}
@@ -235,6 +238,7 @@ export const AnimatePresence: React.FunctionComponent<
         }}
         exitVariant={exitVariant}
         enterVariant={enterVariant}
+        enterExitVariant={enterExitVariant}
         presenceAffectsLayout={presenceAffectsLayout}
       >
         {child}
@@ -254,23 +258,13 @@ export const AnimatePresence: React.FunctionComponent<
         isPresent
         exitVariant={exitVariant}
         enterVariant={enterVariant}
+        enterExitVariant={enterExitVariant}
         presenceAffectsLayout={presenceAffectsLayout}
       >
         {child}
       </PresenceChild>
     )
   })
-
-  if (process.env.NODE_ENV === 'development') {
-    const shouldWarn = exitBeforeEnter && childrenToRender.length > 1
-    if (shouldWarn && hasWarned && !hasWarned.current) {
-      hasWarned.current = true
-      // rome-ignore lint/nursery/noConsoleLog: ok
-      console.log(
-        `You're attempting to animate multiple children within AnimatePresence, but its exitBeforeEnter prop is set to true. This can lead to odd visual behaviour.`
-      )
-    }
-  }
 
   return (
     <>

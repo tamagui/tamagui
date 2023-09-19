@@ -72,7 +72,7 @@ const ActivityIndicator = React.forwardRef<any, ActivityIndicatorProps>(
         />
       </View>
     )
-  },
+  }
 )
 
 ActivityIndicator.displayName = 'ActivityIndicator'

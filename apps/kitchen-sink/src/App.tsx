@@ -1,69 +1,122 @@
-import { ToastViewport } from '@tamagui/sandbox-ui'
-import { setupNativeSheet } from '@tamagui/sheet'
-import { useFonts } from 'expo-font'
-import { useEffect, useMemo, useState } from 'react'
-import { Appearance, useColorScheme } from 'react-native'
-import { ModalView } from 'react-native-ios-modal'
-import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context'
+import '@tamagui/core/reset.css'
 
-import { Navigation } from './Navigation'
+import * as Demos from '@tamagui/demos'
+import { useState } from 'react'
+import { Separator, Theme, XStack, YStack } from 'tamagui'
+
 import { Provider } from './provider'
-import { ThemeContext } from './useKitchenSinkTheme'
+import { Sandbox } from './Sandbox'
+import * as TestCases from './usecases'
 
-setupNativeSheet('ios', ModalView)
+// useful for debugging why things render:
+// import './wdyr'
+
+if (typeof require !== 'undefined') {
+  globalThis['React'] = require('react') // webpack
+}
 
 export default function App() {
-  const [theme, setTheme] = useState(Appearance.getColorScheme())
-  const [loaded] = useFonts({
-    Inter: require('@tamagui/font-inter/otf/Inter-Medium.otf'),
-    InterBold: require('@tamagui/font-inter/otf/Inter-Bold.otf'),
-  })
-
-  const colorScheme = useColorScheme()
-
-  useEffect(() => {
-    setTheme(colorScheme)
-  }, [colorScheme])
-
-  const children = useMemo(() => {
-    return <Navigation />
-  }, [])
-
-  const themeContext = useMemo(() => {
-    return {
-      value: theme,
-      set: setTheme,
-    }
-  }, [theme])
-
-  if (!loaded) {
-    return null
-  }
+  const kitchenSink = new URLSearchParams(window.location.search).get('kitchen')
+  const demoComponentName = new URLSearchParams(window.location.search).get('demo')
+  const useCaseComponentName = new URLSearchParams(window.location.search).get('test')
+  const Component = kitchenSink
+    ? // solito breaking
+      () => null //require('../kitchen-sink/src/features/home/screen').HomeScreen
+    : demoComponentName
+    ? Demos[
+        demoComponentName.endsWith('Demo')
+          ? demoComponentName
+          : `${demoComponentName}Demo`
+      ]
+    : useCaseComponentName
+    ? TestCases[useCaseComponentName]
+    : Sandbox
 
   return (
-    <SafeAreaProvider>
-      <ThemeContext.Provider value={themeContext}>
-        <Provider defaultTheme={theme as any}>
-          {children}
-
-          <SafeToastViewport />
-        </Provider>
-      </ThemeContext.Provider>
-    </SafeAreaProvider>
+    <SandboxFrame>
+      <Component />
+    </SandboxFrame>
   )
 }
 
-const SafeToastViewport = () => {
-  const { left, top, right } = useSafeAreaInsets()
+const SandboxFrame = (props: { children: any }) => {
+  const params = new URLSearchParams(window.location.search)
+  const [theme, setTheme] = useState(params.get('theme') === 'dark' ? 'dark' : 'light')
+  const [screenshot] = useState(params.has('screenshot'))
+  const showThemeSwitch = !screenshot
+  const splitView = params.has('splitView')
+  const centered = params.has('centered')
+
   return (
-    <>
-      <ToastViewport
-        flexDirection="column-reverse"
-        top={top}
-        left={left}
-        right={right}
-        mx="auto"
+    <Provider defaultTheme={theme as any}>
+      <link href="/fonts/inter.css" rel="stylesheet" />
+
+      {screenshot && (
+        <style
+          type="text/css"
+          dangerouslySetInnerHTML={{
+            __html: `
+            html, body, #root { background-color: transparent !important; }
+          `,
+          }}
+        />
+      )}
+
+      <style
+        type="text/css"
+        dangerouslySetInnerHTML={{
+          __html: `
+            html, body, #root { height: 100vh; width: 100vw; display: flex; align-items: center; justify-content: center; }
+          `,
+        }}
       />
-    </>
+
+      <Theme name={screenshot ? 'blue' : undefined}>
+        <XStack w="100%" h="100%" fullscreen>
+          <YStack
+            {...(centered && {
+              ai: 'center',
+              jc: 'center',
+            })}
+            f={1}
+            h="100%"
+          >
+            {props.children}
+          </YStack>
+
+          {splitView ? (
+            <>
+              <Separator vertical />
+              <Theme name="dark">
+                <YStack
+                  f={1}
+                  {...(centered && {
+                    ai: 'center',
+                    jc: 'center',
+                    h: '100%',
+                  })}
+                  bg={screenshot ? 'transparent' : '$background'}
+                >
+                  {props.children}
+                </YStack>
+              </Theme>
+            </>
+          ) : null}
+        </XStack>
+      </Theme>
+      {showThemeSwitch && (
+        <div
+          style={{
+            position: 'fixed',
+            bottom: 30,
+            left: 20,
+            fontSize: 30,
+          }}
+          onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+        >
+          🌗
+        </div>
+      )}
+    </Provider>
   )
 }

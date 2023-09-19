@@ -1,10 +1,10 @@
-import { getTokens, getVariableValue } from '@tamagui/core'
 import type {
   FontSizeTokens,
   GenericFont,
   TextProps,
   VariantSpreadFunction,
 } from '@tamagui/core'
+import { getTokens } from '@tamagui/core'
 
 export const getFontSized: VariantSpreadFunction<TextProps, FontSizeTokens> = (
   sizeTokenIn = '$true',
@@ -13,20 +13,26 @@ export const getFontSized: VariantSpreadFunction<TextProps, FontSizeTokens> = (
   if (!font) {
     if (process.env.NODE_ENV === 'development') {
       console.warn(
-        `Warning: No font found. For a sized text component, you either need to set fontFamily directly, or through the "defaultFont" setting in your createTamagui config.`
+        `Warning: No font found in props`,
+        { ...props },
+        `For a sized text component, you either need to set fontFamily directly, or through the "defaultFont" setting in your createTamagui config.`
       )
     }
     return
   }
 
   const sizeToken = sizeTokenIn === '$true' ? getDefaultSizeToken(font) : sizeTokenIn
-  const fontSize = props.fontSize || font.size[sizeToken]
-  const lineHeight = props.lineHeight || font.lineHeight?.[sizeToken]
-  const fontWeight = props.fontWeight || font.weight?.[sizeToken]
-  const letterSpacing = props.letterSpacing || font.letterSpacing?.[sizeToken]
-  const fontStyle = props.fontStyle || font.style?.[sizeToken]
-  const textTransform = props.textTransform || font.transform?.[sizeToken]
-  const color = props.color || font.color?.[sizeToken]
+
+  // size related, treat them as overrides
+  const fontSize = font.size[sizeToken]
+  const lineHeight = font.lineHeight?.[sizeToken]
+  const fontWeight = font.weight?.[sizeToken]
+  const letterSpacing = font.letterSpacing?.[sizeToken]
+  const textTransform = font.transform?.[sizeToken]
+
+  // not technically size related, treat them as fallbacks
+  const fontStyle = props.fontStyle ?? font.style?.[sizeToken]
+  const color = props.color ?? font.color?.[sizeToken]
 
   const style = {
     color,
@@ -40,13 +46,14 @@ export const getFontSized: VariantSpreadFunction<TextProps, FontSizeTokens> = (
   }
 
   if (process.env.NODE_ENV === 'development') {
-    if (props['debug']) {
+    if (props['debug'] && props['debug'] === 'verbose') {
       console.groupCollapsed('  🔹 getFontSized', sizeTokenIn, sizeToken)
-      // rome-ignore lint/nursery/noConsoleLog: ok
+      // biome-ignore lint/suspicious/noConsoleLog: ok
       console.log({ style, props, font })
       console.groupEnd()
     }
   }
+
   return style
 }
 

@@ -6,16 +6,17 @@ import { StudioQueueCard } from '@components/StudioQueueCard'
 import { getDefaultAvatarImage } from '@lib/avatar'
 import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { Database } from '@lib/supabase-types'
+import { withSupabase } from '@lib/withSupabase'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { Provider } from '@supabase/supabase-js'
 import { ThemeTint } from '@tamagui/logo'
 import { CheckCircle, LogOut, Star } from '@tamagui/lucide-icons'
+import { ButtonLink } from 'components/Link'
 import { UserGuard, useUser } from 'hooks/useUser'
 import { NextSeo } from 'next-seo'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { ButtonLink } from 'studio/Link'
 import {
   Avatar,
   Button,
@@ -59,6 +60,8 @@ const Account = () => {
         <Avatar circular size="$10">
           <Avatar.Image
             source={{
+              width: 104,
+              height: 104,
               uri:
                 userDetails?.avatar_url ??
                 getDefaultAvatarImage(userDetails?.full_name ?? user?.email ?? 'User'),
@@ -96,7 +99,7 @@ const Account = () => {
 
       <YStack mt="$4" ai="flex-start">
         <ThemeTint>
-          <ButtonLink href="/account/subscriptions" size="$2">
+          <ButtonLink href="/account/subscriptions" size="$5">
             View Subscriptions
           </ButtonLink>
         </ThemeTint>
@@ -268,14 +271,15 @@ const SponsorshipContent = () => {
   return (
     <YStack gap="$4">
       <YStack>
-        {teams.personal?.is_active && <Paragraph>You are a personal sponsor.</Paragraph>}
+        {teams.personal?.is_active && (
+          <Paragraph>You are a personal sponsor. Thank you!</Paragraph>
+        )}
         {teams.orgs?.map((org) => (
           <Paragraph key={org.id}>
             You are a member of a sponsoring organization, {org.name}.
           </Paragraph>
         ))}
       </YStack>
-      <SyncSponsorshipButton />
     </YStack>
   )
 }
@@ -284,7 +288,7 @@ const SyncSponsorshipButton = () => {
   const [loading, setLoading] = useState(false)
   const syncWithGithub = async () => {
     setLoading(true)
-    await fetch('/api/github-sync', { method: 'POST' })
+    await fetch('/api/account-sync', { method: 'POST' })
       .then(() => {
         location.reload()
       })
@@ -305,9 +309,21 @@ const SyncSponsorshipButton = () => {
 }
 
 const ConnectionsContent = () => {
+  return (
+    <YStack>
+      <Table
+        data={{
+          GitHub: <GithubConnection />,
+        }}
+      />
+    </YStack>
+  )
+}
+
+const GithubConnection = () => {
   const { data } = useUser()
   if (!data) return null
-
+  const connectedGithub = data.connections.github
   const {
     session: { user },
   } = data
@@ -320,7 +336,7 @@ const ConnectionsContent = () => {
   const supabaseClient = useSupabaseClient()
 
   const handleOAuthSignIn = async (provider: Provider) => {
-    if (user?.app_metadata.provider === 'github') {
+    if (connectedGithub) {
       router.push(
         `https://github.com/settings/connections/applications/${process.env.NEXT_PUBLIC_GITHUB_AUTH_CLIENT_ID}`
       )
@@ -339,36 +355,30 @@ const ConnectionsContent = () => {
     }
     setLoading(false)
   }
-  return (
-    <YStack>
-      {message.content && (
-        <Notice>
-          <Paragraph>{message.content}</Paragraph>
-        </Notice>
-      )}
-      <Table
-        data={{
-          GitHub: (
-            <XStack gap="$2">
-              <Button
-                theme="dark"
-                disabled={loading}
-                onPress={() => handleOAuthSignIn('github')}
-                size="$3"
-                icon={GithubIcon}
-                iconAfter={CheckCircle}
-              >
-                {user?.app_metadata.provider === 'github'
-                  ? 'Connected'
-                  : 'Connect GitHub'}
-              </Button>
 
-              <SyncSponsorshipButton />
-            </XStack>
-          ),
-        }}
-      />
-    </YStack>
+  if (message.content) {
+    return (
+      <Notice>
+        <Paragraph>{message.content}</Paragraph>
+      </Notice>
+    )
+  }
+
+  return (
+    <XStack gap="$2">
+      <Button
+        theme="dark"
+        disabled={loading}
+        onPress={() => handleOAuthSignIn('github')}
+        size="$3"
+        icon={GithubIcon}
+        iconAfter={connectedGithub ? CheckCircle : null}
+      >
+        {connectedGithub ? 'Connected' : 'Connect GitHub'}
+      </Button>
+
+      <SyncSponsorshipButton />
+    </XStack>
   )
 }
 
@@ -405,5 +415,5 @@ const SponsorButton = () => {
     </ButtonLink>
   )
 }
-
-Page.getLayout = getDefaultLayout
+Page.getLayout = (page, pageProps, path) =>
+  withSupabase(getDefaultLayout(page, pageProps, path), pageProps)

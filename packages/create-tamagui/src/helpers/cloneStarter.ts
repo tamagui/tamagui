@@ -4,9 +4,10 @@ import { join } from 'path'
 
 import chalk from 'chalk'
 import { copy, ensureDir, pathExists, remove } from 'fs-extra'
+import { rimraf } from 'rimraf'
 import { $, cd } from 'zx'
 
-import { IS_TEST } from '../constants'
+import { IS_TEST } from '../create-tamagui-constants'
 import { templates } from '../templates'
 
 const open = require('opn')
@@ -38,7 +39,7 @@ export const cloneStarter = async (
   //   process.exit(1)
   // }
   await copy(starterDir, resolvedProjectPath)
-  execSync(`rm -rf ${resolvedProjectPath}/.git`)
+  await rimraf(`${resolvedProjectPath}/.git`)
 
   console.log(chalk.green(`${projectName} created!`))
   console.log()
@@ -49,7 +50,9 @@ async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry 
 
   console.log(`Setting up ${chalk.blueBright(targetGitDir)}...`)
 
-  cd(repoRoot)
+  if (IS_TEST) {
+    cd(repoRoot)
+  }
 
   if (process.env.GITHUB_HEAD_REF) {
     try {
@@ -87,12 +90,24 @@ async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry 
 
     const cmd = `git clone --branch ${branch} ${
       isInSubDir ? '--depth 1 --sparse --filter=blob:none ' : ''
-    }${sourceGitRepo} ${targetGitDir}`
-    console.log(`$ ${cmd}`)
-    console.log()
+    }${sourceGitRepo} "${targetGitDir}"`
 
     try {
-      execSync(cmd)
+      try {
+        console.log(`$ ${cmd}`)
+        console.log()
+        execSync(cmd)
+      } catch (error) {
+        if (cmd.includes('https://')) {
+          console.log(`https failed - trying with ssh now...`)
+          const sshCmd = cmd.replace('https://', 'ssh://')
+          console.log(`$ ${sshCmd}`)
+          console.log()
+          execSync(sshCmd)
+        } else {
+          throw error
+        }
+      }
     } catch (error) {
       if (error instanceof Error) {
         if (template.value === 'takeout-starter') {

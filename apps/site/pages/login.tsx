@@ -1,6 +1,6 @@
 import { SupabaseProvider } from '@components/SupabaseProvider'
 import { getDefaultLayout } from '@lib/getDefaultLayout'
-import { useSupabaseClient } from '@supabase/auth-helpers-react'
+import { useSessionContext, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { Provider } from '@supabase/supabase-js'
 import { LogoIcon } from '@tamagui/logo'
 import { useUser } from 'hooks/useUser'
@@ -27,6 +27,7 @@ export default function SignInPage(props) {
 function SignIn() {
   const router = useRouter()
   const supabaseClient = useSupabaseClient()
+  const supabaseSession = useSessionContext()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPasswordInput, setShowPasswordInput] = useState(false)
@@ -81,13 +82,7 @@ function SignIn() {
   }
 
   const handleOAuthSignIn = async (provider: Provider) => {
-    const redirectTo = `${window.location.origin}/login?${new URLSearchParams(
-      typeof router.query.redirect_to === 'string'
-        ? {
-            redirect_to: router.query.redirect_to,
-          }
-        : undefined
-    ).toString()}`
+    const redirectTo = `${window.location.origin}${router.asPath}`
     setLoading(true)
 
     const { error } = await supabaseClient.auth.signInWithOAuth({
@@ -101,6 +96,14 @@ function SignIn() {
       setMessage({ type: 'error', content: error.message })
     }
     setLoading(false)
+  }
+
+  if (supabaseSession.isLoading) {
+    return (
+      <YStack ai="center" flex={1} jc="center">
+        <Spinner size="large" />
+      </YStack>
+    )
   }
 
   if (!user)

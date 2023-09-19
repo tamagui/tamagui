@@ -1,4 +1,3 @@
-import { Color, colorLog } from '@tamagui/cli-color'
 import {
   TamaguiOptions,
   createExtractor,
@@ -6,8 +5,6 @@ import {
   getPragmaOptions,
 } from '@tamagui/static'
 import type { LoaderContext } from 'webpack'
-
-import { extractedInfoByFile, stylePathToFilePath } from './css'
 
 Error.stackTraceLimit = Infinity
 
@@ -23,16 +20,18 @@ process.env.TAMAGUI_TARGET = 'web'
 
 export const loader = async function loader(
   this: LoaderContext<TamaguiOptions>,
-  sourceIn: Buffer | string,
-  info
+  sourceIn: Buffer | string
 ) {
   this.cacheable(true)
   const callback = this.async()
   const source = sourceIn.toString()
 
   try {
-    const threaded = this.emitFile === undefined
-    const options: TamaguiOptions = { ...this.getOptions() }
+    const options: TamaguiOptions = {
+      // @ts-ignore
+      platform: 'web',
+      ...this.getOptions(),
+    }
     const sourcePath = `${this.resourcePath}`
 
     const { shouldDisable, shouldPrintDebug } = getPragmaOptions({
@@ -47,15 +46,13 @@ export const loader = async function loader(
 
     if (shouldDisable) {
       if (shouldPrintDebug) {
-        // rome-ignore lint/nursery/noConsoleLog: ok
+        // biome-ignore lint/suspicious/noConsoleLog: ok
         console.log('Disabling on file via pragma')
       }
       return callback(null, source)
     }
 
-    const cssPath = threaded
-      ? `${sourcePath}.tamagui.css`
-      : `${sourcePath}.${index++}.tamagui.css`
+    const cssPath = `${sourcePath}.${index++}.tamagui.css`
 
     const extracted = await extractToClassNames({
       extractor,
@@ -71,20 +68,10 @@ export const loader = async function loader(
 
     // add import to css
     if (extracted.styles) {
-      const cssQuery = threaded
-        ? `cssData=${Buffer.from(extracted.styles).toString('base64')}`
-        : `cssPath=${cssPath}`
+      const cssQuery = `cssData=${Buffer.from(extracted.styles).toString('base64')}`
       const remReq = this.remainingRequest
       const importPath = `${cssPath}!=!${CSS_LOADER_PATH}?${cssQuery}!${remReq}`
       extracted.js = `${extracted.js}\n\nrequire(${JSON.stringify(importPath)})`
-    }
-
-    extractedInfoByFile.set(sourcePath, extracted)
-
-    if (!threaded) {
-      if (extracted.stylesPath) {
-        stylePathToFilePath.set(extracted.stylesPath, sourcePath)
-      }
     }
 
     callback(null, extracted.js, extracted.map)
@@ -94,7 +81,7 @@ export const loader = async function loader(
     console.error('Tamagui Webpack Loader Error:\n', `  ${message}\n`)
 
     if (message.includes('Cannot create proxy')) {
-      // rome-ignore lint/nursery/noConsoleLog: ok
+      // biome-ignore lint/suspicious/noConsoleLog: ok
       console.log(
         'This is usually due to components not loading at build-time. Check for logs just below the line above:'
       )

@@ -1,6 +1,99 @@
-// flat transform props
-import { isAndroid } from '@tamagui/constants'
-export const stylePropsTransform = Object.freeze({
+import { isAndroid, isWeb } from '@tamagui/constants'
+
+// generally organizing this so we don't duplicate things so its a bit weird
+
+const placeHolderTextColors = {
+  placeholderTextColor: true,
+}
+
+export const validStylesOnBaseProps = {
+  ...placeHolderTextColors,
+}
+
+const textColors = {
+  color: true,
+  ...placeHolderTextColors,
+  textDecorationColor: true,
+  textShadowColor: true,
+}
+
+// used for propMapping to find the right token category
+// just specificy the least costly, all else go to `space` (most keys - we can exclude)
+export const tokenCategories = {
+  radius: {
+    borderRadius: true,
+    borderTopLeftRadius: true,
+    borderTopRightRadius: true,
+    borderBottomLeftRadius: true,
+    borderBottomRightRadius: true,
+  },
+  size: {
+    width: true,
+    height: true,
+    minWidth: true,
+    minHeight: true,
+    maxWidth: true,
+    maxHeight: true,
+  },
+  zIndex: {
+    zIndex: true,
+  },
+  color: {
+    backgroundColor: true,
+    borderColor: true,
+    borderBottomColor: true,
+    borderTopColor: true,
+    borderLeftColor: true,
+    borderRightColor: true,
+    borderEndColor: true,
+    borderStartColor: true,
+    shadowColor: true,
+    ...textColors,
+    ...(process.env.TAMAGUI_TARGET === 'web' && {
+      outlineColor: true,
+    }),
+  },
+}
+
+export const stylePropsUnitless = {
+  WebkitLineClamp: true,
+  animationIterationCount: true,
+  aspectRatio: true,
+  borderImageOutset: true,
+  borderImageSlice: true,
+  borderImageWidth: true,
+  columnCount: true,
+  flex: true,
+  flexGrow: true,
+  flexOrder: true,
+  flexPositive: true,
+  flexShrink: true,
+  flexNegative: true,
+  fontWeight: true,
+  gridRow: true,
+  gridRowEnd: true,
+  gridRowGap: true,
+  gridRowStart: true,
+  gridColumn: true,
+  gridColumnEnd: true,
+  gridColumnGap: true,
+  gridColumnStart: true,
+  lineClamp: true,
+  opacity: true,
+  order: true,
+  orphans: true,
+  tabSize: true,
+  widows: true,
+  zIndex: true,
+  zoom: true,
+  scale: true,
+  scaleX: true,
+  scaleY: true,
+  scaleZ: true,
+  shadowOpacity: true,
+}
+
+export const stylePropsTransform = {
   x: true,
   y: true,
   scale: true,
@@ -14,58 +107,35 @@ export const stylePropsTransform = Object.freeze({
   rotateY: true,
   rotateX: true,
   rotateZ: true,
-})
+}
 
-export const validStylesOnBaseProps = Object.freeze({
-  placeholderTextColor: true,
-})
-
-export const stylePropsView = Object.freeze({
+export const stylePropsView = {
   backfaceVisibility: true,
-  backgroundColor: true,
-  borderBottomColor: true,
   borderBottomEndRadius: true,
-  borderBottomLeftRadius: true,
-  borderBottomRightRadius: true,
   borderBottomStartRadius: true,
   borderBottomWidth: true,
-  borderColor: true,
-  borderEndColor: true,
-  borderLeftColor: true,
   borderLeftWidth: true,
-  borderRadius: true,
-  borderRightColor: true,
   borderRightWidth: true,
-  borderStartColor: true,
   borderStyle: true,
-  borderTopColor: true,
   borderTopEndRadius: true,
-  borderTopLeftRadius: true,
-  borderTopRightRadius: true,
   borderTopStartRadius: true,
   borderTopWidth: true,
   borderWidth: true,
-  opacity: true,
   transform: true,
   alignContent: true,
   alignItems: true,
   alignSelf: true,
-  aspectRatio: true,
   borderEndWidth: true,
   borderStartWidth: true,
   bottom: true,
   display: true,
   end: true,
-  flex: true,
   flexBasis: true,
   flexDirection: true,
-  flexGrow: true,
-  flexShrink: true,
   flexWrap: true,
   gap: true,
   columnGap: true,
   rowGap: true,
-  height: true,
   justifyContent: true,
   left: true,
   margin: true,
@@ -77,10 +147,6 @@ export const stylePropsView = Object.freeze({
   marginStart: true,
   marginTop: true,
   marginVertical: true,
-  maxHeight: true,
-  maxWidth: true,
-  minHeight: true,
-  minWidth: true,
   overflow: true,
   padding: true,
   paddingBottom: true,
@@ -95,15 +161,16 @@ export const stylePropsView = Object.freeze({
   right: true,
   start: true,
   top: true,
-  width: true,
-  zIndex: true,
   direction: true,
-  shadowColor: true,
   shadowOffset: true,
-  shadowOpacity: true,
   shadowRadius: true,
+  ...tokenCategories.color,
+  ...tokenCategories.radius,
+  ...tokenCategories.size,
+  ...tokenCategories.radius,
   ...validStylesOnBaseProps,
   ...stylePropsTransform,
+  ...stylePropsUnitless,
 
   // allow a few web only ones
 
@@ -122,15 +189,14 @@ export const stylePropsView = Object.freeze({
     pointerEvents: true,
     boxSizing: true,
     boxShadow: true,
-    outlineColor: true,
     outlineStyle: true,
     outlineOffset: true,
     outlineWidth: true,
   }),
   ...(isAndroid ? { elevationAndroid: true } : {}),
-})
+}
 
-export const stylePropsFont = Object.freeze({
+export const stylePropsFont = {
   fontFamily: true,
   fontSize: true,
   fontStyle: true,
@@ -138,16 +204,14 @@ export const stylePropsFont = Object.freeze({
   letterSpacing: true,
   lineHeight: true,
   textTransform: true,
-})
+}
 
-export const stylePropsTextOnly = Object.freeze({
-  color: true,
+export const stylePropsTextOnly = {
   ...stylePropsFont,
   textAlign: true,
   textDecorationLine: true,
   textDecorationStyle: true,
-  textDecorationColor: true,
-  textShadowColor: true,
+  ...textColors,
   textShadowOffset: true,
   textShadowRadius: true,
 
@@ -163,24 +227,24 @@ export const stylePropsTextOnly = Object.freeze({
     WebkitLineClamp: true,
     WebkitBoxOrient: true,
   }),
-})
+}
 
-export const stylePropsText = Object.freeze({
+export const stylePropsText = {
   ...stylePropsView,
   ...stylePropsTextOnly,
-})
+}
 
 export const stylePropsAll = stylePropsText
 
-export const validPseudoKeys = Object.freeze({
+export const validPseudoKeys = {
   enterStyle: true,
   exitStyle: true,
   hoverStyle: true,
   pressStyle: true,
   focusStyle: true,
-})
+}
 
-export const validStyles = Object.freeze({
+export const validStyles = {
   ...validPseudoKeys,
   ...stylePropsView,
-})
+}

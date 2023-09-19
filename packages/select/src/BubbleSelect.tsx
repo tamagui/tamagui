@@ -1,5 +1,5 @@
-import { usePrevious } from '@radix-ui/react-use-previous'
 import { useComposedRefs } from '@tamagui/compose-refs'
+import { usePrevious } from '@tamagui/use-previous'
 import * as React from 'react'
 
 /* -----------------------------------------------------------------------------------------------*/
@@ -18,7 +18,7 @@ const BubbleSelect = React.forwardRef<
     const selectProto = window.HTMLSelectElement.prototype
     const descriptor = Object.getOwnPropertyDescriptor(
       selectProto,
-      'value',
+      'value'
     ) as PropertyDescriptor
     const setValue = descriptor.set
     if (prevValue !== value && setValue) {

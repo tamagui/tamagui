@@ -16,6 +16,10 @@ const chromelessStyle = {
   backgroundColor: 'transparent',
   borderColor: 'transparent',
   shadowColor: 'transparent',
+
+  hoverStyle: {
+    borderColor: 'transparent',
+  },
 }
 
 export const themeableVariants = {

@@ -4,9 +4,9 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "start": "TAMAGUI_TARGET=native npx expo start -c",
-    "android": "TAMAGUI_TARGET=native npx expo run:android",
-    "ios": "TAMAGUI_TARGET=native npx expo run:ios",
+    "start": "npx expo start -c",
+    "android": "npx expo run:android",
+    "ios": "npx expo run:ios",
     "eject": "npx expo eject"
   },
   "dependencies": {
@@ -16,7 +16,7 @@
     "@types/react-native": "^0.71.3",
     "app": "0.0.0",
     "babel-plugin-module-resolver": "^4.1.0",
-    "burnt": "^0.10.0",
+    "burnt": "^0.11.0",
     "expo": "^48.0.7",
     "expo-constants": "^14.2.1",
     "expo-dev-client": "^2.1.5",

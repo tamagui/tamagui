@@ -32,11 +32,17 @@ export class WebSocketRouter {
         const { pathname } = new URL(request.url || '', 'http://localhost')
         let matched = false
 
-        console.log('check for upgrade', pathname, 'servers?')
+        if (pathname === '/inspector/device') {
+          // ignore
+          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+          // socket.destroy()
+          return
+        }
 
         for (const server of this.servers) {
           if (server.shouldUpgrade(pathname)) {
             matched = true
+            // biome-ignore lint/suspicious/noConsoleLog: <explanation>
             server.upgrade(request, socket, head)
             break
           }
@@ -48,6 +54,7 @@ export class WebSocketRouter {
             pathname,
           })
           socket.destroy()
+        } else {
         }
       }
     )

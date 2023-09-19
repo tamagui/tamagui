@@ -26,11 +26,7 @@ function setValueForStyles(node, styles) {
       continue
     }
     const isCustomProperty = styleName.indexOf('--') === 0
-    const styleValue = dangerousStyleValue(
-      styleName,
-      styles[styleName],
-      isCustomProperty,
-    )
+    const styleValue = dangerousStyleValue(styleName, styles[styleName], isCustomProperty)
     if (styleName === 'float') {
       styleName = 'cssFloat'
     }

@@ -16,7 +16,7 @@ cd into the project using:
   ${chalk.green('cd')} ${projectName}
 `)
   }
-  // rome-ignore lint/nursery/noConsoleLog: <explanation>
+  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
   console.log(`
   To start the Next.js development server, run:
     ${chalk.green(runCommand('web'))}
@@ -25,11 +25,14 @@ cd into the project using:
     ${chalk.green(runCommand('native'))}
 
   You can also create Expo development builds by doing:
+  
     ${chalk.green(`cd apps/expo`)} 
     then:
     ${chalk.green(runCommand('ios'))} 
     or...
     ${chalk.green(runCommand('android'))}
+
+  Be sure to replace [yourprojectsname] with the uid you'd like for your app.
 `)
 }
 

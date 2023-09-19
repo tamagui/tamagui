@@ -1,12 +1,10 @@
-import { isClient, isRSC, isServer, isWeb } from '@tamagui/constants'
+import { isClient, isServer, isWeb } from '@tamagui/constants'
 import * as React from 'react'
 
-import { ButtonNestingContext } from '../contexts/ButtonNestingContext'
-import { TextAncestorContext } from '../contexts/TextAncestorContext'
+import { ComponentContext } from '../contexts/ComponentContext'
 import { useMediaListeners } from '../hooks/useMedia'
 import type { TamaguiProviderProps } from '../types'
 import { ThemeProvider } from './ThemeProvider'
-import { AnimationDriverContext } from '../contexts/AnimationDriverContext'
 
 export function TamaguiProvider({
   children,
@@ -14,17 +12,6 @@ export function TamaguiProvider({
   config,
   ...themePropsProvider
 }: TamaguiProviderProps) {
-  if (isRSC) {
-    return (
-      <span
-        style={{ display: 'contents' }}
-        className={`t_${Object.keys(config.themes)[0] || 'light'}`}
-      >
-        {children}
-      </span>
-    )
-  }
-
   if (!(isWeb && isServer)) {
     useMediaListeners(config)
   }
@@ -50,21 +37,15 @@ export function TamaguiProvider({
   }
 
   return (
-    <ButtonNestingContext.Provider value={false}>
-      <TextAncestorContext.Provider value={false}>
-        <AnimationDriverContext.Provider value={config.animations}>
-          <ThemeProvider
-            themeClassNameOnRoot={config.themeClassNameOnRoot}
-            disableRootThemeClass={config.disableRootThemeClass}
-            {...themePropsProvider}
-            defaultTheme={
-              themePropsProvider.defaultTheme ?? Object.keys(config.themes)[0]
-            }
-          >
-            {children}
-          </ThemeProvider>
-        </AnimationDriverContext.Provider>
-      </TextAncestorContext.Provider>
-    </ButtonNestingContext.Provider>
+    <ComponentContext.Provider animationDriver={config.animations}>
+      <ThemeProvider
+        themeClassNameOnRoot={config.themeClassNameOnRoot}
+        disableRootThemeClass={config.disableRootThemeClass}
+        {...themePropsProvider}
+        defaultTheme={themePropsProvider.defaultTheme ?? Object.keys(config.themes)[0]}
+      >
+        {children}
+      </ThemeProvider>
+    </ComponentContext.Provider>
   )
 }

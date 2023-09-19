@@ -1,4 +1,3 @@
-import { RootStore } from '@protected/studio/state/RootStore'
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import {
   FontSizeTokens,
@@ -7,6 +6,7 @@ import {
   H4,
   Paragraph,
   SizableTextProps,
+  SizeTokens,
   SpaceTokens,
   Spacer,
   Theme,
@@ -51,7 +51,7 @@ const lessBouncyOpacityClamped = [
   },
 ] as any
 
-type SlideStepItem =
+export type SlideStepItem =
   | {
       type: 'fullscreen'
       content: any
@@ -63,6 +63,7 @@ type SlideStepItem =
   | {
       type: 'callout'
       content: any
+      size?: SizeTokens
       image?: {
         width: number
         height: number
@@ -91,6 +92,11 @@ type SlideStepItem =
       type: 'vertical'
       title?: any
       variant?: 'center-vertically'
+      content: SlideStepItem[]
+    }
+  | {
+      type: 'horizontal'
+      title?: any
       content: SlideStepItem[]
     }
   | {
@@ -229,11 +235,13 @@ const SlideInner = (props: SlideProps) => {
 
 export const ShowAllStepsContext = createContext(false)
 
+const colors = ['red', 'orange', 'blue', 'purple', 'green', 'pink', 'yellow']
+
 function useGlows(variant: SlideProps['variant']) {
   const colorThemeName = useThemeName().replace('dark_', '').replace('light_', '')
-  const next = RootStore.colors.indexOf(colorThemeName) + 1
-  const nextIndex = next % RootStore.colors.length
-  const altColorName = RootStore.colors[nextIndex]
+  const next = colors.indexOf(colorThemeName) + 1
+  const nextIndex = next % colors.length
+  const altColorName = colors[nextIndex]
 
   const glow = useHoverGlow({
     resist: 65,
@@ -366,6 +374,18 @@ function getTextContent(
                 </YStack>
               )
 
+            case 'horizontal':
+              return (
+                <XStack ai="center" jc="center" h="100%">
+                  {!!item.title && (
+                    <H4 size="$10" als="center" mb="$4" color="$color9">
+                      {item.title}
+                    </H4>
+                  )}
+                  <XStack>{getTextContent(item.content)}</XStack>
+                </XStack>
+              )
+
             case 'split-horizontal':
               return (
                 <XStack
@@ -421,7 +441,7 @@ function getTextContent(
                   color="$color11"
                   px="$3"
                   py="$2"
-                  lineHeight={44}
+                  mr="$4"
                   fontSize={32}
                   {...(size && {
                     size,
@@ -463,14 +483,16 @@ function getTextContent(
             }
 
             case 'callout': {
-              let size = '$12' as any
+              let size = item.size ?? ('$12' as any)
 
-              if (typeof item.content === 'string') {
-                const sizeNum = Math.min(
-                  Math.max(11, Math.round(430 / item.content.length)),
-                  15
-                )
-                size = `$${sizeNum}`
+              if (!item.size) {
+                if (typeof item.content === 'string') {
+                  const sizeNum = Math.min(
+                    Math.max(11, Math.round(430 / item.content.length)),
+                    15
+                  )
+                  size = `$${sizeNum}`
+                }
               }
 
               return (

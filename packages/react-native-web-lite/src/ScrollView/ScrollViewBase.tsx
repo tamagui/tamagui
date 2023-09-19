@@ -109,10 +109,7 @@ const ScrollViewBase = React.forwardRef((props: Props, forwardedRef) => {
       if (scrollState.current.isScrolling) {
         // Scroll last tick may have changed, check if we need to notify
         if (
-          shouldEmitScrollEvent(
-            scrollState.current.scrollLastTick,
-            scrollEventThrottle,
-          )
+          shouldEmitScrollEvent(scrollState.current.scrollLastTick, scrollEventThrottle)
         ) {
           handleScrollTick(e)
         }
@@ -143,8 +140,7 @@ const ScrollViewBase = React.forwardRef((props: Props, forwardedRef) => {
   }
 
   const hideScrollbar =
-    showsHorizontalScrollIndicator === false ||
-    showsVerticalScrollIndicator === false
+    showsHorizontalScrollIndicator === false || showsVerticalScrollIndicator === false
 
   return (
     <View

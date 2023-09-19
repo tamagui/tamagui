@@ -88,9 +88,8 @@ function SizeSection({ section }: { section: Section }) {
                     ]?.val,
                   })}
                   {...(section === 'radius' && {
-                    // @ts-ignore
-                    size: allTokens.size[token]?.val,
-                    borderRadius: tokens[token]?.val,
+                    size: allTokens.size[token]?.val as any,
+                    borderRadius: tokens[token]?.val as any,
                   })}
                 />
               </XStack>

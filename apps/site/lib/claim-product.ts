@@ -1,7 +1,7 @@
 import { Database, Json } from '@lib/supabase-types'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
-import { inviteCollaboratorToRepo } from '@protected/_utils/github'
 import { User } from '@supabase/auth-helpers-nextjs'
+import { inviteCollaboratorToRepo } from 'protected/_utils/github'
 
 export const claimProductAccess = async (
   subscription: Database['public']['Tables']['subscriptions']['Row'],
@@ -18,6 +18,7 @@ export const claimProductAccess = async (
   // check the product claim type and call the related claim function
   switch (metadata.claim_type) {
     case 'repo_access':
+      // @ts-ignore
       claimData = await claimRepositoryAccess({ subscription, product, user, metadata })
       break
     default:
@@ -27,7 +28,7 @@ export const claimProductAccess = async (
   await supabaseAdmin.from('claims').insert({
     product_id: product.id,
     subscription_id: subscription.id,
-    data: claimData.data,
+    data: { claim_type: metadata.claim_type, ...claimData.data },
   })
 
   return claimData
@@ -48,7 +49,7 @@ type ClaimFunction = (args: {
   /**
    * Will be saved to DB and be used for un-claiming - be careful with changing the shape of this
    */
-  data: Json
+  data: { [key: string]: Json | undefined }
 }>
 
 const claimRepositoryAccess: ClaimFunction = async ({ user, metadata }) => {
@@ -60,8 +61,10 @@ const claimRepositoryAccess: ClaimFunction = async ({ user, metadata }) => {
     .single()
 
   if (userPrivateRes.error) {
-    if (userPrivateRes.error.message.includes("rows returned")) {
-      throw new Error("No GitHub connection found. Try logging out and logging in with GitHub again.")
+    if (userPrivateRes.error.message.includes('rows returned')) {
+      throw new Error(
+        'No GitHub connection found. Try logging out and logging in with GitHub again.'
+      )
     }
     throw userPrivateRes.error
   }
@@ -85,7 +88,7 @@ const claimRepositoryAccess: ClaimFunction = async ({ user, metadata }) => {
         node_id: githubUser.node_id,
         login: githubUser.login,
       },
-      repo_name: repoName,
+      repository_name: repoName,
       permission,
     },
     message: 'Check your email for an invitation to the repository.',

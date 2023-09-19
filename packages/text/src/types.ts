@@ -8,6 +8,8 @@ export type TextContextStyles = {
   fontStyle?: SizableTextProps['fontStyle']
   letterSpacing?: SizableTextProps['letterSpacing']
   textAlign?: SizableTextProps['textAlign']
+  ellipse?: SizableTextProps['ellipse']
+  maxFontSizeMultiplier?: number
 }
 
 export type TextParentStyles = TextContextStyles & {

@@ -17,7 +17,7 @@ export function TestModal() {
         <TDialog.Sheet modal snapPoints={[20, 40, 80]}>
           <TDialog.Sheet.Handle
             h={10}
-            bc="$core8"
+            bc="$background"
             o={1} // Uncommenting this causes a rare crash on native iOS Safari
             width="25%"
             m="$0"

@@ -1,8 +1,8 @@
-import { Variable, isVariable } from '@tamagui/web'
+import { Variable, VariableValGeneric, isVariable } from '@tamagui/web'
 import { getTokens } from '@tamagui/web'
 
 // technically number | undefined just for compat with the generic VariableVal
-type GetTokenBase = Variable | string | number | undefined
+type GetTokenBase = Variable | string | number | undefined | VariableValGeneric
 
 type GetTokenOptions = {
   shift?: number

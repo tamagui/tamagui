@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/animations-react-native",
-  "version": "1.38.0",
+  "version": "1.68.2",
   "source": "src/index.ts",
   "sideEffects": [
     "./polyfill.js"
@@ -15,13 +15,13 @@
     "dist"
   ],
   "dependencies": {
-    "@tamagui/use-presence": "1.38.0",
-    "@tamagui/web": "1.38.0"
+    "@tamagui/use-presence": "1.68.2",
+    "@tamagui/web": "1.68.2"
   },
   "devDependencies": {
-    "@tamagui/build": "1.38.0",
+    "@tamagui/build": "1.68.2",
     "react": "^18.2.0",
-    "react-native": "^0.71.7"
+    "react-native": "^0.72.1"
   },
   "peerDependencies": {
     "react": "*",

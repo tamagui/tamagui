@@ -1,15 +1,11 @@
 import * as React from 'react'
 import { expect, test } from 'vitest'
 
-import { extractForNative, extractForWeb } from './lib/extract'
-
-process.env.IS_STATIC = ''
+import { extractForWeb } from './lib/extract'
 
 window['React'] = React
 
 test('conditional styles get full base styles merged onto + shorthand', async () => {
-  console.log('RUN')
-
   // one sanity check debug output test
   const output = await extractForWeb(
     `
@@ -22,6 +18,7 @@ import { Stack } from '@tamagui/core'
   `,
     {
       options: {
+        platform: 'web',
         components: ['@tamagui/core'],
       },
     }
@@ -44,6 +41,7 @@ test('className + conditional styles get full base styles merged onto + shorthan
   `,
     {
       options: {
+        platform: 'web',
         components: ['@tamagui/core'],
       },
     }

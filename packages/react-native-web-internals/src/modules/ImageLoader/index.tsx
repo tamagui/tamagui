@@ -85,7 +85,7 @@ const ImageLoader = {
   getSize(
     uri: string,
     success: (width: number, height: number) => void,
-    failure: () => void,
+    failure: () => void
   ) {
     let complete = false
     const interval = setInterval(callback, 16)
@@ -149,7 +149,7 @@ const ImageLoader = {
           ImageUriCache.remove(uri)
           resolve()
         },
-        reject,
+        reject
       )
     })
   },

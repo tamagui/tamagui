@@ -7,7 +7,7 @@ type DebounceSettings = {
 export function debounce<A extends Function>(
   func: A,
   wait?: number,
-  leading?: boolean,
+  leading?: boolean
 ): A & {
   cancel: () => void
 } {
@@ -45,12 +45,12 @@ export function useDebounce<
   A extends (...args: any) => any | undefined | null,
   DebouncedFn extends A & {
     cancel: () => void
-  },
+  }
 >(
   fn: A,
   wait: number,
   options: DebounceSettings = defaultOpts,
-  mountArgs: any[] = [],
+  mountArgs: any[] = []
 ): DebouncedFn {
   const dbEffect = useRef<DebouncedFn | null>(null)
 

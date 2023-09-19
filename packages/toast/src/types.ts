@@ -69,4 +69,3 @@ export type CreateNativeToastsFn = (
   | boolean
 
 export type HideNativeToastsFn = (ref?: NativeToastRef) => void
-
