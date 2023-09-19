@@ -58,7 +58,7 @@
       [
         "expo-notifications",
         {
-          "icon": "./assets/notification-icon.png",
+          "icon": "./assets/Belaytionship-180.png",
           "color": "#000000",
           "androidMode": "collapse",
           "androidCollapsedTitle": "Belaytionship",
