@@ -158,6 +158,7 @@ export function ClimbsTab() {
     setSelectedClimb(climb)
     setOpen(true)
   }, [])
+
   return (
     <YStack ai="center" gap="$10">
       <FlatList
