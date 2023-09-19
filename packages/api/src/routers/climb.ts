@@ -5,31 +5,8 @@ import { z } from 'zod'
 import {
   add,
 } from 'date-fns'
-import { Expo, ExpoPushMessage } from 'expo-server-sdk';
-const sendNotifications = async () => {
-
-  const chunks = expo.chunkPushNotifications([]);
-
-  for (const chunk of chunks) {
-
-    try {
-      await expo.sendPushNotificationsAsync(chunk)
-    }
-
-    catch (error) {
-      console.log(JSON.stringify(error));
-
-      // The important part:
-      // error.details = { EXPO_PROJECT_NAME: [ ExponentPushTokens ] }
-    }
-  }
-}
-// Create a new Expo SDK client
-// optionally providing an access token if you have enabled push security
-const expo = new Expo({ accessToken: process.env.EXPO_ACCESS_TOKEN });
-
-// // Create the messages that you want to send to clients
-const messages = [];
+import { ExpoPushMessage } from 'expo-server-sdk'
+import { sendNotifications } from '../notifications'
 // for (let pushToken of somePushTokens) {
 //   // Each push token looks like ExponentPushToken[xxxxxxxxxxxxxxxxxxxxxx]
 
@@ -188,49 +165,29 @@ export const climbRouter = createTRPCRouter({
       throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' })
     }
 
-    const { data } = await supabase.from('profiles').select(`*`).eq('id', [climb.data.created_by, session.user.id])
-    const [climber, belayer] = data ?? []
-    if (!climber?.expo_token || !belayer?.expo_token) {
+    const { data: climber = [] } = await supabase.from('profiles').select(`*`).eq('id', climb.data.created_by)
+    const { data: belayer = [] } = await supabase.from('profiles').select(`*`).eq('id', session.user?.id)
+    console.log(climber?.[0]?.expo_token, belayer?.[0]?.expo_token, 'aaaaaaaa')
+    const c = climber?.[0]
+    const b = belayer?.[0]
+    console.log(c)
+    if (!c || !b) {
       throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Missing expo token' })
     }
 
     const messages: ExpoPushMessage[] = [{
-      to: climber.expo_token,
+      to: c.expo_token ?? '',
       sound: 'default',
-      body: `${belayer?.first_name} has joined your climb`,
+      body: `${b.first_name} has joined your climb`,
       data: { withSome: 'data' },
     }, {
-      to: belayer.expo_token,
+      to: b.expo_token ?? '',
       sound: 'default',
-      body: `you are scheduled to climb with ${climber?.first_name}`,
+      body: `you are scheduled to climb with ${c.first_name}`,
       data: { withSome: 'data' },
     }]
-    const validMessages = messages.filter(({ to }) => {
-      return Expo.isExpoPushToken(to)
-    })
-    if (validMessages.length === messages.length) {
-      const chunks = expo.chunkPushNotifications(messages);
-      for (const chunk of chunks) {
-        await expo.sendPushNotificationsAsync(chunk)
-      }
-    }
 
-    // TODO: Need to clean up the expo tokens
-    // Need to get tickets and then make sure
-    // that we're not sending to invalid tokens to apple or google
-    // and get fucked
-
-
-    //  messages.push({
-    //     to: pushToken,
-    //     sound: 'default',
-    //     body: 'This is a test notification',
-    //     data: { withSome: 'data' },
-    //   })
-
-
-
-
+    sendNotifications(messages)
     return true
 
   }),
