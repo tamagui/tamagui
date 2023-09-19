@@ -10,6 +10,7 @@ import { cwd } from 'process'
 import chalk from 'chalk'
 import Commander from 'commander'
 import { detect } from 'detect-package-manager'
+import { existsSync, readFileSync, writeFileSync } from 'fs-extra'
 import { $, cd } from 'zx'
 
 import packageJson from '../package.json'
@@ -135,6 +136,9 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
       process.exit(1)
     }
 
+    // change root package.json's name to project name
+    updatePackageJsonName(projectName, resolvedProjectPath)
+
     console.log('Installing packages. This might take a couple of minutes.')
     console.log()
 
@@ -175,6 +179,18 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
 
   console.log()
   console.log(chalk.gray(tamaguiDuckAsciiArt))
+}
+
+function updatePackageJsonName(projectName: string, dir: string) {
+  const packageJsonPath = path.join(dir, 'package.json')
+  if (existsSync(packageJsonPath)) {
+    const content = readFileSync(packageJsonPath).toString()
+    const contentWithUpdatedName = content.replace(
+      /("name": ")(.*)(",)/,
+      `$1${projectName}$3`
+    )
+    writeFileSync(packageJsonPath, contentWithUpdatedName)
+  }
 }
 
 run()
