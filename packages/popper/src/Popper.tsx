@@ -54,7 +54,7 @@ export type PopperContextValue = UseFloatingReturn & {
 
 export const [createPopperContext, createPopperScope] = createContextScope("Popper");
 export const [PopperProvider, usePopperContext] = createPopperContext<PopperContextValue>(
-  {} as any,
+  "Popper"
 );
 
 export type PopperProps = {

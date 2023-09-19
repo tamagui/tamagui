@@ -13,7 +13,6 @@ import {
   Theme,
   View,
   composeEventHandlers,
-  createStyledContext,
   isWeb,
   useEvent,
   useGet,
@@ -32,10 +31,8 @@ import {
   PopperContent,
   PopperContentFrame,
   PopperContentProps,
-  PopperProvider,
   createPopperScope,
   PopperProps,
-  usePopperContext,
 } from "@tamagui/popper";
 import { Portal, PortalHost, PortalItem } from "@tamagui/portal";
 import { RemoveScroll, RemoveScrollProps } from "@tamagui/remove-scroll";
@@ -80,9 +77,8 @@ type ScopedProps<P> = P & { __scopePopover?: Scope };
 export const [createPopoverContext, createPopoverScope] = createContextScope(POPOVER_NAME, [
   createPopperScope,
 ]);
-export const [PopoverProvider, usePopoverContext] = createPopoverContext<PopoverContextValue>(
-  {} as any,
-);
+export const [PopoverProvider, usePopoverContext] =
+  createPopoverContext<PopoverContextValue>("Popover");
 
 const usePopperScope = createPopperScope();
 /* -------------------------------------------------------------------------------------------------
@@ -92,7 +88,7 @@ const usePopperScope = createPopperScope();
 export type PopoverAnchorProps = YStackProps;
 const ANCHOR_NAME = "PopoverAnchor";
 
-export const PopoverAnchor = React.forwardRef<TamaguiElement, PopoverAnchorProps>(
+export const PopoverAnchor = React.forwardRef<TamaguiElement, ScopedProps<PopoverAnchorProps>>(
   function PopoverAnchor(props: ScopedProps<PopoverAnchorProps>, forwardedRef) {
     const { __scopePopover, ...rest } = props;
     const context = usePopoverContext(ANCHOR_NAME, __scopePopover);
@@ -190,7 +186,7 @@ export const PopoverContent = PopperContentFrame.extractable(
     }, [context.open]);
 
     return (
-      <PopoverContentPortal zIndex={props.zIndex}>
+      <PopoverContentPortal __scopePopover={__scopePopover} zIndex={props.zIndex}>
         <Stack pointerEvents={context.open ? "auto" : "none"}>
           <PopoverContentImpl
             __scopePopover={__scopePopover}
