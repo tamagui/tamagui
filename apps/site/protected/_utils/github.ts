@@ -204,7 +204,7 @@ const getOrgs = async (
   })
   const json = await res.json()
 
-  return json.data.viewer.organizations.nodes
+  return json?.data?.viewer?.organizations?.nodes ?? []
 }
 
 // export const dummy = async () => {
