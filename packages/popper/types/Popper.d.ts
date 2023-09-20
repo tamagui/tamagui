@@ -1,8 +1,8 @@
-import { SizeTokens } from '@tamagui/core';
-import { Coords, OffsetOptions, Placement, Strategy, UseFloatingReturn, flip, shift } from '@tamagui/floating';
-import { SizableStackProps, YStackProps } from '@tamagui/stacks';
-import * as React from 'react';
-import { View } from 'react-native';
+import { SizeTokens } from "@tamagui/core";
+import { Coords, OffsetOptions, Placement, Strategy, UseFloatingReturn, flip, shift } from "@tamagui/floating";
+import { SizableStackProps, YStackProps } from "@tamagui/stacks";
+import * as React from "react";
+import { View } from "react-native";
 type ShiftProps = typeof shift extends (options: infer Opts) => void ? Opts : never;
 type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : never;
 export type PopperContextValue = UseFloatingReturn & {
@@ -17,7 +17,10 @@ export type PopperContextValue = UseFloatingReturn & {
     };
 };
 export declare const PopperContext: import("@tamagui/core").StyledContext<PopperContextValue>;
-export declare const usePopperContext: () => PopperContextValue;
+export declare const usePopperContext: (scope?: string | undefined) => PopperContextValue, PopperProvider: React.ProviderExoticComponent<Partial<PopperContextValue> & {
+    children?: React.ReactNode;
+    scope?: string | undefined;
+}>;
 export type PopperProps = {
     size?: SizeTokens;
     children?: React.ReactNode;
@@ -26,6 +29,7 @@ export type PopperProps = {
     allowFlip?: FlipProps | boolean;
     strategy?: Strategy;
     offset?: OffsetOptions;
+    scope?: string;
 };
 export declare function Popper(props: PopperProps): JSX.Element;
 type PopperAnchorRef = HTMLElement | View;
@@ -49,6 +53,8 @@ export declare const PopperAnchor: React.ForwardRefExoticComponent<Omit<import("
     readonly elevation?: SizeTokens | undefined;
 }>> & {
     virtualRef?: React.RefObject<any> | undefined;
+} & {
+    scope?: string | undefined;
 } & React.RefAttributes<PopperAnchorRef>>;
 type PopperContentElement = HTMLElement | View;
 export type PopperContentProps = SizableStackProps;
@@ -201,7 +207,9 @@ export declare const PopperContent: React.ForwardRefExoticComponent<Omit<import(
     readonly elevate?: boolean | undefined;
     readonly bordered?: number | boolean | undefined;
     readonly size?: SizeTokens | undefined;
-}>> & React.RefAttributes<PopperContentElement>>;
+}>> & {
+    scope?: string | undefined;
+} & React.RefAttributes<PopperContentElement>>;
 export type PopperArrowProps = YStackProps & {
     offset?: number;
     size?: SizeTokens;
@@ -224,6 +232,8 @@ export declare const PopperArrow: import("@tamagui/core").ReactComponentWithRef<
 }>> & {
     offset?: number | undefined;
     size?: SizeTokens | undefined;
+} & {
+    scope?: string | undefined;
 } & Omit<Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
     style?: import("@tamagui/core").StyleProp<React.CSSProperties | import("react-native").ViewStyle | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
@@ -245,7 +255,7 @@ export declare const PopperArrow: import("@tamagui/core").ReactComponentWithRef<
     readonly elevation?: SizeTokens | undefined;
 }, "unstyled"> & {
     readonly unstyled?: boolean | undefined;
-}>>, "size" | "zIndex" | `$${string}` | `$${number}` | "top" | "right" | "bottom" | "left" | "start" | "end" | "padding" | "width" | "height" | "offset" | "transform" | "style" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "elevation" | keyof {
+}>>, "size" | "zIndex" | `$${string}` | `$${number}` | "top" | "right" | "bottom" | "left" | "start" | "end" | "padding" | "width" | "height" | "offset" | "scope" | "transform" | "style" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "elevation" | keyof {
     columnGap?: import("@tamagui/core").SpaceValue | undefined;
     contain?: import("csstype").Property.Contain | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
