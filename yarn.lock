@@ -6811,7 +6811,7 @@ __metadata:
     esm-resolve: ^1.0.8
     file-loader: ^6.2.0
     html-webpack-plugin: ^5.5.0
-    next: ^13.4.4
+    next: ^13.5.2
     tamagui-loader: 1.68.5
     thread-loader: ^4.0.1
     url-loader: ^4.1.1
@@ -7269,7 +7269,7 @@ __metadata:
     mdx-bundler: ^9.0.1
     micro: ^10.0.1
     mini-css-extract-plugin: ^2.7.6
-    next: ^13.4.4
+    next: ^13.5.2
     next-remote-watch: ^2.0.0
     next-seo: ^6.0.0
     nextjs-progressbar: ^0.0.14
