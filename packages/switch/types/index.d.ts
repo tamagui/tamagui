@@ -7,7 +7,7 @@ export declare const Switch: import("react").ForwardRefExoticComponent<Omit<Omit
     size?: number | import("@tamagui/web").SizeTokens | undefined;
     unstyled?: boolean | undefined;
 } & import("./createSwitch").SwitchExtraProps, "children"> & {
-    children?: JSX.Element | ((checked: boolean) => JSX.Element) | undefined;
+    children?: import("react").ReactNode | ((checked: boolean) => import("react").ReactNode);
 } & import("react").RefAttributes<import("@tamagui/web").TamaguiElement>> & {
     Thumb: import("@tamagui/web").ReactComponentWithRef<Object & Omit<Omit<import("react-native").ViewProps, "display" | "children" | "style" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
         style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | import("react").CSSProperties | (import("react").CSSProperties & import("react-native").ViewStyle)>;

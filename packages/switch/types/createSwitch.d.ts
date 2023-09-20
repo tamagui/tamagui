@@ -18,7 +18,7 @@ export type SwitchExtraProps = {
     onCheckedChange?(checked: boolean): void;
 };
 export type SwitchProps = Omit<SwitchBaseProps & SwitchExtraProps, 'children'> & {
-    children?: JSX.Element | ((checked: boolean) => JSX.Element);
+    children?: React.ReactNode | ((checked: boolean) => React.ReactNode);
 };
 type SwitchComponent = TamaguiComponentExpectingVariants<SwitchProps, SwitchSharedProps & SwitchExtraProps>;
 type SwitchThumbComponent = TamaguiComponentExpectingVariants<SwitchBaseProps, SwitchSharedProps>;
@@ -29,7 +29,7 @@ export declare function createSwitch<F extends SwitchComponent, T extends Switch
 }): React.ForwardRefExoticComponent<Omit<Omit<import("react-native").ViewProps, "display" | "children" | "style" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & SwitchSharedProps & SwitchExtraProps, "children"> & {
-    children?: JSX.Element | ((checked: boolean) => JSX.Element) | undefined;
+    children?: React.ReactNode | ((checked: boolean) => React.ReactNode);
 } & React.RefAttributes<TamaguiElement>> & {
     Thumb: import("@tamagui/core").ReactComponentWithRef<Object & Omit<SwitchBaseProps, keyof Object>, any> & {
         staticConfig: import("@tamagui/core").StaticConfig;
