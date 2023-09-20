@@ -1,8 +1,7 @@
 // import './wdyr'
 
-import { CheckboxDemo, RadioGroupDemo, SwitchDemo } from '@tamagui/demos'
 import { Stack, styled } from '@tamagui/web'
-import { Anchor, SizableText, Switch, createSwitch } from 'tamagui'
+import { Anchor, SizableText, createSwitch } from 'tamagui'
 
 const X = styled(SizableText, {
   size: '$10',
