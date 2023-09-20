@@ -264,13 +264,15 @@ const RadioGroupItem = RadioGroupItemFrame.extractable(
         // eslint-disable-next-line react-hooks/rules-of-hooks
         React.useEffect(() => {
           if (!props.id) return
+          if (disabled) return
+
           return registerFocusable(props.id, {
             focusAndSelect: () => {
               onChange?.(value)
             },
             focus: () => {},
           })
-        }, [props.id, value])
+        }, [props.id, value, disabled])
       }
 
       const isDisabled = disabled || itemDisabled

@@ -87,11 +87,7 @@ declare const RadioGroupFrame: import("@tamagui/core").TamaguiComponent<Omit<imp
         style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     };
     __variantProps: {
-        readonly fullscreen?: boolean | undefined; /**
-         * Our `RovingFocusGroup` will focus the radio when navigating with arrow keys
-         * and we need to "check" it in that case. We click it to "check" it (instead
-         * of updating `context.value`) so that the radio change event fires.
-         */
+        readonly fullscreen?: boolean | undefined;
         readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
     } & {
         readonly fullscreen?: boolean | undefined;
