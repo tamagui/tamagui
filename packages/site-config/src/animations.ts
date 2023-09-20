@@ -5,6 +5,10 @@ export const animations = createAnimations({
     type: 'timing',
     duration: 100,
   },
+  '200ms': {
+    type: 'timing',
+    duration: 200,
+  },
   superBouncy: {
     type: 'spring',
     damping: 5,

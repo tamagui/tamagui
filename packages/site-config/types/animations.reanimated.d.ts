@@ -7,6 +7,10 @@ export declare const animations: import("@tamagui/web").AnimationDriver<{
         type: string;
         duration: number;
     };
+    '200ms': {
+        type: string;
+        duration: number;
+    };
     superBouncy: {
         damping: number;
         mass: number;
