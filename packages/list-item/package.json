@@ -16,6 +16,7 @@
   ],
   "scripts": {
     "build": "tamagui-build",
+    "clean": "tamagui-build clean",
     "lint": "../../node_modules/.bin/biome check src",
     "lint:fix": "../../node_modules/.bin/biome check --apply-unsafe src",
     "watch": "tamagui-build --watch"
