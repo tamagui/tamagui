@@ -338,13 +338,15 @@ const CheckboxComponent = CheckboxFrame.extractable(
       // eslint-disable-next-line react-hooks/rules-of-hooks
       React.useEffect(() => {
         if (!props.id) return
+        if (disabled) return
+
         return registerFocusable(props.id, {
           focusAndSelect: () => {
             setChecked((x) => !x)
           },
           focus: () => {},
         })
-      }, [props.id, setChecked])
+      }, [props.id, setChecked, disabled])
     }
 
     return (
