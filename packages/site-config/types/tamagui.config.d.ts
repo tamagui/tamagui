@@ -14,6 +14,10 @@ export declare const config: {
             type: string;
             duration: number;
         };
+        '200ms': {
+            type: string;
+            duration: number;
+        };
         superBouncy: {
             damping: number;
             mass: number;
