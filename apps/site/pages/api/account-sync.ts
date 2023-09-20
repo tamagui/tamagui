@@ -71,7 +71,7 @@ export default apiRoute(async (req, res) => {
             githubStatus.personal.sponsorshipStatus === 'sponsor'
               ? githubStatus.personal.tier.id
               : null,
-          is_active: githubStatus.personal.sponsorshipStatus !== 'not-sponsor',
+          is_active: githubStatus.personal.hasSponsorAccess,
         },
         {}
       )
