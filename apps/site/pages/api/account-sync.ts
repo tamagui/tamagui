@@ -67,8 +67,11 @@ export default apiRoute(async (req, res) => {
           name: githubLogin,
           is_personal: true,
           owner_id: user.id,
-          tier: githubStatus.personal.isSponsoring ? githubStatus.personal.tier.id : null,
-          is_active: githubStatus.personal.isSponsoring,
+          tier:
+            githubStatus.personal.sponsorshipStatus === 'sponsor'
+              ? githubStatus.personal.tier.id
+              : null,
+          is_active: githubStatus.personal.hasSponsorAccess,
         },
         {}
       )
@@ -90,8 +93,11 @@ export default apiRoute(async (req, res) => {
           github_id: githubStatus.personal.meta.id,
           name: githubLogin,
           is_personal: true,
-          tier: githubStatus.personal.isSponsoring ? githubStatus.personal.tier.id : null,
-          is_active: githubStatus.personal.isSponsoring,
+          tier:
+            githubStatus.personal.sponsorshipStatus === 'sponsor'
+              ? githubStatus.personal.tier.id
+              : null,
+          is_active: githubStatus.personal.hasSponsorAccess,
         },
         {}
       )
@@ -111,10 +117,10 @@ export default apiRoute(async (req, res) => {
     .in(
       'github_id',
       githubStatus.orgs
-        .filter((r) => r.isSponsoring === true)
+        .filter((r) => r.hasSponsorAccess === true)
         .map((r) => {
           // no need for the if but ts is stupid
-          if (r.isSponsoring) return r.meta.id
+          if (r.hasSponsorAccess) return r.meta.id
         })
     )
 
@@ -123,7 +129,7 @@ export default apiRoute(async (req, res) => {
   }
 
   for (const org of githubStatus.orgs) {
-    if (!org.isSponsoring) continue
+    if (!org.hasSponsorAccess) continue
     const dbOrg = teamsToAdd.data.find((row) => row?.github_id === org.meta.id)
 
     if (!dbOrg) {
@@ -135,7 +141,7 @@ export default apiRoute(async (req, res) => {
           is_personal: false,
           name: org.meta.name,
           github_id: org.meta.id,
-          tier: org.tier.id,
+          tier: org.sponsorshipStatus === 'sponsor' ? org.tier.id : undefined,
         })
         .select('id')
         .single()

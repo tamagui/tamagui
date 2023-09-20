@@ -6,6 +6,10 @@ export declare const config: {
     shouldAddPrefersColorThemes: true;
     themeClassNameOnRoot: true;
     animations: import("@tamagui/web").AnimationDriver<{
+        '75ms': {
+            type: string;
+            duration: number;
+        };
         '100ms': {
             type: string;
             duration: number;
@@ -44,6 +48,11 @@ export declare const config: {
             stiffness: number;
         };
         quicker: {
+            damping: number;
+            mass: number;
+            stiffness: number;
+        };
+        quickest: {
             damping: number;
             mass: number;
             stiffness: number;

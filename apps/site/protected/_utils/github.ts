@@ -1,13 +1,15 @@
 export type GithubSponsorshipStatus =
   | {
-      isSponsoring: false
+      hasSponsorAccess: false
+      sponsorshipStatus: 'not-sponsor'
       meta: {
         name: string
         id: string
       }
     }
   | {
-      isSponsoring: true
+      hasSponsorAccess: true
+      sponsorshipStatus: 'sponsor'
       meta: {
         name: string
         id: string
@@ -17,18 +19,28 @@ export type GithubSponsorshipStatus =
         name: string
       }
     }
+  | {
+      hasSponsorAccess: true
+      sponsorshipStatus: 'whitelist'
+      meta: {
+        name: string
+        id: string
+      }
+    }
 export type GithubAccessStatus = {
   personal: GithubSponsorshipStatus
   orgs: GithubSponsorshipStatus[]
 }
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN
 
+const whitelistGithubUsernames = ['natew', 'alitnk']
+
 export const checkForSponsorship = async (
   login: string,
   userToken: string
 ): Promise<GithubAccessStatus> => {
   const orgs = await getOrgs(userToken)
-  // const personalStatus = await isLo`ginSponsor(login)
+  // const personalStatus = await isLoginSponsor(login)
   // const allOrgsStatus = await Promise.all(
   //   orgs.map(async (org) => {
   //     return {
@@ -111,10 +123,22 @@ const isLoginSponsor = async (login: string): Promise<GithubSponsorshipStatus> =
   //   }
   // }
 
+  if (whitelistGithubUsernames.includes(login)) {
+    return {
+      hasSponsorAccess: true,
+      sponsorshipStatus: 'whitelist',
+      meta: {
+        id: sponsorId,
+        name: sponsorName,
+      },
+    }
+  }
+
   if (isSponsoring) {
     // const tierIncludesStudio: boolean = tier.description.toLowerCase().includes('studio')
     return {
-      isSponsoring,
+      hasSponsorAccess: true,
+      sponsorshipStatus: 'sponsor',
       meta: {
         id: sponsorId,
         name: sponsorName,
@@ -126,7 +150,8 @@ const isLoginSponsor = async (login: string): Promise<GithubSponsorshipStatus> =
     }
   }
   return {
-    isSponsoring: false,
+    hasSponsorAccess: false,
+    sponsorshipStatus: 'not-sponsor',
     meta: {
       id: sponsorId,
       name: sponsorName,
@@ -179,7 +204,7 @@ const getOrgs = async (
   })
   const json = await res.json()
 
-  return json.data.viewer.organizations.nodes
+  return json?.data?.viewer?.organizations?.nodes ?? []
 }
 
 // export const dummy = async () => {

@@ -46,7 +46,7 @@ export type SwitchExtraProps = {
 }
 
 export type SwitchProps = Omit<SwitchBaseProps & SwitchExtraProps, 'children'> & {
-  children?: JSX.Element | ((checked: boolean) => JSX.Element)
+  children?: React.ReactNode | ((checked: boolean) => React.ReactNode)
 }
 
 type SwitchComponent = TamaguiComponentExpectingVariants<

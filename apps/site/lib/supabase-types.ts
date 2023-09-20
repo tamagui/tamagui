@@ -65,6 +65,43 @@ export interface Database {
           }
         ]
       }
+      bot_pull_requests: {
+        Row: {
+          base_pr_number: number
+          created_at: string | null
+          error: string | null
+          final_pr_num: number | null
+          github_installation_id: number
+          id: number
+          repo_id: number | null
+        }
+        Insert: {
+          base_pr_number: number
+          created_at?: string | null
+          error?: string | null
+          final_pr_num?: number | null
+          github_installation_id: number
+          id?: number
+          repo_id?: number | null
+        }
+        Update: {
+          base_pr_number?: number
+          created_at?: string | null
+          error?: string | null
+          final_pr_num?: number | null
+          github_installation_id?: number
+          id?: number
+          repo_id?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bot_pull_requests_github_installation_id_fkey"
+            columns: ["github_installation_id"]
+            referencedRelation: "app_installations"
+            referencedColumns: ["github_installation_id"]
+          }
+        ]
+      }
       claims: {
         Row: {
           created_at: string

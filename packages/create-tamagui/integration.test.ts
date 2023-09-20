@@ -45,7 +45,7 @@ test.beforeAll(async () => {
 
     cd(dir)
 
-    await $`node ${tamaguiBin} ${appName} --template next-expo-solito`
+    await $`YARN_ENABLE_IMMUTABLE_INSTALLS=false node ${tamaguiBin} ${appName} --template next-expo-solito`
 
     cd(appName)
 
