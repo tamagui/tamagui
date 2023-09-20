@@ -23,7 +23,7 @@ import {
   Platform,
 } from 'react-native'
 
-import { SwitchFrame, SwitchThumb } from './Switch'
+import { SwitchFrame as DefaultSwitchFrame, SwitchThumb } from './Switch'
 import { SwitchContext } from './SwitchContext'
 
 type SwitchSharedProps = {
@@ -60,7 +60,7 @@ type SwitchThumbComponent = TamaguiComponentExpectingVariants<
 >
 
 export function createSwitch<F extends SwitchComponent, T extends SwitchThumbComponent>({
-  Frame = SwitchFrame as any,
+  Frame = DefaultSwitchFrame as any,
   Thumb = SwitchThumb as any,
   acceptsUnstyled,
 }: {
@@ -69,7 +69,7 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
   acceptsUnstyled?: boolean
 }) {
   if (process.env.NODE_ENV === 'development') {
-    if (Frame !== SwitchFrame && Frame.staticConfig.context) {
+    if (Frame !== DefaultSwitchFrame && Frame.staticConfig.context) {
       console.warn(
         `Warning: createSwitch() needs to control context to pass checked state from Frame to Thumb, any custom context passed will be overridden.`
       )
@@ -155,7 +155,7 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
           }
         }
         if (
-          // Frame === SwitchFrame &&
+          Frame === DefaultSwitchFrame &&
           acceptsUnstyled &&
           _ == undefined &&
           unstyled === false
