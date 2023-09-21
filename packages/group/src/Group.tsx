@@ -3,6 +3,7 @@ import {
   TamaguiElement,
   UnionableString,
   Variable,
+  cloneElementWithPropOrder,
   getConfig,
   getExpandedShorthands,
   getTokens,
@@ -327,9 +328,4 @@ const getBorderRadius = ({
     borderBottomRightRadius:
       isLast && disable !== 'bottom' && disable !== 'end' ? radius : 0,
   }
-}
-
-const cloneElementWithPropOrder = (child: any, props: Object) => {
-  const next = mergeProps(child.props, props, getConfig().shorthands)
-  return React.cloneElement({ ...child, props: null }, next)
 }

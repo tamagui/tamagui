@@ -2,8 +2,10 @@ import {
   ColorStyleProp,
   GetProps,
   Stack,
+  cloneElementWithPropOrder,
   composeEventHandlers,
   createStyledContext,
+  isTamaguiElement,
   isWeb,
   setupReactNative,
   styled,
@@ -15,8 +17,10 @@ import {
 import { Scope, createContextScope } from '@tamagui/create-context'
 import { useFocusable } from '@tamagui/focusable'
 import {
+  Children,
   RefObject,
   createContext,
+  isValidElement,
   useCallback,
   useContext,
   useEffect,
@@ -180,13 +184,85 @@ const BaseInputAdornment = styled(Stack, {
   name: BASE_INPUT_ADORNMENT_NAME,
   justifyContent: 'center',
   alignItems: 'center',
+  flexDirection: 'row',
 })
 
 const InputStartAdornmentMain = styled(BaseInputAdornment, {
   name: 'InputStartAdornment',
 })
+
+const lastStyles = { borderTopRightRadius: 0, borderBottomRightRadius: 0 }
+const firstStyles = { borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }
+const middleStyles = { ...firstStyles, ...lastStyles }
+const baseStyles = {
+  height: '100%',
+  borderTopRightRadius: 0,
+  borderBottomRightRadius: 0,
+  borderTopLeftRadius: 0,
+  borderBottomLeftRadius: 0,
+}
+
+const InputStartAdornment = InputStartAdornmentMain.styleable((propsIn, ref) => {
+  const { children: childrenProp, ...props } = useProps(propsIn)
+
+  const childrenArray = Children.toArray(childrenProp)
+  const children = childrenArray.map((child, i) => {
+    const isFirst = i === 0
+    const isLast = i === childrenArray.length - 1
+    const isMiddle = !isFirst && !isLast
+
+    const styles = {
+      ...baseStyles,
+      // ...(isMiddle ? middleStyles : {}),
+      // ...(isLast ? lastStyles : {}),
+      // ...(isFirst ? firstStyles : {}),
+    }
+    const props = {
+      ...(isTamaguiElement(child) ? styles : { style: styles }),
+    }
+
+    return cloneElementWithPropOrder(child, props)
+  })
+
+  return (
+    <InputStartAdornmentMain ref={ref} {...props}>
+      {children}
+    </InputStartAdornmentMain>
+  )
+})
 const InputEndAdornmentMain = styled(BaseInputAdornment, {
   name: 'InputEndAdornment',
+})
+
+const InputEndAdornment = InputEndAdornmentMain.styleable((propsIn, ref) => {
+  const { children: childrenProp, ...props } = useProps(propsIn)
+
+  const childrenArray = Children.toArray(childrenProp)
+  const children = childrenArray.map((child, i) => {
+    const isFirst = i === 0
+    const isLast = i === childrenArray.length - 1
+    const isMiddle = !isFirst && !isLast
+
+    const styles = {
+      ...baseStyles,
+      // ...(isMiddle ? middleStyles : {}),
+      // ...(isLast ? lastStyles : {}),
+      // ...(isFirst ? firstStyles : {}),
+    }
+    const props = {
+      ...(isTamaguiElement(child) ? styles : { style: styles }),
+    }
+
+    return cloneElementWithPropOrder(child, props)
+  })
+
+  console.log(children)
+
+  return (
+    <InputEndAdornmentMain ref={ref} {...props}>
+      {children}
+    </InputEndAdornmentMain>
+  )
 })
 
 const InputMain = InputFrame.styleable<InputProps>((propsIn, ref) => {
@@ -219,9 +295,9 @@ const InputMain = InputFrame.styleable<InputProps>((propsIn, ref) => {
 })
 
 export const Input = withStaticProperties(InputMain, {
-  Start: InputStartAdornmentMain,
+  Start: InputStartAdornment,
   Control: InputControl,
-  End: InputEndAdornmentMain,
+  End: InputEndAdornment,
 })
 
 export function useInputProps(props: InputProps, ref: any) {

@@ -46,6 +46,8 @@ export function InputsDemo() {
         <Input.Control />
         <Input.End>
           <Button>End Button</Button>
+          <Button>End Button 2</Button>
+          <Button>End Button 3</Button>
         </Input.End>
       </Input>
       <TextArea placeholder="Enter your details..." />

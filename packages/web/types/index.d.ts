@@ -36,6 +36,7 @@ export * from './helpers/themeable';
 export * from './helpers/themes';
 export * from './helpers/createShallowSetState';
 export * from './helpers/withStaticProperties';
+export * from './helpers/cloneElementWithPropOrder';
 export { configureMedia, mediaState, useMedia, getMedia, useMediaPropsActive, mediaObjectToString, mediaQueryConfig, } from './hooks/useMedia';
 export * from './hooks/useTheme';
 export * from './hooks/useThemeName';
