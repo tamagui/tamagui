@@ -121,10 +121,11 @@ cd into the project using:
   To start the Next.js development server, run:
     ${chalk.green(runCommand('web'))}
 
-  To start developing for iOS, run:
-    ${chalk.green(runCommand('ios'))}
+  To start developing with Expo Go, run:
+    ${chalk.green(runCommand('native'))}
 
-  To start developing for Android, run:
+  To start developing for Expo dev build, run:
+    ${chalk.green(runCommand('ios'))}
     ${chalk.green(runCommand('android'))}
 
   To run Supabase scripts, cd into the supabase package:
