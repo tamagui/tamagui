@@ -1,12 +1,12 @@
-import "@tamagui/polyfill-dev";
-import { SizeTokens, StackProps, TamaguiElement } from "@tamagui/core";
-import { DismissableProps } from "@tamagui/dismissable";
-import { FocusScopeProps } from "@tamagui/focus-scope";
-import { PopperArrowProps, PopperContentProps, PopperProps } from "@tamagui/popper";
-import { RemoveScrollProps } from "@tamagui/remove-scroll";
-import { YStackProps } from "@tamagui/stacks";
-import * as React from "react";
-import { ScrollView } from "react-native";
+import '@tamagui/polyfill-dev';
+import { SizeTokens, StackProps, TamaguiElement } from '@tamagui/core';
+import { DismissableProps } from '@tamagui/dismissable';
+import { FocusScopeProps } from '@tamagui/focus-scope';
+import { PopperArrowProps, PopperContentProps, PopperProps } from '@tamagui/popper';
+import { RemoveScrollProps } from '@tamagui/remove-scroll';
+import { YStackProps } from '@tamagui/stacks';
+import * as React from 'react';
+import { ScrollView } from 'react-native';
 export type PopoverProps = PopperProps & {
     open?: boolean;
     defaultOpen?: boolean;
@@ -56,21 +56,21 @@ export declare const PopoverTrigger: React.ForwardRefExoticComponent<Omit<import
     scope?: string | undefined;
 } & React.RefAttributes<TamaguiElement>>;
 export type PopoverContentProps = PopoverContentTypeProps;
-export interface PopoverContentTypeProps extends Omit<PopoverContentImplProps, "disableOutsidePointerEvents"> {
+export interface PopoverContentTypeProps extends Omit<PopoverContentImplProps, 'disableOutsidePointerEvents'> {
     /**
      * @see https://github.com/theKashey/react-remove-scroll#usage
      */
-    allowPinchZoom?: RemoveScrollProps["allowPinchZoom"];
+    allowPinchZoom?: RemoveScrollProps['allowPinchZoom'];
 }
 export declare const PopoverContent: React.ForwardRefExoticComponent<PopoverContentTypeProps & {
     scope?: string | undefined;
 } & React.RefAttributes<HTMLElement | import("react-native").View>>;
-export interface PopoverContentImplProps extends PopperContentProps, Omit<DismissableProps, "onDismiss" | "children" | "onPointerDownCapture"> {
+export interface PopoverContentImplProps extends PopperContentProps, Omit<DismissableProps, 'onDismiss' | 'children' | 'onPointerDownCapture'> {
     /**
      * Whether focus should be trapped within the `Popover`
      * @default false
      */
-    trapFocus?: FocusScopeProps["trapped"];
+    trapFocus?: FocusScopeProps['trapped'];
     /**
      * Whether popover should not focus contents on open
      * @default false
@@ -80,12 +80,12 @@ export interface PopoverContentImplProps extends PopperContentProps, Omit<Dismis
      * Event handler called when auto-focusing on open.
      * Can be prevented.
      */
-    onOpenAutoFocus?: FocusScopeProps["onMountAutoFocus"];
+    onOpenAutoFocus?: FocusScopeProps['onMountAutoFocus'];
     /**
      * Event handler called when auto-focusing on close.
      * Can be prevented.
      */
-    onCloseAutoFocus?: FocusScopeProps["onUnmountAutoFocus"];
+    onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus'];
     disableRemoveScroll?: boolean;
     freezeContentsWhenHidden?: boolean;
 }

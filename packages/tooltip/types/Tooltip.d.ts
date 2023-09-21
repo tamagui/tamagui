@@ -1,7 +1,7 @@
-import "@tamagui/polyfill-dev";
-import { SizeTokens } from "@tamagui/core";
-import { PopperProps } from "@tamagui/popper";
-import * as React from "react";
+import '@tamagui/polyfill-dev';
+import { SizeTokens } from '@tamagui/core';
+import { PopperProps } from '@tamagui/popper';
+import * as React from 'react';
 export type TooltipProps = PopperProps & {
     open?: boolean;
     unstyled?: boolean;
