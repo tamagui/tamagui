@@ -191,7 +191,7 @@ export const PopoverContent = PopperContentFrame.extractable(
     }, [context.open])
 
     return (
-      <PopoverContentPortal zIndex={props.zIndex}>
+      <PopoverContentPortal __scopePopover={__scopePopover} zIndex={props.zIndex}>
         <Stack pointerEvents={context.open ? 'auto' : 'none'}>
           <PopoverContentImpl
             {...contentImplProps}
