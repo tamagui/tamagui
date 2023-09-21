@@ -2,6 +2,7 @@ import { createAnimations } from '@tamagui/animations-css'
 
 export const animations = createAnimations({
   '100ms': 'ease-in 100ms',
+  '200ms': 'ease-in 200ms',
   bouncy: 'ease-in 200ms',
   superBouncy: 'ease-in 500ms',
   lazy: 'ease-in 600ms',
