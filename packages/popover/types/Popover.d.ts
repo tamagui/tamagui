@@ -47,13 +47,13 @@ export declare const PopoverAnchor: React.ForwardRefExoticComponent<Omit<import(
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 }>> & {
-    scope?: string | undefined;
+    __scopePopover?: string | undefined;
 } & React.RefAttributes<TamaguiElement>>;
 export type PopoverTriggerProps = StackProps;
 export declare const PopoverTrigger: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children" | "style" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
     style?: import("@tamagui/core").StyleProp<React.CSSProperties | import("react-native").ViewStyle | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
-    scope?: string | undefined;
+    __scopePopover?: string | undefined;
 } & React.RefAttributes<TamaguiElement>>;
 export type PopoverContentProps = PopoverContentTypeProps;
 export interface PopoverContentTypeProps extends Omit<PopoverContentImplProps, 'disableOutsidePointerEvents'> {
@@ -63,7 +63,7 @@ export interface PopoverContentTypeProps extends Omit<PopoverContentImplProps, '
     allowPinchZoom?: RemoveScrollProps['allowPinchZoom'];
 }
 export declare const PopoverContent: React.ForwardRefExoticComponent<PopoverContentTypeProps & {
-    scope?: string | undefined;
+    __scopePopover?: string | undefined;
 } & React.RefAttributes<HTMLElement | import("react-native").View>>;
 export interface PopoverContentImplProps extends PopperContentProps, Omit<DismissableProps, 'onDismiss' | 'children' | 'onPointerDownCapture'> {
     /**
@@ -106,7 +106,7 @@ export declare const PopoverClose: React.ForwardRefExoticComponent<Omit<import("
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 }>> & {
-    scope?: string | undefined;
+    __scopePopover?: string | undefined;
 } & React.RefAttributes<TamaguiElement>>;
 export type PopoverArrowProps = PopperArrowProps;
 export declare const PopoverArrow: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
@@ -128,7 +128,7 @@ export declare const PopoverArrow: React.ForwardRefExoticComponent<Omit<import("
     offset?: number | undefined;
     size?: SizeTokens | undefined;
 } & {
-    scope?: string | undefined;
+    __scopePopover?: string | undefined;
 } & React.RefAttributes<TamaguiElement>>;
 export declare const Popover: React.FC<PopoverProps> & {
     Anchor: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
@@ -147,7 +147,7 @@ export declare const Popover: React.FC<PopoverProps> & {
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
     }>> & {
-        scope?: string | undefined;
+        __scopePopover?: string | undefined;
     } & React.RefAttributes<TamaguiElement>>;
     Arrow: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
         style?: import("@tamagui/core").StyleProp<React.CSSProperties | import("react-native").ViewStyle | (React.CSSProperties & import("react-native").ViewStyle)>;
@@ -168,15 +168,15 @@ export declare const Popover: React.FC<PopoverProps> & {
         offset?: number | undefined;
         size?: SizeTokens | undefined;
     } & {
-        scope?: string | undefined;
+        __scopePopover?: string | undefined;
     } & React.RefAttributes<TamaguiElement>>;
     Trigger: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children" | "style" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
         style?: import("@tamagui/core").StyleProp<React.CSSProperties | import("react-native").ViewStyle | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
-        scope?: string | undefined;
+        __scopePopover?: string | undefined;
     } & React.RefAttributes<TamaguiElement>>;
     Content: React.ForwardRefExoticComponent<PopoverContentTypeProps & {
-        scope?: string | undefined;
+        __scopePopover?: string | undefined;
     } & React.RefAttributes<HTMLElement | import("react-native").View>>;
     Close: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
         style?: import("@tamagui/core").StyleProp<React.CSSProperties | import("react-native").ViewStyle | (React.CSSProperties & import("react-native").ViewStyle)>;
@@ -194,7 +194,7 @@ export declare const Popover: React.FC<PopoverProps> & {
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
     }>> & {
-        scope?: string | undefined;
+        __scopePopover?: string | undefined;
     } & React.RefAttributes<TamaguiElement>>;
     Adapt: (({ platform, when, children }: import("@tamagui/adapt").AdaptProps) => any) & {
         Contents: {

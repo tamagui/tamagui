@@ -9,7 +9,7 @@ export type StyledContext<Props extends Object = any> = Omit<React.Context<Props
     useStyledContext: (scope?: string) => Props;
 };
 export declare function createStyledContext<VariantProps extends Record<string, any>>(defaultValues?: VariantProps): StyledContext<VariantProps>;
-export type Scoped<T> = T & {
-    scope?: string;
+export type ScopedProps<P, K extends string> = P & {
+    [Key in `__scope${K}`]?: string;
 };
 //# sourceMappingURL=createStyledContext.d.ts.map

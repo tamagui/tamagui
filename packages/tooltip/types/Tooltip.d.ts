@@ -42,7 +42,7 @@ export declare const Tooltip: React.ForwardRefExoticComponent<PopperProps & {
         close?: number | undefined;
     } | undefined;
 } & {
-    scope?: string | undefined;
+    __scopeTooltip?: string | undefined;
 } & React.RefAttributes<unknown>> & {
     Anchor: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
         style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
@@ -60,7 +60,7 @@ export declare const Tooltip: React.ForwardRefExoticComponent<PopperProps & {
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
     }>> & {
-        scope?: string | undefined;
+        __scopeTooltip?: string | undefined;
     } & React.RefAttributes<unknown>>;
     Arrow: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
         style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
@@ -81,15 +81,15 @@ export declare const Tooltip: React.ForwardRefExoticComponent<PopperProps & {
         offset?: number | undefined;
         size?: SizeTokens | undefined;
     } & {
-        scope?: string | undefined;
+        __scopeTooltip?: string | undefined;
     } & React.RefAttributes<unknown>>;
     Content: React.ForwardRefExoticComponent<import("@tamagui/popover").PopoverContentTypeProps & {
-        scope?: string | undefined;
+        __scopeTooltip?: string | undefined;
     } & React.RefAttributes<unknown>>;
     Trigger: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "children" | "display" | "style" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
         style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
-        scope?: string | undefined;
+        __scopeTooltip?: string | undefined;
     } & React.RefAttributes<unknown>>;
 };
 export {};

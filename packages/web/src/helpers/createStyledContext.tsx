@@ -72,4 +72,4 @@ export function createStyledContext<VariantProps extends Record<string, any>>(
   return Context
 }
 
-export type Scoped<T> = T & { scope?: string }
+export type ScopedProps<P, K extends string> = P & { [Key in `__scope${K}`]?: string }
