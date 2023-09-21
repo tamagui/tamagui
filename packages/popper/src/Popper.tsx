@@ -291,22 +291,6 @@ const PopperArrowFrame = styled(YStack, {
       false: {
         borderColor: '$borderColor',
         backgroundColor: '$background',
-        position: 'relative',
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: false,
-  },
-})
-
-const PopperArrowOuterFrame = styled(YStack, {
-  name: 'PopperArrowOuter',
-
-  variants: {
-    unstyled: {
-      false: {
         position: 'absolute',
         zIndex: -1,
         pointerEvents: 'none',
@@ -356,16 +340,14 @@ export const PopperArrow = PopperArrowFrame.styleable<PopperArrowProps>(
     const primaryPlacement = (placement ? placement.split('-')[0] : 'top') as Sides
 
     const arrowStyle: StackProps = { x, y, width: size, height: size }
-    const innerArrowStyle: StackProps = {}
     const isVertical = primaryPlacement === 'bottom' || primaryPlacement === 'top'
 
     if (primaryPlacement) {
       // allows for extra diagonal size
-      arrowStyle[isVertical ? 'width' : 'height'] = size * 2
+      // arrowStyle[isVertical ? 'width' : 'height'] = size * 2
       const oppSide = opposites[primaryPlacement]
       if (oppSide) {
-        arrowStyle[oppSide] = -size
-        innerArrowStyle[oppSide] = size / 2
+        arrowStyle[oppSide] = -(size / 2)
       }
       if (oppSide === 'top' || oppSide === 'bottom') {
         arrowStyle.left = 0
@@ -382,31 +364,30 @@ export const PopperArrow = PopperArrowFrame.styleable<PopperArrowProps>(
 
     // outer frame to cut off for ability to have nicer shadows/borders
     return (
-      <PopperArrowOuterFrame ref={refs} {...arrowStyle}>
-        <PopperArrowFrame
-          width={size}
-          height={size}
-          {...arrowProps}
-          {...innerArrowStyle}
-          rotate="45deg"
-          {...(primaryPlacement === 'bottom' && {
-            borderLeftWidth: borderWidth,
-            borderTopWidth: borderWidth,
-          })}
-          {...(primaryPlacement === 'top' && {
-            borderBottomWidth: borderWidth,
-            borderRightWidth: borderWidth,
-          })}
-          {...(primaryPlacement === 'right' && {
-            borderLeftWidth: borderWidth,
-            borderBottomWidth: borderWidth,
-          })}
-          {...(primaryPlacement === 'left' && {
-            borderTopWidth: borderWidth,
-            borderRightWidth: borderWidth,
-          })}
-        />
-      </PopperArrowOuterFrame>
+      <PopperArrowFrame
+        ref={refs}
+        width={size}
+        height={size}
+        {...arrowProps}
+        {...arrowStyle}
+        rotate="45deg"
+        {...(primaryPlacement === 'bottom' && {
+          borderLeftWidth: borderWidth,
+          borderTopWidth: borderWidth,
+        })}
+        {...(primaryPlacement === 'top' && {
+          borderBottomWidth: borderWidth,
+          borderRightWidth: borderWidth,
+        })}
+        {...(primaryPlacement === 'right' && {
+          borderLeftWidth: borderWidth,
+          borderBottomWidth: borderWidth,
+        })}
+        {...(primaryPlacement === 'left' && {
+          borderTopWidth: borderWidth,
+          borderRightWidth: borderWidth,
+        })}
+      />
     )
   }
 )
