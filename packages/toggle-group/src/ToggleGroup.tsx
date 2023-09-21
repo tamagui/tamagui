@@ -446,7 +446,7 @@ const ToggleGroupImpl = ToggleGroupImplElementFrame.extractable(
         ...toggleGroupProps,
       }
       const adjustedSize = getVariableValue(
-        getSize(props.size, {
+        getSize(sizeProp, {
           shift: sizeAdjust,
         })
       )
