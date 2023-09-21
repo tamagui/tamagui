@@ -3392,7 +3392,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@my/supabase@*, @my/supabase@workspace:supabase":
+"@my/supabase@*, @my/supabase@workspace:*, @my/supabase@workspace:supabase":
   version: 0.0.0-use.local
   resolution: "@my/supabase@workspace:supabase"
   dependencies:
@@ -3413,6 +3413,7 @@ __metadata:
   resolution: "@my/ui@workspace:packages/ui"
   dependencies:
     "@hookform/resolvers": ^3.1.0
+    "@my/supabase": "workspace:*"
     "@tamagui-google-fonts/ibm-plex-mono": "*"
     "@tamagui/animations-moti": latest
     "@tamagui/animations-react-native": latest

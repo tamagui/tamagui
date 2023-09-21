@@ -1,22 +1,18 @@
 import { Tables } from '@my/supabase/helpers'
 import { FlatList } from 'react-native'
 import {
-  AddToCalendarButton,
   Avatar,
   Button,
   Card,
   H3,
   H5,
-  Input,
   Paragraph,
   Sheet,
   Spacer,
   Theme,
-  ThemeName,
   XStack,
   YStack,
-  isWeb,
-  styled,
+  useClimbColor,
   useToastController,
 } from '@my/ui'
 import { api } from 'app/utils/api'
@@ -24,24 +20,9 @@ import { add, format, intervalToDuration } from 'date-fns'
 
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { useUser, User } from 'app/utils/useUser'
-import { User as UserIcon, HelpCircle, ShieldQuestion } from '@tamagui/lucide-icons'
+import { ShieldQuestion } from '@tamagui/lucide-icons'
 import { useQueryClient } from '@tanstack/react-query'
 import { useCallback, useState } from 'react'
-const TransparentInput = styled(Input, {
-  borderColor: 'fuck',
-  borderWidth: 0,
-  outlineColor: 'transparent',
-  hoverStyle: {
-    borderColor: 'transparent',
-    outlineColor: '$someColorThatDoesNotExist',
-    borderWidth: '$890',
-  },
-  focusStyle: {
-    borderColor: 'transparent',
-    outlineColor: 'someColorThatDoesNotExist',
-    borderWidth: 0,
-  },
-})
 const displayName = {
   top_rope: 'Top Rope',
   lead_rope: 'Lead Rope',
@@ -54,24 +35,7 @@ type ProfileClimb = Tables<'profile_climbs'> & {
 }
 
 function MyClimb({ profileClimb }: { profileClimb: ProfileClimb; user: User['profile'] }) {
-  let color: ThemeName
-  switch (profileClimb.climb.type) {
-    case 'lead_rope': {
-      color = 'orange'
-      break
-    }
-    case 'top_rope': {
-      color = 'blue'
-      break
-    }
-    case 'boulder': {
-      color = 'light_purple'
-      break
-    }
-    default: {
-      throw Error(':(')
-    }
-  }
+  const { color } = useClimbColor(profileClimb.climb.type)
 
   return (
     <Theme name={color}>
@@ -206,23 +170,9 @@ const SheetDemo = ({
   const queryClient = useQueryClient()
   const { data: user } = api.me.profile.read.useQuery()
   const { climb, profile } = profileClimb ?? {}
+  const { color } = useClimbColor(climb?.type ?? 'top_rope')
   // const [innerOpen, setInnerOpen] = useState(false)
 
-  let color: ThemeName = 'orange'
-  switch (climb?.type) {
-    case 'lead_rope': {
-      color = 'orange'
-      break
-    }
-    case 'top_rope': {
-      color = 'blue'
-      break
-    }
-    case 'boulder': {
-      color = 'light_purple'
-      break
-    }
-  }
   const toast = useToastController()
 
   const reminderConfig = {

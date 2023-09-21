@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.1.0",
+    "@my/supabase": "workspace:*",
     "@tamagui-google-fonts/ibm-plex-mono": "*",
     "@tamagui/animations-moti": "latest",
     "@tamagui/animations-react-native": "latest",

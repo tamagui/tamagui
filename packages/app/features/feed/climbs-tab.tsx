@@ -12,9 +12,8 @@ import {
   XStack,
   Sheet,
   H5,
-  isWeb,
-  AddToCalendarButton,
   useToastController,
+  useClimbColor,
 } from '@my/ui'
 import { api } from 'app/utils/api'
 import { add, format, intervalToDuration } from 'date-fns'
@@ -23,6 +22,7 @@ import { FlatList } from 'react-native'
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { useCallback, useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
+import React from 'react'
 
 type ListClimb = Tables<'climbs'> & {
   climber: Tables<'profiles'>
@@ -35,24 +35,7 @@ const displayName = {
 } as const
 function Climb({ climb, onSelect }: { climb: ListClimb; onSelect?: (climb: ListClimb) => void }) {
   const user = api.me.profile.read.useQuery()
-  let color: ThemeName
-  switch (climb.type) {
-    case 'lead_rope': {
-      color = 'orange'
-      break
-    }
-    case 'top_rope': {
-      color = 'blue'
-      break
-    }
-    case 'boulder': {
-      color = 'purple'
-      break
-    }
-    default: {
-      throw Error(':(')
-    }
-  }
+  const { color } = useClimbColor(climb.type)
 
   return (
     <Theme name={color}>
