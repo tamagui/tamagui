@@ -23,7 +23,7 @@ export function createStyledContext<VariantProps extends Record<string, any>>(
   const OGContext = createContext<VariantProps | undefined>(defaultValues)
   const OGProvider = OGContext.Provider
   const Context = OGContext as any as StyledContext<VariantProps>
-  const scopedContext = new Map<string, React.Context<VariantProps | undefined>>()
+  const scopedContexts = new Map<string, React.Context<VariantProps | undefined>>()
 
   const Provider = ({
     children,
@@ -37,29 +37,21 @@ export function createStyledContext<VariantProps extends Record<string, any>>(
         ...values,
       }
     }, [objectIdentityKey(values)])
+    let Provider = OGProvider
     if (scope) {
-      const ScopedContext = scopedContext.get(scope)
-      if (ScopedContext) {
-        return <ScopedContext.Provider value={value}>{children}</ScopedContext.Provider>
-      } else {
-        const NewlyCreatedScopedContext = createContext<VariantProps | undefined>(
-          defaultValues
-        )
-        scopedContext.set(scope, NewlyCreatedScopedContext)
-        return (
-          <NewlyCreatedScopedContext.Provider value={value}>
-            {children}
-          </NewlyCreatedScopedContext.Provider>
-        )
+      let ScopedContext = scopedContexts.get(scope)
+      if (!ScopedContext) {
+        ScopedContext = createContext<VariantProps | undefined>(defaultValues)
+        scopedContexts.set(scope, ScopedContext)
       }
-    } else {
-      return <OGProvider value={value}>{children}</OGProvider>
+      Provider = ScopedContext.Provider
     }
+    return <Provider value={value} children={children} />
   }
 
   // use consumerComponent just to give a better error message
   const useStyledContext = (scope?: string) => {
-    const context = scope ? scopedContext.get(scope) : OGContext
+    const context = scope ? scopedContexts.get(scope) : OGContext
     return useContext(context!) as VariantProps
   }
 
