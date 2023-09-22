@@ -17,11 +17,9 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
-  "peerDependencies": {
-    "@tamagui/core": "1.69.1"
-  },
   "devDependencies": {
     "@tamagui/build": "1.69.1",
+    "@tamagui/core": "1.69.1",
     "subset-font": "^1.6.1"
   }
 }

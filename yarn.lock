@@ -6413,9 +6413,8 @@ __metadata:
   resolution: "@tamagui/font-dm-sans@workspace:packages/font-dm-sans"
   dependencies:
     "@tamagui/build": 1.69.1
-    subset-font: ^1.6.1
-  peerDependencies:
     "@tamagui/core": 1.69.1
+    subset-font: ^1.6.1
   languageName: unknown
   linkType: soft
 
@@ -6424,9 +6423,8 @@ __metadata:
   resolution: "@tamagui/font-dm-serif-display@workspace:packages/font-dm-serif-display"
   dependencies:
     "@tamagui/build": 1.69.1
-    subset-font: ^1.6.1
-  peerDependencies:
     "@tamagui/core": 1.69.1
+    subset-font: ^1.6.1
   languageName: unknown
   linkType: soft
 
