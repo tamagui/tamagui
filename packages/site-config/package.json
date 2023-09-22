@@ -31,6 +31,8 @@
     "@tamagui/animations-reanimated": "1.69.1",
     "@tamagui/colors": "1.69.1",
     "@tamagui/font-cherry-bomb": "1.69.1",
+    "@tamagui/font-dm-sans": "1.69.1",
+    "@tamagui/font-dm-serif-display": "1.69.1",
     "@tamagui/font-glusp": "1.69.1",
     "@tamagui/font-inter": "1.69.1",
     "@tamagui/font-silkscreen": "1.69.1",

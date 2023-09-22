@@ -6408,6 +6408,26 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/font-dm-sans@1.69.1, @tamagui/font-dm-sans@workspace:packages/font-dm-sans":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/font-dm-sans@workspace:packages/font-dm-sans"
+  dependencies:
+    "@tamagui/build": 1.69.1
+    "@tamagui/core": 1.69.1
+    subset-font: ^1.6.1
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/font-dm-serif-display@1.69.1, @tamagui/font-dm-serif-display@workspace:packages/font-dm-serif-display":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/font-dm-serif-display@workspace:packages/font-dm-serif-display"
+  dependencies:
+    "@tamagui/build": 1.69.1
+    "@tamagui/core": 1.69.1
+    subset-font: ^1.6.1
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/font-fira-mono@1.69.1, @tamagui/font-fira-mono@workspace:packages/font-fira-mono":
   version: 0.0.0-use.local
   resolution: "@tamagui/font-fira-mono@workspace:packages/font-fira-mono"
@@ -7187,6 +7207,8 @@ __metadata:
     "@tamagui/build": 1.69.1
     "@tamagui/colors": 1.69.1
     "@tamagui/font-cherry-bomb": 1.69.1
+    "@tamagui/font-dm-sans": 1.69.1
+    "@tamagui/font-dm-serif-display": 1.69.1
     "@tamagui/font-glusp": 1.69.1
     "@tamagui/font-inter": 1.69.1
     "@tamagui/font-silkscreen": 1.69.1
