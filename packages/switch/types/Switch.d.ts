@@ -112,7 +112,7 @@ export declare const SwitchFrame: import("@tamagui/core").TamaguiComponent<Omit<
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
-}, "size" | "unstyled" | "checked" | "frameWidth"> & {
+}, "size" | "checked" | "frameWidth" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
     readonly checked?: boolean | undefined;
     readonly frameWidth?: number | undefined;
@@ -122,7 +122,7 @@ export declare const SwitchFrame: import("@tamagui/core").TamaguiComponent<Omit<
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
-}, "size" | "unstyled" | "checked" | "frameWidth"> & {
+}, "size" | "checked" | "frameWidth" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
     readonly checked?: boolean | undefined;
     readonly frameWidth?: number | undefined;
@@ -132,7 +132,7 @@ export declare const SwitchFrame: import("@tamagui/core").TamaguiComponent<Omit<
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
-}, "size" | "unstyled" | "checked" | "frameWidth"> & {
+}, "size" | "checked" | "frameWidth" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
     readonly checked?: boolean | undefined;
     readonly frameWidth?: number | undefined;
