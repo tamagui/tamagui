@@ -1,10 +1,11 @@
 import { Collapsible } from '@tamagui/collapsible';
-import type { Scope } from '@tamagui/create-context';
 import { H3 } from '@tamagui/text';
 import { GetProps, Stack, TamaguiElement } from '@tamagui/web';
 import * as React from 'react';
 type Direction = 'ltr' | 'rtl';
-declare const createAccordionScope: import("@tamagui/create-context").CreateScope;
+type ScopedProps<P> = P & {
+    __scopeAccordion?: string;
+};
 type AccordionElement = AccordionImplMultipleElement | AccordionImplSingleElement;
 interface AccordionSingleProps extends AccordionImplSingleProps {
     type: 'single';
@@ -229,7 +230,7 @@ declare const AccordionTriggerFrame: import("@tamagui/web").TamaguiComponent<Omi
 }>;
 type AccordionTriggerProps = GetProps<typeof AccordionTriggerFrame>;
 declare const AccordionContentFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/collapsible/types/Collapsible").CollapsibleContentProps & {
-    __scopeCollapsible?: Scope;
+    __scopeCollapsible?: string | undefined;
 } & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
@@ -245,7 +246,7 @@ declare const AccordionContentFrame: import("@tamagui/web").TamaguiComponent<imp
 }>>), "__scopeCollapsible" | keyof import("@tamagui/collapsible/types/Collapsible").CollapsibleContentProps> & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/web").StackProps, keyof React.RefAttributes<TamaguiElement> | "__scopeCollapsible" | keyof import("@tamagui/collapsible/types/Collapsible").CollapsibleContentProps> & Omit<{}, "unstyled"> & {
     readonly unstyled?: boolean | undefined;
 } & import("@tamagui/web").PseudoProps<Partial<import("@tamagui/collapsible/types/Collapsible").CollapsibleContentProps & {
-    __scopeCollapsible?: Scope;
+    __scopeCollapsible?: string | undefined;
 } & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
@@ -261,7 +262,7 @@ declare const AccordionContentFrame: import("@tamagui/web").TamaguiComponent<imp
 }>>), "__scopeCollapsible" | keyof import("@tamagui/collapsible/types/Collapsible").CollapsibleContentProps> & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/web").StackProps, keyof React.RefAttributes<TamaguiElement> | "__scopeCollapsible" | keyof import("@tamagui/collapsible/types/Collapsible").CollapsibleContentProps> & Omit<{}, "unstyled"> & {
     readonly unstyled?: boolean | undefined;
 }>> & import("@tamagui/web").MediaProps<Partial<import("@tamagui/collapsible/types/Collapsible").CollapsibleContentProps & {
-    __scopeCollapsible?: Scope;
+    __scopeCollapsible?: string | undefined;
 } & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
@@ -277,7 +278,7 @@ declare const AccordionContentFrame: import("@tamagui/web").TamaguiComponent<imp
 }>>), "__scopeCollapsible" | keyof import("@tamagui/collapsible/types/Collapsible").CollapsibleContentProps> & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/web").StackProps, keyof React.RefAttributes<TamaguiElement> | "__scopeCollapsible" | keyof import("@tamagui/collapsible/types/Collapsible").CollapsibleContentProps> & Omit<{}, "unstyled"> & {
     readonly unstyled?: boolean | undefined;
 }>>, TamaguiElement, import("@tamagui/collapsible/types/Collapsible").CollapsibleContentProps & {
-    __scopeCollapsible?: Scope;
+    __scopeCollapsible?: string | undefined;
 } & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
@@ -296,7 +297,7 @@ declare const AccordionContentFrame: import("@tamagui/web").TamaguiComponent<imp
     displayName: string | undefined;
 }>;
 type AccordionContentProps = GetProps<typeof AccordionContentFrame>;
-declare const Accordion: React.ForwardRefExoticComponent<(AccordionSingleProps | AccordionMultipleProps) & React.RefAttributes<AccordionElement>> & {
+declare const Accordion: React.ForwardRefExoticComponent<ScopedProps<AccordionSingleProps | AccordionMultipleProps> & React.RefAttributes<AccordionElement>> & {
     Trigger: import("@tamagui/web").ReactComponentWithRef<Object & Omit<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
         style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> & import("@tamagui/web").MediaProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
@@ -807,7 +808,7 @@ declare const Accordion: React.ForwardRefExoticComponent<(AccordionSingleProps |
         [x: string]: undefined;
     }>> & React.RefAttributes<import("@tamagui/web").TamaguiTextElement>, "ref">, "ref">) & React.RefAttributes<import("@tamagui/web").TamaguiTextElement>>;
     Content: import("@tamagui/web").ReactComponentWithRef<Object & Omit<import("@tamagui/collapsible/types/Collapsible").CollapsibleContentProps & {
-        __scopeCollapsible?: Scope;
+        __scopeCollapsible?: string | undefined;
     } & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
         style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
@@ -823,7 +824,7 @@ declare const Accordion: React.ForwardRefExoticComponent<(AccordionSingleProps |
     }>>), "__scopeCollapsible" | keyof import("@tamagui/collapsible/types/Collapsible").CollapsibleContentProps> & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/web").StackProps, keyof React.RefAttributes<TamaguiElement> | "__scopeCollapsible" | keyof import("@tamagui/collapsible/types/Collapsible").CollapsibleContentProps> & Omit<{}, "unstyled"> & {
         readonly unstyled?: boolean | undefined;
     } & import("@tamagui/web").PseudoProps<Partial<import("@tamagui/collapsible/types/Collapsible").CollapsibleContentProps & {
-        __scopeCollapsible?: Scope;
+        __scopeCollapsible?: string | undefined;
     } & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
         style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
@@ -839,7 +840,7 @@ declare const Accordion: React.ForwardRefExoticComponent<(AccordionSingleProps |
     }>>), "__scopeCollapsible" | keyof import("@tamagui/collapsible/types/Collapsible").CollapsibleContentProps> & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/web").StackProps, keyof React.RefAttributes<TamaguiElement> | "__scopeCollapsible" | keyof import("@tamagui/collapsible/types/Collapsible").CollapsibleContentProps> & Omit<{}, "unstyled"> & {
         readonly unstyled?: boolean | undefined;
     }>> & import("@tamagui/web").MediaProps<Partial<import("@tamagui/collapsible/types/Collapsible").CollapsibleContentProps & {
-        __scopeCollapsible?: Scope;
+        __scopeCollapsible?: string | undefined;
     } & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
         style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
@@ -857,7 +858,7 @@ declare const Accordion: React.ForwardRefExoticComponent<(AccordionSingleProps |
     }>>, keyof Object>, TamaguiElement> & {
         staticConfig: import("@tamagui/web").StaticConfig;
         styleable: import("@tamagui/web").Styleable<import("@tamagui/collapsible/types/Collapsible").CollapsibleContentProps & {
-            __scopeCollapsible?: Scope;
+            __scopeCollapsible?: string | undefined;
         } & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
             style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
         } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
@@ -873,7 +874,7 @@ declare const Accordion: React.ForwardRefExoticComponent<(AccordionSingleProps |
         }>>), "__scopeCollapsible" | keyof import("@tamagui/collapsible/types/Collapsible").CollapsibleContentProps> & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/web").StackProps, keyof React.RefAttributes<TamaguiElement> | "__scopeCollapsible" | keyof import("@tamagui/collapsible/types/Collapsible").CollapsibleContentProps> & Omit<{}, "unstyled"> & {
             readonly unstyled?: boolean | undefined;
         } & import("@tamagui/web").PseudoProps<Partial<import("@tamagui/collapsible/types/Collapsible").CollapsibleContentProps & {
-            __scopeCollapsible?: Scope;
+            __scopeCollapsible?: string | undefined;
         } & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
             style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
         } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
@@ -889,7 +890,7 @@ declare const Accordion: React.ForwardRefExoticComponent<(AccordionSingleProps |
         }>>), "__scopeCollapsible" | keyof import("@tamagui/collapsible/types/Collapsible").CollapsibleContentProps> & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/web").StackProps, keyof React.RefAttributes<TamaguiElement> | "__scopeCollapsible" | keyof import("@tamagui/collapsible/types/Collapsible").CollapsibleContentProps> & Omit<{}, "unstyled"> & {
             readonly unstyled?: boolean | undefined;
         }>> & import("@tamagui/web").MediaProps<Partial<import("@tamagui/collapsible/types/Collapsible").CollapsibleContentProps & {
-            __scopeCollapsible?: Scope;
+            __scopeCollapsible?: string | undefined;
         } & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
             style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
         } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
@@ -908,6 +909,6 @@ declare const Accordion: React.ForwardRefExoticComponent<(AccordionSingleProps |
     };
     Item: React.ForwardRefExoticComponent<AccordionItemProps & React.RefAttributes<TamaguiElement>>;
 };
-export { Accordion, createAccordionScope };
+export { Accordion };
 export type { AccordionContentProps, AccordionHeaderProps, AccordionItemProps, AccordionMultipleProps, AccordionSingleProps, AccordionTriggerProps, };
 //# sourceMappingURL=Accordion.d.ts.map
