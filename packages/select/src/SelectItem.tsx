@@ -1,10 +1,5 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
-import {
-  TamaguiElement,
-  isWeb,
-  isWebTouchable,
-  useIsomorphicLayoutEffect,
-} from '@tamagui/core'
+import { TamaguiElement, isWeb, useIsomorphicLayoutEffect } from '@tamagui/core'
 import { ListItem, ListItemProps } from '@tamagui/list-item'
 import * as React from 'react'
 
@@ -101,24 +96,14 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
 
     const selectItemProps = interactions
       ? interactions.getItemProps({
-          ...(isWebTouchable
-            ? {
-                onTouchStart() {
-                  allowSelectRef!.current = true
-                  allowMouseUpRef!.current = false
-                },
-              }
-            : {
-                onTouchMove() {
-                  allowSelectRef!.current = true
-                  allowMouseUpRef!.current = false
-                },
-                onTouchEnd() {
-                  allowSelectRef!.current = false
-                  allowMouseUpRef!.current = true
-                },
-              }),
-
+          onTouchMove() {
+            allowSelectRef!.current = true
+            allowMouseUpRef!.current = false
+          },
+          onTouchEnd() {
+            allowSelectRef!.current = false
+            allowMouseUpRef!.current = true
+          },
           onKeyDown(event) {
             if (
               event.key === 'Enter' ||
