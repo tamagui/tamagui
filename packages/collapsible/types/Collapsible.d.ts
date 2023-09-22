@@ -1,9 +1,7 @@
 import { AnimatePresenceProps } from '@tamagui/animate-presence';
-import type { Scope } from '@tamagui/create-context';
 import { ThemeableStackProps } from '@tamagui/stacks';
 import { GetProps, Stack, StackProps } from '@tamagui/web';
 import * as React from 'react';
-declare const createCollapsibleScope: import("@tamagui/create-context").CreateScope;
 interface CollapsibleProps extends StackProps {
     defaultOpen?: boolean;
     open?: boolean;
@@ -105,7 +103,7 @@ declare const CollapsibleContentFrame: import("@tamagui/web").TamaguiComponent<S
     __variantProps: {};
 }>;
 declare const CollapsibleContent: import("@tamagui/web").ReactComponentWithRef<CollapsibleContentProps & {
-    __scopeCollapsible?: Scope;
+    __scopeCollapsible?: string | undefined;
 } & Omit<StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | ("onLayout" | keyof import("react-native").GestureResponderHandlers) | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
@@ -135,7 +133,7 @@ declare const CollapsibleContent: import("@tamagui/web").ReactComponentWithRef<C
     }>>), import("@tamagui/web").TamaguiElement>;
 };
 declare const Collapsible: React.ForwardRefExoticComponent<CollapsibleProps & {
-    __scopeCollapsible?: Scope;
+    __scopeCollapsible?: string | undefined;
 } & React.RefAttributes<import("@tamagui/web").TamaguiElement>> & {
     Trigger: import("@tamagui/web").ReactComponentWithRef<Omit<import("react-native").ViewProps, "display" | "children" | ("onLayout" | keyof import("react-native").GestureResponderHandlers) | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
         style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
@@ -186,7 +184,7 @@ declare const Collapsible: React.ForwardRefExoticComponent<CollapsibleProps & {
         }>>), import("@tamagui/web").TamaguiElement>;
     };
     Content: import("@tamagui/web").ReactComponentWithRef<CollapsibleContentProps & {
-        __scopeCollapsible?: Scope;
+        __scopeCollapsible?: string | undefined;
     } & Omit<StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | ("onLayout" | keyof import("react-native").GestureResponderHandlers) | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
         style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
@@ -216,6 +214,6 @@ declare const Collapsible: React.ForwardRefExoticComponent<CollapsibleProps & {
         }>>), import("@tamagui/web").TamaguiElement>;
     };
 };
-export { Collapsible, CollapsibleContent, CollapsibleContentFrame, CollapsibleTrigger, CollapsibleTriggerFrame, createCollapsibleScope, };
+export { Collapsible, CollapsibleContent, CollapsibleContentFrame, CollapsibleTrigger, CollapsibleTriggerFrame, };
 export type { CollapsibleContentProps, CollapsibleProps, CollapsibleTriggerProps };
 //# sourceMappingURL=Collapsible.d.ts.map

@@ -1,6 +1,4 @@
 import { AnimatePresence, AnimatePresenceProps } from '@tamagui/animate-presence'
-import type { Scope } from '@tamagui/create-context'
-import { createContextScope } from '@tamagui/create-context'
 import { ThemeableStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import {
@@ -8,6 +6,7 @@ import {
   Stack,
   StackProps,
   composeEventHandlers,
+  createStyledContext,
   styled,
   withStaticProperties,
 } from '@tamagui/web'
@@ -19,9 +18,7 @@ import * as React from 'react'
 
 const COLLAPSIBLE_NAME = 'Collapsible'
 
-type ScopedProps<P> = P & { __scopeCollapsible?: Scope }
-const [createCollapsibleContext, createCollapsibleScope] =
-  createContextScope(COLLAPSIBLE_NAME)
+type ScopedProps<P> = P & { __scopeCollapsible?: string }
 
 type CollapsibleContextValue = {
   contentId: string
@@ -30,8 +27,8 @@ type CollapsibleContextValue = {
   onOpenToggle(): void
 }
 
-const [CollapsibleProvider, useCollapsibleContext] =
-  createCollapsibleContext<CollapsibleContextValue>(COLLAPSIBLE_NAME)
+const { Provider: CollapsibleProvider, useStyledContext: useCollapsibleContext } =
+  createStyledContext<CollapsibleContextValue>()
 
 interface CollapsibleProps extends StackProps {
   defaultOpen?: boolean
@@ -97,7 +94,7 @@ const CollapsibleTriggerFrame = styled(Stack, {
 const CollapsibleTrigger = CollapsibleTriggerFrame.styleable<CollapsibleTriggerProps>(
   (props: ScopedProps<CollapsibleTriggerProps>, forwardedRef) => {
     const { __scopeCollapsible, children, ...triggerProps } = props
-    const context = useCollapsibleContext(TRIGGER_NAME, __scopeCollapsible)
+    const context = useCollapsibleContext(__scopeCollapsible)
 
     return (
       <CollapsibleTriggerFrame
@@ -140,7 +137,7 @@ const CollapsibleContent = CollapsibleContentFrame.styleable<
   ScopedProps<CollapsibleContentProps>
 >((props, forwardedRef) => {
   const { forceMount, children, __scopeCollapsible, ...contentProps } = props
-  const context = useCollapsibleContext(CONTENT_NAME, __scopeCollapsible)
+  const context = useCollapsibleContext(__scopeCollapsible)
 
   return (
     <AnimatePresence {...contentProps}>
@@ -172,7 +169,6 @@ export {
   CollapsibleContentFrame,
   CollapsibleTrigger,
   CollapsibleTriggerFrame,
-  createCollapsibleScope,
 }
 
 export type { CollapsibleContentProps, CollapsibleProps, CollapsibleTriggerProps }
