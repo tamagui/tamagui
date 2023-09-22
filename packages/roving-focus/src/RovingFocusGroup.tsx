@@ -3,12 +3,11 @@ import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   Stack,
   composeEventHandlers,
+  createStyledContext,
   isWeb,
   useEvent,
   withStaticProperties,
 } from '@tamagui/core'
-import { createContextScope } from '@tamagui/create-context'
-import type { Scope } from '@tamagui/create-context'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
 import * as React from 'react'
@@ -31,7 +30,7 @@ interface RovingFocusGroupImplProps
 
 const RovingFocusGroupImpl = React.forwardRef<
   RovingFocusGroupImplElement,
-  RovingFocusGroupImplProps
+  ScopedProps<RovingFocusGroupImplProps>
 >((props: ScopedProps<RovingFocusGroupImplProps>, forwardedRef) => {
   const {
     __scopeRovingFocusGroup,
@@ -54,7 +53,7 @@ const RovingFocusGroupImpl = React.forwardRef<
   })
   const [isTabbingBackOut, setIsTabbingBackOut] = React.useState(false)
   const handleEntryFocus = useEvent(onEntryFocus)
-  const getItems = useCollection(__scopeRovingFocusGroup)
+  const getItems = useCollection(__scopeRovingFocusGroup || ROVING_FOCUS_GROUP_CONTEXT)
   const isClickFocusRef = React.useRef(false)
   const [focusableItemsCount, setFocusableItemsCount] = React.useState(0)
 
@@ -151,7 +150,7 @@ interface RovingFocusItemProps extends PrimitiveSpanProps {
 
 const RovingFocusGroupItem = React.forwardRef<
   RovingFocusItemElement,
-  RovingFocusItemProps
+  ScopedProps<RovingFocusItemProps>
 >((props: ScopedProps<RovingFocusItemProps>, forwardedRef) => {
   const {
     __scopeRovingFocusGroup,
@@ -162,9 +161,9 @@ const RovingFocusGroupItem = React.forwardRef<
   } = props
   const autoId = React.useId()
   const id = tabStopId || autoId
-  const context = useRovingFocusContext(ITEM_NAME, __scopeRovingFocusGroup)
+  const context = useRovingFocusContext(__scopeRovingFocusGroup)
   const isCurrentTabStop = context.currentTabStopId === id
-  const getItems = useCollection(__scopeRovingFocusGroup)
+  const getItems = useCollection(__scopeRovingFocusGroup || ROVING_FOCUS_GROUP_CONTEXT)
 
   const { onFocusableItemAdd, onFocusableItemRemove } = context
 
@@ -177,7 +176,7 @@ const RovingFocusGroupItem = React.forwardRef<
 
   return (
     <Collection.ItemSlot
-      scope={__scopeRovingFocusGroup}
+      __scopeCollection={__scopeRovingFocusGroup || ROVING_FOCUS_GROUP_CONTEXT}
       id={id}
       focusable={focusable}
       active={active}
@@ -245,16 +244,15 @@ RovingFocusGroupItem.displayName = ITEM_NAME
 const GROUP_NAME = 'RovingFocusGroup'
 
 type ItemData = { id: string; focusable: boolean; active: boolean }
-const [Collection, useCollection, createCollectionScope] = createCollection<
-  HTMLSpanElement,
-  ItemData
->(GROUP_NAME)
-
-type ScopedProps<P> = P & { __scopeRovingFocusGroup?: Scope }
-const [createRovingFocusGroupContext, createRovingFocusGroupScope] = createContextScope(
-  GROUP_NAME,
-  [createCollectionScope]
+const [Collection, useCollection] = createCollection<HTMLSpanElement, ItemData>(
+  GROUP_NAME
 )
+
+type ScopedProps<P> = P & { __scopeRovingFocusGroup?: string }
+// const [createRovingFocusGroupContext, createRovingFocusGroupScope] = createContextScope(
+//   GROUP_NAME,
+//   [createCollectionScope]
+// )
 
 type Orientation = React.AriaAttributes['aria-orientation']
 type Direction = 'ltr' | 'rtl'
@@ -284,18 +282,29 @@ type RovingContextValue = RovingFocusGroupOptions & {
   onFocusableItemRemove(): void
 }
 
-const [RovingFocusProvider, useRovingFocusContext] =
-  createRovingFocusGroupContext<RovingContextValue>(GROUP_NAME)
+// const [RovingFocusProvider, useRovingFocusContext] =
+//   createRovingFocusGroupContext<RovingContextValue>(GROUP_NAME)
+
+const { Provider: RovingFocusProvider, useStyledContext: useRovingFocusContext } =
+  createStyledContext<RovingContextValue>()
 
 type RovingFocusGroupElement = RovingFocusGroupImplElement
 interface RovingFocusGroupProps extends RovingFocusGroupImplProps {}
 
+const ROVING_FOCUS_GROUP_CONTEXT = 'RovingFocusGroupContext'
+
 const RovingFocusGroup = withStaticProperties(
-  React.forwardRef<RovingFocusGroupElement, RovingFocusGroupProps>(
+  React.forwardRef<RovingFocusGroupElement, ScopedProps<RovingFocusGroupProps>>(
     (props: ScopedProps<RovingFocusGroupProps>, forwardedRef) => {
       return (
-        <Collection.Provider scope={props.__scopeRovingFocusGroup}>
-          <Collection.Slot scope={props.__scopeRovingFocusGroup}>
+        <Collection.Provider
+          __scopeCollection={props.__scopeRovingFocusGroup || ROVING_FOCUS_GROUP_CONTEXT}
+        >
+          <Collection.Slot
+            __scopeCollection={
+              props.__scopeRovingFocusGroup || ROVING_FOCUS_GROUP_CONTEXT
+            }
+          >
             <RovingFocusGroupImpl {...props} ref={forwardedRef} />
           </Collection.Slot>
         </Collection.Provider>
@@ -357,6 +366,6 @@ function wrapArray<T>(array: T[], startIndex: number) {
   return array.map((_, index) => array[(startIndex + index) % array.length])
 }
 
-export { createRovingFocusGroupScope, RovingFocusGroup }
+export { RovingFocusGroup }
 
 export type { RovingFocusGroupProps, RovingFocusItemProps }
