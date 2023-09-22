@@ -335,7 +335,7 @@ declare const TabsFrame: import("@tamagui/web").TamaguiComponent<(Omit<import("r
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
-    readonly elevation?: SizeTokens | undefined;
+    readonly elevation?: SizeTokens | undefined; /** Used for making custom indicators when trigger interacted with */
 }, "size" | "unstyled" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "bordered"> & {
     readonly unstyled?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -490,7 +490,7 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
-    readonly elevation?: SizeTokens | undefined;
+    readonly elevation?: SizeTokens | undefined; /** Used for making custom indicators when trigger interacted with */
 }, "size" | "unstyled" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "bordered"> & {
     readonly unstyled?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -522,6 +522,8 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
      * @defaultValue automatic
      * */
     activationMode?: "automatic" | "manual" | undefined;
+} & {
+    __scopeTabs?: string | undefined;
 }) | Omit<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
@@ -592,6 +594,8 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
      * @defaultValue automatic
      * */
     activationMode?: "automatic" | "manual" | undefined;
+} & {
+    __scopeTabs?: string | undefined;
 }, "ref">) & React.RefAttributes<HTMLDivElement>> & {
     List: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
         style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
@@ -739,6 +743,8 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
         value: string;
         /** Used for making custom indicators when trigger interacted with */
         onInteraction?: ((type: InteractionType, layout: TabLayout | null) => void) | undefined;
+    } & {
+        __scopeTabs?: string | undefined;
     } & React.RefAttributes<HTMLButtonElement>>;
     Tab: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
         style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
@@ -808,6 +814,8 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
         value: string;
         /** Used for making custom indicators when trigger interacted with */
         onInteraction?: ((type: InteractionType, layout: TabLayout | null) => void) | undefined;
+    } & {
+        __scopeTabs?: string | undefined;
     } & React.RefAttributes<HTMLButtonElement>>;
     Content: React.ForwardRefExoticComponent<((Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
         style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
