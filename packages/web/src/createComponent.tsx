@@ -975,7 +975,7 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development' && time) time`events-setup`
 
     const events: TamaguiComponentEvents | null =
-      shouldAttach && !isDisabled && !asChild
+      shouldAttach && !isDisabled
         ? {
             onPressOut: attachPress
               ? (e) => {
