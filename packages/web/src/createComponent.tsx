@@ -580,7 +580,7 @@ export function createComponent<
 
     setDidGetVariableValue(false)
 
-    const resolveVariablesAs =
+    const resolveValues =
       // if HOC + mounted + has animation prop, resolve as value so it passes non-variable to child
       (isAnimated && !supportsCSSVars) ||
       (isHOC && state.unmounted == false && hasAnimationProp)
@@ -593,7 +593,7 @@ export function createComponent<
     const styleProps = {
       mediaState,
       noClassNames,
-      resolveVariablesAs,
+      resolveValues,
       isExiting,
       isAnimated,
       keepStyleSSR,
@@ -713,15 +713,15 @@ export function createComponent<
     const {
       asChild,
       children,
+      themeShallow,
+      spaceDirection: _spaceDirection,
+      disabled: disabledProp,
       onPress,
       onLongPress,
       onPressIn,
       onPressOut,
       onHoverIn,
       onHoverOut,
-      themeShallow,
-      spaceDirection: _spaceDirection,
-      disabled: disabledProp,
       onMouseUp,
       onMouseDown,
       onMouseEnter,
@@ -950,16 +950,9 @@ export function createComponent<
         onClick
     )
     const runtimeHoverStyle = !disabled && noClassNames && pseudos?.hoverStyle
+    const needsHoverState = runtimeHoverStyle || onHoverIn || onHoverOut
     const isHoverable =
-      isWeb &&
-      !!(
-        groupName ||
-        runtimeHoverStyle ||
-        onHoverIn ||
-        onHoverOut ||
-        onMouseEnter ||
-        onMouseLeave
-      )
+      isWeb && !!(groupName || needsHoverState || onMouseEnter || onMouseLeave)
 
     const handlesPressEvents = !(isWeb || asChild)
 
@@ -975,7 +968,7 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development' && time) time`events-setup`
 
     const events: TamaguiComponentEvents | null =
-      shouldAttach && !isDisabled && !asChild
+      shouldAttach && !isDisabled && !props.asChild
         ? {
             onPressOut: attachPress
               ? (e) => {
@@ -987,9 +980,13 @@ export function createComponent<
             ...((isHoverable || attachPress) && {
               onMouseEnter: (e) => {
                 const next: Partial<typeof state> = {}
-                next.hover = true
-                if (state.pressIn) {
-                  next.press = true
+                if (needsHoverState) {
+                  next.hover = true
+                }
+                if (runtimePressStyle) {
+                  if (state.pressIn) {
+                    next.press = true
+                  }
                 }
                 setStateShallow(next)
                 onHoverIn?.(e)
@@ -998,10 +995,14 @@ export function createComponent<
               onMouseLeave: (e) => {
                 const next: Partial<typeof state> = {}
                 mouseUps.add(unPress)
-                next.hover = false
-                if (state.pressIn) {
-                  next.press = false
-                  next.pressIn = false
+                if (needsHoverState) {
+                  next.hover = false
+                }
+                if (runtimePressStyle) {
+                  if (state.pressIn) {
+                    next.press = false
+                    next.pressIn = false
+                  }
                 }
                 setStateShallow(next)
                 onHoverOut?.(e)
@@ -1010,10 +1011,12 @@ export function createComponent<
             }),
             onPressIn: attachPress
               ? (e) => {
-                  setStateShallow({
-                    press: true,
-                    pressIn: true,
-                  })
+                  if (runtimePressStyle) {
+                    setStateShallow({
+                      press: true,
+                      pressIn: true,
+                    })
+                  }
                   onPressIn?.(e)
                   onMouseDown?.(e)
                   if (isWeb) {
@@ -1044,7 +1047,7 @@ export function createComponent<
           }
         : null
 
-    if (process.env.TAMAGUI_TARGET === 'native' && events) {
+    if (process.env.TAMAGUI_TARGET === 'native' && events && !asChild) {
       // replicating TouchableWithoutFeedback
       Object.assign(events, {
         cancelable: !viewProps.rejectResponderTermination,
@@ -1072,9 +1075,6 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`hooks`
 
-    // since we re-render without changing children often for animations or on mount
-    // we memo children here. tested this on the site homepage which has hundreds of components
-    // and i see no difference in startup performance, but i do see it memoing often
     let content =
       !children || asChild
         ? children
@@ -1089,12 +1089,27 @@ export function createComponent<
 
     if (asChild) {
       elementType = Slot
-      Object.assign(viewProps, {
-        onPress,
-        onLongPress,
-        onPressIn,
-        onPressOut,
-      })
+      // on native this is already merged into viewProps in hooks.useEvents
+      if (process.env.TAMAGUI_TARGET === 'web') {
+        const passEvents = {
+          onPress,
+          onLongPress,
+          onPressIn,
+          onPressOut,
+          onHoverIn,
+          onHoverOut,
+          onMouseUp,
+          onMouseDown,
+          onMouseEnter,
+          onMouseLeave,
+        }
+        Object.assign(
+          viewProps,
+          asChild === 'web' || asChild === 'except-style-web'
+            ? getWebEvents(passEvents as any)
+            : passEvents
+        )
+      }
     }
 
     if (process.env.NODE_ENV === 'development' && time) time`spaced-as-child`
@@ -1168,15 +1183,7 @@ export function createComponent<
         content = (
           <span
             className={`${isAnimatedReactNativeWeb ? className : ''} _dsp_contents`}
-            {...(events && {
-              onMouseEnter: events.onMouseEnter,
-              onMouseLeave: events.onMouseLeave,
-              onClick: events.onPress,
-              onMouseDown: events.onPressIn,
-              onMouseUp: events.onPressOut,
-              onTouchStart: events.onPressIn,
-              onTouchEnd: events.onPressOut,
-            })}
+            {...(events && getWebEvents(events))}
           >
             {content}
           </span>
@@ -1313,6 +1320,18 @@ export function createComponent<
   res.styleable = styleable
 
   return res
+}
+
+function getWebEvents<E extends TamaguiComponentEvents>(events: E) {
+  return {
+    onMouseEnter: events.onMouseEnter,
+    onMouseLeave: events.onMouseLeave,
+    onClick: events.onPress,
+    onMouseDown: events.onPressIn,
+    onMouseUp: events.onPressOut,
+    onTouchStart: events.onPressIn,
+    onTouchEnd: events.onPressOut,
+  }
 }
 
 // for elements to avoid spacing
