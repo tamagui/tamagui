@@ -600,7 +600,7 @@ export declare const useListItem: (propsIn: ListItemProps, { Text, Subtitle, Tit
         onLongPress?: ((event: import("react-native").GestureResponderEvent) => void) | null | undefined;
         disabled?: boolean | undefined;
         target?: string | undefined;
-        asChild?: boolean | "except-style" | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
         dangerouslySetInnerHTML?: {
             __html: string;
         } | undefined;

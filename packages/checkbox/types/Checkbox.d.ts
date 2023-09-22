@@ -446,6 +446,7 @@ export declare const Checkbox: React.ForwardRefExoticComponent<CheckboxProps & R
         scaleIcon: number;
     }> & {
         children?: React.ReactNode;
+        scope?: string | undefined;
     }>;
 };
 export { createCheckboxScope };

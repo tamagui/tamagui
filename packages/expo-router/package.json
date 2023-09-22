@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/expo-router",
-  "version": "1.68.6",
+  "version": "1.69.1",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -32,7 +32,7 @@
     "@react-navigation/native": "^6.1.7",
     "@react-navigation/native-stack": "^6.9.13",
     "@react-navigation/routers": "^6.1.9",
-    "@tamagui/web": "1.68.6",
+    "@tamagui/web": "1.69.1",
     "escape-string-regexp": "^5.0.0",
     "expo-constants": "^14.4.2",
     "expo-head": "0.0.11",
@@ -50,7 +50,7 @@
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.68.6",
+    "@tamagui/build": "1.69.1",
     "react": "^18.2.0",
     "react-native": "^0.72.1"
   },

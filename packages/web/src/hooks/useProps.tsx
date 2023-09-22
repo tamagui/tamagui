@@ -3,14 +3,16 @@ import { useContext } from 'react'
 import { ComponentContext } from '../contexts/ComponentContext'
 import { defaultComponentStateMounted } from '../defaultComponentState'
 import { useSplitStyles } from '../helpers/getSplitStyles'
-import { ResolveVariableAs, StaticConfig } from '../types'
+import { ResolveVariableAs, SplitStyleProps, StaticConfig } from '../types'
 import { Stack } from '../views/Stack'
 import { useMedia } from './useMedia'
 import { useThemeWithState } from './useTheme'
 
-type UsePropsOptions = {
+type UsePropsOptions = Pick<
+  SplitStyleProps,
+  'noExpand' | 'noNormalize' | 'noClassNames' | 'resolveValues'
+> & {
   disableExpandShorthands?: boolean
-  resolveValues?: ResolveVariableAs
   forComponent?: { staticConfig: StaticConfig }
 }
 
@@ -31,6 +33,8 @@ export function useProps<A extends Object>(
 ): FlattenedProps<A> {
   const [propsOut, styleOut] = usePropsAndStyle(props, {
     ...opts,
+    noExpand: true,
+    noNormalize: true,
     resolveValues: 'none',
   })
   return {
@@ -76,10 +80,8 @@ export function usePropsAndStyle<A extends Object>(
     defaultComponentStateMounted,
     {
       isAnimated: false,
-      noExpand: true,
       mediaState: media,
       noClassNames: true,
-      noNormalize: true,
       ...opts,
     },
     null,

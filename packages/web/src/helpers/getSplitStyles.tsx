@@ -354,142 +354,144 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     if (process.env.TAMAGUI_TARGET === 'web') {
-      /**
-       * Copying in the accessibility/prop handling from react-native-web here
-       * Keeps it in a single loop, avoids dup de-structuring to avoid bundle size
-       */
+      if (!styleProps.noExpand) {
+        /**
+         * Copying in the accessibility/prop handling from react-native-web here
+         * Keeps it in a single loop, avoids dup de-structuring to avoid bundle size
+         */
 
-      if (keyInit === 'disabled' && valInit === true) {
-        viewProps['aria-disabled'] = true
-        // Enhance with native semantics
-        if (
-          elementType === 'button' ||
-          elementType === 'form' ||
-          elementType === 'input' ||
-          elementType === 'select' ||
-          elementType === 'textarea'
-        ) {
-          viewProps.disabled = true
-        }
-        if (!variants?.disabled) {
-          continue
-        }
-      }
-
-      if (keyInit === 'testID') {
-        viewProps[isReactNative ? keyInit : 'data-testid'] = valInit
-        continue
-      }
-
-      if (keyInit === 'id' || keyInit === 'nativeID') {
-        if (isReactNative) {
-          viewProps.nativeID = valInit
-        } else {
-          viewProps.id = valInit
-        }
-        continue
-      }
-
-      let didUseKeyInit = false
-
-      if (isReactNative) {
-        // pass along to react-native-web
-        if (keyInit in accessibilityDirectMap || keyInit.startsWith('accessibility')) {
-          viewProps[keyInit] = valInit
-          continue
-        }
-      } else {
-        didUseKeyInit = true
-
-        if (keyInit in accessibilityDirectMap) {
-          viewProps[accessibilityDirectMap[keyInit]] = valInit
-          continue
-        } else {
-          switch (keyInit) {
-            case 'accessibilityRole': {
-              if (valInit === 'none') {
-                viewProps.role = 'presentation'
-              } else {
-                viewProps.role = accessibilityRoleToWebRole[valInit] || valInit
-              }
-              continue
-            }
-            case 'accessibilityLabelledBy':
-            case 'accessibilityFlowTo':
-            case 'accessibilityControls':
-            case 'accessibilityDescribedBy': {
-              viewProps[`aria-${keyInit.replace('accessibility', '').toLowerCase()}`] =
-                processIDRefList(valInit)
-              continue
-            }
-            case 'accessibilityKeyShortcuts': {
-              if (Array.isArray(valInit)) {
-                viewProps['aria-keyshortcuts'] = valInit.join(' ')
-              }
-              continue
-            }
-            case 'accessibilityLiveRegion': {
-              viewProps['aria-live'] = valInit === 'none' ? 'off' : valInit
-              continue
-            }
-            case 'accessibilityReadOnly': {
-              viewProps['aria-readonly'] = valInit
-              // Enhance with native semantics
-              if (
-                elementType === 'input' ||
-                elementType === 'select' ||
-                elementType === 'textarea'
-              ) {
-                viewProps.readOnly = true
-              }
-              continue
-            }
-            case 'accessibilityRequired': {
-              viewProps['aria-required'] = valInit
-              // Enhance with native semantics
-              if (
-                elementType === 'input' ||
-                elementType === 'select' ||
-                elementType === 'textarea'
-              ) {
-                viewProps.required = valInit
-              }
-              continue
-            }
-            default: {
-              didUseKeyInit = false
-            }
+        if (keyInit === 'disabled' && valInit === true) {
+          viewProps['aria-disabled'] = true
+          // Enhance with native semantics
+          if (
+            elementType === 'button' ||
+            elementType === 'form' ||
+            elementType === 'input' ||
+            elementType === 'select' ||
+            elementType === 'textarea'
+          ) {
+            viewProps.disabled = true
+          }
+          if (!variants?.disabled) {
+            continue
           }
         }
-      }
 
-      if (didUseKeyInit) {
-        continue
-      }
+        if (keyInit === 'testID') {
+          viewProps[isReactNative ? keyInit : 'data-testid'] = valInit
+          continue
+        }
 
-      if (valInit && valInit[0] === '_') {
-        // if valid style key (or pseudo like color-hover):
-        // this conditional and esp the pseudo check rarely runs so not a perf issue
-        const isValidClassName = keyInit in validStyles
-        const isMediaOrPseudo =
-          !isValidClassName &&
-          keyInit.includes(PROP_SPLIT) &&
-          validStyles[keyInit.split(PROP_SPLIT)[0]]
-
-        if (isValidClassName || isMediaOrPseudo) {
-          if (process.env.NODE_ENV === 'development' && debug) {
-            // biome-ignore lint/suspicious/noConsoleLog: ok
-            console.log('tamagui classname prop', keyInit, valInit)
-          }
-
-          if (shouldDoClasses) {
-            mergeClassName(transforms, classNames, keyInit, valInit, isMediaOrPseudo)
-            delete style[keyInit]
+        if (keyInit === 'id' || keyInit === 'nativeID') {
+          if (isReactNative) {
+            viewProps.nativeID = valInit
           } else {
-            style[keyInit] = reverseMapClassNameToValue(keyInit, valInit)
-            delete className[keyInit]
+            viewProps.id = valInit
           }
           continue
+        }
+
+        let didUseKeyInit = false
+
+        if (isReactNative) {
+          // pass along to react-native-web
+          if (keyInit in accessibilityDirectMap || keyInit.startsWith('accessibility')) {
+            viewProps[keyInit] = valInit
+            continue
+          }
+        } else {
+          didUseKeyInit = true
+
+          if (keyInit in accessibilityDirectMap) {
+            viewProps[accessibilityDirectMap[keyInit]] = valInit
+            continue
+          } else {
+            switch (keyInit) {
+              case 'accessibilityRole': {
+                if (valInit === 'none') {
+                  viewProps.role = 'presentation'
+                } else {
+                  viewProps.role = accessibilityRoleToWebRole[valInit] || valInit
+                }
+                continue
+              }
+              case 'accessibilityLabelledBy':
+              case 'accessibilityFlowTo':
+              case 'accessibilityControls':
+              case 'accessibilityDescribedBy': {
+                viewProps[`aria-${keyInit.replace('accessibility', '').toLowerCase()}`] =
+                  processIDRefList(valInit)
+                continue
+              }
+              case 'accessibilityKeyShortcuts': {
+                if (Array.isArray(valInit)) {
+                  viewProps['aria-keyshortcuts'] = valInit.join(' ')
+                }
+                continue
+              }
+              case 'accessibilityLiveRegion': {
+                viewProps['aria-live'] = valInit === 'none' ? 'off' : valInit
+                continue
+              }
+              case 'accessibilityReadOnly': {
+                viewProps['aria-readonly'] = valInit
+                // Enhance with native semantics
+                if (
+                  elementType === 'input' ||
+                  elementType === 'select' ||
+                  elementType === 'textarea'
+                ) {
+                  viewProps.readOnly = true
+                }
+                continue
+              }
+              case 'accessibilityRequired': {
+                viewProps['aria-required'] = valInit
+                // Enhance with native semantics
+                if (
+                  elementType === 'input' ||
+                  elementType === 'select' ||
+                  elementType === 'textarea'
+                ) {
+                  viewProps.required = valInit
+                }
+                continue
+              }
+              default: {
+                didUseKeyInit = false
+              }
+            }
+          }
+        }
+
+        if (didUseKeyInit) {
+          continue
+        }
+
+        if (valInit && valInit[0] === '_') {
+          // if valid style key (or pseudo like color-hover):
+          // this conditional and esp the pseudo check rarely runs so not a perf issue
+          const isValidClassName = keyInit in validStyles
+          const isMediaOrPseudo =
+            !isValidClassName &&
+            keyInit.includes(PROP_SPLIT) &&
+            validStyles[keyInit.split(PROP_SPLIT)[0]]
+
+          if (isValidClassName || isMediaOrPseudo) {
+            if (process.env.NODE_ENV === 'development' && debug) {
+              // biome-ignore lint/suspicious/noConsoleLog: ok
+              console.log('tamagui classname prop', keyInit, valInit)
+            }
+
+            if (shouldDoClasses) {
+              mergeClassName(transforms, classNames, keyInit, valInit, isMediaOrPseudo)
+              delete style[keyInit]
+            } else {
+              style[keyInit] = reverseMapClassNameToValue(keyInit, valInit)
+              delete className[keyInit]
+            }
+            continue
+          }
         }
       }
     }
