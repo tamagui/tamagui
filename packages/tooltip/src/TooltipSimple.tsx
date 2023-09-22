@@ -1,5 +1,4 @@
 import { useDelayGroupContext } from '@floating-ui/react'
-import { Theme } from '@tamagui/core'
 import { SizableStackProps } from '@tamagui/stacks'
 import { Paragraph } from '@tamagui/text'
 import * as React from 'react'
