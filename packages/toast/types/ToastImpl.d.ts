@@ -125,14 +125,7 @@ interface ToastProps extends Omit<ToastImplProps, keyof ToastImplPrivateProps> {
     forceMount?: true;
 }
 type SwipeEvent = GestureResponderEvent;
-declare const useToastInteractiveContext: (consumerName: string, scope: import("@tamagui/create-context").Scope<{
-    onClose(): void;
-} | undefined>, options?: {
-    warn?: boolean | undefined;
-    fallback?: Partial<{
-        onClose(): void;
-    }> | undefined;
-} | undefined) => {
+declare const useToastInteractiveContext: (scope?: string | undefined) => {
     onClose(): void;
 };
 type ToastImplPrivateProps = {
