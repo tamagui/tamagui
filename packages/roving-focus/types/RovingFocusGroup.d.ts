@@ -13,7 +13,6 @@ interface RovingFocusItemProps extends PrimitiveSpanProps {
     focusable?: boolean;
     active?: boolean;
 }
-declare const createRovingFocusGroupScope: import("@tamagui/create-context").CreateScope;
 type Orientation = React.AriaAttributes['aria-orientation'];
 type Direction = 'ltr' | 'rtl';
 interface RovingFocusGroupOptions {
@@ -34,9 +33,13 @@ interface RovingFocusGroupOptions {
 }
 interface RovingFocusGroupProps extends RovingFocusGroupImplProps {
 }
-declare const RovingFocusGroup: React.ForwardRefExoticComponent<RovingFocusGroupProps & React.RefAttributes<import("@tamagui/core").TamaguiElement>> & {
-    Item: React.ForwardRefExoticComponent<RovingFocusItemProps & React.RefAttributes<import("@tamagui/core").TamaguiElement>>;
+declare const RovingFocusGroup: React.ForwardRefExoticComponent<RovingFocusGroupProps & {
+    __scopeRovingFocusGroup?: string | undefined;
+} & React.RefAttributes<import("@tamagui/core").TamaguiElement>> & {
+    Item: React.ForwardRefExoticComponent<RovingFocusItemProps & {
+        __scopeRovingFocusGroup?: string | undefined;
+    } & React.RefAttributes<import("@tamagui/core").TamaguiElement>>;
 };
-export { createRovingFocusGroupScope, RovingFocusGroup };
+export { RovingFocusGroup };
 export type { RovingFocusGroupProps, RovingFocusItemProps };
 //# sourceMappingURL=RovingFocusGroup.d.ts.map
