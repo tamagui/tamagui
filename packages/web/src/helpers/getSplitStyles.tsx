@@ -193,7 +193,7 @@ export const getSplitStyles: StyleSplitter = (
     isClient
   ) {
     console.groupCollapsed('getSplitStyles (collapsed)')
-    
+
     // biome-ignore lint/suspicious/noConsoleLog: ok
     console.log({
       props,
@@ -203,7 +203,7 @@ export const getSplitStyles: StyleSplitter = (
       componentState,
       styleState,
       theme: { ...theme },
-    });
+    })
     console.groupEnd()
   }
 
@@ -243,8 +243,10 @@ export const getSplitStyles: StyleSplitter = (
     let valInit = props[keyOg]
 
     // normalize shorthands up front
-    if (keyInit in shorthands) {
-      keyInit = shorthands[keyInit]
+    if (!styleProps.disableExpandShorthands) {
+      if (keyInit in shorthands) {
+        keyInit = shorthands[keyInit]
+      }
     }
 
     if (keyInit === 'className') continue // handled above
@@ -545,7 +547,6 @@ export const getSplitStyles: StyleSplitter = (
       // biome-ignore lint/suspicious/noConsoleLog: <explanation>
       console.log({ isVariant, valInit, shouldPassProp })
       if (isClient) {
-        
         // biome-ignore lint/suspicious/noConsoleLog: <explanation>
         console.log({
           variants,
@@ -554,7 +555,7 @@ export const getSplitStyles: StyleSplitter = (
           isHOCShouldPassThrough,
           curProps: { ...styleState.curProps },
           parentStaticConfig,
-        });
+        })
       }
       console.groupEnd()
     }
@@ -629,7 +630,6 @@ export const getSplitStyles: StyleSplitter = (
       console.groupCollapsed('  💠 expanded', keyInit, valInit)
       try {
         if (!isServer && isDevTools) {
-          
           // biome-ignore lint/suspicious/noConsoleLog: <explanation>
           console.log({
             expanded,
@@ -642,7 +642,7 @@ export const getSplitStyles: StyleSplitter = (
             theme,
             usedKeys: { ...usedKeys },
             curProps: { ...styleState.curProps },
-          });
+          })
           // biome-ignore lint/suspicious/noConsoleLog: ok
           console.log('expanded', expanded, '\nusedKeys', { ...usedKeys }, '\ncurrent', {
             ...style,
@@ -737,9 +737,9 @@ export const getSplitStyles: StyleSplitter = (
           if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
             // prettier-ignore
             console.groupCollapsed("pseudo (classes)", key);
-            
+
             // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-            console.log({ pseudoStyleObject, pseudoStyles });
+            console.log({ pseudoStyleObject, pseudoStyles })
             console.groupEnd()
           }
 
@@ -777,7 +777,7 @@ export const getSplitStyles: StyleSplitter = (
           if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
             // prettier-ignore
             console.groupCollapsed("pseudo", key, { isDisabled });
-            
+
             // biome-ignore lint/suspicious/noConsoleLog: <explanation>
             console.log(pseudoStyleObject, {
               isDisabled,
@@ -785,7 +785,7 @@ export const getSplitStyles: StyleSplitter = (
               descriptor,
               pseudoState,
               state: { ...componentState },
-            });
+            })
             console.groupEnd()
           }
 
@@ -813,14 +813,13 @@ export const getSplitStyles: StyleSplitter = (
               }
 
               if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-                
                 // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-                console.log("    subKey", pkey, shouldMerge, {
+                console.log('    subKey', pkey, shouldMerge, {
                   importance,
                   curImportance,
                   pkey,
                   val,
-                });
+                })
               }
             }
           }
@@ -870,9 +869,15 @@ export const getSplitStyles: StyleSplitter = (
         const mediaKeyShort = key.slice(1)
 
         if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-          
           // biome-ignore lint/suspicious/noConsoleLog: ok
-          console.log(`  📺 ${key}`, { key, val, mediaStyle, props, shouldDoClasses, componentState });
+          console.log(`  📺 ${key}`, {
+            key,
+            val,
+            mediaStyle,
+            props,
+            shouldDoClasses,
+            componentState,
+          })
         }
 
         // for some reason 'space' in val upsetting next ssr during prod build

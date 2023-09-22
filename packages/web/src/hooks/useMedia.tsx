@@ -1,21 +1,17 @@
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { useMemo, useRef, useSyncExternalStore } from 'react'
+import { useRef, useSyncExternalStore } from 'react'
 
 import { getConfig } from '../config'
 import { createProxy } from '../helpers/createProxy'
 import { matchMedia } from '../helpers/matchMedia'
-import { getTokenForKey } from '../helpers/propMapper'
 import { pseudoDescriptors } from '../helpers/pseudoDescriptors'
 import type {
-  GetStyleState,
   MediaQueries,
   MediaQueryKey,
   MediaQueryObject,
   MediaQueryState,
-  ResolveVariableAs,
   TamaguiInternalConfig,
 } from '../types'
-import { useTheme } from './useTheme'
 
 export let mediaState: MediaQueryState =
   // development only safeguard
@@ -243,75 +239,6 @@ export function useMedia(uid?: any): UseMediaState {
       return Reflect.get(state, key)
     },
   })
-}
-
-/**
- *
- * @deprecated use useProps instead which is the same but also expands shorthands (which you can disable)
- *
- * Useful for more complex components that need access to the currently active props,
- * accounting for the currently active media queries.
- *
- * Use sparingly, it will loop props and trigger re-render on all media queries.
- *
- * */
-export function useMediaPropsActive<A extends Object>(
-  props: A,
-  opts?: {
-    expandShorthands?: boolean
-    resolveValues?: ResolveVariableAs
-  }
-): {
-  // remove all media
-  [Key in keyof A extends `$${string}` ? never : keyof A]?: A[Key]
-} {
-  const media = useMedia()
-  const resolveAs = opts?.resolveValues || 'none'
-  const theme = resolveAs ? useTheme() : null
-  const styleState = { theme } as Partial<GetStyleState>
-  const shouldExpandShorthands = opts?.expandShorthands
-
-  return useMemo(() => {
-    const config = getConfig()
-    const next = {} as A
-    const importancesUsed = {}
-    const propNames = Object.keys(props)
-    const len = propNames.length
-
-    for (let i = 0; i < len; i++) {
-      let key = propNames[i]
-      const val = props[key]
-      if (key[0] === '$') {
-        const mediaKey = key.slice(1)
-        if (!media[mediaKey]) continue
-        if (val && typeof val === 'object') {
-          const subKeys = Object.keys(val)
-          for (let j = subKeys.length; j--; j >= 0) {
-            let subKey = subKeys[j]
-            const value = getTokenForKey(subKey, val[subKey], resolveAs, styleState)
-            if (shouldExpandShorthands) {
-              subKey = config.shorthands[subKey] || subKey
-            }
-            mergeMediaByImportance(next, mediaKey, subKey, value, importancesUsed, true)
-          }
-        }
-      } else {
-        if (shouldExpandShorthands) {
-          key = config.shorthands[key] || key
-        }
-        mergeMediaByImportance(
-          next,
-          '',
-          key,
-          getTokenForKey(key, val, resolveAs, styleState),
-          importancesUsed,
-          true
-        )
-      }
-    }
-
-    return next
-  }, [media, props, theme, resolveAs])
 }
 
 export const getMediaImportanceIfMoreImportant = (

@@ -68,9 +68,11 @@ export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => 
   let shouldReturn = false
 
   // handle shorthands
-  if (key in conf.shorthands) {
-    shouldReturn = true
-    key = conf.shorthands[key]
+  if (!styleProps.disableExpandShorthands) {
+    if (key in conf.shorthands) {
+      shouldReturn = true
+      key = conf.shorthands[key]
+    }
   }
 
   if (value) {

@@ -928,6 +928,7 @@ export type SplitStyleProps = {
     mediaState?: Record<string, boolean>;
     noClassNames?: boolean;
     resolveVariablesAs?: ResolveVariableAs;
+    disableExpandShorthands?: boolean;
     fallbackProps?: Record<string, any>;
     hasTextAncestor?: boolean;
     isAnimated: boolean;

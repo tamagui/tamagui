@@ -23,9 +23,13 @@ const StyledSwitch = createSwitch({})
 export const Sandbox = () => {
   return (
     <>
-      <StyledSwitch>
-        <StyledSwitch.Thumb animation="quick" />
-      </StyledSwitch>
+      <Stack
+        w={100}
+        h={100}
+        bc="red"
+        onPress={() => console.log('hi')}
+        onLongPress={() => console.log('asdas')}
+      />
     </>
   )
 }
