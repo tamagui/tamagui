@@ -184,13 +184,13 @@ function MyButton(props) {
 }
 ```
 
-### useSplitPropsAndStyle
+### usePropsAndStyle
 
 Similar to the above two hooks, this returns your fully resolved/merged/media query flattened styles, but instead of returning _just_ props or _just_ style, it returns both of them split out:
 
 ```tsx
 function MyButton(props) {
-  const [props, style] = useSplitPropsAndStyle(props, opts)
+  const [props, style] = usePropsAndStyle(props, opts)
   // see useProps and useStyle to see opts and how these values are resolved
 }
 ```

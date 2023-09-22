@@ -29,6 +29,6 @@ export declare function useStyle<A extends Object>(props: A, opts?: UsePropsOpti
  * Use sparingly, it will loop props and trigger re-render on all media queries you access.
  *
  * */
-export declare function useSplitPropsAndStyle<A extends Object>(props: A, opts?: UsePropsOptions): [FlattenedProps<A>, FlattenedProps<A>];
+export declare function usePropsAndStyle<A extends Object>(props: A, opts?: UsePropsOptions): [FlattenedProps<A>, FlattenedProps<A>];
 export {};
 //# sourceMappingURL=useProps.d.ts.map

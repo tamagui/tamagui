@@ -1,4 +1,4 @@
-import { getTokenValue, getVariable, useProps, useTheme } from '@tamagui/core'
+import { getTokenValue, getVariable, usePropsAndStyle, useTheme } from '@tamagui/core'
 import React from 'react'
 
 import { IconProps } from './IconProps'
@@ -18,7 +18,7 @@ export function themed(
   }
 ) {
   const wrapped = (propsIn: IconProps) => {
-    const props = useProps(propsIn)
+    const [props, style] = usePropsAndStyle(propsIn)
     const theme = useTheme()
 
     const defaultColor = props.color ?? opts.defaultThemeColor
@@ -39,7 +39,15 @@ export function themed(
         ? getTokenValue(props.strokeWidth as any, 'size')
         : props.strokeWidth ?? `${opts.defaultStrokeWidth}`
 
-    return <Component {...props} color={color} size={size} strokeWidth={strokeWidth} />
+    return (
+      <Component
+        {...props}
+        color={color}
+        size={size}
+        strokeWidth={strokeWidth}
+        style={style as any}
+      />
+    )
   }
 
   return wrapped

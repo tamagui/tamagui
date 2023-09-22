@@ -35,6 +35,7 @@ export const Sandbox = () => {
     <div
       style={{ flex: 1, alignItems: 'center', justifyContent: 'center', display: 'flex' }}
     >
+      <Button debug="verbose">hi</Button>
       {/*  */}
     </div>
   )

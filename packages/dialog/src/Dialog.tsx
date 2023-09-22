@@ -89,7 +89,7 @@ const DialogTriggerFrame = styled(View, {
 
 interface DialogTriggerProps extends StackProps {}
 
-const DialogTrigger = React.forwardRef<TamaguiElement, DialogTriggerProps>(
+const DialogTrigger = DialogTriggerFrame.styleable(
   (props: ScopedProps<DialogTriggerProps>, forwardedRef) => {
     const { __scopeDialog, ...triggerProps } = props
     const context = useDialogContext(TRIGGER_NAME, __scopeDialog)
