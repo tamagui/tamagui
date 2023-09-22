@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/tabs",
-  "version": "1.68.6",
+  "version": "1.69.0",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -25,21 +25,21 @@
     }
   },
   "dependencies": {
-    "@tamagui/create-context": "1.68.6",
-    "@tamagui/get-button-sized": "1.68.6",
-    "@tamagui/group": "1.68.6",
-    "@tamagui/roving-focus": "1.68.6",
-    "@tamagui/stacks": "1.68.6",
-    "@tamagui/use-controllable-state": "1.68.6",
-    "@tamagui/use-direction": "1.68.6",
-    "@tamagui/web": "1.68.6"
+    "@tamagui/create-context": "1.69.0",
+    "@tamagui/get-button-sized": "1.69.0",
+    "@tamagui/group": "1.69.0",
+    "@tamagui/roving-focus": "1.69.0",
+    "@tamagui/stacks": "1.69.0",
+    "@tamagui/use-controllable-state": "1.69.0",
+    "@tamagui/use-direction": "1.69.0",
+    "@tamagui/web": "1.69.0"
   },
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.68.6",
+    "@tamagui/build": "1.69.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
