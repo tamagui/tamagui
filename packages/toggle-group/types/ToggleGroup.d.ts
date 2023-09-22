@@ -1,10 +1,8 @@
-import { Scope } from '@tamagui/create-context';
 import { GroupProps } from '@tamagui/group';
 import { RovingFocusGroup } from '@tamagui/roving-focus';
 import { GetProps, SizeTokens } from '@tamagui/web';
 import React from 'react';
 import { ToggleFrame } from './Toggle';
-declare const createToggleGroupScope: import("@tamagui/create-context").CreateScope;
 type ToggleGroupItemProps = GetProps<typeof ToggleFrame> & {
     value: string;
     id?: string;
@@ -22,7 +20,11 @@ interface ToggleGroupMultipleProps extends ToggleGroupImplMultipleProps {
     type: 'multiple';
 }
 type ToggleGroupProps = ToggleGroupSingleProps | ToggleGroupMultipleProps;
-declare const ToggleGroup: React.ForwardRefExoticComponent<(Omit<ToggleGroupSingleProps, "ref"> | Omit<ToggleGroupMultipleProps, "ref">) & React.RefAttributes<HTMLElement>> & {
+declare const ToggleGroup: React.ForwardRefExoticComponent<(Omit<ToggleGroupSingleProps & {
+    __scopeToggleGroup?: string | undefined;
+}, "ref"> | Omit<ToggleGroupMultipleProps & {
+    __scopeToggleGroup?: string | undefined;
+}, "ref">) & React.RefAttributes<HTMLElement>> & {
     Item: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
         style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
@@ -201,7 +203,7 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     disablePassBorderRadius?: (boolean | "bottom" | "end" | "start" | "top") | undefined;
     forceUseItem?: boolean | undefined;
 } & {
-    __scopeGroup?: Scope;
+    __scopeGroup?: import("@tamagui/create-context").Scope;
 } & React.RefAttributes<import("@tamagui/web").TamaguiElement> & Omit<import("@tamagui/web").StackProps, "style" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "elevation" | keyof {
     columnGap?: import("@tamagui/web").SpaceValue | undefined;
     contain?: import("csstype").Property.Contain | undefined;
@@ -312,7 +314,7 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     disablePassBorderRadius?: (boolean | "bottom" | "end" | "start" | "top") | undefined;
     forceUseItem?: boolean | undefined;
 } & {
-    __scopeGroup?: Scope;
+    __scopeGroup?: import("@tamagui/create-context").Scope;
 } & React.RefAttributes<import("@tamagui/web").TamaguiElement> & Omit<import("@tamagui/web").StackProps, "style" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "elevation" | keyof {
     columnGap?: import("@tamagui/web").SpaceValue | undefined;
     contain?: import("csstype").Property.Contain | undefined;
@@ -423,7 +425,7 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     disablePassBorderRadius?: (boolean | "bottom" | "end" | "start" | "top") | undefined;
     forceUseItem?: boolean | undefined;
 } & {
-    __scopeGroup?: Scope;
+    __scopeGroup?: import("@tamagui/create-context").Scope;
 } & React.RefAttributes<import("@tamagui/web").TamaguiElement> & Omit<import("@tamagui/web").StackProps, "style" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "elevation" | keyof {
     columnGap?: import("@tamagui/web").SpaceValue | undefined;
     contain?: import("csstype").Property.Contain | undefined;
@@ -534,7 +536,7 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     disablePassBorderRadius?: (boolean | "bottom" | "end" | "start" | "top") | undefined;
     forceUseItem?: boolean | undefined;
 } & {
-    __scopeGroup?: Scope;
+    __scopeGroup?: import("@tamagui/create-context").Scope;
 } & React.RefAttributes<import("@tamagui/web").TamaguiElement> & Omit<import("@tamagui/web").StackProps, "style" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "elevation" | keyof {
     columnGap?: import("@tamagui/web").SpaceValue | undefined;
     contain?: import("csstype").Property.Contain | undefined;
@@ -579,7 +581,7 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
 }, {
     displayName: string | undefined;
     Item: (props: import("@tamagui/group").GroupItemProps & {
-        __scopeGroup?: Scope;
+        __scopeGroup?: import("@tamagui/create-context").Scope;
     }) => any;
 }>;
 type ToggleGroupImplProps = GetProps<typeof ToggleGroupImplElementFrame> & GroupProps & {
@@ -588,6 +590,6 @@ type ToggleGroupImplProps = GetProps<typeof ToggleGroupImplElementFrame> & Group
     loop?: RovingFocusGroupProps['loop'];
     sizeAdjust?: number;
 };
-export { ToggleGroup, createToggleGroupScope };
+export { ToggleGroup };
 export type { ToggleGroupItemProps, ToggleGroupMultipleProps, ToggleGroupProps, ToggleGroupSingleProps, };
 //# sourceMappingURL=ToggleGroup.d.ts.map
