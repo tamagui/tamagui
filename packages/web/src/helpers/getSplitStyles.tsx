@@ -29,7 +29,6 @@ import {
   mediaState as globalMediaState,
   isMediaKey,
   mediaKeyMatch,
-  mediaKeyToQuery,
   mediaQueryConfig,
   mergeMediaByImportance,
 } from '../hooks/useMedia'
@@ -53,7 +52,6 @@ import type {
   ThemeParsed,
   ViewStyleWithPseudos,
 } from '../types'
-import type { LanguageContextType } from '../views/FontLanguage.types'
 import { createMediaStyle } from './createMediaStyle'
 import { fixStyles } from './expandStyles'
 import { getGroupPropParts } from './getGroupPropParts'
@@ -1068,49 +1066,51 @@ export const getSplitStyles: StyleSplitter = (
     mergeStyleProp(styleState, props.style)
   }
 
-  fixStyles(style)
+  if (!styleProps.noNormalize) {
+    fixStyles(style)
 
-  // shouldnt this be better? but breaks some tests wierdly, need to check
-  // if (isWeb && !staticConfig.isReactNative) {
-  if (isWeb && !staticConfig.isReactNative) {
-    styleToCSS(style)
-  }
+    // shouldnt this be better? but breaks some tests wierdly, need to check
+    // if (isWeb && !staticConfig.isReactNative) {
+    if (isWeb && !staticConfig.isReactNative) {
+      styleToCSS(style)
+    }
 
-  // these are only the flat transforms
-  // always do this at the very end to preserve the order strictly (animations, origin)
-  // and allow proper merging of all pseudos before applying
-  if (styleState.transforms) {
-    // we need to match the order for animations to work because it needs consistent order
-    // was thinking of having something like `state.prevTransformsOrder = ['y', 'x', ...]
-    // but if we just handle it here its not a big cost and avoids having stateful things
-    // so the strategy is: always sort by a consistent order, until you run into a "duplicate"
-    // because you can have something like:
-    //   [{ translateX: 0 }, { scale: 1 }, { translateX: 10 }]
-    // so basically we sort until we get to a duplicate... we could sort even smarter but
-    // this should work for most (all?) of our cases since the order preservation really only needs to apply
-    // to the "flat" transform props
-    Object.entries(styleState.transforms)
-      .sort(([a], [b]) => a.localeCompare(b))
-      .forEach(([key, val]) => {
-        mergeTransform(style, key, val, true)
-      })
-  }
+    // these are only the flat transforms
+    // always do this at the very end to preserve the order strictly (animations, origin)
+    // and allow proper merging of all pseudos before applying
+    if (styleState.transforms) {
+      // we need to match the order for animations to work because it needs consistent order
+      // was thinking of having something like `state.prevTransformsOrder = ['y', 'x', ...]
+      // but if we just handle it here its not a big cost and avoids having stateful things
+      // so the strategy is: always sort by a consistent order, until you run into a "duplicate"
+      // because you can have something like:
+      //   [{ translateX: 0 }, { scale: 1 }, { translateX: 10 }]
+      // so basically we sort until we get to a duplicate... we could sort even smarter but
+      // this should work for most (all?) of our cases since the order preservation really only needs to apply
+      // to the "flat" transform props
+      Object.entries(styleState.transforms)
+        .sort(([a], [b]) => a.localeCompare(b))
+        .forEach(([key, val]) => {
+          mergeTransform(style, key, val, true)
+        })
+    }
 
-  // add in defaults if not set:
-  if (parentSplitStyles) {
-    if (process.env.TAMAGUI_TARGET === 'web') {
-      if (shouldDoClasses) {
-        for (const key in parentSplitStyles.classNames) {
-          const val = parentSplitStyles.classNames[key]
-          if (key in style || key in classNames) continue
-          classNames[key] = val
+    // add in defaults if not set:
+    if (parentSplitStyles) {
+      if (process.env.TAMAGUI_TARGET === 'web') {
+        if (shouldDoClasses) {
+          for (const key in parentSplitStyles.classNames) {
+            const val = parentSplitStyles.classNames[key]
+            if (key in style || key in classNames) continue
+            classNames[key] = val
+          }
         }
       }
-    }
-    if (!shouldDoClasses) {
-      for (const key in parentSplitStyles.style) {
-        if (key in classNames || key in style) continue
-        style[key] = parentSplitStyles.style[key]
+      if (!shouldDoClasses) {
+        for (const key in parentSplitStyles.style) {
+          if (key in classNames || key in style) continue
+          style[key] = parentSplitStyles.style[key]
+        }
       }
     }
   }
@@ -1163,27 +1163,27 @@ export const getSplitStyles: StyleSplitter = (
           style = retainedStyles || {}
         }
       }
-    }
 
-    if (transforms) {
-      for (const namespace in transforms) {
-        if (!transforms[namespace]) {
-          if (process.env.NODE_ENV === 'development') {
-            console.warn('Error no transform', transforms, namespace)
+      if (transforms) {
+        for (const namespace in transforms) {
+          if (!transforms[namespace]) {
+            if (process.env.NODE_ENV === 'development') {
+              console.warn('Error no transform', transforms, namespace)
+            }
+            continue
           }
-          continue
+          const [hash, val] = transforms[namespace]
+          const identifier = `_transform${hash}`
+          if (isClient && !insertedTransforms[identifier]) {
+            const rule = `.${identifier} { transform: ${val}; }`
+            addStyleToInsertRules(rulesToInsert, {
+              identifier,
+              rules: [rule],
+              property: namespace,
+            } as StyleObject)
+          }
+          classNames[namespace] = identifier
         }
-        const [hash, val] = transforms[namespace]
-        const identifier = `_transform${hash}`
-        if (isClient && !insertedTransforms[identifier]) {
-          const rule = `.${identifier} { transform: ${val}; }`
-          addStyleToInsertRules(rulesToInsert, {
-            identifier,
-            rules: [rule],
-            property: namespace,
-          } as StyleObject)
-        }
-        classNames[namespace] = identifier
       }
     }
 
@@ -1336,7 +1336,7 @@ function mergeClassName(
 }
 
 function mergeStyle(styleState: GetStyleState, key: string, val: any) {
-  const { classNames, viewProps, style, usedKeys } = styleState
+  const { classNames, viewProps, style, usedKeys, styleProps } = styleState
   if (isWeb && val?.[0] === '_') {
     classNames[key] = val
     usedKeys[key] ||= 1
@@ -1344,7 +1344,8 @@ function mergeStyle(styleState: GetStyleState, key: string, val: any) {
     styleState.transforms ||= {}
     styleState.transforms[key] = val
   } else {
-    const out = isWeb ? normalizeValueWithProperty(val, key) : val
+    const out =
+      isWeb && !styleProps.noNormalize ? normalizeValueWithProperty(val, key) : val
     if (key in validStylesOnBaseProps) {
       viewProps[key] = out
     } else {
@@ -1359,7 +1360,7 @@ export const getSubStyle = (
   styleIn: Object,
   avoidMergeTransform?: boolean
 ): TextStyleProps => {
-  const { staticConfig, props, conf } = styleState
+  const { staticConfig, props, conf, styleProps } = styleState
   const styleOut: TextStyleProps = {}
 
   for (let key in styleIn) {
@@ -1373,12 +1374,16 @@ export const getSubStyle = (
       if (!avoidMergeTransform && skey in stylePropsTransform) {
         mergeTransform(styleOut, skey, sval)
       } else {
-        styleOut[skey] = normalizeValueWithProperty(sval, key)
+        styleOut[skey] = styleProps.noNormalize
+          ? sval
+          : normalizeValueWithProperty(sval, key)
       }
     }
   }
 
-  fixStyles(styleOut)
+  if (!styleProps.noNormalize) {
+    fixStyles(styleOut)
+  }
 
   return styleOut
 }

@@ -580,7 +580,7 @@ export function createComponent<
 
     setDidGetVariableValue(false)
 
-    const resolveVariablesAs =
+    const resolveValues =
       // if HOC + mounted + has animation prop, resolve as value so it passes non-variable to child
       (isAnimated && !supportsCSSVars) ||
       (isHOC && state.unmounted == false && hasAnimationProp)
@@ -593,7 +593,7 @@ export function createComponent<
     const styleProps = {
       mediaState,
       noClassNames,
-      resolveVariablesAs,
+      resolveValues,
       isExiting,
       isAnimated,
       keepStyleSSR,

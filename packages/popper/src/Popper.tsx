@@ -327,6 +327,7 @@ export const PopperArrow = PopperArrowFrame.styleable<
 >(function PopperArrow(propsIn: ScopedPopperProps<PopperArrowProps>, forwardedRef) {
   const { __scopePopper, ...rest } = propsIn
   const props = useProps(rest)
+
   const { offset, size: sizeProp, borderWidth = 0, ...arrowProps } = props
 
   const context = usePopperContext(__scopePopper)

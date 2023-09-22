@@ -76,10 +76,11 @@ export function useSplitPropsAndStyle<A extends Object>(
     defaultComponentStateMounted,
     {
       isAnimated: false,
+      noExpand: true,
       mediaState: media,
       noClassNames: true,
+      noNormalize: true,
       ...opts,
-      resolveVariablesAs: opts?.resolveValues,
     },
     null,
     componentContext

@@ -77,14 +77,14 @@ export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => 
 
   if (value) {
     if (value[0] === '$') {
-      value = getTokenForKey(key, value, styleProps.resolveVariablesAs, styleState)
+      value = getTokenForKey(key, value, styleProps.resolveValues, styleState)
     } else if (isVariable(value)) {
-      value = resolveVariableValue(value, styleProps.resolveVariablesAs)
+      value = resolveVariableValue(value, styleProps.resolveValues)
     }
   }
 
   if (shouldReturn || value != null) {
-    return expandStyle(key, value) || [[key, value]]
+    return (styleProps.noExpand ? null : expandStyle(key, value)) || [[key, value]]
   }
 }
 
@@ -240,7 +240,7 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
         res[fKey] =
           // SYNC WITH *1
           val[0] === '$'
-            ? getTokenForKey(fKey, val, styleProps.resolveVariablesAs, styleState)
+            ? getTokenForKey(fKey, val, styleProps.resolveValues, styleState)
             : val
       } else {
         const variantOut = resolveVariants(fKey, val, styleProps, styleState, key)
@@ -262,7 +262,7 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
     }
 
     if (isVariable(val)) {
-      res[fKey] = resolveVariableValue(val, styleProps.resolveVariablesAs)
+      res[fKey] = resolveVariableValue(val, styleProps.resolveValues)
       continue
     }
 
@@ -270,7 +270,7 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
       const fVal =
         // SYNC WITH *1
         val[0] === '$'
-          ? getTokenForKey(fKey, val, styleProps.resolveVariablesAs, styleState)
+          ? getTokenForKey(fKey, val, styleProps.resolveValues, styleState)
           : val
       res[fKey] = fVal
       continue
@@ -434,11 +434,11 @@ export const getTokenForKey = (
 
 function resolveVariableValue(
   valOrVar: Variable | any,
-  resolveVariablesAs?: ResolveVariableAs
+  resolveValues?: ResolveVariableAs
 ) {
-  if (resolveVariablesAs === 'none') return valOrVar
+  if (resolveValues === 'none') return valOrVar
   if (isVariable(valOrVar)) {
-    if (!isWeb || resolveVariablesAs === 'value') {
+    if (!isWeb || resolveValues === 'value') {
       return valOrVar.val
     }
     return valOrVar.variable

@@ -938,7 +938,9 @@ export type ResolveVariableAs = 'auto' | 'value' | 'variable' | 'none';
 export type SplitStyleProps = {
     mediaState?: Record<string, boolean>;
     noClassNames?: boolean;
-    resolveVariablesAs?: ResolveVariableAs;
+    noExpand?: boolean;
+    noNormalize?: boolean;
+    resolveValues?: ResolveVariableAs;
     disableExpandShorthands?: boolean;
     fallbackProps?: Record<string, any>;
     hasTextAncestor?: boolean;
