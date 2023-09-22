@@ -117,9 +117,46 @@ Calling `getVariable(useTheme().color)` returns `var(--color)` on the web, and `
 
 ## Hooks
 
+### useStyle
+
+Pass in props that include media styles and shorthands, get back a flat style object with the current media styles merged, shorthands expanded, and all theme/token values resolved (into CSS variables on the web or values on native by default).
+
+```tsx
+// if props is:
+//   { color: '$background', $sm: { color: '$color' } }
+// and $sm is active, activeProps will be on web:
+//   { color: 'var(--color)' }
+// and on native will resolve to the actual theme or token value:
+//   { color: '#fff' }
+// this resolve behavior can be controlled, see the docs just below.
+
+// if shorthands like m => margin, then m expands to margin
+
+function MyButton(props) {
+  const style = useStyle(props)
+}
+```
+
+It can take a couple options to control how it resolves values and handles shorthands:
+
+```tsx
+function MyButton(props) {
+  const style = useStyle(props, {
+    disableExpandShorthands: true,
+    // 'value' resolves to the actual theme/token value on all platforms
+    // 'auto' resolves to CSS variable on web, value on native
+    // 'variable' resolves to CSS variable on all platforms
+    // default is 'auto'
+    resolveValues: 'value',
+    // pass a Tamagui component with custom variants and it will handle them using this option:
+    forComponent: CustomComponent
+  })
+}
+```
+
 ### useProps
 
-Pass in props that include media styles and shorthands, get back a flat object of styles with the current media styles merged and shorthands expanded. This is an advanced pattern that should be used sparingly, as it will trigger updates on every media query used. Helpful for more complex components that need to pass down props they are given to children (a common example being the `size` prop, if it's controlling children that also accept size).
+Pass in props that include media styles and shorthands, get back a flat object of props with the current media styles merged and shorthands expanded. This is an advanced pattern that should be used sparingly, as it will trigger updates on every media query used in the props object. Helpful for more complex components that need to pass down props they are given to children (a common example being the `size` prop, if it's controlling children that also accept size).
 
 ```tsx
 // if props is:
@@ -141,9 +178,20 @@ function MyButton(props) {
     disableExpandShorthands: true,
     // 'value' resolves to the actual theme/token value on all platforms
     // 'auto' resolves to CSS variable on web, value on native
-    // 'varaible' resolves to CSS variable on all platforms
+    // 'variable' resolves to CSS variable on all platforms
     resolveValues: 'value'
   })
+}
+```
+
+### usePropsAndStyle
+
+Similar to the above two hooks, this returns your fully resolved/merged/media query flattened styles, but instead of returning _just_ props or _just_ style, it returns both of them split out:
+
+```tsx
+function MyButton(props) {
+  const [props, style] = usePropsAndStyle(props, opts)
+  // see useProps and useStyle to see opts and how these values are resolved
 }
 ```
 

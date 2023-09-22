@@ -48,8 +48,9 @@ export const Tabs = withLayoutContext<
                 style={[{ display: 'flex' }, props.style]}
                 href={href}
                 asChild={Platform.OS !== 'web'}
-                children={children}
-              />
+              >
+                {children}
+              </Link>
             )
           },
         },

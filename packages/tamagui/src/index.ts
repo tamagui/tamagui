@@ -180,7 +180,6 @@ export {
   useIsTouchDevice,
   useIsomorphicLayoutEffect,
   useMedia,
-  useMediaPropsActive,
   useProps,
   useStyle,
   useTheme,

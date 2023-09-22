@@ -16,7 +16,18 @@ export type DebugProp = boolean | 'break' | 'verbose' | 'visualize' | 'profile';
 export type TamaguiComponentPropsBase = {
     target?: string;
     hitSlop?: PressableProps['hitSlop'];
-    asChild?: boolean | 'except-style';
+    /**
+     * When truthy passes through all props to a single child element, and avoids rendering its own element.
+     * Must pass just one child React element that will receive all the props.
+     *
+     * The option "except-style" will avoid passing any style related props.
+     *
+     * The option "web" will map all React Native style props to web props (onPress becomes onClick).
+     *
+     * The option "except-style-web" combines the except-style and web options.
+     *
+     */
+    asChild?: boolean | 'except-style' | 'except-style-web' | 'web';
     dangerouslySetInnerHTML?: {
         __html: string;
     };
@@ -927,7 +938,10 @@ export type ResolveVariableAs = 'auto' | 'value' | 'variable' | 'none';
 export type SplitStyleProps = {
     mediaState?: Record<string, boolean>;
     noClassNames?: boolean;
-    resolveVariablesAs?: ResolveVariableAs;
+    noExpand?: boolean;
+    noNormalize?: boolean;
+    resolveValues?: ResolveVariableAs;
+    disableExpandShorthands?: boolean;
     fallbackProps?: Record<string, any>;
     hasTextAncestor?: boolean;
     isAnimated: boolean;
