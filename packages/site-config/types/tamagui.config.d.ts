@@ -43353,6 +43353,72 @@ export declare const config: {
                 };
             };
         }, 5 | 9 | 15 | 1 | 10 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+        headingDmSans: import("@tamagui/font-inter").FillInFont<{
+            size: {
+                5: number;
+                6: number;
+                9: number;
+                10: number;
+            };
+            transform: {
+                6: "uppercase";
+                7: "none";
+            };
+            weight: {
+                6: string;
+                7: string;
+            };
+            color: {
+                6: string;
+                7: string;
+            };
+            letterSpacing: {
+                5: number;
+                6: number;
+                7: number;
+                8: number;
+                9: number;
+                10: number;
+                11: number;
+                12: number;
+                14: number;
+                15: number;
+            };
+            face: {};
+        }, 5 | 9 | 15 | 1 | 10 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+        headingDmSerifDisplay: import("@tamagui/font-inter").FillInFont<{
+            size: {
+                5: number;
+                6: number;
+                9: number;
+                10: number;
+            };
+            transform: {
+                6: "uppercase";
+                7: "none";
+            };
+            weight: {
+                6: string;
+                7: string;
+            };
+            color: {
+                6: string;
+                7: string;
+            };
+            letterSpacing: {
+                5: number;
+                6: number;
+                7: number;
+                8: number;
+                9: number;
+                10: number;
+                11: number;
+                12: number;
+                14: number;
+                15: number;
+            };
+            face: {};
+        }, 5 | 9 | 15 | 1 | 10 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
         body: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 5 | 9 | 15 | 1 | 10 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
         mono: {
             weight: {

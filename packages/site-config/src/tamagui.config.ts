@@ -1,4 +1,6 @@
 import { createCherryBombFont } from '@tamagui/font-cherry-bomb'
+import { createDmSansFont } from '@tamagui/font-dm-sans'
+import { createDmSerifDisplayFont } from '@tamagui/font-dm-serif-display'
 import { createInterFont } from '@tamagui/font-inter'
 import { createMunroFont } from '@tamagui/font-munro'
 import { createSilkscreenFont } from '@tamagui/font-silkscreen'
@@ -59,6 +61,79 @@ const headingFont = createInterFont(
       800: { normal: 'InterBold' },
       900: { normal: 'InterBold' },
     },
+  },
+  { sizeLineHeight: (size) => Math.round(size * 1.1 + (size < 30 ? 10 : 5)) }
+)
+
+const dmSansHeadingFont = createDmSansFont(
+  {
+    size: {
+      5: 13,
+      6: 15,
+      9: 32,
+      10: 44,
+    },
+    transform: {
+      6: 'uppercase',
+      7: 'none',
+    },
+    weight: {
+      6: '400',
+      7: '700',
+    },
+    color: {
+      6: '$colorFocus',
+      7: '$color',
+    },
+    letterSpacing: {
+      5: 2,
+      6: 1,
+      7: 0,
+      8: 0,
+      9: -0.1,
+      10: -0.25,
+      11: -0.5,
+      12: -0.75,
+      14: -1,
+      15: -2,
+    },
+    face: {},
+  },
+  { sizeLineHeight: (size) => Math.round(size * 1.1 + (size < 30 ? 10 : 5)) }
+)
+const dmSerifDisplayHeadingFont = createDmSerifDisplayFont(
+  {
+    size: {
+      5: 13,
+      6: 15,
+      9: 32,
+      10: 44,
+    },
+    transform: {
+      6: 'uppercase',
+      7: 'none',
+    },
+    weight: {
+      6: '400',
+      7: '700',
+    },
+    color: {
+      6: '$colorFocus',
+      7: '$color',
+    },
+    letterSpacing: {
+      5: 2,
+      6: 1,
+      7: 0,
+      8: 0,
+      9: -0.1,
+      10: -0.25,
+      11: -0.5,
+      12: -0.75,
+      14: -1,
+      15: -2,
+    },
+    face: {},
   },
   { sizeLineHeight: (size) => Math.round(size * 1.1 + (size < 30 ? 10 : 5)) }
 )
@@ -127,6 +202,8 @@ export const config = {
   },
   fonts: {
     heading: headingFont,
+    headingDmSans: dmSansHeadingFont,
+    headingDmSerifDisplay: dmSerifDisplayHeadingFont,
     body: bodyFont,
     mono: monoFont,
     silkscreen: silkscreenFont,
