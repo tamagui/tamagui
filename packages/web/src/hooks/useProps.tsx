@@ -29,7 +29,7 @@ export function useProps<A extends Object>(
   props: A,
   opts?: UsePropsOptions
 ): FlattenedProps<A> {
-  const [propsOut, styleOut] = useSplitPropsAndStyle(props, {
+  const [propsOut, styleOut] = usePropsAndStyle(props, {
     ...opts,
     resolveValues: 'none',
   })
@@ -49,7 +49,7 @@ export function useStyle<A extends Object>(
   props: A,
   opts?: UsePropsOptions
 ): FlattenedProps<A> {
-  return useSplitPropsAndStyle(props, opts)[1]
+  return usePropsAndStyle(props, opts)[1]
 }
 
 /**
@@ -58,7 +58,7 @@ export function useStyle<A extends Object>(
  * Use sparingly, it will loop props and trigger re-render on all media queries you access.
  *
  * */
-export function useSplitPropsAndStyle<A extends Object>(
+export function usePropsAndStyle<A extends Object>(
   props: A,
   opts?: UsePropsOptions
 ): [FlattenedProps<A>, FlattenedProps<A>] {
