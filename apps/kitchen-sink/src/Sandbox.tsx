@@ -1,6 +1,6 @@
 // import './wdyr'
 
-import { Search } from '@tamagui/lucide-icons'
+import { Ban, Search } from '@tamagui/lucide-icons'
 import { Stack, styled } from '@tamagui/web'
 import {
   Anchor,
@@ -35,7 +35,7 @@ export const Sandbox = () => {
     <div
       style={{ flex: 1, alignItems: 'center', justifyContent: 'center', display: 'flex' }}
     >
-      <Button disabled>hi</Button>
+      <Ban />
       {/*  */}
     </div>
   )

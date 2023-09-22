@@ -21,10 +21,10 @@ export function themed(
     const [props, style] = usePropsAndStyle(propsIn)
     const theme = useTheme()
 
-    const defaultColor = props.color ?? opts.defaultThemeColor
+    const defaultColor = style.color ?? opts.defaultThemeColor
     const color = getVariable(
       (defaultColor ? theme[defaultColor] : undefined) ||
-        props.color ||
+        style.color ||
         (!props.disableTheme ? theme.color : null) ||
         opts.fallbackColor
     )
