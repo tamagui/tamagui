@@ -30,15 +30,16 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "backgroundColor": "#0000"
       },
       "package": "com.belaytionship.app",
       "permissions": ["android.permission.RECORD_AUDIO"],
       "splash": {
         "image": "./assets/iphone-splash.png",
         "contentFit": "cover",
-        "backgroundColor": "#ffffff",
+        "backgroundColor": "#000000",
         "dark": {
+          "backgroundColor": "#000000",
           "image": "./assets/iphone-splash-dark.png"
         }
       }

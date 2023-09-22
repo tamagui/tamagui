@@ -23,8 +23,8 @@ const development = (config: Partial<ExpoConfig>): ExpoConfig => {
     }
   }
 }
-
-
+// Constants.
+// https://github.com/stephenlaughton/lite-invoice/blob/steve/lit-74-invoice-terms-section-and-general-invoice-edit-strategy/packages/app-state/src/App.store.ts#L18
 export default (props: ConfigContext): ExpoConfig => {
   const TEST = test(props.config)
   const DEVELOPMENT = development(props.config)
