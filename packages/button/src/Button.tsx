@@ -235,6 +235,7 @@ function useButton<Props extends ButtonProps>(
 
   const isNested = useContext(ButtonNestingContext)
   const propsActive = useProps(propsIn) as any as ButtonProps
+
   const size = propsActive.size || (propsActive.unstyled ? undefined : '$true')
 
   const iconSize =

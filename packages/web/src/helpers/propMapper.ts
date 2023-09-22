@@ -56,12 +56,14 @@ export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => 
     );
   }
 
-  if (variants && key in variants) {
-    styleState.curProps[key] = value
+  if (!styleProps.noExpand) {
+    if (variants && key in variants) {
+      styleState.curProps[key] = value
 
-    const variantValue = resolveVariants(key, value, styleProps, styleState, '')
-    if (variantValue) {
-      return variantValue
+      const variantValue = resolveVariants(key, value, styleProps, styleState, '')
+      if (variantValue) {
+        return variantValue
+      }
     }
   }
 
@@ -230,35 +232,39 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
     const fKey = conf.shorthands[rKey] || rKey
     const val = value[rKey]
 
-    if (variants && fKey in variants) {
-      // if its a variant expanded, attach to curProps
-      styleState.curProps[fKey] = val
+    if (styleProps.noExpand) {
+      res[fKey] = val
+    } else {
+      if (variants && fKey in variants) {
+        // if its a variant expanded, attach to curProps
+        styleState.curProps[fKey] = val
 
-      // avoids infinite loop if variant is matching a style prop
-      // eg: { variants: { flex: { true: { flex: 2 } } } }
-      if (parentVariantKey && parentVariantKey === key) {
-        res[fKey] =
-          // SYNC WITH *1
-          val[0] === '$'
-            ? getTokenForKey(fKey, val, styleProps.resolveValues, styleState)
-            : val
-      } else {
-        const variantOut = resolveVariants(fKey, val, styleProps, styleState, key)
+        // avoids infinite loop if variant is matching a style prop
+        // eg: { variants: { flex: { true: { flex: 2 } } } }
+        if (parentVariantKey && parentVariantKey === key) {
+          res[fKey] =
+            // SYNC WITH *1
+            val[0] === '$'
+              ? getTokenForKey(fKey, val, styleProps.resolveValues, styleState)
+              : val
+        } else {
+          const variantOut = resolveVariants(fKey, val, styleProps, styleState, key)
 
-        // apply, merging sub-styles
-        if (variantOut) {
-          for (const [key, val] of variantOut) {
-            if (val == null) continue
-            if (key in pseudoDescriptors) {
-              res[key] ??= {}
-              Object.assign(res[key], val)
-            } else {
-              res[key] = val
+          // apply, merging sub-styles
+          if (variantOut) {
+            for (const [key, val] of variantOut) {
+              if (val == null) continue
+              if (key in pseudoDescriptors) {
+                res[key] ??= {}
+                Object.assign(res[key], val)
+              } else {
+                res[key] = val
+              }
             }
           }
         }
+        continue
       }
-      continue
     }
 
     if (isVariable(val)) {

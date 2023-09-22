@@ -1,7 +1,6 @@
-import { ResolveVariableAs, StaticConfig } from '../types';
-type UsePropsOptions = {
+import { SplitStyleProps, StaticConfig } from '../types';
+type UsePropsOptions = Pick<SplitStyleProps, 'noExpand' | 'noNormalize' | 'noClassNames' | 'resolveValues'> & {
     disableExpandShorthands?: boolean;
-    resolveValues?: ResolveVariableAs;
     forComponent?: {
         staticConfig: StaticConfig;
     };
