@@ -102,7 +102,7 @@ const ToggleGroupItem = ToggleFrame.extractable(
         return getThemedIcon(child)
       })
 
-      const commonProps = { ...props, pressed, disabled, ...sizeProps, children }
+      const commonProps = { pressed, disabled, ...sizeProps, ...props, children }
 
       return (
         <ToggleGroupItemProvider scope={__scopeToggleGroup}>
