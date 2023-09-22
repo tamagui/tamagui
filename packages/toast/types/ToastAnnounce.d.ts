@@ -35,6 +35,8 @@ declare const ToastAnnounceExclude: React.ForwardRefExoticComponent<((Omit<impor
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & import("@tamagui/core").RNViewProps & {
     altText?: string | undefined;
+} & {
+    __scopeToast?: string | undefined;
 }) | Omit<Omit<import("react-native").ViewProps, "children" | "style" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{}, string | number> & {
@@ -49,11 +51,13 @@ declare const ToastAnnounceExclude: React.ForwardRefExoticComponent<((Omit<impor
     [x: string]: undefined;
 }>> & {
     altText?: string | undefined;
+} & {
+    __scopeToast?: string | undefined;
 }, "ref">) & React.RefAttributes<TamaguiElement>>;
 interface ToastAnnounceProps extends Omit<GetProps<typeof VisuallyHidden>, 'children'>, ScopedProps<{
     children: string[];
 }> {
 }
-declare const ToastAnnounce: React.FC<ToastAnnounceProps>;
+declare const ToastAnnounce: React.FC<ScopedProps<ToastAnnounceProps>>;
 export { ToastAnnounce, ToastAnnounceProps, ToastAnnounceExclude, ToastAnnounceExcludeProps, };
 //# sourceMappingURL=ToastAnnounce.d.ts.map

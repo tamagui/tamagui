@@ -1,9 +1,8 @@
 import { createCollection } from '@tamagui/collection'
-import { NativeValue, TamaguiElement } from '@tamagui/core'
-import type { Scope } from '@tamagui/create-context'
-import { createContextScope } from '@tamagui/create-context'
+import { NativeValue, TamaguiElement, createStyledContext } from '@tamagui/core'
 import * as React from 'react'
 
+import { TOAST_CONTEXT } from './Toast'
 import { ToastImperativeProvider } from './ToastImperative'
 import { BurntToastOptions } from './types'
 
@@ -13,8 +12,7 @@ import { BurntToastOptions } from './types'
 
 const PROVIDER_NAME = 'ToastProvider'
 
-const [Collection, useCollection, createCollectionScope] =
-  createCollection<TamaguiElement>('Toast')
+const [Collection, useCollection] = createCollection<TamaguiElement>('Toast')
 
 export type SwipeDirection = 'vertical' | 'up' | 'down' | 'horizontal' | 'left' | 'right'
 
@@ -33,13 +31,15 @@ type ToastProviderContextValue = {
   isClosePausedRef: React.MutableRefObject<boolean>
 }
 
-type ScopedProps<P> = P & { __scopeToast?: Scope }
-const [createToastContext, createToastScope] = createContextScope('Toast', [
-  createCollectionScope,
-])
-const [ToastProviderProvider, useToastProviderContext] =
-  createToastContext<ToastProviderContextValue>(PROVIDER_NAME)
+type ScopedProps<P> = P & { __scopeToast?: string }
+// const [createToastContext, createToastScope] = createContextScope('Toast', [
+//   createCollectionScope,
+// ])
+// const [ToastProviderProvider, useToastProviderContext] =
+//   createToastContext<ToastProviderContextValue>(PROVIDER_NAME)
 
+const { Provider: ToastProviderProvider, useStyledContext: useToastProviderContext } =
+  createStyledContext<ToastProviderContextValue>()
 interface ToastProviderProps {
   children?: React.ReactNode
   /**
@@ -124,7 +124,7 @@ const ToastProvider: React.FC<ToastProviderProps> = (
   }, [JSON.stringify([duration, burntOptions, native, notificationOptions])])
 
   return (
-    <Collection.Provider scope={__scopeToast}>
+    <Collection.Provider __scopeCollection={__scopeToast || TOAST_CONTEXT}>
       <ToastProviderProvider
         scope={__scopeToast}
         id={id}
@@ -162,12 +162,5 @@ ToastProvider.propTypes = {
 
 ToastProvider.displayName = PROVIDER_NAME
 
-export {
-  Collection,
-  ToastProvider,
-  createToastContext,
-  createToastScope,
-  useCollection,
-  useToastProviderContext,
-}
+export { Collection, ToastProvider, useCollection, useToastProviderContext }
 export type { ScopedProps, ToastProviderProps }
