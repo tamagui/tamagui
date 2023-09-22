@@ -1,13 +1,16 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { Slot, TamaguiElement, isWeb } from '@tamagui/core'
-import { createContextScope } from '@tamagui/create-context'
+import {
+  ScopedProps,
+  Slot,
+  TamaguiElement,
+  createStyledContext,
+  isWeb,
+} from '@tamagui/core'
 import React from 'react'
 
 type SlotProps = React.ComponentPropsWithoutRef<typeof Slot>
 type CollectionElement = TamaguiElement
-interface CollectionProps extends SlotProps {
-  scope: any
-}
+interface CollectionProps extends SlotProps {}
 
 // We have resorted to returning slots directly rather than exposing primitives that can then
 // be slotted like `<CollectionItem as={Slot}>…</CollectionItem>`.
@@ -21,9 +24,9 @@ function createCollection<ItemElement extends TamaguiElement, ItemData = {}>(
    * CollectionProvider
    * ---------------------------------------------------------------------------------------------*/
 
-  const PROVIDER_NAME = name + 'CollectionProvider'
-  const [createCollectionContext, createCollectionScope] =
-    createContextScope(PROVIDER_NAME)
+  // const PROVIDER_NAME = name + 'CollectionProvider'
+  // const [createCollectionContext, createCollectionScope] =
+  //   createContextScope(PROVIDER_NAME)
 
   type ContextValue = {
     collectionRef: React.RefObject<CollectionElement>
@@ -33,26 +36,33 @@ function createCollection<ItemElement extends TamaguiElement, ItemData = {}>(
     >
   }
 
-  const [CollectionProviderImpl, useCollectionContext] =
-    createCollectionContext<ContextValue>(PROVIDER_NAME, {
+  type ScopedCollectionProps<P> = ScopedProps<P, 'Collection'>
+
+  const { Provider: CollectionProviderImpl, useStyledContext: useCollectionContext } =
+    createStyledContext<ContextValue>({
       collectionRef: { current: null },
       itemMap: new Map(),
     })
 
-  const CollectionProvider: React.FC<{ children?: React.ReactNode; scope: any }> = (
-    props
-  ) => {
-    const { scope, children } = props
+  const CollectionProvider: React.FC<{
+    children?: React.ReactNode
+    __scopeCollection: string
+  }> = (props) => {
+    const { __scopeCollection, children } = props
     const ref = React.useRef<CollectionElement>(null)
     const itemMap = React.useRef<ContextValue['itemMap']>(new Map()).current
     return (
-      <CollectionProviderImpl scope={scope} itemMap={itemMap} collectionRef={ref}>
+      <CollectionProviderImpl
+        scope={__scopeCollection}
+        itemMap={itemMap}
+        collectionRef={ref}
+      >
         {children}
       </CollectionProviderImpl>
     )
   }
 
-  CollectionProvider.displayName = PROVIDER_NAME
+  CollectionProvider.displayName = 'CollectionProvider'
 
   /* -----------------------------------------------------------------------------------------------
    * CollectionSlot
@@ -60,14 +70,15 @@ function createCollection<ItemElement extends TamaguiElement, ItemData = {}>(
 
   const COLLECTION_SLOT_NAME = name + 'CollectionSlot'
 
-  const CollectionSlot = React.forwardRef<CollectionElement, CollectionProps>(
-    (props, forwardedRef) => {
-      const { scope, children } = props
-      const context = useCollectionContext(COLLECTION_SLOT_NAME, scope)
-      const composedRefs = useComposedRefs(forwardedRef, context.collectionRef)
-      return <Slot ref={composedRefs}>{children}</Slot>
-    }
-  )
+  const CollectionSlot = React.forwardRef<
+    CollectionElement,
+    ScopedCollectionProps<CollectionProps>
+  >((props, forwardedRef) => {
+    const { __scopeCollection, children } = props
+    const context = useCollectionContext(__scopeCollection)
+    const composedRefs = useComposedRefs(forwardedRef, context.collectionRef)
+    return <Slot ref={composedRefs}>{children}</Slot>
+  })
 
   CollectionSlot.displayName = COLLECTION_SLOT_NAME
 
@@ -80,28 +91,28 @@ function createCollection<ItemElement extends TamaguiElement, ItemData = {}>(
 
   type CollectionItemSlotProps = ItemData & {
     children: React.ReactNode
-    scope: any
   }
 
-  const CollectionItemSlot = React.forwardRef<ItemElement, CollectionItemSlotProps>(
-    (props, forwardedRef) => {
-      const { scope, children, ...itemData } = props
-      const ref = React.useRef<ItemElement>(null)
-      const composedRefs = useComposedRefs(forwardedRef, ref)
-      const context = useCollectionContext(ITEM_SLOT_NAME, scope)
+  const CollectionItemSlot = React.forwardRef<
+    ItemElement,
+    ScopedCollectionProps<CollectionItemSlotProps>
+  >((props, forwardedRef) => {
+    const { __scopeCollection, children, ...itemData } = props
+    const ref = React.useRef<ItemElement>(null)
+    const composedRefs = useComposedRefs(forwardedRef, ref)
+    const context = useCollectionContext(__scopeCollection)
 
-      React.useEffect(() => {
-        context.itemMap.set(ref, { ref, ...(itemData as unknown as ItemData) })
-        return () => void context.itemMap.delete(ref)
-      })
+    React.useEffect(() => {
+      context.itemMap.set(ref, { ref, ...(itemData as unknown as ItemData) })
+      return () => void context.itemMap.delete(ref)
+    })
 
-      return (
-        <Slot {...{ [ITEM_DATA_ATTR]: '' }} ref={composedRefs}>
-          {children}
-        </Slot>
-      )
-    }
-  )
+    return (
+      <Slot {...{ [ITEM_DATA_ATTR]: '' }} ref={composedRefs}>
+        {children}
+      </Slot>
+    )
+  })
 
   CollectionItemSlot.displayName = ITEM_SLOT_NAME
 
@@ -109,8 +120,8 @@ function createCollection<ItemElement extends TamaguiElement, ItemData = {}>(
    * useCollection
    * ---------------------------------------------------------------------------------------------*/
 
-  function useCollection(scope: any) {
-    const context = useCollectionContext(name + 'CollectionConsumer', scope)
+  function useCollection(__scopeCollection: any) {
+    const context = useCollectionContext(__scopeCollection)
 
     const getItems = React.useCallback(() => {
       if (!isWeb) {
@@ -137,7 +148,6 @@ function createCollection<ItemElement extends TamaguiElement, ItemData = {}>(
   return [
     { Provider: CollectionProvider, Slot: CollectionSlot, ItemSlot: CollectionItemSlot },
     useCollection,
-    createCollectionScope,
   ] as const
 }
 
