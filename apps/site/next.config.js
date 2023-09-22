@@ -127,7 +127,6 @@ module.exports = function (name, { defaultConfig }) {
     experimental: {
       esmExternals: true,
       scrollRestoration: true,
-      legacyBrowsers: false,
     },
     eslint: {
       ignoreDuringBuilds: true,

@@ -46,7 +46,7 @@ export function createStyledContext<VariantProps extends Record<string, any>>(
       }
       Provider = ScopedContext.Provider
     }
-    return <Provider value={value} children={children} />
+    return <Provider value={value}>{children}</Provider>
   }
 
   // use consumerComponent just to give a better error message
