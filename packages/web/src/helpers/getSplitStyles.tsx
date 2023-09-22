@@ -516,7 +516,10 @@ export const getSplitStyles: StyleSplitter = (
 
     const isStyleProp = isMediaOrPseudo || isVariant || isValidStyleKeyInit || isShorthand
 
-    if (isStyleProp && props.asChild === 'except-style') {
+    if (
+      isStyleProp &&
+      (props.asChild === 'except-style' || props.asChild === 'except-style-web')
+    ) {
       continue
     }
 

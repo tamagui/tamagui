@@ -1044,7 +1044,7 @@ export function createComponent<
           }
         : null
 
-    if (process.env.TAMAGUI_TARGET === 'native' && events) {
+    if (process.env.TAMAGUI_TARGET === 'native' && events && !asChild) {
       // replicating TouchableWithoutFeedback
       Object.assign(events, {
         cancelable: !viewProps.rejectResponderTermination,
@@ -1072,9 +1072,6 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`hooks`
 
-    // since we re-render without changing children often for animations or on mount
-    // we memo children here. tested this on the site homepage which has hundreds of components
-    // and i see no difference in startup performance, but i do see it memoing often
     let content =
       !children || asChild
         ? children
@@ -1089,12 +1086,15 @@ export function createComponent<
 
     if (asChild) {
       elementType = Slot
-      Object.assign(viewProps, {
-        onPress,
-        onLongPress,
-        onPressIn,
-        onPressOut,
-      })
+      // on native this is already merged into viewProps in hooks.useEvents
+      if (process.env.TAMAGUI_TARGET === 'web') {
+        Object.assign(
+          viewProps,
+          events && (asChild === 'web' || asChild === 'except-style-web')
+            ? getWebEvents(events)
+            : events
+        )
+      }
     }
 
     if (process.env.NODE_ENV === 'development' && time) time`spaced-as-child`
@@ -1168,15 +1168,7 @@ export function createComponent<
         content = (
           <span
             className={`${isAnimatedReactNativeWeb ? className : ''} _dsp_contents`}
-            {...(events && {
-              onMouseEnter: events.onMouseEnter,
-              onMouseLeave: events.onMouseLeave,
-              onClick: events.onPress,
-              onMouseDown: events.onPressIn,
-              onMouseUp: events.onPressOut,
-              onTouchStart: events.onPressIn,
-              onTouchEnd: events.onPressOut,
-            })}
+            {...(events && getWebEvents(events))}
           >
             {content}
           </span>
@@ -1313,6 +1305,18 @@ export function createComponent<
   res.styleable = styleable
 
   return res
+}
+
+function getWebEvents<E extends TamaguiComponentEvents>(events: E) {
+  return {
+    onMouseEnter: events.onMouseEnter,
+    onMouseLeave: events.onMouseLeave,
+    onClick: events.onPress,
+    onMouseDown: events.onPressIn,
+    onMouseUp: events.onPressOut,
+    onTouchStart: events.onPressIn,
+    onTouchEnd: events.onPressOut,
+  }
 }
 
 // for elements to avoid spacing
