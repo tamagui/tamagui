@@ -1121,10 +1121,19 @@ export function createComponent<
       process.env.TAMAGUI_TARGET === 'native' &&
       (elementType === BaseText || elementType === BaseView)
     ) {
-      // instead of rendering a whole sub component, just grab the contents directly
-      // we could further improve this performance by actually just doing this ourselves
-      viewProps.children = content
-      content = elementType.render(viewProps, viewProps.ref)
+      if (process.env.TAMAGUI_OPTIMIZE_NATIVE_VIEWS) {
+        // further optimize by not even caling elementType.render
+        viewProps.children = content
+        content = createElement(
+          elementType === BaseText ? 'RCTText' : 'RCTView',
+          viewProps
+        )
+      } else {
+        // instead of rendering a whole sub component, just grab the contents directly
+        // we could further improve this performance by actually just doing this ourselves
+        viewProps.children = content
+        content = elementType.render(viewProps, viewProps.ref)
+      }
     } else {
       content = createElement(elementType, viewProps, content)
     }

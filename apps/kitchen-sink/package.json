@@ -8,7 +8,7 @@
     "dev:web:prod": "NODE_ENV=production webpack serve",
     "dev:web:extract": "DISABLE_EXTRACTION=false NODE_ENV=development webpack serve",
     "start": "EXPO_NO_TELEMETRY=true expo start --dev-client --offline",
-    "start:extract": "TAMAGUI_ENABLE_DYNAMIC_LOAD=1 yarn start",
+    "start:extract": "TAMAGUI_OPTIMIZE_NATIVE_VIEWS=1 TAMAGUI_ENABLE_DYNAMIC_LOAD=1 yarn start",
     "start:prod": "DISABLE_EXTRACTION=false TAMAGUI_ENABLE_DYNAMIC_LOAD=1 expo start --dev-client --offline --no-dev --minify",
     "start:tamagui": "tama dev",
     "start:android": "yarn start --android",
