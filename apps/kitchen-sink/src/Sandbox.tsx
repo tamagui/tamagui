@@ -1,7 +1,7 @@
 // import './wdyr'
 
 import { Ban, Search } from '@tamagui/lucide-icons'
-import { Stack, styled } from '@tamagui/web'
+import { Spacer, Stack, styled } from '@tamagui/web'
 import {
   Anchor,
   Button,
@@ -35,7 +35,14 @@ export const Sandbox = () => {
     <div
       style={{ flex: 1, alignItems: 'center', justifyContent: 'center', display: 'flex' }}
     >
-      <Ban />
+      <YStack debug="highlight">
+        <Ban />
+        <XStack debug="highlight">
+          <Ban />
+        </XStack>
+        <Spacer flex debug="highlight" />
+      </YStack>
+
       {/*  */}
     </div>
   )

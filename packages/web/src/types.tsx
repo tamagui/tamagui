@@ -40,7 +40,7 @@ export type DebugProp =
   | 'verbose'
   | 'visualize'
   | 'profile'
-  | 'borders'
+  | 'highlight'
 
 export type TamaguiComponentPropsBase = {
   target?: string

@@ -1,3 +1,4 @@
+/// <reference types="react" />
 export type ThemeProviderProps = {
     className?: string;
     defaultTheme: string;
@@ -6,5 +7,5 @@ export type ThemeProviderProps = {
     children?: any;
     reset?: boolean;
 };
-export declare const ThemeProvider: (props: ThemeProviderProps) => import("react/jsx-runtime").JSX.Element;
+export declare const ThemeProvider: (props: ThemeProviderProps) => JSX.Element;
 //# sourceMappingURL=ThemeProvider.d.ts.map

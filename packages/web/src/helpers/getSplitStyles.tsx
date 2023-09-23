@@ -69,6 +69,7 @@ import {
 } from './normalizeValueWithProperty'
 import { getPropMappedFontFamily, propMapper } from './propMapper'
 import { pseudoDescriptors, pseudoPriorities } from './pseudoDescriptors'
+import { updateDebugStyle } from './updateDebugStyle'
 
 const fontFamilyKey = 'fontFamily'
 
@@ -1237,27 +1238,19 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
-  if (process.env.NODE_ENV === 'development' && debug === 'borders') {
+  if (process.env.NODE_ENV !== 'production' && debug === 'highlight') {
     const name = `${
       componentName || Component?.displayName || Component?.name || '[Unnamed Component]'
-    }`
+    }` as 'XStack' | 'YStack' | '[Unnamed Component]'
 
-    switch (name) {
-      case 'XStack':
-        style.borderColor = 'red'
-        break
-      case 'YStack':
-        style.borderColor = 'blue'
-        break
-      case '[Unnamed Component]':
-        style.borderColor = 'purple'
-        break
-      default: {
-        style.borderColor = 'green'
-      }
+    const debugStyle = updateDebugStyle(name)
+
+    style = {
+      ...style,
+      borderColor: debugStyle?.borderColor ?? 'grey',
+      borderWidth: 0.5,
+      borderStyle: 'solid',
     }
-    style.borderWidth = 0.5
-    style.borderStyle = 'solid'
   }
 
   const result: GetStyleResult = {
