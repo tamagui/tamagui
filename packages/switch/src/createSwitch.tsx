@@ -97,20 +97,8 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
     } = context
     const [thumbWidth, setThumbWidth] = React.useState(0)
     const initialChecked = React.useRef(checked).current
-
-    // web can get away with 100%
-    // and because it compiles to CSS we then don't need complicated methods of measuring border width
-    const distance = isWeb ? '100%' : frameWidth - thumbWidth
-    const x = initialChecked
-      ? checked
-        ? 0
-        : isWeb
-        ? '0%'
-        : -distance
-      : checked
-      ? distance
-      : 0
-
+    const distance = frameWidth - thumbWidth
+    const x = initialChecked ? (checked ? 0 : -distance) : checked ? distance : 0
     const unstyled = unstyledProp ?? unstyledContext ?? false
 
     return (
@@ -143,8 +131,9 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
       forwardedRef
     ) {
       const styledContext = React.useContext(SwitchContext)
-      const props = useProps(propsIn, {
-        noExpand: false,
+      const [props, style] = usePropsAndStyle(propsIn, {
+        noNormalize: true,
+        forComponent: Frame,
       })
       const {
         labeledBy: ariaLabelledby,
@@ -164,7 +153,7 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
       } = props
 
       const leftBorderWidth = (() => {
-        let _ = props.borderLeftWidth
+        let _ = style.borderLeftWidth
         if (typeof _ === 'string') {
           if (_.endsWith('px')) {
             _ = +_.replace('px', '')
@@ -174,6 +163,9 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
         }
         if (typeof _ === 'number') {
           return _
+        }
+        if (Frame === DefaultSwitchFrame && !unstyled) {
+          return 2
         }
         return 0
       })()
