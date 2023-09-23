@@ -100,20 +100,11 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     }, [open])
   }
 
-  const updateFloatingSize = size({
-    apply({
-      availableHeight,
-      rects: {
-        reference: { width },
-      },
-    }) {
-      floatingStyle.current = {
-        width: width,
-        maxHeight: availableHeight,
-      }
-    },
-    padding: WINDOW_PADDING,
-  })
+  const flipOrShiftMiddlewares = [
+    touch
+      ? shift({ crossAxis: true, padding: WINDOW_PADDING })
+      : flip({ padding: WINDOW_PADDING }),
+  ]
 
   const { x, y, strategy, context, refs, update } = useFloating({
     open,
@@ -122,14 +113,36 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     middleware: fallback
       ? [
           offset(5),
-          ...[
-            touch
-              ? shift({ crossAxis: true, padding: WINDOW_PADDING })
-              : flip({ padding: WINDOW_PADDING }),
-          ],
-          updateFloatingSize,
+          ...flipOrShiftMiddlewares,
+          size({
+            apply({
+              availableHeight,
+              rects: {
+                reference: { width },
+              },
+            }) {
+              floatingStyle.current = {
+                width: width,
+                maxHeight: availableHeight,
+                minWidth: width + 8,
+              }
+            },
+            padding: WINDOW_PADDING,
+          }),
         ]
       : [
+          size({
+            apply({
+              rects: {
+                reference: { width },
+              },
+            }) {
+              floatingStyle.current = {
+                minWidth: width + 8,
+              }
+            },
+          }),
+          ...flipOrShiftMiddlewares,
           inner({
             listRef: listItemsRef,
             overflowRef,
@@ -140,7 +153,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
             minItemsVisible: touch ? 10 : 4,
             referenceOverflowThreshold: 20,
           }),
-          updateFloatingSize,
+          offset({ crossAxis: -5 }),
         ],
   })
 
