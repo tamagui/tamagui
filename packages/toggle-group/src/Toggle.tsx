@@ -98,34 +98,34 @@ const Toggle = ToggleFrame.extractable(
     })
 
     return (
-      <Theme name={pressed ? 'active' : null}>
-        <ToggleFrame
-          active={!props.unstyled ? pressed : undefined}
-          aria-pressed={pressed}
-          data-state={pressed ? 'on' : 'off'}
-          data-disabled={props.disabled ? '' : undefined}
-          {...buttonProps}
-          ref={forwardedRef}
-          onPress={composeEventHandlers(props.onPress ?? undefined, (event) => {
-            if (!props.disabled) {
-              setPressed(!pressed)
-            }
-          })}
-          // caught by onPress - no need for this
-          // {...(isWeb && {
-          //   onKeyDown: composeEventHandlers(
-          //     (props as React.HTMLProps<HTMLButtonElement>).onKeyDown,
-          //     (event) => {
-          //       if ([' ', 'Enter'].includes(event.key)) {
-          //         if (!props.disabled) {
-          //           setPressed(!pressed)
-          //         }
-          //       }
-          //     }
-          //   ),
-          // })}
-        />
-      </Theme>
+      <ToggleFrame
+        theme={pressed ? 'active' : null}
+        themeShallow
+        active={!props.unstyled ? pressed : undefined}
+        aria-pressed={pressed}
+        data-state={pressed ? 'on' : 'off'}
+        data-disabled={props.disabled ? '' : undefined}
+        {...buttonProps}
+        ref={forwardedRef}
+        onPress={composeEventHandlers(props.onPress ?? undefined, (event) => {
+          if (!props.disabled) {
+            setPressed(!pressed)
+          }
+        })}
+        // caught by onPress - no need for this
+        // {...(isWeb && {
+        //   onKeyDown: composeEventHandlers(
+        //     (props as React.HTMLProps<HTMLButtonElement>).onKeyDown,
+        //     (event) => {
+        //       if ([' ', 'Enter'].includes(event.key)) {
+        //         if (!props.disabled) {
+        //           setPressed(!pressed)
+        //         }
+        //       }
+        //     }
+        //   ),
+        // })}
+      />
     )
   })
 )
