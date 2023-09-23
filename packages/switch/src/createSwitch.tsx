@@ -101,7 +101,16 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
     // web can get away with 100%
     // and because it compiles to CSS we then don't need complicated methods of measuring border width
     const distance = isWeb ? '100%' : frameWidth - thumbWidth
-    const x = initialChecked ? (checked ? 0 : -distance) : checked ? distance : 0
+    const x = initialChecked
+      ? checked
+        ? 0
+        : isWeb
+        ? '0%'
+        : -distance
+      : checked
+      ? distance
+      : 0
+
     const unstyled = unstyledProp ?? unstyledContext ?? false
 
     return (
@@ -134,8 +143,8 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
       forwardedRef
     ) {
       const styledContext = React.useContext(SwitchContext)
-      const [props, style] = usePropsAndStyle(propsIn, {
-        forComponent: Frame,
+      const props = useProps(propsIn, {
+        noExpand: false,
       })
       const {
         labeledBy: ariaLabelledby,
@@ -155,7 +164,7 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
       } = props
 
       const leftBorderWidth = (() => {
-        let _ = style.borderLeftWidth
+        let _ = props.borderLeftWidth
         if (typeof _ === 'string') {
           if (_.endsWith('px')) {
             _ = +_.replace('px', '')
