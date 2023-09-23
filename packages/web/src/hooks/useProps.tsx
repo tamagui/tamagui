@@ -81,6 +81,7 @@ export function usePropsAndStyle<A extends Object>(
     {
       isAnimated: false,
       mediaState: media,
+      noSkip: true,
       noClassNames: true,
       ...opts,
     },
