@@ -17,6 +17,10 @@ export const SwitchThumb = styled(ThemeableStack, {
       },
     },
 
+    checked: {
+      true: {},
+    },
+
     size: {
       '...size': (val) => {
         const size = getSwitchHeight(val)

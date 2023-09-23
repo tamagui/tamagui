@@ -9,6 +9,7 @@ import {
   getVariableValue,
   isWeb,
   useProps,
+  usePropsAndStyle,
   withStaticProperties,
 } from '@tamagui/core'
 import { registerFocusable } from '@tamagui/focusable'
@@ -96,7 +97,10 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
     } = context
     const [thumbWidth, setThumbWidth] = React.useState(0)
     const initialChecked = React.useRef(checked).current
-    const distance = frameWidth - thumbWidth
+
+    // web can get away with 100%
+    // and because it compiles to CSS we then don't need complicated methods of measuring border width
+    const distance = isWeb ? '100%' : frameWidth - thumbWidth
     const x = initialChecked ? (checked ? 0 : -distance) : checked ? distance : 0
     const unstyled = unstyledProp ?? unstyledContext ?? false
 
@@ -111,6 +115,7 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
         data-state={getState(checked)}
         data-disabled={disabled ? '' : undefined}
         alignSelf={initialChecked ? 'flex-end' : 'flex-start'}
+        checked={checked}
         x={x}
         {...thumbProps}
         // @ts-ignore
@@ -129,7 +134,9 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
       forwardedRef
     ) {
       const styledContext = React.useContext(SwitchContext)
-      const props = useProps(propsIn)
+      const [props, style] = usePropsAndStyle(propsIn, {
+        forComponent: Frame,
+      })
       const {
         labeledBy: ariaLabelledby,
         name,
@@ -148,22 +155,13 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
       } = props
 
       const leftBorderWidth = (() => {
-        let _: any = undefined
-        for (const key in switchProps) {
-          if (key === 'borderWidth' || key === 'borderLeftWidth') {
-            _ = switchProps[key]
-          }
-        }
-        if (
-          Frame === DefaultSwitchFrame &&
-          acceptsUnstyled &&
-          _ == undefined &&
-          unstyled === false
-        ) {
-          _ = 2 // default we use for styled
-        }
+        let _ = style.borderLeftWidth
         if (typeof _ === 'string') {
-          _ = getVariableValue(getSize(_))
+          if (_.endsWith('px')) {
+            _ = +_.replace('px', '')
+          } else {
+            _ = getVariableValue(getSize(_))
+          }
         }
         if (typeof _ === 'number') {
           return _

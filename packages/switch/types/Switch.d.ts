@@ -17,8 +17,9 @@ export declare const SwitchThumb: import("@tamagui/core").TamaguiComponent<Omit<
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "size" | "unstyled"> & {
+}, "size" | "checked" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
+    readonly checked?: boolean | undefined;
     readonly size?: SizeTokens | undefined;
 } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | import("react").CSSProperties | (import("react").CSSProperties & import("react-native").ViewStyle)>;
@@ -37,8 +38,9 @@ export declare const SwitchThumb: import("@tamagui/core").TamaguiComponent<Omit<
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "size" | "unstyled"> & {
+}, "size" | "checked" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
+    readonly checked?: boolean | undefined;
     readonly size?: SizeTokens | undefined;
 }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | import("react").CSSProperties | (import("react").CSSProperties & import("react-native").ViewStyle)>;
@@ -57,8 +59,9 @@ export declare const SwitchThumb: import("@tamagui/core").TamaguiComponent<Omit<
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "size" | "unstyled"> & {
+}, "size" | "checked" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
+    readonly checked?: boolean | undefined;
     readonly size?: SizeTokens | undefined;
 }>>, import("@tamagui/core").TamaguiElement, Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | import("react").CSSProperties | (import("react").CSSProperties & import("react-native").ViewStyle)>;
@@ -79,6 +82,7 @@ export declare const SwitchThumb: import("@tamagui/core").TamaguiComponent<Omit<
     readonly chromeless?: boolean | "all" | undefined;
 } & {
     readonly unstyled?: boolean | undefined;
+    readonly checked?: boolean | undefined;
     readonly size?: SizeTokens | undefined;
 }, {
     displayName: string | undefined;
