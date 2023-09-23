@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/static-tests",
-  "version": "1.69.1",
+  "version": "1.69.3",
   "module": "dist/esm/index.js",
   "scripts": {
     "build": "true",
@@ -25,8 +25,8 @@
   "devDependencies": {
     "@babel/plugin-syntax-typescript": "^7.21.4",
     "@babel/types": "^7.21.5",
-    "@tamagui/sandbox-ui": "1.69.1",
-    "@tamagui/test-design-system": "1.69.1",
+    "@tamagui/sandbox-ui": "1.69.3",
+    "@tamagui/test-design-system": "1.69.3",
     "@testing-library/react": "^14.0.0",
     "@types/babel__generator": "^7.6.4",
     "@types/babel__traverse": "^7.18.2",
