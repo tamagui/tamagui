@@ -133,6 +133,8 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
       const styledContext = React.useContext(SwitchContext)
       const [props, style] = usePropsAndStyle(propsIn, {
         noNormalize: true,
+        noExpand: true,
+        resolveValues: 'none',
         forComponent: Frame,
       })
       const {
@@ -153,7 +155,7 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
       } = props
 
       const leftBorderWidth = (() => {
-        let _ = style.borderLeftWidth
+        let _ = style.borderLeftWidth || style.borderWidth
         if (typeof _ === 'string') {
           if (_.endsWith('px')) {
             _ = +_.replace('px', '')

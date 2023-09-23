@@ -1816,6 +1816,7 @@ export type SplitStyleProps = {
   noClassNames?: boolean
   noExpand?: boolean
   noNormalize?: boolean
+  noSkip?: boolean
   resolveValues?: ResolveVariableAs
   disableExpandShorthands?: boolean
   fallbackProps?: Record<string, any>

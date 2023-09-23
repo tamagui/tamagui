@@ -514,7 +514,11 @@ export const getSplitStyles: StyleSplitter = (
     let isMedia = !isStyleLikeKey && !isPseudo && isMediaKey(keyInit)
     let isMediaOrPseudo = isMedia || isPseudo
 
-    const isStyleProp = isMediaOrPseudo || isVariant || isValidStyleKeyInit || isShorthand
+    const isStyleProp =
+      isMediaOrPseudo ||
+      (isVariant && !styleProps.noExpand) ||
+      isValidStyleKeyInit ||
+      isShorthand
 
     if (
       isStyleProp &&
@@ -594,7 +598,9 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     // after shouldPassThrough
-    if (keyInit in skipProps) continue
+    if (!styleProps.noSkip) {
+      if (keyInit in skipProps) continue
+    }
 
     // we sort of have to update fontFamily all the time: before variants run, after each variant
     if (isText) {
@@ -1369,7 +1375,7 @@ export const getSubStyle = (
     const val = styleIn[key]
     key = conf.shorthands[key] || key
     const expanded = propMapper(key, val, styleState, { ...props, ...props[subKey] })
-    if (!expanded || (!staticConfig.isHOC && key in skipProps)) {
+    if (!expanded || (!staticConfig.isHOC && key in skipProps && !styleProps.noSkip)) {
       continue
     }
     for (const [skey, sval] of expanded) {
