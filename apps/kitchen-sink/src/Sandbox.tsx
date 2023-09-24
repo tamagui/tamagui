@@ -1,5 +1,6 @@
 // import './wdyr'
 
+import { SelectDemo } from '@tamagui/demos'
 import { Ban, Search } from '@tamagui/lucide-icons'
 import { Stack, styled } from '@tamagui/web'
 import {
@@ -35,7 +36,7 @@ export const Sandbox = () => {
     <div
       style={{ flex: 1, alignItems: 'center', justifyContent: 'center', display: 'flex' }}
     >
-      <Ban />
+      <SelectDemo />
       {/*  */}
     </div>
   )
