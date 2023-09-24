@@ -2,7 +2,6 @@ import {
   Avatar,
   Card,
   Paragraph,
-  ThemeName,
   Theme,
   YStack,
   Spacer,
@@ -11,18 +10,18 @@ import {
   Button,
   XStack,
   Sheet,
-  H5,
   useToastController,
   useClimbColor,
+  H5,
 } from '@my/ui'
 import { api } from 'app/utils/api'
-import { add, format, intervalToDuration } from 'date-fns'
+import { format } from 'date-fns'
 import { Tables } from '@my/supabase/helpers'
 import { FlatList } from 'react-native'
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { useCallback, useState } from 'react'
+import { useUser } from '../../utils/useUser'
 import { useQueryClient } from '@tanstack/react-query'
-import React from 'react'
 
 type ListClimb = Tables<'climbs'> & {
   climber: Tables<'profiles'>
@@ -34,16 +33,20 @@ const displayName = {
   boulder: 'Boulder',
 } as const
 function Climb({ climb, onSelect }: { climb: ListClimb; onSelect?: (climb: ListClimb) => void }) {
-  const user = api.me.profile.read.useQuery()
-  const { color } = useClimbColor(climb.type)
+  // const { color } = useClimbColor(climb.type)
+  // const cache = useQueryClient()
+  // const cachedUserKey = getQueryKey(api.me.profile.read)
+  // const user = cache.getQueryData<User['profile']>(cachedUserKey)
 
   return (
-    <Theme name={color}>
+    <Theme name={'blue'}>
       <Card
         overflow="visible"
         removeClippedSubviews={true}
         height={220}
-        minWidth={320}
+        // minWidth={320}
+        // w={'100%'}
+        // w="100%"
         position="relative"
         padding="$4"
         marginHorizontal="$3"
@@ -104,7 +107,7 @@ function Climb({ climb, onSelect }: { climb: ListClimb; onSelect?: (climb: ListC
             @{climb.climber.username}
           </Paragraph>
           <Paragraph size="$1" fontWeight="400" ellipse>
-            {climb.name} {user?.data?.id === climb?.created_by ? '(your climb)' : ''}
+            {/* {climb.name} {user?.data?.id === climb?.created_by ? '(your climb)' : ''} */}
           </Paragraph>
           <Spacer size="$1" />
         </Card.Header>
@@ -137,13 +140,14 @@ export function ClimbsTab() {
   const climbsQuery = api.climb.read.useQuery()
   const [open, setOpen] = useState(false)
   const [selectedClimb, setSelectedClimb] = useState<ListClimb | undefined>(undefined)
+
   const onSelect = useCallback((climb: ListClimb) => {
     setSelectedClimb(climb)
     setOpen(true)
   }, [])
 
   return (
-    <YStack ai="center" gap="$10">
+    <YStack gap="$10">
       <FlatList
         style={{
           paddingTop: 20,
@@ -156,7 +160,7 @@ export function ClimbsTab() {
         renderItem={({ item }) => <Climb onSelect={onSelect} climb={item} />}
         ItemSeparatorComponent={() => <Spacer size="$6" />}
       />
-      {climbsQuery.data && <SheetDemo climb={selectedClimb} open={open} setOpen={setOpen} />}
+      <SheetDemo climb={selectedClimb} open={open} setOpen={setOpen} />
     </YStack>
   )
 }
@@ -172,44 +176,34 @@ export const SheetDemo = ({
 }) => {
   const [position, setPosition] = useState(0)
   const [modal, setModal] = useState(true)
+
+  const user = useUser()
+
+  console.log('user xxxxxx', user)
   const joinMutation = api.climb.join.useMutation()
   const queryClient = useQueryClient()
-  const user = api.me.profile.read.useQuery()
+  // const user = useUser()
   // const [innerOpen, setInnerOpen] = useState(false)
 
-  let color: ThemeName = 'orange'
-  switch (climb?.type) {
-    case 'lead_rope': {
-      color = 'orange'
-      break
-    }
-    case 'top_rope': {
-      color = 'blue'
-      break
-    }
-    case 'boulder': {
-      color = 'light_purple'
-      break
-    }
-  }
+  const { color } = useClimbColor(climb?.type ?? 'top_rope')
   const toast = useToastController()
-  const reminderConfig = {
-    name: `Climb with ${climb?.climber?.first_name ?? 'unknown climber'}`,
-    description: climb?.name ?? '',
-    startDate: format(new Date(climb?.start ?? 0), 'yyyy-MM-dd'),
-    startTime: format(new Date(climb?.start ?? 0), 'hh:mm'),
-    endTime: format(
-      add(new Date(climb?.start ?? 0), {
-        minutes: intervalToDuration({
-          start: new Date(climb?.start ?? 0),
-          end: new Date(climb?.duration ?? 0),
-        }).minutes,
-      }),
-      'hh:mm'
-    ),
-    options: ['Google', 'iCal'],
-    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-  }
+  // const reminderConfig = {
+  //   name: `Climb with ${climb?.climber?.first_name ?? 'unknown climber'}`,
+  //   description: climb?.name ?? '',
+  //   startDate: format(new Date(climb?.start ?? 0), 'yyyy-MM-dd'),
+  //   startTime: format(new Date(climb?.start ?? 0), 'hh:mm'),
+  //   endTime: format(
+  //     add(new Date(climb?.start ?? 0), {
+  //       minutes: intervalToDuration({
+  //         start: new Date(climb?.start ?? 0),
+  //         end: new Date(climb?.duration ?? 0),
+  //       }).minutes,
+  //     }),
+  //     'hh:mm'
+  //   ),
+  //   options: ['Google', 'iCal'],
+  //   timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+  // }
   return (
     <Theme name={color}>
       <Sheet
@@ -226,14 +220,7 @@ export const SheetDemo = ({
       >
         <Sheet.Overlay animation="lazy" enterStyle={{ opacity: 0 }} exitStyle={{ opacity: 0 }} />
         <Sheet.Handle />
-        <Sheet.Frame
-          flex={1}
-          padding="$4"
-          bg="$backgroundPress"
-          justifyContent="flex-start"
-          alignItems="center"
-          space="$5"
-        >
+        <Sheet.Frame padding="$4" bg="$backgroundPress" space="$5">
           {/* <Button size="$6" circular icon={ChevronDown} onPress={() => setOpen(false)} /> */}
           {/* <Input width={200} /> */}
 
@@ -241,24 +228,24 @@ export const SheetDemo = ({
           <YStack height={450}>
             {climb?.climber?.first_name && (
               <>
-                <H3 fontSize="$8" pt="$0.5">
+                <H3 paddingHorizontal="$3" fontSize="$8" pt="$0.5">
                   Climb with {climb.climber.first_name}
                 </H3>
-                <Paragraph size="$2" fontWeight="400">
+                <Paragraph paddingHorizontal="$3" size="$2" fontWeight="400">
                   @{climb.climber.username}
                 </Paragraph>
               </>
             )}
             <Spacer size="$2" />
             {climb?.type && (
-              <H5 fontSize="$4" theme="alt2">
+              <H5 paddingHorizontal="$3" fontSize="$4" theme="alt2">
                 {displayName[climb.type]}
               </H5>
             )}
             <Spacer size="$4" />
             {climb && <Climb climb={climb} />}
             <Spacer size="$6" />
-            <XStack>
+            <XStack paddingHorizontal="$3">
               <Button
                 padded
                 fontSize="$5"
@@ -295,7 +282,7 @@ export const SheetDemo = ({
                   )
                 }}
               >
-                {user.data?.id === climb?.created_by ? 'Edit' : 'Join'}
+                {user?.user?.id === climb?.created_by ? 'Edit' : 'Join'}
               </Button>
               <Spacer flex />
               <Button

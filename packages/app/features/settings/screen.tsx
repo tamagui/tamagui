@@ -17,9 +17,9 @@ export const SettingsScreen = (props: { schedulePushNotif: () => Promise<void> }
   const pathname = usePathname()
 
   return (
-    <YStack f={1} gap="$2" jc="space-between">
+    <YStack f={1} jc="space-between">
       <ScrollView>
-        <Settings mt="$6">
+        <Settings>
           <Settings.Items>
             <Settings.Group $gtSm={{ space: '$2' }}>
               <Settings.Item

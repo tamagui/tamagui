@@ -21,7 +21,7 @@
     "@tamagui/core": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "latest",
+    "@tamagui/build": "^1.68.6",
     "subset-font": "^1.6.1"
   }
 }

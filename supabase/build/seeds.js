@@ -61,7 +61,7 @@ function createClimbs(supabase, users, admin) {
                     usersClimbs = users.map(function (user) {
                         var _a;
                         var climbs = Array.from({ length: 2 }).map(function (_, i) {
-                            var _a, _b, _c;
+                            var _a, _b;
                             var start = (0, date_fns_1.add)(faker_1.faker.date.between({
                                 from: new Date(),
                                 to: (0, date_fns_1.add)(new Date(), { weeks: 3 }),
@@ -74,14 +74,14 @@ function createClimbs(supabase, users, admin) {
                                     from: (0, date_fns_1.add)(new Date(), { weeks: -1 }),
                                     to: new Date(),
                                 }).toISOString(),
-                                created_by: (_a = user === null || user === void 0 ? void 0 : user.data.user) === null || _a === void 0 ? void 0 : _a.id,
+                                created_by: (_a = user === null || user === void 0 ? void 0 : user.user) === null || _a === void 0 ? void 0 : _a.id,
                                 start: start.toISOString(),
                                 duration: (0, date_fns_1.add)(start, {
                                     hours: faker_1.faker.number.int({ min: 0, max: 4 }),
                                     minutes: faker_1.faker.number.int({ min: 0, max: 59 }),
                                 }).toISOString(),
                                 type: faker_1.faker.helpers.arrayElement(['boulder', 'lead_rope', 'top_rope']),
-                                name: "".concat((_c = (_b = user === null || user === void 0 ? void 0 : user.data) === null || _b === void 0 ? void 0 : _b.user) === null || _c === void 0 ? void 0 : _c.user_metadata.first_name, " ").concat(faker_1.faker.helpers.arrayElement(['climbs', 'sends', 'projects', 'attempts']), " ").concat(faker_1.faker.helpers.arrayElement(['a', 'the', 'my']), " ").concat(faker_1.faker.helpers.arrayElement(['red', 'blue', 'green', 'yellow', 'purple', 'black']), " ").concat(faker_1.faker.helpers.arrayElement(['route', 'problem', 'boulder'])),
+                                name: "".concat((_b = user === null || user === void 0 ? void 0 : user.user) === null || _b === void 0 ? void 0 : _b.user_metadata.first_name, " ").concat(faker_1.faker.helpers.arrayElement(['climbs', 'sends', 'projects', 'attempts']), " ").concat(faker_1.faker.helpers.arrayElement(['a', 'the', 'my']), " ").concat(faker_1.faker.helpers.arrayElement(['red', 'blue', 'green', 'yellow', 'purple', 'black']), " ").concat(faker_1.faker.helpers.arrayElement(['route', 'problem', 'boulder'])),
                             };
                         });
                         // make sure admin has a climb from every user
@@ -94,7 +94,7 @@ function createClimbs(supabase, users, admin) {
                             start: (0, date_fns_1.add)(new Date(), { days: -1 }).toISOString(),
                             duration: (0, date_fns_1.add)(new Date(), { days: -1, hours: 1 }).toISOString(),
                             type: faker_1.faker.helpers.arrayElement(['boulder', 'lead_rope', 'top_rope']),
-                            name: "".concat((_a = user === null || user === void 0 ? void 0 : user.data.user) === null || _a === void 0 ? void 0 : _a.user_metadata.first_name, " ").concat(faker_1.faker.helpers.arrayElement(['climbs', 'sends', 'projects', 'attempts']), " ").concat(faker_1.faker.helpers.arrayElement(['a', 'the', 'my']), " ").concat(faker_1.faker.helpers.arrayElement(['red', 'blue', 'green', 'yellow', 'purple', 'black']), " ").concat(faker_1.faker.helpers.arrayElement(['route', 'problem', 'boulder'])),
+                            name: "".concat((_a = user === null || user === void 0 ? void 0 : user.user) === null || _a === void 0 ? void 0 : _a.user_metadata.first_name, " ").concat(faker_1.faker.helpers.arrayElement(['climbs', 'sends', 'projects', 'attempts']), " ").concat(faker_1.faker.helpers.arrayElement(['a', 'the', 'my']), " ").concat(faker_1.faker.helpers.arrayElement(['red', 'blue', 'green', 'yellow', 'purple', 'black']), " ").concat(faker_1.faker.helpers.arrayElement(['route', 'problem', 'boulder'])),
                         });
                         return climbs;
                     }).flatMap(function (climbs) { return climbs; });
@@ -111,6 +111,66 @@ function createClimbs(supabase, users, admin) {
     });
 }
 // const { data, error } = await supabase.from('climbs').insert()
+function createMaple(supabase) {
+    return __awaiter(this, void 0, void 0, function () {
+        var _a, data, error;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0: return [4 /*yield*/, supabase.auth.signUp({
+                        email: 'maple@gmail.com',
+                        password: 'qwerty',
+                        options: {
+                            data: {
+                                first_name: 'Maple',
+                                last_name: 'Golshani',
+                                username: 'maple',
+                                email_confirm: true,
+                                bio: 'Bork at things. Part marshmallow, part velociraptor.',
+                                avatar_url: 'https://github-production-user-asset-6210df.s3.amazonaws.com/2502947/270132245-073cc1ba-4111-4638-a08e-3860f591672e.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20230923%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20230923T203558Z&X-Amz-Expires=300&X-Amz-Signature=1b6460f5a76c9115bc7a6526d73e32d2f27d3a8657f153571b1cba8b8cbf2a9e&X-Amz-SignedHeaders=host&actor_id=2502947&key_id=0&repo_id=679352400'
+                            },
+                        }
+                    })];
+                case 1:
+                    _a = _b.sent(), data = _a.data, error = _a.error;
+                    if (error) {
+                        console.log(error);
+                        return [2 /*return*/];
+                    }
+                    return [2 /*return*/, data];
+            }
+        });
+    });
+}
+function createMochi(supabase) {
+    return __awaiter(this, void 0, void 0, function () {
+        var _a, data, error;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0: return [4 /*yield*/, supabase.auth.signUp({
+                        email: 'mochi@gmail.com',
+                        password: 'qwerty',
+                        options: {
+                            data: {
+                                first_name: 'Mochi',
+                                last_name: 'Golshani',
+                                username: 'mochi',
+                                email_confirm: true,
+                                bio: 'Feces, Pellets, Dander, Hay forever. I will eat the wall',
+                                avatar_url: 'https://github-production-user-asset-6210df.s3.amazonaws.com/2502947/270132160-ff02fc5c-bd04-4594-b18b-5c99b081ef84.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20230923%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20230923T203329Z&X-Amz-Expires=300&X-Amz-Signature=55b93ac333cad1b809adaebd19881d990b8e8dba0f069f02fafc929ce841dab1&X-Amz-SignedHeaders=host&actor_id=2502947&key_id=0&repo_id=679352400'
+                            },
+                        }
+                    })];
+                case 1:
+                    _a = _b.sent(), data = _a.data, error = _a.error;
+                    if (error) {
+                        console.log(error);
+                        return [2 /*return*/];
+                    }
+                    return [2 /*return*/, data];
+            }
+        });
+    });
+}
 function createBenjamin(supabase) {
     return __awaiter(this, void 0, void 0, function () {
         var _a, data, error;
@@ -145,24 +205,33 @@ function createBenjamin(supabase) {
 function createUsers(supabase, count) {
     return __awaiter(this, void 0, void 0, function () {
         var users, results;
+        var _this = this;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    users = Array.from({ length: count }).map(function () {
-                        return supabase.auth.signUp({
-                            email: faker_1.faker.internet.email(),
-                            password: faker_1.faker.internet.password(),
-                            options: {
-                                data: {
-                                    first_name: faker_1.faker.person.firstName(),
-                                    last_name: faker_1.faker.person.lastName(),
-                                    username: faker_1.faker.internet.userName(),
-                                    avatar_url: faker_1.faker.image.avatar(),
-                                    bio: faker_1.faker.person.bio()
-                                }
+                    users = Array.from({ length: count }).map(function () { return __awaiter(_this, void 0, void 0, function () {
+                        var data;
+                        return __generator(this, function (_a) {
+                            switch (_a.label) {
+                                case 0: return [4 /*yield*/, supabase.auth.signUp({
+                                        email: faker_1.faker.internet.email(),
+                                        password: faker_1.faker.internet.password(),
+                                        options: {
+                                            data: {
+                                                first_name: faker_1.faker.person.firstName(),
+                                                last_name: faker_1.faker.person.lastName(),
+                                                username: faker_1.faker.internet.userName(),
+                                                avatar_url: faker_1.faker.image.avatar(),
+                                                bio: faker_1.faker.person.bio()
+                                            }
+                                        }
+                                    })];
+                                case 1:
+                                    data = (_a.sent()).data;
+                                    return [2 /*return*/, data];
                             }
                         });
-                    });
+                    }); });
                     return [4 /*yield*/, Promise.all(users)];
                 case 1:
                     results = _a.sent();
@@ -229,7 +298,7 @@ function createProfileClimbs(supabase, climbs, profiles, admin) {
 function main() {
     var _a, _b;
     return __awaiter(this, void 0, void 0, function () {
-        var benjamin, users, climbs, profiles;
+        var benjamin, mochi, maple, users, climbs, profiles;
         return __generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
@@ -237,24 +306,39 @@ function main() {
                     return [4 /*yield*/, createBenjamin(supabaseInstance)];
                 case 1:
                     benjamin = _c.sent();
-                    return [4 /*yield*/, createUsers(supabaseInstance, 10)];
+                    return [4 /*yield*/, createMochi(supabaseInstance)];
                 case 2:
+                    mochi = _c.sent();
+                    return [4 /*yield*/, createMaple(supabaseInstance)];
+                case 3:
+                    maple = _c.sent();
+                    return [4 /*yield*/, createUsers(supabaseInstance, 10)];
+                case 4:
                     users = _c.sent();
                     if (!benjamin) {
-                        console.log('no benjamin');
-                        return [2 /*return*/];
+                        throw new Error('no benjamin');
                     }
+                    if (!mochi) {
+                        throw new Error('no mochi');
+                    }
+                    if (!maple) {
+                        console.log(maple);
+                        throw new Error('no maple');
+                    }
+                    return [4 /*yield*/, createClimbs(supabaseInstance, [mochi, maple], benjamin.user)];
+                case 5:
+                    _c.sent();
                     return [4 /*yield*/, createClimbs(supabaseInstance, users, benjamin.user)];
-                case 3:
+                case 6:
                     _c.sent();
                     return [4 /*yield*/, supabaseInstance.from('climbs').select('*')];
-                case 4:
+                case 7:
                     climbs = _c.sent();
                     return [4 /*yield*/, supabaseInstance.from('profiles').select('*')];
-                case 5:
+                case 8:
                     profiles = _c.sent();
                     return [4 /*yield*/, createProfileClimbs(supabaseInstance, (_a = climbs === null || climbs === void 0 ? void 0 : climbs.data) !== null && _a !== void 0 ? _a : [], (_b = profiles.data) !== null && _b !== void 0 ? _b : [], benjamin.user)];
-                case 6:
+                case 9:
                     _c.sent();
                     return [2 /*return*/];
             }

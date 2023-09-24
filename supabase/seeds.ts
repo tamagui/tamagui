@@ -10,7 +10,7 @@ type ProfileClimbs = Tables<'profile_climbs'>
 type Profiles = Tables<'profiles'>
 
 const supabaseInstance = createClient<Database>("http://localhost:54331", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0")
-async function createClimbs(supabase: SupabaseClient<Database>, users: AuthResponse[], admin: AuthResponse['data']['user']) {
+async function createClimbs(supabase: SupabaseClient<Database>, users: AuthResponse['data'][], admin: AuthResponse['data']['user']) {
   // Create 10 climbs from faker data with the Shape of Tables['climbs'] and Enums['climb_type']
   // created at should be now to 1 week ago
   // created by should be the user id from the auth response
@@ -42,14 +42,14 @@ async function createClimbs(supabase: SupabaseClient<Database>, users: AuthRespo
           from: add(new Date(), { weeks: -1 }),
           to: new Date(),
         }).toISOString(),
-        created_by: user?.data.user?.id as string,
+        created_by: user?.user?.id as string,
         start: start.toISOString(),
         duration: add(start, {
           hours: faker.number.int({ min: 0, max: 4 }),
           minutes: faker.number.int({ min: 0, max: 59 }),
         }).toISOString(),
         type: faker.helpers.arrayElement(['boulder', 'lead_rope', 'top_rope']) as Enums<'climb_type'>,
-        name: `${user?.data?.user?.user_metadata.first_name} ${faker.helpers.arrayElement(['climbs', 'sends', 'projects', 'attempts'])} ${faker.helpers.arrayElement(['a', 'the', 'my'])} ${faker.helpers.arrayElement(['red', 'blue', 'green', 'yellow', 'purple', 'black'])} ${faker.helpers.arrayElement(['route', 'problem', 'boulder'])}`,
+        name: `${user?.user?.user_metadata.first_name} ${faker.helpers.arrayElement(['climbs', 'sends', 'projects', 'attempts'])} ${faker.helpers.arrayElement(['a', 'the', 'my'])} ${faker.helpers.arrayElement(['red', 'blue', 'green', 'yellow', 'purple', 'black'])} ${faker.helpers.arrayElement(['route', 'problem', 'boulder'])}`,
       }
     })
 
@@ -64,7 +64,7 @@ async function createClimbs(supabase: SupabaseClient<Database>, users: AuthRespo
       start: add(new Date(), { days: -1 }).toISOString(),
       duration: add(new Date(), { days: -1, hours: 1 }).toISOString(),
       type: faker.helpers.arrayElement(['boulder', 'lead_rope', 'top_rope']) as Enums<'climb_type'>,
-      name: `${user?.data.user?.user_metadata.first_name} ${faker.helpers.arrayElement(['climbs', 'sends', 'projects', 'attempts'])} ${faker.helpers.arrayElement(['a', 'the', 'my'])} ${faker.helpers.arrayElement(['red', 'blue', 'green', 'yellow', 'purple', 'black'])} ${faker.helpers.arrayElement(['route', 'problem', 'boulder'])}`,
+      name: `${user?.user?.user_metadata.first_name} ${faker.helpers.arrayElement(['climbs', 'sends', 'projects', 'attempts'])} ${faker.helpers.arrayElement(['a', 'the', 'my'])} ${faker.helpers.arrayElement(['red', 'blue', 'green', 'yellow', 'purple', 'black'])} ${faker.helpers.arrayElement(['route', 'problem', 'boulder'])}`,
     })
 
     return climbs
@@ -81,6 +81,56 @@ async function createClimbs(supabase: SupabaseClient<Database>, users: AuthRespo
 }
 
 // const { data, error } = await supabase.from('climbs').insert()
+
+async function createMaple(supabase: SupabaseClient<Database>) {
+  const { data, error } = await supabase.auth.signUp({
+    email: 'maple@gmail.com',
+    password: 'qwerty',
+    options: {
+      data: {
+        first_name: 'Maple',
+        last_name: 'Golshani',
+        username: 'maple',
+        email_confirm: true,
+        bio: 'Bork at things. Part marshmallow, part velociraptor.',
+        avatar_url:
+          'https://github-production-user-asset-6210df.s3.amazonaws.com/2502947/270132245-073cc1ba-4111-4638-a08e-3860f591672e.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20230923%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20230923T203558Z&X-Amz-Expires=300&X-Amz-Signature=1b6460f5a76c9115bc7a6526d73e32d2f27d3a8657f153571b1cba8b8cbf2a9e&X-Amz-SignedHeaders=host&actor_id=2502947&key_id=0&repo_id=679352400'
+      },
+    }
+  })
+
+  if (error) {
+    console.log(error)
+    return
+  }
+
+  return data
+}
+async function createMochi(supabase: SupabaseClient<Database>) {
+  const { data, error } = await supabase.auth.signUp({
+    email: 'mochi@gmail.com',
+    password: 'qwerty',
+    options: {
+      data: {
+        first_name: 'Mochi',
+        last_name: 'Golshani',
+        username: 'mochi',
+        email_confirm: true,
+        bio: 'Feces, Pellets, Dander, Hay forever. I will eat the wall',
+        avatar_url:
+          'https://github-production-user-asset-6210df.s3.amazonaws.com/2502947/270132160-ff02fc5c-bd04-4594-b18b-5c99b081ef84.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20230923%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20230923T203329Z&X-Amz-Expires=300&X-Amz-Signature=55b93ac333cad1b809adaebd19881d990b8e8dba0f069f02fafc929ce841dab1&X-Amz-SignedHeaders=host&actor_id=2502947&key_id=0&repo_id=679352400'
+      },
+    }
+  })
+
+  if (error) {
+    console.log(error)
+    return
+  }
+
+  return data
+}
+
 
 async function createBenjamin(supabase: SupabaseClient<Database>) {
   const { data, error } = await supabase.auth.signUp({
@@ -111,8 +161,8 @@ async function createBenjamin(supabase: SupabaseClient<Database>) {
 
 // Notes: This doesn't work, look into it tomorrow
 async function createUsers(supabase: SupabaseClient<Database>, count: number) {
-  const users = Array.from({ length: count }).map(() => {
-    return supabase.auth.signUp({
+  const users = Array.from({ length: count }).map(async () => {
+    const { data } = await supabase.auth.signUp({
       email: faker.internet.email(),
       password: faker.internet.password(),
       options: {
@@ -125,6 +175,7 @@ async function createUsers(supabase: SupabaseClient<Database>, count: number) {
         }
       }
     })
+    return data
   })
 
   const results = await Promise.all(users)
@@ -191,15 +242,29 @@ async function createProfileClimbs(supabase: SupabaseClient<Database>, climbs: C
 async function main() {
   console.log('Running seeds with faker data')
   const benjamin = await createBenjamin(supabaseInstance)
+  const mochi = await createMochi(supabaseInstance)
+  const maple = await createMaple(supabaseInstance)
   const users = await createUsers(supabaseInstance, 10)
 
 
-
   if (!benjamin) {
-    console.log('no benjamin')
-    return
+    throw new Error('no benjamin')
   }
+  if (!mochi) {
+    throw new Error('no mochi')
+  }
+
+  if (!maple) {
+    console.log(maple)
+    throw new Error('no maple')
+  }
+
+
+
+  await createClimbs(supabaseInstance, [mochi, maple], benjamin.user)
   await createClimbs(supabaseInstance, users, benjamin.user)
+
+
   const climbs = await supabaseInstance.from('climbs').select('*');
   const profiles = await supabaseInstance.from('profiles').select('*');
   await createProfileClimbs(supabaseInstance, climbs?.data ?? [], profiles.data ?? [], benjamin.user)

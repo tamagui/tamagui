@@ -1,7 +1,9 @@
-import { H5, Separator, SizableText, Tabs, TabsContentProps, YStack, isWeb } from '@my/ui'
+import { H5, Separator, SizableText, Tabs, TabsContentProps, XStack, YStack, isWeb } from '@my/ui'
 
 import { MyClimbsTab } from './myclimbs-tab'
 import { ClimbsTab } from './climbs-tab'
+import { useState } from 'react'
+import { useUser } from '../../utils/useUser'
 
 export function FeedScreen() {
   return (
@@ -12,30 +14,57 @@ export function FeedScreen() {
         position: 'unset' as any,
       })}
     >
+      <TabsDemo />
+    </YStack>
+  )
+}
+
+export function TabsDemo() {
+  return (
+    // web only fix for position relative
+
+    <YStack
+      {...(isWeb && {
+        position: 'unset' as any,
+      })}
+    >
       <HorizontalTabs />
     </YStack>
   )
 }
+
 const HorizontalTabs = () => {
+  const user = useUser()
+  console.log('user', user)
   return (
-    <Tabs defaultValue="tab1" orientation="horizontal" flexDirection="column" f={1}>
+    <Tabs
+      defaultValue="tab1"
+      orientation="horizontal"
+      flexDirection="column"
+      borderRadius="$4"
+      borderWidth="$0.25"
+      overflow="hidden"
+      borderColor="$borderColor"
+    >
       <Tabs.List
         separator={<Separator vertical />}
         disablePassBorderRadius="bottom"
         aria-label="Manage your account"
       >
         <Tabs.Tab flex={1} value="tab1">
-          <SizableText fontFamily="$body">Climbs</SizableText>
+          <SizableText fontFamily="$body">Open</SizableText>
         </Tabs.Tab>
         <Tabs.Tab flex={1} value="tab2">
-          <SizableText fontFamily="$body">Your Climbs</SizableText>
+          <SizableText fontFamily="$body">Scheduled</SizableText>
         </Tabs.Tab>
       </Tabs.List>
       <Separator />
       <TabsContent value="tab1">
         <ClimbsTab />
       </TabsContent>
+
       <TabsContent value="tab2">
+        <H5>Connections</H5>
         <MyClimbsTab />
       </TabsContent>
     </Tabs>
@@ -43,16 +72,19 @@ const HorizontalTabs = () => {
 }
 
 const TabsContent = (props: TabsContentProps) => {
-  const { children, ...rest } = props
   return (
     <Tabs.Content
+      backgroundColor="$background"
       key="tab3"
-      alignItems="center"
-      justifyContent="center"
+      padding="$2"
       borderColor="$background"
-      {...rest}
+      borderRadius="$2"
+      borderTopLeftRadius={0}
+      borderTopRightRadius={0}
+      borderWidth="$2"
+      {...props}
     >
-      {children}
+      {props.children}
     </Tabs.Content>
   )
 }
