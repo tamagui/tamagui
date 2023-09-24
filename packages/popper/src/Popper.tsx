@@ -315,7 +315,7 @@ const PopperArrowOuterFrame = styled(YStack, {
     unstyled: {
       false: {
         position: 'absolute',
-        zIndex: -1,
+        zIndex: 1_000_000,
         pointerEvents: 'none',
         overflow: 'hidden',
         alignItems: 'center',
@@ -375,6 +375,11 @@ export const PopperArrow = PopperArrowFrame.styleable<
     if (oppSide) {
       arrowStyle[oppSide] = -size
       innerArrowStyle[oppSide] = size / 2
+    }
+    if (oppSide === 'bottom') {
+      // on the bottom it needs to be 1px further up
+      // @ts-ignore it exists
+      arrowStyle[oppSide] += 1
     }
     if (oppSide === 'top' || oppSide === 'bottom') {
       arrowStyle.left = 0
