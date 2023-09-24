@@ -9,12 +9,12 @@ import {
   getVariableValue,
   isWeb,
   useProps,
-  usePropsAndStyle,
   withStaticProperties,
 } from '@tamagui/core'
 import { registerFocusable } from '@tamagui/focusable'
 import { getSize } from '@tamagui/get-token'
 import { useLabelContext } from '@tamagui/label'
+import { YStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { usePrevious } from '@tamagui/use-previous'
 import * as React from 'react'
@@ -131,7 +131,7 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
       forwardedRef
     ) {
       const styledContext = React.useContext(SwitchContext)
-      const [props, style] = usePropsAndStyle(propsIn, {
+      const props = useProps(propsIn, {
         noNormalize: true,
         noExpand: true,
         resolveValues: 'none',
@@ -153,24 +153,6 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
         children,
         ...switchProps
       } = props
-
-      const leftBorderWidth = (() => {
-        let _ = style.borderLeftWidth || style.borderWidth
-        if (typeof _ === 'string') {
-          if (_.endsWith('px')) {
-            _ = +_.replace('px', '')
-          } else {
-            _ = getVariableValue(getSize(_))
-          }
-        }
-        if (typeof _ === 'number') {
-          return _
-        }
-        if (Frame === DefaultSwitchFrame && !unstyled) {
-          return 2
-        }
-        return 0
-      })()
 
       const native = Array.isArray(nativeProp) ? nativeProp : [nativeProp]
 
@@ -231,7 +213,7 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
             size={size}
             checked={checked}
             disabled={disabled}
-            frameWidth={frameWidth ? frameWidth - leftBorderWidth * 2 : 0}
+            frameWidth={frameWidth}
             theme={checked ? 'active' : null}
             themeShallow
             role="switch"
@@ -256,16 +238,16 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
                 if (!hasConsumerStoppedPropagationRef.current) event.stopPropagation()
               }
             })}
-            onLayout={composeEventHandlers(
-              // @ts-ignore
-              props.onLayout,
-              (e) => {
-                // @ts-ignore
-                setFrameWidth(e.nativeEvent.layout.width)
-              }
-            )}
           >
-            {typeof children === 'function' ? children(checked) : children}
+            <YStack
+              alignSelf="stretch"
+              flex={1}
+              onLayout={(e) => {
+                setFrameWidth(e.nativeEvent.layout.width)
+              }}
+            >
+              {typeof children === 'function' ? children(checked) : children}
+            </YStack>
           </Frame>
           {isWeb && isFormControl && (
             <BubbleInput
