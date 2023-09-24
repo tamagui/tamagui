@@ -51,15 +51,14 @@ export const SwitchFrame = styled(YStack, {
       false: {
         size: '$true',
         borderRadius: 1000,
-        borderWidth: 2,
-        borderColor: 'transparent',
         backgroundColor: '$background',
+        borderWidth: 2,
+        borderColor: '$background',
 
         focusStyle: {
-          borderColor: '$borderColorFocus',
           outlineColor: '$borderColorFocus',
           outlineStyle: 'solid',
-          outlineWidth: 1,
+          outlineWidth: 2,
         },
       },
     },
