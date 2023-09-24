@@ -60,6 +60,7 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
       interactions,
       shouldRenderWebNative,
       size,
+      onActiveChange,
       initialValue,
     } = context
 
@@ -68,7 +69,12 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
 
     React.useEffect(() => {
       return activeIndexSubscribe((i) => {
-        setActive(index === i)
+        const isActive = index === i
+        setActive(isActive)
+
+        if (isActive) {
+          onActiveChange(value, index)
+        }
       })
     }, [index])
 

@@ -36,6 +36,11 @@ export interface SelectProps {
    * When true, avoids removing the scrollbar from the body when open
    */
   disablePreventBodyScroll?: boolean
+
+  /**
+   * Called when an item is hovered by mouse or navigated to by keyboard.
+   */
+  onActiveChange?(value: string, index: number): void
 }
 
 type DisposeFn = () => void
@@ -47,6 +52,7 @@ export interface SelectItemParentContextValue {
   listRef?: MutableRefObject<Array<HTMLElement | null>>
   setOpen: (open: boolean) => void
   onChange: (value: string) => void
+  onActiveChange: (value: string, index: number) => void
   activeIndexSubscribe: EmitterSubscriber<number>
   valueSubscribe: EmitterSubscriber<any>
   allowSelectRef?: MutableRefObject<boolean>
