@@ -61,13 +61,13 @@ type SwitchThumbComponent = TamaguiComponentExpectingVariants<
 >
 
 export function createSwitch<F extends SwitchComponent, T extends SwitchThumbComponent>({
+  disableActiveTheme,
   Frame = DefaultSwitchFrame as any,
   Thumb = SwitchThumb as any,
-  acceptsUnstyled,
 }: {
+  disableActiveTheme?: boolean
   Frame?: F
   Thumb?: T
-  acceptsUnstyled?: boolean
 }) {
   if (process.env.NODE_ENV === 'development') {
     if (Frame !== DefaultSwitchFrame && Frame.staticConfig.context) {
@@ -107,7 +107,9 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
         {...(unstyled === false && {
           unstyled: false,
           size: sizeProp ?? sizeContext ?? '$true',
-          theme: checked ? 'active' : null,
+          ...(!disableActiveTheme && {
+            theme: checked ? 'active' : null,
+          }),
         })}
         data-state={getState(checked)}
         data-disabled={disabled ? '' : undefined}
@@ -216,6 +218,10 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
             frameWidth={frameWidth}
             theme={checked ? 'active' : null}
             themeShallow
+            {...(!disableActiveTheme && {
+              theme: checked ? 'active' : null,
+              themeShallow: true,
+            })}
             role="switch"
             aria-checked={checked}
             aria-labelledby={labelledBy}
