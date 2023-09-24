@@ -77,11 +77,18 @@ export const color = {
   ...postfixObjKeys(darkColors, 'Dark'),
 }
 
-function postfixObjKeys<A extends { [key: string]: Variable<string> | string }, B extends string>(
+function postfixObjKeys<
+  A extends { [key: string]: Variable<string> | string },
+  B extends string
+>(
   obj: A,
   postfix: B
 ): {
-  [Key in `${keyof A extends string ? keyof A : never}${B}`]: Variable<string> | string
+  [Key in `${keyof A extends string ? keyof A : never}${B}`]:
+    | Variable<string>
+    | string
 } {
-  return Object.fromEntries(Object.entries(obj).map(([k, v]) => [`${k}${postfix}`, v])) as never
+  return Object.fromEntries(
+    Object.entries(obj).map(([k, v]) => [`${k}${postfix}`, v])
+  ) as never
 }

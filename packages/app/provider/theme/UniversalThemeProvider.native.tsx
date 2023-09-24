@@ -1,8 +1,22 @@
 import { useForceUpdate } from '@my/ui'
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native'
+import {
+  DarkTheme,
+  DefaultTheme,
+  ThemeProvider,
+} from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { ThemeProviderProps, useThemeSetting as next_useThemeSetting } from '@tamagui/next-theme'
-import { createContext, useContext, useEffect, useLayoutEffect, useMemo, useState } from 'react'
+import {
+  ThemeProviderProps,
+  useThemeSetting as next_useThemeSetting,
+} from '@tamagui/next-theme'
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from 'react'
 import { Appearance } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
 export const ThemeContext = createContext<
@@ -11,7 +25,11 @@ export const ThemeContext = createContext<
 
 type ThemeName = 'light' | 'dark' | 'system'
 
-export const UniversalThemeProvider = ({ children }: { children: React.ReactNode }) => {
+export const UniversalThemeProvider = ({
+  children,
+}: {
+  children: React.ReactNode
+}) => {
   const [current, setCurrent] = useState<ThemeName>('system')
 
   useLayoutEffect(() => {
@@ -83,7 +101,9 @@ export const useThemeSetting: typeof next_useThemeSetting = () => {
   const context = useContext(ThemeContext)
 
   if (!context) {
-    throw new Error('useThemeSetting should be used within the context provider.')
+    throw new Error(
+      'useThemeSetting should be used within the context provider.'
+    )
   }
 
   const outputContext: ReturnType<typeof next_useThemeSetting> = {
@@ -91,7 +111,10 @@ export const useThemeSetting: typeof next_useThemeSetting = () => {
     systemTheme: context.systemTheme as 'light' | 'dark',
     themes: context.themes!,
     current: context.current ?? 'system',
-    resolvedTheme: context.current === 'system' ? context.systemTheme : context.current ?? 'system',
+    resolvedTheme:
+      context.current === 'system'
+        ? context.systemTheme
+        : context.current ?? 'system',
     set: (value) => {
       context.onChangeTheme?.(value)
     },
@@ -111,5 +134,8 @@ export const useThemeSetting: typeof next_useThemeSetting = () => {
 export const useRootTheme = () => {
   const context = useThemeSetting()
 
-  return [context.current === 'system' ? context.systemTheme : context.current, context.set]
+  return [
+    context.current === 'system' ? context.systemTheme : context.current,
+    context.set,
+  ]
 }

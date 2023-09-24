@@ -1,10 +1,19 @@
 import { forwardRef } from 'react'
-import { ScrollView, TamaguiElement, YStack, YStackProps, withStaticProperties } from 'tamagui'
+import {
+  ScrollView,
+  TamaguiElement,
+  YStack,
+  YStackProps,
+  withStaticProperties,
+} from 'tamagui'
 
 /**
  * this is pretty straightforward on web - check FormWrapper.native
  */
-const Wrapper = forwardRef<TamaguiElement, YStackProps>(function Wrapper(props, ref) {
+const Wrapper = forwardRef<TamaguiElement, YStackProps>(function Wrapper(
+  props,
+  ref
+) {
   return (
     <YStack
       ref={ref}
@@ -31,7 +40,10 @@ const Body = forwardRef<TamaguiElement, YStackProps>(function Body(props, ref) {
   )
 })
 
-const Footer = forwardRef<TamaguiElement, YStackProps>(function Footer(props, ref) {
+const Footer = forwardRef<TamaguiElement, YStackProps>(function Footer(
+  props,
+  ref
+) {
   return <YStack ref={ref} pb="$4" px="$4" gap="$4" {...props} />
 })
 

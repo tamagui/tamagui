@@ -37,7 +37,8 @@
     "lint:fix": "yarn turbo lint:fix",
     "setup": "yarn create tamagui --template takeout-starter --skip-cloning",
     "generate": "yarn turbo gen",
-    "gen": "yarn generate"
+    "gen": "yarn generate",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "resolutions": {
     "react": "^18.2.0",

@@ -98,9 +98,12 @@ const _SchemaForm = createTsForm(mapping, {
 // }
 
 export const SchemaForm: typeof _SchemaForm = ({ ...props }) => {
-  const renderAfter: ComponentProps<typeof _SchemaForm>['renderAfter'] = props.renderAfter
-    ? (vars) => <FormWrapper.Footer>{props.renderAfter?.(vars)}</FormWrapper.Footer>
-    : undefined
+  const renderAfter: ComponentProps<typeof _SchemaForm>['renderAfter'] =
+    props.renderAfter
+      ? (vars) => (
+          <FormWrapper.Footer>{props.renderAfter?.(vars)}</FormWrapper.Footer>
+        )
+      : undefined
 
   return (
     <_SchemaForm {...props} renderAfter={renderAfter}>

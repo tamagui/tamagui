@@ -24,7 +24,11 @@ export const Shake = ({
 }) => {
   const driver = useAnimationDriver()
   if (!driver) throw new Error('No driver found.')
-  const { useAnimatedNumber, useAnimatedNumberStyle, View: AnimatedView } = driver
+  const {
+    useAnimatedNumber,
+    useAnimatedNumberStyle,
+    View: AnimatedView,
+  } = driver
   const animatedNumber = useAnimatedNumber(0)
   useEffect(() => {
     if (!shakeKey) {
@@ -34,7 +38,11 @@ export const Shake = ({
         setTimeout(
           () =>
             animatedNumber.setValue(
-              idx + 1 === arr.length ? 0 : (idx + 1) % 2 === 0 ? -shakeDistance : shakeDistance
+              idx + 1 === arr.length
+                ? 0
+                : (idx + 1) % 2 === 0
+                ? -shakeDistance
+                : shakeDistance
             ),
           100 * idx
         )

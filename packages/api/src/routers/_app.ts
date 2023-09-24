@@ -7,7 +7,7 @@ import { meRouter } from './me'
 export const appRouter = createTRPCRouter({
   greeting: greetingRouter,
   climb: climbRouter,
-  me: meRouter
+  me: meRouter,
 })
 // export type definition of API
 export type AppRouter = typeof appRouter

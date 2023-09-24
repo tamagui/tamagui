@@ -63,7 +63,11 @@ export function getTimeSelections(
   }
 }
 
-function getTimeSelectionsForDay(startTime: Date, endTime: Date, increment: number) {
+function getTimeSelectionsForDay(
+  startTime: Date,
+  endTime: Date,
+  increment: number
+) {
   const selections: Array<{
     name: string
     value: string
@@ -114,7 +118,9 @@ export const CreateScreen = () => {
         // })
       }}
       schema={z.object({
-        name: formFields.text.min(10).describe('Name // Afternoon Top Rope 5.9+'),
+        name: formFields.text
+          .min(10)
+          .describe('Name // Afternoon Top Rope 5.9+'),
         type: formFields.select.describe('Climb Type'),
         start: formFields.select.describe('Start Time'),
         // Will always be in minutes, and 15 minute increments

@@ -1,1 +1,1 @@
-export { Config, ConfigType } from './Config.native';
+export { Config, ConfigType } from './Config.native'

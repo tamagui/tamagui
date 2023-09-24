@@ -28,7 +28,10 @@ const FormWrapperContext = createContext<{ height: number } | null>(null)
  *
  * you may use asChild on the wrapper as well
  */
-const Wrapper = forwardRef<TamaguiElement, YStackProps>(function Wrapper(props, ref) {
+const Wrapper = forwardRef<TamaguiElement, YStackProps>(function Wrapper(
+  props,
+  ref
+) {
   const [height, setHeight] = useState(0)
 
   return (
@@ -65,7 +68,10 @@ const Body = forwardRef<TamaguiElement, YStackProps>(function Body(props, ref) {
 /**
  * on native, this will be pushed to the bottom of the screen
  */
-const Footer = forwardRef<TamaguiElement, YStackProps>(function Footer(props, ref) {
+const Footer = forwardRef<TamaguiElement, YStackProps>(function Footer(
+  props,
+  ref
+) {
   const dimensions = useWindowDimensions()
   const headerHeight = useHeaderHeight()
   const formWrapperContext = useContext(FormWrapperContext)

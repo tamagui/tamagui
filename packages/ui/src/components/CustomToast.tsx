@@ -35,7 +35,9 @@ export const CustomToast = () => {
             ></Button>
           </Toast.Close> */}
         </XStack>
-        {!!currentToast.message && <Toast.Description>{currentToast.message}</Toast.Description>}
+        {!!currentToast.message && (
+          <Toast.Description>{currentToast.message}</Toast.Description>
+        )}
       </YStack>
     </Toast>
   )

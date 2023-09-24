@@ -13,7 +13,9 @@ import {
 } from 'tamagui'
 import { FieldError } from '../FieldError'
 
-export const BooleanCheckboxField = (props: Pick<CheckboxProps, 'size' | 'native'>) => {
+export const BooleanCheckboxField = (
+  props: Pick<CheckboxProps, 'size' | 'native'>
+) => {
   const {
     field,
     error,

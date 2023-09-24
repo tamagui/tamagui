@@ -88,13 +88,17 @@ export function useNativeNotifications() {
   const [expoPushToken, setExpoPushToken] = useState<string>('')
   const [token, setToken] = useState<string>('')
   const [shouldFetchToken, setShouldFetchToken] = useState<boolean>(false)
-  const [notification, setNotification] = useState<Notifications.Notification | false>(false)
+  const [notification, setNotification] = useState<
+    Notifications.Notification | false
+  >(false)
   const updateProfileMuation = api.me.profile.update.useMutation()
 
   const notificationListener =
     useRef<ReturnType<typeof Notifications.addNotificationReceivedListener>>()
   const responseListener =
-    useRef<ReturnType<typeof Notifications.addNotificationResponseReceivedListener>>()
+    useRef<
+      ReturnType<typeof Notifications.addNotificationResponseReceivedListener>
+    >()
 
   useQuery(
     ['getExpoPushToken'],
@@ -124,23 +128,27 @@ export function useNativeNotifications() {
 
   useEffect(() => {
     // Should probably do something else here
-    registerForPushNotificationsAsync().then((token) => setExpoPushToken(token ?? 'no token'))
+    registerForPushNotificationsAsync().then((token) =>
+      setExpoPushToken(token ?? 'no token')
+    )
 
     if (notificationListener.current) {
-      notificationListener.current = Notifications.addNotificationReceivedListener(
-        (notification) => {
+      notificationListener.current =
+        Notifications.addNotificationReceivedListener((notification) => {
           setNotification(notification)
-        }
-      )
+        })
     }
 
-    responseListener.current = Notifications.addNotificationResponseReceivedListener((response) => {
-      console.log(response)
-    })
+    responseListener.current =
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        console.log(response)
+      })
 
     return () => {
       if (notificationListener.current && responseListener.current) {
-        Notifications.removeNotificationSubscription(notificationListener?.current)
+        Notifications.removeNotificationSubscription(
+          notificationListener?.current
+        )
         Notifications.removeNotificationSubscription(responseListener?.current)
       }
     }

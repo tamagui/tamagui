@@ -41,7 +41,9 @@ export const UploadAvatar = ({ children }: { children: React.ReactNode }) => {
         }
 
         const base64Str = base64Image.includes('base64,')
-          ? base64Image.substring(base64Image.indexOf('base64,') + 'base64,'.length)
+          ? base64Image.substring(
+              base64Image.indexOf('base64,') + 'base64,'.length
+            )
           : base64Image
         const res = decode(base64Str)
 
@@ -112,7 +114,15 @@ export const UploadAvatar = ({ children }: { children: React.ReactNode }) => {
           top={0}
           bottom={0}
         />
-        <YStack position="absolute" left={0} right={0} top={0} bottom={0} jc="center" ai="center">
+        <YStack
+          position="absolute"
+          left={0}
+          right={0}
+          top={0}
+          bottom={0}
+          jc="center"
+          ai="center"
+        >
           <Upload color="white" />
         </YStack>
       </YStack>

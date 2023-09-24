@@ -3,7 +3,7 @@ import { Preview } from '@storybook/react'
 import '@tamagui/core/reset.css'
 import '@tamagui/font-inter/css/400.css'
 import '@tamagui/font-inter/css/700.css'
-import 'raf/polyfill' 
+import 'raf/polyfill'
 import { StorybookDecorator } from './decorator'
 
 const themeData = [
@@ -28,7 +28,8 @@ const preview: Preview = {
         icon: 'paintbrush',
         dynamicTitle: true,
         items: [...themeData[0]].map((value) => ({
-          icon: value === 'light' ? 'sun' : value === 'dark' ? 'moon' : undefined,
+          icon:
+            value === 'light' ? 'sun' : value === 'dark' ? 'moon' : undefined,
           value,
           title: value[0].toUpperCase() + value.slice(1),
         })),

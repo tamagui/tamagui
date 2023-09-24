@@ -1,4 +1,11 @@
-import { H2, SubmitButton, Theme, YStack, isWeb, useToastController } from '@my/ui'
+import {
+  H2,
+  SubmitButton,
+  Theme,
+  YStack,
+  isWeb,
+  useToastController,
+} from '@my/ui'
 import { SchemaForm, formFields } from 'app/utils/SchemaForm'
 import { useSupabase } from 'app/utils/supabase/useSupabase'
 import { useRouter } from 'solito/router'
@@ -6,8 +13,12 @@ import { z } from 'zod'
 
 const ChangePasswordSchema = z
   .object({
-    password: formFields.text.min(6).describe('New Password // Enter your new password'),
-    passwordConfirm: formFields.text.min(6).describe('Confirm Password // Repeat your password'),
+    password: formFields.text
+      .min(6)
+      .describe('New Password // Enter your new password'),
+    passwordConfirm: formFields.text
+      .min(6)
+      .describe('Confirm Password // Repeat your password'),
   })
   .superRefine(({ passwordConfirm, password }, ctx) => {
     if (passwordConfirm !== password) {
@@ -24,7 +35,9 @@ export const ChangePasswordScreen = () => {
   const toast = useToastController()
   const router = useRouter()
 
-  const handleChangePassword = async ({ password }: z.infer<typeof ChangePasswordSchema>) => {
+  const handleChangePassword = async ({
+    password,
+  }: z.infer<typeof ChangePasswordSchema>) => {
     const { error } = await supabase.auth.updateUser({ password })
     if (error) {
       toast.show(error.message)

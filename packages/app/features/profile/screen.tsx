@@ -68,7 +68,11 @@ export function ProfileScreen() {
         <Settings>
           <Settings.Items>
             <Settings.Group>
-              <Settings.Item {...useLink({ href: '/settings' })} icon={Cog} accentColor="$gray9">
+              <Settings.Item
+                {...useLink({ href: '/settings' })}
+                icon={Cog}
+                accentColor="$gray9"
+              >
                 Settings
               </Settings.Item>
             </Settings.Group>

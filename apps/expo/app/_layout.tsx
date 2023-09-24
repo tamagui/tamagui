@@ -2,12 +2,9 @@ import { Session } from '@supabase/supabase-js'
 import { Provider } from 'app/provider'
 import { supabase } from 'app/utils/supabase/client.native'
 import { useFonts } from 'expo-font'
-import { SplashScreen, Stack } from 'expo-router'
-import React from 'react'
-import { useCallback, useEffect, useState } from 'react'
 import * as Notifications from 'expo-notifications'
-
-import { router } from 'expo-router'
+import { SplashScreen, Stack, router } from 'expo-router'
+import React, { useCallback, useEffect, useState } from 'react'
 import { View } from 'react-native'
 // import { LogBox } from 'react-native'
 
@@ -33,9 +30,11 @@ function useNotificationObserver() {
       redirect(response?.notification)
     })
 
-    const subscription = Notifications.addNotificationResponseReceivedListener((response) => {
-      redirect(response.notification)
-    })
+    const subscription = Notifications.addNotificationResponseReceivedListener(
+      (response) => {
+        redirect(response.notification)
+      }
+    )
 
     return () => {
       isMounted = false

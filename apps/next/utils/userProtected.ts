@@ -1,5 +1,8 @@
 import { Database } from '@my/supabase/types'
-import { createPagesServerClient, createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
+import {
+  createPagesServerClient,
+  createServerSupabaseClient,
+} from '@supabase/auth-helpers-nextjs'
 import { AUTH_COOKIE_NAME } from 'app/utils/auth'
 import { GetServerSideProps, PreviewData } from 'next'
 import { ParsedUrlQuery } from 'querystring'
@@ -30,10 +33,12 @@ export function userProtectedGetSSP<
       }
     }
 
-    const getSSRResult = getServerSideProps ? await getServerSideProps(ctx) : { props: {} as Props }
+    const getSSRResult = getServerSideProps
+      ? await getServerSideProps(ctx)
+      : { props: {} as Props }
     if ('props' in getSSRResult) {
       // add the initialSession to page's getServerSideProps
-      (getSSRResult.props as any).initialSession = session
+      ;(getSSRResult.props as any).initialSession = session
     }
     return getSSRResult
   }

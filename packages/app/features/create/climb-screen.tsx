@@ -1,4 +1,12 @@
-import { H2, Paragraph, SubmitButton, Theme, YStack, isWeb, useToastController } from '@my/ui'
+import {
+  H2,
+  Paragraph,
+  SubmitButton,
+  Theme,
+  YStack,
+  isWeb,
+  useToastController,
+} from '@my/ui'
 
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { SchemaForm, formFields } from 'app/utils/SchemaForm'
@@ -83,7 +91,10 @@ export function getTimeSelections(
   let weekendStart
   let weekendEnd
 
-  const tomorrowOrLater = isAfter(day, startOfDay(addDays(currentStartOfDay, 1)))
+  const tomorrowOrLater = isAfter(
+    day,
+    startOfDay(addDays(currentStartOfDay, 1))
+  )
   const gymHasOpenedToday = isAfter(now, addHours(currentStartOfDay, 7))
 
   if (tomorrowOrLater) {
@@ -147,7 +158,11 @@ export function getTimeSelections(
   }
 }
 
-function getTimeSelectionsForDay(startTime: Date, endTime: Date, increment: number) {
+function getTimeSelectionsForDay(
+  startTime: Date,
+  endTime: Date,
+  increment: number
+) {
   const selections: Array<{
     name: string
     value: string
@@ -222,7 +237,10 @@ export const CreateScreen = () => {
           })
           climbMutation.mutate(values, {
             onSuccess: () => {
-              queryClient.invalidateQueries([['climb', 'read'], { type: 'query' }])
+              queryClient.invalidateQueries([
+                ['climb', 'read'],
+                { type: 'query' },
+              ])
               // const oldData = queryClient.getQueryData<
               //   Database['public']['Tables']['climbs']['Row'][]
               // >([['climb', 'read'], { type: 'query' }])
@@ -274,7 +292,10 @@ export const CreateScreen = () => {
             options: getDurationSelections(),
           },
           start: {
-            options: getTimeSelections(add(new Date(), { days: Number(day) }), 15),
+            options: getTimeSelections(
+              add(new Date(), { days: Number(day) }),
+              15
+            ),
           },
           type: {
             options: [

@@ -1,5 +1,12 @@
 import { IconProps } from '@tamagui/helpers-icon'
-import { ListItem, ListItemProps, SizableText, XStack, YGroup, YStack } from 'tamagui'
+import {
+  ListItem,
+  ListItemProps,
+  SizableText,
+  XStack,
+  YGroup,
+  YStack,
+} from 'tamagui'
 
 export type SettingItemProps = {
   icon: React.FC<IconProps>
@@ -33,7 +40,12 @@ export const SettingItem = ({
         </YStack>
         <SizableText flex={1}>{children}</SizableText>
         {!!rightLabel && (
-          <XStack borderRadius="$10" backgroundColor="$backgroundPress" px="$3" py="$1.5">
+          <XStack
+            borderRadius="$10"
+            backgroundColor="$backgroundPress"
+            px="$3"
+            py="$1.5"
+          >
             <SizableText size="$1" textTransform="capitalize">
               {rightLabel}
             </SizableText>

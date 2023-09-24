@@ -1,7 +1,11 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/font-inter/css/400.css'
 import '@tamagui/font-inter/css/700.css'
-import { ColorScheme, NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
+import {
+  ColorScheme,
+  NextThemeProvider,
+  useRootTheme,
+} from '@tamagui/next-theme'
 import { Provider } from 'app/provider'
 import { AuthProviderProps } from 'app/provider/auth'
 import { api } from 'app/utils/api'

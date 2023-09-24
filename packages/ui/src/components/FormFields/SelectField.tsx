@@ -102,7 +102,11 @@ export const SelectField = ({
                     {/* <Select.Label>{label}</Select.Label> */}
                     {options.map((item, i) => {
                       return (
-                        <Select.Item index={i} key={item.name} value={item.value}>
+                        <Select.Item
+                          index={i}
+                          key={item.name}
+                          value={item.value}
+                        >
                           <Select.ItemText>{item.name}</Select.ItemText>
                           <Select.ItemIndicator marginLeft="auto">
                             <Check size={16} />
@@ -123,7 +127,9 @@ export const SelectField = ({
                       width={'$4'}
                       pointerEvents="none"
                     >
-                      <ChevronDown size={getFontSize((props.size ?? '$true') as number)} />
+                      <ChevronDown
+                        size={getFontSize((props.size ?? '$true') as number)}
+                      />
                     </YStack>
                   )}
                 </XStack>

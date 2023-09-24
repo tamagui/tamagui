@@ -14,7 +14,10 @@ export type SettingsLayoutProps = {
   children?: React.ReactNode
 }
 
-export const SettingsLayout = ({ children, isSettingsHome = false }: SettingsLayoutProps) => {
+export const SettingsLayout = ({
+  children,
+  isSettingsHome = false,
+}: SettingsLayoutProps) => {
   const { schedulePushNotification } = {
     schedulePushNotification: () =>
       new Promise<void>((res, reg) => {
@@ -49,7 +52,12 @@ export const SettingsLayout = ({ children, isSettingsHome = false }: SettingsLay
       >
         <SettingsScreen schedulePushNotif={schedulePushNotification} />
       </YStack>
-      <YStack my="$10" f={1} ai="center" $sm={{ display: isSettingsHome ? 'none' : 'block' }}>
+      <YStack
+        my="$10"
+        f={1}
+        ai="center"
+        $sm={{ display: isSettingsHome ? 'none' : 'block' }}
+      >
         <YStack width="100%">{children}</YStack>
       </YStack>
     </XStack>

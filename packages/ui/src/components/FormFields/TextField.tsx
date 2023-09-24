@@ -1,16 +1,26 @@
 import { useStringFieldInfo, useTsController } from '@ts-react/form'
 import { useId } from 'react'
-import { Fieldset, Input, InputProps, Label, Theme, useThemeName } from 'tamagui'
+import {
+  Fieldset,
+  Input,
+  InputProps,
+  Label,
+  Theme,
+  useThemeName,
+} from 'tamagui'
 import { FieldError } from '../FieldError'
 import { Shake } from '../Shake'
 
-export const TextField = (props: Pick<InputProps, 'size' | 'autoFocus' | 'secureTextEntry'>) => {
+export const TextField = (
+  props: Pick<InputProps, 'size' | 'autoFocus' | 'secureTextEntry'>
+) => {
   const {
     field,
     error,
     formState: { isSubmitting },
   } = useTsController<string>()
-  const { label, placeholder, isOptional, maxLength, isEmail } = useStringFieldInfo()
+  const { label, placeholder, isOptional, maxLength, isEmail } =
+    useStringFieldInfo()
   const themeName = useThemeName()
   const id = useId()
   const disabled = isSubmitting

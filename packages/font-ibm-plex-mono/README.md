@@ -1,15 +1,19 @@
 # Prerequisite
+
 First install the dependencies running `yarn install`, then make sure to build the package using `yarn build` and add the package as a dependency to the package/app you want to consume it from (could be the `app` or `ui` package) like so:
+
 ```
 "dependencies": {
   "@tamagui-google-fonts/ibm-plex-mono": "*"
 }
 ```
+
 ## Usage
+
 ### Expo
-  
+
 Add this to the root of your file:
-    
+
 ```ts
 import { useFonts } from 'expo-font'
 
@@ -37,7 +41,6 @@ export default function App() {
 
 Get the font's script (`<link>` or `@import`) and add it to `<head>` from [here](https://fonts.google.com/specimen/IBM+Plex+Mono)
 
-
 ## Next.js Font (next/font/google)
 
 Import the font from `next/font/google` and give it a variable name in your `_app.tsx` like so:
@@ -61,6 +64,7 @@ Add the variable style in `_app.tsx`:
 Then go to the generated font package and update `family` with the variable.
 
 So, change it from:
+
 ```ts
 return createFont({
     family: isWeb
@@ -69,6 +73,7 @@ return createFont({
 ```
 
 To:
+
 ```ts
 return createFont({
     family: isWeb
@@ -76,45 +81,44 @@ return createFont({
       : 'IBM Plex Mono',
 ```
 
-
 ## Usage in config
 
 ```ts
-import { createIbmPlexMonoFont } from '@tamagui-google-fonts/ibm-plex-mono' 
+import { createIbmPlexMonoFont } from '@tamagui-google-fonts/ibm-plex-mono'
 
 export const myFont = createIbmPlexMonoFont(
   {
     face: {
-    "100": {
-        "normal": "IBMPlexMonoThin",
-        "italic": "IBMPlexMonoItalic"
+      '100': {
+        normal: 'IBMPlexMonoThin',
+        italic: 'IBMPlexMonoItalic',
+      },
+      '200': {
+        normal: 'IBMPlexMonoThinItalic',
+        italic: 'IBMPlexMonoMedium',
+      },
+      '300': {
+        normal: 'IBMPlexMonoExtraLight',
+        italic: 'IBMPlexMonoMediumItalic',
+      },
+      '400': {
+        normal: 'IBMPlexMonoExtraLightItalic',
+        italic: 'IBMPlexMonoSemiBold',
+      },
+      '500': {
+        normal: 'IBMPlexMonoLight',
+        italic: 'IBMPlexMonoSemiBoldItalic',
+      },
+      '600': {
+        normal: 'IBMPlexMonoLightItalic',
+        italic: 'IBMPlexMonoBold',
+      },
+      '700': {
+        normal: 'IBMPlexMono',
+        italic: 'IBMPlexMonoBoldItalic',
+      },
     },
-    "200": {
-        "normal": "IBMPlexMonoThinItalic",
-        "italic": "IBMPlexMonoMedium"
-    },
-    "300": {
-        "normal": "IBMPlexMonoExtraLight",
-        "italic": "IBMPlexMonoMediumItalic"
-    },
-    "400": {
-        "normal": "IBMPlexMonoExtraLightItalic",
-        "italic": "IBMPlexMonoSemiBold"
-    },
-    "500": {
-        "normal": "IBMPlexMonoLight",
-        "italic": "IBMPlexMonoSemiBoldItalic"
-    },
-    "600": {
-        "normal": "IBMPlexMonoLightItalic",
-        "italic": "IBMPlexMonoBold"
-    },
-    "700": {
-        "normal": "IBMPlexMono",
-        "italic": "IBMPlexMonoBoldItalic"
-    }
-}
-        },
+  },
   {
     // customize the size and line height scaling to your own needs
     // sizeSize: (size) => Math.round(size * 1.1),

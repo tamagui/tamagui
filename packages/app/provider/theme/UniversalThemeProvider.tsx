@@ -1,5 +1,9 @@
 // is handled on _app.tsx
-export const UniversalThemeProvider = ({ children }: { children: React.ReactNode }) => {
+export const UniversalThemeProvider = ({
+  children,
+}: {
+  children: React.ReactNode
+}) => {
   return <>{children}</>
 }
 

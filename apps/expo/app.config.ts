@@ -7,8 +7,8 @@ const test = (config: Partial<ExpoConfig>): ExpoConfig => {
     name: '(test) belaytionship',
     slug: 'expo-belaytionship',
     ios: {
-      bundleIdentifier: 'com.belay-test.app'
-    }
+      bundleIdentifier: 'com.belay-test.app',
+    },
   }
 }
 
@@ -19,8 +19,8 @@ const development = (config: Partial<ExpoConfig>): ExpoConfig => {
     name: '(dev) belaytionship',
     slug: 'expo-belaytionship',
     ios: {
-      bundleIdentifier: 'com.belay-dev.app'
-    }
+      bundleIdentifier: 'com.belay-dev.app',
+    },
   }
 }
 // Constants.
@@ -28,8 +28,6 @@ const development = (config: Partial<ExpoConfig>): ExpoConfig => {
 export default (props: ConfigContext): ExpoConfig => {
   const TEST = test(props.config)
   const DEVELOPMENT = development(props.config)
-
-
 
   if (process.env.NODE_ENV === 'test') {
     return TEST

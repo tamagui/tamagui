@@ -1,10 +1,24 @@
-import { Button, FormWrapper, H2, Paragraph, SubmitButton, Text, Theme, YStack } from '@my/ui'
+import {
+  Button,
+  FormWrapper,
+  H2,
+  Paragraph,
+  SubmitButton,
+  Text,
+  Theme,
+  YStack,
+} from '@my/ui'
 import { Link } from 'solito/link'
 import { ChevronLeft } from '@tamagui/lucide-icons'
 import { SchemaForm, formFields } from 'app/utils/SchemaForm'
 import { useSupabase } from 'app/utils/supabase/useSupabase'
 import React, { useEffect } from 'react'
-import { FormProvider, useForm, useFormContext, useWatch } from 'react-hook-form'
+import {
+  FormProvider,
+  useForm,
+  useFormContext,
+  useWatch,
+} from 'react-hook-form'
 import { createParam } from 'solito'
 import { z } from 'zod'
 
@@ -69,7 +83,8 @@ export const ResetPasswordScreen = () => {
               <YStack gap="$3" mb="$4">
                 <H2 $sm={{ size: '$8' }}>Reset your password</H2>
                 <Paragraph theme="alt1">
-                  Type in your email and we&aps;ll send you a link to reset your password
+                  Type in your email and we&aps;ll send you a link to reset your
+                  password
                 </Paragraph>
               </YStack>
               {Object.values(fields)}
@@ -91,12 +106,18 @@ const CheckYourEmail = () => {
         <YStack gap="$3">
           <H2>Check Your Email</H2>
           <Paragraph theme="alt1">
-            We&apos;ve sent you a reset link. Please check your email ({email}) and confirm it.
+            We&apos;ve sent you a reset link. Please check your email ({email})
+            and confirm it.
           </Paragraph>
         </YStack>
       </FormWrapper.Body>
       <FormWrapper.Footer>
-        <Button themeInverse icon={ChevronLeft} borderRadius="$10" onPress={() => reset()}>
+        <Button
+          themeInverse
+          icon={ChevronLeft}
+          borderRadius="$10"
+          onPress={() => reset()}
+        >
           Back
         </Button>
       </FormWrapper.Footer>
@@ -108,7 +129,9 @@ const SignInLink = () => {
   const email = useWatch<z.infer<typeof ResetPasswordSchema>>({ name: 'email' })
 
   return (
-    <Link href={`/sign-in?${new URLSearchParams(email ? { email } : undefined)}`}>
+    <Link
+      href={`/sign-in?${new URLSearchParams(email ? { email } : undefined)}`}
+    >
       <Paragraph textAlign="center" theme="alt1">
         Done resetting? <Text textDecorationLine="underline">Sign in</Text>
       </Paragraph>

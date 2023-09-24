@@ -1,6 +1,15 @@
 import { ArrowUpRight } from '@tamagui/lucide-icons'
 import { useLink } from 'solito/link'
-import { Button, Card, CardProps, H6, Paragraph, Theme, ThemeName, XStack } from 'tamagui'
+import {
+  Button,
+  Card,
+  CardProps,
+  H6,
+  Paragraph,
+  Theme,
+  ThemeName,
+  XStack,
+} from 'tamagui'
 
 export type EventCardTypes = {
   title?: string
@@ -12,7 +21,13 @@ export type EventCardTypes = {
   tags?: { text: string; theme: ThemeName }[]
 } & CardProps
 
-export const EventCard = ({ title, description, action, tags = [], ...props }: EventCardTypes) => {
+export const EventCard = ({
+  title,
+  description,
+  action,
+  tags = [],
+  ...props
+}: EventCardTypes) => {
   return (
     <Card gap="$2" padded borderRadius="$0" chromeless {...props}>
       <XStack gap="$2">
@@ -32,7 +47,12 @@ export const EventCard = ({ title, description, action, tags = [], ...props }: E
       </XStack>
 
       {action && (
-        <Button iconAfter={ArrowUpRight} size="$2" als="flex-end" {...action.props}>
+        <Button
+          iconAfter={ArrowUpRight}
+          size="$2"
+          als="flex-end"
+          {...action.props}
+        >
           {action?.text}
         </Button>
       )}

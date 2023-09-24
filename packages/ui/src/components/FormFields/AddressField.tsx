@@ -1,6 +1,14 @@
 import { useFieldInfo, useTsController } from '@ts-react/form'
 import { useId } from 'react'
-import { Fieldset, Input, InputProps, Label, Theme, XStack, useThemeName } from 'tamagui'
+import {
+  Fieldset,
+  Input,
+  InputProps,
+  Label,
+  Theme,
+  XStack,
+  useThemeName,
+} from 'tamagui'
 import { z } from 'zod'
 import { FieldError } from '../FieldError'
 import { Shake } from '../Shake'
@@ -27,10 +35,18 @@ export const AddressField = (props: Pick<InputProps, 'size'>) => {
         {label}
       </Label>
 
-      <XStack $sm={{ flexDirection: 'column' }} $gtSm={{ flexWrap: 'wrap' }} gap="$4">
+      <XStack
+        $sm={{ flexDirection: 'column' }}
+        $gtSm={{ flexWrap: 'wrap' }}
+        gap="$4"
+      >
         <Theme name={error?.street ? 'red' : themeName} forceClassName>
           <Fieldset $gtSm={{ fb: 0 }} f={1}>
-            <Label theme="alt1" size={props.size || '$3'} htmlFor={`${id}-street`}>
+            <Label
+              theme="alt1"
+              size={props.size || '$3'}
+              htmlFor={`${id}-street`}
+            >
               Street
             </Label>
             <Shake shakeKey={error?.street?.errorMessage}>
@@ -38,7 +54,9 @@ export const AddressField = (props: Pick<InputProps, 'size'>) => {
                 disabled={disabled}
                 placeholderTextColor="$color10"
                 value={field.value?.street}
-                onChangeText={(street) => field.onChange({ ...field.value, street })}
+                onChangeText={(street) =>
+                  field.onChange({ ...field.value, street })
+                }
                 onBlur={field.onBlur}
                 ref={field.ref}
                 placeholder="e.g. 4116 Pretty View Lane"
@@ -52,7 +70,11 @@ export const AddressField = (props: Pick<InputProps, 'size'>) => {
 
         <Theme name={error?.zipCode ? 'red' : themeName} forceClassName>
           <Fieldset $gtSm={{ fb: 0 }} f={1}>
-            <Label theme="alt1" size={props.size || '$3'} htmlFor={`${id}-zip-code`}>
+            <Label
+              theme="alt1"
+              size={props.size || '$3'}
+              htmlFor={`${id}-zip-code`}
+            >
               US ZIP Code
             </Label>
             <Shake shakeKey={error?.zipCode?.errorMessage}>
@@ -60,7 +82,9 @@ export const AddressField = (props: Pick<InputProps, 'size'>) => {
                 disabled={disabled}
                 placeholderTextColor="$color10"
                 value={field.value?.zipCode}
-                onChangeText={(zipCode) => field.onChange({ ...field.value, zipCode })}
+                onChangeText={(zipCode) =>
+                  field.onChange({ ...field.value, zipCode })
+                }
                 onBlur={field.onBlur}
                 ref={field.ref}
                 placeholder="e.g. 12345"

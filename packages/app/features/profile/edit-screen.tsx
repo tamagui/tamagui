@@ -1,4 +1,11 @@
-import { Avatar, FullscreenSpinner, SubmitButton, Theme, YStack, useToastController } from '@my/ui'
+import {
+  Avatar,
+  FullscreenSpinner,
+  SubmitButton,
+  Theme,
+  YStack,
+  useToastController,
+} from '@my/ui'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { SchemaForm, formFields } from 'app/utils/SchemaForm'
 import { useSupabase } from 'app/utils/supabase/useSupabase'
@@ -18,7 +25,10 @@ export const EditProfileScreen = () => {
     return <FullscreenSpinner />
   }
   return (
-    <EditProfileForm userId={user.id} initial={{ name: profile.first_name, about: profile.bio }} />
+    <EditProfileForm
+      userId={user.id}
+      initial={{ name: profile.first_name, about: profile.bio }}
+    />
   )
 }
 

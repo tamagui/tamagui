@@ -64,12 +64,14 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
     },
   })
   plop.setGenerator('screen', {
-    description: 'Generates a feature directory, a screen and Next.js and Expo routes',
+    description:
+      'Generates a feature directory, a screen and Next.js and Expo routes',
     prompts: async (inquirer) => {
       const { path } = await inquirer.prompt({
         type: 'input',
         name: 'path',
-        message: "What's the path for this screen? (e.g. /settings/two-factor-auth)",
+        message:
+          "What's the path for this screen? (e.g. /settings/two-factor-auth)",
         validate: (input: string) => {
           if (!input.startsWith('/')) {
             return 'path should start with /'
@@ -147,7 +149,8 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
       const { name } = await inquirer.prompt({
         type: 'input',
         name: 'name',
-        message: "What's the name of the new router to create? (e.g. user, post, comment)",
+        message:
+          "What's the name of the new router to create? (e.g. user, post, comment)",
         validate: (input: string) => {
           if (!input) {
             return 'name is required'
@@ -171,7 +174,8 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
           type: 'append',
           path: `{{ turbo.paths.root }}/packages/api/src/routers/_app.ts`,
           pattern: "import { createTRPCRouter } from '../trpc'",
-          template: "import { {{ camelCase name }}Router } from './{{ camelCase name }}'",
+          template:
+            "import { {{ camelCase name }}Router } from './{{ camelCase name }}'",
         },
         {
           type: 'append',

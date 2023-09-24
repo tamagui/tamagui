@@ -1,5 +1,22 @@
-import { Paragraph, ScrollView, Settings, YStack, isWeb, useMedia } from '@my/ui'
-import { Bell, Book, Cog, Info, Lock, LogOut, Mail, Moon, Twitter } from '@tamagui/lucide-icons'
+import {
+  Paragraph,
+  ScrollView,
+  Settings,
+  YStack,
+  isWeb,
+  useMedia,
+} from '@my/ui'
+import {
+  Bell,
+  Book,
+  Cog,
+  Info,
+  Lock,
+  LogOut,
+  Mail,
+  Moon,
+  Twitter,
+} from '@tamagui/lucide-icons'
 import { useThemeSetting } from 'app/provider/theme'
 import { redirect } from 'app/utils/redirect'
 import { useSupabase } from 'app/utils/supabase/useSupabase'
@@ -12,7 +29,9 @@ const brandColors = {
   twitter: '#1DA1F2',
 }
 
-export const SettingsScreen = (props: { schedulePushNotif: () => Promise<void> }) => {
+export const SettingsScreen = (props: {
+  schedulePushNotif: () => Promise<void>
+}) => {
   const media = useMedia()
   const pathname = usePathname()
 
@@ -24,8 +43,12 @@ export const SettingsScreen = (props: { schedulePushNotif: () => Promise<void> }
             <Settings.Group $gtSm={{ space: '$2' }}>
               <Settings.Item
                 icon={Cog}
-                isActive={pathname === '/settings' || pathname === 'settings/general'}
-                {...useLink({ href: media.sm ? '/settings/general' : '/settings' })}
+                isActive={
+                  pathname === '/settings' || pathname === 'settings/general'
+                }
+                {...useLink({
+                  href: media.sm ? '/settings/general' : '/settings',
+                })}
                 accentColor="$green9"
               >
                 General
@@ -60,7 +83,11 @@ export const SettingsScreen = (props: { schedulePushNotif: () => Promise<void> }
               {!isWeb && (
                 // isWeb is a constant so this isn't really a conditional hook
                 // eslint-disable-next-line react-hooks/rules-of-hooks
-                <Settings.Item icon={Info} {...useLink({ href: '/about' })} accentColor="$blue9">
+                <Settings.Item
+                  icon={Info}
+                  {...useLink({ href: '/about' })}
+                  accentColor="$blue9"
+                >
                   About
                 </Settings.Item>
               )}
@@ -135,7 +162,11 @@ const SettingsItemLogoutAction = () => {
   const supabase = useSupabase()
 
   return (
-    <Settings.Item icon={LogOut} accentColor="$red9" onPress={() => supabase.auth.signOut()}>
+    <Settings.Item
+      icon={LogOut}
+      accentColor="$red9"
+      onPress={() => supabase.auth.signOut()}
+    >
       Log Out
     </Settings.Item>
   )

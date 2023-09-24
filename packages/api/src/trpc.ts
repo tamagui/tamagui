@@ -1,4 +1,4 @@
-import { createPagesServerClient } from '@supabase/auth-helpers-nextjs';
+import { createPagesServerClient } from '@supabase/auth-helpers-nextjs'
 import { Database } from '@my/supabase/types'
 import { TRPCError, initTRPC } from '@trpc/server'
 import { type CreateNextContextOptions } from '@trpc/server/adapters/next'

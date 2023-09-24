@@ -16,8 +16,9 @@ export const Basic: Story = {
       <>
         <H4>Call To Action!</H4>
         <Paragraph size="$2" mt="$1">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos optio vero, iste minima iure
-          id sapiente incidunt eveniet impedit corrupti sequi suscipit.
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos optio
+          vero, iste minima iure id sapiente incidunt eveniet impedit corrupti
+          sequi suscipit.
         </Paragraph>
       </>
     ),

@@ -57,14 +57,21 @@ export default function Layout() {
   )
 }
 
-type TabBarIconProps = Parameters<Exclude<BottomTabNavigationOptions['tabBarIcon'], undefined>>[0]
+type TabBarIconProps = Parameters<
+  Exclude<BottomTabNavigationOptions['tabBarIcon'], undefined>
+>[0]
 
 const ProfileTabIcon = ({ color, size }: TabBarIconProps) => {
   const { avatarUrl } = useUser()
   return (
     <YStack borderWidth="$1" borderColor={color} borderRadius="$10">
       <Avatar circular p="$1" size={size}>
-        <SolitoImage src={avatarUrl} alt="your avatar" width={size} height={size} />
+        <SolitoImage
+          src={avatarUrl}
+          alt="your avatar"
+          width={size}
+          height={size}
+        />
       </Avatar>
     </YStack>
   )

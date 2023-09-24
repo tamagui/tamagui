@@ -1,4 +1,7 @@
-import { Session, SessionContext as SessionContextHelper } from '@supabase/auth-helpers-react'
+import {
+  Session,
+  SessionContext as SessionContextHelper,
+} from '@supabase/auth-helpers-react'
 import { AuthError, User } from '@supabase/supabase-js'
 import { supabase } from 'app/utils/supabase/client.native'
 import { router, useSegments } from 'expo-router'
@@ -14,7 +17,10 @@ export const SessionContext = createContext<SessionContextHelper>({
   supabaseClient: supabase,
 })
 
-export const AuthProvider = ({ children, initialSession }: AuthProviderProps) => {
+export const AuthProvider = ({
+  children,
+  initialSession,
+}: AuthProviderProps) => {
   const [session, setSession] = useState<Session | null>(initialSession || null)
   const [error, setError] = useState<AuthError | null>(null)
   const [isLoading, setIsLoading] = useState(false)

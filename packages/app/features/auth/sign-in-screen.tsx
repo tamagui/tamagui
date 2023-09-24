@@ -29,7 +29,10 @@ export const SignInScreen = () => {
   }, [params?.email, updateParams])
   const form = useForm<z.infer<typeof SignInSchema>>()
 
-  async function signInWithEmail({ email, password }: z.infer<typeof SignInSchema>) {
+  async function signInWithEmail({
+    email,
+    password,
+  }: z.infer<typeof SignInSchema>) {
     const { error } = await supabase.auth.signInWithPassword({
       email: email,
       password: password,
@@ -121,9 +124,14 @@ export const SignInScreen = () => {
 const SignUpLink = () => {
   const email = useWatch<z.infer<typeof SignInSchema>>({ name: 'email' })
   return (
-    <Link href={`/sign-up?${new URLSearchParams(email ? { email } : undefined).toString()}`}>
+    <Link
+      href={`/sign-up?${new URLSearchParams(
+        email ? { email } : undefined
+      ).toString()}`}
+    >
       <Paragraph textAlign="center" theme="alt1">
-        Don&apos;t have an account? <Text textDecorationLine="underline">Sign up</Text>
+        Don&apos;t have an account?{' '}
+        <Text textDecorationLine="underline">Sign up</Text>
       </Paragraph>
     </Link>
   )
@@ -133,7 +141,11 @@ const ForgotPasswordLink = () => {
   const email = useWatch<z.infer<typeof SignInSchema>>({ name: 'email' })
 
   return (
-    <Link href={`/reset-password?${new URLSearchParams(email ? { email } : undefined)}`}>
+    <Link
+      href={`/reset-password?${new URLSearchParams(
+        email ? { email } : undefined
+      )}`}
+    >
       <Paragraph mt="$1" theme="alt2" textDecorationLine="underline">
         Lost password?
       </Paragraph>

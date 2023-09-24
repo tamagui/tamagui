@@ -1,6 +1,13 @@
 import { useNumberFieldInfo, useTsController } from '@ts-react/form'
 import { useId } from 'react'
-import { Fieldset, Input, InputProps, Label, Theme, useThemeName } from 'tamagui'
+import {
+  Fieldset,
+  Input,
+  InputProps,
+  Label,
+  Theme,
+  useThemeName,
+} from 'tamagui'
 import { FieldError } from '../FieldError'
 import { Shake } from '../Shake'
 
@@ -10,7 +17,8 @@ export const NumberField = (props: Pick<InputProps, 'size' | 'autoFocus'>) => {
     error,
     formState: { isSubmitting },
   } = useTsController<number>()
-  const { label, defaultValue, isOptional, placeholder, minValue, maxValue } = useNumberFieldInfo()
+  const { label, defaultValue, isOptional, placeholder, minValue, maxValue } =
+    useNumberFieldInfo()
   const themeName = useThemeName()
   const id = useId()
   const disabled = isSubmitting

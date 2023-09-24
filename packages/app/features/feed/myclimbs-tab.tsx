@@ -1,6 +1,15 @@
 import { Tables } from '@my/supabase/helpers'
 import { FlatList } from 'react-native'
-import { Avatar, Card, H3, Paragraph, Spacer, Theme, YStack, useClimbColor } from '@my/ui'
+import {
+  Avatar,
+  Card,
+  H3,
+  Paragraph,
+  Spacer,
+  Theme,
+  YStack,
+  useClimbColor,
+} from '@my/ui'
 import { api } from 'app/utils/api'
 import { format } from 'date-fns'
 
@@ -18,7 +27,12 @@ type ProfileClimb = Tables<'profile_climbs'> & {
   profile: Tables<'profiles'> | undefined
 }
 
-function MyClimb({ profileClimb }: { profileClimb: ProfileClimb; user: User['profile'] }) {
+function MyClimb({
+  profileClimb,
+}: {
+  profileClimb: ProfileClimb
+  user: User['profile']
+}) {
   const { color } = useClimbColor(profileClimb.climb.type)
   const user = useUser()
 
@@ -120,7 +134,9 @@ export function MyClimbsTab() {
         }}
         showsVerticalScrollIndicator={false}
         data={climbsQuery.data}
-        renderItem={({ item }) => <MyClimb profileClimb={item} user={user.profile} />}
+        renderItem={({ item }) => (
+          <MyClimb profileClimb={item} user={user.profile} />
+        )}
         keyExtractor={(item) => `${item.id}`}
         ItemSeparatorComponent={() => <Spacer size="$5" />}
       />

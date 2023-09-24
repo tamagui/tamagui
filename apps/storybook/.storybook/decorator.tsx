@@ -13,7 +13,8 @@ export const StorybookDecorator: Decorator = (Story, args: any) => {
     theme4,
     // inverseTheme
   } = args.globals
-  const themeName = [theme2, theme3, theme4].filter((theme) => !!theme).join('_') || null
+  const themeName =
+    [theme2, theme3, theme4].filter((theme) => !!theme).join('_') || null
 
   return (
     <UniversalThemeProvider>

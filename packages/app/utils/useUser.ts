@@ -6,11 +6,16 @@ export const useUser = () => {
   const { session, isLoading: isLoadingSession } = useSessionContext()
   const user = session?.user
 
-  const { data: profile, isLoading: isLoadingProfile, refetch } = api.me.profile.read.useQuery()
+  const {
+    data: profile,
+    isLoading: isLoadingProfile,
+    refetch,
+  } = api.me.profile.read.useQuery()
 
   const avatarUrl = (function () {
     if (profile?.avatar_url) return profile.avatar_url
-    if (typeof user?.user_metadata.avatar_url === 'string') return user.user_metadata.avatar_url
+    if (typeof user?.user_metadata.avatar_url === 'string')
+      return user.user_metadata.avatar_url
 
     const params = new URLSearchParams()
     const name = profile?.first_name || user?.email || ''

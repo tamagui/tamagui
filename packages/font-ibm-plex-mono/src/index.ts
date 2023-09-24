@@ -5,7 +5,7 @@ import {
   getVariableValue,
   isWeb,
 } from '@tamagui/core'
-      
+
 const LINE_HEIGHT = 1.3
 export const createIbmPlexMonoFont = <A extends GenericFont>(
   font: Partial<A> = {},
@@ -29,7 +29,10 @@ export const createIbmPlexMonoFont = <A extends GenericFont>(
       ? '"IBM Plex Mono", -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif'
       : 'IBM Plex Mono',
     lineHeight: Object.fromEntries(
-      Object.entries(size).map(([k, v]) => [k, sizeLineHeight(getVariableValue(v) * LINE_HEIGHT)])
+      Object.entries(size).map(([k, v]) => [
+        k,
+        sizeLineHeight(getVariableValue(v) * LINE_HEIGHT),
+      ])
     ),
     weight: {
       4: '300',

@@ -1,4 +1,13 @@
-import { CardProps, Card, H6, H2, Paragraph, Button, XStack, Theme } from 'tamagui'
+import {
+  CardProps,
+  Card,
+  H6,
+  H2,
+  Paragraph,
+  Button,
+  XStack,
+  Theme,
+} from 'tamagui'
 
 export type OverviewCardTypes = {
   title: string

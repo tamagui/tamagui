@@ -13,7 +13,12 @@ export default function Screen() {
         }}
         edges={['left', 'right']}
       >
-        <YStack pt={safeAreaInsets.top} pb={safeAreaInsets.bottom} f={1} bg={'$color3'}>
+        <YStack
+          pt={safeAreaInsets.top}
+          pb={safeAreaInsets.bottom}
+          f={1}
+          bg={'$color3'}
+        >
           <Stack.Screen
             options={{
               headerShown: false,

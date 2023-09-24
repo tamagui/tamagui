@@ -1,4 +1,14 @@
-import { FormWrapper, H2, H4, KVTable, Separator, SizableText, YStack, isWeb, styled } from '@my/ui'
+import {
+  FormWrapper,
+  H2,
+  H4,
+  KVTable,
+  Separator,
+  SizableText,
+  YStack,
+  isWeb,
+  styled,
+} from '@my/ui'
 import { useUser } from 'app/utils/useUser'
 import { Link } from 'solito/link'
 
@@ -26,7 +36,9 @@ export const GeneralSettingsScreen = () => {
               <KVTable.Value gap="$4">
                 <SizableText>{profile?.first_name}</SizableText>
                 <Link href="/profile/edit">
-                  <SizableText textDecorationLine="underline">Change</SizableText>
+                  <SizableText textDecorationLine="underline">
+                    Change
+                  </SizableText>
                 </Link>
               </KVTable.Value>
             </KVTable.Row>
@@ -46,7 +58,9 @@ export const GeneralSettingsScreen = () => {
               <KVTable.Value gap="$4">
                 <SizableText>{user?.email}</SizableText>
                 <Link href="/settings/change-email">
-                  <SizableText textDecorationLine="underline">Change</SizableText>
+                  <SizableText textDecorationLine="underline">
+                    Change
+                  </SizableText>
                 </Link>
               </KVTable.Value>
             </KVTable.Row>

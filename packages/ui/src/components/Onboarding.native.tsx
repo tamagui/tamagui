@@ -41,7 +41,10 @@ export const Onboarding = ({ onOnboarded, steps }: OnboardingProps) => {
   }
 
   const changePage = (newStepIdx: number) => {
-    scrollRef.current?.scrollTo({ x: newStepIdx * dimensions.width, animated: true })
+    scrollRef.current?.scrollTo({
+      x: newStepIdx * dimensions.width,
+      animated: true,
+    })
   }
 
   const scrollRef = useRef<RNScrollView>(null)
@@ -73,7 +76,10 @@ export const Onboarding = ({ onOnboarded, steps }: OnboardingProps) => {
               return (
                 <YStack
                   key={idx}
-                  width={dimensions.width - (safeAreaInsets.left + safeAreaInsets.right)}
+                  width={
+                    dimensions.width -
+                    (safeAreaInsets.left + safeAreaInsets.right)
+                  }
                 >
                   {isActive && <step.Content key={idx} />}
                 </YStack>
@@ -84,7 +90,13 @@ export const Onboarding = ({ onOnboarded, steps }: OnboardingProps) => {
             <XStack gap={10} jc="center" my="$4">
               {Array.from(Array(stepsCount)).map((_, idx) => {
                 const isActive = idx === stepIdx
-                return <Point key={idx} active={isActive} onPress={() => setStepIdx(idx)} />
+                return (
+                  <Point
+                    key={idx}
+                    active={isActive}
+                    onPress={() => setStepIdx(idx)}
+                  />
+                )
               })}
             </XStack>
           }
@@ -100,7 +112,13 @@ export const Onboarding = ({ onOnboarded, steps }: OnboardingProps) => {
   )
 }
 
-const Point = ({ active, onPress }: { active: boolean; onPress: () => void }) => {
+const Point = ({
+  active,
+  onPress,
+}: {
+  active: boolean
+  onPress: () => void
+}) => {
   return (
     <YStack
       br="$10"
@@ -115,7 +133,15 @@ const Point = ({ active, onPress }: { active: boolean; onPress: () => void }) =>
 export const Background = () => {
   const { height } = useWindowDimensions()
   return (
-    <YStack pos="absolute" left={0} right={0} top={0} bottom={0} jc="center" ai="center">
+    <YStack
+      pos="absolute"
+      left={0}
+      right={0}
+      top={0}
+      bottom={0}
+      jc="center"
+      ai="center"
+    >
       <Circle
         animation={'lazy'}
         x={0}

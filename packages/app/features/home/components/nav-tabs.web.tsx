@@ -102,11 +102,16 @@ export const NavTabs = (props: TabsProps) => {
 
 const Tab = (props: TabsTabProps) => (
   <Tabs.Tab unstyled jc="flex-end" margin="$1.5" {...props}>
-    <SizableText size={props.size as FontSizeTokens}>{props.children}</SizableText>
+    <SizableText size={props.size as FontSizeTokens}>
+      {props.children}
+    </SizableText>
   </Tabs.Tab>
 )
 
-const TabsRovingIndicator = ({ active, ...props }: { active?: boolean } & StackProps) => (
+const TabsRovingIndicator = ({
+  active,
+  ...props
+}: { active?: boolean } & StackProps) => (
   <Stack
     position="absolute"
     backgroundColor="$color5"

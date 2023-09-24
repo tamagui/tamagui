@@ -41,5 +41,11 @@ const steps: OnboardingStepInfo[] = [
  */
 export const OnboardingScreen = () => {
   const router = useRouter()
-  return <Onboarding autoSwipe onOnboarded={() => router.push('/sign-up')} steps={steps} />
+  return (
+    <Onboarding
+      autoSwipe
+      onOnboarded={() => router.push('/sign-up')}
+      steps={steps}
+    />
+  )
 }

@@ -12,7 +12,9 @@ import { AppRegistry } from 'react-native'
 import Tamagui from '../tamagui.config'
 
 export default class Document extends NextDocument {
-  static async getInitialProps(ctx: DocumentContext): Promise<DocumentInitialProps> {
+  static async getInitialProps(
+    ctx: DocumentContext
+  ): Promise<DocumentInitialProps> {
     AppRegistry.registerComponent('Main', () => Main)
     const page = await ctx.renderPage()
 
@@ -32,7 +34,8 @@ export default class Document extends NextDocument {
           __html: Tamagui.getCSS({
             // if you are using "outputCSS" option, you should use this "exclude"
             // if not, then you can leave the option out
-            exclude: process.env.NODE_ENV === 'production' ? 'design-system' : null,
+            exclude:
+              process.env.NODE_ENV === 'production' ? 'design-system' : null,
           }),
         }}
       />,

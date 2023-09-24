@@ -22,7 +22,11 @@ function onAppStateChange(status: AppStateStatus) {
   }
 }
 
-export const QueryClientProvider = ({ children }: { children: React.ReactNode }) => {
+export const QueryClientProvider = ({
+  children,
+}: {
+  children: React.ReactNode
+}) => {
   useEffect(() => {
     const subscription = AppState.addEventListener('change', onAppStateChange)
 
@@ -39,7 +43,9 @@ export const QueryClientProvider = ({ children }: { children: React.ReactNode })
 
   return (
     <api.Provider client={trpcClient} queryClient={queryClient}>
-      <QueryClientProviderOG client={queryClient}>{children}</QueryClientProviderOG>
+      <QueryClientProviderOG client={queryClient}>
+        {children}
+      </QueryClientProviderOG>
     </api.Provider>
   )
 }

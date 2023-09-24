@@ -10,12 +10,18 @@ export type AuthProviderProps = {
   children?: React.ReactNode
 }
 
-export const AuthProvider = ({ initialSession, children }: AuthProviderProps) => {
+export const AuthProvider = ({
+  initialSession,
+  children,
+}: AuthProviderProps) => {
   // Create a new supabase browser client on every first render.
   const [supabaseClient] = useState(() => createPagesBrowserClient<Database>())
 
   return (
-    <SessionContextProvider supabaseClient={supabaseClient} initialSession={initialSession}>
+    <SessionContextProvider
+      supabaseClient={supabaseClient}
+      initialSession={initialSession}
+    >
       <AuthStateChangeHandler />
       {children}
     </SessionContextProvider>

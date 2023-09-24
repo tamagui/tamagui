@@ -34,7 +34,9 @@ export const Basic: Story = {
             <SizableText fontWeight="900">Twitter</SizableText>
           </KVTable.Key>
           <KVTable.Value gap="$4">
-            <SizableText textDecorationLine="underline">@natebirdman</SizableText>
+            <SizableText textDecorationLine="underline">
+              @natebirdman
+            </SizableText>
           </KVTable.Value>
         </KVTable.Row>
 

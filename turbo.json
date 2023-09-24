@@ -6,6 +6,7 @@
       "outputs": [".next/**"]
     },
     "lint": {},
+    "format": {},
     "lint:fix": {}
   }
 }

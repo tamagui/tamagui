@@ -1,6 +1,13 @@
 import { useFieldInfo, useTsController } from '@ts-react/form'
 import { useId, useMemo } from 'react'
-import { Fieldset, InputProps, Label, Theme, XStack, useThemeName } from 'tamagui'
+import {
+  Fieldset,
+  InputProps,
+  Label,
+  Theme,
+  XStack,
+  useThemeName,
+} from 'tamagui'
 import { SelectField } from './SelectField'
 
 import { z } from 'zod'
@@ -68,7 +75,11 @@ export function getTimeSelections(
   }
 }
 
-function getTimeSelectionsForDay(startTime: Date, endTime: Date, increment: number) {
+function getTimeSelectionsForDay(
+  startTime: Date,
+  endTime: Date,
+  increment: number
+) {
   const selections: Array<{
     name: string
     value: string
@@ -135,10 +146,18 @@ export const ClimbField = (props: Pick<InputProps, 'size'>) => {
       <Label theme="alt1" size="$3">
         {label}
       </Label>
-      <XStack $sm={{ flexDirection: 'column' }} $gtSm={{ flexWrap: 'wrap' }} gap="$4">
+      <XStack
+        $sm={{ flexDirection: 'column' }}
+        $gtSm={{ flexWrap: 'wrap' }}
+        gap="$4"
+      >
         <Theme name={error?.type ? 'red' : themeName} forceClassName>
           <Fieldset $gtSm={{ fb: 0 }} f={1}>
-            <Label theme="alt1" size={props.size || '$3'} htmlFor={`${id}-street`}>
+            <Label
+              theme="alt1"
+              size={props.size || '$3'}
+              htmlFor={`${id}-street`}
+            >
               Climb Type
             </Label>
             <Shake shakeKey={error?.type?.errorMessage}>
@@ -166,7 +185,11 @@ export const ClimbField = (props: Pick<InputProps, 'size'>) => {
 
         <Theme name={error?.location ? 'red' : themeName} forceClassName>
           <Fieldset $gtSm={{ fb: 0 }} f={1}>
-            <Label theme="alt1" size={props.size || '$3'} htmlFor={`${id}-zip-code`}>
+            <Label
+              theme="alt1"
+              size={props.size || '$3'}
+              htmlFor={`${id}-zip-code`}
+            >
               Location
             </Label>
             <Shake shakeKey={error?.location?.errorMessage}>

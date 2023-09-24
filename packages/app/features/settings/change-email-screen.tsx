@@ -25,7 +25,9 @@ export const ChangeEmailScreen = () => {
   const toast = useToastController()
   const router = useRouter()
 
-  const handleChangePassword = async ({ email }: z.infer<typeof ChangeEmailSchema>) => {
+  const handleChangePassword = async ({
+    email,
+  }: z.infer<typeof ChangeEmailSchema>) => {
     const { data, error } = await supabase.auth.updateUser({ email })
     if (error) {
       toast.show(error.message)

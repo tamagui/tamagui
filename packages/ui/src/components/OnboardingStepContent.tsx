@@ -50,7 +50,7 @@ export const StepContent = ({
         textAlign="center"
         $md={{
           size: '$10',
-          mt: "$4"
+          mt: '$4',
         }}
       >
         {title}

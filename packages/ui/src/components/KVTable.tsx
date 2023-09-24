@@ -1,4 +1,10 @@
-import { XStack, XStackProps, YStack, YStackProps, withStaticProperties } from 'tamagui'
+import {
+  XStack,
+  XStackProps,
+  YStack,
+  YStackProps,
+  withStaticProperties,
+} from 'tamagui'
 
 const KVTableWrapper = (props: YStackProps) => {
   return <YStack gap="$6" {...props} />

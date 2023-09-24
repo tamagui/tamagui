@@ -34,7 +34,9 @@ export const headingFont = createFont({
     3: '500',
     4: '700',
   },
-  size: Object.fromEntries(Object.entries(headingSize).map(([k, v]) => [k, getVariableValue(v)])),
+  size: Object.fromEntries(
+    Object.entries(headingSize).map(([k, v]) => [k, getVariableValue(v)])
+  ),
   lineHeight: Object.fromEntries(
     Object.entries(headingSize).map(([k, v]) => [k, getVariableValue(v) + 4])
   ),

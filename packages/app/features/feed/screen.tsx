@@ -1,4 +1,13 @@
-import { H5, Separator, SizableText, Tabs, TabsContentProps, XStack, YStack, isWeb } from '@my/ui'
+import {
+  H5,
+  Separator,
+  SizableText,
+  Tabs,
+  TabsContentProps,
+  XStack,
+  YStack,
+  isWeb,
+} from '@my/ui'
 
 import { MyClimbsTab } from './myclimbs-tab'
 import { ClimbsTab } from './climbs-tab'

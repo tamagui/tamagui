@@ -32,7 +32,13 @@ const displayName = {
   lead_rope: 'Lead Rope',
   boulder: 'Boulder',
 } as const
-function Climb({ climb, onSelect }: { climb: ListClimb; onSelect?: (climb: ListClimb) => void }) {
+function Climb({
+  climb,
+  onSelect,
+}: {
+  climb: ListClimb
+  onSelect?: (climb: ListClimb) => void
+}) {
   // const { color } = useClimbColor(climb.type)
   // const cache = useQueryClient()
   // const cachedUserKey = getQueryKey(api.me.profile.read)
@@ -113,7 +119,8 @@ function Climb({ climb, onSelect }: { climb: ListClimb; onSelect?: (climb: ListC
         </Card.Header>
         <Card.Footer ai="baseline">
           <Paragraph theme="alt2" size="$1" fontWeight="400">
-            {format(new Date(climb.start), 'MMM d')} @ {format(new Date(climb.start), 'h:mmaaa')}
+            {format(new Date(climb.start), 'MMM d')} @{' '}
+            {format(new Date(climb.start), 'h:mmaaa')}
           </Paragraph>
           <Spacer flex />
           {/* <Button fontSize="$1" size="$3" borderRadius="$3">
@@ -139,7 +146,9 @@ function Climb({ climb, onSelect }: { climb: ListClimb; onSelect?: (climb: ListC
 export function ClimbsTab() {
   const climbsQuery = api.climb.read.useQuery()
   const [open, setOpen] = useState(false)
-  const [selectedClimb, setSelectedClimb] = useState<ListClimb | undefined>(undefined)
+  const [selectedClimb, setSelectedClimb] = useState<ListClimb | undefined>(
+    undefined
+  )
 
   const onSelect = useCallback((climb: ListClimb) => {
     setSelectedClimb(climb)
@@ -218,7 +227,11 @@ export const SheetDemo = ({
         zIndex={100_000}
         animation="bouncy"
       >
-        <Sheet.Overlay animation="lazy" enterStyle={{ opacity: 0 }} exitStyle={{ opacity: 0 }} />
+        <Sheet.Overlay
+          animation="lazy"
+          enterStyle={{ opacity: 0 }}
+          exitStyle={{ opacity: 0 }}
+        />
         <Sheet.Handle />
         <Sheet.Frame padding="$4" bg="$backgroundPress" space="$5">
           {/* <Button size="$6" circular icon={ChevronDown} onPress={() => setOpen(false)} /> */}

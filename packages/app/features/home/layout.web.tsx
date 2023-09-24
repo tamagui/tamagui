@@ -29,7 +29,11 @@ export type HomeLayoutProps = {
   fullPage?: boolean
 }
 
-export const HomeLayout = ({ children, fullPage = false, padded = false }: HomeLayoutProps) => {
+export const HomeLayout = ({
+  children,
+  fullPage = false,
+  padded = false,
+}: HomeLayoutProps) => {
   return (
     <YStack f={1}>
       <YStack
@@ -110,7 +114,12 @@ export const MobileNavbar = ({ children }: { children: React.ReactNode }) => {
   }, [router.events])
   const themeName = useThemeName()
   return (
-    <Popover open={open} onOpenChange={setOpen} size="$5" stayInFrame={{ padding: 20 }}>
+    <Popover
+      open={open}
+      onOpenChange={setOpen}
+      size="$5"
+      stayInFrame={{ padding: 20 }}
+    >
       <Popover.Trigger asChild>
         <Button
           chromeless
@@ -153,8 +162,16 @@ export const MobileNavbar = ({ children }: { children: React.ReactNode }) => {
       >
         <Popover.Arrow borderWidth={1} boc="$borderColor" />
 
-        <Popover.ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
-          <YStack miw={230} p="$3" ai="flex-end" display={open ? 'flex' : 'none'}>
+        <Popover.ScrollView
+          showsVerticalScrollIndicator={false}
+          style={{ flex: 1 }}
+        >
+          <YStack
+            miw={230}
+            p="$3"
+            ai="flex-end"
+            display={open ? 'flex' : 'none'}
+          >
             {children}
           </YStack>
         </Popover.ScrollView>
