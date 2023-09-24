@@ -7,5 +7,4 @@ export * from './createSwitch'
 export const Switch = createSwitch({
   Frame: SwitchFrame,
   Thumb: SwitchThumb,
-  acceptsUnstyled: true,
 })
