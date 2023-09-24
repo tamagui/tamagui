@@ -719,9 +719,10 @@ export const getSplitStyles: StyleSplitter = (
           (isEnter || isExit)
         ) {
           console.warn(
-            `No animation prop given to component ${
-              staticConfig.componentName || ''
-            } with enterStyle / exitStyle, these styles will be ignore.`
+            `No animation prop given to component ${staticConfig.componentName || ''} ${
+              props['data-at'] || ''
+            } with enterStyle / exitStyle, these styles will be ignored`,
+            { props }
           )
         }
 

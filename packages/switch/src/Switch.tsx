@@ -44,7 +44,6 @@ const getSwitchWidth = (val: SizeTokens) => getSwitchHeight(val) * 2
 
 export const SwitchFrame = styled(YStack, {
   name: 'Switch',
-  tag: 'button',
   context: SwitchContext,
 
   variants: {
