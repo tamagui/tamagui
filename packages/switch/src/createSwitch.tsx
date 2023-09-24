@@ -216,7 +216,6 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
             checked={checked}
             disabled={disabled}
             frameWidth={frameWidth}
-            theme={checked ? 'active' : null}
             themeShallow
             {...(!disableActiveTheme && {
               theme: checked ? 'active' : null,
