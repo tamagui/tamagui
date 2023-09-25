@@ -1,3 +1,2 @@
 import '@tamagui/polyfill-dev'
-// export * from './Menu'
-export {}
+export * from './Menu'
