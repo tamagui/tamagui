@@ -1,4 +1,4 @@
-import { ThemeTintAlt, useTint } from '@tamagui/logo'
+import { ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
 import { NextLink } from 'components/NextLink'
 import Link from 'next/link'
 import { memo } from 'react'
@@ -221,9 +221,9 @@ const HeroContents = memo(function HeroContents() {
             <NextLink prefetch={false} href="/docs/intro/why-a-compiler">
               <Button
                 // layout shifts...
-                w={121}
+                w={120}
                 h={52}
-                accessibilityLabel="Get started (docs)"
+                accessibilityLabel="How does Tamagui work?"
                 fontFamily="$silkscreen"
                 size="$5"
                 borderRadius={1000}
@@ -245,7 +245,8 @@ const HeroContents = memo(function HeroContents() {
             <NextLink prefetch={false} href="/docs/intro/introduction">
               <Button
                 // layout shifts...
-                w={118}
+                theme="alt2"
+                w={120}
                 h={52}
                 accessibilityLabel="Get started (docs)"
                 fontFamily="$silkscreen"
@@ -262,7 +263,7 @@ const HeroContents = memo(function HeroContents() {
                 }}
               >
                 <ButtonText fontFamily="$silkscreen" size="$7" letterSpacing={1}>
-                  Docs
+                  Start
                 </ButtonText>
               </Button>
             </NextLink>
