@@ -2048,3 +2048,7 @@ export type DedupedTheme = {
 }
 
 export type DedupedThemes = DedupedTheme[]
+
+export type UseMediaState = {
+  [key in MediaQueryKey]: boolean
+}
