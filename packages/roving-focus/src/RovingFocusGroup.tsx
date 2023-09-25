@@ -366,6 +366,6 @@ function wrapArray<T>(array: T[], startIndex: number) {
   return array.map((_, index) => array[(startIndex + index) % array.length])
 }
 
-export { RovingFocusGroup }
+export { RovingFocusGroup, RovingFocusGroupItem }
 
 export type { RovingFocusGroupProps, RovingFocusItemProps }
