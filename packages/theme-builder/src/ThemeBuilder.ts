@@ -241,7 +241,10 @@ export class ThemeBuilder<State extends ThemeBuilderState> {
       const definitions = this.state.themes[themeName]
       const themeDefinition = Array.isArray(definitions)
         ? (() => {
-            const found = definitions.find((d) => parentName.startsWith(d.parent!))
+            const found = definitions.find(
+              // endWith match stronger than startsWith
+              (d) => parentName.endsWith(d.parent!) || parentName.startsWith(d.parent!)
+            )
             if (!found) {
               return null
             }
@@ -307,6 +310,7 @@ export class ThemeBuilder<State extends ThemeBuilderState> {
       }
 
       const parentTheme = this.state.themes[parentName]
+
       if (parentTheme && 'childOptions' in parentTheme) {
         const { mask, ...childOpts } = parentTheme.childOptions as any
         if (mask) {
