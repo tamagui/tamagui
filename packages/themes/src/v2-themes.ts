@@ -78,7 +78,7 @@ const themesBuilder = createThemeBuilder()
         {
           parent: 'light',
           avoidNestingWithin: ['active'],
-          mask: 'strengthen',
+          mask: 'identity',
           ...maskOptions.component,
         },
         {
