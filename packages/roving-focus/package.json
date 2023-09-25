@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/roving-focus",
-  "version": "1.71.0",
+  "version": "1.72.0",
   "sideEffects": [
     "*.css"
   ],
@@ -27,19 +27,19 @@
     }
   },
   "dependencies": {
-    "@tamagui/collection": "1.71.0",
-    "@tamagui/compose-refs": "1.71.0",
-    "@tamagui/core": "1.71.0",
-    "@tamagui/create-context": "1.71.0",
-    "@tamagui/use-controllable-state": "1.71.0",
-    "@tamagui/use-direction": "1.71.0",
-    "@tamagui/use-event": "1.71.0"
+    "@tamagui/collection": "1.72.0",
+    "@tamagui/compose-refs": "1.72.0",
+    "@tamagui/core": "1.72.0",
+    "@tamagui/create-context": "1.72.0",
+    "@tamagui/use-controllable-state": "1.72.0",
+    "@tamagui/use-direction": "1.72.0",
+    "@tamagui/use-event": "1.72.0"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.71.0",
+    "@tamagui/build": "1.72.0",
     "react": "^18.2.0"
   },
   "publishConfig": {

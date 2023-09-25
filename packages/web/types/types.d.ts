@@ -1101,4 +1101,7 @@ export type DedupedTheme = {
     theme: ThemeParsed;
 };
 export type DedupedThemes = DedupedTheme[];
+export type UseMediaState = {
+    [key in MediaQueryKey]: boolean;
+};
 //# sourceMappingURL=types.d.ts.map
