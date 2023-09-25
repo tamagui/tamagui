@@ -1,3 +1,3 @@
 import '@tamagui/polyfill-dev';
-export * from './Menu';
+export {};
 //# sourceMappingURL=index.d.ts.map
