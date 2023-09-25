@@ -24,6 +24,7 @@ import {
   XStackProps,
   YStack,
   styled,
+  useThemeName,
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 
@@ -34,12 +35,20 @@ import { Code, CodeInline } from './Code'
 import { DataTable } from './DataTable'
 import * as Demos from './demos'
 import { DocCodeBlock } from './DocsCodeBlock'
+import { DocsCtaCard } from './DocsCtaCard'
 import { ExternalIcon } from './ExternalIcon'
 import { Features } from './Features'
 import { HeroContainer } from './HeroContainer'
 import { ExampleAnimations } from './HeroExampleAnimations'
 import { Highlights } from './Highlights'
 import { HR } from './HR'
+import { IconAstro } from './icons/astro'
+import { IconExpo } from './icons/expo'
+import { IconNextdotjs } from './icons/nextdotjs'
+import { IconReact } from './icons/react'
+import { IconRemix } from './icons/remix'
+import { IconVite } from './icons/vite'
+import { IconWebpack } from './icons/webpack'
 import { LI } from './LI'
 import { MediaPlayer } from './MediaPlayer'
 import { Notice, NoticeFrame } from './Notice'
@@ -262,6 +271,91 @@ export const components = {
       >
         {disableUnwrapText ? children : unwrapText(children)}
       </Paragraph>
+    )
+  },
+  WebInstallationCards: () => {
+    const ThemeName = useThemeName()
+    const isThemeDark = ThemeName.startsWith('dark')
+
+    return (
+      <YStack gap="$2" my="$4">
+        <XStack gap="$2" flexWrap="wrap">
+          <NextLink href="#nextjs">
+            <DocsCtaCard
+              f={1}
+              fb={0}
+              minWidth={200}
+              glowColor={isThemeDark ? 'white' : '#000000'}
+            >
+              <IconNextdotjs size={36} color={isThemeDark ? 'white' : '#000000'} />
+              <DocsCtaCard.Title>Next.js</DocsCtaCard.Title>
+            </DocsCtaCard>
+          </NextLink>
+
+          <NextLink href="#vite">
+            <DocsCtaCard f={1} fb={0} minWidth={200} glowColor="#646CFF">
+              <IconVite size={36} color="#646CFF" />
+              <DocsCtaCard.Title>Vite</DocsCtaCard.Title>
+            </DocsCtaCard>
+          </NextLink>
+
+          <NextLink href="#webpack">
+            <DocsCtaCard f={1} fb={0} minWidth={200} glowColor="#8DD6F9">
+              <IconWebpack size={36} color="#8DD6F9" />
+              <DocsCtaCard.Title>Webpack</DocsCtaCard.Title>
+            </DocsCtaCard>
+          </NextLink>
+
+          {/* <NextLink href="#remix">
+            <DocsCtaCard
+              f={1}
+              fb={0}
+              minWidth={200}
+              glowColor={isThemeDark ? 'white' : '#000000'}
+            >
+              <IconRemix size={36} color={isThemeDark ? 'white' : '#000000'} />
+              <DocsCtaCard.Title>Remix</DocsCtaCard.Title>
+            </DocsCtaCard>
+          </NextLink>
+
+          <NextLink href="#astro">
+            <DocsCtaCard f={1} fb={0} minWidth={200} glowColor="#BC52EE">
+              <IconAstro size={36} color="#BC52EE" />
+              <DocsCtaCard.Title>Astro</DocsCtaCard.Title>
+            </DocsCtaCard>
+          </NextLink> */}
+        </XStack>
+      </YStack>
+    )
+  },
+
+  NativeInstallationCards: () => {
+    const ThemeName = useThemeName()
+    const isThemeDark = ThemeName.startsWith('dark')
+
+    return (
+      <YStack gap="$2" my="$4">
+        <XStack gap="$2" flexWrap="wrap">
+          <NextLink href="#expo">
+            <DocsCtaCard
+              f={1}
+              fb={0}
+              minWidth={200}
+              glowColor={isThemeDark ? 'white' : '#000020'}
+            >
+              <IconExpo size={36} color={isThemeDark ? 'white' : '#000020'} />
+              <DocsCtaCard.Title>Expo</DocsCtaCard.Title>
+            </DocsCtaCard>
+          </NextLink>
+
+          <NextLink href="#react-native">
+            <DocsCtaCard f={1} fb={0} minWidth={200} glowColor={'#61DAFB'}>
+              <IconReact size={36} color={'#61DAFB'} />
+              <DocsCtaCard.Title>React-Native</DocsCtaCard.Title>
+            </DocsCtaCard>
+          </NextLink>
+        </XStack>
+      </YStack>
     )
   },
 
