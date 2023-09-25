@@ -218,6 +218,51 @@ export const climbRouter = createTRPCRouter({
       sendNotifications(messages)
       return true
     }),
+  leave: protectedProcedure
+    .input(z.object({
+      profile_climb_id: z.number(),
+    })).mutation(async ({ ctx: { supabase, session }, input }) => {
+      // Profile Climb needs to be both the user id and the climb id to delete
+      const { data, error } = await supabase.from('profile_climbs').select('*').eq('id', input.profile_climb_id).eq('profile_id', session?.user.id).single()
+      const climb = await supabase.from('climbs').select('*').eq('id', [data?.climb_id]).single()
+
+      if (error) {
+        console.log(error)
+        throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' })
+      }
+
+      if (climb.error) {
+        console.log(climb.error)
+        throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' })
+      }
+
+      const updatedClimb = await supabase.from('climbs').update({
+        joined: climb.data.joined - 1,
+      }).eq('id', [data?.climb_id])
+
+
+      if (updatedClimb.error) {
+        console.log(updatedClimb.error)
+        throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' })
+      }
+
+      const removeProfileClimb = await supabase.from('profile_climbs').delete().eq('id', input.profile_climb_id).eq('profile_id', session?.user.id).select()
+
+
+      if (removeProfileClimb.error) {
+        console.log(removeProfileClimb.error)
+        throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' })
+      }
+
+
+      // Send removed climb back so I can delete from the cache optimistically
+      return removeProfileClimb.data
+
+
+
+
+
+    }),
   create: protectedProcedure
     .input(
       z.object({

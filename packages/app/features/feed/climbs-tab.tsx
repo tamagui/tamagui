@@ -39,13 +39,13 @@ function Climb({
   climb: ListClimb
   onSelect?: (climb: ListClimb) => void
 }) {
-  // const { color } = useClimbColor(climb.type)
+  const { color } = useClimbColor(climb.type)
   // const cache = useQueryClient()
   // const cachedUserKey = getQueryKey(api.me.profile.read)
   // const user = cache.getQueryData<User['profile']>(cachedUserKey)
 
   return (
-    <Theme name={'blue'}>
+    <Theme name={color}>
       <Card
         overflow="visible"
         removeClippedSubviews={true}
@@ -188,15 +188,15 @@ export const SheetDemo = ({
 
   const user = useUser()
 
-  console.log('user xxxxxx', user)
   const joinMutation = api.climb.join.useMutation()
   const queryClient = useQueryClient()
   // const user = useUser()
   // const [innerOpen, setInnerOpen] = useState(false)
+  console.log('climb', climb)
 
-  const { color } = useClimbColor(climb?.type ?? 'top_rope')
+  const { color } = useClimbColor(climb?.type)
   const toast = useToastController()
-  // const reminderConfig = {
+  // const reminderConfig = k
   //   name: `Climb with ${climb?.climber?.first_name ?? 'unknown climber'}`,
   //   description: climb?.name ?? '',
   //   startDate: format(new Date(climb?.start ?? 0), 'yyyy-MM-dd'),

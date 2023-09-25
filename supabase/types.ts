@@ -19,7 +19,7 @@ export interface Database {
           name: string
           requested: number
           start: string
-          type: Database['public']['Enums']['climb_type']
+          type: Database["public"]["Enums"]["climb_type"]
         }
         Insert: {
           created_at?: string
@@ -30,7 +30,7 @@ export interface Database {
           name: string
           requested?: number
           start?: string
-          type: Database['public']['Enums']['climb_type']
+          type: Database["public"]["Enums"]["climb_type"]
         }
         Update: {
           created_at?: string
@@ -41,14 +41,14 @@ export interface Database {
           name?: string
           requested?: number
           start?: string
-          type?: Database['public']['Enums']['climb_type']
+          type?: Database["public"]["Enums"]["climb_type"]
         }
         Relationships: [
           {
-            foreignKeyName: 'climbs_created_by_fkey'
-            columns: ['created_by']
-            referencedRelation: 'profiles'
-            referencedColumns: ['id']
+            foreignKeyName: "climbs_created_by_fkey"
+            columns: ["created_by"]
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
           }
         ]
       }
@@ -73,16 +73,16 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: 'profile_climbs_climb_id_fkey'
-            columns: ['climb_id']
-            referencedRelation: 'climbs'
-            referencedColumns: ['id']
+            foreignKeyName: "profile_climbs_climb_id_fkey"
+            columns: ["climb_id"]
+            referencedRelation: "climbs"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'profile_climbs_profile_id_fkey'
-            columns: ['profile_id']
-            referencedRelation: 'profiles'
-            referencedColumns: ['id']
+            foreignKeyName: "profile_climbs_profile_id_fkey"
+            columns: ["profile_id"]
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
           }
         ]
       }
@@ -90,7 +90,7 @@ export interface Database {
         Row: {
           avatar_url: string | null
           bio: string | null
-          climb_type: Database['public']['Enums']['climb_type'][] | null
+          climb_type: Database["public"]["Enums"]["climb_type"][] | null
           expo_token: string | null
           first_name: string
           id: string
@@ -100,7 +100,7 @@ export interface Database {
         Insert: {
           avatar_url?: string | null
           bio?: string | null
-          climb_type?: Database['public']['Enums']['climb_type'][] | null
+          climb_type?: Database["public"]["Enums"]["climb_type"][] | null
           expo_token?: string | null
           first_name: string
           id: string
@@ -110,7 +110,7 @@ export interface Database {
         Update: {
           avatar_url?: string | null
           bio?: string | null
-          climb_type?: Database['public']['Enums']['climb_type'][] | null
+          climb_type?: Database["public"]["Enums"]["climb_type"][] | null
           expo_token?: string | null
           first_name?: string
           id?: string
@@ -119,10 +119,10 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: 'profiles_id_fkey'
-            columns: ['id']
-            referencedRelation: 'users'
-            referencedColumns: ['id']
+            foreignKeyName: "profiles_id_fkey"
+            columns: ["id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
           }
         ]
       }
@@ -134,10 +134,11 @@ export interface Database {
       [_ in never]: never
     }
     Enums: {
-      climb_type: 'top_rope' | 'lead_rope' | 'boulder'
+      climb_type: "top_rope" | "lead_rope" | "boulder"
     }
     CompositeTypes: {
       [_ in never]: never
     }
   }
 }
+

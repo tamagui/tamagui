@@ -1,5 +1,6 @@
 import { Tables } from '@my/supabase/helpers'
 import { FlatList } from 'react-native'
+import { api } from 'app/utils/api'
 import {
   Avatar,
   Card,
@@ -9,13 +10,15 @@ import {
   Theme,
   YStack,
   useClimbColor,
+  Button,
 } from '@my/ui'
-import { api } from 'app/utils/api'
+import { getQueryKey } from '@trpc/react-query'
 import { format } from 'date-fns'
 
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { useUser, User } from 'app/utils/useUser'
 import { ShieldQuestion } from '@tamagui/lucide-icons'
+import { useQueryClient } from '@tanstack/react-query'
 const displayName = {
   top_rope: 'Top Rope',
   lead_rope: 'Lead Rope',
@@ -34,6 +37,10 @@ function MyClimb({
   user: User['profile']
 }) {
   const { color } = useClimbColor(profileClimb.climb.type)
+  const leave = api.climb.leave.useMutation()
+
+  const queryClient = useQueryClient()
+  const profileClimbQueryKey = getQueryKey(api.me.climbs, undefined, 'query')
   const user = useUser()
 
   return (
@@ -100,6 +107,35 @@ function MyClimb({
             {format(new Date(profileClimb.climb.start), 'h:mmaaa')}
           </Paragraph>
           <Spacer flex />
+          <Button
+            onPress={() => {
+              leave.mutate(
+                {
+                  profile_climb_id: profileClimb.id,
+                },
+                {
+                  onSuccess: () => {
+                    console.log('success ttt', profileClimbQueryKey)
+                    // queryClient.invalidateQueries()
+
+                    queryClient.setQueryData<ProfileClimb[]>(
+                      profileClimbQueryKey,
+                      (old) => {
+                        console.log('old', old)
+                        return old?.filter((item) => {
+                          console.log('item', item, profileClimb.id)
+                          return item.id !== profileClimb.id
+                        })
+                      }
+                    )
+                  },
+                }
+              )
+              console.log('leave')
+            }}
+          >
+            Leave
+          </Button>
         </Card.Footer>
         <Card.Background>
           <LinearGradient

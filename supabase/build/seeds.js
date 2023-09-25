@@ -39,7 +39,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var faker_1 = require("@faker-js/faker");
 var date_fns_1 = require("date-fns");
 var supabase_js_1 = require("@supabase/supabase-js");
-var supabaseInstance = (0, supabase_js_1.createClient)("http://localhost:54331", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0");
+var supabaseInstance = (0, supabase_js_1.createClient)('http://localhost:54331', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0');
 function createClimbs(supabase, users, admin) {
     return __awaiter(this, void 0, void 0, function () {
         var usersClimbs, error;
@@ -58,7 +58,8 @@ function createClimbs(supabase, users, admin) {
                     if (!admin) {
                         throw new Error('no admin');
                     }
-                    usersClimbs = users.map(function (user) {
+                    usersClimbs = users
+                        .map(function (user) {
                         var _a;
                         var climbs = Array.from({ length: 2 }).map(function (_, i) {
                             var _a, _b;
@@ -70,34 +71,79 @@ function createClimbs(supabase, users, admin) {
                                 minutes: faker_1.faker.number.int({ min: 0, max: 59 }),
                             });
                             return {
-                                created_at: faker_1.faker.date.between({
+                                created_at: faker_1.faker.date
+                                    .between({
                                     from: (0, date_fns_1.add)(new Date(), { weeks: -1 }),
                                     to: new Date(),
-                                }).toISOString(),
+                                })
+                                    .toISOString(),
                                 created_by: (_a = user === null || user === void 0 ? void 0 : user.user) === null || _a === void 0 ? void 0 : _a.id,
                                 start: start.toISOString(),
                                 duration: (0, date_fns_1.add)(start, {
                                     hours: faker_1.faker.number.int({ min: 0, max: 4 }),
                                     minutes: faker_1.faker.number.int({ min: 0, max: 59 }),
                                 }).toISOString(),
-                                type: faker_1.faker.helpers.arrayElement(['boulder', 'lead_rope', 'top_rope']),
-                                name: "".concat((_b = user === null || user === void 0 ? void 0 : user.user) === null || _b === void 0 ? void 0 : _b.user_metadata.first_name, " ").concat(faker_1.faker.helpers.arrayElement(['climbs', 'sends', 'projects', 'attempts']), " ").concat(faker_1.faker.helpers.arrayElement(['a', 'the', 'my']), " ").concat(faker_1.faker.helpers.arrayElement(['red', 'blue', 'green', 'yellow', 'purple', 'black']), " ").concat(faker_1.faker.helpers.arrayElement(['route', 'problem', 'boulder'])),
+                                type: faker_1.faker.helpers.arrayElement([
+                                    'boulder',
+                                    'lead_rope',
+                                    'top_rope',
+                                ]),
+                                name: "".concat((_b = user === null || user === void 0 ? void 0 : user.user) === null || _b === void 0 ? void 0 : _b.user_metadata.first_name, " ").concat(faker_1.faker.helpers.arrayElement([
+                                    'climbs',
+                                    'sends',
+                                    'projects',
+                                    'attempts',
+                                ]), " ").concat(faker_1.faker.helpers.arrayElement([
+                                    'a',
+                                    'the',
+                                    'my',
+                                ]), " ").concat(faker_1.faker.helpers.arrayElement([
+                                    'red',
+                                    'blue',
+                                    'green',
+                                    'yellow',
+                                    'purple',
+                                    'black',
+                                ]), " ").concat(faker_1.faker.helpers.arrayElement(['route', 'problem', 'boulder'])),
                             };
                         });
                         // make sure admin has a climb from every user
                         climbs.push({
-                            created_at: faker_1.faker.date.between({
+                            created_at: faker_1.faker.date
+                                .between({
                                 from: (0, date_fns_1.add)(new Date(), { weeks: -1 }),
                                 to: new Date(),
-                            }).toISOString(),
+                            })
+                                .toISOString(),
                             created_by: admin === null || admin === void 0 ? void 0 : admin.id,
                             start: (0, date_fns_1.add)(new Date(), { days: -1 }).toISOString(),
                             duration: (0, date_fns_1.add)(new Date(), { days: -1, hours: 1 }).toISOString(),
-                            type: faker_1.faker.helpers.arrayElement(['boulder', 'lead_rope', 'top_rope']),
-                            name: "".concat((_a = user === null || user === void 0 ? void 0 : user.user) === null || _a === void 0 ? void 0 : _a.user_metadata.first_name, " ").concat(faker_1.faker.helpers.arrayElement(['climbs', 'sends', 'projects', 'attempts']), " ").concat(faker_1.faker.helpers.arrayElement(['a', 'the', 'my']), " ").concat(faker_1.faker.helpers.arrayElement(['red', 'blue', 'green', 'yellow', 'purple', 'black']), " ").concat(faker_1.faker.helpers.arrayElement(['route', 'problem', 'boulder'])),
+                            type: faker_1.faker.helpers.arrayElement([
+                                'boulder',
+                                'lead_rope',
+                                'top_rope',
+                            ]),
+                            name: "".concat((_a = user === null || user === void 0 ? void 0 : user.user) === null || _a === void 0 ? void 0 : _a.user_metadata.first_name, " ").concat(faker_1.faker.helpers.arrayElement([
+                                'climbs',
+                                'sends',
+                                'projects',
+                                'attempts',
+                            ]), " ").concat(faker_1.faker.helpers.arrayElement([
+                                'a',
+                                'the',
+                                'my',
+                            ]), " ").concat(faker_1.faker.helpers.arrayElement([
+                                'red',
+                                'blue',
+                                'green',
+                                'yellow',
+                                'purple',
+                                'black',
+                            ]), " ").concat(faker_1.faker.helpers.arrayElement(['route', 'problem', 'boulder'])),
                         });
                         return climbs;
-                    }).flatMap(function (climbs) { return climbs; });
+                    })
+                        .flatMap(function (climbs) { return climbs; });
                     return [4 /*yield*/, supabase.from('climbs').insert(usersClimbs)];
                 case 1:
                     error = (_a.sent()).error;
@@ -126,9 +172,9 @@ function createMaple(supabase) {
                                 username: 'maple',
                                 email_confirm: true,
                                 bio: 'Bork at things. Part marshmallow, part velociraptor.',
-                                avatar_url: 'https://github-production-user-asset-6210df.s3.amazonaws.com/2502947/270132245-073cc1ba-4111-4638-a08e-3860f591672e.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20230923%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20230923T203558Z&X-Amz-Expires=300&X-Amz-Signature=1b6460f5a76c9115bc7a6526d73e32d2f27d3a8657f153571b1cba8b8cbf2a9e&X-Amz-SignedHeaders=host&actor_id=2502947&key_id=0&repo_id=679352400'
+                                avatar_url: 'https://github-production-user-asset-6210df.s3.amazonaws.com/2502947/270132245-073cc1ba-4111-4638-a08e-3860f591672e.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20230923%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20230923T203558Z&X-Amz-Expires=300&X-Amz-Signature=1b6460f5a76c9115bc7a6526d73e32d2f27d3a8657f153571b1cba8b8cbf2a9e&X-Amz-SignedHeaders=host&actor_id=2502947&key_id=0&repo_id=679352400',
                             },
-                        }
+                        },
                     })];
                 case 1:
                     _a = _b.sent(), data = _a.data, error = _a.error;
@@ -156,9 +202,9 @@ function createMochi(supabase) {
                                 username: 'mochi',
                                 email_confirm: true,
                                 bio: 'Feces, Pellets, Dander, Hay forever. I will eat the wall',
-                                avatar_url: 'https://github-production-user-asset-6210df.s3.amazonaws.com/2502947/270132160-ff02fc5c-bd04-4594-b18b-5c99b081ef84.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20230923%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20230923T203329Z&X-Amz-Expires=300&X-Amz-Signature=55b93ac333cad1b809adaebd19881d990b8e8dba0f069f02fafc929ce841dab1&X-Amz-SignedHeaders=host&actor_id=2502947&key_id=0&repo_id=679352400'
+                                avatar_url: 'https://github-production-user-asset-6210df.s3.amazonaws.com/2502947/270132160-ff02fc5c-bd04-4594-b18b-5c99b081ef84.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20230923%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20230923T203329Z&X-Amz-Expires=300&X-Amz-Signature=55b93ac333cad1b809adaebd19881d990b8e8dba0f069f02fafc929ce841dab1&X-Amz-SignedHeaders=host&actor_id=2502947&key_id=0&repo_id=679352400',
                             },
-                        }
+                        },
                     })];
                 case 1:
                     _a = _b.sent(), data = _a.data, error = _a.error;
@@ -186,9 +232,9 @@ function createBenjamin(supabase) {
                                 username: 'benschac',
                                 email_confirm: true,
                                 bio: 'I have no friends to climb with so I made this app',
-                                avatar_url: 'https://avatars.githubusercontent.com/u/2502947?u=eb345767686e9b8692c6d76955650a41e6e80cf3&v=4'
+                                avatar_url: 'https://avatars.githubusercontent.com/u/2502947?u=eb345767686e9b8692c6d76955650a41e6e80cf3&v=4',
                             },
-                        }
+                        },
                     })];
                 case 1:
                     _a = _b.sent(), data = _a.data, error = _a.error;
@@ -222,9 +268,9 @@ function createUsers(supabase, count) {
                                                 last_name: faker_1.faker.person.lastName(),
                                                 username: faker_1.faker.internet.userName(),
                                                 avatar_url: faker_1.faker.image.avatar(),
-                                                bio: faker_1.faker.person.bio()
-                                            }
-                                        }
+                                                bio: faker_1.faker.person.bio(),
+                                            },
+                                        },
                                     })];
                                 case 1:
                                     data = (_a.sent()).data;
@@ -254,12 +300,15 @@ function createProfileClimbs(supabase, climbs, profiles, admin) {
                     if (!admin) {
                         throw new Error('no admin');
                     }
-                    profileClimbs = climbs.map(function (climb) {
+                    profileClimbs = climbs
+                        .map(function (climb) {
                         var result = [];
-                        var created_at = faker_1.faker.date.between({
+                        var created_at = faker_1.faker.date
+                            .between({
                             from: (0, date_fns_1.add)(new Date(), { weeks: -2 }),
                             to: (0, date_fns_1.add)(new Date(), { weeks: 2 }),
-                        }).toISOString();
+                        })
+                            .toISOString();
                         // first profile climb, the user who created the climb
                         result.push({
                             created_at: created_at,
@@ -283,7 +332,8 @@ function createProfileClimbs(supabase, climbs, profiles, admin) {
                             });
                         }
                         return result;
-                    }).flatMap(function (climbs) { return climbs; });
+                    })
+                        .flatMap(function (climbs) { return climbs; });
                     return [4 /*yield*/, supabase.from('profile_climbs').insert(profileClimbs)];
                 case 1:
                     error = (_a.sent()).error;
