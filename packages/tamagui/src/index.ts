@@ -181,6 +181,7 @@ export {
   useIsomorphicLayoutEffect,
   useMedia,
   useProps,
+  usePropsAndStyle,
   useStyle,
   useTheme,
   useThemeName,
