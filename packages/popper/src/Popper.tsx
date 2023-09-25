@@ -67,7 +67,7 @@ export type PopperProps = {
 
 type ScopedPopperProps<P> = ScopedProps<P, 'Popper'>
 
-export function Popper(props: ScopedPopperProps<PopperProps>) {
+export const Popper = React.forwardRef((props: ScopedPopperProps<PopperProps>, _ref) => {
   const {
     children,
     size,
@@ -162,7 +162,9 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
   }
 
   return <PopperProvider {...popperContext}>{children}</PopperProvider>
-}
+})
+
+Popper.displayName = 'Popper'
 
 /* -------------------------------------------------------------------------------------------------
  * PopperAnchor
