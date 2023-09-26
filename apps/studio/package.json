@@ -29,7 +29,6 @@
     "color2k": "^2.0.2",
     "prettier": "^2.8.1",
     "react": "^18.2.0",
-    "react-color": "^2.19.3",
     "react-dom": "^18.2.0",
     "react-freeze": "^1.0.3",
     "react-native-web": "^0.19.6",
