@@ -6333,6 +6333,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/dropdown-menu@workspace:packages/dropdown-menu":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/dropdown-menu@workspace:packages/dropdown-menu"
+  dependencies:
+    "@tamagui/build": 1.71.0
+    "@tamagui/core": 1.71.0
+    "@tamagui/popover": 1.71.0
+    react: ^18.2.0
+  peerDependencies:
+    react: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/expo-router@workspace:packages/expo-router":
   version: 0.0.0-use.local
   resolution: "@tamagui/expo-router@workspace:packages/expo-router"
