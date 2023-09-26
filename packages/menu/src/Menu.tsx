@@ -16,10 +16,10 @@ import type { PopperContentProps } from '@tamagui/popper'
 import { Portal as PortalPrimitive, PortalProps } from '@tamagui/portal'
 import { RovingFocusGroup } from '@tamagui/roving-focus'
 import type { RovingFocusGroupProps } from '@tamagui/roving-focus'
-import { SizableStack } from '@tamagui/stacks'
+import { SizableStack, ThemeableStack } from '@tamagui/stacks'
 import { useCallbackRef } from '@tamagui/use-callback-ref'
 import { useDirection } from '@tamagui/use-direction'
-import { Stack } from '@tamagui/web'
+import { Stack, isWeb, styled } from '@tamagui/web'
 import { TamaguiElement } from '@tamagui/web/types'
 import { hideOthers } from 'aria-hidden'
 import { useId } from 'react'
@@ -149,7 +149,9 @@ type PopperAnchorProps = React.ComponentPropsWithoutRef<
 >
 interface MenuAnchorProps extends PopperAnchorProps {}
 
-const MenuAnchor = React.forwardRef<MenuAnchorElement, ScopedProps<MenuAnchorProps>>(
+const PopperAnchorFrame = styled(PopperPrimitive.PopperAnchor)
+
+const MenuAnchor = PopperAnchorFrame.styleable<ScopedProps<MenuAnchorProps>>(
   (props: ScopedProps<MenuAnchorProps>, forwardedRef) => {
     const { __scopeMenu, ...anchorProps } = props
     return (
@@ -239,6 +241,8 @@ interface MenuContentProps extends MenuRootContentTypeProps {
    */
   forceMount?: true
 }
+
+const MenuContentFrame = styled(ThemeableStack)
 
 const MenuContent = React.forwardRef<MenuContentElement, ScopedProps<MenuContentProps>>(
   (props: ScopedProps<MenuContentProps>, forwardedRef) => {
@@ -455,6 +459,67 @@ const MenuContentImpl = React.forwardRef<MenuContentImplElement, MenuContentImpl
       )
     }, [])
 
+    const content = (
+      <PopperPrimitive.Popper
+        role="menu"
+        aria-orientation="vertical"
+        data-state={getOpenState(context.open)}
+        data-radix-menu-content=""
+        // dir={rootContext.dir}
+        __scopePopper={__scopeMenu || MENU_CONTEXT}
+        {...contentProps}
+        //   @ts-ignore
+        //   TODO: re-enable these commented out props
+        style={{ outline: 'none', ...contentProps.style }}
+        //   onKeyDown={composeEventHandlers(contentProps.onKeyDown, (event) => {
+        //     // submenu key events bubble through portals. We only care about keys in this menu.
+        //     const target = event.target as HTMLElement
+        //     const isKeyDownInside =
+        //       target.closest('[data-radix-menu-content]') === event.currentTarget
+        //     const isModifierKey = event.ctrlKey || event.altKey || event.metaKey
+        //     const isCharacterKey = event.key.length === 1
+        //     if (isKeyDownInside) {
+        //       // menus should not be navigated using tab key so we prevent it
+        //       if (event.key === 'Tab') event.preventDefault()
+        //       if (!isModifierKey && isCharacterKey)
+        //         handleTypeaheadSearch(event.key)
+        //     }
+        //     // focus first/last item based on key pressed
+        //     const content = contentRef.current
+        //     if (event.target !== content) return
+        //     if (!FIRST_LAST_KEYS.includes(event.key)) return
+        //     event.preventDefault()
+        //     const items = getItems().filter((item) => !item.disabled)
+        //     const candidateNodes = items.map((item) => item.ref.current!)
+        //     if (LAST_KEYS.includes(event.key)) candidateNodes.reverse()
+        //     focusFirst(candidateNodes)
+        //   })}
+        // onBlur={composeEventHandlers(props.onBlur, (event) => {
+        //   // clear search buffer when leaving the menu
+        //   if (!event.currentTarget.contains(event.target)) {
+        //     window.clearTimeout(timerRef.current)
+        //     searchRef.current = ''
+        //   }
+        // })}
+        //   onPointerMove={composeEventHandlers(
+        //     props.onPointerMove,
+        //     whenMouse((event) => {
+        //       const target = event.target as HTMLElement
+        //       const pointerXHasChanged = lastPointerXRef.current !== event.clientX
+
+        //       // We don't use `event.movementX` for this check because Safari will
+        //       // always return `0` on a pointer event.
+        //       if (event.currentTarget.contains(target) && pointerXHasChanged) {
+        //         const newDir =
+        //           event.clientX > lastPointerXRef.current ? 'right' : 'left'
+        //         pointerDirRef.current = newDir
+        //         lastPointerXRef.current = event.clientX
+        //       }
+        //     })
+        //   )}
+      />
+    )
+
     return (
       <MenuContentProvider
         scope={__scopeMenu}
@@ -484,100 +549,47 @@ const MenuContentImpl = React.forwardRef<MenuContentImplElement, MenuContentImpl
           pointerGraceIntentRef.current = intent
         }, [])}
       >
-        <ScrollLockWrapper {...scrollLockWrapperProps}>
-          <FocusScope
-            trapped={trapFocus}
-            onMountAutoFocus={composeEventHandlers(onOpenAutoFocus, (event) => {
-              // when opening, explicitly focus the content area only and leave
-              // `onEntryFocus` in  control of focusing first item
-              event.preventDefault()
-              contentRef.current?.focus()
-            })}
-            onUnmountAutoFocus={onCloseAutoFocus}
-          >
-            <DismissableLayer
-              disableOutsidePointerEvents={disableOutsidePointerEvents}
-              onEscapeKeyDown={onEscapeKeyDown}
-              onPointerDownOutside={onPointerDownOutside}
-              onFocusOutside={onFocusOutside}
-              onInteractOutside={onInteractOutside}
-              onDismiss={onDismiss}
+        {isWeb ? (
+          <ScrollLockWrapper {...scrollLockWrapperProps}>
+            <FocusScope
+              trapped={trapFocus}
+              onMountAutoFocus={composeEventHandlers(onOpenAutoFocus, (event) => {
+                // when opening, explicitly focus the content area only and leave
+                // `onEntryFocus` in  control of focusing first item
+                event.preventDefault()
+                contentRef.current?.focus()
+              })}
+              onUnmountAutoFocus={onCloseAutoFocus}
             >
-              <RovingFocusGroup
-                asChild
-                __scopeRovingFocusGroup={__scopeMenu || MENU_CONTEXT}
-                dir={rootContext.dir}
-                orientation="vertical"
-                loop={loop}
-                currentTabStopId={currentItemId}
-                onCurrentTabStopIdChange={setCurrentItemId}
-                onEntryFocus={composeEventHandlers(onEntryFocus, (event) => {
-                  // only focus first item when using keyboard
-                  if (!rootContext.isUsingKeyboardRef.current) event.preventDefault()
-                })}
+              <DismissableLayer
+                disableOutsidePointerEvents={disableOutsidePointerEvents}
+                onEscapeKeyDown={onEscapeKeyDown}
+                onPointerDownOutside={onPointerDownOutside}
+                onFocusOutside={onFocusOutside}
+                onInteractOutside={onInteractOutside}
+                onDismiss={onDismiss}
               >
-                <PopperPrimitive.Popper
-                  role="menu"
-                  aria-orientation="vertical"
-                  data-state={getOpenState(context.open)}
-                  data-radix-menu-content=""
-                  // dir={rootContext.dir}
-                  __scopePopper={__scopeMenu || MENU_CONTEXT}
-                  {...contentProps}
-                  //   @ts-ignore
-                  //   TODO: re-enable these commented out props
-                  style={{ outline: 'none', ...contentProps.style }}
-                  //   onKeyDown={composeEventHandlers(contentProps.onKeyDown, (event) => {
-                  //     // submenu key events bubble through portals. We only care about keys in this menu.
-                  //     const target = event.target as HTMLElement
-                  //     const isKeyDownInside =
-                  //       target.closest('[data-radix-menu-content]') === event.currentTarget
-                  //     const isModifierKey = event.ctrlKey || event.altKey || event.metaKey
-                  //     const isCharacterKey = event.key.length === 1
-                  //     if (isKeyDownInside) {
-                  //       // menus should not be navigated using tab key so we prevent it
-                  //       if (event.key === 'Tab') event.preventDefault()
-                  //       if (!isModifierKey && isCharacterKey)
-                  //         handleTypeaheadSearch(event.key)
-                  //     }
-                  //     // focus first/last item based on key pressed
-                  //     const content = contentRef.current
-                  //     if (event.target !== content) return
-                  //     if (!FIRST_LAST_KEYS.includes(event.key)) return
-                  //     event.preventDefault()
-                  //     const items = getItems().filter((item) => !item.disabled)
-                  //     const candidateNodes = items.map((item) => item.ref.current!)
-                  //     if (LAST_KEYS.includes(event.key)) candidateNodes.reverse()
-                  //     focusFirst(candidateNodes)
-                  //   })}
-                  // onBlur={composeEventHandlers(props.onBlur, (event) => {
-                  //   // clear search buffer when leaving the menu
-                  //   if (!event.currentTarget.contains(event.target)) {
-                  //     window.clearTimeout(timerRef.current)
-                  //     searchRef.current = ''
-                  //   }
-                  // })}
-                  //   onPointerMove={composeEventHandlers(
-                  //     props.onPointerMove,
-                  //     whenMouse((event) => {
-                  //       const target = event.target as HTMLElement
-                  //       const pointerXHasChanged = lastPointerXRef.current !== event.clientX
-
-                  //       // We don't use `event.movementX` for this check because Safari will
-                  //       // always return `0` on a pointer event.
-                  //       if (event.currentTarget.contains(target) && pointerXHasChanged) {
-                  //         const newDir =
-                  //           event.clientX > lastPointerXRef.current ? 'right' : 'left'
-                  //         pointerDirRef.current = newDir
-                  //         lastPointerXRef.current = event.clientX
-                  //       }
-                  //     })
-                  //   )}
-                />
-              </RovingFocusGroup>
-            </DismissableLayer>
-          </FocusScope>
-        </ScrollLockWrapper>
+                <RovingFocusGroup
+                  asChild
+                  __scopeRovingFocusGroup={__scopeMenu || MENU_CONTEXT}
+                  dir={rootContext.dir}
+                  orientation="vertical"
+                  loop={loop}
+                  currentTabStopId={currentItemId}
+                  onCurrentTabStopIdChange={setCurrentItemId}
+                  onEntryFocus={composeEventHandlers(onEntryFocus, (event) => {
+                    // only focus first item when using keyboard
+                    if (!rootContext.isUsingKeyboardRef.current) event.preventDefault()
+                  })}
+                >
+                  {content}
+                </RovingFocusGroup>
+              </DismissableLayer>
+            </FocusScope>
+          </ScrollLockWrapper>
+        ) : (
+          content
+        )}
       </MenuContentProvider>
     )
   }
@@ -595,10 +607,15 @@ type MenuGroupElement = React.ElementRef<typeof Stack>
 type PrimitiveDivProps = React.ComponentPropsWithoutRef<typeof Stack>
 interface MenuGroupProps extends PrimitiveDivProps {}
 
-const MenuGroup = React.forwardRef<MenuGroupElement, ScopedProps<MenuGroupProps>>(
+const MenuGroupFrame = styled(ThemeableStack, {
+  name: GROUP_NAME,
+  role: 'group',
+})
+
+const MenuGroup = MenuGroupFrame.styleable<ScopedProps<MenuGroupProps>>(
   (props: ScopedProps<MenuGroupProps>, forwardedRef) => {
     const { __scopeMenu, ...groupProps } = props
-    return <Stack role="group" {...groupProps} ref={forwardedRef} />
+    return <MenuGroupFrame {...groupProps} ref={forwardedRef} />
   }
 )
 
@@ -613,10 +630,14 @@ const LABEL_NAME = 'MenuLabel'
 type MenuLabelElement = React.ElementRef<typeof Stack>
 interface MenuLabelProps extends PrimitiveDivProps {}
 
-const MenuLabel = React.forwardRef<MenuLabelElement, ScopedProps<MenuLabelProps>>(
+const MenuLabelFrame = styled(ThemeableStack, {
+  name: LABEL_NAME,
+})
+
+const MenuLabel = MenuLabelFrame.styleable<ScopedProps<MenuLabelProps>>(
   (props: ScopedProps<MenuLabelProps>, forwardedRef) => {
     const { __scopeMenu, ...labelProps } = props
-    return <Stack {...labelProps} ref={forwardedRef} />
+    return <MenuLabelFrame {...labelProps} ref={forwardedRef} />
   }
 )
 
@@ -634,7 +655,12 @@ interface MenuItemProps extends Omit<MenuItemImplProps, 'onSelect'> {
   onSelect?: (event: Event) => void
 }
 
-const MenuItem = React.forwardRef<MenuItemElement, ScopedProps<MenuItemProps>>(
+const MenuItemImplFrame = styled(ThemeableStack, {
+  name: ITEM_NAME,
+  role: 'menuitem',
+})
+
+const MenuItem = MenuItemImplFrame.styleable<ScopedProps<MenuItemProps>>(
   (props: ScopedProps<MenuItemProps>, forwardedRef) => {
     const { disabled = false, onSelect, ...itemProps } = props
     const ref = React.useRef<HTMLDivElement>(null)
@@ -740,8 +766,7 @@ const MenuItemImpl = React.forwardRef<
         __scopeRovingFocusGroup={__scopeMenu || MENU_CONTEXT}
         focusable={!disabled}
       >
-        <Stack
-          role="menuitem"
+        <MenuItemImplFrame
           data-highlighted={isFocused ? '' : undefined}
           aria-disabled={disabled || undefined}
           data-disabled={disabled ? '' : undefined}
@@ -801,14 +826,17 @@ interface MenuCheckboxItemProps extends MenuItemProps {
   onCheckedChange?: (checked: boolean) => void
 }
 
-const MenuCheckboxItem = React.forwardRef<
-  MenuCheckboxItemElement,
+const MenuCheckBoxItemFrame = styled(MenuItem, {
+  name: CHECKBOX_ITEM_NAME,
+})
+
+const MenuCheckboxItem = MenuCheckBoxItemFrame.styleable<
   ScopedProps<MenuCheckboxItemProps>
 >((props: ScopedProps<MenuCheckboxItemProps>, forwardedRef) => {
   const { checked = false, onCheckedChange, ...checkboxItemProps } = props
   return (
     <ItemIndicatorProvider scope={props.__scopeMenu} checked={checked}>
-      <MenuItem
+      <MenuCheckBoxItemFrame
         // TODO: this role is not supported in React Native
         //   accessibilityRole="menuitemcheckbox"
         aria-checked={isIndeterminate(checked) ? 'mixed' : checked}
@@ -842,22 +870,25 @@ interface MenuRadioGroupProps extends MenuGroupProps {
   onValueChange?: (value: string) => void
 }
 
-const MenuRadioGroup = React.forwardRef<
-  MenuRadioGroupElement,
-  ScopedProps<MenuRadioGroupProps>
->((props: ScopedProps<MenuRadioGroupProps>, forwardedRef) => {
-  const { value, onValueChange, ...groupProps } = props
-  const handleValueChange = useCallbackRef(onValueChange)
-  return (
-    <RadioGroupProvider
-      scope={props.__scopeMenu}
-      value={value}
-      onValueChange={handleValueChange}
-    >
-      <MenuGroup {...groupProps} ref={forwardedRef} />
-    </RadioGroupProvider>
-  )
+const MenuRadioGroupFrame = styled(MenuGroup, {
+  name: RADIO_GROUP_NAME,
 })
+
+const MenuRadioGroup = MenuRadioGroupFrame.styleable<ScopedProps<MenuRadioGroupProps>>(
+  (props: ScopedProps<MenuRadioGroupProps>, forwardedRef) => {
+    const { value, onValueChange, ...groupProps } = props
+    const handleValueChange = useCallbackRef(onValueChange)
+    return (
+      <RadioGroupProvider
+        scope={props.__scopeMenu}
+        value={value}
+        onValueChange={handleValueChange}
+      >
+        <MenuRadioGroupFrame {...groupProps} ref={forwardedRef} />
+      </RadioGroupProvider>
+    )
+  }
+)
 
 MenuRadioGroup.displayName = RADIO_GROUP_NAME
 
@@ -872,31 +903,34 @@ interface MenuRadioItemProps extends MenuItemProps {
   value: string
 }
 
-const MenuRadioItem = React.forwardRef<
-  MenuRadioItemElement,
-  ScopedProps<MenuRadioItemProps>
->((props: ScopedProps<MenuRadioItemProps>, forwardedRef) => {
-  const { value, ...radioItemProps } = props
-  const context = useRadioGroupContext(props.__scopeMenu)
-  const checked = value === context.value
-  return (
-    <ItemIndicatorProvider scope={props.__scopeMenu} checked={checked}>
-      <MenuItem
-        //TODO: react native does not support this role
-        //   role="menuitemradio"
-        aria-checked={checked}
-        {...radioItemProps}
-        ref={forwardedRef}
-        data-state={getCheckedState(checked)}
-        onSelect={composeEventHandlers(
-          radioItemProps.onSelect,
-          () => context.onValueChange?.(value),
-          { checkDefaultPrevented: false }
-        )}
-      />
-    </ItemIndicatorProvider>
-  )
+const MenuRadioItemFrame = styled(MenuItem, {
+  name: RADIO_ITEM_NAME,
 })
+
+const MenuRadioItem = MenuRadioItemFrame.styleable<ScopedProps<MenuRadioItemProps>>(
+  (props: ScopedProps<MenuRadioItemProps>, forwardedRef) => {
+    const { value, ...radioItemProps } = props
+    const context = useRadioGroupContext(props.__scopeMenu)
+    const checked = value === context.value
+    return (
+      <ItemIndicatorProvider scope={props.__scopeMenu} checked={checked}>
+        <MenuRadioItemFrame
+          //TODO: react native does not support this role
+          //   role="menuitemradio"
+          aria-checked={checked}
+          {...radioItemProps}
+          ref={forwardedRef}
+          data-state={getCheckedState(checked)}
+          onSelect={composeEventHandlers(
+            radioItemProps.onSelect,
+            () => context.onValueChange?.(value),
+            { checkDefaultPrevented: false }
+          )}
+        />
+      </ItemIndicatorProvider>
+    )
+  }
+)
 
 MenuRadioItem.displayName = RADIO_ITEM_NAME
 
@@ -921,8 +955,10 @@ interface MenuItemIndicatorProps extends PrimitiveSpanProps {
   forceMount?: true
 }
 
-const MenuItemIndicator = React.forwardRef<
-  MenuItemIndicatorElement,
+const MenuItemIndicatorFrame = styled(ThemeableStack, {
+  name: ITEM_INDICATOR_NAME,
+})
+const MenuItemIndicator = MenuItemIndicatorFrame.styleable<
   ScopedProps<MenuItemIndicatorProps>
 >((props: ScopedProps<MenuItemIndicatorProps>, forwardedRef) => {
   const { __scopeMenu, forceMount, ...itemIndicatorProps } = props
@@ -932,7 +968,7 @@ const MenuItemIndicator = React.forwardRef<
       {forceMount ||
       isIndeterminate(indicatorContext.checked) ||
       indicatorContext.checked === true ? (
-        <Stack
+        <MenuItemIndicatorFrame
           tag="span"
           {...itemIndicatorProps}
           ref={forwardedRef}
@@ -954,20 +990,22 @@ const SEPARATOR_NAME = 'MenuSeparator'
 type MenuSeparatorElement = React.ElementRef<typeof Stack>
 interface MenuSeparatorProps extends PrimitiveDivProps {}
 
-const MenuSeparator = React.forwardRef<
-  MenuSeparatorElement,
-  ScopedProps<MenuSeparatorProps>
->((props: ScopedProps<MenuSeparatorProps>, forwardedRef) => {
-  const { __scopeMenu, ...separatorProps } = props
-  return (
-    <Stack
-      role="separator"
-      aria-orientation="horizontal"
-      {...separatorProps}
-      ref={forwardedRef}
-    />
-  )
+const MenuSeparatorFrame = styled(ThemeableStack, {
+  name: SEPARATOR_NAME,
+  role: 'separator',
 })
+const MenuSeparator = MenuSeparatorFrame.styleable<ScopedProps<MenuSeparatorProps>>(
+  (props: ScopedProps<MenuSeparatorProps>, forwardedRef) => {
+    const { __scopeMenu, ...separatorProps } = props
+    return (
+      <MenuSeparatorFrame
+        aria-orientation="horizontal"
+        {...separatorProps}
+        ref={forwardedRef}
+      />
+    )
+  }
+)
 
 MenuSeparator.displayName = SEPARATOR_NAME
 
@@ -981,11 +1019,15 @@ type MenuArrowElement = React.ElementRef<typeof PopperPrimitive.PopperArrow>
 type PopperArrowProps = React.ComponentPropsWithoutRef<typeof PopperPrimitive.PopperArrow>
 interface MenuArrowProps extends PopperArrowProps {}
 
-const MenuArrow = React.forwardRef<MenuArrowElement, ScopedProps<MenuArrowProps>>(
+const MenuArrowFrame = styled(PopperPrimitive.PopperArrow, {
+  name: ARROW_NAME,
+})
+
+const MenuArrow = MenuArrowFrame.styleable<ScopedProps<MenuArrowProps>>(
   (props: ScopedProps<MenuArrowProps>, forwardedRef) => {
     const { __scopeMenu, ...arrowProps } = props
     return (
-      <PopperPrimitive.PopperArrow
+      <MenuArrowFrame
         __scopePopper={__scopeMenu || MENU_CONTEXT}
         {...arrowProps}
         ref={forwardedRef}
@@ -1067,131 +1109,133 @@ const SUB_TRIGGER_NAME = 'MenuSubTrigger'
 type MenuSubTriggerElement = MenuItemImplElement
 interface MenuSubTriggerProps extends MenuItemImplProps {}
 
-const MenuSubTrigger = React.forwardRef<
-  MenuSubTriggerElement,
-  ScopedProps<MenuSubTriggerProps>
->((props: ScopedProps<MenuSubTriggerProps>, forwardedRef) => {
-  const context = useMenuContext(props.__scopeMenu)
-  const rootContext = useMenuRootContext(props.__scopeMenu)
-  const subContext = useMenuSubContext(props.__scopeMenu)
-  const contentContext = useMenuContentContext(props.__scopeMenu)
-  const openTimerRef = React.useRef<number | null>(null)
-  const { pointerGraceTimerRef, onPointerGraceIntentChange } = contentContext
-  const scope = { __scopeMenu: props.__scopeMenu }
-
-  const clearOpenTimer = React.useCallback(() => {
-    if (openTimerRef.current) window.clearTimeout(openTimerRef.current)
-    openTimerRef.current = null
-  }, [])
-
-  React.useEffect(() => clearOpenTimer, [clearOpenTimer])
-
-  React.useEffect(() => {
-    const pointerGraceTimer = pointerGraceTimerRef.current
-    return () => {
-      window.clearTimeout(pointerGraceTimer)
-      onPointerGraceIntentChange(null)
-    }
-  }, [pointerGraceTimerRef, onPointerGraceIntentChange])
-
-  return (
-    <MenuAnchor asChild {...scope}>
-      <MenuItemImpl
-        id={subContext.triggerId}
-        aria-haspopup="menu"
-        aria-expanded={context.open}
-        aria-controls={subContext.contentId}
-        data-state={getOpenState(context.open)}
-        {...props}
-        ref={composeRefs(forwardedRef, subContext.onTriggerChange)}
-        // This is redundant for mouse users but we cannot determine pointer type from
-        // click event and we cannot use pointerup event (see git history for reasons why)
-        onPress={(event) => {
-          props.onPress?.(event)
-          if (props.disabled || event.defaultPrevented) return
-          /**
-           * We manually focus because iOS Safari doesn't always focus on click (e.g. buttons)
-           * and we rely heavily on `onFocusOutside` for submenus to close when switching
-           * between separate submenus.
-           */
-          // TODO: uncomment this line
-          // event.currentTarget.focus()
-          if (!context.open) context.onOpenChange(true)
-        }}
-        onPointerMove={composeEventHandlers(
-          props.onPointerMove
-          // TODO: uncomment this part
-          // whenMouse((event) => {
-          //   contentContext.onItemEnter(event)
-          //   if (event.defaultPrevented) return
-          //   if (!props.disabled && !context.open && !openTimerRef.current) {
-          //     contentContext.onPointerGraceIntentChange(null)
-          //     openTimerRef.current = window.setTimeout(() => {
-          //       context.onOpenChange(true)
-          //       clearOpenTimer()
-          //     }, 100)
-          //   }
-          // })
-        )}
-        onPointerLeave={composeEventHandlers(
-          props.onPointerLeave
-          // TODO: uncomment this part
-          // whenMouse((event) => {
-          //   clearOpenTimer()
-
-          //   const contentRect = context.content?.getBoundingClientRect()
-          //   if (contentRect) {
-          //     // TODO: make sure to update this when we change positioning logic
-          //     const side = context.content?.dataset.side as Side
-          //     const rightSide = side === 'right'
-          //     const bleed = rightSide ? -5 : +5
-          //     const contentNearEdge = contentRect[rightSide ? 'left' : 'right']
-          //     const contentFarEdge = contentRect[rightSide ? 'right' : 'left']
-
-          //     contentContext.onPointerGraceIntentChange({
-          //       area: [
-          //         // Apply a bleed on clientX to ensure that our exit point is
-          //         // consistently within polygon bounds
-          //         { x: event.clientX + bleed, y: event.clientY },
-          //         { x: contentNearEdge, y: contentRect.top },
-          //         { x: contentFarEdge, y: contentRect.top },
-          //         { x: contentFarEdge, y: contentRect.bottom },
-          //         { x: contentNearEdge, y: contentRect.bottom },
-          //       ],
-          //       side,
-          //     })
-
-          //     window.clearTimeout(pointerGraceTimerRef.current)
-          //     pointerGraceTimerRef.current = window.setTimeout(
-          //       () => contentContext.onPointerGraceIntentChange(null),
-          //       300
-          //     )
-          //   } else {
-          //     contentContext.onTriggerLeave(event)
-          //     if (event.defaultPrevented) return
-
-          //     // There's 100ms where the user may leave an item before the submenu was opened.
-          //     contentContext.onPointerGraceIntentChange(null)
-          //   }
-          // })
-        )}
-        //   TODO: uncomment this part
-        //   onKeyDown={composeEventHandlers(props.onKeyDown, (event) => {
-        //     const isTypingAhead = contentContext.searchRef.current !== ''
-        //     if (props.disabled || (isTypingAhead && event.key === ' ')) return
-        //     if (SUB_OPEN_KEYS[rootContext.dir].includes(event.key)) {
-        //       context.onOpenChange(true)
-        //       // The trigger may hold focus if opened via pointer interaction
-        //       // so we ensure content is given focus again when switching to keyboard.
-        //       context.content?.focus()
-        //       // prevent window from scrolling
-        //       event.preventDefault()
-        //     }
-        //   })}
-      />
-    </MenuAnchor>
-  )
+const MenuAnchorFrame = styled(MenuAnchor, {
+  name: SUB_TRIGGER_NAME,
 })
+const MenuSubTrigger = MenuAnchor.styleable<ScopedProps<MenuSubTriggerProps>>(
+  (props: ScopedProps<MenuSubTriggerProps>, forwardedRef) => {
+    const context = useMenuContext(props.__scopeMenu)
+    const rootContext = useMenuRootContext(props.__scopeMenu)
+    const subContext = useMenuSubContext(props.__scopeMenu)
+    const contentContext = useMenuContentContext(props.__scopeMenu)
+    const openTimerRef = React.useRef<number | null>(null)
+    const { pointerGraceTimerRef, onPointerGraceIntentChange } = contentContext
+    const scope = { __scopeMenu: props.__scopeMenu }
+
+    const clearOpenTimer = React.useCallback(() => {
+      if (openTimerRef.current) window.clearTimeout(openTimerRef.current)
+      openTimerRef.current = null
+    }, [])
+
+    React.useEffect(() => clearOpenTimer, [clearOpenTimer])
+
+    React.useEffect(() => {
+      const pointerGraceTimer = pointerGraceTimerRef.current
+      return () => {
+        window.clearTimeout(pointerGraceTimer)
+        onPointerGraceIntentChange(null)
+      }
+    }, [pointerGraceTimerRef, onPointerGraceIntentChange])
+
+    return (
+      <MenuAnchorFrame asChild {...scope}>
+        <MenuItemImpl
+          id={subContext.triggerId}
+          aria-haspopup="menu"
+          aria-expanded={context.open}
+          aria-controls={subContext.contentId}
+          data-state={getOpenState(context.open)}
+          {...props}
+          ref={composeRefs(forwardedRef, subContext.onTriggerChange)}
+          // This is redundant for mouse users but we cannot determine pointer type from
+          // click event and we cannot use pointerup event (see git history for reasons why)
+          onPress={(event) => {
+            props.onPress?.(event)
+            if (props.disabled || event.defaultPrevented) return
+            /**
+             * We manually focus because iOS Safari doesn't always focus on click (e.g. buttons)
+             * and we rely heavily on `onFocusOutside` for submenus to close when switching
+             * between separate submenus.
+             */
+            // TODO: uncomment this line
+            // event.currentTarget.focus()
+            if (!context.open) context.onOpenChange(true)
+          }}
+          onPointerMove={composeEventHandlers(
+            props.onPointerMove
+            // TODO: uncomment this part
+            // whenMouse((event) => {
+            //   contentContext.onItemEnter(event)
+            //   if (event.defaultPrevented) return
+            //   if (!props.disabled && !context.open && !openTimerRef.current) {
+            //     contentContext.onPointerGraceIntentChange(null)
+            //     openTimerRef.current = window.setTimeout(() => {
+            //       context.onOpenChange(true)
+            //       clearOpenTimer()
+            //     }, 100)
+            //   }
+            // })
+          )}
+          onPointerLeave={composeEventHandlers(
+            props.onPointerLeave
+            // TODO: uncomment this part
+            // whenMouse((event) => {
+            //   clearOpenTimer()
+
+            //   const contentRect = context.content?.getBoundingClientRect()
+            //   if (contentRect) {
+            //     // TODO: make sure to update this when we change positioning logic
+            //     const side = context.content?.dataset.side as Side
+            //     const rightSide = side === 'right'
+            //     const bleed = rightSide ? -5 : +5
+            //     const contentNearEdge = contentRect[rightSide ? 'left' : 'right']
+            //     const contentFarEdge = contentRect[rightSide ? 'right' : 'left']
+
+            //     contentContext.onPointerGraceIntentChange({
+            //       area: [
+            //         // Apply a bleed on clientX to ensure that our exit point is
+            //         // consistently within polygon bounds
+            //         { x: event.clientX + bleed, y: event.clientY },
+            //         { x: contentNearEdge, y: contentRect.top },
+            //         { x: contentFarEdge, y: contentRect.top },
+            //         { x: contentFarEdge, y: contentRect.bottom },
+            //         { x: contentNearEdge, y: contentRect.bottom },
+            //       ],
+            //       side,
+            //     })
+
+            //     window.clearTimeout(pointerGraceTimerRef.current)
+            //     pointerGraceTimerRef.current = window.setTimeout(
+            //       () => contentContext.onPointerGraceIntentChange(null),
+            //       300
+            //     )
+            //   } else {
+            //     contentContext.onTriggerLeave(event)
+            //     if (event.defaultPrevented) return
+
+            //     // There's 100ms where the user may leave an item before the submenu was opened.
+            //     contentContext.onPointerGraceIntentChange(null)
+            //   }
+            // })
+          )}
+          //   TODO: uncomment this part
+          //   onKeyDown={composeEventHandlers(props.onKeyDown, (event) => {
+          //     const isTypingAhead = contentContext.searchRef.current !== ''
+          //     if (props.disabled || (isTypingAhead && event.key === ' ')) return
+          //     if (SUB_OPEN_KEYS[rootContext.dir].includes(event.key)) {
+          //       context.onOpenChange(true)
+          //       // The trigger may hold focus if opened via pointer interaction
+          //       // so we ensure content is given focus again when switching to keyboard.
+          //       context.content?.focus()
+          //       // prevent window from scrolling
+          //       event.preventDefault()
+          //     }
+          //   })}
+        />
+      </MenuAnchorFrame>
+    )
+  }
+)
 
 MenuSubTrigger.displayName = SUB_TRIGGER_NAME
 
