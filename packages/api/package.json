@@ -3,6 +3,14 @@
   "name": "@my/api",
   "main": "src/index.ts",
   "private": true,
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "devDependencies": {
+    "eslint": "^8.46.0",
+    "eslint-config-custom": "*"
+  },
   "dependencies": {
     "@my/supabase": "workspace:*",
     "@tanstack/react-query": "4.18.0",

@@ -3378,6 +3378,8 @@ __metadata:
     app: "*"
     date-fns: ^2.30.0
     expo-server-sdk: ^3.7.0
+    eslint: ^8.46.0
+    eslint-config-custom: "*"
     superjson: ^1.13.1
     zod: ^3.21.4
   languageName: unknown
