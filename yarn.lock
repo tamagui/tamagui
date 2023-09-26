@@ -5893,7 +5893,7 @@ __metadata:
   dependencies:
     "@types/fs-extra": ^9.0.13
     chokidar: ^3.5.2
-    esbuild: ^0.19.3
+    esbuild: ~0.19.3
     execa: ^5.0.0
     fast-glob: ^3.2.11
     fs-extra: ^11.1.0
@@ -13869,7 +13869,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild@npm:^0.19.3":
+"esbuild@npm:^0.19.3, esbuild@npm:~0.19.3":
   version: 0.19.3
   resolution: "esbuild@npm:0.19.3"
   dependencies:
