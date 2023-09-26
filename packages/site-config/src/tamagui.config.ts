@@ -99,7 +99,7 @@ const dmSansHeadingFont = createDmSansFont(
     },
     face: {},
   },
-  { sizeLineHeight: (size) => Math.round(size * 1.1 + (size < 30 ? 10 : 5)) }
+  { sizeLineHeight: (size) => Math.round(size * 0.95), sizeSize: (size) => size * 1.05 }
 )
 const dmSerifDisplayHeadingFont = createDmSerifDisplayFont(
   {
@@ -135,7 +135,7 @@ const dmSerifDisplayHeadingFont = createDmSerifDisplayFont(
     },
     face: {},
   },
-  { sizeLineHeight: (size) => Math.round(size * 1.1 + (size < 30 ? 10 : 5)) }
+  { sizeLineHeight: (size) => Math.round(size * 0.9), sizeSize: (size) => size * 1.1 }
 )
 
 const bodyFont = createInterFont(
