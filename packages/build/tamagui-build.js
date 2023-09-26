@@ -202,13 +202,15 @@ async function buildJs() {
                 'react-native/Libraries/Renderer/shims/ReactNative': require.resolve(
                   '@tamagui/fake-react-native'
                 ),
-                'react-native/Libraries/Pressability/Pressability': require.resolve(
-                  '@tamagui/fake-react-native'
-                ),
-                'react-native/Libraries/Pressability/usePressability': require.resolve(
-                  '@tamagui/fake-react-native/idFn'
-                ),
               },
+
+              'react-native/Libraries/Pressability/Pressability': require.resolve(
+                '@tamagui/fake-react-native'
+              ),
+              
+              'react-native/Libraries/Pressability/usePressability': require.resolve(
+                '@tamagui/fake-react-native/idFn'
+              ),
               
               'react-native-safe-area-context': require.resolve(
                 '@tamagui/fake-react-native'

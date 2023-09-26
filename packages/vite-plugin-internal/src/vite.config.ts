@@ -1,32 +1,36 @@
 import { join } from 'path'
 
-// import { esbuildCommonjs, viteCommonjs } from '@originjs/vite-plugin-commonjs'
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
 import react from '@vitejs/plugin-react-swc'
 /// <reference types="vitest" />
 import { defineConfig } from 'vite'
+// import { esbuildCommonjs, viteCommonjs } from '@originjs/vite-plugin-commonjs'
+import reactNative from 'vitest-react-native'
 
 export default defineConfig({
   plugins: [
     // viteCommonjs(),
+    process.env.DISABLE_REACT_NATIVE ? null : reactNative(),
     react({}),
     tamaguiPlugin({
       components: ['tamagui'],
       config: './tamagui.config.ts',
       disableWatchTamaguiConfig: true,
     }),
-  ],
+  ].filter(Boolean),
   // optimizeDeps: {
   //   esbuildOptions: {
   //     plugins: [esbuildCommonjs(['@tamagui/core'])],
   //   },
   // },
 
-  resolve: {
-    alias: {
-      '@tamagui/web': require.resolve(`@tamagui/web`),
+  ...(!process.env.DISABLE_NATIVE_TEST && {
+    resolve: {
+      alias: {
+        '@tamagui/core': require.resolve(`@tamagui/core/native-test`),
+      },
     },
-  },
+  }),
 
   test: {
     // for compat with some jest libs (like @testing-library/jest-dom)
