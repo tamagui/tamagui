@@ -192,26 +192,31 @@ async function buildJs() {
           plugins: [
             alias({
               '@tamagui/web': require.resolve('@tamagui/web/native'),
-              'react-native': require.resolve('@tamagui/fake-react-native'),
-              'react-native/Libraries/Renderer/shims/ReactFabric': require.resolve(
-                '@tamagui/fake-react-native'
-              ),
-              'react-native/Libraries/Renderer/shims/ReactNative': require.resolve(
-                '@tamagui/fake-react-native'
-              ),
-              'react-native/Libraries/Pressability/Pressability': require.resolve(
-                '@tamagui/fake-react-native'
-              ),
-              'react-native/Libraries/Pressability/usePressability': require.resolve(
-                '@tamagui/fake-react-native/idFn'
-              ),
+
+              // for test mode we want real react-native
+              ...!bundleNativeTest && {
+                'react-native': require.resolve('@tamagui/fake-react-native'),
+                'react-native/Libraries/Renderer/shims/ReactFabric': require.resolve(
+                  '@tamagui/fake-react-native'
+                ),
+                'react-native/Libraries/Renderer/shims/ReactNative': require.resolve(
+                  '@tamagui/fake-react-native'
+                ),
+                'react-native/Libraries/Pressability/Pressability': require.resolve(
+                  '@tamagui/fake-react-native'
+                ),
+                'react-native/Libraries/Pressability/usePressability': require.resolve(
+                  '@tamagui/fake-react-native/idFn'
+                ),
+              },
+              
               'react-native-safe-area-context': require.resolve(
                 '@tamagui/fake-react-native'
               ),
               'react-native-gesture-handler': require.resolve('@tamagui/proxy-worm'),
             }),
           ],
-          external: ['react', 'react-dom'],
+          external: ['react', 'react-dom', bundleNativeTest ? 'react-native' : undefined].filter(Boolean),
           resolveExtensions: [
             '.native.ts',
             '.native.tsx',
