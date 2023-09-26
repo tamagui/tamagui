@@ -242,8 +242,6 @@ interface MenuContentProps extends MenuRootContentTypeProps {
   forceMount?: true
 }
 
-const MenuContentFrame = styled(ThemeableStack)
-
 const MenuContent = React.forwardRef<MenuContentElement, ScopedProps<MenuContentProps>>(
   (props: ScopedProps<MenuContentProps>, forwardedRef) => {
     const portalContext = usePortalContext(props.__scopeMenu)
