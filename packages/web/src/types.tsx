@@ -605,9 +605,9 @@ export type CreateTamaguiProps = {
   shorthands?: CreateShorthands
   media?: GenericTamaguiConfig['media']
   animations?: AnimationDriver<any>
-  fonts: GenericTamaguiConfig['fonts']
-  tokens: GenericTamaguiConfig['tokens']
-  themes: {
+  fonts?: GenericTamaguiConfig['fonts']
+  tokens?: GenericTamaguiConfig['tokens']
+  themes?: {
     [key: string]: {
       [key: string]: string | number | Variable
     }
