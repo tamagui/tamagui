@@ -93,6 +93,7 @@ export type {
   StackNonStyleProps,
   StackProps,
   StackPropsBase,
+  RadiusTokens,
   StaticConfig,
   Styleable,
   TamaguiBaseTheme,
