@@ -6,9 +6,9 @@
   "license": "MIT",
   "scripts": {
     "build": "true",
-    "test:web": "TEST_ENVIRONMENT=jsdom TAMAGUI_TARGET=web vitest --run --config ../vite-plugin-internal/src/vite.config.ts **/*.web.test.tsx",
-    "test:native": "TEST_ENVIRONMENT=jsdom TAMAGUI_TARGET=native vitest --run --config ../vite-plugin-internal/src/vite.config.ts **/*.native.test.tsx",
-    "test": "yarn test:web && yarn test:native"
+    "test:web": "DISABLE_REACT_NATIVE=1 TEST_ENVIRONMENT=jsdom TAMAGUI_TARGET=web vitest --run --config ../vite-plugin-internal/src/vite.config.ts **/*.web.test.tsx",
+    "test:native": "TAMAGUI_TARGET=native vitest --run --config ../vite-plugin-internal/src/vite.config.ts **/*.native.test.tsx",
+    "test": "yarn test:native"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.1.2",

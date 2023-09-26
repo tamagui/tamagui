@@ -4,8 +4,10 @@ import { tamaguiPlugin } from '@tamagui/vite-plugin'
 import react from '@vitejs/plugin-react-swc'
 /// <reference types="vitest" />
 import { defineConfig } from 'vite'
+
 // import { esbuildCommonjs, viteCommonjs } from '@originjs/vite-plugin-commonjs'
-import reactNative from 'vitest-react-native'
+
+const reactNative = require('vitest-react-native')
 
 export default defineConfig({
   plugins: [
@@ -28,6 +30,7 @@ export default defineConfig({
     resolve: {
       alias: {
         '@tamagui/core': require.resolve(`@tamagui/core/native-test`),
+        '@tamagui/web': require.resolve(`@tamagui/core/native-test`),
       },
     },
   }),
