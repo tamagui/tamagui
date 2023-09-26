@@ -15551,6 +15551,7 @@ __metadata:
     eslint-plugin-import: ^2.28.0
     expo: ^49.0.0
     expo-constants: ~14.4.2
+    expo-device: ~5.4.0
     expo-font: ~11.4.0
     expo-image: ~1.3.3
     expo-image-picker: ~14.3.1
@@ -15666,55 +15667,6 @@ __metadata:
   peerDependencies:
     expo: "*"
   checksum: 393158c537af73a00ca612e31389d889dfa7adcf07fb1028879ff8bfd65b2f2d0b8c81c8f148fa0c43f1b1656504bb35e5a25235446418b3d99bdb3681e84d74
-  languageName: node
-  linkType: hard
-
-"expo-dev-client@npm:~2.4.6":
-  version: 2.4.10
-  resolution: "expo-dev-client@npm:2.4.10"
-  dependencies:
-    expo-dev-launcher: 2.4.12
-    expo-dev-menu: 3.2.0
-    expo-dev-menu-interface: 1.3.0
-    expo-manifests: ~0.7.0
-    expo-updates-interface: ~0.10.0
-  peerDependencies:
-    expo: "*"
-  checksum: d0fbcb5574c109a895d9350f69a0db67555ec9537eb4e287418f57a91d8ea17439f2a91e5215d5bd7728051e94544b5e36fd59b14c3cd1b48a34ca2b60f92ed1
-  languageName: node
-  linkType: hard
-
-"expo-dev-launcher@npm:2.4.12":
-  version: 2.4.12
-  resolution: "expo-dev-launcher@npm:2.4.12"
-  dependencies:
-    expo-dev-menu: 3.2.0
-    resolve-from: ^5.0.0
-    semver: ^7.5.3
-  peerDependencies:
-    expo: "*"
-  checksum: 6ede5d40d4b3a074a7563a2f148cef421f9f1a57e5dc935a22f2ebfa88ec3eab22df9c452ffb881b7b95a6fd41cdf2e12bd96f1156d5268c143c00c092a9a11d
-  languageName: node
-  linkType: hard
-
-"expo-dev-menu-interface@npm:1.3.0":
-  version: 1.3.0
-  resolution: "expo-dev-menu-interface@npm:1.3.0"
-  peerDependencies:
-    expo: "*"
-  checksum: 74fbe9849bda3534981518154cb3ac62f8e96f4f68eab07f04340f8d6e28dd479819d5ae7d5576d5656d2c5780128b1e0e59c2701ad93af83704afa57b240ee8
-  languageName: node
-  linkType: hard
-
-"expo-dev-menu@npm:3.2.0":
-  version: 3.2.0
-  resolution: "expo-dev-menu@npm:3.2.0"
-  dependencies:
-    expo-dev-menu-interface: 1.3.0
-    semver: ^7.5.3
-  peerDependencies:
-    expo: "*"
-  checksum: 2b877c8e24ed2e3ed86f849bedd0122d6f4fde84bc74927eca40e1181ac40f298fb1c230f21ca7efe988320761c6e0c3d7e24f996392a42ad2c6cc1b9f357699
   languageName: node
   linkType: hard
 
