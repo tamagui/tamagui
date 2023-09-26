@@ -31,7 +31,9 @@
     "src",
     "reset.css",
     "native.js",
-    "native.d.ts"
+    "native.d.ts",
+    "native-test.js",
+    "native-test.d.ts"
   ],
   "dependencies": {
     "@tamagui/react-native-use-pressable": "1.72.1",
