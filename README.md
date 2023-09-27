@@ -200,3 +200,10 @@ EAS has already been configured for you, but you still need to do the following:
 - `npm install --global eas-cli`
 - `cd apps/expo`
 - `eas build` - This will also add your EAS project ID to app.json
+
+<!-- Script todos -->
+
+1. Pull fetch latest commits from unistack dev branch upstream
+1. Cherry pick multiple commits from unistack dev from dev branch upstream
+1. run yarn install from root
+1.

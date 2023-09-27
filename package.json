@@ -66,6 +66,7 @@
   "packageManager": "yarn@3.6.3",
   "devDependencies": {
     "@turbo/gen": "^1.10.12",
-    "change-case": "^4.1.2"
+    "change-case": "^4.1.2",
+    "zx": "^7.2.3"
   }
 }

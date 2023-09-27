@@ -27595,6 +27595,7 @@ __metadata:
     prettier: ^2.7.1
     turbo: latest
     typescript: ^5.1.3
+    zx: ^7.2.3
   languageName: unknown
   linkType: soft
 
@@ -28975,7 +28976,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zx@npm:^7.1.1":
+"zx@npm:^7.1.1, zx@npm:^7.2.3":
   version: 7.2.3
   resolution: "zx@npm:7.2.3"
   dependencies:
