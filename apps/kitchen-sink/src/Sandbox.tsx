@@ -1,6 +1,6 @@
 // import './wdyr'
 
-import { SelectDemo } from '@tamagui/demos'
+import { SelectDemo, SwitchDemo } from '@tamagui/demos'
 import { Ban, Search } from '@tamagui/lucide-icons'
 import { Stack, styled } from '@tamagui/web'
 import {
@@ -36,7 +36,9 @@ export const Sandbox = () => {
     <>
       {/*  */}
 
-      <Test w={100} h={100} square={10} />
+      <YStack group="hi">
+        <SwitchDemo />
+      </YStack>
 
       {/* <XStack group="testy">
         <Square bc="red" $group-testy={{ bc: 'blue' }} size={100} />
