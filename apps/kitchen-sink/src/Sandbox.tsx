@@ -36,7 +36,7 @@ export const Sandbox = () => {
     <>
       {/*  */}
 
-      <YStack group="hi">
+      <YStack group="testy">
         <SwitchDemo />
       </YStack>
 
