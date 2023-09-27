@@ -26,14 +26,15 @@ export default defineConfig({
   //   },
   // },
 
-  ...(!process.env.DISABLE_NATIVE_TEST && {
-    resolve: {
-      alias: {
-        '@tamagui/core': require.resolve(`@tamagui/core/native-test`),
-        '@tamagui/web': require.resolve(`@tamagui/core/native-test`),
+  ...(!process.env.DISABLE_NATIVE_TEST &&
+    process.env.TAMAGUI_TARGET !== 'web' && {
+      resolve: {
+        alias: {
+          '@tamagui/core': require.resolve(`@tamagui/core/native-test`),
+          '@tamagui/web': require.resolve(`@tamagui/core/native-test`),
+        },
       },
-    },
-  }),
+    }),
 
   test: {
     // for compat with some jest libs (like @testing-library/jest-dom)
