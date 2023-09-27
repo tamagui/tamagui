@@ -571,11 +571,7 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`theme`
 
-    const mediaState = useMedia(
-      // @ts-ignore, we just pass a stable object so we can get it later with
-      // should match to the one used in `setMediaShouldUpdate` below
-      stateRef
-    )
+    const mediaState = useMedia(stateRef, componentContext)
 
     if (process.env.NODE_ENV === 'development' && time) time`media`
 
