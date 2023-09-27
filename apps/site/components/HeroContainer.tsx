@@ -6,7 +6,7 @@ import {
 } from 'hooks/useAnimationDriverToggler'
 import React from 'react'
 import {
-  AnimationDriverProvider,
+  Configuration,
   Switch,
   Theme,
   TooltipSimple,
@@ -159,7 +159,7 @@ const HeroContainerInner = ({
   const { driver, driverName } = useAnimationDriverToggler()
 
   return (
-    <AnimationDriverProvider driver={driver} key={driverName}>
+    <Configuration animationDriver={driver} key={driverName}>
       <ErrorBoundary>
         {demoMultiple ? (
           <XStack space="$3" px="$8">
@@ -186,6 +186,6 @@ const HeroContainerInner = ({
           children
         )}
       </ErrorBoundary>
-    </AnimationDriverProvider>
+    </Configuration>
   )
 }

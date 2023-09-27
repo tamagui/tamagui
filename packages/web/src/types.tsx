@@ -180,6 +180,7 @@ export type ReactComponentWithRef<Props, Ref> = ForwardRefExoticComponent<
 >
 
 export type ComponentContextI = {
+  disableSSR?: boolean
   inText: boolean
   language: LanguageContextType | null
   animationDriver: AnimationDriver | null

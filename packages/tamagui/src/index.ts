@@ -126,7 +126,7 @@ export type {
 } from '@tamagui/core'
 
 export {
-  AnimationDriverProvider,
+  Configuration,
   ComponentContext,
   FontLanguage,
   // components
@@ -143,7 +143,6 @@ export {
   createTheme,
   createTokens,
   createVariable,
-  getAnimationDriver,
   getConfig,
   getMedia,
   getStylesAtomic,
@@ -184,6 +183,7 @@ export {
   useProps,
   usePropsAndStyle,
   useStyle,
+  useConfiguration,
   useTheme,
   useThemeName,
   variableToString,
