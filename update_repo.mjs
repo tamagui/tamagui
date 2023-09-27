@@ -49,6 +49,8 @@ await $`git checkout dev`
 // Fetch the latest commits from the 'dev' branch of the 'upstream' remote
 await $`git fetch unistack dev`
 
+console.log(`Known Commit zzz: ${KNOWN_COMMIT}`)
+
 // Get all the commit hashes after the known commit from upstream/dev branch, excluding merge commits
 const { stdout: COMMIT_HASHES } =
   await $`git log ${KNOWN_COMMIT}..unistack/dev --pretty=format:"%H" --no-merges`
