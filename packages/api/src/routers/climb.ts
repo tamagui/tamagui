@@ -280,6 +280,7 @@ export const climbRouter = createTRPCRouter({
         .insert([
           {
             name: input.name,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             type: input.type as any,
             start: add(new Date(input.start), {
               days: Number(input.day),

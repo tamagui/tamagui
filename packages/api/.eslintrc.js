@@ -1,4 +1,4 @@
-
+/* eslint-env node */
 module.exports = {
-    extends: ['custom']
+  extends: ['custom'],
 }

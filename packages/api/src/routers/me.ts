@@ -2,7 +2,7 @@ import { TRPCError } from '@trpc/server'
 import { createTRPCRouter, protectedProcedure } from '../trpc'
 import { z } from 'zod'
 
-import { Expo, ExpoPushMessage } from 'expo-server-sdk'
+import { Expo } from 'expo-server-sdk'
 
 const expo = new Expo({
   accessToken: 'HQgepaSF27aFDYdM9iPl8sHiKva5tsbu0_FYZK5o',
@@ -42,6 +42,7 @@ export const meRouter = createTRPCRouter({
 
         if (error) {
           throw new TRPCError({
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             code: error?.code as any,
             message: error.message,
           })
@@ -68,14 +69,14 @@ export const meRouter = createTRPCRouter({
         process.env.BENJAMIN_PHONE_EXPO_TOKEN,
         'ExponentPushToken[hQyzQGD62nI5e3PipCBGl7]'
       )
-      const messages = [
-        {
-          to: 'ExponentPushToken[hQyzQGD62nI5e3PipCBGl7]',
-          sound: 'default',
-          body: `from the server bitch has joined your climb`,
-          data: { withSome: 'data' },
-        },
-      ]
+      // const messages = [
+      //   {
+      //     to: 'ExponentPushToken[hQyzQGD62nI5e3PipCBGl7]',
+      //     sound: 'default',
+      //     body: `from the server bitch has joined your climb`,
+      //     data: { withSome: 'data' },
+      //   },
+      // ]
 
       // to: ExpoPushToken | ExpoPushToken[];
       // data?: object;
@@ -126,6 +127,7 @@ export const meRouter = createTRPCRouter({
     const { data: profiles } = await supabase.from('profiles').select('*')
 
     if (error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       throw new TRPCError({ code: error?.code as any, message: error.message })
     }
     return profileClimbData
