@@ -35,13 +35,14 @@
 
 import { $ } from 'zx'
 
+const lastArg = process.argv[process.argv.length - 1]
 // Ensure that the KNOWN_COMMIT argument is passed
-if (!process.argv[2]) {
+if (!lastArg) {
   console.error('Please provide the known commit as an argument.')
   process.exit(1)
 }
 
-const KNOWN_COMMIT = process.argv[2]
+const KNOWN_COMMIT = lastArg
 
 // Ensure that we're on the desired branch
 await $`git checkout dev`
