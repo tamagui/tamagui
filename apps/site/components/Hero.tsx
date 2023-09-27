@@ -218,6 +218,31 @@ const HeroContents = memo(function HeroContents() {
               mx: '50%',
             }}
           >
+            <NextLink prefetch={false} href="/docs/intro/introduction">
+              <Button
+                themeInverse
+                w={120}
+                h={52}
+                accessibilityLabel="Get started (docs)"
+                fontFamily="$silkscreen"
+                size="$5"
+                borderRadius={1000}
+                bordered
+                bw={2}
+                mx="$2"
+                tabIndex="0"
+                elevation="$1"
+                letterSpacing={-2}
+                pressStyle={{
+                  elevation: '$0',
+                }}
+              >
+                <ButtonText fontFamily="$silkscreen" size="$7" letterSpacing={1}>
+                  Start
+                </ButtonText>
+              </Button>
+            </NextLink>
+
             <NextLink prefetch={false} href="/docs/intro/why-a-compiler">
               <Button
                 // layout shifts...
@@ -238,32 +263,6 @@ const HeroContents = memo(function HeroContents() {
               >
                 <ButtonText fontFamily="$silkscreen" size="$7" letterSpacing={1}>
                   How?
-                </ButtonText>
-              </Button>
-            </NextLink>
-
-            <NextLink prefetch={false} href="/docs/intro/introduction">
-              <Button
-                // layout shifts...
-                theme="alt2"
-                w={120}
-                h={52}
-                accessibilityLabel="Get started (docs)"
-                fontFamily="$silkscreen"
-                size="$5"
-                borderRadius={1000}
-                bordered
-                bw={2}
-                mx="$2"
-                tabIndex="0"
-                elevation="$1"
-                letterSpacing={-2}
-                pressStyle={{
-                  elevation: '$0',
-                }}
-              >
-                <ButtonText fontFamily="$silkscreen" size="$7" letterSpacing={1}>
-                  Start
                 </ButtonText>
               </Button>
             </NextLink>
