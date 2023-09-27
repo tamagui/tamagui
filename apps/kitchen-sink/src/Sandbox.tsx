@@ -36,7 +36,7 @@ export const Sandbox = () => {
     <>
       {/*  */}
 
-      <Test w={100} h={100} square={undefined} />
+      <Test w={100} h={100} square={10} />
 
       {/* <XStack group="testy">
         <Square bc="red" $group-testy={{ bc: 'blue' }} size={100} />

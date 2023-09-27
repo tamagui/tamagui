@@ -23,7 +23,8 @@ export function getThemeCSSRules(props: {
     const { config, themeName, theme, names } = props
 
     // special case for SSR
-    const hasDarkLight = 'light' in config.themes || 'dark' in config.themes
+    const hasDarkLight =
+      config.themes && ('light' in config.themes || 'dark' in config.themes)
     const CNP = `.${THEME_CLASSNAME_PREFIX}`
     let vars = ''
 
