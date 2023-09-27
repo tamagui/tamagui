@@ -7,21 +7,22 @@ import {
   createStyledContext,
   useComposedRefs,
 } from '@tamagui/core'
-// TODO: this import might be wrong
 import { Dismissable as DismissableLayer } from '@tamagui/dismissable'
 import { dispatchDiscreteCustomEvent } from '@tamagui/dismissable'
+import { useFocusGuards } from '@tamagui/focus-guard'
 import { FocusScope } from '@tamagui/focus-scope'
 import * as PopperPrimitive from '@tamagui/popper'
 import type { PopperContentProps } from '@tamagui/popper'
 import { Portal as PortalPrimitive, PortalProps } from '@tamagui/portal'
 import { RovingFocusGroup } from '@tamagui/roving-focus'
 import type { RovingFocusGroupProps } from '@tamagui/roving-focus'
-import { SizableStack, ThemeableStack } from '@tamagui/stacks'
+import { SizableStack, SizableStackProps, ThemeableStack } from '@tamagui/stacks'
 import { useCallbackRef } from '@tamagui/use-callback-ref'
 import { useDirection } from '@tamagui/use-direction'
 import { Stack, isWeb, styled } from '@tamagui/web'
 import { TamaguiElement } from '@tamagui/web/types'
 import { hideOthers } from 'aria-hidden'
+import { useMemo } from 'react'
 import { useId } from 'react'
 import * as React from 'react'
 import { RemoveScroll } from 'react-remove-scroll'
@@ -329,7 +330,7 @@ const MenuRootContentNonModal = React.forwardRef<
 
 /* ---------------------------------------------------------------------------------------------- */
 
-type MenuContentImplElement = React.ElementRef<typeof SizableStack>
+type MenuContentImplElement = React.ElementRef<typeof PopperPrimitive.PopperContent>
 type FocusScopeProps = React.ComponentPropsWithoutRef<typeof FocusScope>
 type DismissableLayerProps = React.ComponentPropsWithoutRef<typeof DismissableLayer>
 type MenuContentImplPrivateProps = {
@@ -371,227 +372,232 @@ interface MenuContentImplProps
   onInteractOutside?: DismissableLayerProps['onInteractOutside']
 }
 
-const MenuContentImpl = React.forwardRef<MenuContentImplElement, MenuContentImplProps>(
-  (props: ScopedProps<MenuContentImplProps>, forwardedRef) => {
-    const {
-      __scopeMenu,
-      loop = false,
-      trapFocus,
-      onOpenAutoFocus,
-      onCloseAutoFocus,
-      disableOutsidePointerEvents,
-      onEntryFocus,
-      onEscapeKeyDown,
-      onPointerDownOutside,
-      onFocusOutside,
-      onInteractOutside,
-      onDismiss,
-      disableOutsideScroll,
-      ...contentProps
-    } = props
-    const context = useMenuContext(__scopeMenu)
-    const rootContext = useMenuRootContext(__scopeMenu)
-    const getItems = useCollection(__scopeMenu)
-    const [currentItemId, setCurrentItemId] = React.useState<string | null>(null)
-    const contentRef = React.useRef<TamaguiElement>(null)
-    const composedRefs = useComposedRefs(
-      forwardedRef,
-      contentRef,
-      context.onContentChange
-    )
-    const timerRef = React.useRef(0)
-    const searchRef = React.useRef('')
-    const pointerGraceTimerRef = React.useRef(0)
-    const pointerGraceIntentRef = React.useRef<GraceIntent | null>(null)
-    const pointerDirRef = React.useRef<Side>('right')
-    const lastPointerXRef = React.useRef(0)
+type StyleableMenuContentProps = MenuContentImplProps & SizableStackProps
 
-    const ScrollLockWrapper = disableOutsideScroll ? RemoveScroll : React.Fragment
-    const scrollLockWrapperProps = disableOutsideScroll
-      ? { as: Slot, allowPinchZoom: true }
-      : undefined
+const MenuContentImpl = React.forwardRef<
+  MenuContentImplElement,
+  ScopedProps<StyleableMenuContentProps>
+>((props, forwardedRef) => {
+  const {
+    __scopeMenu,
+    loop = false,
+    trapFocus,
+    onOpenAutoFocus,
+    onCloseAutoFocus,
+    disableOutsidePointerEvents,
+    onEntryFocus,
+    onEscapeKeyDown,
+    onPointerDownOutside,
+    onFocusOutside,
+    onInteractOutside,
+    onDismiss,
+    disableOutsideScroll,
+    ...contentProps
+  } = props
+  const context = useMenuContext(__scopeMenu)
+  const rootContext = useMenuRootContext(__scopeMenu)
+  const getItems = useCollection(__scopeMenu)
+  const [currentItemId, setCurrentItemId] = React.useState<string | null>(null)
+  const contentRef = React.useRef<TamaguiElement>(null)
+  const composedRefs = useComposedRefs(forwardedRef, contentRef, context.onContentChange)
+  const timerRef = React.useRef<NodeJS.Timeout>(0 as unknown as NodeJS.Timeout)
+  const searchRef = React.useRef('')
+  const pointerGraceTimerRef = React.useRef(0)
+  const pointerGraceIntentRef = React.useRef<GraceIntent | null>(null)
+  const pointerDirRef = React.useRef<Side>('right')
+  const lastPointerXRef = React.useRef(0)
 
-    const handleTypeaheadSearch = (key: string) => {
-      const search = searchRef.current + key
-      const items = getItems().filter((item) => !item.disabled)
-      const currentItem = document.activeElement
-      const currentMatch = items.find(
-        (item) => item.ref.current === currentItem
-      )?.textValue
-      const values = items.map((item) => item.textValue)
-      const nextMatch = getNextMatch(values, search, currentMatch)
-      const newItem = items.find((item) => item.textValue === nextMatch)?.ref.current
+  const ScrollLockWrapper = disableOutsideScroll ? RemoveScroll : React.Fragment
+  const scrollLockWrapperProps = disableOutsideScroll
+    ? { as: Slot, allowPinchZoom: true }
+    : undefined
 
-      // Reset `searchRef` 1 second after it was last updated
-      ;(function updateSearch(value: string) {
-        searchRef.current = value
-        window.clearTimeout(timerRef.current)
-        if (value !== '')
-          timerRef.current = window.setTimeout(() => updateSearch(''), 1000)
-      })(search)
+  const handleTypeaheadSearch = (key: string) => {
+    const search = searchRef.current + key
+    const items = getItems().filter((item) => !item.disabled)
+    const currentItem = document.activeElement
+    const currentMatch = items.find((item) => item.ref.current === currentItem)?.textValue
+    const values = items.map((item) => item.textValue)
+    const nextMatch = getNextMatch(values, search, currentMatch)
+    const newItem = items.find((item) => item.textValue === nextMatch)?.ref.current
 
-      if (newItem) {
-        /**
-         * Imperative focus during keydown is risky so we prevent React's batching updates
-         * to avoid potential bugs. See: https://github.com/facebook/react/issues/20332
-         */
-        setTimeout(() => (newItem as HTMLElement).focus())
-      }
+    // Reset `searchRef` 1 second after it was last updated
+    ;(function updateSearch(value: string) {
+      searchRef.current = value
+      clearTimeout(timerRef.current)
+      if (value !== '') timerRef.current = setTimeout(() => updateSearch(''), 1000)
+    })(search)
+
+    if (newItem) {
+      /**
+       * Imperative focus during keydown is risky so we prevent React's batching updates
+       * to avoid potential bugs. See: https://github.com/facebook/react/issues/20332
+       */
+      setTimeout(() => (newItem as HTMLElement).focus())
     }
-
-    React.useEffect(() => {
-      return () => window.clearTimeout(timerRef.current)
-    }, [])
-
-    // Make sure the whole tree has focus guards as our `MenuContent` may be
-    // the last element in the DOM (beacuse of the `Portal`)
-    // TODO: re-enable this when we have focus guards
-    // useFocusGuards()
-
-    const isPointerMovingToSubmenu = React.useCallback((event: React.PointerEvent) => {
-      const isMovingTowards =
-        pointerDirRef.current === pointerGraceIntentRef.current?.side
-      return (
-        isMovingTowards &&
-        isPointerInGraceArea(event, pointerGraceIntentRef.current?.area)
-      )
-    }, [])
-
-    const content = (
-      <PopperPrimitive.Popper
-        role="menu"
-        aria-orientation="vertical"
-        data-state={getOpenState(context.open)}
-        data-radix-menu-content=""
-        // dir={rootContext.dir}
-        __scopePopper={__scopeMenu || MENU_CONTEXT}
-        {...contentProps}
-        //   @ts-ignore
-        //   TODO: re-enable these commented out props
-        style={{ outline: 'none', ...contentProps.style }}
-        //   onKeyDown={composeEventHandlers(contentProps.onKeyDown, (event) => {
-        //     // submenu key events bubble through portals. We only care about keys in this menu.
-        //     const target = event.target as HTMLElement
-        //     const isKeyDownInside =
-        //       target.closest('[data-radix-menu-content]') === event.currentTarget
-        //     const isModifierKey = event.ctrlKey || event.altKey || event.metaKey
-        //     const isCharacterKey = event.key.length === 1
-        //     if (isKeyDownInside) {
-        //       // menus should not be navigated using tab key so we prevent it
-        //       if (event.key === 'Tab') event.preventDefault()
-        //       if (!isModifierKey && isCharacterKey)
-        //         handleTypeaheadSearch(event.key)
-        //     }
-        //     // focus first/last item based on key pressed
-        //     const content = contentRef.current
-        //     if (event.target !== content) return
-        //     if (!FIRST_LAST_KEYS.includes(event.key)) return
-        //     event.preventDefault()
-        //     const items = getItems().filter((item) => !item.disabled)
-        //     const candidateNodes = items.map((item) => item.ref.current!)
-        //     if (LAST_KEYS.includes(event.key)) candidateNodes.reverse()
-        //     focusFirst(candidateNodes)
-        //   })}
-        // onBlur={composeEventHandlers(props.onBlur, (event) => {
-        //   // clear search buffer when leaving the menu
-        //   if (!event.currentTarget.contains(event.target)) {
-        //     window.clearTimeout(timerRef.current)
-        //     searchRef.current = ''
-        //   }
-        // })}
-        //   onPointerMove={composeEventHandlers(
-        //     props.onPointerMove,
-        //     whenMouse((event) => {
-        //       const target = event.target as HTMLElement
-        //       const pointerXHasChanged = lastPointerXRef.current !== event.clientX
-
-        //       // We don't use `event.movementX` for this check because Safari will
-        //       // always return `0` on a pointer event.
-        //       if (event.currentTarget.contains(target) && pointerXHasChanged) {
-        //         const newDir =
-        //           event.clientX > lastPointerXRef.current ? 'right' : 'left'
-        //         pointerDirRef.current = newDir
-        //         lastPointerXRef.current = event.clientX
-        //       }
-        //     })
-        //   )}
-      />
-    )
-
-    return (
-      <MenuContentProvider
-        scope={__scopeMenu}
-        searchRef={searchRef}
-        onItemEnter={React.useCallback(
-          (event) => {
-            if (isPointerMovingToSubmenu(event)) event.preventDefault()
-          },
-          [isPointerMovingToSubmenu]
-        )}
-        onItemLeave={React.useCallback(
-          (event) => {
-            if (isPointerMovingToSubmenu(event)) return
-            contentRef.current?.focus()
-            setCurrentItemId(null)
-          },
-          [isPointerMovingToSubmenu]
-        )}
-        onTriggerLeave={React.useCallback(
-          (event) => {
-            if (isPointerMovingToSubmenu(event)) event.preventDefault()
-          },
-          [isPointerMovingToSubmenu]
-        )}
-        pointerGraceTimerRef={pointerGraceTimerRef}
-        onPointerGraceIntentChange={React.useCallback((intent) => {
-          pointerGraceIntentRef.current = intent
-        }, [])}
-      >
-        {isWeb ? (
-          <ScrollLockWrapper {...scrollLockWrapperProps}>
-            <FocusScope
-              trapped={trapFocus}
-              onMountAutoFocus={composeEventHandlers(onOpenAutoFocus, (event) => {
-                // when opening, explicitly focus the content area only and leave
-                // `onEntryFocus` in  control of focusing first item
-                event.preventDefault()
-                contentRef.current?.focus()
-              })}
-              onUnmountAutoFocus={onCloseAutoFocus}
-            >
-              <DismissableLayer
-                disableOutsidePointerEvents={disableOutsidePointerEvents}
-                onEscapeKeyDown={onEscapeKeyDown}
-                onPointerDownOutside={onPointerDownOutside}
-                onFocusOutside={onFocusOutside}
-                onInteractOutside={onInteractOutside}
-                onDismiss={onDismiss}
-              >
-                <RovingFocusGroup
-                  asChild
-                  __scopeRovingFocusGroup={__scopeMenu || MENU_CONTEXT}
-                  dir={rootContext.dir}
-                  orientation="vertical"
-                  loop={loop}
-                  currentTabStopId={currentItemId}
-                  onCurrentTabStopIdChange={setCurrentItemId}
-                  onEntryFocus={composeEventHandlers(onEntryFocus, (event) => {
-                    // only focus first item when using keyboard
-                    if (!rootContext.isUsingKeyboardRef.current) event.preventDefault()
-                  })}
-                >
-                  {content}
-                </RovingFocusGroup>
-              </DismissableLayer>
-            </FocusScope>
-          </ScrollLockWrapper>
-        ) : (
-          content
-        )}
-      </MenuContentProvider>
-    )
   }
-)
+
+  React.useEffect(() => {
+    return () => clearTimeout(timerRef.current)
+  }, [])
+
+  // Make sure the whole tree has focus guards as our `MenuContent` may be
+  // the last element in the DOM (beacuse of the `Portal`)
+  useFocusGuards()
+
+  const isPointerMovingToSubmenu = React.useCallback((event: React.PointerEvent) => {
+    const isMovingTowards = pointerDirRef.current === pointerGraceIntentRef.current?.side
+    return (
+      isMovingTowards && isPointerInGraceArea(event, pointerGraceIntentRef.current?.area)
+    )
+  }, [])
+
+  const content = (
+    <PopperPrimitive.PopperContent
+      role="menu"
+      aria-orientation="vertical"
+      data-state={getOpenState(context.open)}
+      data-radix-menu-content=""
+      // @ts-ignore
+      dir={rootContext.dir}
+      __scopePopper={__scopeMenu || MENU_CONTEXT}
+      {...contentProps}
+      // @ts-ignore
+      style={{ outline: 'none', ...contentProps.style }}
+      {...(isWeb
+        ? {
+            onKeyDown: composeEventHandlers(
+              //@ts-ignore
+              contentProps.onKeyDown,
+              (event: KeyboardEvent) => {
+                // submenu key events bubble through portals. We only care about keys in this menu.
+                const target = event.target as HTMLElement
+                const isKeyDownInside =
+                  target.closest('[data-radix-menu-content]') === event.currentTarget
+                const isModifierKey = event.ctrlKey || event.altKey || event.metaKey
+                const isCharacterKey = event.key.length === 1
+                if (isKeyDownInside) {
+                  // menus should not be navigated using tab key so we prevent it
+                  if (event.key === 'Tab') event.preventDefault()
+                  if (!isModifierKey && isCharacterKey) handleTypeaheadSearch(event.key)
+                }
+                // focus first/last item based on key pressed
+                const content = contentRef.current
+                if (event.target !== content) return
+                if (!FIRST_LAST_KEYS.includes(event.key)) return
+                event.preventDefault()
+                const items = getItems().filter((item) => !item.disabled)
+                const candidateNodes = items.map((item) => item.ref.current!)
+                if (LAST_KEYS.includes(event.key)) candidateNodes.reverse()
+                focusFirst(candidateNodes as HTMLElement[])
+              }
+            ),
+            // @ts-ignore
+            onBlur: composeEventHandlers(props.onBlur, (event: MouseEvent) => {
+              // clear search buffer when leaving the menu
+              // @ts-ignore
+              if (!event.currentTarget?.contains(event.target)) {
+                clearTimeout(timerRef.current)
+                searchRef.current = ''
+              }
+            }),
+            onPointerMove: composeEventHandlers(
+              // @ts-ignore
+              props.onPointerMove,
+              // @ts-ignore
+              whenMouse((event: MouseEvent) => {
+                const target = event.target as HTMLElement
+                const pointerXHasChanged = lastPointerXRef.current !== event.clientX
+
+                // We don't use `event.movementX` for this check because Safari will
+                // always return `0` on a pointer event.
+                // @ts-ignore
+                if (event.currentTarget?.contains(target) && pointerXHasChanged) {
+                  const newDir =
+                    event.clientX > lastPointerXRef.current ? 'right' : 'left'
+                  pointerDirRef.current = newDir
+                  lastPointerXRef.current = event.clientX
+                }
+              })
+            ),
+          }
+        : {})}
+    />
+  )
+
+  return (
+    <MenuContentProvider
+      scope={__scopeMenu}
+      searchRef={searchRef}
+      onItemEnter={React.useCallback(
+        (event) => {
+          if (isPointerMovingToSubmenu(event)) event.preventDefault()
+        },
+        [isPointerMovingToSubmenu]
+      )}
+      onItemLeave={React.useCallback(
+        (event) => {
+          if (isPointerMovingToSubmenu(event)) return
+          contentRef.current?.focus()
+          setCurrentItemId(null)
+        },
+        [isPointerMovingToSubmenu]
+      )}
+      onTriggerLeave={React.useCallback(
+        (event) => {
+          if (isPointerMovingToSubmenu(event)) event.preventDefault()
+        },
+        [isPointerMovingToSubmenu]
+      )}
+      pointerGraceTimerRef={pointerGraceTimerRef}
+      onPointerGraceIntentChange={React.useCallback((intent) => {
+        pointerGraceIntentRef.current = intent
+      }, [])}
+    >
+      {isWeb ? (
+        <ScrollLockWrapper {...scrollLockWrapperProps}>
+          <FocusScope
+            trapped={trapFocus}
+            onMountAutoFocus={composeEventHandlers(onOpenAutoFocus, (event) => {
+              // when opening, explicitly focus the content area only and leave
+              // `onEntryFocus` in  control of focusing first item
+              event.preventDefault()
+              contentRef.current?.focus()
+            })}
+            onUnmountAutoFocus={onCloseAutoFocus}
+          >
+            <DismissableLayer
+              disableOutsidePointerEvents={disableOutsidePointerEvents}
+              onEscapeKeyDown={onEscapeKeyDown}
+              onPointerDownOutside={onPointerDownOutside}
+              onFocusOutside={onFocusOutside}
+              onInteractOutside={onInteractOutside}
+              onDismiss={onDismiss}
+            >
+              <RovingFocusGroup
+                asChild
+                __scopeRovingFocusGroup={__scopeMenu || MENU_CONTEXT}
+                dir={rootContext.dir}
+                orientation="vertical"
+                loop={loop}
+                currentTabStopId={currentItemId}
+                onCurrentTabStopIdChange={setCurrentItemId}
+                onEntryFocus={composeEventHandlers(onEntryFocus, (event) => {
+                  // only focus first item when using keyboard
+                  if (!rootContext.isUsingKeyboardRef.current) event.preventDefault()
+                })}
+              >
+                {content}
+              </RovingFocusGroup>
+            </DismissableLayer>
+          </FocusScope>
+        </ScrollLockWrapper>
+      ) : (
+        content
+      )}
+    </MenuContentProvider>
+  )
+})
 
 MenuContent.displayName = CONTENT_NAME
 
@@ -658,6 +664,23 @@ const MenuItemImplFrame = styled(ThemeableStack, {
   role: 'menuitem',
 })
 
+function findTextInChildren(children): string {
+  return 'bla'
+  if (typeof children === 'string') {
+    return children
+  }
+
+  if (Array.isArray(children)) {
+    return children.map((child) => findTextInChildren(child)).join('')
+  }
+
+  if (children.props && children.props.children) {
+    return findTextInChildren(children.props.children)
+  }
+
+  return ''
+}
+
 const MenuItem = MenuItemImplFrame.styleable<ScopedProps<MenuItemProps>>(
   (props: ScopedProps<MenuItemProps>, forwardedRef) => {
     const { disabled = false, onSelect, ...itemProps } = props
@@ -686,10 +709,26 @@ const MenuItem = MenuItemImplFrame.styleable<ScopedProps<MenuItemProps>>(
       }
     }
 
+    const textContent = React.useMemo(
+      () => findTextInChildren(itemProps.children) as string,
+      [itemProps.children]
+    )
+
     return (
       <MenuItemImpl
         {...itemProps}
-        ref={composedRefs}
+        // @ts-ignore
+        ref={
+          isWeb
+            ? composeRefs
+            : (_ref) => {
+                // @ts-ignore
+                composedRefs({
+                  ..._ref,
+                  textContent,
+                })
+              }
+        }
         disabled={disabled}
         onPress={composeEventHandlers(props.onPress, handleSelect)}
         onPointerDown={(event) => {
@@ -700,24 +739,31 @@ const MenuItem = MenuItemImplFrame.styleable<ScopedProps<MenuItemProps>>(
           // Pointer down can move to a different menu item which should activate it on pointer up.
           // We dispatch a click for selection to allow composition with click based triggers and to
           // prevent Firefox from getting stuck in text selection mode when the menu closes.
-          //   TODO: uncomment this line
-          //   if (!isPointerDownRef.current) event.currentTarget?.click()
+          if (isWeb) {
+            // @ts-ignore
+            if (!isPointerDownRef.current) event.currentTarget?.click()
+          }
         })}
-        // TODO: uncomment this prop
-        // onKeyDown={composeEventHandlers(props.onKeyDown, (event) => {
-        //   const isTypingAhead = contentContext.searchRef.current !== ''
-        //   if (disabled || (isTypingAhead && event.key === ' ')) return
-        //   if (SELECTION_KEYS.includes(event.key)) {
-        //     event.currentTarget.click()
-        //     /**
-        //      * We prevent default browser behaviour for selection keys as they should trigger
-        //      * a selection only:
-        //      * - prevents space from scrolling the page.
-        //      * - if keydown causes focus to move, prevents keydown from firing on the new target.
-        //      */
-        //     event.preventDefault()
-        //   }
-        // })}
+        {...(isWeb
+          ? {
+              // @ts-ignore
+              onKeyDown: composeEventHandlers(props.onKeyDown, (event: KeyboardEvent) => {
+                const isTypingAhead = contentContext.searchRef.current !== ''
+                if (disabled || (isTypingAhead && event.key === ' ')) return
+                if (SELECTION_KEYS.includes(event.key)) {
+                  // @ts-ignore
+                  event.currentTarget?.click()
+                  /**
+                   * We prevent default browser behaviour for selection keys as they should trigger
+                   * a selection only:
+                   * - prevents space from scrolling the page.
+                   * - if keydown causes focus to move, prevents keydown from firing on the new target.
+                   */
+                  event.preventDefault()
+                }
+              }),
+            }
+          : {})}
       />
     )
   }
@@ -748,8 +794,8 @@ const MenuItemImpl = React.forwardRef<
   React.useEffect(() => {
     const menuItem = ref.current
     if (menuItem) {
-      // TODO: .textContent seems to be only a web thing. We need to find a way to do this in React Native. probably using a ref
-      // setTextContent((menuItem.textContent ?? '').trim())
+      // @ts-ignore
+      setTextContent((menuItem.textContent ?? '').trim())
     }
   }, [itemProps.children])
 
@@ -781,27 +827,37 @@ const MenuItemImpl = React.forwardRef<
            * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
            * wiggles. This is to match native menu implementation.
            */
-          //TODO: uncomment these props
-          // onPointerMove={composeEventHandlers(
-          //   props.onPointerMove,
-          //   whenMouse((event) => {
-          //     if (disabled) {
-          //       contentContext.onItemLeave(event)
-          //     } else {
-          //       contentContext.onItemEnter(event)
-          //       if (!event.defaultPrevented) {
-          //         const item = event.currentTarget
-          //         item.focus()
-          //       }
-          //     }
-          //   })
-          // )}
-          // onPointerLeave={composeEventHandlers(
-          //   props.onPointerLeave,
-          //   whenMouse((event) => contentContext.onItemLeave(event))
-          // )}
-          // onFocus={composeEventHandlers(props.onFocus, () => setIsFocused(true))}
-          // onBlur={composeEventHandlers(props.onBlur, () => setIsFocused(false))}
+          onPointerMove={composeEventHandlers(
+            props.onPointerMove,
+            // @ts-ignore
+            whenMouse((event) => {
+              if (disabled) {
+                // @ts-ignore
+                contentContext.onItemLeave(event)
+              } else {
+                // @ts-ignore
+                contentContext.onItemEnter(event)
+                if (!event.defaultPrevented) {
+                  const item = event.currentTarget
+                  // @ts-ignore
+                  item.focus()
+                }
+              }
+            })
+          )}
+          onPointerLeave={composeEventHandlers(
+            // @ts-ignore
+            props.onPointerLeave,
+            // @ts-ignore
+            whenMouse((event) => contentContext.onItemLeave(event))
+          )}
+          {...(isWeb
+            ? {
+                onFocus: composeEventHandlers(props.onFocus, () => setIsFocused(true)),
+                // @ts-ignore
+                onBlur: composeEventHandlers(props.onBlur, () => setIsFocused(false)),
+              }
+            : null)}
         />
       </RovingFocusGroup.Item>
     </Collection.ItemSlot>
@@ -834,9 +890,13 @@ const MenuCheckboxItem = MenuCheckBoxItemFrame.styleable<
   const { checked = false, onCheckedChange, ...checkboxItemProps } = props
   return (
     <ItemIndicatorProvider scope={props.__scopeMenu} checked={checked}>
+      {/* @ts-ignore */}
       <MenuCheckBoxItemFrame
-        // TODO: this role is not supported in React Native
-        //   accessibilityRole="menuitemcheckbox"
+        {...(isWeb
+          ? {
+              role: 'menuitemcheckbox',
+            }
+          : null)}
         aria-checked={isIndeterminate(checked) ? 'mixed' : checked}
         {...checkboxItemProps}
         ref={forwardedRef}
@@ -912,10 +972,13 @@ const MenuRadioItem = MenuRadioItemFrame.styleable<ScopedProps<MenuRadioItemProp
     const checked = value === context.value
     return (
       <ItemIndicatorProvider scope={props.__scopeMenu} checked={checked}>
+        {/* @ts-ignore */}
         <MenuRadioItemFrame
-          //TODO: react native does not support this role
-          //   role="menuitemradio"
-          aria-checked={checked}
+          {...(isWeb
+            ? {
+                'aria-checked': { checked },
+              }
+            : null)}
           {...radioItemProps}
           ref={forwardedRef}
           data-state={getCheckedState(checked)}
@@ -1155,80 +1218,91 @@ const MenuSubTrigger = MenuAnchor.styleable<ScopedProps<MenuSubTriggerProps>>(
              * and we rely heavily on `onFocusOutside` for submenus to close when switching
              * between separate submenus.
              */
-            // TODO: uncomment this line
-            // event.currentTarget.focus()
+            if (isWeb) {
+              // @ts-ignore
+              event.currentTarget.focus()
+            }
             if (!context.open) context.onOpenChange(true)
           }}
           onPointerMove={composeEventHandlers(
-            props.onPointerMove
-            // TODO: uncomment this part
-            // whenMouse((event) => {
-            //   contentContext.onItemEnter(event)
-            //   if (event.defaultPrevented) return
-            //   if (!props.disabled && !context.open && !openTimerRef.current) {
-            //     contentContext.onPointerGraceIntentChange(null)
-            //     openTimerRef.current = window.setTimeout(() => {
-            //       context.onOpenChange(true)
-            //       clearOpenTimer()
-            //     }, 100)
-            //   }
-            // })
+            props.onPointerMove,
+            // @ts-ignore
+            whenMouse((event: PointerEvent<Element>) => {
+              contentContext.onItemEnter(event)
+              if (event.defaultPrevented) return
+              if (!props.disabled && !context.open && !openTimerRef.current) {
+                contentContext.onPointerGraceIntentChange(null)
+                openTimerRef.current = window.setTimeout(() => {
+                  context.onOpenChange(true)
+                  clearOpenTimer()
+                }, 100)
+              }
+            })
           )}
           onPointerLeave={composeEventHandlers(
-            props.onPointerLeave
-            // TODO: uncomment this part
-            // whenMouse((event) => {
-            //   clearOpenTimer()
+            props.onPointerLeave,
+            // @ts-ignore
+            whenMouse((event: PointerEvent<Element>) => {
+              clearOpenTimer()
 
-            //   const contentRect = context.content?.getBoundingClientRect()
-            //   if (contentRect) {
-            //     // TODO: make sure to update this when we change positioning logic
-            //     const side = context.content?.dataset.side as Side
-            //     const rightSide = side === 'right'
-            //     const bleed = rightSide ? -5 : +5
-            //     const contentNearEdge = contentRect[rightSide ? 'left' : 'right']
-            //     const contentFarEdge = contentRect[rightSide ? 'right' : 'left']
+              // @ts-ignore
+              const contentRect = context.content?.getBoundingClientRect()
+              if (contentRect) {
+                // TODO: make sure to update this when we change positioning logic
+                // @ts-ignore
+                const side = context.content?.dataset.side as Side
+                const rightSide = side === 'right'
+                const bleed = rightSide ? -5 : +5
+                const contentNearEdge = contentRect[rightSide ? 'left' : 'right']
+                const contentFarEdge = contentRect[rightSide ? 'right' : 'left']
 
-            //     contentContext.onPointerGraceIntentChange({
-            //       area: [
-            //         // Apply a bleed on clientX to ensure that our exit point is
-            //         // consistently within polygon bounds
-            //         { x: event.clientX + bleed, y: event.clientY },
-            //         { x: contentNearEdge, y: contentRect.top },
-            //         { x: contentFarEdge, y: contentRect.top },
-            //         { x: contentFarEdge, y: contentRect.bottom },
-            //         { x: contentNearEdge, y: contentRect.bottom },
-            //       ],
-            //       side,
-            //     })
+                contentContext.onPointerGraceIntentChange({
+                  area: [
+                    // Apply a bleed on clientX to ensure that our exit point is
+                    // consistently within polygon bounds
+                    { x: event.clientX + bleed, y: event.clientY },
+                    { x: contentNearEdge, y: contentRect.top },
+                    { x: contentFarEdge, y: contentRect.top },
+                    { x: contentFarEdge, y: contentRect.bottom },
+                    { x: contentNearEdge, y: contentRect.bottom },
+                  ],
+                  side,
+                })
 
-            //     window.clearTimeout(pointerGraceTimerRef.current)
-            //     pointerGraceTimerRef.current = window.setTimeout(
-            //       () => contentContext.onPointerGraceIntentChange(null),
-            //       300
-            //     )
-            //   } else {
-            //     contentContext.onTriggerLeave(event)
-            //     if (event.defaultPrevented) return
+                window.clearTimeout(pointerGraceTimerRef.current)
+                pointerGraceTimerRef.current = window.setTimeout(
+                  () => contentContext.onPointerGraceIntentChange(null),
+                  300
+                )
+              } else {
+                contentContext.onTriggerLeave(event)
+                if (event.defaultPrevented) return
 
-            //     // There's 100ms where the user may leave an item before the submenu was opened.
-            //     contentContext.onPointerGraceIntentChange(null)
-            //   }
-            // })
+                // There's 100ms where the user may leave an item before the submenu was opened.
+                contentContext.onPointerGraceIntentChange(null)
+              }
+            })
           )}
-          //   TODO: uncomment this part
-          //   onKeyDown={composeEventHandlers(props.onKeyDown, (event) => {
-          //     const isTypingAhead = contentContext.searchRef.current !== ''
-          //     if (props.disabled || (isTypingAhead && event.key === ' ')) return
-          //     if (SUB_OPEN_KEYS[rootContext.dir].includes(event.key)) {
-          //       context.onOpenChange(true)
-          //       // The trigger may hold focus if opened via pointer interaction
-          //       // so we ensure content is given focus again when switching to keyboard.
-          //       context.content?.focus()
-          //       // prevent window from scrolling
-          //       event.preventDefault()
-          //     }
-          //   })}
+          {...(isWeb
+            ? {
+                onKeyDown: composeEventHandlers(
+                  // @ts-ignore
+                  props.onKeyDown,
+                  (event: KeyboardEvent) => {
+                    const isTypingAhead = contentContext.searchRef.current !== ''
+                    if (props.disabled || (isTypingAhead && event.key === ' ')) return
+                    if (SUB_OPEN_KEYS[rootContext.dir].includes(event.key)) {
+                      context.onOpenChange(true)
+                      // The trigger may hold focus if opened via pointer interaction
+                      // so we ensure content is given focus again when switching to keyboard.
+                      context.content?.focus()
+                      // prevent window from scrolling
+                      event.preventDefault()
+                    }
+                  }
+                ),
+              }
+            : null)}
         />
       </MenuAnchorFrame>
     )
@@ -1281,9 +1355,10 @@ const MenuSubContent = React.forwardRef<
               aria-labelledby={subContext.triggerId}
               {...subContentProps}
               ref={composedRefs}
-              //   TODO: uncomment these two props
-              //   align="start"
-              //   side={rootContext.dir === 'rtl' ? 'left' : 'right'}
+              //@ts-ignore
+              align="start"
+              //@ts-ignore
+              side={rootContext.dir === 'rtl' ? 'left' : 'right'}
               disableOutsidePointerEvents={false}
               disableOutsideScroll={false}
               trapFocus={false}
@@ -1305,21 +1380,32 @@ const MenuSubContent = React.forwardRef<
                 // ensure pressing escape in submenu doesn't escape full screen mode
                 event.preventDefault()
               })}
-              //   TODO: uncomment this part
-              //   onKeyDown={composeEventHandlers(props.onKeyDown, (event) => {
-              //     // Submenu key events bubble through portals. We only care about keys in this menu.
-              //     const isKeyDownInside = event.currentTarget.contains(
-              //       event.target as HTMLElement
-              //     )
-              //     const isCloseKey = SUB_CLOSE_KEYS[rootContext.dir].includes(event.key)
-              //     if (isKeyDownInside && isCloseKey) {
-              //       context.onOpenChange(false)
-              //       // We focus manually because we prevented it in `onCloseAutoFocus`
-              //       subContext.trigger?.focus()
-              //       // prevent window from scrolling
-              //       event.preventDefault()
-              //     }
-              //   })}
+              {...(isWeb
+                ? {
+                    // @ts-ignore
+                    onKeyDown: composeEventHandlers(
+                      // @ts-ignore
+                      props.onKeyDown,
+                      (event: KeyboardEvent) => {
+                        // Submenu key events bubble through portals. We only care about keys in this menu.
+                        // @ts-ignore
+                        const isKeyDownInside = event.currentTarget.contains(
+                          event.target as HTMLElement
+                        )
+                        const isCloseKey = SUB_CLOSE_KEYS[rootContext.dir].includes(
+                          event.key
+                        )
+                        if (isKeyDownInside && isCloseKey) {
+                          context.onOpenChange(false)
+                          // We focus manually because we prevented it in `onCloseAutoFocus`
+                          subContext.trigger?.focus()
+                          // prevent window from scrolling
+                          event.preventDefault()
+                        }
+                      }
+                    ),
+                  }
+                : null)}
             />
           </Collection.Slot>
         ) : null}

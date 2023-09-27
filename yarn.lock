@@ -6398,6 +6398,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/focus-guard@workspace:packages/focus-guard":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/focus-guard@workspace:packages/focus-guard"
+  dependencies:
+    "@tamagui/build": 1.71.0
+    "@tamagui/compose-refs": 1.71.0
+    "@tamagui/use-event": 1.71.0
+    react: ^18.2.0
+  peerDependencies:
+    react: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/focus-scope@1.71.0, @tamagui/focus-scope@workspace:packages/focus-scope":
   version: 0.0.0-use.local
   resolution: "@tamagui/focus-scope@workspace:packages/focus-scope"
