@@ -11,6 +11,7 @@ import type {
   MediaQueryObject,
   MediaQueryState,
   TamaguiInternalConfig,
+  UseMediaState,
 } from '../types'
 
 export let mediaState: MediaQueryState =
@@ -167,10 +168,6 @@ function updateCurrentState() {
 
 type MediaKeysState = {
   [key: string]: any
-}
-
-type UseMediaState = {
-  [key in MediaQueryKey]: boolean
 }
 
 type UpdateState = {

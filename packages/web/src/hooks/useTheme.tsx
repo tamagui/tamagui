@@ -21,8 +21,8 @@ import type {
 import { GetThemeUnwrapped } from './getThemeUnwrapped'
 
 export type ChangedThemeResponse = {
-  state: ThemeManagerState
-  themeManager: ThemeManager
+  state?: ThemeManagerState
+  themeManager?: ThemeManager | null
   isNewTheme: boolean
   mounted?: boolean
 }
@@ -90,22 +90,23 @@ export const useThemeWithState = (
   )
 
   const { themeManager, state } = changedThemeState
-  const { theme, name, className } = state
 
-  if (!theme) {
+  if (!state?.theme) {
     if (process.env.NODE_ENV === 'development') {
-      throw new Error(
-        `No theme found given props ${JSON.stringify(
-          props
-        )}. Themes given to tamagui are: ${Object.keys(getConfig().themes)}`
-      )
+      if (process.env.TAMAGUI_DISABLE_NO_THEME_WARNING !== '1') {
+        console.warn(
+          `[tamagui] No theme found, this could be due to an invalid theme name (given theme props ${JSON.stringify(
+            props
+          )}).\n\nIf this is intended and you are using Tamagui without any themes, you can disable this warning by setting the environment variable TAMAGUI_DISABLE_NO_THEME_WARNING=1`
+        )
+      }
     }
-    throw `❌ 1`
   }
 
   const themeProxied = useMemo(() => {
-    return getThemeProxied(theme, themeManager, keys.current, props.debug)
-  }, [theme, name, className, themeManager])
+    if (!themeManager || !state?.theme) return {}
+    return getThemeProxied(state.theme, themeManager, keys.current, props.debug)
+  }, [state, themeManager])
 
   if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
     console.groupCollapsed('  🔹 useTheme =>', name)
@@ -184,7 +185,7 @@ export const activeThemeManagers = new Set<ThemeManager>()
 
 export const useChangeThemeEffect = (
   props: ThemeProps,
-  root = false,
+  isRoot = false,
   keys?: string[],
   shouldUpdate?: () => boolean | undefined
 ): ChangedThemeResponse => {
@@ -195,11 +196,10 @@ export const useChangeThemeEffect = (
 
   const parentManager = useContext(ThemeManagerContext)
 
-  if (disable) {
-    if (!parentManager) throw `❌ 2`
+  if ((!isRoot && !parentManager) || disable) {
     return {
       isNewTheme: false,
-      state: parentManager.state,
+      state: parentManager?.state,
       themeManager: parentManager,
     }
   }
@@ -224,11 +224,11 @@ export const useChangeThemeEffect = (
   function getShouldUpdateTheme(
     manager = themeManager,
     nextState?: ThemeManagerState | null,
-    prevState: ThemeManagerState = state,
+    prevState: ThemeManagerState | undefined = state,
     forceShouldChange = false
   ) {
     const forceUpdate = shouldUpdate?.()
-    if (!forceShouldChange && forceUpdate === false) return
+    if (!manager || (!forceShouldChange && forceUpdate === false)) return
     const next = nextState || manager.getState(props, parentManager)
     if (forceShouldChange) return next
     if (!next) return
@@ -241,6 +241,8 @@ export const useChangeThemeEffect = (
   if (!isServer) {
     // listen for parent change + notify children change
     useLayoutEffect(() => {
+      if (!themeManager) return
+
       // SSR safe inverse (because server can't know prefers scheme)
       // could be done through fancy selectors like how we do prefers-media
       // but may be a bit of explosion of selectors
@@ -269,7 +271,6 @@ export const useChangeThemeEffect = (
         const doUpdate = force ?? Boolean(keys?.length || isNewTheme)
 
         if (process.env.NODE_ENV === 'development' && props.debug) {
-          
           // biome-ignore lint/suspicious/noConsoleLog: <explanation>
           console.log(` 🔸 onChange`, themeManager.id, {
             force,
@@ -278,7 +279,7 @@ export const useChangeThemeEffect = (
             name,
             manager,
             keys,
-          });
+          })
         }
         if (doUpdate) {
           setThemeState(createState)
@@ -313,7 +314,6 @@ export const useChangeThemeEffect = (
   }
 
   if (isInversingOnMount) {
-    if (!parentManager) throw '❌ 3'
     return {
       isNewTheme: false,
       themeManager: parentManager,
@@ -342,7 +342,7 @@ export const useChangeThemeEffect = (
 
     if (hasThemeUpdatingProps) {
       const getNewThemeManager = () => {
-        return new ThemeManager(props, root ? 'root' : parentManager)
+        return new ThemeManager(props, isRoot ? 'root' : parentManager)
       }
 
       if (prev?.themeManager) {
@@ -388,7 +388,7 @@ export const useChangeThemeEffect = (
     const isNewTheme = Boolean(themeManager !== parentManager || props.inverse)
 
     // only inverse relies on this for ssr
-    const mounted = !props.inverse ? true : root || prev?.mounted
+    const mounted = !props.inverse ? true : isRoot || prev?.mounted
 
     if (!state) {
       if (isNewTheme) {
@@ -399,7 +399,7 @@ export const useChangeThemeEffect = (
       }
     }
 
-    if (!force && state.name === prev?.state.name) {
+    if (!force && state.name === prev?.state?.name) {
       return prev
     }
 

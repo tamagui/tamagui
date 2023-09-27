@@ -43,6 +43,7 @@ import {
   DisposeFn,
   GroupState,
   LayoutEvent,
+  SizeTokens,
   SpaceDirection,
   SpaceValue,
   SpacerProps,
@@ -603,7 +604,7 @@ export function createComponent<
       props,
       staticConfig,
       theme,
-      themeState.state.name,
+      themeState?.state?.name || '',
       state,
       styleProps,
       null,
@@ -697,7 +698,7 @@ export function createComponent<
         presence,
         componentState: state,
         styleProps,
-        theme: themeState.state.theme!,
+        theme: themeState.state?.theme!,
         pseudos: pseudos || null,
         hostRef,
         staticConfig,
@@ -1349,6 +1350,17 @@ export function Unspaced(props: { children?: any }) {
 }
 Unspaced['isUnspaced'] = true
 
+const getSpacerSize = (size: SizeTokens | number | boolean, { tokens }) => {
+  size = size === true ? '$true' : size
+  const sizePx = tokens.space[size as any] ?? size
+  return {
+    width: sizePx,
+    height: sizePx,
+    minWidth: sizePx,
+    minHeight: sizePx,
+  }
+}
+
 // dont used styled() here to avoid circular deps
 // keep inline to avoid circular deps
 // @ts-expect-error we override
@@ -1368,16 +1380,7 @@ export const Spacer = createComponent<SpacerProps>({
 
   variants: {
     size: {
-      '...size': (size, { tokens }) => {
-        size = size === true ? '$true' : size
-        const sizePx = tokens.space[size] ?? size
-        return {
-          width: sizePx,
-          height: sizePx,
-          minWidth: sizePx,
-          minHeight: sizePx,
-        }
-      },
+      '...': getSpacerSize,
     },
 
     flex: {

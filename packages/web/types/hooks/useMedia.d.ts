@@ -1,4 +1,4 @@
-import type { MediaQueries, MediaQueryKey, MediaQueryObject, MediaQueryState, TamaguiInternalConfig } from '../types';
+import type { MediaQueries, MediaQueryKey, MediaQueryObject, MediaQueryState, TamaguiInternalConfig, UseMediaState } from '../types';
 export declare let mediaState: MediaQueryState;
 export declare const mediaQueryConfig: MediaQueries;
 export declare const getMedia: () => MediaQueryState;
@@ -9,9 +9,6 @@ export declare const getMediaKeyImportance: (key: string) => number;
 export declare const configureMedia: (config: TamaguiInternalConfig) => void;
 export declare function setupMediaListeners(): void;
 export declare function useMediaListeners(config: TamaguiInternalConfig): void;
-type UseMediaState = {
-    [key in MediaQueryKey]: boolean;
-};
 type UpdateState = {
     enabled: boolean;
     keys: MediaQueryKey[];

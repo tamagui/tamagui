@@ -3,7 +3,7 @@ import { useContext } from 'react'
 import { ComponentContext } from '../contexts/ComponentContext'
 import { defaultComponentStateMounted } from '../defaultComponentState'
 import { useSplitStyles } from '../helpers/getSplitStyles'
-import { SplitStyleProps, StaticConfig } from '../types'
+import { SplitStyleProps, StaticConfig, ThemeParsed, UseMediaState } from '../types'
 import { Stack } from '../views/Stack'
 import { useMedia } from './useMedia'
 import { useThemeWithState } from './useTheme'
@@ -65,7 +65,7 @@ export function useStyle<A extends Object>(
 export function usePropsAndStyle<A extends Object>(
   props: A,
   opts?: UsePropsOptions
-): [FlattenedProps<A>, FlattenedProps<A>] {
+): [FlattenedProps<A>, FlattenedProps<A>, ThemeParsed, UseMediaState] {
   const staticConfig = opts?.forComponent?.staticConfig ?? Stack.staticConfig
   const [themeState, theme] = useThemeWithState({
     componentName: staticConfig.componentName,
@@ -76,7 +76,7 @@ export function usePropsAndStyle<A extends Object>(
     props,
     staticConfig,
     theme,
-    themeState.state.name,
+    themeState.state?.name || '',
     defaultComponentStateMounted,
     {
       isAnimated: false,
@@ -88,5 +88,5 @@ export function usePropsAndStyle<A extends Object>(
     null,
     componentContext
   )
-  return [splitStyles.viewProps, splitStyles.style] as any
+  return [splitStyles.viewProps, splitStyles.style, theme, media] as any
 }

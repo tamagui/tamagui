@@ -95,10 +95,12 @@ export function useThemedChildren(
     })
   }
 
-  const elementsWithContext = (
+  const elementsWithContext = themeManager ? (
     <ThemeManagerContext.Provider value={themeManager}>
       {next}
     </ThemeManagerContext.Provider>
+  ) : (
+    next
   )
 
   if (forceClassName === false) {
@@ -132,7 +134,7 @@ export function wrapThemeElements({
     return children
   }
 
-  const inverse = themeState.state.inverse
+  const inverse = themeState.state?.inverse
 
   if (!themeState.isNewTheme && !inverse && !forceClassName) {
     return <span className="_dsp_contents is_Theme">{children}</span>
@@ -140,7 +142,7 @@ export function wrapThemeElements({
 
   // in order to provide currentColor, set color by default
   const themeColor =
-    themeState.state.theme && themeState.isNewTheme
+    themeState.state?.theme && themeState.isNewTheme
       ? variableToString(themeState.state.theme.color)
       : ''
   const colorStyle = themeColor
@@ -149,7 +151,7 @@ export function wrapThemeElements({
       }
     : undefined
 
-  let className = themeState.state.className || ''
+  let className = themeState.state?.className || ''
 
   if (isRoot) {
     className = className.replace('t_sub_theme', '')
@@ -163,14 +165,11 @@ export function wrapThemeElements({
 
   // to prevent tree structure changes always render this if inverse is true or false
   if (inverse != null || forceClassName) {
+    const name = themeState.state?.name || ''
     themedChildren = (
       <span
         className={`${
-          themeState.state.name.startsWith('light')
-            ? 't_light'
-            : themeState.state.name.startsWith('dark')
-            ? 't_dark'
-            : ''
+          name.startsWith('light') ? 't_light' : name.startsWith('dark') ? 't_dark' : ''
         } _dsp_contents ${inverse ? 'is_inversed' : ''}`}
       >
         {themedChildren}

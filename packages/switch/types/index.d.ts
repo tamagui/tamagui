@@ -1,5 +1,6 @@
 /// <reference types="react" />
 export * from './Switch';
+export * from './SwitchContext';
 export * from './createSwitch';
 export declare const Switch: import("react").ForwardRefExoticComponent<Omit<Omit<import("react-native").ViewProps, "display" | "children" | "style" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | import("react").CSSProperties | (import("react").CSSProperties & import("react-native").ViewStyle)>;
