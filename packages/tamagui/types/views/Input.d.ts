@@ -666,7 +666,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     onPointerUp?: ((event: import("react-native").PointerEvent) => void) | undefined;
     onPointerUpCapture?: ((event: import("react-native").PointerEvent) => void) | undefined;
     target?: string | undefined;
-    asChild?: boolean | "except-style" | undefined;
+    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
     dangerouslySetInnerHTML?: {
         __html: string;
     } | undefined;

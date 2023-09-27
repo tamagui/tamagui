@@ -56,13 +56,11 @@ export {
   mediaState,
   useMedia,
   getMedia,
-  useMediaPropsActive,
   mediaObjectToString,
   mediaQueryConfig,
 } from './hooks/useMedia'
 export * from './hooks/useTheme'
 export * from './hooks/useThemeName'
-export * from './hooks/useStyle'
 export * from './hooks/useAnimationDriver'
 export * from './hooks/useIsTouchDevice'
 export * from './hooks/useProps'

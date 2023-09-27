@@ -1,9 +1,17 @@
 import { createAnimations } from '@tamagui/animations-moti'
 
 export const animations = createAnimations({
+  '75ms': {
+    type: 'timing',
+    duration: 75,
+  },
   '100ms': {
     type: 'timing',
     duration: 100,
+  },
+  '200ms': {
+    type: 'timing',
+    duration: 200,
   },
   superBouncy: {
     damping: 5,
@@ -40,7 +48,12 @@ export const animations = createAnimations({
   },
   quicker: {
     damping: 20,
-    mass: 1,
+    mass: 0.7,
     stiffness: 250,
+  },
+  quickest: {
+    damping: 5,
+    mass: 0.2,
+    stiffness: 200,
   },
 })

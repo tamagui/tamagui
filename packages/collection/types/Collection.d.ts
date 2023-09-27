@@ -1,22 +1,22 @@
-import { Slot, TamaguiElement } from '@tamagui/core';
+import { ScopedProps, Slot, TamaguiElement } from '@tamagui/core';
 import React from 'react';
 type SlotProps = React.ComponentPropsWithoutRef<typeof Slot>;
 interface CollectionProps extends SlotProps {
-    scope: any;
 }
 declare function createCollection<ItemElement extends TamaguiElement, ItemData = {}>(name: string): readonly [{
     readonly Provider: React.FC<{
         children?: React.ReactNode;
-        scope: any;
+        __scopeCollection: string;
     }>;
-    readonly Slot: React.ForwardRefExoticComponent<CollectionProps & React.RefAttributes<TamaguiElement>>;
-    readonly ItemSlot: React.ForwardRefExoticComponent<React.PropsWithoutRef<ItemData & {
+    readonly Slot: React.ForwardRefExoticComponent<CollectionProps & {
+        __scopeCollection?: string | undefined;
+    } & React.RefAttributes<TamaguiElement>>;
+    readonly ItemSlot: React.ForwardRefExoticComponent<React.PropsWithoutRef<ScopedProps<ItemData & {
         children: React.ReactNode;
-        scope: any;
-    }> & React.RefAttributes<ItemElement>>;
-}, (scope: any) => () => ({
+    }, "Collection">> & React.RefAttributes<ItemElement>>;
+}, (__scopeCollection: any) => () => ({
     ref: React.RefObject<ItemElement>;
-} & ItemData)[], import("@tamagui/create-context").CreateScope];
+} & ItemData)[]];
 export { createCollection };
 export type { CollectionProps };
 //# sourceMappingURL=Collection.d.ts.map

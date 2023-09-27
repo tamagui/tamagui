@@ -17,6 +17,8 @@ export const masks = {
   strengthen: createStrengthenMask(),
   inverse: createInverseMask(),
   inverseSoften: combineMasks(createInverseMask(), createSoftenMask({ strength: 2 })),
+  inverseSoften2: combineMasks(createInverseMask(), createSoftenMask({ strength: 3 })),
+  inverseSoften3: combineMasks(createInverseMask(), createSoftenMask({ strength: 4 })),
   inverseStrengthen2: combineMasks(
     createInverseMask(),
     createStrengthenMask({ strength: 2 })

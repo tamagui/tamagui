@@ -217,6 +217,28 @@ export const CheckboxFrame = styled(ThemeableStack, {
       },
     },
 
+    disabled: {
+      true: {
+        pointerEvents: 'none',
+        userSelect: 'none',
+        cursor: 'not-allowed',
+
+        hoverStyle: {
+          borderColor: '$borderColor',
+          backgroundColor: '$background',
+        },
+
+        pressStyle: {
+          borderColor: '$borderColor',
+          backgroundColor: '$backgroundColor',
+        },
+
+        focusStyle: {
+          outlineWidth: 0,
+        },
+      },
+    },
+
     size: {
       '...size': (val, { tokens }) => {
         const radiusToken = getVariableValue(getSize(val)) / 8
@@ -316,13 +338,15 @@ const CheckboxComponent = CheckboxFrame.extractable(
       // eslint-disable-next-line react-hooks/rules-of-hooks
       React.useEffect(() => {
         if (!props.id) return
+        if (disabled) return
+
         return registerFocusable(props.id, {
           focusAndSelect: () => {
             setChecked((x) => !x)
           },
           focus: () => {},
         })
-      }, [props.id, setChecked])
+      }, [props.id, setChecked, disabled])
     }
 
     return (

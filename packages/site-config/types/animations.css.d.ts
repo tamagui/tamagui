@@ -1,5 +1,6 @@
 export declare const animations: import("@tamagui/web").AnimationDriver<{
     '100ms': string;
+    '200ms': string;
     bouncy: string;
     superBouncy: string;
     lazy: string;

@@ -487,7 +487,7 @@ function getYPositions(
       return screenSize - Math.min(screenSize, Math.max(0, point))
     }
     if (point === 'fit') {
-      return screenSize - frameSize
+      return screenSize - Math.min(screenSize, frameSize)
     }
     if (point.endsWith('%')) {
       const pct = Math.min(100, Math.max(0, Number(point.slice(0, -1)))) / 100

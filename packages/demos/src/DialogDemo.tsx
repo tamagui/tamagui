@@ -12,7 +12,6 @@ import {
   TooltipSimple,
   Unspaced,
   XStack,
-  YStack,
 } from 'tamagui'
 
 import { SelectDemoItem } from './SelectDemo'

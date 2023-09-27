@@ -5,6 +5,8 @@ export type MaskOptions = {
     palette?: CreateThemePalette;
     override?: Partial<ThemeMask>;
     overrideStrategy?: 'shift' | 'swap';
+    overrideSwap?: Partial<ThemeMask>;
+    overrideShift?: Partial<ThemeMask>;
     skip?: Partial<ThemeMask>;
     strength?: number;
     max?: number;

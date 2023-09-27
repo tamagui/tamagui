@@ -261,8 +261,9 @@ declare const RadioGroup: React.ForwardRefExoticComponent<Omit<import("react-nat
         readonly bordered?: number | boolean | undefined;
         readonly transparent?: boolean | undefined;
         readonly chromeless?: boolean | "all" | undefined;
-    }, "size" | "unstyled"> & {
+    }, "disabled" | "size" | "unstyled"> & {
         readonly unstyled?: boolean | undefined;
+        readonly disabled?: boolean | undefined;
         readonly size?: import("@tamagui/core").SizeTokens | undefined;
     } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
         style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
@@ -281,8 +282,9 @@ declare const RadioGroup: React.ForwardRefExoticComponent<Omit<import("react-nat
         readonly bordered?: number | boolean | undefined;
         readonly transparent?: boolean | undefined;
         readonly chromeless?: boolean | "all" | undefined;
-    }, "size" | "unstyled"> & {
+    }, "disabled" | "size" | "unstyled"> & {
         readonly unstyled?: boolean | undefined;
+        readonly disabled?: boolean | undefined;
         readonly size?: import("@tamagui/core").SizeTokens | undefined;
     }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
         style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
@@ -301,8 +303,9 @@ declare const RadioGroup: React.ForwardRefExoticComponent<Omit<import("react-nat
         readonly bordered?: number | boolean | undefined;
         readonly transparent?: boolean | undefined;
         readonly chromeless?: boolean | "all" | undefined;
-    }, "size" | "unstyled"> & {
+    }, "disabled" | "size" | "unstyled"> & {
         readonly unstyled?: boolean | undefined;
+        readonly disabled?: boolean | undefined;
         readonly size?: import("@tamagui/core").SizeTokens | undefined;
     }>> & {
         value: string;

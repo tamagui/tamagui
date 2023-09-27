@@ -51,8 +51,6 @@ export async function loadTamagui(
     return bundleInfo
   }
 
-  await generateTamaguiStudioConfig(props, bundleInfo)
-
   // this depends on the config so run it after
   if (bundleInfo) {
     const { createTamagui } = requireTamaguiCore(props.platform)
@@ -65,6 +63,10 @@ export async function loadTamagui(
       const css = config.getCSS()
       await writeFile(props.outputCSS, css)
     }
+  }
+
+  if (process.env.NODE_ENV === 'development') {
+    await generateTamaguiStudioConfig(props, bundleInfo)
   }
 
   return bundleInfo

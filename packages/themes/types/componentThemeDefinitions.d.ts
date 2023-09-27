@@ -36,6 +36,8 @@ export declare const componentThemeDefinitions: {
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
         overrideStrategy?: "shift" | "swap" | undefined;
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -73,6 +75,8 @@ export declare const componentThemeDefinitions: {
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
         overrideStrategy?: "shift" | "swap" | undefined;
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -111,6 +115,8 @@ export declare const componentThemeDefinitions: {
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
         overrideStrategy?: "shift" | "swap" | undefined;
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -119,6 +125,8 @@ export declare const componentThemeDefinitions: {
     };
     Button: {
         override: {
+            borderColor: string;
+            borderColorHover: string;
             color: number;
             colorHover: number;
             colorFocus: number;
@@ -148,6 +156,8 @@ export declare const componentThemeDefinitions: {
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
         overrideStrategy?: "shift" | "swap" | undefined;
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -185,6 +195,8 @@ export declare const componentThemeDefinitions: {
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
         overrideStrategy?: "shift" | "swap" | undefined;
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -222,6 +234,8 @@ export declare const componentThemeDefinitions: {
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
         overrideStrategy?: "shift" | "swap" | undefined;
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -259,6 +273,8 @@ export declare const componentThemeDefinitions: {
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
         overrideStrategy?: "shift" | "swap" | undefined;
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -296,6 +312,8 @@ export declare const componentThemeDefinitions: {
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
         overrideStrategy?: "shift" | "swap" | undefined;
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -333,6 +351,8 @@ export declare const componentThemeDefinitions: {
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
         overrideStrategy?: "shift" | "swap" | undefined;
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -370,6 +390,8 @@ export declare const componentThemeDefinitions: {
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
         overrideStrategy?: "shift" | "swap" | undefined;
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -407,6 +429,8 @@ export declare const componentThemeDefinitions: {
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
         overrideStrategy?: "shift" | "swap" | undefined;
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -444,6 +468,8 @@ export declare const componentThemeDefinitions: {
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
         overrideStrategy?: "shift" | "swap" | undefined;
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -481,6 +507,8 @@ export declare const componentThemeDefinitions: {
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
         overrideStrategy?: "shift" | "swap" | undefined;
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -518,6 +546,8 @@ export declare const componentThemeDefinitions: {
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
         overrideStrategy?: "shift" | "swap" | undefined;
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -555,6 +585,8 @@ export declare const componentThemeDefinitions: {
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
         overrideStrategy?: "shift" | "swap" | undefined;
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -592,6 +624,8 @@ export declare const componentThemeDefinitions: {
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
         overrideStrategy?: "shift" | "swap" | undefined;
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -629,6 +663,8 @@ export declare const componentThemeDefinitions: {
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
         overrideStrategy?: "shift" | "swap" | undefined;
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -684,6 +720,8 @@ export declare const componentThemeDefinitions: {
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
         overrideStrategy?: "shift" | "swap" | undefined;
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -721,6 +759,8 @@ export declare const componentThemeDefinitions: {
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
         overrideStrategy?: "shift" | "swap" | undefined;
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;

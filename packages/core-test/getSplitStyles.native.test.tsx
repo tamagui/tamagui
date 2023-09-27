@@ -1,4 +1,4 @@
-import { Stack, createTamagui, getSplitStyles } from '@tamagui/core/native'
+import { Stack, createTamagui, getSplitStyles } from '@tamagui/core'
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'

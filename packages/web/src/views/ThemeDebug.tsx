@@ -57,7 +57,7 @@ export function ThemeDebug({
     useEffect(() => {
       // to refresh _listeningIds every so often
       const tm = setInterval(rerender, 1000)
-      return () => clearTimeout(tm)
+      return () => clearTimeout(tm as any)
     }, [])
 
     return (
@@ -71,8 +71,8 @@ export function ThemeDebug({
             &lt;Theme {id} /&gt;&nbsp;
             {JSON.stringify(
               {
-                name: themeState.state.name,
-                className: themeState.state.className,
+                name: themeState?.state?.name,
+                className: themeState?.state?.className,
                 inverse: themeProps.inverse,
                 forceClassName: themeProps.forceClassName,
                 parent: themeState.themeManager?.state.parentName,

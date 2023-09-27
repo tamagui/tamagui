@@ -1,18 +1,20 @@
 import { NativeValue, TamaguiElement } from '@tamagui/core';
-import type { Scope } from '@tamagui/create-context';
 import * as React from 'react';
 import { BurntToastOptions } from './types';
 declare const Collection: {
     readonly Provider: React.FC<{
         children?: React.ReactNode;
-        scope: any;
+        __scopeCollection: string;
     }>;
-    readonly Slot: React.ForwardRefExoticComponent<import("@tamagui/collection/types/Collection").CollectionProps & React.RefAttributes<TamaguiElement>>;
+    readonly Slot: React.ForwardRefExoticComponent<import("@tamagui/collection/types/Collection").CollectionProps & {
+        __scopeCollection?: string | undefined;
+    } & React.RefAttributes<TamaguiElement>>;
     readonly ItemSlot: React.ForwardRefExoticComponent<{
         children: React.ReactNode;
-        scope: any;
+    } & {
+        __scopeCollection?: string | undefined;
     } & React.RefAttributes<TamaguiElement>>;
-}, useCollection: (scope: any) => () => {
+}, useCollection: (__scopeCollection: any) => () => {
     ref: React.RefObject<TamaguiElement>;
 }[];
 export type SwipeDirection = 'vertical' | 'up' | 'down' | 'horizontal' | 'left' | 'right';
@@ -31,22 +33,9 @@ type ToastProviderContextValue = {
     isClosePausedRef: React.MutableRefObject<boolean>;
 };
 type ScopedProps<P> = P & {
-    __scopeToast?: Scope;
+    __scopeToast?: string;
 };
-declare const createToastContext: <ContextValueType extends object | null>(rootComponentName: string, defaultContext?: ContextValueType | undefined) => readonly [{
-    (props: ContextValueType & {
-        scope: Scope<ContextValueType>;
-        children: React.ReactNode;
-    }): JSX.Element;
-    displayName: string;
-}, (consumerName: string, scope: Scope<ContextValueType | undefined>, options?: {
-    warn?: boolean | undefined;
-    fallback?: Partial<ContextValueType> | undefined;
-} | undefined) => ContextValueType], createToastScope: import("@tamagui/create-context").CreateScope;
-declare const useToastProviderContext: (consumerName: string, scope: Scope<ToastProviderContextValue | undefined>, options?: {
-    warn?: boolean | undefined;
-    fallback?: Partial<ToastProviderContextValue> | undefined;
-} | undefined) => ToastProviderContextValue;
+declare const useToastProviderContext: (scope?: string | undefined) => ToastProviderContextValue;
 interface ToastProviderProps {
     children?: React.ReactNode;
     /**
@@ -89,6 +78,6 @@ interface ToastProviderProps {
     notificationOptions?: NotificationOptions;
 }
 declare const ToastProvider: React.FC<ToastProviderProps>;
-export { Collection, ToastProvider, createToastContext, createToastScope, useCollection, useToastProviderContext, };
+export { Collection, ToastProvider, useCollection, useToastProviderContext };
 export type { ScopedProps, ToastProviderProps };
 //# sourceMappingURL=ToastProvider.d.ts.map

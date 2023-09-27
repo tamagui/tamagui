@@ -1,4 +1,4 @@
-import { TamaguiOptions, watchTamaguiConfig } from '@tamagui/static'
+import { TamaguiOptions, loadTamagui, watchTamaguiConfig } from '@tamagui/static'
 import type { Compiler, RuleSetRule } from 'webpack'
 
 type PluginOptions = TamaguiOptions & {
@@ -23,7 +23,7 @@ export class TamaguiPlugin {
   ) {}
 
   apply(compiler: Compiler) {
-    if (!this.options.disableWatchConfig) {
+    if (compiler.watchMode && !this.options.disableWatchConfig) {
       void watchTamaguiConfig(this.options).then((watcher) => {
         // yes this is weirdly done promise...
         process.once('exit', () => {
@@ -31,6 +31,11 @@ export class TamaguiPlugin {
         })
       })
     }
+
+    compiler.hooks.beforeCompile.tapAsync(this.pluginName, async (_, done) => {
+      await loadTamagui(this.options)
+      done()
+    })
 
     // mark as side effect
     compiler.hooks.normalModuleFactory.tap(this.pluginName, (nmf) => {
@@ -101,12 +106,14 @@ export class TamaguiPlugin {
         loader: require.resolve('tamagui-loader'),
         options: {
           ...this.options,
+          _disableLoadTamagui: true,
         },
       }
 
       if (nextJsRules === -1) {
         existing.push({
-          test: /\/jsx\/.*\.m?[jt]sx?$/,
+          // looks like its in jsx dir (could be better but windows path sep)
+          test: /jsx.*\.m?[jt]sx?$/,
           exclude: this.options.exclude,
           resolve: {
             fullySpecified: false,

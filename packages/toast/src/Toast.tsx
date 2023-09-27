@@ -28,14 +28,10 @@ import {
   ToastProps,
   useToastInteractiveContext,
 } from './ToastImpl'
-import {
-  ScopedProps,
-  ToastProvider,
-  ToastProviderProps,
-  createToastScope,
-} from './ToastProvider'
+import { ScopedProps, ToastProvider, ToastProviderProps } from './ToastProvider'
 import { ToastViewport, ToastViewportProps } from './ToastViewport'
 
+export const TOAST_CONTEXT = 'Toast'
 /* -------------------------------------------------------------------------------------------------
  * ToastTitle
  * -----------------------------------------------------------------------------------------------*/
@@ -104,7 +100,7 @@ type ToastActionProps = ToastCloseProps & {
   altText: string
 }
 
-const ToastAction = React.forwardRef<TamaguiElement, ToastActionProps>(
+const ToastAction = React.forwardRef<TamaguiElement, ScopedProps<ToastActionProps>>(
   (props: ScopedProps<ToastActionProps>, forwardedRef) => {
     const { altText, ...actionProps } = props
     if (!altText) return null
@@ -143,7 +139,7 @@ type ToastCloseProps = ToastCloseFrameProps & {}
 const ToastClose = React.forwardRef<TamaguiElement, ToastCloseProps>(
   (props: ScopedProps<ToastCloseProps>, forwardedRef) => {
     const { __scopeToast, ...closeProps } = props
-    const interactiveContext = useToastInteractiveContext(CLOSE_NAME, __scopeToast)
+    const interactiveContext = useToastInteractiveContext(__scopeToast)
 
     return (
       <ToastAnnounceExclude asChild>
@@ -164,7 +160,7 @@ ToastClose.displayName = CLOSE_NAME
  * Toast
  * -----------------------------------------------------------------------------------------------*/
 
-const ToastComponent = React.forwardRef<TamaguiElement, ToastProps>(
+const ToastComponent = React.forwardRef<TamaguiElement, ScopedProps<ToastProps>>(
   ToastImplFrame.extractable((props: ScopedProps<ToastProps>, forwardedRef) => {
     const { forceMount, open: openProp, defaultOpen, onOpenChange, ...toastProps } = props
     const [open, setOpen] = useControllableState({
@@ -217,7 +213,6 @@ export {
   ToastProvider,
   ToastViewport,
   //
-  createToastScope,
   // imperative
   useToast,
   useToastController,

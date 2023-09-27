@@ -10,7 +10,7 @@ export const createNativeToast: CreateNativeToastsFn = (
   Burnt.toast({
     title,
     message,
-    duration: duration ? duration * 1000 : undefined,
+    duration: duration ? duration / 1000 : undefined,
     ...burntOptions,
   })
   return true

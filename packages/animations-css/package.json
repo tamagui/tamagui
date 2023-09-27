@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/animations-css",
-  "version": "1.67.0",
+  "version": "1.72.3",
   "source": "src/index.ts",
   "sideEffects": false,
   "license": "MIT",
@@ -13,17 +13,19 @@
     "dist"
   ],
   "dependencies": {
-    "@tamagui/cubic-bezier-animator": "1.67.0",
-    "@tamagui/use-presence": "1.67.0",
-    "@tamagui/web": "1.67.0"
+    "@tamagui/cubic-bezier-animator": "1.72.3",
+    "@tamagui/use-presence": "1.72.3",
+    "@tamagui/web": "1.72.3"
   },
   "devDependencies": {
-    "@tamagui/build": "1.67.0"
+    "@tamagui/build": "1.72.3"
   },
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
+    "lint": "../../node_modules/.bin/biome check src",
+    "lint:fix": "../../node_modules/.bin/biome check --apply-unsafe src",
     "clean:build": "tamagui-build clean:build"
   },
   "publishConfig": {

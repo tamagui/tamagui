@@ -152,6 +152,28 @@ const RadioGroupItemFrame = styled(ThemeableStack, {
       },
     },
 
+    disabled: {
+      true: {
+        pointerEvents: 'none',
+        userSelect: 'none',
+        cursor: 'not-allowed',
+
+        hoverStyle: {
+          borderColor: '$borderColor',
+          backgroundColor: '$background',
+        },
+
+        pressStyle: {
+          borderColor: '$borderColor',
+          backgroundColor: '$backgroundColor',
+        },
+
+        focusStyle: {
+          outlineWidth: 0,
+        },
+      },
+    },
+
     size: {
       '...size': (value, { props }) => {
         const size = Math.floor(
@@ -242,13 +264,15 @@ const RadioGroupItem = RadioGroupItemFrame.extractable(
         // eslint-disable-next-line react-hooks/rules-of-hooks
         React.useEffect(() => {
           if (!props.id) return
+          if (disabled) return
+
           return registerFocusable(props.id, {
             focusAndSelect: () => {
               onChange?.(value)
             },
             focus: () => {},
           })
-        }, [props.id, value])
+        }, [props.id, value, disabled])
       }
 
       const isDisabled = disabled || itemDisabled

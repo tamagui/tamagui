@@ -106,6 +106,8 @@ declare const ToastViewport: React.ForwardRefExoticComponent<Omit<import("react-
      * Pass this when you want to have multiple/duplicated toasts.
      */
     multipleToasts?: boolean | undefined;
+} & {
+    __scopeToast?: string | undefined;
 } & React.RefAttributes<HTMLDivElement>>;
 export { ToastViewport, ToastViewportProps, VIEWPORT_DEFAULT_HOTKEY, VIEWPORT_PAUSE, VIEWPORT_RESUME, };
 //# sourceMappingURL=ToastViewport.d.ts.map

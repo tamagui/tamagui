@@ -11,7 +11,6 @@ import { Portal } from '@tamagui/portal'
 import { VisuallyHidden } from '@tamagui/visually-hidden'
 import * as React from 'react'
 
-import { TOAST_NAME } from './constants'
 import { ScopedProps, useToastProviderContext } from './ToastProvider'
 
 const ToastAnnounceExcludeFrame = styled(Stack, {
@@ -22,20 +21,21 @@ type ToastAnnounceExcludeProps = ToastAnnounceExcludeFrameProps & {
   altText?: string
 }
 
-const ToastAnnounceExclude = React.forwardRef<TamaguiElement, ToastAnnounceExcludeProps>(
-  (props: ScopedProps<ToastAnnounceExcludeProps>, forwardedRef) => {
-    const { __scopeToast, altText, ...announceExcludeProps } = props
+const ToastAnnounceExclude = React.forwardRef<
+  TamaguiElement,
+  ScopedProps<ToastAnnounceExcludeProps>
+>((props: ScopedProps<ToastAnnounceExcludeProps>, forwardedRef) => {
+  const { altText, ...announceExcludeProps } = props
 
-    return (
-      <ToastAnnounceExcludeFrame
-        data-toast-announce-exclude=""
-        data-toast-announce-alt={altText || undefined}
-        {...announceExcludeProps}
-        ref={forwardedRef}
-      />
-    )
-  }
-)
+  return (
+    <ToastAnnounceExcludeFrame
+      data-toast-announce-exclude=""
+      data-toast-announce-alt={altText || undefined}
+      {...announceExcludeProps}
+      ref={forwardedRef}
+    />
+  )
+})
 
 /* -----------------------------------------------------------------------------------------------*/
 
@@ -43,11 +43,11 @@ interface ToastAnnounceProps
   extends Omit<GetProps<typeof VisuallyHidden>, 'children'>,
     ScopedProps<{ children: string[] }> {}
 
-const ToastAnnounce: React.FC<ToastAnnounceProps> = (
+const ToastAnnounce: React.FC<ScopedProps<ToastAnnounceProps>> = (
   props: ScopedProps<ToastAnnounceProps>
 ) => {
   const { __scopeToast, children, ...announceProps } = props
-  const context = useToastProviderContext(TOAST_NAME, __scopeToast)
+  const context = useToastProviderContext(__scopeToast)
   const [renderAnnounceText, setRenderAnnounceText] = React.useState(false)
   const [isAnnounced, setIsAnnounced] = React.useState(false)
 

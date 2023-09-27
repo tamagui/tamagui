@@ -6,7 +6,6 @@ import {
   TamaguiComponentExpectingVariants,
   TamaguiElement,
   composeEventHandlers,
-  createStyledContext,
   getVariableValue,
   isWeb,
   useProps,
@@ -15,6 +14,7 @@ import {
 import { registerFocusable } from '@tamagui/focusable'
 import { getSize } from '@tamagui/get-token'
 import { useLabelContext } from '@tamagui/label'
+import { YStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { usePrevious } from '@tamagui/use-previous'
 import * as React from 'react'
@@ -24,19 +24,8 @@ import {
   Platform,
 } from 'react-native'
 
-export const SwitchContext = createStyledContext<{
-  checked: boolean
-  disabled?: boolean
-  frameWidth: number
-  size?: SizeTokens
-  unstyled?: boolean
-}>({
-  checked: false,
-  disabled: false,
-  size: undefined,
-  frameWidth: 0,
-  unstyled: false,
-})
+import { SwitchFrame as DefaultSwitchFrame, SwitchThumb } from './Switch'
+import { SwitchContext } from './SwitchContext'
 
 type SwitchSharedProps = {
   size?: SizeTokens | number
@@ -57,29 +46,76 @@ export type SwitchExtraProps = {
   onCheckedChange?(checked: boolean): void
 }
 
-export type SwitchProps = SwitchBaseProps & SwitchExtraProps
+export type SwitchProps = Omit<SwitchBaseProps & SwitchExtraProps, 'children'> & {
+  children?: React.ReactNode | ((checked: boolean) => React.ReactNode)
+}
 
-export function createSwitch<
-  F extends TamaguiComponentExpectingVariants<
-    SwitchProps,
-    SwitchSharedProps & SwitchExtraProps
-  >,
-  T extends TamaguiComponentExpectingVariants<SwitchBaseProps, SwitchSharedProps>
->({ Frame, Thumb, acceptsUnstyled }: { Frame: F; Thumb: T; acceptsUnstyled?: boolean }) {
-  const SwitchThumb = Thumb.styleable(function SwitchThumb(props, forwardedRef) {
-    const { size: sizeProp, ...thumbProps } = props
-    const { disabled, checked, unstyled, frameWidth } = React.useContext(SwitchContext)
+type SwitchComponent = TamaguiComponentExpectingVariants<
+  SwitchProps,
+  SwitchSharedProps & SwitchExtraProps
+>
+
+type SwitchThumbComponent = TamaguiComponentExpectingVariants<
+  SwitchBaseProps,
+  SwitchSharedProps
+>
+
+export function createSwitch<F extends SwitchComponent, T extends SwitchThumbComponent>({
+  disableActiveTheme,
+  Frame = DefaultSwitchFrame as any,
+  Thumb = SwitchThumb as any,
+}: {
+  disableActiveTheme?: boolean
+  Frame?: F
+  Thumb?: T
+}) {
+  if (process.env.NODE_ENV === 'development') {
+    if (Frame !== DefaultSwitchFrame && Frame.staticConfig.context) {
+      console.warn(
+        `Warning: createSwitch() needs to control context to pass checked state from Frame to Thumb, any custom context passed will be overridden.`
+      )
+    }
+    if (Thumb !== SwitchThumb && Thumb.staticConfig.context) {
+      console.warn(
+        `Warning: createSwitch() needs to control context to pass checked state from Frame to Thumb, any custom context passed will be overridden.`
+      )
+    }
+  }
+
+  Frame.staticConfig.context = SwitchContext
+  Thumb.staticConfig.context = SwitchContext
+
+  const SwitchThumbComponent = Thumb.styleable(function SwitchThumb(props, forwardedRef) {
+    const { size: sizeProp, unstyled: unstyledProp, ...thumbProps } = props
+    const context = React.useContext(SwitchContext)
+    const {
+      disabled,
+      checked,
+      unstyled: unstyledContext,
+      frameWidth,
+      size: sizeContext,
+    } = context
     const [thumbWidth, setThumbWidth] = React.useState(0)
     const initialChecked = React.useRef(checked).current
     const distance = frameWidth - thumbWidth
+    const x = initialChecked ? (checked ? 0 : -distance) : checked ? distance : 0
+    const unstyled = unstyledProp ?? unstyledContext ?? false
+
     return (
       // @ts-ignore
       <Thumb
-        theme={unstyled === false && checked ? 'active' : null}
+        {...(unstyled === false && {
+          unstyled: false,
+          size: sizeProp ?? sizeContext ?? '$true',
+          ...(!disableActiveTheme && {
+            theme: checked ? 'active' : null,
+          }),
+        })}
         data-state={getState(checked)}
         data-disabled={disabled ? '' : undefined}
         alignSelf={initialChecked ? 'flex-end' : 'flex-start'}
-        x={initialChecked ? (checked ? 0 : -distance) : checked ? distance : 0}
+        checked={checked}
+        x={x}
         {...thumbProps}
         // @ts-ignore
         onLayout={composeEventHandlers(props.onLayout, (e) =>
@@ -97,7 +133,12 @@ export function createSwitch<
       forwardedRef
     ) {
       const styledContext = React.useContext(SwitchContext)
-      const props = useProps(propsIn)
+      const props = useProps(propsIn, {
+        noNormalize: true,
+        noExpand: true,
+        resolveValues: 'none',
+        forComponent: Frame,
+      })
       const {
         labeledBy: ariaLabelledby,
         name,
@@ -111,24 +152,9 @@ export function createSwitch<
         unstyled = styledContext.unstyled ?? false,
         native: nativeProp,
         nativeProps,
+        children,
         ...switchProps
       } = props
-
-      const leftBorderWidth = (() => {
-        let _: any = undefined
-        for (const key in switchProps) {
-          if (key === 'borderWidth' || key === 'borderLeftWidth') {
-            _ = switchProps[key]
-          }
-        }
-        if (acceptsUnstyled && _ === undefined && unstyled === false) {
-          _ = 2 // default we use for styled
-        }
-        if (typeof _ === 'string') {
-          _ = getVariableValue(getSize(_))
-        }
-        return +_
-      })()
 
       const native = Array.isArray(nativeProp) ? nativeProp : [nativeProp]
 
@@ -189,9 +215,12 @@ export function createSwitch<
             size={size}
             checked={checked}
             disabled={disabled}
-            frameWidth={frameWidth ? frameWidth - leftBorderWidth * 2 : 0}
-            theme={checked ? 'active' : null}
+            frameWidth={frameWidth}
             themeShallow
+            {...(!disableActiveTheme && {
+              theme: checked ? 'active' : null,
+              themeShallow: true,
+            })}
             role="switch"
             aria-checked={checked}
             aria-labelledby={labelledBy}
@@ -214,12 +243,17 @@ export function createSwitch<
                 if (!hasConsumerStoppedPropagationRef.current) event.stopPropagation()
               }
             })}
-            // @ts-ignore
-            onLayout={composeEventHandlers(props.onLayout, (e) =>
-              // @ts-ignore
-              setFrameWidth(e.nativeEvent.layout.width)
-            )}
-          />
+          >
+            <YStack
+              alignSelf="stretch"
+              flex={1}
+              onLayout={(e) => {
+                setFrameWidth(e.nativeEvent.layout.width)
+              }}
+            >
+              {typeof children === 'function' ? children(checked) : children}
+            </YStack>
+          </Frame>
           {isWeb && isFormControl && (
             <BubbleInput
               control={button}
@@ -299,7 +333,7 @@ export function createSwitch<
   }
 
   const Switch = withStaticProperties(SwitchComponent, {
-    Thumb: SwitchThumb,
+    Thumb: SwitchThumbComponent,
   })
 
   return Switch
