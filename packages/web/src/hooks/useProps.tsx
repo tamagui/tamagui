@@ -76,7 +76,7 @@ export function usePropsAndStyle<A extends Object>(
     props,
     staticConfig,
     theme,
-    themeState.state.name,
+    themeState.state?.name || '',
     defaultComponentStateMounted,
     {
       isAnimated: false,

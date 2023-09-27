@@ -2,8 +2,8 @@ import { Variable } from '../createVariable';
 import { ThemeManager, ThemeManagerState } from '../helpers/ThemeManager';
 import type { DebugProp, ThemeParsed, ThemeProps, VariableVal, VariableValGeneric } from '../types';
 export type ChangedThemeResponse = {
-    state: ThemeManagerState;
-    themeManager: ThemeManager;
+    state?: ThemeManagerState;
+    themeManager?: ThemeManager | null;
     isNewTheme: boolean;
     mounted?: boolean;
 };
