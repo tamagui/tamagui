@@ -132,14 +132,16 @@ config.optimizeDeps.esbuildOptions = {
   ...config.optimizeDeps.esbuildOptions,
   resolveExtensions: [
     '.web.js',
+    '.web.jsx',
     '.web.ts',
     '.web.tsx',
-    '.js',
-    '.jsx',
-    '.json',
-    '.ts',
-    '.tsx',
     '.mjs',
+    '.js',
+    '.mts',
+    '.ts',
+    '.jsx',
+    '.tsx',
+    '.json'
   ],
   loader: {
     '.js': 'jsx',
