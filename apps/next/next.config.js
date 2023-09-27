@@ -8,7 +8,8 @@ const boolVals = {
 }
 
 const disableExtraction =
-  boolVals[process.env.DISABLE_EXTRACTION] ?? process.env.NODE_ENV === 'development'
+  boolVals[process.env.DISABLE_EXTRACTION] ??
+  process.env.NODE_ENV === 'development'
 
 const plugins = [
   withTamagui({
@@ -19,7 +20,8 @@ const plugins = [
     config: './tamagui.config.ts',
     components: ['tamagui', '@my/ui'],
     importsWhitelist: ['constants.js', 'colors.js'],
-    outputCSS: process.env.NODE_ENV === 'production' ? './public/tamagui.css' : null,
+    outputCSS:
+      process.env.NODE_ENV === 'production' ? './public/tamagui.css' : null,
     logTimings: true,
     disableExtraction,
     // experiment - reduced bundle size react-native-web
@@ -29,7 +31,12 @@ const plugins = [
         return true
       }
     },
-    excludeReactNativeWebExports: ['Switch', 'ProgressBar', 'Picker', 'CheckBox'],
+    excludeReactNativeWebExports: [
+      'Switch',
+      'ProgressBar',
+      'Picker',
+      'CheckBox',
+    ],
   }),
 ]
 
@@ -79,10 +86,9 @@ module.exports = function () {
        - Solito doesn't support app dir at the moment - You'll have to remove Solito.
        - The `/app` in this starter has the same routes as the `/pages` directory. You should probably remove `/pages` after enabling this.
       */
-      appDir: false,
       // optimizeCss: true,
+      appDir: false,
       scrollRestoration: true,
-      legacyBrowsers: false,
     },
   }
 
