@@ -122,20 +122,20 @@ const dmSerifDisplayHeadingFont = createDmSerifDisplayFont(
       7: '$color',
     },
     letterSpacing: {
-      5: 2,
+      5: 1,
       6: 1,
-      7: 0,
-      8: 0,
-      9: -0.1,
-      10: -0.25,
-      11: -0.5,
-      12: -0.75,
-      14: -1,
-      15: -2,
+      7: 1,
+      8: 1,
+      9: 1.9,
+      10: 1.75,
+      11: 1.5,
+      12: 1.25,
+      14: 1,
+      15: 0,
     },
     face: {},
   },
-  { sizeLineHeight: (size) => Math.round(size * 0.9), sizeSize: (size) => size * 1.1 }
+  { sizeLineHeight: (size) => Math.round(size * 0.9), sizeSize: (size) => size * 1.2 }
 )
 
 const bodyFont = createInterFont(
