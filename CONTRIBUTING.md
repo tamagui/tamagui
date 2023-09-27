@@ -60,7 +60,13 @@ Endeavour to adhere to these rules and make use of the proper templates, lest yo
 
 Contributions to the UI Kit otherwise known as code level contributions should come in the form of pull requests or issues. Pull requests can be done by forking the repo, creating a branch for that specific change and making changes locally. For issues, make sure that you follow the guidelines mentioned previously in the Issues section.
 
-**Note**: Make sure to run the `yarn build` command before running any of the projects in the `/app` directory.
+**Note**: While developing, you'll want to watch the build watching in a dedicated terminal.
+
+```bash
+yarn watch:build
+```
+
+**Note**: you may see some errors around "studio" as you run build - this is fine, we encrypt some of the non-open-source projects in the repo. The errors shouldn't block anything.
 
 ### Bugs and Fixing them
 
@@ -72,8 +78,63 @@ When making pull requests addressing bug issues please make sure that they meet 
 - [ ] The solution adheres to the code style and quality of the repo.
 - [ ] The solution does not break or change the behavior of any other part of Tamagui.
 - [ ] The solution is up to date with the current release of Tamagui.
+- [ ] The solution should have tests and should not break any pre-existing tests. (reference the [testing section](#testing) below)
 
 If your pull request ticks all these boxes then congratulations your PR is ready for review, and you're well on your way to being a Tamagui contributor.
+
+### Testing
+
+It's easiest to use the sandbox project to test and develop things for web:
+
+```bash
+yarn sandbox
+```
+
+This runs a client-side only vite build of tamagui, with a complete configuration already set up.
+
+To test on native, `kitchen-sink` is equally well set up.
+
+You'll need to create a [development build](https://docs.expo.dev/develop/development-builds/create-a-build/) to run this.
+
+```bash
+# Android
+yarn kitchen-sink:build:android
+
+# iOS
+yarn kitchen-sink:build:ios
+```
+
+After the build has been completed, run the below command to start the Expo app:
+
+```bash
+yarn kitchen-sink
+```
+
+Once you've made changes, you can add tests. All compiler and CSS generation tests live in `packages/static-tests`, other tests live in `apps/kitchen-sink/tests` or in other `-tests` packages.
+
+Before submitting a PR, please check everything works across every combination of environments.
+
+To do so, run the site first in development to test if it works entirely at runtime:
+
+```bash
+# Make sure you have run `yarn watch:build` before you execute this command.
+
+yarn site
+```
+
+You use `pages/test.tsx` as an easy way to load things. If it looks good, try running again with the compiler on:
+
+```bash
+yarn site:extract
+```
+
+Finally, if that looks good, build to production and test that:
+
+```bash
+yarn site:prod
+```
+
+This flow ensures it works with Vite, Webpack, Metro, Next.js with SSR, and with the compiler both on and off.
 
 ## Documentation Contributions
 
@@ -81,10 +142,10 @@ Contributions to the documentation can come in many formats such as issues, pull
 
 ## Other ways to Contribute
 
-If you're not quite up to contributing to documentation or code, don't worry you can always contribute in other ways. You can contribute by: 
+If you're not quite up to contributing to documentation or code, don't worry you can always contribute in other ways. You can contribute by:
 
 - answering questions other community members might have;
-- helping other community members debug their code; 
+- helping other community members debug their code;
 - sharing your progress in learning Tamagui;
 - sharing some of your awesome projects built using Tamagui; or
 - advocating for Tamagui by writing blog posts and making tutorials.
