@@ -185,7 +185,7 @@ export const activeThemeManagers = new Set<ThemeManager>()
 
 export const useChangeThemeEffect = (
   props: ThemeProps,
-  root = false,
+  isRoot = false,
   keys?: string[],
   shouldUpdate?: () => boolean | undefined
 ): ChangedThemeResponse => {
@@ -196,7 +196,7 @@ export const useChangeThemeEffect = (
 
   const parentManager = useContext(ThemeManagerContext)
 
-  if (!parentManager || disable) {
+  if ((!isRoot && !parentManager) || disable) {
     return {
       isNewTheme: false,
       state: parentManager?.state,
@@ -342,7 +342,7 @@ export const useChangeThemeEffect = (
 
     if (hasThemeUpdatingProps) {
       const getNewThemeManager = () => {
-        return new ThemeManager(props, root ? 'root' : parentManager)
+        return new ThemeManager(props, isRoot ? 'root' : parentManager)
       }
 
       if (prev?.themeManager) {
@@ -388,7 +388,7 @@ export const useChangeThemeEffect = (
     const isNewTheme = Boolean(themeManager !== parentManager || props.inverse)
 
     // only inverse relies on this for ssr
-    const mounted = !props.inverse ? true : root || prev?.mounted
+    const mounted = !props.inverse ? true : isRoot || prev?.mounted
 
     if (!state) {
       if (isNewTheme) {
