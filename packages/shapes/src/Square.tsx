@@ -11,6 +11,7 @@ export const Square = styled(ThemeableStack, {
   variants: {
     size: {
       '...size': getShapeSize,
+      ':number': getShapeSize,
     },
   } as const,
 })

@@ -101,7 +101,7 @@ const resolveVariants: StyleResolver = (
   const { variants } = staticConfig
   if (!variants) return
 
-  let variantValue = getVariantDefinition(variants[key], key, value, conf)
+  let variantValue = getVariantDefinition(variants[key], value, conf)
 
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
     console.groupCollapsed(`♦️♦️♦️ resolve variant ${key}`)
@@ -316,30 +316,28 @@ const tokenCats = ['size', 'color', 'radius', 'space', 'zIndex'].map((name) => (
 }))
 
 // goes through specificity finding best matching variant function
-function getVariantDefinition(
-  variant: any,
-  key: string,
-  value: any,
-  conf: TamaguiInternalConfig
-) {
+function getVariantDefinition(variant: any, value: any, conf: TamaguiInternalConfig) {
   if (typeof variant === 'function') {
     return variant
   }
-  if (variant[value]) {
-    return variant[value]
+  const exact = variant[value]
+  if (exact) {
+    return exact
   }
-  const { tokensParsed } = conf
-  for (const { name, spreadName } of tokenCats) {
-    if (spreadName in variant && value in tokensParsed[name]) {
-      return variant[spreadName]
+  if (value != null) {
+    const { tokensParsed } = conf
+    for (const { name, spreadName } of tokenCats) {
+      if (spreadName in variant && value in tokensParsed[name]) {
+        return variant[spreadName]
+      }
+    }
+    const fontSizeVariant = variant['...fontSize']
+    if (fontSizeVariant && conf.fontSizeTokens.has(value)) {
+      return fontSizeVariant
     }
   }
-  const fontSizeVariant = variant['...fontSize']
-  if (fontSizeVariant && conf.fontSizeTokens.has(value)) {
-    return fontSizeVariant
-  }
   // fallback to catch all | size
-  return variant[`:${typeof value}`] || variant['...'] || variant['...size']
+  return variant[`:${typeof value}`] || variant['...']
 }
 
 const fontShorthand = {
