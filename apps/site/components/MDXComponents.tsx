@@ -675,7 +675,6 @@ const LinkHeading = ({ id, children, ...props }: { id: string } & XStackProps) =
 )
 
 const getNonTextChildren = (children) => {
-  // biome-ignore lint/complexity/useFlatMap: <explanation>
   return React.Children.map(children, (x) => {
     if (typeof x === 'string') return null
     if (x['type'] === code) return null

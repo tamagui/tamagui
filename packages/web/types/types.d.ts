@@ -272,12 +272,12 @@ type RemoveLanguagePostfixes<F extends GenericFonts> = {
 };
 type GetLanguagePostfixes<F extends GenericFonts> = GetLanguagePostfix<keyof F>;
 type ConfProps<A extends GenericTokens, B extends GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts, G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting, H extends DefaultFontSetting = DefaultFontSetting, I extends GenericTamaguiSettings = GenericTamaguiSettings> = {
-    tokens: A;
-    themes: B;
+    tokens?: A;
+    themes?: B;
     shorthands?: C;
     media?: D;
     animations?: AnimationDriver<E>;
-    fonts: F;
+    fonts?: F;
     onlyAllowShorthands?: G;
     defaultFont?: H;
     settings?: I;
