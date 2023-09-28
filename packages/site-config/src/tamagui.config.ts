@@ -146,7 +146,7 @@ const bodyFont = createInterFont(
   },
   {
     sizeSize: (size) => Math.round(size),
-    sizeLineHeight: (size) => Math.round(size * 1.1 + (size >= 12 ? 8 : 4)),
+    sizeLineHeight: (size) => Math.round(size * 1.2 + (size >= 20 ? 12 : 8)),
   }
 )
 
