@@ -8,7 +8,7 @@ import {
   createStyledContext,
   isWeb,
   styled,
-  useAnimationDriver,
+  useConfiguration,
   useEvent,
   useThemeName,
 } from '@tamagui/core'
@@ -247,17 +247,18 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
       context.swipeDirection
     )
 
-    const driver = useAnimationDriver()
-    if (!driver) {
+    const { animationDriver } = useConfiguration()
+    if (!animationDriver) {
       throw new Error('Must set animations in tamagui.config.ts')
     }
 
-    const { useAnimatedNumber, useAnimatedNumberStyle } = driver
+    const { useAnimatedNumber, useAnimatedNumberStyle } = animationDriver
 
     const animatedNumber = useAnimatedNumber(0)
 
     // temp until reanimated useAnimatedNumber fix
-    const AnimatedView = (driver['NumberView'] ?? driver.View) as typeof Animated.View
+    const AnimatedView = (animationDriver['NumberView'] ??
+      animationDriver.View) as typeof Animated.View
 
     const animatedStyles = useAnimatedNumberStyle(animatedNumber, (val) => {
       'worklet'

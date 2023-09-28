@@ -1,4 +1,4 @@
-import { TamaguiElement, useAnimationDriver } from '@tamagui/core'
+import { TamaguiElement, useConfiguration } from '@tamagui/core'
 import { useConstant } from '@tamagui/use-constant'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
@@ -125,8 +125,8 @@ export function useSheetProviderProps(
     }
   }, [setPosition, shouldSetPositionOpen])
 
-  const driver = useAnimationDriver()
-  if (!driver) {
+  const { animationDriver } = useConfiguration()
+  if (!animationDriver) {
     throw new Error('Must set animations in tamagui.config.ts')
   }
 
