@@ -388,7 +388,6 @@ async function run() {
       console.log(`✅ Pushed and versioned\n`)
     }
 
-    // just leave it
     // console.log(`All done, cleanup up in...`)
     // await sleep(2 * 1000)
     // // then remove old prepub tag

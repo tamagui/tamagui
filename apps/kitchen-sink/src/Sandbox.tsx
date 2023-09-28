@@ -1,6 +1,6 @@
 // import './wdyr'
 
-import { SelectDemo } from '@tamagui/demos'
+import { SelectDemo, SwitchDemo } from '@tamagui/demos'
 import { Ban, Search } from '@tamagui/lucide-icons'
 import { Stack, styled } from '@tamagui/web'
 import {
@@ -9,36 +9,41 @@ import {
   Paragraph,
   Popover,
   SizableText,
+  Square,
   XStack,
   YStack,
   createSwitch,
 } from 'tamagui'
 
-const X = styled(SizableText, {
-  size: '$10',
-})
+const Test = styled(Stack, {
+  variants: {
+    square: {
+      ':number': () => ({
+        backgroundColor: 'blue',
+      }),
 
-const ChangeWeight = styled(Stack, {
-  backgroundColor: 'red',
+      '...size': (val) => {
+        return {
+          backgroundColor: 'red',
+        }
+      },
+    },
+  },
 })
-
-export const MyAnchor = styled(Anchor, {
-  name: 'Link',
-  cursor: 'pointer',
-  fontWeight: '700',
-  textDecorationLine: 'underline',
-})
-
-const StyledSwitch = createSwitch({})
 
 export const Sandbox = () => {
   return (
-    <div
-      style={{ flex: 1, alignItems: 'center', justifyContent: 'center', display: 'flex' }}
-    >
-      <SelectDemo />
+    <>
       {/*  */}
-    </div>
+
+      <YStack group="hi">
+        <SwitchDemo />
+      </YStack>
+
+      {/* <XStack group="testy">
+        <Square bc="red" $group-testy={{ bc: 'blue' }} size={100} />
+      </XStack> */}
+    </>
   )
 }
 

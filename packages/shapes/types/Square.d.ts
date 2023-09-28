@@ -18,7 +18,7 @@ export declare const Square: import("@tamagui/web").TamaguiComponent<Omit<import
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 }, "size"> & {
-    readonly size?: import("@tamagui/web").SizeTokens | undefined;
+    readonly size?: number | import("@tamagui/web").SizeTokens | undefined;
 } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | import("react").CSSProperties | (import("react").CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
@@ -37,7 +37,7 @@ export declare const Square: import("@tamagui/web").TamaguiComponent<Omit<import
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 }, "size"> & {
-    readonly size?: import("@tamagui/web").SizeTokens | undefined;
+    readonly size?: number | import("@tamagui/web").SizeTokens | undefined;
 }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | import("react").CSSProperties | (import("react").CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
@@ -56,7 +56,7 @@ export declare const Square: import("@tamagui/web").TamaguiComponent<Omit<import
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 }, "size"> & {
-    readonly size?: import("@tamagui/web").SizeTokens | undefined;
+    readonly size?: number | import("@tamagui/web").SizeTokens | undefined;
 }>>, import("@tamagui/web").TamaguiElement, Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | import("react").CSSProperties | (import("react").CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core").RNViewProps, {
@@ -75,7 +75,7 @@ export declare const Square: import("@tamagui/web").TamaguiComponent<Omit<import
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 } & {
-    readonly size?: import("@tamagui/web").SizeTokens | undefined;
+    readonly size?: number | import("@tamagui/web").SizeTokens | undefined;
 }, {
     displayName: string | undefined;
     __baseProps: Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {

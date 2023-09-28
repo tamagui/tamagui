@@ -6,6 +6,8 @@ export declare const masks: {
     strengthen: import("@tamagui/create-theme").CreateMask;
     inverse: import("@tamagui/create-theme").CreateMask;
     inverseSoften: import("@tamagui/create-theme").CreateMask;
+    inverseSoften2: import("@tamagui/create-theme").CreateMask;
+    inverseSoften3: import("@tamagui/create-theme").CreateMask;
     inverseStrengthen2: import("@tamagui/create-theme").CreateMask;
     strengthenButSoftenBorder: import("@tamagui/create-theme").CreateMask;
     soften2Border1: import("@tamagui/create-theme").CreateMask;
