@@ -33,7 +33,7 @@ export type GithubAccessStatus = {
 }
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN
 
-const whitelistGithubUsernames = ['natew', 'alitnk']
+const whitelistGithubUsernames = ['natew', 'alitnk', 'benschac']
 
 export const checkForSponsorship = async (
   login: string,
