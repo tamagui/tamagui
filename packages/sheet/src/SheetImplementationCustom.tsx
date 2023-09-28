@@ -144,11 +144,14 @@ export const SheetImplementationCustom = themeable(
         value: animatedNumber,
         hostRef: sheetRef,
       },
-      useCallback((value) => {
-        if (!driver.isReactNative) return
-        at.current = value
-        scrollBridge.paneY = value
-      }, [])
+      useCallback(
+        (value) => {
+          if (!animationDriver.isReactNative) return
+          at.current = value
+          scrollBridge.paneY = value
+        },
+        [animationDriver]
+      )
     )
 
     function stopSpring() {
