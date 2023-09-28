@@ -1,11 +1,13 @@
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { useRef, useSyncExternalStore } from 'react'
+import { useContext, useRef, useSyncExternalStore } from 'react'
 
 import { getConfig } from '../config'
+import { ComponentContext } from '../contexts/ComponentContext'
 import { createProxy } from '../helpers/createProxy'
 import { matchMedia } from '../helpers/matchMedia'
 import { pseudoDescriptors } from '../helpers/pseudoDescriptors'
 import type {
+  ComponentContextI,
   MediaQueries,
   MediaQueryKey,
   MediaQueryObject,
@@ -13,6 +15,8 @@ import type {
   TamaguiInternalConfig,
   UseMediaState,
 } from '../types'
+import { useConfiguration } from './useConfiguration'
+import { getDisableSSR, useDisableSSR } from './useDisableSSR'
 
 export let mediaState: MediaQueryState =
   // development only safeguard
@@ -50,9 +54,6 @@ export const isMediaKey = (key: string) =>
 
 // for SSR capture it at time of startup
 let initState: MediaQueryState
-export const getInitialMediaState = () => {
-  return (getConfig().disableSSR ? mediaState : initState) || {}
-}
 
 // media always above pseudos
 const defaultMediaImportance = Object.keys(pseudoDescriptors).length
@@ -191,14 +192,17 @@ function subscribe(subscriber: any) {
   return () => listeners.delete(subscriber)
 }
 
-export function useMedia(uid?: any): UseMediaState {
+export function useMedia(uid?: any, componentContext?: ComponentContextI): UseMediaState {
   const internal = useRef<UseMediaInternalState | undefined>()
+  // performance boost to avoid using context twice
+  const disableSSR = componentContext ? getDisableSSR(componentContext) : useDisableSSR()
+  const initialState = (disableSSR ? mediaState : initState) || {}
 
   const state = useSyncExternalStore<MediaQueryState>(
     subscribe,
     () => {
       if (!internal.current) {
-        return initState
+        return initialState
       }
 
       const { touched, prev } = internal.current
@@ -223,13 +227,13 @@ export function useMedia(uid?: any): UseMediaState {
 
       return mediaState
     },
-    () => initState
+    () => initialState
   )
 
   return new Proxy(state, {
     get(_, key) {
       if (typeof key === 'string') {
-        internal.current ||= { prev: initState }
+        internal.current ||= { prev: initialState }
         internal.current.touched ||= new Set()
         internal.current.touched.add(key)
       }

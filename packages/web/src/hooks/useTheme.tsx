@@ -318,7 +318,8 @@ export const useChangeThemeEffect = (
       isNewTheme: false,
       themeManager: parentManager,
       state: {
-        ...parentManager.state,
+        name: '',
+        ...parentManager?.state,
         className: '',
       },
     }

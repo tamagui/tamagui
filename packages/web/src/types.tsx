@@ -180,6 +180,7 @@ export type ReactComponentWithRef<Props, Ref> = ForwardRefExoticComponent<
 >
 
 export type ComponentContextI = {
+  disableSSR?: boolean
   inText: boolean
   language: LanguageContextType | null
   animationDriver: AnimationDriver | null
@@ -413,12 +414,12 @@ type ConfProps<
   H extends DefaultFontSetting = DefaultFontSetting,
   I extends GenericTamaguiSettings = GenericTamaguiSettings
 > = {
-  tokens: A
-  themes: B
+  tokens?: A
+  themes?: B
   shorthands?: C
   media?: D
   animations?: AnimationDriver<E>
-  fonts: F
+  fonts?: F
   onlyAllowShorthands?: G
   defaultFont?: H
   settings?: I
