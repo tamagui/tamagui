@@ -125,6 +125,7 @@ export type TamaguiReactElement<P = {}> = React.ReactElement<P> & {
 };
 export type ReactComponentWithRef<Props, Ref> = ForwardRefExoticComponent<Props & RefAttributes<Ref>>;
 export type ComponentContextI = {
+    disableSSR?: boolean;
     inText: boolean;
     language: LanguageContextType | null;
     animationDriver: AnimationDriver | null;

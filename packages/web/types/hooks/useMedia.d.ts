@@ -1,4 +1,4 @@
-import type { MediaQueries, MediaQueryKey, MediaQueryObject, MediaQueryState, TamaguiInternalConfig, UseMediaState } from '../types';
+import type { ComponentContextI, MediaQueries, MediaQueryKey, MediaQueryObject, MediaQueryState, TamaguiInternalConfig, UseMediaState } from '../types';
 export declare let mediaState: MediaQueryState;
 export declare const mediaQueryConfig: MediaQueries;
 export declare const getMedia: () => MediaQueryState;
@@ -13,7 +13,7 @@ type UpdateState = {
     keys: MediaQueryKey[];
 };
 export declare function setMediaShouldUpdate(ref: any, props: UpdateState): WeakMap<any, UpdateState>;
-export declare function useMedia(uid?: any): UseMediaState;
+export declare function useMedia(uid?: any, componentContext?: ComponentContextI): UseMediaState;
 export declare const getMediaImportanceIfMoreImportant: (mediaKey: string, key: string, importancesUsed: Record<string, number>, isSizeMedia: boolean) => number | null;
 export declare function mergeMediaByImportance(onto: Record<string, any>, mediaKey: string, key: string, value: any, importancesUsed: Record<string, number>, isSizeMedia: boolean, importanceBump?: number): boolean;
 export declare function mediaObjectToString(query: string | MediaQueryObject, key?: string): string;

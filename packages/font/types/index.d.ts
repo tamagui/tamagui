@@ -9,7 +9,7 @@ export declare function addFont(props: {
     fontFamilyToken?: undefined;
     fontDeclaration?: undefined;
 } | {
-    fontFamilyToken: import("@tamagui/web").DeepVariableObject<import("@tamagui/web").GenericFont<string | number | symbol>>;
+    fontFamilyToken: never;
     fontDeclaration: {
         [x: string]: {
             name: string;
