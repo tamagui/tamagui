@@ -49,7 +49,7 @@ export async function checkSponsorAccess({
 
   const payload: PayloadShape = { hasStudioAccess, teamId: teamsWithAccess[0]?.id }
 
-  if (throwIfNoAccess && !hasStudioAccess) {
+  if (throwIfNoAccess && !hasStudioAccess && process.env.NODE_ENV === 'production') {
     res.status(403).json({
       message: "You don't have access to this part of the studio.",
     })
