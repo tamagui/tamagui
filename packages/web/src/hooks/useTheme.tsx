@@ -109,7 +109,7 @@ export const useThemeWithState = (
   }, [state, themeManager])
 
   if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
-    console.groupCollapsed('  🔹 useTheme =>', name)
+    console.groupCollapsed('  🔹 useTheme =>', state?.name)
     // biome-ignore lint/suspicious/noConsoleLog: <explanation>
     console.log('returning state', changedThemeState, 'from props', props)
     console.groupEnd()
