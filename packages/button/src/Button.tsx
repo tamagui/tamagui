@@ -251,7 +251,7 @@ function useButton<Props extends ButtonProps>(
   const spaceSize = propsActive.space ?? getVariableValue(iconSize) * scaleSpace
   const contents = wrapChildrenInText(
     Text,
-    propsActive,
+    { children },
     Text === ButtonText && propsIn.unstyled !== true
       ? {
           unstyled: false,
