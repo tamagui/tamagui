@@ -16,10 +16,11 @@
   ],
   "scripts": {
     "build": "tamagui-build",
-    "clean": "tamagui-build clean",
+    "watch": "tamagui-build --watch",
     "lint": "../../node_modules/.bin/biome check src",
     "lint:fix": "../../node_modules/.bin/biome check --apply-unsafe src",
-    "watch": "tamagui-build --watch"
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
     "@tamagui/font-size": "1.73.0",
