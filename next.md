@@ -4,6 +4,7 @@
 - Select native
   - can use iOS Select as well as the newer SwiftUI menu style Picker
 - avoid need for setupReactNative
+- ssr safe themeInverse would be pretty nice
 
 - styled(ExternalComponent) should always allow Partial props
   - but if you do provide the props ideally it should 'know' they are pre-filled and therefore not required anymore

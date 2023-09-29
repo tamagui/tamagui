@@ -57,6 +57,7 @@ import {
   TextProps,
   UseAnimationHook,
   UseAnimationProps,
+  WebOnlyPressEvents,
 } from './types'
 import { Slot } from './views/Slot'
 import { useThemedChildren } from './views/Theme'
@@ -1086,24 +1087,23 @@ export function createComponent<
       elementType = Slot
       // on native this is already merged into viewProps in hooks.useEvents
       if (process.env.TAMAGUI_TARGET === 'web') {
-        const passEvents = {
-          onPress,
-          onLongPress,
-          onPressIn,
-          onPressOut,
-          onHoverIn,
-          onHoverOut,
-          onMouseUp,
-          onMouseDown,
-          onMouseEnter,
-          onMouseLeave,
-        }
-        Object.assign(
-          viewProps,
-          asChild === 'web' || asChild === 'except-style-web'
-            ? getWebEvents(passEvents as any)
-            : passEvents
+        const webStyleEvents = asChild === 'web' || asChild === 'except-style-web'
+        const passEvents = getWebEvents(
+          {
+            onPress,
+            onLongPress,
+            onPressIn,
+            onPressOut,
+            onHoverIn,
+            onHoverOut,
+            onMouseUp,
+            onMouseDown,
+            onMouseEnter,
+            onMouseLeave,
+          },
+          webStyleEvents
         )
+        Object.assign(viewProps, passEvents)
       }
     }
 
@@ -1337,11 +1337,16 @@ export function createComponent<
   return res
 }
 
-function getWebEvents<E extends TamaguiComponentEvents>(events: E) {
+type EventKeys = keyof (TamaguiComponentEvents & WebOnlyPressEvents)
+type EventLikeObject = {
+  [key in EventKeys]?: any
+}
+
+function getWebEvents<E extends EventLikeObject>(events: E, webStyle = true) {
   return {
-    onMouseEnter: events.onMouseEnter,
-    onMouseLeave: events.onMouseLeave,
-    onClick: events.onPress,
+    onMouseEnter: events.onHoverIn ?? events.onMouseEnter,
+    onMouseLeave: events.onHoverOut ?? events.onMouseLeave,
+    [webStyle ? 'onClick' : 'onPress']: events.onPress,
     onMouseDown: events.onPressIn,
     onMouseUp: events.onPressOut,
     onTouchStart: events.onPressIn,
@@ -1537,8 +1542,6 @@ function isUnspaced(child: React.ReactNode) {
   const t = child?.['type']
   return t?.['isVisuallyHidden'] || t?.['isUnspaced']
 }
-
-const DefaultProps = new Map()
 
 const AbsoluteFill: any = createComponent({
   defaultProps: {
