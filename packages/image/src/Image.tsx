@@ -77,6 +77,11 @@ export const Image = StyledImage.extractable(
         ? { uri: src, ...(isWeb && { width: props.width, height: props.height }) }
         : source ?? src
 
+    // require compat across native/web
+    if (typeof finalSource === 'object' && finalSource['default']) {
+      finalSource = finalSource['default']
+    }
+
     // must set defaultSource to allow SSR, default it to the same as src
     return <StyledImage ref={ref} source={finalSource} style={style} {...(rest as any)} />
   })
