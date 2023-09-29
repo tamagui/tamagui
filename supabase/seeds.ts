@@ -67,25 +67,24 @@ async function createClimbs(
             'lead_rope',
             'top_rope',
           ]) as Enums<'climb_type'>,
-          name: `${
-            user?.user?.user_metadata.first_name
-          } ${faker.helpers.arrayElement([
-            'climbs',
-            'sends',
-            'projects',
-            'attempts',
-          ])} ${faker.helpers.arrayElement([
-            'a',
-            'the',
-            'my',
-          ])} ${faker.helpers.arrayElement([
-            'red',
-            'blue',
-            'green',
-            'yellow',
-            'purple',
-            'black',
-          ])} ${faker.helpers.arrayElement(['route', 'problem', 'boulder'])}`,
+          name: `${user?.user?.user_metadata.first_name
+            } ${faker.helpers.arrayElement([
+              'climbs',
+              'sends',
+              'projects',
+              'attempts',
+            ])} ${faker.helpers.arrayElement([
+              'a',
+              'the',
+              'my',
+            ])} ${faker.helpers.arrayElement([
+              'red',
+              'blue',
+              'green',
+              'yellow',
+              'purple',
+              'black',
+            ])} ${faker.helpers.arrayElement(['route', 'problem', 'boulder'])}`,
         }
       })
 
@@ -105,25 +104,24 @@ async function createClimbs(
           'lead_rope',
           'top_rope',
         ]) as Enums<'climb_type'>,
-        name: `${
-          user?.user?.user_metadata.first_name
-        } ${faker.helpers.arrayElement([
-          'climbs',
-          'sends',
-          'projects',
-          'attempts',
-        ])} ${faker.helpers.arrayElement([
-          'a',
-          'the',
-          'my',
-        ])} ${faker.helpers.arrayElement([
-          'red',
-          'blue',
-          'green',
-          'yellow',
-          'purple',
-          'black',
-        ])} ${faker.helpers.arrayElement(['route', 'problem', 'boulder'])}`,
+        name: `${user?.user?.user_metadata.first_name
+          } ${faker.helpers.arrayElement([
+            'climbs',
+            'sends',
+            'projects',
+            'attempts',
+          ])} ${faker.helpers.arrayElement([
+            'a',
+            'the',
+            'my',
+          ])} ${faker.helpers.arrayElement([
+            'red',
+            'blue',
+            'green',
+            'yellow',
+            'purple',
+            'black',
+          ])} ${faker.helpers.arrayElement(['route', 'problem', 'boulder'])}`,
       })
 
       return climbs
@@ -133,7 +131,7 @@ async function createClimbs(
   const { error } = await supabase.from('climbs').insert(usersClimbs)
 
   if (error) {
-    console.log(error)
+    console.error(error)
     return
   }
 }
@@ -158,7 +156,7 @@ async function createMaple(supabase: SupabaseClient<Database>) {
   })
 
   if (error) {
-    console.log(error)
+    console.error(error)
     return
   }
 
@@ -182,7 +180,7 @@ async function createMochi(supabase: SupabaseClient<Database>) {
   })
 
   if (error) {
-    console.log(error)
+    console.error(error)
     return
   }
 
@@ -207,7 +205,7 @@ async function createBenjamin(supabase: SupabaseClient<Database>) {
   })
 
   if (error) {
-    console.log(error)
+    console.error(error)
     return
   }
 
@@ -293,12 +291,12 @@ async function createProfileClimbs(
   const { error } = await supabase.from('profile_climbs').insert(profileClimbs)
 
   if (error) {
-    console.log(error)
+    console.error(error)
   }
 }
 
 async function main() {
-  console.log('Running seeds with faker data')
+  console.error('Running seeds with faker data')
   const benjamin = await createBenjamin(supabaseInstance)
   const mochi = await createMochi(supabaseInstance)
   const maple = await createMaple(supabaseInstance)
@@ -312,7 +310,7 @@ async function main() {
   }
 
   if (!maple) {
-    console.log(maple)
+    console.error(maple)
     throw new Error('no maple')
   }
 
@@ -330,5 +328,3 @@ async function main() {
 }
 
 main().catch(console.error)
-
-console.log('hello')

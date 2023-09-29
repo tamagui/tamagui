@@ -3,7 +3,6 @@ const expo = new Expo({ accessToken: process.env.EXPO_ACCESS_TOKEN })
 
 export async function sendNotifications(notfications: ExpoPushMessage[]) {
   for (const notif of notfications) {
-    console.log(notif.to)
     if (!Expo.isExpoPushToken(notif.to)) {
       throw new Error('Malformed expo token')
     }

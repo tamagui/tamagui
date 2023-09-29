@@ -3,7 +3,7 @@ import { replaceLocalhost } from './getLocalhost.native'
 
 export function _getBaseUrl() {
   if (isWeb && typeof window !== 'undefined') {
-    console.log(typeof window)
+    console.info(typeof window)
     // browser should use relative path
     return ''
   }

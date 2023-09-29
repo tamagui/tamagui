@@ -118,7 +118,6 @@ export const climbRouter = createTRPCRouter({
       .order('start', { ascending: true })
 
     if (climbs.error) {
-      console.log(climbs.error)
       throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' })
     }
 
@@ -144,7 +143,6 @@ export const climbRouter = createTRPCRouter({
         .eq('id', input.climb_id)
         .single()
       if (climb.error) {
-        console.log(climb.error)
         throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' })
       }
 
@@ -163,7 +161,6 @@ export const climbRouter = createTRPCRouter({
         .eq('id', input.climb_id)
 
       if (updatedClimb.error) {
-        console.log(updatedClimb.error)
         throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' })
       }
 
@@ -173,7 +170,7 @@ export const climbRouter = createTRPCRouter({
       })
 
       if (profileClimb.error) {
-        console.log(profileClimb.error)
+        (profileClimb.error)
         throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' })
       }
 
@@ -185,14 +182,8 @@ export const climbRouter = createTRPCRouter({
         .from('profiles')
         .select(`*`)
         .eq('id', session.user?.id)
-      console.log(
-        climber?.[0]?.expo_token,
-        belayer?.[0]?.expo_token,
-        'aaaaaaaa'
-      )
       const c = climber?.[0]
       const b = belayer?.[0]
-      console.log(c)
       if (!c || !b) {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
@@ -227,12 +218,10 @@ export const climbRouter = createTRPCRouter({
       const climb = await supabase.from('climbs').select('*').eq('id', [data?.climb_id]).single()
 
       if (error) {
-        console.log(error)
         throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' })
       }
 
       if (climb.error) {
-        console.log(climb.error)
         throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' })
       }
 
@@ -242,7 +231,6 @@ export const climbRouter = createTRPCRouter({
 
 
       if (updatedClimb.error) {
-        console.log(updatedClimb.error)
         throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' })
       }
 
@@ -250,7 +238,6 @@ export const climbRouter = createTRPCRouter({
 
 
       if (removeProfileClimb.error) {
-        console.log(removeProfileClimb.error)
         throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' })
       }
 
@@ -296,11 +283,9 @@ export const climbRouter = createTRPCRouter({
         .select()
 
       if (profile.error) {
-        console.log(profile.error)
         throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' })
       }
 
-      console.log(profile)
       return true
     }),
 })

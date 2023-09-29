@@ -5,6 +5,7 @@ import { z } from 'zod'
 import { Expo } from 'expo-server-sdk'
 
 const expo = new Expo({
+  // TODO: put in a env file
   accessToken: 'HQgepaSF27aFDYdM9iPl8sHiKva5tsbu0_FYZK5o',
 })
 export const meRouter = createTRPCRouter({
@@ -52,11 +53,6 @@ export const meRouter = createTRPCRouter({
       }),
   }),
 
-  // updateExpoToken: protectedProcedure.input(z.object({
-  //   token: z.string().optional(),
-  // })).mutation(async () => {
-  //   return 'hello'
-  // }),
   testNotifFromServer: protectedProcedure
     .input(
       z.object({
@@ -65,36 +61,6 @@ export const meRouter = createTRPCRouter({
       })
     )
     .mutation(async () => {
-      console.log(
-        process.env.BENJAMIN_PHONE_EXPO_TOKEN,
-        'ExponentPushToken[hQyzQGD62nI5e3PipCBGl7]'
-      )
-      // const messages = [
-      //   {
-      //     to: 'ExponentPushToken[hQyzQGD62nI5e3PipCBGl7]',
-      //     sound: 'default',
-      //     body: `from the server bitch has joined your climb`,
-      //     data: { withSome: 'data' },
-      //   },
-      // ]
-
-      // to: ExpoPushToken | ExpoPushToken[];
-      // data?: object;
-      // title?: string;
-      // subtitle?: string;
-      // body?: string;
-      // sound?: 'default' | null | {
-      //     critical?: boolean;
-      //     name?: 'default' | null;
-      //     volume?: number;
-      // };
-      // ttl?: number;
-      // expiration?: number;
-      // priority?: 'default' | 'normal' | 'high';
-      // badge?: number;
-      // channelId?: string;
-      // categoryId?: string;
-      // mutableContent?: boolean;
       const chunks = expo.chunkPushNotifications([
         {
           to: 'ExponentPushToken[aZBtiuP6QZ29Gzoc7B_yVC]',
@@ -105,19 +71,13 @@ export const meRouter = createTRPCRouter({
 
       for (const chunk of chunks) {
         try {
+          // TODO: Need to do something with this ticket
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const ticket = await expo.sendPushNotificationsAsync(chunk)
-          console.log(ticket)
         } catch (error) {
-          console.log(JSON.stringify(error))
-
-          // The important part:
-          // error.details = { EXPO_PROJECT_NAME: [ ExponentPushTokens ] }
+          console.error(JSON.stringify(error))
         }
       }
-
-      // for (const chunk in chunks) {
-      //   const ticket = await expo.sendPushNotificationsAsync(chunk)
-      // }
     }),
   climbs: protectedProcedure.query(async ({ ctx: { supabase, session } }) => {
     const { data: profileClimbData, error } = await supabase
