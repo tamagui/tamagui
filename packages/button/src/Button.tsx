@@ -233,6 +233,8 @@ function useButton<Props extends ButtonProps>(
     scaleIcon = 1,
     scaleSpace = 0.66,
     separator,
+    noTextWrap,
+    fontFamily,
 
     ...rest
   } = propsActive
@@ -249,16 +251,18 @@ function useButton<Props extends ButtonProps>(
   })
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)
   const spaceSize = propsActive.space ?? getVariableValue(iconSize) * scaleSpace
-  const contents = wrapChildrenInText(
-    Text,
-    { children },
-    Text === ButtonText && propsIn.unstyled !== true
-      ? {
-          unstyled: false,
-          size,
-        }
-      : undefined
-  )
+  const contents = noTextWrap
+    ? [children]
+    : wrapChildrenInText(
+        Text,
+        { children, fontFamily },
+        Text === ButtonText && propsIn.unstyled !== true
+          ? {
+              unstyled: false,
+              size,
+            }
+          : undefined
+      )
 
   const inner = spacedChildren({
     // a bit arbitrary but scaling to font size is necessary so long as button does

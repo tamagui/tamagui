@@ -957,10 +957,7 @@ export function createComponent<
     // check presence rather than value to prevent reparenting bugs
     // allows for onPress={x ? function : undefined} without re-ordering dom
     const shouldAttach = Boolean(
-      attachPress ||
-        isHoverable ||
-        (noClassNames && 'pressStyle' in props) ||
-        (isWeb && noClassNames && 'hoverStyle' in props)
+      attachPress || isHoverable || runtimePressStyle || runtimeHoverStyle
     )
 
     if (process.env.NODE_ENV === 'development' && time) time`events-setup`
