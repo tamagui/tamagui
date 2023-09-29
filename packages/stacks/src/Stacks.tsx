@@ -20,6 +20,7 @@ const variants = {
   },
   elevation: {
     '...size': getElevation,
+    ':number': getElevation,
   },
 } as const
 

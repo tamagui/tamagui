@@ -1,18 +1,25 @@
+- strict shorthands (only use shorthands)
+- ios no render dark/light mode support
+- fix button color + pressStyle
+- Select native
+  - can use iOS Select as well as the newer SwiftUI menu style Picker
+- avoid need for setupReactNative
+
 - styled(ExternalComponent) should always allow Partial props
   - but if you do provide the props ideally it should 'know' they are pre-filled and therefore not required anymore
   - also it should make sure to make those props required if they aren't set in styled()
 
-- v2 : col => c
-
-- web mode: 100% of css coverage or at least allow all valid web props
-  - compiler can accummulate them and emit a file?
-
-bigger up next:
+- v2 
+  - shorthands
+    - col => c
+    - remove bg/bc confusion
+  - web mode: 100% of css coverage or at least allow all valid web props
+    - compiler can accummulate them and emit a file?
+  - basic plugins system
   - no separate UI package necessary for optimization
   - if dynamic eval flattens every usage, remove the definition
   - headless
   - zero runtime
-  - Menu
 
 - TODO this could definitely be done better by at the very minimum
   - this entire proxy could be removed in favor of the proxy we make on initial theme creation, and just having a way to subscribeThemeGet(theme, (key, val) => any) at the useThemeWithState callsite
