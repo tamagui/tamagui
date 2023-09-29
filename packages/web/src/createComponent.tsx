@@ -224,6 +224,7 @@ export function createComponent<
     let overriddenContextProps: Object | undefined
     let contextValue: Object | null | undefined
     const { context } = staticConfig
+
     if (context) {
       contextValue = useContext(context)
       const { inverseShorthands } = getConfig()
@@ -1194,6 +1195,17 @@ export function createComponent<
             {content}
           </span>
         )
+      }
+    }
+
+    // ensure we override new context with syle resolved values
+    if (staticConfig.context) {
+      const contextProps = staticConfig.context.props
+      for (const key in contextProps) {
+        if (key in style) {
+          overriddenContextProps ||= {}
+          overriddenContextProps[key] = style[key]
+        }
       }
     }
 

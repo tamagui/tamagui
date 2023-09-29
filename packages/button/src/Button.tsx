@@ -28,7 +28,19 @@ export const ButtonContext = createStyledContext<
       size: SizeTokens
     }
   >
->({})
+>({
+  // keeping these here means they work with styled() passing down color to text
+  color: undefined,
+  ellipse: undefined,
+  fontFamily: undefined,
+  fontSize: undefined,
+  fontStyle: undefined,
+  fontWeight: undefined,
+  letterSpacing: undefined,
+  maxFontSizeMultiplier: undefined,
+  size: undefined,
+  textAlign: undefined,
+})
 
 type ButtonIconProps = { color?: string; size?: number }
 type IconProp = JSX.Element | FunctionComponent<ButtonIconProps> | null
@@ -239,7 +251,7 @@ function useButton<Props extends ButtonProps>(
   const spaceSize = propsActive.space ?? getVariableValue(iconSize) * scaleSpace
   const contents = wrapChildrenInText(
     Text,
-    propsActive,
+    { children },
     Text === ButtonText && propsIn.unstyled !== true
       ? {
           unstyled: false,
@@ -286,6 +298,8 @@ function useButton<Props extends ButtonProps>(
     children: (
       <ButtonNestingContext.Provider value={true}>{inner}</ButtonNestingContext.Provider>
     ),
+    // forces it to be a runtime pressStyle so it passes through context text colors
+    disableClassName: true,
   } as Props
 
   return {
