@@ -207,34 +207,23 @@ function useButton<Props extends ButtonProps>(
   propsIn: Props,
   { Text = Button.Text }: { Text: any } = { Text: Button.Text }
 ) {
+  const isNested = useContext(ButtonNestingContext)
+
+  const propsActive = useProps(propsIn) as any as ButtonProps
+
   // careful not to desctructure and re-order props, order is important
   const {
     children,
     icon,
     iconAfter,
-    noTextWrap,
-    theme: themeName,
     space,
     spaceFlex,
     scaleIcon = 1,
     scaleSpace = 0.66,
     separator,
 
-    // text props
-    color,
-    fontWeight,
-    letterSpacing,
-    fontSize,
-    fontFamily,
-    fontStyle,
-    textAlign,
-    textProps,
-
     ...rest
-  } = propsIn
-
-  const isNested = useContext(ButtonNestingContext)
-  const propsActive = useProps(propsIn) as any as ButtonProps
+  } = propsActive
 
   const size = propsActive.size || (propsActive.unstyled ? undefined : '$true')
 
@@ -242,7 +231,10 @@ function useButton<Props extends ButtonProps>(
     (typeof size === 'number' ? size * 0.5 : getFontSize(size as FontSizeTokens)) *
     scaleIcon
 
-  const getThemedIcon = useGetThemedIcon({ size: iconSize, color: color as any })
+  const getThemedIcon = useGetThemedIcon({
+    size: iconSize,
+    color: propsActive.color as any,
+  })
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)
   const spaceSize = propsActive.space ?? getVariableValue(iconSize) * scaleSpace
   const contents = wrapChildrenInText(

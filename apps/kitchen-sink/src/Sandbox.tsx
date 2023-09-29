@@ -16,19 +16,15 @@ import {
   createSwitch,
 } from 'tamagui'
 
-const Test = styled(Stack, {
-  variants: {
-    square: {
-      ':number': () => ({
-        backgroundColor: 'blue',
-      }),
+const StyledButtonPseudoColor = styled(Button, {
+  color: 'green',
+  backgroundColor: 'yellow',
+  debug: 'verbose',
 
-      '...size': (val) => {
-        return {
-          backgroundColor: 'red',
-        }
-      },
-    },
+  pressStyle: {
+    backgroundColor: 'red',
+    // @ts-ignore
+    color: 'white',
   },
 })
 
@@ -38,7 +34,7 @@ export const Sandbox = () => {
       {/*  */}
 
       <YStack group="testy">
-        <Image source={require('./guy.png')} width={200} height={200} />
+        <StyledButtonPseudoColor debug="verbose">hi</StyledButtonPseudoColor>
       </YStack>
 
       {/* <XStack group="testy">
