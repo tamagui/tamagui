@@ -680,10 +680,11 @@ export const getSplitStyles: StyleSplitter = (
 
       // have to run this logic again here because expansions may need to be passed down
       // see StyledButtonVariantPseudoMerge test
-      const isHOCShouldPassThrough =
-        isHOC && (isMediaOrPseudo || parentStaticConfig?.variants?.[keyInit])
+      const shouldPassThrough =
+        (styleProps.noExpand && isPseudo) ||
+        (isHOC && (isMediaOrPseudo || parentStaticConfig?.variants?.[keyInit]))
 
-      if (isHOCShouldPassThrough) {
+      if (shouldPassThrough) {
         passDownProp(viewProps, key, val, isMediaOrPseudo)
         if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
           console.groupCollapsed(` - passing down prop ${key}`)
@@ -694,7 +695,6 @@ export const getSplitStyles: StyleSplitter = (
         continue
       }
 
-      // pseudo
       if (isPseudo) {
         if (!val) continue
 

@@ -400,7 +400,7 @@ export const useChangeThemeEffect = (
       }
     }
 
-    if (!force && state.name === prev?.state?.name) {
+    if (!force && state?.name === prev?.state?.name) {
       return prev
     }
 
