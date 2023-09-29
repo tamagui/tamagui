@@ -2,10 +2,8 @@ import {
   ColorStyleProp,
   GetProps,
   Stack,
-  cloneElementWithPropOrder,
   composeEventHandlers,
   createStyledContext,
-  isTamaguiElement,
   isWeb,
   setupReactNative,
   styled,
@@ -16,18 +14,7 @@ import {
 } from '@tamagui/core'
 import { Scope, createContextScope } from '@tamagui/create-context'
 import { useFocusable } from '@tamagui/focusable'
-import {
-  Children,
-  RefObject,
-  createContext,
-  isValidElement,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import { RefObject, useEffect, useMemo, useRef, useState } from 'react'
 import { TextInput } from 'react-native'
 
 import { inputFrameSizeVariant, inputSizeVariant } from '../helpers/inputHelpers'
@@ -39,7 +26,7 @@ type InputContextValue = {
 
 const INPUT_NAME = 'InputFrame'
 
-const InputStyledContext = createStyledContext({ size: null })
+const InputStyledContext = createStyledContext({ size: null, unstyled: false })
 
 type ScopedProps<P> = P & { __scopeGroup?: Scope }
 const [createInputContext, _] = createContextScope(INPUT_NAME)
@@ -130,14 +117,13 @@ const InputControlMain = styled(
 
     variants: {
       unstyled: {
-        true: {
-          focusStyle: { outlineWidth: 0 },
-        },
         false: defaultStyles,
       },
 
-      fill: {
+      decorated: {
         true: {
+          focusStyle: { outlineWidth: 0 },
+          borderWidth: 0,
           flex: 1,
         },
       },
@@ -156,13 +142,17 @@ const InputControlMain = styled(
   }
 )
 
-const InputControl = InputControlMain.styleable<InputProps>((propsIn, ref) => {
-  const props = useProps(propsIn)
-  const inputProps = useInputProps(props, ref)
+const BaseInputControl = InputControlMain.styleable<InputProps>((propsIn, ref) => {
+  const props = useInputProps(propsIn, ref)
+  return <InputControlMain {...props} />
+})
+
+const DecoratedInputControl = InputControlMain.styleable<InputProps>((propsIn, ref) => {
+  const inputProps = useInputProps(propsIn, ref)
   const { ref: focusRef, children, onFocus, onBlur, ...extraInputProps } = inputProps
   const { textInputRef, setIsFocused } = useInputContext(
     'InputControl',
-    props.__scopeGroup
+    propsIn.__scopeGroup
   )
   const passedRef = useComposedRefs(textInputRef, focusRef)
 
@@ -171,8 +161,7 @@ const InputControl = InputControlMain.styleable<InputProps>((propsIn, ref) => {
       ref={passedRef}
       onFocus={composeEventHandlers(onFocus, () => setIsFocused(true))}
       onBlur={composeEventHandlers(onBlur, () => setIsFocused(false))}
-      unstyled
-      fill
+      decorated
       {...extraInputProps}
     />
   )
@@ -187,101 +176,81 @@ const BaseInputAdornment = styled(Stack, {
   flexDirection: 'row',
 })
 
-const InputStartAdornmentMain = styled(BaseInputAdornment, {
+const InputStartAdornment = styled(BaseInputAdornment, {
   name: 'InputStartAdornment',
 })
 
-const lastStyles = { borderTopRightRadius: 0, borderBottomRightRadius: 0 }
-const firstStyles = { borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }
-const middleStyles = { ...firstStyles, ...lastStyles }
-const baseStyles = {
-  height: '100%',
-  borderTopRightRadius: 0,
-  borderBottomRightRadius: 0,
-  borderTopLeftRadius: 0,
-  borderBottomLeftRadius: 0,
-}
+// const baseStyles = {
+//   height: '100%',
+//   borderTopRightRadius: 0,
+//   borderBottomRightRadius: 0,
+//   borderTopLeftRadius: 0,
+//   borderBottomLeftRadius: 0,
+// }
 
-const InputStartAdornment = InputStartAdornmentMain.styleable((propsIn, ref) => {
-  const { children: childrenProp, ...props } = useProps(propsIn)
+// const InputStartAdornment = InputStartAdornmentMain.styleable((propsIn, ref) => {
+//   const { children: childrenProp, ...props } = useProps(propsIn)
 
-  const childrenArray = Children.toArray(childrenProp)
-  const children = childrenArray.map((child, i) => {
-    const isFirst = i === 0
-    const isLast = i === childrenArray.length - 1
-    const isMiddle = !isFirst && !isLast
+//   const childrenArray = Children.toArray(childrenProp)
+//   const children = childrenArray.map((child) => {
+//     const props = {
+//       ...(isTamaguiElement(child) ? baseStyles : { style: baseStyles }),
+//     }
 
-    const styles = {
-      ...baseStyles,
-      // ...(isMiddle ? middleStyles : {}),
-      // ...(isLast ? lastStyles : {}),
-      // ...(isFirst ? firstStyles : {}),
-    }
-    const props = {
-      ...(isTamaguiElement(child) ? styles : { style: styles }),
-    }
+//     return cloneElementWithPropOrder(child, props)
+//   })
 
-    return cloneElementWithPropOrder(child, props)
-  })
-
-  return (
-    <InputStartAdornmentMain ref={ref} {...props}>
-      {children}
-    </InputStartAdornmentMain>
-  )
-})
-const InputEndAdornmentMain = styled(BaseInputAdornment, {
+//   return (
+//     <InputStartAdornmentMain ref={ref} {...props}>
+//       {children}
+//     </InputStartAdornmentMain>
+//   )
+// })
+const InputEndAdornment = styled(BaseInputAdornment, {
   name: 'InputEndAdornment',
 })
 
-const InputEndAdornment = InputEndAdornmentMain.styleable((propsIn, ref) => {
-  const { children: childrenProp, ...props } = useProps(propsIn)
+// const InputEndAdornment = InputEndAdornmentMain.styleable((propsIn, ref) => {
+//   const { children: childrenProp, ...props } = useProps(propsIn)
 
-  const childrenArray = Children.toArray(childrenProp)
-  const children = childrenArray.map((child, i) => {
-    const isFirst = i === 0
-    const isLast = i === childrenArray.length - 1
-    const isMiddle = !isFirst && !isLast
+//   const childrenArray = Children.toArray(childrenProp)
+//   const children = childrenArray.map((child) => {
+//     const props = {
+//       ...(isTamaguiElement(child) ? baseStyles : { style: baseStyles }),
+//     }
 
-    const styles = {
-      ...baseStyles,
-      // ...(isMiddle ? middleStyles : {}),
-      // ...(isLast ? lastStyles : {}),
-      // ...(isFirst ? firstStyles : {}),
-    }
-    const props = {
-      ...(isTamaguiElement(child) ? styles : { style: styles }),
-    }
+//     return cloneElementWithPropOrder(child, props)
+//   })
 
-    return cloneElementWithPropOrder(child, props)
-  })
+//   return (
+//     <InputEndAdornmentMain ref={ref} {...props}>
+//       {children}
+//     </InputEndAdornmentMain>
+//   )
+// })
 
-  console.log(children)
-
-  return (
-    <InputEndAdornmentMain ref={ref} {...props}>
-      {children}
-    </InputEndAdornmentMain>
+const InputMain = InputFrame.styleable<InputProps>((propsIn, ref) =>
+  propsIn.children ? (
+    <InputDecorated ref={ref} {...propsIn} />
+  ) : (
+    <BaseInputControl ref={ref} {...propsIn} />
   )
-})
+)
 
-const InputMain = InputFrame.styleable<InputProps>((propsIn, ref) => {
+const InputDecorated = InputFrame.styleable<InputProps>((propsIn, ref) => {
   const props = useProps(propsIn)
   const [isFocused, setIsFocused] = useState(false)
   const textInputRef = useRef<TextInput>(null)
-  const hasContent = props.children
 
   const handleOnPress = useMemo(
     () => composeEventHandlers(props.onPress, () => textInputRef.current?.focus()),
-    []
+    [props.onPress]
   )
   const { onPress: _, ...rest } = props
 
   useEffect(() => {
     if (propsIn.disabled) setIsFocused(false)
   }, [propsIn.disabled])
-
-  if (!hasContent) return <InputControl unstyled={false} {...props} />
 
   return (
     <InputProvider
@@ -296,7 +265,7 @@ const InputMain = InputFrame.styleable<InputProps>((propsIn, ref) => {
 
 export const Input = withStaticProperties(InputMain, {
   Start: InputStartAdornment,
-  Control: InputControl,
+  Control: DecoratedInputControl,
   End: InputEndAdornment,
 })
 
