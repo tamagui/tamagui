@@ -77,9 +77,24 @@ export const Image = StyledImage.extractable(
         ? { uri: src, ...(isWeb && { width: props.width, height: props.height }) }
         : source ?? src
 
-    // require compat across native/web
-    if (typeof finalSource === 'object' && finalSource['default']) {
-      finalSource = finalSource['default']
+    if (finalSource && typeof finalSource === 'object') {
+      if (process.env.TAMAGUI_TARGET === 'native') {
+        // fix: normalize import style images
+        if (!Array.isArray(finalSource)) {
+          if (typeof finalSource.uri === 'number') {
+            finalSource = finalSource.uri
+            if (source && typeof source === 'object' && !Array.isArray(source)) {
+              style.width ??= source.width
+              style.height ??= source.height
+            }
+          }
+        }
+      }
+
+      // require compat across native/web
+      if (finalSource['default']) {
+        finalSource = finalSource['default']
+      }
     }
 
     // must set defaultSource to allow SSR, default it to the same as src

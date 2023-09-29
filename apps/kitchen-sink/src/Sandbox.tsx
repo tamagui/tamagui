@@ -17,6 +17,8 @@ import {
   createSwitch,
 } from 'tamagui'
 
+import guy from './guy.png'
+
 const StyledButtonPseudoColor = styled(Button, {
   color: 'green',
   backgroundColor: 'yellow',
@@ -36,6 +38,8 @@ export const Sandbox = () => {
       <YStack group="testy">
         <StyledButtonPseudoColor>hi</StyledButtonPseudoColor>
       </YStack>
+
+      <Image source={{ uri: guy, width: 200, height: 200 }} />
 
       {/* <XStack group="testy">
         <Square bc="red" $group-testy={{ bc: 'blue' }} size={100} />
