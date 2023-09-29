@@ -39,6 +39,10 @@ export const Sandbox = () => {
         <StyledButtonPseudoColor>hi</StyledButtonPseudoColor>
       </YStack>
 
+      <Button size="$3" chromeless circular>
+        hello???
+      </Button>
+
       <Image source={{ uri: guy, width: 200, height: 200 }} />
 
       {/* <XStack group="testy">

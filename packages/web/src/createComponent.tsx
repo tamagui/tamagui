@@ -1202,9 +1202,9 @@ export function createComponent<
     if (staticConfig.context) {
       const contextProps = staticConfig.context.props
       for (const key in contextProps) {
-        if (key in style) {
+        if (key in style || key in viewProps) {
           overriddenContextProps ||= {}
-          overriddenContextProps[key] = style[key]
+          overriddenContextProps[key] = style[key] ?? viewProps[key]
         }
       }
     }
