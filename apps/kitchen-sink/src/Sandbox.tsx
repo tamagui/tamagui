@@ -6,6 +6,7 @@ import { Stack, styled } from '@tamagui/web'
 import {
   Anchor,
   Button,
+  ButtonText,
   Image,
   Paragraph,
   Popover,
@@ -19,7 +20,6 @@ import {
 const StyledButtonPseudoColor = styled(Button, {
   color: 'green',
   backgroundColor: 'yellow',
-  debug: 'verbose',
 
   pressStyle: {
     backgroundColor: 'red',
@@ -34,7 +34,7 @@ export const Sandbox = () => {
       {/*  */}
 
       <YStack group="testy">
-        <StyledButtonPseudoColor debug="verbose">hi</StyledButtonPseudoColor>
+        <StyledButtonPseudoColor>hi</StyledButtonPseudoColor>
       </YStack>
 
       {/* <XStack group="testy">
