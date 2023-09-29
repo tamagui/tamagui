@@ -302,6 +302,11 @@ There is an optional CSS reset that helps normalize styling, you can import it i
 import '@tamagui/core/reset.css'
 ```
 
+<Notice>
+  You will have to turn `isCSSEnabled` on if you're using Metro as your web bundler. See
+  [Expo's docs](https://docs.expo.dev/versions/latest/config/metro/#css).
+</Notice>
+
 ### Setup media query driver
 
 `@tamagui/core` doesn't provide media capabilities out of the box to native apps, while on the web it uses native media queries. To enable media queries for React Native, you need to provide matchMedia implementation:
