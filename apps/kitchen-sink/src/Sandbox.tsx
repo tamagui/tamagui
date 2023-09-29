@@ -6,6 +6,7 @@ import { Stack, styled } from '@tamagui/web'
 import {
   Anchor,
   Button,
+  Image,
   Paragraph,
   Popover,
   SizableText,
@@ -37,7 +38,7 @@ export const Sandbox = () => {
       {/*  */}
 
       <YStack group="testy">
-        <SwitchDemo />
+        <Image source={require('./guy.png')} width={200} height={200} />
       </YStack>
 
       {/* <XStack group="testy">
