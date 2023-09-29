@@ -7,7 +7,7 @@ import {
   isWeb,
   setupReactNative,
   styled,
-  useProps,
+  usePropsAndStyle,
 } from '@tamagui/core'
 import React, { forwardRef } from 'react'
 import { Image as RNImage } from 'react-native'
@@ -53,7 +53,7 @@ let hasWarned = false
 
 export const Image = StyledImage.extractable(
   forwardRef((inProps: ImageProps, ref) => {
-    const props = useProps(inProps)
+    const [props, style] = usePropsAndStyle(inProps)
     const { src, source, ...rest } = props
 
     if (process.env.NODE_ENV === 'development') {
@@ -72,13 +72,13 @@ export const Image = StyledImage.extractable(
       }
     }
 
-    const finalSource =
+    let finalSource =
       typeof src === 'string'
         ? { uri: src, ...(isWeb && { width: props.width, height: props.height }) }
         : source ?? src
 
     // must set defaultSource to allow SSR, default it to the same as src
-    return <StyledImage ref={ref} source={finalSource} {...(rest as any)} />
+    return <StyledImage ref={ref} source={finalSource} style={style} {...(rest as any)} />
   })
 ) as any as ImageType
 
