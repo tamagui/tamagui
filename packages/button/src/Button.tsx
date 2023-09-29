@@ -235,6 +235,7 @@ function useButton<Props extends ButtonProps>(
     separator,
     noTextWrap,
     fontFamily,
+    fontSize,
 
     ...rest
   } = propsActive
@@ -255,7 +256,7 @@ function useButton<Props extends ButtonProps>(
     ? [children]
     : wrapChildrenInText(
         Text,
-        { children, fontFamily },
+        { children, fontFamily, fontSize },
         Text === ButtonText && propsIn.unstyled !== true
           ? {
               unstyled: false,

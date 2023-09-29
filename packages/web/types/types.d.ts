@@ -13,7 +13,7 @@ export type SpaceDirection = 'vertical' | 'horizontal' | 'both';
 export type TamaguiElement = HTMLElement | View;
 export type TamaguiTextElement = HTMLElement | RNText;
 export type DebugProp = boolean | 'break' | 'verbose' | 'visualize' | 'profile';
-export type TamaguiComponentPropsBase = {
+export type TamaguiComponentPropsBase = WebOnlyPressEvents & {
     target?: string;
     hitSlop?: PressableProps['hitSlop'];
     /**
@@ -89,6 +89,10 @@ export type TamaguiComponentPropsBase = {
      * Disables className output of styles, instead using only inline styles
      */
     disableClassName?: boolean;
+    onFocus?: (event: React.FocusEvent<HTMLDivElement>) => void;
+    onScroll?: (event: React.UIEvent<HTMLDivElement, UIEvent>) => void;
+};
+export type WebOnlyPressEvents = {
     onPress?: PressableProps['onPress'];
     onLongPress?: PressableProps['onLongPress'];
     onPressIn?: PressableProps['onPress'];
@@ -99,8 +103,6 @@ export type TamaguiComponentPropsBase = {
     onMouseLeave?: DivAttributes['onMouseLeave'];
     onMouseDown?: DivAttributes['onMouseDown'];
     onMouseUp?: DivAttributes['onMouseUp'];
-    onFocus?: (event: React.FocusEvent<HTMLDivElement>) => void;
-    onScroll?: (event: React.UIEvent<HTMLDivElement, UIEvent>) => void;
 };
 /**
  * For static / studio

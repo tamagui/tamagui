@@ -1,22 +1,19 @@
-import { ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
+import { ThemeTintAlt, useTint } from '@tamagui/logo'
 import { NextLink } from 'components/NextLink'
 import Link from 'next/link'
 import { memo } from 'react'
 import {
   Button,
-  ButtonText,
   H1,
   Paragraph,
   Spacer,
   Text,
   Theme,
-  ThemeParsed,
   TooltipSimple,
   VisuallyHidden,
   XStack,
   YStack,
   styled,
-  useTheme,
 } from 'tamagui'
 
 import { ContainerLarge } from './Container'
@@ -108,9 +105,9 @@ const HeroContents = memo(function HeroContents() {
       <YStack
         f={1}
         ov="hidden"
-        space="$3"
+        gap="$3"
         position="relative"
-        pt="$14"
+        pt="$15"
         mb="$4"
         $sm={{
           maxWidth: '100%',
@@ -138,7 +135,7 @@ const HeroContents = memo(function HeroContents() {
           </Link>
         </XStack>
 
-        <YStack ai="flex-start" $gtSm={{ ai: 'center' }} space="$2">
+        <YStack ai="flex-start" $gtSm={{ ai: 'center' }} gap="$4">
           <H1
             ta="left"
             size="$10"
@@ -210,7 +207,7 @@ const HeroContents = memo(function HeroContents() {
           <XStack
             ai="center"
             jc="center"
-            space="$2"
+            gap="$4"
             $xxs={{
               // words web-only
               // @ts-ignore
@@ -220,16 +217,14 @@ const HeroContents = memo(function HeroContents() {
           >
             <NextLink prefetch={false} href="/docs/intro/introduction">
               <Button
-                // layout shifts...
-                w={125}
                 h={52}
                 accessibilityLabel="Get started (docs)"
                 fontFamily="$silkscreen"
                 size="$5"
+                fontSize="$6"
                 borderRadius={1000}
                 bordered
                 bw={2}
-                theme="active"
                 mx="$2"
                 tabIndex="0"
                 elevation="$1"
@@ -238,38 +233,7 @@ const HeroContents = memo(function HeroContents() {
                   elevation: '$0',
                 }}
               >
-                <ButtonText fontFamily="$silkscreen" size="$7" letterSpacing={1}>
-                  Start
-                </ButtonText>
-              </Button>
-            </NextLink>
-
-            <NextLink prefetch={false} href="/docs/intro/why-a-compiler">
-              <Button
-                // layout shifts...
-                w={125}
-                h={52}
-                accessibilityLabel="Get started (docs)"
-                fontFamily="$silkscreen"
-                size="$5"
-                borderRadius={1000}
-                bordered
-                bw={2}
-                mx="$2"
-                tabIndex="0"
-                elevation="$1"
-                pressStyle={{
-                  elevation: '$0',
-                }}
-              >
-                <ButtonText
-                  theme="alt2"
-                  fontFamily="$silkscreen"
-                  size="$7"
-                  letterSpacing={1}
-                >
-                  How?
-                </ButtonText>
+                Get started
               </Button>
             </NextLink>
           </XStack>
