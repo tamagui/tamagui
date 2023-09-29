@@ -811,7 +811,7 @@ export const getSplitStyles: StyleSplitter = (
                 mergeStyle(styleState, pkey, defaultVal)
               }
             } else {
-              const curImportance = usedKeys[importance] || 0
+              const curImportance = usedKeys[pkey] || 0
               const shouldMerge = importance >= curImportance
 
               if (shouldMerge) {
@@ -819,7 +819,7 @@ export const getSplitStyles: StyleSplitter = (
                 pseudos[key] ||= {}
                 pseudos[key][pkey] = val
                 mergeStyle(styleState, pkey, val)
-                usedKeys[pkey] ||= 1
+                usedKeys[pkey] = Math.max(usedKeys[pkey], curImportance)
               }
 
               if (process.env.NODE_ENV === 'development' && debug === 'verbose') {

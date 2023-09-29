@@ -288,6 +288,7 @@ function useButton<Props extends ButtonProps>(
     : undefined
 
   const props = {
+    size,
     ...(propsActive.disabled && {
       // in rnw - false still has keyboard tabIndex, undefined = not actually focusable
       focusable: undefined,
