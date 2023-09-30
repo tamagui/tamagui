@@ -23,8 +23,7 @@ import {
   PanResponderGestureState,
 } from 'react-native'
 
-import { TOAST_NAME } from './constants'
-import { TOAST_CONTEXT } from './Toast'
+import { TOAST_CONTEXT, TOAST_NAME } from './constants'
 import { ToastAnnounce } from './ToastAnnounce'
 import {
   Collection,

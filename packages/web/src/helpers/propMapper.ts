@@ -419,6 +419,10 @@ export const getTokenForKey = (
 
   if (hasSet) {
     const out = resolveVariableValue(valOrVar, resolveAs)
+    if (process.env.NODE_ENV === 'development' && styleState.debug === 'verbose') {
+      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+      console.log(`resolved`, resolveAs, valOrVar.get, out)
+    }
     return out
   }
 
@@ -442,10 +446,15 @@ function resolveVariableValue(
 ) {
   if (resolveValues === 'none') return valOrVar
   if (isVariable(valOrVar)) {
-    if (!isWeb || resolveValues === 'value') {
+    if (resolveValues === 'value') {
       return valOrVar.val
     }
-    return valOrVar.variable
+    // @ts-expect-error this is fine until we can type better
+    const get = valOrVar.get
+    if (typeof get === 'function') {
+      return get()
+    }
+    return process.env.TAMAGUI_TARGET === 'native' ? valOrVar.val : valOrVar.variable
   }
   return valOrVar
 }

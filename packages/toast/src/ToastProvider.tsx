@@ -2,7 +2,7 @@ import { createCollection } from '@tamagui/collection'
 import { NativeValue, TamaguiElement, createStyledContext } from '@tamagui/core'
 import * as React from 'react'
 
-import { TOAST_CONTEXT } from './Toast'
+import { TOAST_CONTEXT } from './constants'
 import { ToastImperativeProvider } from './ToastImperative'
 import { BurntToastOptions } from './types'
 

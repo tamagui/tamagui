@@ -6,7 +6,7 @@ import { YStack } from '@tamagui/stacks'
 import { VisuallyHidden } from '@tamagui/visually-hidden'
 import * as React from 'react'
 
-import { TOAST_CONTEXT } from './Toast'
+import { TOAST_CONTEXT } from './constants'
 import {
   Collection,
   ScopedProps,

@@ -66,6 +66,7 @@ export declare const useConfiguration: () => {
         }) | undefined;
         autocompleteSpecificTokens?: (boolean | "except-special") | undefined;
         mediaPropOrder?: boolean | undefined;
+        fastSchemeChange?: boolean | undefined;
     };
     tokens: Omit<{
         [x: string]: {
