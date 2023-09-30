@@ -55,6 +55,12 @@ export const dev = async (options: CLIResolvedOptions) => {
     mode: 'development',
     clearScreen: false,
 
+    resolve: {
+      alias: {
+        'react-native': 'react-native-web',
+      },
+    },
+
     plugins: [
       ...plugins,
 
@@ -311,6 +317,12 @@ export const dev = async (options: CLIResolvedOptions) => {
     const buildConfig = {
       plugins: [
         swapRnPlugin,
+
+        tamaguiPlugin({
+          disableWatchTamaguiConfig: true,
+          ...options.tamaguiOptions,
+          platform: 'native',
+        }),
 
         {
           name: 'reanimated',
