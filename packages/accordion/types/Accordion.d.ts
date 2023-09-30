@@ -89,21 +89,121 @@ interface AccordionItemProps extends Omit<CollapsibleProps, 'open' | 'defaultOpe
 }
 type PrimitiveHeading3Props = React.ComponentPropsWithoutRef<typeof H3>;
 type AccordionHeaderProps = PrimitiveHeading3Props;
-declare const AccordionTriggerFrame: import("@tamagui/web").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+declare const AccordionTriggerFrame: import("@tamagui/web").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+    target?: string | undefined;
+    hitSlop?: number | import("react-native").Insets | null | undefined;
+    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+    dangerouslySetInnerHTML?: {
+        __html: string;
+    } | undefined;
+    children?: any;
+    debug?: import("@tamagui/web").DebugProp | undefined;
+    disabled?: boolean | undefined;
+    className?: string | undefined;
+    themeShallow?: boolean | undefined;
+    id?: string | undefined;
+    tag?: string | undefined;
+    theme?: string | null | undefined;
+    group?: undefined;
+    untilMeasured?: "hide" | "show" | undefined;
+    componentName?: string | undefined;
+    tabIndex?: string | number | undefined;
+    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+    disableOptimization?: boolean | undefined;
+    forceStyle?: "hover" | "press" | "focus" | undefined;
+    disableClassName?: boolean | undefined;
+    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+} & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
-} & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> & import("@tamagui/web").MediaProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+} & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> & import("@tamagui/web").MediaProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+    target?: string | undefined;
+    hitSlop?: number | import("react-native").Insets | null | undefined;
+    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+    dangerouslySetInnerHTML?: {
+        __html: string;
+    } | undefined;
+    children?: any;
+    debug?: import("@tamagui/web").DebugProp | undefined;
+    disabled?: boolean | undefined;
+    className?: string | undefined;
+    themeShallow?: boolean | undefined;
+    id?: string | undefined;
+    tag?: string | undefined;
+    theme?: string | null | undefined;
+    group?: undefined;
+    untilMeasured?: "hide" | "show" | undefined;
+    componentName?: string | undefined;
+    tabIndex?: string | number | undefined;
+    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+    disableOptimization?: boolean | undefined;
+    forceStyle?: "hover" | "press" | "focus" | undefined;
+    disableClassName?: boolean | undefined;
+    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+} & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
     [x: string]: undefined;
-} & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+} & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+    target?: string | undefined;
+    hitSlop?: number | import("react-native").Insets | null | undefined;
+    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+    dangerouslySetInnerHTML?: {
+        __html: string;
+    } | undefined;
+    children?: any;
+    debug?: import("@tamagui/web").DebugProp | undefined;
+    disabled?: boolean | undefined;
+    className?: string | undefined;
+    themeShallow?: boolean | undefined;
+    id?: string | undefined;
+    tag?: string | undefined;
+    theme?: string | null | undefined;
+    group?: undefined;
+    untilMeasured?: "hide" | "show" | undefined;
+    componentName?: string | undefined;
+    tabIndex?: string | number | undefined;
+    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+    disableOptimization?: boolean | undefined;
+    forceStyle?: "hover" | "press" | "focus" | undefined;
+    disableClassName?: boolean | undefined;
+    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+} & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
     [x: string]: undefined;
-}>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+}>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+    target?: string | undefined;
+    hitSlop?: number | import("react-native").Insets | null | undefined;
+    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+    dangerouslySetInnerHTML?: {
+        __html: string;
+    } | undefined;
+    children?: any;
+    debug?: import("@tamagui/web").DebugProp | undefined;
+    disabled?: boolean | undefined;
+    className?: string | undefined;
+    themeShallow?: boolean | undefined;
+    id?: string | undefined;
+    tag?: string | undefined;
+    theme?: string | null | undefined;
+    group?: undefined;
+    untilMeasured?: "hide" | "show" | undefined;
+    componentName?: string | undefined;
+    tabIndex?: string | number | undefined;
+    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+    disableOptimization?: boolean | undefined;
+    forceStyle?: "hover" | "press" | "focus" | undefined;
+    disableClassName?: boolean | undefined;
+    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+} & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
     [x: string]: undefined;
-}>>), "display" | "style" | "pointerEvents" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "space" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "userSelect" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").TransformStyleProps | keyof import("@tamagui/web").TamaguiComponentPropsBase | keyof import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/web").StackProps, "style" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | keyof {
+}>>), "display" | "children" | "style" | "hitSlop" | "id" | "pointerEvents" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "space" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "userSelect" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").TransformStyleProps | "theme" | "group" | "disabled" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "className" | "themeShallow" | "tag" | "untilMeasured" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onFocus" | "onScroll" | keyof import("@tamagui/web").WebOnlyPressEvents | keyof import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/web").StackProps, "children" | "style" | "hitSlop" | "id" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | keyof {
     columnGap?: import("@tamagui/web").SpaceValue | undefined;
     contain?: import("csstype").Property.Contain | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
@@ -121,23 +221,123 @@ declare const AccordionTriggerFrame: import("@tamagui/web").TamaguiComponent<Omi
     animation?: import("@tamagui/web").AnimationProp | null | undefined;
     animateOnly?: string[] | undefined;
     userSelect?: import("csstype").Property.UserSelect | undefined;
-} | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").TransformStyleProps | keyof import("@tamagui/web").TamaguiComponentPropsBase | keyof import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> | keyof React.RefAttributes<TamaguiElement>> & Omit<{}, "unstyled"> & {
+} | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").TransformStyleProps | "theme" | "group" | "disabled" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "className" | "themeShallow" | "tag" | "untilMeasured" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onFocus" | "onScroll" | keyof import("@tamagui/web").WebOnlyPressEvents | keyof import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> | keyof React.RefAttributes<TamaguiElement>> & Omit<{}, "unstyled"> & {
     readonly unstyled?: boolean | undefined;
-} & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+} & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+    target?: string | undefined;
+    hitSlop?: number | import("react-native").Insets | null | undefined;
+    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+    dangerouslySetInnerHTML?: {
+        __html: string;
+    } | undefined;
+    children?: any;
+    debug?: import("@tamagui/web").DebugProp | undefined;
+    disabled?: boolean | undefined;
+    className?: string | undefined;
+    themeShallow?: boolean | undefined;
+    id?: string | undefined;
+    tag?: string | undefined;
+    theme?: string | null | undefined;
+    group?: undefined;
+    untilMeasured?: "hide" | "show" | undefined;
+    componentName?: string | undefined;
+    tabIndex?: string | number | undefined;
+    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+    disableOptimization?: boolean | undefined;
+    forceStyle?: "hover" | "press" | "focus" | undefined;
+    disableClassName?: boolean | undefined;
+    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+} & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
-} & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> & import("@tamagui/web").MediaProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+} & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> & import("@tamagui/web").MediaProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+    target?: string | undefined;
+    hitSlop?: number | import("react-native").Insets | null | undefined;
+    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+    dangerouslySetInnerHTML?: {
+        __html: string;
+    } | undefined;
+    children?: any;
+    debug?: import("@tamagui/web").DebugProp | undefined;
+    disabled?: boolean | undefined;
+    className?: string | undefined;
+    themeShallow?: boolean | undefined;
+    id?: string | undefined;
+    tag?: string | undefined;
+    theme?: string | null | undefined;
+    group?: undefined;
+    untilMeasured?: "hide" | "show" | undefined;
+    componentName?: string | undefined;
+    tabIndex?: string | number | undefined;
+    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+    disableOptimization?: boolean | undefined;
+    forceStyle?: "hover" | "press" | "focus" | undefined;
+    disableClassName?: boolean | undefined;
+    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+} & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
     [x: string]: undefined;
-} & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+} & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+    target?: string | undefined;
+    hitSlop?: number | import("react-native").Insets | null | undefined;
+    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+    dangerouslySetInnerHTML?: {
+        __html: string;
+    } | undefined;
+    children?: any;
+    debug?: import("@tamagui/web").DebugProp | undefined;
+    disabled?: boolean | undefined;
+    className?: string | undefined;
+    themeShallow?: boolean | undefined;
+    id?: string | undefined;
+    tag?: string | undefined;
+    theme?: string | null | undefined;
+    group?: undefined;
+    untilMeasured?: "hide" | "show" | undefined;
+    componentName?: string | undefined;
+    tabIndex?: string | number | undefined;
+    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+    disableOptimization?: boolean | undefined;
+    forceStyle?: "hover" | "press" | "focus" | undefined;
+    disableClassName?: boolean | undefined;
+    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+} & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
     [x: string]: undefined;
-}>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+}>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+    target?: string | undefined;
+    hitSlop?: number | import("react-native").Insets | null | undefined;
+    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+    dangerouslySetInnerHTML?: {
+        __html: string;
+    } | undefined;
+    children?: any;
+    debug?: import("@tamagui/web").DebugProp | undefined;
+    disabled?: boolean | undefined;
+    className?: string | undefined;
+    themeShallow?: boolean | undefined;
+    id?: string | undefined;
+    tag?: string | undefined;
+    theme?: string | null | undefined;
+    group?: undefined;
+    untilMeasured?: "hide" | "show" | undefined;
+    componentName?: string | undefined;
+    tabIndex?: string | number | undefined;
+    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+    disableOptimization?: boolean | undefined;
+    forceStyle?: "hover" | "press" | "focus" | undefined;
+    disableClassName?: boolean | undefined;
+    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+} & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
     [x: string]: undefined;
-}>>), "display" | "style" | "pointerEvents" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "space" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "userSelect" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").TransformStyleProps | keyof import("@tamagui/web").TamaguiComponentPropsBase | keyof import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/web").StackProps, "style" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | keyof {
+}>>), "display" | "children" | "style" | "hitSlop" | "id" | "pointerEvents" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "space" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "userSelect" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").TransformStyleProps | "theme" | "group" | "disabled" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "className" | "themeShallow" | "tag" | "untilMeasured" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onFocus" | "onScroll" | keyof import("@tamagui/web").WebOnlyPressEvents | keyof import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/web").StackProps, "children" | "style" | "hitSlop" | "id" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | keyof {
     columnGap?: import("@tamagui/web").SpaceValue | undefined;
     contain?: import("csstype").Property.Contain | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
@@ -155,23 +355,123 @@ declare const AccordionTriggerFrame: import("@tamagui/web").TamaguiComponent<Omi
     animation?: import("@tamagui/web").AnimationProp | null | undefined;
     animateOnly?: string[] | undefined;
     userSelect?: import("csstype").Property.UserSelect | undefined;
-} | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").TransformStyleProps | keyof import("@tamagui/web").TamaguiComponentPropsBase | keyof import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> | keyof React.RefAttributes<TamaguiElement>> & Omit<{}, "unstyled"> & {
+} | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").TransformStyleProps | "theme" | "group" | "disabled" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "className" | "themeShallow" | "tag" | "untilMeasured" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onFocus" | "onScroll" | keyof import("@tamagui/web").WebOnlyPressEvents | keyof import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> | keyof React.RefAttributes<TamaguiElement>> & Omit<{}, "unstyled"> & {
     readonly unstyled?: boolean | undefined;
-}>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+}>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+    target?: string | undefined;
+    hitSlop?: number | import("react-native").Insets | null | undefined;
+    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+    dangerouslySetInnerHTML?: {
+        __html: string;
+    } | undefined;
+    children?: any;
+    debug?: import("@tamagui/web").DebugProp | undefined;
+    disabled?: boolean | undefined;
+    className?: string | undefined;
+    themeShallow?: boolean | undefined;
+    id?: string | undefined;
+    tag?: string | undefined;
+    theme?: string | null | undefined;
+    group?: undefined;
+    untilMeasured?: "hide" | "show" | undefined;
+    componentName?: string | undefined;
+    tabIndex?: string | number | undefined;
+    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+    disableOptimization?: boolean | undefined;
+    forceStyle?: "hover" | "press" | "focus" | undefined;
+    disableClassName?: boolean | undefined;
+    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+} & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
-} & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> & import("@tamagui/web").MediaProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+} & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> & import("@tamagui/web").MediaProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+    target?: string | undefined;
+    hitSlop?: number | import("react-native").Insets | null | undefined;
+    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+    dangerouslySetInnerHTML?: {
+        __html: string;
+    } | undefined;
+    children?: any;
+    debug?: import("@tamagui/web").DebugProp | undefined;
+    disabled?: boolean | undefined;
+    className?: string | undefined;
+    themeShallow?: boolean | undefined;
+    id?: string | undefined;
+    tag?: string | undefined;
+    theme?: string | null | undefined;
+    group?: undefined;
+    untilMeasured?: "hide" | "show" | undefined;
+    componentName?: string | undefined;
+    tabIndex?: string | number | undefined;
+    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+    disableOptimization?: boolean | undefined;
+    forceStyle?: "hover" | "press" | "focus" | undefined;
+    disableClassName?: boolean | undefined;
+    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+} & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
     [x: string]: undefined;
-} & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+} & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+    target?: string | undefined;
+    hitSlop?: number | import("react-native").Insets | null | undefined;
+    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+    dangerouslySetInnerHTML?: {
+        __html: string;
+    } | undefined;
+    children?: any;
+    debug?: import("@tamagui/web").DebugProp | undefined;
+    disabled?: boolean | undefined;
+    className?: string | undefined;
+    themeShallow?: boolean | undefined;
+    id?: string | undefined;
+    tag?: string | undefined;
+    theme?: string | null | undefined;
+    group?: undefined;
+    untilMeasured?: "hide" | "show" | undefined;
+    componentName?: string | undefined;
+    tabIndex?: string | number | undefined;
+    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+    disableOptimization?: boolean | undefined;
+    forceStyle?: "hover" | "press" | "focus" | undefined;
+    disableClassName?: boolean | undefined;
+    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+} & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
     [x: string]: undefined;
-}>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+}>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+    target?: string | undefined;
+    hitSlop?: number | import("react-native").Insets | null | undefined;
+    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+    dangerouslySetInnerHTML?: {
+        __html: string;
+    } | undefined;
+    children?: any;
+    debug?: import("@tamagui/web").DebugProp | undefined;
+    disabled?: boolean | undefined;
+    className?: string | undefined;
+    themeShallow?: boolean | undefined;
+    id?: string | undefined;
+    tag?: string | undefined;
+    theme?: string | null | undefined;
+    group?: undefined;
+    untilMeasured?: "hide" | "show" | undefined;
+    componentName?: string | undefined;
+    tabIndex?: string | number | undefined;
+    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+    disableOptimization?: boolean | undefined;
+    forceStyle?: "hover" | "press" | "focus" | undefined;
+    disableClassName?: boolean | undefined;
+    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+} & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
     [x: string]: undefined;
-}>>), "display" | "style" | "pointerEvents" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "space" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "userSelect" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").TransformStyleProps | keyof import("@tamagui/web").TamaguiComponentPropsBase | keyof import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/web").StackProps, "style" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | keyof {
+}>>), "display" | "children" | "style" | "hitSlop" | "id" | "pointerEvents" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "space" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "userSelect" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").TransformStyleProps | "theme" | "group" | "disabled" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "className" | "themeShallow" | "tag" | "untilMeasured" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onFocus" | "onScroll" | keyof import("@tamagui/web").WebOnlyPressEvents | keyof import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/web").StackProps, "children" | "style" | "hitSlop" | "id" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | keyof {
     columnGap?: import("@tamagui/web").SpaceValue | undefined;
     contain?: import("csstype").Property.Contain | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
@@ -189,23 +489,123 @@ declare const AccordionTriggerFrame: import("@tamagui/web").TamaguiComponent<Omi
     animation?: import("@tamagui/web").AnimationProp | null | undefined;
     animateOnly?: string[] | undefined;
     userSelect?: import("csstype").Property.UserSelect | undefined;
-} | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").TransformStyleProps | keyof import("@tamagui/web").TamaguiComponentPropsBase | keyof import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> | keyof React.RefAttributes<TamaguiElement>> & Omit<{}, "unstyled"> & {
+} | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").TransformStyleProps | "theme" | "group" | "disabled" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "className" | "themeShallow" | "tag" | "untilMeasured" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onFocus" | "onScroll" | keyof import("@tamagui/web").WebOnlyPressEvents | keyof import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> | keyof React.RefAttributes<TamaguiElement>> & Omit<{}, "unstyled"> & {
     readonly unstyled?: boolean | undefined;
-}>>, TamaguiElement, Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+}>>, TamaguiElement, Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+    target?: string | undefined;
+    hitSlop?: number | import("react-native").Insets | null | undefined;
+    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+    dangerouslySetInnerHTML?: {
+        __html: string;
+    } | undefined;
+    children?: any;
+    debug?: import("@tamagui/web").DebugProp | undefined;
+    disabled?: boolean | undefined;
+    className?: string | undefined;
+    themeShallow?: boolean | undefined;
+    id?: string | undefined;
+    tag?: string | undefined;
+    theme?: string | null | undefined;
+    group?: undefined;
+    untilMeasured?: "hide" | "show" | undefined;
+    componentName?: string | undefined;
+    tabIndex?: string | number | undefined;
+    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+    disableOptimization?: boolean | undefined;
+    forceStyle?: "hover" | "press" | "focus" | undefined;
+    disableClassName?: boolean | undefined;
+    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+} & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
-} & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> & import("@tamagui/web").MediaProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+} & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> & import("@tamagui/web").MediaProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+    target?: string | undefined;
+    hitSlop?: number | import("react-native").Insets | null | undefined;
+    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+    dangerouslySetInnerHTML?: {
+        __html: string;
+    } | undefined;
+    children?: any;
+    debug?: import("@tamagui/web").DebugProp | undefined;
+    disabled?: boolean | undefined;
+    className?: string | undefined;
+    themeShallow?: boolean | undefined;
+    id?: string | undefined;
+    tag?: string | undefined;
+    theme?: string | null | undefined;
+    group?: undefined;
+    untilMeasured?: "hide" | "show" | undefined;
+    componentName?: string | undefined;
+    tabIndex?: string | number | undefined;
+    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+    disableOptimization?: boolean | undefined;
+    forceStyle?: "hover" | "press" | "focus" | undefined;
+    disableClassName?: boolean | undefined;
+    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+} & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
     [x: string]: undefined;
-} & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+} & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+    target?: string | undefined;
+    hitSlop?: number | import("react-native").Insets | null | undefined;
+    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+    dangerouslySetInnerHTML?: {
+        __html: string;
+    } | undefined;
+    children?: any;
+    debug?: import("@tamagui/web").DebugProp | undefined;
+    disabled?: boolean | undefined;
+    className?: string | undefined;
+    themeShallow?: boolean | undefined;
+    id?: string | undefined;
+    tag?: string | undefined;
+    theme?: string | null | undefined;
+    group?: undefined;
+    untilMeasured?: "hide" | "show" | undefined;
+    componentName?: string | undefined;
+    tabIndex?: string | number | undefined;
+    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+    disableOptimization?: boolean | undefined;
+    forceStyle?: "hover" | "press" | "focus" | undefined;
+    disableClassName?: boolean | undefined;
+    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+} & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
     [x: string]: undefined;
-}>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+}>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+    target?: string | undefined;
+    hitSlop?: number | import("react-native").Insets | null | undefined;
+    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+    dangerouslySetInnerHTML?: {
+        __html: string;
+    } | undefined;
+    children?: any;
+    debug?: import("@tamagui/web").DebugProp | undefined;
+    disabled?: boolean | undefined;
+    className?: string | undefined;
+    themeShallow?: boolean | undefined;
+    id?: string | undefined;
+    tag?: string | undefined;
+    theme?: string | null | undefined;
+    group?: undefined;
+    untilMeasured?: "hide" | "show" | undefined;
+    componentName?: string | undefined;
+    tabIndex?: string | number | undefined;
+    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+    disableOptimization?: boolean | undefined;
+    forceStyle?: "hover" | "press" | "focus" | undefined;
+    disableClassName?: boolean | undefined;
+    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+} & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
     [x: string]: undefined;
-}>>), "display" | "style" | "pointerEvents" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "space" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "userSelect" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").TransformStyleProps | keyof import("@tamagui/web").TamaguiComponentPropsBase | keyof import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/web").StackProps, "style" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | keyof {
+}>>), "display" | "children" | "style" | "hitSlop" | "id" | "pointerEvents" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "space" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "userSelect" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").TransformStyleProps | "theme" | "group" | "disabled" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "className" | "themeShallow" | "tag" | "untilMeasured" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onFocus" | "onScroll" | keyof import("@tamagui/web").WebOnlyPressEvents | keyof import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/web").StackProps, "children" | "style" | "hitSlop" | "id" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | keyof {
     columnGap?: import("@tamagui/web").SpaceValue | undefined;
     contain?: import("csstype").Property.Contain | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
@@ -223,7 +623,7 @@ declare const AccordionTriggerFrame: import("@tamagui/web").TamaguiComponent<Omi
     animation?: import("@tamagui/web").AnimationProp | null | undefined;
     animateOnly?: string[] | undefined;
     userSelect?: import("csstype").Property.UserSelect | undefined;
-} | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").TransformStyleProps | keyof import("@tamagui/web").TamaguiComponentPropsBase | keyof import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> | keyof React.RefAttributes<TamaguiElement>>, {
+} | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").TransformStyleProps | "theme" | "group" | "disabled" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "className" | "themeShallow" | "tag" | "untilMeasured" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onFocus" | "onScroll" | keyof import("@tamagui/web").WebOnlyPressEvents | keyof import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> | keyof React.RefAttributes<TamaguiElement>>, {
     readonly unstyled?: boolean | undefined;
 }, {
     displayName: string | undefined;
@@ -231,15 +631,90 @@ declare const AccordionTriggerFrame: import("@tamagui/web").TamaguiComponent<Omi
 type AccordionTriggerProps = GetProps<typeof AccordionTriggerFrame>;
 declare const AccordionContentFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/collapsible/types/Collapsible").CollapsibleContentProps & {
     __scopeCollapsible?: string | undefined;
-} & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+} & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+    target?: string | undefined;
+    hitSlop?: number | import("react-native").Insets | null | undefined;
+    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+    dangerouslySetInnerHTML?: {
+        __html: string;
+    } | undefined;
+    children?: any;
+    debug?: import("@tamagui/web").DebugProp | undefined;
+    disabled?: boolean | undefined;
+    className?: string | undefined;
+    themeShallow?: boolean | undefined;
+    id?: string | undefined;
+    tag?: string | undefined;
+    theme?: string | null | undefined;
+    group?: undefined;
+    untilMeasured?: "hide" | "show" | undefined;
+    componentName?: string | undefined;
+    tabIndex?: string | number | undefined;
+    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+    disableOptimization?: boolean | undefined;
+    forceStyle?: "hover" | "press" | "focus" | undefined;
+    disableClassName?: boolean | undefined;
+    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+} & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
     [x: string]: undefined;
-} & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+} & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+    target?: string | undefined;
+    hitSlop?: number | import("react-native").Insets | null | undefined;
+    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+    dangerouslySetInnerHTML?: {
+        __html: string;
+    } | undefined;
+    children?: any;
+    debug?: import("@tamagui/web").DebugProp | undefined;
+    disabled?: boolean | undefined;
+    className?: string | undefined;
+    themeShallow?: boolean | undefined;
+    id?: string | undefined;
+    tag?: string | undefined;
+    theme?: string | null | undefined;
+    group?: undefined;
+    untilMeasured?: "hide" | "show" | undefined;
+    componentName?: string | undefined;
+    tabIndex?: string | number | undefined;
+    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+    disableOptimization?: boolean | undefined;
+    forceStyle?: "hover" | "press" | "focus" | undefined;
+    disableClassName?: boolean | undefined;
+    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+} & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
     [x: string]: undefined;
-}>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+}>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+    target?: string | undefined;
+    hitSlop?: number | import("react-native").Insets | null | undefined;
+    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+    dangerouslySetInnerHTML?: {
+        __html: string;
+    } | undefined;
+    children?: any;
+    debug?: import("@tamagui/web").DebugProp | undefined;
+    disabled?: boolean | undefined;
+    className?: string | undefined;
+    themeShallow?: boolean | undefined;
+    id?: string | undefined;
+    tag?: string | undefined;
+    theme?: string | null | undefined;
+    group?: undefined;
+    untilMeasured?: "hide" | "show" | undefined;
+    componentName?: string | undefined;
+    tabIndex?: string | number | undefined;
+    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+    disableOptimization?: boolean | undefined;
+    forceStyle?: "hover" | "press" | "focus" | undefined;
+    disableClassName?: boolean | undefined;
+    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+} & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
     [x: string]: undefined;
@@ -247,15 +722,90 @@ declare const AccordionContentFrame: import("@tamagui/web").TamaguiComponent<imp
     readonly unstyled?: boolean | undefined;
 } & import("@tamagui/web").PseudoProps<Partial<import("@tamagui/collapsible/types/Collapsible").CollapsibleContentProps & {
     __scopeCollapsible?: string | undefined;
-} & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+} & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+    target?: string | undefined;
+    hitSlop?: number | import("react-native").Insets | null | undefined;
+    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+    dangerouslySetInnerHTML?: {
+        __html: string;
+    } | undefined;
+    children?: any;
+    debug?: import("@tamagui/web").DebugProp | undefined;
+    disabled?: boolean | undefined;
+    className?: string | undefined;
+    themeShallow?: boolean | undefined;
+    id?: string | undefined;
+    tag?: string | undefined;
+    theme?: string | null | undefined;
+    group?: undefined;
+    untilMeasured?: "hide" | "show" | undefined;
+    componentName?: string | undefined;
+    tabIndex?: string | number | undefined;
+    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+    disableOptimization?: boolean | undefined;
+    forceStyle?: "hover" | "press" | "focus" | undefined;
+    disableClassName?: boolean | undefined;
+    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+} & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
     [x: string]: undefined;
-} & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+} & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+    target?: string | undefined;
+    hitSlop?: number | import("react-native").Insets | null | undefined;
+    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+    dangerouslySetInnerHTML?: {
+        __html: string;
+    } | undefined;
+    children?: any;
+    debug?: import("@tamagui/web").DebugProp | undefined;
+    disabled?: boolean | undefined;
+    className?: string | undefined;
+    themeShallow?: boolean | undefined;
+    id?: string | undefined;
+    tag?: string | undefined;
+    theme?: string | null | undefined;
+    group?: undefined;
+    untilMeasured?: "hide" | "show" | undefined;
+    componentName?: string | undefined;
+    tabIndex?: string | number | undefined;
+    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+    disableOptimization?: boolean | undefined;
+    forceStyle?: "hover" | "press" | "focus" | undefined;
+    disableClassName?: boolean | undefined;
+    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+} & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
     [x: string]: undefined;
-}>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+}>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+    target?: string | undefined;
+    hitSlop?: number | import("react-native").Insets | null | undefined;
+    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+    dangerouslySetInnerHTML?: {
+        __html: string;
+    } | undefined;
+    children?: any;
+    debug?: import("@tamagui/web").DebugProp | undefined;
+    disabled?: boolean | undefined;
+    className?: string | undefined;
+    themeShallow?: boolean | undefined;
+    id?: string | undefined;
+    tag?: string | undefined;
+    theme?: string | null | undefined;
+    group?: undefined;
+    untilMeasured?: "hide" | "show" | undefined;
+    componentName?: string | undefined;
+    tabIndex?: string | number | undefined;
+    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+    disableOptimization?: boolean | undefined;
+    forceStyle?: "hover" | "press" | "focus" | undefined;
+    disableClassName?: boolean | undefined;
+    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+} & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
     [x: string]: undefined;
@@ -263,15 +813,90 @@ declare const AccordionContentFrame: import("@tamagui/web").TamaguiComponent<imp
     readonly unstyled?: boolean | undefined;
 }>> & import("@tamagui/web").MediaProps<Partial<import("@tamagui/collapsible/types/Collapsible").CollapsibleContentProps & {
     __scopeCollapsible?: string | undefined;
-} & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+} & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+    target?: string | undefined;
+    hitSlop?: number | import("react-native").Insets | null | undefined;
+    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+    dangerouslySetInnerHTML?: {
+        __html: string;
+    } | undefined;
+    children?: any;
+    debug?: import("@tamagui/web").DebugProp | undefined;
+    disabled?: boolean | undefined;
+    className?: string | undefined;
+    themeShallow?: boolean | undefined;
+    id?: string | undefined;
+    tag?: string | undefined;
+    theme?: string | null | undefined;
+    group?: undefined;
+    untilMeasured?: "hide" | "show" | undefined;
+    componentName?: string | undefined;
+    tabIndex?: string | number | undefined;
+    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+    disableOptimization?: boolean | undefined;
+    forceStyle?: "hover" | "press" | "focus" | undefined;
+    disableClassName?: boolean | undefined;
+    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+} & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
     [x: string]: undefined;
-} & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+} & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+    target?: string | undefined;
+    hitSlop?: number | import("react-native").Insets | null | undefined;
+    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+    dangerouslySetInnerHTML?: {
+        __html: string;
+    } | undefined;
+    children?: any;
+    debug?: import("@tamagui/web").DebugProp | undefined;
+    disabled?: boolean | undefined;
+    className?: string | undefined;
+    themeShallow?: boolean | undefined;
+    id?: string | undefined;
+    tag?: string | undefined;
+    theme?: string | null | undefined;
+    group?: undefined;
+    untilMeasured?: "hide" | "show" | undefined;
+    componentName?: string | undefined;
+    tabIndex?: string | number | undefined;
+    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+    disableOptimization?: boolean | undefined;
+    forceStyle?: "hover" | "press" | "focus" | undefined;
+    disableClassName?: boolean | undefined;
+    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+} & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
     [x: string]: undefined;
-}>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+}>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+    target?: string | undefined;
+    hitSlop?: number | import("react-native").Insets | null | undefined;
+    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+    dangerouslySetInnerHTML?: {
+        __html: string;
+    } | undefined;
+    children?: any;
+    debug?: import("@tamagui/web").DebugProp | undefined;
+    disabled?: boolean | undefined;
+    className?: string | undefined;
+    themeShallow?: boolean | undefined;
+    id?: string | undefined;
+    tag?: string | undefined;
+    theme?: string | null | undefined;
+    group?: undefined;
+    untilMeasured?: "hide" | "show" | undefined;
+    componentName?: string | undefined;
+    tabIndex?: string | number | undefined;
+    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+    disableOptimization?: boolean | undefined;
+    forceStyle?: "hover" | "press" | "focus" | undefined;
+    disableClassName?: boolean | undefined;
+    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+} & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
     [x: string]: undefined;
@@ -279,15 +904,90 @@ declare const AccordionContentFrame: import("@tamagui/web").TamaguiComponent<imp
     readonly unstyled?: boolean | undefined;
 }>>, TamaguiElement, import("@tamagui/collapsible/types/Collapsible").CollapsibleContentProps & {
     __scopeCollapsible?: string | undefined;
-} & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+} & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+    target?: string | undefined;
+    hitSlop?: number | import("react-native").Insets | null | undefined;
+    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+    dangerouslySetInnerHTML?: {
+        __html: string;
+    } | undefined;
+    children?: any;
+    debug?: import("@tamagui/web").DebugProp | undefined;
+    disabled?: boolean | undefined;
+    className?: string | undefined;
+    themeShallow?: boolean | undefined;
+    id?: string | undefined;
+    tag?: string | undefined;
+    theme?: string | null | undefined;
+    group?: undefined;
+    untilMeasured?: "hide" | "show" | undefined;
+    componentName?: string | undefined;
+    tabIndex?: string | number | undefined;
+    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+    disableOptimization?: boolean | undefined;
+    forceStyle?: "hover" | "press" | "focus" | undefined;
+    disableClassName?: boolean | undefined;
+    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+} & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
     [x: string]: undefined;
-} & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+} & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+    target?: string | undefined;
+    hitSlop?: number | import("react-native").Insets | null | undefined;
+    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+    dangerouslySetInnerHTML?: {
+        __html: string;
+    } | undefined;
+    children?: any;
+    debug?: import("@tamagui/web").DebugProp | undefined;
+    disabled?: boolean | undefined;
+    className?: string | undefined;
+    themeShallow?: boolean | undefined;
+    id?: string | undefined;
+    tag?: string | undefined;
+    theme?: string | null | undefined;
+    group?: undefined;
+    untilMeasured?: "hide" | "show" | undefined;
+    componentName?: string | undefined;
+    tabIndex?: string | number | undefined;
+    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+    disableOptimization?: boolean | undefined;
+    forceStyle?: "hover" | "press" | "focus" | undefined;
+    disableClassName?: boolean | undefined;
+    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+} & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
     [x: string]: undefined;
-}>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+}>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+    target?: string | undefined;
+    hitSlop?: number | import("react-native").Insets | null | undefined;
+    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+    dangerouslySetInnerHTML?: {
+        __html: string;
+    } | undefined;
+    children?: any;
+    debug?: import("@tamagui/web").DebugProp | undefined;
+    disabled?: boolean | undefined;
+    className?: string | undefined;
+    themeShallow?: boolean | undefined;
+    id?: string | undefined;
+    tag?: string | undefined;
+    theme?: string | null | undefined;
+    group?: undefined;
+    untilMeasured?: "hide" | "show" | undefined;
+    componentName?: string | undefined;
+    tabIndex?: string | number | undefined;
+    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+    disableOptimization?: boolean | undefined;
+    forceStyle?: "hover" | "press" | "focus" | undefined;
+    disableClassName?: boolean | undefined;
+    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+} & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
     [x: string]: undefined;
@@ -298,21 +998,121 @@ declare const AccordionContentFrame: import("@tamagui/web").TamaguiComponent<imp
 }>;
 type AccordionContentProps = GetProps<typeof AccordionContentFrame>;
 declare const Accordion: React.ForwardRefExoticComponent<ScopedProps<AccordionSingleProps | AccordionMultipleProps> & React.RefAttributes<AccordionElement>> & {
-    Trigger: import("@tamagui/web").ReactComponentWithRef<Object & Omit<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    Trigger: import("@tamagui/web").ReactComponentWithRef<Object & Omit<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
-    } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> & import("@tamagui/web").MediaProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> & import("@tamagui/web").MediaProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
         [x: string]: undefined;
-    } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
         [x: string]: undefined;
-    }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
         [x: string]: undefined;
-    }>>), "display" | "style" | "pointerEvents" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "space" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "userSelect" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").TransformStyleProps | keyof import("@tamagui/web").TamaguiComponentPropsBase | keyof import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/web").StackProps, "style" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | keyof {
+    }>>), "display" | "children" | "style" | "hitSlop" | "id" | "pointerEvents" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "space" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "userSelect" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").TransformStyleProps | "theme" | "group" | "disabled" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "className" | "themeShallow" | "tag" | "untilMeasured" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onFocus" | "onScroll" | keyof import("@tamagui/web").WebOnlyPressEvents | keyof import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/web").StackProps, "children" | "style" | "hitSlop" | "id" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | keyof {
         columnGap?: import("@tamagui/web").SpaceValue | undefined;
         contain?: import("csstype").Property.Contain | undefined;
         cursor?: import("csstype").Property.Cursor | undefined;
@@ -330,23 +1130,123 @@ declare const Accordion: React.ForwardRefExoticComponent<ScopedProps<AccordionSi
         animation?: import("@tamagui/web").AnimationProp | null | undefined;
         animateOnly?: string[] | undefined;
         userSelect?: import("csstype").Property.UserSelect | undefined;
-    } | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").TransformStyleProps | keyof import("@tamagui/web").TamaguiComponentPropsBase | keyof import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> | keyof React.RefAttributes<TamaguiElement>> & Omit<{}, "unstyled"> & {
+    } | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").TransformStyleProps | "theme" | "group" | "disabled" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "className" | "themeShallow" | "tag" | "untilMeasured" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onFocus" | "onScroll" | keyof import("@tamagui/web").WebOnlyPressEvents | keyof import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> | keyof React.RefAttributes<TamaguiElement>> & Omit<{}, "unstyled"> & {
         readonly unstyled?: boolean | undefined;
-    } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
-    } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> & import("@tamagui/web").MediaProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> & import("@tamagui/web").MediaProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
         [x: string]: undefined;
-    } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
         [x: string]: undefined;
-    }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
         [x: string]: undefined;
-    }>>), "display" | "style" | "pointerEvents" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "space" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "userSelect" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").TransformStyleProps | keyof import("@tamagui/web").TamaguiComponentPropsBase | keyof import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/web").StackProps, "style" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | keyof {
+    }>>), "display" | "children" | "style" | "hitSlop" | "id" | "pointerEvents" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "space" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "userSelect" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").TransformStyleProps | "theme" | "group" | "disabled" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "className" | "themeShallow" | "tag" | "untilMeasured" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onFocus" | "onScroll" | keyof import("@tamagui/web").WebOnlyPressEvents | keyof import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/web").StackProps, "children" | "style" | "hitSlop" | "id" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | keyof {
         columnGap?: import("@tamagui/web").SpaceValue | undefined;
         contain?: import("csstype").Property.Contain | undefined;
         cursor?: import("csstype").Property.Cursor | undefined;
@@ -364,23 +1264,123 @@ declare const Accordion: React.ForwardRefExoticComponent<ScopedProps<AccordionSi
         animation?: import("@tamagui/web").AnimationProp | null | undefined;
         animateOnly?: string[] | undefined;
         userSelect?: import("csstype").Property.UserSelect | undefined;
-    } | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").TransformStyleProps | keyof import("@tamagui/web").TamaguiComponentPropsBase | keyof import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> | keyof React.RefAttributes<TamaguiElement>> & Omit<{}, "unstyled"> & {
+    } | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").TransformStyleProps | "theme" | "group" | "disabled" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "className" | "themeShallow" | "tag" | "untilMeasured" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onFocus" | "onScroll" | keyof import("@tamagui/web").WebOnlyPressEvents | keyof import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> | keyof React.RefAttributes<TamaguiElement>> & Omit<{}, "unstyled"> & {
         readonly unstyled?: boolean | undefined;
-    }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
-    } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> & import("@tamagui/web").MediaProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> & import("@tamagui/web").MediaProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
         [x: string]: undefined;
-    } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
         [x: string]: undefined;
-    }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
         [x: string]: undefined;
-    }>>), "display" | "style" | "pointerEvents" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "space" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "userSelect" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").TransformStyleProps | keyof import("@tamagui/web").TamaguiComponentPropsBase | keyof import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/web").StackProps, "style" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | keyof {
+    }>>), "display" | "children" | "style" | "hitSlop" | "id" | "pointerEvents" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "space" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "userSelect" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").TransformStyleProps | "theme" | "group" | "disabled" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "className" | "themeShallow" | "tag" | "untilMeasured" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onFocus" | "onScroll" | keyof import("@tamagui/web").WebOnlyPressEvents | keyof import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/web").StackProps, "children" | "style" | "hitSlop" | "id" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | keyof {
         columnGap?: import("@tamagui/web").SpaceValue | undefined;
         contain?: import("csstype").Property.Contain | undefined;
         cursor?: import("csstype").Property.Cursor | undefined;
@@ -398,25 +1398,125 @@ declare const Accordion: React.ForwardRefExoticComponent<ScopedProps<AccordionSi
         animation?: import("@tamagui/web").AnimationProp | null | undefined;
         animateOnly?: string[] | undefined;
         userSelect?: import("csstype").Property.UserSelect | undefined;
-    } | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").TransformStyleProps | keyof import("@tamagui/web").TamaguiComponentPropsBase | keyof import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> | keyof React.RefAttributes<TamaguiElement>> & Omit<{}, "unstyled"> & {
+    } | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").TransformStyleProps | "theme" | "group" | "disabled" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "className" | "themeShallow" | "tag" | "untilMeasured" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onFocus" | "onScroll" | keyof import("@tamagui/web").WebOnlyPressEvents | keyof import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> | keyof React.RefAttributes<TamaguiElement>> & Omit<{}, "unstyled"> & {
         readonly unstyled?: boolean | undefined;
     }>>, keyof Object>, TamaguiElement> & {
         staticConfig: import("@tamagui/web").StaticConfig;
-        styleable: import("@tamagui/web").Styleable<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        styleable: import("@tamagui/web").Styleable<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+            target?: string | undefined;
+            hitSlop?: number | import("react-native").Insets | null | undefined;
+            asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+            dangerouslySetInnerHTML?: {
+                __html: string;
+            } | undefined;
+            children?: any;
+            debug?: import("@tamagui/web").DebugProp | undefined;
+            disabled?: boolean | undefined;
+            className?: string | undefined;
+            themeShallow?: boolean | undefined;
+            id?: string | undefined;
+            tag?: string | undefined;
+            theme?: string | null | undefined;
+            group?: undefined;
+            untilMeasured?: "hide" | "show" | undefined;
+            componentName?: string | undefined;
+            tabIndex?: string | number | undefined;
+            role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+            disableOptimization?: boolean | undefined;
+            forceStyle?: "hover" | "press" | "focus" | undefined;
+            disableClassName?: boolean | undefined;
+            onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+            onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+        } & {
             style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
-        } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> & import("@tamagui/web").MediaProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> & import("@tamagui/web").MediaProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+            target?: string | undefined;
+            hitSlop?: number | import("react-native").Insets | null | undefined;
+            asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+            dangerouslySetInnerHTML?: {
+                __html: string;
+            } | undefined;
+            children?: any;
+            debug?: import("@tamagui/web").DebugProp | undefined;
+            disabled?: boolean | undefined;
+            className?: string | undefined;
+            themeShallow?: boolean | undefined;
+            id?: string | undefined;
+            tag?: string | undefined;
+            theme?: string | null | undefined;
+            group?: undefined;
+            untilMeasured?: "hide" | "show" | undefined;
+            componentName?: string | undefined;
+            tabIndex?: string | number | undefined;
+            role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+            disableOptimization?: boolean | undefined;
+            forceStyle?: "hover" | "press" | "focus" | undefined;
+            disableClassName?: boolean | undefined;
+            onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+            onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+        } & {
             style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
         } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
             [x: string]: undefined;
-        } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+            target?: string | undefined;
+            hitSlop?: number | import("react-native").Insets | null | undefined;
+            asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+            dangerouslySetInnerHTML?: {
+                __html: string;
+            } | undefined;
+            children?: any;
+            debug?: import("@tamagui/web").DebugProp | undefined;
+            disabled?: boolean | undefined;
+            className?: string | undefined;
+            themeShallow?: boolean | undefined;
+            id?: string | undefined;
+            tag?: string | undefined;
+            theme?: string | null | undefined;
+            group?: undefined;
+            untilMeasured?: "hide" | "show" | undefined;
+            componentName?: string | undefined;
+            tabIndex?: string | number | undefined;
+            role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+            disableOptimization?: boolean | undefined;
+            forceStyle?: "hover" | "press" | "focus" | undefined;
+            disableClassName?: boolean | undefined;
+            onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+            onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+        } & {
             style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
         } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
             [x: string]: undefined;
-        }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+            target?: string | undefined;
+            hitSlop?: number | import("react-native").Insets | null | undefined;
+            asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+            dangerouslySetInnerHTML?: {
+                __html: string;
+            } | undefined;
+            children?: any;
+            debug?: import("@tamagui/web").DebugProp | undefined;
+            disabled?: boolean | undefined;
+            className?: string | undefined;
+            themeShallow?: boolean | undefined;
+            id?: string | undefined;
+            tag?: string | undefined;
+            theme?: string | null | undefined;
+            group?: undefined;
+            untilMeasured?: "hide" | "show" | undefined;
+            componentName?: string | undefined;
+            tabIndex?: string | number | undefined;
+            role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+            disableOptimization?: boolean | undefined;
+            forceStyle?: "hover" | "press" | "focus" | undefined;
+            disableClassName?: boolean | undefined;
+            onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+            onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+        } & {
             style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
         } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
             [x: string]: undefined;
-        }>>), "display" | "style" | "pointerEvents" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "space" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "userSelect" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").TransformStyleProps | keyof import("@tamagui/web").TamaguiComponentPropsBase | keyof import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/web").StackProps, "style" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | keyof {
+        }>>), "display" | "children" | "style" | "hitSlop" | "id" | "pointerEvents" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "space" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "userSelect" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").TransformStyleProps | "theme" | "group" | "disabled" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "className" | "themeShallow" | "tag" | "untilMeasured" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onFocus" | "onScroll" | keyof import("@tamagui/web").WebOnlyPressEvents | keyof import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/web").StackProps, "children" | "style" | "hitSlop" | "id" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | keyof {
             columnGap?: import("@tamagui/web").SpaceValue | undefined;
             contain?: import("csstype").Property.Contain | undefined;
             cursor?: import("csstype").Property.Cursor | undefined;
@@ -434,23 +1534,123 @@ declare const Accordion: React.ForwardRefExoticComponent<ScopedProps<AccordionSi
             animation?: import("@tamagui/web").AnimationProp | null | undefined;
             animateOnly?: string[] | undefined;
             userSelect?: import("csstype").Property.UserSelect | undefined;
-        } | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").TransformStyleProps | keyof import("@tamagui/web").TamaguiComponentPropsBase | keyof import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> | keyof React.RefAttributes<TamaguiElement>> & Omit<{}, "unstyled"> & {
+        } | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").TransformStyleProps | "theme" | "group" | "disabled" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "className" | "themeShallow" | "tag" | "untilMeasured" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onFocus" | "onScroll" | keyof import("@tamagui/web").WebOnlyPressEvents | keyof import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> | keyof React.RefAttributes<TamaguiElement>> & Omit<{}, "unstyled"> & {
             readonly unstyled?: boolean | undefined;
-        } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+            target?: string | undefined;
+            hitSlop?: number | import("react-native").Insets | null | undefined;
+            asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+            dangerouslySetInnerHTML?: {
+                __html: string;
+            } | undefined;
+            children?: any;
+            debug?: import("@tamagui/web").DebugProp | undefined;
+            disabled?: boolean | undefined;
+            className?: string | undefined;
+            themeShallow?: boolean | undefined;
+            id?: string | undefined;
+            tag?: string | undefined;
+            theme?: string | null | undefined;
+            group?: undefined;
+            untilMeasured?: "hide" | "show" | undefined;
+            componentName?: string | undefined;
+            tabIndex?: string | number | undefined;
+            role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+            disableOptimization?: boolean | undefined;
+            forceStyle?: "hover" | "press" | "focus" | undefined;
+            disableClassName?: boolean | undefined;
+            onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+            onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+        } & {
             style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
-        } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> & import("@tamagui/web").MediaProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> & import("@tamagui/web").MediaProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+            target?: string | undefined;
+            hitSlop?: number | import("react-native").Insets | null | undefined;
+            asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+            dangerouslySetInnerHTML?: {
+                __html: string;
+            } | undefined;
+            children?: any;
+            debug?: import("@tamagui/web").DebugProp | undefined;
+            disabled?: boolean | undefined;
+            className?: string | undefined;
+            themeShallow?: boolean | undefined;
+            id?: string | undefined;
+            tag?: string | undefined;
+            theme?: string | null | undefined;
+            group?: undefined;
+            untilMeasured?: "hide" | "show" | undefined;
+            componentName?: string | undefined;
+            tabIndex?: string | number | undefined;
+            role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+            disableOptimization?: boolean | undefined;
+            forceStyle?: "hover" | "press" | "focus" | undefined;
+            disableClassName?: boolean | undefined;
+            onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+            onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+        } & {
             style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
         } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
             [x: string]: undefined;
-        } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+            target?: string | undefined;
+            hitSlop?: number | import("react-native").Insets | null | undefined;
+            asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+            dangerouslySetInnerHTML?: {
+                __html: string;
+            } | undefined;
+            children?: any;
+            debug?: import("@tamagui/web").DebugProp | undefined;
+            disabled?: boolean | undefined;
+            className?: string | undefined;
+            themeShallow?: boolean | undefined;
+            id?: string | undefined;
+            tag?: string | undefined;
+            theme?: string | null | undefined;
+            group?: undefined;
+            untilMeasured?: "hide" | "show" | undefined;
+            componentName?: string | undefined;
+            tabIndex?: string | number | undefined;
+            role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+            disableOptimization?: boolean | undefined;
+            forceStyle?: "hover" | "press" | "focus" | undefined;
+            disableClassName?: boolean | undefined;
+            onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+            onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+        } & {
             style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
         } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
             [x: string]: undefined;
-        }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+            target?: string | undefined;
+            hitSlop?: number | import("react-native").Insets | null | undefined;
+            asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+            dangerouslySetInnerHTML?: {
+                __html: string;
+            } | undefined;
+            children?: any;
+            debug?: import("@tamagui/web").DebugProp | undefined;
+            disabled?: boolean | undefined;
+            className?: string | undefined;
+            themeShallow?: boolean | undefined;
+            id?: string | undefined;
+            tag?: string | undefined;
+            theme?: string | null | undefined;
+            group?: undefined;
+            untilMeasured?: "hide" | "show" | undefined;
+            componentName?: string | undefined;
+            tabIndex?: string | number | undefined;
+            role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+            disableOptimization?: boolean | undefined;
+            forceStyle?: "hover" | "press" | "focus" | undefined;
+            disableClassName?: boolean | undefined;
+            onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+            onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+        } & {
             style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
         } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
             [x: string]: undefined;
-        }>>), "display" | "style" | "pointerEvents" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "space" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "userSelect" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").TransformStyleProps | keyof import("@tamagui/web").TamaguiComponentPropsBase | keyof import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/web").StackProps, "style" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | keyof {
+        }>>), "display" | "children" | "style" | "hitSlop" | "id" | "pointerEvents" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "space" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "userSelect" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").TransformStyleProps | "theme" | "group" | "disabled" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "className" | "themeShallow" | "tag" | "untilMeasured" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onFocus" | "onScroll" | keyof import("@tamagui/web").WebOnlyPressEvents | keyof import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/web").StackProps, "children" | "style" | "hitSlop" | "id" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | keyof {
             columnGap?: import("@tamagui/web").SpaceValue | undefined;
             contain?: import("csstype").Property.Contain | undefined;
             cursor?: import("csstype").Property.Cursor | undefined;
@@ -468,23 +1668,123 @@ declare const Accordion: React.ForwardRefExoticComponent<ScopedProps<AccordionSi
             animation?: import("@tamagui/web").AnimationProp | null | undefined;
             animateOnly?: string[] | undefined;
             userSelect?: import("csstype").Property.UserSelect | undefined;
-        } | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").TransformStyleProps | keyof import("@tamagui/web").TamaguiComponentPropsBase | keyof import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> | keyof React.RefAttributes<TamaguiElement>> & Omit<{}, "unstyled"> & {
+        } | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").TransformStyleProps | "theme" | "group" | "disabled" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "className" | "themeShallow" | "tag" | "untilMeasured" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onFocus" | "onScroll" | keyof import("@tamagui/web").WebOnlyPressEvents | keyof import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> | keyof React.RefAttributes<TamaguiElement>> & Omit<{}, "unstyled"> & {
             readonly unstyled?: boolean | undefined;
-        }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+            target?: string | undefined;
+            hitSlop?: number | import("react-native").Insets | null | undefined;
+            asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+            dangerouslySetInnerHTML?: {
+                __html: string;
+            } | undefined;
+            children?: any;
+            debug?: import("@tamagui/web").DebugProp | undefined;
+            disabled?: boolean | undefined;
+            className?: string | undefined;
+            themeShallow?: boolean | undefined;
+            id?: string | undefined;
+            tag?: string | undefined;
+            theme?: string | null | undefined;
+            group?: undefined;
+            untilMeasured?: "hide" | "show" | undefined;
+            componentName?: string | undefined;
+            tabIndex?: string | number | undefined;
+            role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+            disableOptimization?: boolean | undefined;
+            forceStyle?: "hover" | "press" | "focus" | undefined;
+            disableClassName?: boolean | undefined;
+            onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+            onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+        } & {
             style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
-        } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> & import("@tamagui/web").MediaProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> & import("@tamagui/web").MediaProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+            target?: string | undefined;
+            hitSlop?: number | import("react-native").Insets | null | undefined;
+            asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+            dangerouslySetInnerHTML?: {
+                __html: string;
+            } | undefined;
+            children?: any;
+            debug?: import("@tamagui/web").DebugProp | undefined;
+            disabled?: boolean | undefined;
+            className?: string | undefined;
+            themeShallow?: boolean | undefined;
+            id?: string | undefined;
+            tag?: string | undefined;
+            theme?: string | null | undefined;
+            group?: undefined;
+            untilMeasured?: "hide" | "show" | undefined;
+            componentName?: string | undefined;
+            tabIndex?: string | number | undefined;
+            role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+            disableOptimization?: boolean | undefined;
+            forceStyle?: "hover" | "press" | "focus" | undefined;
+            disableClassName?: boolean | undefined;
+            onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+            onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+        } & {
             style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
         } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
             [x: string]: undefined;
-        } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+            target?: string | undefined;
+            hitSlop?: number | import("react-native").Insets | null | undefined;
+            asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+            dangerouslySetInnerHTML?: {
+                __html: string;
+            } | undefined;
+            children?: any;
+            debug?: import("@tamagui/web").DebugProp | undefined;
+            disabled?: boolean | undefined;
+            className?: string | undefined;
+            themeShallow?: boolean | undefined;
+            id?: string | undefined;
+            tag?: string | undefined;
+            theme?: string | null | undefined;
+            group?: undefined;
+            untilMeasured?: "hide" | "show" | undefined;
+            componentName?: string | undefined;
+            tabIndex?: string | number | undefined;
+            role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+            disableOptimization?: boolean | undefined;
+            forceStyle?: "hover" | "press" | "focus" | undefined;
+            disableClassName?: boolean | undefined;
+            onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+            onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+        } & {
             style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
         } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
             [x: string]: undefined;
-        }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+            target?: string | undefined;
+            hitSlop?: number | import("react-native").Insets | null | undefined;
+            asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+            dangerouslySetInnerHTML?: {
+                __html: string;
+            } | undefined;
+            children?: any;
+            debug?: import("@tamagui/web").DebugProp | undefined;
+            disabled?: boolean | undefined;
+            className?: string | undefined;
+            themeShallow?: boolean | undefined;
+            id?: string | undefined;
+            tag?: string | undefined;
+            theme?: string | null | undefined;
+            group?: undefined;
+            untilMeasured?: "hide" | "show" | undefined;
+            componentName?: string | undefined;
+            tabIndex?: string | number | undefined;
+            role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+            disableOptimization?: boolean | undefined;
+            forceStyle?: "hover" | "press" | "focus" | undefined;
+            disableClassName?: boolean | undefined;
+            onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+            onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+        } & {
             style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
         } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
             [x: string]: undefined;
-        }>>), "display" | "style" | "pointerEvents" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "space" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "userSelect" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").TransformStyleProps | keyof import("@tamagui/web").TamaguiComponentPropsBase | keyof import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/web").StackProps, "style" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | keyof {
+        }>>), "display" | "children" | "style" | "hitSlop" | "id" | "pointerEvents" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "space" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "userSelect" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").TransformStyleProps | "theme" | "group" | "disabled" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "className" | "themeShallow" | "tag" | "untilMeasured" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onFocus" | "onScroll" | keyof import("@tamagui/web").WebOnlyPressEvents | keyof import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/web").StackProps, "children" | "style" | "hitSlop" | "id" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | keyof {
             columnGap?: import("@tamagui/web").SpaceValue | undefined;
             contain?: import("csstype").Property.Contain | undefined;
             cursor?: import("csstype").Property.Cursor | undefined;
@@ -502,47 +1802,222 @@ declare const Accordion: React.ForwardRefExoticComponent<ScopedProps<AccordionSi
             animation?: import("@tamagui/web").AnimationProp | null | undefined;
             animateOnly?: string[] | undefined;
             userSelect?: import("csstype").Property.UserSelect | undefined;
-        } | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").TransformStyleProps | keyof import("@tamagui/web").TamaguiComponentPropsBase | keyof import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> | keyof React.RefAttributes<TamaguiElement>> & Omit<{}, "unstyled"> & {
+        } | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").TransformStyleProps | "theme" | "group" | "disabled" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "className" | "themeShallow" | "tag" | "untilMeasured" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onFocus" | "onScroll" | keyof import("@tamagui/web").WebOnlyPressEvents | keyof import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> | keyof React.RefAttributes<TamaguiElement>> & Omit<{}, "unstyled"> & {
             readonly unstyled?: boolean | undefined;
         }>>, TamaguiElement>;
     };
-    Header: React.ForwardRefExoticComponent<(Omit<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    Header: React.ForwardRefExoticComponent<(Omit<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").TextStyle | React.CSSProperties | (React.CSSProperties & import("react-native").TextStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<{}, "unstyled" | "size"> & {
         readonly unstyled?: boolean | undefined;
         readonly size?: import("@tamagui/web").FontSizeTokens | undefined;
-    } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").TextStyle | React.CSSProperties | (React.CSSProperties & import("react-native").TextStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<{}, "unstyled" | "size"> & {
         readonly unstyled?: boolean | undefined;
         readonly size?: import("@tamagui/web").FontSizeTokens | undefined;
-    }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").TextStyle | React.CSSProperties | (React.CSSProperties & import("react-native").TextStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<{}, "unstyled" | "size"> & {
         readonly unstyled?: boolean | undefined;
         readonly size?: import("@tamagui/web").FontSizeTokens | undefined;
-    }>> & React.RefAttributes<import("@tamagui/web").TamaguiTextElement>, "ref"> | Omit<Omit<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    }>> & React.RefAttributes<import("@tamagui/web").TamaguiTextElement>, "ref"> | Omit<Omit<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").TextStyle | React.CSSProperties | (React.CSSProperties & import("react-native").TextStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<{
         readonly unstyled?: boolean | undefined;
         readonly size?: import("@tamagui/web").FontSizeTokens | undefined;
     }, string | number> & {
         [x: string]: undefined;
-    } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").TextStyle | React.CSSProperties | (React.CSSProperties & import("react-native").TextStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<{
         readonly unstyled?: boolean | undefined;
         readonly size?: import("@tamagui/web").FontSizeTokens | undefined;
     }, string | number> & {
         [x: string]: undefined;
-    }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").TextStyle | React.CSSProperties | (React.CSSProperties & import("react-native").TextStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<{
         readonly unstyled?: boolean | undefined;
         readonly size?: import("@tamagui/web").FontSizeTokens | undefined;
     }, string | number> & {
         [x: string]: undefined;
-    }>> & React.RefAttributes<import("@tamagui/web").TamaguiTextElement>, "ref">, "ref"> | Omit<Omit<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    }>> & React.RefAttributes<import("@tamagui/web").TamaguiTextElement>, "ref">, "ref"> | Omit<Omit<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").TextStyle | React.CSSProperties | (React.CSSProperties & import("react-native").TextStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<{
         readonly unstyled?: boolean | undefined;
@@ -554,7 +2029,32 @@ declare const Accordion: React.ForwardRefExoticComponent<ScopedProps<AccordionSi
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
-    } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").TextStyle | React.CSSProperties | (React.CSSProperties & import("react-native").TextStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<{
         readonly unstyled?: boolean | undefined;
@@ -566,7 +2066,32 @@ declare const Accordion: React.ForwardRefExoticComponent<ScopedProps<AccordionSi
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
-    }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").TextStyle | React.CSSProperties | (React.CSSProperties & import("react-native").TextStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<{
         readonly unstyled?: boolean | undefined;
@@ -578,7 +2103,32 @@ declare const Accordion: React.ForwardRefExoticComponent<ScopedProps<AccordionSi
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
-    }>> & React.RefAttributes<import("@tamagui/web").TamaguiTextElement>, "ref">, "ref"> | Omit<Omit<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    }>> & React.RefAttributes<import("@tamagui/web").TamaguiTextElement>, "ref">, "ref"> | Omit<Omit<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").TextStyle | React.CSSProperties | (React.CSSProperties & import("react-native").TextStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<{
         readonly unstyled?: boolean | undefined;
@@ -590,7 +2140,32 @@ declare const Accordion: React.ForwardRefExoticComponent<ScopedProps<AccordionSi
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
-    } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").TextStyle | React.CSSProperties | (React.CSSProperties & import("react-native").TextStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<{
         readonly unstyled?: boolean | undefined;
@@ -602,7 +2177,32 @@ declare const Accordion: React.ForwardRefExoticComponent<ScopedProps<AccordionSi
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
-    }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").TextStyle | React.CSSProperties | (React.CSSProperties & import("react-native").TextStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<{
         readonly unstyled?: boolean | undefined;
@@ -614,7 +2214,32 @@ declare const Accordion: React.ForwardRefExoticComponent<ScopedProps<AccordionSi
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
-    }>> & React.RefAttributes<import("@tamagui/web").TamaguiTextElement>, "ref">, "ref"> | Omit<Omit<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    }>> & React.RefAttributes<import("@tamagui/web").TamaguiTextElement>, "ref">, "ref"> | Omit<Omit<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").TextStyle | React.CSSProperties | (React.CSSProperties & import("react-native").TextStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<({
         readonly unstyled?: boolean | undefined;
@@ -630,7 +2255,32 @@ declare const Accordion: React.ForwardRefExoticComponent<ScopedProps<AccordionSi
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
-    } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").TextStyle | React.CSSProperties | (React.CSSProperties & import("react-native").TextStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<({
         readonly unstyled?: boolean | undefined;
@@ -646,7 +2296,32 @@ declare const Accordion: React.ForwardRefExoticComponent<ScopedProps<AccordionSi
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
-    }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").TextStyle | React.CSSProperties | (React.CSSProperties & import("react-native").TextStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<({
         readonly unstyled?: boolean | undefined;
@@ -662,7 +2337,32 @@ declare const Accordion: React.ForwardRefExoticComponent<ScopedProps<AccordionSi
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
-    }>> & React.RefAttributes<import("@tamagui/web").TamaguiTextElement>, "ref">, "ref"> | Omit<Omit<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    }>> & React.RefAttributes<import("@tamagui/web").TamaguiTextElement>, "ref">, "ref"> | Omit<Omit<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").TextStyle | React.CSSProperties | (React.CSSProperties & import("react-native").TextStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<({
         readonly unstyled?: boolean | undefined;
@@ -678,7 +2378,32 @@ declare const Accordion: React.ForwardRefExoticComponent<ScopedProps<AccordionSi
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
-    } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").TextStyle | React.CSSProperties | (React.CSSProperties & import("react-native").TextStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<({
         readonly unstyled?: boolean | undefined;
@@ -694,7 +2419,32 @@ declare const Accordion: React.ForwardRefExoticComponent<ScopedProps<AccordionSi
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
-    }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").TextStyle | React.CSSProperties | (React.CSSProperties & import("react-native").TextStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<({
         readonly unstyled?: boolean | undefined;
@@ -710,7 +2460,32 @@ declare const Accordion: React.ForwardRefExoticComponent<ScopedProps<AccordionSi
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
-    }>> & React.RefAttributes<import("@tamagui/web").TamaguiTextElement>, "ref">, "ref"> | Omit<Omit<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    }>> & React.RefAttributes<import("@tamagui/web").TamaguiTextElement>, "ref">, "ref"> | Omit<Omit<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").TextStyle | React.CSSProperties | (React.CSSProperties & import("react-native").TextStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<({
         readonly unstyled?: boolean | undefined;
@@ -726,7 +2501,32 @@ declare const Accordion: React.ForwardRefExoticComponent<ScopedProps<AccordionSi
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
-    } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").TextStyle | React.CSSProperties | (React.CSSProperties & import("react-native").TextStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<({
         readonly unstyled?: boolean | undefined;
@@ -742,7 +2542,32 @@ declare const Accordion: React.ForwardRefExoticComponent<ScopedProps<AccordionSi
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
-    }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").TextStyle | React.CSSProperties | (React.CSSProperties & import("react-native").TextStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<({
         readonly unstyled?: boolean | undefined;
@@ -758,7 +2583,32 @@ declare const Accordion: React.ForwardRefExoticComponent<ScopedProps<AccordionSi
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
-    }>> & React.RefAttributes<import("@tamagui/web").TamaguiTextElement>, "ref">, "ref"> | Omit<Omit<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    }>> & React.RefAttributes<import("@tamagui/web").TamaguiTextElement>, "ref">, "ref"> | Omit<Omit<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").TextStyle | React.CSSProperties | (React.CSSProperties & import("react-native").TextStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<({
         readonly unstyled?: boolean | undefined;
@@ -774,7 +2624,32 @@ declare const Accordion: React.ForwardRefExoticComponent<ScopedProps<AccordionSi
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
-    } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").TextStyle | React.CSSProperties | (React.CSSProperties & import("react-native").TextStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<({
         readonly unstyled?: boolean | undefined;
@@ -790,7 +2665,32 @@ declare const Accordion: React.ForwardRefExoticComponent<ScopedProps<AccordionSi
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
-    }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").TextStyle | React.CSSProperties | (React.CSSProperties & import("react-native").TextStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<({
         readonly unstyled?: boolean | undefined;
@@ -809,15 +2709,90 @@ declare const Accordion: React.ForwardRefExoticComponent<ScopedProps<AccordionSi
     }>> & React.RefAttributes<import("@tamagui/web").TamaguiTextElement>, "ref">, "ref">) & React.RefAttributes<import("@tamagui/web").TamaguiTextElement>>;
     Content: import("@tamagui/web").ReactComponentWithRef<Object & Omit<import("@tamagui/collapsible/types/Collapsible").CollapsibleContentProps & {
         __scopeCollapsible?: string | undefined;
-    } & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    } & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
         [x: string]: undefined;
-    } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
         [x: string]: undefined;
-    }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
         [x: string]: undefined;
@@ -825,15 +2800,90 @@ declare const Accordion: React.ForwardRefExoticComponent<ScopedProps<AccordionSi
         readonly unstyled?: boolean | undefined;
     } & import("@tamagui/web").PseudoProps<Partial<import("@tamagui/collapsible/types/Collapsible").CollapsibleContentProps & {
         __scopeCollapsible?: string | undefined;
-    } & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    } & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
         [x: string]: undefined;
-    } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
         [x: string]: undefined;
-    }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
         [x: string]: undefined;
@@ -841,15 +2891,90 @@ declare const Accordion: React.ForwardRefExoticComponent<ScopedProps<AccordionSi
         readonly unstyled?: boolean | undefined;
     }>> & import("@tamagui/web").MediaProps<Partial<import("@tamagui/collapsible/types/Collapsible").CollapsibleContentProps & {
         __scopeCollapsible?: string | undefined;
-    } & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    } & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
         [x: string]: undefined;
-    } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
         [x: string]: undefined;
-    }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+        target?: string | undefined;
+        hitSlop?: number | import("react-native").Insets | null | undefined;
+        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        children?: any;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        disabled?: boolean | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
+        tag?: string | undefined;
+        theme?: string | null | undefined;
+        group?: undefined;
+        untilMeasured?: "hide" | "show" | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        disableClassName?: boolean | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+    } & {
         style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
         [x: string]: undefined;
@@ -859,15 +2984,90 @@ declare const Accordion: React.ForwardRefExoticComponent<ScopedProps<AccordionSi
         staticConfig: import("@tamagui/web").StaticConfig;
         styleable: import("@tamagui/web").Styleable<import("@tamagui/collapsible/types/Collapsible").CollapsibleContentProps & {
             __scopeCollapsible?: string | undefined;
-        } & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        } & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+            target?: string | undefined;
+            hitSlop?: number | import("react-native").Insets | null | undefined;
+            asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+            dangerouslySetInnerHTML?: {
+                __html: string;
+            } | undefined;
+            children?: any;
+            debug?: import("@tamagui/web").DebugProp | undefined;
+            disabled?: boolean | undefined;
+            className?: string | undefined;
+            themeShallow?: boolean | undefined;
+            id?: string | undefined;
+            tag?: string | undefined;
+            theme?: string | null | undefined;
+            group?: undefined;
+            untilMeasured?: "hide" | "show" | undefined;
+            componentName?: string | undefined;
+            tabIndex?: string | number | undefined;
+            role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+            disableOptimization?: boolean | undefined;
+            forceStyle?: "hover" | "press" | "focus" | undefined;
+            disableClassName?: boolean | undefined;
+            onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+            onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+        } & {
             style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
         } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
             [x: string]: undefined;
-        } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+            target?: string | undefined;
+            hitSlop?: number | import("react-native").Insets | null | undefined;
+            asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+            dangerouslySetInnerHTML?: {
+                __html: string;
+            } | undefined;
+            children?: any;
+            debug?: import("@tamagui/web").DebugProp | undefined;
+            disabled?: boolean | undefined;
+            className?: string | undefined;
+            themeShallow?: boolean | undefined;
+            id?: string | undefined;
+            tag?: string | undefined;
+            theme?: string | null | undefined;
+            group?: undefined;
+            untilMeasured?: "hide" | "show" | undefined;
+            componentName?: string | undefined;
+            tabIndex?: string | number | undefined;
+            role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+            disableOptimization?: boolean | undefined;
+            forceStyle?: "hover" | "press" | "focus" | undefined;
+            disableClassName?: boolean | undefined;
+            onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+            onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+        } & {
             style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
         } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
             [x: string]: undefined;
-        }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+            target?: string | undefined;
+            hitSlop?: number | import("react-native").Insets | null | undefined;
+            asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+            dangerouslySetInnerHTML?: {
+                __html: string;
+            } | undefined;
+            children?: any;
+            debug?: import("@tamagui/web").DebugProp | undefined;
+            disabled?: boolean | undefined;
+            className?: string | undefined;
+            themeShallow?: boolean | undefined;
+            id?: string | undefined;
+            tag?: string | undefined;
+            theme?: string | null | undefined;
+            group?: undefined;
+            untilMeasured?: "hide" | "show" | undefined;
+            componentName?: string | undefined;
+            tabIndex?: string | number | undefined;
+            role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+            disableOptimization?: boolean | undefined;
+            forceStyle?: "hover" | "press" | "focus" | undefined;
+            disableClassName?: boolean | undefined;
+            onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+            onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+        } & {
             style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
         } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
             [x: string]: undefined;
@@ -875,15 +3075,90 @@ declare const Accordion: React.ForwardRefExoticComponent<ScopedProps<AccordionSi
             readonly unstyled?: boolean | undefined;
         } & import("@tamagui/web").PseudoProps<Partial<import("@tamagui/collapsible/types/Collapsible").CollapsibleContentProps & {
             __scopeCollapsible?: string | undefined;
-        } & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        } & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+            target?: string | undefined;
+            hitSlop?: number | import("react-native").Insets | null | undefined;
+            asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+            dangerouslySetInnerHTML?: {
+                __html: string;
+            } | undefined;
+            children?: any;
+            debug?: import("@tamagui/web").DebugProp | undefined;
+            disabled?: boolean | undefined;
+            className?: string | undefined;
+            themeShallow?: boolean | undefined;
+            id?: string | undefined;
+            tag?: string | undefined;
+            theme?: string | null | undefined;
+            group?: undefined;
+            untilMeasured?: "hide" | "show" | undefined;
+            componentName?: string | undefined;
+            tabIndex?: string | number | undefined;
+            role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+            disableOptimization?: boolean | undefined;
+            forceStyle?: "hover" | "press" | "focus" | undefined;
+            disableClassName?: boolean | undefined;
+            onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+            onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+        } & {
             style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
         } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
             [x: string]: undefined;
-        } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+            target?: string | undefined;
+            hitSlop?: number | import("react-native").Insets | null | undefined;
+            asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+            dangerouslySetInnerHTML?: {
+                __html: string;
+            } | undefined;
+            children?: any;
+            debug?: import("@tamagui/web").DebugProp | undefined;
+            disabled?: boolean | undefined;
+            className?: string | undefined;
+            themeShallow?: boolean | undefined;
+            id?: string | undefined;
+            tag?: string | undefined;
+            theme?: string | null | undefined;
+            group?: undefined;
+            untilMeasured?: "hide" | "show" | undefined;
+            componentName?: string | undefined;
+            tabIndex?: string | number | undefined;
+            role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+            disableOptimization?: boolean | undefined;
+            forceStyle?: "hover" | "press" | "focus" | undefined;
+            disableClassName?: boolean | undefined;
+            onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+            onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+        } & {
             style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
         } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
             [x: string]: undefined;
-        }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+            target?: string | undefined;
+            hitSlop?: number | import("react-native").Insets | null | undefined;
+            asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+            dangerouslySetInnerHTML?: {
+                __html: string;
+            } | undefined;
+            children?: any;
+            debug?: import("@tamagui/web").DebugProp | undefined;
+            disabled?: boolean | undefined;
+            className?: string | undefined;
+            themeShallow?: boolean | undefined;
+            id?: string | undefined;
+            tag?: string | undefined;
+            theme?: string | null | undefined;
+            group?: undefined;
+            untilMeasured?: "hide" | "show" | undefined;
+            componentName?: string | undefined;
+            tabIndex?: string | number | undefined;
+            role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+            disableOptimization?: boolean | undefined;
+            forceStyle?: "hover" | "press" | "focus" | undefined;
+            disableClassName?: boolean | undefined;
+            onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+            onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+        } & {
             style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
         } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
             [x: string]: undefined;
@@ -891,15 +3166,90 @@ declare const Accordion: React.ForwardRefExoticComponent<ScopedProps<AccordionSi
             readonly unstyled?: boolean | undefined;
         }>> & import("@tamagui/web").MediaProps<Partial<import("@tamagui/collapsible/types/Collapsible").CollapsibleContentProps & {
             __scopeCollapsible?: string | undefined;
-        } & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        } & Omit<import("@tamagui/web").StackProps | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+            target?: string | undefined;
+            hitSlop?: number | import("react-native").Insets | null | undefined;
+            asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+            dangerouslySetInnerHTML?: {
+                __html: string;
+            } | undefined;
+            children?: any;
+            debug?: import("@tamagui/web").DebugProp | undefined;
+            disabled?: boolean | undefined;
+            className?: string | undefined;
+            themeShallow?: boolean | undefined;
+            id?: string | undefined;
+            tag?: string | undefined;
+            theme?: string | null | undefined;
+            group?: undefined;
+            untilMeasured?: "hide" | "show" | undefined;
+            componentName?: string | undefined;
+            tabIndex?: string | number | undefined;
+            role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+            disableOptimization?: boolean | undefined;
+            forceStyle?: "hover" | "press" | "focus" | undefined;
+            disableClassName?: boolean | undefined;
+            onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+            onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+        } & {
             style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
         } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
             [x: string]: undefined;
-        } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+            target?: string | undefined;
+            hitSlop?: number | import("react-native").Insets | null | undefined;
+            asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+            dangerouslySetInnerHTML?: {
+                __html: string;
+            } | undefined;
+            children?: any;
+            debug?: import("@tamagui/web").DebugProp | undefined;
+            disabled?: boolean | undefined;
+            className?: string | undefined;
+            themeShallow?: boolean | undefined;
+            id?: string | undefined;
+            tag?: string | undefined;
+            theme?: string | null | undefined;
+            group?: undefined;
+            untilMeasured?: "hide" | "show" | undefined;
+            componentName?: string | undefined;
+            tabIndex?: string | number | undefined;
+            role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+            disableOptimization?: boolean | undefined;
+            forceStyle?: "hover" | "press" | "focus" | undefined;
+            disableClassName?: boolean | undefined;
+            onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+            onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+        } & {
             style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
         } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
             [x: string]: undefined;
-        }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & {
+            target?: string | undefined;
+            hitSlop?: number | import("react-native").Insets | null | undefined;
+            asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+            dangerouslySetInnerHTML?: {
+                __html: string;
+            } | undefined;
+            children?: any;
+            debug?: import("@tamagui/web").DebugProp | undefined;
+            disabled?: boolean | undefined;
+            className?: string | undefined;
+            themeShallow?: boolean | undefined;
+            id?: string | undefined;
+            tag?: string | undefined;
+            theme?: string | null | undefined;
+            group?: undefined;
+            untilMeasured?: "hide" | "show" | undefined;
+            componentName?: string | undefined;
+            tabIndex?: string | number | undefined;
+            role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
+            disableOptimization?: boolean | undefined;
+            forceStyle?: "hover" | "press" | "focus" | undefined;
+            disableClassName?: boolean | undefined;
+            onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+            onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+        } & {
             style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
         } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & Omit<{}, string | number> & {
             [x: string]: undefined;
