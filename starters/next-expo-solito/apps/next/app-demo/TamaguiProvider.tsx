@@ -3,7 +3,7 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { config as configBase } from '@tamagui/config'
+import { config as configBase } from '@tamagui/config/v2'
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
 import { useServerInsertedHTML } from 'next/navigation'
 import React from 'react'
