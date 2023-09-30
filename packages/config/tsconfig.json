@@ -3,6 +3,15 @@
   "compilerOptions": {
     "composite": true
   },
+  "exclude": [
+    "types",
+    "v2.d.ts",
+    "v2.js",
+    "v2-reanimated.d.ts",
+    "v2-reanimated.js",
+    "v2-native.d.ts",
+    "v2-native.js"
+  ],
   "references": [
     { "path": "../colors" },
     { "path": "../shorthands" },

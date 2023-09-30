@@ -6,6 +6,12 @@
   "module": "dist/esm",
   "sideEffects": false,
   "files": [
+    "v2.js",
+    "v2.d.ts",
+    "v2-reanimated.js",
+    "v2-reanimated.d.ts",
+    "v2-native.js",
+    "v2-native.d.ts",
     "src",
     "types",
     "dist"
@@ -24,6 +30,21 @@
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
+    },
+    "./v2": {
+      "types": "./types/v2.d.ts",
+      "import": "./dist/esm/v2.js",
+      "require": "./dist/cjs/v2.js"
+    },
+    "./v2-reanimated": {
+      "types": "./types/v2-reanimated.d.ts",
+      "import": "./dist/esm/v2-reanimated.js",
+      "require": "./dist/cjs/v2-reanimated.js"
+    },
+    "./v2-native": {
+      "types": "./types/v2-native.d.ts",
+      "import": "./dist/esm/v2-native.js",
+      "require": "./dist/cjs/v2-native.js"
     },
     "./reanimated": {
       "types": "./types/index.reanimated.d.ts",
