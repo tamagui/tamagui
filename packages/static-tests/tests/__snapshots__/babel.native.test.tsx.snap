@@ -1,8 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`basic conditional extraction 1`] = `
-"import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
-const _sheet = ReactNativeStyleSheet.create({
+"const __ReactNativeStyleSheet = require('react-native').StyleSheet;
+const _sheet = __ReactNativeStyleSheet.create({
   \\"0\\": {
     \\"alignItems\\": \\"stretch\\",
     \\"flexDirection\\": \\"column\\"
@@ -22,7 +22,8 @@ const _sheet = ReactNativeStyleSheet.create({
   },
   \\"5\\": {}
 });
-import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
+const __ReactNativeView = require('react-native').View;
+const __ReactNativeText = require('react-native').Text;
 import { YStack } from 'tamagui';
 export function Test() {
   return <>
@@ -33,15 +34,16 @@ export function Test() {
 `;
 
 exports[`basic extraction 1`] = `
-"import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
-const _sheet = ReactNativeStyleSheet.create({
+"const __ReactNativeStyleSheet = require('react-native').StyleSheet;
+const _sheet = __ReactNativeStyleSheet.create({
   \\"0\\": {
     \\"alignItems\\": \\"stretch\\",
     \\"flexDirection\\": \\"column\\",
     \\"backgroundColor\\": \\"red\\"
   }
 });
-import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
+const __ReactNativeView = require('react-native').View;
+const __ReactNativeText = require('react-native').Text;
 import { YStack } from 'tamagui';
 export function Test() {
   return <__ReactNativeView style={_sheet[\\"0\\"]} />;
@@ -49,8 +51,8 @@ export function Test() {
 `;
 
 exports[`flat transform props 1`] = `
-"import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
-const _sheet = ReactNativeStyleSheet.create({
+"const __ReactNativeStyleSheet = require('react-native').StyleSheet;
+const _sheet = __ReactNativeStyleSheet.create({
   \\"0\\": {
     \\"alignItems\\": \\"stretch\\",
     \\"flexDirection\\": \\"column\\"
@@ -75,7 +77,8 @@ const _sheet = ReactNativeStyleSheet.create({
     }]
   }
 });
-import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
+const __ReactNativeView = require('react-native').View;
+const __ReactNativeText = require('react-native').Text;
 import { YStack } from 'tamagui';
 export function Test(isLoading) {
   return <__ReactNativeView style={[_sheet[\\"0\\"], isLoading ? _sheet[\\"1\\"] : _sheet[\\"2\\"], _sheet[\\"3\\"]]} />;
@@ -83,7 +86,8 @@ export function Test(isLoading) {
 `;
 
 exports[`handles style order merge properly 1`] = `
-"import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
+"const __ReactNativeView = require('react-native').View;
+const __ReactNativeText = require('react-native').Text;
 import { YStack } from 'tamagui';
 export function Test(props) {
   return <YStack scale={props.isLoading ? 1 : 2} x={10} {...props} rotate=\\"10deg\\" />;
@@ -91,8 +95,8 @@ export function Test(props) {
 `;
 
 exports[`normalize ternaries flips the conditional properly 1`] = `
-"import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
-const _sheet = ReactNativeStyleSheet.create({
+"const __ReactNativeStyleSheet = require('react-native').StyleSheet;
+const _sheet = __ReactNativeStyleSheet.create({
   \\"0\\": {
     \\"alignItems\\": \\"stretch\\"
   },
@@ -103,7 +107,8 @@ const _sheet = ReactNativeStyleSheet.create({
     \\"marginBottom\\": 12
   }
 });
-import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
+const __ReactNativeView = require('react-native').View;
+const __ReactNativeText = require('react-native').Text;
 import { Stack } from 'tamagui';
 export function Test(props) {
   return <__ReactNativeView style={[_sheet[\\"0\\"], props === 123 ? _sheet[\\"1\\"] : _sheet[\\"2\\"]]} />;
@@ -111,7 +116,8 @@ export function Test(props) {
 `;
 
 exports[`theme value extraction should NOT work when theme variables used 1`] = `
-"import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
+"const __ReactNativeView = require('react-native').View;
+const __ReactNativeText = require('react-native').Text;
 import { Paragraph } from 'tamagui';
 export function Test() {
   return <Paragraph>hello world</Paragraph>;
@@ -119,8 +125,8 @@ export function Test() {
 `;
 
 exports[`theme value extraction should work when no theme variables used 1`] = `
-"import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
-const _sheet = ReactNativeStyleSheet.create({
+"const __ReactNativeStyleSheet = require('react-native').StyleSheet;
+const _sheet = __ReactNativeStyleSheet.create({
   \\"0\\": {
     \\"display\\": \\"flex\\",
     \\"color\\": \\"red\\",
@@ -130,7 +136,8 @@ const _sheet = ReactNativeStyleSheet.create({
     \\"lineHeight\\": 23
   }
 });
-import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
+const __ReactNativeView = require('react-native').View;
+const __ReactNativeText = require('react-native').Text;
 import { Paragraph } from 'tamagui';
 export function Test() {
   return <__ReactNativeText style={_sheet[\\"0\\"]}>hello world</__ReactNativeText>;
