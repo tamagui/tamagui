@@ -18,9 +18,12 @@ export function themed(
   }
 ) {
   const wrapped = (propsIn: IconProps) => {
-    const [props, style, theme] = usePropsAndStyle(propsIn)
+    const [props, style, theme] = usePropsAndStyle(propsIn, {
+      resolveValues: 'value',
+    })
 
     const defaultColor = style.color ?? opts.defaultThemeColor
+
     const color = getVariable(
       (defaultColor ? theme[defaultColor] : undefined) ||
         style.color ||

@@ -13,7 +13,6 @@ import {
   Switch,
   YGroup,
   YStack,
-  useTheme,
 } from 'tamagui'
 
 import { useThemeControl } from '../../useKitchenSinkTheme'
@@ -42,7 +41,12 @@ export function HomeScreen() {
                 {group.pages.map((page) => {
                   return (
                     <YGroup.Item key={page.route}>
-                      <LinkListItem href={page.route} pressTheme size="$4">
+                      <LinkListItem
+                        bc="$backgroundStrong"
+                        href={page.route}
+                        pressTheme
+                        size="$4"
+                      >
                         {page.title}
                       </LinkListItem>
                     </YGroup.Item>
@@ -65,7 +69,6 @@ const LinkListItem = ({
   ...props
 }: UseLinkProps & ListItemProps) => {
   const linkProps = useLink({ href, as, shallow })
-  const theme = useTheme()
 
   return (
     <ListItem
@@ -74,7 +77,7 @@ const LinkListItem = ({
         linkProps.onPress(e)
       }}
       {...props}
-      iconAfter={<ChevronRight color={theme.color11.get()} />}
+      iconAfter={<ChevronRight color="$color11" />}
     >
       {children}
     </ListItem>
@@ -86,7 +89,7 @@ const ColorSchemeListItem = (props: ListItemProps) => {
   const checked = theme.value === 'light'
 
   return (
-    <ListItem {...props} pressTheme paddingVertical={0}>
+    <ListItem {...props} bc="$backgroundStrong" pressTheme paddingVertical={0}>
       <ListItem.Text>Theme</ListItem.Text>
       <Spacer flex />
       <Button chromeless disabled w={20} icon={Moon} />
