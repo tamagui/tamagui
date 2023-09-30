@@ -6,6 +6,10 @@
   "module": "dist/esm",
   "sideEffects": false,
   "files": [
+    "v2.js",
+    "v2.d.ts",
+    "v2-themes.js",
+    "v2-themes.d.ts",
     "src",
     "types",
     "dist"

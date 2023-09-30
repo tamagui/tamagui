@@ -1,7 +1,7 @@
-import { ToastViewport } from '@tamagui/sandbox-ui'
+import { ToastViewport, styled } from '@tamagui/sandbox-ui'
 import { useFonts } from 'expo-font'
 import { useEffect, useMemo, useState } from 'react'
-import { Appearance, Platform, useColorScheme } from 'react-native'
+import { Appearance, Platform, View, useColorScheme } from 'react-native'
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { Navigation } from './Navigation'

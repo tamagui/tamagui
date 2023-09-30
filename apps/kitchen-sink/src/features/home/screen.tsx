@@ -71,7 +71,6 @@ const LinkListItem = ({
     <ListItem
       {...linkProps}
       onPress={(e) => {
-        console.log(linkProps)
         linkProps.onPress(e)
       }}
       {...props}
@@ -186,6 +185,9 @@ const demos = [
 
   {
     label: 'Etc',
-    pages: [{ title: 'Spinner', route: '/demo/spinner' }],
+    pages: [
+      { title: 'Spinner', route: '/demo/spinner' },
+      { title: 'ScrollView', route: '/docs/components/scroll-view' },
+    ],
   },
 ]

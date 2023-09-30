@@ -1,5 +1,3 @@
-import { stylePropsAll } from '@tamagui/helpers'
-
 import { createComponent } from './createComponent'
 import { StyledContext } from './helpers/createStyledContext'
 import { mergeVariants } from './helpers/mergeVariants'
@@ -77,12 +75,14 @@ export function styled<
       ? ComponentIn
       : parentStaticConfig?.Component || ComponentIn
 
-  const reactNativeConfig = getReactNativeConfig(Component)
+  const reactNativeConfig = !parentStaticConfig
+    ? getReactNativeConfig(Component)
+    : undefined
+
   const isReactNative = Boolean(
     reactNativeConfig ||
       staticExtractionOptions?.isReactNative ||
-      parentStaticConfig?.isReactNative ||
-      getReactNativeConfig(parentStaticConfig?.Component)
+      parentStaticConfig?.isReactNative
   )
 
   const staticConfigProps = (() => {

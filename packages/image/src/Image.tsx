@@ -5,16 +5,11 @@ import {
   StackProps,
   ThemeValueFallback,
   isWeb,
-  setupReactNative,
   styled,
   usePropsAndStyle,
 } from '@tamagui/core'
 import React, { forwardRef } from 'react'
 import { Image as RNImage } from 'react-native'
-
-setupReactNative({
-  Image: RNImage,
-})
 
 const StyledImage = styled(RNImage, {
   name: 'Image',

@@ -1,8 +1,8 @@
 // import './wdyr'
 
 import { memo, useState } from 'react'
-import { Appearance, Button, View } from 'react-native'
-import { ListItem, ListItemFrame, Square, Theme } from 'tamagui'
+import { Appearance, Button, Text, View } from 'react-native'
+import { ListItem, ListItemFrame, Square, Theme, styled } from 'tamagui'
 
 export const Sandbox = () => {
   return (
