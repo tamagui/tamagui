@@ -1,51 +1,58 @@
 // import './wdyr'
 
 import { memo, useState } from 'react'
-import { Appearance, Button, Text, View } from 'react-native'
-import { ListItem, ListItemFrame, Square, Theme, styled } from 'tamagui'
+import { Appearance, View } from 'react-native'
+import { Button, ListItem, ListItemFrame, Square, Theme, styled } from 'tamagui'
 
 export const Sandbox = () => {
   return (
     <View
       style={{ width: '100%', height: '100%', backgroundColor: 'yellow', padding: 50 }}
     >
-      <ThemeChangeTest />
+      {/* <ThemeChangeTest /> */}
     </View>
   )
 }
 
-function ThemeChangeTest() {
-  const [x, setX] = useState('dark' as any)
+// const CustomButton = styled(Button, {
+//   color: 'red',
+//   pressStyle: {
+//     color: 'blue',
+//   },
+// })
 
-  return (
-    <>
-      <Button
-        title="change"
-        onPress={() => {
-          const next = x === 'dark' ? 'light' : 'dark'
-          Appearance.setColorScheme(next)
-          setX(next)
-        }}
-      />
-      <Theme name="blue">
-        <Theme name={x}>
-          <Children />
-        </Theme>
-      </Theme>
-    </>
-  )
-}
+// function ThemeChangeTest() {
+//   const [x, setX] = useState('dark' as any)
 
-const Children = memo(() => {
-  return (
-    <>
-      <ListItem w={200} h={200} />
-      <Square
-        // animation="bouncy"
-        // animateOnly={['backgroundColor']}
-        size={100}
-        bc="$background"
-      />
-    </>
-  )
-})
+//   return (
+//     <>
+//       <Button
+//         title="change"
+//         onPress={() => {
+//           const next = x === 'dark' ? 'light' : 'dark'
+//           Appearance.setColorScheme(next)
+//           setX(next)
+//         }}
+//       />
+//       <Theme name="blue">
+//         <Theme name={x}>
+//           <Children />
+//         </Theme>
+//       </Theme>
+//     </>
+//   )
+// }
+
+// const Children = memo(() => {
+//   return (
+//     <>
+//       <ListItem w={200} h={200} />
+//       <Square
+//         // animation="bouncy"
+//         // animateOnly={['backgroundColor']}
+//         size={100}
+//         bc="$background"
+//       />
+//     </>
+//   )
+// })

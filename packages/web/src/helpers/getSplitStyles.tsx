@@ -824,7 +824,6 @@ export const getSplitStyles: StyleSplitter = (
                 pseudos[key] ||= {}
                 pseudos[key][pkey] = val
                 mergeStyle(styleState, pkey, val)
-                usedKeys[pkey] = Math.max(usedKeys[pkey], importance)
               }
 
               if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
