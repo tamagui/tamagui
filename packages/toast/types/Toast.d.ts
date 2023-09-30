@@ -4,7 +4,6 @@ import { CustomData, useToast, useToastController, useToastState } from './Toast
 import { ToastProps } from './ToastImpl';
 import { ToastProvider, ToastProviderProps } from './ToastProvider';
 import { ToastViewport, ToastViewportProps } from './ToastViewport';
-export declare const TOAST_CONTEXT = "Toast";
 declare const ToastTitle: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").TextProps, "children" | "style" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").TextStyle | React.CSSProperties | (React.CSSProperties & import("react-native").TextStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{

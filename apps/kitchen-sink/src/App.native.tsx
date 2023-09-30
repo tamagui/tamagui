@@ -32,7 +32,10 @@ export default function App() {
   const themeContext = useMemo(() => {
     return {
       value: theme,
-      set: setTheme,
+      set: (next) => {
+        Appearance.setColorScheme(next)
+        setTheme(next)
+      },
     }
   }, [theme])
 
@@ -45,7 +48,6 @@ export default function App() {
       <ThemeContext.Provider value={themeContext}>
         <Provider defaultTheme={theme as any}>
           {children}
-
           <SafeToastViewport />
         </Provider>
       </ThemeContext.Provider>

@@ -15,21 +15,12 @@ import {
   setupHooks,
 } from '@tamagui/web'
 import type { RefObject } from 'react'
-import { DynamicColorIOS } from 'react-native'
 
 import { getBaseViews } from './getBaseViews'
 import { useElementLayout } from './hooks/useElementLayout'
 import { usePlatformMethods } from './hooks/usePlatformMethods'
 import { RNViewProps } from './reactNativeTypes'
 import { usePressability } from './vendor/Pressability'
-
-console.log(
-  'waht is',
-  DynamicColorIOS({
-    dark: 'red',
-    light: 'blue',
-  })
-)
 
 // re-exports all of @tamagui/web just adds hooks
 export * from '@tamagui/web'

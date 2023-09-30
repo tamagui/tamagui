@@ -55,8 +55,10 @@ import {
   TamaguiElement,
   TamaguiInternalConfig,
   TextProps,
+  ThemeProps,
   UseAnimationHook,
   UseAnimationProps,
+  UseThemeWithStateProps,
   WebOnlyPressEvents,
 } from './types'
 import { Slot } from './views/Slot'
@@ -494,7 +496,7 @@ export function createComponent<
     const noClassNames = shouldAvoidClasses || shouldForcePseudo
 
     // internal use only
-    const disableThemeProp = props['data-disable-theme']
+    const disableThemeProp = false //props['data-disable-theme']
     const disableTheme = (disableThemeProp && !willBeAnimated) || isHOC
 
     if (process.env.NODE_ENV === 'development' && time) time`theme-props`
@@ -503,17 +505,29 @@ export function createComponent<
       stateRef.current.themeShallow = true
     }
 
-    const themeStateProps = {
+    const themeStateProps: UseThemeWithStateProps = {
       name: props.theme,
       componentName,
-      // @ts-ignore this is internal use only
       disable: disableTheme,
       shallow: stateRef.current.themeShallow,
+      // if this returns undefined it defers to the keys tracking, so its only used to force either updates or no updates
       shouldUpdate: () => {
-        // only forces when defined
-        return stateRef.current.isListeningToTheme
+        // if (isAnimated && process.env.TAMAGUI_TARGET === 'native') {
+        //   // when animated on native we can safely say 'always update on theme changes'
+        //   // this lets us optimize
+        //   return true
+        // }
+        return (
+          // when we use $theme- styles we need to force it to re-render on theme changes (this can be optimized likely)
+          stateRef.current.isListeningToTheme
+        )
       },
       debug: debugProp,
+    }
+
+    // on native we optimize theme changes if fastSchemeChange is enabled, otherwise deopt
+    if (process.env.TAMAGUI_TARGET === 'native') {
+      themeStateProps.deopt = !config?.settings.fastSchemeChange ? true : willBeAnimated
     }
 
     const isExiting = Boolean(!state.unmounted && presence?.[0] === false)
@@ -1295,7 +1309,7 @@ export function createComponent<
 
   let res: ComponentType = component as any
 
-  if (process.env.TAMAGUI_MEMO_ALL || staticConfig.memo) {
+  if (!process.env.TAMAGUI_DISABLE_MEMO) {
     res = memo(res) as any
   }
 
