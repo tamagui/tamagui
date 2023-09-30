@@ -311,8 +311,11 @@ export const useChangeThemeEffect = (
           shouldUpdate?.() ||
           props.deopt ||
           // this fixes themeable() not updating with the new fastSchemeChange setting
-          (process.env.TAMAGUI_TARGET === 'native' && props['disable-child-theme'])
-        const doUpdate = force ?? Boolean(keys?.length)
+          (process.env.TAMAGUI_TARGET === 'native'
+            ? props['disable-child-theme']
+            : undefined)
+
+        const doUpdate = force ?? Boolean(keys?.length || isNewTheme)
 
         if (process.env.NODE_ENV === 'development' && props.debug) {
           // biome-ignore lint/suspicious/noConsoleLog: <explanation>

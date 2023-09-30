@@ -496,7 +496,8 @@ export function createComponent<
     const noClassNames = shouldAvoidClasses || shouldForcePseudo
 
     // internal use only
-    const disableThemeProp = false //props['data-disable-theme']
+    const disableThemeProp =
+      process.env.TAMAGUI_TARGET === 'native' ? false : props['data-disable-theme']
     const disableTheme = (disableThemeProp && !willBeAnimated) || isHOC
 
     if (process.env.NODE_ENV === 'development' && time) time`theme-props`
@@ -512,11 +513,6 @@ export function createComponent<
       shallow: stateRef.current.themeShallow,
       // if this returns undefined it defers to the keys tracking, so its only used to force either updates or no updates
       shouldUpdate: () => {
-        // if (isAnimated && process.env.TAMAGUI_TARGET === 'native') {
-        //   // when animated on native we can safely say 'always update on theme changes'
-        //   // this lets us optimize
-        //   return true
-        // }
         return (
           // when we use $theme- styles we need to force it to re-render on theme changes (this can be optimized likely)
           stateRef.current.isListeningToTheme
