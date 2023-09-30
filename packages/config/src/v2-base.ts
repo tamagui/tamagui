@@ -1,15 +1,12 @@
 import { shorthands } from '@tamagui/shorthands'
-import { themes, tokens } from '@tamagui/themes'
+import { tokens } from '@tamagui/themes/v2'
+import { themes } from '@tamagui/themes/v2-themes'
 import { CreateTamaguiProps } from '@tamagui/web'
 
-import { animations } from './animations.reanimated'
 import { fonts } from './fonts'
 import { media, mediaQueryDefaultActive } from './media'
 
-export * from './animations'
-
-export const configWithoutAnimations = {
-  animations,
+export const config = {
   defaultFont: 'body',
   shouldAddPrefersColorThemes: true,
   themeClassNameOnRoot: true,
