@@ -9,11 +9,11 @@ import { simpleHash } from '@tamagui/simple-hash'
 import type { TamaguiOptions } from '@tamagui/static'
 
 const importNativeView = template(`
-import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
+const { View as __ReactNativeView, Text as __ReactNativeText } = require('react-native');
 `)
 
 const importStyleSheet = template(`
-import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
+const { StyleSheet as ReactNativeStyleSheet } = require('react-native');
 `)
 
 // default to native before requiring static

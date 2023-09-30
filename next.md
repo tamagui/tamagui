@@ -1,4 +1,3 @@
-- strict shorthands (only use shorthands)
 - ios no render dark/light mode support
 - fix button color + pressStyle
 - Select native
