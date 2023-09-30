@@ -79,7 +79,7 @@ export function clientInjectionsPlugin(config: ResolvedConfig): Plugin {
     },
 
     transform(code, id, options) {
-      if (id.endsWith('vite-native-client/dist/esm/client.js')) {
+      if (id.includes('vite-native-client/dist/esm/client.')) {
         return injectConfigValues(code)
       } else if (!options?.ssr && code.includes('process.env.NODE_ENV')) {
         // replace process.env.NODE_ENV instead of defining a global
