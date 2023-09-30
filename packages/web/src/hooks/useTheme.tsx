@@ -131,6 +131,8 @@ export function getThemeProxied(
 ): UseThemeResult {
   if (!theme) return {}
 
+  const config = getConfig()
+
   function track(key: string) {
     if (keys && !keys.includes(key)) {
       keys.push(key)
@@ -183,7 +185,7 @@ export function getThemeProxied(
                   if (process.env.TAMAGUI_TARGET === 'native') {
                     // ios can avoid re-rendering in some cases when we are using a root light/dark
                     // disabled in cases where we have animations
-                    if (isIos && !deopt) {
+                    if (isIos && !deopt && config.settings.fastSchemeChange) {
                       const isDark = name.startsWith('dark')
                       const isLight = !isDark && name.startsWith('light')
                       if (isDark || isLight) {
@@ -191,7 +193,7 @@ export function getThemeProxied(
                           isDark ? 'dark' : 'light',
                           isDark ? 'light' : 'dark'
                         )
-                        const oppositeTheme = getConfig().themes[oppositeThemeName]
+                        const oppositeTheme = config.themes[oppositeThemeName]
                         const oppositeVal = getVariable(oppositeTheme?.[keyString])
                         if (oppositeVal) {
                           const dynamicVal = {
