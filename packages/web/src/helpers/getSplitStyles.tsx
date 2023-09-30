@@ -55,7 +55,12 @@ import type {
 import { createMediaStyle } from './createMediaStyle'
 import { fixStyles } from './expandStyles'
 import { getGroupPropParts } from './getGroupPropParts'
-import { generateAtomicStyles, getStylesAtomic, styleToCSS } from './getStylesAtomic'
+import {
+  generateAtomicStyles,
+  getStylesAtomic,
+  styleToCSS,
+  transformsToString,
+} from './getStylesAtomic'
 import {
   insertStyleRules,
   insertedTransforms,
@@ -819,7 +824,7 @@ export const getSplitStyles: StyleSplitter = (
                 pseudos[key] ||= {}
                 pseudos[key][pkey] = val
                 mergeStyle(styleState, pkey, val)
-                usedKeys[pkey] = Math.max(usedKeys[pkey], curImportance)
+                usedKeys[pkey] = Math.max(usedKeys[pkey], importance)
               }
 
               if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
@@ -829,6 +834,7 @@ export const getSplitStyles: StyleSplitter = (
                   curImportance,
                   pkey,
                   val,
+                  transforms: { ...styleState.transforms },
                 })
               }
             }
@@ -1058,6 +1064,8 @@ export const getSplitStyles: StyleSplitter = (
         // biome-ignore lint/suspicious/noConsoleLog: <explanation>
         console.log('style', { ...style })
         // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+        console.log('transforms', { ...transforms })
+        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
         console.log('viewProps', { ...viewProps })
       } catch {
         // RN can run into PayloadTooLargeError: request entity too large
@@ -1102,6 +1110,17 @@ export const getSplitStyles: StyleSplitter = (
         .forEach(([key, val]) => {
           mergeTransform(style, key, val, true)
         })
+
+      // Button for example uses disableClassName: true but renders to a 'button' element, so needs this
+      if (process.env.TAMAGUI_TARGET === 'web') {
+        if (
+          !staticConfig.isReactNative &&
+          !styleProps.isAnimated &&
+          Array.isArray(style.transform)
+        ) {
+          style.transform = transformsToString(style.transform) as any
+        }
+      }
     }
 
     // add in defaults if not set:
