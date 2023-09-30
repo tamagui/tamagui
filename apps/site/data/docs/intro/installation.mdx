@@ -3,10 +3,6 @@ title: Installation
 description: How to get Tamagui set up.
 ---
 
-If you want a complete set of components designed to build universal apps, use `tamagui`. If you want to build out your own components and don't want any of the tamagui components, you can just use `@tamagui/core`. This document uses `tamagui` as an example, but if you are using `@tamagui/core` you can swap out the import.
-
-### Quick Start
-
 We highly recommend using our CLI to bootstrap a new app. Even if you're adding it to your existing app, it will give you a good template repo to copy from:
 
 ```bash
@@ -137,7 +133,9 @@ config.optimizeDeps.esbuildOptions = {
 
 For React Native or Expo you shouldn't need any plugins unless you're setting up the optimizing compiler which we highly recommend doing only once you're ready to ship your app to production. That install process is explained in the [Compiler installation docs](/docs/intro/compiler-install).
 
-### Quick configuration
+---
+
+## Quick configuration
 
 For an in-depth setup, check out [the full configuration docs](/docs/core/configuration). This sets you up with the default Tamagui design system which is great for getting started quick:
 
@@ -204,6 +202,8 @@ export default function Demo() {
 ```
 
 We recommend [spending time understanding configuration](/docs/core/configuration) from here, skipping over the Compiler setup. The compiler is optional and should be saved for setting up after you've built something you'd like to test it with.
+
+---
 
 #### Saving bundle size for web-only use cases
 
