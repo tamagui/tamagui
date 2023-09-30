@@ -1,23 +1,5 @@
 // import './wdyr'
 
-import { SelectDemo, SwitchDemo } from '@tamagui/demos'
-import { Ban, Search } from '@tamagui/lucide-icons'
-import { Stack, styled } from '@tamagui/web'
-import {
-  Anchor,
-  Button,
-  ButtonText,
-  GroupNames,
-  Image,
-  Paragraph,
-  Popover,
-  SizableText,
-  Square,
-  XStack,
-  YStack,
-  createSwitch,
-} from 'tamagui'
-
 export const Sandbox = () => {
   return <>{/*  */}</>
 }
