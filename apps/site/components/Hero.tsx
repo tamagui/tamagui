@@ -192,65 +192,52 @@ const HeroContents = memo(function HeroContents() {
         <InstallInput />
         <Spacer size="$1" />
 
-        <XStack ai="center" jc="center" $xxs={{ ai: 'center', fw: 'wrap' }}>
+        <XStack
+          ai="center"
+          jc="center"
+          gap="$2"
+          $xxs={{ ai: 'center', fw: 'wrap', gap: 0 }}
+        >
           <NextLink target="_blank" href="https://twitter.com/tamagui_js">
             <TooltipSimple placement="top" delay={0} restMs={25} label="Twitter">
               <YStack p="$5" $sm={{ p: '$3' }} opacity={0.65} hoverStyle={{ opacity: 1 }}>
                 <VisuallyHidden>
                   <Text>Twitter</Text>
                 </VisuallyHidden>
-                <TwitterIcon width={23} />
+                <TwitterIcon width={24} />
               </YStack>
             </TooltipSimple>
           </NextLink>
 
-          <XStack
-            ai="center"
-            jc="center"
-            gap="$4"
-            $xxs={{
-              // words web-only
-              // @ts-ignore
-              order: '-1',
-              mx: '50%',
-            }}
-          >
-            <NextLink prefetch={false} href="/docs/intro/introduction">
-              <Button
-                h={52}
-                accessibilityLabel="Get started (docs)"
-                fontFamily="$silkscreen"
-                size="$5"
-                fontSize="$6"
-                borderRadius={1000}
-                bordered
-                bw={2}
-                mx="$2"
-                tabIndex="0"
-                elevation="$1"
-                letterSpacing={-2}
-                pressStyle={{
-                  elevation: '$0',
-                }}
-              >
-                Get started
-              </Button>
-            </NextLink>
-          </XStack>
+          <NextLink prefetch={false} href="/docs/intro/introduction">
+            <Button
+              h={52}
+              accessibilityLabel="Get started (docs)"
+              fontFamily="$silkscreen"
+              size="$5"
+              fontSize="$6"
+              borderRadius={1000}
+              bordered
+              bw={2}
+              mx="$2"
+              tabIndex="0"
+              elevation="$1"
+              letterSpacing={-2}
+              pressStyle={{
+                elevation: '$0',
+              }}
+            >
+              Get started
+            </Button>
+          </NextLink>
 
           <NextLink target="_blank" href="https://discord.gg/4qh6tdcVDa">
             <TooltipSimple placement="top" delay={0} restMs={25} label="Discord">
-              <YStack
-                p="$5"
-                $sm={{ p: '$3' }}
-                ml="$-2"
-                opacity={0.65}
-                hoverStyle={{ opacity: 1 }}
-              >
+              <YStack p="$5" $sm={{ p: '$3' }} opacity={0.65} hoverStyle={{ opacity: 1 }}>
                 <VisuallyHidden>
                   <Text>Discord</Text>
                 </VisuallyHidden>
-                <DiscordIcon plain width={23} />
+                <DiscordIcon plain width={24} />
               </YStack>
             </TooltipSimple>
           </NextLink>
