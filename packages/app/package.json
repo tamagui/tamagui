@@ -13,7 +13,7 @@
   "dependencies": {
     "@my/shared-env": "workspace:*",
     "@my/supabase": "workspace:*",
-    "@my/ui": "*",
+    "@my/ui": "workspace:*",
     "@react-native-async-storage/async-storage": "1.18.2",
     "@supabase/auth-helpers-nextjs": "^0.7.4",
     "@supabase/auth-helpers-react": "^0.4.2",
@@ -36,6 +36,7 @@
     "expo-image-picker": "~14.3.1",
     "expo-linking": "~5.0.2",
     "expo-secure-store": "~12.3.1",
+    "query-string": "^8.1.0",
     "react-hook-form": "^7.44.3",
     "react-native-safe-area-context": "4.6.3",
     "solito": "^4.0.1",

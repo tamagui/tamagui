@@ -9,14 +9,16 @@ import {
   XStack,
   YStack,
   isWeb,
+  WebView,
 } from '@my/ui'
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
+import { getBaseUrl } from '../../utils/getBaseUrl'
 import { useState } from 'react'
+import { Linking } from 'react-native'
 
 export const Thingy = () => {
   return (
     <YStack f={1}>
-      <H3>Hi</H3>
       <SheetDemo />
     </YStack>
   )
@@ -104,13 +106,22 @@ export const SheetDemo = () => {
           exitStyle={{ opacity: 0 }}
         />
         <Sheet.Handle />
-        <Sheet.Frame
-          padding="$4"
-          justifyContent="center"
-          alignItems="center"
-          space="$5"
-        >
-          <Button
+        <Sheet.Frame justifyContent="center" alignItems="center" space="$5">
+          {/* This becomes webview with climb page */}
+          {/* {!isWeb && (
+            <Button onPress={Linking.openURL(`${getBaseUrl()}/test`)}>hi</Button>
+            // <WebView
+            //   containerStyle={{
+            //     width: '100%',
+            //     backgroundColor: 'red',
+            //   }}
+            //   javaScriptEnabled={true}
+            //   // TODO: Toggled if local, or prod
+            //   source={{ uri: `${getBaseUrl()}/test` }}
+            // />
+          )} */}
+
+          {/* <Button
             size="$6"
             circular
             icon={ChevronDown}
@@ -127,7 +138,7 @@ export const SheetDemo = () => {
                 onPress={() => setInnerOpen(true)}
               />
             </>
-          )}
+          )} */}
         </Sheet.Frame>
       </Sheet>
     </>

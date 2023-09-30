@@ -1,6 +1,5 @@
 {
   "name": "@my/ui",
-  "version": "0.0.1",
   "sideEffects": [
     "*.css"
   ],
@@ -22,7 +21,6 @@
   "dependencies": {
     "@hookform/resolvers": "^3.1.0",
     "@my/supabase": "workspace:*",
-    "@tamagui-google-fonts/ibm-plex-mono": "*",
     "@tamagui/animations-moti": "^1.68.6",
     "@tamagui/animations-react-native": "^1.68.6",
     "@tamagui/cli": "^1.68.6",
@@ -35,10 +33,11 @@
     "@tamagui/themes": "^1.68.6",
     "@tamagui/toast": "^1.68.6",
     "@ts-react/form": "^1.6.4",
-    "add-to-calendar-button-react": "^2.4.1",
+    "add-to-calendar-button-react": "^2.4.3",
     "date-fns": "^2.30.0",
     "moti": "^0.25.3",
     "react-hook-form": "^7.44.3",
+    "react-native-webview": "13.2.2",
     "tamagui": "^1.68.6",
     "zod": "^3.21.4"
   },

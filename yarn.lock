@@ -3375,7 +3375,7 @@ __metadata:
     "@trpc/next": ^10.36.0
     "@trpc/react-query": ^10.36.0
     "@trpc/server": ^10.36.0
-    app: "*"
+    app: "workspace:*"
     date-fns: ^2.30.0
     eslint: ^8.46.0
     eslint-config-custom: "*"
@@ -3410,13 +3410,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@my/ui@*, @my/ui@workspace:packages/ui":
+"@my/ui@workspace:*, @my/ui@workspace:packages/ui":
   version: 0.0.0-use.local
   resolution: "@my/ui@workspace:packages/ui"
   dependencies:
     "@hookform/resolvers": ^3.1.0
     "@my/supabase": "workspace:*"
-    "@tamagui-google-fonts/ibm-plex-mono": "*"
     "@tamagui/animations-moti": ^1.68.6
     "@tamagui/animations-react-native": ^1.68.6
     "@tamagui/build": ^1.68.6
@@ -3430,12 +3429,13 @@ __metadata:
     "@tamagui/themes": ^1.68.6
     "@tamagui/toast": ^1.68.6
     "@ts-react/form": ^1.6.4
-    add-to-calendar-button-react: ^2.4.1
+    add-to-calendar-button-react: ^2.4.3
     date-fns: ^2.30.0
     eslint: ^8.46.0
     eslint-config-custom: "*"
     moti: ^0.25.3
     react-hook-form: ^7.44.3
+    react-native-webview: 13.2.2
     tamagui: ^1.68.6
     zod: ^3.21.4
   languageName: unknown
@@ -6758,17 +6758,6 @@ __metadata:
   checksum: 4d9158061c5f397c57b4988cde33a163244e4f02df16364f103971957a32886beb104d6180902cbe8b38cb940e234d9f98a4e486200deca621923f62f50a06fe
   languageName: node
   linkType: hard
-
-"@tamagui-google-fonts/ibm-plex-mono@*, @tamagui-google-fonts/ibm-plex-mono@workspace:packages/font-ibm-plex-mono":
-  version: 0.0.0-use.local
-  resolution: "@tamagui-google-fonts/ibm-plex-mono@workspace:packages/font-ibm-plex-mono"
-  dependencies:
-    "@tamagui/build": ^1.68.6
-    subset-font: ^1.6.1
-  peerDependencies:
-    "@tamagui/core": "*"
-  languageName: unknown
-  linkType: soft
 
 "@tamagui/accordion@npm:1.68.6":
   version: 1.68.6
@@ -10164,7 +10153,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"add-to-calendar-button-react@npm:^2.4.1":
+"add-to-calendar-button-react@npm:^2.4.3":
   version: 2.4.3
   resolution: "add-to-calendar-button-react@npm:2.4.3"
   dependencies:
@@ -10500,13 +10489,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"app@*, app@workspace:packages/app":
+"app@workspace:*, app@workspace:packages/app":
   version: 0.0.0-use.local
   resolution: "app@workspace:packages/app"
   dependencies:
     "@my/shared-env": "workspace:*"
     "@my/supabase": "workspace:*"
-    "@my/ui": "*"
+    "@my/ui": "workspace:*"
     "@react-native-async-storage/async-storage": 1.18.2
     "@supabase/auth-helpers-nextjs": ^0.7.4
     "@supabase/auth-helpers-react": ^0.4.2
@@ -10532,6 +10521,7 @@ __metadata:
     expo-image-picker: ~14.3.1
     expo-linking: ~5.0.2
     expo-secure-store: ~12.3.1
+    query-string: ^8.1.0
     react-hook-form: ^7.44.3
     react-native-safe-area-context: 4.6.3
     solito: ^4.0.1
@@ -13239,6 +13229,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"decode-uri-component@npm:^0.4.1":
+  version: 0.4.1
+  resolution: "decode-uri-component@npm:0.4.1"
+  checksum: 0473924860986fb6ca19ee65a2af13e08801b4f3660475b058500ea8479ed715c919884a026b6bf4296dbb640d3cea74fadf45490b2439152fc548271d0201ec
+  languageName: node
+  linkType: hard
+
 "decompress-response@npm:^3.3.0":
   version: 3.3.0
   resolution: "decompress-response@npm:3.3.0"
@@ -15562,12 +15559,12 @@ __metadata:
     "@babel/core": ^7.20.2
     "@babel/runtime": ^7.18.9
     "@expo/metro-config": ~0.10.0
-    "@my/ui": "*"
+    "@my/ui": "workspace:*"
     "@react-native-async-storage/async-storage": 1.18.2
     "@react-native-community/netinfo": 9.3.10
     "@react-navigation/native": ^6.1.7
     "@tamagui/babel-plugin": ^1.68.6
-    app: "*"
+    app: "workspace:*"
     babel-plugin-module-resolver: ^4.1.0
     babel-plugin-transform-inline-environment-variables: ^0.4.4
     burnt: ^0.10.0
@@ -16435,6 +16432,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"filter-obj@npm:^5.1.0":
+  version: 5.1.0
+  resolution: "filter-obj@npm:5.1.0"
+  checksum: ba7c24d9b2c0552ee87d268e07eca74483af61fb740545ffa809f7e9e5294de38cf163ecc55af0e8a40020af9a49512c32f4022de2a858b110420fc8bffa7c9c
+  languageName: node
+  linkType: hard
+
 "finalhandler@npm:1.1.2":
   version: 1.1.2
   resolution: "finalhandler@npm:1.1.2"
@@ -16655,16 +16659,6 @@ __metadata:
   version: 2.3.0
   resolution: "fontfaceobserver@npm:2.3.0"
   checksum: 5f14715974203b9d68f299f93a7623afd9d5701572d683e861cdbb7514573ac556f56e9b5d07d2d534e01aed19a3b0bbe568e735e0e5494cbea913fc3f12b856
-  languageName: node
-  linkType: hard
-
-"fontverter@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "fontverter@npm:2.0.0"
-  dependencies:
-    wawoff2: ^2.0.0
-    woff2sfnt-sfnt2woff: ^1.0.0
-  checksum: 3dbfcc0023a6af401a34c248b965fdc4abacb6cb738b7eed56d7440b672f029b24c709975f7f3648c3d86bcc08fa6c6fca3762f286ceb9d73920e7b5f6ec0b76
   languageName: node
   linkType: hard
 
@@ -17606,13 +17600,6 @@ __metadata:
   bin:
     handlebars: bin/handlebars
   checksum: 00e68bb5c183fd7b8b63322e6234b5ac8fbb960d712cb3f25587d559c2951d9642df83c04a1172c918c41bcfc81bfbd7a7718bbce93b893e0135fc99edea93ff
-  languageName: node
-  linkType: hard
-
-"harfbuzzjs@npm:^0.3.0":
-  version: 0.3.3
-  resolution: "harfbuzzjs@npm:0.3.3"
-  checksum: 2f17d536d339538312c2fdd2da825d5533ced4d923f4ad02bfabce8acc74c249b95290593dc5aa78e760a4f2906552a6c47e16a1122a4ae4780c1958792f043a
   languageName: node
   linkType: hard
 
@@ -21416,7 +21403,8 @@ __metadata:
     "@trpc/react-query": ^10.36.0
     "@trpc/server": ^10.36.0
     "@types/node": ^18.6.4
-    app: "*"
+    add-to-calendar-button-react: ^2.4.3
+    app: "workspace:*"
     dotenv-cli: ^6.0.0
     eslint: ^8.46.0
     eslint-config-next: ^13.4.12
@@ -22379,17 +22367,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pako@npm:^1.0.7, pako@npm:~1.0.5":
-  version: 1.0.11
-  resolution: "pako@npm:1.0.11"
-  checksum: 1be2bfa1f807608c7538afa15d6f25baa523c30ec870a3228a89579e474a4d992f4293859524e46d5d87fd30fa17c5edf34dbef0671251d9749820b488660b16
-  languageName: node
-  linkType: hard
-
 "pako@npm:~0.2.0":
   version: 0.2.9
   resolution: "pako@npm:0.2.9"
   checksum: 055f9487cd57fbb78df84315873bbdd089ba286f3499daed47d2effdc6253e981f5db6898c23486de76d4a781559f890d643bd3a49f70f1b4a18019c98aa5125
+  languageName: node
+  linkType: hard
+
+"pako@npm:~1.0.5":
+  version: 1.0.11
+  resolution: "pako@npm:1.0.11"
+  checksum: 1be2bfa1f807608c7538afa15d6f25baa523c30ec870a3228a89579e474a4d992f4293859524e46d5d87fd30fa17c5edf34dbef0671251d9749820b488660b16
   languageName: node
   linkType: hard
 
@@ -23376,6 +23364,17 @@ __metadata:
     split-on-first: ^1.0.0
     strict-uri-encode: ^2.0.0
   checksum: 91af02dcd9cc9227a052841d5c2eecb80a0d6489d05625df506a097ef1c59037cfb5e907f39b84643cbfd535c955abec3e553d0130a7b510120c37d06e0f4346
+  languageName: node
+  linkType: hard
+
+"query-string@npm:^8.1.0":
+  version: 8.1.0
+  resolution: "query-string@npm:8.1.0"
+  dependencies:
+    decode-uri-component: ^0.4.1
+    filter-obj: ^5.1.0
+    split-on-first: ^3.0.0
+  checksum: 16fe49ab714f2b802bd31bc417876a38a82cd49bea01c0d6c37ca3439604c774752c8c66f9eda5ee33c268de2fc2a65e0e0e27aa97d8d98159af5c1fc838a017
   languageName: node
   linkType: hard
 
@@ -25666,6 +25665,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"split-on-first@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "split-on-first@npm:3.0.0"
+  checksum: 75dc27ecbac65cfbeab9a3b90cf046307220192d3d7a30e46aa0f19571cc9b4802aac813f3de2cc9b16f2e46aae72f275659b5d2614bb5369c77724d739e5f73
+  languageName: node
+  linkType: hard
+
 "split-string@npm:^3.0.1, split-string@npm:^3.0.2":
   version: 3.1.0
   resolution: "split-string@npm:3.1.0"
@@ -25803,7 +25809,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "storybook-app@workspace:apps/storybook"
   dependencies:
-    "@my/ui": "*"
+    "@my/ui": "workspace:*"
     "@storybook/addon-essentials": ^7.0.26
     "@storybook/addon-interactions": ^7.0.26
     "@storybook/addon-links": ^7.0.26
@@ -25814,7 +25820,7 @@ __metadata:
     "@storybook/nextjs": ^7.0.26
     "@storybook/react": ^7.0.26
     "@storybook/testing-library": ^0.2.0
-    app: "*"
+    app: "workspace:*"
     chromatic: ^6.20.0
     react: ^18.2.0
     react-dom: ^18.2.0
@@ -25831,7 +25837,7 @@ __metadata:
   dependencies:
     "@babel/core": ^7.20.2
     "@expo/vector-icons": ^13.0.0
-    "@my/ui": "*"
+    "@my/ui": "workspace:*"
     "@react-native-async-storage/async-storage": 1.18.2
     "@react-native-community/datetimepicker": 7.2.0
     "@react-native-community/slider": ^4.4.2
@@ -25841,7 +25847,7 @@ __metadata:
     "@storybook/addon-ondevice-controls": ^6.5.1
     "@storybook/react-native": ^6.5.4
     "@storybook/testing-library": ^0.2.0
-    app: "*"
+    app: "workspace:*"
     babel-loader: ^8.3.0
     cross-env: ^7.0.3
     expo: ^49.0.0
@@ -26203,18 +26209,6 @@ __metadata:
   version: 0.1.3
   resolution: "styleq@npm:0.1.3"
   checksum: 14a8d23abd914166a9b4bd04ed753bd91363f0e029ee4a94ec2c7dc37d3213fe01fceee22dc655288da3ae89f5dc01cec42d5e2b58478b0dea33bf5bdf509be1
-  languageName: node
-  linkType: hard
-
-"subset-font@npm:^1.6.1":
-  version: 1.7.1
-  resolution: "subset-font@npm:1.7.1"
-  dependencies:
-    fontverter: ^2.0.0
-    harfbuzzjs: ^0.3.0
-    lodash: ^4.17.21
-    p-limit: ^3.1.0
-  checksum: 39f11491d97e2d66caeea742cc1c03e686720f2e89096a65c01c65b3aba7726ee45f43fa16aa1c79f204fd6db8fbc805291cd72628005d080f03dd67dcf6e755
   languageName: node
   linkType: hard
 
@@ -27001,6 +26995,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ts-pattern@npm:^5.0.5":
+  version: 5.0.5
+  resolution: "ts-pattern@npm:5.0.5"
+  checksum: 9eef9fe24ee29c92cfd00c945c35d1b93b1d04e9e47da6cd13f0a2f480864210acdab0c6d2d07ef4f396f6f0e54627a6b60afacc788c4501ee81f699a45588ff
+  languageName: node
+  linkType: hard
+
 "ts-pnp@npm:^1.1.6":
   version: 1.2.0
   resolution: "ts-pnp@npm:1.2.0"
@@ -27593,6 +27594,7 @@ __metadata:
     eslint: ^8.46.0
     node-gyp: ^9.3.1
     prettier: ^2.7.1
+    ts-pattern: ^5.0.5
     turbo: latest
     typescript: ^5.1.3
     zx: ^7.2.3
@@ -28257,18 +28259,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"wawoff2@npm:^2.0.0":
-  version: 2.0.1
-  resolution: "wawoff2@npm:2.0.1"
-  dependencies:
-    argparse: ^2.0.1
-  bin:
-    woff2_compress.js: bin/woff2_compress.js
-    woff2_decompress.js: bin/woff2_decompress.js
-  checksum: 7fbe0c5968713afc2f2fe854e94eec2424d90f2f76d9515ab50455dd9e446dbfb5a46a9fefc7b861dcbd68cb319cfdc084c6336ec3fbefab553d26ced839edf1
-  languageName: node
-  linkType: hard
-
 "wcwidth@npm:^1.0.1":
   version: 1.0.1
   resolution: "wcwidth@npm:1.0.1"
@@ -28589,15 +28579,6 @@ __metadata:
   dependencies:
     string-width: ^1.0.2 || 2 || 3 || 4
   checksum: d5fc37cd561f9daee3c80e03b92ed3e84d80dde3365a8767263d03dacfc8fa06b065ffe1df00d8c2a09f731482fcacae745abfbb478d4af36d0a891fad4834d3
-  languageName: node
-  linkType: hard
-
-"woff2sfnt-sfnt2woff@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "woff2sfnt-sfnt2woff@npm:1.0.0"
-  dependencies:
-    pako: ^1.0.7
-  checksum: 7c558ce8e1b956d39047e78bf07b35b5a9545ad3750fdc82e1fa9c2b559a58fe5cf17f103199dbd42411ce5f0ad5f133cb55ef101e64112545539119666d41f8
   languageName: node
   linkType: hard
 

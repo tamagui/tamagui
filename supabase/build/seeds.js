@@ -148,7 +148,7 @@ function createClimbs(supabase, users, admin) {
                 case 1:
                     error = (_a.sent()).error;
                     if (error) {
-                        console.log(error);
+                        console.error(error);
                         return [2 /*return*/];
                     }
                     return [2 /*return*/];
@@ -179,7 +179,7 @@ function createMaple(supabase) {
                 case 1:
                     _a = _b.sent(), data = _a.data, error = _a.error;
                     if (error) {
-                        console.log(error);
+                        console.error(error);
                         return [2 /*return*/];
                     }
                     return [2 /*return*/, data];
@@ -209,7 +209,7 @@ function createMochi(supabase) {
                 case 1:
                     _a = _b.sent(), data = _a.data, error = _a.error;
                     if (error) {
-                        console.log(error);
+                        console.error(error);
                         return [2 /*return*/];
                     }
                     return [2 /*return*/, data];
@@ -239,7 +239,7 @@ function createBenjamin(supabase) {
                 case 1:
                     _a = _b.sent(), data = _a.data, error = _a.error;
                     if (error) {
-                        console.log(error);
+                        console.error(error);
                         return [2 /*return*/];
                     }
                     return [2 /*return*/, data];
@@ -338,7 +338,7 @@ function createProfileClimbs(supabase, climbs, profiles, admin) {
                 case 1:
                     error = (_a.sent()).error;
                     if (error) {
-                        console.log(error);
+                        console.error(error);
                     }
                     return [2 /*return*/];
             }
@@ -352,7 +352,7 @@ function main() {
         return __generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
-                    console.log('Running seeds with faker data');
+                    console.error('Running seeds with faker data');
                     return [4 /*yield*/, createBenjamin(supabaseInstance)];
                 case 1:
                     benjamin = _c.sent();
@@ -372,7 +372,7 @@ function main() {
                         throw new Error('no mochi');
                     }
                     if (!maple) {
-                        console.log(maple);
+                        console.error(maple);
                         throw new Error('no maple');
                     }
                     return [4 /*yield*/, createClimbs(supabaseInstance, [mochi, maple], benjamin.user)];
@@ -396,4 +396,3 @@ function main() {
     });
 }
 main().catch(console.error);
-console.log('hello');

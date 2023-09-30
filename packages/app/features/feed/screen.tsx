@@ -4,15 +4,13 @@ import {
   SizableText,
   Tabs,
   TabsContentProps,
-  XStack,
   YStack,
   isWeb,
 } from '@my/ui'
 
 import { MyClimbsTab } from './myclimbs-tab'
 import { ClimbsTab } from './climbs-tab'
-import { useState } from 'react'
-import { useUser } from '../../utils/useUser'
+import { SheetDemo } from './thingy'
 
 export function FeedScreen() {
   return (
@@ -20,6 +18,7 @@ export function FeedScreen() {
       flex={1}
       {...(isWeb && {
         // Should fix in core
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         position: 'unset' as any,
       })}
     >
@@ -31,20 +30,20 @@ export function FeedScreen() {
 export function TabsDemo() {
   return (
     // web only fix for position relative
-
-    <YStack
-      {...(isWeb && {
-        position: 'unset' as any,
-      })}
-    >
-      <HorizontalTabs />
-    </YStack>
+    <>
+      <YStack
+        {...(isWeb && {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          position: 'unset' as any,
+        })}
+      >
+        <HorizontalTabs />
+      </YStack>
+    </>
   )
 }
 
 const HorizontalTabs = () => {
-  const user = useUser()
-  console.log('user', user)
   return (
     <Tabs
       defaultValue="tab1"
@@ -56,7 +55,6 @@ const HorizontalTabs = () => {
       borderColor="$borderColor"
     >
       <Tabs.List
-        separator={<Separator vertical />}
         disablePassBorderRadius="bottom"
         aria-label="Manage your account"
       >
@@ -71,9 +69,7 @@ const HorizontalTabs = () => {
       <TabsContent value="tab1">
         <ClimbsTab />
       </TabsContent>
-
       <TabsContent value="tab2">
-        <H5>Connections</H5>
         <MyClimbsTab />
       </TabsContent>
     </Tabs>
@@ -83,14 +79,12 @@ const HorizontalTabs = () => {
 const TabsContent = (props: TabsContentProps) => {
   return (
     <Tabs.Content
-      backgroundColor="$background"
       key="tab3"
-      padding="$2"
+      // padding="$2"
       borderColor="$background"
       borderRadius="$2"
       borderTopLeftRadius={0}
       borderTopRightRadius={0}
-      borderWidth="$2"
       {...props}
     >
       {props.children}

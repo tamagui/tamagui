@@ -26,4 +26,18 @@ export const animations = createAnimations({
     mass: 1.2,
     stiffness: 250,
   },
+  medium: {
+    damping: 15,
+    stiffness: 120,
+    mass: 1,
+  },
+  slow: {
+    damping: 15,
+    stiffness: 40,
+  },
+  tooltip: {
+    damping: 10,
+    mass: 0.9,
+    stiffness: 100,
+  },
 })

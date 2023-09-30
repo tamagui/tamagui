@@ -18,11 +18,11 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.18.9",
-    "@my/ui": "*",
+    "@my/ui": "workspace:*",
     "@react-native-async-storage/async-storage": "1.18.2",
     "@react-native-community/netinfo": "9.3.10",
     "@react-navigation/native": "^6.1.7",
-    "app": "*",
+    "app": "workspace:*",
     "babel-plugin-module-resolver": "^4.1.0",
     "burnt": "^0.10.0",
     "eslint-plugin-import": "^2.28.0",

@@ -10,8 +10,8 @@
     "serve-sb": "npx serve ./public-storybook"
   },
   "dependencies": {
-    "@my/ui": "*",
-    "app": "*",
+    "@my/ui": "workspace:*",
+    "app": "workspace:*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-native": "0.72.4",

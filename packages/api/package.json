@@ -18,7 +18,7 @@
     "@trpc/next": "^10.36.0",
     "@trpc/react-query": "^10.36.0",
     "@trpc/server": "^10.36.0",
-    "app": "*",
+    "app": "workspace:*",
     "date-fns": "^2.30.0",
     "expo-server-sdk": "^3.7.0",
     "superjson": "^1.13.1",

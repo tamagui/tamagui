@@ -156,11 +156,11 @@ export function ClimbsTab() {
   }, [])
 
   return (
-    <YStack gap="$10">
+    <YStack>
       <FlatList
         style={{
           paddingTop: 20,
-          paddingBottom: 80,
+          // paddingBottom: 80,
         }}
         data={climbsQuery.data}
         showsVerticalScrollIndicator={false}

@@ -9,6 +9,40 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      climb_requests: {
+        Row: {
+          climb_id: number
+          created_at: string
+          id: number
+          profile_id: string
+        }
+        Insert: {
+          climb_id: number
+          created_at?: string
+          id?: number
+          profile_id: string
+        }
+        Update: {
+          climb_id?: number
+          created_at?: string
+          id?: number
+          profile_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "climb_requests_climb_id_fkey"
+            columns: ["climb_id"]
+            referencedRelation: "climbs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "climb_requests_profile_id_fkey"
+            columns: ["profile_id"]
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       climbs: {
         Row: {
           created_at: string
