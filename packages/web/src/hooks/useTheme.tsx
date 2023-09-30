@@ -317,13 +317,13 @@ export const useChangeThemeEffect = (
             ? props['disable-child-theme']
             : undefined)
 
-        const doUpdate = force ?? Boolean(keys?.length || isNewTheme)
+        const shouldTryUpdate = force ?? Boolean(keys?.length || isNewTheme)
 
         if (process.env.NODE_ENV === 'development' && props.debug) {
           // biome-ignore lint/suspicious/noConsoleLog: <explanation>
           console.log(` 🔸 onChange`, themeManager.id, {
             force,
-            doUpdate,
+            shouldTryUpdate,
             props,
             name,
             manager,
@@ -331,7 +331,7 @@ export const useChangeThemeEffect = (
           })
         }
 
-        if (doUpdate) {
+        if (shouldTryUpdate) {
           setThemeState(createState)
         }
       }, themeManager.id)

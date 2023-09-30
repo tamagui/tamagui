@@ -141,6 +141,7 @@ const demos = [
     pages: [
       { title: 'Button', route: '/demo/button' },
       { title: 'Checkbox', route: '/demo/checkbox' },
+      { title: 'Form', route: '/demo/forms' },
       { title: 'Input + Textarea', route: '/demo/inputs' },
       { title: 'Label', route: '/demo/label' },
       { title: 'Progress', route: '/demo/progress' },
@@ -156,8 +157,8 @@ const demos = [
     label: 'Panels',
     pages: [
       { title: 'AlertDialog', route: '/demo/alert-dialog' },
-      // { title: 'Dialog', route: '/demo/dialog' },
-      // { title: 'Drawer', route: '/demo/drawer' },
+      { title: 'Dialog', route: '/demo/dialog' },
+      { title: 'Drawer', route: '/demo/drawer' },
       { title: 'Popover', route: '/demo/popover' },
       { title: 'Sheet', route: '/demo/sheet' },
       { title: 'Toast', route: '/demo/toast' },
@@ -190,7 +191,7 @@ const demos = [
     label: 'Etc',
     pages: [
       { title: 'Spinner', route: '/demo/spinner' },
-      { title: 'ScrollView', route: '/docs/components/scroll-view' },
+      { title: 'ScrollView', route: '/demo/scroll-view' },
     ],
   },
 ]

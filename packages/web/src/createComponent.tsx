@@ -1114,6 +1114,8 @@ export function createComponent<
           webStyleEvents
         )
         Object.assign(viewProps, passEvents)
+      } else {
+        Object.assign(viewProps, { onPress, onLongPress })
       }
     }
 

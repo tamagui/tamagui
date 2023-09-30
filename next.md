@@ -1,8 +1,5 @@
-- ios no render dark/light mode support
-- fix button color + pressStyle
 - Select native
   - can use iOS Select as well as the newer SwiftUI menu style Picker
-- avoid need for setupReactNative
 - ssr safe themeInverse would be pretty nice
 
 - styled(ExternalComponent) should always allow Partial props
@@ -23,8 +20,6 @@
 
 - TODO this could definitely be done better by at the very minimum
   - this entire proxy could be removed in favor of the proxy we make on initial theme creation, and just having a way to subscribeThemeGet(theme, (key, val) => any) at the useThemeWithState callsite
-
-- option to disable ssr mode to avoid extra renders on SPA
 
 -  button circular + ai not working <Button
             theme={contrastThemeName}
