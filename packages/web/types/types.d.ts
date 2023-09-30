@@ -13,7 +13,7 @@ export type SpaceDirection = 'vertical' | 'horizontal' | 'both';
 export type TamaguiElement = HTMLElement | View;
 export type TamaguiTextElement = HTMLElement | RNText;
 export type DebugProp = boolean | 'break' | 'verbose' | 'visualize' | 'profile';
-export type TamaguiComponentPropsBase = WebOnlyPressEvents & {
+export type TamaguiComponentPropsBaseBase = {
     target?: string;
     hitSlop?: PressableProps['hitSlop'];
     /**
@@ -92,6 +92,7 @@ export type TamaguiComponentPropsBase = WebOnlyPressEvents & {
     onFocus?: (event: React.FocusEvent<HTMLDivElement>) => void;
     onScroll?: (event: React.UIEvent<HTMLDivElement, UIEvent>) => void;
 };
+export type TamaguiComponentPropsBase<A = {}> = WebOnlyPressEvents & TamaguiComponentPropsBaseBase;
 export type WebOnlyPressEvents = {
     onPress?: PressableProps['onPress'];
     onLongPress?: PressableProps['onLongPress'];

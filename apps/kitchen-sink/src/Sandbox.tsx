@@ -7,6 +7,7 @@ import {
   Anchor,
   Button,
   ButtonText,
+  GroupNames,
   Image,
   Paragraph,
   Popover,

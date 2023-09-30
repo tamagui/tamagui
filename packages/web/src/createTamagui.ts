@@ -256,7 +256,6 @@ ${runtimeStyles}`
 
   const config: TamaguiInternalConfig = {
     fonts: {},
-    groupNames: [],
     settings: {},
     onlyAllowShorthands: false,
     fontLanguages: [],
