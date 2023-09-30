@@ -4,32 +4,7 @@ import * as React from 'react';
 import { View } from 'react-native';
 import { SliderProps, SliderTrackProps } from './types';
 type SliderTrackElement = HTMLElement | View;
-export declare const SliderTrackFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-    target?: string | undefined;
-    hitSlop?: number | import("react-native").Insets | null | undefined;
-    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-    dangerouslySetInnerHTML?: {
-        __html: string;
-    } | undefined;
-    children?: any;
-    debug?: import("@tamagui/core").DebugProp | undefined;
-    disabled?: boolean | undefined;
-    className?: string | undefined;
-    themeShallow?: boolean | undefined;
-    id?: string | undefined;
-    tag?: string | undefined;
-    theme?: string | null | undefined;
-    group?: undefined;
-    untilMeasured?: "hide" | "show" | undefined;
-    componentName?: string | undefined;
-    tabIndex?: string | number | undefined;
-    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-    disableOptimization?: boolean | undefined;
-    forceStyle?: "hover" | "press" | "focus" | undefined;
-    disableClassName?: boolean | undefined;
-    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-} & {
+export declare const SliderTrackFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -40,32 +15,7 @@ export declare const SliderTrackFrame: import("@tamagui/core").TamaguiComponent<
     readonly size?: any;
 }, "unstyled"> & {
     readonly unstyled?: boolean | undefined;
-} & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-    target?: string | undefined;
-    hitSlop?: number | import("react-native").Insets | null | undefined;
-    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-    dangerouslySetInnerHTML?: {
-        __html: string;
-    } | undefined;
-    children?: any;
-    debug?: import("@tamagui/core").DebugProp | undefined;
-    disabled?: boolean | undefined;
-    className?: string | undefined;
-    themeShallow?: boolean | undefined;
-    id?: string | undefined;
-    tag?: string | undefined;
-    theme?: string | null | undefined;
-    group?: undefined;
-    untilMeasured?: "hide" | "show" | undefined;
-    componentName?: string | undefined;
-    tabIndex?: string | number | undefined;
-    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-    disableOptimization?: boolean | undefined;
-    forceStyle?: "hover" | "press" | "focus" | undefined;
-    disableClassName?: boolean | undefined;
-    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-} & {
+} & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -76,32 +26,7 @@ export declare const SliderTrackFrame: import("@tamagui/core").TamaguiComponent<
     readonly size?: any;
 }, "unstyled"> & {
     readonly unstyled?: boolean | undefined;
-}>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-    target?: string | undefined;
-    hitSlop?: number | import("react-native").Insets | null | undefined;
-    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-    dangerouslySetInnerHTML?: {
-        __html: string;
-    } | undefined;
-    children?: any;
-    debug?: import("@tamagui/core").DebugProp | undefined;
-    disabled?: boolean | undefined;
-    className?: string | undefined;
-    themeShallow?: boolean | undefined;
-    id?: string | undefined;
-    tag?: string | undefined;
-    theme?: string | null | undefined;
-    group?: undefined;
-    untilMeasured?: "hide" | "show" | undefined;
-    componentName?: string | undefined;
-    tabIndex?: string | number | undefined;
-    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-    disableOptimization?: boolean | undefined;
-    forceStyle?: "hover" | "press" | "focus" | undefined;
-    disableClassName?: boolean | undefined;
-    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-} & {
+}>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -112,32 +37,7 @@ export declare const SliderTrackFrame: import("@tamagui/core").TamaguiComponent<
     readonly size?: any;
 }, "unstyled"> & {
     readonly unstyled?: boolean | undefined;
-}>>, TamaguiElement, Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-    target?: string | undefined;
-    hitSlop?: number | import("react-native").Insets | null | undefined;
-    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-    dangerouslySetInnerHTML?: {
-        __html: string;
-    } | undefined;
-    children?: any;
-    debug?: import("@tamagui/core").DebugProp | undefined;
-    disabled?: boolean | undefined;
-    className?: string | undefined;
-    themeShallow?: boolean | undefined;
-    id?: string | undefined;
-    tag?: string | undefined;
-    theme?: string | null | undefined;
-    group?: undefined;
-    untilMeasured?: "hide" | "show" | undefined;
-    componentName?: string | undefined;
-    tabIndex?: string | number | undefined;
-    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-    disableOptimization?: boolean | undefined;
-    forceStyle?: "hover" | "press" | "focus" | undefined;
-    disableClassName?: boolean | undefined;
-    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-} & {
+}>>, TamaguiElement, Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps, {
     readonly fullscreen?: boolean | undefined;
@@ -150,59 +50,9 @@ export declare const SliderTrackFrame: import("@tamagui/core").TamaguiComponent<
     readonly unstyled?: boolean | undefined;
 }, {
     displayName: string | undefined;
-    __baseProps: Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-        target?: string | undefined;
-        hitSlop?: number | import("react-native").Insets | null | undefined;
-        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-        dangerouslySetInnerHTML?: {
-            __html: string;
-        } | undefined;
-        children?: any;
-        debug?: import("@tamagui/core").DebugProp | undefined;
-        disabled?: boolean | undefined;
-        className?: string | undefined;
-        themeShallow?: boolean | undefined;
-        id?: string | undefined;
-        tag?: string | undefined;
-        theme?: string | null | undefined;
-        group?: undefined;
-        untilMeasured?: "hide" | "show" | undefined;
-        componentName?: string | undefined;
-        tabIndex?: string | number | undefined;
-        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-        disableOptimization?: boolean | undefined;
-        forceStyle?: "hover" | "press" | "focus" | undefined;
-        disableClassName?: boolean | undefined;
-        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-    } & {
+    __baseProps: Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
         style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & {
-        target?: string | undefined;
-        hitSlop?: number | import("react-native").Insets | null | undefined;
-        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-        dangerouslySetInnerHTML?: {
-            __html: string;
-        } | undefined;
-        children?: any;
-        debug?: import("@tamagui/core").DebugProp | undefined;
-        disabled?: boolean | undefined;
-        className?: string | undefined;
-        themeShallow?: boolean | undefined;
-        id?: string | undefined;
-        tag?: string | undefined;
-        theme?: string | null | undefined;
-        group?: undefined;
-        untilMeasured?: "hide" | "show" | undefined;
-        componentName?: string | undefined;
-        tabIndex?: string | number | undefined;
-        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-        disableOptimization?: boolean | undefined;
-        forceStyle?: "hover" | "press" | "focus" | undefined;
-        disableClassName?: boolean | undefined;
-        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-    } & {
         style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     };
     __variantProps: {
@@ -215,32 +65,7 @@ export declare const SliderTrackFrame: import("@tamagui/core").TamaguiComponent<
     };
 }>;
 declare const SliderTrack: React.ForwardRefExoticComponent<SliderTrackProps & React.RefAttributes<SliderTrackElement>>;
-export declare const SliderTrackActiveFrame: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-    target?: string | undefined;
-    hitSlop?: number | import("react-native").Insets | null | undefined;
-    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-    dangerouslySetInnerHTML?: {
-        __html: string;
-    } | undefined;
-    children?: any;
-    debug?: import("@tamagui/core").DebugProp | undefined;
-    disabled?: boolean | undefined;
-    className?: string | undefined;
-    themeShallow?: boolean | undefined;
-    id?: string | undefined;
-    tag?: string | undefined;
-    theme?: string | null | undefined;
-    group?: undefined;
-    untilMeasured?: "hide" | "show" | undefined;
-    componentName?: string | undefined;
-    tabIndex?: string | number | undefined;
-    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-    disableOptimization?: boolean | undefined;
-    forceStyle?: "hover" | "press" | "focus" | undefined;
-    disableClassName?: boolean | undefined;
-    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-} & {
+export declare const SliderTrackActiveFrame: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -249,32 +74,7 @@ export declare const SliderTrackActiveFrame: import("@tamagui/core").TamaguiComp
     readonly orientation?: "vertical" | "horizontal" | undefined;
 }, "size"> & {
     readonly size?: any;
-} & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-    target?: string | undefined;
-    hitSlop?: number | import("react-native").Insets | null | undefined;
-    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-    dangerouslySetInnerHTML?: {
-        __html: string;
-    } | undefined;
-    children?: any;
-    debug?: import("@tamagui/core").DebugProp | undefined;
-    disabled?: boolean | undefined;
-    className?: string | undefined;
-    themeShallow?: boolean | undefined;
-    id?: string | undefined;
-    tag?: string | undefined;
-    theme?: string | null | undefined;
-    group?: undefined;
-    untilMeasured?: "hide" | "show" | undefined;
-    componentName?: string | undefined;
-    tabIndex?: string | number | undefined;
-    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-    disableOptimization?: boolean | undefined;
-    forceStyle?: "hover" | "press" | "focus" | undefined;
-    disableClassName?: boolean | undefined;
-    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-} & {
+} & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -283,32 +83,7 @@ export declare const SliderTrackActiveFrame: import("@tamagui/core").TamaguiComp
     readonly orientation?: "vertical" | "horizontal" | undefined;
 }, "size"> & {
     readonly size?: any;
-}>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-    target?: string | undefined;
-    hitSlop?: number | import("react-native").Insets | null | undefined;
-    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-    dangerouslySetInnerHTML?: {
-        __html: string;
-    } | undefined;
-    children?: any;
-    debug?: import("@tamagui/core").DebugProp | undefined;
-    disabled?: boolean | undefined;
-    className?: string | undefined;
-    themeShallow?: boolean | undefined;
-    id?: string | undefined;
-    tag?: string | undefined;
-    theme?: string | null | undefined;
-    group?: undefined;
-    untilMeasured?: "hide" | "show" | undefined;
-    componentName?: string | undefined;
-    tabIndex?: string | number | undefined;
-    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-    disableOptimization?: boolean | undefined;
-    forceStyle?: "hover" | "press" | "focus" | undefined;
-    disableClassName?: boolean | undefined;
-    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-} & {
+}>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -317,32 +92,7 @@ export declare const SliderTrackActiveFrame: import("@tamagui/core").TamaguiComp
     readonly orientation?: "vertical" | "horizontal" | undefined;
 }, "size"> & {
     readonly size?: any;
-}>>) | (Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-    target?: string | undefined;
-    hitSlop?: number | import("react-native").Insets | null | undefined;
-    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-    dangerouslySetInnerHTML?: {
-        __html: string;
-    } | undefined;
-    children?: any;
-    debug?: import("@tamagui/core").DebugProp | undefined;
-    disabled?: boolean | undefined;
-    className?: string | undefined;
-    themeShallow?: boolean | undefined;
-    id?: string | undefined;
-    tag?: string | undefined;
-    theme?: string | null | undefined;
-    group?: undefined;
-    untilMeasured?: "hide" | "show" | undefined;
-    componentName?: string | undefined;
-    tabIndex?: string | number | undefined;
-    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-    disableOptimization?: boolean | undefined;
-    forceStyle?: "hover" | "press" | "focus" | undefined;
-    disableClassName?: boolean | undefined;
-    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-} & {
+}>>) | (Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -353,32 +103,7 @@ export declare const SliderTrackActiveFrame: import("@tamagui/core").TamaguiComp
     readonly size?: any;
 }, string | number> & {
     [x: string]: undefined;
-} & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-    target?: string | undefined;
-    hitSlop?: number | import("react-native").Insets | null | undefined;
-    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-    dangerouslySetInnerHTML?: {
-        __html: string;
-    } | undefined;
-    children?: any;
-    debug?: import("@tamagui/core").DebugProp | undefined;
-    disabled?: boolean | undefined;
-    className?: string | undefined;
-    themeShallow?: boolean | undefined;
-    id?: string | undefined;
-    tag?: string | undefined;
-    theme?: string | null | undefined;
-    group?: undefined;
-    untilMeasured?: "hide" | "show" | undefined;
-    componentName?: string | undefined;
-    tabIndex?: string | number | undefined;
-    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-    disableOptimization?: boolean | undefined;
-    forceStyle?: "hover" | "press" | "focus" | undefined;
-    disableClassName?: boolean | undefined;
-    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-} & {
+} & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -389,32 +114,7 @@ export declare const SliderTrackActiveFrame: import("@tamagui/core").TamaguiComp
     readonly size?: any;
 }, string | number> & {
     [x: string]: undefined;
-}>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-    target?: string | undefined;
-    hitSlop?: number | import("react-native").Insets | null | undefined;
-    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-    dangerouslySetInnerHTML?: {
-        __html: string;
-    } | undefined;
-    children?: any;
-    debug?: import("@tamagui/core").DebugProp | undefined;
-    disabled?: boolean | undefined;
-    className?: string | undefined;
-    themeShallow?: boolean | undefined;
-    id?: string | undefined;
-    tag?: string | undefined;
-    theme?: string | null | undefined;
-    group?: undefined;
-    untilMeasured?: "hide" | "show" | undefined;
-    componentName?: string | undefined;
-    tabIndex?: string | number | undefined;
-    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-    disableOptimization?: boolean | undefined;
-    forceStyle?: "hover" | "press" | "focus" | undefined;
-    disableClassName?: boolean | undefined;
-    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-} & {
+}>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -425,32 +125,7 @@ export declare const SliderTrackActiveFrame: import("@tamagui/core").TamaguiComp
     readonly size?: any;
 }, string | number> & {
     [x: string]: undefined;
-}>>), TamaguiElement, Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-    target?: string | undefined;
-    hitSlop?: number | import("react-native").Insets | null | undefined;
-    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-    dangerouslySetInnerHTML?: {
-        __html: string;
-    } | undefined;
-    children?: any;
-    debug?: import("@tamagui/core").DebugProp | undefined;
-    disabled?: boolean | undefined;
-    className?: string | undefined;
-    themeShallow?: boolean | undefined;
-    id?: string | undefined;
-    tag?: string | undefined;
-    theme?: string | null | undefined;
-    group?: undefined;
-    untilMeasured?: "hide" | "show" | undefined;
-    componentName?: string | undefined;
-    tabIndex?: string | number | undefined;
-    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-    disableOptimization?: boolean | undefined;
-    forceStyle?: "hover" | "press" | "focus" | undefined;
-    disableClassName?: boolean | undefined;
-    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-} & {
+}>>), TamaguiElement, Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps, {
     readonly fullscreen?: boolean | undefined;
@@ -463,59 +138,9 @@ export declare const SliderTrackActiveFrame: import("@tamagui/core").TamaguiComp
     [x: string]: undefined;
 }), {
     displayName: string | undefined;
-    __baseProps: Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-        target?: string | undefined;
-        hitSlop?: number | import("react-native").Insets | null | undefined;
-        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-        dangerouslySetInnerHTML?: {
-            __html: string;
-        } | undefined;
-        children?: any;
-        debug?: import("@tamagui/core").DebugProp | undefined;
-        disabled?: boolean | undefined;
-        className?: string | undefined;
-        themeShallow?: boolean | undefined;
-        id?: string | undefined;
-        tag?: string | undefined;
-        theme?: string | null | undefined;
-        group?: undefined;
-        untilMeasured?: "hide" | "show" | undefined;
-        componentName?: string | undefined;
-        tabIndex?: string | number | undefined;
-        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-        disableOptimization?: boolean | undefined;
-        forceStyle?: "hover" | "press" | "focus" | undefined;
-        disableClassName?: boolean | undefined;
-        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-    } & {
+    __baseProps: Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
         style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & {
-        target?: string | undefined;
-        hitSlop?: number | import("react-native").Insets | null | undefined;
-        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-        dangerouslySetInnerHTML?: {
-            __html: string;
-        } | undefined;
-        children?: any;
-        debug?: import("@tamagui/core").DebugProp | undefined;
-        disabled?: boolean | undefined;
-        className?: string | undefined;
-        themeShallow?: boolean | undefined;
-        id?: string | undefined;
-        tag?: string | undefined;
-        theme?: string | null | undefined;
-        group?: undefined;
-        untilMeasured?: "hide" | "show" | undefined;
-        componentName?: string | undefined;
-        tabIndex?: string | number | undefined;
-        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-        disableOptimization?: boolean | undefined;
-        forceStyle?: "hover" | "press" | "focus" | undefined;
-        disableClassName?: boolean | undefined;
-        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-    } & {
         style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     };
     __variantProps: {
@@ -528,32 +153,7 @@ export declare const SliderTrackActiveFrame: import("@tamagui/core").TamaguiComp
     };
 }>;
 type SliderTrackActiveProps = GetProps<typeof SliderTrackActiveFrame>;
-declare const SliderTrackActive: React.ForwardRefExoticComponent<((Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-    target?: string | undefined;
-    hitSlop?: number | import("react-native").Insets | null | undefined;
-    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-    dangerouslySetInnerHTML?: {
-        __html: string;
-    } | undefined;
-    children?: any;
-    debug?: import("@tamagui/core").DebugProp | undefined;
-    disabled?: boolean | undefined;
-    className?: string | undefined;
-    themeShallow?: boolean | undefined;
-    id?: string | undefined;
-    tag?: string | undefined;
-    theme?: string | null | undefined;
-    group?: undefined;
-    untilMeasured?: "hide" | "show" | undefined;
-    componentName?: string | undefined;
-    tabIndex?: string | number | undefined;
-    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-    disableOptimization?: boolean | undefined;
-    forceStyle?: "hover" | "press" | "focus" | undefined;
-    disableClassName?: boolean | undefined;
-    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-} & {
+declare const SliderTrackActive: React.ForwardRefExoticComponent<((Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -562,32 +162,7 @@ declare const SliderTrackActive: React.ForwardRefExoticComponent<((Omit<import("
     readonly orientation?: "vertical" | "horizontal" | undefined;
 }, "size"> & {
     readonly size?: any;
-} & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-    target?: string | undefined;
-    hitSlop?: number | import("react-native").Insets | null | undefined;
-    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-    dangerouslySetInnerHTML?: {
-        __html: string;
-    } | undefined;
-    children?: any;
-    debug?: import("@tamagui/core").DebugProp | undefined;
-    disabled?: boolean | undefined;
-    className?: string | undefined;
-    themeShallow?: boolean | undefined;
-    id?: string | undefined;
-    tag?: string | undefined;
-    theme?: string | null | undefined;
-    group?: undefined;
-    untilMeasured?: "hide" | "show" | undefined;
-    componentName?: string | undefined;
-    tabIndex?: string | number | undefined;
-    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-    disableOptimization?: boolean | undefined;
-    forceStyle?: "hover" | "press" | "focus" | undefined;
-    disableClassName?: boolean | undefined;
-    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-} & {
+} & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -596,32 +171,7 @@ declare const SliderTrackActive: React.ForwardRefExoticComponent<((Omit<import("
     readonly orientation?: "vertical" | "horizontal" | undefined;
 }, "size"> & {
     readonly size?: any;
-}>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-    target?: string | undefined;
-    hitSlop?: number | import("react-native").Insets | null | undefined;
-    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-    dangerouslySetInnerHTML?: {
-        __html: string;
-    } | undefined;
-    children?: any;
-    debug?: import("@tamagui/core").DebugProp | undefined;
-    disabled?: boolean | undefined;
-    className?: string | undefined;
-    themeShallow?: boolean | undefined;
-    id?: string | undefined;
-    tag?: string | undefined;
-    theme?: string | null | undefined;
-    group?: undefined;
-    untilMeasured?: "hide" | "show" | undefined;
-    componentName?: string | undefined;
-    tabIndex?: string | number | undefined;
-    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-    disableOptimization?: boolean | undefined;
-    forceStyle?: "hover" | "press" | "focus" | undefined;
-    disableClassName?: boolean | undefined;
-    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-} & {
+}>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -630,32 +180,7 @@ declare const SliderTrackActive: React.ForwardRefExoticComponent<((Omit<import("
     readonly orientation?: "vertical" | "horizontal" | undefined;
 }, "size"> & {
     readonly size?: any;
-}>>) | Omit<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-    target?: string | undefined;
-    hitSlop?: number | import("react-native").Insets | null | undefined;
-    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-    dangerouslySetInnerHTML?: {
-        __html: string;
-    } | undefined;
-    children?: any;
-    debug?: import("@tamagui/core").DebugProp | undefined;
-    disabled?: boolean | undefined;
-    className?: string | undefined;
-    themeShallow?: boolean | undefined;
-    id?: string | undefined;
-    tag?: string | undefined;
-    theme?: string | null | undefined;
-    group?: undefined;
-    untilMeasured?: "hide" | "show" | undefined;
-    componentName?: string | undefined;
-    tabIndex?: string | number | undefined;
-    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-    disableOptimization?: boolean | undefined;
-    forceStyle?: "hover" | "press" | "focus" | undefined;
-    disableClassName?: boolean | undefined;
-    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-} & {
+}>>) | Omit<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -666,32 +191,7 @@ declare const SliderTrackActive: React.ForwardRefExoticComponent<((Omit<import("
     readonly size?: any;
 }, string | number> & {
     [x: string]: undefined;
-} & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-    target?: string | undefined;
-    hitSlop?: number | import("react-native").Insets | null | undefined;
-    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-    dangerouslySetInnerHTML?: {
-        __html: string;
-    } | undefined;
-    children?: any;
-    debug?: import("@tamagui/core").DebugProp | undefined;
-    disabled?: boolean | undefined;
-    className?: string | undefined;
-    themeShallow?: boolean | undefined;
-    id?: string | undefined;
-    tag?: string | undefined;
-    theme?: string | null | undefined;
-    group?: undefined;
-    untilMeasured?: "hide" | "show" | undefined;
-    componentName?: string | undefined;
-    tabIndex?: string | number | undefined;
-    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-    disableOptimization?: boolean | undefined;
-    forceStyle?: "hover" | "press" | "focus" | undefined;
-    disableClassName?: boolean | undefined;
-    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-} & {
+} & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -702,32 +202,7 @@ declare const SliderTrackActive: React.ForwardRefExoticComponent<((Omit<import("
     readonly size?: any;
 }, string | number> & {
     [x: string]: undefined;
-}>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-    target?: string | undefined;
-    hitSlop?: number | import("react-native").Insets | null | undefined;
-    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-    dangerouslySetInnerHTML?: {
-        __html: string;
-    } | undefined;
-    children?: any;
-    debug?: import("@tamagui/core").DebugProp | undefined;
-    disabled?: boolean | undefined;
-    className?: string | undefined;
-    themeShallow?: boolean | undefined;
-    id?: string | undefined;
-    tag?: string | undefined;
-    theme?: string | null | undefined;
-    group?: undefined;
-    untilMeasured?: "hide" | "show" | undefined;
-    componentName?: string | undefined;
-    tabIndex?: string | number | undefined;
-    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-    disableOptimization?: boolean | undefined;
-    forceStyle?: "hover" | "press" | "focus" | undefined;
-    disableClassName?: boolean | undefined;
-    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-} & {
+}>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -739,32 +214,7 @@ declare const SliderTrackActive: React.ForwardRefExoticComponent<((Omit<import("
 }, string | number> & {
     [x: string]: undefined;
 }>>, "ref">) & React.RefAttributes<View>>;
-export declare const SliderThumbFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-    target?: string | undefined;
-    hitSlop?: number | import("react-native").Insets | null | undefined;
-    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-    dangerouslySetInnerHTML?: {
-        __html: string;
-    } | undefined;
-    children?: any;
-    debug?: import("@tamagui/core").DebugProp | undefined;
-    disabled?: boolean | undefined;
-    className?: string | undefined;
-    themeShallow?: boolean | undefined;
-    id?: string | undefined;
-    tag?: string | undefined;
-    theme?: string | null | undefined;
-    group?: undefined;
-    untilMeasured?: "hide" | "show" | undefined;
-    componentName?: string | undefined;
-    tabIndex?: string | number | undefined;
-    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-    disableOptimization?: boolean | undefined;
-    forceStyle?: "hover" | "press" | "focus" | undefined;
-    disableClassName?: boolean | undefined;
-    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-} & {
+export declare const SliderThumbFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -784,32 +234,7 @@ export declare const SliderThumbFrame: import("@tamagui/core").TamaguiComponent<
 }, "size" | "unstyled"> & {
     readonly size?: SizeTokens | undefined;
     readonly unstyled?: boolean | undefined;
-} & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-    target?: string | undefined;
-    hitSlop?: number | import("react-native").Insets | null | undefined;
-    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-    dangerouslySetInnerHTML?: {
-        __html: string;
-    } | undefined;
-    children?: any;
-    debug?: import("@tamagui/core").DebugProp | undefined;
-    disabled?: boolean | undefined;
-    className?: string | undefined;
-    themeShallow?: boolean | undefined;
-    id?: string | undefined;
-    tag?: string | undefined;
-    theme?: string | null | undefined;
-    group?: undefined;
-    untilMeasured?: "hide" | "show" | undefined;
-    componentName?: string | undefined;
-    tabIndex?: string | number | undefined;
-    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-    disableOptimization?: boolean | undefined;
-    forceStyle?: "hover" | "press" | "focus" | undefined;
-    disableClassName?: boolean | undefined;
-    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-} & {
+} & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -829,32 +254,7 @@ export declare const SliderThumbFrame: import("@tamagui/core").TamaguiComponent<
 }, "size" | "unstyled"> & {
     readonly size?: SizeTokens | undefined;
     readonly unstyled?: boolean | undefined;
-}>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-    target?: string | undefined;
-    hitSlop?: number | import("react-native").Insets | null | undefined;
-    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-    dangerouslySetInnerHTML?: {
-        __html: string;
-    } | undefined;
-    children?: any;
-    debug?: import("@tamagui/core").DebugProp | undefined;
-    disabled?: boolean | undefined;
-    className?: string | undefined;
-    themeShallow?: boolean | undefined;
-    id?: string | undefined;
-    tag?: string | undefined;
-    theme?: string | null | undefined;
-    group?: undefined;
-    untilMeasured?: "hide" | "show" | undefined;
-    componentName?: string | undefined;
-    tabIndex?: string | number | undefined;
-    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-    disableOptimization?: boolean | undefined;
-    forceStyle?: "hover" | "press" | "focus" | undefined;
-    disableClassName?: boolean | undefined;
-    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-} & {
+}>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -874,32 +274,7 @@ export declare const SliderThumbFrame: import("@tamagui/core").TamaguiComponent<
 }, "size" | "unstyled"> & {
     readonly size?: SizeTokens | undefined;
     readonly unstyled?: boolean | undefined;
-}>>, TamaguiElement, Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-    target?: string | undefined;
-    hitSlop?: number | import("react-native").Insets | null | undefined;
-    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-    dangerouslySetInnerHTML?: {
-        __html: string;
-    } | undefined;
-    children?: any;
-    debug?: import("@tamagui/core").DebugProp | undefined;
-    disabled?: boolean | undefined;
-    className?: string | undefined;
-    themeShallow?: boolean | undefined;
-    id?: string | undefined;
-    tag?: string | undefined;
-    theme?: string | null | undefined;
-    group?: undefined;
-    untilMeasured?: "hide" | "show" | undefined;
-    componentName?: string | undefined;
-    tabIndex?: string | number | undefined;
-    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-    disableOptimization?: boolean | undefined;
-    forceStyle?: "hover" | "press" | "focus" | undefined;
-    disableClassName?: boolean | undefined;
-    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-} & {
+}>>, TamaguiElement, Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps, {
     readonly fullscreen?: boolean | undefined;
@@ -921,59 +296,9 @@ export declare const SliderThumbFrame: import("@tamagui/core").TamaguiComponent<
     readonly unstyled?: boolean | undefined;
 }, {
     displayName: string | undefined;
-    __baseProps: Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-        target?: string | undefined;
-        hitSlop?: number | import("react-native").Insets | null | undefined;
-        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-        dangerouslySetInnerHTML?: {
-            __html: string;
-        } | undefined;
-        children?: any;
-        debug?: import("@tamagui/core").DebugProp | undefined;
-        disabled?: boolean | undefined;
-        className?: string | undefined;
-        themeShallow?: boolean | undefined;
-        id?: string | undefined;
-        tag?: string | undefined;
-        theme?: string | null | undefined;
-        group?: undefined;
-        untilMeasured?: "hide" | "show" | undefined;
-        componentName?: string | undefined;
-        tabIndex?: string | number | undefined;
-        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-        disableOptimization?: boolean | undefined;
-        forceStyle?: "hover" | "press" | "focus" | undefined;
-        disableClassName?: boolean | undefined;
-        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-    } & {
+    __baseProps: Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
         style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & {
-        target?: string | undefined;
-        hitSlop?: number | import("react-native").Insets | null | undefined;
-        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-        dangerouslySetInnerHTML?: {
-            __html: string;
-        } | undefined;
-        children?: any;
-        debug?: import("@tamagui/core").DebugProp | undefined;
-        disabled?: boolean | undefined;
-        className?: string | undefined;
-        themeShallow?: boolean | undefined;
-        id?: string | undefined;
-        tag?: string | undefined;
-        theme?: string | null | undefined;
-        group?: undefined;
-        untilMeasured?: "hide" | "show" | undefined;
-        componentName?: string | undefined;
-        tabIndex?: string | number | undefined;
-        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-        disableOptimization?: boolean | undefined;
-        forceStyle?: "hover" | "press" | "focus" | undefined;
-        disableClassName?: boolean | undefined;
-        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-    } & {
         style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     };
     __variantProps: {
@@ -999,32 +324,7 @@ export declare const SliderThumbFrame: import("@tamagui/core").TamaguiComponent<
 interface SliderThumbProps extends SizableStackProps {
     index: number;
 }
-declare const SliderThumb: import("@tamagui/core").ReactComponentWithRef<SliderThumbProps & Omit<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-    target?: string | undefined;
-    hitSlop?: number | import("react-native").Insets | null | undefined;
-    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-    dangerouslySetInnerHTML?: {
-        __html: string;
-    } | undefined;
-    children?: any;
-    debug?: import("@tamagui/core").DebugProp | undefined;
-    disabled?: boolean | undefined;
-    className?: string | undefined;
-    themeShallow?: boolean | undefined;
-    id?: string | undefined;
-    tag?: string | undefined;
-    theme?: string | null | undefined;
-    group?: undefined;
-    untilMeasured?: "hide" | "show" | undefined;
-    componentName?: string | undefined;
-    tabIndex?: string | number | undefined;
-    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-    disableOptimization?: boolean | undefined;
-    forceStyle?: "hover" | "press" | "focus" | undefined;
-    disableClassName?: boolean | undefined;
-    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-} & {
+declare const SliderThumb: import("@tamagui/core").ReactComponentWithRef<SliderThumbProps & Omit<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -1044,32 +344,7 @@ declare const SliderThumb: import("@tamagui/core").ReactComponentWithRef<SliderT
 }, "size" | "unstyled"> & {
     readonly size?: SizeTokens | undefined;
     readonly unstyled?: boolean | undefined;
-} & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-    target?: string | undefined;
-    hitSlop?: number | import("react-native").Insets | null | undefined;
-    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-    dangerouslySetInnerHTML?: {
-        __html: string;
-    } | undefined;
-    children?: any;
-    debug?: import("@tamagui/core").DebugProp | undefined;
-    disabled?: boolean | undefined;
-    className?: string | undefined;
-    themeShallow?: boolean | undefined;
-    id?: string | undefined;
-    tag?: string | undefined;
-    theme?: string | null | undefined;
-    group?: undefined;
-    untilMeasured?: "hide" | "show" | undefined;
-    componentName?: string | undefined;
-    tabIndex?: string | number | undefined;
-    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-    disableOptimization?: boolean | undefined;
-    forceStyle?: "hover" | "press" | "focus" | undefined;
-    disableClassName?: boolean | undefined;
-    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-} & {
+} & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -1089,32 +364,7 @@ declare const SliderThumb: import("@tamagui/core").ReactComponentWithRef<SliderT
 }, "size" | "unstyled"> & {
     readonly size?: SizeTokens | undefined;
     readonly unstyled?: boolean | undefined;
-}>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-    target?: string | undefined;
-    hitSlop?: number | import("react-native").Insets | null | undefined;
-    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-    dangerouslySetInnerHTML?: {
-        __html: string;
-    } | undefined;
-    children?: any;
-    debug?: import("@tamagui/core").DebugProp | undefined;
-    disabled?: boolean | undefined;
-    className?: string | undefined;
-    themeShallow?: boolean | undefined;
-    id?: string | undefined;
-    tag?: string | undefined;
-    theme?: string | null | undefined;
-    group?: undefined;
-    untilMeasured?: "hide" | "show" | undefined;
-    componentName?: string | undefined;
-    tabIndex?: string | number | undefined;
-    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-    disableOptimization?: boolean | undefined;
-    forceStyle?: "hover" | "press" | "focus" | undefined;
-    disableClassName?: boolean | undefined;
-    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-} & {
+}>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -1136,32 +386,7 @@ declare const SliderThumb: import("@tamagui/core").ReactComponentWithRef<SliderT
     readonly unstyled?: boolean | undefined;
 }>>, keyof SliderThumbProps>, TamaguiElement> & {
     staticConfig: import("@tamagui/core").StaticConfig;
-    styleable: import("@tamagui/core").Styleable<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-        target?: string | undefined;
-        hitSlop?: number | import("react-native").Insets | null | undefined;
-        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-        dangerouslySetInnerHTML?: {
-            __html: string;
-        } | undefined;
-        children?: any;
-        debug?: import("@tamagui/core").DebugProp | undefined;
-        disabled?: boolean | undefined;
-        className?: string | undefined;
-        themeShallow?: boolean | undefined;
-        id?: string | undefined;
-        tag?: string | undefined;
-        theme?: string | null | undefined;
-        group?: undefined;
-        untilMeasured?: "hide" | "show" | undefined;
-        componentName?: string | undefined;
-        tabIndex?: string | number | undefined;
-        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-        disableOptimization?: boolean | undefined;
-        forceStyle?: "hover" | "press" | "focus" | undefined;
-        disableClassName?: boolean | undefined;
-        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-    } & {
+    styleable: import("@tamagui/core").Styleable<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
         style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
@@ -1181,32 +406,7 @@ declare const SliderThumb: import("@tamagui/core").ReactComponentWithRef<SliderT
     }, "size" | "unstyled"> & {
         readonly size?: SizeTokens | undefined;
         readonly unstyled?: boolean | undefined;
-    } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-        target?: string | undefined;
-        hitSlop?: number | import("react-native").Insets | null | undefined;
-        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-        dangerouslySetInnerHTML?: {
-            __html: string;
-        } | undefined;
-        children?: any;
-        debug?: import("@tamagui/core").DebugProp | undefined;
-        disabled?: boolean | undefined;
-        className?: string | undefined;
-        themeShallow?: boolean | undefined;
-        id?: string | undefined;
-        tag?: string | undefined;
-        theme?: string | null | undefined;
-        group?: undefined;
-        untilMeasured?: "hide" | "show" | undefined;
-        componentName?: string | undefined;
-        tabIndex?: string | number | undefined;
-        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-        disableOptimization?: boolean | undefined;
-        forceStyle?: "hover" | "press" | "focus" | undefined;
-        disableClassName?: boolean | undefined;
-        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-    } & {
+    } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
         style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
@@ -1226,32 +426,7 @@ declare const SliderThumb: import("@tamagui/core").ReactComponentWithRef<SliderT
     }, "size" | "unstyled"> & {
         readonly size?: SizeTokens | undefined;
         readonly unstyled?: boolean | undefined;
-    }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-        target?: string | undefined;
-        hitSlop?: number | import("react-native").Insets | null | undefined;
-        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-        dangerouslySetInnerHTML?: {
-            __html: string;
-        } | undefined;
-        children?: any;
-        debug?: import("@tamagui/core").DebugProp | undefined;
-        disabled?: boolean | undefined;
-        className?: string | undefined;
-        themeShallow?: boolean | undefined;
-        id?: string | undefined;
-        tag?: string | undefined;
-        theme?: string | null | undefined;
-        group?: undefined;
-        untilMeasured?: "hide" | "show" | undefined;
-        componentName?: string | undefined;
-        tabIndex?: string | number | undefined;
-        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-        disableOptimization?: boolean | undefined;
-        forceStyle?: "hover" | "press" | "focus" | undefined;
-        disableClassName?: boolean | undefined;
-        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-    } & {
+    }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
         style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
@@ -1275,32 +450,7 @@ declare const SliderThumb: import("@tamagui/core").ReactComponentWithRef<SliderT
 };
 declare const Slider: React.ForwardRefExoticComponent<SliderProps & React.RefAttributes<View>> & {
     Track: React.ForwardRefExoticComponent<SliderTrackProps & React.RefAttributes<SliderTrackElement>>;
-    TrackActive: React.ForwardRefExoticComponent<((Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-        target?: string | undefined;
-        hitSlop?: number | import("react-native").Insets | null | undefined;
-        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-        dangerouslySetInnerHTML?: {
-            __html: string;
-        } | undefined;
-        children?: any;
-        debug?: import("@tamagui/core").DebugProp | undefined;
-        disabled?: boolean | undefined;
-        className?: string | undefined;
-        themeShallow?: boolean | undefined;
-        id?: string | undefined;
-        tag?: string | undefined;
-        theme?: string | null | undefined;
-        group?: undefined;
-        untilMeasured?: "hide" | "show" | undefined;
-        componentName?: string | undefined;
-        tabIndex?: string | number | undefined;
-        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-        disableOptimization?: boolean | undefined;
-        forceStyle?: "hover" | "press" | "focus" | undefined;
-        disableClassName?: boolean | undefined;
-        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-    } & {
+    TrackActive: React.ForwardRefExoticComponent<((Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
         style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
@@ -1309,32 +459,7 @@ declare const Slider: React.ForwardRefExoticComponent<SliderProps & React.RefAtt
         readonly orientation?: "vertical" | "horizontal" | undefined;
     }, "size"> & {
         readonly size?: any;
-    } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-        target?: string | undefined;
-        hitSlop?: number | import("react-native").Insets | null | undefined;
-        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-        dangerouslySetInnerHTML?: {
-            __html: string;
-        } | undefined;
-        children?: any;
-        debug?: import("@tamagui/core").DebugProp | undefined;
-        disabled?: boolean | undefined;
-        className?: string | undefined;
-        themeShallow?: boolean | undefined;
-        id?: string | undefined;
-        tag?: string | undefined;
-        theme?: string | null | undefined;
-        group?: undefined;
-        untilMeasured?: "hide" | "show" | undefined;
-        componentName?: string | undefined;
-        tabIndex?: string | number | undefined;
-        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-        disableOptimization?: boolean | undefined;
-        forceStyle?: "hover" | "press" | "focus" | undefined;
-        disableClassName?: boolean | undefined;
-        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-    } & {
+    } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
         style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
@@ -1343,32 +468,7 @@ declare const Slider: React.ForwardRefExoticComponent<SliderProps & React.RefAtt
         readonly orientation?: "vertical" | "horizontal" | undefined;
     }, "size"> & {
         readonly size?: any;
-    }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-        target?: string | undefined;
-        hitSlop?: number | import("react-native").Insets | null | undefined;
-        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-        dangerouslySetInnerHTML?: {
-            __html: string;
-        } | undefined;
-        children?: any;
-        debug?: import("@tamagui/core").DebugProp | undefined;
-        disabled?: boolean | undefined;
-        className?: string | undefined;
-        themeShallow?: boolean | undefined;
-        id?: string | undefined;
-        tag?: string | undefined;
-        theme?: string | null | undefined;
-        group?: undefined;
-        untilMeasured?: "hide" | "show" | undefined;
-        componentName?: string | undefined;
-        tabIndex?: string | number | undefined;
-        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-        disableOptimization?: boolean | undefined;
-        forceStyle?: "hover" | "press" | "focus" | undefined;
-        disableClassName?: boolean | undefined;
-        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-    } & {
+    }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
         style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
@@ -1377,32 +477,7 @@ declare const Slider: React.ForwardRefExoticComponent<SliderProps & React.RefAtt
         readonly orientation?: "vertical" | "horizontal" | undefined;
     }, "size"> & {
         readonly size?: any;
-    }>>) | Omit<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-        target?: string | undefined;
-        hitSlop?: number | import("react-native").Insets | null | undefined;
-        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-        dangerouslySetInnerHTML?: {
-            __html: string;
-        } | undefined;
-        children?: any;
-        debug?: import("@tamagui/core").DebugProp | undefined;
-        disabled?: boolean | undefined;
-        className?: string | undefined;
-        themeShallow?: boolean | undefined;
-        id?: string | undefined;
-        tag?: string | undefined;
-        theme?: string | null | undefined;
-        group?: undefined;
-        untilMeasured?: "hide" | "show" | undefined;
-        componentName?: string | undefined;
-        tabIndex?: string | number | undefined;
-        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-        disableOptimization?: boolean | undefined;
-        forceStyle?: "hover" | "press" | "focus" | undefined;
-        disableClassName?: boolean | undefined;
-        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-    } & {
+    }>>) | Omit<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
         style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
@@ -1413,32 +488,7 @@ declare const Slider: React.ForwardRefExoticComponent<SliderProps & React.RefAtt
         readonly size?: any;
     }, string | number> & {
         [x: string]: undefined;
-    } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-        target?: string | undefined;
-        hitSlop?: number | import("react-native").Insets | null | undefined;
-        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-        dangerouslySetInnerHTML?: {
-            __html: string;
-        } | undefined;
-        children?: any;
-        debug?: import("@tamagui/core").DebugProp | undefined;
-        disabled?: boolean | undefined;
-        className?: string | undefined;
-        themeShallow?: boolean | undefined;
-        id?: string | undefined;
-        tag?: string | undefined;
-        theme?: string | null | undefined;
-        group?: undefined;
-        untilMeasured?: "hide" | "show" | undefined;
-        componentName?: string | undefined;
-        tabIndex?: string | number | undefined;
-        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-        disableOptimization?: boolean | undefined;
-        forceStyle?: "hover" | "press" | "focus" | undefined;
-        disableClassName?: boolean | undefined;
-        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-    } & {
+    } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
         style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
@@ -1449,32 +499,7 @@ declare const Slider: React.ForwardRefExoticComponent<SliderProps & React.RefAtt
         readonly size?: any;
     }, string | number> & {
         [x: string]: undefined;
-    }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-        target?: string | undefined;
-        hitSlop?: number | import("react-native").Insets | null | undefined;
-        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-        dangerouslySetInnerHTML?: {
-            __html: string;
-        } | undefined;
-        children?: any;
-        debug?: import("@tamagui/core").DebugProp | undefined;
-        disabled?: boolean | undefined;
-        className?: string | undefined;
-        themeShallow?: boolean | undefined;
-        id?: string | undefined;
-        tag?: string | undefined;
-        theme?: string | null | undefined;
-        group?: undefined;
-        untilMeasured?: "hide" | "show" | undefined;
-        componentName?: string | undefined;
-        tabIndex?: string | number | undefined;
-        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-        disableOptimization?: boolean | undefined;
-        forceStyle?: "hover" | "press" | "focus" | undefined;
-        disableClassName?: boolean | undefined;
-        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-    } & {
+    }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
         style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
@@ -1486,32 +511,7 @@ declare const Slider: React.ForwardRefExoticComponent<SliderProps & React.RefAtt
     }, string | number> & {
         [x: string]: undefined;
     }>>, "ref">) & React.RefAttributes<View>>;
-    Thumb: import("@tamagui/core").ReactComponentWithRef<SliderThumbProps & Omit<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-        target?: string | undefined;
-        hitSlop?: number | import("react-native").Insets | null | undefined;
-        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-        dangerouslySetInnerHTML?: {
-            __html: string;
-        } | undefined;
-        children?: any;
-        debug?: import("@tamagui/core").DebugProp | undefined;
-        disabled?: boolean | undefined;
-        className?: string | undefined;
-        themeShallow?: boolean | undefined;
-        id?: string | undefined;
-        tag?: string | undefined;
-        theme?: string | null | undefined;
-        group?: undefined;
-        untilMeasured?: "hide" | "show" | undefined;
-        componentName?: string | undefined;
-        tabIndex?: string | number | undefined;
-        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-        disableOptimization?: boolean | undefined;
-        forceStyle?: "hover" | "press" | "focus" | undefined;
-        disableClassName?: boolean | undefined;
-        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-    } & {
+    Thumb: import("@tamagui/core").ReactComponentWithRef<SliderThumbProps & Omit<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
         style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
@@ -1531,32 +531,7 @@ declare const Slider: React.ForwardRefExoticComponent<SliderProps & React.RefAtt
     }, "size" | "unstyled"> & {
         readonly size?: SizeTokens | undefined;
         readonly unstyled?: boolean | undefined;
-    } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-        target?: string | undefined;
-        hitSlop?: number | import("react-native").Insets | null | undefined;
-        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-        dangerouslySetInnerHTML?: {
-            __html: string;
-        } | undefined;
-        children?: any;
-        debug?: import("@tamagui/core").DebugProp | undefined;
-        disabled?: boolean | undefined;
-        className?: string | undefined;
-        themeShallow?: boolean | undefined;
-        id?: string | undefined;
-        tag?: string | undefined;
-        theme?: string | null | undefined;
-        group?: undefined;
-        untilMeasured?: "hide" | "show" | undefined;
-        componentName?: string | undefined;
-        tabIndex?: string | number | undefined;
-        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-        disableOptimization?: boolean | undefined;
-        forceStyle?: "hover" | "press" | "focus" | undefined;
-        disableClassName?: boolean | undefined;
-        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-    } & {
+    } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
         style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
@@ -1576,32 +551,7 @@ declare const Slider: React.ForwardRefExoticComponent<SliderProps & React.RefAtt
     }, "size" | "unstyled"> & {
         readonly size?: SizeTokens | undefined;
         readonly unstyled?: boolean | undefined;
-    }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-        target?: string | undefined;
-        hitSlop?: number | import("react-native").Insets | null | undefined;
-        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-        dangerouslySetInnerHTML?: {
-            __html: string;
-        } | undefined;
-        children?: any;
-        debug?: import("@tamagui/core").DebugProp | undefined;
-        disabled?: boolean | undefined;
-        className?: string | undefined;
-        themeShallow?: boolean | undefined;
-        id?: string | undefined;
-        tag?: string | undefined;
-        theme?: string | null | undefined;
-        group?: undefined;
-        untilMeasured?: "hide" | "show" | undefined;
-        componentName?: string | undefined;
-        tabIndex?: string | number | undefined;
-        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-        disableOptimization?: boolean | undefined;
-        forceStyle?: "hover" | "press" | "focus" | undefined;
-        disableClassName?: boolean | undefined;
-        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-    } & {
+    }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
         style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
@@ -1623,32 +573,7 @@ declare const Slider: React.ForwardRefExoticComponent<SliderProps & React.RefAtt
         readonly unstyled?: boolean | undefined;
     }>>, keyof SliderThumbProps>, TamaguiElement> & {
         staticConfig: import("@tamagui/core").StaticConfig;
-        styleable: import("@tamagui/core").Styleable<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-            target?: string | undefined;
-            hitSlop?: number | import("react-native").Insets | null | undefined;
-            asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-            dangerouslySetInnerHTML?: {
-                __html: string;
-            } | undefined;
-            children?: any;
-            debug?: import("@tamagui/core").DebugProp | undefined;
-            disabled?: boolean | undefined;
-            className?: string | undefined;
-            themeShallow?: boolean | undefined;
-            id?: string | undefined;
-            tag?: string | undefined;
-            theme?: string | null | undefined;
-            group?: undefined;
-            untilMeasured?: "hide" | "show" | undefined;
-            componentName?: string | undefined;
-            tabIndex?: string | number | undefined;
-            role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-            disableOptimization?: boolean | undefined;
-            forceStyle?: "hover" | "press" | "focus" | undefined;
-            disableClassName?: boolean | undefined;
-            onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-            onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-        } & {
+        styleable: import("@tamagui/core").Styleable<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
             style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
         } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
             readonly fullscreen?: boolean | undefined;
@@ -1668,32 +593,7 @@ declare const Slider: React.ForwardRefExoticComponent<SliderProps & React.RefAtt
         }, "size" | "unstyled"> & {
             readonly size?: SizeTokens | undefined;
             readonly unstyled?: boolean | undefined;
-        } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-            target?: string | undefined;
-            hitSlop?: number | import("react-native").Insets | null | undefined;
-            asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-            dangerouslySetInnerHTML?: {
-                __html: string;
-            } | undefined;
-            children?: any;
-            debug?: import("@tamagui/core").DebugProp | undefined;
-            disabled?: boolean | undefined;
-            className?: string | undefined;
-            themeShallow?: boolean | undefined;
-            id?: string | undefined;
-            tag?: string | undefined;
-            theme?: string | null | undefined;
-            group?: undefined;
-            untilMeasured?: "hide" | "show" | undefined;
-            componentName?: string | undefined;
-            tabIndex?: string | number | undefined;
-            role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-            disableOptimization?: boolean | undefined;
-            forceStyle?: "hover" | "press" | "focus" | undefined;
-            disableClassName?: boolean | undefined;
-            onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-            onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-        } & {
+        } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
             style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
         } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
             readonly fullscreen?: boolean | undefined;
@@ -1713,32 +613,7 @@ declare const Slider: React.ForwardRefExoticComponent<SliderProps & React.RefAtt
         }, "size" | "unstyled"> & {
             readonly size?: SizeTokens | undefined;
             readonly unstyled?: boolean | undefined;
-        }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-            target?: string | undefined;
-            hitSlop?: number | import("react-native").Insets | null | undefined;
-            asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-            dangerouslySetInnerHTML?: {
-                __html: string;
-            } | undefined;
-            children?: any;
-            debug?: import("@tamagui/core").DebugProp | undefined;
-            disabled?: boolean | undefined;
-            className?: string | undefined;
-            themeShallow?: boolean | undefined;
-            id?: string | undefined;
-            tag?: string | undefined;
-            theme?: string | null | undefined;
-            group?: undefined;
-            untilMeasured?: "hide" | "show" | undefined;
-            componentName?: string | undefined;
-            tabIndex?: string | number | undefined;
-            role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-            disableOptimization?: boolean | undefined;
-            forceStyle?: "hover" | "press" | "focus" | undefined;
-            disableClassName?: boolean | undefined;
-            onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-            onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-        } & {
+        }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
             style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
         } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
             readonly fullscreen?: boolean | undefined;
@@ -1762,32 +637,7 @@ declare const Slider: React.ForwardRefExoticComponent<SliderProps & React.RefAtt
     };
 };
 declare const Track: React.ForwardRefExoticComponent<SliderTrackProps & React.RefAttributes<SliderTrackElement>>;
-declare const Range: React.ForwardRefExoticComponent<((Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-    target?: string | undefined;
-    hitSlop?: number | import("react-native").Insets | null | undefined;
-    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-    dangerouslySetInnerHTML?: {
-        __html: string;
-    } | undefined;
-    children?: any;
-    debug?: import("@tamagui/core").DebugProp | undefined;
-    disabled?: boolean | undefined;
-    className?: string | undefined;
-    themeShallow?: boolean | undefined;
-    id?: string | undefined;
-    tag?: string | undefined;
-    theme?: string | null | undefined;
-    group?: undefined;
-    untilMeasured?: "hide" | "show" | undefined;
-    componentName?: string | undefined;
-    tabIndex?: string | number | undefined;
-    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-    disableOptimization?: boolean | undefined;
-    forceStyle?: "hover" | "press" | "focus" | undefined;
-    disableClassName?: boolean | undefined;
-    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-} & {
+declare const Range: React.ForwardRefExoticComponent<((Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -1796,32 +646,7 @@ declare const Range: React.ForwardRefExoticComponent<((Omit<import("react-native
     readonly orientation?: "vertical" | "horizontal" | undefined;
 }, "size"> & {
     readonly size?: any;
-} & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-    target?: string | undefined;
-    hitSlop?: number | import("react-native").Insets | null | undefined;
-    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-    dangerouslySetInnerHTML?: {
-        __html: string;
-    } | undefined;
-    children?: any;
-    debug?: import("@tamagui/core").DebugProp | undefined;
-    disabled?: boolean | undefined;
-    className?: string | undefined;
-    themeShallow?: boolean | undefined;
-    id?: string | undefined;
-    tag?: string | undefined;
-    theme?: string | null | undefined;
-    group?: undefined;
-    untilMeasured?: "hide" | "show" | undefined;
-    componentName?: string | undefined;
-    tabIndex?: string | number | undefined;
-    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-    disableOptimization?: boolean | undefined;
-    forceStyle?: "hover" | "press" | "focus" | undefined;
-    disableClassName?: boolean | undefined;
-    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-} & {
+} & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -1830,32 +655,7 @@ declare const Range: React.ForwardRefExoticComponent<((Omit<import("react-native
     readonly orientation?: "vertical" | "horizontal" | undefined;
 }, "size"> & {
     readonly size?: any;
-}>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-    target?: string | undefined;
-    hitSlop?: number | import("react-native").Insets | null | undefined;
-    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-    dangerouslySetInnerHTML?: {
-        __html: string;
-    } | undefined;
-    children?: any;
-    debug?: import("@tamagui/core").DebugProp | undefined;
-    disabled?: boolean | undefined;
-    className?: string | undefined;
-    themeShallow?: boolean | undefined;
-    id?: string | undefined;
-    tag?: string | undefined;
-    theme?: string | null | undefined;
-    group?: undefined;
-    untilMeasured?: "hide" | "show" | undefined;
-    componentName?: string | undefined;
-    tabIndex?: string | number | undefined;
-    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-    disableOptimization?: boolean | undefined;
-    forceStyle?: "hover" | "press" | "focus" | undefined;
-    disableClassName?: boolean | undefined;
-    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-} & {
+}>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -1864,32 +664,7 @@ declare const Range: React.ForwardRefExoticComponent<((Omit<import("react-native
     readonly orientation?: "vertical" | "horizontal" | undefined;
 }, "size"> & {
     readonly size?: any;
-}>>) | Omit<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-    target?: string | undefined;
-    hitSlop?: number | import("react-native").Insets | null | undefined;
-    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-    dangerouslySetInnerHTML?: {
-        __html: string;
-    } | undefined;
-    children?: any;
-    debug?: import("@tamagui/core").DebugProp | undefined;
-    disabled?: boolean | undefined;
-    className?: string | undefined;
-    themeShallow?: boolean | undefined;
-    id?: string | undefined;
-    tag?: string | undefined;
-    theme?: string | null | undefined;
-    group?: undefined;
-    untilMeasured?: "hide" | "show" | undefined;
-    componentName?: string | undefined;
-    tabIndex?: string | number | undefined;
-    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-    disableOptimization?: boolean | undefined;
-    forceStyle?: "hover" | "press" | "focus" | undefined;
-    disableClassName?: boolean | undefined;
-    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-} & {
+}>>) | Omit<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -1900,32 +675,7 @@ declare const Range: React.ForwardRefExoticComponent<((Omit<import("react-native
     readonly size?: any;
 }, string | number> & {
     [x: string]: undefined;
-} & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-    target?: string | undefined;
-    hitSlop?: number | import("react-native").Insets | null | undefined;
-    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-    dangerouslySetInnerHTML?: {
-        __html: string;
-    } | undefined;
-    children?: any;
-    debug?: import("@tamagui/core").DebugProp | undefined;
-    disabled?: boolean | undefined;
-    className?: string | undefined;
-    themeShallow?: boolean | undefined;
-    id?: string | undefined;
-    tag?: string | undefined;
-    theme?: string | null | undefined;
-    group?: undefined;
-    untilMeasured?: "hide" | "show" | undefined;
-    componentName?: string | undefined;
-    tabIndex?: string | number | undefined;
-    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-    disableOptimization?: boolean | undefined;
-    forceStyle?: "hover" | "press" | "focus" | undefined;
-    disableClassName?: boolean | undefined;
-    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-} & {
+} & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -1936,32 +686,7 @@ declare const Range: React.ForwardRefExoticComponent<((Omit<import("react-native
     readonly size?: any;
 }, string | number> & {
     [x: string]: undefined;
-}>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-    target?: string | undefined;
-    hitSlop?: number | import("react-native").Insets | null | undefined;
-    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-    dangerouslySetInnerHTML?: {
-        __html: string;
-    } | undefined;
-    children?: any;
-    debug?: import("@tamagui/core").DebugProp | undefined;
-    disabled?: boolean | undefined;
-    className?: string | undefined;
-    themeShallow?: boolean | undefined;
-    id?: string | undefined;
-    tag?: string | undefined;
-    theme?: string | null | undefined;
-    group?: undefined;
-    untilMeasured?: "hide" | "show" | undefined;
-    componentName?: string | undefined;
-    tabIndex?: string | number | undefined;
-    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-    disableOptimization?: boolean | undefined;
-    forceStyle?: "hover" | "press" | "focus" | undefined;
-    disableClassName?: boolean | undefined;
-    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-} & {
+}>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -1973,32 +698,7 @@ declare const Range: React.ForwardRefExoticComponent<((Omit<import("react-native
 }, string | number> & {
     [x: string]: undefined;
 }>>, "ref">) & React.RefAttributes<View>>;
-declare const Thumb: import("@tamagui/core").ReactComponentWithRef<SliderThumbProps & Omit<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-    target?: string | undefined;
-    hitSlop?: number | import("react-native").Insets | null | undefined;
-    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-    dangerouslySetInnerHTML?: {
-        __html: string;
-    } | undefined;
-    children?: any;
-    debug?: import("@tamagui/core").DebugProp | undefined;
-    disabled?: boolean | undefined;
-    className?: string | undefined;
-    themeShallow?: boolean | undefined;
-    id?: string | undefined;
-    tag?: string | undefined;
-    theme?: string | null | undefined;
-    group?: undefined;
-    untilMeasured?: "hide" | "show" | undefined;
-    componentName?: string | undefined;
-    tabIndex?: string | number | undefined;
-    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-    disableOptimization?: boolean | undefined;
-    forceStyle?: "hover" | "press" | "focus" | undefined;
-    disableClassName?: boolean | undefined;
-    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-} & {
+declare const Thumb: import("@tamagui/core").ReactComponentWithRef<SliderThumbProps & Omit<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -2018,32 +718,7 @@ declare const Thumb: import("@tamagui/core").ReactComponentWithRef<SliderThumbPr
 }, "size" | "unstyled"> & {
     readonly size?: SizeTokens | undefined;
     readonly unstyled?: boolean | undefined;
-} & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-    target?: string | undefined;
-    hitSlop?: number | import("react-native").Insets | null | undefined;
-    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-    dangerouslySetInnerHTML?: {
-        __html: string;
-    } | undefined;
-    children?: any;
-    debug?: import("@tamagui/core").DebugProp | undefined;
-    disabled?: boolean | undefined;
-    className?: string | undefined;
-    themeShallow?: boolean | undefined;
-    id?: string | undefined;
-    tag?: string | undefined;
-    theme?: string | null | undefined;
-    group?: undefined;
-    untilMeasured?: "hide" | "show" | undefined;
-    componentName?: string | undefined;
-    tabIndex?: string | number | undefined;
-    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-    disableOptimization?: boolean | undefined;
-    forceStyle?: "hover" | "press" | "focus" | undefined;
-    disableClassName?: boolean | undefined;
-    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-} & {
+} & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -2063,32 +738,7 @@ declare const Thumb: import("@tamagui/core").ReactComponentWithRef<SliderThumbPr
 }, "size" | "unstyled"> & {
     readonly size?: SizeTokens | undefined;
     readonly unstyled?: boolean | undefined;
-}>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-    target?: string | undefined;
-    hitSlop?: number | import("react-native").Insets | null | undefined;
-    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-    dangerouslySetInnerHTML?: {
-        __html: string;
-    } | undefined;
-    children?: any;
-    debug?: import("@tamagui/core").DebugProp | undefined;
-    disabled?: boolean | undefined;
-    className?: string | undefined;
-    themeShallow?: boolean | undefined;
-    id?: string | undefined;
-    tag?: string | undefined;
-    theme?: string | null | undefined;
-    group?: undefined;
-    untilMeasured?: "hide" | "show" | undefined;
-    componentName?: string | undefined;
-    tabIndex?: string | number | undefined;
-    role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-    disableOptimization?: boolean | undefined;
-    forceStyle?: "hover" | "press" | "focus" | undefined;
-    disableClassName?: boolean | undefined;
-    onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-    onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-} & {
+}>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -2110,32 +760,7 @@ declare const Thumb: import("@tamagui/core").ReactComponentWithRef<SliderThumbPr
     readonly unstyled?: boolean | undefined;
 }>>, keyof SliderThumbProps>, TamaguiElement> & {
     staticConfig: import("@tamagui/core").StaticConfig;
-    styleable: import("@tamagui/core").Styleable<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-        target?: string | undefined;
-        hitSlop?: number | import("react-native").Insets | null | undefined;
-        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-        dangerouslySetInnerHTML?: {
-            __html: string;
-        } | undefined;
-        children?: any;
-        debug?: import("@tamagui/core").DebugProp | undefined;
-        disabled?: boolean | undefined;
-        className?: string | undefined;
-        themeShallow?: boolean | undefined;
-        id?: string | undefined;
-        tag?: string | undefined;
-        theme?: string | null | undefined;
-        group?: undefined;
-        untilMeasured?: "hide" | "show" | undefined;
-        componentName?: string | undefined;
-        tabIndex?: string | number | undefined;
-        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-        disableOptimization?: boolean | undefined;
-        forceStyle?: "hover" | "press" | "focus" | undefined;
-        disableClassName?: boolean | undefined;
-        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-    } & {
+    styleable: import("@tamagui/core").Styleable<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
         style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
@@ -2155,32 +780,7 @@ declare const Thumb: import("@tamagui/core").ReactComponentWithRef<SliderThumbPr
     }, "size" | "unstyled"> & {
         readonly size?: SizeTokens | undefined;
         readonly unstyled?: boolean | undefined;
-    } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-        target?: string | undefined;
-        hitSlop?: number | import("react-native").Insets | null | undefined;
-        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-        dangerouslySetInnerHTML?: {
-            __html: string;
-        } | undefined;
-        children?: any;
-        debug?: import("@tamagui/core").DebugProp | undefined;
-        disabled?: boolean | undefined;
-        className?: string | undefined;
-        themeShallow?: boolean | undefined;
-        id?: string | undefined;
-        tag?: string | undefined;
-        theme?: string | null | undefined;
-        group?: undefined;
-        untilMeasured?: "hide" | "show" | undefined;
-        componentName?: string | undefined;
-        tabIndex?: string | number | undefined;
-        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-        disableOptimization?: boolean | undefined;
-        forceStyle?: "hover" | "press" | "focus" | undefined;
-        disableClassName?: boolean | undefined;
-        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-    } & {
+    } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
         style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
@@ -2200,32 +800,7 @@ declare const Thumb: import("@tamagui/core").ReactComponentWithRef<SliderThumbPr
     }, "size" | "unstyled"> & {
         readonly size?: SizeTokens | undefined;
         readonly unstyled?: boolean | undefined;
-    }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & {
-        target?: string | undefined;
-        hitSlop?: number | import("react-native").Insets | null | undefined;
-        asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
-        dangerouslySetInnerHTML?: {
-            __html: string;
-        } | undefined;
-        children?: any;
-        debug?: import("@tamagui/core").DebugProp | undefined;
-        disabled?: boolean | undefined;
-        className?: string | undefined;
-        themeShallow?: boolean | undefined;
-        id?: string | undefined;
-        tag?: string | undefined;
-        theme?: string | null | undefined;
-        group?: undefined;
-        untilMeasured?: "hide" | "show" | undefined;
-        componentName?: string | undefined;
-        tabIndex?: string | number | undefined;
-        role?: import("@tamagui/web/types/interfaces/Role").Role | undefined;
-        disableOptimization?: boolean | undefined;
-        forceStyle?: "hover" | "press" | "focus" | undefined;
-        disableClassName?: boolean | undefined;
-        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-    } & {
+    }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
         style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;

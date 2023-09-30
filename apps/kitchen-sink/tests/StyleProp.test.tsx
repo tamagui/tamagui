@@ -4,7 +4,7 @@ import { setupPage } from './test-utils'
 import { getStyles } from './utils'
 
 test.beforeEach(async ({ page }) => {
-  await setupPage(page, { name: "StyleProp", type: "useCase" })
+  await setupPage(page, { name: 'StyleProp', type: 'useCase' })
 })
 
 test(`style prop flattens`, async ({ page }) => {
