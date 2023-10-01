@@ -19,14 +19,12 @@ export const Text = createComponent<TextProps, Text, TextPropsBase>({
   defaultProps:
     process.env.TAMAGUI_TARGET === 'web'
       ? {
-          color: '$color',
           display: 'inline',
           boxSizing: 'border-box',
           wordWrap: 'break-word',
           margin: 0,
         }
       : {
-          color: '$color',
           display: 'flex',
           suppressHighlighting: true,
         },

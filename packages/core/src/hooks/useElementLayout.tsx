@@ -1,5 +1,4 @@
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { useEvent } from '@tamagui/use-event'
 import { RefObject } from 'react'
 
 import { getBoundingClientRect } from '../helpers/getBoundingClientRect'

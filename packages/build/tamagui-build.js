@@ -194,7 +194,7 @@ async function buildJs() {
               '@tamagui/web': require.resolve('@tamagui/web/native'),
 
               // for test mode we want real react-native
-              ...!bundleNativeTest && {
+              ...(!bundleNativeTest && {
                 'react-native': require.resolve('@tamagui/fake-react-native'),
                 'react-native/Libraries/Renderer/shims/ReactFabric': require.resolve(
                   '@tamagui/fake-react-native'
@@ -202,23 +202,27 @@ async function buildJs() {
                 'react-native/Libraries/Renderer/shims/ReactNative': require.resolve(
                   '@tamagui/fake-react-native'
                 ),
-              },
+              }),
 
               'react-native/Libraries/Pressability/Pressability': require.resolve(
                 '@tamagui/fake-react-native'
               ),
-              
+
               'react-native/Libraries/Pressability/usePressability': require.resolve(
                 '@tamagui/fake-react-native/idFn'
               ),
-              
+
               'react-native-safe-area-context': require.resolve(
                 '@tamagui/fake-react-native'
               ),
               'react-native-gesture-handler': require.resolve('@tamagui/proxy-worm'),
             }),
           ],
-          external: ['react', 'react-dom', bundleNativeTest ? 'react-native' : undefined].filter(Boolean),
+          external: [
+            'react',
+            'react-dom',
+            bundleNativeTest ? 'react-native' : undefined,
+          ].filter(Boolean),
           resolveExtensions: [
             '.native.ts',
             '.native.tsx',
@@ -236,47 +240,46 @@ async function buildJs() {
       : {}
 
   const start = Date.now()
+
+  const cjsConfig = {
+    entryPoints: files,
+    outdir: flatOut ? 'dist' : 'dist/cjs',
+    bundle: shouldBundle,
+    external,
+    target: 'node16',
+    format: 'cjs',
+    jsx: 'automatic',
+    plugins: shouldBundleNodeModules ? [] : [externalPlugin],
+    minify: process.env.MINIFY ? true : false,
+    platform: 'node',
+  }
+
+  const esmConfig = {
+    entryPoints: files,
+    outdir: flatOut ? 'dist' : 'dist/esm',
+    bundle: shouldBundle,
+    external,
+    target: 'esnext',
+    jsx: 'automatic',
+    allowOverwrite: true,
+    format: 'esm',
+    minify: process.env.MINIFY ? true : false,
+    platform: shouldBundle ? 'node' : 'neutral',
+  }
+
   return await Promise.all([
     // web output to cjs
     pkgMain
-      ? esbuildWriteIfChanged(
-          {
-            entryPoints: files,
-            outdir: flatOut ? 'dist' : 'dist/cjs',
-            bundle: shouldBundle,
-            external,
-            target: 'node16',
-            format: 'cjs',
-            jsx: 'automatic',
-            plugins: shouldBundleNodeModules ? [] : [externalPlugin],
-            minify: process.env.MINIFY ? true : false,
-            platform: 'node',
-          },
-          {
-            platform: 'web',
-          }
-        )
+      ? esbuildWriteIfChanged(cjsConfig, {
+          platform: 'web',
+        })
       : null,
 
     // native output to cjs
     pkgMain
-      ? esbuildWriteIfChanged(
-          {
-            entryPoints: files,
-            outdir: flatOut ? 'dist' : 'dist/cjs',
-            bundle: shouldBundle,
-            external,
-            target: 'node16',
-            format: 'cjs',
-            jsx: 'automatic',
-            plugins: shouldBundleNodeModules ? [] : [externalPlugin],
-            minify: process.env.MINIFY ? true : false,
-            platform: 'node',
-          },
-          {
-            platform: 'native',
-          }
-        )
+      ? esbuildWriteIfChanged(cjsConfig, {
+          platform: 'native',
+        })
       : null,
 
     // for tests to load native-mode from node
@@ -308,23 +311,16 @@ async function buildJs() {
 
     // web output to esm
     pkgModule
-      ? esbuildWriteIfChanged(
-          {
-            entryPoints: files,
-            outdir: flatOut ? 'dist' : 'dist/esm',
-            bundle: shouldBundle,
-            external,
-            target: 'esnext',
-            jsx: 'automatic',
-            allowOverwrite: true,
-            format: 'esm',
-            minify: process.env.MINIFY ? true : false,
-            platform: shouldBundle ? 'node' : 'neutral',
-          },
-          {
-            platform: 'web',
-          }
-        )
+      ? esbuildWriteIfChanged(esmConfig, {
+          platform: 'web',
+        })
+      : null,
+
+    // web output to esm
+    pkgModule
+      ? esbuildWriteIfChanged(esmConfig, {
+          platform: 'native',
+        })
       : null,
 
     // jsx web

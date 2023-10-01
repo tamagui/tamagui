@@ -28,7 +28,19 @@ export const ButtonContext = createStyledContext<
       size: SizeTokens
     }
   >
->({})
+>({
+  // keeping these here means they work with styled() passing down color to text
+  color: undefined,
+  ellipse: undefined,
+  fontFamily: undefined,
+  fontSize: undefined,
+  fontStyle: undefined,
+  fontWeight: undefined,
+  letterSpacing: undefined,
+  maxFontSizeMultiplier: undefined,
+  size: undefined,
+  textAlign: undefined,
+})
 
 type ButtonIconProps = { color?: string; size?: number }
 type IconProp = JSX.Element | FunctionComponent<ButtonIconProps> | null
@@ -207,34 +219,26 @@ function useButton<Props extends ButtonProps>(
   propsIn: Props,
   { Text = Button.Text }: { Text: any } = { Text: Button.Text }
 ) {
+  const isNested = useContext(ButtonNestingContext)
+
+  const propsActive = useProps(propsIn) as any as ButtonProps
+
   // careful not to desctructure and re-order props, order is important
   const {
     children,
     icon,
     iconAfter,
-    noTextWrap,
-    theme: themeName,
     space,
     spaceFlex,
     scaleIcon = 1,
     scaleSpace = 0.66,
     separator,
-
-    // text props
-    color,
-    fontWeight,
-    letterSpacing,
-    fontSize,
+    noTextWrap,
     fontFamily,
-    fontStyle,
-    textAlign,
-    textProps,
+    fontSize,
 
     ...rest
-  } = propsIn
-
-  const isNested = useContext(ButtonNestingContext)
-  const propsActive = useProps(propsIn) as any as ButtonProps
+  } = propsActive
 
   const size = propsActive.size || (propsActive.unstyled ? undefined : '$true')
 
@@ -242,19 +246,24 @@ function useButton<Props extends ButtonProps>(
     (typeof size === 'number' ? size * 0.5 : getFontSize(size as FontSizeTokens)) *
     scaleIcon
 
-  const getThemedIcon = useGetThemedIcon({ size: iconSize, color: color as any })
+  const getThemedIcon = useGetThemedIcon({
+    size: iconSize,
+    color: propsActive.color as any,
+  })
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)
   const spaceSize = propsActive.space ?? getVariableValue(iconSize) * scaleSpace
-  const contents = wrapChildrenInText(
-    Text,
-    propsActive,
-    Text === ButtonText && propsIn.unstyled !== true
-      ? {
-          unstyled: false,
-          size,
-        }
-      : undefined
-  )
+  const contents = noTextWrap
+    ? [children]
+    : wrapChildrenInText(
+        Text,
+        { children, fontFamily, fontSize },
+        Text === ButtonText && propsIn.unstyled !== true
+          ? {
+              unstyled: false,
+              size,
+            }
+          : undefined
+      )
 
   const inner = spacedChildren({
     // a bit arbitrary but scaling to font size is necessary so long as button does
@@ -279,6 +288,7 @@ function useButton<Props extends ButtonProps>(
     : undefined
 
   const props = {
+    size,
     ...(propsActive.disabled && {
       // in rnw - false still has keyboard tabIndex, undefined = not actually focusable
       focusable: undefined,
@@ -294,6 +304,8 @@ function useButton<Props extends ButtonProps>(
     children: (
       <ButtonNestingContext.Provider value={true}>{inner}</ButtonNestingContext.Provider>
     ),
+    // forces it to be a runtime pressStyle so it passes through context text colors
+    disableClassName: true,
   } as Props
 
   return {

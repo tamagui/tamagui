@@ -1,5 +1,4 @@
-/* eslint-disable no-console */
-import { isClient, isServer, isWeb } from '@tamagui/constants'
+import { isClient, isIos, isServer } from '@tamagui/constants'
 import { useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 import { getConfig } from '../config'
@@ -15,6 +14,7 @@ import type {
   DebugProp,
   ThemeParsed,
   ThemeProps,
+  UseThemeWithStateProps,
   VariableVal,
   VariableValGeneric,
 } from '../types'
@@ -33,13 +33,26 @@ let cached: any
 function getDefaultThemeProxied() {
   if (cached) return cached
   const config = getConfig()
-  const defaultTheme = config.themes.light ?? config.themes[Object.keys(config.themes)[0]]
-  cached = getThemeProxied(defaultTheme)
+  const name = config.themes.light ? 'light' : Object.keys(config.themes)[0]
+  const defaultTheme = config.themes[name]
+  cached = getThemeProxied({ theme: defaultTheme, name })
   return cached
 }
 
 export type ThemeGettable<Val> = Val & {
-  get: () =>
+  /**
+   * Tries to return an optimized value that avoids the need for re-rendering:
+   * On web a CSS variable, on iOS a dynamic color, on Android it doesn't
+   * optimize and returns the underyling value.
+   *
+   * See: https://reactnative.dev/docs/dynamiccolorios
+   *
+   * @param platform when "web" it will only return the dynamic value for web, avoiding the iOS dynamic value.
+   * For things like SVG, gradients, or other external components that don't support it, use this option.
+   */
+  get: (
+    platform?: 'web'
+  ) =>
     | string
     | (Val extends Variable<infer X>
         ? X extends VariableValGeneric
@@ -61,7 +74,7 @@ export const useTheme = (props: ThemeProps = emptyProps) => {
 }
 
 export const useThemeWithState = (
-  props: ThemeProps
+  props: UseThemeWithStateProps
 ): [ChangedThemeResponse, ThemeParsed] => {
   const keys = useRef<string[]>([])
 
@@ -73,6 +86,7 @@ export const useThemeWithState = (
       ? () => {
           const next =
             props.shouldUpdate?.() ?? (keys.current.length > 0 ? true : undefined)
+
           if (
             process.env.NODE_ENV === 'development' &&
             props.debug &&
@@ -104,12 +118,14 @@ export const useThemeWithState = (
   }
 
   const themeProxied = useMemo(() => {
-    if (!themeManager || !state?.theme) return {}
-    return getThemeProxied(state.theme, themeManager, keys.current, props.debug)
-  }, [state, themeManager])
+    if (!themeManager || !state?.theme) {
+      return {}
+    }
+    return getThemeProxied(state, props.deopt, themeManager, keys.current, props.debug)
+  }, [state, themeManager, props.deopt, props.debug])
 
   if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
-    console.groupCollapsed('  🔹 useTheme =>', name)
+    console.groupCollapsed('  🔹 useTheme =>', state?.name)
     // biome-ignore lint/suspicious/noConsoleLog: <explanation>
     console.log('returning state', changedThemeState, 'from props', props)
     console.groupEnd()
@@ -119,11 +135,26 @@ export const useThemeWithState = (
 }
 
 export function getThemeProxied(
-  theme: ThemeParsed,
+  { theme, name }: ThemeManagerState,
+  deopt = false,
   themeManager?: ThemeManager,
   keys?: string[],
   debug?: DebugProp
 ): UseThemeResult {
+  if (!theme) return {}
+
+  const config = getConfig()
+
+  function track(key: string) {
+    if (keys && !keys.includes(key)) {
+      keys.push(key)
+      if (process.env.NODE_ENV === 'development' && debug) {
+        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+        console.log(` 🎨 useTheme() tracking new key: ${key}`)
+      }
+    }
+  }
+
   return createProxy(theme, {
     has(_, key) {
       if (Reflect.has(theme, key)) {
@@ -138,6 +169,7 @@ export function getThemeProxied(
       if (key === GetThemeUnwrapped) {
         return theme
       }
+
       if (
         // dont ask me, idk why but on hermes you can see that useTheme()[undefined] passes in STRING undefined to proxy
         // if someone is crazy enough to use "undefined" as a theme key then this not working is on them
@@ -147,6 +179,7 @@ export function getThemeProxied(
         // auto convert variables to plain
         const keyString = key[0] === '$' ? key.slice(1) : key
         const val = theme[keyString]
+
         if (val && typeof val === 'object') {
           // TODO this could definitely be done better by at the very minimum
           // proxying it up front and just having a listener here
@@ -154,22 +187,51 @@ export function getThemeProxied(
             // when they touch the actual value we only track it
             // if its a variable (web), its ignored!
             get(_, subkey) {
-              // trigger read key that makes it track updates
-              if (keys) {
-                if (
-                  (subkey === 'val' || (subkey === 'get' && !isWeb)) &&
-                  !keys.includes(keyString)
-                ) {
-                  keys.push(keyString)
-                  if (process.env.NODE_ENV === 'development' && debug) {
-                    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-                    console.log(` 🎨 useTheme() tracking new key: ${keyString}`)
+              if (subkey === 'val') {
+                // always track .val
+                track(keyString)
+              } else if (subkey === 'get') {
+                return (platform?: 'web') => {
+                  const outVal = getVariable(val)
+
+                  if (process.env.TAMAGUI_TARGET === 'native') {
+                    // ios can avoid re-rendering in some cases when we are using a root light/dark
+                    // disabled in cases where we have animations
+                    if (
+                      platform !== 'web' &&
+                      isIos &&
+                      !deopt &&
+                      config.settings.fastSchemeChange
+                    ) {
+                      const isDark = name.startsWith('dark')
+                      const isLight = !isDark && name.startsWith('light')
+                      if (isDark || isLight) {
+                        const oppositeThemeName = name.replace(
+                          isDark ? 'dark' : 'light',
+                          isDark ? 'light' : 'dark'
+                        )
+                        const oppositeTheme = config.themes[oppositeThemeName]
+                        const oppositeVal = getVariable(oppositeTheme?.[keyString])
+                        if (oppositeVal) {
+                          const dynamicVal = {
+                            dynamic: {
+                              dark: isDark ? outVal : oppositeVal,
+                              light: isLight ? outVal : oppositeVal,
+                            },
+                          }
+                          return dynamicVal
+                        }
+                      }
+                    }
+
+                    // if we dont return early with a dynamic val on native, always track
+                    track(keyString)
                   }
+
+                  return outVal
                 }
               }
-              if (subkey === 'get') {
-                return () => getVariable(val)
-              }
+
               return Reflect.get(val as any, subkey)
             },
           })
@@ -184,15 +246,12 @@ export function getThemeProxied(
 export const activeThemeManagers = new Set<ThemeManager>()
 
 export const useChangeThemeEffect = (
-  props: ThemeProps,
+  props: UseThemeWithStateProps,
   isRoot = false,
   keys?: string[],
   shouldUpdate?: () => boolean | undefined
 ): ChangedThemeResponse => {
-  const {
-    // @ts-expect-error internal use only
-    disable,
-  } = props
+  const { disable } = props
 
   const parentManager = useContext(ThemeManagerContext)
 
@@ -267,21 +326,29 @@ export const useChangeThemeEffect = (
       })
 
       const disposeChangeListener = parentManager?.onChangeTheme((name, manager) => {
-        const force = shouldUpdate?.()
-        const doUpdate = force ?? Boolean(keys?.length || isNewTheme)
+        const force =
+          shouldUpdate?.() ||
+          props.deopt ||
+          // this fixes themeable() not updating with the new fastSchemeChange setting
+          (process.env.TAMAGUI_TARGET === 'native'
+            ? props['disable-child-theme']
+            : undefined)
+
+        const shouldTryUpdate = force ?? Boolean(keys?.length || isNewTheme)
 
         if (process.env.NODE_ENV === 'development' && props.debug) {
           // biome-ignore lint/suspicious/noConsoleLog: <explanation>
           console.log(` 🔸 onChange`, themeManager.id, {
             force,
-            doUpdate,
+            shouldTryUpdate,
             props,
             name,
             manager,
             keys,
           })
         }
-        if (doUpdate) {
+
+        if (shouldTryUpdate) {
           setThemeState(createState)
         }
       }, themeManager.id)
@@ -367,7 +434,7 @@ export const useChangeThemeEffect = (
         if (nextState) {
           state = nextState
 
-          if (!prev.isNewTheme || !isWeb) {
+          if (!prev.isNewTheme) {
             themeManager = getNewThemeManager()
           } else {
             themeManager.updateState(nextState)
@@ -400,7 +467,7 @@ export const useChangeThemeEffect = (
       }
     }
 
-    if (!force && state.name === prev?.state?.name) {
+    if (!force && state?.name === prev?.state?.name) {
       return prev
     }
 

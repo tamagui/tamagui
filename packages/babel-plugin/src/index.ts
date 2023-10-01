@@ -9,11 +9,12 @@ import { simpleHash } from '@tamagui/simple-hash'
 import type { TamaguiOptions } from '@tamagui/static'
 
 const importNativeView = template(`
-import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
+const __ReactNativeView = require('react-native').View;
+const __ReactNativeText = require('react-native').Text;
 `)
 
 const importStyleSheet = template(`
-import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
+const __ReactNativeStyleSheet = require('react-native').StyleSheet;
 `)
 
 // default to native before requiring static
@@ -237,11 +238,11 @@ export default declare(function snackBabelPlugin(
           }
 
           const sheetObject = literalToAst(sheetStyles)
-          const sheetOuter = template('const SHEET = ReactNativeStyleSheet.create(null)')(
-            {
-              SHEET: sheetIdentifier.name,
-            }
-          ) as any
+          const sheetOuter = template(
+            'const SHEET = __ReactNativeStyleSheet.create(null)'
+          )({
+            SHEET: sheetIdentifier.name,
+          }) as any
 
           // replace the null with our object
           sheetOuter.declarations[0].init.arguments[0] = sheetObject

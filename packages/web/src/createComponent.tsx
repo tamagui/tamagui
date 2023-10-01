@@ -55,8 +55,11 @@ import {
   TamaguiElement,
   TamaguiInternalConfig,
   TextProps,
+  ThemeProps,
   UseAnimationHook,
   UseAnimationProps,
+  UseThemeWithStateProps,
+  WebOnlyPressEvents,
 } from './types'
 import { Slot } from './views/Slot'
 import { useThemedChildren } from './views/Theme'
@@ -224,6 +227,7 @@ export function createComponent<
     let overriddenContextProps: Object | undefined
     let contextValue: Object | null | undefined
     const { context } = staticConfig
+
     if (context) {
       contextValue = useContext(context)
       const { inverseShorthands } = getConfig()
@@ -492,7 +496,8 @@ export function createComponent<
     const noClassNames = shouldAvoidClasses || shouldForcePseudo
 
     // internal use only
-    const disableThemeProp = props['data-disable-theme']
+    const disableThemeProp =
+      process.env.TAMAGUI_TARGET === 'native' ? false : props['data-disable-theme']
     const disableTheme = (disableThemeProp && !willBeAnimated) || isHOC
 
     if (process.env.NODE_ENV === 'development' && time) time`theme-props`
@@ -501,17 +506,24 @@ export function createComponent<
       stateRef.current.themeShallow = true
     }
 
-    const themeStateProps = {
+    const themeStateProps: UseThemeWithStateProps = {
       name: props.theme,
       componentName,
-      // @ts-ignore this is internal use only
       disable: disableTheme,
       shallow: stateRef.current.themeShallow,
+      // if this returns undefined it defers to the keys tracking, so its only used to force either updates or no updates
       shouldUpdate: () => {
-        // only forces when defined
-        return stateRef.current.isListeningToTheme
+        return (
+          // when we use $theme- styles we need to force it to re-render on theme changes (this can be optimized likely)
+          stateRef.current.isListeningToTheme
+        )
       },
       debug: debugProp,
+    }
+
+    // on native we optimize theme changes if fastSchemeChange is enabled, otherwise deopt
+    if (process.env.TAMAGUI_TARGET === 'native') {
+      themeStateProps.deopt = willBeAnimated
     }
 
     const isExiting = Boolean(!state.unmounted && presence?.[0] === false)
@@ -956,10 +968,7 @@ export function createComponent<
     // check presence rather than value to prevent reparenting bugs
     // allows for onPress={x ? function : undefined} without re-ordering dom
     const shouldAttach = Boolean(
-      attachPress ||
-        isHoverable ||
-        (noClassNames && 'pressStyle' in props) ||
-        (isWeb && noClassNames && 'hoverStyle' in props)
+      attachPress || isHoverable || runtimePressStyle || runtimeHoverStyle
     )
 
     if (process.env.NODE_ENV === 'development' && time) time`events-setup`
@@ -1088,24 +1097,25 @@ export function createComponent<
       elementType = Slot
       // on native this is already merged into viewProps in hooks.useEvents
       if (process.env.TAMAGUI_TARGET === 'web') {
-        const passEvents = {
-          onPress,
-          onLongPress,
-          onPressIn,
-          onPressOut,
-          onHoverIn,
-          onHoverOut,
-          onMouseUp,
-          onMouseDown,
-          onMouseEnter,
-          onMouseLeave,
-        }
-        Object.assign(
-          viewProps,
-          asChild === 'web' || asChild === 'except-style-web'
-            ? getWebEvents(passEvents as any)
-            : passEvents
+        const webStyleEvents = asChild === 'web' || asChild === 'except-style-web'
+        const passEvents = getWebEvents(
+          {
+            onPress,
+            onLongPress,
+            onPressIn,
+            onPressOut,
+            onHoverIn,
+            onHoverOut,
+            onMouseUp,
+            onMouseDown,
+            onMouseEnter,
+            onMouseLeave,
+          },
+          webStyleEvents
         )
+        Object.assign(viewProps, passEvents)
+      } else {
+        Object.assign(viewProps, { onPress, onLongPress })
       }
     }
 
@@ -1194,6 +1204,17 @@ export function createComponent<
             {content}
           </span>
         )
+      }
+    }
+
+    // ensure we override new context with syle resolved values
+    if (staticConfig.context) {
+      const contextProps = staticConfig.context.props
+      for (const key in contextProps) {
+        if (key in style || key in viewProps) {
+          overriddenContextProps ||= {}
+          overriddenContextProps[key] = style[key] ?? viewProps[key]
+        }
       }
     }
 
@@ -1286,7 +1307,7 @@ export function createComponent<
 
   let res: ComponentType = component as any
 
-  if (process.env.TAMAGUI_MEMO_ALL || staticConfig.memo) {
+  if (!process.env.TAMAGUI_DISABLE_MEMO) {
     res = memo(res) as any
   }
 
@@ -1328,11 +1349,16 @@ export function createComponent<
   return res
 }
 
-function getWebEvents<E extends TamaguiComponentEvents>(events: E) {
+type EventKeys = keyof (TamaguiComponentEvents & WebOnlyPressEvents)
+type EventLikeObject = {
+  [key in EventKeys]?: any
+}
+
+function getWebEvents<E extends EventLikeObject>(events: E, webStyle = true) {
   return {
-    onMouseEnter: events.onMouseEnter,
-    onMouseLeave: events.onMouseLeave,
-    onClick: events.onPress,
+    onMouseEnter: events.onHoverIn ?? events.onMouseEnter,
+    onMouseLeave: events.onHoverOut ?? events.onMouseLeave,
+    [webStyle ? 'onClick' : 'onPress']: events.onPress,
     onMouseDown: events.onPressIn,
     onMouseUp: events.onPressOut,
     onTouchStart: events.onPressIn,
@@ -1528,8 +1554,6 @@ function isUnspaced(child: React.ReactNode) {
   const t = child?.['type']
   return t?.['isVisuallyHidden'] || t?.['isUnspaced']
 }
-
-const DefaultProps = new Map()
 
 const AbsoluteFill: any = createComponent({
   defaultProps: {

@@ -105,6 +105,7 @@ const SandboxFrame = (props: { children: any }) => {
         </XStack>
       </Theme>
       {showThemeSwitch && (
+        // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
         <div
           style={{
             position: 'fixed',

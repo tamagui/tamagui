@@ -360,5 +360,6 @@ export declare function getDefaultTamaguiConfig(): import("@tamagui/core").Tamag
     }) | undefined;
     autocompleteSpecificTokens?: (boolean | "except-special") | undefined;
     mediaPropOrder?: boolean | undefined;
+    fastSchemeChange?: boolean | undefined;
 }>;
 //# sourceMappingURL=index.d.ts.map

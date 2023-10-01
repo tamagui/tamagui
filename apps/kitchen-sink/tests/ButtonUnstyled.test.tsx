@@ -1,10 +1,10 @@
 import { expect, test } from '@playwright/test'
 
-import { getStyles, whilePressed } from './utils'
 import { setupPage } from './test-utils'
+import { getStyles, whilePressed } from './utils'
 
 test.beforeEach(async ({ page }) => {
-  await setupPage(page, { name: "ButtonUnstyled", type: "useCase" })
+  await setupPage(page, { name: 'ButtonUnstyled', type: 'useCase' })
 })
 
 function expectEmptyStyles(styles: any) {

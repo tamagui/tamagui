@@ -1,4 +1,4 @@
-import { config as configOptions } from '@tamagui/config'
+import { config as configOptions } from '@tamagui/config/v2'
 import { createTamagui } from '@tamagui/core'
 
 export const config = createTamagui(configOptions)

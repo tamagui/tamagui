@@ -55,7 +55,12 @@ import type {
 import { createMediaStyle } from './createMediaStyle'
 import { fixStyles } from './expandStyles'
 import { getGroupPropParts } from './getGroupPropParts'
-import { generateAtomicStyles, getStylesAtomic, styleToCSS } from './getStylesAtomic'
+import {
+  generateAtomicStyles,
+  getStylesAtomic,
+  styleToCSS,
+  transformsToString,
+} from './getStylesAtomic'
 import {
   insertStyleRules,
   insertedTransforms,
@@ -680,10 +685,11 @@ export const getSplitStyles: StyleSplitter = (
 
       // have to run this logic again here because expansions may need to be passed down
       // see StyledButtonVariantPseudoMerge test
-      const isHOCShouldPassThrough =
-        isHOC && (isMediaOrPseudo || parentStaticConfig?.variants?.[keyInit])
+      const shouldPassThrough =
+        (styleProps.noExpand && isPseudo) ||
+        (isHOC && (isMediaOrPseudo || parentStaticConfig?.variants?.[keyInit]))
 
-      if (isHOCShouldPassThrough) {
+      if (shouldPassThrough) {
         passDownProp(viewProps, key, val, isMediaOrPseudo)
         if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
           console.groupCollapsed(` - passing down prop ${key}`)
@@ -694,7 +700,6 @@ export const getSplitStyles: StyleSplitter = (
         continue
       }
 
-      // pseudo
       if (isPseudo) {
         if (!val) continue
 
@@ -811,7 +816,7 @@ export const getSplitStyles: StyleSplitter = (
                 mergeStyle(styleState, pkey, defaultVal)
               }
             } else {
-              const curImportance = usedKeys[importance] || 0
+              const curImportance = usedKeys[pkey] || 0
               const shouldMerge = importance >= curImportance
 
               if (shouldMerge) {
@@ -819,7 +824,6 @@ export const getSplitStyles: StyleSplitter = (
                 pseudos[key] ||= {}
                 pseudos[key][pkey] = val
                 mergeStyle(styleState, pkey, val)
-                usedKeys[pkey] ||= 1
               }
 
               if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
@@ -829,6 +833,7 @@ export const getSplitStyles: StyleSplitter = (
                   curImportance,
                   pkey,
                   val,
+                  transforms: { ...styleState.transforms },
                 })
               }
             }
@@ -1058,6 +1063,8 @@ export const getSplitStyles: StyleSplitter = (
         // biome-ignore lint/suspicious/noConsoleLog: <explanation>
         console.log('style', { ...style })
         // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+        console.log('transforms', { ...transforms })
+        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
         console.log('viewProps', { ...viewProps })
       } catch {
         // RN can run into PayloadTooLargeError: request entity too large
@@ -1102,6 +1109,17 @@ export const getSplitStyles: StyleSplitter = (
         .forEach(([key, val]) => {
           mergeTransform(style, key, val, true)
         })
+
+      // Button for example uses disableClassName: true but renders to a 'button' element, so needs this
+      if (process.env.TAMAGUI_TARGET === 'web') {
+        if (
+          !staticConfig.isReactNative &&
+          !styleProps.isAnimated &&
+          Array.isArray(style.transform)
+        ) {
+          style.transform = transformsToString(style.transform) as any
+        }
+      }
     }
 
     // add in defaults if not set:

@@ -13,7 +13,6 @@ import {
   Switch,
   YGroup,
   YStack,
-  useTheme,
 } from 'tamagui'
 
 import { useThemeControl } from '../../useKitchenSinkTheme'
@@ -42,7 +41,12 @@ export function HomeScreen() {
                 {group.pages.map((page) => {
                   return (
                     <YGroup.Item key={page.route}>
-                      <LinkListItem href={page.route} pressTheme size="$4">
+                      <LinkListItem
+                        bc="$backgroundStrong"
+                        href={page.route}
+                        pressTheme
+                        size="$4"
+                      >
                         {page.title}
                       </LinkListItem>
                     </YGroup.Item>
@@ -65,17 +69,15 @@ const LinkListItem = ({
   ...props
 }: UseLinkProps & ListItemProps) => {
   const linkProps = useLink({ href, as, shallow })
-  const theme = useTheme()
 
   return (
     <ListItem
       {...linkProps}
       onPress={(e) => {
-        console.log(linkProps)
         linkProps.onPress(e)
       }}
       {...props}
-      iconAfter={<ChevronRight color={theme.color11.get()} />}
+      iconAfter={<ChevronRight color="$color11" />}
     >
       {children}
     </ListItem>
@@ -87,7 +89,7 @@ const ColorSchemeListItem = (props: ListItemProps) => {
   const checked = theme.value === 'light'
 
   return (
-    <ListItem {...props} pressTheme paddingVertical={0}>
+    <ListItem {...props} bc="$backgroundStrong" pressTheme paddingVertical={0}>
       <ListItem.Text>Theme</ListItem.Text>
       <Spacer flex />
       <Button chromeless disabled w={20} icon={Moon} />
@@ -139,6 +141,7 @@ const demos = [
     pages: [
       { title: 'Button', route: '/demo/button' },
       { title: 'Checkbox', route: '/demo/checkbox' },
+      { title: 'Form', route: '/demo/forms' },
       { title: 'Input + Textarea', route: '/demo/inputs' },
       { title: 'Label', route: '/demo/label' },
       { title: 'Progress', route: '/demo/progress' },
@@ -154,8 +157,8 @@ const demos = [
     label: 'Panels',
     pages: [
       { title: 'AlertDialog', route: '/demo/alert-dialog' },
-      // { title: 'Dialog', route: '/demo/dialog' },
-      // { title: 'Drawer', route: '/demo/drawer' },
+      { title: 'Dialog', route: '/demo/dialog' },
+      { title: 'Drawer', route: '/demo/drawer' },
       { title: 'Popover', route: '/demo/popover' },
       { title: 'Sheet', route: '/demo/sheet' },
       { title: 'Toast', route: '/demo/toast' },
@@ -186,6 +189,9 @@ const demos = [
 
   {
     label: 'Etc',
-    pages: [{ title: 'Spinner', route: '/demo/spinner' }],
+    pages: [
+      { title: 'Spinner', route: '/demo/spinner' },
+      { title: 'ScrollView', route: '/demo/scroll-view' },
+    ],
   },
 ]

@@ -36,7 +36,7 @@ export type TamaguiTextElement = HTMLElement | RNText
 
 export type DebugProp = boolean | 'break' | 'verbose' | 'visualize' | 'profile'
 
-export type TamaguiComponentPropsBase = {
+export type TamaguiComponentPropsBaseBase = {
   target?: string
   hitSlop?: PressableProps['hitSlop']
   /**
@@ -127,20 +127,26 @@ export type TamaguiComponentPropsBase = {
    */
   disableClassName?: boolean
 
+  // WEB ONLY TODO probably remove these in favor of something better
+
+  onFocus?: (event: React.FocusEvent<HTMLDivElement>) => void
+  onScroll?: (event: React.UIEvent<HTMLDivElement, UIEvent>) => void
+}
+
+export type TamaguiComponentPropsBase<A = {}> = WebOnlyPressEvents &
+  TamaguiComponentPropsBaseBase
+
+export type WebOnlyPressEvents = {
   onPress?: PressableProps['onPress']
   onLongPress?: PressableProps['onLongPress']
   onPressIn?: PressableProps['onPress']
   onPressOut?: PressableProps['onPress']
-
-  // WEB ONLY TODO probably remove these in favor of something better
   onHoverIn?: DivAttributes['onMouseEnter']
   onHoverOut?: DivAttributes['onMouseLeave']
   onMouseEnter?: DivAttributes['onMouseEnter']
   onMouseLeave?: DivAttributes['onMouseLeave']
   onMouseDown?: DivAttributes['onMouseDown']
   onMouseUp?: DivAttributes['onMouseUp']
-  onFocus?: (event: React.FocusEvent<HTMLDivElement>) => void
-  onScroll?: (event: React.UIEvent<HTMLDivElement, UIEvent>) => void
 }
 
 /**
@@ -512,6 +518,12 @@ export interface ThemeProps {
   shallow?: boolean
 }
 
+// more low level
+export type UseThemeWithStateProps = ThemeProps & {
+  deopt?: boolean
+  disable?: boolean
+}
+
 type ArrayIntersection<A extends any[]> = A[keyof A]
 
 type GetAltThemeNames<S> =
@@ -597,6 +609,25 @@ type GenericTamaguiSettings = {
    * @default false
    */
   mediaPropOrder?: boolean
+
+  /**
+   * On iOS, this enables a mode where Tamagui returns color values using `DynamicColorIOS`
+   * This is a React Native built in feature, you can read the docs here:
+   *   https://reactnative.dev/docs/dynamiccolorios
+   *
+   * We're working to make this enabled by default without any setting, but Tamagui themes
+   * support inversing and/or changing to light/dark at any point in the tree. We haven't implemented
+   * support for either of these cases when combined with this feature.
+   *
+   * So - as long as you:
+   *
+   *   1. Only use light/dark changes of themes at the root of your app
+   *   2. Don't use <Theme inverse> or themeInverse
+   *   3. Always change light/dark alongside the Appearance.colorSheme
+   *
+   * Then this feature is safe to turn on and will significantly speed up dark/light re-renders.
+   */
+  fastSchemeChange?: boolean
 }
 
 export type TamaguiSettings = TamaguiConfig['settings']
@@ -1810,7 +1841,7 @@ export type TamaguiComponentState = {
   group?: Record<string, GroupState>
 }
 
-export type ResolveVariableAs = 'auto' | 'value' | 'variable' | 'none'
+export type ResolveVariableAs = 'auto' | 'value' | 'variable' | 'none' | 'web'
 
 export type SplitStyleProps = {
   mediaState?: Record<string, boolean>

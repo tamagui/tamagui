@@ -7,16 +7,17 @@ import type { Plugin } from 'vite'
  * For some reason envPlugin doesnt work for vitest, but process: { env: {} } breaks vitest
  */
 
-export function tamaguiPlugin(
-  options: Partial<TamaguiOptions> & {
-    useReactNativeWebLite?: boolean
-    disableWatchTamaguiConfig?: boolean
-  }
-): Plugin {
+export function tamaguiPlugin({
+  platform = 'web',
+  ...options
+}: Partial<TamaguiOptions> & {
+  useReactNativeWebLite?: boolean
+  disableWatchTamaguiConfig?: boolean
+}): Plugin {
   const watcher = options.disableWatchTamaguiConfig
     ? null
     : watchTamaguiConfig({
-        platform: 'web',
+        platform,
         components: ['tamagui'],
         config: './src/tamagui.config.ts',
         ...options,
@@ -29,6 +30,20 @@ export function tamaguiPlugin(
     `${components.join('|')}|react-native|expo-linear-gradient`,
     'ig'
   )
+
+  const extensions = [
+    `.${platform}.js`,
+    `.${platform}.jsx`,
+    `.${platform}.ts`,
+    `.${platform}.tsx`,
+    '.mjs',
+    '.js',
+    '.mts',
+    '.ts',
+    '.jsx',
+    '.tsx',
+    '.json',
+  ]
 
   const plugin: Plugin = {
     name: 'tamagui-base',
@@ -67,7 +82,7 @@ export function tamaguiPlugin(
         },
         optimizeDeps: {
           // disabled: false,
-          include: options.platform !== 'native' ? ['styleq'] : [],
+          include: platform !== 'native' ? ['styleq'] : [],
           esbuildOptions: {
             jsx: 'transform',
             // plugins: [
@@ -79,19 +94,7 @@ export function tamaguiPlugin(
             //     'escape-string-regexp',
             //   ]),
             // ],
-            resolveExtensions: [
-              '.web.js',
-              '.web.jsx',
-              '.web.ts',
-              '.web.tsx',
-              '.mjs',
-              '.js',
-              '.mts',
-              '.ts',
-              '.jsx',
-              '.tsx',
-              '.json',
-            ],
+            resolveExtensions: extensions,
             loader: {
               '.js': 'jsx',
             },
@@ -100,21 +103,9 @@ export function tamaguiPlugin(
         resolve: {
           // for once it extracts
           // mainFields: ['module:jsx', 'module', 'jsnext:main', 'jsnext', 'main'],
-          extensions: [
-            '.web.js',
-            '.web.jsx',
-            '.web.ts',
-            '.web.tsx',
-            '.mjs',
-            '.js',
-            '.mts',
-            '.ts',
-            '.jsx',
-            '.tsx',
-            '.json',
-          ],
+          extensions: extensions,
           alias: {
-            ...(options.platform !== 'native' && {
+            ...(platform !== 'native' && {
               'react-native/Libraries/Renderer/shims/ReactFabric': '@tamagui/proxy-worm',
               'react-native/Libraries/Utilities/codegenNativeComponent':
                 '@tamagui/proxy-worm',

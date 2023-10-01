@@ -31,7 +31,6 @@ import {
 import { ScopedProps, ToastProvider, ToastProviderProps } from './ToastProvider'
 import { ToastViewport, ToastViewportProps } from './ToastViewport'
 
-export const TOAST_CONTEXT = 'Toast'
 /* -------------------------------------------------------------------------------------------------
  * ToastTitle
  * -----------------------------------------------------------------------------------------------*/
