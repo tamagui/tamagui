@@ -960,7 +960,7 @@ export type TamaguiComponentState = {
     };
     group?: Record<string, GroupState>;
 };
-export type ResolveVariableAs = 'auto' | 'value' | 'variable' | 'none';
+export type ResolveVariableAs = 'auto' | 'value' | 'variable' | 'none' | 'web';
 export type SplitStyleProps = {
     mediaState?: Record<string, boolean>;
     noClassNames?: boolean;

@@ -1,4 +1,4 @@
-import { isAndroid, isWeb } from '@tamagui/constants'
+import { isAndroid } from '@tamagui/constants'
 import { tokenCategories } from '@tamagui/helpers'
 
 import { getConfig } from '../config'
@@ -8,7 +8,6 @@ import type {
   GetStyleState,
   PropMapper,
   ResolveVariableAs,
-  SplitStyleProps,
   StyleResolver,
   TamaguiInternalConfig,
   VariantSpreadFunction,
@@ -462,7 +461,7 @@ function resolveVariableValue(
     // shadowColor doesn't support dynamic style
     if (process.env.TAMAGUI_TARGET !== 'native' || key !== 'shadowColor') {
       if (typeof get === 'function') {
-        return get()
+        return get(resolveValues === 'web' ? 'web' : undefined)
       }
     }
 
