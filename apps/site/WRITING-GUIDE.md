@@ -105,6 +105,3 @@ Here are some tips to writing good explanations and reference documentation;
 
 - User-Centered Approach:
 	- Tailor your explanations and references to the audience's knowledge level and needs.
-
-## Useful components
-
