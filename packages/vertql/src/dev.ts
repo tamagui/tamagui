@@ -3,6 +3,7 @@ import { join } from 'path'
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
 import { create } from '@tamagui/vite-react-native'
 import chalk from 'chalk'
+import { build, context } from 'esbuild'
 import express, { Express } from 'express'
 import { pathExists } from 'fs-extra'
 import { createProxyMiddleware } from 'http-proxy-middleware'
@@ -52,21 +53,43 @@ export const dev = async (optionsIn: Options) => {
   const vertqlExpressServer = startVertqlServer(options, viteServer)
   const userAppServer = startUserAppServer(options, vertqlExpressServer)
 
+  const vertqlGraphBuilder = await startVertqlGraphBuilder(options)
+  vertqlGraphBuilder.watch()
+
+  const expressServer = vertqlExpressServer.listen(8091)
+
   // wait for all servers
-  await Promise.all([closePromise, userAppServer, vertqlExpressServer])
+  await Promise.all([
+    closePromise,
+    userAppServer,
+    vertqlExpressServer,
+    new Promise((res) => {
+      expressServer.once('close', res)
+    }),
+  ])
+}
+
+async function startVertqlGraphBuilder(options: OptionsFilled) {
+  return await context({
+    // just pleasing weird grats things for now
+    entryPoints: [join(options.root, 'graph', 'user.ts')],
+    target: 'node16',
+    format: 'cjs',
+    outdir: join(options.root, '..', '..', 'dist', 'apps', 'tamastack', 'graph'),
+  })
 }
 
 function startVertqlServer(options: OptionsFilled, viteServer: ViteDevServer) {
   const viteAddress = viteServer.httpServer?.address
   const app = express()
   const target = `http://${viteAddress}:8081`
-  app.use(
-    '/',
-    createProxyMiddleware({
-      target,
-      ws: true,
-    })
-  )
+  // app.use(
+  //   '/',
+  //   createProxyMiddleware({
+  //     target,
+  //     ws: true,
+  //   })
+  // )
 
   return app
 }
@@ -78,6 +101,8 @@ async function startUserAppServer(options: OptionsFilled, app: Express) {
     const { unregister } = register()
     try {
       const serverEndpoint = require(serverPath).default
+      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+      console.log('starting user server', serverPath)
       serverEndpoint(app)
     } finally {
       unregister()

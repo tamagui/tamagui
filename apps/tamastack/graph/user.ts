@@ -1,12 +1,9 @@
 /**
- * A user in our kick-ass system!
+ * Test comment
  * @gqlType */
-type User = {
-  /** @gqlField */
-  name: string
-}
+type Query = {}
 
 /** @gqlField */
-export function greet(user: User, args: { greeting: string }): string {
-  return `${args.greeting}, ${user.name}`
+export function greet(query: Query, args: { greeting: string }): string {
+  return `hello ${args.greeting}`
 }
