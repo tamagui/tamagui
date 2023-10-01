@@ -39,7 +39,7 @@ To install Tamagui with all it's components run:
 npm install tamagui @tamagui/config @tamagui/theme-builder
 ```
 
-Next, create a Tamagui config file named `tamagui.config.js`:
+Next, create a Tamagui config file named `tamagui.config.ts`:
 
 ```ts
 // the v2 config imports the css driver on web and react-native on native
