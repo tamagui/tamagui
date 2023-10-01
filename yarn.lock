@@ -5301,8 +5301,8 @@ __metadata:
   linkType: hard
 
 "@rollup/pluginutils@npm:^5.0.2":
-  version: 5.0.3
-  resolution: "@rollup/pluginutils@npm:5.0.3"
+  version: 5.0.4
+  resolution: "@rollup/pluginutils@npm:5.0.4"
   dependencies:
     "@types/estree": ^1.0.0
     estree-walker: ^2.0.2
@@ -5312,7 +5312,7 @@ __metadata:
   peerDependenciesMeta:
     rollup:
       optional: true
-  checksum: 8efbdeac53c58ba7b26c353a0a95acb0286cb6afec9816e0c52c3537404be80af11d897f78416a3339a8a76cbce8600269bdf4853edfdebcc89b2e90c56bf3d9
+  checksum: 893d5805ac4121fc704926963a0ae4e79e9e2bc8d736c3b28499ab69a404cce5119ca3a4e0c3d3a81d62f1beb3966f35285c36935d94b061794f26e94fed4cd1
   languageName: node
   linkType: hard
 
@@ -6133,39 +6133,21 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/cli@workspace:packages/cli"
   dependencies:
-    "@babel/code-frame": ^7.21.4
-    "@babel/plugin-transform-react-jsx": ^7.22.5
-    "@callstack/repack-debugger-app": ^1.0.0
-    "@fastify/sensible": ^4.1.0
-    "@fastify/static": ^5.0.2
     "@tamagui/build": 1.74.4
     "@tamagui/create-theme": 1.74.4
     "@tamagui/generate-themes": 1.74.4
     "@tamagui/static": 1.74.4
     "@tamagui/types": 1.74.4
-    "@tamagui/vite-native-hmr": 1.74.4
-    "@tamagui/vite-native-swc": 1.74.4
     "@tamagui/vite-plugin": 1.74.4
-    "@types/compression": ^1.7.2
     "@types/marked": ^5.0.0
-    "@types/morgan": ^1.9.3
-    "@vitejs/plugin-react": ^4.0.4
     "@vitejs/plugin-react-swc": ^3.3.2
     arg: ^5.0.2
     chalk: ^4.1.2
     change-case: ^4.1.2
     chokidar: ^3.5.2
-    compression: ^1.7.4
-    es-module-lexer: ^1.3.0
     esbuild: ~0.19.3
-    esm-resolve: ^1.0.8
     execa: ^5.0.0
     express: ^4.18.1
-    fast-glob: ^3.2.11
-    fastify: ^3.29.0
-    fastify-favicon: ^3.2.0
-    fastify-plugin: ^3.0.1
-    flow-remove-types: ^2.214.0
     fs-extra: ^11.1.0
     get-port: ^6.1.2
     graphology: ^0.24.1
@@ -6173,27 +6155,16 @@ __metadata:
     graphql-yoga: ^4.0.4
     http-proxy-middleware: ^2.0.6
     kill-port: ^2.0.1
-    lodash.debounce: ^4.0.8
     marked: ^5.1.0
     marked-terminal: ^5.2.0
-    metro-inspector-proxy: ^0.71.0
-    mime: ^3.0.0
-    morgan: ^1.10.0
     open: ^8.4.0
-    open-editor: ^4.0.0
-    pretty-format: ^28.1.0
     prompts: 2.1.0
-    source-map: ^0.7.3
     ts-morph: ^15.1.0
     typescript: ^5.2.2
     url: ^0.11.0
     vite: ^4.4.9
-    vite-plugin-entry-shaking: ^0.3.2
-    vite-plugin-externals: ^0.6.2
-    vite-plugin-inspect: ^0.7.38
+    vite-react-native2: 0.0.0
     vite-tsconfig-paths: ^4.2.0
-    ws: ^8.7.0
-    zx: ^7.1.1
   bin:
     tama: ./dist/index.js
     tamagui: ./dist/index.js
@@ -7523,6 +7494,7 @@ __metadata:
     react-dom: ^18.2.0
     react-native: ^0.72.1
     tamagui: 1.74.4
+    vertql: 0.0.0
   languageName: unknown
   linkType: soft
 
@@ -8423,15 +8395,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/compression@npm:^1.7.2":
-  version: 1.7.2
-  resolution: "@types/compression@npm:1.7.2"
-  dependencies:
-    "@types/express": "*"
-  checksum: 3457f9d39ed73d58387bccf15bcfe8e140298c5d6e90fe354dfeb24ec7828432658caebee8ab6f4e4ac39a7d03bc0a6a52686d7fb2fe405fbdefede41d6b5834
-  languageName: node
-  linkType: hard
-
 "@types/connect-history-api-fallback@npm:^1.3.5":
   version: 1.3.5
   resolution: "@types/connect-history-api-fallback@npm:1.3.5"
@@ -8828,15 +8791,6 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: 0d01e11b5b959625385a482ad29ea16352be42506b459555b0f77fd82235e9c540946cc9c05a73fed1ae30b132914baaa4ccf257ed2cad20bc9773f0a06f4bac
-  languageName: node
-  linkType: hard
-
-"@types/morgan@npm:^1.9.3":
-  version: 1.9.4
-  resolution: "@types/morgan@npm:1.9.4"
-  dependencies:
-    "@types/node": "*"
-  checksum: d1e99c66a43501dcdf6e94e013dfff4e6c152cbb5f782d954bb722d230a9c1c0fe06fab6df3f3dfa3547735a7598f9471633cc6813d794e9562fd022e217c6ae
   languageName: node
   linkType: hard
 
@@ -10671,15 +10625,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"basic-auth@npm:~2.0.1":
-  version: 2.0.1
-  resolution: "basic-auth@npm:2.0.1"
-  dependencies:
-    safe-buffer: 5.1.2
-  checksum: 3419b805d5dfc518f3a05dcf42aa53aa9ce820e50b6df5097f9e186322e1bc733c36722b624802cd37e791035aa73b828ed814d8362333d42d7f5cd04d7a5e48
-  languageName: node
-  linkType: hard
-
 "batch@npm:0.6.1":
   version: 0.6.1
   resolution: "batch@npm:0.6.1"
@@ -11542,6 +11487,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"citty@npm:^0.1.4":
+  version: 0.1.4
+  resolution: "citty@npm:0.1.4"
+  dependencies:
+    consola: ^3.2.3
+  checksum: d70f739c32c8a65170be5bad0407f22e860a819da1712d66c14993b1f46356c95c4d5acee7a36f763b7f7132dd0acd2bbdae02f8188970bbd3c978c1ada9bae5
+  languageName: node
+  linkType: hard
+
 "class-utils@npm:^0.3.5":
   version: 0.3.6
   resolution: "class-utils@npm:0.3.6"
@@ -11993,6 +11947,13 @@ __metadata:
     parseurl: ~1.3.3
     utils-merge: 1.0.1
   checksum: 96e1c4effcf219b065c7823e57351c94366d2e2a6952fa95e8212bffb35c86f1d5a3f9f6c5796d4cd3a5fdda628368b1c3cc44bf19c66cfd68fe9f9cab9177e2
+  languageName: node
+  linkType: hard
+
+"consola@npm:^3.2.3":
+  version: 3.2.3
+  resolution: "consola@npm:3.2.3"
+  checksum: 32ec70e177dd2385c42e38078958cc7397be91db21af90c6f9faa0b16168b49b1c61d689338604bbb2d64370b9347a35f42a9197663a913d3a405bb0ce728499
   languageName: node
   linkType: hard
 
@@ -12946,7 +12907,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"depd@npm:2.0.0, depd@npm:^2.0.0, depd@npm:~2.0.0":
+"depd@npm:2.0.0, depd@npm:^2.0.0":
   version: 2.0.0
   resolution: "depd@npm:2.0.0"
   checksum: abbe19c768c97ee2eed6282d8ce3031126662252c58d711f646921c9623f9052e3e1906443066beec1095832f534e57c523b7333f8e7e0d93051ab6baef5ab3a
@@ -13424,7 +13385,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"env-editor@npm:^1.0.0":
+"env-editor@npm:^1.1.0":
   version: 1.1.0
   resolution: "env-editor@npm:1.1.0"
   checksum: f1693c23c530240f13aec866b5d8d8d4729f3b281093e3b69585d820c1aa7ad0e5ebca6e49ce103d94c202a34837d5c0c2c8eedd9278a0a5c4943ddeb94f0fc7
@@ -13562,17 +13523,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"es-module-lexer@npm:^1.0.3, es-module-lexer@npm:^1.3.0":
-  version: 1.3.0
-  resolution: "es-module-lexer@npm:1.3.0"
-  checksum: 48fd9f504a9d2a894126f75c8b7ccc6273a289983e9b67255f165bfd9ae765d50100218251e94e702ca567826905ea2f7b3b4a0c4d74d3ce99cce3a2a606a238
-  languageName: node
-  linkType: hard
-
 "es-module-lexer@npm:^1.2.1":
   version: 1.2.1
   resolution: "es-module-lexer@npm:1.2.1"
   checksum: c4145b853e1491eaa5d591e4580926d242978c38071ad3d09165c3b6d50314cc0ae3bf6e1dec81a9e53768b9299df2063d2e4a67d7742a5029ddeae6c4fc26f0
+  languageName: node
+  linkType: hard
+
+"es-module-lexer@npm:^1.3.0":
+  version: 1.3.0
+  resolution: "es-module-lexer@npm:1.3.0"
+  checksum: 48fd9f504a9d2a894126f75c8b7ccc6273a289983e9b67255f165bfd9ae765d50100218251e94e702ca567826905ea2f7b3b4a0c4d74d3ce99cce3a2a606a238
   languageName: node
   linkType: hard
 
@@ -15681,13 +15642,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"flow-parser@npm:^0.214.0":
-  version: 0.214.0
-  resolution: "flow-parser@npm:0.214.0"
-  checksum: c7aab94b25622e811af65c1f3197f07e4f518266758fadc798847146611bbbd7bb9a423d022efa62e535cc87beb9841023b0650f9cdc725c41c6f84932133cb7
-  languageName: node
-  linkType: hard
-
 "flow-parser@npm:^0.217.0":
   version: 0.217.0
   resolution: "flow-parser@npm:0.217.0"
@@ -15706,20 +15660,6 @@ __metadata:
     flow-node: flow-node
     flow-remove-types: flow-remove-types
   checksum: 31892f028a0ef912bbe77a28ec86ef8ff54972a684f1126ebdb8c42e6803314fc7f9200573fc8f3e2f24513ed2b898e6f78b784fc89a094628ff1cf832ca4f55
-  languageName: node
-  linkType: hard
-
-"flow-remove-types@npm:^2.214.0":
-  version: 2.214.0
-  resolution: "flow-remove-types@npm:2.214.0"
-  dependencies:
-    flow-parser: ^0.214.0
-    pirates: ^3.0.2
-    vlq: ^0.2.1
-  bin:
-    flow-node: flow-node
-    flow-remove-types: flow-remove-types
-  checksum: a23e8b8a90389432d9a3ea7913a884e04784c3486926d7697b47827144c8790a6681f880e5b644ed93134083b9e2e122490ed89c996072a13221d1e2c407cc49
   languageName: node
   linkType: hard
 
@@ -19231,15 +19171,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"magic-string@npm:^0.26.3":
-  version: 0.26.7
-  resolution: "magic-string@npm:0.26.7"
-  dependencies:
-    sourcemap-codec: ^1.4.8
-  checksum: 89b0d60cbb32bbf3d1e23c46ea93db082d18a8230b972027aecb10a40bba51be519ecce0674f995571e3affe917b76b09f59d8dbc9a1b2c9c4102a2b6e8a2b01
-  languageName: node
-  linkType: hard
-
 "magic-string@npm:^0.27.0":
   version: 0.27.0
   resolution: "magic-string@npm:0.27.0"
@@ -20836,19 +20767,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"morgan@npm:^1.10.0":
-  version: 1.10.0
-  resolution: "morgan@npm:1.10.0"
-  dependencies:
-    basic-auth: ~2.0.1
-    debug: 2.6.9
-    depd: ~2.0.0
-    on-finished: ~2.3.0
-    on-headers: ~1.0.2
-  checksum: fb41e226ab5a1abf7e8909e486b387076534716d60207e361acfb5df78b84d703a7b7ea58f3046a9fd0b83d3c94bfabde32323341a1f1b26ce50680abd2ea5dd
-  languageName: node
-  linkType: hard
-
 "moti@npm:^0.25.3":
   version: 0.25.3
   resolution: "moti@npm:0.25.3"
@@ -21685,15 +21603,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"open-editor@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "open-editor@npm:4.0.0"
+"open-editor@npm:^4.1.1":
+  version: 4.1.1
+  resolution: "open-editor@npm:4.1.1"
   dependencies:
-    env-editor: ^1.0.0
+    env-editor: ^1.1.0
     execa: ^5.1.1
     line-column-path: ^3.0.0
     open: ^8.4.0
-  checksum: b3af8d0303cda1a0ae3d0a866094a35e4b0e0f646ab27389cd56cc9f4875f6ddc9e8249babbf7ffcfa1c162f8799dc5e5e7e8f6e528c02fbc17241d3ed88b706
+  checksum: 389b62a668c38af9b34fb4253b71fe7ba3003d008b32ba3bed2d7b739e97ce8b4d5c0c4b523e09e99343995a1048a358fe0342c0a3d822b8c993af91179b43f4
   languageName: node
   linkType: hard
 
@@ -27682,6 +27600,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"vertql@0.0.0, vertql@workspace:packages/vertql":
+  version: 0.0.0-use.local
+  resolution: "vertql@workspace:packages/vertql"
+  dependencies:
+    "@tamagui/build": 1.74.4
+    "@tamagui/vite-plugin": 1.74.4
+    citty: ^0.1.4
+    fs-extra: ^11.1.0
+    graphology: ^0.24.1
+    graphql: ^16.8.0
+    graphql-yoga: ^4.0.4
+    vite: ^4.4.9
+    vite-plugin-inspect: ^0.7.38
+    vite-react-native2: 0.0.0
+  bin:
+    vert: ./dist/index.js
+    vertql: ./dist/index.js
+  languageName: unknown
+  linkType: soft
+
 "vfile-location@npm:^4.0.0":
   version: 4.1.0
   resolution: "vfile-location@npm:4.1.0"
@@ -28207,18 +28145,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-entry-shaking@npm:^0.3.2":
-  version: 0.3.2
-  resolution: "vite-plugin-entry-shaking@npm:0.3.2"
-  dependencies:
-    es-module-lexer: ^1.0.3
-    magic-string: ^0.26.3
-  peerDependencies:
-    vite: ">=2.0.0"
-  checksum: 1c0cb85cb856302447e3d65440a2f50a1188939a0d7ea13764dcda7c320f872ff83f2136f06f7d89792b60ec59690236a2917d2259d0260e0e4de210439b9a28
-  languageName: node
-  linkType: hard
-
 "vite-plugin-externals@npm:^0.6.2":
   version: 0.6.2
   resolution: "vite-plugin-externals@npm:0.6.2"
@@ -28253,6 +28179,45 @@ __metadata:
   checksum: 7258b741ebd43c43906d53d99e580a4faf7db72506dc98b09af6cb7ce987fe8bb7f810551fff9c9f6582d7faa5e152700ba63ce5dc55801cf374741be292d438
   languageName: node
   linkType: hard
+
+"vite-react-native2@0.0.0, vite-react-native2@workspace:packages/vite-react-native":
+  version: 0.0.0-use.local
+  resolution: "vite-react-native2@workspace:packages/vite-react-native"
+  dependencies:
+    "@babel/code-frame": ^7.21.4
+    "@callstack/repack-debugger-app": ^1.0.0
+    "@fastify/sensible": ^4.1.0
+    "@fastify/static": ^5.0.2
+    "@tamagui/build": 1.74.4
+    "@tamagui/create-theme": 1.74.4
+    "@tamagui/generate-themes": 1.74.4
+    "@tamagui/static": 1.74.4
+    "@tamagui/types": 1.74.4
+    "@tamagui/vite-native-hmr": 1.74.4
+    "@tamagui/vite-native-swc": 1.74.4
+    "@tamagui/vite-plugin": 1.74.4
+    "@vitejs/plugin-react": ^4.0.4
+    "@vitejs/plugin-react-swc": ^3.3.2
+    chalk: ^4.1.2
+    es-module-lexer: ^1.3.0
+    esbuild: ~0.19.3
+    execa: ^5.0.0
+    fast-glob: ^3.2.11
+    fastify: ^3.29.0
+    fastify-favicon: ^3.2.0
+    fastify-plugin: ^3.0.1
+    fs-extra: ^11.1.0
+    http-proxy-middleware: ^2.0.6
+    metro-inspector-proxy: ^0.71.0
+    mime: ^3.0.0
+    open-editor: ^4.1.1
+    pretty-format: ^28.1.0
+    source-map: ^0.7.3
+    url: ^0.11.0
+    vite: ^4.4.9
+    ws: ^8.7.0
+  languageName: unknown
+  linkType: soft
 
 "vite-tsconfig-paths@npm:^4.2.0":
   version: 4.2.0

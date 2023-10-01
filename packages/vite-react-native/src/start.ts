@@ -2,51 +2,30 @@ import { readFile, writeFile } from 'fs/promises'
 import { dirname, join, relative } from 'path'
 
 import * as babel from '@babel/core'
-import { CLIResolvedOptions } from '@tamagui/types'
 import viteReactPlugin, {
   swcTransform,
   transformForBuild,
 } from '@tamagui/vite-native-swc'
-import { getVitePath, nativePlugin, tamaguiPlugin } from '@tamagui/vite-plugin'
+import { getVitePath, nativePlugin } from '@tamagui/vite-plugin'
 import react from '@vitejs/plugin-react-swc'
 import chalk from 'chalk'
 import { parse } from 'es-module-lexer'
 import { pathExists } from 'fs-extra'
-import { InlineConfig, build, createServer, resolveConfig } from 'vite'
+import { InlineConfig, build, createServer, mergeConfig, resolveConfig } from 'vite'
 
 import { clientInjectionsPlugin } from './dev/clientInjectPlugin'
 import { createDevServer } from './dev/createDevServer'
-import { HMRListener } from './dev/types'
+import { HMRListener } from './types'
+import { StartOptions } from './types'
 import { registerDispose } from './utils'
 
-export const dev = async (options: CLIResolvedOptions) => {
+export const start = async (options: StartOptions) => {
   const { root } = options
-
-  process.on('uncaughtException', (err) => {
-    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-    console.log(err?.message || err)
-  })
-
   const packageRootDir = join(__dirname, '..')
+  const templateFile = join(packageRootDir, 'react-native-template.js')
 
   // react native port (it scans 19000 +5)
   const port = options.port || 8081
-
-  const tamaguiVitePlugin = tamaguiPlugin({
-    ...options.tamaguiOptions,
-  })
-
-  const plugins = [
-    //
-    tamaguiVitePlugin,
-  ] satisfies InlineConfig['plugins']
-
-  if (process.env.IS_TAMAGUI_DEV) {
-    const inspect = require('vite-plugin-inspect')
-    // @ts-ignore
-    plugins.push(inspect())
-  }
-
   const hmrListeners: HMRListener[] = []
   const hotUpdatedCJSFiles = new Map<string, string>()
 
@@ -62,8 +41,6 @@ export const dev = async (options: CLIResolvedOptions) => {
     },
 
     plugins: [
-      ...plugins,
-
       react(),
 
       {
@@ -163,6 +140,10 @@ export const dev = async (options: CLIResolvedOptions) => {
     },
   } satisfies InlineConfig
 
+  if (options.webConfig) {
+    serverConfig = mergeConfig(serverConfig, options.webConfig) as any
+  }
+
   // first resolve config so we can pass into client plugin, then add client plugin:
   const resolvedConfig = await resolveConfig(serverConfig, 'serve')
 
@@ -175,6 +156,7 @@ export const dev = async (options: CLIResolvedOptions) => {
 
   const server = await createServer(serverConfig)
 
+  // this fakes vite into thinking its loading files, so it hmrs in native mode despite not requesting
   server.watcher.addListener('change', async (path) => {
     const id = path.replace(process.cwd(), '')
     if (!id.endsWith('tsx') && !id.endsWith('jsx')) {
@@ -215,15 +197,17 @@ export const dev = async (options: CLIResolvedOptions) => {
   await new Promise((res) => server.httpServer?.on('close', res))
 
   async function getBundleCode() {
-    // for easier quick testing things:
-    const tmpBundle = join(process.cwd(), 'bundle.tmp.js')
-    if (await pathExists(tmpBundle)) {
-      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-      console.log(
-        '⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️ returning temp bundle ⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️',
-        tmpBundle
-      )
-      return await readFile(tmpBundle, 'utf-8')
+    if (process.env.LOAD_TMP_BUNDLE) {
+      // for easier quick testing things:
+      const tmpBundle = join(process.cwd(), 'bundle.tmp.js')
+      if (await pathExists(tmpBundle)) {
+        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+        console.log(
+          '⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️ returning temp bundle ⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️',
+          tmpBundle
+        )
+        return await readFile(tmpBundle, 'utf-8')
+      }
     }
 
     if (isBuilding) {
@@ -314,46 +298,9 @@ export const dev = async (options: CLIResolvedOptions) => {
     }
 
     // build app
-    const buildConfig = {
+    let buildConfig = {
       plugins: [
         swapRnPlugin,
-
-        tamaguiPlugin({
-          disableWatchTamaguiConfig: true,
-          ...options.tamaguiOptions,
-          platform: 'native',
-        }),
-
-        // needs to run before resolve... smh
-        // {
-        //   name: `react-native-screens`,
-        //   enforce: 'pre',
-
-        //   async transform(code, id) {
-        //     if (id.includes('react-native-screens') && id.endsWith('.index.native.js')) {
-        //       const cjsExport = /exports\.([a-z0-9]+) = (.*)\n/gi
-
-        //       const out = code
-        //         .split('\n')
-        //         .map((line) => {
-        //           const matched = line.match(cjsExport)
-        //           if (!matched) return line
-        //           return line.replace(
-        //             cjsExport,
-        //             `
-        //           $1 = $2
-        //           export { $1 }
-        //           `
-        //           )
-        //         })
-        //         .join('\n')
-
-        //       console.log('now', out)
-
-        //       return out
-        //     }
-        //   },
-        // },
 
         {
           name: 'reanimated',
@@ -404,8 +351,12 @@ export const dev = async (options: CLIResolvedOptions) => {
       },
     } satisfies InlineConfig
 
+    if (options.buildConfig) {
+      buildConfig = mergeConfig(buildConfig, options.buildConfig) as any
+    }
+
     // this fixes my swap-react-native plugin not being called pre 😳
-    const resolvedConfig = await resolveConfig(buildConfig, 'build')
+    await resolveConfig(buildConfig, 'build')
 
     const buildOutput = await build(buildConfig)
 
@@ -454,8 +405,6 @@ __require("${module.fileName}")
       // this can be done in the individual file transform
       .replaceAll('undefined.accept(() => {})', '')
       .replaceAll('undefined.accept(function() {});', '') // swc
-
-    const templateFile = join(packageRootDir, 'react-native-template.js')
 
     const out = (await readFile(templateFile, 'utf-8')) + appCode
 

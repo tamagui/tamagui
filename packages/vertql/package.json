@@ -1,0 +1,39 @@
+{
+  "name": "vertql",
+  "version": "0.0.0",
+  "source": "src/index.ts",
+  "types": "./types/index.d.ts",
+  "main": "dist",
+  "bin": {
+    "vert": "./dist/index.js",
+    "vertql": "./dist/index.js"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "yarn build --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "dependencies": {
+    "@tamagui/vite-plugin": "1.74.4",
+    "citty": "^0.1.4",
+    "fs-extra": "^11.1.0",
+    "graphology": "^0.24.1",
+    "graphql": "^16.8.0",
+    "graphql-yoga": "^4.0.4",
+    "vite": "^4.4.9",
+    "vite-plugin-inspect": "^0.7.38",
+    "vite-react-native2": "0.0.0"
+  },
+  "devDependencies": {
+    "@tamagui/build": "1.74.4"
+  }
+}

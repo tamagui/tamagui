@@ -1,12 +1,12 @@
-import { CLIResolvedOptions } from '@tamagui/types'
 import mime from 'mime/lite'
 
+import { StartOptions } from '../types'
+import { HMRListener } from '../types'
 import { DEFAULT_PORT } from '../utils/constants'
 import { Server, createServer } from '../vendor/repack/dev-server/src'
-import { HMRListener } from './types'
 
 export async function createDevServer(
-  options: CLIResolvedOptions,
+  options: StartOptions,
   {
     indexJson,
     listenForHMR,
