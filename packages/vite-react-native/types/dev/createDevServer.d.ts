@@ -1,10 +1,15 @@
+/// <reference types="node" />
 import { HMRListener, StartOptions } from '../types';
 export declare function createDevServer(options: StartOptions, { indexJson, listenForHMR, getIndexBundle, hotUpdatedCJSFiles, }: {
     indexJson: Object;
     getIndexBundle: () => Promise<string>;
     listenForHMR: (cb: HMRListener) => void;
     hotUpdatedCJSFiles: Map<string, string>;
-}): Promise<() => Promise<void>>;
+}): Promise<{
+    start: () => Promise<void>;
+    stop: () => Promise<void>;
+    instance: import("fastify").FastifyInstance<import("http").Server, import("http").IncomingMessage, import("http").ServerResponse, import("fastify").FastifyLoggerInstance> & PromiseLike<import("fastify").FastifyInstance<import("http").Server, import("http").IncomingMessage, import("http").ServerResponse, import("fastify").FastifyLoggerInstance>>;
+}>;
 /**
  * Represent Hot Module Replacement Update body.
  *

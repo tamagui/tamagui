@@ -18,7 +18,7 @@ export async function createDevServer(
     hotUpdatedCJSFiles: Map<string, string>
   }
 ) {
-  const { start, stop } = await createServer({
+  return await createServer({
     options: {
       rootDir: options.root,
       host: options.host,
@@ -192,12 +192,6 @@ export async function createDevServer(
       }
     },
   })
-
-  await start()
-
-  return async () => {
-    await stop()
-  }
 }
 
 function createHmrBody(body: HMRMessageBody): HMRMessageBody | null {

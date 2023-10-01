@@ -8,7 +8,6 @@ import viteReactPlugin, {
 } from '@tamagui/vite-native-swc'
 import { getVitePath, nativePlugin } from '@tamagui/vite-plugin'
 import react from '@vitejs/plugin-react-swc'
-import chalk from 'chalk'
 import { parse } from 'es-module-lexer'
 import { pathExists } from 'fs-extra'
 import { InlineConfig, build, createServer, mergeConfig, resolveConfig } from 'vite'
@@ -17,10 +16,9 @@ import { clientInjectionsPlugin } from './dev/clientInjectPlugin'
 import { createDevServer } from './dev/createDevServer'
 import { HMRListener } from './types'
 import { StartOptions } from './types'
-import { registerDispose } from './utils'
 
-export const start = async (options: StartOptions) => {
-  const { root } = options
+export const create = async (options: StartOptions) => {
+    const { root } = options
   const packageRootDir = join(__dirname, '..')
   const templateFile = join(packageRootDir, 'react-native-template.js')
 
@@ -154,17 +152,17 @@ export const start = async (options: StartOptions) => {
     plugins: [...serverConfig.plugins],
   }
 
-  const server = await createServer(serverConfig)
+  const viteServer = await createServer(serverConfig)
 
   // this fakes vite into thinking its loading files, so it hmrs in native mode despite not requesting
-  server.watcher.addListener('change', async (path) => {
+  viteServer.watcher.addListener('change', async (path) => {
     const id = path.replace(process.cwd(), '')
     if (!id.endsWith('tsx') && !id.endsWith('jsx')) {
       return
     }
     // just so it thinks its loaded
     try {
-      void server.transformRequest(id)
+      void viteServer.transformRequest(id)
     } catch (err) {
       // ok
       // biome-ignore lint/suspicious/noConsoleLog: <explanation>
@@ -172,11 +170,9 @@ export const start = async (options: StartOptions) => {
     }
   })
 
-  await server.listen()
-
   let isBuilding: Promise<string> | null = null
 
-  const dispose = await createDevServer(options, {
+  const nativeServer = await createDevServer(options, {
     hotUpdatedCJSFiles,
     listenForHMR(cb) {
       hmrListeners.push(cb)
@@ -185,16 +181,22 @@ export const start = async (options: StartOptions) => {
     indexJson: getIndexJsonReponse({ port, root }),
   })
 
-  // biome-ignore lint/suspicious/noConsoleLog: ok
-  console.log(`Listening on:`, chalk.green(`http://localhost:${port}`))
-  server.printUrls()
+  return {
+    nativeServer: nativeServer.instance,
+    viteServer,
 
-  registerDispose(() => {
-    dispose()
-    server.close()
-  })
+    async start() {
+      await Promise.all([viteServer.listen(), nativeServer.start()])
 
-  await new Promise((res) => server.httpServer?.on('close', res))
+      return {
+        closePromise: new Promise((res) => viteServer.httpServer?.on('close', res)),
+      }
+    },
+
+    stop: async () => {
+      await Promise.all([nativeServer.stop(), viteServer.close()])
+    },
+  }
 
   async function getBundleCode() {
     if (process.env.LOAD_TMP_BUNDLE) {

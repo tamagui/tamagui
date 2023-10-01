@@ -24,14 +24,16 @@
   },
   "dependencies": {
     "@tamagui/vite-plugin": "1.74.5",
+    "@tamagui/vite-react-native": "0.0.0",
+    "chalk": "^4.1.2",
     "citty": "^0.1.4",
+    "express": "^4.18.2",
     "fs-extra": "^11.1.0",
     "graphology": "^0.24.1",
     "graphql": "^16.8.0",
-    "graphql-yoga": "^4.0.4",
+    "http-proxy-middleware": "^2.0.6",
     "vite": "^4.4.9",
-    "vite-plugin-inspect": "^0.7.38",
-    "vite-react-native2": "0.0.0"
+    "vite-plugin-inspect": "^0.7.38"
   },
   "devDependencies": {
     "@tamagui/build": "1.74.5"

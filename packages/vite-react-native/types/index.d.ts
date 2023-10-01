@@ -1,2 +1,2 @@
-export * from './start';
+export * from './create';
 //# sourceMappingURL=index.d.ts.map

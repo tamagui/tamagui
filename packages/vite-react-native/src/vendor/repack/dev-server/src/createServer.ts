@@ -1,11 +1,9 @@
-import { join } from 'path'
 import { Writable } from 'stream'
 
 // import debuggerAppPath from '@callstack/repack-debugger-app'
 import fastifySensible from '@fastify/sensible'
 import fastifyStatic from '@fastify/static'
 import Fastify from 'fastify'
-import { pathExists } from 'fs-extra'
 
 import apiPlugin from './plugins/api'
 import compilerPlugin from './plugins/compiler'
@@ -40,23 +38,6 @@ export async function createServer(config: Server.Config) {
     },
     ...(config.options.https ? { https: config.options.https } : undefined),
   })
-
-  async function startServer() {
-    const serverPath = join(config.options.rootDir, 'server.ts')
-    if (await pathExists(serverPath)) {
-      const { register } = require('esbuild-register/dist/node')
-      const { unregister } = register()
-      try {
-        const serverEndpoint = require(serverPath).default
-        serverEndpoint(instance)
-      } finally {
-        unregister()
-      }
-    }
-  }
-
-  // disable for demo
-  void startServer()
 
   delegate = config.delegate({
     log: instance.log,

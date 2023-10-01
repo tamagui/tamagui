@@ -1,5 +1,5 @@
 {
-  "name": "vite-react-native2",
+  "name": "@tamagui/vite-react-native",
   "version": "0.0.0",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
