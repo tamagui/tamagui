@@ -7,7 +7,6 @@ This guide explains how to write content for the Tamagui docs, by informing you 
 - [Writing style](#writing-style)
 - [Accessibility](#accessibility)
 - [Content types](#content-types)
-- [Useful components](#components)
 
 ## Writing style
 
