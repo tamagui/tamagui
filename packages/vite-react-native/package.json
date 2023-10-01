@@ -47,6 +47,7 @@
     "http-proxy-middleware": "^2.0.6",
     "metro-inspector-proxy": "^0.71.0",
     "mime": "^3.0.0",
+    "open-editor": "^4.1.1",
     "pretty-format": "^28.1.0",
     "source-map": "^0.7.3",
     "url": "^0.11.0",

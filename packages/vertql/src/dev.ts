@@ -1,22 +1,21 @@
-import { CLIResolvedOptions } from '@tamagui/types'
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
-import { InlineConfig } from 'vite'
 import inspectPlugin from 'vite-plugin-inspect'
 import { start } from 'vite-react-native2'
 
-export const dev = async (options: CLIResolvedOptions) => {
+export const dev = async () => {
   const tamaguiVitePlugin = tamaguiPlugin({
-    ...options.tamaguiOptions,
+    components: ['@tamagui/core'],
+    config: 'src/tamagui.config.ts',
   })
 
-  const plugins = [tamaguiVitePlugin, inspectPlugin()] satisfies InlineConfig['plugins']
-
   await start({
+    root: process.cwd(),
+    host: '127.0.0.1',
     webConfig: {
-      plugins,
+      plugins: [tamaguiVitePlugin, inspectPlugin()],
     },
-    serverConfig: {
-      plugins,
+    buildConfig: {
+      plugins: [],
     },
   })
 }

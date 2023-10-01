@@ -4,7 +4,7 @@
   "private": true,
   "main": "index.jsx",
   "scripts": {
-    "dev": "tama dev"
+    "dev": "vertql dev"
   },
   "dependencies": {
     "@react-navigation/native": "^6.1.7",
@@ -18,7 +18,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-native": "^0.72.1",
-    "tamagui": "1.74.4"
+    "tamagui": "1.74.4",
+    "vertql": "0.0.0"
   },
   "devDependencies": {
     "@tamagui/cli": "1.74.4"

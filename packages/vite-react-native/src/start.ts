@@ -15,18 +15,12 @@ import { InlineConfig, build, createServer, mergeConfig, resolveConfig } from 'v
 
 import { clientInjectionsPlugin } from './dev/clientInjectPlugin'
 import { createDevServer } from './dev/createDevServer'
-import { HMRListener } from './dev/types'
+import { HMRListener } from './types'
 import { StartOptions } from './types'
 import { registerDispose } from './utils'
 
 export const start = async (options: StartOptions) => {
   const { root } = options
-
-  process.on('uncaughtException', (err) => {
-    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-    console.log(err?.message || err)
-  })
-
   const packageRootDir = join(__dirname, '..')
   const templateFile = join(packageRootDir, 'react-native-template.js')
 

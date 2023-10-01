@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@tamagui/vite-plugin": "1.74.4",
+    "citty": "^0.1.4",
     "fs-extra": "^11.1.0",
     "graphology": "^0.24.1",
     "graphql": "^16.8.0",
