@@ -7518,7 +7518,7 @@ __metadata:
     "@tamagui/shorthands": 1.74.3
     "@tamagui/themes": 1.74.3
     "@tamagui/vite-native-client": 1.74.3
-    grats: ^0.0.2
+    grats: 0.0.0-main-998b014c
     react: ^18.2.0
     react-dom: ^18.2.0
     react-native: ^0.72.1
@@ -11838,6 +11838,13 @@ __metadata:
   version: 2.20.0
   resolution: "commander@npm:2.20.0"
   checksum: 7f7ad57277e7a42e6931c0016e57ee1c14c3d2cf88aeff53c0c4d995a1a90ba33aa8bbff1cde1f92578b495e85c23aac7964c8f06322b9667b8b6e9ff9ceeca8
+  languageName: node
+  linkType: hard
+
+"commander@npm:^10.0.0":
+  version: 10.0.1
+  resolution: "commander@npm:10.0.1"
+  checksum: 436901d64a818295803c1996cd856621a74f30b9f9e28a588e726b2b1670665bccd7c1a77007ebf328729f0139838a88a19265858a0fa7a8728c4656796db948
   languageName: node
   linkType: hard
 
@@ -16498,16 +16505,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"grats@npm:^0.0.2":
-  version: 0.0.2
-  resolution: "grats@npm:0.0.2"
+"grats@npm:0.0.0-main-998b014c":
+  version: 0.0.0-main-998b014c
+  resolution: "grats@npm:0.0.0-main-998b014c"
   dependencies:
     "@graphql-tools/utils": ^9.2.1
+    commander: ^10.0.0
     graphql: ^16.6.0
     typescript: ^4.9.5
   bin:
     grats: dist/src/cli.js
-  checksum: 47255628292582e794e4cab7f76d87b9238531577061929b6ce7d3e02b143e5443b54fb3cf9dff9e3aa13c357f8f3262d2938d54c13eb4c717a9f8f1b50405ff
+  checksum: 69d8864917e1c3d53c25773c8ce5f235a951a18d8057acfa72767e0a899510ccfbc24b7cebdd4efe17035a5494505e65e3c086f289a7725e048e77ef2c25fab0
   languageName: node
   linkType: hard
 
