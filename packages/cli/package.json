@@ -52,6 +52,7 @@
     "typescript": "^5.2.2",
     "url": "^0.11.0",
     "vite": "^4.4.9",
+    "vite-plugin-entry-shaking": "^0.3.2",
     "vite-react-native2": "0.0.0",
     "vite-tsconfig-paths": "^4.2.0"
   },

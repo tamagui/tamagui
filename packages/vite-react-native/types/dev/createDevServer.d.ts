@@ -1,5 +1,4 @@
-import { StartOptions } from '../types';
-import { HMRListener } from '../types';
+import { HMRListener, StartOptions } from '../types';
 export declare function createDevServer(options: StartOptions, { indexJson, listenForHMR, getIndexBundle, hotUpdatedCJSFiles, }: {
     indexJson: Object;
     getIndexBundle: () => Promise<string>;

@@ -5963,7 +5963,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/animations-moti@workspace:packages/animations-moti":
+"@tamagui/animations-moti@1.74.4, @tamagui/animations-moti@workspace:packages/animations-moti":
   version: 0.0.0-use.local
   resolution: "@tamagui/animations-moti@workspace:packages/animations-moti"
   dependencies:
@@ -6163,6 +6163,7 @@ __metadata:
     typescript: ^5.2.2
     url: ^0.11.0
     vite: ^4.4.9
+    vite-plugin-entry-shaking: ^0.3.2
     vite-react-native2: 0.0.0
     vite-tsconfig-paths: ^4.2.0
   bin:
@@ -6281,6 +6282,7 @@ __metadata:
   resolution: "@tamagui/config@workspace:packages/config"
   dependencies:
     "@tamagui/animations-css": 1.74.4
+    "@tamagui/animations-moti": 1.74.4
     "@tamagui/animations-react-native": 1.74.4
     "@tamagui/build": 1.74.4
     "@tamagui/colors": 1.74.4
@@ -13523,6 +13525,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"es-module-lexer@npm:^1.0.3":
+  version: 1.3.1
+  resolution: "es-module-lexer@npm:1.3.1"
+  checksum: 3beafa7e171eb1e8cc45695edf8d51638488dddf65294d7911f8d6a96249da6a9838c87529262cc6ea53988d8272cec0f4bff93f476ed031a54ba3afb51a0ed3
+  languageName: node
+  linkType: hard
+
 "es-module-lexer@npm:^1.2.1":
   version: 1.2.1
   resolution: "es-module-lexer@npm:1.2.1"
@@ -19168,6 +19177,15 @@ __metadata:
   dependencies:
     sourcemap-codec: ^1.4.8
   checksum: 9a0e55a15c7303fc360f9572a71cffba1f61451bc92c5602b1206c9d17f492403bf96f946dfce7483e66822d6b74607262e24392e87b0ac27b786e69a40e9b1a
+  languageName: node
+  linkType: hard
+
+"magic-string@npm:^0.26.3":
+  version: 0.26.7
+  resolution: "magic-string@npm:0.26.7"
+  dependencies:
+    sourcemap-codec: ^1.4.8
+  checksum: 89b0d60cbb32bbf3d1e23c46ea93db082d18a8230b972027aecb10a40bba51be519ecce0674f995571e3affe917b76b09f59d8dbc9a1b2c9c4102a2b6e8a2b01
   languageName: node
   linkType: hard
 
@@ -28142,6 +28160,18 @@ __metadata:
     fast-glob: ^3.2.12
     magic-string: ^0.30.1
   checksum: 68efd897daa0c72a9f9d3481095dd3f7ec9a822be5a15eef60413734a4c894c5bbd1c1762f02daeef5df59cef212c9f1e7e056315e2a7780816ccafe5c74da6e
+  languageName: node
+  linkType: hard
+
+"vite-plugin-entry-shaking@npm:^0.3.2":
+  version: 0.3.2
+  resolution: "vite-plugin-entry-shaking@npm:0.3.2"
+  dependencies:
+    es-module-lexer: ^1.0.3
+    magic-string: ^0.26.3
+  peerDependencies:
+    vite: ">=2.0.0"
+  checksum: 1c0cb85cb856302447e3d65440a2f50a1188939a0d7ea13764dcda7c320f872ff83f2136f06f7d89792b60ec59690236a2917d2259d0260e0e4de210439b9a28
   languageName: node
   linkType: hard
 

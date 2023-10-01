@@ -54,8 +54,8 @@
   },
   "dependencies": {
     "@tamagui/animations-css": "1.74.4",
-    "@tamagui/animations-react-native": "1.74.4",
     "@tamagui/animations-moti": "1.74.4",
+    "@tamagui/animations-react-native": "1.74.4",
     "@tamagui/colors": "1.74.4",
     "@tamagui/font-inter": "1.74.4",
     "@tamagui/font-silkscreen": "1.74.4",
