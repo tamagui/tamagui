@@ -40,7 +40,19 @@ function getDefaultThemeProxied() {
 }
 
 export type ThemeGettable<Val> = Val & {
-  get: () =>
+  /**
+   * Tries to return an optimized value that avoids the need for re-rendering:
+   * On web a CSS variable, on iOS a dynamic color, on Android it doesn't
+   * optimize and returns the underyling value.
+   *
+   * See: https://reactnative.dev/docs/dynamiccolorios
+   *
+   * @param platform when "web" it will only return the dynamic value for web, avoiding the iOS dynamic value.
+   * For things like SVG, gradients, or other external components that don't support it, use this option.
+   */
+  get: (
+    platform?: 'web'
+  ) =>
     | string
     | (Val extends Variable<infer X>
         ? X extends VariableValGeneric
@@ -179,13 +191,18 @@ export function getThemeProxied(
                 // always track .val
                 track(keyString)
               } else if (subkey === 'get') {
-                return () => {
+                return (platform?: 'web') => {
                   const outVal = getVariable(val)
 
                   if (process.env.TAMAGUI_TARGET === 'native') {
                     // ios can avoid re-rendering in some cases when we are using a root light/dark
                     // disabled in cases where we have animations
-                    if (isIos && !deopt && config.settings.fastSchemeChange) {
+                    if (
+                      platform !== 'web' &&
+                      isIos &&
+                      !deopt &&
+                      config.settings.fastSchemeChange
+                    ) {
                       const isDark = name.startsWith('dark')
                       const isLight = !isDark && name.startsWith('light')
                       if (isDark || isLight) {
