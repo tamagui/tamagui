@@ -216,3 +216,5 @@ export default function Layout({ children }) {
   return <NextTamaguiProvider>{children}</NextTamaguiProvider>
 }
 ```
+
+Additionally, you will need to add the `skipNextHead` prop to your `<NextThemeProvider>`, as the internal usage of `next/head` is not supported in the app directory.
