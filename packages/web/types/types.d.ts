@@ -13,10 +13,21 @@ export type SpaceDirection = 'vertical' | 'horizontal' | 'both';
 export type TamaguiElement = HTMLElement | View;
 export type TamaguiTextElement = HTMLElement | RNText;
 export type DebugProp = boolean | 'break' | 'verbose' | 'visualize' | 'profile';
-export type TamaguiComponentPropsBase = {
+export type TamaguiComponentPropsBaseBase = {
     target?: string;
     hitSlop?: PressableProps['hitSlop'];
-    asChild?: boolean | 'except-style';
+    /**
+     * When truthy passes through all props to a single child element, and avoids rendering its own element.
+     * Must pass just one child React element that will receive all the props.
+     *
+     * The option "except-style" will avoid passing any style related props.
+     *
+     * The option "web" will map all React Native style props to web props (onPress becomes onClick).
+     *
+     * The option "except-style-web" combines the except-style and web options.
+     *
+     */
+    asChild?: boolean | 'except-style' | 'except-style-web' | 'web';
     dangerouslySetInnerHTML?: {
         __html: string;
     };
@@ -78,6 +89,11 @@ export type TamaguiComponentPropsBase = {
      * Disables className output of styles, instead using only inline styles
      */
     disableClassName?: boolean;
+    onFocus?: (event: React.FocusEvent<HTMLDivElement>) => void;
+    onScroll?: (event: React.UIEvent<HTMLDivElement, UIEvent>) => void;
+};
+export type TamaguiComponentPropsBase<A = {}> = WebOnlyPressEvents & TamaguiComponentPropsBaseBase;
+export type WebOnlyPressEvents = {
     onPress?: PressableProps['onPress'];
     onLongPress?: PressableProps['onLongPress'];
     onPressIn?: PressableProps['onPress'];
@@ -88,8 +104,6 @@ export type TamaguiComponentPropsBase = {
     onMouseLeave?: DivAttributes['onMouseLeave'];
     onMouseDown?: DivAttributes['onMouseDown'];
     onMouseUp?: DivAttributes['onMouseUp'];
-    onFocus?: (event: React.FocusEvent<HTMLDivElement>) => void;
-    onScroll?: (event: React.UIEvent<HTMLDivElement, UIEvent>) => void;
 };
 /**
  * For static / studio
@@ -114,6 +128,7 @@ export type TamaguiReactElement<P = {}> = React.ReactElement<P> & {
 };
 export type ReactComponentWithRef<Props, Ref> = ForwardRefExoticComponent<Props & RefAttributes<Ref>>;
 export type ComponentContextI = {
+    disableSSR?: boolean;
     inText: boolean;
     language: LanguageContextType | null;
     animationDriver: AnimationDriver | null;
@@ -260,12 +275,12 @@ type RemoveLanguagePostfixes<F extends GenericFonts> = {
 };
 type GetLanguagePostfixes<F extends GenericFonts> = GetLanguagePostfix<keyof F>;
 type ConfProps<A extends GenericTokens, B extends GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts, G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting, H extends DefaultFontSetting = DefaultFontSetting, I extends GenericTamaguiSettings = GenericTamaguiSettings> = {
-    tokens: A;
-    themes: B;
+    tokens?: A;
+    themes?: B;
     shorthands?: C;
     media?: D;
     animations?: AnimationDriver<E>;
-    fonts: F;
+    fonts?: F;
     onlyAllowShorthands?: G;
     defaultFont?: H;
     settings?: I;
@@ -310,6 +325,10 @@ export interface ThemeProps {
     shouldUpdate?: () => boolean | undefined;
     shallow?: boolean;
 }
+export type UseThemeWithStateProps = ThemeProps & {
+    deopt?: boolean;
+    disable?: boolean;
+};
 type ArrayIntersection<A extends any[]> = A[keyof A];
 type GetAltThemeNames<S> = (S extends `${string}_${infer Alt}` ? GetAltThemeNames<Alt> : S) | S;
 type SpacerPropsBase = {
@@ -370,6 +389,24 @@ type GenericTamaguiSettings = {
      * @default false
      */
     mediaPropOrder?: boolean;
+    /**
+     * On iOS, this enables a mode where Tamagui returns color values using `DynamicColorIOS`
+     * This is a React Native built in feature, you can read the docs here:
+     *   https://reactnative.dev/docs/dynamiccolorios
+     *
+     * We're working to make this enabled by default without any setting, but Tamagui themes
+     * support inversing and/or changing to light/dark at any point in the tree. We haven't implemented
+     * support for either of these cases when combined with this feature.
+     *
+     * So - as long as you:
+     *
+     *   1. Only use light/dark changes of themes at the root of your app
+     *   2. Don't use <Theme inverse> or themeInverse
+     *   3. Always change light/dark alongside the Appearance.colorSheme
+     *
+     * Then this feature is safe to turn on and will significantly speed up dark/light re-renders.
+     */
+    fastSchemeChange?: boolean;
 };
 export type TamaguiSettings = TamaguiConfig['settings'];
 export type CreateTamaguiProps = {
@@ -377,9 +414,9 @@ export type CreateTamaguiProps = {
     shorthands?: CreateShorthands;
     media?: GenericTamaguiConfig['media'];
     animations?: AnimationDriver<any>;
-    fonts: GenericTamaguiConfig['fonts'];
-    tokens: GenericTamaguiConfig['tokens'];
-    themes: {
+    fonts?: GenericTamaguiConfig['fonts'];
+    tokens?: GenericTamaguiConfig['tokens'];
+    themes?: {
         [key: string]: {
             [key: string]: string | number | Variable;
         };
@@ -923,11 +960,15 @@ export type TamaguiComponentState = {
     };
     group?: Record<string, GroupState>;
 };
-export type ResolveVariableAs = 'auto' | 'value' | 'variable' | 'none';
+export type ResolveVariableAs = 'auto' | 'value' | 'variable' | 'none' | 'web';
 export type SplitStyleProps = {
     mediaState?: Record<string, boolean>;
     noClassNames?: boolean;
-    resolveVariablesAs?: ResolveVariableAs;
+    noExpand?: boolean;
+    noNormalize?: boolean;
+    noSkip?: boolean;
+    resolveValues?: ResolveVariableAs;
+    disableExpandShorthands?: boolean;
     fallbackProps?: Record<string, any>;
     hasTextAncestor?: boolean;
     isAnimated: boolean;
@@ -1086,4 +1127,7 @@ export type DedupedTheme = {
     theme: ThemeParsed;
 };
 export type DedupedThemes = DedupedTheme[];
+export type UseMediaState = {
+    [key in MediaQueryKey]: boolean;
+};
 //# sourceMappingURL=types.d.ts.map

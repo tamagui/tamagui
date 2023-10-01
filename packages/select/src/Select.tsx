@@ -8,6 +8,7 @@ import {
   getVariableValue,
   isWeb,
   styled,
+  useEvent,
   useGet,
   useIsomorphicLayoutEffect,
   withStaticProperties,
@@ -438,6 +439,7 @@ export const Select = withStaticProperties(
       onValueChange,
       disablePreventBodyScroll,
       size: sizeProp = '$true',
+      onActiveChange,
       dir,
     } = props
 
@@ -511,6 +513,9 @@ export const Select = withStaticProperties(
             setValue(val)
             emitValue(val)
           }, [])}
+          onActiveChange={useEvent((...args) => {
+            onActiveChange?.(...args)
+          })}
           setSelectedIndex={setSelectedIndex}
           setValueAtIndex={React.useCallback((index, value) => {
             listContentRef.current[index] = value
@@ -533,10 +538,15 @@ export const Select = withStaticProperties(
             activeIndex={activeIndex}
             selectedIndex={selectedIndex}
             setActiveIndex={React.useCallback((index) => {
-              setActiveIndex(index)
-              if (typeof index === 'number') {
-                emitActiveIndex(index)
-              }
+              setActiveIndex((prev) => {
+                if (prev !== index) {
+                  if (typeof index === 'number') {
+                    emitActiveIndex(index)
+                  }
+                  return index
+                }
+                return prev
+              })
             }, [])}
             value={value}
             open={open}

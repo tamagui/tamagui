@@ -2,8 +2,6 @@ import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
 import { createSchema, createYoga } from 'graphql-yoga'
 import { extractGratsSchemaAtRuntime } from 'grats'
 
-import * as resolvers from './graph/user'
-
 // extract the GraphQL schema.
 const schema = extractGratsSchemaAtRuntime({
   emitSchemaFile: './schema.graphql',
@@ -12,10 +10,15 @@ const schema = extractGratsSchemaAtRuntime({
 const yogaSchema = createSchema({
   typeDefs: schema,
   resolvers: {
-    Query: {
-      hello(...args) {
-        console.log('args', args)
-        return `hi`
+    // Query: {
+    //   hello(...args) {
+    //     console.log('args', args)
+    //     return `hi`
+    //   },
+    // },
+    User: {
+      greet() {
+        return `ok`
       },
     },
   },

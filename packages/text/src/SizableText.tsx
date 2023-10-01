@@ -5,6 +5,7 @@ const variants = {
   unstyled: {
     false: {
       size: '$true',
+      color: '$color',
     },
   },
 

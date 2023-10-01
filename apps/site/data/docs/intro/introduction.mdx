@@ -4,13 +4,20 @@ description: Universal styles for React Native and Web
 ---
 
 <IntroParagraph>
-  Style more consistently, easily, and performantly while sharing typed tokens, themes,
-  fonts and more across both React Native and Web.
+  Tamagui is a complete UI solution for cross-platform apps on React (web and native),
+  featuring best-in-class performance and highly platform-optimized output thanks to a
+  smart compiler.
 </IntroParagraph>
+
+<GetStarted />
+
+---
+
+## High level
 
 The highest level part of Tamagui is `tamagui` itself, a complete UI kit built on top of `@tamagui/core`. This gives you a huge amount of progress towards a beautiful, fully working app consisting of some of the hardest components to get right, all done in a way that gives you control over their styling.
 
-## `@tamagui/core`
+### `@tamagui/core`
 
 After [configuring](/docs/core/configuration), use `@tamagui/core` as simply as:
 
@@ -146,7 +153,7 @@ Using [createTamagui](/docs/core/configuration) you can generate a fully-typed d
 
 ---
 
-## `@tamagui/static`
+### `@tamagui/static`
 
 The `@tamagui/static` package is an optimizing compiler for React that does much more than just extracting CSS styles. It significantly speeds up the runtime of apps by flattening your styled views as their call-sites, handling even tricky dynamic styles there, and outputting a `div` (on the web) or `View` (on native).
 
@@ -154,7 +161,7 @@ There's a lot to it, and good reasons it exists, but are [discussed more on the 
 
 ---
 
-## `tamagui`
+### `tamagui`
 
 Above that, [the Tamagui UI Kit](/docs/components/stacks) for building full-featured app interfaces right out of the box. Featuring powerful, themeable components that scale across every size in your design system. Enjoy Radix-like composable component APIs that always visually adapt properly to each platform.
 

@@ -8,5 +8,5 @@ export declare const getSizedElevation: (val: SizeTokens | number | boolean, { t
         height: number;
         width: number;
     };
-};
+} | undefined;
 //# sourceMappingURL=getElevation.d.ts.map

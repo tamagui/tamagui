@@ -4,19 +4,16 @@ import Link from 'next/link'
 import { memo } from 'react'
 import {
   Button,
-  ButtonText,
   H1,
   Paragraph,
   Spacer,
   Text,
   Theme,
-  ThemeParsed,
   TooltipSimple,
   VisuallyHidden,
   XStack,
   YStack,
   styled,
-  useTheme,
 } from 'tamagui'
 
 import { ContainerLarge } from './Container'
@@ -108,9 +105,9 @@ const HeroContents = memo(function HeroContents() {
       <YStack
         f={1}
         ov="hidden"
-        space="$3"
+        gap="$3"
         position="relative"
-        pt="$14"
+        pt="$15"
         mb="$4"
         $sm={{
           maxWidth: '100%',
@@ -138,7 +135,7 @@ const HeroContents = memo(function HeroContents() {
           </Link>
         </XStack>
 
-        <YStack ai="flex-start" $gtSm={{ ai: 'center' }} space="$2">
+        <YStack ai="flex-start" $gtSm={{ ai: 'center' }} gap="$4">
           <H1
             ta="left"
             size="$10"
@@ -195,92 +192,52 @@ const HeroContents = memo(function HeroContents() {
         <InstallInput />
         <Spacer size="$1" />
 
-        <XStack ai="center" jc="center" $xxs={{ ai: 'center', fw: 'wrap' }}>
+        <XStack
+          ai="center"
+          jc="center"
+          gap="$2"
+          $xxs={{ ai: 'center', fw: 'wrap', gap: 0 }}
+        >
           <NextLink target="_blank" href="https://twitter.com/tamagui_js">
             <TooltipSimple placement="top" delay={0} restMs={25} label="Twitter">
               <YStack p="$5" $sm={{ p: '$3' }} opacity={0.65} hoverStyle={{ opacity: 1 }}>
                 <VisuallyHidden>
                   <Text>Twitter</Text>
                 </VisuallyHidden>
-                <TwitterIcon width={23} />
+                <TwitterIcon width={24} />
               </YStack>
             </TooltipSimple>
           </NextLink>
 
-          <XStack
-            ai="center"
-            jc="center"
-            space="$2"
-            $xxs={{
-              // words web-only
-              // @ts-ignore
-              order: '-1',
-              mx: '50%',
-            }}
-          >
-            <NextLink prefetch={false} href="/docs/intro/why-a-compiler">
-              <Button
-                // layout shifts...
-                w={121}
-                h={52}
-                accessibilityLabel="Get started (docs)"
-                fontFamily="$silkscreen"
-                size="$5"
-                borderRadius={1000}
-                bordered
-                bw={2}
-                mx="$2"
-                tabIndex="0"
-                elevation="$1"
-                pressStyle={{
-                  elevation: '$0',
-                }}
-              >
-                <ButtonText fontFamily="$silkscreen" size="$7" letterSpacing={1}>
-                  How?
-                </ButtonText>
-              </Button>
-            </NextLink>
-
-            <NextLink prefetch={false} href="/docs/intro/introduction">
-              <Button
-                // layout shifts...
-                w={118}
-                h={52}
-                accessibilityLabel="Get started (docs)"
-                fontFamily="$silkscreen"
-                size="$5"
-                borderRadius={1000}
-                bordered
-                bw={2}
-                mx="$2"
-                tabIndex="0"
-                elevation="$1"
-                letterSpacing={-2}
-                pressStyle={{
-                  elevation: '$0',
-                }}
-              >
-                <ButtonText fontFamily="$silkscreen" size="$7" letterSpacing={1}>
-                  Docs
-                </ButtonText>
-              </Button>
-            </NextLink>
-          </XStack>
+          <NextLink prefetch={false} href="/docs/intro/introduction">
+            <Button
+              h={52}
+              accessibilityLabel="Get started (docs)"
+              fontFamily="$silkscreen"
+              size="$5"
+              fontSize="$6"
+              borderRadius={1000}
+              bordered
+              bw={2}
+              mx="$2"
+              tabIndex="0"
+              elevation="$1"
+              letterSpacing={-2}
+              pressStyle={{
+                elevation: '$0',
+              }}
+            >
+              Get started
+            </Button>
+          </NextLink>
 
           <NextLink target="_blank" href="https://discord.gg/4qh6tdcVDa">
             <TooltipSimple placement="top" delay={0} restMs={25} label="Discord">
-              <YStack
-                p="$5"
-                $sm={{ p: '$3' }}
-                ml="$-2"
-                opacity={0.65}
-                hoverStyle={{ opacity: 1 }}
-              >
+              <YStack p="$5" $sm={{ p: '$3' }} opacity={0.65} hoverStyle={{ opacity: 1 }}>
                 <VisuallyHidden>
                   <Text>Discord</Text>
                 </VisuallyHidden>
-                <DiscordIcon plain width={23} />
+                <DiscordIcon plain width={24} />
               </YStack>
             </TooltipSimple>
           </NextLink>

@@ -6,7 +6,7 @@ const emptyObj = {} as any
 const styleProps = {
   mediaState: undefined,
   isAnimated: false,
-  resolveVariablesAs: 'auto',
+  resolveValues: 'auto',
 } satisfies SplitStyleProps
 
 export function simplifiedGetSplitStyles(

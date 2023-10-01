@@ -48,21 +48,18 @@ export interface FormTriggerProps extends StackProps {}
 
 export const FormTrigger = FormTriggerFrame.styleable(
   (props: ScopedProps<FormTriggerProps>, forwardedRef) => {
-    const { __scopeForm, children, ...triggerProps } = props
+    const { __scopeForm, children, onPress, ...triggerProps } = props
     const context = useFormContext(TRIGGER_NAME, __scopeForm)
 
     return (
       <FormTriggerFrame
         tag="button"
         {...triggerProps}
-        children={
-          triggerProps.asChild
-            ? cloneElement(children, { disabled: triggerProps.disabled })
-            : children
-        }
         ref={forwardedRef}
-        onPress={composeEventHandlers(props.onPress as any, context.onSubmit)}
-      />
+        onPress={composeEventHandlers(onPress as any, context.onSubmit)}
+      >
+        {children}
+      </FormTriggerFrame>
     )
   }
 )

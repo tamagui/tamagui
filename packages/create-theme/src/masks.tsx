@@ -24,13 +24,34 @@ export const skipMask: CreateMask = {
 }
 
 function applyOverrides(key: string, value: number | string, opts: MaskOptions) {
-  if (!opts.override) return value
-  const override = opts.override[key]
+  let override: string | number | undefined
+  let strategy = opts.overrideStrategy
+
+  const overrideSwap = opts.overrideSwap?.[key]
+  if (typeof overrideSwap !== 'undefined') {
+    override = overrideSwap
+    strategy = 'swap'
+  } else {
+    const overrideShift = opts.overrideShift?.[key]
+    if (typeof overrideShift !== 'undefined') {
+      override = overrideShift
+      strategy = 'shift'
+    } else {
+      const overrideDefault = opts.override?.[key]
+      if (typeof overrideDefault !== 'undefined') {
+        override = overrideDefault
+        strategy = opts.overrideStrategy
+      }
+    }
+  }
+
   if (typeof override === 'undefined') return value
   if (typeof override === 'string') return value
-  if (opts.overrideStrategy === 'swap') {
+
+  if (strategy === 'swap') {
     return override
   }
+
   return value
 }
 

@@ -1,9 +1,7 @@
-import type { Scope } from '@tamagui/create-context'
-import { createContextScope } from '@tamagui/create-context'
 import { getButtonSized } from '@tamagui/get-button-sized'
 import { Group, GroupProps, useGroupItem } from '@tamagui/group'
-import { RovingFocusGroup, createRovingFocusGroupScope } from '@tamagui/roving-focus'
-import { SizableStack, ThemeableStack, ThemeableStackProps } from '@tamagui/stacks'
+import { RovingFocusGroup } from '@tamagui/roving-focus'
+import { SizableStack, ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
 import {
@@ -12,6 +10,7 @@ import {
   Theme,
   composeEventHandlers,
   composeRefs,
+  createStyledContext,
   isWeb,
   styled,
   useEvent,
@@ -19,6 +18,8 @@ import {
 } from '@tamagui/web'
 import * as React from 'react'
 import type { LayoutRectangle } from 'react-native'
+
+const TABS_CONTEXT = 'TabsContext'
 
 /* -------------------------------------------------------------------------------------------------
  * TabsList
@@ -45,16 +46,15 @@ const TabsList = TabsListFrame.extractable(
   React.forwardRef<HTMLDivElement, TabsListProps>(
     (props: ScopedProps<TabsListProps>, forwardedRef) => {
       const { __scopeTabs, loop = true, children, ...listProps } = props
-      const context = useTabsContext(TAB_LIST_NAME, __scopeTabs)
-      const rovingFocusGroupScope = useRovingFocusGroupScope(__scopeTabs)
+      const context = useTabsContext(__scopeTabs)
 
       return (
         <RovingFocusGroup
+          __scopeRovingFocusGroup={__scopeTabs || TABS_CONTEXT}
           asChild="except-style"
           orientation={context.orientation}
           dir={context.dir}
           loop={loop}
-          {...rovingFocusGroupScope}
         >
           <TabsListFrame
             role="tablist"
@@ -144,7 +144,7 @@ type TabsTriggerProps = TabsTriggerFrameProps & {
 type TabsTabProps = TabsTriggerProps
 
 const TabsTrigger = TabsTriggerFrame.extractable(
-  React.forwardRef<HTMLButtonElement, TabsTriggerProps>(
+  React.forwardRef<HTMLButtonElement, ScopedProps<TabsTriggerProps>>(
     (props: ScopedProps<TabsTriggerProps>, forwardedRef) => {
       const {
         __scopeTabs,
@@ -153,8 +153,7 @@ const TabsTrigger = TabsTriggerFrame.extractable(
         onInteraction,
         ...triggerProps
       } = props
-      const context = useTabsContext(TRIGGER_NAME, __scopeTabs)
-      const rovingFocusGroupScope = useRovingFocusGroupScope(__scopeTabs)
+      const context = useTabsContext(__scopeTabs)
       const triggerId = makeTriggerId(context.baseId, value)
       const contentId = makeContentId(context.baseId, value)
       const isSelected = value === context.value
@@ -199,8 +198,8 @@ const TabsTrigger = TabsTriggerFrame.extractable(
       return (
         <Theme name={isSelected ? 'active' : null}>
           <RovingFocusGroup.Item
+            __scopeRovingFocusGroup={__scopeTabs || TABS_CONTEXT}
             asChild="except-style"
-            {...rovingFocusGroupScope}
             focusable={!disabled}
             active={isSelected}
           >
@@ -306,7 +305,7 @@ const TabsContent = TabsContentFrame.extractable(
   React.forwardRef<HTMLDivElement, TabsContentProps>(
     (props: ScopedProps<TabsContentProps>, forwardedRef) => {
       const { __scopeTabs, value, forceMount, children, ...contentProps } = props
-      const context = useTabsContext(CONTENT_NAME, __scopeTabs)
+      const context = useTabsContext(__scopeTabs)
       const isSelected = value === context.value
       const show = forceMount || isSelected
 
@@ -343,11 +342,11 @@ TabsContent.displayName = CONTENT_NAME
 
 const TABS_NAME = 'Tabs'
 
-type ScopedProps<P> = P & { __scopeTabs?: Scope }
-const [createTabsContext, createTabsScope] = createContextScope(TABS_NAME, [
-  createRovingFocusGroupScope,
-])
-const useRovingFocusGroupScope = createRovingFocusGroupScope()
+type ScopedProps<P> = P & { __scopeTabs?: string }
+// const [createTabsContext, createTabsScope] = createContextScope(TABS_NAME, [
+//   createRovingFocusGroupScope,
+// ])
+// const useRovingFocusGroupScope = createRovingFocusGroupScope()
 
 type TabsContextValue = {
   baseId: string
@@ -362,7 +361,8 @@ type TabsContextValue = {
   triggersCount: number
 }
 
-const [TabsProvider, useTabsContext] = createTabsContext<TabsContextValue>(TABS_NAME)
+const { Provider: TabsProvider, useStyledContext: useTabsContext } =
+  createStyledContext<TabsContextValue>()
 
 const TabsFrame = styled(SizableStack, {
   name: TABS_NAME,
@@ -395,7 +395,7 @@ type TabsProps = TabsFrameProps & {
 
 export const Tabs = withStaticProperties(
   TabsFrame.extractable(
-    React.forwardRef<HTMLDivElement, TabsProps>(
+    React.forwardRef<HTMLDivElement, ScopedProps<TabsProps>>(
       (props: ScopedProps<TabsProps>, forwardedRef) => {
         const {
           __scopeTabs,

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/checkbox",
-  "version": "1.68.5",
+  "version": "1.74.5",
   "sideEffects": [
     "*.css"
   ],
@@ -16,19 +16,23 @@
   ],
   "scripts": {
     "build": "tamagui-build",
-    "watch": "tamagui-build --watch"
+    "watch": "tamagui-build --watch",
+    "lint": "../../node_modules/.bin/biome check src",
+    "lint:fix": "../../node_modules/.bin/biome check --apply-unsafe src",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/core": "1.68.5",
-    "@tamagui/create-context": "1.68.5",
-    "@tamagui/focusable": "1.68.5",
-    "@tamagui/font-size": "1.68.5",
-    "@tamagui/get-token": "1.68.5",
-    "@tamagui/helpers-tamagui": "1.68.5",
-    "@tamagui/label": "1.68.5",
-    "@tamagui/stacks": "1.68.5",
-    "@tamagui/use-controllable-state": "1.68.5",
-    "@tamagui/use-previous": "1.68.5"
+    "@tamagui/core": "1.74.5",
+    "@tamagui/create-context": "1.74.5",
+    "@tamagui/focusable": "1.74.5",
+    "@tamagui/font-size": "1.74.5",
+    "@tamagui/get-token": "1.74.5",
+    "@tamagui/helpers-tamagui": "1.74.5",
+    "@tamagui/label": "1.74.5",
+    "@tamagui/stacks": "1.74.5",
+    "@tamagui/use-controllable-state": "1.74.5",
+    "@tamagui/use-previous": "1.74.5"
   },
   "exports": {
     "./package.json": "./package.json",
@@ -42,7 +46,7 @@
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.68.5",
+    "@tamagui/build": "1.74.5",
     "react": "^18.2.0"
   },
   "publishConfig": {

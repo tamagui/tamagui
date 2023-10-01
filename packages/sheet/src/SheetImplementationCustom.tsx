@@ -4,10 +4,9 @@ import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   Theme,
   getConfig,
-  isTouchable,
   isWeb,
   themeable,
-  useAnimationDriver,
+  useConfiguration,
   useEvent,
   useIsomorphicLayoutEffect,
   useThemeName,
@@ -117,11 +116,10 @@ export const SheetImplementationCustom = themeable(
       [screenSize, frameSize, snapPoints, snapPointsMode]
     )
 
-    const driver = useAnimationDriver()
+    const { animationDriver } = useConfiguration()
     const { useAnimatedNumber, useAnimatedNumberStyle, useAnimatedNumberReaction } =
-      driver
-
-    const AnimatedView = driver.View as typeof Animated.View
+      animationDriver
+    const AnimatedView = animationDriver.View as typeof Animated.View
 
     useIsomorphicLayoutEffect(() => {
       if (!(parentSheetContext && open)) return
@@ -146,11 +144,14 @@ export const SheetImplementationCustom = themeable(
         value: animatedNumber,
         hostRef: sheetRef,
       },
-      useCallback((value) => {
-        if (!driver.isReactNative) return
-        at.current = value
-        scrollBridge.paneY = value
-      }, [])
+      useCallback(
+        (value) => {
+          if (!animationDriver.isReactNative) return
+          at.current = value
+          scrollBridge.paneY = value
+        },
+        [animationDriver]
+      )
     )
 
     function stopSpring() {

@@ -7,7 +7,6 @@ export default () => (
       <Text>hi from home</Text>
     </Stack>
     <Link
-      asChild
       href={{
         pathname: '/[user]',
         params: { user: 'abc' },

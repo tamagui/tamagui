@@ -1,31 +1,61 @@
 // import './wdyr'
 
-import { Stack, styled } from '@tamagui/web'
-import { Anchor, SizableText, createSwitch } from 'tamagui'
-
-const X = styled(SizableText, {
-  size: '$10',
-})
-
-const ChangeWeight = styled(Stack, {
-  backgroundColor: 'red',
-})
-
-export const MyAnchor = styled(Anchor, {
-  name: 'Link',
-  cursor: 'pointer',
-  fontWeight: '700',
-  textDecorationLine: 'underline',
-})
-
-const StyledSwitch = createSwitch({})
+import { ChevronRight } from '@tamagui/lucide-icons'
+import { memo, useState } from 'react'
+import { Appearance, View } from 'react-native'
+import { Button, ListItem, ListItemFrame, Square, Theme, styled } from 'tamagui'
 
 export const Sandbox = () => {
   return (
-    <>
-      <StyledSwitch>
-        <StyledSwitch.Thumb animation="quick" />
-      </StyledSwitch>
-    </>
+    <View
+      style={{ width: '100%', height: '100%', backgroundColor: 'yellow', padding: 50 }}
+    >
+      {/* <ThemeChangeTest /> */}
+      {/* <ChevronRight color="$color" /> */}
+      <ListItem icon={ChevronRight} />
+    </View>
   )
 }
+
+// const CustomButton = styled(Button, {
+//   color: 'red',
+//   pressStyle: {
+//     color: 'blue',
+//   },
+// })
+
+// function ThemeChangeTest() {
+//   const [x, setX] = useState('dark' as any)
+
+//   return (
+//     <>
+//       <Button
+//         title="change"
+//         onPress={() => {
+//           const next = x === 'dark' ? 'light' : 'dark'
+//           Appearance.setColorScheme(next)
+//           setX(next)
+//         }}
+//       />
+//       <Theme name="blue">
+//         <Theme name={x}>
+//           <Children />
+//         </Theme>
+//       </Theme>
+//     </>
+//   )
+// }
+
+// const Children = memo(() => {
+//   return (
+//     <>
+//       <ListItem w={200} h={200} />
+//       <Square
+//         // animation="bouncy"
+//         // animateOnly={['backgroundColor']}
+//         size={100}
+//         bc="$background"
+//       />
+//     </>
+//   )
+// })

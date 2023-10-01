@@ -1,7 +1,5 @@
-import { Collapsible, createCollapsibleScope } from '@tamagui/collapsible'
+import { Collapsible } from '@tamagui/collapsible'
 import { createCollection } from '@tamagui/collection'
-import type { Scope } from '@tamagui/create-context'
-import { createContextScope } from '@tamagui/create-context'
 import { YStack } from '@tamagui/stacks'
 import { H1, H3 } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -12,6 +10,7 @@ import {
   Stack,
   TamaguiElement,
   composeEventHandlers,
+  createStyledContext,
   isWeb,
   styled,
   useComposedRefs,
@@ -28,16 +27,10 @@ type Direction = 'ltr' | 'rtl'
 const ACCORDION_NAME = 'Accordion'
 const ACCORDION_KEYS = ['Home', 'End', 'ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight']
 
-const [Collection, useCollection, createCollectionScope] =
-  createCollection<AccordionTrigger>(ACCORDION_NAME)
+const [Collection, useCollection] = createCollection<AccordionTrigger>(ACCORDION_NAME)
 
-type ScopedProps<P> = P & { __scopeAccordion?: Scope }
-const [createAccordionContext, createAccordionScope] = createContextScope(
-  ACCORDION_NAME,
-  [createCollectionScope, createCollapsibleScope]
-)
+type ScopedProps<P> = P & { __scopeAccordion?: string }
 
-const useCollapsibleScope = createCollapsibleScope()
 type AccordionElement = AccordionImplMultipleElement | AccordionImplSingleElement
 interface AccordionSingleProps extends AccordionImplSingleProps {
   type: 'single'
@@ -46,16 +39,18 @@ interface AccordionMultipleProps extends AccordionImplMultipleProps {
   type: 'multiple'
 }
 
+const ACCORDION_CONTEXT = 'Accordion'
+
 const AccordionComponent = React.forwardRef<
   AccordionElement,
-  AccordionSingleProps | AccordionMultipleProps
+  ScopedProps<AccordionSingleProps | AccordionMultipleProps>
 >((props: ScopedProps<AccordionSingleProps | AccordionMultipleProps>, forwardedRef) => {
   const { type, ...accordionProps } = props
   const singleProps = accordionProps as AccordionImplSingleProps
   const multipleProps = accordionProps as AccordionImplMultipleProps
 
   return (
-    <Collection.Provider scope={props.__scopeAccordion}>
+    <Collection.Provider __scopeCollection={props.__scopeAccordion || ACCORDION_CONTEXT}>
       {type === 'multiple' ? (
         <AccordionImplMultiple {...multipleProps} ref={forwardedRef} />
       ) : (
@@ -97,11 +92,13 @@ type AccordionValueContextValue = {
   onItemClose(value: string): void
 }
 
-const [AccordionValueProvider, useAccordionValueContext] =
-  createAccordionContext<AccordionValueContextValue>(ACCORDION_NAME)
+const { Provider: AccordionValueProvider, useStyledContext: useAccordionValueContext } =
+  createStyledContext<AccordionValueContextValue>()
 
-const [AccordionCollapsibleProvider, useAccordionCollapsibleContext] =
-  createAccordionContext(ACCORDION_NAME, { collapsible: false })
+const {
+  Provider: AccordionCollapsibleProvider,
+  useStyledContext: useAccordionCollapsibleContext,
+} = createStyledContext()
 
 type AccordionImplSingleElement = AccordionImplElement
 
@@ -128,7 +125,7 @@ interface AccordionImplSingleProps extends AccordionImplProps {
 
 const AccordionImplSingle = React.forwardRef<
   AccordionImplSingleElement,
-  AccordionImplSingleProps
+  ScopedProps<AccordionImplSingleProps>
 >((props: ScopedProps<AccordionImplSingleProps>, forwardedRef) => {
   const {
     value: valueProp,
@@ -185,7 +182,7 @@ interface AccordionImplMultipleProps extends AccordionImplProps {
 
 const AccordionImplMultiple = React.forwardRef<
   AccordionImplMultipleElement,
-  AccordionImplMultipleProps
+  ScopedProps<AccordionImplMultipleProps>
 >((props: ScopedProps<AccordionImplMultipleProps>, forwardedRef) => {
   const {
     value: valueProp,
@@ -233,8 +230,8 @@ type AccordionImplContextValue = {
   orientation: AccordionImplProps['orientation']
 }
 
-const [AccordionImplProvider, useAccordionContext] =
-  createAccordionContext<AccordionImplContextValue>(ACCORDION_NAME)
+const { Provider: AccordionImplProvider, useStyledContext: useAccordionContext } =
+  createStyledContext<AccordionImplContextValue>()
 
 type AccordionImplElement = TamaguiElement
 type PrimitiveDivProps = React.ComponentPropsWithoutRef<typeof Stack>
@@ -273,7 +270,7 @@ const AccordionImpl = React.forwardRef<AccordionImplElement, AccordionImplProps>
 
     const accordionRef = React.useRef<AccordionImplElement>(null)
     const composedRef = useComposedRefs(accordionRef, forwardedRef)
-    const getItems = useCollection(__scopeAccordion)
+    const getItems = useCollection(__scopeAccordion || ACCORDION_CONTEXT)
     const direction = useDirection(dir)
     const isDirectionLTR = direction === 'ltr'
     const handleKeyDown = composeEventHandlers(
@@ -362,7 +359,7 @@ const AccordionImpl = React.forwardRef<AccordionImplElement, AccordionImplProps>
         direction={dir}
         orientation={orientation}
       >
-        <Collection.Slot scope={__scopeAccordion}>
+        <Collection.Slot __scopeCollection={__scopeAccordion || ACCORDION_CONTEXT}>
           <YStack
             data-orientation={orientation}
             ref={composedRef}
@@ -384,8 +381,8 @@ const AccordionImpl = React.forwardRef<AccordionImplElement, AccordionImplProps>
 const ITEM_NAME = 'AccordionItem'
 
 type AccordionItemContextValue = { open?: boolean; disabled?: boolean; triggerId: string }
-const [AccordionItemProvider, useAccordionItemContext] =
-  createAccordionContext<AccordionItemContextValue>(ITEM_NAME)
+const { Provider: AccordionItemProvider, useStyledContext: useAccordionItemContext } =
+  createStyledContext<AccordionItemContextValue>()
 type AccordionItemElement = React.ElementRef<typeof Collapsible>
 type CollapsibleProps = React.ComponentPropsWithoutRef<typeof Collapsible>
 interface AccordionItemProps
@@ -409,9 +406,8 @@ interface AccordionItemProps
 const AccordionItem = React.forwardRef<AccordionItemElement, AccordionItemProps>(
   (props: ScopedProps<AccordionItemProps>, forwardedRef) => {
     const { __scopeAccordion, value, ...accordionItemProps } = props
-    const accordionContext = useAccordionContext(ITEM_NAME, __scopeAccordion)
-    const valueContext = useAccordionValueContext(ITEM_NAME, __scopeAccordion)
-    const collapsibleScope = useCollapsibleScope(__scopeAccordion)
+    const accordionContext = useAccordionContext(__scopeAccordion)
+    const valueContext = useAccordionValueContext(__scopeAccordion)
     const triggerId = React.useId()
     const open = (value && valueContext.value.includes(value)) || false
     const disabled = accordionContext.disabled || props.disabled
@@ -426,7 +422,7 @@ const AccordionItem = React.forwardRef<AccordionItemElement, AccordionItemProps>
         <Collapsible
           data-orientation={accordionContext.orientation}
           data-state={open ? 'open' : 'closed'}
-          {...collapsibleScope}
+          __scopeCollapsible={__scopeAccordion || ACCORDION_CONTEXT}
           {...accordionItemProps}
           ref={forwardedRef}
           disabled={disabled}
@@ -463,8 +459,8 @@ type AccordionHeaderProps = PrimitiveHeading3Props
 const AccordionHeader = React.forwardRef<AccordionHeaderElement, AccordionHeaderProps>(
   (props: ScopedProps<AccordionHeaderProps>, forwardedRef) => {
     const { __scopeAccordion, ...headerProps } = props
-    const accordionContext = useAccordionContext(ACCORDION_NAME, __scopeAccordion)
-    const itemContext = useAccordionItemContext(HEADER_NAME, __scopeAccordion)
+    const accordionContext = useAccordionContext(__scopeAccordion)
+    const itemContext = useAccordionItemContext(__scopeAccordion)
     return (
       <H1
         data-orientation={accordionContext.orientation}
@@ -513,8 +509,6 @@ const AccordionTriggerFrame = styled(Collapsible.Trigger, {
   },
 })
 
-const TRIGGER_NAME = 'AccordionTrigger'
-
 type AccordionTrigger = GetRef<typeof AccordionTriggerFrame>
 type AccordionTriggerProps = GetProps<typeof AccordionTriggerFrame>
 
@@ -527,21 +521,18 @@ const AccordionTrigger = AccordionTriggerFrame.styleable(function AccordionTrigg
   forwardedRef
 ) {
   const { __scopeAccordion, ...triggerProps } = props
-  const accordionContext = useAccordionContext(ACCORDION_NAME, __scopeAccordion)
-  const itemContext = useAccordionItemContext(TRIGGER_NAME, __scopeAccordion)
-  const collapsibleContext = useAccordionCollapsibleContext(
-    TRIGGER_NAME,
-    __scopeAccordion
-  )
-  const collapsibleScope = useCollapsibleScope(__scopeAccordion)
+  const accordionContext = useAccordionContext(__scopeAccordion)
+  const itemContext = useAccordionItemContext(__scopeAccordion)
+  const collapsibleContext = useAccordionCollapsibleContext(__scopeAccordion)
 
   return (
-    <Collection.ItemSlot scope={__scopeAccordion}>
+    <Collection.ItemSlot __scopeCollection={__scopeAccordion || ACCORDION_CONTEXT}>
       <AccordionTriggerFrame
+        //   @ts-ignore
+        __scopeCollapsible={__scopeAccordion || ACCORDION_CONTEXT}
         aria-disabled={(itemContext.open && !collapsibleContext.collapsible) || undefined}
         data-orientation={accordionContext.orientation}
         id={itemContext.triggerId}
-        {...collapsibleScope}
         {...triggerProps}
         ref={forwardedRef}
       />
@@ -578,15 +569,14 @@ const AccordionContent = AccordionContentFrame.styleable(function AccordionConte
   forwardedRef
 ) {
   const { __scopeAccordion, ...contentProps } = props
-  const accordionContext = useAccordionContext(ACCORDION_NAME, __scopeAccordion)
-  const itemContext = useAccordionItemContext('AccordionContent', __scopeAccordion)
-  const collapsibleScope = useCollapsibleScope(__scopeAccordion)
+  const accordionContext = useAccordionContext(__scopeAccordion)
+  const itemContext = useAccordionItemContext(__scopeAccordion)
   return (
     <AccordionContentFrame
       role="region"
       aria-labelledby={itemContext.triggerId}
       data-orientation={accordionContext.orientation}
-      {...collapsibleScope}
+      __scopeCollapsible={__scopeAccordion || ACCORDION_CONTEXT}
       {...contentProps}
       ref={forwardedRef}
     />
@@ -605,7 +595,7 @@ const Accordion = withStaticProperties(AccordionComponent, {
   Item: AccordionItem,
 })
 
-export { Accordion, createAccordionScope }
+export { Accordion }
 
 export type {
   AccordionContentProps,

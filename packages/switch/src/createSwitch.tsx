@@ -14,6 +14,7 @@ import {
 import { registerFocusable } from '@tamagui/focusable'
 import { getSize } from '@tamagui/get-token'
 import { useLabelContext } from '@tamagui/label'
+import { YStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { usePrevious } from '@tamagui/use-previous'
 import * as React from 'react'
@@ -60,13 +61,13 @@ type SwitchThumbComponent = TamaguiComponentExpectingVariants<
 >
 
 export function createSwitch<F extends SwitchComponent, T extends SwitchThumbComponent>({
+  disableActiveTheme,
   Frame = DefaultSwitchFrame as any,
   Thumb = SwitchThumb as any,
-  acceptsUnstyled,
 }: {
+  disableActiveTheme?: boolean
   Frame?: F
   Thumb?: T
-  acceptsUnstyled?: boolean
 }) {
   if (process.env.NODE_ENV === 'development') {
     if (Frame !== DefaultSwitchFrame && Frame.staticConfig.context) {
@@ -106,11 +107,14 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
         {...(unstyled === false && {
           unstyled: false,
           size: sizeProp ?? sizeContext ?? '$true',
-          theme: checked ? 'active' : null,
+          ...(!disableActiveTheme && {
+            theme: checked ? 'active' : null,
+          }),
         })}
         data-state={getState(checked)}
         data-disabled={disabled ? '' : undefined}
         alignSelf={initialChecked ? 'flex-end' : 'flex-start'}
+        checked={checked}
         x={x}
         {...thumbProps}
         // @ts-ignore
@@ -129,7 +133,12 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
       forwardedRef
     ) {
       const styledContext = React.useContext(SwitchContext)
-      const props = useProps(propsIn)
+      const props = useProps(propsIn, {
+        noNormalize: true,
+        noExpand: true,
+        resolveValues: 'none',
+        forComponent: Frame,
+      })
       const {
         labeledBy: ariaLabelledby,
         name,
@@ -146,30 +155,6 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
         children,
         ...switchProps
       } = props
-
-      const leftBorderWidth = (() => {
-        let _: any = undefined
-        for (const key in switchProps) {
-          if (key === 'borderWidth' || key === 'borderLeftWidth') {
-            _ = switchProps[key]
-          }
-        }
-        if (
-          Frame === DefaultSwitchFrame &&
-          acceptsUnstyled &&
-          _ == undefined &&
-          unstyled === false
-        ) {
-          _ = 2 // default we use for styled
-        }
-        if (typeof _ === 'string') {
-          _ = getVariableValue(getSize(_))
-        }
-        if (typeof _ === 'number') {
-          return _
-        }
-        return 0
-      })()
 
       const native = Array.isArray(nativeProp) ? nativeProp : [nativeProp]
 
@@ -230,9 +215,12 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
             size={size}
             checked={checked}
             disabled={disabled}
-            frameWidth={frameWidth ? frameWidth - leftBorderWidth * 2 : 0}
-            theme={checked ? 'active' : null}
+            frameWidth={frameWidth}
             themeShallow
+            {...(!disableActiveTheme && {
+              theme: checked ? 'active' : null,
+              themeShallow: true,
+            })}
             role="switch"
             aria-checked={checked}
             aria-labelledby={labelledBy}
@@ -255,16 +243,16 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
                 if (!hasConsumerStoppedPropagationRef.current) event.stopPropagation()
               }
             })}
-            onLayout={composeEventHandlers(
-              // @ts-ignore
-              props.onLayout,
-              (e) => {
-                // @ts-ignore
-                setFrameWidth(e.nativeEvent.layout.width)
-              }
-            )}
           >
-            {typeof children === 'function' ? children(checked) : children}
+            <YStack
+              alignSelf="stretch"
+              flex={1}
+              onLayout={(e) => {
+                setFrameWidth(e.nativeEvent.layout.width)
+              }}
+            >
+              {typeof children === 'function' ? children(checked) : children}
+            </YStack>
           </Frame>
           {isWeb && isFormControl && (
             <BubbleInput

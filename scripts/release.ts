@@ -97,20 +97,23 @@ async function run() {
       location: string
     }[]
 
-    const allPackageJsons = await Promise.all(
-      packagePaths
-        .filter((i) => i.location !== '.' && !i.name.startsWith('@takeout'))
-        .map(async ({ name, location }) => {
-          const cwd = path.join(process.cwd(), location)
-          return {
-            name,
-            cwd,
-            json: await fs.readJSON(path.join(cwd, 'package.json')),
-            path: path.join(cwd, 'package.json'),
-            directory: location,
-          }
-        })
-    )
+    const allPackageJsons = (
+      await Promise.all(
+        packagePaths
+          .filter((i) => i.location !== '.' && !i.name.startsWith('@takeout'))
+          .map(async ({ name, location }) => {
+            const cwd = path.join(process.cwd(), location)
+            const json = await fs.readJSON(path.join(cwd, 'package.json'))
+            return {
+              name,
+              cwd,
+              json,
+              path: path.join(cwd, 'package.json'),
+              directory: location,
+            }
+          })
+      )
+    ).filter((x) => !x.json['tamagui-publish-skip'])
 
     const packageJsons = allPackageJsons
       .filter((x) => {
@@ -388,7 +391,6 @@ async function run() {
       console.log(`✅ Pushed and versioned\n`)
     }
 
-    // just leave it
     // console.log(`All done, cleanup up in...`)
     // await sleep(2 * 1000)
     // // then remove old prepub tag

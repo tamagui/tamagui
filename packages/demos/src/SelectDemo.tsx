@@ -87,7 +87,7 @@ export function SelectDemoItem(props: SelectProps) {
             start={[0, 0]}
             end={[0, 1]}
             fullscreen
-            colors={['$background', '$backgroundTransparent']}
+            colors={['$background', 'transparent']}
             borderRadius="$4"
           />
         </Select.ScrollUpButton>
@@ -153,7 +153,7 @@ export function SelectDemoItem(props: SelectProps) {
             start={[0, 0]}
             end={[0, 1]}
             fullscreen
-            colors={['$backgroundTransparent', '$background']}
+            colors={['transparent', '$background']}
             borderRadius="$4"
           />
         </Select.ScrollDownButton>

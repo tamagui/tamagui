@@ -6,6 +6,7 @@ import { YStack } from '@tamagui/stacks'
 import { VisuallyHidden } from '@tamagui/visually-hidden'
 import * as React from 'react'
 
+import { TOAST_CONTEXT } from './constants'
 import {
   Collection,
   ScopedProps,
@@ -83,7 +84,7 @@ type ToastViewportProps = ToastViewportFrameProps & {
   multipleToasts?: boolean
 }
 
-const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
+const ToastViewport = React.forwardRef<HTMLDivElement, ScopedProps<ToastViewportProps>>(
   (props: ScopedProps<ToastViewportProps>, forwardedRef) => {
     const {
       __scopeToast,
@@ -93,8 +94,8 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
       multipleToasts,
       ...viewportProps
     } = props
-    const context = useToastProviderContext(VIEWPORT_NAME, __scopeToast)
-    const getItems = useCollection(__scopeToast)
+    const context = useToastProviderContext(__scopeToast)
+    const getItems = useCollection(__scopeToast || TOAST_CONTEXT)
     const headFocusProxyRef = React.useRef<FocusProxyElement>(null)
     const tailFocusProxyRef = React.useRef<FocusProxyElement>(null)
     const wrapperRef = React.useRef<HTMLDivElement>(null)
@@ -262,6 +263,7 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
       >
         {hasToasts && (
           <FocusProxy
+            __scopeToast={__scopeToast}
             viewportName={name}
             ref={headFocusProxyRef}
             onFocusFromOutsideViewport={() => {
@@ -276,7 +278,7 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
          * tabindex on the the list so that it can be focused when items are removed. we focus
          * the list instead of the viewport so it announces number of items remaining.
          */}
-        <Collection.Slot scope={__scopeToast}>
+        <Collection.Slot __scopeCollection={__scopeToast || TOAST_CONTEXT}>
           <ToastViewportFrame
             focusable={context.toastCount > 0}
             ref={composedRefs}
@@ -294,6 +296,7 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
         </Collection.Slot>
         {hasToasts && (
           <FocusProxy
+            __scopeToast={__scopeToast}
             viewportName={name}
             ref={tailFocusProxyRef}
             onFocusFromOutsideViewport={() => {
@@ -326,7 +329,7 @@ const FocusProxy = React.forwardRef<FocusProxyElement, ScopedProps<FocusProxyPro
   (props, forwardedRef) => {
     const { __scopeToast, onFocusFromOutsideViewport, viewportName, ...proxyProps } =
       props
-    const context = useToastProviderContext(FOCUS_PROXY_NAME, __scopeToast)
+    const context = useToastProviderContext(__scopeToast)
     const viewport = context.viewports[viewportName] as HTMLElement
 
     return (

@@ -1,24 +1,92 @@
-import { ResolveVariableAs } from '../types'
-import { useMediaPropsActive } from './useMedia'
+import { useContext } from 'react'
+
+import { ComponentContext } from '../contexts/ComponentContext'
+import { defaultComponentStateMounted } from '../defaultComponentState'
+import { useSplitStyles } from '../helpers/getSplitStyles'
+import { SplitStyleProps, StaticConfig, ThemeParsed, UseMediaState } from '../types'
+import { Stack } from '../views/Stack'
+import { useMedia } from './useMedia'
+import { useThemeWithState } from './useTheme'
+
+type UsePropsOptions = Pick<
+  SplitStyleProps,
+  'noExpand' | 'noNormalize' | 'noClassNames' | 'resolveValues'
+> & {
+  disableExpandShorthands?: boolean
+  forComponent?: { staticConfig: StaticConfig }
+}
+
+type FlattenedProps<A> = {
+  // remove all media
+  [Key in keyof A extends `$${string}` ? never : keyof A]?: A[Key]
+}
 
 /**
- * Will flatten any media styles down + expand all shorthands.
+ * Returns props and style as a single object, expanding and merging shorthands and media queries.
  *
- * Use sparingly, it will loop props and trigger re-render on all media queries.
+ * Use sparingly, it will loop props and trigger re-render on all media queries you access.
  *
  * */
 export function useProps<A extends Object>(
   props: A,
-  opts?: {
-    disableExpandShorthands?: boolean
-    resolveValues?: ResolveVariableAs
-  }
-): {
-  // remove all media
-  [Key in keyof A extends `$${string}` ? never : keyof A]?: A[Key]
-} {
-  return useMediaPropsActive(props, {
-    expandShorthands: !opts?.disableExpandShorthands,
-    resolveValues: opts?.resolveValues,
+  opts?: UsePropsOptions
+): FlattenedProps<A> {
+  const [propsOut, styleOut] = usePropsAndStyle(props, {
+    ...opts,
+    noExpand: true,
+    noNormalize: true,
+    resolveValues: 'none',
   })
+  return {
+    ...propsOut,
+    ...styleOut,
+  }
+}
+
+/**
+ * Returns only style values fully resolved and flattened with merged media queries and shorthands with all theme and token values resolved.
+ *
+ * Use sparingly, it will loop props and trigger re-render on all media queries you access.
+ *
+ * */
+export function useStyle<A extends Object>(
+  props: A,
+  opts?: UsePropsOptions
+): FlattenedProps<A> {
+  return usePropsAndStyle(props, opts)[1]
+}
+
+/**
+ * Returns [props, styles] fully resolved and flattened with merged media queries and shorthands with all theme and token values resolved.
+ *
+ * Use sparingly, it will loop props and trigger re-render on all media queries you access.
+ *
+ * */
+export function usePropsAndStyle<A extends Object>(
+  props: A,
+  opts?: UsePropsOptions
+): [FlattenedProps<A>, FlattenedProps<A>, ThemeParsed, UseMediaState] {
+  const staticConfig = opts?.forComponent?.staticConfig ?? Stack.staticConfig
+  const [themeState, theme] = useThemeWithState({
+    componentName: staticConfig.componentName,
+  })
+  const componentContext = useContext(ComponentContext)
+  const media = useMedia()
+  const splitStyles = useSplitStyles(
+    props,
+    staticConfig,
+    theme,
+    themeState.state?.name || '',
+    defaultComponentStateMounted,
+    {
+      isAnimated: false,
+      mediaState: media,
+      noSkip: true,
+      noClassNames: true,
+      ...opts,
+    },
+    null,
+    componentContext
+  )
+  return [splitStyles.viewProps, splitStyles.style, theme, media] as any
 }

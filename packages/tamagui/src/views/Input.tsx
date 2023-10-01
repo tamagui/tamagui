@@ -1,19 +1,8 @@
-import {
-  ColorStyleProp,
-  GetProps,
-  isWeb,
-  setupReactNative,
-  styled,
-  useTheme,
-} from '@tamagui/core'
+import { ColorStyleProp, GetProps, isWeb, styled, useTheme } from '@tamagui/core'
 import { useFocusable } from '@tamagui/focusable'
 import { TextInput } from 'react-native'
 
 import { inputSizeVariant } from '../helpers/inputHelpers'
-
-setupReactNative({
-  TextInput,
-})
 
 export const defaultStyles = {
   size: '$true',

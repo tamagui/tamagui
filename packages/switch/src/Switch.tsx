@@ -17,6 +17,10 @@ export const SwitchThumb = styled(ThemeableStack, {
       },
     },
 
+    checked: {
+      true: {},
+    },
+
     size: {
       '...size': (val) => {
         const size = getSwitchHeight(val)
@@ -40,7 +44,6 @@ const getSwitchWidth = (val: SizeTokens) => getSwitchHeight(val) * 2
 
 export const SwitchFrame = styled(YStack, {
   name: 'Switch',
-  tag: 'button',
   context: SwitchContext,
 
   variants: {
@@ -48,15 +51,14 @@ export const SwitchFrame = styled(YStack, {
       false: {
         size: '$true',
         borderRadius: 1000,
-        borderWidth: 2,
-        borderColor: 'transparent',
         backgroundColor: '$background',
+        borderWidth: 2,
+        borderColor: '$background',
 
         focusStyle: {
-          borderColor: '$borderColorFocus',
           outlineColor: '$borderColorFocus',
           outlineStyle: 'solid',
-          outlineWidth: 1,
+          outlineWidth: 2,
         },
       },
     },

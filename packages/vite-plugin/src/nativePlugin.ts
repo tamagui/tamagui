@@ -39,6 +39,12 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
       config.resolve ??= {}
 
       config.resolve.extensions = extensions
+      // config.resolve.conditions = [
+      //   // for rn compat use require over exports
+      //   'require',
+      //   'default',
+      //   'import',
+      // ]
 
       config.optimizeDeps ??= {}
 

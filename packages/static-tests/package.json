@@ -1,18 +1,19 @@
 {
   "name": "@tamagui/static-tests",
-  "version": "1.68.5",
+  "version": "1.74.5",
   "module": "dist/esm/index.js",
   "scripts": {
     "build": "true",
     "pretest": "RUN_PRETEST=1 node -r esbuild-register ./tests/lib/preTest.ts",
     "test": "yarn test:native && yarn test:web && yarn test:webpack",
     "test:run": "INCLUDE_CSS_COLOR_NAMES=1 vitest --config ../vite-plugin-internal/src/vite.config.ts --run",
+    "test:run:web": "DISABLE_NATIVE_TEST=1 yarn test:run",
     "test:webpack": "yarn pretest && yarn test:run tests/webpack.test.tsx --reporter=verbose --singleThread",
     "test:flatten:native": "yarn test:run tests/flatten.native.test.tsx",
     "test:babel:native": "yarn test:run tests/babel.native.test.tsx",
     "test:babel:web": "yarn test:run tests/babel.web.test.tsx",
     "test:styled:web": "yarn test:run tests/styled.web.test.tsx",
-    "test:web": "yarn test:run tests/*.web.test.tsx",
+    "test:web": "yarn test:run:web tests/*.web.test.tsx",
     "test:native": "yarn test:run tests/*.native.test.tsx"
   },
   "tests": {
@@ -25,8 +26,8 @@
   "devDependencies": {
     "@babel/plugin-syntax-typescript": "^7.21.4",
     "@babel/types": "^7.21.5",
-    "@tamagui/sandbox-ui": "1.68.5",
-    "@tamagui/test-design-system": "1.68.5",
+    "@tamagui/sandbox-ui": "1.74.5",
+    "@tamagui/test-design-system": "1.74.5",
     "@testing-library/react": "^14.0.0",
     "@types/babel__generator": "^7.6.4",
     "@types/babel__traverse": "^7.18.2",

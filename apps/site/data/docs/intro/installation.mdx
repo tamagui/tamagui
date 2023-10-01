@@ -3,25 +3,11 @@ title: Installation
 description: How to get Tamagui set up.
 ---
 
-Tamagui is a full-featured UI kit built on top of `@tamagui/core`.
-
-If you want a complete set of components designed to build universal apps, use `tamagui`. If you want to build out your own components and don't want any of the `tamagui` components, you can just use `@tamagui/core`. [See the Design Systems guide](/docs/guides/design-systems) for more on how to configure Core.
-
-This document uses `tamagui` as an example, but if you are using `@tamagui/core` you can swap out the import.
-
-#### Saving bundle size for web-only use cases
-
-If you are _only_ targeting the web: `@tamagui/web` is the same library as `@tamagui/core`, except that it drops support for a few React Native specific things, mostly props: namely the `GestureResponderHandlers` and `onLayout` props are absent, and the platform methods on refs like `measureInWindow` are absent. If you are only targeting web, you can swap every reference of `tamagui` or `@tamagui/core` in this guide with `@tamagui/web`. Note that you can't use `@tamagui/web` with `tamagui` as the full `tamagui` package relies on many of these props.
-
-### Quick Start
-
-Try out [create-tamagui](/docs/guides/create-tamagui-app) for a helpful starter template which comes with `@tamagui/shorthands` and `@tamagui/themes` for easy default configuration:
+We highly recommend using our CLI to bootstrap a new app. Even if you're adding it to your existing app, it will give you a good template repo to copy from:
 
 ```bash
 npm create tamagui@latest
 ```
-
-This gives you everything pre-configured for full-stack apps with shared code.
 
 ## Install
 
@@ -37,15 +23,9 @@ If you just want `core` which only exports `Stack` and `Text` components:
 yarn add @tamagui/core
 ```
 
-And if you are only targeting web, want to save some bundle size, and are ok going without the React Native specific props like gesture handlers and onLayout, you can just use `web`:
+That's basically it! You can now import and start using Tamagui. That said, we highly recommend [walking through configuration](#quick-configuration) though, which gives you a design system, media queries, themes and more.
 
-```bash
-yarn add @tamagui/web
-```
-
-That's basically it for install. You can now import and start using Tamagui once you [set up the configuration](#quick-configuration). As of version `1.62.0` Tamagui no longer requires any sort of special setup with your bundler.
-
-That said, once you start using libraries from the React Native ecosystem, you likely need some extra setup. Many of them use the special "platform specific" file extensions pattern that React Native recommends, eg having an `index.js` alongside `index.web.js`, in which bundlers need to grab the `index.web.js` when targeting web. Many packages also import `react-native` directly, so if you're targeting web you need to set an alias from `react-native` to `react-native-web`.
+Once you start using libraries from the React Native ecosystem, you likely need some extra setup. For example, React Native supports "platform specific" file extensions (eg `index.js` alongside `index.web.js`, in which bundlers need to grab the `index.web.js` when targeting web). Many packages also import `react-native` directly and therefore you will want your web bundler to alias it to `react-native-web`.
 
 Tamagui itself doesn't need any of this, but since you're probably going to add a variety of packages, you eventually may want to use one of the Tamagui bundler plugins.
 
@@ -132,14 +112,16 @@ config.optimizeDeps.esbuildOptions = {
   ...config.optimizeDeps.esbuildOptions,
   resolveExtensions: [
     '.web.js',
+    '.web.jsx',
     '.web.ts',
     '.web.tsx',
-    '.js',
-    '.jsx',
-    '.json',
-    '.ts',
-    '.tsx',
     '.mjs',
+    '.js',
+    '.mts',
+    '.ts',
+    '.jsx',
+    '.tsx',
+    '.json'
   ],
   loader: {
     '.js': 'jsx',
@@ -151,7 +133,9 @@ config.optimizeDeps.esbuildOptions = {
 
 For React Native or Expo you shouldn't need any plugins unless you're setting up the optimizing compiler which we highly recommend doing only once you're ready to ship your app to production. That install process is explained in the [Compiler installation docs](/docs/intro/compiler-install).
 
-### Quick configuration
+---
+
+## Quick configuration
 
 For an in-depth setup, check out [the full configuration docs](/docs/core/configuration). This sets you up with the default Tamagui design system which is great for getting started quick:
 
@@ -162,7 +146,10 @@ yarn add @tamagui/config
 Create a `tamagui.config.ts` file at the root of your project:
 
 ```tsx
-import { config } from '@tamagui/config'
+// the v2 config imports the css driver on web and react-native on native
+// for reanimated: @tamagui/config/v2-reanimated
+// for react-native only: @tamagui/config/v2-native
+import { config } from '@tamagui/config/v2'
 import { createTamagui } from 'tamagui'
 
 const tamaguiConfig = createTamagui(config)
@@ -218,3 +205,15 @@ export default function Demo() {
 ```
 
 We recommend [spending time understanding configuration](/docs/core/configuration) from here, skipping over the Compiler setup. The compiler is optional and should be saved for setting up after you've built something you'd like to test it with.
+
+---
+
+#### Saving bundle size for web-only use cases
+
+If you are only targeting web, want to save some bundle size, and are ok going without the React Native specific props like gesture handlers and onLayout, you can just use `web`:
+
+```bash
+yarn add @tamagui/web
+```
+
+If you are _only_ targeting the web: `@tamagui/web` is the same library as `@tamagui/core`, except that it drops support for a few React Native specific things, mostly props: namely the `GestureResponderHandlers` and `onLayout` props are absent, and the platform methods on refs like `measureInWindow` are absent. If you are only targeting web, you can swap every reference of `tamagui` or `@tamagui/core` in this guide with `@tamagui/web`. Note that you can't use `@tamagui/web` with `tamagui` as the full `tamagui` package relies on many of these props.

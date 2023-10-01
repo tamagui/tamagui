@@ -9,6 +9,7 @@ const StyledButton = styled(Button, {
         pressStyle: {
           backgroundColor: 'red',
         },
+
         hoverStyle: {
           backgroundColor: 'green',
         },

@@ -5,9 +5,10 @@ import {
   TamaguiElement,
   Theme,
   composeEventHandlers,
+  createStyledContext,
   isWeb,
   styled,
-  useAnimationDriver,
+  useConfiguration,
   useEvent,
   useThemeName,
 } from '@tamagui/core'
@@ -22,13 +23,12 @@ import {
   PanResponderGestureState,
 } from 'react-native'
 
-import { TOAST_NAME } from './constants'
+import { TOAST_CONTEXT, TOAST_NAME } from './constants'
 import { ToastAnnounce } from './ToastAnnounce'
 import {
   Collection,
   ScopedProps,
   SwipeDirection,
-  createToastContext,
   useToastProviderContext,
 } from './ToastProvider'
 import { VIEWPORT_PAUSE, VIEWPORT_RESUME } from './ToastViewport'
@@ -79,12 +79,12 @@ interface ToastProps extends Omit<ToastImplProps, keyof ToastImplPrivateProps> {
 
 type SwipeEvent = GestureResponderEvent
 
-const [ToastInteractiveProvider, useToastInteractiveContext] = createToastContext(
-  TOAST_NAME,
-  {
-    onClose() {},
-  }
-)
+const {
+  Provider: ToastInteractiveProvider,
+  useStyledContext: useToastInteractiveContext,
+} = createStyledContext({
+  onClose() {},
+})
 
 type ToastImplPrivateProps = { open: boolean; onClose(): void }
 type ToastImplFrameProps = GetProps<typeof ToastImplFrame>
@@ -162,7 +162,7 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
       ...toastProps
     } = props
     const isPresent = useIsPresent()
-    const context = useToastProviderContext(TOAST_NAME, __scopeToast)
+    const context = useToastProviderContext(__scopeToast)
     const [node, setNode] = React.useState<TamaguiElement | null>(null)
     const composedRefs = useComposedRefs(forwardedRef, (node) => setNode(node))
     const duration = durationProp || context.duration
@@ -246,17 +246,18 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
       context.swipeDirection
     )
 
-    const driver = useAnimationDriver()
-    if (!driver) {
+    const { animationDriver } = useConfiguration()
+    if (!animationDriver) {
       throw new Error('Must set animations in tamagui.config.ts')
     }
 
-    const { useAnimatedNumber, useAnimatedNumberStyle } = driver
+    const { useAnimatedNumber, useAnimatedNumberStyle } = animationDriver
 
     const animatedNumber = useAnimatedNumber(0)
 
     // temp until reanimated useAnimatedNumber fix
-    const AnimatedView = (driver['NumberView'] ?? driver.View) as typeof Animated.View
+    const AnimatedView = (animationDriver['NumberView'] ??
+      animationDriver.View) as typeof Animated.View
 
     const animatedStyles = useAnimatedNumberStyle(animatedNumber, (val) => {
       'worklet'
@@ -346,7 +347,7 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
                   {...panResponder?.panHandlers}
                   style={[{ margin: 'auto' }, animatedStyles]}
                 >
-                  <Collection.ItemSlot scope={__scopeToast}>
+                  <Collection.ItemSlot __scopeCollection={__scopeToast || TOAST_CONTEXT}>
                     <ToastImplFrame
                       // Ensure toasts are announced as status list or status when focused
                       role="status"

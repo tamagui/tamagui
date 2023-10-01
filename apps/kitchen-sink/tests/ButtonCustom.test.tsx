@@ -1,10 +1,10 @@
 import { expect, test } from '@playwright/test'
 
-import { getStyles } from './utils'
 import { setupPage } from './test-utils'
+import { getStyles } from './utils'
 
 test.beforeEach(async ({ page }) => {
-  await setupPage(page, { name: "ButtonCustom", type: "useCase" })
+  await setupPage(page, { name: 'ButtonCustom', type: 'useCase' })
 })
 
 test(`keeps flex direction for styled(Button)`, async ({ page }) => {

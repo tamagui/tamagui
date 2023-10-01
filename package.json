@@ -9,7 +9,7 @@
     "./apps/*",
     "./packages/*"
   ],
-  "packageManager": "yarn@3.5.0",
+  "packageManager": "yarn@3.6.3",
   "scripts": {
     "build:force": "yarn clean:build && yarn build --force",
     "build:js": "./scripts/build-js.sh",
@@ -82,7 +82,7 @@
     "next": "13.4.4",
     "react-dom": "18.2.0",
     "react-native-reanimated@^3.3.0": "patch:react-native-reanimated@npm%3A3.4.1#./.yarn/patches/react-native-reanimated-npm-3.4.1-bf4ac7f6b3.patch",
-    "react-native-screens@~3.22.0": "patch:react-native-screens@npm%3A3.22.0#./.yarn/patches/react-native-screens-npm-3.22.0-9ada8582d1.patch"
+    "react-native-screens@~3.22.0": "patch:react-native-screens@npm%3A3.22.1#./.yarn/patches/react-native-screens-npm-3.22.1-b3da351834.patch"
   },
   "importSort": {
     ".js, .jsx, .ts, .tsx": {

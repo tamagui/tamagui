@@ -93,6 +93,7 @@ export type {
   StackNonStyleProps,
   StackProps,
   StackPropsBase,
+  RadiusTokens,
   StaticConfig,
   Styleable,
   TamaguiBaseTheme,
@@ -125,7 +126,7 @@ export type {
 } from '@tamagui/core'
 
 export {
-  AnimationDriverProvider,
+  Configuration,
   ComponentContext,
   FontLanguage,
   // components
@@ -142,7 +143,6 @@ export {
   createTheme,
   createTokens,
   createVariable,
-  getAnimationDriver,
   getConfig,
   getMedia,
   getStylesAtomic,
@@ -180,9 +180,10 @@ export {
   useIsTouchDevice,
   useIsomorphicLayoutEffect,
   useMedia,
-  useMediaPropsActive,
   useProps,
+  usePropsAndStyle,
   useStyle,
+  useConfiguration,
   useTheme,
   useThemeName,
   variableToString,

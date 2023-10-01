@@ -1,5 +1,4 @@
 import { themes } from '@tamagui/themes';
-export * from './animations';
 export declare const configWithoutAnimations: {
     defaultFont: string;
     shouldAddPrefersColorThemes: true;

@@ -1,8 +1,9 @@
+// debug
 // import '../lib/wdyr'
 
 import { SwitchDemo } from '@tamagui/demos'
 import { memo } from 'react'
-import { Theme } from 'tamagui'
+import { Button, Theme } from 'tamagui'
 
 import { ThemeToggle } from '../components/ThemeToggle'
 
@@ -21,9 +22,20 @@ export default memo(() => {
         <ThemeToggle />
       </div>
 
-      <Theme name="blue">
-        <SwitchDemo />
-      </Theme>
+      <Button
+        size="$3"
+        chromeless
+        debug="verbose"
+        circular
+        hoverStyle={{
+          bc: 'transparent',
+        }}
+        pressStyle={{
+          bc: '$backgroundPress',
+        }}
+      >
+        test
+      </Button>
     </div>
   )
 })

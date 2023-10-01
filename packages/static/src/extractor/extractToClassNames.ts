@@ -72,7 +72,7 @@ export async function extractToClassNames({
     console.warn(`${sourcePath?.slice(0, 100)} - bad filename.`)
   }
 
-  if (!options.disableExtraction) {
+  if (!options.disableExtraction && !options['_disableLoadTamagui']) {
     // dont include loading in timing of parsing (one time cost)
     await extractor.loadTamagui(options)
   }

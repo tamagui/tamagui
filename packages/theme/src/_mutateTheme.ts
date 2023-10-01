@@ -192,7 +192,6 @@ function updateStyle(id: string, rules: string[]) {
   const style = document.createElement('style')
   style.id = id
   style.appendChild(document.createTextNode(rules.join('\n')))
-  console.log('UPDATE', { id, rules, existing })
   document.head.appendChild(style)
   if (existing) {
     existing.parentElement?.removeChild(existing)

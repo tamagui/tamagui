@@ -1,4 +1,4 @@
-import { isAndroid, isWeb } from '@tamagui/constants'
+import { isAndroid } from '@tamagui/constants'
 import { tokenCategories } from '@tamagui/helpers'
 
 import { getConfig } from '../config'
@@ -8,7 +8,6 @@ import type {
   GetStyleState,
   PropMapper,
   ResolveVariableAs,
-  SplitStyleProps,
   StyleResolver,
   TamaguiInternalConfig,
   VariantSpreadFunction,
@@ -56,33 +55,37 @@ export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => 
     );
   }
 
-  if (variants && key in variants) {
-    styleState.curProps[key] = value
+  if (!styleProps.noExpand) {
+    if (variants && key in variants) {
+      styleState.curProps[key] = value
 
-    const variantValue = resolveVariants(key, value, styleProps, styleState, '')
-    if (variantValue) {
-      return variantValue
+      const variantValue = resolveVariants(key, value, styleProps, styleState, '')
+      if (variantValue) {
+        return variantValue
+      }
     }
   }
 
   let shouldReturn = false
 
   // handle shorthands
-  if (key in conf.shorthands) {
-    shouldReturn = true
-    key = conf.shorthands[key]
+  if (!styleProps.disableExpandShorthands) {
+    if (key in conf.shorthands) {
+      shouldReturn = true
+      key = conf.shorthands[key]
+    }
   }
 
   if (value) {
     if (value[0] === '$') {
-      value = getTokenForKey(key, value, styleProps.resolveVariablesAs, styleState)
+      value = getTokenForKey(key, value, styleProps.resolveValues, styleState)
     } else if (isVariable(value)) {
-      value = resolveVariableValue(value, styleProps.resolveVariablesAs)
+      value = resolveVariableValue(key, value, styleProps.resolveValues)
     }
   }
 
   if (shouldReturn || value != null) {
-    return expandStyle(key, value) || [[key, value]]
+    return (styleProps.noExpand ? null : expandStyle(key, value)) || [[key, value]]
   }
 }
 
@@ -97,7 +100,7 @@ const resolveVariants: StyleResolver = (
   const { variants } = staticConfig
   if (!variants) return
 
-  let variantValue = getVariantDefinition(variants[key], key, value, conf)
+  let variantValue = getVariantDefinition(variants[key], value, conf)
 
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
     console.groupCollapsed(`♦️♦️♦️ resolve variant ${key}`)
@@ -224,43 +227,47 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
     console.log(`   - resolveTokensAndVariants`, key, value)
   }
 
-  for (const rKey in value) {
-    const fKey = conf.shorthands[rKey] || rKey
-    const val = value[rKey]
+  for (const _key in value) {
+    const subKey = conf.shorthands[_key] || _key
+    const val = value[_key]
 
-    if (variants && fKey in variants) {
-      // if its a variant expanded, attach to curProps
-      styleState.curProps[fKey] = val
+    if (styleProps.noExpand) {
+      res[subKey] = val
+    } else {
+      if (variants && subKey in variants) {
+        // if its a variant expanded, attach to curProps
+        styleState.curProps[subKey] = val
 
-      // avoids infinite loop if variant is matching a style prop
-      // eg: { variants: { flex: { true: { flex: 2 } } } }
-      if (parentVariantKey && parentVariantKey === key) {
-        res[fKey] =
-          // SYNC WITH *1
-          val[0] === '$'
-            ? getTokenForKey(fKey, val, styleProps.resolveVariablesAs, styleState)
-            : val
-      } else {
-        const variantOut = resolveVariants(fKey, val, styleProps, styleState, key)
+        // avoids infinite loop if variant is matching a style prop
+        // eg: { variants: { flex: { true: { flex: 2 } } } }
+        if (parentVariantKey && parentVariantKey === key) {
+          res[subKey] =
+            // SYNC WITH *1
+            val[0] === '$'
+              ? getTokenForKey(subKey, val, styleProps.resolveValues, styleState)
+              : val
+        } else {
+          const variantOut = resolveVariants(subKey, val, styleProps, styleState, key)
 
-        // apply, merging sub-styles
-        if (variantOut) {
-          for (const [key, val] of variantOut) {
-            if (val == null) continue
-            if (key in pseudoDescriptors) {
-              res[key] ??= {}
-              Object.assign(res[key], val)
-            } else {
-              res[key] = val
+          // apply, merging sub-styles
+          if (variantOut) {
+            for (const [key, val] of variantOut) {
+              if (val == null) continue
+              if (key in pseudoDescriptors) {
+                res[key] ??= {}
+                Object.assign(res[key], val)
+              } else {
+                res[key] = val
+              }
             }
           }
         }
+        continue
       }
-      continue
     }
 
     if (isVariable(val)) {
-      res[fKey] = resolveVariableValue(val, styleProps.resolveVariablesAs)
+      res[subKey] = resolveVariableValue(subKey, val, styleProps.resolveValues)
       continue
     }
 
@@ -268,32 +275,38 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
       const fVal =
         // SYNC WITH *1
         val[0] === '$'
-          ? getTokenForKey(fKey, val, styleProps.resolveVariablesAs, styleState)
+          ? getTokenForKey(subKey, val, styleProps.resolveValues, styleState)
           : val
-      res[fKey] = fVal
+
+      res[subKey] = fVal
       continue
     }
 
     if (isObj(val)) {
-      const subObject = resolveTokensAndVariants(fKey, val, styleProps, styleState, key)
+      const subObject = resolveTokensAndVariants(subKey, val, styleProps, styleState, key)
 
       if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
         // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-        console.log(`object`, fKey, subObject)
+        console.log(`object`, subKey, subObject)
       }
 
       // sub-objects: media queries, pseudos, shadowOffset
-      res[fKey] ??= {}
-      Object.assign(res[fKey], subObject)
+      res[subKey] ??= {}
+      Object.assign(res[subKey], subObject)
     } else {
       // nullish values cant be tokens, need no extra parsing
-      res[fKey] = val
+      res[subKey] = val
     }
 
     if (process.env.NODE_ENV === 'development') {
       if (debug) {
-        if (res[fKey]?.[0] === '$') {
-          console.warn(`⚠️ Missing token in theme ${theme.name}:`, fKey, res[fKey], theme)
+        if (res[subKey]?.[0] === '$') {
+          console.warn(
+            `⚠️ Missing token in theme ${theme.name}:`,
+            subKey,
+            res[subKey],
+            theme
+          )
         }
       }
     }
@@ -308,30 +321,28 @@ const tokenCats = ['size', 'color', 'radius', 'space', 'zIndex'].map((name) => (
 }))
 
 // goes through specificity finding best matching variant function
-function getVariantDefinition(
-  variant: any,
-  key: string,
-  value: any,
-  conf: TamaguiInternalConfig
-) {
+function getVariantDefinition(variant: any, value: any, conf: TamaguiInternalConfig) {
   if (typeof variant === 'function') {
     return variant
   }
-  if (variant[value]) {
-    return variant[value]
+  const exact = variant[value]
+  if (exact) {
+    return exact
   }
-  const { tokensParsed } = conf
-  for (const { name, spreadName } of tokenCats) {
-    if (spreadName in variant && value in tokensParsed[name]) {
-      return variant[spreadName]
+  if (value != null) {
+    const { tokensParsed } = conf
+    for (const { name, spreadName } of tokenCats) {
+      if (spreadName in variant && value in tokensParsed[name]) {
+        return variant[spreadName]
+      }
+    }
+    const fontSizeVariant = variant['...fontSize']
+    if (fontSizeVariant && conf.fontSizeTokens.has(value)) {
+      return fontSizeVariant
     }
   }
-  const fontSizeVariant = variant['...fontSize']
-  if (fontSizeVariant && conf.fontSizeTokens.has(value)) {
-    return fontSizeVariant
-  }
   // fallback to catch all | size
-  return variant[`:${typeof value}`] || variant['...'] || variant['...size']
+  return variant[`:${typeof value}`] || variant['...']
 }
 
 const fontShorthand = {
@@ -412,7 +423,11 @@ export const getTokenForKey = (
   }
 
   if (hasSet) {
-    const out = resolveVariableValue(valOrVar, resolveAs)
+    const out = resolveVariableValue(key, valOrVar, resolveAs)
+    if (process.env.NODE_ENV === 'development' && styleState.debug === 'verbose') {
+      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+      console.log(`resolved`, resolveAs, valOrVar.get, out)
+    }
     return out
   }
 
@@ -431,15 +446,26 @@ export const getTokenForKey = (
 }
 
 function resolveVariableValue(
+  key: string,
   valOrVar: Variable | any,
-  resolveVariablesAs?: ResolveVariableAs
+  resolveValues?: ResolveVariableAs
 ) {
-  if (resolveVariablesAs === 'none') return valOrVar
+  if (resolveValues === 'none') return valOrVar
   if (isVariable(valOrVar)) {
-    if (!isWeb || resolveVariablesAs === 'value') {
+    if (resolveValues === 'value') {
       return valOrVar.val
     }
-    return valOrVar.variable
+    // @ts-expect-error this is fine until we can type better
+    const get = valOrVar.get
+
+    // shadowColor doesn't support dynamic style
+    if (process.env.TAMAGUI_TARGET !== 'native' || key !== 'shadowColor') {
+      if (typeof get === 'function') {
+        return get(resolveValues === 'web' ? 'web' : undefined)
+      }
+    }
+
+    return process.env.TAMAGUI_TARGET === 'native' ? valOrVar.val : valOrVar.variable
   }
   return valOrVar
 }

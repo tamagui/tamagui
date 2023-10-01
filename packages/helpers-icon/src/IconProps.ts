@@ -6,7 +6,7 @@ export type BaseIconProps = {
   strokeWidth?: number | SizeTokens
   color?: (ColorTokens | ThemeTokens | (string & {})) | null
   disableTheme?: boolean
-  style?: any
+  style?: SvgProps['style']
 }
 
-export type IconProps = SvgProps & Omit<SvgProps, keyof BaseIconProps> & BaseIconProps
+export type IconProps = Omit<SvgProps, keyof BaseIconProps> & BaseIconProps

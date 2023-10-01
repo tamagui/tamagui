@@ -31,7 +31,6 @@ export * from './contexts/ComponentContext'
 export * from './helpers/createStyledContext'
 export * from './helpers/expandStyles'
 export * from './helpers/propMapper'
-export * from './helpers/getAnimationDriver'
 export * from './helpers/getExpandedShorthands'
 export * from './helpers/getSplitStyles'
 export * from './helpers/getStylesAtomic'
@@ -55,16 +54,15 @@ export {
   mediaState,
   useMedia,
   getMedia,
-  useMediaPropsActive,
   mediaObjectToString,
   mediaQueryConfig,
 } from './hooks/useMedia'
 export * from './hooks/useTheme'
 export * from './hooks/useThemeName'
-export * from './hooks/useStyle'
-export * from './hooks/useAnimationDriver'
+export * from './hooks/useConfiguration'
 export * from './hooks/useIsTouchDevice'
 export * from './hooks/useProps'
+export * from './hooks/useConfiguration'
 
 export * from './views/Slot'
 export * from './views/Stack'
@@ -74,7 +72,7 @@ export * from './views/Theme'
 export * from './views/ThemeProvider'
 export * from './views/FontLanguage'
 export * from './views/TamaguiProvider'
-export * from './views/AnimationDriverProvider'
+export * from './views/Configuration'
 
 export * from '@tamagui/use-did-finish-ssr'
 export * from '@tamagui/use-event'

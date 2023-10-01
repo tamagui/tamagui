@@ -1,7 +1,7 @@
 import { createAnimations as createAnimationsCSS } from '@tamagui/animations-css'
 import { createAnimations as createAnimationsMoti } from '@tamagui/animations-moti'
 import { createAnimations as createAnimationsNative } from '@tamagui/animations-react-native'
-import { config } from '@tamagui/config'
+import { config } from '@tamagui/config/v2'
 import { createTamagui } from 'tamagui'
 
 export const animationsCSS = createAnimationsCSS({
@@ -104,6 +104,7 @@ const tamaConf = createTamagui({
   settings: {
     allowedStyleValues: 'somewhat-strict',
     autocompleteSpecificTokens: 'except-special',
+    fastSchemeChange: true,
   },
   tokens,
   animations: search.includes('animationDriver=css')

@@ -10,8 +10,6 @@ import {
   YStack,
 } from 'tamagui'
 
-import { SelectDemoItem } from './SelectDemo'
-
 export function PopoverDemo() {
   return (
     <XStack space="$2" flex={1} justifyContent="center" alignItems="center">
@@ -71,8 +69,6 @@ export function Demo({
             </Label>
             <Input size="$3" id={Name} />
           </XStack>
-
-          <SelectDemoItem />
 
           <Popover.Close asChild>
             <Button

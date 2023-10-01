@@ -7,19 +7,15 @@ Create a `tamagui.config.ts` in the root of your app to set up your design syste
 
 ## Quick Start
 
-You can use `@tamagui/config` a totally complete config out of the box, the same one this site uses.
+You can use `@tamagui/config` which provides a complete config out of the box, the same one this site uses.
 
 ```tsx
-import { config } from '@tamagui/config'
+// the v2 config imports the css driver on web and react-native on native
+// for reanimated: @tamagui/config/v2-reanimated
+// for react-native only: @tamagui/config/v2-native
+import { config } from '@tamagui/config/v2'
 import { Text, View } from 'react-native'
-import { createTamagui, setupReactNative } from 'tamagui' // or '@tamagui/core'
-
-// if using only @tamagui/core with `react-native` components
-// if using `tamagui` this isn't necessary as it does this setup for you (for most components)
-setupReactNative({
-  Text,
-  View,
-})
+import { createTamagui } from 'tamagui' // or '@tamagui/core'
 
 const appConfig = createTamagui(config)
 
@@ -35,7 +31,7 @@ declare module 'tamagui' {
 export default appConfig
 ```
 
-[The source](https://github.com/tamagui/tamagui/blob/master/packages/config/src/tamagui.config.ts) and [type output](https://github.com/tamagui/tamagui/blob/master/packages/config/types/tamagui.config.d.ts) of that config is also useful as a reference for building your own custom config.
+[The source](https://github.com/tamagui/tamagui/blob/master/packages/config/src/config.ts) and [type output](https://github.com/tamagui/tamagui/blob/master/packages/config/types/config.d.ts) of that config is also useful as a reference for building your own custom config.
 
 ---
 
@@ -301,6 +297,11 @@ There is an optional CSS reset that helps normalize styling, you can import it i
 ```tsx
 import '@tamagui/core/reset.css'
 ```
+
+<Notice>
+  You will have to turn `isCSSEnabled` on if you're using Metro as your web bundler. See
+  [Expo's docs](https://docs.expo.dev/versions/latest/config/metro/#css).
+</Notice>
 
 ### Setup media query driver
 
@@ -676,6 +677,13 @@ For a full configuration, see [@tamagui/shorthands](https://github.com/tamagui/t
       type: 'boolean',
       default: false,
       description: `(beta) Will change the behavior of media styles. By default they have a fixed specificity: they always override any $theme- or $platform- styles. With this enabled, media styles will have the same precedence as the theme and platform styles, meaning that the order of the props determines if they override.`,
+    },
+    {
+      name: 'fastSchemeChange',
+      required: false,
+      type: 'boolean',
+      default: false,
+      description: `(beta) On iOS, this enables a mode where Tamagui returns color values using DynamicColorIOS significantly speeding up dark/light re-renders. If you use theme inversing or manually change from light to dark without also changing the native color scheme, this will break. We're working on accounting for these last edge cases before removing the beta tag.`,
     },
   ]}
 />
