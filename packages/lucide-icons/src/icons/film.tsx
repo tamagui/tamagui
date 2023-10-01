@@ -29,20 +29,28 @@ const Icon = (props) => {
       height={size}
       viewBox="0 0 24 24"
       fill="none"
-      stroke={`${color}`}
+      stroke={color}
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
       {...otherProps}
     >
-      <Rect width="20" height="20" x="2" y="2" rx="2.18" ry="2.18" stroke={`${color}`} />
-      <Line x1="7" x2="7" y1="2" y2="22" stroke={`${color}`} />
-      <Line x1="17" x2="17" y1="2" y2="22" stroke={`${color}`} />
-      <Line x1="2" x2="22" y1="12" y2="12" stroke={`${color}`} />
-      <Line x1="2" x2="7" y1="7" y2="7" stroke={`${color}`} />
-      <Line x1="2" x2="7" y1="17" y2="17" stroke={`${color}`} />
-      <Line x1="17" x2="22" y1="17" y2="17" stroke={`${color}`} />
-      <Line x1="17" x2="22" y1="7" y2="7" stroke={`${color}`} />
+      <Rect
+        width="20"
+        height="20"
+        x="2"
+        y="2"
+        rx="2.18"
+        ry="2.18"
+        stroke={color}
+      />
+      <Line x1="7" x2="7" y1="2" y2="22" stroke={color} />
+      <Line x1="17" x2="17" y1="2" y2="22" stroke={color} />
+      <Line x1="2" x2="22" y1="12" y2="12" stroke={color} />
+      <Line x1="2" x2="7" y1="7" y2="7" stroke={color} />
+      <Line x1="2" x2="7" y1="17" y2="17" stroke={color} />
+      <Line x1="17" x2="22" y1="17" y2="17" stroke={color} />
+      <Line x1="17" x2="22" y1="7" y2="7" stroke={color} />
     </Svg>
   )
 }

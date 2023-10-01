@@ -29,16 +29,16 @@ const Icon = (props) => {
       height={size}
       viewBox="0 0 24 24"
       fill="none"
-      stroke={`${color}`}
+      stroke={color}
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
       {...otherProps}
     >
-      <Polyline points="4 14 10 14 10 20" stroke={`${color}`} />
-      <Polyline points="20 10 14 10 14 4" stroke={`${color}`} />
-      <Line x1="14" x2="21" y1="10" y2="3" stroke={`${color}`} />
-      <Line x1="3" x2="10" y1="21" y2="14" stroke={`${color}`} />
+      <Polyline points="4 14 10 14 10 20" stroke={color} />
+      <Polyline points="20 10 14 10 14 4" stroke={color} />
+      <Line x1="14" x2="21" y1="10" y2="3" stroke={color} />
+      <Line x1="3" x2="10" y1="21" y2="14" stroke={color} />
     </Svg>
   )
 }

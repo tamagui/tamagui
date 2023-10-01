@@ -29,7 +29,7 @@ const Icon = (props) => {
       height={size}
       viewBox="0 0 24 24"
       fill="none"
-      stroke={`${color}`}
+      stroke={color}
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -42,7 +42,7 @@ const Icon = (props) => {
         y="1"
         rx="2.41"
         transform="rotate(45 12 1)"
-        stroke={`${color}`}
+        stroke={color}
       />
     </Svg>
   )

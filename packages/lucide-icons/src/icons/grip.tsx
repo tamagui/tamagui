@@ -29,21 +29,21 @@ const Icon = (props) => {
       height={size}
       viewBox="0 0 24 24"
       fill="none"
-      stroke={`${color}`}
+      stroke={color}
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
       {...otherProps}
     >
-      <_Circle cx="12" cy="5" r="1" stroke={`${color}`} />
-      <_Circle cx="19" cy="5" r="1" stroke={`${color}`} />
-      <_Circle cx="5" cy="5" r="1" stroke={`${color}`} />
-      <_Circle cx="12" cy="12" r="1" stroke={`${color}`} />
-      <_Circle cx="19" cy="12" r="1" stroke={`${color}`} />
-      <_Circle cx="5" cy="12" r="1" stroke={`${color}`} />
-      <_Circle cx="12" cy="19" r="1" stroke={`${color}`} />
-      <_Circle cx="19" cy="19" r="1" stroke={`${color}`} />
-      <_Circle cx="5" cy="19" r="1" stroke={`${color}`} />
+      <_Circle cx="12" cy="5" r="1" stroke={color} />
+      <_Circle cx="19" cy="5" r="1" stroke={color} />
+      <_Circle cx="5" cy="5" r="1" stroke={color} />
+      <_Circle cx="12" cy="12" r="1" stroke={color} />
+      <_Circle cx="19" cy="12" r="1" stroke={color} />
+      <_Circle cx="5" cy="12" r="1" stroke={color} />
+      <_Circle cx="12" cy="19" r="1" stroke={color} />
+      <_Circle cx="19" cy="19" r="1" stroke={color} />
+      <_Circle cx="5" cy="19" r="1" stroke={color} />
     </Svg>
   )
 }
