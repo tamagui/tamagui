@@ -23290,29 +23290,29 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-screens@npm:3.22.0":
-  version: 3.22.0
-  resolution: "react-native-screens@npm:3.22.0"
+"react-native-screens@npm:3.22.1":
+  version: 3.22.1
+  resolution: "react-native-screens@npm:3.22.1"
   dependencies:
     react-freeze: ^1.0.0
     warn-once: ^0.1.0
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 18014990785abade1223aeb6468c7f5917f9ef5bc7144fac4ba25b1778cb9faac413cbecd565fed6b7c40474a9387ba29d672af1539a175ca87a235900128b7f
+  checksum: 3b592ff31d9dfde5e2ce967f85f3ad17a94f4f3bee2248a3dad9ec791e7cda72a431f86b468b3b2a70ebeffb49b462f8162668a58fb9ddabb10b5a369816850d
   languageName: node
   linkType: hard
 
-"react-native-screens@patch:react-native-screens@npm%3A3.22.0#./.yarn/patches/react-native-screens-npm-3.22.0-9ada8582d1.patch::locator=tamagui-monorepo%40workspace%3A.":
-  version: 3.22.0
-  resolution: "react-native-screens@patch:react-native-screens@npm%3A3.22.0#./.yarn/patches/react-native-screens-npm-3.22.0-9ada8582d1.patch::version=3.22.0&hash=0259c8&locator=tamagui-monorepo%40workspace%3A."
+"react-native-screens@patch:react-native-screens@npm%3A3.22.1#./.yarn/patches/react-native-screens-npm-3.22.1-b3da351834.patch::locator=tamagui-monorepo%40workspace%3A.":
+  version: 3.22.1
+  resolution: "react-native-screens@patch:react-native-screens@npm%3A3.22.1#./.yarn/patches/react-native-screens-npm-3.22.1-b3da351834.patch::version=3.22.1&hash=7fdf88&locator=tamagui-monorepo%40workspace%3A."
   dependencies:
     react-freeze: ^1.0.0
     warn-once: ^0.1.0
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 5560b30f2c5649482c09ea1543b59e8f5e10b23c05ca12419821cd374dd4cd53fad0ad61049a0fc9a99c3134e88dd2c42981af466fd2eabf5cf6927188c8f9fd
+  checksum: 7934cc19d9272bcb36013f760dd26afb84e6ac9fb4d64e766c839768ca79b538026e7e8562ab982bb5ffbb414a5ab646d04b7fa13f9df239761c1f8c834c6113
   languageName: node
   linkType: hard
 

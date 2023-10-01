@@ -10,4 +10,4 @@ export declare const isTouchable: boolean;
 export declare const isAndroid: boolean;
 export declare const isIos: boolean;
 export declare const currentPlatform: 'web' | 'ios' | 'native' | 'android';
-//# sourceMappingURL=index.ios.d.ts.map
+//# sourceMappingURL=constants.d.ts.map
