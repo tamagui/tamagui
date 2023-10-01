@@ -1,7 +1,6 @@
 import mime from 'mime/lite'
 
-import { StartOptions } from '../types'
-import { HMRListener } from '../types'
+import { HMRListener, StartOptions } from '../types'
 import { DEFAULT_PORT } from '../utils/constants'
 import { Server, createServer } from '../vendor/repack/dev-server/src'
 

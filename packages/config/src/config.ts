@@ -2,14 +2,10 @@ import { shorthands } from '@tamagui/shorthands'
 import { themes, tokens } from '@tamagui/themes'
 import { CreateTamaguiProps } from '@tamagui/web'
 
-import { animations } from './animations.reanimated'
 import { fonts } from './fonts'
 import { media, mediaQueryDefaultActive } from './media'
 
-export * from './animations'
-
 export const configWithoutAnimations = {
-  animations,
   defaultFont: 'body',
   shouldAddPrefersColorThemes: true,
   themeClassNameOnRoot: true,
