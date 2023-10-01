@@ -7,3 +7,5 @@ export type StartOptions = {
   webConfig?: InlineConfig
   buildConfig?: InlineConfig
 }
+
+export type HMRListener = (update: { file: string; contents: string }) => void
