@@ -45,8 +45,6 @@ export function tamaguiPlugin({
     '.json',
   ]
 
-  console.log('extensions', extensions)
-
   const plugin: Plugin = {
     name: 'tamagui-base',
     enforce: 'pre',

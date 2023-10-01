@@ -324,6 +324,37 @@ export const dev = async (options: CLIResolvedOptions) => {
           platform: 'native',
         }),
 
+        // needs to run before resolve... smh
+        // {
+        //   name: `react-native-screens`,
+        //   enforce: 'pre',
+
+        //   async transform(code, id) {
+        //     if (id.includes('react-native-screens') && id.endsWith('.index.native.js')) {
+        //       const cjsExport = /exports\.([a-z0-9]+) = (.*)\n/gi
+
+        //       const out = code
+        //         .split('\n')
+        //         .map((line) => {
+        //           const matched = line.match(cjsExport)
+        //           if (!matched) return line
+        //           return line.replace(
+        //             cjsExport,
+        //             `
+        //           $1 = $2
+        //           export { $1 }
+        //           `
+        //           )
+        //         })
+        //         .join('\n')
+
+        //       console.log('now', out)
+
+        //       return out
+        //     }
+        //   },
+        // },
+
         {
           name: 'reanimated',
 
@@ -350,6 +381,7 @@ export const dev = async (options: CLIResolvedOptions) => {
       appType: 'custom',
       root,
       clearScreen: false,
+
       build: {
         ssr: false,
         minify: false,
@@ -365,6 +397,7 @@ export const dev = async (options: CLIResolvedOptions) => {
           },
         },
       },
+
       mode: 'development',
       define: {
         'process.env.NODE_ENV': `"development"`,
@@ -372,7 +405,7 @@ export const dev = async (options: CLIResolvedOptions) => {
     } satisfies InlineConfig
 
     // this fixes my swap-react-native plugin not being called pre 😳
-    await resolveConfig(buildConfig, 'build')
+    const resolvedConfig = await resolveConfig(buildConfig, 'build')
 
     const buildOutput = await build(buildConfig)
 
