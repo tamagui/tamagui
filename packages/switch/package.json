@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/switch",
-  "version": "1.74.6",
+  "version": "1.74.7",
   "sideEffects": [
     "*.css"
   ],
@@ -31,22 +31,22 @@
     }
   },
   "dependencies": {
-    "@tamagui/compose-refs": "1.74.6",
-    "@tamagui/core": "1.74.6",
-    "@tamagui/create-context": "1.74.6",
-    "@tamagui/focusable": "1.74.6",
-    "@tamagui/get-token": "1.74.6",
-    "@tamagui/label": "1.74.6",
-    "@tamagui/stacks": "1.74.6",
-    "@tamagui/use-controllable-state": "1.74.6",
-    "@tamagui/use-previous": "1.74.6"
+    "@tamagui/compose-refs": "1.74.7",
+    "@tamagui/core": "1.74.7",
+    "@tamagui/create-context": "1.74.7",
+    "@tamagui/focusable": "1.74.7",
+    "@tamagui/get-token": "1.74.7",
+    "@tamagui/label": "1.74.7",
+    "@tamagui/stacks": "1.74.7",
+    "@tamagui/use-controllable-state": "1.74.7",
+    "@tamagui/use-previous": "1.74.7"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.74.6",
+    "@tamagui/build": "1.74.7",
     "react": "^18.2.0",
     "react-native": "^0.72.1"
   },

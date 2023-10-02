@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/scroll-view",
-  "version": "1.74.6",
+  "version": "1.74.7",
   "sideEffects": [
     "*.css"
   ],
@@ -29,14 +29,14 @@
     }
   },
   "dependencies": {
-    "@tamagui/stacks": "1.74.6",
-    "@tamagui/web": "1.74.6"
+    "@tamagui/stacks": "1.74.7",
+    "@tamagui/web": "1.74.7"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.74.6",
+    "@tamagui/build": "1.74.7",
     "react": "^18.2.0"
   },
   "publishConfig": {
