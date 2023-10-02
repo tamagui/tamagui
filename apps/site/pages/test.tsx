@@ -22,18 +22,7 @@ export default memo(() => {
         <ThemeToggle />
       </div>
 
-      <Button
-        size="$3"
-        chromeless
-        debug="verbose"
-        circular
-        hoverStyle={{
-          bc: 'transparent',
-        }}
-        pressStyle={{
-          bc: '$backgroundPress',
-        }}
-      >
+      <Button debug="verbose" $xs={{ display: 'none' }}>
         test
       </Button>
     </div>

@@ -17,6 +17,7 @@ import {
   getVariableValue,
   spacedChildren,
   styled,
+  useDidFinishSSR,
   useProps,
   withStaticProperties,
 } from '@tamagui/web'
@@ -220,12 +221,11 @@ function useButton<Props extends ButtonProps>(
   { Text = Button.Text }: { Text: any } = { Text: Button.Text }
 ) {
   const isNested = useContext(ButtonNestingContext)
-
+  const didFinishSSR = useDidFinishSSR()
   const propsActive = useProps(propsIn) as any as ButtonProps
 
   // careful not to desctructure and re-order props, order is important
   const {
-    children,
     icon,
     iconAfter,
     space,
@@ -236,8 +236,6 @@ function useButton<Props extends ButtonProps>(
     noTextWrap,
     fontFamily,
     fontSize,
-
-    ...rest
   } = propsActive
 
   const size = propsActive.size || (propsActive.unstyled ? undefined : '$true')
@@ -251,13 +249,13 @@ function useButton<Props extends ButtonProps>(
     color: propsActive.color as any,
   })
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)
-  const spaceSize = propsActive.space ?? getVariableValue(iconSize) * scaleSpace
+  const spaceSize = space ?? getVariableValue(iconSize) * scaleSpace
   const contents = noTextWrap
-    ? [children]
+    ? [propsIn.children]
     : wrapChildrenInText(
         Text,
-        { children, fontFamily, fontSize },
-        Text === ButtonText && propsIn.unstyled !== true
+        { children: propsIn.children, fontFamily, fontSize },
+        Text === ButtonText && propsActive.unstyled !== true
           ? {
               unstyled: false,
               size,
@@ -283,13 +281,16 @@ function useButton<Props extends ButtonProps>(
     ? 'span'
     : // defaults to <a /> when accessibilityRole = link
     // see https://github.com/tamagui/tamagui/issues/505
-    propsIn.accessibilityRole === 'link'
+    propsActive.accessibilityRole === 'link'
     ? 'a'
     : undefined
 
+  // remove the ones we used here
+  const { iconAfter: _1, icon: _2, noTextWrap: _3, ...restProps } = propsIn
+
   const props = {
     size,
-    ...(propsActive.disabled && {
+    ...(propsIn.disabled && {
       // in rnw - false still has keyboard tabIndex, undefined = not actually focusable
       focusable: undefined,
       // even with tabIndex unset, it will keep focusStyle on web so disable it here
@@ -300,12 +301,12 @@ function useButton<Props extends ButtonProps>(
     ...(tag && {
       tag,
     }),
-    ...rest,
+    ...restProps,
     children: (
       <ButtonNestingContext.Provider value={true}>{inner}</ButtonNestingContext.Provider>
     ),
     // forces it to be a runtime pressStyle so it passes through context text colors
-    disableClassName: true,
+    disableClassName: didFinishSSR,
   } as Props
 
   return {
