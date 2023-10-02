@@ -140,7 +140,6 @@ function MyClimb({
                   ),
                   endDate: format(
                     new Date(profileClimb.climb.duration),
-
                     'yyyy-MM-dd'
                   ),
                   startTime: format(
