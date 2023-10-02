@@ -210,7 +210,7 @@ export function MyClimbsTab() {
   const user = useUser()
 
   return (
-    <YStack overflow="visible" gap="$5">
+    <YStack gap="$5">
       <FlatList
         style={{
           paddingTop: 20,
