@@ -156,11 +156,14 @@ export function ClimbsTab() {
   }, [])
 
   return (
-    <YStack>
+    <YStack
+      style={{
+        paddingBottom: 134,
+      }}
+    >
       <FlatList
         style={{
           paddingTop: 20,
-          // paddingBottom: 80,
         }}
         data={climbsQuery.data}
         showsVerticalScrollIndicator={false}
@@ -329,25 +332,8 @@ export const SheetDemo = ({
               </Button>
             </XStack>
           </YStack>
-          {/* {modal && (
-            <>
-              <InnerSheet open={innerOpen} onOpenChange={setInnerOpen} />
-              <Button size="$6" circular icon={ChevronUp} onPress={() => setInnerOpen(true)} />
-            </>
-          )} */}
         </Sheet.Frame>
       </Sheet>
     </Theme>
   )
 }
-
-// const config = {
-//   name: '[Reminder] Test the Add to Calendar Button',
-//   description:
-//     'Check out the maybe easiest way to include Add to Calendar Buttons to your web projects:[br]→ [url]https://add-to-calendar-button.com/',
-//   startDate: '2023-09-07',
-//   startTime: '10:15',
-//   endTime: '23:30',
-//   options: ['Google|My custom label', 'iCal'],
-//   timeZone: 'America/Los_Angeles',
-// }
