@@ -189,9 +189,8 @@ export const SheetDemo = ({
   const user = useUser()
 
   const joinMutation = api.climb.join.useMutation()
+  const deleteMutation = api.climb.delete.useMutation()
   const queryClient = useQueryClient()
-  // const user = useUser()
-  // const [innerOpen, setInnerOpen] = useState(false)
   console.log('climb', climb)
 
   const { color } = useClimbColor(climb?.type)
@@ -273,29 +272,45 @@ export const SheetDemo = ({
                 onPress={async () => {
                   setOpen(false)
                   if (!climb) return
-                  await joinMutation.mutateAsync(
-                    { climb_id: climb?.id ?? 0 },
-                    {
-                      onSuccess: () => {
-                        toast.show('You joined the climb!', {
-                          message: `You are climbing with ${climb?.climber.first_name}`,
-                        })
-                        queryClient.setQueryData(
-                          [['climb', 'read'], { type: 'query' }],
-                          (climbs: ListClimb[] | undefined) => {
-                            return climbs?.filter((c) => c.id !== climb.id)
-                          }
-                        )
-                      },
-                      onError: (error) => {
-                        // TODO: create toast for error case
-                        console.log(error)
-                      },
-                    }
-                  )
+                  console.log('clibm xxxx', climb.id)
+                  user.user?.id === climb?.created_by
+                    ? await deleteMutation.mutateAsync(
+                        { climb_id: climb?.id ?? 0 },
+                        {
+                          onSuccess: () => {
+                            toast.show('Climb deleted')
+                            queryClient.setQueryData(
+                              [['climb', 'read'], { type: 'query' }],
+                              (climbs: ListClimb[] | undefined) => {
+                                return climbs?.filter((c) => c.id !== climb.id)
+                              }
+                            )
+                          },
+                        }
+                      )
+                    : await joinMutation.mutateAsync(
+                        { climb_id: climb?.id ?? 0 },
+                        {
+                          onSuccess: () => {
+                            toast.show('You joined the climb!', {
+                              message: `You are climbing with ${climb?.climber.first_name}`,
+                            })
+                            queryClient.setQueryData(
+                              [['climb', 'read'], { type: 'query' }],
+                              (climbs: ListClimb[] | undefined) => {
+                                return climbs?.filter((c) => c.id !== climb.id)
+                              }
+                            )
+                          },
+                          onError: (error) => {
+                            // TODO: create toast for error case
+                            console.log(error)
+                          },
+                        }
+                      )
                 }}
               >
-                {user?.user?.id === climb?.created_by ? 'Edit' : 'Join'}
+                {user?.user?.id === climb?.created_by ? 'Delete' : 'Join'}
               </Button>
               <Spacer flex />
               <Button

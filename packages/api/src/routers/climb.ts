@@ -241,15 +241,42 @@ export const climbRouter = createTRPCRouter({
         throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' })
       }
 
-
       // Send removed climb back so I can delete from the cache optimistically
       return removeProfileClimb.data
-
-
-
-
-
     }),
+  delete: protectedProcedure.input(z.object({
+    climb_id: z.number(),
+  })).mutation(async ({ ctx: { supabase, session }, input }) => {
+    // Delete the profile_climb first
+    // delete the climb from the climbs table next
+    // only climb creator can delete
+    console.log('input xxxxx', input)
+
+    const climb = await supabase.from('climbs').select('*').eq('id', input.climb_id).single()
+
+    if (climb.error) {
+      throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' })
+    }
+
+    if (climb.data.created_by !== session?.user.id) {
+      throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' })
+    }
+
+    const deleteProfileClimbs = await supabase.from('profile_climbs').delete().eq('climb_id', input.climb_id).select()
+
+    if (deleteProfileClimbs.error) {
+      throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' })
+    }
+
+    const deleteClimb = await supabase.from('climbs').delete().eq('id', input.climb_id).select()
+
+    if (deleteClimb.error) {
+      throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' })
+    }
+
+    return true
+
+  }),
   create: protectedProcedure
     .input(
       z.object({

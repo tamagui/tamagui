@@ -24,8 +24,6 @@ import { LinearGradient } from '@tamagui/linear-gradient'
 import { useUser, User } from 'app/utils/useUser'
 import { ShieldQuestion } from '@tamagui/lucide-icons'
 import { useQueryClient } from '@tanstack/react-query'
-import { createParam } from 'solito'
-import React, { useState } from 'react'
 import { getBaseUrl } from '../../utils/getBaseUrl'
 const displayName = {
   top_rope: 'Top Rope',
@@ -38,17 +36,6 @@ type ProfileClimb = Tables<'profile_climbs'> & {
   profile: Tables<'profiles'> | undefined
 }
 
-const { useParams, useUpdateParams } = createParam<{
-  name?: string
-  options?: string[]
-  location?: string
-  startDate?: string
-  endDate?: string
-  startTime?: string
-  endTime?: string
-  timeZone?: string
-}>()
-
 function MyClimb({
   profileClimb,
 }: {
@@ -57,15 +44,7 @@ function MyClimb({
 }) {
   const { color } = useClimbColor(profileClimb.climb.type)
   const leave = api.climb.leave.useMutation()
-  const { params } = useParams()
-  const [calClicked, setCalClicked] = useState()
-  const updateParams = useUpdateParams()
-  React.useEffect(() => {
-    if (calClicked) {
-      console.log(params, 'ttttt')
-    }
-  }, [calClicked, params])
-  // const { setParams, params } = useParam('name', {})
+
   const onPressUpdateSlug = (props: {
     name?: string
     location?: string
@@ -82,15 +61,6 @@ function MyClimb({
       })
     )
   }
-  // localhost:3001/test/%7B%22name%22:%22Big%20Climb%22,%22location%22:%22World%20Wide%20Web%22,%22startDate%22:%222023-09-21%22,%22endDate%22:%222023-09-21%22,%22startTime%22:%2210:15%22,%22endTime%22:%2223:30%22,%22timeZone%22:%22America/Los_Angeles%22%7D
-  // name="Title"
-  // options={['Apple', 'Google', 'Outlook.com', 'Yahoo']}
-  // location="World Wide Web"
-  // startDate="2023-09-21"
-  // endDate="2023-09-21"
-  // startTime="10:15"
-  // endTime="23:30"
-  // timeZone="America/Los_Angeles"
   const queryClient = useQueryClient()
   const profileClimbQueryKey = getQueryKey(api.me.climbs, undefined, 'query')
   const user = useUser()
@@ -241,7 +211,6 @@ export function MyClimbsTab() {
         keyExtractor={(item) => `${item.id}`}
         ItemSeparatorComponent={() => <Spacer size="$5" />}
       />
-      {/* <SheetDemo profileClimb={selectedClimb} open={open} setOpen={setOpen} /> */}
     </YStack>
   )
 }
