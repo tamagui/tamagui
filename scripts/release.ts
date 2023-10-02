@@ -4,8 +4,7 @@ import { join } from 'node:path'
 import { promisify } from 'node:util'
 import path from 'path'
 
-import fs, { readJSON, writeJSON } from 'fs-extra'
-import _ from 'lodash'
+import fs, { writeJSON } from 'fs-extra'
 import pMap from 'p-map'
 import prompts from 'prompts'
 

@@ -7973,6 +7973,7 @@ __metadata:
     "@tamagui/cli": 1.74.6
     "@tamagui/colors": 1.74.6
     "@tamagui/create-theme": 1.74.6
+    "@tamagui/theme-builder": 1.74.6
     "@tamagui/web": 1.74.6
     vitest: ^0.34.3
   languageName: unknown
