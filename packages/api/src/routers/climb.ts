@@ -247,10 +247,6 @@ export const climbRouter = createTRPCRouter({
   delete: protectedProcedure.input(z.object({
     climb_id: z.number(),
   })).mutation(async ({ ctx: { supabase, session }, input }) => {
-    // Delete the profile_climb first
-    // delete the climb from the climbs table next
-    // only climb creator can delete
-    console.log('input xxxxx', input)
 
     const climb = await supabase.from('climbs').select('*').eq('id', input.climb_id).single()
 

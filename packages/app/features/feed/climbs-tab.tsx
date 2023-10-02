@@ -40,9 +40,6 @@ function Climb({
   onSelect?: (climb: ListClimb) => void
 }) {
   const { color } = useClimbColor(climb.type)
-  // const cache = useQueryClient()
-  // const cachedUserKey = getQueryKey(api.me.profile.read)
-  // const user = cache.getQueryData<User['profile']>(cachedUserKey)
 
   return (
     <Theme name={color}>
@@ -50,9 +47,6 @@ function Climb({
         overflow="visible"
         removeClippedSubviews={true}
         height={220}
-        // minWidth={320}
-        // w={'100%'}
-        // w="100%"
         position="relative"
         padding="$4"
         marginHorizontal="$3"
@@ -112,9 +106,7 @@ function Climb({
           <Paragraph size="$1" fontWeight="800" ellipse>
             @{climb.climber.username}
           </Paragraph>
-          <Paragraph size="$1" fontWeight="400" ellipse>
-            {/* {climb.name} {user?.data?.id === climb?.created_by ? '(your climb)' : ''} */}
-          </Paragraph>
+          <Paragraph size="$1" fontWeight="400" ellipse></Paragraph>
           <Spacer size="$1" />
         </Card.Header>
         <Card.Footer ai="baseline">
@@ -123,9 +115,6 @@ function Climb({
             {format(new Date(climb.start), 'h:mmaaa')}
           </Paragraph>
           <Spacer flex />
-          {/* <Button fontSize="$1" size="$3" borderRadius="$3">
-            Join
-          </Button> */}
         </Card.Footer>
         <Card.Background>
           <LinearGradient

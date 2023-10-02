@@ -132,13 +132,26 @@ function MyClimb({
             <Button
               onPress={() => {
                 onPressUpdateSlug({
-                  name: 'Big Climb',
-                  location: 'World Wide Web',
-                  startDate: '2023-09-21',
-                  endDate: '2023-09-21',
-                  startTime: '10:15',
-                  endTime: '23:30',
-                  timeZone: 'America/Los_Angeles',
+                  name: profileClimb.climb.name,
+                  location: '242 Butler St, Brooklyn, NY 11217',
+                  startDate: format(
+                    new Date(profileClimb.climb.start),
+                    'yyyy-MM-dd'
+                  ),
+                  endDate: format(
+                    new Date(profileClimb.climb.duration),
+
+                    'yyyy-MM-dd'
+                  ),
+                  startTime: format(
+                    new Date(profileClimb.climb.start),
+                    'HH:mm'
+                  ),
+                  endTime: format(
+                    new Date(profileClimb.climb.duration),
+                    'HH:mm'
+                  ),
+                  timeZone: 'America/New_York',
                 })
               }}
             >

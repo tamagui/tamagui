@@ -47,6 +47,7 @@ const Page: NextPageWithLayout = () => {
         <title>test screen</title>
       </Head>
       <YStack f={1} paddingTop="$4" paddingHorizontal="$2">
+        {/* <Paragraph>{JSON.stringify(params, null, 2)}</Paragraph> */}
         <H3>Add to Calendar</H3>
         <Spacer />
         <AddToCalendarButton
