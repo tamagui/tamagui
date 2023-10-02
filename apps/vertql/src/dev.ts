@@ -1,7 +1,7 @@
 import { join } from 'path'
 
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
-import { create } from '@tamagui/vite-react-native'
+// import { create } from '@tamagui/vite-react-native'
 import chalk from 'chalk'
 import { context } from 'esbuild'
 import express, { Express } from 'express'
@@ -32,6 +32,7 @@ export const dev = async (optionsIn: Options) => {
     config: 'src/tamagui.config.ts',
   })
 
+  // @ts-ignore
   const { viteServer, start, stop } = await create({
     root: options.root,
     host: options.host,
