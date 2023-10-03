@@ -147,7 +147,7 @@ module.exports = function (name, { defaultConfig }) {
         },
         {
           source: '/vite',
-          destination: 'https://natew.github.io/react-native-vite',
+          destination: 'https://vxrn.dev',
           permanent: true,
         },
       ]

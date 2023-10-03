@@ -1,9 +1,8 @@
 // import './wdyr'
 
 import { ChevronRight } from '@tamagui/lucide-icons'
-import { memo, useState } from 'react'
-import { Appearance, View } from 'react-native'
-import { Button, ListItem, ListItemFrame, Square, Theme, styled } from 'tamagui'
+import { View } from 'react-native'
+import { ListItem } from 'tamagui'
 
 export const Sandbox = () => {
   return (
