@@ -1,13 +1,13 @@
 import { join } from 'path'
 
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
-// import { create } from '@tamagui/vite-react-native'
 import chalk from 'chalk'
 import { context } from 'esbuild'
 import express, { Express } from 'express'
 import { pathExists } from 'fs-extra'
 import { ViteDevServer } from 'vite'
 import inspectPlugin from 'vite-plugin-inspect'
+import { create } from 'vxrn'
 
 type Options = {
   root?: string

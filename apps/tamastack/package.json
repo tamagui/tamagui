@@ -13,7 +13,6 @@
     "@tamagui/core": "1.74.8",
     "@tamagui/shorthands": "1.74.8",
     "@tamagui/themes": "1.74.8",
-    "@tamagui/vite-native-client": "1.74.7",
     "express": "^4.18.2",
     "express-graphql": "^0.12.0",
     "gqty": "^3.0.0-alpha-7b21563c.0",
