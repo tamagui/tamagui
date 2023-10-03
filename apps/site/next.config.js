@@ -145,6 +145,11 @@ module.exports = function (name, { defaultConfig }) {
           destination: '/docs/intro/introduction',
           permanent: true,
         },
+        {
+          source: '/vite',
+          destination: 'https://natew.github.io/react-native-vite',
+          permanent: true,
+        },
       ]
     },
   }
