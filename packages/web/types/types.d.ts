@@ -739,7 +739,14 @@ export type TextNonStyleProps = Omit<ReactTextProps, 'children' | OmitRemovedNon
 export type TextPropsBase = TextNonStyleProps & WithThemeAndShorthands<TextStylePropsBase>;
 export type TextStyleProps = WithThemeShorthandsPseudosMediaAnimation<TextStylePropsBase>;
 export type TextProps = TextNonStyleProps & TextStyleProps;
-export type Styleable<Props, Ref> = <CustomProps extends Object, X extends FunctionComponent<Props & CustomProps> = FunctionComponent<Props & CustomProps>>(a: X, staticConfig?: Partial<StaticConfig>) => ReactComponentWithRef<CustomProps & Omit<Props, keyof CustomProps>, Ref> & {
+export interface ThemeableProps {
+    theme?: ThemeName | null;
+    themeInverse?: boolean;
+    themeReset?: boolean;
+    componentName?: string;
+    debug?: DebugProp;
+}
+export type Styleable<Props, Ref> = <CustomProps extends Object, X extends FunctionComponent<any> = FunctionComponent<ThemeableProps & Props & CustomProps>>(a: X, staticConfig?: Partial<StaticConfig>) => ReactComponentWithRef<CustomProps & Omit<Props & ThemeableProps, keyof CustomProps>, Ref> & {
     staticConfig: StaticConfig;
     styleable: Styleable<Props, Ref>;
 };
