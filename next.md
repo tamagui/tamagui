@@ -7,9 +7,11 @@
   - also it should make sure to make those props required if they aren't set in styled()
 
 - v2 
-  - shorthands
-    - col => c
-    - remove bg/bc confusion
+  - breaking:
+    - shorthands
+      - col => c
+      - remove bg/bc confusion
+    - remove suppressHighlighting / margin 0 default from Text
   - web mode: 100% of css coverage or at least allow all valid web props
     - compiler can accummulate them and emit a file?
   - basic plugins system

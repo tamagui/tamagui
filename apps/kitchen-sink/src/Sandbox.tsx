@@ -1,12 +1,15 @@
 // import './wdyr'
 
 import { View } from 'react-native'
-import { Square } from 'tamagui'
+import { Text as RNText } from 'react-native'
+import { Button, Text } from 'tamagui'
 
 export const Sandbox = () => {
   return (
     <View style={{ width: '100%', height: '100%', padding: 50 }}>
-      <Square size={200} bc="red" elevation={20} />
+      <Button>
+        <RNText>hello</RNText>
+      </Button>
     </View>
   )
 }
