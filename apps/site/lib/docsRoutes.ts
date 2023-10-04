@@ -1,10 +1,52 @@
-export const docsRoutes = [
+import { DocsRoute } from 'types'
+
+export const docsRoutes: DocsRoute[] = [
   {
     pages: [
       { title: 'Introduction', route: '/docs/intro/introduction' },
       { title: 'Installation', route: '/docs/intro/installation' },
       { title: 'Releases', route: 'https://github.com/tamagui/tamagui/releases' },
     ],
+  },
+
+  {
+    type: 'hr',
+    title: 'Guides',
+  },
+  {
+    pages: [{ title: 'Overview', route: '/docs/guides/overview' }],
+  },
+
+  {
+    type: 'hr',
+    title: 'Components',
+  },
+  {
+    pages: [{ title: 'Overview', route: '/docs/components/overview' }],
+  },
+
+  {
+    type: 'hr',
+    title: 'Theme',
+  },
+  {
+    pages: [{ title: 'Overview', route: '/docs/theme/overview' }],
+  },
+
+  {
+    type: 'hr',
+    title: 'Styling',
+  },
+  {
+    pages: [{ title: 'Overview', route: '/docs/styling/overview' }],
+  },
+
+  {
+    type: 'hr',
+    title: 'Extras',
+  },
+  {
+    pages: [{ title: 'Overview', route: '/docs/extras/overview' }],
   },
 
   {
@@ -186,4 +228,11 @@ export const docsRoutes = [
   },
 ]
 
-export const allDocsRoutes = docsRoutes.flatMap((x) => x.pages || [])
+export const allDocsRoutes = docsRoutes.flatMap((x) => {
+  switch (x.type) {
+    case undefined:
+      return x.pages
+    default:
+      return []
+  }
+})

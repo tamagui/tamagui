@@ -69,3 +69,10 @@ export interface Subscription {
   trial_end?: string
   prices?: Price
 }
+
+export type DocsRoute =
+  | {
+      type: string
+      title: string
+    }
+  | { type?: undefined; label?: string; pages: { title: string; route: string }[] }
