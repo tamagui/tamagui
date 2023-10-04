@@ -3,6 +3,7 @@ import { createDmSansFont } from '@tamagui/font-dm-sans'
 import { createDmSerifDisplayFont } from '@tamagui/font-dm-serif-display'
 import { createInterFont } from '@tamagui/font-inter'
 import { createMunroFont } from '@tamagui/font-munro'
+import { createNohemi } from '@tamagui/font-nohemi'
 import { createSilkscreenFont } from '@tamagui/font-silkscreen'
 import { shorthands } from '@tamagui/shorthands'
 import { tokens } from '@tamagui/themes/v2'
@@ -89,6 +90,43 @@ const dmSansHeadingFont = createDmSansFont(
       5: 2,
       6: 1,
       7: 0,
+      8: 0,
+      9: -0.1,
+      10: -0.25,
+      11: -0.5,
+      12: -0.75,
+      14: -1,
+      15: -2,
+    },
+    face: {},
+  },
+  { sizeLineHeight: (size) => Math.round(size * 0.95), sizeSize: (size) => size * 1.05 }
+)
+
+const nohemiFont = createNohemi(
+  {
+    size: {
+      5: 13,
+      6: 15,
+      9: 32,
+      10: 44,
+    },
+    transform: {
+      6: 'uppercase',
+      7: 'none',
+    },
+    weight: {
+      6: '400',
+      7: '700',
+    },
+    color: {
+      6: '$colorFocus',
+      7: '$color',
+    },
+    letterSpacing: {
+      5: 3,
+      6: 2,
+      7: 1,
       8: 0,
       9: -0.1,
       10: -0.25,
@@ -204,6 +242,7 @@ export const config = {
     heading: headingFont,
     headingDmSans: dmSansHeadingFont,
     headingDmSerifDisplay: dmSerifDisplayHeadingFont,
+    headingNohemi: nohemiFont,
     body: bodyFont,
     mono: monoFont,
     silkscreen: silkscreenFont,

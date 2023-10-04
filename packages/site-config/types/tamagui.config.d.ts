@@ -43419,6 +43419,7 @@ export declare const config: {
             };
             face: {};
         }, 5 | 9 | 15 | 1 | 10 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+        headingNohemi: any;
         body: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 5 | 9 | 15 | 1 | 10 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
         mono: {
             weight: {
