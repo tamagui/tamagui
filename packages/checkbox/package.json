@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/checkbox",
-  "version": "1.74.8",
+  "version": "1.74.9",
   "sideEffects": [
     "*.css"
   ],
@@ -23,16 +23,16 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/core": "1.74.8",
-    "@tamagui/create-context": "1.74.8",
-    "@tamagui/focusable": "1.74.8",
-    "@tamagui/font-size": "1.74.8",
-    "@tamagui/get-token": "1.74.8",
-    "@tamagui/helpers-tamagui": "1.74.8",
-    "@tamagui/label": "1.74.8",
-    "@tamagui/stacks": "1.74.8",
-    "@tamagui/use-controllable-state": "1.74.8",
-    "@tamagui/use-previous": "1.74.8"
+    "@tamagui/core": "1.74.9",
+    "@tamagui/create-context": "1.74.9",
+    "@tamagui/focusable": "1.74.9",
+    "@tamagui/font-size": "1.74.9",
+    "@tamagui/get-token": "1.74.9",
+    "@tamagui/helpers-tamagui": "1.74.9",
+    "@tamagui/label": "1.74.9",
+    "@tamagui/stacks": "1.74.9",
+    "@tamagui/use-controllable-state": "1.74.9",
+    "@tamagui/use-previous": "1.74.9"
   },
   "exports": {
     "./package.json": "./package.json",
@@ -46,7 +46,7 @@
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.74.8",
+    "@tamagui/build": "1.74.9",
     "react": "^18.2.0"
   },
   "publishConfig": {
