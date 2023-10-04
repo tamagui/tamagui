@@ -25,7 +25,7 @@
 
 Tamagui lets you share more code between web and native apps without sacrificing the two things that typically suffer when you do: performance and code quality.
 
-It does this with an optimizing compiler that outputs platform-specific optimizations, turning even cross-module-imported, logic-infused, inline-styled components into clean, flat DOM + CSS on the web, or on native, hoisted style objects and View/Text. The compiler is also completely optional, as Tamagui also works entirely at runtime.
+It does this with an optimizing compiler that outputs platform-specific optimizations, turning even cross-module-imported, logic-infused, inline-styled components into clean, flat DOM + CSS on the web, or on native, hoisted style objects and View/Text. The compiler is also optional, as Tamagui also works entirely at runtime.
 
 For example, within the ~500px² responsive browser section on [the homepage](https://tamagui.dev), 49 of the 55 or so inline styled components are flattened to a `div`. The homepage gains nearly 15% on Lighthouse just by turning on the compiler.
 
@@ -33,21 +33,15 @@ For example, within the ~500px² responsive browser section on [the homepage](ht
 
 ## Installing Tamagui
 
-To install Tamagui with all it's components run:
+To install Tamagui with all its components run:
 
 ```bash
-npm install tamagui @tamagui/config @tamagui/theme-builder
+npm install tamagui @tamagui/config
 ```
 
 Next, create a Tamagui config file named `tamagui.config.ts`:
 
 ```ts
-// the v2 config imports the css driver on web and react-native on native
-
-// for reanimated: @tamagui/config/v2-reanimated
-
-// for react-native only: @tamagui/config/v2-native
-
 import { config } from '@tamagui/config/v2'
 
 import { createTamagui } from 'tamagui'
@@ -65,6 +59,8 @@ export default tamaguiConfig
 // depending on if you chose tamagui, @tamagui/core, or @tamagui/web
 // be sure the import and declare module lines both use that same name
 ```
+
+**Note:** The `v2` config imports the css driver on web and react-native on native. For react-native, import the `@tamagui/config/v2-native` config, and for reanimated, import the `@tamagui/config/v2-reanimated` config.
 
 ### Usage
 
@@ -90,12 +86,12 @@ export default function App() {
 Done! Now try out some components:
 
 ```tsx
-import { Button } from 'tamagui'
+import { Button, Text } from 'tamagui'
 
 function Example() {
   return (
     <Button>
-      My button
+      <Text>My button</Text>
     </Button>
   );
 }
