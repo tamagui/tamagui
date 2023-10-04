@@ -134,16 +134,16 @@ const TakeoutGallery = dynamic(() => import('../components/TakeoutGallery'), {
 const heroHeight = 1100
 
 type TakeoutPageProps = {
-  starter: Database['public']['Tables']['products']['Row'] & {
+  starter?: Database['public']['Tables']['products']['Row'] & {
     prices: Database['public']['Tables']['prices']['Row'][]
   }
-  iconsPack: Database['public']['Tables']['products']['Row'] & {
+  iconsPack?: Database['public']['Tables']['products']['Row'] & {
     prices: Database['public']['Tables']['prices']['Row'][]
   }
-  fontsPack: Database['public']['Tables']['products']['Row'] & {
+  fontsPack?: Database['public']['Tables']['products']['Row'] & {
     prices: Database['public']['Tables']['prices']['Row'][]
   }
-  coupon: Stripe.Coupon | null
+  coupon?: Stripe.Coupon | null
 }
 
 const TakeoutCard2Frame = styled(YStack, {
@@ -1165,13 +1165,13 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
   const store = useTakeoutStore()
   // const [selectedPriceId, setSelectedPriceId] = useState(prices[prices.length - 1].id)
   const [selectedProductsIds, setSelectedProductsIds] = useState<string[]>(
-    products.map((p) => p.id)
+    products.filter(Boolean).map((p) => p!.id)
   )
-  const sortedStarterPrices = starter.prices.sort(
+  const sortedStarterPrices = (starter?.prices ?? []).sort(
     (a, b) => a.unit_amount! - b.unit_amount!
   )
 
-  const [starterPriceId, setStarterPriceId] = useState(sortedStarterPrices[0].id)
+  const [starterPriceId, setStarterPriceId] = useState(sortedStarterPrices[0]?.id)
   // const selectedProducts = products.filter((p) => selectedProductsIds.includes(p.id))
   const { data } = useUser()
   const subscriptions = data?.subscriptions
@@ -1188,6 +1188,9 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
   // const sortedPrices = prices.sort((a, b) => (a.unit_amount ?? 0) - (b.unit_amount ?? 0))
 
   const sum = useMemo(() => {
+    if (!starter || !iconsPack || !fontsPack) {
+      return 0
+    }
     let final = 0
     if (selectedProductsIds.includes(starter.id)) {
       final += starterPriceId
@@ -1217,10 +1220,10 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
   const hasDiscountApplied = finalPrice !== sum
 
   const noProductSelected = selectedProductsIds.length === 0
-  const showTeamSelect = selectedProductsIds.includes(starter.id)
+  const showTeamSelect = selectedProductsIds.includes(starter?.id || '')
 
   const takeoutPriceInfo = getTakeoutPriceInfo(
-    starter.prices.find((price) => price.id === starterPriceId)?.description ?? ''
+    starter?.prices.find((price) => price.id === starterPriceId)?.description ?? ''
   )
   return (
     <Dialog
@@ -1290,6 +1293,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
               <YStack my="$2">
                 <YStack gap="$4" $gtSm={{ fd: 'row' }} flexWrap="wrap">
                   {products.map((product) => {
+                    if (!product) return null
                     const active = selectedProductsIds.includes(product.id)
                     const price = product.prices[0]
                     const htmlId = `check-${price.id}`
@@ -1357,9 +1361,9 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                           </Checkbox>
 
                           <YStack gap="$2" f={1}>
-                            <H3 lh="$6">{product.name}</H3>
+                            <H3 lh="$6">{product?.name}</H3>
                             <Paragraph size="$3" lh="$1" theme="alt2">
-                              {product.description}
+                              {product?.description}
                             </Paragraph>
                           </YStack>
                         </Label>
@@ -1588,7 +1592,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                           for (const productId of selectedProductsIds) {
                             params.append('product_id', productId)
                           }
-                          params.append(`price-${starter.id}`, starterPriceId)
+                          params.append(`price-${starter?.id}`, starterPriceId)
                           if (store.appliedPromoCode) {
                             // the coupon user applied
                             params.append(`promotion_code`, store.appliedPromoCode)
@@ -2837,7 +2841,7 @@ export const getStaticProps: GetStaticProps<TakeoutPageProps | any> = async () =
   } catch (err) {
     console.error(`Error getting props`, err)
     return {
-      notFound: true,
+      props: {},
     }
   }
 }
