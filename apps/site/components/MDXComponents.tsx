@@ -264,7 +264,7 @@ export const components = {
     )
   },
 
-  Grid: (props) => <XStack flexWrap="wrap" jc="space-between" {...props} />,
+  Grid: (props) => <XStack flexWrap="wrap" jc="space-between" gap="$3" {...props} />,
   Card: TamaguiCard,
 
   Note: (props) => (
@@ -584,26 +584,16 @@ export const components = {
             </Card.Footer>
           </Card>
         </ThemeTintAlt>
-
-        <NextLink passHref href="/docs/intro/installation">
-          <Card
-            tag="a"
-            animation="quickest"
-            f={1}
-            y={0}
-            hoverStyle={{ y: -10, bc: '$backgroundHover' }}
-          >
-            <Card.Header gap="$2">
-              <H4 size="$4" color="$color8">
-                Install
-              </H4>
-              <Paragraph size="$6" color="$color9">
-                Set up an app.
-              </Paragraph>
-            </Card.Header>
-          </Card>
-        </NextLink>
       </XStack>
+    )
+  },
+  RouteCard: (props: { title: string; description: string; href: string; children?: React.ReactNode }) => {
+    return (
+      <NextLink passHref href={props.href}>
+        <TamaguiCard title={props.title} subTitle={props.description}>
+          {props.children}
+        </TamaguiCard>
+      </NextLink>
     )
   },
 
