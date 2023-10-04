@@ -2309,6 +2309,14 @@ const FaqModal = () => {
                 </YStack>
 
                 <YStack gap="$4" f={1} fb={0} minWidth={300}>
+                  <H5>Can I use the Takeout starter for an open-source project?</H5>
+                  <Paragraph>
+                    You aren't allowed to publish the source-code to the public. So no,
+                    you can't use the starter for an open-source project.
+                  </Paragraph>
+                </YStack>
+
+                <YStack gap="$4" f={1} fb={0} minWidth={300}>
                   <H5>How many projects can I use this for?</H5>
                   <Paragraph
                     cursor="pointer"
