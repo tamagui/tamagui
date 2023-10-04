@@ -6,6 +6,9 @@
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
+  "sideEffects": [
+    "polyfill.js"
+  ],
   "files": [
     "src",
     "types",
@@ -31,9 +34,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
-  "sideEffects": [
-    "./index.tsx",
-    "./polyfill.ts"
-  ]
+  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
 }

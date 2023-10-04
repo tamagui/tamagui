@@ -1,17 +1,12 @@
 // import './wdyr'
 
-import { ChevronRight } from '@tamagui/lucide-icons'
 import { View } from 'react-native'
-import { ListItem } from 'tamagui'
+import { Square } from 'tamagui'
 
 export const Sandbox = () => {
   return (
-    <View
-      style={{ width: '100%', height: '100%', backgroundColor: 'yellow', padding: 50 }}
-    >
-      {/* <ThemeChangeTest /> */}
-      {/* <ChevronRight color="$color" /> */}
-      <ListItem icon={ChevronRight} />
+    <View style={{ width: '100%', height: '100%', padding: 50 }}>
+      <Square size={200} bc="red" elevation={20} />
     </View>
   )
 }

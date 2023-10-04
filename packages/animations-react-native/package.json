@@ -3,7 +3,7 @@
   "version": "1.74.8",
   "source": "src/index.ts",
   "sideEffects": [
-    "./polyfill.js"
+    "polyfill.js"
   ],
   "license": "MIT",
   "types": "./types/index.d.ts",
