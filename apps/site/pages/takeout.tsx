@@ -968,12 +968,12 @@ export default function TakeoutPage({
                         <Bullet status="done">Apple & Google OAuth</Bullet>
                         <Bullet status="done">Screens + Components generators</Bullet>
                         <Bullet status="done">Reanimated</Bullet>
+                        <Bullet status="building">Notifications</Bullet>
                         <Bullet status="building">Maestro integration tests</Bullet>
                         <Bullet status="building">Layout animations</Bullet>
                         <Bullet status="building">Tamagui CLI: Doctor</Bullet>
                         <Bullet status="building">Tamagui CLI: Upgrade</Bullet>
                         <Bullet>Playwright integration tests</Bullet>
-                        <Bullet>Notifications</Bullet>
                         <Bullet>Alternative deployment targets</Bullet>
                         <Bullet>Premium font add-ons</Bullet>
                         <Bullet>Unified RN and web testing tools</Bullet>
