@@ -965,10 +965,10 @@ export default function TakeoutPage({
                       <XStack tag="ul" fw="wrap" gap="$5" my="$4">
                         <Bullet status="done">Storybook</Bullet>
                         <Bullet status="done">tRPC</Bullet>
+                        <Bullet status="done">Apple & Google OAuth</Bullet>
                         <Bullet status="done">Screens + Components generators</Bullet>
                         <Bullet status="done">Reanimated</Bullet>
                         <Bullet status="building">Maestro integration tests</Bullet>
-                        <Bullet status="building">Simple state management system</Bullet>
                         <Bullet status="building">Layout animations</Bullet>
                         <Bullet status="building">Tamagui CLI: Doctor</Bullet>
                         <Bullet status="building">Tamagui CLI: Upgrade</Bullet>
@@ -1785,7 +1785,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
 
                 <Row
                   title="Data & Auth"
-                  description="Supabase pre-configured with migrations, auth, utilities, automatic setup and everything to get rolling immediately."
+                  description="Supabase pre-configured with migrations, Email, Google & Apple OAuth, utilities, automatic setup and everything to get rolling immediately."
                   after="01"
                 />
 
