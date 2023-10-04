@@ -384,7 +384,7 @@ declare const SliderThumb: import("@tamagui/core").ReactComponentWithRef<SliderT
 }, "size" | "unstyled"> & {
     readonly size?: SizeTokens | undefined;
     readonly unstyled?: boolean | undefined;
-}>>, keyof SliderThumbProps>, TamaguiElement> & {
+}>> & import("@tamagui/core").ThemeableProps, keyof SliderThumbProps>, TamaguiElement> & {
     staticConfig: import("@tamagui/core").StaticConfig;
     styleable: import("@tamagui/core").Styleable<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
         style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
@@ -571,7 +571,7 @@ declare const Slider: React.ForwardRefExoticComponent<SliderProps & React.RefAtt
     }, "size" | "unstyled"> & {
         readonly size?: SizeTokens | undefined;
         readonly unstyled?: boolean | undefined;
-    }>>, keyof SliderThumbProps>, TamaguiElement> & {
+    }>> & import("@tamagui/core").ThemeableProps, keyof SliderThumbProps>, TamaguiElement> & {
         staticConfig: import("@tamagui/core").StaticConfig;
         styleable: import("@tamagui/core").Styleable<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
             style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
@@ -758,7 +758,7 @@ declare const Thumb: import("@tamagui/core").ReactComponentWithRef<SliderThumbPr
 }, "size" | "unstyled"> & {
     readonly size?: SizeTokens | undefined;
     readonly unstyled?: boolean | undefined;
-}>>, keyof SliderThumbProps>, TamaguiElement> & {
+}>> & import("@tamagui/core").ThemeableProps, keyof SliderThumbProps>, TamaguiElement> & {
     staticConfig: import("@tamagui/core").StaticConfig;
     styleable: import("@tamagui/core").Styleable<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
         style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;

@@ -1,5 +1,5 @@
 import type { FillInFont, GenericFont } from '@tamagui/core';
-export declare const createDmSerifDisplayFont: <A extends GenericFont>(font?: Partial<A>, { sizeLineHeight, sizeSize, }?: {
+export declare const createNohemi: <A extends GenericFont>(font?: Partial<A>, { sizeLineHeight, sizeSize, }?: {
     sizeLineHeight?: ((fontSize: number) => number) | undefined;
     sizeSize?: ((size: number) => number) | undefined;
 }) => FillInFont<A, 11 | 12 | 13 | 14 | 16 | 1 | 2 | 3 | 4 | "true" | 5 | 6 | 7 | 8 | 9 | 10 | 15>;
