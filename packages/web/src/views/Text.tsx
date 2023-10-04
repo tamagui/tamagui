@@ -25,7 +25,6 @@ export const Text = createComponent<TextProps, Text, TextPropsBase>({
           margin: 0,
         }
       : {
-          display: 'flex',
           suppressHighlighting: true,
         },
 
