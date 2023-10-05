@@ -10,6 +10,6 @@ export const Text = styled(TamaguiText, {
   },
 
   defaultVariants: {
-    unstyled: true,
+    unstyled: false,
   },
 })
