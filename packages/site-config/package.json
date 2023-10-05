@@ -8,7 +8,8 @@
   "files": [
     "src",
     "types",
-    "dist"
+    "dist",
+    "animations.css"
   ],
   "scripts": {
     "build": "tamagui-build",
@@ -24,6 +25,11 @@
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
+    },
+    "./animations.css": {
+      "types": "./types/animations.css.d.ts",
+      "import": "./dist/esm/animations.js",
+      "require": "./dist/cjs/animations.js"
     }
   },
   "dependencies": {
