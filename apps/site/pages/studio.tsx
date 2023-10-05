@@ -494,12 +494,12 @@ const Hero = memo(() => {
 
         <XStack space ai="center">
           <SizableText o={0.5} size="$3">
-            Launching Summer 2023
+            Available to all Sponsors now
           </SizableText>
 
-          <NextLink href="/login">
+          <NextLink href="https://studio.tamagui.dev">
             <Button icon={Lock} chromeless size="$3" borderRadius="$10">
-              Sponsor login
+              Sponsor Login
             </Button>
           </NextLink>
         </XStack>
