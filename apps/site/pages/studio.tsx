@@ -105,7 +105,7 @@ const RibbonContainer = () => {
       fullscreen
       scaleX="200%"
       rotateX="-180deg"
-      y={600}
+      y={-600}
       rotate="20deg"
     >
       <YStack fullscreen pe="none" zIndex={100} className="themes-fader" />
