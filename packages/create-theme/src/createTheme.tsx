@@ -37,8 +37,9 @@ export function createTheme<
     ...options?.nonInheritedValues,
   }
 
+  setThemeInfo(theme, { palette, definition, options, name })
+  
   if (cacheKey) {
-    setThemeInfo(theme, { palette, definition, options, name })
     identityCache.set(cacheKey, theme)
   }
 
