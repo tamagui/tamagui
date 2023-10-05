@@ -1785,7 +1785,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
 
                 <Row
                   title="Data & Auth"
-                  description="Supabase pre-configured with migrations, Email, Google & Apple OAuth, utilities, automatic setup and everything to get rolling immediately."
+                  description="Supabase pre-configured with migrations, email and OAuth (Google + Apple) authentication, utilities, automatic setup and everything to get rolling immediately."
                   after="01"
                 />
 
