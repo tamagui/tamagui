@@ -1,3 +1,5 @@
+import BetaTag from '@components/BetaTag'
+import { HomeH1 } from '@components/HomeH2'
 import { components } from '@components/MDXComponents'
 import { MDXProvider } from '@components/MDXProvider'
 import { QuickNav } from '@components/QuickNav'
@@ -9,6 +11,7 @@ import { getMDXComponent } from 'mdx-bundler/client'
 import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
+import { H1, Spacer } from 'tamagui'
 
 import type { Frontmatter } from '../../../frontmatter'
 import { listeners } from '../../../hooks/setTinted'
@@ -76,6 +79,10 @@ export default function DocComponentsPage({ frontmatter, code }: Doc) {
           href={`/primitives/docs/components/${frontmatter.slug.replace(frontmatter.version, '')}`}
         />
       )} */}
+      <H1 width="max-content" pos="relative" mb="$2">
+        {frontmatter.title} {frontmatter.beta && <BetaTag />}
+      </H1>
+      <Spacer size="$1" />
       <MDXProvider frontmatter={frontmatter}>
         <ThemeTint disable={!isTinted}>
           <Component components={components as any} />

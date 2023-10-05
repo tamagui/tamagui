@@ -38,7 +38,7 @@ export const DocsMenuContents = React.memo(function DocsMenuContents() {
           }
           return (
             <YStack key={`${section.label}${i}`} mb="$4">
-              {!!section.label && <NavHeading>{section.label}</NavHeading>}
+              {!!section.label && <NavHeading textAlign='right'>{section.label}</NavHeading>}
               {section.pages.map((page, index) => {
                 return (
                   <DocsRouteNavItem

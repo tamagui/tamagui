@@ -15,4 +15,5 @@ export type Frontmatter = {
   component?: string
   package?: string
   demoName?: string
+  beta?: boolean
 }

@@ -54,6 +54,7 @@ import { TamaguiCard } from './TamaguiCard'
 import { TamaguiExamplesCode } from './TamaguiExamplesCode'
 import { UL } from './UL'
 import { unwrapText } from './unwrapText'
+import BetaTag from './BetaTag'
 
 const TableFrame = styled(ThemeableStack, {
   bordered: true,
@@ -233,18 +234,7 @@ export const components = {
   Button,
 
   Beta: () => (
-    <Button
-      accessibilityLabel="Beta blog post"
-      pe="none"
-      size="$2"
-      theme="pink_alt2"
-      pos="absolute"
-      t={-15}
-      r={-75}
-      rotate="5deg"
-    >
-      Beta
-    </Button>
+    <BetaTag/>
   ),
 
   IntroParagraph: ({ children, large, disableUnwrapText, ...props }) => {
