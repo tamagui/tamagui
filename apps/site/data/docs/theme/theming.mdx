@@ -7,8 +7,6 @@ Themes map neatly to CSS variables for your components: they should contain colo
 
 All themes must be of the same type: all objects share the same set of keys and key to value types.
 
-If you just want to dive in and copy a complete theme, check out the [Quick Start](#quick-start).
-
 <Notice>
   This document introduces how themes work, but as of version 1.37 we've introduced a new
   way to create your themes that makes generating a full suite of themes much easier.
@@ -75,6 +73,20 @@ You can also access a specific subset more directly:
   <Button theme="green_subtle">Hello world</Button>
 </Theme>
 ```
+#### Reset
+
+The `reset` prop will change the theme to the grandparent's value:
+
+```tsx
+<Theme name="dark">
+  <Theme name="pink">
+    <Theme reset>
+      {/* This square and all children will have theme "dark" */}
+      <Square bc="$background" size={10} />
+    </Theme>
+  </Theme>
+</Theme>
+```
 
 #### Component themes
 
@@ -112,6 +124,18 @@ const light_Circle = {
 - `dark_green_subtle_Circle`
 
 This is an incredibly powerful and unique feature that allows authors of UI components control over design, while still letting users customize them completely.
+
+## Inverse
+
+The `inverse` prop will change any dark theme to light, and vice-versa. If it's a sub-theme, it'll check for matching parents, so `dark_red` will inverse to `light_red` if possible:
+
+<HeroContainer>
+  <ThemeInverseDemo />
+</HeroContainer>
+
+```tsx hero template=ThemeInverse
+
+```
 
 ---
 
@@ -158,7 +182,7 @@ export const Button = ButtonFrame.extractable(({ children, ...props }: ButtonPro
 
 And now you can add two themes: `dark_Button` and `dark_ButtonText`, and override their default styles.
 
-## Quick start
+{/* ## Quick start
 
 To get started quickly, you can use the themes we've developed alongside this site and with other apps, `@tamagui/themes`. It's even easier to see how it all comes together by using [create-tamagui to bootstrap](/docs/guides/create-tamagui-app).
 
@@ -194,7 +218,7 @@ export default config
 <Notice>
   If you want to customize the starter themes, we recommend you just grab the `src` for
   `@tamagui/themes` and copy/paste it into your app, and customize from there.
-</Notice>
+</Notice> */}
 
 ## Full Example
 
@@ -382,6 +406,18 @@ Sometimes you want to defer loading themes, or change existing theme values at r
 ```tsx hero template=ReplaceTheme
 
 ```
+
+---
+
+## themeable()
+
+The `themeable` helper function is a "higher order component" that wraps any React component definition and adds two props:
+
+- `theme` for changing the theme on that component and its children
+- `themeInverse` which wraps the component with `<Theme inverse>`
+
+It's used for example on [Button](/docs/components/button).
+
 
 ### Notes
 

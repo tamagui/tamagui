@@ -159,8 +159,7 @@ const HeroContainerInner = ({
   const { driver, driverName } = useAnimationDriverToggler()
 
   return (
-    // TODO: Fix the error thrown by this
-    // <Configuration animationDriver={driver} key={driverName}>
+    <Configuration animationDriver={driver} key={driverName}>
       <ErrorBoundary>
         {demoMultiple ? (
           <XStack space="$3" px="$8">
@@ -187,6 +186,6 @@ const HeroContainerInner = ({
           children
         )}
       </ErrorBoundary>
-    // </Configuration>
+    </Configuration>
   )
 }
