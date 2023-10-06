@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/font-silkscreen",
-  "version": "1.74.9",
+  "version": "1.74.10",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -20,10 +20,10 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/core": "1.74.9"
+    "@tamagui/core": "1.74.10"
   },
   "devDependencies": {
-    "@tamagui/build": "1.74.9"
+    "@tamagui/build": "1.74.10"
   },
   "publishConfig": {
     "access": "public"
