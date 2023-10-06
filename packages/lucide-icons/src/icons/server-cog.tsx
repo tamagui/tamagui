@@ -35,25 +35,25 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
+      <_Circle cx="12" cy="12" r="3" stroke={color} />
       <Path
-        d="M5 10H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-1"
+        d="M4.5 10H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-.5"
         stroke={color}
       />
       <Path
-        d="M5 14H4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2h-1"
+        d="M4.5 14H4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2h-.5"
         stroke={color}
       />
       <Path d="M6 6h.01" stroke={color} />
       <Path d="M6 18h.01" stroke={color} />
-      <_Circle cx="12" cy="12" r="3" stroke={color} />
-      <Path d="M12 8v1" stroke={color} />
-      <Path d="M12 15v1" stroke={color} />
-      <Path d="M16 12h-1" stroke={color} />
-      <Path d="M9 12H8" stroke={color} />
-      <Path d="m15 9-.88.88" stroke={color} />
-      <Path d="M9.88 14.12 9 15" stroke={color} />
-      <Path d="m15 15-.88-.88" stroke={color} />
-      <Path d="M9.88 9.88 9 9" stroke={color} />
+      <Path d="m15.7 13.4-.9-.3" stroke={color} />
+      <Path d="m9.2 10.9-.9-.3" stroke={color} />
+      <Path d="m10.6 15.7.3-.9" stroke={color} />
+      <Path d="m13.6 15.7-.4-1" stroke={color} />
+      <Path d="m10.8 9.3-.4-1" stroke={color} />
+      <Path d="m8.3 13.6 1-.4" stroke={color} />
+      <Path d="m14.7 10.8 1-.4" stroke={color} />
+      <Path d="m13.4 8.3-.3.9" stroke={color} />
     </Svg>
   )
 }

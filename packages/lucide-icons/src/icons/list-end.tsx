@@ -38,7 +38,7 @@ const Icon = (props) => {
       <Path d="M16 12H3" stroke={color} />
       <Path d="M16 6H3" stroke={color} />
       <Path d="M10 18H3" stroke={color} />
-      <Path d="M21 6v10a2 2 0 0 1-2 2h-4" stroke={color} />
+      <Path d="M21 6v10a2 2 0 0 1-2 2h-5" stroke={color} />
       <Path d="m16 16-2 2 2 2" stroke={color} />
     </Svg>
   )
