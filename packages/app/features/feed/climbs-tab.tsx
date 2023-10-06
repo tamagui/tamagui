@@ -183,7 +183,6 @@ export const SheetDemo = ({
   const joinMutation = api.climb.join.useMutation()
   const deleteMutation = api.climb.delete.useMutation()
   const queryClient = useQueryClient()
-  console.log('climb', climb)
 
   const { color } = useClimbColor(climb?.type)
   const toast = useToastController()
@@ -264,7 +263,6 @@ export const SheetDemo = ({
                 onPress={async () => {
                   setOpen(false)
                   if (!climb) return
-                  console.log('clibm xxxx', climb.id)
                   user.user?.id === climb?.created_by
                     ? await deleteMutation.mutateAsync(
                         { climb_id: climb?.id ?? 0 },
@@ -296,7 +294,7 @@ export const SheetDemo = ({
                           },
                           onError: (error) => {
                             // TODO: create toast for error case
-                            console.log(error)
+                            console.error(error)
                           },
                         }
                       )

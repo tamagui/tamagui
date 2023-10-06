@@ -164,15 +164,12 @@ function MyClimb({
                   },
                   {
                     onSuccess: () => {
-                      console.log('success ttt', profileClimbQueryKey)
                       // queryClient.invalidateQueries()
 
                       queryClient.setQueryData<ProfileClimb[]>(
                         profileClimbQueryKey,
                         (old) => {
-                          console.log('old', old)
                           return old?.filter((item) => {
-                            console.log('item', item, profileClimb.id)
                             return item.id !== profileClimb.id
                           })
                         }
@@ -180,7 +177,6 @@ function MyClimb({
                     },
                   }
                 )
-                console.log('leave')
               }}
             >
               Leave

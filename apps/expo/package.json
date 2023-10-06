@@ -8,13 +8,14 @@
     "start:dev": "NODE_ENV=development yarn start",
     "start:prod": "NODE_ENV=production yarn start",
     "start:test": "NODE_ENV=test yarn start",
-    "start": "TAMAGUI_TARGET=native expo start --dev-client -c --port 8082",
+    "start": "TAMAGUI_TARGET=native yarn git && expo start --dev-client -c --port 8082",
     "android": "TAMAGUI_TARGET=native yarn expo run:android",
     "ios": "TAMAGUI_TARGET=native yarn expo run:ios",
     "lint": "eslint ./app",
     "lint:fix": "eslint ./app --fix",
     "eject": "expo eject",
-    "yolo": "eas update --auto"
+    "yolo": "eas update --auto",
+    "git": "node git.js"
   },
   "dependencies": {
     "@babel/runtime": "^7.18.9",

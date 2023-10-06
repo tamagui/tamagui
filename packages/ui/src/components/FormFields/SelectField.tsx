@@ -41,10 +41,6 @@ export const SelectField = ({
   const themeName = useThemeName()
   const id = useId()
   const disabled = isSubmitting || props.disabled
-  console.log(field)
-  console.log(error)
-  console.log(zodType)
-
   return (
     <Theme name={error ? 'red' : themeName} forceClassName>
       <Fieldset>

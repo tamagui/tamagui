@@ -3,14 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "yarn with-env next dev --port 3001",
+    "dev": "yarn git && yarn with-env next dev --port 3001",
     "build": "cd ../.. && yarn build && cd apps/next && yarn next:build",
     "next:build": "yarn with-env next build",
     "start": "yarn with-env next start",
     "serve": "NODE_ENV=production yarn with-env next start --port 8151",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
-    "with-env": "TAMAGUI_TARGET=web dotenv -e ../../.env -c --"
+    "with-env": "TAMAGUI_TARGET=web dotenv -e ../../.env -c --",
+    "git": "node git.js"
   },
   "dependencies": {
     "@my/shared-env": "workspace:*",

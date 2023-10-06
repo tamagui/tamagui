@@ -24,14 +24,25 @@ import { usePathname } from 'app/utils/usePathname'
 import { useLink } from 'solito/link'
 import rootPackageJson from '../../../../package.json'
 import packageJson from '../../package.json'
+import git from '../../../../apps/next/git.json'
+
+function WebSettings() {
+  return (
+    <Settings.Item
+      icon={Info}
+      {...useLink({ href: '/about' })}
+      accentColor="$blue9"
+    >
+      About
+    </Settings.Item>
+  )
+}
 
 const brandColors = {
   twitter: '#1DA1F2',
 }
 
-export const SettingsScreen = (props: {
-  schedulePushNotif: () => Promise<void>
-}) => {
+export const SettingsScreen = () => {
   const media = useMedia()
   const pathname = usePathname()
 
@@ -69,6 +80,7 @@ export const SettingsScreen = (props: {
               >
                 Change Email
               </Settings.Item>
+              {isWeb && <WebSettings />}
               <Settings.Item
                 icon={Bell}
                 isActive={pathname === '/settings/notifications'}
@@ -80,17 +92,6 @@ export const SettingsScreen = (props: {
               </Settings.Item>
             </Settings.Group>
             <Settings.Group>
-              {!isWeb && (
-                // isWeb is a constant so this isn't really a conditional hook
-                // eslint-disable-next-line react-hooks/rules-of-hooks
-                <Settings.Item
-                  icon={Info}
-                  {...useLink({ href: '/about' })}
-                  accentColor="$blue9"
-                >
-                  About
-                </Settings.Item>
-              )}
               <Settings.Item
                 icon={Book}
                 isActive={pathname === '/privacy-policy'}
@@ -130,7 +131,8 @@ export const SettingsScreen = (props: {
       we just did a simple package.json read since we want to keep things simple for the starter
        */}
       <Paragraph py="$2" ta="center" theme="alt2">
-        {rootPackageJson.name} {packageJson.version}
+        {rootPackageJson.name} {packageJson.version}{' '}
+        {git.commitHash.slice(0, 3)}...{git.commitHash.slice(-3)}
       </Paragraph>
     </YStack>
   )

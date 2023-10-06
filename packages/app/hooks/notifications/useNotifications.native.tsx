@@ -21,26 +21,36 @@ export const useNotifications = () => {
   const [token, setToken] = useState<string>('')
   const [shouldFetchToken, setShouldFetchToken] = useState<boolean>(false)
 
-  const [notification, setNotification] = useState<Notifications.Notification | false>(false)
+  const [notification, setNotification] = useState<
+    Notifications.Notification | false
+  >(false)
   const notificationListener =
     useRef<ReturnType<typeof Notifications.addNotificationReceivedListener>>()
   const responseListener =
-    useRef<ReturnType<typeof Notifications.addNotificationResponseReceivedListener>>()
+    useRef<
+      ReturnType<typeof Notifications.addNotificationResponseReceivedListener>
+    >()
 
   useEffect(() => {
-    registerForPushNotificationsAsync().then((token) => setExpoPushToken(token ?? 'no token'))
+    registerForPushNotificationsAsync().then((token) =>
+      setExpoPushToken(token ?? 'no token')
+    )
 
-    notificationListener.current = Notifications.addNotificationReceivedListener((notification) => {
-      setNotification(notification)
-    })
+    notificationListener.current =
+      Notifications.addNotificationReceivedListener((notification) => {
+        setNotification(notification)
+      })
 
-    responseListener.current = Notifications.addNotificationResponseReceivedListener((response) => {
-      console.log(response)
-    })
+    responseListener.current =
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        // console.log(response)
+      })
 
     return () => {
       if (notificationListener.current && responseListener.current) {
-        Notifications.removeNotificationSubscription(notificationListener?.current)
+        Notifications.removeNotificationSubscription(
+          notificationListener?.current
+        )
         Notifications.removeNotificationSubscription(responseListener?.current)
       }
     }
@@ -97,8 +107,12 @@ async function registerForPushNotificationsAsync() {
     }
     // Learn more about projectId:
     // https://docs.expo.dev/push-notifications/push-notifications-setup/#configure-projectid
-    token = (await Notifications.getExpoPushTokenAsync({ projectId: 'your-project-id' })).data
-    console.log(token)
+    token = (
+      await Notifications.getExpoPushTokenAsync({
+        projectId: 'your-project-id',
+      })
+    ).data
+    console.info(token)
   } else {
     alert('Must use physical device for Push Notifications')
   }

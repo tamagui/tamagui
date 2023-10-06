@@ -37,7 +37,6 @@ export const SignInScreen = () => {
       email: email,
       password: password,
     })
-    console.log(error)
 
     if (error) {
       const errorMessage = error?.message.toLowerCase()
