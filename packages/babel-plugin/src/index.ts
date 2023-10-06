@@ -17,6 +17,10 @@ const importStyleSheet = template(`
 const __ReactNativeStyleSheet = require('react-native').StyleSheet;
 `)
 
+const importWithTheme = template(`
+const __internalWithTheme = require('@tamagui/core').internalWithTheme;
+`)
+
 // default to native before requiring static
 process.env.TAMAGUI_TARGET = process.env.TAMAGUI_TARGET || 'native'
 
@@ -53,6 +57,7 @@ export default declare(function snackBabelPlugin(
           }
 
           let hasImportedView = false
+          let hasImportedViewWrapper = false
           const sheetStyles = {}
           const sheetIdentifier = root.scope.generateUidIdentifier('sheet')
           const firstComment =
@@ -117,7 +122,7 @@ export default declare(function snackBabelPlugin(
               // for now just turn it off entirely at a small perf loss
               disableExtractInlineMedia: true,
               // disable extracting variables as no native concept of them (only theme values)
-              disableExtractVariables: 'theme',
+              disableExtractVariables: false,
               sourcePath,
 
               // disabling flattening for now
@@ -155,19 +160,14 @@ export default declare(function snackBabelPlugin(
                   }
                 }
 
+                let themedStyles: null | Object = null
+
                 for (const attr of props.attrs) {
                   switch (attr.type) {
                     case 'style': {
                       // split theme properties and leave them as props since RN has no concept of theme
                       const { themed, plain } = splitThemeStyles(attr.value)
-                      for (const key in themed) {
-                        finalAttrs.push(
-                          t.jsxAttribute(
-                            t.jsxIdentifier(key),
-                            t.stringLiteral(themed[key])
-                          )
-                        )
-                      }
+                      themedStyles = themed
                       const ident = addSheetStyle(plain, props.node)
                       addStyle(ident, simpleHash(JSON.stringify(plain)))
                       break
@@ -204,16 +204,69 @@ export default declare(function snackBabelPlugin(
 
                 props.node.attributes = finalAttrs
                 if (props.isFlattened) {
-                  props.node.attributes.push(
-                    t.jsxAttribute(
-                      t.jsxIdentifier('style'),
-                      t.jsxExpressionContainer(
-                        stylesExpr.elements.length === 1
-                          ? (stylesExpr.elements[0] as any)
-                          : stylesExpr
+                  if (themedStyles) {
+                    if (!hasImportedViewWrapper) {
+                      root.unshiftContainer('body', importWithTheme())
+                      hasImportedViewWrapper = true
+                    }
+                    const themedStylesAst = literalToAst(themedStyles)
+                    themedStylesAst.properties.forEach((prop) => {
+                      if (prop.value.type === 'StringLiteral') {
+                        prop.value = t.memberExpression(
+                          t.identifier('theme'),
+                          t.identifier(prop.value.value.slice(1))
+                        )
+                      }
+                    })
+                    const WrapperIdentifier = root.scope.generateUidIdentifier(
+                      props.node.name.name + 'Wrapper'
+                    )
+                    root.pushContainer(
+                      'body',
+                      t.variableDeclaration('const', [
+                        t.variableDeclarator(
+                          WrapperIdentifier,
+                          t.callExpression(
+                            t.identifier('__internalWithTheme'),
+                            [
+                              t.identifier(props.node.name.name),
+                              t.arrowFunctionExpression(
+                                [t.identifier('theme')],
+                                t.blockStatement([
+                                  t.returnStatement(
+                                    t.callExpression(
+                                      t.memberExpression(
+                                        t.identifier('Object'),
+                                        t.identifier('assign')
+                                      ),
+                                      [
+                                        stylesExpr.elements.length === 1
+                                          ? (stylesExpr.elements[0] as any)
+                                          : stylesExpr,
+                                        themedStylesAst,
+                                      ]
+                                    )
+                                  ),
+                                ])
+                              ),
+                            ]
+                          )
+                        )
+                      ])
+                    )
+                    props.node.name = WrapperIdentifier
+                  } else {
+                    props.node.attributes.push(
+                      t.jsxAttribute(
+                        t.jsxIdentifier('style'),
+                        t.jsxExpressionContainer(
+                          stylesExpr.elements.length === 1
+                            ? (stylesExpr.elements[0] as any)
+                            : stylesExpr
+                        )
                       )
                     )
-                  )
+                  }
                 }
               },
             })
@@ -280,13 +333,15 @@ function assertValidTag(node: t.JSXOpeningElement) {
 function splitThemeStyles(style: Object) {
   const themed = {}
   const plain = {}
+  let noTheme = true
   for (const key in style) {
     const val = style[key]
     if (val && val[0] === '$') {
       themed[key] = val
+      noTheme = false
     } else {
       plain[key] = val
     }
   }
-  return { themed, plain }
+  return { themed: noTheme ? null : themed, plain }
 }

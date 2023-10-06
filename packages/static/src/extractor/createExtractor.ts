@@ -1597,16 +1597,16 @@ export function createExtractor(
           const shouldWrapTheme = shouldFlatten && themeVal
           const usedThemeKeys = new Set<string>()
 
-          if (disableExtractVariables) {
-            // if it accesses any theme values during evaluation
-            themeAccessListeners.add((key) => {
+          // if it accesses any theme values during evaluation
+          themeAccessListeners.add((key) => {
+            usedThemeKeys.add(key)
+            if (disableExtractVariables) {
               shouldFlatten = false
-              usedThemeKeys.add(key)
               if (shouldPrintDebug === 'verbose') {
                 logger.info([' ! accessing theme key, avoid flatten', key].join(' '))
               }
-            })
-          }
+            }
+          })
 
           if (shouldPrintDebug) {
             try {
@@ -1942,10 +1942,22 @@ export function createExtractor(
                 debugPropValue || shouldPrintDebug
               )
 
-              const outProps = {
+              let outProps = {
                 ...(includeProps ? out.viewProps : {}),
                 ...out.style,
                 ...out.pseudos,
+              }
+
+              if (usedThemeKeys.size > 0) {
+                // TODO: find a better way
+                let rawStyles = Object.entries(props)
+                rawStyles = rawStyles.filter(([_, value]) => {
+                  return usedThemeKeys.has(value)
+                })
+                outProps = {
+                  ...outProps,
+                  ...Object.fromEntries(rawStyles),
+                }
               }
 
               if (shouldPrintDebug) {
