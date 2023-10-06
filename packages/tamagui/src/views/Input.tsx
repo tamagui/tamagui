@@ -37,29 +37,23 @@ export const defaultStyles = {
   },
 } as const
 
-export const InputFrame = styled(
-  TextInput,
-  {
-    name: 'Input',
+export const InputFrame = styled(TextInput, {
+  name: 'Input',
 
-    variants: {
-      unstyled: {
-        false: defaultStyles,
-      },
-
-      size: {
-        '...size': inputSizeVariant,
-      },
-    } as const,
-
-    defaultVariants: {
-      unstyled: false,
+  variants: {
+    unstyled: {
+      false: defaultStyles,
     },
+
+    size: {
+      '...size': inputSizeVariant,
+    },
+  } as const,
+
+  defaultVariants: {
+    unstyled: false,
   },
-  {
-    isInput: true,
-  }
-)
+})
 
 export type InputProps = Omit<GetProps<typeof InputFrame>, 'placeholderTextColor'> & {
   placeholderTextColor?: ColorStyleProp

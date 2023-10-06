@@ -1,15 +1,17 @@
 // import './wdyr'
 
 import { View } from 'react-native'
-import { Text as RNText } from 'react-native'
-import { Button, Text } from 'tamagui'
+import { Text as RNText, TextInput } from 'react-native'
+import { Button, Input, Text } from 'tamagui'
 
 export const Sandbox = () => {
   return (
     <View style={{ width: '100%', height: '100%', padding: 50 }}>
-      <Button>
-        <RNText>hello</RNText>
-      </Button>
+      <Input
+        onPressIn={() => {
+          console.log('press in')
+        }}
+      />
     </View>
   )
 }
