@@ -20,7 +20,7 @@ import { getBaseViews } from './getBaseViews'
 import { useElementLayout } from './hooks/useElementLayout'
 import { usePlatformMethods } from './hooks/usePlatformMethods'
 import { RNViewProps } from './reactNativeTypes'
-import { usePressability } from './vendor/Pressability'
+import { Pressability, usePressability } from './vendor/Pressability'
 
 // re-exports all of @tamagui/web just adds hooks
 export * from '@tamagui/web'
@@ -121,7 +121,7 @@ setupHooks({
     return viewProps
   },
 
-  useEvents(viewProps, events, { pseudos }, setStateShallow) {
+  useEvents(viewProps, events, { pseudos }, setStateShallow, staticConfig) {
     if (process.env.TAMAGUI_TARGET === 'native') {
       const attachFocus = !!pseudos?.focusStyle
       if (attachFocus) {
@@ -133,28 +133,59 @@ setupHooks({
         })
       }
 
-      // use Pressability to get smooth unPress when you press + hold + move out
-      // only ever create once, use .configure() to update later
-      if (events && viewProps.hitSlop) {
-        events.hitSlop = viewProps.hitSlop
-      }
+      if (staticConfig.isInput) {
+        if (events) {
+          const { onPressIn, onPressOut, onPress } = events
+          const inputEvents = {
+            onPressIn,
+            onPressOut: onPressOut || onPress,
+          }
+          if (onPressOut && onPress) {
+            // only supports onPressIn and onPressOut so combine them
+            inputEvents.onPressOut = composeEventHandlers(onPress, onPressOut)
+          }
+          Object.assign(viewProps, inputEvents)
+        }
+      } else {
+        // use Pressability to get smooth unPress when you press + hold + move out
+        // only ever create once, use .configure() to update later
+        if (events && viewProps.hitSlop) {
+          events.hitSlop = viewProps.hitSlop
+        }
 
-      const pressability = usePressability(events || null)
+        const pressability = usePressability(events || null)
 
-      if (events) {
-        if (events.onPress) {
-          for (const key in pressability) {
-            const og = viewProps[key]
-            const val = pressability[key]
-            viewProps[key] =
-              og && !dontComposePressabilityKeys[key]
-                ? composeEventHandlers(og, val)
-                : val
+        if (events) {
+          if (events.onPress) {
+            for (const key in pressability) {
+              const og = viewProps[key]
+              const val = pressability[key]
+              viewProps[key] =
+                og && !dontComposePressabilityKeys[key]
+                  ? composeEventHandlers(og, val)
+                  : val
+            }
           }
         }
       }
     }
   },
+
+  // attempt at properly fixing RN input, but <Pressable><TextInput /> just doesnt work on RN
+  // useChildren(children, viewProps, events, staticConfig) {
+  //   if (process.env.TAMAGUI_TARGET === 'native') {
+  //     if (staticConfig.isInput && !staticConfig.isHOC) {
+  //       const Pressable = getBaseViews().Pressable
+  //       console.log(
+  //         'wrapping in pressable',
+  //         events?.['onPressIn']?.toString(),
+  //         viewProps['onPressIn']
+  //       )
+  //       // we need to wrap it in a view?
+  //       return <Pressable {...events}>{children}</Pressable>
+  //     }
+  //   }
+  // },
 })
 
 const dontComposePressabilityKeys = {

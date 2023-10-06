@@ -1075,7 +1075,7 @@ export function createComponent<
     }
 
     // EVENTS native
-    hooks.useEvents?.(viewProps, events, splitStyles, setStateShallow)
+    hooks.useEvents?.(viewProps, events, splitStyles, setStateShallow, staticConfig)
 
     const direction = props.spaceDirection || 'both'
 
@@ -1143,6 +1143,10 @@ export function createComponent<
       }
     } else {
       content = createElement(elementType, viewProps, content)
+    }
+
+    if (hooks.useChildren) {
+      content = hooks.useChildren?.(content, viewProps, events, staticConfig)
     }
 
     if (process.env.NODE_ENV === 'development' && time) time`create-element`
