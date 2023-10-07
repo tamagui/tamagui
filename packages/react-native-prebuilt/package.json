@@ -4,6 +4,9 @@
   "main": "react-native.js",
   "license": "MIT",
   "sideEffects": true,
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "prebuild": "node -r esbuild-register ./prebuild-react-native.ts"
   },
