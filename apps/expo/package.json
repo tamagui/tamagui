@@ -5,8 +5,8 @@
   "private": true,
   "scripts": {
     "clean": "react-native-clean-project",
-    "start:dev": "NODE_ENV=development yarn start",
-    "start:prod": "NODE_ENV=production yarn start",
+    "start:dev": "NODE_ENV=development yarn git && yarn start",
+    "start:prod": "NODE_ENV=production && yarn git && yarn start",
     "start:test": "NODE_ENV=test yarn start",
     "start": "TAMAGUI_TARGET=native yarn git && expo start --dev-client -c --port 8082",
     "android": "TAMAGUI_TARGET=native yarn expo run:android",
