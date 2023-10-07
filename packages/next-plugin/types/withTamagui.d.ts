@@ -1,5 +1,5 @@
-import type { TamaguiOptions } from '@tamagui/static';
-export type WithTamaguiProps = TamaguiOptions & {
+import { type PluginOptions as LoaderPluginOptions } from 'tamagui-loader';
+export type WithTamaguiProps = LoaderPluginOptions & {
     useReactNativeWebLite: boolean;
     enableLegacyFontSupport?: boolean;
     aliasReactPackages?: boolean;
