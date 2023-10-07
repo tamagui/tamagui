@@ -26,7 +26,7 @@
     "add-to-calendar-button-react": "^2.4.3",
     "app": "workspace:*",
     "expo-device": "~5.4.0",
-    "next": "^13.2.4",
+    "next": "13.4.19",
     "raf": "^3.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
