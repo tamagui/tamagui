@@ -5,7 +5,7 @@ description: Extend and build custom and optimizable components.
 
 <Notice>
   If you're looking for a full list of style properties accepted by Tamagui, check the
-  [Props documentation](/docs/intro/props).
+  [Props documentation](/docs/styling/props).
 </Notice>
 
 Create a new component by extending an existing one:
@@ -85,7 +85,7 @@ We can use these like so:
 <Circle pin="top" centered size="$lg" />
 ```
 
-To learn more about to use them and all the special types, [see the docs on variants](/docs/core/variants).
+To learn more about to use them and all the special types, [see the docs on variants](/docs/styling/variants).
 
 ### Non-working React Native views
 
@@ -286,6 +286,6 @@ const StyledHigherOrderStyledText = styled(HigherOrderStyledText, {
 })
 ```
 
-Note that `styleable` automatically wraps your component in [`themeable`](/docs/core/exports#themeable), which means it will handle the theme props for you and change the theme above your wrapped component. This means that in `HigherOrderStyledText` you can use `useTheme` and if you do something like `<HigherOrderStyledText theme="some_different_theme">`, then your `useTheme()` hook will properly get the `some_difference_theme` Theme object.
+Note that `styleable` automatically wraps your component in [`themeable`](/docs/extras/other-exports#themeable), which means it will handle the theme props for you and change the theme above your wrapped component. This means that in `HigherOrderStyledText` you can use `useTheme` and if you do something like `<HigherOrderStyledText theme="some_different_theme">`, then your `useTheme()` hook will properly get the `some_difference_theme` Theme object.
 
 Also note that you also must always pass the props given to `HigherOrderStyledText` down to `StyledText` for things to work properly.

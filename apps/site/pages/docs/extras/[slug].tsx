@@ -26,7 +26,7 @@ export default function DocsExtrasPage({ frontmatter, code }: Doc) {
   return (
     <>
       <NextSeo
-        title={`${frontmatter.title} — Tamagui Core`}
+        title={`${frontmatter.title} — Tamagui Extras`}
         description={frontmatter.description}
         openGraph={{
           images: [
@@ -34,7 +34,7 @@ export default function DocsExtrasPage({ frontmatter, code }: Doc) {
               url: getOgUrl('default', {
                 title: frontmatter.title,
                 description: frontmatter.description ?? '',
-                category: 'Core',
+                category: 'Extras',
               }),
               width: 1200,
               height: 630,

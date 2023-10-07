@@ -11,11 +11,16 @@ export const TamaguiExamples = createContext<ReturnType<
 
 export function TamaguiExamplesCode() {
   try {
-    const examples = useContext(TamaguiExamples)
+    // Context isn't working here for some reason
+    // const examples = useContext(TamaguiExamples)
     return (
       <HeroContainer noScroll noPad>
         <Spacer />
-        <HeroExampleCode onlyDemo examples={examples?.compilationExamples} />
+        {/* <HeroExampleCode onlyDemo examples={examples?.compilationExamples} /> */}
+        <HeroExampleCode
+          onlyDemo
+          examples={getCompilationExamples().compilationExamples}
+        />
         <Spacer />
       </HeroContainer>
     )

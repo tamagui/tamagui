@@ -1,5 +1,6 @@
 import { components } from '@components/MDXComponents'
 import { QuickNav } from '@components/QuickNav'
+import { TamaguiExamples } from '@components/TamaguiExamplesCode'
 import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { getAllFrontmatter, getMdxBySlug } from '@lib/mdx'
 import { getOgUrl } from '@lib/og'
@@ -16,17 +17,18 @@ import type { Frontmatter } from '../../../frontmatter'
 type Doc = {
   frontmatter: Frontmatter
   code: any
+  examples: any
 }
 
-export default function DocsStylingPage({ frontmatter, code }: Doc) {
+export default function DocCompilerPage({ frontmatter, code, examples }: Doc) {
   if (!frontmatter) {
     return null
   }
   const Component = React.useMemo(() => getMDXComponent(code), [code])
   return (
-    <>
+    <TamaguiExamples.Provider value={examples}>
       <NextSeo
-        title={`${frontmatter.title} — Tamagui Styling`}
+        title={`${frontmatter.title} — Tamagui Compiler`}
         description={frontmatter.description}
         openGraph={{
           images: [
@@ -34,10 +36,9 @@ export default function DocsStylingPage({ frontmatter, code }: Doc) {
               url: getOgUrl('default', {
                 title: frontmatter.title,
                 description: frontmatter.description ?? '',
-                category: 'Styling',
+                category: 'Compiler',
+                demoName: frontmatter.demoName,
               }),
-              width: 1200,
-              height: 630,
             },
           ],
         }}
@@ -48,17 +49,17 @@ export default function DocsStylingPage({ frontmatter, code }: Doc) {
       <ThemeTint>
         <Component components={components as any} />
       </ThemeTint>
-      <QuickNav key={frontmatter.slug} />
-    </>
+      <QuickNav />
+    </TamaguiExamples.Provider>
   )
 }
 
-DocsStylingPage.getLayout = getDefaultLayout
+DocCompilerPage.getLayout = getDefaultLayout
 
 export async function getStaticPaths() {
-  const frontmatters = getAllFrontmatter('docs/styling')
+  const frontmatters = getAllFrontmatter('docs/compiler')
   const paths = frontmatters.map(({ slug }) => ({
-    params: { slug: slug.replace('docs/styling/', '') },
+    params: { slug: slug.replace('docs/compiler/', '') },
   }))
   return {
     paths,
@@ -67,7 +68,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context) {
-  const { frontmatter, code } = await getMdxBySlug('docs/styling', context.params.slug)
+  const { frontmatter, code } = await getMdxBySlug('docs/compiler', context.params.slug)
   return {
     props: {
       frontmatter,

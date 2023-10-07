@@ -7,8 +7,6 @@ package: text
 demoName: Text
 ---
 
-# Text
-
 <Description>Text primitives with themes custom to each font.</Description>
 
 <HeroContainer demoMultiple>
@@ -41,7 +39,7 @@ export default () => (
 
 ## Text
 
-Text in Tamagui matches to Text in react-native-web, just with the added [Tamagui Props](/docs/intro/props).
+Text in Tamagui matches to Text in react-native-web, just with the added [Tamagui Props](/docs/styling/props).
 
 It explicitly doesn't inherit your theme color or other font properties, as it's meant to be plain and used for extension. Below, we'll show `SizableText` which extends Text, and `Paragraph` which extends SizableText. Generally, Paragraph is the useful view as it will use theme values, while you can extend Text if you'd like to derive your own design system.
 
@@ -77,7 +75,7 @@ SizableText does this with the `size` property, which looks into your theme and 
 - fontWeight
 - letterSpacing
 
-It uses [spread variants](/docs/core/styled#spread-variants) to achieve this.
+It uses [spread variants](/docs/styling/styled#spread-variants) to achieve this.
 
 [Seeing how SizableText is defined](https://github.com/tamagui/tamagui/blob/master/packages/text/src/SizableText.tsx) is helpful for understanding Tamagui. They serve as a good example of how you can extend and compose components.
 

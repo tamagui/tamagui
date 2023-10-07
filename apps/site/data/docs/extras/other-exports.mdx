@@ -1,6 +1,6 @@
 ---
-title: 'Other exports'
-description: Helpful functions and constants.
+title: Other exports
+description: Helpful functions and constants
 ---
 
 Let's take a quick look through some of the useful other exports in `@tamagui/core`.
@@ -109,7 +109,7 @@ themeable<Comp extends ReactComponentLike>(component: Comp): Comp
 type getVariable = (value: Variable) => string
 ```
 
-If given a `Variable` - which comes from a parsed theme or token returned from `createTamagui`, `useTheme` or `getTokens` (read more [on the useTheme docs](/docs/core/use-theme)).
+If given a `Variable` - which comes from a parsed theme or token returned from `createTamagui`, `useTheme` or `getTokens` (read more [on the useTheme docs](/docs/theme/use-theme)).
 
 Calling `getVariable(useTheme().color)` returns `var(--color)` on the web, and `#fff` on other platforms.
 

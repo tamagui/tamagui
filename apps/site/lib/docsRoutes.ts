@@ -14,7 +14,10 @@ export const docsRoutes: DocsRoute[] = [
     title: 'Guides',
   },
   {
-    pages: [{ title: 'Overview', route: '/docs/guides/overview' }],
+    pages: [
+      { title: 'Overview', route: '/docs/guides/overview' },
+      { title: 'Starting with a template', route: '/docs/guides/create-tamagui-app' },
+    ],
   },
   {
     label: 'Setting up a pre-existing project',
@@ -29,7 +32,7 @@ export const docsRoutes: DocsRoute[] = [
     pages: [
       { title: 'Introduction', route: '/docs/guides/design-systems' },
       { title: 'Building a button', route: '/docs/guides/how-to-build-a-button' },
-      { title: 'Creating a custom theme', route: '/docs/guides/creating-custom-themes' },
+      { title: 'Creating a custom theme', route: '/docs/guides/theme-builder' },
     ],
   },
   {
@@ -49,7 +52,6 @@ export const docsRoutes: DocsRoute[] = [
       { title: 'Animations', route: '/docs/core/animations' },
       { title: 'useMedia', route: '/docs/core/use-media' },
       { title: 'FontLanguage', route: '/docs/core/font-language' },
-      { title: 'Extras', route: '/docs/core/exports' },
     ],
   },
 
@@ -139,9 +141,9 @@ export const docsRoutes: DocsRoute[] = [
 
   {
     pages: [
-      { title: 'About', route: '/docs/intro/why-a-compiler' },
-      { title: 'Install', route: '/docs/intro/compiler-install' },
-      { title: 'Benchmarks', route: '/docs/intro/benchmarks' },
+      { title: 'About', route: '/docs/compiler/why-a-compiler' },
+      { title: 'Install', route: '/docs/compiler/compiler-install' },
+      { title: 'Benchmarks', route: '/docs/compiler/benchmarks' },
     ],
   },
 
@@ -166,9 +168,9 @@ export const docsRoutes: DocsRoute[] = [
   {
     pages: [
       { title: 'Overview', route: '/docs/styling/overview' },
-      { title: 'Props', route: '/docs/intro/props' },
-      { title: 'styled', route: '/docs/core/styled' },
-      { title: 'Variants', route: '/docs/core/variants' },
+      { title: 'Props', route: '/docs/styling/props' },
+      { title: 'styled', route: '/docs/styling/styled' },
+      { title: 'Variants', route: '/docs/styling/variants' },
     ],
   },
 
@@ -179,6 +181,7 @@ export const docsRoutes: DocsRoute[] = [
   {
     pages: [
       { title: 'Overview', route: '/docs/extras/overview' },
+      { title: 'Other exports', route: '/docs/extras/other-exports' },
       { title: 'Lucide Icons', route: '/docs/components/lucide-icons' },
     ],
   },
