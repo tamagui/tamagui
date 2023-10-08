@@ -263,11 +263,9 @@ export function createComponent<
 
     // React inserts default props after your props for some reason...
     // order important so we do loops, you can't just spread because JS does weird things
-    let props: StackProps | TextProps
+    let props: StackProps | TextProps = propsIn
     if (curDefaultProps) {
       props = mergeProps(curDefaultProps, propsIn)
-    } else {
-      props = propsIn
     }
 
     const debugProp = props['debug'] as DebugProp

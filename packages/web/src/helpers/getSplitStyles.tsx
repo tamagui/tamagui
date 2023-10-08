@@ -1308,6 +1308,7 @@ export const getSplitStyles: StyleSplitter = (
         // prettier-ignore
         const logs = {
           ...result,
+          className,
           componentState,
           transforms,
           viewProps,
