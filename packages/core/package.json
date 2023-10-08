@@ -5,8 +5,8 @@
   "main": "dist/cjs",
   "module": "dist/esm",
   "tamagui": {
-    "bundle.native": "./src/index.ts",
-    "bundle.native.test": "./src/index.ts"
+    "bundle.native": "./src/index.tsx",
+    "bundle.native.test": "./src/index.tsx"
   },
   "types": "./types/index.d.ts",
   "license": "MIT",
@@ -14,8 +14,7 @@
     "name": "Nate Wienert"
   },
   "sideEffects": [
-    "*.css",
-    "index.ts"
+    "*.css"
   ],
   "scripts": {
     "build": "tamagui-build",
