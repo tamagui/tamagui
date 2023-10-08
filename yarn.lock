@@ -6179,7 +6179,7 @@ __metadata:
     ts-morph: ^15.1.0
     typescript: ^5.2.2
     url: ^0.11.0
-    vite: ^4.4.9
+    vite: ^4.4.11
     vite-plugin-entry-shaking: ^0.3.2
     vite-tsconfig-paths: ^4.2.0
   bin:
@@ -7624,7 +7624,7 @@ __metadata:
     tamagui: 1.74.11
     tinybase: ^4.0.4
     victory: ^36.6.11
-    vite: ^4.4.9
+    vite: ^4.4.11
   languageName: unknown
   linkType: soft
 
@@ -27760,7 +27760,7 @@ __metadata:
     graphology: ^0.24.1
     graphql: ^16.8.0
     http-proxy-middleware: ^2.0.6
-    vite: ^4.4.9
+    vite: ^4.4.11
     vite-plugin-inspect: ^0.7.38
     vxrn: ^0.0.7
   bin:
@@ -28391,6 +28391,46 @@ __metadata:
   bin:
     vite: bin/vite.js
   checksum: e58ba33ec10af6167686c1c43c61f31fcbc6b3b6a1f16ed03fb6cc8278700c6edaf4ff394ef454291ee35924054c7772feac159f1acf3af1a33d289fe8494d9c
+  languageName: node
+  linkType: hard
+
+"vite@npm:^4.4.11":
+  version: 4.4.11
+  resolution: "vite@npm:4.4.11"
+  dependencies:
+    esbuild: ^0.18.10
+    fsevents: ~2.3.2
+    postcss: ^8.4.27
+    rollup: ^3.27.1
+  peerDependencies:
+    "@types/node": ">= 14"
+    less: "*"
+    lightningcss: ^1.21.0
+    sass: "*"
+    stylus: "*"
+    sugarss: "*"
+    terser: ^5.4.0
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  peerDependenciesMeta:
+    "@types/node":
+      optional: true
+    less:
+      optional: true
+    lightningcss:
+      optional: true
+    sass:
+      optional: true
+    stylus:
+      optional: true
+    sugarss:
+      optional: true
+    terser:
+      optional: true
+  bin:
+    vite: bin/vite.js
+  checksum: c22145c8385343a629cd546054b9da6eee60327540102bdfd1ad897fd2e78e0763ce6a18a9d84fdefde9da8fd2427d3bec9eb2697b47cf4068c7b4b52f7e3e6a
   languageName: node
   linkType: hard
 
