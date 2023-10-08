@@ -575,6 +575,10 @@ textarea {
   -webkit-font-smoothing: auto;
 }
 
+.font-smooth-aliased {
+  -webkit-font-smoothing: antialiased !important;
+}
+
 .hero-tag:hover,
 .hero-tag.active {
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);

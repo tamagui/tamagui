@@ -135,6 +135,8 @@ const dmSerifDisplayHeadingFont = createDmSerifDisplayFont(
     size: {
       5: 13,
       6: 15,
+      7: 16,
+      8: 22,
       9: 32,
       10: 44,
     },
