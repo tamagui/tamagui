@@ -49,6 +49,7 @@ export const dev = async (optionsIn: Options) => {
     host: options.host,
     nativePort: internalNativePort,
     webConfig: {
+      // @ts-ignore
       plugins: [tamaguiVitePlugin, inspectPlugin()],
     },
     buildConfig: {
