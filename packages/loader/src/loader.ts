@@ -46,8 +46,7 @@ export const loader = async function loader(
 
     if (shouldDisable) {
       if (shouldPrintDebug) {
-        // biome-ignore lint/suspicious/noConsoleLog: ok
-        console.log('Disabling on file via pragma')
+        console.info('Disabling on file via pragma')
       }
       return callback(null, source)
     }
@@ -81,8 +80,7 @@ export const loader = async function loader(
     console.error('Tamagui Webpack Loader Error:\n', `  ${message}\n`)
 
     if (message.includes('Cannot create proxy')) {
-      // biome-ignore lint/suspicious/noConsoleLog: ok
-      console.log(
+      console.info(
         'This is usually due to components not loading at build-time. Check for logs just below the line above:'
       )
     }

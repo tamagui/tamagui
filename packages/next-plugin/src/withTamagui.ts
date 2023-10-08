@@ -66,8 +66,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
                 continue
               }
               if (process.env.DEBUG?.startsWith('tamagui')) {
-                // biome-ignore lint/suspicious/noConsoleLog: ok
-                console.log(prefix, `withTamagui skipping resolving ${out}`, err)
+                console.info(prefix, `withTamagui skipping resolving ${out}`, err)
               }
             }
           }
@@ -162,8 +161,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
         }
 
         if (process.env.DEBUG) {
-          // biome-ignore lint/suspicious/noConsoleLog: ok
-          console.log('Tamagui alias:', alias)
+          console.info('Tamagui alias:', alias)
         }
 
         if (process.env.ANALYZE === 'true') {
@@ -196,7 +194,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
               '|'
             )}).*js`
             const regex = new RegExp(regexStr)
-            // console.log(prefix, 'exclude', regexStr)
+            // console.info(prefix, 'exclude', regexStr)
             webpackConfig.plugins.push(
               new webpack.NormalModuleReplacementPlugin(
                 regex,
@@ -214,8 +212,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
 
         if (process.env.IGNORE_TS_CONFIG_PATHS) {
           if (process.env.DEBUG) {
-            // biome-ignore lint/suspicious/noConsoleLog: ok
-            console.log(prefix, 'ignoring tsconfig paths')
+            console.info(prefix, 'ignoring tsconfig paths')
           }
           if (webpackConfig.resolve.plugins[0]) {
             delete webpackConfig.resolve.plugins[0].paths['@tamagui/*']
@@ -402,7 +399,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
             isServer,
             exclude: (path: string) => {
               const res = shouldExclude(path, options.dir)
-              // console.log(`shouldExclude`, res, path)
+              // console.info(`shouldExclude`, res, path)
               return res
             },
             ...tamaguiOptions,

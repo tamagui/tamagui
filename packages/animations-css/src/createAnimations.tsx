@@ -129,8 +129,7 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
       }`
 
       if (process.env.NODE_ENV === 'development' && props['debug']) {
-        // biome-ignore lint/suspicious/noConsoleLog: ok
-        console.log('CSS animation', style, { isEntering, isExiting })
+        console.info('CSS animation', style, { isEntering, isExiting })
       }
 
       return { style }

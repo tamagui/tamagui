@@ -16,8 +16,7 @@ const runCommand = (scriptName: string) =>
   `${packageManager} ${useYarn ? '' : 'run '}${scriptName}`
 
 const main: ExtraSteps = async ({ isFullClone, projectName, projectPath }) => {
-  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-  console.log(`
+  console.info(`
 ${tamaguiRainbowAsciiArt
   .split('\n')
   .map((line) => `                ${line}`)
@@ -26,8 +25,7 @@ ${takeoutAsciiArt}
 
 `)
 
-  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-  console.log()
+  console.info()
   const { setupSupabase } = await prompts({
     name: 'setupSupabase',
     message: 'Set up Supabase?',
@@ -36,8 +34,7 @@ ${takeoutAsciiArt}
   })
 
   if (setupSupabase) {
-    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-    console.log()
+    console.info()
     const { startLocalSupabase } = await prompts({
       name: 'startLocalSupabase',
       type: 'confirm',
@@ -49,8 +46,7 @@ ${takeoutAsciiArt}
       const supabaseStarted = await runRetryableCommand(`yarn supa start`)
 
       if (supabaseStarted) {
-        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-        console.log()
+        console.info()
         const { setUpSupabaseEnv } = await prompts({
           name: 'setUpSupabaseEnv',
           type: 'confirm',
@@ -82,8 +78,7 @@ ${takeoutAsciiArt}
       }
     }
 
-    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-    console.log()
+    console.info()
     const { setupRemoteSupabase } = await prompts({
       name: 'setupRemoteSupabase',
       type: 'confirm',
@@ -94,11 +89,10 @@ ${takeoutAsciiArt}
 
     if (setupRemoteSupabase) {
       await runRetryableCommand(`npx supabase login`)
-      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-      console.log()
+      console.info()
       await linkSupabase()
 
-      // console.log()
+      // console.info()
       // const { runSupabaseMigrations } = await prompts({ name: 'runSupabaseMigrations', type: 'confirm', message: 'Run Supabase migrations on your remote Supabase instance?' })
 
       // if (runSupabaseMigrations) {
@@ -108,7 +102,7 @@ ${takeoutAsciiArt}
   }
 
   if (isFullClone) {
-    console.log(`
+    console.info(`
   ${chalk.green.bold('Done!')} created a new project under ./${projectName}
 
 cd into the project using:
@@ -116,8 +110,7 @@ cd into the project using:
   `)
   }
 
-  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-  console.log(`
+  console.info(`
   To start the Next.js development server, run:
     ${chalk.green(runCommand('web'))}
 
@@ -157,7 +150,7 @@ async function runRetryableCommand(cmd: string, retriesCount = 0) {
     if (tryAgain) {
       await runRetryableCommand(cmd, retriesCount + 1)
     } else {
-      console.log(
+      console.info(
         chalk.yellow(
           `⚠️ Skipping this step. You can try running this command later. The failed command was \`${chalk.underline(
             cmd
@@ -193,7 +186,7 @@ async function linkSupabase() {
     if (tryAgain) {
       await linkSupabase()
     } else {
-      console.log(
+      console.info(
         chalk.yellow(
           `⚠️ Skipping this step. You can try running this command later. The failed command was \`${chalk.underline(
             cmd

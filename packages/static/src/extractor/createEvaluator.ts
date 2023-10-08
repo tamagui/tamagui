@@ -36,8 +36,7 @@ export function createEvaluator({
       .code.replace(/;\n$/, '')
 
     if (shouldPrintDebug) {
-      // biome-ignore lint/suspicious/noConsoleLog: ok
-      console.log('evaluating', code)
+      console.info('evaluating', code)
     }
     return vm.runInContext(code, evalContext)
   }

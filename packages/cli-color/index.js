@@ -31,8 +31,7 @@ function colorString(color, string) {
 }
 
 function colorLog(color, ...args) {
-  // biome-ignore lint/suspicious/noConsoleLog: ok
-  console.log(...args.map((it) => (typeof it === 'string' ? colorString(color, it) : it)))
+  console.info(...args.map((it) => (typeof it === 'string' ? colorString(color, it) : it)))
 }
 
 Object.assign(module.exports, {

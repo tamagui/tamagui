@@ -98,7 +98,6 @@ global.performance = {
 global.ErrorUtils = {
   setGlobalHandler: () => {},
   reportFatalError: (err) => {
-    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-    console.log("err" + err["message"] + err["stack"]);
+    console.info("err" + err["message"] + err["stack"]);
   },
 };

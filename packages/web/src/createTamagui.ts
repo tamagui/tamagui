@@ -294,8 +294,7 @@ ${runtimeStyles}`
 
   if (process.env.NODE_ENV === 'development') {
     if (process.env.DEBUG?.startsWith('tamagui')) {
-      // biome-ignore lint/suspicious/noConsoleLog: ok
-      console.log('Tamagui config:', config)
+      console.info('Tamagui config:', config)
     }
     if (!globalThis['Tamagui']) {
       globalThis['Tamagui'] = Tamagui

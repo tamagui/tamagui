@@ -26,8 +26,7 @@ import { validateNpmName } from './helpers/validateNpmPackage'
 let projectPath = ''
 
 if (IS_TEST) {
-  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-  console.log(`🧐 Running create-tamagui in test mode 🧐`)
+  console.info(`🧐 Running create-tamagui in test mode 🧐`)
 }
 
 const program = new Commander.Command(packageJson.name)

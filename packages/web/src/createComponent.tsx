@@ -160,8 +160,7 @@ export function createComponent<
         initialTheme = proxyThemeVariables(next)
         if (process.env.NODE_ENV === 'development') {
           if (!initialTheme) {
-            // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-            console.log('Warning: Missing theme')
+            console.info('Warning: Missing theme')
           }
         }
       }
@@ -182,8 +181,7 @@ export function createComponent<
 
   if (process.env.NODE_ENV === 'development' && staticConfig.defaultProps?.['debug']) {
     if (process.env.IS_STATIC !== 'is_static') {
-      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-      console.log(`🐛 [${staticConfig.componentName || 'Component'}]`, {
+      console.info(`🐛 [${staticConfig.componentName || 'Component'}]`, {
         staticConfig,
         defaultProps,
         defaultPropsKeyOrder: defaultProps ? Object.keys(defaultProps) : [],
@@ -550,8 +548,7 @@ export function createComponent<
             }${state.focus ? 'FOCUSED' : ' '}`
           )
 
-          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-          console.log({
+          console.info({
             propsIn,
             props,
             state,
@@ -655,8 +652,7 @@ export function createComponent<
       if (debugProp && debugProp !== 'profile') {
         console.groupCollapsed('>>>')
 
-        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-        console.log(
+        console.info(
           'props in',
           propsIn,
           'mapped to',
@@ -664,15 +660,11 @@ export function createComponent<
           'in order',
           Object.keys(props)
         )
-        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-        console.log('splitStyles', splitStyles)
-        // biome-ignore lint/suspicious/noConsoleLog: ok
-        console.log('media', { shouldListenForMedia, isMediaArray, mediaListeningKeys })
-        // biome-ignore lint/suspicious/noConsoleLog: ok
-        console.log('className', Object.values(splitStyles.classNames))
+        console.info('splitStyles', splitStyles)
+        console.info('media', { shouldListenForMedia, isMediaArray, mediaListeningKeys })
+        console.info('className', Object.values(splitStyles.classNames))
         if (isClient) {
-          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-          console.log('ref', hostRef, '(click to view)')
+          console.info('ref', hostRef, '(click to view)')
         }
         console.groupEnd()
         if (debugProp === 'break') {
@@ -1068,8 +1060,7 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development' && time) time`events`
 
     if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
-      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-      console.log(`events`, { events, isHoverable, attachPress })
+      console.info(`events`, { events, isHoverable, attachPress })
     }
 
     // EVENTS native
@@ -1234,19 +1225,14 @@ export function createComponent<
         const element = typeof elementType === 'string' ? elementType : 'Component'
         console.groupCollapsed(`render <${element} /> with props`)
         try {
-          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-          console.log('viewProps', viewProps)
-          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-          console.log('viewPropsOrder', Object.keys(viewProps))
+          console.info('viewProps', viewProps)
+          console.info('viewPropsOrder', Object.keys(viewProps))
           for (const key in viewProps) {
-            // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-            console.log(' - ', key, viewProps[key])
+            console.info(' - ', key, viewProps[key])
           }
-          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-          console.log('children', content)
+          console.info('children', content)
           if (typeof window !== 'undefined') {
-            // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-            console.log({
+            console.info({
               viewProps,
               state,
               styleProps,
@@ -1529,8 +1515,7 @@ export function spacedChildren(props: SpacedChildrenProps) {
 
   if (process.env.NODE_ENV === 'development') {
     if (props.debug) {
-      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-      console.log(`  Spaced children`, final, props)
+      console.info(`  Spaced children`, final, props)
     }
   }
 

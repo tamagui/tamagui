@@ -162,8 +162,7 @@ export function loadTamaguiSync({
         throw new Error(`No components loaded`)
       }
       if (process.env.DEBUG === 'tamagui') {
-        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-        console.log(`components`, components)
+        console.info(`components`, components)
       }
 
       // undo shims
@@ -192,8 +191,7 @@ export function loadTamaguiSync({
           console.warn(
             `Error loading tamagui.config.ts (set DEBUG=tamagui to see full stack), running tamagui without custom config`
           )
-          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-          console.log(`\n\n    ${err.message}\n\n`)
+          console.info(`\n\n    ${err.message}\n\n`)
         } else {
           if (SHOULD_DEBUG) {
             console.error(err)
