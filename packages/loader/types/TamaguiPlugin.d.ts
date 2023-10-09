@@ -1,6 +1,6 @@
 import { TamaguiOptions } from '@tamagui/static';
 import type { Compiler, RuleSetRule } from 'webpack';
-type PluginOptions = TamaguiOptions & {
+export type PluginOptions = TamaguiOptions & {
     isServer?: boolean;
     enableStudio?: boolean;
     exclude?: RuleSetRule['exclude'];
@@ -16,5 +16,4 @@ export declare class TamaguiPlugin {
     constructor(options?: PluginOptions);
     apply(compiler: Compiler): void;
 }
-export {};
 //# sourceMappingURL=TamaguiPlugin.d.ts.map
