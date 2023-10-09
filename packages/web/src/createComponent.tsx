@@ -49,6 +49,7 @@ import {
   SpacerProps,
   StackProps,
   StaticConfig,
+  StyleableOptions,
   TamaguiComponent,
   TamaguiComponentEvents,
   TamaguiComponentState,
@@ -195,10 +196,6 @@ export function createComponent<
         startVisualizer()
         startVisualizer = undefined
       }
-    }
-
-    if (propsIn['debug'] === 'verbose') {
-      debugger
     }
 
     if (process.env.TAMAGUI_TARGET === 'native') {
@@ -1321,15 +1318,16 @@ export function createComponent<
     return Component
   }
 
-  function styleable(Component: any, extended?: Partial<StaticConfig>) {
+  function styleable(Component: any, options?: StyleableOptions) {
     const isForwardedRefAlready = Component.render?.length === 2
     const ComponentForwardedRef = isForwardedRefAlready
       ? (Component as any)
       : // memo because theme changes otherwise would always re-render
         memo(forwardRef(Component as any))
-
-    const extendedConfig = extendStyledConfig(extended)
-    const out = themeable(ComponentForwardedRef, extendedConfig) as any
+    const extendedConfig = extendStyledConfig(options?.staticConfig)
+    const out = options?.disableTheme
+      ? ComponentForwardedRef
+      : (themeable(ComponentForwardedRef, extendedConfig) as any)
     out.staticConfig = extendedConfig
     out.styleable = styleable
     return out

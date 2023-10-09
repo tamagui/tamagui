@@ -747,7 +747,11 @@ export interface ThemeableProps {
     componentName?: string;
     debug?: DebugProp;
 }
-export type Styleable<Props, Ref> = <CustomProps extends Object, X extends FunctionComponent<any> = FunctionComponent<ThemeableProps & Props & CustomProps>>(a: X, staticConfig?: Partial<StaticConfig>) => ReactComponentWithRef<CustomProps & Omit<Props & ThemeableProps, keyof CustomProps>, Ref> & {
+export type StyleableOptions = {
+    disableTheme?: boolean;
+    staticConfig?: Partial<StaticConfig>;
+};
+export type Styleable<Props, Ref> = <CustomProps extends Object, X extends FunctionComponent<any> = FunctionComponent<ThemeableProps & Props & CustomProps>>(a: X, options?: StyleableOptions) => ReactComponentWithRef<CustomProps & Omit<Props & ThemeableProps, keyof CustomProps>, Ref> & {
     staticConfig: StaticConfig;
     styleable: Styleable<Props, Ref>;
 };
