@@ -27,7 +27,7 @@ That's it! You should be good to go.
 
 ## Issue and Pull Request Guidelines
 
-Do not open issues for general support questions, that is what our [discord](https://discord.gg/vhEKmdCZw6) is for. Please do not open pull requests that do not address pre-existing issues, unless spoken about and approved in our discord. These rules are to uphold order and code quality, and most of all seperate the wheat from the chaff.
+Do not open issues for general support questions, that is what our [discord](https://discord.gg/vhEKmdCZw6) is for. Please do not open pull requests that do not address pre-existing issues, unless spoken about and approved in our discord. These rules are to uphold order and code quality, and most of all separate the wheat from the chaff.
 
 ### Issues
 
@@ -41,7 +41,7 @@ When opening issues please make sure that they adhere to these guidelines:
 
 For now this is the only Github issue we support, for any other kinds of issues or general questions please join our discord and feel free to ask for help in the `help-casual` channel or open a help discussion in the `help board`.
 
-If your issue does not adhere to these guidelines, in order to save everyones time we will close it on sight.
+If your issue does not adhere to these guidelines, in order to save everyone's time we will close it on sight.
 
 ### Pull Requests
 
@@ -90,7 +90,7 @@ It's easiest to use the sandbox project to test and develop things for web:
 yarn sandbox
 ```
 
-This runs a client-side only vite build of tamagui, with a complete configuration already set up.
+This runs a client-side only vite build of Tamagui, with a complete configuration already set up.
 
 To test on native, `kitchen-sink` is equally well set up.
 

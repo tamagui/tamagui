@@ -1,15 +1,14 @@
 import { existsSync } from 'fs'
 import path, { dirname, join } from 'path'
 
-import type { TamaguiOptions } from '@tamagui/static'
 import browserslist from 'browserslist'
 import buildResolver from 'esm-resolve'
 import { lazyPostCSS } from 'next/dist/build/webpack/config/blocks/css'
 import { getGlobalCssLoader } from 'next/dist/build/webpack/config/blocks/css/loaders'
-import { TamaguiPlugin, shouldExclude as shouldExcludeDefault } from 'tamagui-loader'
+import { TamaguiPlugin, shouldExclude as shouldExcludeDefault, type PluginOptions as LoaderPluginOptions  } from 'tamagui-loader'
 import webpack from 'webpack'
 
-export type WithTamaguiProps = TamaguiOptions & {
+export type WithTamaguiProps = LoaderPluginOptions & {
   useReactNativeWebLite: boolean
   enableLegacyFontSupport?: boolean
   aliasReactPackages?: boolean
