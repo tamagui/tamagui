@@ -63,55 +63,54 @@ export type ListItemProps = Omit<TextParentStyles, 'TextComponent' | 'noTextWrap
 
 const NAME = 'ListItem'
 
-export const listItemVariants = {
-  unstyled: {
-    false: {
-      size: '$true',
-      alignItems: 'center',
-      flexWrap: 'nowrap',
-      width: '100%',
-      borderColor: '$borderColor',
-      maxWidth: '100%',
-      overflow: 'hidden',
-      flexDirection: 'row',
-      backgroundColor: '$background',
-    },
-  },
-
-  size: {
-    '...size': (val: SizeTokens, { tokens }) => {
-      return {
-        minHeight: tokens.size[val],
-        paddingHorizontal: tokens.space[val],
-        paddingVertical: getSpace(tokens.space[val], {
-          shift: -4,
-        }),
-      }
-    },
-  },
-
-  active: {
-    true: {
-      hoverStyle: {
-        backgroundColor: '$background',
-      },
-    },
-  },
-
-  disabled: {
-    true: {
-      opacity: 0.5,
-      // TODO breaking types
-      pointerEvents: 'none' as any,
-    },
-  },
-} as const
-
 export const ListItemFrame = styled(ThemeableStack, {
   name: NAME,
   tag: 'li',
 
-  variants: listItemVariants,
+  variants: {
+    unstyled: {
+      false: {
+        size: '$true',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        flexWrap: 'nowrap',
+        width: '100%',
+        borderColor: '$borderColor',
+        maxWidth: '100%',
+        overflow: 'hidden',
+        flexDirection: 'row',
+        backgroundColor: '$background',
+      },
+    },
+
+    size: {
+      '...size': (val: SizeTokens, { tokens }) => {
+        return {
+          minHeight: tokens.size[val],
+          paddingHorizontal: tokens.space[val],
+          paddingVertical: getSpace(tokens.space[val], {
+            shift: -4,
+          }),
+        }
+      },
+    },
+
+    active: {
+      true: {
+        hoverStyle: {
+          backgroundColor: '$background',
+        },
+      },
+    },
+
+    disabled: {
+      true: {
+        opacity: 0.5,
+        // TODO breaking types
+        pointerEvents: 'none' as any,
+      },
+    },
+  } as const,
 
   defaultVariants: {
     unstyled: false,
@@ -284,21 +283,8 @@ const ListItemComponent = ListItemFrame.styleable<ListItemProps>(function ListIt
   ref
 ) {
   const { props: listItemProps } = useListItem(props)
-  return <ListItemFrame ref={ref} justifyContent="space-between" {...listItemProps} />
+  return <ListItemFrame ref={ref} {...listItemProps} />
 })
-
-export const listItemStaticConfig = {
-  inlineProps: new Set([
-    // text props go here (can't really optimize them, but we never fully extract listItem anyway)
-    'color',
-    'fontWeight',
-    'fontSize',
-    'fontFamily',
-    'letterSpacing',
-    'textAlign',
-    'ellipse',
-  ]),
-}
 
 export const ListItem = withStaticProperties(ListItemComponent, {
   Text: ListItemText,
