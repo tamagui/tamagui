@@ -29,6 +29,8 @@ import type { ThemeProviderProps } from './views/ThemeProvider'
 
 export type { MediaStyleObject, StyleObject } from '@tamagui/helpers'
 
+export type IsMediaType = boolean | 'platform' | 'theme' | 'group'
+
 export type SpaceDirection = 'vertical' | 'horizontal' | 'both'
 
 export type TamaguiElement = HTMLElement | View

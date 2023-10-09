@@ -38,6 +38,7 @@ import type {
   DebugProp,
   GetStyleResult,
   GetStyleState,
+  IsMediaType,
   MediaQueryKey,
   PseudoPropKeys,
   PseudoStyles,
@@ -513,8 +514,8 @@ export const getSplitStyles: StyleSplitter = (
     const isStyleLikeKey = isShorthand || isValidStyleKeyInit || isVariant
 
     let isPseudo = keyInit in validPseudoKeys
-    let isMedia = !isStyleLikeKey && !isPseudo && isMediaKey(keyInit)
-    let isMediaOrPseudo = isMedia || isPseudo
+    let isMedia: IsMediaType = !isStyleLikeKey && !isPseudo && isMediaKey(keyInit)
+    let isMediaOrPseudo = Boolean(isMedia || isPseudo)
 
     const isStyleProp =
       isMediaOrPseudo ||
@@ -669,7 +670,7 @@ export const getSplitStyles: StyleSplitter = (
 
       isPseudo = key in validPseudoKeys
       isMedia = !isPseudo && !isValidStyleKeyInit && isMediaKey(key)
-      isMediaOrPseudo = isMedia || isPseudo
+      isMediaOrPseudo = Boolean(isMedia || isPseudo)
       isVariant = variants && key in variants
 
       if (inlineProps?.has(key) || (IS_STATIC && inlineWhenUnflattened?.has(key))) {
@@ -844,8 +845,7 @@ export const getSplitStyles: StyleSplitter = (
       else if (isMedia) {
         if (!val) continue
 
-        const isPlatformMedia = key.startsWith('$platform-')
-        if (isPlatformMedia) {
+        if (isMedia === 'platform') {
           const platform = key.slice(10)
           if (
             // supports web, ios, android
@@ -925,6 +925,7 @@ export const getSplitStyles: StyleSplitter = (
               style,
               mediaKeyShort,
               mediaQueryConfig,
+              isMedia,
               false,
               priority
             )
@@ -934,9 +935,9 @@ export const getSplitStyles: StyleSplitter = (
             mergeClassName(transforms, classNames, fullKey, out.identifier, true, true)
           }
         } else {
-          const isThemeMedia = !isPlatformMedia && mediaKeyShort.startsWith('theme-')
-          const isGroupMedia =
-            !isPlatformMedia && !isThemeMedia && mediaKeyShort.startsWith('group-')
+          const isThemeMedia = isMedia === 'theme'
+          const isGroupMedia = isMedia === 'group'
+          const isPlatformMedia = isMedia === 'platform'
 
           if (!isThemeMedia && !isPlatformMedia && !isGroupMedia) {
             if (!mediaState[mediaKeyShort]) {

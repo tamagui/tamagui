@@ -1,13 +1,13 @@
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { useContext, useRef, useSyncExternalStore } from 'react'
+import { useRef, useSyncExternalStore } from 'react'
 
 import { getConfig } from '../config'
-import { ComponentContext } from '../contexts/ComponentContext'
 import { createProxy } from '../helpers/createProxy'
 import { matchMedia } from '../helpers/matchMedia'
 import { pseudoDescriptors } from '../helpers/pseudoDescriptors'
 import type {
   ComponentContextI,
+  IsMediaType,
   MediaQueries,
   MediaQueryKey,
   MediaQueryObject,
@@ -15,7 +15,6 @@ import type {
   TamaguiInternalConfig,
   UseMediaState,
 } from '../types'
-import { useConfiguration } from './useConfiguration'
 import { getDisableSSR, useDisableSSR } from './useDisableSSR'
 
 export let mediaState: MediaQueryState =
@@ -45,12 +44,15 @@ export const getMedia = () => mediaState
 
 export const mediaKeys = new Set<string>() // with $ prefix
 
-export const isMediaKey = (key: string) =>
-  mediaKeys.has(key) ||
-  (key[0] === '$' &&
-    (key.startsWith('$platform-') ||
-      key.startsWith('$theme-') ||
-      key.startsWith('$group-')))
+export const isMediaKey = (key: string): IsMediaType => {
+  if (mediaKeys.has(key)) return true
+  if (key[0] === '$') {
+    if (key.startsWith('$platform-')) return 'platform'
+    if (key.startsWith('$theme-')) return 'theme'
+    if (key.startsWith('$group-')) return 'group'
+  }
+  return false
+}
 
 // for SSR capture it at time of startup
 let initState: MediaQueryState
