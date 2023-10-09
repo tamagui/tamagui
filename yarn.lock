@@ -5459,15 +5459,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@supabase/auth-helpers-nextjs@npm:^0.7.4":
-  version: 0.7.4
-  resolution: "@supabase/auth-helpers-nextjs@npm:0.7.4"
+"@supabase/auth-helpers-nextjs@npm:^0.8.1":
+  version: 0.8.1
+  resolution: "@supabase/auth-helpers-nextjs@npm:0.8.1"
   dependencies:
-    "@supabase/auth-helpers-shared": 0.4.1
+    "@supabase/auth-helpers-shared": 0.5.0
     set-cookie-parser: ^2.6.0
   peerDependencies:
     "@supabase/supabase-js": ^2.19.0
-  checksum: eaf9ff6b4259fc21bd5204c9862068c86d30636fc1f5ab9cc1baa989762402eb84bd2dc0ba3e5350e14a71d4e527867e3f003de6681ed606bb27bf863bea12c9
+  checksum: 8315d7ed7588e1d60202faa38f59bf748f195b7bb502d657f40328ab1fc013a6fe04c0bb065ce1ee5050b77e010019a81389b85f64241b2615e54227ff5d9d8f
   languageName: node
   linkType: hard
 
@@ -5480,14 +5480,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@supabase/auth-helpers-shared@npm:0.4.1, @supabase/auth-helpers-shared@npm:^0.4.1":
-  version: 0.4.1
-  resolution: "@supabase/auth-helpers-shared@npm:0.4.1"
+"@supabase/auth-helpers-shared@npm:0.5.0, @supabase/auth-helpers-shared@npm:^0.5.0":
+  version: 0.5.0
+  resolution: "@supabase/auth-helpers-shared@npm:0.5.0"
   dependencies:
-    jose: ^4.14.3
+    jose: ^4.14.4
   peerDependencies:
     "@supabase/supabase-js": ^2.19.0
-  checksum: 07e29f12127b297bb3a11ca5d411ca20c3944a6cadda0d3266ff59bffd85d676116447f70de34116e1773fac0229fd8e944865597d8c044c8f979fa26db4d9f9
+  checksum: 7a37d346b99676c51ae80901ec6144737f2906cbf2e6f002900a3a8e04783a2c0dcd2cf4a9829b7b56b24706e320c4f4071555fe0c037089509a6e445fac3864
   languageName: node
   linkType: hard
 
@@ -5500,12 +5500,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@supabase/functions-js@npm:^2.1.0":
-  version: 2.1.1
-  resolution: "@supabase/functions-js@npm:2.1.1"
+"@supabase/functions-js@npm:^2.1.5":
+  version: 2.1.5
+  resolution: "@supabase/functions-js@npm:2.1.5"
   dependencies:
-    cross-fetch: ^3.1.5
-  checksum: a8b74726e557a3a19efbe70db2c0080a5745e41a5ad7421b86a1286c96b96f77bfc0f89c988ae9ab4a328822956dc6ccdf5de6a718405baea15776015afe8e36
+    "@supabase/node-fetch": ^2.6.14
+  checksum: f2ab8636af8d982270b61631a5120369ca10db101b4298da71be892e5d91a8ddaddcf7f51079ad0fe24731a15892b21bd7dbe41b997da9d4b90e4326d09632c8
   languageName: node
   linkType: hard
 
@@ -5518,12 +5518,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@supabase/gotrue-js@npm:^2.46.1":
-  version: 2.47.0
-  resolution: "@supabase/gotrue-js@npm:2.47.0"
+"@supabase/gotrue-js@npm:^2.54.2":
+  version: 2.55.0
+  resolution: "@supabase/gotrue-js@npm:2.55.0"
   dependencies:
-    cross-fetch: ^3.1.5
-  checksum: 9b3f90f5e153514428a40c8ae1fb5d5cff5f7146de0d78c0bdeb564519bfb1a9c3f34900d30fe6e4a9d2eb750038f9ebbb099e40394c9816c9a332d2634fc8c3
+    "@supabase/node-fetch": ^2.6.14
+  checksum: 0c66a8456e885cd5fde96df631822035fcafe94c7f3b51150e174e44c5821202a8f3424df6c55e9f25da712be3737d021d3e831aa619e511cc29b44eab5bdddf
+  languageName: node
+  linkType: hard
+
+"@supabase/node-fetch@npm:^2.6.14":
+  version: 2.6.14
+  resolution: "@supabase/node-fetch@npm:2.6.14"
+  dependencies:
+    whatwg-url: ^5.0.0
+  checksum: 5c022875b096fe9fd3e4870f1eea4a4a48e199a3881e74f164b977639acad7e438fe8dc6129a8d3e97475a25149e5ede17e264965a83b5ceea86cef2446eb222
   languageName: node
   linkType: hard
 
@@ -5536,12 +5545,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@supabase/postgrest-js@npm:^1.8.0":
-  version: 1.8.0
-  resolution: "@supabase/postgrest-js@npm:1.8.0"
+"@supabase/postgrest-js@npm:^1.8.4":
+  version: 1.8.4
+  resolution: "@supabase/postgrest-js@npm:1.8.4"
   dependencies:
-    cross-fetch: ^3.1.5
-  checksum: 107273fff13ba4dc95efe736bdc8b4021305e57614516c53d2026e56d81f918259df1776ab9429acee38b2a736620c5074e2b5a94e81964ea96502d8d0c0b519
+    "@supabase/node-fetch": ^2.6.14
+  checksum: e37f3046362986b739fc237b6aef9d08cf40e22fff667a3f98010f8638f91fce7019cc3300059d4405385181e7ef89ad85acbe2906d3fb0aa2d969a2a31b3d1e
   languageName: node
   linkType: hard
 
@@ -5555,14 +5564,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@supabase/realtime-js@npm:^2.7.3":
-  version: 2.7.3
-  resolution: "@supabase/realtime-js@npm:2.7.3"
+"@supabase/realtime-js@npm:^2.8.0":
+  version: 2.8.0
+  resolution: "@supabase/realtime-js@npm:2.8.0"
   dependencies:
+    "@supabase/node-fetch": ^2.6.14
     "@types/phoenix": ^1.5.4
     "@types/websocket": ^1.0.3
     websocket: ^1.0.34
-  checksum: a6e789098ef7c388faf3a3b483ae91e1d45f8b7d02ae4ae1ad8ef0d7246678777aab1e0f3f2cbaf25549b27926c94bce9adc5c90f3f2693e1ccf780d5941411d
+  checksum: 85fff3aada0f3a56b803007c3cd7c8962219f9f5e2b9a6c3afaa0dfa04ad845e35e347f903afb1cda42f4369c9be21e2a1edc08362f55ce25390dc8275661184
   languageName: node
   linkType: hard
 
@@ -5575,12 +5585,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@supabase/storage-js@npm:^2.5.1":
-  version: 2.5.1
-  resolution: "@supabase/storage-js@npm:2.5.1"
+"@supabase/storage-js@npm:^2.5.4":
+  version: 2.5.4
+  resolution: "@supabase/storage-js@npm:2.5.4"
   dependencies:
-    cross-fetch: ^3.1.5
-  checksum: bff8673f7c5fb967385bff812e5dec22ad85df6982f3dc2745f46ecd2a0ede280684490adea752b647a995c1d3b33895921d87c2f0e3dd61d5704964a5b59bbd
+    "@supabase/node-fetch": ^2.6.14
+  checksum: 034a918c1c5504174cc67c0335575fa647958a9c53eb7440c1f24a210177c60bde9990fde19eb8902c2bbe3bd823be01204e36ad290bcb8df2387ac5511ed2a4
   languageName: node
   linkType: hard
 
@@ -5608,17 +5618,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@supabase/supabase-js@npm:^2.32.0":
-  version: 2.32.0
-  resolution: "@supabase/supabase-js@npm:2.32.0"
+"@supabase/supabase-js@npm:^2.38.0":
+  version: 2.38.0
+  resolution: "@supabase/supabase-js@npm:2.38.0"
   dependencies:
-    "@supabase/functions-js": ^2.1.0
-    "@supabase/gotrue-js": ^2.46.1
-    "@supabase/postgrest-js": ^1.8.0
-    "@supabase/realtime-js": ^2.7.3
-    "@supabase/storage-js": ^2.5.1
-    cross-fetch: ^3.1.5
-  checksum: 1b4cb5b07a66d05e718f778a33d88c0c56e133135be99fcc25e7f69087f9ed9fa6cebc45ecb69766d337c1d6a0f0b0299bbf5375e57ea41dfcb24aa5d3ed0e6f
+    "@supabase/functions-js": ^2.1.5
+    "@supabase/gotrue-js": ^2.54.2
+    "@supabase/node-fetch": ^2.6.14
+    "@supabase/postgrest-js": ^1.8.4
+    "@supabase/realtime-js": ^2.8.0
+    "@supabase/storage-js": ^2.5.4
+  checksum: fc882c049b15904c63b7d37a652a6da71f2e34fdebce15fe1d164e83dbdd1b30470e1700e740234e989e7ceac3c027f5f31617ea7ada9da63a1afebdb6f9b259
   languageName: node
   linkType: hard
 
@@ -7358,10 +7368,10 @@ __metadata:
     "@react-three/fiber": ^8.13.0
     "@stripe/react-stripe-js": ^2.1.0
     "@stripe/stripe-js": ^1.53.0
-    "@supabase/auth-helpers-nextjs": ^0.7.4
+    "@supabase/auth-helpers-nextjs": ^0.8.1
     "@supabase/auth-helpers-react": ^0.4.2
     "@supabase/supabase-auth-helpers": ^1.4.2
-    "@supabase/supabase-js": ^2.32.0
+    "@supabase/supabase-js": ^2.38.0
     "@tamagui/animate-presence": 1.74.13
     "@tamagui/animations-reanimated": 1.74.13
     "@tamagui/build": 1.74.13
@@ -7440,7 +7450,7 @@ __metadata:
     seamless-scroll-polyfill: ^1.2.3
     sharp: ^0.32.0
     stripe: ^9.1.0
-    supabase: ^1.74.0
+    supabase: ^1.100.1
     swr: ^2.2.0
     tamagui: 1.74.13
     tamagui-loader: 1.74.13
@@ -7604,7 +7614,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/studio@workspace:apps/studio"
   dependencies:
-    "@supabase/auth-helpers-shared": ^0.4.1
+    "@supabase/auth-helpers-shared": ^0.5.0
     "@tamagui/build": 1.74.13
     "@tamagui/cli": 1.74.13
     "@tamagui/linear-gradient": 1.74.13
@@ -9778,6 +9788,15 @@ __metadata:
   dependencies:
     debug: 4
   checksum: f52b6872cc96fd5f622071b71ef200e01c7c4c454ee68bc9accca90c98cfb39f2810e3e9aa330435835eedc8c23f4f8a15267f67c6e245d2b33757575bdac49d
+  languageName: node
+  linkType: hard
+
+"agent-base@npm:^7.0.2":
+  version: 7.1.0
+  resolution: "agent-base@npm:7.1.0"
+  dependencies:
+    debug: ^4.3.4
+  checksum: f7828f991470a0cc22cb579c86a18cbae83d8a3cbed39992ab34fc7217c4d126017f1c74d0ab66be87f71455318a8ea3e757d6a37881b8d0f2a2c6aa55e5418f
   languageName: node
   linkType: hard
 
@@ -17162,6 +17181,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"https-proxy-agent@npm:^7.0.2":
+  version: 7.0.2
+  resolution: "https-proxy-agent@npm:7.0.2"
+  dependencies:
+    agent-base: ^7.0.2
+    debug: 4
+  checksum: 088969a0dd476ea7a0ed0a2cf1283013682b08f874c3bc6696c83fa061d2c157d29ef0ad3eb70a2046010bb7665573b2388d10fdcb3e410a66995e5248444292
+  languageName: node
+  linkType: hard
+
 "human-signals@npm:^1.1.1":
   version: 1.1.1
   resolution: "human-signals@npm:1.1.1"
@@ -18333,10 +18362,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jose@npm:^4.14.3":
-  version: 4.14.4
-  resolution: "jose@npm:4.14.4"
-  checksum: 2d820a91a8fd97c05d8bc8eedc373b944a0cd7f5fe41063086da233d0473c73fb523912a9f026ea870782bd221f4a515f441a2d3af4de48c6f2c76dac5082377
+"jose@npm:^4.14.4":
+  version: 4.15.2
+  resolution: "jose@npm:4.15.2"
+  checksum: 8f0cab1eef31243abe14a935b2b330cd95f10f9b69808fd642088ae5000e50e566664934537d2c6413ab2f6b54acd8265a5033da05157aa1260c5f1d7e57fab0
   languageName: node
   linkType: hard
 
@@ -25957,16 +25986,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"supabase@npm:^1.74.0":
-  version: 1.75.0
-  resolution: "supabase@npm:1.75.0"
+"supabase@npm:^1.100.1":
+  version: 1.102.3
+  resolution: "supabase@npm:1.102.3"
   dependencies:
     bin-links: ^4.0.1
+    https-proxy-agent: ^7.0.2
     node-fetch: ^3.2.10
-    tar: 6.1.15
+    tar: 6.2.0
   bin:
     supabase: bin/supabase
-  checksum: 3f83182fa73375c48cc30b8e287fe6f88e40311a203b1baca499902b7825818850445c72cbe55a02f6ae9af0d329078fb4eb9e226bc887ca8540987607b8ebf1
+  checksum: a50b9f64ad044c83259a6794e6a4c0de7d6d275aa176f0d68c810e7ccce1d073baa84f8501dca26d5ab1af8562ea704e6ec4b1f1bde2b495e0fe57bf8512b8ac
   languageName: node
   linkType: hard
 
@@ -26219,7 +26249,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tar@npm:6.1.15, tar@npm:^6.0.2, tar@npm:^6.0.5, tar@npm:^6.1.11, tar@npm:^6.1.2":
+"tar@npm:6.2.0":
+  version: 6.2.0
+  resolution: "tar@npm:6.2.0"
+  dependencies:
+    chownr: ^2.0.0
+    fs-minipass: ^2.0.0
+    minipass: ^5.0.0
+    minizlib: ^2.1.1
+    mkdirp: ^1.0.3
+    yallist: ^4.0.0
+  checksum: db4d9fe74a2082c3a5016630092c54c8375ff3b280186938cfd104f2e089c4fd9bad58688ef6be9cf186a889671bf355c7cda38f09bbf60604b281715ca57f5c
+  languageName: node
+  linkType: hard
+
+"tar@npm:^6.0.2, tar@npm:^6.0.5, tar@npm:^6.1.11, tar@npm:^6.1.2":
   version: 6.1.15
   resolution: "tar@npm:6.1.15"
   dependencies:

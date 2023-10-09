@@ -49,5 +49,5 @@ export async function protectApiRoute({
     }
   }
 
-  return { supabase, session: session!, user: user! }
+  return { supabase, session, user }
 }

@@ -5,7 +5,7 @@ import { protectApiRoute } from '@lib/protectApiRoute'
 let apis
 export default apiRoute(async (req, res) => {
   try {
-    apis = await require('@tamagui/studio/api')
+    apis = require('@tamagui/studio/api')
   } catch (error) {
     console.error('git-crypt is not unlocked. returning.', error)
     res.status(500).json({})
