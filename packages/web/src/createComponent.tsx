@@ -197,6 +197,10 @@ export function createComponent<
       }
     }
 
+    if (propsIn['debug'] === 'verbose') {
+      debugger
+    }
+
     if (process.env.TAMAGUI_TARGET === 'native') {
       // todo this could be moved to a cleaner location
       if (!hasSetupBaseViews) {

@@ -44,6 +44,10 @@ export const createMediaStyle = (
       .fill(':root')
       .join('')
 
+    if (mediaKeyIn.includes('-active')) {
+      debugger
+    }
+
     if (isTheme || isGroup) {
       const groupInfo = getGroupPropParts(mediaKeyIn)
       const mediaName = groupInfo?.name

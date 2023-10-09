@@ -1,6 +1,6 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { TamaguiElement, isWeb, useIsomorphicLayoutEffect } from '@tamagui/core'
-import { ListItem, ListItemProps } from '@tamagui/list-item'
+import { ListItem, ListItemFrame, ListItemProps, useListItem } from '@tamagui/list-item'
 import * as React from 'react'
 
 import { createSelectContext, useSelectItemParentContext } from './context'
@@ -28,7 +28,7 @@ export interface SelectItemProps extends ListItemProps {
   textValue?: string
 }
 
-export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
+export const SelectItem = ListItemFrame.styleable<SelectItemProps>(
   (props: ScopedProps<SelectItemProps>, forwardedRef) => {
     const {
       __scopeSelect,
@@ -36,8 +36,10 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
       disabled = false,
       textValue: textValueProp,
       index,
-      ...itemProps
+      ...restProps
     } = props
+
+    const { props: listItemProps } = useListItem(restProps)
     const context = useSelectItemParentContext(ITEM_NAME, __scopeSelect)
 
     const {
@@ -165,7 +167,7 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
         {shouldRenderWebNative ? (
           <option value={value}>{props.children}</option>
         ) : (
-          <ListItem
+          <ListItemFrame
             tag="div"
             componentName={ITEM_NAME}
             ref={composedRefs}
@@ -185,7 +187,7 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
               size,
               ellipse: true,
             })}
-            {...itemProps}
+            {...listItemProps}
             {...selectItemProps}
           />
         )}
