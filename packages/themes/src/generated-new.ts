@@ -381,7 +381,6 @@ const vs = [
   'rgba(0,0,0,0.5)',
   'rgba(0,0,0,0.9)',
   'transparent',
-  'undefined',
 ]
 
 const ks = [
