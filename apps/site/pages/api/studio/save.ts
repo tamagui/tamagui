@@ -1,5 +1,4 @@
 import { apiRoute } from '@lib/apiRoute'
-import { setupCors } from '@lib/cors'
 import { checkSponsorAccess } from '@lib/getSponsorData'
 import { protectApiRoute } from '@lib/protectApiRoute'
 import type { ThemeRow } from '@tamagui/studio/src/store/tb-store'
@@ -8,7 +7,6 @@ export type StoreData = Array<{
   themes: Record<string, ThemeRow>
 }>
 export default apiRoute(async (req, res) => {
-  setupCors(req, res)
   const { supabase, user } = await protectApiRoute({ req, res })
   const { teamId } = await checkSponsorAccess({
     req,
