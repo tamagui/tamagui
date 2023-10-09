@@ -194,11 +194,6 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     }, interactionsProps)
   )
 
-  const getXY = useGet({
-    x,
-    y,
-  })
-
   const interactionsContext = React.useMemo(() => {
     return {
       ...interactions,
@@ -218,7 +213,6 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
         })
       },
       getFloatingProps(props) {
-        const { x, y } = getXY()
         return interactions.getFloatingProps({
           ref: refs.floating,
           className: 'Select',
@@ -257,7 +251,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
         })
       },
     }
-  }, [refs.reference.current, refs.floating.current, interactions])
+  }, [refs.reference.current, x, y, refs.floating.current, interactions])
 
   // effects
 
