@@ -28,81 +28,84 @@ export interface SelectItemProps extends ListItemProps {
   textValue?: string
 }
 
-export const SelectItem = ListItemFrame.styleable<SelectItemProps>(
-  (props: ScopedProps<SelectItemProps>, forwardedRef) => {
-    const {
-      __scopeSelect,
-      value,
-      disabled = false,
-      textValue: textValueProp,
-      index,
-      ...restProps
-    } = props
+export const SelectItem = ListItemFrame.styleable<SelectItemProps>(function SelectItem(
+  props: ScopedProps<SelectItemProps>,
+  forwardedRef
+) {
+  const {
+    __scopeSelect,
+    value,
+    disabled = false,
+    textValue: textValueProp,
+    index,
+    ...restProps
+  } = props
 
-    const { props: listItemProps } = useListItem(restProps)
-    const context = useSelectItemParentContext(ITEM_NAME, __scopeSelect)
+  const { props: listItemProps } = useListItem(restProps)
+  const context = useSelectItemParentContext(ITEM_NAME, __scopeSelect)
 
-    const {
-      setSelectedIndex,
-      listRef,
-      setOpen,
-      onChange,
-      activeIndexSubscribe,
-      valueSubscribe,
-      allowMouseUpRef,
-      allowSelectRef,
-      setValueAtIndex,
-      selectTimeoutRef,
-      dataRef,
-      interactions,
-      shouldRenderWebNative,
-      size,
-      onActiveChange,
-      initialValue,
-    } = context
+  const {
+    setSelectedIndex,
+    listRef,
+    setOpen,
+    onChange,
+    activeIndexSubscribe,
+    valueSubscribe,
+    allowMouseUpRef,
+    allowSelectRef,
+    setValueAtIndex,
+    selectTimeoutRef,
+    dataRef,
+    interactions,
+    shouldRenderWebNative,
+    size,
+    onActiveChange,
+    initialValue,
+  } = context
 
-    const [isSelected, setSelected] = React.useState(initialValue === value)
-    const [isActive, setActive] = React.useState(false)
+  const [isSelected, setSelected] = React.useState(initialValue === value)
+  const [isActive, setActive] = React.useState(false)
 
-    React.useEffect(() => {
-      return activeIndexSubscribe((i) => {
-        const isActive = index === i
-        setActive(isActive)
+  React.useEffect(() => {
+    return activeIndexSubscribe((i) => {
+      const isActive = index === i
+      setActive(isActive)
 
-        if (isActive) {
-          onActiveChange(value, index)
-        }
-      })
-    }, [index])
-
-    React.useEffect(() => {
-      return valueSubscribe((val) => {
-        setSelected(val === value)
-      })
-    }, [value])
-
-    const textId = React.useId()
-
-    const composedRefs = useComposedRefs(forwardedRef, (node) => {
-      if (!isWeb) return
-      if (node instanceof HTMLElement) {
-        if (listRef) {
-          listRef.current[index] = node
-        }
+      if (isActive) {
+        onActiveChange(value, index)
       }
     })
+  }, [index])
 
-    useIsomorphicLayoutEffect(() => {
-      setValueAtIndex(index, value)
-    }, [index, setValueAtIndex, value])
+  React.useEffect(() => {
+    return valueSubscribe((val) => {
+      setSelected(val === value)
+    })
+  }, [value])
 
-    function handleSelect() {
-      setSelectedIndex(index)
-      onChange(value)
-      setOpen(false)
+  const textId = React.useId()
+
+  const composedRefs = useComposedRefs(forwardedRef, (node) => {
+    if (!isWeb) return
+    if (node instanceof HTMLElement) {
+      if (listRef) {
+        listRef.current[index] = node
+      }
     }
+  })
 
-    const selectItemProps = interactions
+  useIsomorphicLayoutEffect(() => {
+    setValueAtIndex(index, value)
+  }, [index, setValueAtIndex, value])
+
+  function handleSelect() {
+    setSelectedIndex(index)
+    onChange(value)
+    setOpen(false)
+  }
+
+  const selectItemProps = React.useMemo(() => {
+    return interactions
       ? interactions.getItemProps({
           onTouchMove() {
             allowSelectRef!.current = true
@@ -150,50 +153,50 @@ export const SelectItem = ListItemFrame.styleable<SelectItemProps>(
       : {
           onPress: handleSelect,
         }
+  }, [handleSelect])
 
-    useIsomorphicLayoutEffect(() => {
-      if (isActive) {
-        listRef?.current[index]?.focus()
-      }
-    }, [isActive])
+  useIsomorphicLayoutEffect(() => {
+    if (isActive) {
+      listRef?.current[index]?.focus()
+    }
+  }, [isActive])
 
-    return (
-      <SelectItemContextProvider
-        scope={__scopeSelect}
-        value={value}
-        textId={textId || ''}
-        isSelected={isSelected}
-      >
-        {shouldRenderWebNative ? (
-          <option value={value}>{props.children}</option>
-        ) : (
-          <ListItemFrame
-            tag="div"
-            componentName={ITEM_NAME}
-            ref={composedRefs}
-            aria-labelledby={textId}
-            aria-selected={isSelected}
-            data-state={isSelected ? 'active' : 'inactive'}
-            aria-disabled={disabled || undefined}
-            data-disabled={disabled ? '' : undefined}
-            tabIndex={disabled ? undefined : -1}
-            {...(!props.unstyled && {
-              backgrounded: true,
-              pressTheme: true,
-              hoverTheme: true,
-              focusTheme: true,
-              cursor: 'default',
-              outlineWidth: 0,
-              size,
-              ellipse: true,
-            })}
-            {...listItemProps}
-            {...selectItemProps}
-          />
-        )}
-      </SelectItemContextProvider>
-    )
-  }
-)
+  return (
+    <SelectItemContextProvider
+      scope={__scopeSelect}
+      value={value}
+      textId={textId || ''}
+      isSelected={isSelected}
+    >
+      {shouldRenderWebNative ? (
+        <option value={value}>{props.children}</option>
+      ) : (
+        <ListItemFrame
+          tag="div"
+          componentName={ITEM_NAME}
+          ref={composedRefs}
+          aria-labelledby={textId}
+          aria-selected={isSelected}
+          data-state={isSelected ? 'active' : 'inactive'}
+          aria-disabled={disabled || undefined}
+          data-disabled={disabled ? '' : undefined}
+          tabIndex={disabled ? undefined : -1}
+          {...(!props.unstyled && {
+            backgrounded: true,
+            pressTheme: true,
+            hoverTheme: true,
+            focusTheme: true,
+            cursor: 'default',
+            outlineWidth: 0,
+            size,
+            ellipse: true,
+          })}
+          {...listItemProps}
+          {...selectItemProps}
+        />
+      )}
+    </SelectItemContextProvider>
+  )
+})
 
 SelectItem.displayName = ITEM_NAME
