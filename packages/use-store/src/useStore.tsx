@@ -1,4 +1,4 @@
-import { useCallback, useRef, useSyncExternalStore } from 'react'
+import { useCallback, useMemo, useRef, useSyncExternalStore } from 'react'
 
 import { isEqualSubsetShallow } from './comparators'
 import { configureOpts } from './configureUseStore'
@@ -21,8 +21,7 @@ export function useStore<A, B extends Object>(
   props?: B | null,
   options: UseStoreOptions<A, any> = defaultOptions
 ): A {
-  const selectorCb = useCallback(options.selector || idFn, [])
-  const selector = options.selector ? selectorCb : options.selector
+  const selector = useMemo(() => options.selector, [])
   const info = getOrCreateStoreInfo(StoreKlass, props, options)
   return useStoreFromInfo(info, selector, options)
 }

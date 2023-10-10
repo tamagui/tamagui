@@ -1,5 +1,4 @@
 import { simpleHash } from '@tamagui/simple-hash'
-import { useRef } from 'react'
 
 import { StoreInfo } from './interfaces'
 
@@ -30,16 +29,6 @@ export function getStoreDescriptors(storeInstance: any) {
 
 export function get<A>(_: A, b?: any): A extends new (props?: any) => infer B ? B : A {
   return _ as any
-}
-
-type ResultBox<T> = { v: T }
-
-export default function useConstant<T>(fn: () => T): T {
-  const ref = useRef<ResultBox<T>>()
-  if (!ref.current) {
-    ref.current = { v: fn() }
-  }
-  return ref.current.v
 }
 
 export function simpleStr(arg: any) {

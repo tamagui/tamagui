@@ -57,7 +57,7 @@ function applyOverrides(key: string, value: number | string, opts: MaskOptions) 
 
 export const createIdentityMask = (): CreateMask => ({
   name: 'identity-mask',
-  mask: (template) => template,
+  mask: (template, opts) => skipMask.mask(template, opts),
 })
 
 export const createInverseMask = () => {
