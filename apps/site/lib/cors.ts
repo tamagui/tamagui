@@ -5,7 +5,9 @@ export function setupCors(req: NextApiRequest, res: NextApiResponse) {
 
   if (
     typeof origin === 'string' &&
-    (origin.endsWith('tamagui.dev') || origin.endsWith('localhost:1421'))
+    (origin.endsWith('tamagui.dev') ||
+      origin.endsWith('localhost:1421') ||
+      origin.endsWith('stripe.com'))
   ) {
     res.setHeader('Access-Control-Allow-Origin', origin)
     res.setHeader('Access-Control-Allow-Credentials', 'true')
