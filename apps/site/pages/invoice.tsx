@@ -1,6 +1,3 @@
-// debug
-// import '../lib/wdyr'
-
 import { memo } from 'react'
 import { H1, H3, Input, Stack, Text, YStack, styled, withStaticProperties } from 'tamagui'
 

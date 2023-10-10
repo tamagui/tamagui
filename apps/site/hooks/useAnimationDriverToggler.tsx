@@ -1,5 +1,5 @@
 import { createAnimations as createAnimationsCss } from '@tamagui/animations-css'
-import { AnimationDriver } from '@tamagui/web/types'
+import { AnimationDriver } from '@tamagui/web'
 // import { createAnimations as createAnimationsReanimated } from '@tamagui/animations-reanimated'
 import { createContext, useContext, useMemo, useState } from 'react'
 

@@ -50,6 +50,7 @@ async function clean() {
     await Promise.allSettled([
       //
       fs.remove('.turbo'),
+      fs.remove('node_modules'),
       fs.remove('.ultra.cache.json'),
       fs.remove('types'),
       fs.remove('dist'),

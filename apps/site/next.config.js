@@ -32,7 +32,7 @@ const plugins = [
     components: ['tamagui'],
     importsWhitelist: ['constants.js', 'colors.js'],
     logTimings: true,
-    enableDynamicEvaluation: true,
+    // enableDynamicEvaluation: true,
     disableExtraction,
     excludeReactNativeWebExports: ['Switch', 'ProgressBar', 'Picker', 'CheckBox', 'Touchable', 'Animated', 'FlatList', 'Modal'],
   }),
