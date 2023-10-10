@@ -25,7 +25,7 @@ export const HeaderLinks = ({ showExtra, forceShowAllLinks, showAuth }: HeaderPr
   // there is user context and supabase setup in the current page
   return (
     <>
-      <NextLink prefetch={false} href="/docs/intro/installation">
+      <NextLink prefetch={false} href="/docs/intro/introduction">
         <HeadAnchor
           $sm={{
             display: forceShowAllLinks ? 'flex' : 'none',
