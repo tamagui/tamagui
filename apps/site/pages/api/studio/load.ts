@@ -2,9 +2,11 @@ import { checkSponsorAccess } from '@lib/getSponsorData'
 import { protectApiRoute } from '@lib/protectApiRoute'
 import { NextApiHandler } from 'next'
 
+import { setupCors } from '../../../lib/cors'
 import { StoreData } from './save'
 
 const handler: NextApiHandler = async (req, res) => {
+  setupCors(req, res)
   const { supabase, user } = await protectApiRoute({ req, res })
   const { teamId } = await checkSponsorAccess({
     req,
