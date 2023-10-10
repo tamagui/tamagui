@@ -28,7 +28,8 @@ const handler: NextApiHandler = async (req, res) => {
 
   let event: Stripe.Event
   const sig = req.headers['stripe-signature']
-  const toltReferral = req.body.referral as string | undefined
+
+  const toltReferral = req.body?.referral as string | undefined
 
   const reqBuffer = await buffer(req)
   try {

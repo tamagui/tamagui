@@ -293,6 +293,8 @@ export async function addRenewalSubscription(
   }
   console.info('creating the sub...', renewalPriceIds)
   if (renewalPriceIds.length > 0) {
+    const toltReferral = options?.toltReferral ?? null
+
     const cardPaymentMethods = await stripe.paymentMethods.list({
       customer: customerId,
       type: 'card',
@@ -300,9 +302,11 @@ export async function addRenewalSubscription(
     const paymentMethod = cardPaymentMethods.data[0]
     const collectionMethod = paymentMethod ? 'charge_automatically' : 'send_invoice'
     const renewalSub = await stripe.subscriptions.create({
-      // metadata: {
-      //   tolt_referral: options?.toltReferral ?? null,
-      // },
+      ...(toltReferral && {
+        metadata: {
+          tolt_referral: toltReferral,
+        },
+      }),
       customer: customerId,
       collection_method: collectionMethod,
       ...(collectionMethod === 'charge_automatically'
