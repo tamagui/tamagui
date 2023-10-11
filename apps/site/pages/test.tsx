@@ -21,7 +21,7 @@ export default memo(() => {
         <ThemeToggle />
       </div>
 
-      <SelectDemo />
+      <Button>hi</Button>
     </div>
   )
 })

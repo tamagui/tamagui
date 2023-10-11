@@ -726,6 +726,8 @@ export function createComponent<
       onMouseDown,
       onMouseEnter,
       onMouseLeave,
+      onFocus,
+      onBlur,
       separator,
       // ignore from here on out
       forceStyle: _forceStyle,
@@ -940,6 +942,7 @@ export function createComponent<
     // if its a group its gotta listen for pseudos to emit them to children
 
     const runtimePressStyle = !disabled && noClassNames && pseudos?.pressStyle
+    const runtimeFocusStyle = !disabled && noClassNames && pseudos?.focusStyle
     const attachPress = Boolean(
       groupName ||
         runtimePressStyle ||
@@ -959,7 +962,11 @@ export function createComponent<
     // check presence rather than value to prevent reparenting bugs
     // allows for onPress={x ? function : undefined} without re-ordering dom
     const shouldAttach = Boolean(
-      attachPress || isHoverable || runtimePressStyle || runtimeHoverStyle
+      attachPress ||
+        isHoverable ||
+        runtimePressStyle ||
+        runtimeHoverStyle ||
+        runtimeFocusStyle
     )
 
     if (process.env.NODE_ENV === 'development' && time) time`events-setup`
@@ -1032,15 +1039,29 @@ export function createComponent<
                   }
                 }
               : undefined,
-            ...(process.env.TAMAGUI_TARGET === 'native' && {
-              onLongPress:
-                attachPress && onLongPress
-                  ? (e) => {
-                      unPress()
-                      onLongPress?.(e)
-                    }
-                  : undefined,
-            }),
+            ...(process.env.TAMAGUI_TARGET === 'native' &&
+              attachPress &&
+              onLongPress && {
+                onLongPress: (e) => {
+                  unPress()
+                  onLongPress?.(e)
+                },
+              }),
+            ...(process.env.TAMAGUI_TARGET === 'web' &&
+              runtimeFocusStyle && {
+                onFocus: (e) => {
+                  setStateShallow({
+                    focus: true,
+                  })
+                  onFocus?.(e)
+                },
+                onBlur: (e) => {
+                  setStateShallow({
+                    focus: false,
+                  })
+                  onBlur?.(e)
+                },
+              }),
           }
         : null
 
@@ -1056,6 +1077,10 @@ export function createComponent<
         focusable: viewProps.focusable ?? true,
         minPressDuration: 0,
       })
+    }
+
+    if (process.env.TAMAGUI_TARGET === 'web' && events && !isReactNative) {
+      Object.assign(viewProps, getWebEvents(events))
     }
 
     if (process.env.NODE_ENV === 'development' && time) time`events`
@@ -1189,7 +1214,7 @@ export function createComponent<
     }
 
     if (process.env.TAMAGUI_TARGET === 'web') {
-      if (events || isAnimatedReactNativeWeb) {
+      if (isReactNative) {
         content = (
           <span
             className={`${isAnimatedReactNativeWeb ? className : ''} _dsp_contents`}
@@ -1353,6 +1378,8 @@ function getWebEvents<E extends EventLikeObject>(events: E, webStyle = true) {
     onMouseUp: events.onPressOut,
     onTouchStart: events.onPressIn,
     onTouchEnd: events.onPressOut,
+    onFocus: events.onFocus,
+    onBlur: events.onBlur,
   }
 }
 

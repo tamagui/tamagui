@@ -149,6 +149,8 @@ export type WebOnlyPressEvents = {
   onMouseLeave?: DivAttributes['onMouseLeave']
   onMouseDown?: DivAttributes['onMouseDown']
   onMouseUp?: DivAttributes['onMouseUp']
+  onFocus?: DivAttributes['onFocus']
+  onBlur?: DivAttributes['onBlur']
 }
 
 /**
