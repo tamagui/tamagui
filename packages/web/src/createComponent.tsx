@@ -63,7 +63,7 @@ import {
   WebOnlyPressEvents,
 } from './types'
 import { Slot } from './views/Slot'
-import { useThemedChildren } from './views/Theme'
+import { getThemeCNStyle, useThemedChildren } from './views/Theme'
 import { ThemeDebug } from './views/ThemeDebug'
 
 // this appears to fix expo / babel not picking this up sometimes? really odd
@@ -900,12 +900,20 @@ export function createComponent<
     let className: string | undefined
 
     if (process.env.TAMAGUI_TARGET === 'web') {
-      const classList = [
-        componentName ? componentClassName : '',
-        fontFamilyClassName,
-        classNames ? Object.values(classNames).join(' ') : '',
-        groupClassName,
-      ]
+      // TODO this could be moved into getSplitStyles right?
+      const fromTheme = getThemeCNStyle(themeState)
+
+      let classList: string[] = []
+      if (componentName) classList.push(componentClassName)
+      if (fontFamilyClassName) classList.push(fontFamilyClassName)
+      if (classNames) classList.push(Object.values(classNames).join(' '))
+      if (groupClassName) classList.push(groupClassName)
+
+      if (fromTheme) {
+        classList.push(fromTheme.className)
+        style.color ??= fromTheme.style?.color
+      }
+
       className = classList.join(' ')
 
       if (isAnimatedReactNativeWeb && !avoidAnimationStyle) {
@@ -1201,7 +1209,7 @@ export function createComponent<
     // disable theme prop is deterministic so conditional hook ok here
     content = disableThemeProp
       ? content
-      : useThemedChildren(themeState, content, themeStateProps)
+      : useThemedChildren(themeState, content, themeStateProps, false, true)
 
     if (process.env.NODE_ENV === 'development' && time) time`themed-children`
 
