@@ -951,6 +951,7 @@ export function createComponent<
 
     const runtimePressStyle = !disabled && noClassNames && pseudos?.pressStyle
     const runtimeFocusStyle = !disabled && noClassNames && pseudos?.focusStyle
+    const attachFocus = Boolean(runtimePressStyle || onFocus || onBlur)
     const attachPress = Boolean(
       groupName ||
         runtimePressStyle ||
@@ -970,7 +971,8 @@ export function createComponent<
     // check presence rather than value to prevent reparenting bugs
     // allows for onPress={x ? function : undefined} without re-ordering dom
     const shouldAttach = Boolean(
-      attachPress ||
+      attachFocus ||
+        attachPress ||
         isHoverable ||
         runtimePressStyle ||
         runtimeHoverStyle ||
@@ -1055,21 +1057,20 @@ export function createComponent<
                   onLongPress?.(e)
                 },
               }),
-            ...(process.env.TAMAGUI_TARGET === 'web' &&
-              runtimeFocusStyle && {
-                onFocus: (e) => {
-                  setStateShallow({
-                    focus: true,
-                  })
-                  onFocus?.(e)
-                },
-                onBlur: (e) => {
-                  setStateShallow({
-                    focus: false,
-                  })
-                  onBlur?.(e)
-                },
-              }),
+            ...(attachFocus && {
+              onFocus: (e) => {
+                setStateShallow({
+                  focus: true,
+                })
+                onFocus?.(e)
+              },
+              onBlur: (e) => {
+                setStateShallow({
+                  focus: false,
+                })
+                onBlur?.(e)
+              },
+            }),
           }
         : null
 
