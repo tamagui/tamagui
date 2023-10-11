@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/build",
-  "version": "1.74.13",
+  "version": "1.74.14",
   "bin": {
     "tamagui-build": "tamagui-build.js"
   },
