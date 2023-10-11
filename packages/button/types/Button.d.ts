@@ -490,7 +490,7 @@ export declare const ButtonNestingContext: import("react").Context<boolean>;
 /**
  * @deprecated Instead of useButton, see the Button docs for the newer and much improved Advanced customization pattern: https://tamagui.dev/docs/components/button
  */
-declare function useButton<Props extends ButtonProps>(propsIn: Props, { Text }?: {
+declare function useButton<Props extends ButtonProps>({ textProps, ...propsIn }: Props, { Text }?: {
     Text: any;
 }): {
     spaceSize: number | boolean | import("@tamagui/web").UnionableString | import("@tamagui/web").Variable<any>;

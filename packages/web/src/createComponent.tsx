@@ -901,7 +901,7 @@ export function createComponent<
 
     if (process.env.TAMAGUI_TARGET === 'web') {
       // TODO this could be moved into getSplitStyles right?
-      const fromTheme = getThemeCNStyle(themeState)
+      // const fromTheme = getThemeCNStyle(themeState)
 
       let classList: string[] = []
       if (componentName) classList.push(componentClassName)
@@ -909,10 +909,10 @@ export function createComponent<
       if (classNames) classList.push(Object.values(classNames).join(' '))
       if (groupClassName) classList.push(groupClassName)
 
-      if (fromTheme) {
-        classList.push(fromTheme.className)
-        style.color ??= fromTheme.style?.color
-      }
+      // if (fromTheme) {
+      //   classList.push(fromTheme.className)
+      //   style.color ??= fromTheme.style?.color
+      // }
 
       className = classList.join(' ')
 
@@ -1209,7 +1209,7 @@ export function createComponent<
     // disable theme prop is deterministic so conditional hook ok here
     content = disableThemeProp
       ? content
-      : useThemedChildren(themeState, content, themeStateProps, false, true)
+      : useThemedChildren(themeState, content, themeStateProps, false)
 
     if (process.env.NODE_ENV === 'development' && time) time`themed-children`
 
