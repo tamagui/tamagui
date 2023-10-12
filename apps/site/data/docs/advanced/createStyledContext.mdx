@@ -1,0 +1,87 @@
+---
+title: createStyledContext
+---
+
+When building a "Composable Component API", you need a way to pass properties down to multiple related components at once.
+
+What is a Composable Component API? It looks like this:
+
+```tsx
+export default () => (
+  <Button size="$large">
+    <Button.Icon>
+      <Icon />
+    </Button.Icon>
+    <Button.Text>Lorem ipsum</Button.Text>
+  </Button>
+)
+```
+
+Note how the `size="$large"` is set on the outer Button frame. We'd expect this size property to pass down to both the Icon and Text so that our frame size always matches the icon and text size. It would be cumbersome and bug-prone to have to always pass the size to every sub-component.
+
+Tamagui solves this with `createStyledContext` which acts much like React `createContext`, except it only works with styled components and only controls their variants (for now, we're exploring if it can do more).
+
+You can set it up as follows:
+
+```tsx
+import {
+  SizeTokens,
+  Stack,
+  Text,
+  createStyledContext,
+  styled,
+  withStaticProperties,
+} from 'tamagui' // or @tamagui/core
+
+export const ButtonContext = createStyledContext<{
+  size: SizeTokens
+}>({
+  size: '$medium',
+})
+
+export const ButtonFrame = styled(Stack, {
+  name: 'Button',
+  context: ButtonContext,
+
+  variants: {
+    size: {
+      '...size': (name, { tokens }) => {
+        return {
+          height: tokens.size[name],
+          borderRadius: tokens.radius[name],
+          gap: tokens.space[name].val * 0.2,
+        }
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    size: '$medium',
+  },
+})
+
+export const ButtonText = styled(Text, {
+  name: 'ButtonText',
+  context: ButtonContext,
+
+  variants: {
+    size: {
+      '...fontSize': (name, { font }) => ({
+        fontSize: font?.size[name],
+      }),
+    },
+  } as const,
+})
+
+export const Button = withStaticProperties(ButtonFrame, {
+  Props: ButtonContext.Provider,
+  Text: ButtonText,
+})
+```
+
+A few things to note here:
+
+- ButtonContext should only be typed and given properties that work across both components. Since they both define a `size` variant, this works.
+- But note that one defines `...size` while the other defines `...fontSize`. This works in this case only if your design system has consistent naming for token sizes across `size` and `fontSize` (and is why we highly recommend this pattern).
+- You can use `<Button.Props size="$large"><Button /></Button.Props>` now to set default props for a Button from above.
+- As of today, using `context` pattern does not work with the optimizing compiler flattening functionality. So we recommend not using this for your most common components like Stacks or Text. But for Button or anything higher level it's totally fine - it will still extract CSS and remove some logic from the render function. We've mapped out how this can work with flattening eventually and it shouldn't be too much effort.

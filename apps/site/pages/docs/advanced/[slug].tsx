@@ -18,7 +18,7 @@ type Doc = {
   code: any
 }
 
-export default function DocsStylingPage({ frontmatter, code }: Doc) {
+export default function DocsAdvancedPage({ frontmatter, code }: Doc) {
   if (!frontmatter) {
     return null
   }
@@ -26,7 +26,7 @@ export default function DocsStylingPage({ frontmatter, code }: Doc) {
   return (
     <>
       <NextSeo
-        title={`${frontmatter.title} — Tamagui Styling`}
+        title={`${frontmatter.title} — Tamagui Advanced Concepts`}
         description={frontmatter.description}
         openGraph={{
           images: [
@@ -34,7 +34,7 @@ export default function DocsStylingPage({ frontmatter, code }: Doc) {
               url: getOgUrl('default', {
                 title: frontmatter.title,
                 description: frontmatter.description ?? '',
-                category: 'Styling',
+                category: 'Advanced',
               }),
               width: 1200,
               height: 630,
@@ -55,12 +55,12 @@ export default function DocsStylingPage({ frontmatter, code }: Doc) {
   )
 }
 
-DocsStylingPage.getLayout = getDefaultLayout
+DocsAdvancedPage.getLayout = getDefaultLayout
 
 export async function getStaticPaths() {
-  const frontmatters = getAllFrontmatter('docs/styling')
+  const frontmatters = getAllFrontmatter('docs/advanced')
   const paths = frontmatters.map(({ slug }) => ({
-    params: { slug: slug.replace('docs/styling/', '') },
+    params: { slug: slug.replace('docs/advanced/', '') },
   }))
   return {
     paths,
@@ -69,7 +69,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context) {
-  const { frontmatter, code } = await getMdxBySlug('docs/styling', context.params.slug)
+  const { frontmatter, code } = await getMdxBySlug('docs/advanced', context.params.slug)
   return {
     props: {
       frontmatter,

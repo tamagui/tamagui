@@ -35,10 +35,6 @@ export const docsRoutes: DocsRoute[] = [
       { title: 'Creating a custom theme', route: '/docs/guides/theme-builder' },
     ],
   },
-  {
-    label: 'Developing with Tamagui',
-    pages: [{ title: 'Developing', route: '/docs/guides/developing' }],
-  },
 
   {
     type: 'hr',
@@ -170,7 +166,19 @@ export const docsRoutes: DocsRoute[] = [
       { title: 'Introduction', route: '/docs/styling/introduction' },
       // { title: 'Props', route: '/docs/styling/props' },
       { title: 'styled', route: '/docs/styling/styled' },
+      { title: 'Groups', route: '/docs/styling/groups' },
       { title: 'Variants', route: '/docs/styling/variants' },
+    ],
+  },
+
+  {
+    type: 'hr',
+    title: 'Advanced',
+  },
+  {
+    pages: [
+      { title: 'Developing', route: '/docs/advanced/developing' },
+      { title: 'createStyledContext', route: '/docs/advanced/createStyledContext' },
     ],
   },
 
