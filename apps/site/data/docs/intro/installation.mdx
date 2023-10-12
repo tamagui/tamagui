@@ -25,13 +25,13 @@ yarn add @tamagui/core
 
 That's basically it! You can now import and start using Tamagui. That said, we highly recommend [walking through configuration](#quick-configuration) though, which gives you a design system, media queries, themes and more.
 
-Once you start using libraries from the React Native ecosystem, you likely need some extra setup. For example, React Native supports "platform specific" file extensions (eg `index.js` alongside `index.web.js`, in which bundlers need to grab the `index.web.js` when targeting web). Many packages also import `react-native` directly and therefore you will want your web bundler to alias it to `react-native-web`.
+{/* Once you start using libraries from the React Native ecosystem, you likely need some extra setup. For example, React Native supports "platform specific" file extensions (eg `index.js` alongside `index.web.js`, in which bundlers need to grab the `index.web.js` when targeting web). Many packages also import `react-native` directly and therefore you will want your web bundler to alias it to `react-native-web`. */}
 
-Tamagui itself doesn't need any of this, but since you're probably going to add a variety of packages, you eventually may want to use one of the Tamagui bundler plugins.
+{/* Tamagui itself doesn't need any of this, but since you're probably going to add a variety of packages, you eventually may want to use one of the Tamagui bundler plugins.
 
-If you just want to get coding, don't worry about it for now and continue to [quick configuration](#quick-configuration) or [the full configuration docs](/docs/core/configuration).
+If you just want to get coding, don't worry about it for now and continue to [quick configuration](#quick-configuration) or [the full configuration docs](/docs/core/configuration). */}
 
-### Bundler plugins
+{/* ### Bundler plugins
 
 The bundler plugins generally set up platform specific extension support, alias react-native to react-native-web, and can enable the optimizing compiler.
 
@@ -131,7 +131,7 @@ config.optimizeDeps.esbuildOptions = {
 
 ### Native
 
-For React Native or Expo you shouldn't need any plugins unless you're setting up the optimizing compiler which we highly recommend doing only once you're ready to ship your app to production. That install process is explained in the [Compiler installation docs](/docs/intro/compiler-install).
+For React Native or Expo you shouldn't need any plugins unless you're setting up the optimizing compiler which we highly recommend doing only once you're ready to ship your app to production. That install process is explained in the [Compiler installation docs](/docs/intro/compiler-install). */}
 
 ---
 
@@ -208,7 +208,7 @@ We recommend [spending time understanding configuration](/docs/core/configuratio
 
 ---
 
-#### Saving bundle size for web-only use cases
+## Saving bundle size for web-only use cases
 
 If you are only targeting web, want to save some bundle size, and are ok going without the React Native specific props like gesture handlers and onLayout, you can just use `web`:
 

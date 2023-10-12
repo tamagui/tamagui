@@ -31,6 +31,7 @@ import { LinearGradient } from 'tamagui/linear-gradient'
 import { BenchmarkChart } from './BenchmarkChart'
 import { BenchmarkChartNative } from './BenchmarkChartNative'
 import { BenchmarkChartWeb } from './BenchmarkChartWeb'
+import BetaTag from './BetaTag'
 import { Code, CodeInline } from './Code'
 import { DataTable } from './DataTable'
 import * as Demos from './demos'
@@ -54,7 +55,6 @@ import { TamaguiCard } from './TamaguiCard'
 import { TamaguiExamplesCode } from './TamaguiExamplesCode'
 import { UL } from './UL'
 import { unwrapText } from './unwrapText'
-import BetaTag from './BetaTag'
 
 const TableFrame = styled(ThemeableStack, {
   bordered: true,
@@ -233,9 +233,7 @@ export const components = {
 
   Button,
 
-  Beta: () => (
-    <BetaTag/>
-  ),
+  Beta: () => <BetaTag />,
 
   IntroParagraph: ({ children, large, disableUnwrapText, ...props }) => {
     return (
@@ -323,7 +321,11 @@ export const components = {
 
   a: ({ href = '', children, ...props }) => {
     return (
-      <NextLink className="link" href={href}>
+      <NextLink
+        className="link"
+        href={href}
+        target={href.startsWith('http') ? '_blank' : undefined}
+      >
         {/* @ts-ignore */}
         <Paragraph
           tag="span"
@@ -577,7 +579,12 @@ export const components = {
       </XStack>
     )
   },
-  RouteCard: (props: { title: string; description: string; href: string; children?: React.ReactNode }) => {
+  RouteCard: (props: {
+    title: string
+    description: string
+    href: string
+    children?: React.ReactNode
+  }) => {
     return (
       <NextLink passHref href={props.href}>
         <TamaguiCard title={props.title} subTitle={props.description}>

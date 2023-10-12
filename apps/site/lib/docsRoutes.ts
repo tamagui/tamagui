@@ -20,7 +20,7 @@ export const docsRoutes: DocsRoute[] = [
     ],
   },
   {
-    label: 'Setting up a pre-existing project',
+    label: 'Setup your project',
     pages: [
       { title: 'Next.js', route: '/docs/guides/next-js' },
       { title: 'Expo', route: '/docs/guides/expo' },
@@ -167,8 +167,8 @@ export const docsRoutes: DocsRoute[] = [
   },
   {
     pages: [
-      { title: 'Overview', route: '/docs/styling/overview' },
-      { title: 'Props', route: '/docs/styling/props' },
+      { title: 'Introduction', route: '/docs/styling/introduction' },
+      // { title: 'Props', route: '/docs/styling/props' },
       { title: 'styled', route: '/docs/styling/styled' },
       { title: 'Variants', route: '/docs/styling/variants' },
     ],
