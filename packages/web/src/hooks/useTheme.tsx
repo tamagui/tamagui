@@ -198,22 +198,22 @@ export function getThemeProxied(
                       platform !== 'web' &&
                       isIos &&
                       !deopt &&
-                      config.settings.fastSchemeChange
+                      config.settings.fastSchemeChange &&
+                      !someParentIsInversed(themeManager)
                     ) {
-                      const isDark = name.startsWith('dark')
-                      const isLight = !isDark && name.startsWith('light')
-                      if (isDark || isLight) {
+                      const scheme = getScheme(name)
+                      if (scheme !== 'none') {
                         const oppositeThemeName = name.replace(
-                          isDark ? 'dark' : 'light',
-                          isDark ? 'light' : 'dark'
+                          scheme === 'dark' ? 'dark' : 'light',
+                          scheme === 'dark' ? 'light' : 'dark'
                         )
                         const oppositeTheme = config.themes[oppositeThemeName]
                         const oppositeVal = getVariable(oppositeTheme?.[keyString])
                         if (oppositeVal) {
                           const dynamicVal = {
                             dynamic: {
-                              dark: isDark ? outVal : oppositeVal,
-                              light: isLight ? outVal : oppositeVal,
+                              dark: scheme === 'dark' ? outVal : oppositeVal,
+                              light: scheme === 'light' ? outVal : oppositeVal,
                             },
                           }
                           return dynamicVal
@@ -238,6 +238,37 @@ export function getThemeProxied(
       return Reflect.get(_, key)
     },
   }) as UseThemeResult
+}
+
+function getScheme(name: string) {
+  const isDark = name.startsWith('dark')
+  const isLight = !isDark && name.startsWith('light')
+  return isDark ? 'dark' : isLight ? 'light' : 'none'
+}
+
+// to tell if we are inversing the scheme anywhere in the tree, if so we need to de-opt
+function someParentIsInversed(manager?: ThemeManager) {
+  if (process.env.TAMAGUI_TARGET === 'native') {
+    let cur: ThemeManager | null | undefined = manager
+
+    while (cur) {
+      const parent = cur.parentManager
+      if (!parent) {
+        return false
+      }
+      if (cur.state.inverse) {
+        return true
+      }
+      const curScheme = getScheme(cur.state.name)
+      const parentScheme = getScheme(parent.state.name)
+      if (curScheme !== parentScheme) {
+        return true
+      }
+      cur = parent
+    }
+  }
+
+  return false
 }
 
 export const activeThemeManagers = new Set<ThemeManager>()

@@ -2,14 +2,21 @@
 
 import { View } from 'react-native'
 import { Text as RNText, TextInput } from 'react-native'
-import { Button, Input, Text } from 'tamagui'
+import { Button, Input, Square, Text, Theme, useTheme } from 'tamagui'
 
 export const Sandbox = () => {
   return (
     <View style={{ width: '100%', height: '100%', padding: 50 }}>
-      <Input onPress={() => console.log('press')} onFocus={() => console.log('focus')} />
+      <Theme name="dark">
+        <Square size={100} bc="$background" />
+        <TestInner />
+      </Theme>
     </View>
   )
+}
+
+const TestInner = () => {
+  return null
 }
 
 // const CustomButton = styled(Button, {
