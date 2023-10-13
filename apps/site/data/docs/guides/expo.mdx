@@ -13,9 +13,13 @@ This guide assumes Expo is configured with TypeScript support.
 npx create-expo-app -t expo-template-blank-typescript
 ```
 
-For instructions on adding TypeScript to an existing project, visit https://docs.expo.dev/guides/typescript/
+For instructions on adding TypeScript to an existing project, visit the [expo typescript documentation](https://docs.expo.dev/guides/typescript/).
 
-To support dark mode, update your app.json to app.config.ts and set "userInterfaceStyle" to "automatic"
+To support dark mode, update your `app.json` to `app.config.ts` and set userInterfaceStyle to automatic.
+
+```ts
+userInterfaceStyle: "automatic",
+```
 
 ### Update Babel / Metro
 
