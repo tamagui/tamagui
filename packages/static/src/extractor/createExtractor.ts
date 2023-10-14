@@ -1949,16 +1949,13 @@ export function createExtractor(
               }
 
               if (usedThemeKeys.size > 0) {
-                // TODO: find a better way
-                let rawStyles = Object.entries(props)
-                rawStyles = rawStyles.filter(([_, value]) => {
-                  return usedThemeKeys.has(value)
+                Object.entries(props).forEach(([key, value]) => {
+                  if (usedThemeKeys.has(value)) {
+                    outProps[key] = value
+                  }
                 })
-                outProps = {
-                  ...outProps,
-                  ...Object.fromEntries(rawStyles),
-                }
               }
+
 
               if (shouldPrintDebug) {
                 logger.info(`(${debugName})`)
