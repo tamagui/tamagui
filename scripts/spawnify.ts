@@ -10,8 +10,7 @@ export const spawnify = async (
     avoidLog?: boolean
   }
 ): Promise<string> => {
-  // biome-ignore lint/suspicious/noConsoleLog: ok
-  console.log('>', cmd)
+  console.info('>', cmd)
   const [head, ...rest] = cmd.split(' ')
   return new Promise((res, rej) => {
     const avoidLog = opts?.avoidLog

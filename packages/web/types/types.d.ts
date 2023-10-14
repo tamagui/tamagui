@@ -9,6 +9,7 @@ import { Role } from './interfaces/Role';
 import type { LanguageContextType } from './views/FontLanguage.types';
 import type { ThemeProviderProps } from './views/ThemeProvider';
 export type { MediaStyleObject, StyleObject } from '@tamagui/helpers';
+export type IsMediaType = boolean | 'platform' | 'theme' | 'group';
 export type SpaceDirection = 'vertical' | 'horizontal' | 'both';
 export type TamaguiElement = HTMLElement | View;
 export type TamaguiTextElement = HTMLElement | RNText;
@@ -104,6 +105,8 @@ export type WebOnlyPressEvents = {
     onMouseLeave?: DivAttributes['onMouseLeave'];
     onMouseDown?: DivAttributes['onMouseDown'];
     onMouseUp?: DivAttributes['onMouseUp'];
+    onFocus?: DivAttributes['onFocus'];
+    onBlur?: DivAttributes['onBlur'];
 };
 /**
  * For static / studio
@@ -746,7 +749,11 @@ export interface ThemeableProps {
     componentName?: string;
     debug?: DebugProp;
 }
-export type Styleable<Props, Ref> = <CustomProps extends Object, X extends FunctionComponent<any> = FunctionComponent<ThemeableProps & Props & CustomProps>>(a: X, staticConfig?: Partial<StaticConfig>) => ReactComponentWithRef<CustomProps & Omit<Props & ThemeableProps, keyof CustomProps>, Ref> & {
+export type StyleableOptions = {
+    disableTheme?: boolean;
+    staticConfig?: Partial<StaticConfig>;
+};
+export type Styleable<Props, Ref> = <CustomProps extends Object, X extends FunctionComponent<any> = FunctionComponent<ThemeableProps & Props & CustomProps>>(a: X, options?: StyleableOptions) => ReactComponentWithRef<CustomProps & Omit<Props & ThemeableProps, keyof CustomProps>, Ref> & {
     staticConfig: StaticConfig;
     styleable: Styleable<Props, Ref>;
 };
@@ -1086,6 +1093,8 @@ export type TamaguiComponentEvents = {
     onMouseEnter?: ((e: any) => void) | undefined;
     onMouseLeave?: ((e: any) => void) | undefined;
     onPressOut: ((e: any) => void) | undefined;
+    onFocus?: ((e: any) => void) | undefined;
+    onBlur?: ((e: any) => void) | undefined;
 };
 export type ModifyTamaguiComponentStyleProps<Comp extends TamaguiComponent, ChangedProps extends Object> = Comp extends TamaguiComponent<infer A, infer B, infer C, infer D, infer E> ? A extends Object ? TamaguiComponent<Omit<A, keyof ChangedProps> & ChangedProps, B, C, D, E> : never : never;
 /**

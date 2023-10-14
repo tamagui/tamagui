@@ -4,5 +4,6 @@ export function getBaseViews() {
   return {
     View: native.View || native.default.View,
     Text: native.Text || native.default.Text,
+    Pressable: native.Pressable || native.default.Pressable,
   }
 }

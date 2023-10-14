@@ -284,8 +284,7 @@ export default declare(function snackBabelPlugin(
 
           if (!Object.keys(sheetStyles).length) {
             if (shouldPrintDebug) {
-              // biome-ignore lint/suspicious/noConsoleLog: ok
-              console.log('END no styles')
+              console.info('END no styles')
             }
             return
           }
@@ -304,10 +303,8 @@ export default declare(function snackBabelPlugin(
           root.unshiftContainer('body', importStyleSheet())
 
           if (shouldPrintDebug) {
-            // biome-ignore lint/suspicious/noConsoleLog: ok
-            console.log('\n -------- output code ------- \n')
-            // biome-ignore lint/suspicious/noConsoleLog: ok
-            console.log(
+            console.info('\n -------- output code ------- \n')
+            console.info(
               generator(root.parent)
                 .code.split('\n')
                 .filter((x) => !x.startsWith('//'))

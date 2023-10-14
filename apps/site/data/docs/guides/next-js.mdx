@@ -218,3 +218,11 @@ export default function Layout({ children }) {
 ```
 
 Additionally, you will need to add the `skipNextHead` prop to your `<NextThemeProvider>`, as the internal usage of `next/head` is not supported in the app directory.
+
+And you'll need to pass the `appDir` boolean to `@tamagui/next-plugin`:
+
+```tsx
+withTamagui({
+  appDir: true,
+})
+```

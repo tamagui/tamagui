@@ -77,7 +77,7 @@ const LinkListItem = ({
         linkProps.onPress(e)
       }}
       {...props}
-      iconAfter={<ChevronRight color="$color11" />}
+      iconAfter={<ChevronRight color="$color10" />}
     >
       {children}
     </ListItem>

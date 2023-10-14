@@ -29,6 +29,8 @@ import type { ThemeProviderProps } from './views/ThemeProvider'
 
 export type { MediaStyleObject, StyleObject } from '@tamagui/helpers'
 
+export type IsMediaType = boolean | 'platform' | 'theme' | 'group'
+
 export type SpaceDirection = 'vertical' | 'horizontal' | 'both'
 
 export type TamaguiElement = HTMLElement | View
@@ -147,6 +149,8 @@ export type WebOnlyPressEvents = {
   onMouseLeave?: DivAttributes['onMouseLeave']
   onMouseDown?: DivAttributes['onMouseDown']
   onMouseUp?: DivAttributes['onMouseUp']
+  onFocus?: DivAttributes['onFocus']
+  onBlur?: DivAttributes['onBlur']
 }
 
 /**
@@ -1343,6 +1347,11 @@ export interface ThemeableProps {
   debug?: DebugProp
 }
 
+export type StyleableOptions = {
+  disableTheme?: boolean
+  staticConfig?: Partial<StaticConfig>
+}
+
 export type Styleable<Props, Ref> = <
   CustomProps extends Object,
   X extends FunctionComponent<any> = FunctionComponent<
@@ -1350,7 +1359,7 @@ export type Styleable<Props, Ref> = <
   >
 >(
   a: X,
-  staticConfig?: Partial<StaticConfig>
+  options?: StyleableOptions
 ) => ReactComponentWithRef<
   CustomProps & Omit<Props & ThemeableProps, keyof CustomProps>,
   Ref
@@ -2001,6 +2010,8 @@ export type TamaguiComponentEvents = {
   onMouseEnter?: ((e: any) => void) | undefined
   onMouseLeave?: ((e: any) => void) | undefined
   onPressOut: ((e: any) => void) | undefined
+  onFocus?: ((e: any) => void) | undefined
+  onBlur?: ((e: any) => void) | undefined
 }
 
 export type ModifyTamaguiComponentStyleProps<

@@ -97,7 +97,12 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportProps>
       return null
     }
 
-    const { style, ...floatingProps } = itemContext.interactions.getFloatingProps()
+    const {
+      style,
+      // remove this, it was set to "Select" always
+      className,
+      ...floatingProps
+    } = itemContext.interactions.getFloatingProps()
     const { scrollbarWidth, listStyleType, overflow, ...restStyle } = style
 
     return (

@@ -14,8 +14,7 @@ export function removeUnusedHooks(
   // check the top level statements
   let bodyStatements = compFn?.get('body')
   if (!bodyStatements) {
-    // biome-ignore lint/suspicious/noConsoleLog: ok
-    console.log('no body statemnts?', compFn)
+    console.info('no body statemnts?', compFn)
     return
   }
   if (!Array.isArray(bodyStatements)) {
@@ -75,8 +74,7 @@ export function removeUnusedHooks(
       if (shouldRemove) {
         declarator.remove()
         if (shouldPrintDebug) {
-          // biome-ignore lint/suspicious/noConsoleLog: ok
-          console.log(`  [🪝] removed ${id.node['name'] ?? ''}`)
+          console.info(`  [🪝] removed ${id.node['name'] ?? ''}`)
         }
       }
     }

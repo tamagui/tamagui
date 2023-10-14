@@ -1,7 +1,7 @@
 import { TamaguiOptions, loadTamagui, watchTamaguiConfig } from '@tamagui/static'
 import type { Compiler, RuleSetRule } from 'webpack'
 
-type PluginOptions = TamaguiOptions & {
+export type PluginOptions = TamaguiOptions & {
   isServer?: boolean
   enableStudio?: boolean
   exclude?: RuleSetRule['exclude']

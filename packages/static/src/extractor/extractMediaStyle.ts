@@ -36,8 +36,7 @@ export function extractMediaStyle(
     getStyleObj(ternary.alternate, true),
   ].filter(isPresent)
   if (shouldPrintDebug && !styleOpts.length) {
-    // biome-ignore lint/suspicious/noConsoleLog: ok
-    console.log('  media query, no styles?')
+    console.info('  media query, no styles?')
     return null
   }
   // for now order first strongest
@@ -88,9 +87,12 @@ export function extractMediaStyle(
       }
     })
     if (shouldPrintDebug === 'verbose') {
-      
-      // biome-ignore lint/suspicious/noConsoleLog: ok
-      console.log('  media styles:', importance, styleObj, singleMediaStyles.map(x => x.identifier).join(', '))
+      console.info(
+        '  media styles:',
+        importance,
+        styleObj,
+        singleMediaStyles.map((x) => x.identifier).join(', ')
+      )
     }
     // add to output
     mediaStyles = [...mediaStyles, ...singleMediaStyles]

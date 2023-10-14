@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/studio",
-  "version": "1.74.8",
+  "version": "1.74.15",
   "private": true,
   "type": "module",
   "module": "dist",
@@ -18,14 +18,14 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@supabase/auth-helpers-shared": "^0.4.1",
-    "@tamagui/cli": "1.74.8",
-    "@tamagui/linear-gradient": "1.74.8",
-    "@tamagui/lucide-icons": "1.74.8",
-    "@tamagui/theme": "1.74.8",
-    "@tamagui/theme-builder": "1.74.8",
-    "@tamagui/themes": "1.74.8",
-    "@tamagui/use-store": "1.74.8",
+    "@supabase/auth-helpers-shared": "^0.5.0",
+    "@tamagui/cli": "1.74.15",
+    "@tamagui/linear-gradient": "1.74.15",
+    "@tamagui/lucide-icons": "1.74.15",
+    "@tamagui/theme": "1.74.15",
+    "@tamagui/theme-builder": "1.74.15",
+    "@tamagui/themes": "1.74.15",
+    "@tamagui/use-store": "1.74.15",
     "color2k": "^2.0.2",
     "prettier": "^2.8.1",
     "react": "^18.2.0",
@@ -33,13 +33,13 @@
     "react-freeze": "^1.0.3",
     "react-native-web": "^0.19.6",
     "react-router-dom": "^6.14.1",
-    "tamagui": "1.74.8",
+    "tamagui": "1.74.15",
     "tinybase": "^4.0.4",
     "victory": "^36.6.11"
   },
   "devDependencies": {
-    "@tamagui/build": "1.74.8",
+    "@tamagui/build": "1.74.15",
     "@types/react-color": "^3.0.6",
-    "vite": "^4.4.9"
+    "vite": "^4.4.11"
   }
 }

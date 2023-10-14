@@ -92,8 +92,7 @@ export const useThemeWithState = (
             props.debug &&
             props.debug !== 'profile'
           ) {
-            // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-            console.log(`  🎨 useTheme() shouldUpdate?`, next, {
+            console.info(`  🎨 useTheme() shouldUpdate?`, next, {
               shouldUpdateProp: props.shouldUpdate?.(),
               keys: [...keys.current],
             })
@@ -126,8 +125,7 @@ export const useThemeWithState = (
 
   if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
     console.groupCollapsed('  🔹 useTheme =>', state?.name)
-    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-    console.log('returning state', changedThemeState, 'from props', props)
+    console.info('returning state', changedThemeState, 'from props', props)
     console.groupEnd()
   }
 
@@ -149,8 +147,7 @@ export function getThemeProxied(
     if (keys && !keys.includes(key)) {
       keys.push(key)
       if (process.env.NODE_ENV === 'development' && debug) {
-        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-        console.log(` 🎨 useTheme() tracking new key: ${key}`)
+        console.info(` 🎨 useTheme() tracking new key: ${key}`)
       }
     }
   }
@@ -337,8 +334,7 @@ export const useChangeThemeEffect = (
         const shouldTryUpdate = force ?? Boolean(keys?.length || isNewTheme)
 
         if (process.env.NODE_ENV === 'development' && props.debug) {
-          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-          console.log(` 🔸 onChange`, themeManager.id, {
+          console.info(` 🔸 onChange`, themeManager.id, {
             force,
             shouldTryUpdate,
             props,
@@ -483,8 +479,7 @@ export const useChangeThemeEffect = (
       const parentState = { ...parentManager?.state }
       const parentId = parentManager?.id
       const themeManagerState = { ...themeManager.state }
-      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-      console.log({
+      console.info({
         props,
         parentState,
         parentId,

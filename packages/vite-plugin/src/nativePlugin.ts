@@ -172,8 +172,7 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
       }
 
       if (process.env.DEBUG) {
-        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-        console.log('config..', config)
+        console.debug('config..', config)
       }
 
       const updateOutputOptions = (out: OutputOptions) => {

@@ -50,6 +50,7 @@ async function clean() {
     await Promise.allSettled([
       //
       fs.remove('.turbo'),
+      fs.remove('node_modules'),
       fs.remove('.ultra.cache.json'),
       fs.remove('types'),
       fs.remove('dist'),
@@ -58,7 +59,7 @@ async function clean() {
     // ok
   }
   if (shouldCleanBuildOnly) {
-    console.log('🔹 cleaned', pkg.name)
+    console.info('🔹 cleaned', pkg.name)
     process.exit(0)
   }
   try {
@@ -66,7 +67,7 @@ async function clean() {
   } catch {
     // ok
   }
-  console.log('🔹 cleaned', pkg.name)
+  console.info('🔹 cleaned', pkg.name)
   process.exit(0)
 }
 
@@ -103,7 +104,7 @@ if (shouldWatch) {
 build()
 
 async function build({ skipTypes } = {}) {
-  if (process.env.DEBUG) console.log('🔹', pkg.name)
+  if (process.env.DEBUG) console.info('🔹', pkg.name)
   try {
     const start = Date.now()
     await Promise.all([
@@ -111,7 +112,7 @@ async function build({ skipTypes } = {}) {
       skipTypes ? null : buildTsc(),
       buildJs(),
     ])
-    console.log('built', pkg.name, 'in', Date.now() - start, 'ms')
+    console.info('built', pkg.name, 'in', Date.now() - start, 'ms')
   } catch (error) {
     console.error(`Error building:`, error.message)
   }
@@ -149,11 +150,10 @@ async function buildTsc() {
     const tsProjectFlag = tsProject ? ` --project ${tsProject}` : ''
     const cmd = `tsc${baseUrlFlag}${tsProjectFlag} --outDir ${targetDir} --rootDir src ${declarationToRootFlag}--emitDeclarationOnly --declarationMap`
 
-    console.log('\x1b[2m$', `npx ${cmd}`)
+    console.info('\x1b[2m$', `npx ${cmd}`)
     await exec('npx', cmd.split(' '))
   } catch (err) {
-    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-    console.log(err.message)
+    console.info(err.message)
     if (!shouldWatch) {
       process.exit(1)
     }
@@ -365,8 +365,7 @@ async function buildJs() {
         )
       : null,
   ]).then(() => {
-    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-    if (process.env.DEBUG) console.log(`built js in ${Date.now() - start}ms`)
+    if (process.env.DEBUG) console.info(`built js in ${Date.now() - start}ms`)
   })
 }
 

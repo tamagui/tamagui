@@ -4,7 +4,6 @@ import {
   FontSizeTokens,
   GetProps,
   TamaguiElement,
-  TamaguiTextElement,
   getVariableValue,
   isWeb,
   styled,
@@ -34,6 +33,7 @@ import {
 import { SelectContent } from './SelectContent'
 import { SelectInlineImpl } from './SelectImpl'
 import { SelectItem, useSelectItemContext } from './SelectItem'
+import { ITEM_TEXT_NAME, SelectItemText } from './SelectItemText'
 import { SelectScrollDownButton, SelectScrollUpButton } from './SelectScrollButton'
 import { SelectTrigger } from './SelectTrigger'
 import { SelectViewport } from './SelectViewport'
@@ -116,95 +116,6 @@ export const SelectIcon = styled(XStack, {
   'aria-hidden': true,
   children: <Paragraph>▼</Paragraph>,
 })
-
-/* -------------------------------------------------------------------------------------------------
- * SelectItemText
- * -----------------------------------------------------------------------------------------------*/
-
-const ITEM_TEXT_NAME = 'SelectItemText'
-
-export const SelectItemTextFrame = styled(SizableText, {
-  name: ITEM_TEXT_NAME,
-
-  variants: {
-    unstyled: {
-      false: {
-        userSelect: 'none',
-        color: '$color',
-        ellipse: true,
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: false,
-  },
-})
-
-type SelectItemTextProps = GetProps<typeof SelectItemTextFrame>
-
-const SelectItemText = React.forwardRef<TamaguiTextElement, SelectItemTextProps>(
-  (props: ScopedProps<SelectItemTextProps>, forwardedRef) => {
-    const { __scopeSelect, className, ...itemTextProps } = props
-    const context = useSelectContext(ITEM_TEXT_NAME, __scopeSelect)
-    const itemParentContext = useSelectItemParentContext(ITEM_TEXT_NAME, __scopeSelect)
-    const ref = React.useRef<TamaguiTextElement | null>(null)
-    const composedRefs = useComposedRefs(forwardedRef, ref)
-    const itemContext = useSelectItemContext(ITEM_TEXT_NAME, __scopeSelect)
-
-    const contents = React.useMemo(
-      () => (
-        <SelectItemTextFrame
-          className={className}
-          size={itemParentContext.size as any}
-          id={itemContext.textId}
-          {...itemTextProps}
-          ref={composedRefs}
-        />
-      ),
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      [props, itemParentContext.size, className, itemContext.textId]
-    )
-
-    React.useEffect(() => {
-      if (
-        itemParentContext.initialValue === itemContext.value &&
-        !context.selectedIndex
-      ) {
-        context.setSelectedItem(contents)
-      }
-    }, [])
-
-    React.useEffect(() => {
-      return itemParentContext.valueSubscribe((val) => {
-        if (val === itemContext.value) {
-          context.setSelectedItem(contents)
-        }
-      })
-    }, [itemContext.value])
-
-    if (itemParentContext.shouldRenderWebNative) {
-      return <>{props.children}</>
-    }
-
-    return (
-      <>
-        {contents}
-
-        {/* Portal an option in the bubble select */}
-        {/* {context.bubbleSelect
-          ? ReactDOM.createPortal(
-              // we use `.textContent` because `option` only support `string` or `number`
-              <option value={itemContext.value}>{ref.current?.textContent}</option>,
-              context.bubbleSelect
-            )
-          : null} */}
-      </>
-    )
-  }
-)
-
-SelectItemText.displayName = ITEM_TEXT_NAME
 
 /* -------------------------------------------------------------------------------------------------
  * SelectItemIndicator

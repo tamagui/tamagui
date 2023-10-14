@@ -1,7 +1,6 @@
-// debug
 // import '../lib/wdyr'
 
-import { SwitchDemo } from '@tamagui/demos'
+import { SelectDemo, SwitchDemo } from '@tamagui/demos'
 import { memo } from 'react'
 import { Button, Theme } from 'tamagui'
 
@@ -22,9 +21,7 @@ export default memo(() => {
         <ThemeToggle />
       </div>
 
-      <Button debug="verbose" $xs={{ display: 'none' }}>
-        test
-      </Button>
+      <Button>hi</Button>
     </div>
   )
 })

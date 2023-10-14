@@ -217,7 +217,7 @@ export const ButtonNestingContext = createContext(false)
  * @deprecated Instead of useButton, see the Button docs for the newer and much improved Advanced customization pattern: https://tamagui.dev/docs/components/button
  */
 function useButton<Props extends ButtonProps>(
-  propsIn: Props,
+  { textProps, ...propsIn }: Props,
   { Text = Button.Text }: { Text: any } = { Text: Button.Text }
 ) {
   const isNested = useContext(ButtonNestingContext)
@@ -254,7 +254,7 @@ function useButton<Props extends ButtonProps>(
     ? [propsIn.children]
     : wrapChildrenInText(
         Text,
-        { children: propsIn.children, fontFamily, fontSize },
+        { children: propsIn.children, fontFamily, fontSize, textProps },
         Text === ButtonText && propsActive.unstyled !== true
           ? {
               unstyled: false,

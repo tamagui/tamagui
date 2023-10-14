@@ -109,8 +109,7 @@ export async function bundleConfig(props: TamaguiOptions) {
       process.env.NODE_ENV === 'development' &&
       process.env.DEBUG?.startsWith('tamagui')
     ) {
-      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-      console.log(`Building config entry`, configEntry)
+      console.info(`Building config entry`, configEntry)
     }
 
     // build them to node-compat versions
@@ -225,8 +224,7 @@ export async function bundleConfig(props: TamaguiOptions) {
       process.env.NODE_ENV === 'development' &&
       process.env.DEBUG?.startsWith('tamagui')
     ) {
-      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-      console.log('Loaded components', components)
+      console.info('Loaded components', components)
     }
 
     const res = {
@@ -312,8 +310,7 @@ export function loadComponents(
         }
 
         if (process.env.DEBUG === 'tamagui') {
-          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-          console.log(`loadModule`, loadModule, require.resolve(loadModule))
+          console.info(`loadModule`, loadModule, require.resolve(loadModule))
         }
 
         const moduleResult = require(loadModule)
@@ -344,13 +341,11 @@ export function loadComponents(
         didBabel = true
         return res
       } catch (err) {
-        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-        console.log('babel err', err, writtenContents)
+        console.info('babel err', err, writtenContents)
         // ok
         writtenContents = fileContents
         if (process.env.DEBUG?.startsWith('tamagui')) {
-          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-          console.log(`Error parsing babel likely`, err)
+          console.info(`Error parsing babel likely`, err)
         }
       } finally {
         dispose()
@@ -362,16 +357,13 @@ export function loadComponents(
         })
       } catch (err) {
         if (process.env.TAMAGUI_ENABLE_WARN_DYNAMIC_LOAD) {
-          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-          console.log(`
+          console.info(`
 
 Tamagui attempted but failed to dynamically optimize components in:
   ${name}
 `)
-          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-          console.log(err)
-          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-          console.log(
+          console.info(err)
+          console.info(
             `At: ${loadModule}`,
             `\ndidBabel: ${didBabel}`,
             `\nIn:`,
@@ -388,8 +380,7 @@ Tamagui attempted but failed to dynamically optimize components in:
     cacheComponents[key] = info
     return info
   } catch (err: any) {
-    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-    console.log(`Tamagui error bundling components`, err.message, err.stack)
+    console.info(`Tamagui error bundling components`, err.message, err.stack)
     return null
   } finally {
     unregister()

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/lucide-icons",
-  "version": "1.74.8",
+  "version": "1.74.15",
   "sideEffects": false,
   "description": "React Native components for Lucide icons - native and web",
   "source": "src/index.ts",
@@ -21,19 +21,19 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@tamagui/core": "1.74.8",
-    "@tamagui/helpers-icon": "1.74.8"
+    "@tamagui/core": "1.74.15",
+    "@tamagui/helpers-icon": "1.74.15"
   },
   "peerDependencies": {
     "react": "*",
     "react-native-svg": ">=12"
   },
   "devDependencies": {
-    "@tamagui/build": "1.74.8",
+    "@tamagui/build": "1.74.15",
     "camelcase": "^6.0.0",
     "cheerio": "^1.0.0-rc.5",
     "glob": "^7.1.6",
-    "lucide-static": "^0.215.0",
+    "lucide-static": "^0.284.0",
     "prettier": "^2.8.1",
     "prettier-plugin-import-sort": "^0.0.7",
     "prop-types": "^15.7.2",

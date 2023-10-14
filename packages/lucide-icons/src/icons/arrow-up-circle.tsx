@@ -36,8 +36,8 @@ const Icon = (props) => {
       {...otherProps}
     >
       <_Circle cx="12" cy="12" r="10" stroke={color} />
-      <Polyline points="16 12 12 8 8 12" stroke={color} />
-      <Line x1="12" x2="12" y1="16" y2="8" stroke={color} />
+      <Path d="m16 12-4-4-4 4" stroke={color} />
+      <Path d="M12 16V8" stroke={color} />
     </Svg>
   )
 }
