@@ -220,20 +220,25 @@ describe('ThemeManager', () => {
       },
       'root'
     )
+
     const child = new ThemeManager(
       {
         name: 'dark',
       },
       parent
     )
+
     expect(child.state.name).toBe('dark')
     expect(child.parentManager).toBe(parent)
+
     const child2 = new ThemeManager(
       {
         reset: true,
+        debug: 'verbose',
       },
       child
     )
+
     expect(child2.parentManager).toBe(child)
     expect(child2.state.name).toBe('light')
   })

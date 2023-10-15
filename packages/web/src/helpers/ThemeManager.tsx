@@ -44,14 +44,14 @@ export class ThemeManager {
 
   constructor(
     public props: ThemeProps = {},
-    manager?: ThemeManager | 'root' | null | undefined
+    parentManager?: ThemeManager | 'root' | null | undefined
   ) {
-    if (manager === 'root') {
+    if (parentManager === 'root') {
       this.updateStateFromProps(props, false)
       return
     }
 
-    if (!manager) {
+    if (!parentManager) {
       if (process.env.NODE_ENV !== 'production') {
         throw new Error(
           `No parent manager given, this is likely due to duplicated Tamagui dependencies. Check your lockfile for mis-matched versions. It could also be from an error somewhere else in your stack causing Tamagui to recieve undefined context, you can try putting some ErrorBoundary components around other areas of your app, or a Suspense boundary.`
@@ -60,13 +60,14 @@ export class ThemeManager {
       throw `❌ 0`
     }
 
-    this.parentManager = manager
+    // this is used in updateStateFromProps so must be set
+    this.parentManager = parentManager
 
     if (this.updateStateFromProps(props, false)) {
       return
     }
 
-    return manager || this
+    return parentManager
   }
 
   updateStateFromProps(
@@ -80,6 +81,7 @@ export class ThemeManager {
       return true
     }
     const nextState = this.getStateIfChanged(props)
+
     if (nextState) {
       this.updateState(nextState, shouldNotify)
       return nextState
@@ -172,6 +174,7 @@ function getState(
         : 'Cannot reset and set a new name at the same time.'
     )
   }
+
   if (!getHasThemeUpdatingProps(props)) {
     return null
   }
@@ -194,7 +197,7 @@ function getState(
 
   const isDirectParentAComponentTheme = !!baseManager?.parentManager?.state.isComponent
   const baseName = baseManager?.state.name || ''
-  const nextName = props.reset ? parentManager?.state.name || '' : props.name || ''
+  const nextName = props.reset ? baseName : props.name || ''
 
   const allComponentThemes = componentManagers.map((x) => x?.state.name || '')
   if (props.reset && isDirectParentAComponentTheme) {
