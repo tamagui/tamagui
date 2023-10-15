@@ -374,13 +374,14 @@ describe('ThemeManager', () => {
     expect(child3.state.name).toBe('dark_blue_Button')
   })
 
-  test('Nested Component Themes are working now', () => {
+  test.only('Nested Component Themes are working now', () => {
     const parent = new ThemeManager(
       {
         name: 'dark',
       },
       'root'
     )
+
     const child = new ThemeManager(
       {
         name: 'blue',
@@ -388,6 +389,7 @@ describe('ThemeManager', () => {
       },
       parent
     )
+
     const child2 = new ThemeManager(
       {
         name: 'red',
@@ -395,39 +397,11 @@ describe('ThemeManager', () => {
       },
       child
     )
+
     expect(child2.parentManager).toBe(child)
     // it first check dark_red_Menu and because that doesn't exist it falls back to its parent
     expect(child2.state.name).toBe('dark_blue_Button')
   })
-
-  // this is no longer the case, we now use the component theme
-  // test(`Component sub of another component reverts to parent`, () => {
-  //   const parent = new ThemeManager(
-  //     {
-  //       name: 'dark',
-  //     },
-  //     'root'
-  //   )
-  //   const child = new ThemeManager(
-  //     {
-  //       name: 'red',
-  //       componentName: 'Button',
-  //     },
-  //     parent
-  //   )
-  //   const child2 = new ThemeManager(
-  //     {
-  //       componentName: 'Spacer',
-  //     },
-  //     child
-  //   )
-
-  //   // child 1 does change
-  //   expect(parent.id !== child.id).toBeTruthy()
-
-  //   // child 2 doesnt change so its the same as parent
-  //   expect(child2.id).toBe(parent.id)
-  // })
 
   test(`Doesn't find invalid parent when only passing component`, () => {
     expect(!!conf.themes['dark_Card']).toBeTruthy()
