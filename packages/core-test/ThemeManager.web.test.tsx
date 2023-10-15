@@ -171,10 +171,11 @@ describe('ThemeManager', () => {
     expect(newState).toMatchInlineSnapshot(`
       {
         "className": "t_sub_theme t_dark",
-        "componentName": undefined,
+        "isComponent": false,
         "inverse": undefined,
         "name": "dark",
-        "parentName": "",
+        "parentName": undefined,
+        "scheme": "dark",
         "theme": {
           "background": {
             "isVar": true,

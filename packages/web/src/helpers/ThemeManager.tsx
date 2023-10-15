@@ -20,6 +20,7 @@ export type SetActiveThemeProps = {
 
 export type ThemeManagerState = {
   name: string
+  parentName?: string
   theme?: ThemeParsed | null
   isComponent?: boolean
   className?: string
@@ -178,16 +179,13 @@ function getState(
   const themes = getThemes()
   const [nonComponentManagers, componentManagers] = getManagers(manager)
 
-  let baseManager = nonComponentManagers[props.reset ? 1 : 0]
-  let parentManager = nonComponentManagers[props.reset ? 2 : 1]
+  const index = props.reset ? 1 : 0
+  let baseManager = nonComponentManagers[index]
+  let parentManager = nonComponentManagers[index + 1]
 
-  if (!baseManager) {
+  if (!baseManager && props.reset) {
     if (process.env.NODE_ENV !== 'production') {
-      console.warn(
-        props.reset
-          ? 'Cannot reset, no parent theme exists'
-          : `No ThemeManager found, not changing theme`
-      )
+      console.warn('Cannot reset, no parent theme exists')
     }
     return null
   }
@@ -278,11 +276,18 @@ function getState(
       const scheme =
         firstName === 'light' ? 'light' : firstName === 'dark' ? 'dark' : undefined
       const pre = THEME_CLASSNAME_PREFIX
-      const className = !isWeb ? '' : `${pre}sub_theme ${pre}${restNames.join('_')}`
-      const inverse = scheme !== manager?.state.scheme
-
+      const className = !isWeb
+        ? ''
+        : `${pre}sub_theme ${pre}${
+            !scheme || !restNames.length ? firstName : restNames.join('_')
+          }`
+      const parentState = parentManager?.state
+      const parentScheme = parentState?.scheme
+      const parentName = parentState?.name
+      const inverse = parentScheme && scheme !== parentScheme
       result = {
         name: found,
+        parentName,
         theme: themes[found],
         className,
         inverse,
@@ -314,15 +319,19 @@ const inverseThemeName = (themeName: string) => {
     : themeName.replace(/^dark/, 'light')
 }
 
+type MaybeThemeManager = ThemeManager | undefined
+
 // components never inherit from components
 // example <Switch><Switch.Thumb /></Switch>
 // the Switch theme shouldn't be considered parent of Thumb
 export function getManagers(themeManager?: ThemeManager | null) {
-  const parents = [[], []] as [(ThemeManager | undefined)[], (ThemeManager | undefined)[]]
+  const nonComponents: MaybeThemeManager[] = []
+  const withComponents: MaybeThemeManager[] = []
   let cur = themeManager
   while (cur) {
-    parents[cur.state.isComponent ? 1 : 0].unshift(cur)
+    const base = cur.state.isComponent ? withComponents : nonComponents
+    base.push(cur)
     cur = cur.parentManager
   }
-  return parents
+  return [nonComponents, withComponents]
 }
