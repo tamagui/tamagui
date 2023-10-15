@@ -2,7 +2,7 @@ import { isWeb } from '@tamagui/constants'
 
 import { getThemes } from '../config'
 import { THEME_CLASSNAME_PREFIX, THEME_NAME_SEPARATOR } from '../constants/constants'
-import { ThemeParsed, ThemeProps } from '../types'
+import { ColorScheme, ThemeParsed, ThemeProps } from '../types'
 
 type ThemeListener = (
   name: string | null,
@@ -21,10 +21,10 @@ export type SetActiveThemeProps = {
 export type ThemeManagerState = {
   name: string
   theme?: ThemeParsed | null
+  isComponent?: boolean
   className?: string
-  parentName?: string
-  componentName?: string
   inverse?: boolean
+  scheme?: ColorScheme
 }
 
 const emptyState: ThemeManagerState = { name: '' }
@@ -37,22 +37,20 @@ let uid = 0
 
 export class ThemeManager {
   id = uid++
-  isComponent = false
   themeListeners = new Set<ThemeListener>()
   parentManager: ThemeManager | null = null
   state: ThemeManagerState = emptyState
-  scheme: 'light' | 'dark' | null = null
 
   constructor(
     public props: ThemeProps = {},
-    parentManagerIn?: ThemeManager | 'root' | null | undefined
+    manager?: ThemeManager | 'root' | null | undefined
   ) {
-    if (parentManagerIn === 'root') {
+    if (manager === 'root') {
       this.updateStateFromProps(props, false)
       return
     }
 
-    if (!parentManagerIn) {
+    if (!manager) {
       if (process.env.NODE_ENV !== 'production') {
         throw new Error(
           `No parent manager given, this is likely due to duplicated Tamagui dependencies. Check your lockfile for mis-matched versions. It could also be from an error somewhere else in your stack causing Tamagui to recieve undefined context, you can try putting some ErrorBoundary components around other areas of your app, or a Suspense boundary.`
@@ -61,13 +59,13 @@ export class ThemeManager {
       throw `❌ 0`
     }
 
-    this.parentManager = parentManagerIn
+    this.parentManager = manager
 
     if (this.updateStateFromProps(props, false)) {
       return
     }
 
-    return parentManagerIn || this
+    return manager || this
   }
 
   updateStateFromProps(
@@ -89,11 +87,7 @@ export class ThemeManager {
 
   updateState(nextState: ThemeManagerState, shouldNotify = true) {
     this.state = nextState
-    const names = this.state.name.split('_')
-    const lastName = names[names.length - 1][0]
-    this.isComponent = lastName[0] === lastName[0].toUpperCase()
     this._allKeys = null
-    this.scheme = names[0] === 'light' ? 'light' : names[0] === 'dark' ? 'dark' : null
     if (process.env.NODE_ENV === 'development') {
       this['_numChangeEventsSent'] ??= 0
       this['_numChangeEventsSent']++
@@ -166,72 +160,54 @@ export class ThemeManager {
   }
 }
 
-function getNextThemeClassName(name: string) {
-  const next = `t_sub_theme ${THEME_CLASSNAME_PREFIX}${name}`
-  return next.replace('light_', '').replace('dark_', '')
-}
-
 function getState(
   props: ThemeProps,
-  parentManager?: ThemeManager | null
+  manager?: ThemeManager | null
 ): ThemeManagerState | null {
-  const validManagerAndAllComponentThemes = getNonComponentParentManager(parentManager)
-  parentManager = validManagerAndAllComponentThemes[0]
-  const allComponentThemes = validManagerAndAllComponentThemes[1]
-  const themes = getThemes()
-  const isDirectParentAComponentTheme = allComponentThemes.length > 0
-
   if (props.name && props.reset) {
-    throw new Error('Cannot reset + set new name')
+    throw new Error(
+      process.env.NODE_ENV === 'production'
+        ? `❌004`
+        : 'Cannot reset and set a new name at the same time.'
+    )
   }
-
-  if (!props.name && !props.inverse && !props.reset && !props.componentName) {
+  if (!getHasThemeUpdatingProps(props)) {
     return null
   }
 
-  if (props.reset && !isDirectParentAComponentTheme && !parentManager?.parentManager) {
-    if (process.env.NODE_ENV === 'development') {
-      console.warn('Cannot reset no grandparent exists')
+  const themes = getThemes()
+  const [nonComponentManagers, componentManagers] = getManagers(manager)
+
+  let baseManager = nonComponentManagers[props.reset ? 1 : 0]
+  let parentManager = nonComponentManagers[props.reset ? 2 : 1]
+
+  if (!baseManager) {
+    if (process.env.NODE_ENV !== 'production') {
+      console.warn(
+        props.reset
+          ? 'Cannot reset, no parent theme exists'
+          : `No ThemeManager found, not changing theme`
+      )
     }
     return null
   }
 
   let result: ThemeManagerState | null = null
 
-  const nextName = props.reset
-    ? isDirectParentAComponentTheme
-      ? parentManager?.state?.name || ''
-      : parentManager?.parentManager?.state?.name || ''
-    : props.name || ''
-  const { componentName } = props
-  const parentName = props.reset
-    ? isDirectParentAComponentTheme
-      ? // here because parentManager already skipped componentTheme so we have to only go up once
-        parentManager?.parentManager?.state.name || ''
-      : parentManager?.parentManager?.parentManager?.state.name || ''
-    : isDirectParentAComponentTheme
-    ? allComponentThemes[0] || ''
-    : parentManager?.state.name || ''
+  const isDirectParentAComponentTheme = !!baseManager?.parentManager?.state.isComponent
+  const baseName = baseManager?.state.name || ''
+  const nextName = props.reset ? parentManager?.state.name || '' : props.name || ''
 
+  const allComponentThemes = componentManagers.map((x) => x?.state.name || '')
   if (props.reset && isDirectParentAComponentTheme) {
-    // skip nearest component theme
     allComponentThemes.shift()
   }
 
   // components look for most specific, fallback upwards
-  const base = parentName.split(THEME_NAME_SEPARATOR)
-  const lastSegment = base[base.length - 1]
-  const isParentComponentTheme =
-    parentName && lastSegment[0].toUpperCase() === lastSegment[0]
-  if (isParentComponentTheme) {
-    base.pop() // always remove componentName they can't nest
-  }
-  const parentBaseTheme = isParentComponentTheme
-    ? base.slice(0, base.length).join(THEME_NAME_SEPARATOR)
-    : parentName
+  const base = baseName.split(THEME_NAME_SEPARATOR)
   const max = base.length
   const min =
-    componentName && !nextName
+    props.componentName && !nextName
       ? max // component name only don't search upwards
       : 0
 
@@ -239,12 +215,10 @@ function getState(
     console.groupCollapsed('ThemeManager.getState()')
     console.info({
       props,
-      parentName,
-      parentBaseTheme,
+      baseName,
       base,
       min,
       max,
-      isParentComponentTheme,
     })
   }
 
@@ -256,7 +230,7 @@ function getState(
     }
     let potentials: string[] = []
 
-    if (prefix && prefix !== parentBaseTheme) {
+    if (prefix && prefix !== baseName) {
       potentials.push(prefix)
     }
     if (nextName) {
@@ -269,40 +243,51 @@ function getState(
       }
     }
 
-    if (componentName) {
+    if (props.componentName) {
       let componentPotentials: string[] = []
       // components only look for component themes
       if (nextName) {
         const beforeSeparator = prefix.slice(0, prefix.indexOf(THEME_NAME_SEPARATOR))
-        componentPotentials.push(`${beforeSeparator}_${nextName}_${componentName}`)
+        componentPotentials.push(`${beforeSeparator}_${nextName}_${props.componentName}`)
       }
-      componentPotentials.push(`${prefix}_${componentName}`)
+      componentPotentials.push(`${prefix}_${props.componentName}`)
       if (nextName) {
         // do this one and one level up
         const prefixLessOne = base.slice(0, i - 1).join(THEME_NAME_SEPARATOR)
         if (prefixLessOne) {
-          const lessSpecific = `${prefixLessOne}_${nextName}_${componentName}`
+          const lessSpecific = `${prefixLessOne}_${nextName}_${props.componentName}`
           componentPotentials.unshift(lessSpecific)
         }
-        const moreSpecific = `${prefix}_${nextName}_${componentName}`
+        const moreSpecific = `${prefix}_${nextName}_${props.componentName}`
         componentPotentials.unshift(moreSpecific)
       }
       potentials = [...componentPotentials, ...potentials, ...allComponentThemes]
     }
+
     const found = potentials.find((t) => t in themes)
 
     if (process.env.NODE_ENV === 'development' && typeof props.debug === 'string') {
-      console.info(' - ', { found, potentials, parentManager })
+      console.info(' - ', { found, potentials, baseManager })
     }
 
     if (found) {
+      const names = found.split('_')
+      const [firstName, ...restNames] = names
+      const lastName = names[names.length - 1]
+      const isComponent = lastName[0] === lastName[0].toUpperCase()
+      const scheme =
+        firstName === 'light' ? 'light' : firstName === 'dark' ? 'dark' : undefined
+      const pre = THEME_CLASSNAME_PREFIX
+      const className = !isWeb ? '' : `${pre}sub_theme ${pre}${restNames.join('_')}`
+      const inverse = scheme !== manager?.state.scheme
+
       result = {
         name: found,
         theme: themes[found],
-        className: isWeb ? getNextThemeClassName(found) : '',
-        parentName,
-        componentName,
-        inverse: props.inverse,
+        className,
+        inverse,
+        isComponent,
+        scheme,
       }
       break
     }
@@ -329,19 +314,15 @@ const inverseThemeName = (themeName: string) => {
     : themeName.replace(/^dark/, 'light')
 }
 
-export function getNonComponentParentManager(themeManager?: ThemeManager | null) {
-  // components never inherit from components
-  // example <Switch><Switch.Thumb /></Switch>
-  // the Switch theme shouldn't be considered parent of Thumb
-  let res = themeManager
-  let componentThemeNames: string[] = []
-  while (res) {
-    if (res?.isComponent) {
-      componentThemeNames.push(res?.state?.name!)
-      res = res.parentManager
-    } else {
-      break
-    }
+// components never inherit from components
+// example <Switch><Switch.Thumb /></Switch>
+// the Switch theme shouldn't be considered parent of Thumb
+export function getManagers(themeManager?: ThemeManager | null) {
+  const parents = [[], []] as [(ThemeManager | undefined)[], (ThemeManager | undefined)[]]
+  let cur = themeManager
+  while (cur) {
+    parents[cur.state.isComponent ? 1 : 0].unshift(cur)
+    cur = cur.parentManager
   }
-  return [res || null, componentThemeNames] as const
+  return parents
 }
