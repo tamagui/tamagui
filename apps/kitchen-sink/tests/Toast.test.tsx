@@ -15,8 +15,7 @@ async function toastIsFocused(page: Page, identifier: number) {
 }
 
 test.describe('given zero toasts', () => {
-  // this is working but test is failing
-  test.skip('should not interrupt natural tab order in the document', async ({
+  test('should not interrupt natural tab order in the document', async ({
     page,
   }) => {
     await page.getByTestId('button-before').focus()
@@ -38,8 +37,7 @@ test.describe('given multiple toasts', () => {
     await new Promise((res) => setTimeout(res, 1000))
   })
 
-  // this is working but test is failing
-  test.skip('should reverse tab order from most recent to least', async ({ page }) => {
+  test('should reverse tab order from most recent to least', async ({ page }) => {
     await page.getByTestId('button-before').focus()
 
     await page.keyboard.press('Tab')
@@ -89,8 +87,7 @@ test.describe('given multiple toasts', () => {
     await expect(page.getByTestId('button-before')).toBeFocused()
   })
 
-  // this is working but test is failing
-  test.skip('should tab forwards from viewport to latest toast or backwards into the document', async ({
+  test('should tab forwards from viewport to latest toast or backwards into the document', async ({
     page,
   }) => {
     // Tab forward from viewport
