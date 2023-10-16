@@ -1,3 +1,29 @@
+Studio:
+
+- Scales
+  - All color scales should have an option/check to turn on/off their control over saturation
+  - In fact split out saturation scales
+  - Remove luminosity slider for base theme just keep for contrast
+  - Customize scale popover lets you name a new one, change the values
+- Contrast
+  - needs to be able to pick the foreground color manually
+  - by default it picks a nice contrast (opposite scale end) foreground
+  - 
+- Mask themes
+  - Need to be fixed in general and improved defaults
+- Final Step
+  - Add a final preview set where you can choose any theme for every box section, that way you can preview you main theme + contrast, but also your sub-themes on some boxes, getting very interesting combos
+  - Needs to have a overview view of the themes you generated, a grid of cards showing their names, palette, scales, etc, this will be re-used on the purchase page for free/pro themes
+
+---
+
+Studio second release
+
+- Sharing your themes should be a thing, hit publish and it makes the final step overview screen + other users can load it into their studio = more sharing on twitter etc
+
+---
+
+
 - Select native
   - can use iOS Select as well as the newer SwiftUI menu style Picker
 - ssr safe themeInverse would be pretty nice

@@ -5,10 +5,16 @@ import browserslist from 'browserslist'
 import buildResolver from 'esm-resolve'
 import { lazyPostCSS } from 'next/dist/build/webpack/config/blocks/css'
 import { getGlobalCssLoader } from 'next/dist/build/webpack/config/blocks/css/loaders'
-import { TamaguiPlugin, shouldExclude as shouldExcludeDefault, type PluginOptions as LoaderPluginOptions  } from 'tamagui-loader'
+import {
+  PluginOptions as LoaderPluginOptions,
+  TamaguiPlugin,
+  shouldExclude as shouldExcludeDefault,
+} from 'tamagui-loader'
 import webpack from 'webpack'
 
 export type WithTamaguiProps = LoaderPluginOptions & {
+  appDir?: boolean
+
   useReactNativeWebLite: boolean
   enableLegacyFontSupport?: boolean
   aliasReactPackages?: boolean
@@ -24,7 +30,7 @@ export type WithTamaguiProps = LoaderPluginOptions & {
 
 export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
   return (nextConfig: any = {}) => {
-    const isAppDir = nextConfig.experimental?.appDir
+    const isAppDir = tamaguiOptions?.appDir || nextConfig.experimental?.appDir
 
     return {
       ...nextConfig,

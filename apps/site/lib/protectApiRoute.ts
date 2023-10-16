@@ -2,6 +2,7 @@ import { createPagesServerClient } from '@supabase/auth-helpers-nextjs'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { HandledResponseTermination } from './apiRoute'
+import { setupCors } from './cors'
 import { Database } from './supabase-types'
 import { supabaseCookieOptions } from './supabase-utils'
 
@@ -17,6 +18,7 @@ export async function protectApiRoute({
   res: NextApiResponse
   shouldRedirect?: boolean
 }) {
+  setupCors(req, res)
   const supabase = createPagesServerClient<Database>(
     { req, res },
     { cookieOptions: supabaseCookieOptions }

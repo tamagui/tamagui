@@ -123,14 +123,11 @@ setupHooks({
 
   useEvents(viewProps, events, { pseudos }, setStateShallow, staticConfig) {
     if (process.env.TAMAGUI_TARGET === 'native') {
-      const attachFocus = !!pseudos?.focusStyle
-      if (attachFocus) {
-        viewProps.onFocus = composeEventHandlers(viewProps.onFocus, () => {
-          setStateShallow({ focus: true })
-        })
-        viewProps.onBlur = composeEventHandlers(viewProps.onBlur, () => {
-          setStateShallow({ focus: false })
-        })
+      if (events?.onFocus) {
+        viewProps['onFocus'] = events.onFocus
+      }
+      if (events?.onBlur) {
+        viewProps['onBlur'] = events.onBlur
       }
 
       if (staticConfig.isInput) {

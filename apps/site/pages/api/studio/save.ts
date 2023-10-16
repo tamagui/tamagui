@@ -9,7 +9,6 @@ export type StoreData = Array<{
   themes: Record<string, ThemeRow>
 }>
 export default apiRoute(async (req, res) => {
-  setupCors(req, res)
   const { supabase, user } = await protectApiRoute({ req, res })
   const { teamId } = await checkSponsorAccess({
     req,

@@ -63,7 +63,8 @@ export function useThemedChildren(
   themeState: ChangedThemeResponse,
   children: any,
   props: ThemeProps,
-  isRoot = false
+  isRoot = false,
+  avoidWrap = false
 ) {
   const { themeManager, isNewTheme } = themeState
   const { shallow, forceClassName } = props
@@ -108,7 +109,7 @@ export function useThemedChildren(
     return elementsWithContext
   }
 
-  if (isWeb) {
+  if (isWeb && !avoidWrap) {
     return wrapThemeElements({
       children: elementsWithContext,
       themeState,
@@ -118,6 +119,25 @@ export function useThemedChildren(
   }
 
   return elementsWithContext
+}
+
+export function getThemeCNStyle(themeState: ChangedThemeResponse, isRoot = false) {
+  if (!themeState.isNewTheme) return
+  // in order to provide currentColor, set color by default
+  const themeColor =
+    themeState.state?.theme && themeState.isNewTheme
+      ? variableToString(themeState.state.theme.color)
+      : ''
+  const style = themeColor
+    ? {
+        color: themeColor,
+      }
+    : undefined
+  let className = themeState.state?.className || ''
+  if (isRoot) {
+    className = className.replace('t_sub_theme', '')
+  }
+  return { style, className }
 }
 
 export function wrapThemeElements({
@@ -141,25 +161,9 @@ export function wrapThemeElements({
     return <span className="_dsp_contents is_Theme">{children}</span>
   }
 
-  // in order to provide currentColor, set color by default
-  const themeColor =
-    themeState.state?.theme && themeState.isNewTheme
-      ? variableToString(themeState.state.theme.color)
-      : ''
-  const colorStyle = themeColor
-    ? {
-        color: themeColor,
-      }
-    : undefined
-
-  let className = themeState.state?.className || ''
-
-  if (isRoot) {
-    className = className.replace('t_sub_theme', '')
-  }
-
+  const { className, style } = getThemeCNStyle(themeState, isRoot)!
   let themedChildren = (
-    <span className={`${className} _dsp_contents is_Theme`} style={colorStyle}>
+    <span className={`${className} _dsp_contents is_Theme`} style={style}>
       {children}
     </span>
   )

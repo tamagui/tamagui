@@ -2010,6 +2010,8 @@ export type TamaguiComponentEvents = {
   onMouseEnter?: ((e: any) => void) | undefined
   onMouseLeave?: ((e: any) => void) | undefined
   onPressOut: ((e: any) => void) | undefined
+  onFocus?: ((e: any) => void) | undefined
+  onBlur?: ((e: any) => void) | undefined
 }
 
 export type ModifyTamaguiComponentStyleProps<

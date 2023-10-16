@@ -7,11 +7,7 @@ import { Button, Input, Text } from 'tamagui'
 export const Sandbox = () => {
   return (
     <View style={{ width: '100%', height: '100%', padding: 50 }}>
-      <Input
-        onPressIn={() => {
-          console.log('press in')
-        }}
-      />
+      <Input onPress={() => console.log('press')} onFocus={() => console.log('focus')} />
     </View>
   )
 }

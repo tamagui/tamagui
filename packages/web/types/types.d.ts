@@ -1093,6 +1093,8 @@ export type TamaguiComponentEvents = {
     onMouseEnter?: ((e: any) => void) | undefined;
     onMouseLeave?: ((e: any) => void) | undefined;
     onPressOut: ((e: any) => void) | undefined;
+    onFocus?: ((e: any) => void) | undefined;
+    onBlur?: ((e: any) => void) | undefined;
 };
 export type ModifyTamaguiComponentStyleProps<Comp extends TamaguiComponent, ChangedProps extends Object> = Comp extends TamaguiComponent<infer A, infer B, infer C, infer D, infer E> ? A extends Object ? TamaguiComponent<Omit<A, keyof ChangedProps> & ChangedProps, B, C, D, E> : never : never;
 /**
