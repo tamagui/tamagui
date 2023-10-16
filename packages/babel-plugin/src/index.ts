@@ -17,9 +17,6 @@ const importStyleSheet = template(`
 const __ReactNativeStyleSheet = require('react-native').StyleSheet;
 `)
 
-// default to native before requiring static
-process.env.TAMAGUI_TARGET = process.env.TAMAGUI_TARGET || 'native'
-
 const {
   createExtractor,
   getPragmaOptions,
