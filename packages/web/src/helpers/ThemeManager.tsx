@@ -281,10 +281,13 @@ function getState(
         : `${pre}sub_theme ${pre}${
             !scheme || !restNames.length ? firstName : restNames.join('_')
           }`
-      const parentState = parentManager?.state
+
+      // because its a new theme the baseManager is now the parent
+      const parentState = baseManager?.state
       const parentScheme = parentState?.scheme
       const parentName = parentState?.name
       const inverse = parentScheme && scheme !== parentScheme
+
       result = {
         name: found,
         parentName,
@@ -294,6 +297,7 @@ function getState(
         isComponent,
         scheme,
       }
+
       break
     }
   }
