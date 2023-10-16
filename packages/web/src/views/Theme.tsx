@@ -121,18 +121,19 @@ export function useThemedChildren(
   return elementsWithContext
 }
 
-export function getThemeCNStyle(themeState: ChangedThemeResponse, isRoot = false) {
-  if (!themeState.isNewTheme) return
+function getThemeClassNameAndStyle(themeState: ChangedThemeResponse, isRoot = false) {
   // in order to provide currentColor, set color by default
   const themeColor =
     themeState.state?.theme && themeState.isNewTheme
       ? variableToString(themeState.state.theme.color)
       : ''
+
   const style = themeColor
     ? {
         color: themeColor,
       }
     : undefined
+
   let className = themeState.state?.className || ''
   if (isRoot) {
     className = className.replace('t_sub_theme', '')
@@ -157,11 +158,12 @@ export function wrapThemeElements({
 
   const inverse = themeState.state?.inverse
 
-  if (!themeState.isNewTheme && !inverse && !forceClassName) {
+  if (!themeState.isNewTheme && inverse == null && !forceClassName) {
     return <span className="_dsp_contents is_Theme">{children}</span>
   }
 
-  const { className, style } = getThemeCNStyle(themeState, isRoot)!
+  const { className, style } = getThemeClassNameAndStyle(themeState, isRoot)
+
   let themedChildren = (
     <span className={`${className} _dsp_contents is_Theme`} style={style}>
       {children}

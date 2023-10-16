@@ -485,6 +485,11 @@ export const useChangeThemeEffect = (
       mounted,
     } satisfies ChangedThemeResponse
 
+    // avoids re-parenting by turning null into false, see corresponding `wrapThemeElements` logic
+    if (!state.inverse && prev?.state?.inverse) {
+      state.inverse = false
+    }
+
     if (process.env.NODE_ENV === 'development' && props['debug'] && isClient) {
       console.groupCollapsed(` 🔷 ${themeManager.id} useChangeThemeEffect createState`)
       const parentState = { ...parentManager?.state }

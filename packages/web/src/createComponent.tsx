@@ -56,14 +56,13 @@ import {
   TamaguiElement,
   TamaguiInternalConfig,
   TextProps,
-  ThemeProps,
   UseAnimationHook,
   UseAnimationProps,
   UseThemeWithStateProps,
   WebOnlyPressEvents,
 } from './types'
 import { Slot } from './views/Slot'
-import { getThemeCNStyle, useThemedChildren } from './views/Theme'
+import { useThemedChildren } from './views/Theme'
 import { ThemeDebug } from './views/ThemeDebug'
 
 // this appears to fix expo / babel not picking this up sometimes? really odd

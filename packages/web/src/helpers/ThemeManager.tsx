@@ -24,7 +24,9 @@ export type ThemeManagerState = {
   theme?: ThemeParsed | null
   isComponent?: boolean
   className?: string
-  inverse?: boolean
+  // null = never been inversed, false = was previously inversed
+  // for avoiding reparenting
+  inverse?: boolean | null
   scheme?: ColorScheme
 }
 
@@ -286,7 +288,7 @@ function getState(
       const parentState = baseManager?.state
       const parentScheme = parentState?.scheme
       const parentName = parentState?.name
-      const inverse = parentScheme && scheme !== parentScheme
+      const inverse = parentScheme && scheme && scheme === parentScheme ? null : true
 
       result = {
         name: found,
