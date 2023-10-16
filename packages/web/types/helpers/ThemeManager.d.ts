@@ -13,7 +13,6 @@ export type ThemeManagerState = {
     theme?: ThemeParsed | null;
     isComponent?: boolean;
     className?: string;
-    inverse?: boolean | null;
     scheme?: ColorScheme;
 };
 export declare function getHasThemeUpdatingProps(props: ThemeProps): string | boolean | undefined;

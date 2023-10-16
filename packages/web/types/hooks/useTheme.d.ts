@@ -5,6 +5,7 @@ export type ChangedThemeResponse = {
     state?: ThemeManagerState;
     themeManager?: ThemeManager | null;
     isNewTheme: boolean;
+    inversed?: null | boolean;
     mounted?: boolean;
 };
 export type ThemeGettable<Val> = Val & {

@@ -149,7 +149,7 @@ const ButtonFrame = styled(ThemeableStack, {
 })
 
 const ButtonText = styled(SizableText, {
-  name: 'Button', // same name as the frame so they can share a single theme
+  name: 'Button',
   context: ButtonContext,
 
   variants: {

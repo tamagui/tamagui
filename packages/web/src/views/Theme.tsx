@@ -121,6 +121,54 @@ export function useThemedChildren(
   return elementsWithContext
 }
 
+function wrapThemeElements({
+  children,
+  themeState,
+  forceClassName,
+  isRoot,
+}: {
+  children?: React.ReactNode
+  themeState: ChangedThemeResponse
+  forceClassName?: boolean
+  isRoot?: boolean
+}) {
+  if (isRoot && forceClassName === false) {
+    return children
+  }
+
+  const inverse = themeState.inversed
+  const requiresExtraWrapper = inverse != null || forceClassName
+
+  if (!themeState.isNewTheme && !requiresExtraWrapper) {
+    return <span className="_dsp_contents is_Theme">{children}</span>
+  }
+
+  const { className, style } = getThemeClassNameAndStyle(themeState, isRoot)
+
+  let themedChildren = (
+    <span className={`${className} _dsp_contents is_Theme`} style={style}>
+      {children}
+    </span>
+  )
+
+  // to prevent tree structure changes always render this if inverse is true or false
+  if (requiresExtraWrapper) {
+    const name = themeState.state?.name || ''
+    const inverseClassName = name.startsWith('light')
+      ? 't_light is_inversed'
+      : name.startsWith('dark')
+      ? 't_dark is_inversed'
+      : ''
+    themedChildren = (
+      <span className={`${inverse ? inverseClassName : ''} _dsp_contents`}>
+        {themedChildren}
+      </span>
+    )
+  }
+
+  return themedChildren
+}
+
 function getThemeClassNameAndStyle(themeState: ChangedThemeResponse, isRoot = false) {
   // in order to provide currentColor, set color by default
   const themeColor =
@@ -139,50 +187,4 @@ function getThemeClassNameAndStyle(themeState: ChangedThemeResponse, isRoot = fa
     className = className.replace('t_sub_theme', '')
   }
   return { style, className }
-}
-
-export function wrapThemeElements({
-  children,
-  themeState,
-  forceClassName,
-  isRoot,
-}: {
-  children?: React.ReactNode
-  themeState: ChangedThemeResponse
-  forceClassName?: boolean
-  isRoot?: boolean
-}) {
-  if (isRoot && forceClassName === false) {
-    return children
-  }
-
-  const inverse = themeState.state?.inverse
-
-  if (!themeState.isNewTheme && inverse == null && !forceClassName) {
-    return <span className="_dsp_contents is_Theme">{children}</span>
-  }
-
-  const { className, style } = getThemeClassNameAndStyle(themeState, isRoot)
-
-  let themedChildren = (
-    <span className={`${className} _dsp_contents is_Theme`} style={style}>
-      {children}
-    </span>
-  )
-
-  // to prevent tree structure changes always render this if inverse is true or false
-  if (inverse != null || forceClassName) {
-    const name = themeState.state?.name || ''
-    themedChildren = (
-      <span
-        className={`${
-          name.startsWith('light') ? 't_light' : name.startsWith('dark') ? 't_dark' : ''
-        } _dsp_contents ${inverse ? 'is_inversed' : ''}`}
-      >
-        {themedChildren}
-      </span>
-    )
-  }
-
-  return themedChildren
 }

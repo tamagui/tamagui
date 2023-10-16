@@ -141,6 +141,54 @@ describe('ThemeManager', () => {
     expect(child1.state.name).toBe('dark')
   })
 
+  test('Inverts nested components work', () => {
+    const a = new ThemeManager(
+      {
+        name: 'light',
+      },
+      'root'
+    )
+    const b = new ThemeManager(
+      {
+        inverse: true,
+        componentName: 'Button',
+      },
+      a
+    )
+    const c = new ThemeManager(
+      {
+        componentName: 'Card',
+      },
+      b
+    )
+    expect(c.state.scheme).toBe('dark')
+    expect(c.state.name).toBe('dark_Card')
+  })
+
+  test('Inverts nested components work (same name)', () => {
+    const a = new ThemeManager(
+      {
+        name: 'light',
+      },
+      'root'
+    )
+    const b = new ThemeManager(
+      {
+        inverse: true,
+        componentName: 'Button',
+      },
+      a
+    )
+    const c = new ThemeManager(
+      {
+        componentName: 'Button',
+      },
+      b
+    )
+    expect(c.state.scheme).toBe('dark')
+    expect(c.state.name).toBe('dark_Button')
+  })
+
   test('Inverts "light_red" to "dark_red"', () => {
     const parent = new ThemeManager(
       {
@@ -171,7 +219,6 @@ describe('ThemeManager', () => {
     expect(newState).toMatchInlineSnapshot(`
       {
         "className": "t_sub_theme t_dark",
-        "inverse": undefined,
         "isComponent": false,
         "name": "dark",
         "parentName": undefined,

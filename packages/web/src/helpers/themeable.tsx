@@ -16,7 +16,7 @@ export function themeable<ComponentType extends (props: any) => any>(
     let contents = (
       <Theme
         componentName={componentName || staticConfig?.componentName}
-        name={theme || null}
+        name={theme}
         disable-child-theme
         debug={props.debug}
         inverse={themeInverse}

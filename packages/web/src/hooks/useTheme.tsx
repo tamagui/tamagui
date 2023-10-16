@@ -1,9 +1,18 @@
 import { isClient, isIos, isServer } from '@tamagui/constants'
-import { useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import {
+  useContext,
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 
 import { getConfig } from '../config'
 import { Variable, getVariable } from '../createVariable'
 import { createProxy } from '../helpers/createProxy'
+import { isEqualShallow } from '../helpers/createShallowSetState'
 import {
   ThemeManager,
   ThemeManagerState,
@@ -24,6 +33,9 @@ export type ChangedThemeResponse = {
   state?: ThemeManagerState
   themeManager?: ThemeManager | null
   isNewTheme: boolean
+  // null = never been inversed
+  // false = was inversed, now not
+  inversed?: null | boolean
   mounted?: boolean
 }
 
@@ -244,7 +256,8 @@ function someParentIsInversed(manager?: ThemeManager) {
   if (process.env.TAMAGUI_TARGET === 'native') {
     let cur: ThemeManager | null | undefined = manager
     while (cur) {
-      if (cur.state.inverse) return true
+      if (!cur.parentManager) return true
+      if (cur.parentManager.state.scheme !== cur.state.scheme) return false
       cur = cur.parentManager
     }
   }
@@ -285,7 +298,8 @@ export const useChangeThemeEffect = (
   // }
 
   const [themeState, setThemeState] = useState<ChangedThemeResponse>(createState)
-  const { state, mounted, isNewTheme, themeManager } = themeState
+
+  const { state, mounted, isNewTheme, themeManager, inversed } = themeState
   const isInversingOnMount = Boolean(!themeState.mounted && props.inverse)
 
   function getShouldUpdateTheme(
@@ -302,6 +316,7 @@ export const useChangeThemeEffect = (
     if (forceUpdate !== true && !manager.getStateShouldChange(next, prevState)) {
       return
     }
+
     return next
   }
 
@@ -314,7 +329,12 @@ export const useChangeThemeEffect = (
       // could be done through fancy selectors like how we do prefers-media
       // but may be a bit of explosion of selectors
       if (props.inverse && !mounted) {
-        setThemeState({ ...themeState, mounted: true })
+        setThemeState((prev) => {
+          return createState({
+            ...prev,
+            mounted: true,
+          })
+        })
         return
       }
 
@@ -390,6 +410,7 @@ export const useChangeThemeEffect = (
   if (isInversingOnMount) {
     return {
       isNewTheme: false,
+      inversed: false,
       themeManager: parentManager,
       state: {
         name: '',
@@ -402,6 +423,7 @@ export const useChangeThemeEffect = (
   return {
     state,
     isNewTheme,
+    inversed,
     themeManager,
   }
 
@@ -474,21 +496,31 @@ export const useChangeThemeEffect = (
       }
     }
 
-    if (!force && state?.name === prev?.state?.name) {
-      return prev
-    }
+    const wasInversed = prev?.inversed
+    const nextInversed = isNewTheme && state.scheme !== parentManager?.state.scheme
+    const inversed = nextInversed ? true : wasInversed ? false : null
 
-    const response = {
-      state,
+    const response: ChangedThemeResponse = {
       themeManager,
       isNewTheme,
       mounted,
-    } satisfies ChangedThemeResponse
-
-    // avoids re-parenting by turning null into false, see corresponding `wrapThemeElements` logic
-    if (!state.inverse && prev?.state?.inverse) {
-      state.inverse = false
+      inversed,
     }
+
+    const shouldReturnPrev =
+      !force &&
+      prev &&
+      // isEqualShallow uses the second arg as the keys so this should compare without state first...
+      isEqualShallow(prev, response) &&
+      // ... and then compare just the state, because we make a new state obj but is likely the same
+      isEqualShallow(prev.state, state)
+
+    if (prev && shouldReturnPrev) {
+      return prev
+    }
+
+    // after we compare equal we set the state
+    response.state = state
 
     if (process.env.NODE_ENV === 'development' && props['debug'] && isClient) {
       console.groupCollapsed(` 🔷 ${themeManager.id} useChangeThemeEffect createState`)

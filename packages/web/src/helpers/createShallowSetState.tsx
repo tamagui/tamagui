@@ -1,18 +1,20 @@
 import React from 'react'
 
-import { TamaguiComponentState } from '../types'
-
 export function createShallowSetState<State extends Object>(
   setter: React.Dispatch<React.SetStateAction<State>>
 ) {
   return (next: Partial<State>) => setter((prev) => mergeIfNotShallowEqual(prev, next))
 }
 
-export function mergeIfNotShallowEqual(prev, next) {
+export function mergeIfNotShallowEqual(prev: any, next: any) {
+  return isEqualShallow(prev, next) ? prev : { ...prev, ...next }
+}
+
+export function isEqualShallow(prev, next) {
   for (const key in next) {
     if (prev[key] !== next[key]) {
-      return { ...prev, ...next }
+      return false
     }
   }
-  return prev
+  return true
 }

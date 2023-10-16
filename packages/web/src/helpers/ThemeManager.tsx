@@ -24,9 +24,6 @@ export type ThemeManagerState = {
   theme?: ThemeParsed | null
   isComponent?: boolean
   className?: string
-  // null = never been inversed, false = was previously inversed
-  // for avoiding reparenting
-  inverse?: boolean | null
   scheme?: ColorScheme
 }
 
@@ -93,7 +90,7 @@ export class ThemeManager {
   updateState(nextState: ThemeManagerState, shouldNotify = true) {
     this.state = nextState
     this._allKeys = null
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV !== 'production') {
       this['_numChangeEventsSent'] ??= 0
       this['_numChangeEventsSent']++
     }
@@ -151,7 +148,7 @@ export class ThemeManager {
   }
 
   onChangeTheme(cb: ThemeListener, debugId?: number) {
-    if (process.env.NODE_ENV === 'development' && debugId) {
+    if (process.env.NODE_ENV !== 'production' && debugId) {
       // @ts-ignore
       this._listeningIds ??= new Set()
       // @ts-ignore
@@ -185,10 +182,7 @@ function getState(
   const [allManagers, componentManagers] = getManagers(manager)
 
   const isDirectParentAComponentTheme = !!manager?.state.isComponent
-  const startIndex =
-    allManagers.findIndex((x) => !x?.state.isComponent) +
-    (props.reset && !isDirectParentAComponentTheme ? 1 : 0)
-
+  const startIndex = props.reset && !isDirectParentAComponentTheme ? 1 : 0
   let baseManager = allManagers[startIndex]
   let parentManager = allManagers[startIndex + 1]
 
@@ -199,13 +193,20 @@ function getState(
     return null
   }
 
+  const { componentName } = props
   let result: ThemeManagerState | null = null
 
-  const baseName = baseManager?.state.name || ''
+  let baseName = baseManager?.state.name || ''
+
+  if (baseManager?.state.isComponent) {
+    // remove component name
+    baseName = baseName.replace(/_[A-Z][a-z]+/, '')
+  }
+
   const nextName = props.reset ? baseName : props.name || ''
 
   const allComponentThemes = componentManagers.map((x) => x?.state.name || '')
-  if (props.reset && isDirectParentAComponentTheme) {
+  if (isDirectParentAComponentTheme) {
     allComponentThemes.shift()
   }
 
@@ -217,7 +218,7 @@ function getState(
       ? max // component name only don't search upwards
       : 0
 
-  if (process.env.NODE_ENV === 'development' && typeof props.debug === 'string') {
+  if (process.env.NODE_ENV !== 'production' && typeof props.debug === 'string') {
     console.groupCollapsed('ThemeManager.getState()')
     console.info({ props, baseName, base, min, max })
   }
@@ -243,22 +244,22 @@ function getState(
       }
     }
 
-    if (props.componentName) {
+    if (componentName && !props.reset) {
       let componentPotentials: string[] = []
       // components only look for component themes
       if (nextName) {
         const beforeSeparator = prefix.slice(0, prefix.indexOf(THEME_NAME_SEPARATOR))
-        componentPotentials.push(`${beforeSeparator}_${nextName}_${props.componentName}`)
+        componentPotentials.push(`${beforeSeparator}_${nextName}_${componentName}`)
       }
-      componentPotentials.push(`${prefix}_${props.componentName}`)
+      componentPotentials.push(`${prefix}_${componentName}`)
       if (nextName) {
         // do this one and one level up
         const prefixLessOne = base.slice(0, i - 1).join(THEME_NAME_SEPARATOR)
         if (prefixLessOne) {
-          const lessSpecific = `${prefixLessOne}_${nextName}_${props.componentName}`
+          const lessSpecific = `${prefixLessOne}_${nextName}_${componentName}`
           componentPotentials.unshift(lessSpecific)
         }
-        const moreSpecific = `${prefix}_${nextName}_${props.componentName}`
+        const moreSpecific = `${prefix}_${nextName}_${componentName}`
         componentPotentials.unshift(moreSpecific)
       }
       potentials = [...componentPotentials, ...potentials, ...allComponentThemes]
@@ -266,8 +267,8 @@ function getState(
 
     const found = potentials.find((t) => t in themes)
 
-    if (process.env.NODE_ENV === 'development' && typeof props.debug === 'string') {
-      console.info(' - ', { found, potentials, baseManager })
+    if (process.env.NODE_ENV !== 'production' && typeof props.debug === 'string') {
+      console.info(' - ', { found, potentials, baseManager, nextName, baseName, prefix })
     }
 
     if (found) {
@@ -285,17 +286,14 @@ function getState(
           }`
 
       // because its a new theme the baseManager is now the parent
-      const parentState = baseManager?.state
-      const parentScheme = parentState?.scheme
+      const parentState = (baseManager || parentManager)?.state
       const parentName = parentState?.name
-      const inverse = parentScheme && scheme && scheme === parentScheme ? null : true
 
       result = {
         name: found,
         parentName,
         theme: themes[found],
         className,
-        inverse,
         isComponent,
         scheme,
       }
@@ -305,7 +303,7 @@ function getState(
   }
 
   if (
-    process.env.NODE_ENV === 'development' &&
+    process.env.NODE_ENV !== 'production' &&
     typeof props.debug === 'string' &&
     typeof window !== 'undefined'
   ) {
