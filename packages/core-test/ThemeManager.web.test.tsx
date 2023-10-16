@@ -171,10 +171,11 @@ describe('ThemeManager', () => {
     expect(newState).toMatchInlineSnapshot(`
       {
         "className": "t_sub_theme t_dark",
-        "componentName": undefined,
         "inverse": undefined,
+        "isComponent": false,
         "name": "dark",
-        "parentName": "",
+        "parentName": undefined,
+        "scheme": "dark",
         "theme": {
           "background": {
             "isVar": true,
@@ -219,20 +220,24 @@ describe('ThemeManager', () => {
       },
       'root'
     )
+
     const child = new ThemeManager(
       {
         name: 'dark',
       },
       parent
     )
+
     expect(child.state.name).toBe('dark')
     expect(child.parentManager).toBe(parent)
+
     const child2 = new ThemeManager(
       {
         reset: true,
       },
       child
     )
+
     expect(child2.parentManager).toBe(child)
     expect(child2.state.name).toBe('light')
   })
@@ -244,6 +249,7 @@ describe('ThemeManager', () => {
       },
       'root'
     )
+
     const child = new ThemeManager(
       {
         name: 'blue',
@@ -251,14 +257,17 @@ describe('ThemeManager', () => {
       },
       parent
     )
+
     const child2 = new ThemeManager(
       {
         reset: true,
       },
       child
     )
+
     expect(child2.parentManager).toBe(child)
     expect(child2.state.name).toBe('dark')
+
     const child3 = new ThemeManager(
       {
         componentName: 'Button',
@@ -266,6 +275,7 @@ describe('ThemeManager', () => {
       },
       child
     )
+
     expect(child3.parentManager).toBe(child)
     expect(child3.state.name).toBe('dark')
   })
@@ -368,13 +378,14 @@ describe('ThemeManager', () => {
     expect(child3.state.name).toBe('dark_blue_Button')
   })
 
-  test('Nested Component Themes are working now', () => {
+  test('Nested component themes work', () => {
     const parent = new ThemeManager(
       {
         name: 'dark',
       },
       'root'
     )
+
     const child = new ThemeManager(
       {
         name: 'blue',
@@ -382,6 +393,7 @@ describe('ThemeManager', () => {
       },
       parent
     )
+
     const child2 = new ThemeManager(
       {
         name: 'red',
@@ -389,39 +401,12 @@ describe('ThemeManager', () => {
       },
       child
     )
+
     expect(child2.parentManager).toBe(child)
-    // it first check dark_red_Menu and because that doesn't exist it falls back to its parent
-    expect(child2.state.name).toBe('dark_blue_Button')
+
+    // it should be dark_red because Component themes are optional
+    expect(child2.state.name).toBe('dark_red')
   })
-
-  // this is no longer the case, we now use the component theme
-  // test(`Component sub of another component reverts to parent`, () => {
-  //   const parent = new ThemeManager(
-  //     {
-  //       name: 'dark',
-  //     },
-  //     'root'
-  //   )
-  //   const child = new ThemeManager(
-  //     {
-  //       name: 'red',
-  //       componentName: 'Button',
-  //     },
-  //     parent
-  //   )
-  //   const child2 = new ThemeManager(
-  //     {
-  //       componentName: 'Spacer',
-  //     },
-  //     child
-  //   )
-
-  //   // child 1 does change
-  //   expect(parent.id !== child.id).toBeTruthy()
-
-  //   // child 2 doesnt change so its the same as parent
-  //   expect(child2.id).toBe(parent.id)
-  // })
 
   test(`Doesn't find invalid parent when only passing component`, () => {
     expect(!!conf.themes['dark_Card']).toBeTruthy()

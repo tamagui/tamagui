@@ -20,7 +20,7 @@ import { getBaseViews } from './getBaseViews'
 import { useElementLayout } from './hooks/useElementLayout'
 import { usePlatformMethods } from './hooks/usePlatformMethods'
 import { RNViewProps } from './reactNativeTypes'
-import { Pressability, usePressability } from './vendor/Pressability'
+import { usePressability } from './vendor/Pressability'
 
 // re-exports all of @tamagui/web just adds hooks
 export * from '@tamagui/web'
