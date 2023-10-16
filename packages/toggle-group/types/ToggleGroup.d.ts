@@ -141,9 +141,7 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly elevation?: number | SizeTokens | undefined;
 } & {
     readonly backgrounded?: boolean | undefined;
-    readonly radiused?: boolean | undefined; /**
-     * The controlled stateful value of the items that are pressed.
-     */
+    readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
     readonly pressTheme?: boolean | undefined;
     readonly focusTheme?: boolean | undefined;
@@ -216,9 +214,7 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly elevation?: number | SizeTokens | undefined;
 } & {
     readonly backgrounded?: boolean | undefined;
-    readonly radiused?: boolean | undefined; /**
-     * The controlled stateful value of the items that are pressed.
-     */
+    readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
     readonly pressTheme?: boolean | undefined;
     readonly focusTheme?: boolean | undefined;
@@ -291,9 +287,7 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly elevation?: number | SizeTokens | undefined;
 } & {
     readonly backgrounded?: boolean | undefined;
-    readonly radiused?: boolean | undefined; /**
-     * The controlled stateful value of the items that are pressed.
-     */
+    readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
     readonly pressTheme?: boolean | undefined;
     readonly focusTheme?: boolean | undefined;
@@ -366,9 +360,7 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly elevation?: number | SizeTokens | undefined;
 } & {
     readonly backgrounded?: boolean | undefined;
-    readonly radiused?: boolean | undefined; /**
-     * The controlled stateful value of the items that are pressed.
-     */
+    readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
     readonly pressTheme?: boolean | undefined;
     readonly focusTheme?: boolean | undefined;
