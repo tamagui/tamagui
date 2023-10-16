@@ -234,7 +234,6 @@ describe('ThemeManager', () => {
     const child2 = new ThemeManager(
       {
         reset: true,
-        debug: 'verbose',
       },
       child
     )
@@ -250,6 +249,7 @@ describe('ThemeManager', () => {
       },
       'root'
     )
+
     const child = new ThemeManager(
       {
         name: 'blue',
@@ -257,14 +257,17 @@ describe('ThemeManager', () => {
       },
       parent
     )
+
     const child2 = new ThemeManager(
       {
         reset: true,
       },
       child
     )
+
     expect(child2.parentManager).toBe(child)
     expect(child2.state.name).toBe('dark')
+
     const child3 = new ThemeManager(
       {
         componentName: 'Button',
@@ -272,6 +275,7 @@ describe('ThemeManager', () => {
       },
       child
     )
+
     expect(child3.parentManager).toBe(child)
     expect(child3.state.name).toBe('dark')
   })
@@ -374,7 +378,7 @@ describe('ThemeManager', () => {
     expect(child3.state.name).toBe('dark_blue_Button')
   })
 
-  test.only('Nested Component Themes are working now', () => {
+  test('Nested component themes work', () => {
     const parent = new ThemeManager(
       {
         name: 'dark',
@@ -399,8 +403,9 @@ describe('ThemeManager', () => {
     )
 
     expect(child2.parentManager).toBe(child)
-    // it first check dark_red_Menu and because that doesn't exist it falls back to its parent
-    expect(child2.state.name).toBe('dark_blue_Button')
+
+    // it should be dark_red because Component themes are optional
+    expect(child2.state.name).toBe('dark_red')
   })
 
   test(`Doesn't find invalid parent when only passing component`, () => {

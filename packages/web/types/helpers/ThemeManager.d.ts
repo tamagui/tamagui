@@ -37,6 +37,6 @@ export declare class ThemeManager {
     onChangeTheme(cb: ThemeListener, debugId?: number): () => void;
 }
 type MaybeThemeManager = ThemeManager | undefined;
-export declare function getManagers(themeManager?: ThemeManager | null): MaybeThemeManager[][];
+export declare function getManagers(themeManager?: ThemeManager | null): readonly [MaybeThemeManager[], MaybeThemeManager[]];
 export {};
 //# sourceMappingURL=ThemeManager.d.ts.map

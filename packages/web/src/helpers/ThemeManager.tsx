@@ -180,11 +180,15 @@ function getState(
   }
 
   const themes = getThemes()
-  const [nonComponentManagers, componentManagers] = getManagers(manager)
+  const [allManagers, componentManagers] = getManagers(manager)
 
-  const index = props.reset ? 1 : 0
-  let baseManager = nonComponentManagers[index]
-  let parentManager = nonComponentManagers[index + 1]
+  const isDirectParentAComponentTheme = !!manager?.state.isComponent
+  const startIndex =
+    allManagers.findIndex((x) => !x?.state.isComponent) +
+    (props.reset && !isDirectParentAComponentTheme ? 1 : 0)
+
+  let baseManager = allManagers[startIndex]
+  let parentManager = allManagers[startIndex + 1]
 
   if (!baseManager && props.reset) {
     if (process.env.NODE_ENV !== 'production') {
@@ -195,7 +199,6 @@ function getState(
 
   let result: ThemeManagerState | null = null
 
-  const isDirectParentAComponentTheme = !!baseManager?.parentManager?.state.isComponent
   const baseName = baseManager?.state.name || ''
   const nextName = props.reset ? baseName : props.name || ''
 
@@ -214,13 +217,7 @@ function getState(
 
   if (process.env.NODE_ENV === 'development' && typeof props.debug === 'string') {
     console.groupCollapsed('ThemeManager.getState()')
-    console.info({
-      props,
-      baseName,
-      base,
-      min,
-      max,
-    })
+    console.info({ props, baseName, base, min, max })
   }
 
   for (let i = max; i >= min; i--) {
@@ -306,9 +303,7 @@ function getState(
     typeof props.debug === 'string' &&
     typeof window !== 'undefined'
   ) {
-    console.warn('ThemeManager.getState():', {
-      result,
-    })
+    console.warn('ThemeManager.getState():', { result })
     console.trace()
     console.groupEnd()
   }
@@ -328,13 +323,15 @@ type MaybeThemeManager = ThemeManager | undefined
 // example <Switch><Switch.Thumb /></Switch>
 // the Switch theme shouldn't be considered parent of Thumb
 export function getManagers(themeManager?: ThemeManager | null) {
-  const nonComponents: MaybeThemeManager[] = []
-  const withComponents: MaybeThemeManager[] = []
+  const comp: MaybeThemeManager[] = []
+  const all: MaybeThemeManager[] = []
   let cur = themeManager
   while (cur) {
-    const base = cur.state.isComponent ? withComponents : nonComponents
-    base.push(cur)
+    all.push(cur)
+    if (cur.state.isComponent) {
+      comp.push(cur)
+    }
     cur = cur.parentManager
   }
-  return [nonComponents, withComponents]
+  return [all, comp] as const
 }
