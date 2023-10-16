@@ -2,15 +2,26 @@
 
 import { View } from 'react-native'
 import { Text as RNText, TextInput } from 'react-native'
-import { Button, Input, Square, Text, Theme, useTheme } from 'tamagui'
+import { Button, Input, Square, Stack, Text, Theme, useTheme } from 'tamagui'
 
 export const Sandbox = () => {
   return (
     <View style={{ width: '100%', height: '100%', padding: 50 }}>
       <Theme name="dark">
-        <Square size={100} bc="$background" />
+        <Square
+          size={100}
+          bc="$background"
+          pressStyle={{ bg: 'red' }}
+          onPress={() => {
+            alert('wtf')
+          }}
+        />
         <TestInner />
       </Theme>
+
+      <Stack group="testy">
+        <Text $group-testy={{ color: 'red' }}>Hello!?</Text>
+      </Stack>
     </View>
   )
 }
