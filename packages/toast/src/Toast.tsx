@@ -39,6 +39,7 @@ const TITLE_NAME = 'ToastTitle'
 
 const ToastTitle = styled(SizableText, {
   name: TITLE_NAME,
+
   variants: {
     unstyled: {
       false: {
@@ -47,6 +48,7 @@ const ToastTitle = styled(SizableText, {
       },
     },
   } as const,
+
   defaultVariants: {
     unstyled: false,
   },

@@ -33,7 +33,7 @@ cd into the project using:
     or...
     ${chalk.green(runCommand('android'))}
 
-  Be sure to replace [yourprojectsname] with the uid you'd like for your app.
+  Be sure to replace yourprojectsname in app.json with the uid you'd like for your app.
 `)
 }
 
