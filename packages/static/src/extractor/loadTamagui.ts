@@ -36,9 +36,6 @@ export async function loadTamagui(
 ): Promise<TamaguiProjectInfo | null> {
   const props = getFilledOptions(propsIn)
 
-  // this affects the bundled config so run it first
-  await generateThemesAndLog(props)
-
   const bundleInfo = await getBundledConfig(props)
   if (!bundleInfo) {
     console.warn(
@@ -46,6 +43,9 @@ export async function loadTamagui(
     )
     return null
   }
+
+  // this affects the bundled config so run it first
+  await generateThemesAndLog(props, true)
 
   if (!hasBundledConfigChanged()) {
     return bundleInfo
@@ -59,7 +59,7 @@ export async function loadTamagui(
     const config = createTamagui(bundleInfo.tamaguiConfig) as any
 
     if (props.outputCSS) {
-      colorLog(Color.FgYellow, `    ➡ [tamagui] outputCSS: ${props.outputCSS}\n`)
+      colorLog(Color.FgYellow, `    ➡ [tamagui] output css: ${props.outputCSS}\n`)
       const css = config.getCSS()
       await writeFile(props.outputCSS, css)
     }
@@ -76,21 +76,23 @@ export async function loadTamagui(
 let waiting = false
 let hasLoggedOnce = false
 
-const generateThemesAndLog = async (options: TamaguiOptions) => {
+const generateThemesAndLog = async (options: TamaguiOptions, force = false) => {
   if (waiting) return
   if (!options.themeBuilder) return
   try {
     waiting = true
     await new Promise((res) => setTimeout(res, 30))
-    const didGenerate = await generateTamaguiThemes(options)
+    const didGenerate = await generateTamaguiThemes(options, force)
     // only logs when changed
-    if (!hasLoggedOnce || didGenerate) {
+    if (!hasLoggedOnce && didGenerate) {
       hasLoggedOnce = true
       const whitespaceBefore = `    `
-      colorLog(Color.FgYellow, `${whitespaceBefore}➡ [tamagui] Generated themes:`)
       colorLog(
-        Color.Dim,
-        `\n${whitespaceBefore}${relative(process.cwd(), options.themeBuilder.output)}`
+        Color.FgYellow,
+        `\n${whitespaceBefore}➡ [tamagui] generated themes: ${relative(
+          process.cwd(),
+          options.themeBuilder.output
+        )}`
       )
     }
   } finally {

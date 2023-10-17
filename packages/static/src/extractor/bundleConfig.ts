@@ -152,7 +152,7 @@ export async function bundleConfig(props: TamaguiOptions) {
     colorLog(
       Color.FgYellow,
       `
-    ➡ [tamagui] (${Date.now() - start}ms):`
+    ➡ [tamagui] built config and components (${Date.now() - start}ms):`
     )
     colorLog(
       Color.Dim,

@@ -396,11 +396,12 @@ async function esbuildWriteIfChanged(
       // {
       //   name: 'no-side-effects',
       //   setup(build) {
-      //     build.onResolve({ filter: /.*/, namespace: 'file' }, async ({ path, ...options }) => {
+      //     build.onResolve({ filter: /@tamagui.*/ }, async ({ path, ...options }) => {
       //       const result = await build.resolve(path, {
       //         ...options,
       //         namespace: 'noRecurse',
       //       })
+      //       console.log('no side effects', path)
       //       return { ...result, sideEffects: false }
       //     })
       //   },
