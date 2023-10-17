@@ -7,15 +7,16 @@ Set up a starter repo to help learn about and/or bootstrap your tamagui app:
 
 ### Templates
 
-Currently, we have two template available:
+Currently, we have two templates available:
 
 - `next-expo-solito` Expo, Expo Router, Solito and Next.js (with both `/pages` and `/app` dir)
+- `expo` A prebuilt Expo app with Expo Router and Tamagui theming setup.
 - `simple-web` (recommended for learning) Client-only web app with Webpack or Vite. Useful to understand how to set up tamagui.config.ts.
 
 ### Usage
 
 ```bash
-npm create tamagui
+npm create tamagui@latest
 ```
 
 Check out [the source of the templates](https://github.com/tamagui/tamagui/tree/master/starters).
@@ -38,7 +39,7 @@ yarn native # Expo local dev (only for `next-expo-solito`)
 - `tamagui` for cross-platform views, themes and animations
 - `solito` for cross-platform navigation
 - `expo-router` for having same routing concepts between web and native
-- Expo SDK 48
+- Expo SDK 49
 - Next.js 13
 
 By integrating `Tamagui`, `expo-router`, `Solito`, and, `Next.js` you can enjoy the power and simplicity of creating universal apps.
@@ -56,7 +57,7 @@ By integrating `Tamagui`, `expo-router`, `Solito`, and, `Next.js` you can enjoy 
     - `provider` (all the providers that wrap the app, and some no-ops for Web.)
     - `navigation` only for next-expo-solito template, contains the navigation code for RN
 
-You can add other folders inside of `packages/` if you know what you're doing and have a good reason to.
+In case you have any local packages feel free to add them to `/packages`.
 
 ## 🏁 Start the app
 
@@ -92,8 +93,4 @@ cd ../..
 yarn
 ```
 
-You can also install the native library inside of `packages/app` if you want to get autoimport for that package inside of the `app` folder. However, you need to be careful and install the _exact_ same version in both packages. If the versions mismatch at all, you'll potentially get terrible bugs. This is a classic monorepo issue. I use `lerna-update-wizard` to help with this (you don't need to use Lerna to use that lib).
-
-```
-
-```
+You can also install the native library inside of `packages/app` if you want to get auto-import for that package inside of the `app` folder. However, you need to be careful and install the _exact_ same version in both packages. If the versions mismatch at all, you'll potentially get terrible bugs. This is a classic monorepo issue. We use `lerna-update-wizard` to help with this (you don't need to use Lerna to use that lib).

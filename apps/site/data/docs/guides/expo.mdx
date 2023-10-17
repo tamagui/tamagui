@@ -10,21 +10,107 @@ If you would like an example of an Expo web app albeit not kept up to date, [che
 This guide assumes Expo is configured with TypeScript support.
 
 ```bash
-npx create-expo-app -t expo-template-blank-typescript
+npx create-expo-app -t
 ```
 
 For instructions on adding TypeScript to an existing project, visit the [expo typescript docs](https://docs.expo.dev/guides/typescript/)
 
 **Step 1:** Install all required dependencies:
 
-### Update Babel / Metro
+<CodeBlockWithTabs>
+  <div id="yarn">
+    ```bash margin=false
+    yarn add tamagui @tamagui/config
+    ```
+  </div>
+
+  <div id="npm">
+    ```bash margin=false
+    npm install tamagui @tamagui/config
+    ```
+  </div>
+
+  <div id="bun">
+    ```bash margin=false
+    bun add tamagui @tamagui/config
+    ```
+  </div>
+
+  <div id="pnpm">
+    ```bash margin=false
+    pnpm add tamagui @tamagui/config
+    ```
+  </div>
+</CodeBlockWithTabs>
+
+**Step 2:** Create a `tamagui.config.ts` file in the root of your app:
+
+```ts
+import { createTamagui } from "tamagui"
+import { config } from "@tamagui/config/v2-native"
+
+const tamaguiConfig = createTamagui(config)
+
+// this makes typescript properly type everything based on the config
+type Conf = typeof tamaguiConfig
+
+declare module "tamagui" {
+	interface TamaguiCustomConfig extends Conf {}
+}
+export default tamaguiConfig
+// depending on if you chose tamagui, @tamagui/core, or @tamagui/web
+// be sure the import and declare module lines both use that same name
+```
+
+**Step 3:** Add `TamaguiProvider` to your app:
+```tsx
+import { TamaguiProvider } from 'tamagui'
+import tamaguiConfig from "../tamagui.config"
+
+export default function App() {
+  return (
+    <TamaguiProvider config={tamaguiConfig}>
+      {/* Your app code */}
+    </TamaguiProvider>
+  )
+}
+```
+
+**Done 🎉** your project is ready to go!
+
+### Further configuration
 
 The following steps are optional but useful for many apps, they enable the optimizing compiler, reanimated, as well as using `process.env.XYZ` for environment variables.
 
-```bash
-yarn add @tamagui/babel-plugin babel-plugin-transform-inline-environment-variables
-npx expo install react-native-reanimated
-```
+<CodeBlockWithTabs>
+  <div id="yarn">
+  ```bash
+  yarn add @tamagui/babel-plugin babel-plugin-transform-inline-environment-variables
+  npx expo install react-native-reanimated #optional
+  ```
+  </div>
+
+  <div id="npm">
+  ```bash
+  npm install @tamagui/babel-plugin babel-plugin-transform-inline-environment-variables
+  npx expo install react-native-reanimated #optional
+  ```
+  </div>
+
+  <div id="bun">
+  ```bash
+  bun add @tamagui/babel-plugin babel-plugin-transform-inline-environment-variables
+  bunx expo install react-native-reanimated #optional
+  ```
+  </div>
+
+  <div id="pnpm">
+  ```bash
+  pnpm add @tamagui/babel-plugin babel-plugin-transform-inline-environment-variables
+  npx expo install react-native-reanimated #optional
+  ```
+  </div>
+</CodeBlockWithTabs>
 
 Update your `babel.config.js` to include the optional `@tamagui/babel-plugin` and `transform-inline-environment-variables` (and `react-native-reanimated` if using reanimated):
 
@@ -72,10 +158,6 @@ config.resolver.sourceExts.push('mjs');
 module.exports = config;
 ```
 
-### Setup Tamagui
-
-From here on out you can follow the [Installation](/docs/intro/installation) and [Configuration](/docs/core/configuration) docs.
-
 #### Loading fonts
 
 You need to load your fonts for React Native to recognize them. Typically this looks something like if using Expo, (or you can [follow a React Native guide here](https://stackoverflow.com/questions/35255645/how-to-set-default-font-family-in-react-native)):
@@ -108,7 +190,7 @@ function App() {
 The first time running your project with Tamagui, be sure to clear the cache:
 
 ```bash
- expo start -c
+expo start -c
 ```
 
 Your `package.json` scripts should look something like this:
@@ -116,11 +198,10 @@ Your `package.json` scripts should look something like this:
 ```json
 {
   "scripts": {
-    "start-native": "expo start -c",
-    "start-web": "expo start -c",
-    "android": "yarn expo run:android",
-    "ios": "yarn expo run:ios",
-    "web": "expo start --web"
+    "start": "expo start",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "web": "expo start --web",
   }
 }
 ```
