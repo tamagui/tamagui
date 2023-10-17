@@ -1,11 +1,11 @@
-import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { authors } from '@data/authors'
+import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { getAllFrontmatter } from '@lib/mdx'
-import { NextLink } from 'components/NextLink'
 import { NextSeo } from 'next-seo'
 import { H2, Paragraph, Spacer, XStack } from 'tamagui'
 
 import { ContainerLarge } from '../../components/Container'
+import { NextLink } from '../../components/NextLink'
 import { TamaguiCard } from '../../components/TamaguiCard'
 
 export default function Blog({ frontmatters }) {

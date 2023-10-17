@@ -19,7 +19,6 @@ import {
 } from '@tamagui/lucide-icons'
 import { useClientValue } from '@tamagui/use-did-finish-ssr'
 import { createUseStore } from '@tamagui/use-store'
-import { ContainerXL } from 'components/Container'
 import { useUser } from 'hooks/useUser'
 import { GetStaticProps } from 'next'
 import { NextSeo } from 'next-seo'
@@ -71,6 +70,7 @@ import {
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 
+import { ContainerXL } from '../components/Container'
 import { useHoverGlow } from '../components/HoverGlow'
 import { LoadCherryBomb, LoadMunro } from '../components/LoadFont'
 import { NextLink } from '../components/NextLink'

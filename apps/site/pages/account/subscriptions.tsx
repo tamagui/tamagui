@@ -4,7 +4,6 @@ import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { Database, Json } from '@lib/supabase-types'
 import { getArray, getSingle } from '@lib/supabase-utils'
 import { Search } from '@tamagui/lucide-icons'
-import { ButtonLink } from 'components/Link'
 import { UserGuard, useUser } from 'hooks/useUser'
 import { NextSeo } from 'next-seo'
 import Link from 'next/link'
@@ -33,6 +32,7 @@ import {
   YStack,
 } from 'tamagui'
 
+import { ButtonLink } from '../../components/Link'
 import { NextLink } from '../../components/NextLink'
 import { Notice, NoticeFrame } from '../../components/Notice'
 

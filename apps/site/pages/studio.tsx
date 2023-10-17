@@ -1,13 +1,14 @@
 import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { ThemeTint } from '@tamagui/logo'
-import { ContainerXL } from 'components/Container'
-import { Features } from 'components/Features'
-import { LoadInter900 } from 'components/LoadFont'
-import { StudioScreen1 } from 'components/StudioScreen1'
 import { NextSeo } from 'next-seo'
 import Head from 'next/head'
 import { Button, EnsureFlexed, Spacer, XStack, YStack } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
+
+import { ContainerXL } from '../components/Container'
+import { Features } from '../components/Features'
+import { LoadInter900 } from '../components/LoadFont'
+import { StudioScreen1 } from '../components/StudioScreen1'
 
 export default function StudioSplashPage() {
   const soonButton = (
