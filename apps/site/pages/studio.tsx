@@ -1,31 +1,13 @@
 import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { ThemeTint } from '@tamagui/logo'
-import { Lock } from '@tamagui/lucide-icons'
-import { useThemeSetting } from '@tamagui/next-theme'
-import { Container, ContainerXL } from 'components/Container'
+import { ContainerXL } from 'components/Container'
 import { Features } from 'components/Features'
-import { DivProps, HoverGlowProps, IS_SAFARI, useHoverGlow } from 'components/HoverGlow'
-import { NextLink } from 'components/NextLink'
+import { LoadInter900 } from 'components/LoadFont'
+import { StudioScreen1 } from 'components/StudioScreen1'
 import { NextSeo } from 'next-seo'
 import Head from 'next/head'
-import { Children, memo } from 'react'
-import {
-  Button,
-  EnsureFlexed,
-  H1,
-  H2,
-  HeadingProps,
-  Separator,
-  SizableText,
-  Spacer,
-  XStack,
-  YStack,
-  useComposedRefs,
-} from 'tamagui'
+import { Button, EnsureFlexed, Spacer, XStack, YStack } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
-
-import { LoadInter900 } from '../components/LoadFont'
-import { StudioScreen1 } from '../components/StudioScreen1'
 
 export default function StudioSplashPage() {
   const soonButton = (
