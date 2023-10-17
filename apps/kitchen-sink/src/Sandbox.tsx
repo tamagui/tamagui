@@ -2,7 +2,7 @@
 
 import { View } from 'react-native'
 import { Text as RNText, TextInput } from 'react-native'
-import { Button, Input, Square, Stack, Text, Theme, useTheme } from 'tamagui'
+import { Button, Input, Square, Stack, Text, Theme, YStack, useTheme } from 'tamagui'
 
 export const Sandbox = () => {
   return (
@@ -26,6 +26,20 @@ export const Sandbox = () => {
           }}
         />
       </Theme>
+
+      <YStack group="testy">
+        <Square
+          size={100}
+          bg="yellow"
+          debug="verbose"
+          // pressStyle={{
+          //   bg: 'red',
+          // }}
+          $group-testy={{
+            bg: 'blue',
+          }}
+        />
+      </YStack>
 
       {/* <Stack group="testy">
         <Text $group-testy={{ color: 'red' }}>Hello!?</Text>
