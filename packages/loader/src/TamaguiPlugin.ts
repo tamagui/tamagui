@@ -32,7 +32,7 @@ export class TamaguiPlugin {
       })
     }
 
-    compiler.hooks.beforeCompile.tapAsync(this.pluginName, async (_, done) => {
+    compiler.hooks.beforeRun.tapAsync(this.pluginName, async (_, done) => {
       await loadTamagui(this.options)
       done()
     })
