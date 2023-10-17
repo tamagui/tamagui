@@ -1,3 +1,4 @@
+import toBool from '@lib/toBool'
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { Link, Subtitles } from '@tamagui/lucide-icons'
 import { NextLink } from 'components/NextLink'
@@ -33,6 +34,7 @@ import { BenchmarkChartNative } from './BenchmarkChartNative'
 import { BenchmarkChartWeb } from './BenchmarkChartWeb'
 import BetaTag from './BetaTag'
 import { Code, CodeInline } from './Code'
+import CodeBlocksWithTabs from './CodeBlocksWithTabs'
 import { DataTable } from './DataTable'
 import * as Demos from './demos'
 import { DocCodeBlock } from './DocsCodeBlock'
@@ -88,13 +90,19 @@ const code = (props) => {
     id,
     showLineNumbers,
     collapsible,
+    margin,
     ...rest
   } = props
+
   if (!className) {
     return <CodeInline>{unwrapText(children)}</CodeInline>
   }
+
   return (
-    <YStack mt="$3">
+    <YStack
+      mt={toBool(margin) === false ? '$0' : '$3'}
+      mb={toBool(margin) === false ? '$0' : '$3'}
+    >
       <DocCodeBlock
         isHighlightingLines={line !== undefined}
         className={className}
@@ -639,6 +647,33 @@ export const components = {
           </LinearGradient>
         )}
       </YStack>
+    )
+  },
+  CodeBlockWithTabs: ({ children, ...props }) => {
+    const {
+      className,
+      collapsible,
+      hero,
+      id,
+      line,
+      scrollable,
+      showLineNumbers,
+      ...rest
+    } = props
+
+    return (
+      <CodeBlocksWithTabs
+        className={className}
+        collapsible={collapsible}
+        hero={hero}
+        id={id}
+        line={line}
+        scrollable={scrollable}
+        showLineNumbers={showLineNumbers}
+        rest={rest}
+      >
+        {children}
+      </CodeBlocksWithTabs>
     )
   },
 }

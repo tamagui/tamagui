@@ -57,7 +57,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
     <YStack
       ref={ref}
       position="relative"
-      mb="$4"
+      // mb="$4"
       {...(isHero && {
         px: '$4',
         mx: '$-4',

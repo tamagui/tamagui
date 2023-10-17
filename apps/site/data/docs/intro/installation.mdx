@@ -13,15 +13,59 @@ npm create tamagui@latest
 
 If you want tamagui with all the components:
 
-```bash
-yarn add tamagui
-```
+<CodeBlockWithTabs>
+  <div id='yarn'>
+    ```bash margin=false
+    yarn add tamagui
+    ```
+  </div>
+
+  <div id='npm'>
+    ```bash margin=false
+    npm install tamagui
+    ```
+  </div>
+
+  <div id='bun'>
+    ```bash margin=false
+    bun add tamagui
+    ```
+  </div>
+
+  <div id='pnpm'>
+    ```bash margin=false
+    pnpm add tamagui
+    ```
+  </div>
+</CodeBlockWithTabs>
 
 If you just want `core` which only exports `Stack` and `Text` components:
 
-```bash
-yarn add @tamagui/core
-```
+<CodeBlockWithTabs>
+  <div id='yarn'>
+    ```bash margin=false
+    yarn add @tamagui/core
+    ```
+  </div>
+
+  <div id='npm'>
+    ```bash margin=false
+    npm install @tamagui/core
+    ```
+  </div>
+
+  <div id='bun'>
+    ```bash margin=false
+    bun add @tamagui/core
+    ```
+  </div>
+
+  <div id='pnpm'>
+    ```bash margin=false
+    pnpm add @tamagui/core
+    ```
+  </div>
+</CodeBlockWithTabs>
 
 That's basically it! You can now import and start using Tamagui. That said, we highly recommend [going through the configuration](#quick-configuration), which gives you a design system, media queries, themes and more.
 
@@ -139,9 +183,31 @@ For React Native or Expo you shouldn't need any plugins unless you're setting up
 
 For an in-depth setup, check out [the full configuration docs](/docs/core/configuration). This sets you up with the default Tamagui design system which is great for getting started quick:
 
-```sh
-yarn add @tamagui/config
-```
+<CodeBlockWithTabs>
+  <div id='yarn'>
+    ```bash margin=false
+    yarn add @tamagui/config
+    ```
+  </div>
+
+  <div id='npm'>
+    ```bash margin=false
+    npm install @tamagui/config
+    ```
+  </div>
+
+  <div id='bun'>
+    ```bash margin=false
+    bun add @tamagui/config
+    ```
+  </div>
+
+  <div id='pnpm'>
+    ```bash margin=false
+    pnpm add @tamagui/config
+    ```
+  </div>
+</CodeBlockWithTabs>
 
 Create a `tamagui.config.ts` file at the root of your project:
 
@@ -212,8 +278,30 @@ We recommend [spending time understanding configuration](/docs/core/configuratio
 
 If you are only targeting web, want to save some bundle size, and are ok going without the React Native specific props like gesture handlers and onLayout, you can just use `web`:
 
-```bash
-yarn add @tamagui/web
-```
+<CodeBlockWithTabs>
+  <div id='yarn'>
+    ```bash margin=false
+    yarn add @tamagui/web
+    ```
+  </div>
+
+  <div id='npm'>
+    ```bash margin=false
+    npm install @tamagui/web
+    ```
+  </div>
+
+  <div id='bun'>
+    ```bash margin=false
+    bun add @tamagui/web
+    ```
+  </div>
+
+  <div id='pnpm'>
+    ```bash margin=false
+    pnpm add @tamagui/web
+    ```
+  </div>
+</CodeBlockWithTabs>
 
 If you are _only_ targeting the web: `@tamagui/web` is the same library as `@tamagui/core`, except that it drops support for a few React Native specific things, mostly props: namely the `GestureResponderHandlers` and `onLayout` props are absent, and the platform methods on refs like `measureInWindow` are absent. If you are only targeting web, you can swap every reference of `tamagui` or `@tamagui/core` in this guide with `@tamagui/web`. Note that you can't use `@tamagui/web` with `tamagui` as the full `tamagui` package relies on many of these props.
