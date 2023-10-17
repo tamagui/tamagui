@@ -14,12 +14,12 @@ export const templates = [
   {
     title: `Next Expo Solito - Prod-ready universal app with a monorepo`,
     value: 'next-expo-solito',
-    type: 'included-in-monorepo',
+    type: 'free',
     hidden: false,
     repo: {
-      url: IS_TEST ? `file://${repoRoot}` : `https://github.com/tamagui/tamagui.git`,
-      dir: ['starters', 'next-expo-solito'],
-      branch: 'master',
+      url: IS_TEST ? `file://${repoRoot}` : `https://github.com/tamagui/starter-free.git`,
+      dir: [],
+      branch: 'main',
     },
     extraSteps: nextExpoSolito,
   },
