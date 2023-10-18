@@ -1,9 +1,9 @@
+import { Container } from '@components/Container'
+import { DivProps, HoverGlowProps, IS_SAFARI, useHoverGlow } from '@components/HoverGlow'
+import { NextLink } from '@components/NextLink'
 import { ThemeTint } from '@tamagui/logo'
 import { Lock } from '@tamagui/lucide-icons'
 import { useThemeSetting } from '@tamagui/next-theme'
-import { Container } from 'components/Container'
-import { DivProps, HoverGlowProps, IS_SAFARI, useHoverGlow } from 'components/HoverGlow'
-import { NextLink } from 'components/NextLink'
 import { memo } from 'react'
 import {
   Button,
