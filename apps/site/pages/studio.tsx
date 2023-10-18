@@ -110,10 +110,10 @@ const ScreenContainer = ({ children }: { children: any }) => (
     <YStack
       fullscreen
       shadowColor="$shadowColor"
-      $theme-dark={{
-        shadowColor: '#000',
-        shadowRadius: 90,
-      }}
+      // $theme-dark={{
+      //   shadowColor: '#000',
+      //   shadowRadius: 90,
+      // }}
       shadowRadius={90}
       shadowOffset={{ width: 0, height: 20 }}
       o={0.3}
@@ -124,10 +124,10 @@ const ScreenContainer = ({ children }: { children: any }) => (
     <YStack
       fullscreen
       shadowColor="$shadowColor"
-      $theme-dark={{
-        shadowColor: '#000',
-        shadowRadius: 40,
-      }}
+      // $theme-dark={{
+      //   shadowColor: '#000',
+      //   shadowRadius: 40,
+      // }}
       shadowRadius={40}
       shadowOffset={{ width: 0, height: 10 }}
       o={0.24}

@@ -400,7 +400,7 @@ iframe {
 }
 
 .token.operator {
-  color: (--color);
+  color: var(--color);
 }
 
 .token.attr-name,
@@ -586,10 +586,6 @@ textarea {
 
 .word-break-keep-all {
   word-break: keep-all;
-}
-
-.transition-bg-color {
-  transform: background-color ease-in 1000ms;
 }
 
 .mix-blend {
