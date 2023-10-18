@@ -46,8 +46,7 @@ export const ButtonContext = createStyledContext<
 type ButtonIconProps = { color?: string; size?: number }
 type IconProp = JSX.Element | FunctionComponent<ButtonIconProps> | null
 
-type ButtonProps = TextParentStyles &
-  GetProps<typeof ButtonFrame> &
+type ButtonExtraProps = TextParentStyles &
   ThemeableProps & {
     /**
      * add icon before, passes color and size automatically if Component
@@ -76,6 +75,8 @@ type ButtonProps = TextParentStyles &
      */
     unstyled?: boolean
   }
+
+type ButtonProps = ButtonExtraProps & GetProps<typeof ButtonFrame>
 
 const BUTTON_NAME = 'Button'
 
@@ -183,7 +184,10 @@ const ButtonIcon = (props: { children: React.ReactNode; scaleIcon?: number }) =>
   return getThemedIcon(children)
 }
 
-const ButtonComponent = ButtonFrame.styleable<ButtonProps>(function Button(props, ref) {
+const ButtonComponent = ButtonFrame.styleable<ButtonExtraProps>(function Button(
+  props,
+  ref
+) {
   const { props: buttonProps } = useButton(props)
   return <ButtonFrame {...buttonProps} ref={ref} />
 })

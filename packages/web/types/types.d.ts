@@ -754,19 +754,16 @@ export type StyleableOptions = {
     disableTheme?: boolean;
     staticConfig?: Partial<StaticConfig>;
 };
-export type Styleable<Props, Ref> = <CustomProps extends Object, X extends FunctionComponent<any> = FunctionComponent<ThemeableProps & Props & CustomProps>>(a: X, options?: StyleableOptions) => ReactComponentWithRef<CustomProps & Omit<Props & ThemeableProps, keyof CustomProps>, Ref> & {
-    staticConfig: StaticConfig;
-    styleable: Styleable<Props, Ref>;
-};
-export type TamaguiComponent<Props = any, Ref = any, BaseProps = {}, VariantProps = {}, ParentStaticProperties = {}> = ReactComponentWithRef<Props, Ref> & StaticComponentObject<Props, Ref> & ParentStaticProperties & {
+export type Styleable<Props, Ref, BaseProps, VariantProps, ParentStaticProperties> = <CustomProps extends Object, X extends FunctionComponent<any> = FunctionComponent<any>>(a: X, options?: StyleableOptions) => TamaguiComponent<CustomProps & Props, Ref, BaseProps, VariantProps, ParentStaticProperties>;
+export type TamaguiComponent<Props = any, Ref = any, BaseProps = {}, VariantProps = {}, ParentStaticProperties = {}> = ReactComponentWithRef<Props, Ref> & StaticComponentObject<Props, Ref, BaseProps, VariantProps, ParentStaticProperties> & ParentStaticProperties & {
     __baseProps: BaseProps;
     __variantProps: VariantProps;
 };
-type StaticComponentObject<Props, Ref> = {
+type StaticComponentObject<Props, Ref, BaseProps, VariantProps, ParentStaticProperties> = {
     staticConfig: StaticConfig;
     /** @deprecated use `styleable` instead (same functionality, better name) */
     extractable: <X>(a: X, staticConfig?: Partial<StaticConfig>) => X;
-    styleable: Styleable<Props, Ref>;
+    styleable: Styleable<Props, Ref, BaseProps, VariantProps, ParentStaticProperties>;
 };
 export type TamaguiComponentExpectingVariants<Props = {}, Variants = {}> = TamaguiComponent<Props, any, any, Variants>;
 export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>> & {
@@ -859,7 +856,7 @@ export type StaticConfigPublic = {
     acceptsClassName?: boolean;
 };
 type StaticConfigBase = StaticConfigPublic & {
-    Component?: FunctionComponent<any> & StaticComponentObject<any, any>;
+    Component?: FunctionComponent<any> & StaticComponentObject<any, any, any, any, any>;
     variants?: GenericVariantDefinitions;
     context?: StyledContext;
     /**

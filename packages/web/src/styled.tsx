@@ -14,6 +14,7 @@ import type {
   VariantDefinitions,
   VariantSpreadFunction,
 } from './types'
+import { Stack } from './views/Stack'
 
 type GetBaseProps<A extends StylableComponent> = A extends TamaguiComponent<
   any,
@@ -176,9 +177,9 @@ export function styled<
   type VariantKeys = keyof ParentVariants | keyof OurVariantProps
 
   type MergedVariants = {
-    [Key in VariantKeys]:
-      | (Key extends keyof ParentVariants ? ParentVariants[Key] : {})
-      | (Key extends keyof OurVariantProps ? OurVariantProps[Key] : {})
+    [Key in VariantKeys]?:
+      | (Key extends keyof ParentVariants ? ParentVariants[Key] : undefined)
+      | (Key extends keyof OurVariantProps ? OurVariantProps[Key] : undefined)
   }
 
   type OurPropsBaseBase = ParentPropsBase & MergedVariants
@@ -314,34 +315,53 @@ export function styled<
 // const y = <Test someting>sadad</Test>
 // const z = <Test3 someting="$true" ork>sadad</Test3>
 
-// merge variant types properly:
-
+//
+// merges variant types properly:
+//
 // const OneVariant = styled(Stack, {
 //   variants: {
 //     variant: {
-//       test: { bg: 'gray' },
+//       test: { backgroundColor: 'gray' },
 //     },
 //   } as const,
 // })
-
-// const TwoVariant = styled(Stack, {
+// const Second = styled(Stack, {
 //   variants: {
 //     variant: {
-//       simple: { bg: 'gray' },
-//       colorful: { bg: 'violet' },
+//       simple: { backgroundColor: 'gray' },
+//       colorful: { backgroundColor: 'violet' },
+//     },
+//   } as const,
+// })
+// const TwoVariant = styled(OneVariant, {
+//   variants: {
+//     variant: {
+//       simple: { backgroundColor: 'gray' },
+//       colorful: { backgroundColor: 'violet' },
 //     },
 //   } as const,
 // })
 
 // type X = typeof OneVariant extends TamaguiComponent<any, any, any, infer V> ? V : any
-// type V = typeof TwoVariant extends TamaguiComponent<any, any, any, infer V> ? V : any
+// type V = typeof Second extends TamaguiComponent<any, any, any, infer V> ? V : any
+
+// type V2 = VariantDefinitions<typeof OneVariant>
+
+// type R = typeof TwoVariant extends TamaguiComponent<any, any, any, infer V> ? V : any
+
 // type Keys = keyof X | keyof V
 // type Z = {
 //   [Key in Keys]: V[Key] | X[Key]
 // }
 
-// const z: Z = {
-//   variant: ''
+// const a: Z = {
+//   variant: 'colorful'
+// }
+// const b: Z = {
+//   variant: 'simple'
+// }
+// const c: Z = {
+//   variant: 'invalid'
 // }
 
-// const y = <TwoVariant variant="test" />
+// const y = <TwoVariant variant="colorful" />
