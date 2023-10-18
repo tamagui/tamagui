@@ -32,9 +32,8 @@ export class TamaguiPlugin {
       })
     }
 
-    compiler.hooks.beforeRun.tapAsync(this.pluginName, async (_, done) => {
+    compiler.hooks.beforeRun.tapPromise(this.pluginName, async () => {
       await loadTamagui(this.options)
-      done()
     })
 
     // mark as side effect
