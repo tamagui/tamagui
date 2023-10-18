@@ -1,11 +1,11 @@
-import { Container, ContainerXL } from '@components/Container'
-import { Features } from '@components/Features'
-import { DivProps, HoverGlowProps, IS_SAFARI, useHoverGlow } from '@components/HoverGlow'
-import { NextLink } from '@components/NextLink'
 import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { ThemeTint } from '@tamagui/logo'
 import { Lock } from '@tamagui/lucide-icons'
 import { useThemeSetting } from '@tamagui/next-theme'
+import { Container, ContainerXL } from 'components/Container'
+import { Features } from 'components/Features'
+import { DivProps, HoverGlowProps, IS_SAFARI, useHoverGlow } from 'components/HoverGlow'
+import { NextLink } from 'components/NextLink'
 import { NextSeo } from 'next-seo'
 import Head from 'next/head'
 import { memo } from 'react'
@@ -103,59 +103,12 @@ export default function StudioSplashPage() {
 const StudioScreens = () => {
   return (
     <YStack my="$6">
-      <ScreenContainer>
+      <>
         <StudioScreenOne />
-      </ScreenContainer>
+      </>
     </YStack>
   )
 }
-
-const ScreenContainer = ({ children }: { children: any }) => (
-  <YStack als="center" w="95%" h={850}>
-    <ThemeTint>
-      <YStack
-        fullscreen
-        shadowColor="$color10"
-        shadowRadius={300}
-        o={0.125}
-        br="$10"
-        zi={0}
-      />
-    </ThemeTint>
-
-    <YStack
-      fullscreen
-      shadowColor="$shadowColor"
-      $theme-dark={{
-        shadowColor: '#000',
-        shadowRadius: 90,
-      }}
-      shadowRadius={90}
-      shadowOffset={{ width: 0, height: 20 }}
-      o={0.3}
-      br="$10"
-      zi={0}
-    />
-
-    <YStack
-      fullscreen
-      shadowColor="$shadowColor"
-      $theme-dark={{
-        shadowColor: '#000',
-        shadowRadius: 40,
-      }}
-      shadowRadius={40}
-      shadowOffset={{ width: 0, height: 10 }}
-      o={0.24}
-      br="$10"
-      zi={0}
-    />
-
-    <YStack bc="$backgroundStrong" br="$10" fullscreen zi={1} ov="hidden">
-      {children}
-    </YStack>
-  </YStack>
-)
 
 StudioSplashPage.getLayout = getDefaultLayout
 
