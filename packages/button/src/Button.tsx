@@ -224,7 +224,7 @@ function useButton<Props extends ButtonProps>(
   const didFinishSSR = useDidFinishSSR()
   const propsActive = useProps(propsIn) as any as ButtonProps
 
-  // careful not to desctructure and re-order props, order is important
+  // careful not to destructure and re-order props, order is important
   const {
     icon,
     iconAfter,
