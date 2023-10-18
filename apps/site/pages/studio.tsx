@@ -8,7 +8,7 @@ import { Button, EnsureFlexed, Spacer, XStack, YStack } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 
 import { LoadInter900 } from '../components/LoadFont'
-import { StudioScreen1 } from '../components/StudioScreen1'
+import { StudioScreen1 } from '../components/StudioScreenOne'
 
 export default function StudioSplashPage() {
   const soonButton = (
