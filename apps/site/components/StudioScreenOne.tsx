@@ -17,7 +17,7 @@ import {
   useComposedRefs,
 } from 'tamagui'
 
-export const StudioScreen1 = memo(() => {
+export const StudioScreenOne = memo(() => {
   const { resolvedTheme: themeName } = useThemeSetting()!
   const isLight = themeName === 'light'
 

@@ -5,10 +5,10 @@ import { ThemeTint } from '@tamagui/logo'
 import { NextSeo } from 'next-seo'
 import Head from 'next/head'
 import { Button, EnsureFlexed, Spacer, XStack, YStack } from 'tamagui'
-import { LinearGradient } from 'tamagui/linear-gradient'
 
 import { LoadInter900 } from '../components/LoadFont'
-import { StudioScreen1 } from '../components/StudioScreenOne'
+import { StudioScreenOne } from '../components/StudioScreenOne'
+// import { LinearGradient } from 'tamagui/linear-gradient'
 
 export default function StudioSplashPage() {
   const soonButton = (
@@ -33,7 +33,7 @@ export default function StudioSplashPage() {
       </Head>
 
       <YStack>
-        <LinearGradient
+        {/* <LinearGradient
           pos="absolute"
           fullscreen
           colors={[
@@ -43,7 +43,7 @@ export default function StudioSplashPage() {
             '$color2',
             '$backgroundStrong',
           ]}
-        />
+        /> */}
 
         <ContainerXL>
           <StudioScreens />
@@ -88,7 +88,7 @@ const StudioScreens = () => {
   return (
     <YStack my="$6">
       <ScreenContainer>
-        <StudioScreen1 />
+        <StudioScreenOne />
       </ScreenContainer>
     </YStack>
   )
