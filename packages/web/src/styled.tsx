@@ -43,7 +43,7 @@ type GetVariantAcceptedValues<V> = V extends Object
 
 export function styled<
   ParentComponent extends StylableComponent,
-  Variants extends VariantDefinitions<ParentComponent> | void = VariantDefinitions<ParentComponent> | void
+  Variants extends VariantDefinitions<ParentComponent> | void = void
 >(
   ComponentIn: ParentComponent,
   // this should be Partial<GetProps<ParentComponent>> but causes excessively deep type issues
@@ -175,12 +175,13 @@ export function styled<
   type OurVariantProps = Variants extends void ? {} : GetVariantAcceptedValues<Variants>
 
   type VariantKeys = keyof ParentVariants | keyof OurVariantProps
-
-  type MergedVariants = {
-    [Key in VariantKeys]?:
-      | (Key extends keyof ParentVariants ? ParentVariants[Key] : undefined)
-      | (Key extends keyof OurVariantProps ? OurVariantProps[Key] : undefined)
-  }
+  type MergedVariants = Variants extends void
+    ? ParentVariants
+    : {
+        [Key in VariantKeys]?:
+          | (Key extends keyof ParentVariants ? ParentVariants[Key] : undefined)
+          | (Key extends keyof OurVariantProps ? OurVariantProps[Key] : undefined)
+      }
 
   type OurPropsBaseBase = ParentPropsBase & MergedVariants
 
