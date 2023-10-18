@@ -1325,7 +1325,7 @@ export function createComponent<
     component.displayName = staticConfig.componentName
   }
 
-  type ComponentType = TamaguiComponent<ComponentPropTypes, Ref, BaseProps, {}>
+  type ComponentType = TamaguiComponent<ComponentPropTypes, Ref, BaseProps, void>
 
   let res: ComponentType = component as any
 

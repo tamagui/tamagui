@@ -7,7 +7,6 @@ import {
   withStaticProperties,
 } from '@tamagui/core'
 import { Scope, createContextScope } from '@tamagui/create-context'
-import { cloneElement } from 'react'
 
 const FORM_NAME = 'Form'
 
@@ -74,7 +73,11 @@ const FormComponent = FormFrame.extractable(function Form({
 }: ScopedProps<FormProps>) {
   return (
     <FormProvider scope={props.__scopeForm} onSubmit={onSubmit}>
-      <FormFrame {...props} onSubmit={((e: any) => e.preventDefault()) as any} />
+      <FormFrame
+        {...props}
+        // @ts-expect-error its ok
+        onSubmit={((e: any) => e.preventDefault()) as any}
+      />
     </FormProvider>
   )
 })

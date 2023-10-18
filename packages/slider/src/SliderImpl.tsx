@@ -11,19 +11,15 @@ import { View } from 'react-native'
 import { ARROW_KEYS, PAGE_KEYS, SLIDER_NAME, useSliderContext } from './constants'
 import { ScopedProps, SliderImplProps } from './types'
 
-export const DirectionalYStack = styled(YStack, {
+export const SliderFrame = styled(YStack, {
+  position: 'relative',
+
   variants: {
     orientation: {
       horizontal: {},
       vertical: {},
     },
-  } as const,
-})
 
-export const SliderFrame = styled(DirectionalYStack, {
-  position: 'relative',
-
-  variants: {
     size: (val, extras) => {
       if (!val) {
         return

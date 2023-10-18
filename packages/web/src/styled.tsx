@@ -15,6 +15,7 @@ import type {
   VariantSpreadFunction,
 } from './types'
 import { Stack } from './views/Stack'
+import { Text } from './views/Text'
 
 type GetBaseProps<A extends StylableComponent> = A extends TamaguiComponent<
   any,
@@ -41,9 +42,22 @@ type GetVariantAcceptedValues<V> = V extends Object
     }
   : undefined
 
+type NullVariantAutocomplete = VariantDefinitions<any, any, '_no_'>
+
 export function styled<
   ParentComponent extends StylableComponent,
-  Variants extends VariantDefinitions<ParentComponent> | void = void
+  Variants extends
+    | VariantDefinitions<ParentComponent>
+    | NullVariantAutocomplete = ParentComponent extends TamaguiComponent<
+    any,
+    any,
+    any,
+    infer V
+  >
+    ? V extends void
+      ? NullVariantAutocomplete
+      : VariantDefinitions<ParentComponent>
+    : NullVariantAutocomplete
 >(
   ComponentIn: ParentComponent,
   // this should be Partial<GetProps<ParentComponent>> but causes excessively deep type issues
@@ -175,7 +189,7 @@ export function styled<
   type OurVariantProps = Variants extends void ? {} : GetVariantAcceptedValues<Variants>
 
   type VariantKeys = keyof ParentVariants | keyof OurVariantProps
-  type MergedVariants = Variants extends void
+  type MergedVariants = Variants extends NullVariantAutocomplete
     ? ParentVariants
     : {
         [Key in VariantKeys]?:

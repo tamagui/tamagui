@@ -754,7 +754,7 @@ export type StyleableOptions = {
     disableTheme?: boolean;
     staticConfig?: Partial<StaticConfig>;
 };
-export type Styleable<Props, Ref, BaseProps, VariantProps, ParentStaticProperties> = <CustomProps extends Object, X extends FunctionComponent<any> = FunctionComponent<any>>(a: X, options?: StyleableOptions) => TamaguiComponent<CustomProps & Props, Ref, BaseProps, VariantProps, ParentStaticProperties>;
+export type Styleable<Props, Ref, BaseProps, VariantProps, ParentStaticProperties> = <CustomProps extends Object | void = void, X extends FunctionComponent<any> = FunctionComponent<any>>(a: X, options?: StyleableOptions) => TamaguiComponent<CustomProps extends void ? Props : Omit<Props, keyof CustomProps> & CustomProps, Ref, BaseProps, VariantProps, ParentStaticProperties>;
 export type TamaguiComponent<Props = any, Ref = any, BaseProps = {}, VariantProps = {}, ParentStaticProperties = {}> = ReactComponentWithRef<Props, Ref> & StaticComponentObject<Props, Ref, BaseProps, VariantProps, ParentStaticProperties> & ParentStaticProperties & {
     __baseProps: BaseProps;
     __variantProps: VariantProps;

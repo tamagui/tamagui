@@ -1,12 +1,12 @@
 import {
   ColorTokens,
+  GetProps,
   ThemeTokens,
-  getVariable,
   styled,
   useProps,
   useTheme,
 } from '@tamagui/core'
-import { YStack, YStackProps } from '@tamagui/stacks'
+import { YStack } from '@tamagui/stacks'
 import type { ViewStyle } from 'react-native'
 
 import {
@@ -15,36 +15,39 @@ import {
 } from './linear-gradient'
 
 //
-export type LinearGradientProps = Omit<ExpoLinearGradientProps, 'colors'> &
-  Omit<YStackProps, 'children' | keyof ExpoLinearGradientProps> & {
-    colors?: (ColorTokens | ThemeTokens | (string & {}))[]
+export type LinearGradientExtraProps = Omit<ExpoLinearGradientProps, 'colors'> & {
+  colors?: (ColorTokens | ThemeTokens | (string & {}))[]
+}
+
+export const LinearGradient = YStack.styleable<LinearGradientExtraProps>(
+  (propsIn, ref) => {
+    const props = useProps(propsIn)
+
+    const { start, end, colors: colorsProp, locations, children, ...stackProps } = props
+    const theme = useTheme()
+
+    const colors =
+      props.colors?.map((c) => {
+        return (theme[c]?.get('web') as string) ?? c
+      }) || []
+
+    return (
+      <LinearGradientFrame ref={ref as any} {...stackProps}>
+        <ExpoLinearGradient
+          start={start}
+          end={end}
+          colors={colors}
+          locations={locations}
+          style={absoluteFill}
+        >
+          {children}
+        </ExpoLinearGradient>
+      </LinearGradientFrame>
+    )
   }
+)
 
-export const LinearGradient = YStack.styleable<LinearGradientProps>((propsIn, ref) => {
-  const props = useProps(propsIn)
-
-  const { start, end, colors: colorsProp, locations, children, ...stackProps } = props
-  const theme = useTheme()
-
-  const colors =
-    props.colors?.map((c) => {
-      return (theme[c]?.get('web') as string) ?? c
-    }) || []
-
-  return (
-    <LinearGradientFrame ref={ref as any} {...stackProps}>
-      <ExpoLinearGradient
-        start={start}
-        end={end}
-        colors={colors}
-        locations={locations}
-        style={absoluteFill}
-      >
-        {children}
-      </ExpoLinearGradient>
-    </LinearGradientFrame>
-  )
-})
+export type LinearGradientProps = GetProps<typeof LinearGradient>
 
 const absoluteFill: ViewStyle = {
   position: 'absolute',
