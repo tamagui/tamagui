@@ -173,8 +173,15 @@ export function styled<
 
   type OurVariantProps = Variants extends void ? {} : GetVariantAcceptedValues<Variants>
 
-  type VariantProps = Omit<ParentVariants, keyof OurVariantProps> & OurVariantProps
-  type OurPropsBaseBase = ParentPropsBase & VariantProps
+  type VariantKeys = keyof ParentVariants | keyof OurVariantProps
+
+  type MergedVariants = {
+    [Key in VariantKeys]:
+      | (Key extends keyof ParentVariants ? ParentVariants[Key] : {})
+      | (Key extends keyof OurVariantProps ? OurVariantProps[Key] : {})
+  }
+
+  type OurPropsBaseBase = ParentPropsBase & MergedVariants
 
   /**
    * de-opting a bit of type niceness because were hitting depth issues too soon
@@ -185,7 +192,6 @@ export function styled<
    * that would give you nicely merged pseudo sub-styles but its just too much for TS
    * so now pseudos wont be nicely typed inside media queries, but at least we can nest
    */
-
   type OurPropsBase = OurPropsBaseBase
 
   type Props = Variants extends void
@@ -213,7 +219,7 @@ export function styled<
     Props,
     GetRef<ParentComponent>,
     ParentPropsBase,
-    ParentVariants & OurVariantProps,
+    MergedVariants,
     ParentStaticProperties
   >
 
@@ -307,3 +313,35 @@ export function styled<
 
 // const y = <Test someting>sadad</Test>
 // const z = <Test3 someting="$true" ork>sadad</Test3>
+
+// merge variant types properly:
+
+// const OneVariant = styled(Stack, {
+//   variants: {
+//     variant: {
+//       test: { bg: 'gray' },
+//     },
+//   } as const,
+// })
+
+// const TwoVariant = styled(Stack, {
+//   variants: {
+//     variant: {
+//       simple: { bg: 'gray' },
+//       colorful: { bg: 'violet' },
+//     },
+//   } as const,
+// })
+
+// type X = typeof OneVariant extends TamaguiComponent<any, any, any, infer V> ? V : any
+// type V = typeof TwoVariant extends TamaguiComponent<any, any, any, infer V> ? V : any
+// type Keys = keyof X | keyof V
+// type Z = {
+//   [Key in Keys]: V[Key] | X[Key]
+// }
+
+// const z: Z = {
+//   variant: ''
+// }
+
+// const y = <TwoVariant variant="test" />
