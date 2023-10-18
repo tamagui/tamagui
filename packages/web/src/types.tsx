@@ -42,7 +42,7 @@ export type DebugProp = boolean | 'break' | 'verbose' | 'visualize' | 'profile'
 
 export type TamaguiComponentPropsBaseBase = {
   target?: string
-  hitSlop?: PressableProps['hitSlop']
+
   /**
    * When truthy passes through all props to a single child element, and avoids rendering its own element.
    * Must pass just one child React element that will receive all the props.
