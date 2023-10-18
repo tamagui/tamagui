@@ -1354,21 +1354,19 @@ export type StyleableOptions = {
   staticConfig?: Partial<StaticConfig>
 }
 
-export type Styleable<Props, Ref> = <
+export type Styleable<Props, Ref, BaseProps, VariantProps, ParentStaticProperties> = <
   CustomProps extends Object,
-  X extends FunctionComponent<any> = FunctionComponent<
-    ThemeableProps & Props & CustomProps
-  >
+  X extends FunctionComponent<any> = FunctionComponent<any>
 >(
   a: X,
   options?: StyleableOptions
-) => ReactComponentWithRef<
-  CustomProps & Omit<Props & ThemeableProps, keyof CustomProps>,
-  Ref
-> & {
-  staticConfig: StaticConfig
-  styleable: Styleable<Props, Ref>
-}
+) => TamaguiComponent<
+  CustomProps & Props,
+  Ref,
+  BaseProps,
+  VariantProps,
+  ParentStaticProperties
+>
 
 export type TamaguiComponent<
   Props = any,
@@ -1377,22 +1375,23 @@ export type TamaguiComponent<
   VariantProps = {},
   ParentStaticProperties = {}
 > = ReactComponentWithRef<Props, Ref> &
-  StaticComponentObject<Props, Ref> &
+  StaticComponentObject<Props, Ref, BaseProps, VariantProps, ParentStaticProperties> &
   ParentStaticProperties & {
     __baseProps: BaseProps
     __variantProps: VariantProps
   }
 
-type StaticComponentObject<Props, Ref> = {
-  staticConfig: StaticConfig
+type StaticComponentObject<Props, Ref, BaseProps, VariantProps, ParentStaticProperties> =
+  {
+    staticConfig: StaticConfig
 
-  /** @deprecated use `styleable` instead (same functionality, better name) */
-  extractable: <X>(a: X, staticConfig?: Partial<StaticConfig>) => X
-  /*
-   * If you want your HOC of a styled() component to also be able to be styled(), you need this to wrap it.
-   */
-  styleable: Styleable<Props, Ref>
-}
+    /** @deprecated use `styleable` instead (same functionality, better name) */
+    extractable: <X>(a: X, staticConfig?: Partial<StaticConfig>) => X
+    /*
+     * If you want your HOC of a styled() component to also be able to be styled(), you need this to wrap it.
+     */
+    styleable: Styleable<Props, Ref, BaseProps, VariantProps, ParentStaticProperties>
+  }
 
 export type TamaguiComponentExpectingVariants<
   Props = {},
@@ -1516,7 +1515,7 @@ export type StaticConfigPublic = {
 }
 
 type StaticConfigBase = StaticConfigPublic & {
-  Component?: FunctionComponent<any> & StaticComponentObject<any, any>
+  Component?: FunctionComponent<any> & StaticComponentObject<any, any, any, any, any>
 
   variants?: GenericVariantDefinitions
 

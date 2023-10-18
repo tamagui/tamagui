@@ -2,7 +2,24 @@
 
 import { View } from 'react-native'
 import { Text as RNText, TextInput } from 'react-native'
-import { Button, Input, Square, Stack, Text, Theme, YStack, useTheme } from 'tamagui'
+import { Button, Input, Square, Stack, Text, Theme, styled, useTheme } from 'tamagui'
+
+const OneVariant = styled(Stack, {
+  variants: {
+    variant: {
+      test: { bg: 'gray' },
+    },
+  } as const,
+})
+
+const TwoVariant = styled(OneVariant, {
+  variants: {
+    variant: {
+      simple: { bg: 'gray' },
+      colorful: { bg: 'violet' },
+    },
+  } as const,
+})
 
 export const Sandbox = () => {
   return (
@@ -16,6 +33,8 @@ export const Sandbox = () => {
 
       <Button themeInverse>test</Button>
 
+      <TwoVariant variant="simple">test</TwoVariant>
+
       <Theme name="light">
         <Square
           size={100}
@@ -26,20 +45,6 @@ export const Sandbox = () => {
           }}
         />
       </Theme>
-
-      <YStack group="testy">
-        <Square
-          size={100}
-          bg="yellow"
-          debug="verbose"
-          // pressStyle={{
-          //   bg: 'red',
-          // }}
-          $group-testy={{
-            bg: 'blue',
-          }}
-        />
-      </YStack>
 
       {/* <Stack group="testy">
         <Text $group-testy={{ color: 'red' }}>Hello!?</Text>
