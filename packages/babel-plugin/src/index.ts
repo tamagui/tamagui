@@ -160,32 +160,63 @@ export default declare(function snackBabelPlugin(
                   }
                 }
 
-                let themedStyles: null | Object = null
+                let forTernary: string[] = []
+                let finalForWrapperCompStyles: t.Expression[] = []
+
+                const isThereAnyValueFromTheme = props.attrs.some((attr) => {
+                  if (attr.type === 'style') {
+                    return Object.values(attr.value).some((val) => val?.[0] === '$')
+                  } else if (attr.type === 'ternary') {
+                    return (
+                      Object.values(attr.value.consequent).some(
+                        (val) => val?.[0] === '$'
+                      ) ||
+                      Object.values(attr.value.alternate).some((val) => val?.[0] === '$')
+                    )
+                  }
+                  return false
+                })
 
                 for (const attr of props.attrs) {
                   switch (attr.type) {
                     case 'style': {
-                      // split theme properties and leave them as props since RN has no concept of theme
-                      const { themed, plain } = splitThemeStyles(attr.value)
-                      themedStyles = themed
-                      const ident = addSheetStyle(plain, props.node)
-                      addStyle(ident, simpleHash(JSON.stringify(plain)))
+                      if (doesStyleContainTheme(attr.value)) {
+                        finalForWrapperCompStyles.push(convertThemeStyleToAst(attr.value))
+                      } else {
+                        const ident = addSheetStyle(attr.value, props.node)
+                        addStyle(ident, simpleHash(JSON.stringify(attr.value)))
+                      }
                       break
                     }
                     case 'ternary': {
-                      // TODO use splitThemeStyles
                       const { consequent, alternate } = attr.value
-                      const cons = addSheetStyle(consequent, props.node)
-                      const alt = addSheetStyle(alternate, props.node)
-                      const styleExpr = t.conditionalExpression(
-                        attr.value.test,
-                        cons,
-                        alt
-                      )
-                      addStyle(
-                        styleExpr,
-                        simpleHash(JSON.stringify({ consequent, alternate }))
-                      )
+                      if (isThereAnyValueFromTheme) {
+                        let accessIndex = forTernary.findIndex(
+                          (v) => v === attr.value.test.name
+                        )
+                        if (accessIndex === -1) {
+                          accessIndex = forTernary.length
+                          forTernary.push(attr.value.test.name)
+                        }
+                        const styleExpr = t.conditionalExpression(
+                          t.identifier(`forTernary[${accessIndex}]`),
+                          convertThemeStyleToAst(consequent),
+                          convertThemeStyleToAst(alternate)
+                        )
+                        finalForWrapperCompStyles.push(styleExpr)
+                      } else {
+                        const cons = addSheetStyle(consequent, props.node)
+                        const alt = addSheetStyle(alternate, props.node)
+                        const styleExpr = t.conditionalExpression(
+                          attr.value.test,
+                          cons,
+                          alt
+                        )
+                        addStyle(
+                          styleExpr,
+                          simpleHash(JSON.stringify({ consequent, alternate }))
+                        )
+                      }
                       break
                     }
                     case 'attr': {
@@ -204,20 +235,11 @@ export default declare(function snackBabelPlugin(
 
                 props.node.attributes = finalAttrs
                 if (props.isFlattened) {
-                  if (themedStyles) {
+                  if (isThereAnyValueFromTheme) {
                     if (!hasImportedViewWrapper) {
                       root.unshiftContainer('body', importWithTheme())
                       hasImportedViewWrapper = true
                     }
-                    const themedStylesAst = literalToAst(themedStyles)
-                    themedStylesAst.properties.forEach((prop) => {
-                      if (prop.value.type === 'StringLiteral') {
-                        prop.value = t.memberExpression(
-                          t.identifier('theme'),
-                          t.identifier(prop.value.value.slice(1))
-                        )
-                      }
-                    })
                     const WrapperIdentifier = root.scope.generateUidIdentifier(
                       props.node.name.name + 'Wrapper'
                     )
@@ -226,35 +248,40 @@ export default declare(function snackBabelPlugin(
                       t.variableDeclaration('const', [
                         t.variableDeclarator(
                           WrapperIdentifier,
-                          t.callExpression(
-                            t.identifier('__internalWithTheme'),
-                            [
-                              t.identifier(props.node.name.name),
-                              t.arrowFunctionExpression(
-                                [t.identifier('theme')],
-                                t.blockStatement([
-                                  t.returnStatement(
-                                    t.callExpression(
-                                      t.memberExpression(
-                                        t.identifier('Object'),
-                                        t.identifier('assign')
-                                      ),
-                                      [
-                                        stylesExpr.elements.length === 1
-                                          ? (stylesExpr.elements[0] as any)
-                                          : stylesExpr,
-                                        themedStylesAst,
-                                      ]
-                                    )
-                                  ),
-                                ])
-                              ),
-                            ]
-                          )
-                        )
+                          t.callExpression(t.identifier('__internalWithTheme'), [
+                            t.identifier(props.node.name.name),
+                            t.arrowFunctionExpression(
+                              [t.identifier('theme'), t.identifier('forTernary')],
+                              t.blockStatement([
+                                t.returnStatement(
+                                  t.callExpression(
+                                    t.memberExpression(
+                                      t.identifier('Object'),
+                                      t.identifier('assign')
+                                    ),
+                                    [...stylesExpr.elements, ...finalForWrapperCompStyles] as any[]
+                                  )
+                                ),
+                              ])
+                            ),
+                          ])
+                        ),
                       ])
                     )
                     props.node.name = WrapperIdentifier
+
+                    if (forTernary.length) {
+                      props.node.attributes.push(
+                        t.jsxAttribute(
+                          t.jsxIdentifier('forTernary'),
+                          t.jsxExpressionContainer(
+                            t.arrayExpression(
+                              forTernary.map((name) => t.identifier(name))
+                            )
+                          )
+                        )
+                      )
+                    }
                   } else {
                     props.node.attributes.push(
                       t.jsxAttribute(
@@ -327,18 +354,29 @@ function assertValidTag(node: t.JSXOpeningElement) {
   }
 }
 
-function splitThemeStyles(style: Object) {
-  const themed = {}
-  const plain = {}
-  let noTheme = true
+function doesStyleContainTheme(style: Object) {
   for (const key in style) {
     const val = style[key]
     if (val && val[0] === '$') {
-      themed[key] = val
-      noTheme = false
-    } else {
-      plain[key] = val
+      return true
     }
   }
-  return { themed: noTheme ? null : themed, plain }
+  return false
+}
+
+function convertThemeStyleToAst(style: Object) {
+  const themedStylesAst = literalToAst(style)
+  themedStylesAst.properties.forEach((prop) => {
+    if (prop.value.type === 'StringLiteral') {
+      if (prop.value.value[0] === '$') {
+        prop.value = t.memberExpression(
+          t.identifier('theme'),
+          t.identifier(prop.value.value.slice(1))
+        )
+      } else {
+        prop.value = t.stringLiteral(prop.value.value)
+      }
+    }
+  })
+  return themedStylesAst
 }
