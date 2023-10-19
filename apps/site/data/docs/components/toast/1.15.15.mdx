@@ -32,9 +32,31 @@ beta: true
 
 Run the following command:
 
-```bash
-yarn add @tamagui/toast burnt
-```
+<CodeBlockWithTabs>
+  <div id="yarn">
+  ```bash margin=false
+  yarn add @tamagui/toast burnt
+  ```
+  </div>
+
+  <div id="npm">
+  ```bash margin=false
+  npm install @tamagui/toast burnt
+  ```
+  </div>
+
+  <div id="bun">
+  ```bash margin=false
+  bun add @tamagui/toast burnt
+  ```
+  </div>
+
+  <div id="pnpm">
+  ```bash margin=false
+  pnpm add @tamagui/toast burnt
+  ```
+  </div>
+</CodeBlockWithTabs>
 
 Then, if targeting native, rebuild your React Native app. React Native requires sub-dependencies with native dependencies always be hoisted to your apps package.json and Toast relies on the amazing [Burnt](https://github.com/nandorojo/burnt) library by Fernando Rojo to provide its native functionality.
 

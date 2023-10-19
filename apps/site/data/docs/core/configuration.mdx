@@ -39,7 +39,8 @@ Another quick start that gives a bit more customization is using `@tamagui/short
 
 ```tsx
 import { shorthands } from '@tamagui/shorthands'
-import { themes, tokens } from '@tamagui/themes'
+import { tokens } from '@tamagui/themes/v2'
+import { themes } from '@tamagui/themes/v2-themes'
 import { createTamagui } from 'tamagui' // or '@tamagui/core'
 
 const appConfig = createTamagui({
@@ -423,8 +424,7 @@ import { useFonts } from 'expo-font'
 
 function App() {
   const [loaded] = useFonts({
-    Inter: require("@tamagui/font-inter/otf/Inter-Medium.otf"),
-    InterBold: require("@tamagui/font-inter/otf/Inter-Bold.otf"),
+    Inter: require("@tamagui/font-inter/otf/Inter-Medium.otf"), InterBold: require("@tamagui/font-inter/otf/Inter-Bold.otf"),
   });
 
   useEffect(() => {
