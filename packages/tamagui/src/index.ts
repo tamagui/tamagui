@@ -1,4 +1,4 @@
-import './setup.js'
+import './setup'
 
 export * from '@tamagui/accordion'
 export * from '@tamagui/adapt'

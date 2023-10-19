@@ -15,6 +15,9 @@ export function getReactNativeConfig(Component: any) {
     if (Component.propTypes?.textBreakStrategy) {
       return RNConfigs.Text
     }
+
+    // can optimize plain View or Text to not be react native specific
+
     // can assume everything else is react native on native
     return RNConfigs.default
   } else {

@@ -2,7 +2,7 @@
 
 import { SelectDemo, SwitchDemo } from '@tamagui/demos'
 import { memo } from 'react'
-import { Button, Theme } from 'tamagui'
+import { Button, Square, Theme } from 'tamagui'
 
 import { ThemeToggle } from '../components/ThemeToggle'
 
@@ -17,11 +17,16 @@ export default memo(() => {
         flex: 1,
       }}
     >
-      <div style={{ position: 'absolute', top: 10, right: 10, zIndex: 1000 }}>
+      {/* <div style={{ position: 'absolute', top: 10, right: 10, zIndex: 1000 }}>
         <ThemeToggle />
-      </div>
+      </div> */}
 
-      <Button>hi</Button>
+      <Button themeInverse>
+        <Button.Text>hi</Button.Text>
+      </Button>
+      {/* <Square size={100} bc="$background">
+          hi
+        </Square> */}
     </div>
   )
 })

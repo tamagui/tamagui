@@ -1,10 +1,10 @@
-import { NextSeo } from 'next-seo'
 import { authors } from '@data/authors'
 import { getAllFrontmatter } from '@lib/mdx'
-import { NextLink } from 'components/NextLink'
+import { NextSeo } from 'next-seo'
 import { H3, Paragraph, YStack } from 'tamagui'
 
 import { ContainerLarge } from '../../components/Container'
+import { NextLink } from '../../components/NextLink'
 
 export default function Blog({ frontmatters }) {
   return (

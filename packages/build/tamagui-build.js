@@ -389,6 +389,25 @@ async function esbuildWriteIfChanged(
   const built = await esbuild.build({
     ...opts,
 
+    plugins: [
+      ...(opts.plugins || []),
+
+      // not workin
+      // {
+      //   name: 'no-side-effects',
+      //   setup(build) {
+      //     build.onResolve({ filter: /@tamagui.*/ }, async ({ path, ...options }) => {
+      //       const result = await build.resolve(path, {
+      //         ...options,
+      //         namespace: 'noRecurse',
+      //       })
+      //       console.log('no side effects', path)
+      //       return { ...result, sideEffects: false }
+      //     })
+      //   },
+      // },
+    ],
+
     treeShaking: true,
     minifySyntax: true,
     // minifyIdentifiers: true,

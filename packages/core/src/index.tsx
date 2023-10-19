@@ -1,5 +1,6 @@
 import { useResponderEvents } from '@tamagui/react-native-use-responder-events'
 import type {
+  GetProps,
   StackProps,
   StackPropsBase,
   TamaguiComponent,
@@ -19,8 +20,8 @@ import type { RefObject } from 'react'
 import { getBaseViews } from './getBaseViews'
 import { useElementLayout } from './hooks/useElementLayout'
 import { usePlatformMethods } from './hooks/usePlatformMethods'
-import { RNViewProps } from './reactNativeTypes'
-import { Pressability, usePressability } from './vendor/Pressability'
+import { RNTextProps, RNViewProps } from './reactNativeTypes'
+import { usePressability } from './vendor/Pressability'
 
 // re-exports all of @tamagui/web just adds hooks
 export * from '@tamagui/web'
@@ -30,16 +31,22 @@ export * from './reactNativeTypes'
 
 // adds extra types to Stack/Text:
 
-export const Stack = WebStack as TamaguiComponent<
-  StackProps & RNViewProps,
+type RNExclusiveViewProps = Omit<RNViewProps, keyof StackProps>
+
+export const Stack = WebStack as any as TamaguiComponent<
+  StackProps & RNExclusiveViewProps,
   TamaguiElement,
-  StackPropsBase & RNViewProps
+  StackPropsBase & RNExclusiveViewProps,
+  void
 >
 
-export const Text = WebText as TamaguiComponent<
-  TextProps & TextProps,
+type RNExclusiveTextProps = Omit<RNTextProps, keyof TextProps>
+
+export const Text = WebText as any as TamaguiComponent<
+  TextProps & RNExclusiveTextProps,
   TamaguiTextElement,
-  TextPropsBase & TextProps
+  TextPropsBase & RNExclusiveTextProps,
+  void
 >
 
 // setup internal hooks:

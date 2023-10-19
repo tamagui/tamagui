@@ -56,14 +56,13 @@ import {
   TamaguiElement,
   TamaguiInternalConfig,
   TextProps,
-  ThemeProps,
   UseAnimationHook,
   UseAnimationProps,
   UseThemeWithStateProps,
   WebOnlyPressEvents,
 } from './types'
 import { Slot } from './views/Slot'
-import { getThemeCNStyle, useThemedChildren } from './views/Theme'
+import { useThemedChildren } from './views/Theme'
 import { ThemeDebug } from './views/ThemeDebug'
 
 // this appears to fix expo / babel not picking this up sometimes? really odd
@@ -1326,7 +1325,7 @@ export function createComponent<
     component.displayName = staticConfig.componentName
   }
 
-  type ComponentType = TamaguiComponent<ComponentPropTypes, Ref, BaseProps, {}>
+  type ComponentType = TamaguiComponent<ComponentPropTypes, Ref, BaseProps, void>
 
   let res: ComponentType = component as any
 

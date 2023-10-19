@@ -25,14 +25,14 @@ export const cloneStarter = async (
     ? join(tamaguiDir, 'tamagui-test', template.repo.url.split('/').at(-1)!)
     : join(tamaguiDir, 'tamagui', template.repo.url.split('/').at(-1)!)
 
-  console.log()
+  console.info()
   await setupTamaguiDotDir(template)
   const starterDir = join(targetGitDir, ...template.repo.dir)
-  console.log()
-  console.log(
+  console.info()
+  console.info(
     `Copying starter from ${starterDir} into ${chalk.blueBright(projectName)}...`
   )
-  console.log()
+  console.info()
 
   // if (!(await pathExists(starterDir))) {
   //   console.error(`Missing template for ${template.value} in ${starterDir}`)
@@ -41,14 +41,14 @@ export const cloneStarter = async (
   await copy(starterDir, resolvedProjectPath)
   await rimraf(`${resolvedProjectPath}/.git`)
 
-  console.log(chalk.green(`${projectName} created!`))
-  console.log()
+  console.info(chalk.green(`${projectName} created!`))
+  console.info()
 }
 
 async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry = false) {
   const repoRoot = join(__dirname, '..', '..', '..')
 
-  console.log(`Setting up ${chalk.blueBright(targetGitDir)}...`)
+  console.info(`Setting up ${chalk.blueBright(targetGitDir)}...`)
 
   if (IS_TEST) {
     cd(repoRoot)
@@ -69,7 +69,7 @@ async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry 
 
   // setup tests for CI
   if (IS_TEST) {
-    console.log(`Test mode: cleaning old tamagui git dir`)
+    console.info(`Test mode: cleaning old tamagui git dir`)
     // always clean for test
     await remove(targetGitDir)
     if (!(await pathExists(join(repoRoot, '.git')))) {
@@ -83,8 +83,8 @@ async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry 
   const isInSubDir = template.repo.dir.length > 0
 
   if (!(await pathExists(targetGitDir))) {
-    console.log(`Cloning tamagui base directory`)
-    console.log()
+    console.info(`Cloning tamagui base directory`)
+    console.info()
 
     const sourceGitRepo = template.repo.url
 
@@ -94,15 +94,15 @@ async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry 
 
     try {
       try {
-        console.log(`$ ${cmd}`)
-        console.log()
+        console.info(`$ ${cmd}`)
+        console.info()
         execSync(cmd)
       } catch (error) {
         if (cmd.includes('https://')) {
-          console.log(`https failed - trying with ssh now...`)
+          console.info(`https failed - trying with ssh now...`)
           const sshCmd = cmd.replace('https://', 'ssh://')
-          console.log(`$ ${sshCmd}`)
-          console.log()
+          console.info(`$ ${sshCmd}`)
+          console.info()
           execSync(sshCmd)
         } else {
           throw error
@@ -112,7 +112,7 @@ async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry 
       if (error instanceof Error) {
         if (template.value === 'takeout-starter') {
           if ((error as any)?.stderr.includes('Repository not found')) {
-            console.log(
+            console.info(
               chalk.yellow(
                 `You don't have access to this starter. Check 🥡 Tamagui Takeout (https://tamagui.dev/takeout) for more info.`
               )
@@ -130,31 +130,31 @@ async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry 
       process.exit(1)
     }
   }
-  console.log()
-  console.log(`Updating tamagui starters repo`)
-  console.log()
+  console.info()
+  console.info(`Updating tamagui starters repo`)
+  console.info()
 
   if (isInSubDir) {
     const cmd = `git sparse-checkout set ${template.repo.dir[0] ?? '.'}`
     execSync(cmd, { cwd: targetGitDir })
-    console.log()
-    console.log(`$ ${cmd}`)
+    console.info()
+    console.info(`$ ${cmd}`)
   }
   try {
     const cmd2 = `git pull --rebase --allow-unrelated-histories --depth 1 origin ${branch}`
     execSync(cmd2, {
       cwd: targetGitDir,
     })
-    console.log()
-    console.log(`$ ${cmd2}`)
+    console.info()
+    console.info(`$ ${cmd2}`)
   } catch (err: any) {
-    console.log(
+    console.info(
       `Error updating: ${err.message} ${
         isRetry ? `failing.\n${err.stack}` : 'trying from fresh.'
       }`
     )
     if (isRetry) {
-      console.log(
+      console.info(
         `Please file an issue: https://github.com/tamagui/tamagui/issues/new?assignees=&labels=&template=bug_report.md&title=`
       )
       process.exit(1)

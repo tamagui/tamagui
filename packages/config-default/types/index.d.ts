@@ -153,6 +153,10 @@ export declare function getDefaultTamaguiConfig(): import("@tamagui/core").Tamag
         background: string;
         color: string;
     };
+    dark_Button: {
+        background: string;
+        color: string;
+    };
     dark_blue_Button: {
         background: string;
         color: string;
