@@ -9,9 +9,37 @@ For a full-featured example, you can create a new app using `npm create tamagui@
 
 ### Installation
 
-1. Remove `"type": "module"` from your `package.json` if you have it. (The type module support was removed because it was breaking metro, webpack or something).
-2. Add `@tamagui/vite-plugin`
-3. And update your `vite.config.ts`:
+**Step 1:** Remove `"type": "module"` from your `package.json` if you have it. (The type module support was removed because it breaks metro, webpack and some other things).
+
+**Step 2:** Install `@tamagui/vite-plugin`
+
+<CodeBlockWithTabs>
+  <div id='yarn'>
+  ```bash margin=false
+  yarn add @tamagui/vite-plugin
+  ```
+  </div>
+
+  <div id='npm'>
+  ```bash margin=false
+  npm install @tamagui/vite-plugin
+  ```
+  </div>
+
+  <div id='bun'>
+  ```bash margin=false
+  bun add @tamagui/vite-plugin
+  ```
+  </div>
+
+  <div id='pnpm'>
+  ```bash margin=false
+  pnpm add @tamagui/vite-plugin
+  ```
+  </div>
+</CodeBlockWithTabs>
+
+**Step 3:** Update your `vite.config.ts`:
 
 ```tsx
 import { tamaguiExtractPlugin, tamaguiPlugin } from '@tamagui/vite-plugin'

@@ -5,14 +5,19 @@ description: Put together your own design system.
 
 To skip to some real examples:
 
-- `create-tamagui` is itself a [well structured monorepo](https://github.com/tamagui/tamagui/tree/master/starters).
-- More complete, the [tamagui](https://github.com/tamagui/tamagui/tree/master/packages/tamagui) package itself.
+- The Nextjs-Expo-Solito template in `create-tamagui` is itself a [well structured monorepo](https://github.com/tamagui/tamagui/tree/master/starters).
+  {/* - More complete, the [tamagui](https://github.com/tamagui/tamagui/tree/master/packages/tamagui) package itself. */}
 
 Tamagui allows you to build your own set of components that are optimized with the compiler whenever they are used in your app.
 
 By default, if you just use `styled()` in your app, Tamagui **won't** be able to optimize those components. This is because the compiler needs to know about those components at build-time.
 
 Let's break down how to set this up in more detail.
+
+<Notice>
+  This guide assumes that you have knowledge on how to setup a monorepo using your
+  preferred package manager.
+</Notice>
 
 ### Step 1: Create a package
 
@@ -61,7 +66,7 @@ There are a few things to note here:
 
 Check the [configuration docs](/docs/core/configuration) for more details on this step.
 
-You'll be creating a tamagui.config.ts at the the root of your app. It will contain a full suite of tokens, themes, and fonts exported onto a single named `config` export.
+You'll be creating a `tamagui.config.ts` at the the root of design system package. It will contain a full suite of tokens, themes, and fonts exported onto a single named `config` export.
 
 ### Step 3: Define and export components
 
@@ -101,53 +106,49 @@ export * from './Circle'
 
 ### Step 4: Set up your build
 
-Now in your app, add `@ourapp/components` and `tamagui` (since we are extending it) to your package.json, and update your tamagui build configuration.
+Now in your app, add `@ourapp/components` and `tamagui` (since we are extending it) to your package.json, and update your tamagui build configuration. Below are configs for Webpack projects, Next.js projects and React Native projects respectively, use the config that suits your project.
 
-#### Webpack
+<CodeBlockWithTabs>
+  <div id="webpack.config.js">
+  ```js margin=false
+  {
+    loader: 'tamagui-loader',
+    options: {
+      config: './tamagui.config.ts',
+      components: ['@ourapp/components', 'tamagui'],
+    },
+  }
+  ```
+  </div>
 
-In your `webpack.config.js`:
+  <div id="next.config.js">
+  ```js margin=false
+  export default withPlugins([
+    withTamagui({
+      config: './tamagui.config.ts',
+      components: ['@ourapp/components', 'tamagui'],
+    })
+  ])
+  ```
+  </div>
 
-```js
-{
-  loader: 'tamagui-loader',
-  options: {
-    config: './tamagui.config.ts',
-    components: ['@ourapp/components', 'tamagui'],
-  },
-}
-```
-
-#### Next.js
-
-In your `next.config.js`:
-
-```js
-export default withPlugins([
-  withTamagui({
-    config: './tamagui.config.ts',
-    components: ['@ourapp/components', 'tamagui'],
-  })
-])
-```
-
-#### React Native
-
-In your `babel.config.js`:
-
-```js
-export default {
-  plugins: [
-    [
-      '@tamagui/babel-plugin',
-      {
-        exclude: /node_modules/,
-        config: './tamagui.config.ts',
-        components: ['@ourapp/components', 'tamagui']
-      },
+  <div id="babel.config.js">
+  ```js margin=false
+  export default {
+    plugins: [
+      [
+        '@tamagui/babel-plugin',
+        {
+          exclude: /node_modules/,
+          config: './tamagui.config.ts',
+          components: ['@ourapp/components', 'tamagui']
+        },
+      ],
     ],
-  ],
-}
-```
+  }
+  ```
+  </div>
+</CodeBlockWithTabs>
 
 #### Configuration notes
 
