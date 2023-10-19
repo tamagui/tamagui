@@ -5,7 +5,7 @@ import {
   UniversalAnimatedNumber,
   useIsomorphicLayoutEffect,
 } from '@tamagui/core'
-import { animate } from '@tamagui/cubic-bezier-animator'
+// import { animate } from '@tamagui/cubic-bezier-animator'
 import { usePresence } from '@tamagui/use-presence'
 import { useRef, useState } from 'react'
 
@@ -62,13 +62,10 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
       const isEntering = !!componentState.unmounted
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
-      const initialPositionRef = useRef<any>(null)
-      const animationKey = Array.isArray(props.animation)
-        ? props.animation[0]
-        : props.animation
-      const animation = animations[animationKey as any]
-
-      const keys = props.animateOnly ? props.animateOnly.join(' ') : 'all'
+      // const initialPositionRef = useRef<any>(null)
+      const [animationKey, animationConfig] = [].concat(props.animation)
+      const animation = animations[animationKey]
+      const keys = props.animateOnly ?? ['all']
 
       useIsomorphicLayoutEffect(() => {
         if (!sendExitComplete || !isExiting || !hostRef.current) return
@@ -85,37 +82,37 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
       }, [sendExitComplete, isExiting])
 
       // layout animations
-      useIsomorphicLayoutEffect(() => {
-        if (!hostRef.current || !props.layout) {
-          return
-        }
-        // @ts-ignore
-        const boundingBox = hostRef.current?.getBoundingClientRect()
-        if (isChanged(initialPositionRef.current, boundingBox)) {
-          const transform = invert(
-            hostRef.current,
-            boundingBox,
-            initialPositionRef.current
-          )
+      // useIsomorphicLayoutEffect(() => {
+      //   if (!hostRef.current || !props.layout) {
+      //     return
+      //   }
+      //   // @ts-ignore
+      //   const boundingBox = hostRef.current?.getBoundingClientRect()
+      //   if (isChanged(initialPositionRef.current, boundingBox)) {
+      //     const transform = invert(
+      //       hostRef.current,
+      //       boundingBox,
+      //       initialPositionRef.current
+      //     )
 
-          animate({
-            from: transform,
-            to: { x: 0, y: 0, scaleX: 1, scaleY: 1 },
-            duration: 1000,
-            onUpdate: ({ x, y, scaleX, scaleY }) => {
-              // @ts-ignore
-              hostRef.current.style.transform = `translate(${x}px, ${y}px) scaleX(${scaleX}) scaleY(${scaleY})`
-              // TODO: handle childRef inverse scale
-              //   childRef.current.style.transform = `scaleX(${1 / scaleX}) scaleY(${
-              //     1 / scaleY
-              //   })`
-            },
-            // TODO: extract ease-in from string and convert/map it to a cubicBezier array
-            cubicBezier: [0, 1.38, 1, -0.41],
-          })
-        }
-        initialPositionRef.current = boundingBox
-      })
+      //     animate({
+      //       from: transform,
+      //       to: { x: 0, y: 0, scaleX: 1, scaleY: 1 },
+      //       duration: 1000,
+      //       onUpdate: ({ x, y, scaleX, scaleY }) => {
+      //         // @ts-ignore
+      //         hostRef.current.style.transform = `translate(${x}px, ${y}px) scaleX(${scaleX}) scaleY(${scaleY})`
+      //         // TODO: handle childRef inverse scale
+      //         //   childRef.current.style.transform = `scaleX(${1 / scaleX}) scaleY(${
+      //         //     1 / scaleY
+      //         //   })`
+      //       },
+      //       // TODO: extract ease-in from string and convert/map it to a cubicBezier array
+      //       cubicBezier: [0, 1.38, 1, -0.41],
+      //     })
+      //   }
+      //   initialPositionRef.current = boundingBox
+      // })
 
       if (!animation) {
         return null
@@ -124,13 +121,19 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
       // add css transition
       // TODO: we disabled the transform transition, because it will create issue for inverse function and animate function
       // for non layout transform properties either use animate function or find a workaround to do it with css
-      style.transition = `${keys} ${animation}${
-        props.layout ? ',width 0s, height 0s, margin 0s, padding 0s, transform' : ''
-      }`
+      style.transition = keys
+        .map((key) => {
+          const override = animations[animationConfig?.[key]] ?? animation
+          return `${key} ${override}`
+        })
+        .join(', ')
+
+      // style.transition = `${keys} ${animation}${
+      //   props.layout ? ',width 0s, height 0s, margin 0s, padding 0s, transform' : ''
+      // }`
 
       if (process.env.NODE_ENV === 'development' && props['debug']) {
-        // biome-ignore lint/suspicious/noConsoleLog: ok
-        console.log('CSS animation', style, { isEntering, isExiting })
+        console.info('CSS animation', style, { isEntering, isExiting })
       }
 
       return { style }
@@ -138,26 +141,26 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
   }
 }
 
-const isChanged = (initialBox: any, finalBox: any) => {
-  // we just mounted, so we don't have complete data yet
-  if (!initialBox || !finalBox) return false
+// const isChanged = (initialBox: any, finalBox: any) => {
+//   // we just mounted, so we don't have complete data yet
+//   if (!initialBox || !finalBox) return false
 
-  // deep compare the two boxes
-  return JSON.stringify(initialBox) !== JSON.stringify(finalBox)
-}
+//   // deep compare the two boxes
+//   return JSON.stringify(initialBox) !== JSON.stringify(finalBox)
+// }
 
-const invert = (el, from, to) => {
-  const { x: fromX, y: fromY, width: fromWidth, height: fromHeight } = from
-  const { x, y, width, height } = to
+// const invert = (el, from, to) => {
+//   const { x: fromX, y: fromY, width: fromWidth, height: fromHeight } = from
+//   const { x, y, width, height } = to
 
-  const transform = {
-    x: x - fromX - (fromWidth - width) / 2,
-    y: y - fromY - (fromHeight - height) / 2,
-    scaleX: width / fromWidth,
-    scaleY: height / fromHeight,
-  }
+//   const transform = {
+//     x: x - fromX - (fromWidth - width) / 2,
+//     y: y - fromY - (fromHeight - height) / 2,
+//     scaleX: width / fromWidth,
+//     scaleY: height / fromHeight,
+//   }
 
-  el.style.transform = `translate(${transform.x}px, ${transform.y}px) scaleX(${transform.scaleX}) scaleY(${transform.scaleY})`
+//   el.style.transform = `translate(${transform.x}px, ${transform.y}px) scaleX(${transform.scaleX}) scaleY(${transform.scaleY})`
 
-  return transform
-}
+//   return transform
+// }

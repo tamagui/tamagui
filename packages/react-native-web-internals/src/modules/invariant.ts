@@ -16,7 +16,6 @@ export function warning(condition: any, log: string, ...logVars: string[]) {
     try {
       invariant(condition, log, ...logVars)
     } catch (err) {
-      // biome-ignore lint/suspicious/noConsoleLog: ok
       console.warn(err)
       // allow to pass through
     }

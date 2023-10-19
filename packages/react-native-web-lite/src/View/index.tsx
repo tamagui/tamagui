@@ -54,7 +54,6 @@ const View = React.forwardRef<HTMLElement & PlatformMethods, ViewProps>(
     if (process.env.NODE_ENV !== 'production') {
       React.Children.toArray(props.children).forEach((item) => {
         if (typeof item === 'string') {
-          // biome-ignore lint/suspicious/noConsoleLog: ok
           console.error(
             `Unexpected text node: ${item}. A text node cannot be a child of a <View>.`
           )

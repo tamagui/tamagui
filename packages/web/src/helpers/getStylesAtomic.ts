@@ -31,8 +31,7 @@ export function getStylesAtomic(stylesIn: ViewStyleWithPseudos, debug?: DebugPro
   res = [...res, ...generateAtomicStyles(stylesIn)]
 
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-    console.log(` 🪮 getStylesAtomic`, { stylesIn, res })
+    console.info(` 🪮 getStylesAtomic`, { stylesIn, res })
   }
   return res
 }

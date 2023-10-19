@@ -36,7 +36,7 @@ const Icon = (props) => {
       {...otherProps}
     >
       <_Circle cx="12" cy="12" r="10" stroke={color} />
-      <Path d="M15 9.354a4 4 0 1 0 0 5.292" stroke={color} />
+      <Path d="M15 9.4a4 4 0 1 0 0 5.246" stroke={color} />
     </Svg>
   )
 }

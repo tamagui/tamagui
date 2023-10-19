@@ -290,7 +290,7 @@ export class ThemeBuilder<State extends ThemeBuilderState> {
           throw new Error(`No template for theme ${themeName}: ${templateName}`)
         }
 
-        out[themeName] = createTheme(palette, template, options, themeName)
+        out[themeName] = createTheme(palette, template, options, themeName, true)
       }
     }
 

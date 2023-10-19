@@ -9,16 +9,15 @@ const runCommand = (scriptName: string) =>
   `${packageManager} ${useYarn ? '' : 'run '}${scriptName}`
 
 const main: ExtraSteps = async ({ isFullClone, projectName }) => {
-  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
   if (isFullClone) {
-    console.log(`
+    console.info(`
   ${chalk.green.bold('Done!')} created a new project under ./${projectName}
 
 cd into the project using:
   ${chalk.green('cd')} ${projectName}
 `)
   }
-  console.log(`
+  console.info(`
   To start the Next.js development server, run:
     ${chalk.green(runCommand('web'))}
 `)

@@ -353,7 +353,8 @@ export const PopperArrow = PopperArrowFrame.styleable<
       bounds: [2],
     })
   )
-  const size = +sizeValResolved
+  const size = Math.max(0, +sizeValResolved)
+
   const { placement } = context
   const refs = useComposedRefs(context.arrowRef, forwardedRef)
 

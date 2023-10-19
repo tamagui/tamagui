@@ -28,13 +28,13 @@ export const upsertProductRecord = async (product: Stripe.Product) => {
 
   const { error } = await supabaseAdmin.from('products').upsert([productData])
   if (error) throw error
-  console.log(`Product inserted/updated: ${product.id}`)
+  console.info(`Product inserted/updated: ${product.id}`)
 }
 
 export const deleteProductRecord = async (id: Stripe.Product['id']) => {
   const { error } = await supabaseAdmin.from('products').delete().eq('id', id)
   if (error) throw error
-  console.log(`Product deleted: ${id}`)
+  console.info(`Product deleted: ${id}`)
 }
 
 export const upsertPriceRecord = async (price: Stripe.Price) => {
@@ -55,13 +55,13 @@ export const upsertPriceRecord = async (price: Stripe.Price) => {
   // @ts-expect-error
   const { error } = await supabaseAdmin.from('prices').upsert([priceData])
   if (error) throw error
-  console.log(`Price inserted/updated: ${price.id}`)
+  console.info(`Price inserted/updated: ${price.id}`)
 }
 
 export const deletePriceRecord = async (id: Stripe.Price['id']) => {
   const { error } = await supabaseAdmin.from('prices').delete().eq('id', id)
   if (error) throw error
-  console.log(`Price deleted: ${id}`)
+  console.info(`Price deleted: ${id}`)
 }
 
 export const createOrRetrieveCustomer = async ({
@@ -90,7 +90,7 @@ export const createOrRetrieveCustomer = async ({
       .from('customers')
       .insert([{ id: uuid, stripe_customer_id: customer.id }])
     if (supabaseError) throw supabaseError
-    console.log(`New customer created and inserted for ${uuid}.`)
+    console.info(`New customer created and inserted for ${uuid}.`)
     return customer.id
   }
   if (data) return data.stripe_customer_id
@@ -187,7 +187,7 @@ export const manageSubscriptionStatusChange = async (
   )
   if (insertionError) throw insertionError
 
-  console.log(`Inserted/updated subscription [${subscription.id}] for user [${uuid}]`)
+  console.info(`Inserted/updated subscription [${subscription.id}] for user [${uuid}]`)
   // For a new subscription copy the billing details to the customer object.
   // NOTE: This is a costly operation and should happen at the very end.
   if (createAction && subscription.default_payment_method && uuid) {
@@ -230,17 +230,20 @@ export const manageSubscriptionStatusChange = async (
     await sendTakeoutWelcomeEmail(email, {
       name: userModel.data.full_name ?? email.split('@').shift()!,
     })
-    console.log(`Welcome email request sent to Postmark for ${email}`)
+    console.info(`Welcome email request sent to Postmark for ${email}`)
   }
 }
 
 export async function deleteSubscriptionRecord(sub: Stripe.Subscription) {
   const { error } = await supabaseAdmin.from('subscriptions').delete().eq('id', sub.id)
   if (error) throw error
-  console.log(`Deleted subscription: ${sub.id}`)
+  console.error(`Deleted subscription: ${sub.id}`)
 }
 
-export async function addRenewalSubscription(sessionFromEvent: Stripe.Checkout.Session) {
+export async function addRenewalSubscription(
+  sessionFromEvent: Stripe.Checkout.Session,
+  options?: { toltReferral?: string }
+) {
   const session = await stripe.checkout.sessions.retrieve(sessionFromEvent.id, {
     expand: ['line_items'],
   })
@@ -288,8 +291,10 @@ export async function addRenewalSubscription(sessionFromEvent: Stripe.Checkout.S
 
     renewalPriceIds.push(renewalPriceId)
   }
-  console.log('creating the sub...', renewalPriceIds)
+  console.info('creating the sub...', renewalPriceIds)
   if (renewalPriceIds.length > 0) {
+    const toltReferral = options?.toltReferral ?? null
+
     const cardPaymentMethods = await stripe.paymentMethods.list({
       customer: customerId,
       type: 'card',
@@ -297,6 +302,11 @@ export async function addRenewalSubscription(sessionFromEvent: Stripe.Checkout.S
     const paymentMethod = cardPaymentMethods.data[0]
     const collectionMethod = paymentMethod ? 'charge_automatically' : 'send_invoice'
     const renewalSub = await stripe.subscriptions.create({
+      ...(toltReferral && {
+        metadata: {
+          tolt_referral: toltReferral,
+        },
+      }),
       customer: customerId,
       collection_method: collectionMethod,
       ...(collectionMethod === 'charge_automatically'
@@ -316,7 +326,7 @@ export async function addRenewalSubscription(sessionFromEvent: Stripe.Checkout.S
         price: id,
       })),
     })
-    console.log(renewalSub)
+    console.info(renewalSub)
   }
 }
 

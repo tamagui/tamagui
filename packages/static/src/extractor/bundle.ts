@@ -23,8 +23,7 @@ function getESBuildConfig(
   aliases?: Record<string, string>
 ) {
   if (process.env.DEBUG?.startsWith('tamagui')) {
-    // biome-ignore lint/suspicious/noConsoleLog: ok
-    console.log(`Building`, entryPoints)
+    console.info(`Building`, entryPoints)
   }
   const tsconfig = join(__dirname, '..', '..', '..', 'tamagui.tsconfig.json')
 
@@ -129,8 +128,7 @@ async function asyncLock(props: Props) {
     : new Date().getTime() - new Date(lockStat.mtime).getTime()
   if (lockedMsAgo < 500) {
     if (process.env.DEBUG?.startsWith('tamagui')) {
-      // biome-ignore lint/suspicious/noConsoleLog: ok
-      console.log(`Waiting for existing build`, props.entryPoints)
+      console.info(`Waiting for existing build`, props.entryPoints)
     }
     let tries = 5
     while (tries--) {

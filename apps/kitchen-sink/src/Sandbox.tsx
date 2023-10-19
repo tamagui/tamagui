@@ -1,18 +1,54 @@
 // import './wdyr'
 
-import { ChevronRight } from '@tamagui/lucide-icons'
-import { memo, useState } from 'react'
-import { Appearance, View } from 'react-native'
-import { Button, ListItem, ListItemFrame, Square, Theme, styled } from 'tamagui'
+import { View } from 'react-native'
+import { Text as RNText, TextInput } from 'react-native'
+import { Button, Input, Square, Stack, Text, Theme, styled, useTheme } from 'tamagui'
+
+const OneVariant = styled(Stack, {
+  variants: {
+    variant: {
+      test: { bg: 'gray' },
+    },
+  } as const,
+})
+
+const TwoVariant = styled(OneVariant, {
+  variants: {
+    variant: {
+      simple: { bg: 'gray' },
+      colorful: { bg: 'violet' },
+    },
+  } as const,
+})
 
 export const Sandbox = () => {
   return (
-    <View
-      style={{ width: '100%', height: '100%', backgroundColor: 'yellow', padding: 50 }}
-    >
-      {/* <ThemeChangeTest /> */}
-      {/* <ChevronRight color="$color" /> */}
-      <ListItem icon={ChevronRight} />
+    <View style={{ width: '100%', height: '100%', padding: 50 }}>
+      <Theme inverse>
+        <Button>hi</Button>
+        {/* <Square size={100} bc="$background">
+          hi
+        </Square> */}
+      </Theme>
+
+      <Button themeInverse>test</Button>
+
+      <TwoVariant variant="simple">test</TwoVariant>
+
+      <Theme name="light">
+        <Square
+          size={100}
+          bc="$background"
+          pressStyle={{ bg: 'red' }}
+          onPress={() => {
+            alert('wtf')
+          }}
+        />
+      </Theme>
+
+      {/* <Stack group="testy">
+        <Text $group-testy={{ color: 'red' }}>Hello!?</Text>
+      </Stack> */}
     </View>
   )
 }

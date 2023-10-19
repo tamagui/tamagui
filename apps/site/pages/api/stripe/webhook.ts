@@ -29,11 +29,13 @@ const handler: NextApiHandler = async (req, res) => {
   let event: Stripe.Event
   const sig = req.headers['stripe-signature']
 
+  const toltReferral = req.body?.referral as string | undefined
+
   const reqBuffer = await buffer(req)
   try {
     event = stripe.webhooks.constructEvent(reqBuffer, sig ?? '', endpointSecret)
   } catch (error) {
-    console.log(error.message)
+    console.error(error.message)
     return res.status(400).send(`Webhook error: ${error.message}`)
   }
 
@@ -55,7 +57,7 @@ const handler: NextApiHandler = async (req, res) => {
       await deletePriceRecord((event.data.object as Stripe.Price).id)
       break
 
-    case 'customer.subscription.created':
+    case 'customer.subscription.created': {
       const createdSub = event.data.object as Stripe.Subscription
       await manageSubscriptionStatusChange(
         createdSub.id,
@@ -65,7 +67,8 @@ const handler: NextApiHandler = async (req, res) => {
         true
       )
       break
-    case 'customer.subscription.updated':
+    }
+    case 'customer.subscription.updated': {
       const updatedSub = event.data.object as Stripe.Subscription
       await manageSubscriptionStatusChange(
         updatedSub.id,
@@ -74,17 +77,22 @@ const handler: NextApiHandler = async (req, res) => {
           : updatedSub.customer.id
       )
       break
-    case 'customer.subscription.deleted':
+    }
+    case 'customer.subscription.deleted': {
       await unclaimSubscription(event.data.object as Stripe.Subscription)
       await deleteSubscriptionRecord(event.data.object as Stripe.Subscription)
       break
+    }
 
-    case 'checkout.session.completed':
-      await addRenewalSubscription(event.data.object as Stripe.Checkout.Session)
+    case 'checkout.session.completed': {
+      await addRenewalSubscription(event.data.object as Stripe.Checkout.Session, {
+        toltReferral,
+      })
       break
+    }
 
     default:
-      console.log(
+      console.error(
         `Unhandled event type ${event.type}`
         // JSON.stringify(event.data, null, 2)
       )

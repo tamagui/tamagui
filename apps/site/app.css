@@ -400,7 +400,7 @@ iframe {
 }
 
 .token.operator {
-  color: (--color);
+  color: var(--color);
 }
 
 .token.attr-name,
@@ -575,6 +575,10 @@ textarea {
   -webkit-font-smoothing: auto;
 }
 
+.font-smooth-aliased {
+  -webkit-font-smoothing: antialiased !important;
+}
+
 .hero-tag:hover,
 .hero-tag.active {
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
@@ -582,10 +586,6 @@ textarea {
 
 .word-break-keep-all {
   word-break: keep-all;
-}
-
-.transition-bg-color {
-  transform: background-color ease-in 1000ms;
 }
 
 .mix-blend {

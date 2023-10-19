@@ -576,6 +576,7 @@ const AccordionContent = AccordionContentFrame.styleable(function AccordionConte
       role="region"
       aria-labelledby={itemContext.triggerId}
       data-orientation={accordionContext.orientation}
+      // @ts-ignore
       __scopeCollapsible={__scopeAccordion || ACCORDION_CONTEXT}
       {...contentProps}
       ref={forwardedRef}

@@ -4,7 +4,6 @@ import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { Database, Json } from '@lib/supabase-types'
 import { getArray, getSingle } from '@lib/supabase-utils'
 import { Search } from '@tamagui/lucide-icons'
-import { ButtonLink } from 'components/Link'
 import { UserGuard, useUser } from 'hooks/useUser'
 import { NextSeo } from 'next-seo'
 import Link from 'next/link'
@@ -20,6 +19,7 @@ import {
   Form,
   H2,
   H3,
+  H4,
   H6,
   Image,
   Input,
@@ -31,6 +31,10 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
+
+import { ButtonLink } from '../../components/Link'
+import { NextLink } from '../../components/NextLink'
+import { Notice, NoticeFrame } from '../../components/Notice'
 
 export default function Page() {
   return (
@@ -209,6 +213,7 @@ const SubscriptionDetail = ({ subscription }: SubscriptionDetailProps) => {
             </SizableText>
           )}
         </XStack>
+
         <XStack gap="$4" separator={<Separator vertical my="$1" />} flexWrap="wrap">
           <SizableText>Sub ID: {subscription.id}</SizableText>
           <SizableText>
@@ -222,7 +227,8 @@ const SubscriptionDetail = ({ subscription }: SubscriptionDetailProps) => {
           </SizableText>
         </XStack>
       </YStack>
-      <YStack p="$4" gap="$4" separator={<Separator />}>
+
+      <YStack p="$4" gap="$6" separator={<Separator o={0.5} />}>
         {items.map((item) => {
           const price = getSingle(item?.prices)
           const product = getSingle(price?.products)
@@ -320,12 +326,12 @@ const SubscriptionItem = ({
     }
   }
 
-  const productSlug =
-    typeof product.metadata === 'object' &&
-    !Array.isArray(product.metadata) &&
-    product.metadata
-      ? product.metadata.slug
-      : null
+  // const productSlug =
+  //   typeof product.metadata === 'object' &&
+  //   !Array.isArray(product.metadata) &&
+  //   product.metadata
+  //     ? product.metadata.slug
+  //     : null
 
   return (
     <YStack key={product.id} gap="$4">
@@ -338,7 +344,7 @@ const SubscriptionItem = ({
           }}
           borderRadius="$4"
         />
-        <YStack />
+
         <YStack gap="$2">
           <Button
             size="$2"
@@ -361,20 +367,23 @@ const SubscriptionItem = ({
           </Button> */}
         </YStack>
       </XStack>
+
       <YStack>
         <H3>{product.name}</H3>
-        <Paragraph theme="alt1">{product.description}</Paragraph>
+        <Paragraph size="$5" theme="alt2">
+          {product.description}
+        </Paragraph>
       </YStack>
-      <YStack gap="$4" separator={<Separator />}>
-        <YStack>
-          {installInstructions && (
-            <YStack>
-              <H6>How to use</H6>
-              <Paragraph mt="$2">{installInstructions}</Paragraph>
-            </YStack>
-          )}
-        </YStack>
+
+      <YStack gap="$6" separator={<Separator o={0.5} />}>
+        {installInstructions && (
+          <Paragraph size="$5" theme="alt1">
+            {installInstructions}
+          </Paragraph>
+        )}
+
         {hasDiscordInvites && <DiscordPanel subscriptionId={subscription.id} />}
+
         {hasGithubApp && item.id && (
           <BotInstallPanel
             subItemId={item.id}
@@ -401,10 +410,11 @@ const BotInstallPanel = ({
   })}`
 
   return (
-    <YStack gap="$2">
+    <YStack gap="$3">
       <XStack jc="space-between" gap="$2" ai="center">
-        <H6>GitHub App</H6>
+        <H4>GitHub App</H4>
       </XStack>
+
       {activeInstallations.length > 0 ? (
         <YStack gap="$1">
           {activeInstallations.map((installation) => (
@@ -422,19 +432,16 @@ const BotInstallPanel = ({
         </YStack>
       ) : (
         <>
-          <Paragraph>
-            No installation found. To receive updates, you need to install the Takeout
-            GitHub Bot on your repo.
-          </Paragraph>
-          <Paragraph theme="alt1">
-            If you have already installed the bot and don't see it here, *uninstall* the
-            bot from GitHub, come back to this page and try again.
-          </Paragraph>
+          <Notice my={0}>
+            No install found. To receive updates, install the Takeout GitHub Bot on your
+            repo. If you have already installed the bot and don't see it here, uninstall
+            the bot from GitHub, then come back to this page and try again.
+          </Notice>
         </>
       )}
 
       <XStack>
-        <ButtonLink href={installationUrl} size="$2" themeInverse>
+        <ButtonLink href={installationUrl} themeInverse>
           Install GitHub App
         </ButtonLink>
       </XStack>
@@ -492,13 +499,14 @@ const DiscordPanel = ({ subscriptionId }: { subscriptionId: string }) => {
   }
 
   return (
-    <YStack gap="$2">
+    <YStack gap="$3">
       <XStack jc="space-between" gap="$2" ai="center">
-        <H6>
+        <H4>
           Discord Access{' '}
           {!!groupInfoSwr.data &&
             `(${groupInfoSwr.data?.currentlyOccupiedSeats}/${groupInfoSwr.data?.discordSeats})`}
-        </H6>
+        </H4>
+
         <Button
           size="$2"
           onPress={() => resetChannelMutation.trigger()}
@@ -507,13 +515,14 @@ const DiscordPanel = ({ subscriptionId }: { subscriptionId: string }) => {
           {resetChannelMutation.isMutating ? 'Resetting...' : 'Reset'}
         </Button>
       </XStack>
+
       <Form onSubmit={handleSearch} gap="$2" flexDirection="row" ai="flex-end">
         <Fieldset>
-          <Label size="$2" htmlFor="discord-username">
+          <Label size="$3" theme="alt1" htmlFor="discord-username">
             Username / Nickname
           </Label>
           <Input
-            size="$2"
+            miw={200}
             placeholder="Your username..."
             id="discord-username"
             value={draftQuery}
@@ -522,11 +531,19 @@ const DiscordPanel = ({ subscriptionId }: { subscriptionId: string }) => {
         </Fieldset>
 
         <Form.Trigger>
-          <Button size="$2" icon={Search}>
-            Search
-          </Button>
+          <Button icon={Search}>Search</Button>
         </Form.Trigger>
       </Form>
+
+      <XStack tag="article">
+        <Paragraph size="$3" theme="alt1">
+          Note: You must{' '}
+          <NextLink target="_blank" href="https://discord.gg/4qh6tdcVDa">
+            join the Discord server
+          </NextLink>{' '}
+          first so we can find your username.
+        </Paragraph>
+      </XStack>
 
       <YStack gap="$2">
         {searchSwr.data?.map((member) => {

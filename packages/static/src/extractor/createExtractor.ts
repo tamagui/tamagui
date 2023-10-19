@@ -278,8 +278,7 @@ export function createExtractor(
         console.error(
           `⛔️ Error: Missing "themes" in your tamagui.config file, this may be due to duplicated dependency versions. Try out https://github.com/bmish/check-dependency-version-consistency to see if there are mis-matches, or search your lockfile.`
         )
-        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-        console.log(`  Got config:`, tamaguiConfig)
+        console.info(`  Got config:`, tamaguiConfig)
         process.exit(0)
       }
     }
@@ -289,10 +288,8 @@ export function createExtractor(
 
     if (!firstTheme || typeof firstTheme !== 'object') {
       console.error(`Missing theme, an error occurred when importing your config`)
-      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-      console.log(`Got config:`, tamaguiConfig)
-      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-      console.log(`Looking for theme:`, firstThemeName)
+      console.info(`Got config:`, tamaguiConfig)
+      console.info(`Looking for theme:`, firstThemeName)
       process.exit(0)
     }
 
@@ -318,8 +315,7 @@ export function createExtractor(
           `Warning: Tamagui didn't find any valid components (DEBUG=tamagui for more)`
         )
         if (process.env.DEBUG === 'tamagui') {
-          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-          console.log(`components`, Object.keys(components || []), components)
+          console.info(`components`, Object.keys(components || []), components)
         }
       }
     }
@@ -772,8 +768,7 @@ export function createExtractor(
 
         if (shouldDisableExtraction) {
           if (shouldPrintDebug === 'verbose') {
-            // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-            console.log(` Extraction disabled`)
+            console.info(` Extraction disabled`)
           }
           return
         }
@@ -800,8 +795,7 @@ export function createExtractor(
             })
 
           if (shouldPrintDebug === 'verbose') {
-            // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-            console.log(` Start tag ${tagName}`)
+            console.info(` Start tag ${tagName}`)
           }
 
           const flatNode = getFlattenedNode?.({ isTextView, tag: tagName })
@@ -2037,8 +2031,7 @@ export function createExtractor(
           for (const attr of attrs) {
             try {
               if (shouldPrintDebug) {
-                // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-                console.log(`  Processing ${attr.type}:`)
+                console.info(`  Processing ${attr.type}:`)
               }
 
               switch (attr.type) {

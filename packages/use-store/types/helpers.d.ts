@@ -6,7 +6,6 @@ export declare function getStoreDescriptors(storeInstance: any): {
     [x: string]: TypedPropertyDescriptor<any> & PropertyDescriptor;
 };
 export declare function get<A>(_: A, b?: any): A extends new (props?: any) => infer B ? B : A;
-export default function useConstant<T>(fn: () => T): T;
 export declare function simpleStr(arg: any): any;
 export declare function getStoreDebugInfo(store: any): any;
 //# sourceMappingURL=helpers.d.ts.map

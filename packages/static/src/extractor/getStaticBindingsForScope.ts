@@ -100,7 +100,7 @@ export async function getStaticBindingsForScope(
     shouldPrintDebug
   ) {
     // prettier-ignore
-    // console.log('  ', Object.keys(bindings).length, 'variables in scope')
+    // console.info('  ', Object.keys(bindings).length, 'variables in scope')
     // .map(x => bindings[x].identifier?.name).join(', ')
   }
 
@@ -134,8 +134,7 @@ export async function getStaticBindingsForScope(
             `    | Skipping partial evaluation of constant file: ${moduleName} (DEBUG=tamagui for more)`
           )
         } else if (process.env.DEBUG?.startsWith('tamagui')) {
-          // biome-ignore lint/suspicious/noConsoleLog: ok
-          console.log(`Error in partial evaluation`, err.message, err.stack)
+          console.info(`Error in partial evaluation`, err.message, err.stack)
         }
       }
     }
@@ -163,8 +162,7 @@ export async function getStaticBindingsForScope(
       if (isOnWhitelist) {
         const src = importModule(moduleName)
         if (!src) {
-          // biome-ignore lint/suspicious/noConsoleLog: ok
-          console.log(
+          console.info(
             `    | ⚠️ Missing file ${moduleName} via ${sourcePath} import ${sourceModule.sourceModule}?`
           )
           return {}

@@ -50,7 +50,6 @@ export function tamaguiExtractPlugin(options: Partial<TamaguiOptions>): Plugin {
 
     writeBundle(this, options, bundle) {
       setTimeout(() => {
-        // biome-ignore lint/suspicious/noConsoleLog: ok
         console.warn('some sort of dangling process or osmethign, exit for now...')
         process.exit(0)
       }, 100)

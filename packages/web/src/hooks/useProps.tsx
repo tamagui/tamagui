@@ -83,6 +83,7 @@ export function usePropsAndStyle<A extends Object>(
       mediaState: media,
       noSkip: true,
       noClassNames: true,
+      resolveValues: 'auto',
       ...opts,
     },
     null,

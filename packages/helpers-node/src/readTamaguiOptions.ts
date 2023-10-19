@@ -30,7 +30,6 @@ export async function readTamaguiOptions({ cwd = '.' }: { cwd: string }) {
       },
     }
   } catch (err: any) {
-    // biome-ignore lint/suspicious/noConsoleLog: ok
     console.error(`Error reading tamagui.json: ${err.message} ${err.stack}`)
 
     return {

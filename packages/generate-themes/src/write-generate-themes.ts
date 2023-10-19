@@ -17,10 +17,8 @@ export async function writeGeneratedThemes(
   const themeBuilderStatePath = join(tamaguiDotDir, `theme-builder.json`)
 
   if (process.env.DEBUG === 'tamagui') {
-    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-    console.log(`Generated themes:`, JSON.stringify(generatedOutput, null, 2))
-    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-    console.log(`Writing themes to`, { outPath, themeBuilderStatePath })
+    console.info(`Generated themes:`, JSON.stringify(generatedOutput, null, 2))
+    console.info(`Writing themes to`, { outPath, themeBuilderStatePath })
   }
 
   await Promise.all([

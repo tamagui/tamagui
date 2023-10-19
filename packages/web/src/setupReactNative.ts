@@ -6,15 +6,18 @@ export function getReactNativeConfig(Component: any) {
   if (!Component) return
 
   if (process.env.TAMAGUI_TARGET === 'native') {
+    if (Component.propTypes?.onTextInput || Component.propTypes?.onChangeText) {
+      return RNConfigs.TextInput
+    }
     if (Component.getSizeWithHeaders) {
       return RNConfigs.Image
     }
     if (Component.propTypes?.textBreakStrategy) {
       return RNConfigs.Text
     }
-    if (Component.propTypes?.onTextInput) {
-      return
-    }
+
+    // can optimize plain View or Text to not be react native specific
+
     // can assume everything else is react native on native
     return RNConfigs.default
   } else {

@@ -1,22 +1,25 @@
 import { join } from 'path'
 
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
-// import { create } from '@tamagui/vite-react-native'
 import chalk from 'chalk'
 import { context } from 'esbuild'
 import express, { Express } from 'express'
 import { pathExists } from 'fs-extra'
+import { createProxyMiddleware } from 'http-proxy-middleware'
 import { ViteDevServer } from 'vite'
 import inspectPlugin from 'vite-plugin-inspect'
+import { create } from 'vxrn'
 
 type Options = {
   root?: string
+  port?: number
   host?: string
 }
 
 type OptionsFilled = Required<Options>
 
 const defaultOptions = {
+  port: 8081,
   root: process.cwd(),
   host: '127.0.0.1',
 } satisfies Options
@@ -32,11 +35,21 @@ export const dev = async (optionsIn: Options) => {
     config: 'src/tamagui.config.ts',
   })
 
-  // @ts-ignore
+  const { default: getPort } = await import('get-port')
+
+  const [internalNativePort, externalNativePort] = await Promise.all([
+    getPort(),
+    getPort({
+      port: options.port,
+    }),
+  ])
+
   const { viteServer, start, stop } = await create({
     root: options.root,
     host: options.host,
+    nativePort: internalNativePort,
     webConfig: {
+      // @ts-ignore
       plugins: [tamaguiVitePlugin, inspectPlugin()],
     },
     buildConfig: {
@@ -46,23 +59,47 @@ export const dev = async (optionsIn: Options) => {
 
   const { closePromise } = await start()
 
-  // biome-ignore lint/suspicious/noConsoleLog: ok
-  console.log(`Listening on:`, chalk.green(`http://localhost:8081`))
+  const expressApp = express()
+
+  const userAppServer = await startUserAppServer(options, expressApp)
+
+  const target = `http://${options.host}:${internalNativePort}`
+  expressApp.use(
+    '/',
+    createProxyMiddleware({
+      target,
+      ws: true,
+    })
+  )
+
+  console.info(
+    `Native server:\n  `,
+    chalk.green(`http://localhost:${externalNativePort}`)
+  )
+  console.info(`Web server:`)
   viteServer.printUrls()
 
-  const vertqlExpressServer = startVertqlServer(options, viteServer)
-  const userAppServer = startUserAppServer(options, vertqlExpressServer)
+  const expressServer = expressApp.listen(externalNativePort)
 
   const vertqlGraphBuilder = await startVertqlGraphBuilder(options)
   vertqlGraphBuilder.watch()
 
-  const expressServer = vertqlExpressServer.listen(8091)
+  process.on('beforeExit', () => {
+    stop()
+  })
+
+  process.on('SIGINT', () => {
+    stop()
+  })
+
+  process.on('uncaughtException', (err) => {
+    console.error(err?.message || err)
+  })
 
   // wait for all servers
   await Promise.all([
     closePromise,
     userAppServer,
-    vertqlExpressServer,
     new Promise((res) => {
       expressServer.once('close', res)
     }),
@@ -79,21 +116,6 @@ async function startVertqlGraphBuilder(options: OptionsFilled) {
   })
 }
 
-function startVertqlServer(options: OptionsFilled, viteServer: ViteDevServer) {
-  const viteAddress = viteServer.httpServer?.address
-  const app = express()
-  const target = `http://${viteAddress}:8081`
-  // app.use(
-  //   '/',
-  //   createProxyMiddleware({
-  //     target,
-  //     ws: true,
-  //   })
-  // )
-
-  return app
-}
-
 async function startUserAppServer(options: OptionsFilled, app: Express) {
   const serverPath = join(options.root, 'server.ts')
   if (await pathExists(serverPath)) {
@@ -101,8 +123,7 @@ async function startUserAppServer(options: OptionsFilled, app: Express) {
     const { unregister } = register()
     try {
       const serverEndpoint = require(serverPath).default
-      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-      console.log('starting user server', serverPath)
+      console.info('starting user server', serverPath)
       serverEndpoint(app)
     } finally {
       unregister()
