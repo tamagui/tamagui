@@ -1329,7 +1329,7 @@ export function createComponent<
 
   let res: ComponentType = component as any
 
-  if (process.env.TAMAGUI_FORCE_MEMO) {
+  if (process.env.TAMAGUI_FORCE_MEMO || staticConfig.memo) {
     res = memo(res) as any
   }
 
