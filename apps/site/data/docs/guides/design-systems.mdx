@@ -3,12 +3,11 @@ title: Design Systems
 description: Put together your own design system.
 ---
 
-To skip to some real examples:
-
-- The Nextjs-Expo-Solito template in `create-tamagui` is itself a [well structured monorepo](https://github.com/tamagui/tamagui/tree/master/starters).
-  {/* - More complete, the [tamagui](https://github.com/tamagui/tamagui/tree/master/packages/tamagui) package itself. */}
-
 Tamagui allows you to build your own set of components that are optimized with the compiler whenever they are used in your app.
+
+<Notice>
+  To skip to some real examples: The Nextjs-Expo-Solito template in `create-tamagui` is itself a [well structured monorepo](https://github.com/tamagui/tamagui/tree/master/starters); More complete, the [tamagui](https://github.com/tamagui/tamagui/tree/master/packages/tamagui) package itself.
+</Notice>
 
 By default, if you just use `styled()` in your app, Tamagui **won't** be able to optimize those components. This is because the compiler needs to know about those components at build-time.
 
@@ -16,7 +15,7 @@ Let's break down how to set this up in more detail.
 
 <Notice>
   This guide assumes that you have knowledge on how to setup a monorepo using your
-  preferred package manager.
+  preferred package manager. Keep in mind that this pattern isn't necessary to start.
 </Notice>
 
 ### Step 1: Create a package

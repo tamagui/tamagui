@@ -33,6 +33,8 @@ export default function CodeBlocksWithTabs(props: Props) {
       flexDirection="column"
       defaultValue={children[0].props.id}
       orientation="horizontal"
+      my="$4"
+      theme="alt1"
     >
       <Tabs.List>
         {children.map((child, index) => {
@@ -43,6 +45,7 @@ export default function CodeBlocksWithTabs(props: Props) {
               borderBottomLeftRadius={0}
               borderBottomRightRadius={0}
               value={child.props.id}
+              size='$3'
               key={index}
             >
               {child.props.id}

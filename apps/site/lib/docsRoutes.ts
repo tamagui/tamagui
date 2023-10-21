@@ -15,27 +15,17 @@ export const docsRoutes: DocsRoute[] = [
   },
   {
     pages: [
-      { title: 'Overview', route: '/docs/guides/overview' },
       { title: 'Starting with a template', route: '/docs/guides/create-tamagui-app' },
     ],
   },
   {
-    label: 'Setup your project',
+    label: 'Frameworks',
     pages: [
       { title: 'Next.js', route: '/docs/guides/next-js' },
       { title: 'Expo', route: '/docs/guides/expo' },
       { title: 'Vite', route: '/docs/guides/vite' },
     ],
   },
-  {
-    label: 'Design Systems',
-    pages: [
-      { title: 'Introduction', route: '/docs/guides/design-systems' },
-      { title: 'Building a button', route: '/docs/guides/how-to-build-a-button' },
-      { title: 'Creating a custom theme', route: '/docs/guides/theme-builder' },
-    ],
-  },
-
   {
     type: 'hr',
     title: 'Core',
@@ -45,6 +35,7 @@ export const docsRoutes: DocsRoute[] = [
     pages: [
       { title: 'Configuration', route: '/docs/core/configuration' },
       { title: 'Stack & Text', route: '/docs/core/stack-and-text' },
+      { title: 'Props', route: '/docs/styling/props' },
       { title: 'Animations', route: '/docs/core/animations' },
       { title: 'useMedia', route: '/docs/core/use-media' },
       { title: 'FontLanguage', route: '/docs/core/font-language' },
@@ -53,10 +44,7 @@ export const docsRoutes: DocsRoute[] = [
 
   {
     type: 'hr',
-    title: 'Components',
-  },
-  {
-    pages: [{ title: 'Overview', route: '/docs/components/overview' }],
+    title: 'Tamagui',
   },
   {
     label: 'Basic',
@@ -164,7 +152,6 @@ export const docsRoutes: DocsRoute[] = [
   {
     pages: [
       { title: 'Introduction', route: '/docs/styling/introduction' },
-      // { title: 'Props', route: '/docs/styling/props' },
       { title: 'styled', route: '/docs/styling/styled' },
       { title: 'Groups', route: '/docs/styling/groups' },
       { title: 'Variants', route: '/docs/styling/variants' },
@@ -181,6 +168,15 @@ export const docsRoutes: DocsRoute[] = [
       { title: 'createStyledContext', route: '/docs/advanced/createStyledContext' },
     ],
   },
+  {
+    label: 'Design Systems',
+    pages: [
+      { title: 'Introduction', route: '/docs/guides/design-systems' },
+      { title: 'Building a button', route: '/docs/guides/how-to-build-a-button' },
+      { title: 'Creating a custom theme', route: '/docs/guides/theme-builder' },
+    ],
+  },
+
 
   {
     type: 'hr',
