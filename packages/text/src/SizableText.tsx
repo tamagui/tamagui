@@ -14,7 +14,7 @@ const variants = {
 
 // this is odd but we need it because otherwise if a parent sets
 // a new fontFamily it wont go through size variant unless size also set
-// and its messing up types due to overlap with stlye prop so doing super odd stuff
+// and its messing up types due to overlap with style prop so doing super odd stuff
 variants['fontFamily'] = {
   '...': (_, extras) => {
     const size = extras.props['size'] || '$true'
