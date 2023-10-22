@@ -1,8 +1,17 @@
 export function getBaseViews() {
   const native = require('react-native')
-  const View =
-    require('react-native/Libraries/Components/View/ViewNativeComponent').default
-  const TextAncestor = require('react-native/Libraries/Text/TextAncestor')
+
+  let View
+  let TextAncestor
+
+  if (process.env.NODE_ENV !== 'test') {
+    View = require('react-native/Libraries/Components/View/ViewNativeComponent').default
+    TextAncestor = require('react-native/Libraries/Text/TextAncestor')
+  }
+
+  if (!View) {
+    View = native.View || native.default.View
+  }
 
   return {
     View,
