@@ -507,14 +507,11 @@ export function createComponent<
       componentName,
       disable: disableTheme,
       shallow: stateRef.current.themeShallow,
-      // if this returns undefined it defers to the keys tracking, so its only used to force either updates or no updates
-      shouldUpdate: () => {
-        return (
-          // when we use $theme- styles we need to force it to re-render on theme changes (this can be optimized likely)
-          stateRef.current.isListeningToTheme
-        )
-      },
       debug: debugProp,
+    }
+
+    if (typeof stateRef.current.isListeningToTheme === 'boolean') {
+      themeStateProps.shouldUpdate = () => stateRef.current.isListeningToTheme
     }
 
     // on native we optimize theme changes if fastSchemeChange is enabled, otherwise deopt

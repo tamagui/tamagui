@@ -99,7 +99,7 @@ const BenchmarkOne = ({ name }) => {
   )
 }
 
-const iterArr = new Array(900).fill(0)
+const iterArr = new Array(1000).fill(0)
 
 const BenchTama = () => {
   return (

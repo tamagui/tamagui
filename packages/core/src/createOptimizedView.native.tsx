@@ -1,5 +1,7 @@
 // native only, taken from react-native
 
+import { createElement, useContext } from 'react'
+
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -18,7 +20,7 @@ export function createOptimizedView(
   const TextAncestor = baseViews.TextAncestor
   const ViewNativeComponent = baseViews.View
 
-  // return <ViewNativeComponent {...viewProps}>{children}</ViewNativeComponent>
+  // return createElement(ViewNativeComponent, viewProps, children)
 
   const {
     accessibilityElementsHidden,
@@ -117,11 +119,15 @@ export function createOptimizedView(
     }
   }
 
-  return (
-    <TextAncestor.Provider value={false}>
-      <ViewNativeComponent {...finalProps}>{children}</ViewNativeComponent>
-    </TextAncestor.Provider>
-  )
+  // isInText is significantly faster than just providing it each time
+  const isInText = useContext(TextAncestor)
+  const finalElement = createElement(ViewNativeComponent, finalProps, children)
+
+  if (!isInText) {
+    return finalElement
+  }
+
+  return createElement(TextAncestor.Provider, { value: false }, finalElement)
 }
 
 export function getAccessibilityRoleFromRole(role) {
