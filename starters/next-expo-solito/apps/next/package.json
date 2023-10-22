@@ -19,7 +19,6 @@
     "react-dom": "^18.2.0",
     "react-native": "0.72.5",
     "react-native-web": "~0.19.6",
-    "react-native-web-lite": "latest",
     "vercel": "latest"
   },
   "devDependencies": {

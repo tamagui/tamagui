@@ -123,11 +123,6 @@ export default withPlugins([
 
     // rest are all optional:
 
-    // Experimentally opt into react-native-web which drops support for all react-native
-    // built-in List components and removes many deprecated APIs for code-reduction, slimming
-    // bundle sizes down nearly 30-50Kb.
-    useReactNativeWebLite: true,
-
     // disable static extraction, faster to iterate in dev mode (default false)
     disableExtraction: process.env.NODE_ENV === 'development',
 
