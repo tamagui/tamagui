@@ -5518,12 +5518,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@supabase/gotrue-js@npm:^2.54.2":
-  version: 2.55.0
-  resolution: "@supabase/gotrue-js@npm:2.55.0"
+"@supabase/gotrue-js@npm:^2.56.0":
+  version: 2.57.0
+  resolution: "@supabase/gotrue-js@npm:2.57.0"
   dependencies:
     "@supabase/node-fetch": ^2.6.14
-  checksum: 0c66a8456e885cd5fde96df631822035fcafe94c7f3b51150e174e44c5821202a8f3424df6c55e9f25da712be3737d021d3e831aa619e511cc29b44eab5bdddf
+  checksum: 2328b53f5ed33845e6097f84c76db094572f091da465018b93a3d5f9f41161b8d25b505d5a94d462242b7d346083a1a43b877e06f956e5298efe64ddb84ead63
   languageName: node
   linkType: hard
 
@@ -5545,12 +5545,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@supabase/postgrest-js@npm:^1.8.4":
-  version: 1.8.4
-  resolution: "@supabase/postgrest-js@npm:1.8.4"
+"@supabase/postgrest-js@npm:^1.8.5":
+  version: 1.8.5
+  resolution: "@supabase/postgrest-js@npm:1.8.5"
   dependencies:
     "@supabase/node-fetch": ^2.6.14
-  checksum: e37f3046362986b739fc237b6aef9d08cf40e22fff667a3f98010f8638f91fce7019cc3300059d4405385181e7ef89ad85acbe2906d3fb0aa2d969a2a31b3d1e
+  checksum: 45d188bfb30bbc964131ee0da71b12c3a9e4631e62948a02512fe1b7ae021a1b883f543d477c649a87e4a87bc8655e798657a4b15d4e0ec03e7d090bc835cb46
   languageName: node
   linkType: hard
 
@@ -5564,15 +5564,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@supabase/realtime-js@npm:^2.8.0":
-  version: 2.8.0
-  resolution: "@supabase/realtime-js@npm:2.8.0"
+"@supabase/realtime-js@npm:^2.8.1":
+  version: 2.8.1
+  resolution: "@supabase/realtime-js@npm:2.8.1"
   dependencies:
     "@supabase/node-fetch": ^2.6.14
     "@types/phoenix": ^1.5.4
     "@types/websocket": ^1.0.3
     websocket: ^1.0.34
-  checksum: 85fff3aada0f3a56b803007c3cd7c8962219f9f5e2b9a6c3afaa0dfa04ad845e35e347f903afb1cda42f4369c9be21e2a1edc08362f55ce25390dc8275661184
+  checksum: 2c20fcf893c45a65eca3ac40aaaddbf660f73d690643fce240fc15106209aec3f0568484409c4702b57d86239c5db086dc27f6db2e6ae67921021f8a7351e9bd
   languageName: node
   linkType: hard
 
@@ -5618,17 +5618,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@supabase/supabase-js@npm:^2.38.0":
-  version: 2.38.0
-  resolution: "@supabase/supabase-js@npm:2.38.0"
+"@supabase/supabase-js@npm:^2.38.2":
+  version: 2.38.2
+  resolution: "@supabase/supabase-js@npm:2.38.2"
   dependencies:
     "@supabase/functions-js": ^2.1.5
-    "@supabase/gotrue-js": ^2.54.2
+    "@supabase/gotrue-js": ^2.56.0
     "@supabase/node-fetch": ^2.6.14
-    "@supabase/postgrest-js": ^1.8.4
-    "@supabase/realtime-js": ^2.8.0
+    "@supabase/postgrest-js": ^1.8.5
+    "@supabase/realtime-js": ^2.8.1
     "@supabase/storage-js": ^2.5.4
-  checksum: fc882c049b15904c63b7d37a652a6da71f2e34fdebce15fe1d164e83dbdd1b30470e1700e740234e989e7ceac3c027f5f31617ea7ada9da63a1afebdb6f9b259
+  checksum: 2346fe27e8cb566ce2cea0a3484518bf487390677e68511f6aa6bbfd05b923463ceb4a2c680707c4958fec62305deba38d25da1e2d359376002dd406a07c1c90
   languageName: node
   linkType: hard
 
@@ -7487,7 +7487,7 @@ __metadata:
     "@supabase/auth-helpers-nextjs": ^0.8.1
     "@supabase/auth-helpers-react": ^0.4.2
     "@supabase/supabase-auth-helpers": ^1.4.2
-    "@supabase/supabase-js": ^2.38.0
+    "@supabase/supabase-js": ^2.38.2
     "@tamagui/animate-presence": 1.75.1
     "@tamagui/animations-reanimated": 1.75.1
     "@tamagui/build": 1.75.1
