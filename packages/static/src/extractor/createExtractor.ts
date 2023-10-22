@@ -1942,14 +1942,15 @@ export function createExtractor(
                 ...out.pseudos,
               }
 
-              if (usedThemeKeys.size > 0) {
-                Object.entries(props).forEach(([key, value]) => {
-                  if (usedThemeKeys.has(value)) {
-                    outProps[key] = value
-                  }
-                })
+              if (options.experimentalFlattenThemesOnNative) {
+                if (usedThemeKeys.size > 0) {
+                  Object.entries(props).forEach(([key, value]) => {
+                    if (usedThemeKeys.has(value)) {
+                      outProps[key] = value
+                    }
+                  })
+                }
               }
-
 
               if (shouldPrintDebug) {
                 logger.info(`(${debugName})`)
