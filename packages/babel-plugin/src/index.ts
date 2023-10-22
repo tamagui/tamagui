@@ -118,7 +118,9 @@ export default declare(function snackBabelPlugin(
               // for now just turn it off entirely at a small perf loss
               disableExtractInlineMedia: true,
               // disable extracting variables as no native concept of them (only theme values)
-              disableExtractVariables: false,
+              disableExtractVariables: options.experimentalFlattenThemesOnNative
+                ? false
+                : 'theme',
               sourcePath,
 
               // disabling flattening for now
