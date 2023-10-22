@@ -8140,7 +8140,7 @@ __metadata:
     vitest: ^0.34.3
     vitest-axe: ^0.1.0
     vitest-mock-process: ^1.0.4
-    vitest-react-native: ^0.1.3
+    vitest-react-native: ^0.1.4
   languageName: unknown
   linkType: soft
 
@@ -28672,9 +28672,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vitest-react-native@npm:^0.1.3":
-  version: 0.1.3
-  resolution: "vitest-react-native@npm:0.1.3"
+"vitest-react-native@npm:^0.1.4":
+  version: 0.1.4
+  resolution: "vitest-react-native@npm:0.1.4"
   dependencies:
     "@bunchtogether/vite-plugin-flow": ^1.0.2
     "@react-native/polyfills": ^2.0.0
@@ -28686,7 +28686,7 @@ __metadata:
     react: "*"
     react-native: "*"
     vite: "*"
-  checksum: 4855e8bd893c1b25c1d1060746b647601d2522605e7c920985d61795ea4e1170485cfdda9323f810e73bc957bd60707242229d61333314d3c21a73b6f7a5b1c1
+  checksum: ea4417d3dc8e373d356dfe4bb950e94f682d50c3edc16512ef6a096ce4c033979368ffb07ecc4bf44befad777b4e41a8cb9168ae068ce6ead8cf12193ebf8489
   languageName: node
   linkType: hard
 
