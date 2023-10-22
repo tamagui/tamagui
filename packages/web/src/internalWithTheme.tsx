@@ -2,13 +2,15 @@ import { useMemo } from 'react'
 
 import { useTheme } from './hooks/useTheme'
 
-/** this is for tamagui babel plugin */
-export const internalWithTheme = (Component: any, styleProvider: any) => {
+/** internal: this is for tamagui babel plugin usage only */
+
+export const internalWithTheme = (
+  Component: any,
+  styleProvider: any,
+  memoArgs: string[]
+) => {
   return (props) => {
     const theme = useTheme()
-    const style = useMemo(() => {
-      return Object.assign({}, styleProvider(theme))
-    }, [theme])
-    return <Component style={style} {...props} />
+    return <Component style={useMemo(() => styleProvider(theme), memoArgs)} {...props} />
   }
 }

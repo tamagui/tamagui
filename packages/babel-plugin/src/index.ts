@@ -6,6 +6,12 @@ import template from '@babel/template'
 import { Visitor } from '@babel/traverse'
 import * as t from '@babel/types'
 import { simpleHash } from '@tamagui/simple-hash'
+import {
+  createExtractor,
+  getPragmaOptions,
+  isSimpleSpread,
+  literalToAst,
+} from '@tamagui/static'
 import type { TamaguiOptions } from '@tamagui/static'
 
 const importNativeView = template(`
@@ -20,13 +26,6 @@ const __ReactNativeStyleSheet = require('react-native').StyleSheet;
 const importWithTheme = template(`
 const __internalWithTheme = require('@tamagui/core').internalWithTheme;
 `)
-
-const {
-  createExtractor,
-  getPragmaOptions,
-  isSimpleSpread,
-  literalToAst,
-} = require('@tamagui/static')
 
 const extractor = createExtractor()
 
@@ -137,51 +136,79 @@ export default declare(function snackBabelPlugin(
               },
 
               onExtractTag(props) {
-                if (!props.isFlattened) {
+                const { isFlattened } = props
+
+                if (!isFlattened) {
+                  // we aren't optimizing at all if not flattened anymore
                   return
                 }
+
                 assertValidTag(props.node)
                 const stylesExpr = t.arrayExpression([])
                 const finalAttrs: (t.JSXAttribute | t.JSXSpreadAttribute)[] = []
+                const themeKeysUsed = new Set<string>()
 
-                function addStyle(expr: any, key: string) {
-                  if (props.isFlattened) {
-                    stylesExpr.elements.push(expr)
+                function getStyleExpression(style: Object | null) {
+                  if (!style) return
+
+                  // split theme properties and leave them as props since RN has no concept of theme
+                  const { plain, themed } = splitThemeStyles(style)
+
+                  const ident = addSheetStyle(plain, props.node)
+
+                  if (themed && options.experimentalFlattenThemesOnNative) {
+                    for (const key in themed) {
+                      themeKeysUsed.add(key)
+                    }
+
+                    // make a sub-array
+                    return t.arrayExpression([ident, addThemedStyleExpression(themed)])
                   } else {
-                    finalAttrs.push(
-                      t.jsxAttribute(
-                        t.jsxIdentifier(`_style${key}`),
-                        t.jsxExpressionContainer(expr)
-                      )
-                    )
+                    // since we only do flattened disabling this path
+                    return ident
+                    // when we supported extracting non-flattened
+                    // addStyleExpression(ident, isFlattened ? simpleHash(JSON.stringify(plain)) : undefined)
                   }
                 }
 
-                let themedStyles: null | Object = null
+                function addStyleExpression(expr: any) {
+                  stylesExpr.elements.push(expr)
+                }
+
+                function addThemedStyleExpression(styles: Object) {
+                  const themedStylesAst = literalToAst(styles) as t.ObjectExpression
+                  themedStylesAst.properties.forEach((_) => {
+                    const prop = _ as t.ObjectProperty
+                    if (prop.value.type === 'StringLiteral') {
+                      prop.value = t.memberExpression(
+                        t.identifier('theme'),
+                        t.identifier(prop.value.value.slice(1))
+                      )
+                    }
+                  })
+                  return themedStylesAst
+                }
 
                 for (const attr of props.attrs) {
                   switch (attr.type) {
                     case 'style': {
-                      // split theme properties and leave them as props since RN has no concept of theme
-                      const { themed, plain } = splitThemeStyles(attr.value)
-                      themedStyles = themed
-                      const ident = addSheetStyle(plain, props.node)
-                      addStyle(ident, simpleHash(JSON.stringify(plain)))
+                      addStyleExpression(getStyleExpression(attr.value))
                       break
                     }
                     case 'ternary': {
-                      // TODO use splitThemeStyles
                       const { consequent, alternate } = attr.value
-                      const cons = addSheetStyle(consequent, props.node)
-                      const alt = addSheetStyle(alternate, props.node)
+
+                      const consExpr = getStyleExpression(consequent)
+                      const altExpr = getStyleExpression(alternate)
+
                       const styleExpr = t.conditionalExpression(
                         attr.value.test,
-                        cons,
-                        alt
+                        consExpr || t.nullLiteral(),
+                        altExpr || t.nullLiteral()
                       )
-                      addStyle(
-                        styleExpr,
-                        simpleHash(JSON.stringify({ consequent, alternate }))
+                      addStyleExpression(
+                        styleExpr
+                        // isFlattened ? simpleHash(JSON.stringify({ consequent, alternate })) : undefined
                       )
                       break
                     }
@@ -200,54 +227,39 @@ export default declare(function snackBabelPlugin(
                 }
 
                 props.node.attributes = finalAttrs
+
                 if (props.isFlattened) {
-                  if (themedStyles) {
+                  if (themeKeysUsed.size) {
                     if (!hasImportedViewWrapper) {
                       root.unshiftContainer('body', importWithTheme())
                       hasImportedViewWrapper = true
                     }
-                    const themedStylesAst = literalToAst(themedStyles)
-                    themedStylesAst.properties.forEach((prop) => {
-                      if (prop.value.type === 'StringLiteral') {
-                        prop.value = t.memberExpression(
-                          t.identifier('theme'),
-                          t.identifier(prop.value.value.slice(1))
-                        )
-                      }
-                    })
+
+                    const name = props.node.name['name']
                     const WrapperIdentifier = root.scope.generateUidIdentifier(
-                      props.node.name.name + 'Wrapper'
+                      name + 'Wrapper'
                     )
+
                     root.pushContainer(
                       'body',
                       t.variableDeclaration('const', [
                         t.variableDeclarator(
                           WrapperIdentifier,
                           t.callExpression(t.identifier('__internalWithTheme'), [
-                            t.identifier(props.node.name.name),
+                            t.identifier(name),
                             t.arrowFunctionExpression(
                               [t.identifier('theme')],
-                              t.blockStatement([
-                                t.returnStatement(
-                                  t.callExpression(
-                                    t.memberExpression(
-                                      t.identifier('Object'),
-                                      t.identifier('assign')
-                                    ),
-                                    [
-                                      stylesExpr.elements.length === 1
-                                        ? (stylesExpr.elements[0] as any)
-                                        : stylesExpr,
-                                      themedStylesAst,
-                                    ]
-                                  )
-                                ),
-                              ])
+                              t.blockStatement([t.returnStatement(stylesExpr)])
+                            ),
+                            t.arrayExpression(
+                              [...themeKeysUsed].map((k) => t.stringLiteral(k))
                             ),
                           ])
                         ),
                       ])
                     )
+
+                    // @ts-ignore
                     props.node.name = WrapperIdentifier
                   } else {
                     props.node.attributes.push(
@@ -322,8 +334,8 @@ function assertValidTag(node: t.JSXOpeningElement) {
 }
 
 function splitThemeStyles(style: Object) {
-  const themed = {}
-  const plain = {}
+  const themed: Object = {}
+  const plain: Object = {}
   let noTheme = true
   for (const key in style) {
     const val = style[key]

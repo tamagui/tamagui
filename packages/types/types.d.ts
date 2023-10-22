@@ -96,6 +96,11 @@ export interface TamaguiOptions {
   excludeProps?: Set<string>
   inlineProps?: Set<string>
   forceExtractStyleDefinitions?: boolean
+
+  /**
+   * (Experimental) Will flatten theme value usages on native as well
+   */
+  experimentalFlattenThemesOnNative?: boolean
 }
 
 // for cli
