@@ -46,12 +46,14 @@ export const ToggleFrame = styled(ThemeableStack, {
     active: {
       true: {
         zIndex: 1,
+
         hoverStyle: {
           backgroundColor: '$background',
         },
+
         focusStyle: {
-          borderColor: '$borderColorPress',
-          backgroundColor: '$backgroundPress',
+          borderColor: '$borderColor',
+          backgroundColor: '$background',
         },
       },
     },
