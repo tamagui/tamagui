@@ -155,3 +155,20 @@ export default () => {
     },
   ]}
 />
+
+When it is active, it will receive an `active` prop set to true. This means you can customize the active styles like so:
+
+```tsx
+import { ToggleGroup } from '@tamagui/toggle-group'
+import { styled } from 'tamagui'
+
+const MyToggleGroupItem = styled(ToggleGroup.Item, {
+  variants: {
+    active: {
+      true: {
+        backgroundColor: 'red'
+      },
+    },
+  },
+})
+```
