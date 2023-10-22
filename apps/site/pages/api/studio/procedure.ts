@@ -11,7 +11,9 @@ export default apiRoute(async (req, res) => {
     res.status(500).json({})
     return
   }
+
   const { supabase } = await protectApiRoute({ req, res })
+
   await checkSponsorAccess({
     req,
     res,
@@ -26,6 +28,11 @@ export default apiRoute(async (req, res) => {
       res
         .status(400)
         .json({ error: '`procedure` query param is not provided / incorrect.' })
+      return
+    }
+
+    if (!(procedureName in apis)) {
+      res.status(400).json({ error: `No procedure found: ${procedureName}` })
       return
     }
 
