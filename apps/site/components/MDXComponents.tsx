@@ -584,6 +584,25 @@ export const components = {
             </Card.Footer>
           </Card>
         </ThemeTintAlt>
+
+        <NextLink passHref href="/docs/intro/installation">
+          <Card
+            tag="a"
+            animation="quickest"
+            f={1}
+            y={0}
+            hoverStyle={{ y: -10, bc: '$backgroundHover' }}
+          >
+            <Card.Header gap="$2">
+              <H4 size="$4" color="$color8">
+                Install
+              </H4>
+              <Paragraph size="$6" color="$color9">
+                Set up an app.
+              </Paragraph>
+            </Card.Header>
+          </Card>
+        </NextLink>
       </XStack>
     )
   },
