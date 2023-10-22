@@ -26,7 +26,7 @@ export const HeaderLinks = ({ showExtra, forceShowAllLinks, showAuth }: HeaderPr
   // there is user context and supabase setup in the current page
   return (
     <>
-      <NextLink prefetch={false} href="/docs/intro/installation">
+      <NextLink passHref prefetch={false} href="/docs/intro/installation">
         <HeadAnchor
           $sm={{
             display: forceShowAllLinks ? 'flex' : 'none',
@@ -36,7 +36,7 @@ export const HeaderLinks = ({ showExtra, forceShowAllLinks, showAuth }: HeaderPr
         </HeadAnchor>
       </NextLink>
 
-      <NextLink prefetch={false} href="/studio">
+      <NextLink passHref prefetch={false} href="/studio">
         <HeadAnchor
           $md={{
             display: forceShowAllLinks ? 'flex' : 'none',
@@ -47,7 +47,7 @@ export const HeaderLinks = ({ showExtra, forceShowAllLinks, showAuth }: HeaderPr
       </NextLink>
 
       {!router.asPath.startsWith('/takeout') && (
-        <NextLink prefetch={false} href="/takeout">
+        <NextLink passHref prefetch={false} href="/takeout">
           <TooltipSimple delay={0} restMs={25} label="Takeout">
             <HeadAnchor
               {...(!forceShowAllLinks && {

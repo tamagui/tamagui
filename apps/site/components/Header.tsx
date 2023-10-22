@@ -194,7 +194,6 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
       >
         <NextLink href="/" aria-label="Homepage">
           <XStack
-            tag="a"
             cursor={isHome ? 'default' : 'pointer'}
             pointerEvents="auto"
             als="center"
@@ -239,7 +238,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
           ) : (
             <NextLink target="_blank" href="https://github.com/tamagui/tamagui">
               <TooltipSimple delay={0} restMs={25} label="Star on Github">
-                <YStack tag="a" p="$2" opacity={0.7} hoverStyle={{ opacity: 1 }}>
+                <YStack p="$2" opacity={0.7} hoverStyle={{ opacity: 1 }}>
                   <VisuallyHidden>
                     <Text>Github</Text>
                   </VisuallyHidden>
