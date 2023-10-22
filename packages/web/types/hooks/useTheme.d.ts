@@ -5,6 +5,7 @@ export type ChangedThemeResponse = {
     state?: ThemeManagerState;
     themeManager?: ThemeManager | null;
     isNewTheme: boolean;
+    inversed?: null | boolean;
     mounted?: boolean;
 };
 export type ThemeGettable<Val> = Val & {
@@ -25,7 +26,7 @@ export type UseThemeResult = {
 };
 export declare const useTheme: (props?: ThemeProps) => UseThemeResult;
 export declare const useThemeWithState: (props: UseThemeWithStateProps) => [ChangedThemeResponse, ThemeParsed];
-export declare function getThemeProxied({ theme, name }: ThemeManagerState, deopt?: boolean, themeManager?: ThemeManager, keys?: string[], debug?: DebugProp): UseThemeResult;
+export declare function getThemeProxied({ theme, name, scheme }: ThemeManagerState, deopt?: boolean, themeManager?: ThemeManager, keys?: string[], debug?: DebugProp): UseThemeResult;
 export declare const activeThemeManagers: Set<ThemeManager>;
 export declare const useChangeThemeEffect: (props: UseThemeWithStateProps, isRoot?: boolean, keys?: string[], shouldUpdate?: () => boolean | undefined) => ChangedThemeResponse;
 //# sourceMappingURL=useTheme.d.ts.map

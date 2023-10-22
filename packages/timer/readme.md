@@ -1,4 +1,4 @@
-[timer console output screenshot](./screen.png)!
+[time console output screenshot](./screen.png)!
 
 ```tsx
 import { timer } from '@tamagui/timer'

@@ -38,6 +38,7 @@ import type {
   DebugProp,
   GetStyleResult,
   GetStyleState,
+  IsMediaType,
   MediaQueryKey,
   PseudoPropKeys,
   PseudoStyles,
@@ -197,8 +198,7 @@ export const getSplitStyles: StyleSplitter = (
   ) {
     console.groupCollapsed('getSplitStyles (collapsed)')
 
-    // biome-ignore lint/suspicious/noConsoleLog: ok
-    console.log({
+    console.info({
       props,
       staticConfig,
       shouldDoClasses,
@@ -281,8 +281,7 @@ export const getSplitStyles: StyleSplitter = (
       if (valInitType === 'string' && valInit[0] === '_') {
         if (keyInit in validStyleProps || keyInit.includes('-')) {
           if (process.env.NODE_ENV === 'development' && debug) {
-            // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-            console.log(`Adding compiled style ${keyInit}: ${valInit}`)
+            console.info(`Adding compiled style ${keyInit}: ${valInit}`)
           }
 
           if (shouldDoClasses) {
@@ -484,8 +483,7 @@ export const getSplitStyles: StyleSplitter = (
 
           if (isValidClassName || isMediaOrPseudo) {
             if (process.env.NODE_ENV === 'development' && debug) {
-              // biome-ignore lint/suspicious/noConsoleLog: ok
-              console.log('tamagui classname prop', keyInit, valInit)
+              console.info('tamagui classname prop', keyInit, valInit)
             }
 
             if (shouldDoClasses) {
@@ -516,8 +514,8 @@ export const getSplitStyles: StyleSplitter = (
     const isStyleLikeKey = isShorthand || isValidStyleKeyInit || isVariant
 
     let isPseudo = keyInit in validPseudoKeys
-    let isMedia = !isStyleLikeKey && !isPseudo && isMediaKey(keyInit)
-    let isMediaOrPseudo = isMedia || isPseudo
+    let isMedia: IsMediaType = !isStyleLikeKey && !isPseudo && isMediaKey(keyInit)
+    let isMediaOrPseudo = Boolean(isMedia || isPseudo)
 
     const isStyleProp =
       isMediaOrPseudo ||
@@ -556,11 +554,9 @@ export const getSplitStyles: StyleSplitter = (
           shouldPassThrough ? '(pass)' : ''
         } 🔹🔹🔹🔹`
       )
-      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-      console.log({ isVariant, valInit, shouldPassProp })
+      console.info({ isVariant, valInit, shouldPassProp })
       if (isClient) {
-        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-        console.log({
+        console.info({
           variants,
           variant: variants?.[keyInit],
           isVariant,
@@ -644,8 +640,7 @@ export const getSplitStyles: StyleSplitter = (
       console.groupCollapsed('  💠 expanded', keyInit, valInit)
       try {
         if (!isServer && isDevTools) {
-          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-          console.log({
+          console.info({
             expanded,
             styleProps,
             componentState,
@@ -657,8 +652,7 @@ export const getSplitStyles: StyleSplitter = (
             usedKeys: { ...usedKeys },
             curProps: { ...styleState.curProps },
           })
-          // biome-ignore lint/suspicious/noConsoleLog: ok
-          console.log('expanded', expanded, '\nusedKeys', { ...usedKeys }, '\ncurrent', {
+          console.info('expanded', expanded, '\nusedKeys', { ...usedKeys }, '\ncurrent', {
             ...style,
           })
         }
@@ -676,7 +670,7 @@ export const getSplitStyles: StyleSplitter = (
 
       isPseudo = key in validPseudoKeys
       isMedia = !isPseudo && !isValidStyleKeyInit && isMediaKey(key)
-      isMediaOrPseudo = isMedia || isPseudo
+      isMediaOrPseudo = Boolean(isMedia || isPseudo)
       isVariant = variants && key in variants
 
       if (inlineProps?.has(key) || (IS_STATIC && inlineWhenUnflattened?.has(key))) {
@@ -693,8 +687,7 @@ export const getSplitStyles: StyleSplitter = (
         passDownProp(viewProps, key, val, isMediaOrPseudo)
         if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
           console.groupCollapsed(` - passing down prop ${key}`)
-          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-          console.log({ val, after: { ...viewProps[key] } })
+          console.info({ val, after: { ...viewProps[key] } })
           console.groupEnd()
         }
         continue
@@ -753,8 +746,7 @@ export const getSplitStyles: StyleSplitter = (
             // prettier-ignore
             console.groupCollapsed("pseudo (classes)", key);
 
-            // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-            console.log({ pseudoStyleObject, pseudoStyles })
+            console.info({ pseudoStyleObject, pseudoStyles })
             console.groupEnd()
           }
 
@@ -793,8 +785,7 @@ export const getSplitStyles: StyleSplitter = (
             // prettier-ignore
             console.groupCollapsed("pseudo", key, { isDisabled });
 
-            // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-            console.log(pseudoStyleObject, {
+            console.info(pseudoStyleObject, {
               isDisabled,
               descriptorKey,
               descriptor,
@@ -827,8 +818,7 @@ export const getSplitStyles: StyleSplitter = (
               }
 
               if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-                // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-                console.log('    subKey', pkey, shouldMerge, {
+                console.info('    subKey', pkey, shouldMerge, {
                   importance,
                   curImportance,
                   pkey,
@@ -855,8 +845,7 @@ export const getSplitStyles: StyleSplitter = (
       else if (isMedia) {
         if (!val) continue
 
-        const isPlatformMedia = key.startsWith('$platform-')
-        if (isPlatformMedia) {
+        if (isMedia === 'platform') {
           const platform = key.slice(10)
           if (
             // supports web, ios, android
@@ -884,8 +873,7 @@ export const getSplitStyles: StyleSplitter = (
         const mediaKeyShort = key.slice(1)
 
         if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-          // biome-ignore lint/suspicious/noConsoleLog: ok
-          console.log(`  📺 ${key}`, {
+          console.info(`  📺 ${key}`, {
             key,
             val,
             mediaStyle,
@@ -920,8 +908,7 @@ export const getSplitStyles: StyleSplitter = (
                 space = val['space']
                 usedKeys['space'] = importance
                 if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-                  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-                  console.log(
+                  console.info(
                     `Found more important space for current media ${mediaKeyShort}: ${val} (importance: ${importance})`
                   )
                 }
@@ -938,6 +925,7 @@ export const getSplitStyles: StyleSplitter = (
               style,
               mediaKeyShort,
               mediaQueryConfig,
+              isMedia,
               false,
               priority
             )
@@ -947,9 +935,9 @@ export const getSplitStyles: StyleSplitter = (
             mergeClassName(transforms, classNames, fullKey, out.identifier, true, true)
           }
         } else {
-          const isThemeMedia = !isPlatformMedia && mediaKeyShort.startsWith('theme-')
-          const isGroupMedia =
-            !isPlatformMedia && !isThemeMedia && mediaKeyShort.startsWith('group-')
+          const isThemeMedia = isMedia === 'theme'
+          const isGroupMedia = isMedia === 'group'
+          const isPlatformMedia = isMedia === 'platform'
 
           if (!isThemeMedia && !isPlatformMedia && !isGroupMedia) {
             if (!mediaState[mediaKeyShort]) {
@@ -1060,12 +1048,9 @@ export const getSplitStyles: StyleSplitter = (
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
       console.groupCollapsed(` ✔️ expand complete`, keyInit)
       try {
-        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-        console.log('style', { ...style })
-        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-        console.log('transforms', { ...transforms })
-        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-        console.log('viewProps', { ...viewProps })
+        console.info('style', { ...style })
+        console.info('transforms', { ...transforms })
+        console.info('viewProps', { ...viewProps })
       } catch {
         // RN can run into PayloadTooLargeError: request entity too large
       }
@@ -1291,8 +1276,7 @@ export const getSplitStyles: StyleSplitter = (
         }
       }
       if (process.env.NODE_ENV === 'development' && debug && debug !== 'profile') {
-        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-        console.log(`Found fontFamily native: ${style.fontFamily}`, faceInfo)
+        console.info(`Found fontFamily native: ${style.fontFamily}`, faceInfo)
       }
     }
   }
@@ -1308,6 +1292,7 @@ export const getSplitStyles: StyleSplitter = (
         // prettier-ignore
         const logs = {
           ...result,
+          className,
           componentState,
           transforms,
           viewProps,
@@ -1316,8 +1301,7 @@ export const getSplitStyles: StyleSplitter = (
           parentSplitStyles,
         };
         for (const key in logs) {
-          // biome-ignore lint/suspicious/noConsoleLog: ok
-          console.log(key, logs[key])
+          console.info(key, logs[key])
         }
       } catch {
         // RN can run into PayloadTooLargeError: request entity too large

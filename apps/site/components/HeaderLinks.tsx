@@ -17,6 +17,7 @@ const HeadAnchor = styled(Paragraph, {
   pressStyle: { opacity: 0.25 },
   tabIndex: -1,
   w: '100%',
+  tag: 'a',
 })
 
 export const HeaderLinks = ({ showExtra, forceShowAllLinks, showAuth }: HeaderProps) => {

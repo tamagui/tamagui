@@ -79,7 +79,9 @@ export const Image = StyledImage.extractable(
           if (typeof finalSource.uri === 'number') {
             finalSource = finalSource.uri
             if (source && typeof source === 'object' && !Array.isArray(source)) {
+              // @ts-ignore
               style.width ??= source.width
+              // @ts-ignore
               style.height ??= source.height
             }
           }

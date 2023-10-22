@@ -1,4 +1,4 @@
-import './setup.js'
+import './setup'
 
 export * from '@tamagui/accordion'
 export * from '@tamagui/adapt'
@@ -54,6 +54,7 @@ export * from './views/Input'
 export * from './views/Layouts'
 export * from './views/Spinner'
 export * from './views/TextArea'
+export * from './views/Text'
 
 // since we overlap with StackProps and potentially others
 // lets be explicit on what gets exported
@@ -132,7 +133,6 @@ export {
   // components
   Spacer,
   Stack,
-  Text,
   Theme,
   Unspaced,
   View,

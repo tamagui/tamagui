@@ -63,7 +63,8 @@ export function useThemedChildren(
   themeState: ChangedThemeResponse,
   children: any,
   props: ThemeProps,
-  isRoot = false
+  isRoot = false,
+  avoidWrap = false
 ) {
   const { themeManager, isNewTheme } = themeState
   const { shallow, forceClassName } = props
@@ -108,7 +109,7 @@ export function useThemedChildren(
     return elementsWithContext
   }
 
-  if (isWeb) {
+  if (isWeb && !avoidWrap) {
     return wrapThemeElements({
       children: elementsWithContext,
       themeState,
@@ -120,7 +121,7 @@ export function useThemedChildren(
   return elementsWithContext
 }
 
-export function wrapThemeElements({
+function wrapThemeElements({
   children,
   themeState,
   forceClassName,
@@ -135,48 +136,55 @@ export function wrapThemeElements({
     return children
   }
 
-  const inverse = themeState.state?.inverse
+  const inverse = themeState.inversed
+  const requiresExtraWrapper = inverse != null || forceClassName
 
-  if (!themeState.isNewTheme && !inverse && !forceClassName) {
+  if (!themeState.isNewTheme && !requiresExtraWrapper) {
     return <span className="_dsp_contents is_Theme">{children}</span>
   }
 
-  // in order to provide currentColor, set color by default
-  const themeColor =
-    themeState.state?.theme && themeState.isNewTheme
-      ? variableToString(themeState.state.theme.color)
-      : ''
-  const colorStyle = themeColor
-    ? {
-        color: themeColor,
-      }
-    : undefined
-
-  let className = themeState.state?.className || ''
-
-  if (isRoot) {
-    className = className.replace('t_sub_theme', '')
-  }
+  const { className, style } = getThemeClassNameAndStyle(themeState, isRoot)
 
   let themedChildren = (
-    <span className={`${className} _dsp_contents is_Theme`} style={colorStyle}>
+    <span className={`${className} _dsp_contents is_Theme`} style={style}>
       {children}
     </span>
   )
 
   // to prevent tree structure changes always render this if inverse is true or false
-  if (inverse != null || forceClassName) {
+  if (requiresExtraWrapper) {
     const name = themeState.state?.name || ''
+    const inverseClassName = name.startsWith('light')
+      ? 't_light is_inversed'
+      : name.startsWith('dark')
+      ? 't_dark is_inversed'
+      : ''
     themedChildren = (
-      <span
-        className={`${
-          name.startsWith('light') ? 't_light' : name.startsWith('dark') ? 't_dark' : ''
-        } _dsp_contents ${inverse ? 'is_inversed' : ''}`}
-      >
+      <span className={`${inverse ? inverseClassName : ''} _dsp_contents`}>
         {themedChildren}
       </span>
     )
   }
 
   return themedChildren
+}
+
+function getThemeClassNameAndStyle(themeState: ChangedThemeResponse, isRoot = false) {
+  // in order to provide currentColor, set color by default
+  const themeColor =
+    themeState.state?.theme && themeState.isNewTheme
+      ? variableToString(themeState.state.theme.color)
+      : ''
+
+  const style = themeColor
+    ? {
+        color: themeColor,
+      }
+    : undefined
+
+  let className = themeState.state?.className || ''
+  if (isRoot) {
+    className = className.replace('t_sub_theme', '')
+  }
+  return { style, className }
 }

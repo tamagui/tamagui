@@ -5,7 +5,6 @@ if (!process.env.TARGET) {
 }
 
 copyTamaguiPackages(process.env.TARGET).catch((err) => {
-  // biome-ignore lint/suspicious/noConsoleLog: ok
   console.error(`Error copying: ${err}`)
   process.exit(0)
 })

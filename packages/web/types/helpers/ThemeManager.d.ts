@@ -1,4 +1,4 @@
-import { ThemeParsed, ThemeProps } from '../types';
+import { ColorScheme, ThemeParsed, ThemeProps } from '../types';
 type ThemeListener = (name: string | null, themeManager: ThemeManager, forced: boolean) => void;
 export type SetActiveThemeProps = {
     className?: string;
@@ -9,22 +9,20 @@ export type SetActiveThemeProps = {
 };
 export type ThemeManagerState = {
     name: string;
-    theme?: ThemeParsed | null;
-    className?: string;
     parentName?: string;
-    componentName?: string;
-    inverse?: boolean;
+    theme?: ThemeParsed | null;
+    isComponent?: boolean;
+    className?: string;
+    scheme?: ColorScheme;
 };
 export declare function getHasThemeUpdatingProps(props: ThemeProps): string | boolean | undefined;
 export declare class ThemeManager {
     props: ThemeProps;
     id: number;
-    isComponent: boolean;
     themeListeners: Set<ThemeListener>;
     parentManager: ThemeManager | null;
     state: ThemeManagerState;
-    scheme: 'light' | 'dark' | null;
-    constructor(props?: ThemeProps, parentManagerIn?: ThemeManager | 'root' | null | undefined);
+    constructor(props?: ThemeProps, parentManager?: ThemeManager | 'root' | null | undefined);
     updateStateFromProps(props?: ThemeProps & {
         forceTheme?: ThemeParsed;
     }, shouldNotify?: boolean): true | ThemeManagerState | undefined;
@@ -37,6 +35,7 @@ export declare class ThemeManager {
     notify(forced?: boolean): void;
     onChangeTheme(cb: ThemeListener, debugId?: number): () => void;
 }
-export declare function getNonComponentParentManager(themeManager?: ThemeManager | null): readonly [ThemeManager | null, string[]];
+type MaybeThemeManager = ThemeManager | undefined;
+export declare function getManagers(themeManager?: ThemeManager | null): readonly [MaybeThemeManager[], MaybeThemeManager[]];
 export {};
 //# sourceMappingURL=ThemeManager.d.ts.map

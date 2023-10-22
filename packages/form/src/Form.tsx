@@ -7,7 +7,6 @@ import {
   withStaticProperties,
 } from '@tamagui/core'
 import { Scope, createContextScope } from '@tamagui/create-context'
-import { cloneElement } from 'react'
 
 const FORM_NAME = 'Form'
 
@@ -54,7 +53,7 @@ export const FormTrigger = FormTriggerFrame.styleable(
     return (
       <FormTriggerFrame
         tag="button"
-        {...triggerProps}
+        {...(triggerProps as any)}
         ref={forwardedRef}
         onPress={composeEventHandlers(onPress as any, context.onSubmit)}
       >
@@ -74,7 +73,7 @@ const FormComponent = FormFrame.extractable(function Form({
 }: ScopedProps<FormProps>) {
   return (
     <FormProvider scope={props.__scopeForm} onSubmit={onSubmit}>
-      <FormFrame {...props} onSubmit={((e: any) => e.preventDefault()) as any} />
+      <FormFrame {...(props as any)} onSubmit={(e: any) => e.preventDefault()} />
     </FormProvider>
   )
 })

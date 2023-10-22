@@ -60,16 +60,15 @@ const nextVersion = (() => {
 })()
 
 const sleep = (ms) => {
-  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-  console.log(`Sleeping ${ms}ms`)
+  console.info(`Sleeping ${ms}ms`)
   return new Promise((res) => setTimeout(res, ms))
 }
 
 if (!finish) {
   if (!skipVersion) {
-    console.log('Publishing version:', nextVersion, '\n')
+    console.info('Publishing version:', nextVersion, '\n')
   } else {
-    console.log(`Re-publishing ${curVersion}`)
+    console.info(`Re-publishing ${curVersion}`)
   }
 }
 
@@ -126,8 +125,7 @@ async function run() {
         return -1
       })
 
-    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-    console.log(`Publishing in order:\n\n${packageJsons.map((x) => x.name).join('\n')}`)
+    console.info(`Publishing in order:\n\n${packageJsons.map((x) => x.name).join('\n')}`)
 
     async function checkDistDirs() {
       await Promise.all(
@@ -160,8 +158,7 @@ async function run() {
 
     version = answer.version
 
-    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-    console.log('install and build')
+    console.info('install and build')
 
     if (!rePublish) {
       await spawnify(`yarn install`)
@@ -172,8 +169,7 @@ async function run() {
       await checkDistDirs()
     }
 
-    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-    console.log('run checks')
+    console.info('run checks')
 
     if (!finish) {
       if (!skipTest) {
@@ -219,8 +215,7 @@ async function run() {
     }
 
     if (!finish && dryRun) {
-      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-      console.log(`Dry run, exiting before publish`)
+      console.info(`Dry run, exiting before publish`)
       return
     }
 
@@ -249,8 +244,8 @@ async function run() {
         packageJsons,
         async (pkg) => {
           const { cwd, name } = pkg
-          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-          console.log(`Publish ${name}`)
+
+          console.info(`Publish ${name}`)
 
           // check if already published first as its way faster for re-runs
           let versionsOut = ''
@@ -262,7 +257,7 @@ async function run() {
             const latest = allVersions[allVersions.length - 1]
 
             if (latest === nextVersion) {
-              console.log(`Already published, skipping`)
+              console.info(`Already published, skipping`)
               return
             }
           } catch (err) {
@@ -270,7 +265,7 @@ async function run() {
               // fails if never published before, ok
             } else {
               if (`${err}`.includes(`Unexpected token`)) {
-                console.log(`Bad JSON? ${versionsOut}`)
+                console.info(`Bad JSON? ${versionsOut}`)
               }
               throw err
             }
@@ -281,14 +276,14 @@ async function run() {
               cwd,
               avoidLog: true,
             })
-            console.log(` 📢 pre-published ${name}`)
+            console.info(` 📢 pre-published ${name}`)
           } catch (err: any) {
             // @ts-ignore
             if (err.includes(`403`)) {
-              console.log('Already published, skipping')
+              console.info('Already published, skipping')
               return
             }
-            console.log(`Error publishing!`, `${err}`)
+            console.info(`Error publishing!`, `${err}`)
           }
         },
         {
@@ -296,8 +291,7 @@ async function run() {
         }
       )
 
-      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-      console.log(
+      console.info(
         `✅ Published under dist-tag "prepub" (${erroredPackages.length} errors)\n`
       )
     }
@@ -310,7 +304,7 @@ async function run() {
           message: 'Ready to publish?',
         })
         if (!confirmed) {
-          console.log(`Not confirmed, can re-run with --republish to try again`)
+          console.info(`Not confirmed, can re-run with --republish to try again`)
           process.exit(0)
         }
       }
@@ -325,7 +319,7 @@ async function run() {
         async ({ name, cwd }) => {
           const tag = canary ? ` --tag canary` : ''
 
-          console.log(`Publishing ${name}${tag}`)
+          console.info(`Publishing ${name}${tag}`)
 
           await spawnify(`npm publish${tag}`, {
             cwd,
@@ -352,8 +346,7 @@ async function run() {
       )
     }
 
-    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-    console.log(`✅ Published\n`)
+    console.info(`✅ Published\n`)
 
     // then git tag, commit, push
     if (!finish) {
@@ -386,11 +379,11 @@ async function run() {
 
       await spawnify(`git push origin head`)
       await spawnify(`git push origin ${gitTag}`)
-      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-      console.log(`✅ Pushed and versioned\n`)
+
+      console.info(`✅ Pushed and versioned\n`)
     }
 
-    // console.log(`All done, cleanup up in...`)
+    // console.info(`All done, cleanup up in...`)
     // await sleep(2 * 1000)
     // // then remove old prepub tag
     // await pMap(
@@ -405,11 +398,9 @@ async function run() {
     //   }
     // )
 
-    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-    console.log(`✅ Done\n`)
+    console.info(`✅ Done\n`)
   } catch (err) {
-    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-    console.log('\nError:\n', err)
+    console.info('\nError:\n', err)
     process.exit(1)
   }
 }

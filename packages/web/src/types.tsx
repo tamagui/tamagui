@@ -29,6 +29,10 @@ import type { ThemeProviderProps } from './views/ThemeProvider'
 
 export type { MediaStyleObject, StyleObject } from '@tamagui/helpers'
 
+export type ColorScheme = 'light' | 'dark'
+
+export type IsMediaType = boolean | 'platform' | 'theme' | 'group'
+
 export type SpaceDirection = 'vertical' | 'horizontal' | 'both'
 
 export type TamaguiElement = HTMLElement | View
@@ -38,7 +42,7 @@ export type DebugProp = boolean | 'break' | 'verbose' | 'visualize' | 'profile'
 
 export type TamaguiComponentPropsBaseBase = {
   target?: string
-  hitSlop?: PressableProps['hitSlop']
+
   /**
    * When truthy passes through all props to a single child element, and avoids rendering its own element.
    * Must pass just one child React element that will receive all the props.
@@ -147,6 +151,8 @@ export type WebOnlyPressEvents = {
   onMouseLeave?: DivAttributes['onMouseLeave']
   onMouseDown?: DivAttributes['onMouseDown']
   onMouseUp?: DivAttributes['onMouseUp']
+  onFocus?: DivAttributes['onFocus']
+  onBlur?: DivAttributes['onBlur']
 }
 
 /**
@@ -1343,21 +1349,24 @@ export interface ThemeableProps {
   debug?: DebugProp
 }
 
-export type Styleable<Props, Ref> = <
-  CustomProps extends Object,
-  X extends FunctionComponent<any> = FunctionComponent<
-    ThemeableProps & Props & CustomProps
-  >
+export type StyleableOptions = {
+  disableTheme?: boolean
+  staticConfig?: Partial<StaticConfig>
+}
+
+export type Styleable<Props, Ref, BaseProps, VariantProps, ParentStaticProperties> = <
+  CustomProps extends Object | void = void,
+  X extends FunctionComponent<any> = FunctionComponent<any>
 >(
   a: X,
-  staticConfig?: Partial<StaticConfig>
-) => ReactComponentWithRef<
-  CustomProps & Omit<Props & ThemeableProps, keyof CustomProps>,
-  Ref
-> & {
-  staticConfig: StaticConfig
-  styleable: Styleable<Props, Ref>
-}
+  options?: StyleableOptions
+) => TamaguiComponent<
+  CustomProps extends void ? Props : Omit<Props, keyof CustomProps> & CustomProps,
+  Ref,
+  BaseProps,
+  VariantProps,
+  ParentStaticProperties
+>
 
 export type TamaguiComponent<
   Props = any,
@@ -1366,22 +1375,23 @@ export type TamaguiComponent<
   VariantProps = {},
   ParentStaticProperties = {}
 > = ReactComponentWithRef<Props, Ref> &
-  StaticComponentObject<Props, Ref> &
+  StaticComponentObject<Props, Ref, BaseProps, VariantProps, ParentStaticProperties> &
   ParentStaticProperties & {
     __baseProps: BaseProps
     __variantProps: VariantProps
   }
 
-type StaticComponentObject<Props, Ref> = {
-  staticConfig: StaticConfig
+type StaticComponentObject<Props, Ref, BaseProps, VariantProps, ParentStaticProperties> =
+  {
+    staticConfig: StaticConfig
 
-  /** @deprecated use `styleable` instead (same functionality, better name) */
-  extractable: <X>(a: X, staticConfig?: Partial<StaticConfig>) => X
-  /*
-   * If you want your HOC of a styled() component to also be able to be styled(), you need this to wrap it.
-   */
-  styleable: Styleable<Props, Ref>
-}
+    /** @deprecated use `styleable` instead (same functionality, better name) */
+    extractable: <X>(a: X, staticConfig?: Partial<StaticConfig>) => X
+    /*
+     * If you want your HOC of a styled() component to also be able to be styled(), you need this to wrap it.
+     */
+    styleable: Styleable<Props, Ref, BaseProps, VariantProps, ParentStaticProperties>
+  }
 
 export type TamaguiComponentExpectingVariants<
   Props = {},
@@ -1505,7 +1515,7 @@ export type StaticConfigPublic = {
 }
 
 type StaticConfigBase = StaticConfigPublic & {
-  Component?: FunctionComponent<any> & StaticComponentObject<any, any>
+  Component?: FunctionComponent<any> & StaticComponentObject<any, any, any, any, any>
 
   variants?: GenericVariantDefinitions
 
@@ -2001,6 +2011,8 @@ export type TamaguiComponentEvents = {
   onMouseEnter?: ((e: any) => void) | undefined
   onMouseLeave?: ((e: any) => void) | undefined
   onPressOut: ((e: any) => void) | undefined
+  onFocus?: ((e: any) => void) | undefined
+  onBlur?: ((e: any) => void) | undefined
 }
 
 export type ModifyTamaguiComponentStyleProps<

@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-/* eslint-disable no-console */
 // inspired by https://github.com/vercel/next.js/blob/0355e5f63f87db489f36db8d814958cb4c2b828b/packages/create-next-app/helpers/examples.ts#L71
 
 import { execSync } from 'child_process'
@@ -26,8 +25,7 @@ import { validateNpmName } from './helpers/validateNpmPackage'
 let projectPath = ''
 
 if (IS_TEST) {
-  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-  console.log(`🧐 Running create-tamagui in test mode 🧐`)
+  console.info(`🧐 Running create-tamagui in test mode 🧐`)
 }
 
 const program = new Commander.Command(packageJson.name)
@@ -48,7 +46,7 @@ const program = new Commander.Command(packageJson.name)
   .allowUnknownOption()
   .usage(
     `${chalk.green('<project-directory>')} [options]
-  
+
 Example usage:
 
 ${chalk.blueBright(`npx ${packageJson.name} next-expo`)}`
@@ -56,7 +54,7 @@ ${chalk.blueBright(`npx ${packageJson.name} next-expo`)}`
   .parse(process.argv)
 
 if (process.argv.includes('--version')) {
-  console.log(packageJson.version)
+  console.info(packageJson.version)
   process.exit(0)
 }
 const skipCloning = !!program.skipCloning
@@ -64,9 +62,9 @@ const skipCloning = !!program.skipCloning
 async function run() {
   const packageManager = await detect()
   if (!skipCloning) {
-    console.log() // this newline prevents the ascii art from breaking
-    console.log(tamaguiRainbowAsciiArt)
-    console.log(chalk.bold('Creating tamagui app...'))
+    console.info() // this newline prevents the ascii art from breaking
+    console.info(tamaguiRainbowAsciiArt)
+    console.info(chalk.bold('Creating tamagui app...'))
 
     const gitVersionString = parseFloat(
       execSync(`git --version`).toString().replace(`git version `, '').trim()
@@ -82,7 +80,7 @@ async function run() {
   let template = await getTemplateInfo(program.template)
   if (!skipCloning) {
     // space
-    console.log()
+    console.info()
 
     const resolvedProjectPath = path.resolve(process.cwd(), projectPath)
     const projectName = path.basename(resolvedProjectPath)
@@ -100,8 +98,8 @@ async function run() {
     }
 
     if (fs.existsSync(resolvedProjectPath)) {
-      console.log()
-      console.log(
+      console.info()
+      console.info(
         chalk.red('🚨 [tamagui] error'),
         `You tried to make a project called ${chalk.underline(
           chalk.blueBright(projectName)
@@ -111,14 +109,14 @@ async function run() {
 
 ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
       )
-      console.log()
-      console.log()
+      console.info()
+      console.info()
       process.exit(1)
     }
-    console.log()
-    console.log(`Creating a new tamagui app ${chalk.blueBright(resolvedProjectPath)}...`)
+    console.info()
+    console.info(`Creating a new tamagui app ${chalk.blueBright(resolvedProjectPath)}...`)
     fs.mkdirSync(resolvedProjectPath)
-    console.log(chalk.green(`${projectName} folder created.`))
+    console.info(chalk.green(`${projectName} folder created.`))
     const shouldGitInit = await getShouldUseGit()
 
     try {
@@ -126,7 +124,7 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
       cd(resolvedProjectPath)
 
       // space
-      console.log()
+      console.info()
 
       if (shouldGitInit) {
         await $`git init`
@@ -139,11 +137,11 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
     // change root package.json's name to project name
     updatePackageJsonName(projectName, resolvedProjectPath)
 
-    console.log('Installing packages. This might take a couple of minutes.')
-    console.log()
+    console.info('Installing packages. This might take a couple of minutes.')
+    console.info()
 
     try {
-      console.log('installing with ' + packageManager)
+      console.info('installing with ' + packageManager)
       await installDependencies(resolvedProjectPath, packageManager)
     } catch (e: any) {
       console.error(
@@ -177,8 +175,8 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
     })
   }
 
-  console.log()
-  console.log(chalk.gray(tamaguiDuckAsciiArt))
+  console.info()
+  console.info(chalk.gray(tamaguiDuckAsciiArt))
 }
 
 function updatePackageJsonName(projectName: string, dir: string) {

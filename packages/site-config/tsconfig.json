@@ -3,6 +3,10 @@
   "compilerOptions": {
     "composite": true
   },
+  "exclude": [
+    "types",
+    "animations.css/*"
+  ],
   "references": [
     { "path": "../colors" },
     { "path": "../shorthands" },

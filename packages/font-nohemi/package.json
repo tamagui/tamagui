@@ -1,0 +1,26 @@
+{
+  "name": "@tamagui/font-nohemi",
+  "version": "1.74.21",
+  "types": "./types/index.d.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "module:jsx": "dist/jsx",
+  "files": [
+    "types",
+    "dist",
+    "css",
+    "fonts",
+    "nohemi.css"
+  ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "devDependencies": {
+    "@tamagui/build": "1.74.21",
+    "@tamagui/core": "1.74.21",
+    "subset-font": "^1.6.1"
+  }
+}

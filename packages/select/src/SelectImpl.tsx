@@ -17,6 +17,8 @@ import {
 import {
   isClient,
   isWeb,
+  useEvent,
+  useGet,
   useIsTouchDevice,
   useIsomorphicLayoutEffect,
 } from '@tamagui/core'
@@ -110,51 +112,31 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     open,
     onOpenChange: setOpen,
     placement: 'bottom-start',
-    middleware: fallback
-      ? [
-          offset(5),
-          ...flipOrShiftMiddlewares,
-          size({
-            apply({
-              availableHeight,
-              rects: {
-                reference: { width },
-              },
-            }) {
-              floatingStyle.current = {
-                width: width,
-                maxHeight: availableHeight,
-                minWidth: width + 8,
-              }
-            },
-            padding: WINDOW_PADDING,
-          }),
-        ]
-      : [
-          size({
-            apply({
-              rects: {
-                reference: { width },
-              },
-            }) {
-              floatingStyle.current = {
-                minWidth: width + 8,
-              }
-            },
-          }),
-          ...flipOrShiftMiddlewares,
-          inner({
-            listRef: listItemsRef,
-            overflowRef,
-            index: selectedIndex,
-            offset: innerOffset,
-            onFallbackChange: setFallback,
-            padding: 10,
-            minItemsVisible: touch ? 10 : 4,
-            referenceOverflowThreshold: 20,
-          }),
-          offset({ crossAxis: -5 }),
-        ],
+    middleware: [
+      size({
+        apply({
+          rects: {
+            reference: { width },
+          },
+        }) {
+          floatingStyle.current = {
+            minWidth: width + 8,
+          }
+        },
+      }),
+      ...flipOrShiftMiddlewares,
+      inner({
+        listRef: listItemsRef,
+        overflowRef,
+        index: selectedIndex,
+        offset: innerOffset,
+        // onFallbackChange: setFallback,
+        padding: 10,
+        minItemsVisible: touch ? 10 : 4,
+        referenceOverflowThreshold: 20,
+      }),
+      offset({ crossAxis: -5 }),
+    ],
   })
 
   useIsomorphicLayoutEffect(() => {
@@ -176,7 +158,12 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
         floatingRef.current.clientHeight -
         SCROLL_ARROW_THRESHOLD
 
-  const interactions = useInteractions([
+  const onMatch = useEvent((index: number) => {
+    const fn = open ? setActiveIndex : setSelectedIndex
+    return fn(index)
+  })
+
+  const interactionsProps = [
     useClick(context, { event: 'mousedown' }),
     useDismiss(context, { outsidePress: false }),
     useRole(context, { role: 'listbox' }),
@@ -194,11 +181,18 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     }),
     useTypeahead(context, {
       listRef: listContentRef,
-      onMatch: open ? setActiveIndex : setSelectedIndex,
+      onMatch,
       selectedIndex,
       activeIndex,
     }),
-  ])
+  ]
+
+  const interactions = useInteractions(
+    // unfortunately these memos will just always break due to floating-ui context always changing :/
+    React.useMemo(() => {
+      return interactionsProps
+    }, interactionsProps)
+  )
 
   const interactionsContext = React.useMemo(() => {
     return {
@@ -257,7 +251,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
         })
       },
     }
-  }, [refs.reference.current, refs.floating.current, y, x, interactions])
+  }, [refs.reference.current, x, y, refs.floating.current, interactions])
 
   // effects
 

@@ -49,6 +49,7 @@ export const dev = async (optionsIn: Options) => {
     host: options.host,
     nativePort: internalNativePort,
     webConfig: {
+      // @ts-ignore
       plugins: [tamaguiVitePlugin, inspectPlugin()],
     },
     buildConfig: {
@@ -71,10 +72,11 @@ export const dev = async (optionsIn: Options) => {
     })
   )
 
-  // biome-ignore lint/suspicious/noConsoleLog: ok
-  console.log(`Native server:\n  `, chalk.green(`http://localhost:${externalNativePort}`))
-  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-  console.log(`Web server:`)
+  console.info(
+    `Native server:\n  `,
+    chalk.green(`http://localhost:${externalNativePort}`)
+  )
+  console.info(`Web server:`)
   viteServer.printUrls()
 
   const expressServer = expressApp.listen(externalNativePort)
@@ -91,8 +93,7 @@ export const dev = async (optionsIn: Options) => {
   })
 
   process.on('uncaughtException', (err) => {
-    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-    console.log(err?.message || err)
+    console.error(err?.message || err)
   })
 
   // wait for all servers
@@ -122,8 +123,7 @@ async function startUserAppServer(options: OptionsFilled, app: Express) {
     const { unregister } = register()
     try {
       const serverEndpoint = require(serverPath).default
-      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-      console.log('starting user server', serverPath)
+      console.info('starting user server', serverPath)
       serverEndpoint(app)
     } finally {
       unregister()

@@ -103,8 +103,7 @@ const removePortal = (
   portalName: string
 ) => {
   if (!(hostName in state)) {
-    // biome-ignore lint/suspicious/noConsoleLog: ok
-    console.log(
+    console.info(
       `Failed to remove portal '${portalName}', '${hostName}' was not registered!`
     )
     return state

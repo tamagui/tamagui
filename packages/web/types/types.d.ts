@@ -9,13 +9,14 @@ import { Role } from './interfaces/Role';
 import type { LanguageContextType } from './views/FontLanguage.types';
 import type { ThemeProviderProps } from './views/ThemeProvider';
 export type { MediaStyleObject, StyleObject } from '@tamagui/helpers';
+export type ColorScheme = 'light' | 'dark';
+export type IsMediaType = boolean | 'platform' | 'theme' | 'group';
 export type SpaceDirection = 'vertical' | 'horizontal' | 'both';
 export type TamaguiElement = HTMLElement | View;
 export type TamaguiTextElement = HTMLElement | RNText;
 export type DebugProp = boolean | 'break' | 'verbose' | 'visualize' | 'profile';
 export type TamaguiComponentPropsBaseBase = {
     target?: string;
-    hitSlop?: PressableProps['hitSlop'];
     /**
      * When truthy passes through all props to a single child element, and avoids rendering its own element.
      * Must pass just one child React element that will receive all the props.
@@ -104,6 +105,8 @@ export type WebOnlyPressEvents = {
     onMouseLeave?: DivAttributes['onMouseLeave'];
     onMouseDown?: DivAttributes['onMouseDown'];
     onMouseUp?: DivAttributes['onMouseUp'];
+    onFocus?: DivAttributes['onFocus'];
+    onBlur?: DivAttributes['onBlur'];
 };
 /**
  * For static / studio
@@ -746,19 +749,20 @@ export interface ThemeableProps {
     componentName?: string;
     debug?: DebugProp;
 }
-export type Styleable<Props, Ref> = <CustomProps extends Object, X extends FunctionComponent<any> = FunctionComponent<ThemeableProps & Props & CustomProps>>(a: X, staticConfig?: Partial<StaticConfig>) => ReactComponentWithRef<CustomProps & Omit<Props & ThemeableProps, keyof CustomProps>, Ref> & {
-    staticConfig: StaticConfig;
-    styleable: Styleable<Props, Ref>;
+export type StyleableOptions = {
+    disableTheme?: boolean;
+    staticConfig?: Partial<StaticConfig>;
 };
-export type TamaguiComponent<Props = any, Ref = any, BaseProps = {}, VariantProps = {}, ParentStaticProperties = {}> = ReactComponentWithRef<Props, Ref> & StaticComponentObject<Props, Ref> & ParentStaticProperties & {
+export type Styleable<Props, Ref, BaseProps, VariantProps, ParentStaticProperties> = <CustomProps extends Object | void = void, X extends FunctionComponent<any> = FunctionComponent<any>>(a: X, options?: StyleableOptions) => TamaguiComponent<CustomProps extends void ? Props : Omit<Props, keyof CustomProps> & CustomProps, Ref, BaseProps, VariantProps, ParentStaticProperties>;
+export type TamaguiComponent<Props = any, Ref = any, BaseProps = {}, VariantProps = {}, ParentStaticProperties = {}> = ReactComponentWithRef<Props, Ref> & StaticComponentObject<Props, Ref, BaseProps, VariantProps, ParentStaticProperties> & ParentStaticProperties & {
     __baseProps: BaseProps;
     __variantProps: VariantProps;
 };
-type StaticComponentObject<Props, Ref> = {
+type StaticComponentObject<Props, Ref, BaseProps, VariantProps, ParentStaticProperties> = {
     staticConfig: StaticConfig;
     /** @deprecated use `styleable` instead (same functionality, better name) */
     extractable: <X>(a: X, staticConfig?: Partial<StaticConfig>) => X;
-    styleable: Styleable<Props, Ref>;
+    styleable: Styleable<Props, Ref, BaseProps, VariantProps, ParentStaticProperties>;
 };
 export type TamaguiComponentExpectingVariants<Props = {}, Variants = {}> = TamaguiComponent<Props, any, any, Variants>;
 export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>> & {
@@ -851,7 +855,7 @@ export type StaticConfigPublic = {
     acceptsClassName?: boolean;
 };
 type StaticConfigBase = StaticConfigPublic & {
-    Component?: FunctionComponent<any> & StaticComponentObject<any, any>;
+    Component?: FunctionComponent<any> & StaticComponentObject<any, any, any, any, any>;
     variants?: GenericVariantDefinitions;
     context?: StyledContext;
     /**
@@ -1086,6 +1090,8 @@ export type TamaguiComponentEvents = {
     onMouseEnter?: ((e: any) => void) | undefined;
     onMouseLeave?: ((e: any) => void) | undefined;
     onPressOut: ((e: any) => void) | undefined;
+    onFocus?: ((e: any) => void) | undefined;
+    onBlur?: ((e: any) => void) | undefined;
 };
 export type ModifyTamaguiComponentStyleProps<Comp extends TamaguiComponent, ChangedProps extends Object> = Comp extends TamaguiComponent<infer A, infer B, infer C, infer D, infer E> ? A extends Object ? TamaguiComponent<Omit<A, keyof ChangedProps> & ChangedProps, B, C, D, E> : never : never;
 /**

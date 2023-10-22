@@ -7,6 +7,7 @@ import { useDirection } from '@tamagui/use-direction'
 import {
   GetProps,
   SizeTokens,
+  TamaguiElement,
   Theme,
   composeEventHandlers,
   composeRefs,
@@ -290,7 +291,8 @@ const TabsContentFrame = styled(ThemeableStack, {
   name: CONTENT_NAME,
 })
 type TabsContentFrameProps = GetProps<typeof TabsContentFrame>
-type TabsContentProps = TabsContentFrameProps & {
+
+type TabsContentExtraProps = {
   /** Will show the content when the value matches the state of Tabs root */
   value: string
 
@@ -301,40 +303,38 @@ type TabsContentProps = TabsContentFrameProps & {
   forceMount?: true
 }
 
-const TabsContent = TabsContentFrame.extractable(
-  React.forwardRef<HTMLDivElement, TabsContentProps>(
-    (props: ScopedProps<TabsContentProps>, forwardedRef) => {
-      const { __scopeTabs, value, forceMount, children, ...contentProps } = props
-      const context = useTabsContext(__scopeTabs)
-      const isSelected = value === context.value
-      const show = forceMount || isSelected
+type TabsContentProps = TabsContentFrameProps & TabsContentExtraProps
 
-      const triggerId = makeTriggerId(context.baseId, value)
-      const contentId = makeContentId(context.baseId, value)
+const TabsContent = TabsContentFrame.styleable<TabsContentExtraProps>(
+  function TabsContent(props: ScopedProps<TabsContentProps>, forwardedRef) {
+    const { __scopeTabs, value, forceMount, children, ...contentProps } = props
+    const context = useTabsContext(__scopeTabs)
+    const isSelected = value === context.value
+    const show = forceMount || isSelected
 
-      if (!show) return null
-      return (
-        <TabsContentFrame
-          key={value}
-          data-state={isSelected ? 'active' : 'inactive'}
-          data-orientation={context.orientation}
-          role="tabpanel"
-          aria-labelledby={triggerId}
-          // @ts-ignore
-          hidden={!show}
-          id={contentId}
-          tabIndex={0}
-          {...contentProps}
-          ref={forwardedRef}
-        >
-          {children}
-        </TabsContentFrame>
-      )
-    }
-  )
+    const triggerId = makeTriggerId(context.baseId, value)
+    const contentId = makeContentId(context.baseId, value)
+
+    if (!show) return null
+    return (
+      <TabsContentFrame
+        key={value}
+        data-state={isSelected ? 'active' : 'inactive'}
+        data-orientation={context.orientation}
+        role="tabpanel"
+        aria-labelledby={triggerId}
+        // @ts-ignore
+        hidden={!show}
+        id={contentId}
+        tabIndex={0}
+        {...contentProps}
+        ref={forwardedRef}
+      >
+        {children}
+      </TabsContentFrame>
+    )
+  }
 )
-
-TabsContent.displayName = CONTENT_NAME
 
 /* -------------------------------------------------------------------------------------------------
  * Tabs

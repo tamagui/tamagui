@@ -12,9 +12,10 @@ const repoRoot = join(__dirname, '..', '..', '..')
 
 export const templates = [
   {
-    title: `Next + Expo + Solito - Production-ready universal app with a monorepo.`,
+    title: `Next Expo Solito - Prod-ready universal app with a monorepo`,
     value: 'next-expo-solito',
     type: 'included-in-monorepo',
+    hidden: false,
     repo: {
       url: IS_TEST ? `file://${repoRoot}` : `https://github.com/tamagui/tamagui.git`,
       dir: ['starters', 'next-expo-solito'],
@@ -24,9 +25,10 @@ export const templates = [
   },
 
   {
-    title: `Simple Web - Learning only, not prod-ready. Client web app, Webpack + Vite. Helps understand tamagui.config.ts.`,
+    title: `Simple Web - For learning, client app, Webpack & Vite, custom tamagui.config`,
     value: 'simple-web',
     type: 'included-in-monorepo',
+    hidden: false,
     repo: {
       url: IS_TEST ? `file://${repoRoot}` : `https://github.com/tamagui/tamagui.git`,
       dir: [`starters`, `simple-web`],
@@ -36,10 +38,11 @@ export const templates = [
   },
   {
     title: `${chalk.bold.underline(
-      `🥡 Takeout Starter (${makeRainbowChalk('Premium')})`
-    )} - Prod-ready universal app - onboarding, auth, account, settings, profiles, feed, adaptive layouts & more.`,
+      `🥡 ${makeRainbowChalk('Takeout')}`
+    )} - Pro, prod-ready universal app w/onboard, auth, account, settings, testing +++`,
     value: `takeout-starter`,
     type: 'premium',
+    hidden: false,
     repo: {
       url: `https://github.com/tamagui/unistack`,
       dir: [],

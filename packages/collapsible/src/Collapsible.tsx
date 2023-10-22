@@ -5,6 +5,7 @@ import {
   GetProps,
   Stack,
   StackProps,
+  TamaguiComponent,
   composeEventHandlers,
   createStyledContext,
   styled,
@@ -91,7 +92,7 @@ const CollapsibleTriggerFrame = styled(Stack, {
   tag: 'button',
 })
 
-const CollapsibleTrigger = CollapsibleTriggerFrame.styleable<CollapsibleTriggerProps>(
+const CollapsibleTrigger = CollapsibleTriggerFrame.styleable(
   (props: ScopedProps<CollapsibleTriggerProps>, forwardedRef) => {
     const { __scopeCollapsible, children, ...triggerProps } = props
     const context = useCollapsibleContext(__scopeCollapsible)
@@ -103,7 +104,7 @@ const CollapsibleTrigger = CollapsibleTriggerFrame.styleable<CollapsibleTriggerP
         data-state={getState(context.open)}
         data-disabled={context.disabled ? '' : undefined}
         disabled={context.disabled}
-        {...triggerProps}
+        {...(triggerProps as any)}
         ref={forwardedRef}
         onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
       >

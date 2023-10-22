@@ -18,8 +18,7 @@ const logUpdate =
         console.groupCollapsed('trace >')
         console.trace()
         console.groupEnd()
-        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-        console.log('  next', next)
+        console.info('  next', next)
         console.groupEnd()
       }
     : null

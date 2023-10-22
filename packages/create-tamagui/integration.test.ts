@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { platform, tmpdir } from 'os'
 import { join } from 'path'
 
@@ -37,7 +36,7 @@ test.beforeAll(async () => {
 
     const tamaguiBin = join(PACKAGE_ROOT, `dist`, `index.js`)
 
-    console.log(`Making test app in`, dir)
+    console.info(`Making test app in`, dir)
 
     // clear it from old tests
     await fs.remove(dir)
@@ -71,15 +70,15 @@ test.beforeAll(async () => {
 
 test.afterAll(async () => {
   test.setTimeout(oneMinute * 3)
-  console.log(`Killing server...`)
+  console.info(`Killing server...`)
 
   await Promise.race([
     server?.kill(),
-    sleep(oneMinute).then(() => console.log(`timed out server kill`)),
+    sleep(oneMinute).then(() => console.info(`timed out server kill`)),
   ])
 
   if (didFailInBeforeAll) {
-    console.log(`\n ⚠️ Failed during test, leaving behind tmp dir for debugging\n`)
+    console.info(`\n ⚠️ Failed during test, leaving behind tmp dir for debugging\n`)
     return
   }
 
@@ -88,10 +87,10 @@ test.afterAll(async () => {
     await sleep(1000)
     await Promise.race([
       $`rm -rf ${dir}`,
-      sleep(oneMinute).then(() => console.log(`timed out cleanup`)),
+      sleep(oneMinute).then(() => console.info(`timed out cleanup`)),
     ])
 
-    console.log(`Done cleaning`)
+    console.info(`Done cleaning`)
   }
 })
 

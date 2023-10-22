@@ -3,23 +3,20 @@ import React, { forwardRef } from 'react'
 import { StaticConfig, ThemeableProps } from '../types'
 import { Theme } from '../views/Theme'
 
-export function themeable<Component extends (props: any) => any>(
-  component: Component,
+export function themeable<ComponentType extends (props: any) => any>(
+  Component: ComponentType,
   staticConfig?: Partial<StaticConfig>
 ) {
   const withThemeComponent = forwardRef(function WithTheme(props: ThemeableProps, ref) {
     const { themeInverse, theme, componentName, themeReset, ...rest } = props
 
-    const element = React.createElement(component, {
-      ...rest,
-      ref,
-      'data-disable-theme': true,
-    } as any)
+    // @ts-expect-error its ok
+    const element = <Component ref={ref} {...rest} data-disable-theme />
 
     let contents = (
       <Theme
         componentName={componentName || staticConfig?.componentName}
-        name={theme || null}
+        name={theme}
         disable-child-theme
         debug={props.debug}
         inverse={themeInverse}
@@ -34,10 +31,10 @@ export function themeable<Component extends (props: any) => any>(
 
   const withTheme: any = withThemeComponent
   withTheme.displayName = `Themed(${
-    (component as any)?.displayName || (component as any)?.name || 'Anonymous'
+    (Component as any)?.displayName || (Component as any)?.name || 'Anonymous'
   })`
 
-  return withTheme as Component extends (props: infer P) => infer R
+  return withTheme as ComponentType extends (props: infer P) => infer R
     ? (props: Omit<P, 'theme' | 'themeInverse'> & ThemeableProps) => R
     : unknown
 }

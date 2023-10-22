@@ -71,8 +71,7 @@ export function reverseMapClassNameToValue(key: string, className: string) {
   if (process.env.NODE_ENV === 'development') {
     // ensure we are parsing properly
     if (typeof res === 'number' && isNaN(res)) {
-      // biome-ignore lint/suspicious/noConsoleLog: ok
-      console.log('Tamagui invalid parsed value, NaN:', {
+      console.info('Tamagui invalid parsed value, NaN:', {
         res,
         cssVal,
         cssRule,

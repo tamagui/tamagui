@@ -2,10 +2,12 @@ import { createElement, forwardRef } from 'react'
 
 const Decorated = Symbol()
 
+type Combined<A, B> = A & B
+
 export const withStaticProperties = function <A extends Function, B>(
   component: A,
   staticProps: B
-): A & B {
+): Combined<A, B> {
   // clone component if already wrapped once
   const next = (() => {
     if (component[Decorated]) {

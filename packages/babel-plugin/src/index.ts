@@ -21,9 +21,6 @@ const importWithTheme = template(`
 const __internalWithTheme = require('@tamagui/core').internalWithTheme;
 `)
 
-// default to native before requiring static
-process.env.TAMAGUI_TARGET = process.env.TAMAGUI_TARGET || 'native'
-
 const {
   createExtractor,
   getPragmaOptions,
@@ -226,32 +223,29 @@ export default declare(function snackBabelPlugin(
                       t.variableDeclaration('const', [
                         t.variableDeclarator(
                           WrapperIdentifier,
-                          t.callExpression(
-                            t.identifier('__internalWithTheme'),
-                            [
-                              t.identifier(props.node.name.name),
-                              t.arrowFunctionExpression(
-                                [t.identifier('theme')],
-                                t.blockStatement([
-                                  t.returnStatement(
-                                    t.callExpression(
-                                      t.memberExpression(
-                                        t.identifier('Object'),
-                                        t.identifier('assign')
-                                      ),
-                                      [
-                                        stylesExpr.elements.length === 1
-                                          ? (stylesExpr.elements[0] as any)
-                                          : stylesExpr,
-                                        themedStylesAst,
-                                      ]
-                                    )
-                                  ),
-                                ])
-                              ),
-                            ]
-                          )
-                        )
+                          t.callExpression(t.identifier('__internalWithTheme'), [
+                            t.identifier(props.node.name.name),
+                            t.arrowFunctionExpression(
+                              [t.identifier('theme')],
+                              t.blockStatement([
+                                t.returnStatement(
+                                  t.callExpression(
+                                    t.memberExpression(
+                                      t.identifier('Object'),
+                                      t.identifier('assign')
+                                    ),
+                                    [
+                                      stylesExpr.elements.length === 1
+                                        ? (stylesExpr.elements[0] as any)
+                                        : stylesExpr,
+                                      themedStylesAst,
+                                    ]
+                                  )
+                                ),
+                              ])
+                            ),
+                          ])
+                        ),
                       ])
                     )
                     props.node.name = WrapperIdentifier
@@ -284,8 +278,7 @@ export default declare(function snackBabelPlugin(
 
           if (!Object.keys(sheetStyles).length) {
             if (shouldPrintDebug) {
-              // biome-ignore lint/suspicious/noConsoleLog: ok
-              console.log('END no styles')
+              console.info('END no styles')
             }
             return
           }
@@ -304,10 +297,8 @@ export default declare(function snackBabelPlugin(
           root.unshiftContainer('body', importStyleSheet())
 
           if (shouldPrintDebug) {
-            // biome-ignore lint/suspicious/noConsoleLog: ok
-            console.log('\n -------- output code ------- \n')
-            // biome-ignore lint/suspicious/noConsoleLog: ok
-            console.log(
+            console.info('\n -------- output code ------- \n')
+            console.info(
               generator(root.parent)
                 .code.split('\n')
                 .filter((x) => !x.startsWith('//'))
