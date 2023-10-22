@@ -22,6 +22,7 @@ import React from 'react'
 import { Toggle, ToggleFrame, ToggleProps } from './Toggle'
 
 const TOGGLE_GROUP_NAME = 'ToggleGroup'
+
 /* -------------------------------------------------------------------------------------------------
  * ToggleGroupItem
  * -----------------------------------------------------------------------------------------------*/
@@ -53,12 +54,10 @@ type ToggleGroupItemProps = GetProps<typeof ToggleFrame> & {
 const ToggleGroupItem = ToggleFrame.extractable(
   React.forwardRef<ToggleGroupItemElement, ToggleGroupItemProps>(
     (props: ScopedProps<ToggleGroupItemProps>, forwardedRef) => {
-      const { __scopeToggleGroup, ...rest } = props
-      const valueContext = useToggleGroupValueContext(__scopeToggleGroup)
-      const context = useToggleGroupContext(__scopeToggleGroup)
-      const pressed = valueContext.value.includes(props.value)
+      const valueContext = useToggleGroupValueContext(props.__scopeToggleGroup)
+      const context = useToggleGroupContext(props.__scopeToggleGroup)
+      const pressed = valueContext?.value.includes(props.value)
       const disabled = context.disabled || props.disabled || false
-      const ref = React.useRef<HTMLDivElement>(null)
       const groupItemProps = useGroupItem({ disabled })
       const size = props.size ?? context.size
 
@@ -87,42 +86,29 @@ const ToggleGroupItem = ToggleFrame.extractable(
 
       const commonProps = { pressed, disabled, ...sizeProps, ...props, children }
 
+      const inner = (
+        <ToggleGroupItemImpl
+          {...commonProps}
+          ref={forwardedRef}
+          focusable={!disabled}
+          disabled={disabled}
+          {...groupItemProps}
+        />
+      )
+
       return (
-        <ToggleGroupItemProvider scope={__scopeToggleGroup}>
+        <ToggleGroupItemProvider scope={props.__scopeToggleGroup}>
           {context.rovingFocus ? (
             <RovingFocusGroup.Item
               asChild="except-style"
-              __scopeRovingFocusGroup={__scopeToggleGroup || TOGGLE_GROUP_CONTEXT}
+              __scopeRovingFocusGroup={props.__scopeToggleGroup || TOGGLE_GROUP_CONTEXT}
               focusable={!disabled}
               active={pressed}
             >
-              <ToggleFrame
-                asChild="except-style"
-                focusable={!disabled}
-                disabled={disabled}
-                ref={ref}
-              >
-                <ToggleGroupItemImpl
-                  __scopeToggleGroup={__scopeToggleGroup}
-                  {...commonProps}
-                  ref={forwardedRef}
-                  {...groupItemProps}
-                />
-              </ToggleFrame>
+              {inner}
             </RovingFocusGroup.Item>
           ) : (
-            <ToggleFrame
-              asChild="except-style"
-              focusable={!disabled}
-              disabled={disabled}
-              ref={ref}
-            >
-              <ToggleGroupItemImpl
-                __scopeToggleGroup={__scopeToggleGroup}
-                {...commonProps}
-                ref={forwardedRef}
-              />
-            </ToggleFrame>
+            inner
           )}
         </ToggleGroupItemProvider>
       )
@@ -145,33 +131,33 @@ type ToggleGroupItemImplProps = Omit<
   size?: SizeTokens
 }
 
-const ToggleGroupItemImpl = ToggleFrame.extractable(
-  React.forwardRef<ToggleGroupItemImplElement, ScopedProps<ToggleGroupItemImplProps>>(
-    (props: ScopedProps<ToggleGroupItemImplProps>, forwardedRef) => {
-      const { __scopeToggleGroup, value, ...itemProps } = props
-      const valueContext = useToggleGroupValueContext(__scopeToggleGroup)
-      const singleProps = {
-        'aria-pressed': undefined,
-      }
-      const typeProps = valueContext.type === 'single' ? singleProps : undefined
+const ToggleGroupItemImpl = React.forwardRef<
+  ToggleGroupItemImplElement,
+  ScopedProps<ToggleGroupItemImplProps>
+>((props: ScopedProps<ToggleGroupItemImplProps>, forwardedRef) => {
+  const { __scopeToggleGroup, value, ...itemProps } = props
 
-      return (
-        <Toggle
-          {...typeProps}
-          {...itemProps}
-          ref={forwardedRef}
-          onPressedChange={(pressed) => {
-            if (pressed) {
-              valueContext.onItemActivate(value)
-            } else {
-              valueContext.onItemDeactivate(value)
-            }
-          }}
-        />
-      )
-    }
+  const valueContext = useToggleGroupValueContext(__scopeToggleGroup)
+  const singleProps = {
+    'aria-pressed': undefined,
+  }
+  const typeProps = valueContext.type === 'single' ? singleProps : undefined
+
+  return (
+    <Toggle
+      {...typeProps}
+      {...itemProps}
+      ref={forwardedRef}
+      onPressedChange={(pressed) => {
+        if (pressed) {
+          valueContext.onItemActivate(value)
+        } else {
+          valueContext.onItemDeactivate(value)
+        }
+      }}
+    />
   )
-)
+})
 
 /* -----------------------------------------------------------------------------------------------*/
 

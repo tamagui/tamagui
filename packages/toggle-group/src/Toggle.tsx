@@ -1,6 +1,6 @@
 import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
-import { GetProps, Theme, composeEventHandlers, isWeb, styled } from '@tamagui/web'
+import { GetProps, composeEventHandlers, styled } from '@tamagui/web'
 import * as React from 'react'
 
 /* -------------------------------------------------------------------------------------------------
@@ -11,9 +11,9 @@ const NAME = 'Toggle'
 
 type TamaguiButtonElement = HTMLButtonElement
 
-type ToggleElement = TamaguiButtonElement
+export type ToggleElement = TamaguiButtonElement
 
-const ToggleFrame = styled(ThemeableStack, {
+export const ToggleFrame = styled(ThemeableStack, {
   name: NAME,
   tag: 'button',
 
@@ -67,6 +67,7 @@ const ToggleFrame = styled(ThemeableStack, {
       },
     },
   } as const,
+
   defaultVariants: {
     unstyled: false,
   },
@@ -74,7 +75,7 @@ const ToggleFrame = styled(ThemeableStack, {
 
 type ToggleFrameProps = GetProps<typeof ToggleFrame>
 
-type ToggleProps = ToggleFrameProps & {
+type ToggleItemExtraProps = {
   defaultValue?: string
   disabled?: boolean
   pressed?: boolean
@@ -82,56 +83,44 @@ type ToggleProps = ToggleFrameProps & {
   onPressedChange?(pressed: boolean): void
 }
 
-const Toggle = ToggleFrame.extractable(
-  React.forwardRef<ToggleElement, ToggleProps>((props, forwardedRef) => {
-    const {
-      pressed: pressedProp,
-      defaultPressed = false,
-      onPressedChange,
-      ...buttonProps
-    } = props
+export type ToggleProps = ToggleFrameProps & ToggleItemExtraProps
 
-    const [pressed = false, setPressed] = useControllableState({
-      prop: pressedProp,
-      onChange: onPressedChange,
-      defaultProp: defaultPressed,
-    })
+export const Toggle = React.forwardRef<ToggleElement, ToggleProps>(function Toggle(
+  props,
+  forwardedRef
+) {
+  const {
+    pressed: pressedProp,
+    defaultPressed = false,
+    onPressedChange,
+    ...buttonProps
+  } = props
 
-    return (
-      <ToggleFrame
-        theme={pressed ? 'active' : null}
-        themeShallow
-        active={!props.unstyled ? pressed : undefined}
-        aria-pressed={pressed}
-        data-state={pressed ? 'on' : 'off'}
-        data-disabled={props.disabled ? '' : undefined}
-        {...buttonProps}
-        ref={forwardedRef}
-        onPress={composeEventHandlers(props.onPress ?? undefined, (event) => {
-          if (!props.disabled) {
-            setPressed(!pressed)
-          }
-        })}
-        // caught by onPress - no need for this
-        // {...(isWeb && {
-        //   onKeyDown: composeEventHandlers(
-        //     (props as React.HTMLProps<HTMLButtonElement>).onKeyDown,
-        //     (event) => {
-        //       if ([' ', 'Enter'].includes(event.key)) {
-        //         if (!props.disabled) {
-        //           setPressed(!pressed)
-        //         }
-        //       }
-        //     }
-        //   ),
-        // })}
-      />
-    )
+  const [pressed = false, setPressed] = useControllableState({
+    prop: pressedProp,
+    onChange: onPressedChange,
+    defaultProp: defaultPressed,
   })
-)
-Toggle.displayName = NAME
+
+  return (
+    <ToggleFrame
+      {...(!props.unstyled && {
+        theme: pressed ? 'active' : null,
+        themeShallow: true,
+      })}
+      active={!props.unstyled ? pressed : undefined}
+      aria-pressed={pressed}
+      data-state={pressed ? 'on' : 'off'}
+      data-disabled={props.disabled ? '' : undefined}
+      {...buttonProps}
+      ref={forwardedRef}
+      onPress={composeEventHandlers(props.onPress ?? undefined, () => {
+        if (!props.disabled) {
+          setPressed(!pressed)
+        }
+      })}
+    />
+  )
+})
 
 /* ---------------------------------------------------------------------------------------------- */
-
-export { Toggle, ToggleFrame }
-export type { ToggleProps }
