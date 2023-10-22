@@ -1,7 +1,7 @@
-import { ThemeProvider, createBox, createTheme } from '@shopify/restyle'
+import { ThemeProvider, createBox } from '@shopify/restyle'
 import { useMemo, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { Button, Stack, Text, XStack, YStack, styled } from 'tamagui'
+import { Button, Stack, Text, styled } from 'tamagui'
 
 import { TimedRender } from '../components/TimedRender'
 
@@ -99,10 +99,12 @@ const BenchmarkOne = ({ name }) => {
   )
 }
 
+const iterArr = new Array(900).fill(0)
+
 const BenchTama = () => {
   return (
     <TimedRender>
-      {new Array(500).fill(0).map((_, i) => (
+      {iterArr.map((_, i) => (
         <StyledStack key={i} />
       ))}
     </TimedRender>
@@ -112,7 +114,7 @@ const BenchTama = () => {
 const BenchRestyle = () => {
   return (
     <TimedRender>
-      {new Array(500).fill(0).map((_, i) => (
+      {iterArr.map((_, i) => (
         <Box borderColor="red" borderWidth={2} padding="s" key={i} />
       ))}
     </TimedRender>
@@ -130,7 +132,7 @@ const styles = StyleSheet.create({
 const BenchRN = () => {
   return (
     <TimedRender>
-      {new Array(500).fill(0).map((_, i) => (
+      {iterArr.map((_, i) => (
         <View style={styles.style} key={i} />
       ))}
     </TimedRender>
