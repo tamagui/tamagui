@@ -1,6 +1,6 @@
 import * as Config from '@tamagui/site-config'
 import { addTheme, updateTheme } from '@tamagui/theme'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import {
   Button,
   Square,
@@ -25,7 +25,6 @@ export function UpdateThemeDemo() {
       insertCSS: true,
       theme: {
         color: 'red',
-        color2: 'blue',
       },
     })
     setTheme('custom')

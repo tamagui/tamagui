@@ -74,13 +74,15 @@ export class ThemeManager {
     shouldNotify = true
   ) {
     this.props = props
+
     if (props.forceTheme) {
       this.state.theme = props.forceTheme
       this.state.name = props.name || ''
-      return true
+      this.updateState(this.state, true)
+      return this.state
     }
-    const nextState = this.getStateIfChanged(props)
 
+    const nextState = this.getStateIfChanged(props)
     if (nextState) {
       this.updateState(nextState, shouldNotify)
       return nextState
