@@ -5,6 +5,7 @@
   "scripts": {
     "build": "true",
     "pretest": "RUN_PRETEST=1 node -r esbuild-register ./tests/lib/preTest.ts",
+    "test-output": "node -r esbuild-register ./test-output.tsx",
     "test": "yarn test:native && yarn test:web && yarn test:webpack",
     "test:run": "INCLUDE_CSS_COLOR_NAMES=1 vitest --config ../vite-plugin-internal/src/vite.config.ts --run",
     "test:run:web": "DISABLE_NATIVE_TEST=1 yarn test:run",
