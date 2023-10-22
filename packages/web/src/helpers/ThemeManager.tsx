@@ -202,7 +202,7 @@ function getState(
 
   if (baseManager?.state.isComponent) {
     // remove component name
-    baseName = baseName.replace(/_[A-Z][a-z]+/, '')
+    baseName = baseName.replace(/_[A-Z][A-Za-z]+/, '')
   }
 
   const nextName = props.reset ? baseName : props.name || ''
@@ -264,6 +264,7 @@ function getState(
         const moreSpecific = `${prefix}_${nextName}_${componentName}`
         componentPotentials.unshift(moreSpecific)
       }
+
       potentials = [...componentPotentials, ...potentials, ...allComponentThemes]
     }
 
