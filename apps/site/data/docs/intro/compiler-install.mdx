@@ -205,7 +205,7 @@ module.exports = {
 }
 ```
 
-Currently the native compiler doesn't optimize as much as it could. It bails out if it encounters any token or theme usage, like `<Stack backgroundColor="$background" />`. If you'd like to test enabling this experimental optimization, add a new property of `experimentalFlattenThemesOnNative` set to true in the above config object.
+Currently the native compiler doesn't optimize as much as it could. It bails out if it encounters any token or theme usage, like `<Stack backgroundColor="$background" />`. If you are on version `1.75` or greater, you can test enabling this experimental optimization by adding a new property with the key `experimentalFlattenThemesOnNative` set to true in the above config object.
 
 #### Expo
 
