@@ -40,5 +40,6 @@ type InternalHooks = {
   getBaseViews?: () => {
     View: any
     Text: any
+    TextAncestor: any
   }
 }

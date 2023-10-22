@@ -138,6 +138,7 @@ if (typeof document !== 'undefined') {
  * On the web we avoid react-native dep altogether.
  */
 let BaseText: any
+let BaseTextAncestor: any
 let BaseView: any
 let hasSetupBaseViews = false
 
@@ -205,6 +206,7 @@ export function createComponent<
         if (baseViews) {
           BaseText = baseViews.Text
           BaseView = baseViews.View
+          BaseTextAncestor = baseViews.TextAncestor
         }
       }
     }
