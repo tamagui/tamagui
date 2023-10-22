@@ -138,7 +138,6 @@ if (typeof document !== 'undefined') {
  * On the web we avoid react-native dep altogether.
  */
 let BaseText: any
-let BaseTextAncestor: any
 let BaseView: any
 let hasSetupBaseViews = false
 
@@ -206,7 +205,6 @@ export function createComponent<
         if (baseViews) {
           BaseText = baseViews.Text
           BaseView = baseViews.View
-          BaseTextAncestor = baseViews.TextAncestor
         }
       }
     }
@@ -1146,32 +1144,20 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`spaced-as-child`
 
-    // perf - unwrap View
-    if (
-      // in test mode disable perf unwrapping so react-testing-library finds Text properly
-      process.env.NODE_ENV !== 'test' &&
-      process.env.TAMAGUI_TARGET === 'native' &&
-      (elementType === BaseText || elementType === BaseView)
-    ) {
-      if (process.env.TAMAGUI_OPTIMIZE_NATIVE_VIEWS) {
-        // further optimize by not even caling elementType.render
-        viewProps.children = content
-        content = createElement(
-          elementType === BaseText ? 'RCTText' : 'RCTView',
-          viewProps
-        )
-      } else {
-        // instead of rendering a whole sub component, just grab the contents directly
-        // we could further improve this performance by actually just doing this ourselves
-        viewProps.children = content
-        content = elementType.render(viewProps, viewProps.ref)
-      }
+    let useChildrenResult: any
+    if (hooks.useChildren) {
+      useChildrenResult = hooks.useChildren(
+        elementType,
+        content,
+        viewProps,
+        events,
+        staticConfig
+      )
+    }
+    if (useChildrenResult) {
+      content = useChildrenResult
     } else {
       content = createElement(elementType, viewProps, content)
-    }
-
-    if (hooks.useChildren) {
-      content = hooks.useChildren?.(content, viewProps, events, staticConfig)
     }
 
     if (process.env.NODE_ENV === 'development' && time) time`create-element`
