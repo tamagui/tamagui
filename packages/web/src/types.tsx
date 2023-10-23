@@ -1355,13 +1355,15 @@ export type StyleableOptions = {
 }
 
 export type Styleable<Props, Ref, BaseProps, VariantProps, ParentStaticProperties> = <
-  CustomProps extends Object | void = void,
-  X extends FunctionComponent<any> = FunctionComponent<any>
+  CustomProps extends Object = {},
+  X extends FunctionComponent<
+    Omit<Props, keyof CustomProps> & CustomProps
+  > = FunctionComponent<Omit<Props, keyof CustomProps> & CustomProps>
 >(
   a: X,
   options?: StyleableOptions
 ) => TamaguiComponent<
-  CustomProps extends void ? Props : Omit<Props, keyof CustomProps> & CustomProps,
+  Omit<Props, keyof CustomProps> & CustomProps,
   Ref,
   BaseProps,
   VariantProps,
