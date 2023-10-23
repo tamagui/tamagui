@@ -115,7 +115,7 @@ const HeroContents = memo(function HeroContents() {
           pb: '$4',
         }}
       >
-        <XStack pos="absolute" als="center" y={-70}>
+        <XStack pos="absolute" als="center" y={-80}>
           <Link prefetch={false} href="/takeout">
             <ThemeTintAlt>
               <Button
@@ -250,7 +250,7 @@ const HeroContents = memo(function HeroContents() {
 })
 
 const Subtitle = styled(Paragraph, {
-  color: '$gray10',
+  color: '$color8',
   size: '$6',
   fontFamily: '$silkscreen',
   ta: 'left',

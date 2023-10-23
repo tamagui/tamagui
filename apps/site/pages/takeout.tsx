@@ -315,7 +315,7 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
       <YStack
         pos="absolute"
         style={{
-          clipPath: `polygon(0% 0%, 0% 0%, 100% 100%, 100% 0%, 100% 0, 6.5% 100%)`,
+          clipPath: `polygon(0% 0%, 0% 0%, 100% 100%, 100% 0%, 100% 0, 0% 100%)`,
         }}
       >
         <ThemeTint>
@@ -327,7 +327,7 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
         mt={0}
         className="mix-blend"
         style={{
-          clipPath: `polygon(0% 0%, 0% 100%, 100% 100%, 0% 0%, 100% 0, 6.5% 100%)`,
+          clipPath: `polygon(0% 0%, 0% 100%, 100% 100%, 0% 0%, 100% 0, 0% 100%)`,
         }}
       >
         <TAKEOUT zi={1000} />
@@ -656,7 +656,7 @@ export default function TakeoutPage({
 
                 <ThemeTint>
                   <H2
-                    className="clip-text mix-blend text-wrap-balance"
+                    className="clip-text text-wrap-balance"
                     ff="$cherryBomb"
                     size="$12"
                     fontSize={96}
@@ -684,16 +684,14 @@ export default function TakeoutPage({
                   </H2>
                 </ThemeTint>
 
-                <ThemeTint>
-                  <MunroP className="callout" size="$10" $sm={{ size: '$9' }}>
-                    We can't promise everything...
-                  </MunroP>
-                </ThemeTint>
+                <MunroP size="$10" $sm={{ size: '$9' }}>
+                  We can't promise everything...
+                </MunroP>
 
                 <ThemeTint>
                   <MunroP
                     className="text-wrap-balance"
-                    style={{ textShadow: '0 1px 1px var(--color9)' }}
+                    ls={0.5}
                     size="$9"
                     fow="400"
                     $sm={{ size: '$8' }}
@@ -1763,11 +1761,9 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
                 Drop 0001
               </MunroP>
 
-              <ThemeTintAlt>
-                <MunroP className="callout" color="$color9" size="$11" ls={2}>
-                  The Stack
-                </MunroP>
-              </ThemeTintAlt>
+              <MunroP color="$color10" size="$11" ls={2}>
+                The Stack
+              </MunroP>
 
               <YStack>
                 <Row
@@ -1894,7 +1890,7 @@ const Row = (props: { title: any; description: any; after: any }) => {
       }}
     >
       <YStack f={1} py="$3" space="$1">
-        <Paragraph fontFamily="$cherryBomb" size="$4">
+        <Paragraph fontFamily="$munro" tt="uppercase" ls={4} size="$4">
           {props.title}
         </Paragraph>
         <Paragraph

@@ -47,9 +47,10 @@ export const HeaderLinks = ({ showExtra, forceShowAllLinks, showAuth }: HeaderPr
       </NextLink>
 
       {!router.asPath.startsWith('/takeout') && (
-        <NextLink passHref prefetch={false} href="/takeout">
+        <NextLink passHref legacyBehavior={false} prefetch={false} href="/takeout">
           <TooltipSimple delay={0} restMs={25} label="Takeout">
             <HeadAnchor
+              tag="span"
               {...(!forceShowAllLinks && {
                 size: '$8',
               })}
