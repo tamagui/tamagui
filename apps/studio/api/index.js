@@ -1,1 +1,1 @@
-Object.assign(module.exports, require('../dist/cjs/api'))
+export * from '../dist/esm/api'
