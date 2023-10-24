@@ -198,7 +198,11 @@ const HeroContents = memo(function HeroContents() {
           gap="$2"
           $xxs={{ ai: 'center', fw: 'wrap', gap: 0 }}
         >
-          <NextLink target="_blank" href="https://twitter.com/tamagui_js">
+          <NextLink
+            target="_blank"
+            legacyBehavior={false}
+            href="https://twitter.com/tamagui_js"
+          >
             <TooltipSimple placement="top" delay={0} restMs={25} label="Twitter">
               <YStack p="$5" $sm={{ p: '$3' }} opacity={0.65} hoverStyle={{ opacity: 1 }}>
                 <VisuallyHidden>
@@ -231,7 +235,11 @@ const HeroContents = memo(function HeroContents() {
             </Button>
           </NextLink>
 
-          <NextLink target="_blank" href="https://discord.gg/4qh6tdcVDa">
+          <NextLink
+            target="_blank"
+            legacyBehavior={false}
+            href="https://discord.gg/4qh6tdcVDa"
+          >
             <TooltipSimple placement="top" delay={0} restMs={25} label="Discord">
               <YStack p="$5" $sm={{ p: '$3' }} opacity={0.65} hoverStyle={{ opacity: 1 }}>
                 <VisuallyHidden>
