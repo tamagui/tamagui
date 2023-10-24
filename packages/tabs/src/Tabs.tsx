@@ -100,6 +100,19 @@ const TabsTriggerFrame = styled(ThemeableStack, {
         pointerEvents: 'none',
       },
     },
+
+    active: {
+      true: {
+        hoverStyle: {
+          backgroundColor: '$background',
+        },
+
+        focusStyle: {
+          backgroundColor: '$background',
+        },
+      },
+    },
+
     unstyled: {
       false: {
         backgroundColor: '$background',
@@ -118,6 +131,7 @@ const TabsTriggerFrame = styled(ThemeableStack, {
       },
     },
   } as const,
+
   defaultVariants: {
     unstyled: false,
   },
