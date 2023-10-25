@@ -598,8 +598,8 @@ const SliderComponent = React.forwardRef<TamaguiElement, SliderProps>(
                   if (target !== 'thumb') {
                     const closestIndex = getClosestValueIndex(values, value)
                     updateValues(value, closestIndex)
-                    onSlideStart?.(event, value, target)
                   }
+                  onSlideStart?.(event, value, target)
                 }
           }
           onSlideMove={disabled ? undefined : handleSlideMove}
