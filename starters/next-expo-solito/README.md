@@ -93,3 +93,13 @@ You may potentially want to have the native module transpiled for the next app. 
 - Install command to be `yarn set version stable && yarn install`
 - Build command: leave default setting
 - Output dir: leave default setting
+
+#### Troubleshooting Vercel Deployment
+If after pushing to GitHub you're seeing that your automatic vercel deployment failed because of an error that looks like this:
+```
+➤ YN0028: │ The lockfile would have been modified by this install, which is explicitly forbidden.
+➤ YN0000: └ Completed
+➤ YN0000: Failed with errors in 0s 700ms
+Error: Command "yarn set version stable && yarn install" exited with 1
+```
+Run `yarn vercel:install` locally and then commit and push the changes to GitHub.
