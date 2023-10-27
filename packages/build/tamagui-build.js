@@ -385,7 +385,7 @@ async function esbuildWriteIfChanged(
   if (!shouldWatch && !platform) {
     return await esbuild.build(opts)
   }
-
+  
   const built = await esbuild.build({
     ...opts,
 
@@ -406,7 +406,7 @@ async function esbuildWriteIfChanged(
       //     })
       //   },
       // },
-    ],
+    ].filter(Boolean),
 
     treeShaking: true,
     minifySyntax: true,
@@ -489,7 +489,14 @@ async function esbuildWriteIfChanged(
       const outDir = dirname(outPath)
 
       await fs.ensureDir(outDir)
-      const outString = new TextDecoder().decode(file.contents)
+      let outString = new TextDecoder().decode(file.contents)
+
+      if (platform === 'web') {
+        const rnWebReplacer = replaceRNWeb[opts.format]
+        if (rnWebReplacer) {
+          outString = outString.replaceAll(rnWebReplacer.from, rnWebReplacer.to)
+        }
+      }
 
       if (shouldWatch) {
         if (
@@ -503,4 +510,15 @@ async function esbuildWriteIfChanged(
       }
     })
   )
+}
+
+const replaceRNWeb = {
+  esm: {
+    from: 'from "react-native"',
+    to: 'from "react-native-web"'
+  },
+  cjs: {
+    from: 'require("react-native")',
+    to: 'require("react-native-web")'
+  }
 }
