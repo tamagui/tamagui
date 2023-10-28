@@ -97,9 +97,7 @@ export class ThemeManager {
       this['_numChangeEventsSent']++
     }
     if (shouldNotify) {
-      queueMicrotask(() => {
-        this.notify()
-      })
+      this.notify()
     }
   }
 
@@ -220,7 +218,11 @@ function getState(
       ? max // component name only don't search upwards
       : 0
 
-  if (process.env.NODE_ENV !== 'production' && typeof props.debug === 'string') {
+  if (
+    process.env.NODE_ENV !== 'production' &&
+    typeof props.debug === 'string' &&
+    typeof window !== 'undefined'
+  ) {
     console.groupCollapsed('ThemeManager.getState()')
     console.info({ props, baseName, base, min, max })
   }
