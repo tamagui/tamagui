@@ -45,6 +45,17 @@ const pkgTypes = Boolean(pkg['types'] || pkg['typings'])
 
 const flatOut = [pkgMain, pkgModule, pkgModuleJSX].filter(Boolean).length === 1
 
+const replaceRNWeb = {
+  esm: {
+    from: 'from "react-native"',
+    to: 'from "react-native-web"'
+  },
+  cjs: {
+    from: 'require("react-native")',
+    to: 'require("react-native-web")'
+  }
+}
+
 async function clean() {
   try {
     await Promise.allSettled([
@@ -510,15 +521,4 @@ async function esbuildWriteIfChanged(
       }
     })
   )
-}
-
-const replaceRNWeb = {
-  esm: {
-    from: 'from "react-native"',
-    to: 'from "react-native-web"'
-  },
-  cjs: {
-    from: 'require("react-native")',
-    to: 'require("react-native-web")'
-  }
 }
