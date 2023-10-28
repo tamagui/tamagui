@@ -1,7 +1,7 @@
 // import './wdyr'
 
 import { View } from 'react-native'
-import { GetProps, Stack, styled } from 'tamagui'
+import { GetProps, Square, Stack, styled } from 'tamagui'
 
 export const Sandbox = () => {
   return (

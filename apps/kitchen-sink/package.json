@@ -46,7 +46,7 @@
     "@tamagui/themes": "1.75.5",
     "@tamagui/web": "1.75.5",
     "burnt": "^0.11.0",
-    "expo": "^49.0.5",
+    "expo": "49.0.16",
     "expo-dev-client": "~2.4.6",
     "expo-font": "~11.4.0",
     "expo-linear-gradient": "~12.3.0",
