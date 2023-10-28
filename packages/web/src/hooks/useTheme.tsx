@@ -248,8 +248,8 @@ function someParentIsInversed(manager?: ThemeManager) {
   if (process.env.TAMAGUI_TARGET === 'native') {
     let cur: ThemeManager | null | undefined = manager
     while (cur) {
-      if (!cur.parentManager) return true
-      if (cur.parentManager.state.scheme !== cur.state.scheme) return false
+      if (!cur.parentManager) return false
+      if (cur.parentManager.state.scheme !== cur.state.scheme) return true
       cur = cur.parentManager
     }
   }
@@ -358,8 +358,8 @@ export const useChangeThemeEffect = (
 
           const shouldTryUpdate = force ?? Boolean(keys?.length || isNewTheme)
 
-          if (process.env.NODE_ENV === 'development' && props.debug) {
-            console.info(` 🔸 onChange`, themeManager.id, {
+          if (true) {
+            console.log(` 🔸 onChange`, themeManager.id, {
               force,
               shouldTryUpdate,
               props,
@@ -510,6 +510,8 @@ export const useChangeThemeEffect = (
       isEqualShallow(prev, response) &&
       // ... and then compare just the state, because we make a new state obj but is likely the same
       isEqualShallow(prev.state, state)
+
+    console.log('now', { response, shouldReturnPrev, force, prev, state })
 
     if (prev && shouldReturnPrev) {
       return prev
