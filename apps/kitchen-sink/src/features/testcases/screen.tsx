@@ -47,17 +47,16 @@ const LinkListItem = ({
   ...props
 }: UseLinkProps & ListItemProps) => {
   const linkProps = useLink({ href, as, shallow })
-  const theme = useTheme()
 
   return (
     <ListItem
       {...linkProps}
+      backgroundColor="$color1"
       onPress={(e) => {
-        console.log(linkProps)
         linkProps.onPress(e)
       }}
       {...props}
-      iconAfter={<ChevronRight color={theme.color11.get()} />}
+      iconAfter={ChevronRight}
     >
       {children}
     </ListItem>

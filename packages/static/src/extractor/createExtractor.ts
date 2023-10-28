@@ -326,6 +326,13 @@ export function createExtractor(
           .map((k) => k.moduleName)
           .join(', ')}`
       )
+      logger.info(
+        `valid import paths: ${JSON.stringify(
+          getValidComponentsPaths(propsWithFileInfo),
+          null,
+          2
+        )}`
+      )
     }
 
     let doesUseValidImport = false
@@ -343,6 +350,10 @@ export function createExtractor(
 
       if (valid) {
         importDeclarations.push(node)
+      }
+
+      if (shouldPrintDebug === 'verbose') {
+        logger.info(` - import ${moduleName} ${valid}`)
       }
 
       if (extractStyledDefinitions) {
@@ -672,11 +683,19 @@ export function createExtractor(
         const componentName = findComponentName(traversePath.scope)
         const closingElement = traversePath.node.closingElement
 
+        if (shouldPrintDebug) {
+          logger.info(` start ${node.name}`)
+        }
+
         // skip non-identifier opening elements (member expressions, etc.)
         if (
-          t.isJSXMemberExpression(closingElement?.name) ||
+          (closingElement && t.isJSXMemberExpression(closingElement?.name)) ||
           !t.isJSXIdentifier(node.name)
         ) {
+          if (shouldPrintDebug) {
+            logger.info(` skip non-identifier element`)
+          }
+
           return
         }
 
@@ -811,6 +830,8 @@ export function createExtractor(
             // always de-opt animation these
             'animation',
             'disableOptimization',
+
+            ...(!isTargetingHTML ? ['pressStyle', 'focusStyle'] : []),
 
             // when using a non-CSS driver, de-opt on enterStyle/exitStyle
             ...(tamaguiConfig?.animations.isReactNative
@@ -1593,8 +1614,11 @@ export function createExtractor(
 
           // if it accesses any theme values during evaluation
           themeAccessListeners.add((key) => {
-            usedThemeKeys.add(key)
+            if (options.experimentalFlattenThemesOnNative) {
+              usedThemeKeys.add(key)
+            }
             if (disableExtractVariables) {
+              usedThemeKeys.add(key)
               shouldFlatten = false
               if (shouldPrintDebug === 'verbose') {
                 logger.info([' ! accessing theme key, avoid flatten', key].join(' '))
@@ -1940,6 +1964,13 @@ export function createExtractor(
                 ...(includeProps ? out.viewProps : {}),
                 ...out.style,
                 ...out.pseudos,
+              }
+
+              // check de-opt props again
+              for (const key in outProps) {
+                if (deoptProps.has(key)) {
+                  shouldFlatten = false
+                }
               }
 
               if (options.experimentalFlattenThemesOnNative) {
