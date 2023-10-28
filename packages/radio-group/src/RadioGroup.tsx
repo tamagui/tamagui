@@ -496,7 +496,6 @@ const RadioGroup = withStaticProperties(
             accentColor={accentColor}
           >
             <RadioGroupFrame
-              aria-valuetext={value}
               role="radiogroup"
               aria-orientation={orientation}
               ref={forwardedRef}
