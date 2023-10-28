@@ -3,6 +3,9 @@ import React from 'react'
 
 import { IconProps } from './IconProps'
 
+// sad fix https://github.com/tamagui/tamagui/issues/1812
+React['keep']
+
 type ThemedOptions = {
   defaultThemeColor?: string
   defaultStrokeWidth?: number
