@@ -97,7 +97,15 @@ export class ThemeManager {
       this['_numChangeEventsSent']++
     }
     if (shouldNotify) {
-      this.notify()
+      if (process.env.TAMAGUI_TARGET === 'native') {
+        // native is way slower with queueMicrotask
+        this.notify()
+      } else {
+        // web is way faster this way
+        queueMicrotask(() => {
+          this.notify()
+        })
+      }
     }
   }
 
