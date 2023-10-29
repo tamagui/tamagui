@@ -1,5 +1,5 @@
 import { ThemeTint } from '@tamagui/logo'
-import { Lock } from '@tamagui/lucide-icons'
+import { Lock, Play } from '@tamagui/lucide-icons'
 import { useThemeSetting } from '@tamagui/next-theme'
 import { Container } from 'components/Container'
 import { DivProps, HoverGlowProps, IS_SAFARI, useHoverGlow } from 'components/HoverGlow'
@@ -172,7 +172,9 @@ export const StudioScreen1 = memo(() => {
 
       <YStack
         als="center"
-        pt={100}
+        py={200}
+        my={-100}
+        x={10}
         pos="relative"
         {...lettersContainerBounds}
         minWidth={lettersContainerBounds.width}
@@ -206,17 +208,19 @@ export const StudioScreen1 = memo(() => {
       </YStack>
 
       <Container ai="center">
-        <XStack
+        <YStack
           ai="center"
           jc="center"
           gap="$5"
           als="center"
+          py="$8"
           f={1}
           w="100%"
           $sm={{ mt: -100, fd: 'column' }}
         >
           <NextLink target="_blank" href="https://github.com/sponsors/natew">
             <Button
+              mt={60}
               animation="quick"
               bg="$color10"
               color="$color1"
@@ -237,18 +241,47 @@ export const StudioScreen1 = memo(() => {
             </Button>
           </NextLink>
 
+          {/* <Button
+            animation="quicker"
+            bg="$color10"
+            color="$color1"
+            circular
+            size="$10"
+            icon={Play}
+            borderRadius="$12"
+            elevation="$2"
+            className="glowing"
+            hoverStyle={{
+              bg: '$color9',
+              elevation: '$3',
+              scale: 1.1,
+              y: -5,
+            }}
+            pressStyle={{
+              bg: '$color8',
+            }}
+          /> */}
+
           <NextLink href="/login">
-            <Button icon={Lock} variant="outlined" size="$3" borderRadius="$10">
-              Sponsor login
+            <Button variant="outlined" size="$3" borderRadius="$10">
+              Login
             </Button>
           </NextLink>
-        </XStack>
+        </YStack>
 
         <Spacer size="$8" />
 
         <XStack maw={790} space="$8" separator={<Separator vertical />}>
-          <H2 als="center" size="$9" fow="900" $sm={{ size: '$5' }}>
-            A new way to design system
+          <H2
+            theme="alt2"
+            className="text-glow"
+            als="center"
+            ff="$silkscreen"
+            size="$8"
+            fow="900"
+            $sm={{ size: '$5' }}
+          >
+            Your design system!
           </H2>
         </XStack>
       </Container>

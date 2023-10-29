@@ -1,3 +1,5 @@
+- 3.0 - single forward pass generates the css alongside the style object
+
 - Fix ToggleGroup active style looking really bad only sticking sometimes
   - in general we need a better system for controlling if we apply active theme or not, or letting consumers control the active styling in general on things
     - perhaps we do active theme by default (unless unstyled: true)

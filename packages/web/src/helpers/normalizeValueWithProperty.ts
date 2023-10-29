@@ -18,12 +18,10 @@ const stylePropsAllPlusTransforms = {
 
 export function normalizeValueWithProperty(value: any, property?: string): any {
   if (!isWeb) return value
-  if (typeof value === 'boolean') {
+  if (typeof value === 'boolean' || (property && property in stylePropsUnitless)) {
     return value
   }
-  if (property && property in stylePropsUnitless) {
-    return value
-  }
+  // if not a style prop
   if (property && !(property in stylePropsAllPlusTransforms)) {
     return value
   }

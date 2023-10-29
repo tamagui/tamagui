@@ -30,6 +30,7 @@ export * from './contexts/ComponentContext'
 
 export * from './helpers/createStyledContext'
 export * from './helpers/expandStyles'
+export * from './helpers/expandStylesAndRemoveNullishValues'
 export * from './helpers/propMapper'
 export * from './helpers/getExpandedShorthands'
 export * from './helpers/getSplitStyles'

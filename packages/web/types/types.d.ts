@@ -976,7 +976,7 @@ export type SplitStyleProps = {
     mediaState?: Record<string, boolean>;
     noClassNames?: boolean;
     noExpand?: boolean;
-    noNormalize?: boolean;
+    noNormalize?: boolean | 'values';
     noSkip?: boolean;
     resolveValues?: ResolveVariableAs;
     disableExpandShorthands?: boolean;

@@ -677,6 +677,10 @@ textarea {
     7px 7px 0 var(--red9), 0 0 50px rgba(0, 0, 0, 1);
 }
 
+.text-glow {
+  text-shadow: 4px 4px 0 var(--backgroundStrong), 0 0 75px var(--color10), 0 0 160px var(--color9);
+}
+
 .rotate-slow-right {
   animation: rotate-right 25s ease-in 2s infinite;
   transform-origin: top left;

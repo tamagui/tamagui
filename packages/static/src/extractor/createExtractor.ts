@@ -1743,7 +1743,10 @@ export function createExtractor(
               if (staticConfig.variants && key in staticConfig.variants) {
                 mergeToEnd(res, key, style[key])
               } else {
-                const expanded = expandStylesAndRemoveNullishValues({ [key]: style[key] })
+                const expanded = expandStylesAndRemoveNullishValues(
+                  { [key]: style[key] },
+                  true
+                )
                 for (const key in expanded) {
                   mergeToEnd(res, key, expanded[key])
                 }
