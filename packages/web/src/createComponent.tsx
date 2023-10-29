@@ -1340,8 +1340,7 @@ export function createComponent<
     const isForwardedRefAlready = Component.render?.length === 2
     const ComponentForwardedRef = isForwardedRefAlready
       ? (Component as any)
-      : // memo because theme changes otherwise would always re-render
-        memo(forwardRef(Component as any))
+      : forwardRef(Component as any)
     const extendedConfig = extendStyledConfig(options?.staticConfig)
     const out = options?.disableTheme
       ? ComponentForwardedRef
