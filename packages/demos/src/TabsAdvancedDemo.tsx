@@ -312,7 +312,7 @@ const TabsAdvancedUnderline = () => {
 
 const TabsRovingIndicator = ({ active, ...props }: { active?: boolean } & StackProps) => {
   return (
-    <Stack
+    <YStack
       position="absolute"
       backgroundColor="$color5"
       opacity={0.7}
