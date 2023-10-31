@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useMemo, useState } from 'react'
-import { Separator, Tabs, YStack, useDidFinishSSR } from 'tamagui'
+import { Separator, Tabs, Text, YStack, useDidFinishSSR } from 'tamagui'
 
 interface Props {
   hero: boolean
@@ -67,26 +67,28 @@ export default function CodeBlocksWithTabs(props: Props) {
   return (
     <Tabs
       flexDirection="column"
-      // defaultValue={state[stateKey] ?? children[0].props.id}
       value={state ?? children[0].props.id}
       orientation="horizontal"
       my="$4"
       theme="alt1"
       onValueChange={handleChange}
     >
-      <Tabs.List>
+      <Tabs.List marginBottom={'$-1'} separator={<Separator vertical />}>
         {children.map((child, index) => {
           return (
             <Tabs.Tab
-              borderWidth={1}
+              borderWidth={"$0.25"}
               borderColor={'$backgroundPress'}
+              borderLeftWidth={index === 0 ? "$0.25" : 0}
+              borderRightWidth={index === children.length - 1 ? "$0.25" : 0}
               borderBottomLeftRadius={0}
               borderBottomRightRadius={0}
+              // marginLeft={index !== 0 ? "$-1" : 0}
               value={child.props.id}
               size="$3"
               key={index}
             >
-              {child.props.id}
+              <Text fontSize={'15px'}>{child.props.id}</Text>
             </Tabs.Tab>
           )
         })}

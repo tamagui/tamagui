@@ -15,13 +15,14 @@ export function TamaguiCard({ children, title, subTitle, ...props }) {
         maxWidth: 'calc(50% - var(--space-8))',
       }}
       $sm={{ width: 'auto', maxWidth: 'auto', f: 1 }}
+      bc="rgba(0,0,0,0)"
     >
       <H3
         tag="span"
         fontFamily="$silkscreen"
         size="$7"
         lh="$6"
-        color="$color"
+        color="$color8"
         cursor="inherit"
         ls={0}
       >

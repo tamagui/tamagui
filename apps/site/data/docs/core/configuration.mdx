@@ -7,10 +7,10 @@ Create a `tamagui.config.ts` in the root of your app to set up your design syste
 
 ## Quick Start
 
-You can use `@tamagui/config` which provides a complete config out of the box, the same one this site uses.
+You can use `@tamagui/config` which provides a complete config out of the box.
 
 ```tsx
-// the v2 config imports the css driver on web and react-native on native
+// the v2 config imports the css driver on web and react-native animation driver on native
 // for reanimated: @tamagui/config/v2-reanimated
 // for react-native only: @tamagui/config/v2-native
 import { config } from '@tamagui/config/v2'
@@ -30,6 +30,8 @@ declare module 'tamagui' {
 
 export default appConfig
 ```
+
+This config is same as the one this site uses.
 
 [The source](https://github.com/tamagui/tamagui/blob/master/packages/config/src/config.ts) and [type output](https://github.com/tamagui/tamagui/blob/master/packages/config/types/config.d.ts) of that config is also useful as a reference for building your own custom config.
 

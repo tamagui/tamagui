@@ -1,6 +1,7 @@
 import toBool from '@lib/toBool'
+import { useClipboard } from '@lib/useClipboard'
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
-import { Link, Subtitles } from '@tamagui/lucide-icons'
+import { CheckCircle, Clipboard, Link, Subtitles } from '@tamagui/lucide-icons'
 import { NextLink } from 'components/NextLink'
 import React, { useState } from 'react'
 import { ScrollView } from 'react-native'
@@ -34,8 +35,8 @@ import { BenchmarkChartNative } from './BenchmarkChartNative'
 import { BenchmarkChartWeb } from './BenchmarkChartWeb'
 import BetaTag from './BetaTag'
 import { Code, CodeInline } from './Code'
-import { Preview } from './ComponentPreview'
 import CodeBlocksWithTabs from './CodeBlocksWithTabs'
+import { Preview } from './ComponentPreview'
 import { DataTable } from './DataTable'
 import * as Demos from './demos'
 import { DocCodeBlock } from './DocsCodeBlock'
@@ -57,6 +58,7 @@ import { TamaguiCard } from './TamaguiCard'
 import { TamaguiExamplesCode } from './TamaguiExamplesCode'
 import { UL } from './UL'
 import { unwrapText } from './unwrapText'
+import { ThemeName } from 'tamagui'
 
 const TableFrame = styled(ThemeableStack, {
   bordered: true,
@@ -564,6 +566,9 @@ export const components = {
   },
 
   GetStarted: () => {
+    const codeSnippet = 'npm create tamagui@latest'
+    const { hasCopied, onCopy, value } = useClipboard(codeSnippet)
+
     return (
       <XStack gap="$4" f={1} fw="wrap" mt="$6">
         <ThemeTintAlt>
@@ -577,10 +582,22 @@ export const components = {
               </Paragraph>
             </Card.Header>
 
-            <Card.Footer p="$6" pt={0}>
+            <Card.Footer p="$6" pt={0} gap={'$2'}>
               <Code f={1} bc="$color4" p="$3" br="$4" size="$6">
-                npm create tamagui@latest
+                {codeSnippet}
               </Code>
+              <TooltipSimple label={hasCopied ? 'Copied' : 'Copy to clipboard'}>
+                <Button
+                  aria-label="Copy code to clipboard"
+                  size="$5"
+                  display="inline-flex"
+                  icon={hasCopied ? CheckCircle : Clipboard}
+                  onPress={onCopy}
+                  $xs={{
+                    display: 'none',
+                  }}
+                />
+              </TooltipSimple>
             </Card.Footer>
           </Card>
         </ThemeTintAlt>
@@ -601,6 +618,14 @@ export const components = {
                 Set up an app.
               </Paragraph>
             </Card.Header>
+
+            <Card.Footer jc={'center'} p={'$6'} pt={'$0'}>
+              <XStack gap={'$4'}>
+                <img src="/expo-logo.png" height={32} />
+                <img src="/nextjs-logo.png" height={32} />
+                <img src="/vite-logo.png" height={32} />
+              </XStack>
+            </Card.Footer>
           </Card>
         </NextLink>
       </XStack>
@@ -611,12 +636,15 @@ export const components = {
     description: string
     href: string
     children?: React.ReactNode
+    theme?: ThemeName
   }) => {
     return (
       <NextLink passHref href={props.href}>
-        <TamaguiCard title={props.title} subTitle={props.description}>
-          {props.children}
-        </TamaguiCard>
+        <Theme name={props.theme}>
+          <TamaguiCard title={props.title} subTitle={props.description}>
+            {props.children}
+          </TamaguiCard>
+        </Theme>
       </NextLink>
     )
   },

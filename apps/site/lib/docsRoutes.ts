@@ -14,11 +14,6 @@ export const docsRoutes: DocsRoute[] = [
     title: 'Guides',
   },
   {
-    pages: [
-      { title: 'Starting with a template', route: '/docs/guides/create-tamagui-app' },
-    ],
-  },
-  {
     label: 'Frameworks',
     pages: [
       { title: 'Next.js', route: '/docs/guides/next-js' },

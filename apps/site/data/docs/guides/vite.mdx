@@ -3,13 +3,21 @@ title: Vite Guide
 description: How to set up Tamagui with Vite
 ---
 
-Tamagui now has two plugins for Vite: one that sets up everything you need to get going, and a second that adds CSS compilation. Both are included in the `@tamagui/vite-plugin` package.
+In this guide we will walk you through the steps needed for you to get Tamagui integrated into your Vite app.
 
-For a full-featured example, you can create a new app using `npm create tamagui@latest` and select the 'Simple Web' option which includes a Vite setup.
+In case you would like a full-featured example, you can create a new app using `npm create tamagui@latest` and select the 'Simple Web' option which includes a Vite setup.
+
+{/* Tamagui now has two plugins for Vite: one that sets up everything you need to get going, and a second that adds CSS compilation. Both are included in the `@tamagui/vite-plugin` package.
+
+For a full-featured example, you can create a new app using `npm create tamagui@latest` and select the 'Simple Web' option which includes a Vite setup. */}
 
 ### Installation
 
-**Step 1:** Remove `"type": "module"` from your `package.json` if you have it. (The type module support was removed because it breaks metro, webpack and some other things).
+**Step 1:** Remove `"type": "module"` from your `package.json` if you have it. 
+
+<Notice>
+With `type: 'module'` mode, there was some issue with .mjs. so we removed that. But then path specific imports also break due to metro getting confused and not finding any path specific imports `.native.ts`​.
+</Notice>
 
 **Step 2:** Install `@tamagui/vite-plugin`
 

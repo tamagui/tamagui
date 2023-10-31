@@ -18,17 +18,20 @@ description: Universal styles for React Native and Web
     title="Install"
     href="/docs/intro/installation"
     description="Install Tamagui in a pre-existing app and get started right away"
+    theme="blue"
   />
   <RouteCard
     title="Guides"
     href="/docs/guides/overview"
     description="Learn how to create production ready applications with Tamagui"
+    theme="red"
   />
-  <RouteCard title="Core" href="" description="Core hooks and utilities" />
+  <RouteCard title="Core" href="" description="Core hooks and utilities" theme="green"/>
   <RouteCard
     title="Components"
     href="/docs/components/overview"
     description="Core components that make up the Tamagui ecosystem"
+    theme="purple"
   />
 </Grid>
 
@@ -42,9 +45,7 @@ The highest level part of Tamagui is `tamagui` itself, a complete UI kit built o
 
 ### `@tamagui/static`
 
-The `@tamagui/static` package is an optimizing compiler for React that does much more than just extracting CSS styles. It significantly speeds up the runtime of apps by flattening your styled views as their call-sites, handling even tricky dynamic styles there, and outputting a `div` (on the web) or `View` (on native).
-
-There's a lot to it, and good reasons it exists, but are [discussed more on the compiler introduction](/docs/compiler/why-a-compiler).
+`@tamagui/static` is an optimizing compiler for React that does much more than just extracting CSS styles. It significantly speeds up the runtime of apps by flattening your styled views as their call-sites, handling even tricky dynamic styles there, and outputting a `div` (on the web) or `View` (on native). <small>[Read more](/docs/compiler/why-a-compiler)</small>
 
 ---
 
@@ -67,3 +68,6 @@ A big thanks to:
 - [Modulz](https://github.com/modulz) for the bones of the website and inspiration on some Radix-like component APIs.
 - [Moti](https://moti.fyi) for the foundation of the reanimated driver.
 - [Framer Motion](https://github.com/framer/motion) for the AnimatePresence functionality.
+- [Floating-UI](https://floating-ui.com/)
+- [Radix](https://www.radix-ui.com/)
+- [Stitches](https://stitches.dev/)
