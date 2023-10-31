@@ -24,6 +24,7 @@ import {
 } from 'react'
 import {
   Animated,
+  Dimensions,
   GestureResponderEvent,
   Keyboard,
   LayoutChangeEvent,
@@ -326,7 +327,11 @@ export const SheetImplementationCustom = themeable(
 
     const handleAnimationViewLayout = useCallback(
       (e: LayoutChangeEvent) => {
-        const next = e.nativeEvent?.layout.height
+        // avoid bugs where it grows forever for whatever reason
+        const next = Math.min(
+          e.nativeEvent?.layout.height,
+          Dimensions.get('window').height
+        )
         if (!next) return
         setFrameSize(next)
       },
@@ -335,7 +340,11 @@ export const SheetImplementationCustom = themeable(
 
     const handleMaxContentViewLayout = useCallback(
       (e: LayoutChangeEvent) => {
-        const next = e.nativeEvent?.layout.height
+        // avoid bugs where it grows forever for whatever reason
+        const next = Math.min(
+          e.nativeEvent?.layout.height,
+          Dimensions.get('window').height
+        )
         if (!next) return
         setMaxContentSize(next)
       },
@@ -418,11 +427,14 @@ export const SheetImplementationCustom = themeable(
               onLayout={handleMaxContentViewLayout}
             />
           )}
+
           <AnimatedView
             ref={ref}
             {...panResponder?.panHandlers}
             onLayout={handleAnimationViewLayout}
             pointerEvents={open && !shouldHideParentSheet ? 'auto' : 'none'}
+            // @ts-ignore for CSS driver this is necessary to attach the transition
+            animation={animation}
             style={[
               {
                 position: 'absolute',

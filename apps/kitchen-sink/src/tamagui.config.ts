@@ -11,6 +11,7 @@ export const animationsCSS = createAnimationsCSS({
   slow: 'ease-in 500ms',
   quick: 'ease-in 100ms',
   tooltip: 'ease-in 400ms',
+  medium: 'ease-in 400ms',
 })
 
 export const animationsMoti = createAnimationsMoti({
@@ -35,6 +36,11 @@ export const animationsMoti = createAnimationsMoti({
     damping: 20,
     mass: 1.2,
     stiffness: 250,
+  },
+  medium: {
+    damping: 15,
+    stiffness: 120,
+    mass: 1,
   },
   tooltip: {
     type: 'spring',
@@ -66,6 +72,11 @@ export const animationsNative = createAnimationsNative({
     damping: 20,
     mass: 1.2,
     stiffness: 250,
+  },
+  medium: {
+    damping: 15,
+    stiffness: 120,
+    mass: 1,
   },
   tooltip: {
     type: 'spring',

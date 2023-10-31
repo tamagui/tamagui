@@ -7,7 +7,7 @@ import {
 } from '@tamagui/core'
 // import { animate } from '@tamagui/cubic-bezier-animator'
 import { usePresence } from '@tamagui/use-presence'
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 
 export function createAnimations<A extends Object>(animations: A): AnimationDriver<A> {
   return {
