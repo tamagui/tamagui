@@ -7,9 +7,11 @@ import {
 } from '@tamagui/core'
 // import { animate } from '@tamagui/cubic-bezier-animator'
 import { usePresence } from '@tamagui/use-presence'
-import { useState } from 'react'
+import { useEffect, useId, useState } from 'react'
 
 export function createAnimations<A extends Object>(animations: A): AnimationDriver<A> {
+  const reactionListeners = new WeakMap<any, Set<Function>>()
+
   return {
     View: Stack,
     Text: Text,
@@ -17,41 +19,41 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
     usePresence,
     supportsCSSVars: true,
 
-    useAnimatedNumber(initial): UniversalAnimatedNumber<number> {
+    useAnimatedNumber(initial): UniversalAnimatedNumber<Function> {
       const [val, setVal] = useState(initial)
 
       return {
         getInstance() {
-          return val
+          return setVal
         },
         getValue() {
           return val
         },
         setValue(next) {
           setVal(next)
+          const listeners = reactionListeners.get(setVal)
+          if (listeners) {
+            listeners.forEach((cb) => cb(next))
+          }
         },
         stop() {},
       }
     },
 
     useAnimatedNumberReaction({ hostRef, value }, onValue) {
-      // doesn't make much sense given value the animated value is a state in this driver, but this is compatible
-      useIsomorphicLayoutEffect(() => {
-        if (!hostRef.current) return
-        const onTransitionEvent = (e: TransitionEvent) => {
-          onValue(value.getValue())
+      useEffect(() => {
+        const instance = value.getInstance()
+        let queue = reactionListeners.get(instance)
+        if (!queue) {
+          const next = new Set<Function>()
+          reactionListeners.set(instance, next)
+          queue = next!
         }
-
-        const node = hostRef.current as HTMLElement
-        node.addEventListener('transitionstart', onTransitionEvent)
-        node.addEventListener('transitioncancel', onTransitionEvent)
-        node.addEventListener('transitionend', onTransitionEvent)
+        queue.add(onValue)
         return () => {
-          node.removeEventListener('transitionstart', onTransitionEvent)
-          node.removeEventListener('transitioncancel', onTransitionEvent)
-          node.removeEventListener('transitionend', onTransitionEvent)
+          queue?.delete(onValue)
         }
-      }, [hostRef, onValue])
+      }, [])
     },
 
     useAnimatedNumberStyle(val, getStyle) {
