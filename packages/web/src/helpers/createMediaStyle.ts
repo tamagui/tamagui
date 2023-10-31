@@ -93,8 +93,8 @@ export const createMediaStyle = (
 
     const mediaKey = groupMediaKey || mediaKeyIn
     const mediaSelector = selectors[mediaKey]
-    const screenStr = negate ? 'not all and' : ''
-    const mediaQuery = `${screenStr} ${mediaSelector}`
+    const screenStr = negate ? 'not all and ' : ''
+    const mediaQuery = `${screenStr}${mediaSelector}`
     const precedenceImportancePrefix = groupMediaKey
       ? ''
       : enableMediaPropOrder
@@ -114,6 +114,11 @@ export const createMediaStyle = (
       styleRule = styleInner.replace('{', ` and ${mediaQuery} {`)
     } else {
       styleRule = `${prefix} ${mediaQuery}{${precedenceImportancePrefix}${styleInner}}`
+    }
+
+    // add @supports for legacy browser support to not break container queries
+    if (groupMediaKey) {
+      styleRule = `@supports (contain: inline-size) {${styleRule}}`
     }
   }
 
