@@ -1,5 +1,3 @@
-process.env.TAMAGUI_TARGET = 'web'
-
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'
@@ -106,32 +104,41 @@ describe('getSplitStyles', () => {
     expect(styles.rulesToInsert[0].property).toEqual(`boxShadow`)
   })
 
-  const timed = async (fn: Function, opts?: { runs?: number }) => {
-    const start = performance.now()
-    const runs = opts?.runs ?? 1
+  test(`group container queries generate @supports and @container`, () => {
+    const styles = simplifiedGetSplitStyles(Text, {
+      '$group-testy-sm': {
+        color: 'red',
+      },
+    })
+    expect(styles.rulesToInsert[0].rules[0]).toMatchInlineSnapshot('"@supports (contain: inline-size) {@container testy (max-width: 800px){:root:root .t_group_testy  ._col-_grouptesty-sm_red{color:red;}}}"')
+  })
 
-    for (let i = 0; i < runs; i++) {
-      let response = fn()
-      if (response instanceof Promise) {
-        response = await response
-      }
-    }
+  // const timed = async (fn: Function, opts?: { runs?: number }) => {
+  //   const start = performance.now()
+  //   const runs = opts?.runs ?? 1
 
-    const took = (performance.now() - start) / runs
-    return {
-      took,
-    }
-  }
+  //   for (let i = 0; i < runs; i++) {
+  //     let response = fn()
+  //     if (response instanceof Promise) {
+  //       response = await response
+  //     }
+  //   }
 
-  function runBaselineSpeedTest() {
-    const start = performance.now()
-    let y: any[] = []
-    for (let i = 0; i < 50; i++) {
-      y.push(new Array(50).fill({}))
-    }
-    globalThis['__ensureRuns'] = y[0]
-    return performance.now() - start
-  }
+  //   const took = (performance.now() - start) / runs
+  //   return {
+  //     took,
+  //   }
+  // }
+
+  // function runBaselineSpeedTest() {
+  //   const start = performance.now()
+  //   let y: any[] = []
+  //   for (let i = 0; i < 50; i++) {
+  //     y.push(new Array(50).fill({}))
+  //   }
+  //   globalThis['__ensureRuns'] = y[0]
+  //   return performance.now() - start
+  // }
 
   // never actually hit the memo in practice
   // test(`it memoizes`, async () => {

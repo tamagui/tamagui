@@ -1,4 +1,4 @@
-import { SplitStyleProps, TamaguiComponent, getSplitStyles } from '../core/src'
+import { SplitStyleProps, getSplitStyles } from '../core/src'
 import { defaultComponentState } from '../web/src/defaultComponentState'
 
 const emptyObj = {} as any
@@ -10,7 +10,7 @@ const styleProps = {
 } satisfies SplitStyleProps
 
 export function simplifiedGetSplitStyles(
-  component: TamaguiComponent,
+  component: any,
   props: Record<string, any>,
   options: {
     tag?: string
@@ -25,7 +25,12 @@ export function simplifiedGetSplitStyles(
     defaultComponentState,
     styleProps,
     emptyObj,
-    emptyObj,
+    {
+      animationDriver: {},
+      groups: {
+        state: {},
+      },
+    } as any,
     options.tag,
     true
   )

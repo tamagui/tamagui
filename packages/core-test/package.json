@@ -9,8 +9,9 @@
   },
   "scripts": {
     "build": "true",
-    "test:web": "TAMAGUI_TARGET=web vitest --run --config ../vite-plugin-internal/src/vite.config.ts **/*.web.test.tsx",
-    "test:native": "TAMAGUI_TARGET=native vitest --run --config ../vite-plugin-internal/src/vite.config.ts **/*.native.test.tsx",
+    "test:run": "vitest --run --config ../vite-plugin-internal/src/vite.config.ts",
+    "test:web": "TAMAGUI_TARGET=web yarn test:run **/*.web.test.tsx",
+    "test:native": "TAMAGUI_TARGET=native yarn test:run **/*.native.test.tsx",
     "test": "yarn test:native && yarn test:web"
   },
   "devDependencies": {
