@@ -1423,17 +1423,15 @@ export const getSubStyle = (
   return styleOut
 }
 
-function mergeStylePropIntoStyle(styleState: GetStyleState, cur: any) {
+function mergeStylePropIntoStyle(styleState: GetStyleState, cur: Object[] | Object) {
   if (!cur) return
-  const isRNW = cur['$$css']
-  if (isRNW) {
-    Object.assign(styleState.classNames, cur)
-  } else {
-    for (const key in cur) {
-      if (key in styleState.usedKeys) {
-        continue
-      }
-      mergeStyle(styleState, key, cur[key])
+  const styles = Array.isArray(cur) ? cur : [cur]
+  for (const style of styles) {
+    const isRNW = cur['$$css']
+    if (isRNW) {
+      Object.assign(styleState.classNames, style)
+    } else {
+      Object.assign(styleState.style, style)
     }
   }
 }
