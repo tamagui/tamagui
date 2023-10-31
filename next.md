@@ -29,6 +29,7 @@ Web Mode:
 Headless:
 
   - `createX` functions for all core components
+  - `eject` command for all components that actually just takes the src from the node modules and copies into a local dir or package for you
 
 ---
 

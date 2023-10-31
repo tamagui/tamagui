@@ -6102,6 +6102,7 @@ __metadata:
     "@tamagui/cubic-bezier-animator": 1.75.7
     "@tamagui/use-presence": 1.75.7
     "@tamagui/web": 1.75.7
+    react: ^18.2.0
   languageName: unknown
   linkType: soft
 
