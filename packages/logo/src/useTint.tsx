@@ -68,7 +68,7 @@ export const ThemeTint = (props: { children: any; disable?: boolean }) => {
 export const ThemeTintAlt = ({
   children,
   disable,
-  offset = 2,
+  offset = 1,
 }: {
   children: any
   disable?: boolean

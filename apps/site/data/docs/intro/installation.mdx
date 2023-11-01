@@ -3,7 +3,7 @@ title: Installation
 description: How to get Tamagui set up.
 ---
 
-We highly recommend using our CLI to bootstrap a new app. Even if you're adding it to your existing app, it will give you a good template repo to copy from:
+We recommend using the cli to bootstrap one of the example apps, whether you use it directly or just as reference when implementing in your stack.
 
 ```bash
 npm create tamagui@latest
@@ -17,19 +17,19 @@ If you want tamagui with all the components:
 yarn add tamagui
 ```
 
-If you just want `core` which only exports `Stack` and `Text` components:
+If you just want `core` which includes the styling primitives as well as the base `Stack` and `Text` components:
 
 ```bash
 yarn add @tamagui/core
 ```
 
-That's basically it! You can now import and start using Tamagui. That said, we highly recommend [walking through configuration](#quick-configuration) though, which gives you a design system, media queries, themes and more.
+And you can now import and start using Tamagui. We do recommend [walking through configuration](#quick-configuration) for a basic design system, media queries, themes and more.
 
-Once you start using libraries from the React Native ecosystem, you likely need some extra setup. For example, React Native supports "platform specific" file extensions (eg `index.js` alongside `index.web.js`, in which bundlers need to grab the `index.web.js` when targeting web). Many packages also import `react-native` directly and therefore you will want your web bundler to alias it to `react-native-web`.
+Once you start using libraries from the React Native ecosystem, you likely need some extra setup. For example, React Native supports "platform specific" file extensions (ie, bundlers should import `index.web.js` when targeting web and importing `./index.js`). Many packages also import `react-native` directly and so on the web you'll need to alias `react` to `react-native-web`.
 
-Tamagui itself doesn't need any of this, but since you're probably going to add a variety of packages, you eventually may want to use one of the Tamagui bundler plugins.
+Tamagui require this to work out of the box, but eventually you'll probably want to add one of the plugins which automates a variety of these types of compatibility fixes and features, alongside the optimizing compiler.
 
-If you just want to get coding, don't worry about it for now and continue to [quick configuration](#quick-configuration) or [the full configuration docs](/docs/core/configuration).
+If you just want to get going, don't worry about it for now and continue to [quick configuration](#quick-configuration) or [the full configuration docs](/docs/core/configuration).
 
 ### Bundler plugins
 
@@ -79,8 +79,6 @@ compiler.options.resolve.extensions = [
 ```
 
 #### Vite
-
-You can just use the plugin:
 
 ```tsx
 import { tamaguiExtractPlugin, tamaguiPlugin } from '@tamagui/vite-plugin'
@@ -137,7 +135,7 @@ For React Native or Expo you shouldn't need any plugins unless you're setting up
 
 ## Quick configuration
 
-For an in-depth setup, check out [the full configuration docs](/docs/core/configuration). This sets you up with the default Tamagui design system which is great for getting started quick:
+For an in-depth setup, check out [the full configuration docs](/docs/core/configuration). For a nice set of defaults:
 
 ```sh
 yarn add @tamagui/config

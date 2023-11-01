@@ -346,7 +346,7 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
             {/* alt color slices */}
             <ThemeTintAlt>
               <TAKEOUT
-                className="clip-slice mix-blend animate-fade2 slice-alt"
+                className="clip-slice mix-blend slice-alt"
                 pos="absolute"
                 color="$color8"
                 y={2}
@@ -654,19 +654,14 @@ export default function TakeoutPage({
                   Universal React Native + Web Starter Kit
                 </MunroP>
 
-                <ThemeTint>
+                <ThemeTintAlt>
                   <H2
-                    className="clip-text text-wrap-balance"
+                    className="text-wrap-balance"
                     ff="$cherryBomb"
                     size="$12"
-                    fontSize={96}
                     lh="$11"
+                    my="$5"
                     color="$color10"
-                    mb="$4"
-                    style={{
-                      // @ts-ignore
-                      backgroundImage: `-webkit-linear-gradient(100deg, var(--color9), yellow)`,
-                    }}
                     $gtLg={{
                       mr: 100,
                     }}
@@ -682,11 +677,7 @@ export default function TakeoutPage({
                   >
                     From idea to shipped in less time than ever
                   </H2>
-                </ThemeTint>
-
-                <MunroP size="$10" $sm={{ size: '$9' }}>
-                  We can't promise everything...
-                </MunroP>
+                </ThemeTintAlt>
 
                 <ThemeTint>
                   <MunroP
@@ -696,8 +687,9 @@ export default function TakeoutPage({
                     fow="400"
                     $sm={{ size: '$8' }}
                   >
-                    Success is up to you. But we can say you've found the cheat code to
-                    shipping top quality web and native apps as fast as possible.
+                    We can't promise it all... success is up to you 🫡. That said, here's a
+                    cheat code to shipping the best quality web and native apps as fast as
+                    possible.
                   </MunroP>
                 </ThemeTint>
 
@@ -911,21 +903,23 @@ export default function TakeoutPage({
                       </Paragraph>
                     </YStack>
 
-                    <Paragraph
-                      fontFamily="$cherryBomb"
-                      size="$9"
-                      color="$color11"
-                      className="text-3d text-wrap-balance"
-                      ls={-1}
-                      $lg={{ size: '$8' }}
-                      $md={{ size: '$7' }}
-                      $sm={{ size: '$6' }}
-                      $xs={{ size: '$5' }}
-                      fow="400"
-                      mb="$4"
-                    >
-                      It's not just about shipping fast.
-                    </Paragraph>
+                    <ThemeTintAlt>
+                      <Paragraph
+                        fontFamily="$cherryBomb"
+                        size="$9"
+                        color="$color10"
+                        className="text-wrap-balance"
+                        ls={-1}
+                        $lg={{ size: '$8' }}
+                        $md={{ size: '$7' }}
+                        $sm={{ size: '$6' }}
+                        $xs={{ size: '$5' }}
+                        fow="400"
+                        mb="$4"
+                      >
+                        It's not just about shipping fast.
+                      </Paragraph>
+                    </ThemeTintAlt>
 
                     <Paragraph size="$8" lh="$9" $sm={{ size: '$7' }} fow="400">
                       Takeout is a template repo <b>with a GitHub bot</b> that lets us
@@ -936,22 +930,21 @@ export default function TakeoutPage({
 
                     <ThemeTintAlt>
                       <Paragraph
-                        className="text-shadow text-wrap-balance"
                         size="$8"
+                        lh="$9"
                         $sm={{ size: '$7' }}
-                        color="$color9"
-                        fow="800"
+                        fow="400"
+                        className="text-shadow text-wrap-balance"
                       >
-                        That means you get constant improvements to your codebase.
+                        It's like having a dedicated developer updating deps, improving DX
+                        and ensuring everything works across versions.
                       </Paragraph>
                     </ThemeTintAlt>
 
                     <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
-                      It's why we've set up pricing the way we have: lifetime rights,
-                      1-year of updates. Each year renewal is only 50% of the original
-                      purchase price. Forever pricing wouldn't incentivize us to keep
-                      innovating, and we have big plans to make Takeout the best stack,
-                      period.
+                      It's why we've set up pricing like so: you get lifetime rights to
+                      use the assets, with 1-year of updates. Each year renewal is 50% of
+                      the original price.
                     </Paragraph>
 
                     <Paragraph
@@ -1000,12 +993,7 @@ export default function TakeoutPage({
                 <Spacer />
 
                 <ThemeTint>
-                  <Paragraph
-                    className="theme-shadow"
-                    als="center"
-                    fontFamily="$cherryBomb"
-                    size="$9"
-                  >
+                  <Paragraph als="center" fontFamily="$cherryBomb" size="$9">
                     Take a peek
                   </Paragraph>
                 </ThemeTint>
@@ -1761,9 +1749,11 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
                 Drop 0001
               </MunroP>
 
-              <MunroP color="$color10" size="$11" ls={2}>
-                The Stack
-              </MunroP>
+              <ThemeTintAlt>
+                <MunroP color="$color10" size="$11" ls={2}>
+                  The Stack
+                </MunroP>
+              </ThemeTintAlt>
 
               <YStack>
                 <Row
@@ -2751,13 +2741,13 @@ const PromoVideo = () => {
           <YStack fullscreen ai="center" jc="center" bc="rgba(0,0,0,0.75)">
             <PlayCircle size={150} color="red" />
             <Paragraph
-              size="$15"
+              size="$12"
               pos="absolute"
               rotate="-10deg"
               ta="center"
               ff="$silkscreen"
             >
-              WATCH THE VIDEO
+              promo
             </Paragraph>
           </YStack>
         )}
