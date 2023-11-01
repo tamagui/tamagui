@@ -678,7 +678,7 @@ export default function TakeoutPage({
                       mr: 0,
                     }}
                   >
-                    Idea to shipped in less time than ever
+                    From idea to shipped in less time than ever.
                   </H2>
                 </ThemeTintAlt>
 
@@ -702,10 +702,10 @@ export default function TakeoutPage({
                   $xs={{ size: '$5' }}
                   fow="400"
                 >
-                  Designed to be easy to onboard with helpful scripts and a CLI, a whole
-                  ton of sensible configuration, libraries, and glue code, and completely
-                  configured to deploy to Vercel on web or Expo EAS on native. Add on 150
-                  icon sets and 1,500 fonts from Google.
+                  Designed to be as easy as possible to get started with thanks to helpful
+                  scripts and a CLI, with a whole ton of helpful stuff out of the box.
+                  Deploy to production with Vercel and Expo EAS in minutes. Plus 150 icon
+                  sets and 1,500 fonts from Google.
                 </Paragraph>
 
                 <Spacer size="$6" />
