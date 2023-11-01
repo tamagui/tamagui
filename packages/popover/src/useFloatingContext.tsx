@@ -26,13 +26,17 @@ export const useFloatingContext = ({
         onOpenChange: setOpen,
       }) as any
       const { getReferenceProps, getFloatingProps } = useInteractions([
-        useHover(floating.context, {
-          enabled: !disable && hoverable,
-          handleClose: safePolygon({
-            requireIntent: true,
-            blockPointerEvents: true,
-          }),
-        }),
+        hoverable
+          ? useHover(floating.context, {
+              enabled: !disable && hoverable,
+              handleClose: safePolygon({
+                requireIntent: true,
+                blockPointerEvents: true,
+              }),
+            })
+          : useHover(floating.context, {
+              enabled: false,
+            }),
         useFocus(floating.context, {
           enabled: !disable && !disableFocus,
           keyboardOnly: true,
