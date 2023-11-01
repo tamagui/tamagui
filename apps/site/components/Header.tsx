@@ -162,7 +162,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
               <ColorToggleButton borderWidth={0} chromeless />
             </XGroup.Item>
             <XGroup.Item>
-              <SeasonToggleButton $xs={{ display: 'none' }} borderWidth={0} chromeless />
+              <SeasonToggleButton borderWidth={0} chromeless />
             </XGroup.Item>
           </XGroup>
         </TooltipGroup>

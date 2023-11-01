@@ -1,11 +1,10 @@
-import { ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
+import { ThemeTintAlt, useTint } from '@tamagui/logo'
 import { NextLink } from 'components/NextLink'
 import Link from 'next/link'
 import { memo } from 'react'
 import {
   Button,
   H1,
-  Image,
   Paragraph,
   SizableText,
   Spacer,
@@ -15,7 +14,6 @@ import {
   VisuallyHidden,
   XStack,
   YStack,
-  ZStack,
   styled,
 } from 'tamagui'
 
@@ -26,30 +24,12 @@ import { InstallInput } from './InstallInput'
 import { seasons } from './SeasonToggleButton'
 import { TwitterIcon } from './TwitterIcon'
 
-// function useAlwaysConcurrent() {
-//   const inputRef = useRef<HTMLInputElement>(null)
-
-//   useEffect(() => {
-//     const input = inputRef.current
-//     if (!input) return
-//     setInterval(() => {
-//       console.log('writing in the input')
-//       input.value = `${Math.random()}`
-//     }, 16)
-//   }, [inputRef])
-
-//   return <input ref={inputRef} />
-// }
-
 export function Hero() {
   const { tint, name } = useTint()
-
-  // const element = useAlwaysConcurrent()
 
   return (
     <Theme name={tint as any}>
       <div className={`${name}-season _dsp-contents`}>
-        {/* {element} */}
         <YStack
           o={0.75}
           zi={-1}
@@ -179,7 +159,16 @@ const HeroContents = memo(function HeroContents() {
           </H1>
 
           {name === 'halloween' && (
-            <YStack mt={-350 - 9} zi={-1} mb={-350 - 9} mah={700} maw={700}>
+            <YStack
+              mx="$-6"
+              mt={-350 - 9}
+              zi={-1}
+              mb={-350 - 9}
+              mah={700}
+              maw={700}
+              $sm={{ x: '-10%', scale: 0.7 }}
+              o={0.25}
+            >
               <svg
                 height="700"
                 width="700"
