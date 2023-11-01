@@ -12,6 +12,14 @@ export type PopoverProps = PopperProps & {
     defaultOpen?: boolean;
     onOpenChange?: (open: boolean) => void;
     keepChildrenMounted?: boolean;
+    /**
+     * Enable staying open while mouseover
+     */
+    hoverable?: boolean;
+    /**
+     * Disable focusing behavior on open
+     */
+    disableFocus?: boolean;
 };
 type ScopedPopoverProps<P> = ScopedProps<P, 'Popover'>;
 type PopoverContextValue = {
