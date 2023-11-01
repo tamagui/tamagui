@@ -656,10 +656,13 @@ export default function TakeoutPage({
 
                 <ThemeTintAlt>
                   <H2
-                    className="text-wrap-balance"
+                    className="text-wrap-balance clip-text"
                     ff="$cherryBomb"
-                    size="$12"
-                    lh="$11"
+                    size="$10"
+                    style={{
+                      // @ts-ignore
+                      backgroundImage: `-webkit-linear-gradient(100deg, var(--color9), yellow)`,
+                    }}
                     my="$5"
                     color="$color10"
                     $gtLg={{
@@ -675,25 +678,9 @@ export default function TakeoutPage({
                       mr: 0,
                     }}
                   >
-                    From idea to shipped in less time than ever
+                    Idea to shipped in less time than ever
                   </H2>
                 </ThemeTintAlt>
-
-                <ThemeTint>
-                  <MunroP
-                    className="text-wrap-balance"
-                    ls={0.5}
-                    size="$9"
-                    fow="400"
-                    $sm={{ size: '$8' }}
-                  >
-                    We can't promise it all... success is up to you 🫡. That said, here's a
-                    cheat code to shipping the best quality web and native apps as fast as
-                    possible.
-                  </MunroP>
-                </ThemeTint>
-
-                <HeartsRow />
 
                 <Paragraph
                   className="text-wrap-balance"
@@ -702,12 +689,23 @@ export default function TakeoutPage({
                   $xs={{ size: '$7' }}
                   fow="400"
                 >
-                  Takeout 🥡 is a bootstrap that delivers on years of effort to put
-                  together a better React Native and web stack. Powered by{' '}
-                  <LogoWords tag="span" display="inline-flex" mx="$3" scale={1.1} />,
-                  within an hour you'll be deploying on the web to Vercel and to
-                  iOS/Android app stores via Expo EAS. Featuring all new themes, 150 new
-                  icon packs, 1,500 new fonts, and much more.
+                  Takeout 🥡 is a bootstrap that delivers on years of work putting
+                  together a great "universal" stack (built on React and React Native),
+                  and of course powered by{' '}
+                  <LogoWords tag="span" display="inline-flex" mx="$3" scale={1.1} />.
+                </Paragraph>
+
+                <Paragraph
+                  className="text-wrap-balance"
+                  size="$7"
+                  $sm={{ size: '$6' }}
+                  $xs={{ size: '$5' }}
+                  fow="400"
+                >
+                  Designed to be easy to onboard with helpful scripts and a CLI, a whole
+                  ton of sensible configuration, libraries, and glue code, and completely
+                  configured to deploy to Vercel on web or Expo EAS on native. Add on 150
+                  icon sets and 1,500 fonts from Google.
                 </Paragraph>
 
                 <Spacer size="$6" />
@@ -921,7 +919,7 @@ export default function TakeoutPage({
                       </Paragraph>
                     </ThemeTintAlt>
 
-                    <Paragraph size="$8" lh="$9" $sm={{ size: '$7' }} fow="400">
+                    <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
                       Takeout is a template repo <b>with a GitHub bot</b> that lets us
                       send PRs easily thanks to a pluggable, well-isolated architecture.
                       Whenever we make significant updates, we trigger TakeoutBot to
@@ -930,18 +928,18 @@ export default function TakeoutPage({
 
                     <ThemeTintAlt>
                       <Paragraph
-                        size="$8"
-                        lh="$9"
-                        $sm={{ size: '$7' }}
+                        size="$6"
+                        $sm={{ size: '$5' }}
                         fow="400"
                         className="text-shadow text-wrap-balance"
                       >
-                        It's like having a dedicated developer updating deps, improving DX
-                        and ensuring everything works across versions.
+                        It's like having a dedicated developer updating dependencies,
+                        improving DX and ensuring everything works while upgrading your
+                        versions in sensible, organized PRs.
                       </Paragraph>
                     </ThemeTintAlt>
 
-                    <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
+                    <Paragraph size="$6" $sm={{ size: '$5' }} fow="400">
                       It's why we've set up pricing like so: you get lifetime rights to
                       use the assets, with 1-year of updates. Each year renewal is 50% of
                       the original price.
@@ -949,12 +947,11 @@ export default function TakeoutPage({
 
                     <Paragraph
                       className="text-shadow text-wrap-balance"
-                      size="$7"
-                      $sm={{ size: '$6' }}
+                      size="$6"
+                      $sm={{ size: '$5' }}
                       fow="400"
                     >
-                      Here's what we're working on, coming automatically as a PR to your
-                      repo:
+                      Here's the roadmap:
                     </Paragraph>
 
                     <ThemeTintAlt>
