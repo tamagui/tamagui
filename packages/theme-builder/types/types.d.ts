@@ -1,5 +1,5 @@
 export type ScaleTypeName = 'radix' | 'radix-b' | 'radius-bold' | 'radius-bright' | 'linear' | 'pastel' | 'pastel-desaturating' | 'neon' | 'neon-bright' | 'neon-c';
-export type BuildThemeBasicProperties = {
+type BuildThemeBasicProperties = {
     id: string;
     color: string;
     scale: ScaleTypeName;
@@ -7,6 +7,9 @@ export type BuildThemeBasicProperties = {
     contrastColor?: string;
     contrastScale?: ScaleTypeName;
     errors?: string[];
+};
+export type BuildLightDarkTheme = BuildThemeBasicProperties & {
+    type: 'lightdark';
 };
 export type BuildColorSubTheme = BuildThemeBasicProperties & {
     type: 'base';
@@ -39,7 +42,8 @@ export type BuildMaskSubTheme = {
     errors?: string[];
 };
 export type BuildThemeSuiteProps = {
-    theme: BuildColorSubTheme | BuildMaskSubTheme;
+    theme: BuildLightDarkTheme | BuildColorSubTheme | BuildMaskSubTheme;
     fallbackTheme?: BuildColorSubTheme;
 };
+export {};
 //# sourceMappingURL=types.d.ts.map

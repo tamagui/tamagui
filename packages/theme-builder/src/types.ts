@@ -12,7 +12,7 @@ export type ScaleTypeName =
   | 'neon-bright'
   | 'neon-c'
 
-export type BuildThemeBasicProperties = {
+type BuildThemeBasicProperties = {
   id: string
   color: string
   scale: ScaleTypeName
@@ -21,6 +21,10 @@ export type BuildThemeBasicProperties = {
   contrastColor?: string
   contrastScale?: ScaleTypeName
   errors?: string[]
+}
+
+export type BuildLightDarkTheme = BuildThemeBasicProperties & {
+  type: 'lightdark'
 }
 
 export type BuildColorSubTheme = BuildThemeBasicProperties & {
@@ -61,7 +65,7 @@ export type BuildMaskSubTheme = {
 }
 
 export type BuildThemeSuiteProps = {
-  theme: BuildColorSubTheme | BuildMaskSubTheme
+  theme: BuildLightDarkTheme | BuildColorSubTheme | BuildMaskSubTheme
   // fallback theme is used for mask only theme
   fallbackTheme?: BuildColorSubTheme
 }
