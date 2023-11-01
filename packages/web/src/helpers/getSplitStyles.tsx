@@ -1427,7 +1427,7 @@ function mergeStylePropIntoStyle(styleState: GetStyleState, cur: Object[] | Obje
   if (!cur) return
   const styles = Array.isArray(cur) ? cur : [cur]
   for (const style of styles) {
-    const isRNW = cur['$$css']
+    const isRNW = style['$$css']
     if (isRNW) {
       Object.assign(styleState.classNames, style)
     } else {
