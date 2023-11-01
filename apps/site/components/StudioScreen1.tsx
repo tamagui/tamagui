@@ -273,7 +273,7 @@ export const StudioScreen1 = memo(() => {
 
         <XStack maw={790} space="$8" separator={<Separator vertical />}>
           <H2
-            theme="alt2"
+            theme="alt1"
             className="text-glow"
             als="center"
             ff="$silkscreen"

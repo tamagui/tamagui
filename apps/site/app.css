@@ -678,7 +678,7 @@ textarea {
 }
 
 .text-glow {
-  text-shadow: 4px 4px 0 var(--backgroundStrong), 0 0 75px var(--color10), 0 0 160px var(--color9);
+  text-shadow: 4px 4px 0 var(--backgroundStrong);
 }
 
 .rotate-slow-right {
