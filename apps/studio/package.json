@@ -26,6 +26,7 @@
     "@tamagui/theme-builder": "1.75.9",
     "@tamagui/themes": "1.75.9",
     "@tamagui/use-store": "1.75.9",
+    "@tauri-apps/api": "^1.2.0",
     "color2k": "^2.0.2",
     "prettier": "^2.8.1",
     "react": "^18.2.0",
@@ -39,6 +40,7 @@
   },
   "devDependencies": {
     "@tamagui/build": "1.75.9",
+    "@tauri-apps/cli": "^1.2.2",
     "@types/react-color": "^3.0.6",
     "vite": "^4.4.11"
   }
