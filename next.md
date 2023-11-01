@@ -1,3 +1,4 @@
+- Theme reset Button not changing
 - ZStack is abs positioning children...
 
 Web:
