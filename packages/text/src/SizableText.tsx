@@ -29,7 +29,7 @@ export const SizableText = styled(Text, {
   variants,
 
   defaultVariants: {
-    unstyled: false,
+    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
   },
 })
 

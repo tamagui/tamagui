@@ -1,17 +1,6 @@
-- 3.0 - single forward pass generates the css alongside the style object
+- ZStack is abs positioning children...
 
-- Fix ToggleGroup active style looking really bad only sticking sometimes
-  - in general we need a better system for controlling if we apply active theme or not, or letting consumers control the active styling in general on things
-    - perhaps we do active theme by default (unless unstyled: true)
-    - <ToggleGroup activeItemProps={{ active: true }}>
-    - <ToggleGroup.Item /> then would recieve active={true}?
-    - defaults to theme: 'active'
-
-- <Image borderWidth="$2" /> not turning into val via psgeorge
-
----
-
-Web Mode:
+Web:
 
   - createTamagui({ settings: { webMode: true } })
   - avoids console warning on Text
@@ -26,10 +15,11 @@ Web Mode:
 
 ---
 
-Headless:
+HEADLESS=1
 
-  - `createX` functions for all core components
-  - `eject` command for all components that actually just takes the src from the node modules and copies into a local dir or package for you
++ env HEADLESS sets unstyled: true by default
++ createX
++ eject command
 
 ---
 
@@ -425,3 +415,14 @@ themes.dark_Button = {
 
 Themes can completely transform the look and feel, a button could have multiple shadows/reflections in one theme, but be totally flat in another.
 
+
+- 3.0 - single forward pass generates the css alongside the style object
+
+- Fix ToggleGroup active style looking really bad only sticking sometimes
+  - in general we need a better system for controlling if we apply active theme or not, or letting consumers control the active styling in general on things
+    - perhaps we do active theme by default (unless unstyled: true)
+    - <ToggleGroup activeItemProps={{ active: true }}>
+    - <ToggleGroup.Item /> then would recieve active={true}?
+    - defaults to theme: 'active'
+
+- <Image borderWidth="$2" /> not turning into val via psgeorge

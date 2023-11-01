@@ -1,4 +1,5 @@
 import {
+  blackA,
   blue,
   blueDark,
   gray,
@@ -114,6 +115,7 @@ export const colorTokens = {
     purple: purple,
     red: red,
     yellow: yellow,
+    black: gray,
   },
   dark: {
     blue: blueDark,
@@ -124,6 +126,7 @@ export const colorTokens = {
     purple: purpleDark,
     red: redDark,
     yellow: yellowDark,
+    black: grayDark,
   },
 }
 
@@ -136,6 +139,7 @@ export const darkColors = {
   ...colorTokens.dark.purple,
   ...colorTokens.dark.red,
   ...colorTokens.dark.yellow,
+  ...colorTokens.dark.black,
 }
 
 export const lightColors = {
@@ -147,6 +151,7 @@ export const lightColors = {
   ...colorTokens.light.purple,
   ...colorTokens.light.red,
   ...colorTokens.light.yellow,
+  ...colorTokens.light.black,
 }
 
 export const color = {

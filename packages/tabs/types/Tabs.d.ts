@@ -774,7 +774,7 @@ declare const TabsFrame: import("@tamagui/web").TamaguiComponent<(Omit<import("r
     onScrollShouldSetResponder?: unknown;
     onScrollShouldSetResponderCapture?: unknown;
     onSelectionChangeShouldSetResponder?: unknown;
-    onSelectionChangeShouldSetResponderCapture?: unknown; /** The value of the tab to select by default, if uncontrolled */
+    onSelectionChangeShouldSetResponderCapture?: unknown;
     href?: string | undefined;
     hrefAttrs?: {
         target?: "top" | "_blank" | "_self" | "_top" | "blank" | "self" | undefined;
@@ -1168,7 +1168,7 @@ export declare const Tabs: import("@tamagui/web").ReactComponentWithRef<Omit<(Om
     onScrollShouldSetResponder?: unknown;
     onScrollShouldSetResponderCapture?: unknown;
     onSelectionChangeShouldSetResponder?: unknown;
-    onSelectionChangeShouldSetResponderCapture?: unknown; /** The value of the tab to select by default, if uncontrolled */
+    onSelectionChangeShouldSetResponderCapture?: unknown;
     href?: string | undefined;
     hrefAttrs?: {
         target?: "top" | "_blank" | "_self" | "_top" | "blank" | "self" | undefined;
@@ -1417,7 +1417,7 @@ export declare const Tabs: import("@tamagui/web").ReactComponentWithRef<Omit<(Om
         onScrollShouldSetResponder?: unknown;
         onScrollShouldSetResponderCapture?: unknown;
         onSelectionChangeShouldSetResponder?: unknown;
-        onSelectionChangeShouldSetResponderCapture?: unknown; /** The value of the tab to select by default, if uncontrolled */
+        onSelectionChangeShouldSetResponderCapture?: unknown;
         href?: string | undefined;
         hrefAttrs?: {
             target?: "top" | "_blank" | "_self" | "_top" | "blank" | "self" | undefined;

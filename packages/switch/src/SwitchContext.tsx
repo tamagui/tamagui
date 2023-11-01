@@ -11,5 +11,5 @@ export const SwitchContext = createStyledContext<{
   disabled: false,
   size: undefined,
   frameWidth: 0,
-  unstyled: false,
+  unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
 })

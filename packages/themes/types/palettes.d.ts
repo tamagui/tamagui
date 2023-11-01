@@ -7,6 +7,7 @@ export declare const palettes: {
     dark_purple: string[];
     dark_red: string[];
     dark_yellow: string[];
+    dark_black: string[];
     light_blue: string[];
     light_gray: string[];
     light_green: string[];
@@ -15,6 +16,7 @@ export declare const palettes: {
     light_purple: string[];
     light_red: string[];
     light_yellow: string[];
+    light_black: string[];
     light: string[];
     dark: string[];
 };

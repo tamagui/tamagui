@@ -12,7 +12,7 @@ export type ScaleTypeName =
   | 'neon-bright'
   | 'neon-c'
 
-type BuildThemeBasicProperties = {
+export type BuildThemeBasicProperties = {
   id: string
   color: string
   scale: ScaleTypeName

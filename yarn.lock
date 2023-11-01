@@ -7512,8 +7512,6 @@ __metadata:
     "@tamagui/themes": 1.75.9
     "@tamagui/toast": 1.75.9
     "@tamagui/use-store": 1.75.9
-    "@tauri-apps/api": ^1.2.0
-    "@tauri-apps/cli": ^1.2.2
     "@types/d3-scale": ^4.0.2
     "@types/jsonwebtoken": ^9.0.2
     "@types/lodash-es": ^4.17.6
@@ -7739,6 +7737,8 @@ __metadata:
     "@tamagui/theme-builder": 1.75.9
     "@tamagui/themes": 1.75.9
     "@tamagui/use-store": 1.75.9
+    "@tauri-apps/api": ^1.2.0
+    "@tauri-apps/cli": ^1.2.2
     "@types/react-color": ^3.0.6
     color2k: ^2.0.2
     prettier: ^2.8.1
