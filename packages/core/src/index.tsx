@@ -11,6 +11,7 @@ import type {
 import {
   Stack as WebStack,
   Text as WebText,
+  View as WebView,
   composeEventHandlers,
   setupHooks,
 } from '@tamagui/web'
@@ -32,6 +33,13 @@ export * from './reactNativeTypes'
 // adds extra types to Stack/Text:
 
 type RNExclusiveViewProps = Omit<RNViewProps, keyof StackProps>
+
+export const View = WebView as any as TamaguiComponent<
+  StackProps & RNExclusiveViewProps,
+  TamaguiElement,
+  StackPropsBase & RNExclusiveViewProps,
+  void
+>
 
 export const Stack = WebStack as any as TamaguiComponent<
   StackProps & RNExclusiveViewProps,
