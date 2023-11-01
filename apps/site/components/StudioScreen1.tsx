@@ -1,4 +1,4 @@
-import { ThemeTint } from '@tamagui/logo'
+import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { Lock, Play } from '@tamagui/lucide-icons'
 import { useThemeSetting } from '@tamagui/next-theme'
 import { Container } from 'components/Container'
@@ -218,28 +218,30 @@ export const StudioScreen1 = memo(() => {
           w="100%"
           $sm={{ mt: -100, fd: 'column' }}
         >
-          <NextLink target="_blank" href="https://github.com/sponsors/natew">
-            <Button
-              mt={60}
-              animation="quick"
-              bg="$color10"
-              color="$color1"
-              size="$6"
-              borderRadius="$10"
-              elevation="$2"
-              className="glowing"
-              hoverStyle={{
-                bg: '$color9',
-                elevation: '$3',
-              }}
-              pressStyle={{
-                bg: '$color8',
-                scale: 0.98,
-              }}
-            >
-              Sponsor for early access
-            </Button>
-          </NextLink>
+          <ThemeTintAlt>
+            <NextLink target="_blank" href="https://github.com/sponsors/natew">
+              <Button
+                mt={60}
+                animation="quick"
+                bg="$color10"
+                color="$color1"
+                size="$6"
+                borderRadius="$10"
+                elevation="$2"
+                className="glowing"
+                hoverStyle={{
+                  bg: '$color9',
+                  elevation: '$3',
+                }}
+                pressStyle={{
+                  bg: '$color8',
+                  scale: 0.98,
+                }}
+              >
+                Sponsor for early access
+              </Button>
+            </NextLink>
+          </ThemeTintAlt>
 
           {/* <Button
             animation="quicker"
