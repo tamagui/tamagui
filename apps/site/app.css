@@ -361,6 +361,14 @@ iframe {
   mask-image: linear-gradient(transparent 20%, rgba(0, 0, 0, 1));
 }
 
+.mask-gradient-right {
+  mask-image: linear-gradient(90deg, rgba(0, 0, 0, 1), transparent 30%);
+}
+
+.mask-gradient-left {
+  mask-image: linear-gradient(-90deg, rgba(0, 0, 0, 1), transparent 50%);
+}
+
 /* code highlighting */
 
 .token.parameter {

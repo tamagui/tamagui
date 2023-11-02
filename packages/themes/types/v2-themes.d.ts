@@ -4,18 +4,6 @@ declare const nonInherited: {
         shadowColorHover: string;
         shadowColorPress: string;
         shadowColorFocus: string;
-        gray1: string;
-        gray2: string;
-        gray3: string;
-        gray4: string;
-        gray5: string;
-        gray6: string;
-        gray7: string;
-        gray8: string;
-        gray9: string;
-        gray10: string;
-        gray11: string;
-        gray12: string;
         yellow1: string;
         yellow2: string;
         yellow3: string;
@@ -88,6 +76,18 @@ declare const nonInherited: {
         green10: string;
         green11: string;
         green12: string;
+        gray1: string;
+        gray2: string;
+        gray3: string;
+        gray4: string;
+        gray5: string;
+        gray6: string;
+        gray7: string;
+        gray8: string;
+        gray9: string;
+        gray10: string;
+        gray11: string;
+        gray12: string;
         blue1: string;
         blue2: string;
         blue3: string;
@@ -106,18 +106,6 @@ declare const nonInherited: {
         shadowColorHover: string;
         shadowColorPress: string;
         shadowColorFocus: string;
-        gray1: string;
-        gray2: string;
-        gray3: string;
-        gray4: string;
-        gray5: string;
-        gray6: string;
-        gray7: string;
-        gray8: string;
-        gray9: string;
-        gray10: string;
-        gray11: string;
-        gray12: string;
         yellow1: string;
         yellow2: string;
         yellow3: string;
@@ -190,6 +178,18 @@ declare const nonInherited: {
         green10: string;
         green11: string;
         green12: string;
+        gray1: string;
+        gray2: string;
+        gray3: string;
+        gray4: string;
+        gray5: string;
+        gray6: string;
+        gray7: string;
+        gray8: string;
+        gray9: string;
+        gray10: string;
+        gray11: string;
+        gray12: string;
         blue1: string;
         blue2: string;
         blue3: string;
@@ -266,6 +266,36 @@ declare const themesIn: {
         color12: string;
     };
     light_blue: {
+        background: string;
+        backgroundHover: string;
+        backgroundPress: string;
+        backgroundFocus: string;
+        backgroundStrong: string;
+        backgroundTransparent: string;
+        color: string;
+        colorHover: string;
+        colorPress: string;
+        colorFocus: string;
+        colorTransparent: string;
+        borderColor: string;
+        borderColorHover: string;
+        borderColorFocus: string;
+        borderColorPress: string;
+        placeholderColor: string;
+        color1: string;
+        color2: string;
+        color3: string;
+        color4: string;
+        color5: string;
+        color6: string;
+        color7: string;
+        color8: string;
+        color9: string;
+        color10: string;
+        color11: string;
+        color12: string;
+    };
+    light_gray: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -475,7 +505,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black: {
+    dark_blue: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -505,7 +535,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_blue: {
+    dark_gray: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -686,36 +716,6 @@ declare const themesIn: {
         color12: string;
     };
     dark_yellow: {
-        background: string;
-        backgroundHover: string;
-        backgroundPress: string;
-        backgroundFocus: string;
-        backgroundStrong: string;
-        backgroundTransparent: string;
-        color: string;
-        colorHover: string;
-        colorPress: string;
-        colorFocus: string;
-        colorTransparent: string;
-        borderColor: string;
-        borderColorHover: string;
-        borderColorFocus: string;
-        borderColorPress: string;
-        placeholderColor: string;
-        color1: string;
-        color2: string;
-        color3: string;
-        color4: string;
-        color5: string;
-        color6: string;
-        color7: string;
-        color8: string;
-        color9: string;
-        color10: string;
-        color11: string;
-        color12: string;
-    };
-    dark_black: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -2185,7 +2185,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt1: {
+    light_gray_alt1: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -2215,7 +2215,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt2: {
+    light_gray_alt2: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -2245,7 +2245,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_active: {
+    light_gray_active: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -2275,7 +2275,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt1: {
+    dark_gray_alt1: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -2305,7 +2305,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt2: {
+    dark_gray_alt2: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -2335,7 +2335,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_active: {
+    dark_gray_active: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -42685,7 +42685,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_ListItem: {
+    light_gray_ListItem: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -42715,7 +42715,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_Card: {
+    light_gray_Card: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -42745,7 +42745,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_Button: {
+    light_gray_Button: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -42775,7 +42775,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_Checkbox: {
+    light_gray_Checkbox: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -42805,7 +42805,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_Switch: {
+    light_gray_Switch: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -42835,7 +42835,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_SwitchThumb: {
+    light_gray_SwitchThumb: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -42865,7 +42865,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_TooltipContent: {
+    light_gray_TooltipContent: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -42895,7 +42895,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_DrawerFrame: {
+    light_gray_DrawerFrame: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -42925,7 +42925,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_Progress: {
+    light_gray_Progress: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -42955,7 +42955,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_TooltipArrow: {
+    light_gray_TooltipArrow: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -42985,7 +42985,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_SliderTrackActive: {
+    light_gray_SliderTrackActive: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -43015,7 +43015,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_SliderTrack: {
+    light_gray_SliderTrack: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -43045,7 +43045,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_SliderThumb: {
+    light_gray_SliderThumb: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -43075,7 +43075,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_Tooltip: {
+    light_gray_Tooltip: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -43105,7 +43105,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_ProgressIndicator: {
+    light_gray_ProgressIndicator: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -43135,7 +43135,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_SheetOverlay: {
+    light_gray_SheetOverlay: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -43165,7 +43165,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_DialogOverlay: {
+    light_gray_DialogOverlay: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -43195,7 +43195,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_ModalOverlay: {
+    light_gray_ModalOverlay: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -43225,7 +43225,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_Input: {
+    light_gray_Input: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -43255,7 +43255,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_TextArea: {
+    light_gray_TextArea: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -43285,7 +43285,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt1_ListItem: {
+    light_gray_alt1_ListItem: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -43315,7 +43315,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt1_Card: {
+    light_gray_alt1_Card: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -43345,7 +43345,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt1_Button: {
+    light_gray_alt1_Button: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -43375,7 +43375,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt1_Checkbox: {
+    light_gray_alt1_Checkbox: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -43405,7 +43405,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt1_Switch: {
+    light_gray_alt1_Switch: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -43435,7 +43435,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt1_SwitchThumb: {
+    light_gray_alt1_SwitchThumb: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -43465,7 +43465,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt1_TooltipContent: {
+    light_gray_alt1_TooltipContent: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -43495,7 +43495,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt1_DrawerFrame: {
+    light_gray_alt1_DrawerFrame: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -43525,7 +43525,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt1_Progress: {
+    light_gray_alt1_Progress: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -43555,7 +43555,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt1_TooltipArrow: {
+    light_gray_alt1_TooltipArrow: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -43585,7 +43585,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt1_SliderTrackActive: {
+    light_gray_alt1_SliderTrackActive: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -43615,7 +43615,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt1_SliderTrack: {
+    light_gray_alt1_SliderTrack: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -43645,7 +43645,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt1_SliderThumb: {
+    light_gray_alt1_SliderThumb: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -43675,7 +43675,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt1_Tooltip: {
+    light_gray_alt1_Tooltip: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -43705,7 +43705,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt1_ProgressIndicator: {
+    light_gray_alt1_ProgressIndicator: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -43735,7 +43735,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt1_SheetOverlay: {
+    light_gray_alt1_SheetOverlay: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -43765,7 +43765,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt1_DialogOverlay: {
+    light_gray_alt1_DialogOverlay: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -43795,7 +43795,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt1_ModalOverlay: {
+    light_gray_alt1_ModalOverlay: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -43825,7 +43825,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt1_Input: {
+    light_gray_alt1_Input: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -43855,7 +43855,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt1_TextArea: {
+    light_gray_alt1_TextArea: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -43885,7 +43885,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt2_ListItem: {
+    light_gray_alt2_ListItem: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -43915,7 +43915,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt2_Card: {
+    light_gray_alt2_Card: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -43945,7 +43945,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt2_Button: {
+    light_gray_alt2_Button: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -43975,7 +43975,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt2_Checkbox: {
+    light_gray_alt2_Checkbox: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -44005,7 +44005,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt2_Switch: {
+    light_gray_alt2_Switch: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -44035,7 +44035,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt2_SwitchThumb: {
+    light_gray_alt2_SwitchThumb: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -44065,7 +44065,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt2_TooltipContent: {
+    light_gray_alt2_TooltipContent: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -44095,7 +44095,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt2_DrawerFrame: {
+    light_gray_alt2_DrawerFrame: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -44125,7 +44125,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt2_Progress: {
+    light_gray_alt2_Progress: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -44155,7 +44155,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt2_TooltipArrow: {
+    light_gray_alt2_TooltipArrow: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -44185,7 +44185,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt2_SliderTrackActive: {
+    light_gray_alt2_SliderTrackActive: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -44215,7 +44215,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt2_SliderTrack: {
+    light_gray_alt2_SliderTrack: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -44245,7 +44245,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt2_SliderThumb: {
+    light_gray_alt2_SliderThumb: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -44275,7 +44275,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt2_Tooltip: {
+    light_gray_alt2_Tooltip: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -44305,7 +44305,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt2_ProgressIndicator: {
+    light_gray_alt2_ProgressIndicator: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -44335,7 +44335,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt2_SheetOverlay: {
+    light_gray_alt2_SheetOverlay: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -44365,7 +44365,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt2_DialogOverlay: {
+    light_gray_alt2_DialogOverlay: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -44395,7 +44395,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt2_ModalOverlay: {
+    light_gray_alt2_ModalOverlay: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -44425,7 +44425,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt2_Input: {
+    light_gray_alt2_Input: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -44455,7 +44455,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt2_TextArea: {
+    light_gray_alt2_TextArea: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -44485,7 +44485,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_active_ListItem: {
+    light_gray_active_ListItem: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -44515,7 +44515,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_active_Card: {
+    light_gray_active_Card: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -44545,7 +44545,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_active_Button: {
+    light_gray_active_Button: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -44575,7 +44575,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_active_Checkbox: {
+    light_gray_active_Checkbox: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -44605,7 +44605,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_active_Switch: {
+    light_gray_active_Switch: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -44635,7 +44635,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_active_SwitchThumb: {
+    light_gray_active_SwitchThumb: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -44665,7 +44665,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_active_TooltipContent: {
+    light_gray_active_TooltipContent: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -44695,7 +44695,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_active_DrawerFrame: {
+    light_gray_active_DrawerFrame: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -44725,7 +44725,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_active_Progress: {
+    light_gray_active_Progress: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -44755,7 +44755,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_active_TooltipArrow: {
+    light_gray_active_TooltipArrow: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -44785,7 +44785,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_active_SliderTrackActive: {
+    light_gray_active_SliderTrackActive: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -44815,7 +44815,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_active_SliderTrack: {
+    light_gray_active_SliderTrack: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -44845,7 +44845,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_active_SliderThumb: {
+    light_gray_active_SliderThumb: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -44875,7 +44875,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_active_Tooltip: {
+    light_gray_active_Tooltip: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -44905,7 +44905,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_active_ProgressIndicator: {
+    light_gray_active_ProgressIndicator: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -44935,7 +44935,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_active_SheetOverlay: {
+    light_gray_active_SheetOverlay: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -44965,7 +44965,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_active_DialogOverlay: {
+    light_gray_active_DialogOverlay: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -44995,7 +44995,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_active_ModalOverlay: {
+    light_gray_active_ModalOverlay: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -45025,7 +45025,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_active_Input: {
+    light_gray_active_Input: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -45055,7 +45055,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_active_TextArea: {
+    light_gray_active_TextArea: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -45085,7 +45085,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_ListItem: {
+    dark_gray_ListItem: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -45115,7 +45115,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_Card: {
+    dark_gray_Card: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -45145,7 +45145,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_Button: {
+    dark_gray_Button: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -45175,7 +45175,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_Checkbox: {
+    dark_gray_Checkbox: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -45205,7 +45205,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_Switch: {
+    dark_gray_Switch: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -45235,7 +45235,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_SwitchThumb: {
+    dark_gray_SwitchThumb: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -45265,7 +45265,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_TooltipContent: {
+    dark_gray_TooltipContent: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -45295,7 +45295,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_DrawerFrame: {
+    dark_gray_DrawerFrame: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -45325,7 +45325,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_Progress: {
+    dark_gray_Progress: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -45355,7 +45355,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_TooltipArrow: {
+    dark_gray_TooltipArrow: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -45385,7 +45385,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_SliderTrackActive: {
+    dark_gray_SliderTrackActive: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -45415,7 +45415,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_SliderTrack: {
+    dark_gray_SliderTrack: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -45445,7 +45445,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_SliderThumb: {
+    dark_gray_SliderThumb: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -45475,7 +45475,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_Tooltip: {
+    dark_gray_Tooltip: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -45505,7 +45505,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_ProgressIndicator: {
+    dark_gray_ProgressIndicator: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -45535,7 +45535,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_SheetOverlay: {
+    dark_gray_SheetOverlay: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -45565,7 +45565,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_DialogOverlay: {
+    dark_gray_DialogOverlay: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -45595,7 +45595,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_ModalOverlay: {
+    dark_gray_ModalOverlay: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -45625,7 +45625,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_Input: {
+    dark_gray_Input: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -45655,7 +45655,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_TextArea: {
+    dark_gray_TextArea: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -45685,7 +45685,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt1_ListItem: {
+    dark_gray_alt1_ListItem: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -45715,7 +45715,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt1_Card: {
+    dark_gray_alt1_Card: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -45745,7 +45745,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt1_Button: {
+    dark_gray_alt1_Button: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -45775,7 +45775,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt1_Checkbox: {
+    dark_gray_alt1_Checkbox: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -45805,7 +45805,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt1_Switch: {
+    dark_gray_alt1_Switch: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -45835,7 +45835,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt1_SwitchThumb: {
+    dark_gray_alt1_SwitchThumb: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -45865,7 +45865,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt1_TooltipContent: {
+    dark_gray_alt1_TooltipContent: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -45895,7 +45895,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt1_DrawerFrame: {
+    dark_gray_alt1_DrawerFrame: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -45925,7 +45925,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt1_Progress: {
+    dark_gray_alt1_Progress: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -45955,7 +45955,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt1_TooltipArrow: {
+    dark_gray_alt1_TooltipArrow: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -45985,7 +45985,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt1_SliderTrackActive: {
+    dark_gray_alt1_SliderTrackActive: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -46015,7 +46015,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt1_SliderTrack: {
+    dark_gray_alt1_SliderTrack: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -46045,7 +46045,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt1_SliderThumb: {
+    dark_gray_alt1_SliderThumb: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -46075,7 +46075,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt1_Tooltip: {
+    dark_gray_alt1_Tooltip: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -46105,7 +46105,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt1_ProgressIndicator: {
+    dark_gray_alt1_ProgressIndicator: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -46135,7 +46135,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt1_SheetOverlay: {
+    dark_gray_alt1_SheetOverlay: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -46165,7 +46165,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt1_DialogOverlay: {
+    dark_gray_alt1_DialogOverlay: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -46195,7 +46195,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt1_ModalOverlay: {
+    dark_gray_alt1_ModalOverlay: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -46225,7 +46225,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt1_Input: {
+    dark_gray_alt1_Input: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -46255,7 +46255,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt1_TextArea: {
+    dark_gray_alt1_TextArea: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -46285,7 +46285,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt2_ListItem: {
+    dark_gray_alt2_ListItem: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -46315,7 +46315,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt2_Card: {
+    dark_gray_alt2_Card: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -46345,7 +46345,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt2_Button: {
+    dark_gray_alt2_Button: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -46375,7 +46375,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt2_Checkbox: {
+    dark_gray_alt2_Checkbox: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -46405,7 +46405,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt2_Switch: {
+    dark_gray_alt2_Switch: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -46435,7 +46435,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt2_SwitchThumb: {
+    dark_gray_alt2_SwitchThumb: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -46465,7 +46465,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt2_TooltipContent: {
+    dark_gray_alt2_TooltipContent: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -46495,7 +46495,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt2_DrawerFrame: {
+    dark_gray_alt2_DrawerFrame: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -46525,7 +46525,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt2_Progress: {
+    dark_gray_alt2_Progress: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -46555,7 +46555,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt2_TooltipArrow: {
+    dark_gray_alt2_TooltipArrow: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -46585,7 +46585,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt2_SliderTrackActive: {
+    dark_gray_alt2_SliderTrackActive: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -46615,7 +46615,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt2_SliderTrack: {
+    dark_gray_alt2_SliderTrack: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -46645,7 +46645,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt2_SliderThumb: {
+    dark_gray_alt2_SliderThumb: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -46675,7 +46675,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt2_Tooltip: {
+    dark_gray_alt2_Tooltip: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -46705,7 +46705,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt2_ProgressIndicator: {
+    dark_gray_alt2_ProgressIndicator: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -46735,7 +46735,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt2_SheetOverlay: {
+    dark_gray_alt2_SheetOverlay: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -46765,7 +46765,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt2_DialogOverlay: {
+    dark_gray_alt2_DialogOverlay: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -46795,7 +46795,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt2_ModalOverlay: {
+    dark_gray_alt2_ModalOverlay: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -46825,7 +46825,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt2_Input: {
+    dark_gray_alt2_Input: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -46855,7 +46855,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt2_TextArea: {
+    dark_gray_alt2_TextArea: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -46885,7 +46885,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_active_ListItem: {
+    dark_gray_active_ListItem: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -46915,7 +46915,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_active_Card: {
+    dark_gray_active_Card: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -46945,7 +46945,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_active_Button: {
+    dark_gray_active_Button: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -46975,7 +46975,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_active_Checkbox: {
+    dark_gray_active_Checkbox: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -47005,7 +47005,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_active_Switch: {
+    dark_gray_active_Switch: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -47035,7 +47035,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_active_SwitchThumb: {
+    dark_gray_active_SwitchThumb: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -47065,7 +47065,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_active_TooltipContent: {
+    dark_gray_active_TooltipContent: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -47095,7 +47095,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_active_DrawerFrame: {
+    dark_gray_active_DrawerFrame: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -47125,7 +47125,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_active_Progress: {
+    dark_gray_active_Progress: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -47155,7 +47155,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_active_TooltipArrow: {
+    dark_gray_active_TooltipArrow: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -47185,7 +47185,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_active_SliderTrackActive: {
+    dark_gray_active_SliderTrackActive: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -47215,7 +47215,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_active_SliderTrack: {
+    dark_gray_active_SliderTrack: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -47245,7 +47245,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_active_SliderThumb: {
+    dark_gray_active_SliderThumb: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -47275,7 +47275,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_active_Tooltip: {
+    dark_gray_active_Tooltip: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -47305,7 +47305,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_active_ProgressIndicator: {
+    dark_gray_active_ProgressIndicator: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -47335,7 +47335,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_active_SheetOverlay: {
+    dark_gray_active_SheetOverlay: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -47365,7 +47365,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_active_DialogOverlay: {
+    dark_gray_active_DialogOverlay: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -47395,7 +47395,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_active_ModalOverlay: {
+    dark_gray_active_ModalOverlay: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -47425,7 +47425,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_active_Input: {
+    dark_gray_active_Input: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -47455,7 +47455,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_active_TextArea: {
+    dark_gray_active_TextArea: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -47485,7 +47485,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_RadioGroupItem: {
+    light_gray_RadioGroupItem: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -47515,7 +47515,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_RadioGroupItem: {
+    dark_gray_RadioGroupItem: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -47545,7 +47545,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt1_RadioGroupItem: {
+    light_gray_alt1_RadioGroupItem: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -47575,7 +47575,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_alt2_RadioGroupItem: {
+    light_gray_alt2_RadioGroupItem: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -47605,7 +47605,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    light_black_active_RadioGroupItem: {
+    light_gray_active_RadioGroupItem: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -47635,7 +47635,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt1_RadioGroupItem: {
+    dark_gray_alt1_RadioGroupItem: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -47665,7 +47665,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_alt2_RadioGroupItem: {
+    dark_gray_alt2_RadioGroupItem: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -47695,7 +47695,7 @@ declare const themesIn: {
         color11: string;
         color12: string;
     };
-    dark_black_active_RadioGroupItem: {
+    dark_gray_active_RadioGroupItem: {
         background: string;
         backgroundHover: string;
         backgroundPress: string;

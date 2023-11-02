@@ -124,7 +124,7 @@ const HeroContents = memo(function HeroContents() {
             ta="left"
             size="$10"
             maw={500}
-            h={130}
+            pos="relative"
             // FOR CLS IMPORTANT TO SET EXACT HEIGHT IDK WHY LINE HEIGHT SHOULD BE STABLE
             $gtSm={{
               mx: 0,
@@ -141,15 +141,33 @@ const HeroContents = memo(function HeroContents() {
             }}
             $gtLg={{
               size: '$16',
-              lh: '$15',
+              lh: 146,
               maxWidth: 1200,
-              h: 290,
+              h: 310,
             }}
           >
-            <ThemeTintAlt offset={1}>
+            <Text color="$color10">Write less,</Text>
+            {/* add gradient to other colors: */}
+            <ThemeTintAlt>
               <Text
+                className="mask-gradient-left"
+                pos="absolute"
+                t={0}
+                l="1.3%"
                 color="$color10"
-                className={'all ease-in ms250' + ` clip-slice-${name}`}
+                $sm={{ l: 0 }}
+              >
+                Write less,
+              </Text>
+            </ThemeTintAlt>
+            <ThemeTintAlt offset={-1}>
+              <Text
+                className="mask-gradient-right"
+                pos="absolute"
+                t={0}
+                l="1.3%"
+                color="$color10"
+                $sm={{ l: 0 }}
               >
                 Write less,
               </Text>
@@ -275,7 +293,7 @@ const HeroContents = memo(function HeroContents() {
           <SizableText
             size="$9"
             h={200}
-            my={-200 / 2}
+            my={-213 / 2}
             rotate="-8deg"
             als="center"
             y={-90}
