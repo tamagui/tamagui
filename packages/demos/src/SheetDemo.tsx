@@ -18,7 +18,6 @@ export const SheetDemo = () => {
   const isConstant = snapPointsMode === 'constant'
   const isFit = snapPointsMode === 'fit'
   const isMixed = snapPointsMode === 'mixed'
-  const hasFit = isFit || (isMixed && mixedFitDemo)
   const snapPoints = isPercent
     ? [85, 50, 25]
     : isConstant
