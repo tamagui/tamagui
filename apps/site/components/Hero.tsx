@@ -167,7 +167,7 @@ const HeroContents = memo(function HeroContents() {
               mah={700}
               maw={700}
               $sm={{ x: '-10%', scale: 0.7 }}
-              o={0.25}
+              o={0.5}
             >
               <svg
                 height="700"
