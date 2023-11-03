@@ -64,7 +64,7 @@ const RadioIndicatorFrame = styled(ThemeableStack, {
   } as const,
 
   defaultVariants: {
-    unstyled: false,
+    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
   },
 })
 
@@ -188,7 +188,7 @@ const RadioGroupItemFrame = styled(ThemeableStack, {
   } as const,
 
   defaultVariants: {
-    unstyled: false,
+    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
   },
 })
 
@@ -496,7 +496,6 @@ const RadioGroup = withStaticProperties(
             accentColor={accentColor}
           >
             <RadioGroupFrame
-              aria-valuetext={value}
               role="radiogroup"
               aria-orientation={orientation}
               ref={forwardedRef}

@@ -31,6 +31,7 @@ type InternalHooks = {
   ) => any
 
   useChildren?: (
+    elementType: any,
     children: any,
     viewProps: Record<string, any>,
     events: TamaguiComponentEvents | null,
@@ -40,5 +41,6 @@ type InternalHooks = {
   getBaseViews?: () => {
     View: any
     Text: any
+    TextAncestor: any
   }
 }

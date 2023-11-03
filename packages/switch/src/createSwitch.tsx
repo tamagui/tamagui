@@ -105,7 +105,7 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
       // @ts-ignore
       <Thumb
         {...(unstyled === false && {
-          unstyled: false,
+          unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
           size: sizeProp ?? sizeContext ?? '$true',
           ...(!disableActiveTheme && {
             theme: checked ? 'active' : null,

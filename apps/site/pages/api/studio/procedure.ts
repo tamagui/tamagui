@@ -5,13 +5,15 @@ import { protectApiRoute } from '@lib/protectApiRoute'
 let apis
 export default apiRoute(async (req, res) => {
   try {
-    apis = require('@tamagui/studio/api')
+    apis = await require('@tamagui/studio/api')
   } catch (error) {
     console.error('git-crypt is not unlocked. returning.', error)
     res.status(500).json({})
     return
   }
+
   const { supabase } = await protectApiRoute({ req, res })
+
   await checkSponsorAccess({
     req,
     res,
@@ -26,6 +28,11 @@ export default apiRoute(async (req, res) => {
       res
         .status(400)
         .json({ error: '`procedure` query param is not provided / incorrect.' })
+      return
+    }
+
+    if (!(procedureName in apis)) {
+      res.status(400).json({ error: `No procedure found: ${procedureName}` })
       return
     }
 

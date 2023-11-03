@@ -1,4 +1,4 @@
-import { YStack, styled } from 'tamagui'
+import { Stack, YStack, styled } from 'tamagui'
 
 export * as lucideIcons from '@tamagui/lucide-icons'
 
@@ -12,6 +12,16 @@ export * from './views'
 // export * from './TestExpoVectorIcons'
 // export { Image as ExpoImage } from 'expo-image'
 export * from 'expo-constants'
+
+export const SimpleTest = styled(Stack, {
+  width: 100,
+  height: 100,
+  backgroundColor: 'blue',
+
+  pressStyle: {
+    backgroundColor: 'red',
+  },
+})
 
 export const Test14Component = styled(YStack, {
   name: 'MyComponent',

@@ -5,6 +5,10 @@ export const SandboxHeading = styled(Text, {
   color: '$color',
   backgroundColor: '$background',
 
+  pressStyle: {
+    backgroundColor: 'red',
+  },
+
   variants: {
     size: {
       large: {

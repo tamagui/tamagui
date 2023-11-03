@@ -85,7 +85,19 @@ export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import
 }>>, "placeholderTextColor"> & {
     placeholderTextColor?: ColorStyleProp | undefined;
     rows?: number | undefined;
-}, TextInput, import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps>, {
+}, TextInput, import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & {
+    readonly unstyled?: boolean | undefined;
+    readonly size?: import("@tamagui/core").SizeTokens | undefined;
+} & import("@tamagui/core").PseudoProps<Partial<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & {
+    readonly unstyled?: boolean | undefined;
+    readonly size?: import("@tamagui/core").SizeTokens | undefined;
+}>> & import("@tamagui/core").MediaProps<Partial<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & {
+    readonly unstyled?: boolean | undefined;
+    readonly size?: import("@tamagui/core").SizeTokens | undefined;
+}>>, "placeholderTextColor"> & {
+    placeholderTextColor?: ColorStyleProp | undefined;
+    rows?: number | undefined;
+}, {
     readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
 }, {

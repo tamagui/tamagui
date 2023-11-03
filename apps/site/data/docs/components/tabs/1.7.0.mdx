@@ -32,13 +32,17 @@ Note: Tabs have landed on v1.7 and not fully ready for runtime. Send us your fee
 ## Usage
 
 ```tsx
-import { Tabs } from 'tamagui'
+import { SizableText, Tabs } from 'tamagui'
 
 export default () => (
   <Tabs defaultValue="tab1" width={400}>
     <Tabs.List space>
-      <Tabs.Tab value="tab1">Tab 1</Tabs.Tab>
-      <Tabs.Tab value="tab2">Tab 2</Tabs.Tab>
+      <Tabs.Tab value="tab1">
+        <SizableText>Tab 1</SizableText>
+      </Tabs.Tab>
+      <Tabs.Tab value="tab2">
+        <SizableText>Tab 2</SizableText>
+      </Tabs.Tab>
     </Tabs.List>
 
     <Tabs.Content value="tab1">

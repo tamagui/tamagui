@@ -17,6 +17,7 @@ const HeadAnchor = styled(Paragraph, {
   pressStyle: { opacity: 0.25 },
   tabIndex: -1,
   w: '100%',
+  tag: 'a',
 })
 
 export const HeaderLinks = ({ showExtra, forceShowAllLinks, showAuth }: HeaderProps) => {
@@ -35,7 +36,7 @@ export const HeaderLinks = ({ showExtra, forceShowAllLinks, showAuth }: HeaderPr
         </HeadAnchor>
       </NextLink>
 
-      <NextLink prefetch={false} href="/studio">
+      <NextLink passHref prefetch={false} href="/studio">
         <HeadAnchor
           $md={{
             display: forceShowAllLinks ? 'flex' : 'none',
@@ -46,9 +47,10 @@ export const HeaderLinks = ({ showExtra, forceShowAllLinks, showAuth }: HeaderPr
       </NextLink>
 
       {!router.asPath.startsWith('/takeout') && (
-        <NextLink prefetch={false} href="/takeout">
+        <NextLink passHref legacyBehavior={false} prefetch={false} href="/takeout">
           <TooltipSimple delay={0} restMs={25} label="Takeout">
             <HeadAnchor
+              tag="span"
               {...(!forceShowAllLinks && {
                 size: '$8',
               })}

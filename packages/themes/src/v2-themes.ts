@@ -55,6 +55,7 @@ const themesBuilder = createThemeBuilder()
     purple: colorThemeDefinition('purple'),
     pink: colorThemeDefinition('pink'),
     red: colorThemeDefinition('red'),
+    gray: colorThemeDefinition('gray'),
   })
   .addChildThemes({
     alt1: {

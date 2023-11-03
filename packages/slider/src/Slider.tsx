@@ -257,7 +257,7 @@ export const SliderTrackFrame = styled(SliderFrame, {
   } as const,
 
   defaultVariants: {
-    unstyled: false,
+    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
   },
 })
 
@@ -382,7 +382,7 @@ export const SliderThumbFrame = styled(ThemeableStack, {
   } as const,
 
   defaultVariants: {
-    unstyled: false,
+    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
   },
 })
 

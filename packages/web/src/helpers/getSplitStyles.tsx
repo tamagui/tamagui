@@ -139,6 +139,17 @@ export const getSplitStyles: StyleSplitter = (
   debug
 ) => {
   conf = conf || getConfig()
+
+  // a bit icky, we need no normalize but not fully
+  if (
+    isWeb &&
+    styleProps.isAnimated &&
+    conf.animations.isReactNative &&
+    !styleProps.noNormalize
+  ) {
+    styleProps.noNormalize = 'values'
+  }
+
   const { shorthands } = conf
   const {
     isHOC,
@@ -150,6 +161,7 @@ export const getSplitStyles: StyleSplitter = (
     parentStaticConfig,
     acceptsClassName,
   } = staticConfig
+
   const validStyleProps = isText ? stylePropsText : validStyles
   const viewProps: GetStyleResult['viewProps'] = {}
   const mediaState = styleProps.mediaState || globalMediaState
@@ -210,6 +222,8 @@ export const getSplitStyles: StyleSplitter = (
     console.groupEnd()
   }
 
+  // className first:
+
   // handle before the loop so we can mark usedKeys in className
   // since the compiler will optimize to className we just treat className as the more powerful
   //   TODO the compiler should probably just leave things inline if its not flattening
@@ -252,8 +266,9 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
-    if (keyInit === 'className') continue // handled above
+    if (keyInit === 'className') continue // handled above first
     if (keyInit in usedKeys) continue
+    // keyInit === 'style' is handled in skipProps
     if (keyInit in skipProps && !isHOC) {
       if (keyInit === 'group') {
         if (process.env.TAMAGUI_TARGET === 'web') {
@@ -353,7 +368,7 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     if (keyInit[0] === '_' && keyInit.startsWith('_style')) {
-      mergeStyleProp(styleState, valInit)
+      mergeStylePropIntoStyle(styleState, valInit)
       continue
     }
 
@@ -1058,16 +1073,20 @@ export const getSplitStyles: StyleSplitter = (
     }
   } // end prop loop
 
+  // style prop after:
+
   // merge after the prop loop - this way pseudos apply and set usedKeys and then this wont clobber them
   // otherwise styled(styleable(), { bg: 'red', pressStyle: { bg: 'pink' } })
   // will pass down a style={} + pressStyle={} but pressStyle will go behind style depending on how you pass it
   // also it makes sense that props.style is basically the last to apply,
   // at least more sense than "it applies at the position its defined in the prop loop"
   if (props.style) {
-    mergeStyleProp(styleState, props.style)
+    mergeStylePropIntoStyle(styleState, props.style)
   }
 
-  if (!styleProps.noNormalize) {
+  const avoidNormalize = styleProps.noNormalize === false
+
+  if (!avoidNormalize) {
     fixStyles(style)
 
     // shouldnt this be better? but breaks some tests wierdly, need to check
@@ -1346,7 +1365,12 @@ function mergeClassName(
   }
 }
 
-function mergeStyle(styleState: GetStyleState, key: string, val: any) {
+function mergeStyle(
+  styleState: GetStyleState,
+  key: string,
+  val: any,
+  disableNormalize = false
+) {
   const { classNames, viewProps, style, usedKeys, styleProps } = styleState
   if (isWeb && val?.[0] === '_') {
     classNames[key] = val
@@ -1355,8 +1379,8 @@ function mergeStyle(styleState: GetStyleState, key: string, val: any) {
     styleState.transforms ||= {}
     styleState.transforms[key] = val
   } else {
-    const out =
-      isWeb && !styleProps.noNormalize ? normalizeValueWithProperty(val, key) : val
+    const shouldNormalize = isWeb && !disableNormalize && !styleProps.noNormalize
+    const out = shouldNormalize ? normalizeValueWithProperty(val, key) : val
     if (key in validStylesOnBaseProps) {
       viewProps[key] = out
     } else {
@@ -1399,21 +1423,16 @@ export const getSubStyle = (
   return styleOut
 }
 
-function mergeStyleProp(styleState: GetStyleState, val: any) {
-  if (!val) return
-  const styles = [].concat(val).flat()
-  for (const cur of styles) {
-    if (!cur) continue
-    const isRNW = cur['$$css']
+function mergeStylePropIntoStyle(styleState: GetStyleState, cur: Object[] | Object) {
+  if (!cur) return
+  const styles = Array.isArray(cur) ? cur : [cur]
+  for (const style of styles) {
+    if (!style) continue
+    const isRNW = style['$$css']
     if (isRNW) {
-      Object.assign(styleState.classNames, cur)
+      Object.assign(styleState.classNames, style)
     } else {
-      for (const key in cur) {
-        if (key in styleState.usedKeys) {
-          continue
-        }
-        mergeStyle(styleState, key, cur[key])
-      }
+      Object.assign(styleState.style, style)
     }
   }
 }

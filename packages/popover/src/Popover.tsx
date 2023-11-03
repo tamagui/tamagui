@@ -43,7 +43,6 @@ import { Sheet, SheetController } from '@tamagui/sheet'
 import { YStack, YStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
-import { Freeze } from 'react-freeze'
 import { Platform, ScrollView } from 'react-native'
 
 import { useFloatingContext } from './useFloatingContext'
@@ -55,6 +54,16 @@ export type PopoverProps = PopperProps & {
   defaultOpen?: boolean
   onOpenChange?: (open: boolean) => void
   keepChildrenMounted?: boolean
+
+  /**
+   * Enable staying open while mouseover
+   */
+  hoverable?: boolean
+
+  /**
+   * Disable focusing behavior on open
+   */
+  disableFocus?: boolean
 }
 
 type ScopedPopoverProps<P> = ScopedProps<P, 'Popover'>
@@ -409,53 +418,29 @@ const PopoverContentImpl = React.forwardRef<
         setIsFullyHidden(true)
       }}
     >
-      <FreezeToLastContents
-        // freeze if fully hidden but fallback to last contents
-        // if keepChildrenMounted then mount it on the first
-        freeze={freeze}
+      <PopperContent
+        __scopePopper={__scopePopover || POPOVER_SCOPE}
+        key={context.contentId}
+        data-state={getState(open)}
+        id={context.contentId}
+        ref={forwardedRef}
+        {...contentProps}
       >
-        <PopperContent
-          __scopePopper={__scopePopover || POPOVER_SCOPE}
-          key={context.contentId}
-          data-state={getState(open)}
-          id={context.contentId}
-          ref={forwardedRef}
-          {...contentProps}
+        <RemoveScroll
+          enabled={disableRemoveScroll ? false : open}
+          allowPinchZoom
+          // causes lots of bugs on touch web on site
+          removeScrollBar={false}
+          style={{
+            display: 'contents',
+          }}
         >
-          <RemoveScroll
-            enabled={disableRemoveScroll ? false : open}
-            allowPinchZoom
-            // causes lots of bugs on touch web on site
-            removeScrollBar={false}
-            style={{
-              display: 'contents',
-            }}
-          >
-            <FocusScope
-              loop
-              enabled={disableFocusScope ? false : open}
-              trapped={trapFocus}
-              onMountAutoFocus={onOpenAutoFocus}
-              onUnmountAutoFocus={onCloseAutoFocus}
-            >
-              {contents}
-            </FocusScope>
-          </RemoveScroll>
-        </PopperContent>
-      </FreezeToLastContents>
+          {contents}
+        </RemoveScroll>
+      </PopperContent>
     </Animate>
   )
 })
-
-const FreezeToLastContents = (props: { freeze: boolean; children: any }) => {
-  const last = React.useRef()
-
-  if (!props.freeze) {
-    last.current = props.children
-  }
-
-  return <Freeze placeholder={last.current} {...props} />
-}
 
 /* -------------------------------------------------------------------------------------------------
  * PopoverClose
@@ -515,6 +500,8 @@ export const Popover = withStaticProperties(
       onOpenChange,
       __scopePopover,
       keepChildrenMounted,
+      hoverable,
+      disableFocus,
       ...restProps
     } = props
 
@@ -534,9 +521,15 @@ export const Popover = withStaticProperties(
       onChange: onOpenChange,
     })
 
-    const breakpointActive = useSheetBreakpointActive(sheetBreakpoint)
+    const sheetActive = useSheetBreakpointActive(sheetBreakpoint)
 
-    const floatingContext = useFloatingContext({ open, setOpen, breakpointActive }) as any
+    const floatingContext = useFloatingContext({
+      open,
+      setOpen,
+      disable: sheetActive,
+      hoverable,
+      disableFocus: disableFocus,
+    }) as any
 
     const popoverContext = {
       id,
@@ -544,10 +537,10 @@ export const Popover = withStaticProperties(
       contentId: React.useId(),
       triggerRef,
       open,
-      breakpointActive,
+      breakpointActive: sheetActive,
       onOpenChange: setOpen,
       onOpenToggle: useEvent(() => {
-        if (open && breakpointActive) {
+        if (open && sheetActive) {
           return
         }
         setOpen(!open)

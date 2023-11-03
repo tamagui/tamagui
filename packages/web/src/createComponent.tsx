@@ -507,14 +507,11 @@ export function createComponent<
       componentName,
       disable: disableTheme,
       shallow: stateRef.current.themeShallow,
-      // if this returns undefined it defers to the keys tracking, so its only used to force either updates or no updates
-      shouldUpdate: () => {
-        return (
-          // when we use $theme- styles we need to force it to re-render on theme changes (this can be optimized likely)
-          stateRef.current.isListeningToTheme
-        )
-      },
       debug: debugProp,
+    }
+
+    if (typeof stateRef.current.isListeningToTheme === 'boolean') {
+      themeStateProps.shouldUpdate = () => stateRef.current.isListeningToTheme
     }
 
     // on native we optimize theme changes if fastSchemeChange is enabled, otherwise deopt
@@ -1144,32 +1141,20 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`spaced-as-child`
 
-    // perf - unwrap View
-    if (
-      // in test mode disable perf unwrapping so react-testing-library finds Text properly
-      process.env.NODE_ENV !== 'test' &&
-      process.env.TAMAGUI_TARGET === 'native' &&
-      (elementType === BaseText || elementType === BaseView)
-    ) {
-      if (process.env.TAMAGUI_OPTIMIZE_NATIVE_VIEWS) {
-        // further optimize by not even caling elementType.render
-        viewProps.children = content
-        content = createElement(
-          elementType === BaseText ? 'RCTText' : 'RCTView',
-          viewProps
-        )
-      } else {
-        // instead of rendering a whole sub component, just grab the contents directly
-        // we could further improve this performance by actually just doing this ourselves
-        viewProps.children = content
-        content = elementType.render(viewProps, viewProps.ref)
-      }
+    let useChildrenResult: any
+    if (hooks.useChildren) {
+      useChildrenResult = hooks.useChildren(
+        elementType,
+        content,
+        viewProps,
+        events,
+        staticConfig
+      )
+    }
+    if (useChildrenResult) {
+      content = useChildrenResult
     } else {
       content = createElement(elementType, viewProps, content)
-    }
-
-    if (hooks.useChildren) {
-      content = hooks.useChildren?.(content, viewProps, events, staticConfig)
     }
 
     if (process.env.NODE_ENV === 'development' && time) time`create-element`
@@ -1329,7 +1314,7 @@ export function createComponent<
 
   let res: ComponentType = component as any
 
-  if (!process.env.TAMAGUI_DISABLE_MEMO) {
+  if (process.env.TAMAGUI_FORCE_MEMO || staticConfig.memo) {
     res = memo(res) as any
   }
 
@@ -1353,14 +1338,17 @@ export function createComponent<
 
   function styleable(Component: any, options?: StyleableOptions) {
     const isForwardedRefAlready = Component.render?.length === 2
-    const ComponentForwardedRef = isForwardedRefAlready
-      ? (Component as any)
-      : // memo because theme changes otherwise would always re-render
-        memo(forwardRef(Component as any))
+
+    let out = isForwardedRefAlready ? (Component as any) : forwardRef(Component as any)
+
     const extendedConfig = extendStyledConfig(options?.staticConfig)
-    const out = options?.disableTheme
-      ? ComponentForwardedRef
-      : (themeable(ComponentForwardedRef, extendedConfig) as any)
+
+    out = options?.disableTheme ? out : (themeable(out, extendedConfig) as any)
+
+    if (process.env.TAMAGUI_MEMOIZE_STYLEABLE) {
+      out = memo(out)
+    }
+
     out.staticConfig = extendedConfig
     out.styleable = styleable
     return out

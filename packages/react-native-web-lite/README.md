@@ -1,3 +1,7 @@
+# Deprecated: ⚠️
+
+Just use react-native-web, it's evolved enough to fix a few things and this has been left behind a bit.
+
 ## Experiment!
 
 Use at your own risk.

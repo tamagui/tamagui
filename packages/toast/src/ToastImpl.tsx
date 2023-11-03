@@ -54,7 +54,7 @@ const ToastImplFrame = styled(ThemeableStack, {
     },
   } as const,
   defaultVariants: {
-    unstyled: false,
+    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
   },
 })
 interface ToastProps extends Omit<ToastImplProps, keyof ToastImplPrivateProps> {

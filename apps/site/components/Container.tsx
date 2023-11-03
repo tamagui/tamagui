@@ -50,10 +50,10 @@ export const ContainerLarge = styled(YStack, {
 
 export const ContainerXL = styled(YStack, {
   mx: 'auto',
-  px: '$4',
   width: '100%',
 
   $gtSm: {
+    px: '$4',
     maxWidth: 980,
   },
 

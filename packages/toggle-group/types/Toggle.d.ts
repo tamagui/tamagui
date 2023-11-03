@@ -1,6 +1,8 @@
 import { GetProps } from '@tamagui/web';
 import * as React from 'react';
-declare const ToggleFrame: import("@tamagui/web").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & import("@tamagui/web").TamaguiComponentPropsBaseBase & {
+type TamaguiButtonElement = HTMLButtonElement;
+export type ToggleElement = TamaguiButtonElement;
+export declare const ToggleFrame: import("@tamagui/web").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & import("@tamagui/web").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> & import("@tamagui/web").MediaProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & {
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
@@ -273,14 +275,14 @@ declare const ToggleFrame: import("@tamagui/web").TamaguiComponent<Omit<import("
     };
 }>;
 type ToggleFrameProps = GetProps<typeof ToggleFrame>;
-type ToggleProps = ToggleFrameProps & {
+type ToggleItemExtraProps = {
     defaultValue?: string;
     disabled?: boolean;
     pressed?: boolean;
     defaultPressed?: boolean;
     onPressedChange?(pressed: boolean): void;
 };
-declare const Toggle: React.ForwardRefExoticComponent<Omit<ToggleProps, "ref"> & React.RefAttributes<HTMLButtonElement>>;
-export { Toggle, ToggleFrame };
-export type { ToggleProps };
+export type ToggleProps = ToggleFrameProps & ToggleItemExtraProps;
+export declare const Toggle: React.ForwardRefExoticComponent<Omit<ToggleProps, "ref"> & React.RefAttributes<HTMLButtonElement>>;
+export {};
 //# sourceMappingURL=Toggle.d.ts.map

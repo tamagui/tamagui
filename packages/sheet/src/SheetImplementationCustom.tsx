@@ -24,6 +24,7 @@ import {
 } from 'react'
 import {
   Animated,
+  Dimensions,
   GestureResponderEvent,
   Keyboard,
   LayoutChangeEvent,
@@ -146,7 +147,6 @@ export const SheetImplementationCustom = themeable(
       },
       useCallback(
         (value) => {
-          if (!animationDriver.isReactNative) return
           at.current = value
           scrollBridge.paneY = value
         },
@@ -213,6 +213,7 @@ export const SheetImplementationCustom = themeable(
 
     const disableDrag = props.disableDrag ?? controller?.disableDrag
     const themeName = useThemeName()
+    const [isDragging, setIsDragging] = useState(false)
 
     const panResponder = useMemo(
       () => {
@@ -224,7 +225,10 @@ export const SheetImplementationCustom = themeable(
         scrollBridge.paneMinY = minY
         let startY = at.current
 
-        function makeUnselectable(val: boolean) {
+        function setPanning(val: boolean) {
+          setIsDragging(val)
+
+          // make unselectable:
           if (!SHEET_HIDDEN_STYLESHEET) return
           if (!val) {
             SHEET_HIDDEN_STYLESHEET.innerText = ''
@@ -237,7 +241,7 @@ export const SheetImplementationCustom = themeable(
         const release = ({ vy, dragAt }: { dragAt: number; vy: number }) => {
           isExternalDrag = false
           previouslyScrolling = false
-          makeUnselectable(false)
+          setPanning(false)
           const at = dragAt + startY
           // seems liky vy goes up to about 4 at the very most (+ is down, - is up)
           // lets base our multiplier on the total layout height
@@ -289,7 +293,7 @@ export const SheetImplementationCustom = themeable(
         }
 
         const grant = () => {
-          makeUnselectable(true)
+          setPanning(true)
           stopSpring()
           startY = at.current
         }
@@ -326,7 +330,11 @@ export const SheetImplementationCustom = themeable(
 
     const handleAnimationViewLayout = useCallback(
       (e: LayoutChangeEvent) => {
-        const next = e.nativeEvent?.layout.height
+        // avoid bugs where it grows forever for whatever reason
+        const next = Math.min(
+          e.nativeEvent?.layout.height,
+          Dimensions.get('window').height
+        )
         if (!next) return
         setFrameSize(next)
       },
@@ -335,7 +343,11 @@ export const SheetImplementationCustom = themeable(
 
     const handleMaxContentViewLayout = useCallback(
       (e: LayoutChangeEvent) => {
-        const next = e.nativeEvent?.layout.height
+        // avoid bugs where it grows forever for whatever reason
+        const next = Math.min(
+          e.nativeEvent?.layout.height,
+          Dimensions.get('window').height
+        )
         if (!next) return
         setMaxContentSize(next)
       },
@@ -418,11 +430,16 @@ export const SheetImplementationCustom = themeable(
               onLayout={handleMaxContentViewLayout}
             />
           )}
+
           <AnimatedView
             ref={ref}
             {...panResponder?.panHandlers}
             onLayout={handleAnimationViewLayout}
             pointerEvents={open && !shouldHideParentSheet ? 'auto' : 'none'}
+            {...(!isDragging && {
+              // @ts-ignore for CSS driver this is necessary to attach the transition
+              animation,
+            })}
             style={[
               {
                 position: 'absolute',

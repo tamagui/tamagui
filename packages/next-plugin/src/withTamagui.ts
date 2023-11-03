@@ -15,6 +15,9 @@ import webpack from 'webpack'
 export type WithTamaguiProps = LoaderPluginOptions & {
   appDir?: boolean
 
+  /**
+   * @deprecated Deprecated, just leave it off
+   */
   useReactNativeWebLite: boolean
   enableLegacyFontSupport?: boolean
   aliasReactPackages?: boolean

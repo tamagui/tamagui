@@ -74,13 +74,15 @@ export class ThemeManager {
     shouldNotify = true
   ) {
     this.props = props
+
     if (props.forceTheme) {
       this.state.theme = props.forceTheme
       this.state.name = props.name || ''
-      return true
+      this.updateState(this.state, true)
+      return this.state
     }
-    const nextState = this.getStateIfChanged(props)
 
+    const nextState = this.getStateIfChanged(props)
     if (nextState) {
       this.updateState(nextState, shouldNotify)
       return nextState
@@ -95,9 +97,15 @@ export class ThemeManager {
       this['_numChangeEventsSent']++
     }
     if (shouldNotify) {
-      queueMicrotask(() => {
+      if (process.env.TAMAGUI_TARGET === 'native') {
+        // native is way slower with queueMicrotask
         this.notify()
-      })
+      } else {
+        // web is way faster this way
+        queueMicrotask(() => {
+          this.notify()
+        })
+      }
     }
   }
 
@@ -200,7 +208,7 @@ function getState(
 
   if (baseManager?.state.isComponent) {
     // remove component name
-    baseName = baseName.replace(/_[A-Z][a-z]+/, '')
+    baseName = baseName.replace(/_[A-Z][A-Za-z]+/, '')
   }
 
   const nextName = props.reset ? baseName : props.name || ''
@@ -218,7 +226,11 @@ function getState(
       ? max // component name only don't search upwards
       : 0
 
-  if (process.env.NODE_ENV !== 'production' && typeof props.debug === 'string') {
+  if (
+    process.env.NODE_ENV !== 'production' &&
+    typeof props.debug === 'string' &&
+    typeof window !== 'undefined'
+  ) {
     console.groupCollapsed('ThemeManager.getState()')
     console.info({ props, baseName, base, min, max })
   }
@@ -262,6 +274,7 @@ function getState(
         const moreSpecific = `${prefix}_${nextName}_${componentName}`
         componentPotentials.unshift(moreSpecific)
       }
+
       potentials = [...componentPotentials, ...potentials, ...allComponentThemes]
     }
 

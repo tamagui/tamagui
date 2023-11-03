@@ -6,18 +6,18 @@
     "packages/*"
   ],
   "scripts": {
+    "vercel:install": "yarn set version 3.5 && yarn install",
     "native": "cd apps/expo && yarn start",
     "watch": "yarn workspaces foreach -pi run watch",
-    "vercel:install": "yarn set version 3.5 && yarn install",
     "web": "yarn build && cd apps/next && yarn next",
     "web:extract": "DISABLE_EXTRACTION=false yarn workspace next-app dev",
     "web:prod": "yarn workspace next-app build",
     "web:prod:serve": "yarn workspace next-app serve",
     "fix": "manypkg fix",
     "postinstall": "yarn check-deps && yarn build",
-    "build": "yarn workspaces foreach --exclude next-app run build",
-    "upgrade:tamagui": "yarn up '*tamagui*'@latest '@tamagui/*'@latest react-native-web-lite@latest",
-    "upgrade:tamagui:canary": "yarn up '*tamagui*'@canary '@tamagui/*'@canary react-native-web-lite@canary",
+    "build": "yarn workspaces foreach --all --exclude next-app run build",
+    "upgrade:tamagui": "yarn up '*tamagui*'@latest '@tamagui/*'@latest",
+    "upgrade:tamagui:canary": "yarn up '*tamagui*'@canary '@tamagui/*'@canary",
     "check-deps": "check-dependency-version-consistency ."
   },
   "resolutions": {

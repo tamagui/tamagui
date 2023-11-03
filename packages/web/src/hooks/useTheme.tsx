@@ -1,13 +1,5 @@
 import { isClient, isIos, isServer } from '@tamagui/constants'
-import {
-  useContext,
-  useEffect,
-  useId,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import { useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 import { getConfig } from '../config'
 import { Variable, getVariable } from '../createVariable'
@@ -133,7 +125,7 @@ export const useThemeWithState = (
       return {}
     }
     return getThemeProxied(state, props.deopt, themeManager, keys.current, props.debug)
-  }, [state, themeManager, props.deopt, props.debug])
+  }, [state?.theme, themeManager, props.deopt, props.debug])
 
   if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
     console.groupCollapsed('  🔹 useTheme =>', state?.name)
@@ -256,8 +248,8 @@ function someParentIsInversed(manager?: ThemeManager) {
   if (process.env.TAMAGUI_TARGET === 'native') {
     let cur: ThemeManager | null | undefined = manager
     while (cur) {
-      if (!cur.parentManager) return true
-      if (cur.parentManager.state.scheme !== cur.state.scheme) return false
+      if (!cur.parentManager) return false
+      if (cur.parentManager.state.scheme !== cur.state.scheme) return true
       cur = cur.parentManager
     }
   }
@@ -353,32 +345,30 @@ export const useChangeThemeEffect = (
         }
       })
 
-      const disposeChangeListener = parentManager?.onChangeTheme((name, manager) => {
-        const force =
-          shouldUpdate?.() ||
-          props.deopt ||
-          // this fixes themeable() not updating with the new fastSchemeChange setting
-          (process.env.TAMAGUI_TARGET === 'native'
-            ? props['disable-child-theme']
-            : undefined)
+      const disposeChangeListener = parentManager?.onChangeTheme(
+        (name, manager, forced) => {
+          const force =
+            forced ||
+            shouldUpdate?.() ||
+            props.deopt ||
+            // this fixes themeable() not updating with the new fastSchemeChange setting
+            (process.env.TAMAGUI_TARGET === 'native'
+              ? props['disable-child-theme']
+              : undefined)
 
-        const shouldTryUpdate = force ?? Boolean(keys?.length || isNewTheme)
+          const shouldTryUpdate = force ?? Boolean(keys?.length || isNewTheme)
 
-        if (process.env.NODE_ENV === 'development' && props.debug) {
-          console.info(` 🔸 onChange`, themeManager.id, {
-            force,
-            shouldTryUpdate,
-            props,
-            name,
-            manager,
-            keys,
-          })
-        }
+          if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
+            // prettier-ignore
+            console.info(` 🔸 onChange`, themeManager.id, { force, shouldTryUpdate, props, name, manager, keys, })
+          }
 
-        if (shouldTryUpdate) {
-          setThemeState(createState)
-        }
-      }, themeManager.id)
+          if (shouldTryUpdate) {
+            setThemeState(createState)
+          }
+        },
+        themeManager.id
+      )
 
       return () => {
         selfListenerDispose()
@@ -428,7 +418,7 @@ export const useChangeThemeEffect = (
   }
 
   function createState(prev?: ChangedThemeResponse, force = false): ChangedThemeResponse {
-    if (prev && shouldUpdate?.() === false) {
+    if (prev && shouldUpdate?.() === false && !force) {
       return prev
     }
 
@@ -451,7 +441,7 @@ export const useChangeThemeEffect = (
         // at all anymore. this forces updates onChangeTheme for all dynamic style accessed components
         // which is correct, potentially in the future we can avoid forceChange and just know to
         // update if keys.length is set + onChangeTheme called
-        const forceChange = Boolean(keys?.length)
+        const forceChange = force || Boolean(keys?.length)
         const next = themeManager.getState(props, parentManager)
         const nextState = getShouldUpdateTheme(
           themeManager,

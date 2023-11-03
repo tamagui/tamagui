@@ -145,7 +145,7 @@ const ButtonFrame = styled(ThemeableStack, {
   } as const,
 
   defaultVariants: {
-    unstyled: false,
+    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
   },
 })
 
@@ -168,7 +168,7 @@ const ButtonText = styled(SizableText, {
   } as const,
 
   defaultVariants: {
-    unstyled: false,
+    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
   },
 })
 
@@ -261,7 +261,7 @@ function useButton<Props extends ButtonProps>(
         { children: propsIn.children, fontFamily, fontSize, textProps },
         Text === ButtonText && propsActive.unstyled !== true
           ? {
-              unstyled: false,
+              unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
               size,
             }
           : undefined

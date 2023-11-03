@@ -95,7 +95,7 @@ const StudioScreens = () => {
 }
 
 const ScreenContainer = ({ children }: { children: any }) => (
-  <YStack als="center" w="95%" h={850}>
+  <YStack als="center" w="95%" h={850} $sm={{ w: '100%', mt: '$-12', mb: '$-6' }}>
     <ThemeTint>
       <YStack
         fullscreen
@@ -104,6 +104,7 @@ const ScreenContainer = ({ children }: { children: any }) => (
         o={0.125}
         br="$10"
         zi={0}
+        $sm={{ br: '$0' }}
       />
     </ThemeTint>
 
@@ -118,6 +119,7 @@ const ScreenContainer = ({ children }: { children: any }) => (
       shadowOffset={{ width: 0, height: 20 }}
       o={0.3}
       br="$10"
+      $sm={{ br: '$0' }}
       zi={0}
     />
 
@@ -132,10 +134,18 @@ const ScreenContainer = ({ children }: { children: any }) => (
       shadowOffset={{ width: 0, height: 10 }}
       o={0.24}
       br="$10"
+      $sm={{ br: '$0' }}
       zi={0}
     />
 
-    <YStack bc="$backgroundStrong" br="$10" fullscreen zi={1} ov="hidden">
+    <YStack
+      bc="$backgroundStrong"
+      br="$10"
+      $sm={{ br: '$0' }}
+      fullscreen
+      zi={1}
+      ov="hidden"
+    >
       {children}
     </YStack>
   </YStack>

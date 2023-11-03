@@ -3,7 +3,7 @@ title: Installation
 description: How to get Tamagui set up.
 ---
 
-We highly recommend using our CLI to bootstrap a new app. Even if you're adding it to your existing app, it will give you a good template repo to copy from:
+We recommend using the cli to bootstrap one of the example apps, whether you use it directly or just as reference when implementing in your stack.
 
 ```bash
 npm create tamagui@latest
@@ -39,7 +39,7 @@ If you want tamagui with all the components:
   </div>
 </CodeBlockWithTabs>
 
-If you just want `core` which only exports `Stack` and `Text` components:
+If you just want `core` which includes the styling primitives as well as the base `Stack` and `Text` components:
 
 <CodeBlockWithTabs>
   <div id='yarn'>
@@ -124,8 +124,6 @@ compiler.options.resolve.extensions = [
 
 #### Vite
 
-You can just use the plugin:
-
 ```tsx
 import { tamaguiExtractPlugin, tamaguiPlugin } from '@tamagui/vite-plugin'
 import react from '@vitejs/plugin-react-swc'
@@ -181,7 +179,7 @@ For React Native or Expo you shouldn't need any plugins unless you're setting up
 
 ## Quick configuration
 
-For an in-depth setup, check out [the full configuration docs](/docs/core/configuration). This sets you up with the default Tamagui design system which is great for getting started quick:
+For an in-depth setup, check out [the full configuration docs](/docs/core/configuration). For a nice set of defaults:
 
 <CodeBlockWithTabs>
   <div id='yarn'>

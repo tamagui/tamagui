@@ -11,24 +11,13 @@ import {
   Separator,
   Spacer,
   Switch,
-  Theme,
   YGroup,
   YStack,
 } from 'tamagui'
-import { Square } from 'tamagui'
 
 import { useThemeControl } from '../../useKitchenSinkTheme'
 
 export function HomeScreen() {
-  return (
-    <>
-      <Button themeInverse>hi233</Button>
-      <Theme inverse>
-        <Button>???/</Button>
-      </Theme>
-    </>
-  )
-
   return (
     <ScrollView>
       <YStack bc="$background" p="$3" pt="$6" pb="$8" f={1} space>

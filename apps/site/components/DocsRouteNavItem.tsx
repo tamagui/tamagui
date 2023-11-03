@@ -49,6 +49,7 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
         <SizableText
           size="$4"
           lh="$3"
+          cursor="pointer"
           userSelect="none"
           opacity={active ? 1 : 0.65}
           ta="right"

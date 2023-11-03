@@ -1356,14 +1356,17 @@ export type StyleableOptions = {
 
 export type Styleable<Props, Ref, BaseProps, VariantProps, ParentStaticProperties> = <
   CustomProps extends Object | void = void,
-  X extends FunctionComponent<any> = FunctionComponent<any>
+  MergedProps = CustomProps extends void
+    ? Props
+    : Omit<Props, keyof CustomProps> & CustomProps,
+  X extends FunctionComponent<MergedProps> = FunctionComponent<MergedProps>
 >(
   a: X,
   options?: StyleableOptions
 ) => TamaguiComponent<
-  CustomProps extends void ? Props : Omit<Props, keyof CustomProps> & CustomProps,
+  MergedProps,
   Ref,
-  BaseProps,
+  BaseProps & CustomProps,
   VariantProps,
   ParentStaticProperties
 >
@@ -1864,7 +1867,7 @@ export type SplitStyleProps = {
   mediaState?: Record<string, boolean>
   noClassNames?: boolean
   noExpand?: boolean
-  noNormalize?: boolean
+  noNormalize?: boolean | 'values'
   noSkip?: boolean
   resolveValues?: ResolveVariableAs
   disableExpandShorthands?: boolean

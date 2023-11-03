@@ -326,6 +326,13 @@ export function createExtractor(
           .map((k) => k.moduleName)
           .join(', ')}`
       )
+      logger.info(
+        `valid import paths: ${JSON.stringify(
+          getValidComponentsPaths(propsWithFileInfo),
+          null,
+          2
+        )}`
+      )
     }
 
     let doesUseValidImport = false
@@ -343,6 +350,10 @@ export function createExtractor(
 
       if (valid) {
         importDeclarations.push(node)
+      }
+
+      if (shouldPrintDebug === 'verbose') {
+        logger.info(` - import ${moduleName} ${valid}`)
       }
 
       if (extractStyledDefinitions) {
@@ -672,11 +683,19 @@ export function createExtractor(
         const componentName = findComponentName(traversePath.scope)
         const closingElement = traversePath.node.closingElement
 
+        if (shouldPrintDebug) {
+          logger.info(` start ${node.name}`)
+        }
+
         // skip non-identifier opening elements (member expressions, etc.)
         if (
-          t.isJSXMemberExpression(closingElement?.name) ||
+          (closingElement && t.isJSXMemberExpression(closingElement?.name)) ||
           !t.isJSXIdentifier(node.name)
         ) {
+          if (shouldPrintDebug) {
+            logger.info(` skip non-identifier element`)
+          }
+
           return
         }
 
@@ -811,6 +830,8 @@ export function createExtractor(
             // always de-opt animation these
             'animation',
             'disableOptimization',
+
+            ...(!isTargetingHTML ? ['pressStyle', 'focusStyle'] : []),
 
             // when using a non-CSS driver, de-opt on enterStyle/exitStyle
             ...(tamaguiConfig?.animations.isReactNative
@@ -1591,16 +1612,19 @@ export function createExtractor(
           const shouldWrapTheme = shouldFlatten && themeVal
           const usedThemeKeys = new Set<string>()
 
-          if (disableExtractVariables) {
-            // if it accesses any theme values during evaluation
-            themeAccessListeners.add((key) => {
-              shouldFlatten = false
+          // if it accesses any theme values during evaluation
+          themeAccessListeners.add((key) => {
+            if (options.experimentalFlattenThemesOnNative) {
               usedThemeKeys.add(key)
+            }
+            if (disableExtractVariables) {
+              usedThemeKeys.add(key)
+              shouldFlatten = false
               if (shouldPrintDebug === 'verbose') {
                 logger.info([' ! accessing theme key, avoid flatten', key].join(' '))
               }
-            })
-          }
+            }
+          })
 
           if (shouldPrintDebug) {
             try {
@@ -1719,7 +1743,10 @@ export function createExtractor(
               if (staticConfig.variants && key in staticConfig.variants) {
                 mergeToEnd(res, key, style[key])
               } else {
-                const expanded = expandStylesAndRemoveNullishValues({ [key]: style[key] })
+                const expanded = expandStylesAndRemoveNullishValues(
+                  { [key]: style[key] },
+                  true
+                )
                 for (const key in expanded) {
                   mergeToEnd(res, key, expanded[key])
                 }
@@ -1936,10 +1963,27 @@ export function createExtractor(
                 debugPropValue || shouldPrintDebug
               )
 
-              const outProps = {
+              let outProps = {
                 ...(includeProps ? out.viewProps : {}),
                 ...out.style,
                 ...out.pseudos,
+              }
+
+              // check de-opt props again
+              for (const key in outProps) {
+                if (deoptProps.has(key)) {
+                  shouldFlatten = false
+                }
+              }
+
+              if (options.experimentalFlattenThemesOnNative) {
+                if (usedThemeKeys.size > 0) {
+                  Object.entries(props).forEach(([key, value]) => {
+                    if (usedThemeKeys.has(value)) {
+                      outProps[key] = value
+                    }
+                  })
+                }
               }
 
               if (shouldPrintDebug) {

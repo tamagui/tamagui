@@ -25,7 +25,7 @@ export declare class ThemeManager {
     constructor(props?: ThemeProps, parentManager?: ThemeManager | 'root' | null | undefined);
     updateStateFromProps(props?: ThemeProps & {
         forceTheme?: ThemeParsed;
-    }, shouldNotify?: boolean): true | ThemeManagerState | undefined;
+    }, shouldNotify?: boolean): ThemeManagerState | undefined;
     updateState(nextState: ThemeManagerState, shouldNotify?: boolean): void;
     getStateIfChanged(props?: ThemeProps, state?: ThemeManagerState | null, parentManager?: ThemeManager | null): ThemeManagerState | null | undefined;
     getStateShouldChange(nextState: ThemeManagerState | null, state?: ThemeManagerState | null): boolean;

@@ -98,9 +98,6 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     hoverTheme?: boolean | undefined;
-    /**
-     * The callback that fires when the value of the toggle group changes.
-     */
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
@@ -252,9 +249,6 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     hoverTheme?: boolean | undefined;
-    /**
-     * The callback that fires when the value of the toggle group changes.
-     */
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
@@ -406,9 +400,6 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     hoverTheme?: boolean | undefined;
-    /**
-     * The callback that fires when the value of the toggle group changes.
-     */
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
@@ -560,9 +551,6 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     hoverTheme?: boolean | undefined;
-    /**
-     * The callback that fires when the value of the toggle group changes.
-     */
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;

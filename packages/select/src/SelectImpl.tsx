@@ -18,7 +18,6 @@ import {
   isClient,
   isWeb,
   useEvent,
-  useGet,
   useIsTouchDevice,
   useIsomorphicLayoutEffect,
 } from '@tamagui/core'

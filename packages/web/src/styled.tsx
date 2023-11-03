@@ -1,7 +1,6 @@
 import { createComponent } from './createComponent'
 import { StyledContext } from './helpers/createStyledContext'
 import { mergeVariants } from './helpers/mergeVariants'
-import { withStaticProperties } from './helpers/withStaticProperties'
 import type { GetRef } from './interfaces/GetRef'
 import { getReactNativeConfig } from './setupReactNative'
 import type {
@@ -15,8 +14,6 @@ import type {
   VariantDefinitions,
   VariantSpreadFunction,
 } from './types'
-import { Stack } from './views/Stack'
-import { Text } from './views/Text'
 
 type GetBaseProps<A extends StylableComponent> = A extends TamaguiComponent<
   any,

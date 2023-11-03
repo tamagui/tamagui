@@ -37,7 +37,7 @@ export const HomeGlow = memo(() => {
               h="100vh"
               w={1000}
               theme={cur as ThemeName}
-              o={active ? 0.3 : 0}
+              o={active ? 0.1 : 0}
               fullscreen
               left={`calc(50vw - 500px)`}
               x={isOnHeroBelow ? 0 : isDouble ? (isOpposite ? -500 : 500) : 0}

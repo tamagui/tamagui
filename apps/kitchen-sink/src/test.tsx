@@ -1,3 +1,3 @@
-const View = require('react-native/Libraries/Components/View/ViewNativeComponent').default
+import { View } from 'tamagui'
 
 export default () => <View style={{ backgroundColor: 'red' }} />

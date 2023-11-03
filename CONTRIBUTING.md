@@ -23,7 +23,15 @@ This might take some time depending on your internet speed. Once it's done run t
 yarn install
 ```
 
-That's it! You should be good to go.
+And then build the app:
+
+```bash
+yarn build
+```
+
+You may see some errors due to encryption, as the studio has encrypted contents. This is fine and won't affect contributions to Tamagui.
+
+That's it! You should be good to go. As you are developing you'll also want to have a `yarn watch` running somewhere ongoing to ensure packages JS and types are rebuilt as you iterate. 
 
 ## Issue and Pull Request Guidelines
 

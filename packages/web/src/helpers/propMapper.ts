@@ -13,7 +13,7 @@ import type {
   VariantSpreadFunction,
 } from '../types'
 import { expandStyle } from './expandStyle'
-import { expandStylesAndRemoveNullishValues } from './expandStyles'
+import { expandStylesAndRemoveNullishValues } from './expandStylesAndRemoveNullishValues'
 import { getFontsForLanguage, getVariantExtras } from './getVariantExtras'
 import { isObj } from './isObj'
 import { pseudoDescriptors } from './pseudoDescriptors'
@@ -166,7 +166,10 @@ const resolveVariants: StyleResolver = (
   }
 
   if (variantValue) {
-    const expanded = expandStylesAndRemoveNullishValues(variantValue)
+    const expanded = expandStylesAndRemoveNullishValues(
+      variantValue,
+      !!styleProps.noNormalize
+    )
     const next = Object.entries(expanded)
 
     // store any changed font family (only support variables for now)

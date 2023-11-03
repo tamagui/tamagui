@@ -14,7 +14,7 @@
     "build:force": "yarn clean:build && yarn build --force",
     "build:js": "./scripts/build-js.sh",
     "build:types": "SKIP_JS=1 yarn build",
-    "build": "turbo run build --filter=!next-app",
+    "build": "turbo run build --filter=!next-app -vvv",
     "check-deps": "check-dependency-version-consistency .",
     "check": "manypkg check",
     "clean:build": "turbo run clean:build",

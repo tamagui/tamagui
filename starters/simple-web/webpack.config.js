@@ -34,7 +34,6 @@ module.exports = {
   resolve: {
     mainFields: ['module:jsx', 'browser', 'module', 'main'],
     alias: {
-      'react-native$': 'react-native-web-lite',
       'react-native-svg': '@tamagui/react-native-svg',
     },
   },

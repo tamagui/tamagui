@@ -1,6 +1,5 @@
 import { useResponderEvents } from '@tamagui/react-native-use-responder-events'
 import type {
-  GetProps,
   StackProps,
   StackPropsBase,
   TamaguiComponent,
@@ -12,11 +11,13 @@ import type {
 import {
   Stack as WebStack,
   Text as WebText,
+  View as WebView,
   composeEventHandlers,
   setupHooks,
 } from '@tamagui/web'
-import type { RefObject } from 'react'
+import { RefObject, createElement } from 'react'
 
+import { createOptimizedView } from './createOptimizedView'
 import { getBaseViews } from './getBaseViews'
 import { useElementLayout } from './hooks/useElementLayout'
 import { usePlatformMethods } from './hooks/usePlatformMethods'
@@ -33,6 +34,13 @@ export * from './reactNativeTypes'
 
 type RNExclusiveViewProps = Omit<RNViewProps, keyof StackProps>
 
+export const View = WebView as any as TamaguiComponent<
+  StackProps & RNExclusiveViewProps,
+  TamaguiElement,
+  StackPropsBase & RNExclusiveViewProps,
+  void
+>
+
 export const Stack = WebStack as any as TamaguiComponent<
   StackProps & RNExclusiveViewProps,
   TamaguiElement,
@@ -48,6 +56,8 @@ export const Text = WebText as any as TamaguiComponent<
   TextPropsBase & RNExclusiveTextProps,
   void
 >
+
+const baseViews = getBaseViews()
 
 // setup internal hooks:
 
@@ -176,20 +186,27 @@ setupHooks({
   },
 
   // attempt at properly fixing RN input, but <Pressable><TextInput /> just doesnt work on RN
-  // useChildren(children, viewProps, events, staticConfig) {
-  //   if (process.env.TAMAGUI_TARGET === 'native') {
-  //     if (staticConfig.isInput && !staticConfig.isHOC) {
-  //       const Pressable = getBaseViews().Pressable
-  //       console.log(
-  //         'wrapping in pressable',
-  //         events?.['onPressIn']?.toString(),
-  //         viewProps['onPressIn']
-  //       )
-  //       // we need to wrap it in a view?
-  //       return <Pressable {...events}>{children}</Pressable>
-  //     }
-  //   }
-  // },
+  ...(process.env.TAMAGUI_TARGET === 'native' && {
+    useChildren(elementType, children, viewProps, events, staticConfig) {
+      if (process.env.NODE_ENV === 'test') {
+        // test mode - just use regular views since optimizations cause weirdness
+        return
+      }
+
+      if (elementType === baseViews.View) {
+        // optimize view
+        return createOptimizedView(children, viewProps, baseViews)
+      }
+
+      if (process.env.TAMAGUI_OPTIMIZE_NATIVE_VIEWS) {
+        if (elementType === baseViews.Text) {
+          // further optimize by not even caling elementType.render
+          viewProps.children = children
+          return createElement('RCTText', viewProps)
+        }
+      }
+    },
+  }),
 })
 
 const dontComposePressabilityKeys = {

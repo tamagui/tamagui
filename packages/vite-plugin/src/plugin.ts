@@ -11,6 +11,9 @@ export function tamaguiPlugin({
   platform = 'web',
   ...options
 }: Partial<TamaguiOptions> & {
+  /**
+   * @deprecated Deprecated, just leave it off
+   */
   useReactNativeWebLite?: boolean
   disableWatchTamaguiConfig?: boolean
 }): Plugin {

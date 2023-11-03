@@ -1,7 +1,5 @@
-import { Text } from '@tamagui/core'
-import { Stack } from '@tamagui/web'
 import { useLayoutEffect, useState } from 'react'
-import { View } from 'react-native'
+import { Text, View } from 'react-native'
 
 export function TimedRender(props) {
   const [start] = useState(Date.now())
