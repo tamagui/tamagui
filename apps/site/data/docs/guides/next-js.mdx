@@ -7,55 +7,117 @@ Running `npm create tamagui` let's you choose the `next-expo-solito` starter whi
 
 Take a peek at this website's [source code](https://github.com/tamagui/tamagui/tree/master/apps/site) to see what a fully fledged Next.js website developed with Tamagui looks like.
 
+<Notice>
+  Tamagui is fully supported only in Next.js applications using pages router. You can use it in your App Router applications, however, it is not recommended to do so for production applications.
+</Notice>
+
 {/* Also check out the [source for this site](https://github.com/tamagui/tamagui/tree/master/apps/site) to see a good example of a full featured Next.js website as well, especially the `next.config.js` and `tamagui.config.ts`. */}
 
-### next.config.js
+## Installing Tamagui in Next.js
 
-To configure Tamagui for Next.js, you'll want to add the `@tamagui/next-plugin` and set it up in your next config. See the [compiler install docs](/docs/compiler/compiler-install) for more options:
+This guide assumes that your Next.js application is using the pages router and has typescript setup.
 
-```tsx
-module.exports = function (name, { defaultConfig }) {
-  let config = {
-    ...defaultConfig,
-    // ...your configuration
-  }
+**Step 1:** Install all required dependencies:
 
-  const tamaguiPlugin = withTamagui({
-    config: './tamagui.config.ts',
-    components: ['tamagui'],
-    // build-time generate CSS styles for better performance
-    // we recommend only using this for production so you get reloading during dev mode
-    outputCSS: process.env.NODE_ENV === 'production' ? './public/tamagui.css' : null,
+<CodeBlockWithTabs>
+  <div id="yarn">
+    ```bash margin=false
+    yarn add tamagui @tamagui/config @tamagui/next-plugin
+    ```
+  </div>
+  <div id="npm">
+    ```bash margin=false
+    npm install tamagui @tamagui/config @tamagui/next-plugin
+    ```
+  </div>
+  <div id="bun">
+    ```bash margin=false
+    bun add tamagui @tamagui/config @tamagui/next-plugin
+    ```
+  </div>
+  <div id="pnpm">
+    ```bash margin=false
+    pnpm add tamagui @tamagui/config @tamagui/next-plugin
+    ```
+  </div>
+</CodeBlockWithTabs>
 
-    // optional advanced settings:
+**Step 2:** Create a `tamagui.config.ts` file in the root of your project:
 
-    // set to false if you never call addTheme or updateTheme
-    // when combined with outputCSS this saves you 1Kb more bundle size
-    doesMutateThemes: true, // default true
-  })
+```ts
+import { createTamagui } from "tamagui"
+import { config } from "@tamagui/config/v2-native"
 
-  return {
-    ...config,
-    ...tamaguiPlugin(config),
-  }
+const tamaguiConfig = createTamagui(config)
+// this makes typescript properly type everything based on the config
+type Conf = typeof tamaguiConfig
+declare module "tamagui" {
+  interface TamaguiCustomConfig extends Conf {}
+}
+
+export default tamaguiConfig
+// depending on if you chose tamagui, @tamagui/core, or @tamagui/web
+// be sure the import and declare module lines both use that same name
+```
+
+**Step 3:** Configure your `next.config.js` to work with Tamagui:
+
+```js
+const { withTamagui } = require("@tamagui/next-plugin")
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+}
+
+const tamaguiPlugin = withTamagui({
+  platform: 'web',
+  useReactNativeWebLite: false,
+  config: "./tamagui.config.ts",
+  components: ["tamagui"],
+  // build-time generate CSS styles for better performance
+  // we recommend only using this for production so you get reloading during dev mode
+  outputCSS:
+    process.env.NODE_ENV === "production" ? "./public/tamagui.css" : null,
+
+  // optional advanced settings:
+
+  // set to false if you never call addTheme or updateTheme
+  // when combined with outputCSS this saves you 1Kb more bundle size
+  doesMutateThemes: true,
+})
+
+module.exports = {
+  ...nextConfig,
+  ...tamaguiPlugin(nextConfig)
 }
 ```
 
-### pages/\_app.tsx
+**Step 4:** In your `pages/_app.tsx` add `@tamagui/core/reset.css` to get more consistent styles across browsers, and wrap your app with the `TamaguiProvider` component:
 
-Add the reset to get more consistent styles across browsers:
+```tsx line={2,5,6,10}
+import "@/styles/globals.css"
+import "@tamagui/core/reset.css"
 
-```tsx
-import '@tamagui/core/reset.css'
-```
+import type { AppProps } from "next/app"
+import { TamaguiProvider } from "tamagui"
+import tamaguiConfig from "../../tamagui.config"
 
-And then add this if you are using the `outputCSS` option to include the CSS file generated at build-time:
-
-```tsx
+// include this only if you're using the outputCSS option
 if (process.env.NODE_ENV === 'production') {
   require('../public/tamagui.css')
 }
+
+export default function App({ Component, pageProps }: AppProps) {
+  return (
+    <TamaguiProvider config={tamaguiConfig}>
+      <Component {...pageProps} />
+    </TamaguiProvider>
+  )
+}
 ```
+
+**Done** your project is ready to go!
 
 ### pages/\_document.tsx
 
