@@ -16,7 +16,7 @@ type UsePropsOptions = Pick<
   forComponent?: { staticConfig: StaticConfig }
 }
 
-type FlattenedProps<A> = {
+type PropsWithoutMediaStyles<A> = {
   // remove all media
   [Key in keyof A extends `$${string}` ? never : keyof A]?: A[Key]
 }
@@ -30,7 +30,7 @@ type FlattenedProps<A> = {
 export function useProps<A extends Object>(
   props: A,
   opts?: UsePropsOptions
-): FlattenedProps<A> {
+): PropsWithoutMediaStyles<A> {
   const [propsOut, styleOut] = usePropsAndStyle(props, {
     ...opts,
     noExpand: true,
@@ -52,7 +52,7 @@ export function useProps<A extends Object>(
 export function useStyle<A extends Object>(
   props: A,
   opts?: UsePropsOptions
-): FlattenedProps<A> {
+): PropsWithoutMediaStyles<A> {
   return usePropsAndStyle(props, opts)[1]
 }
 
@@ -65,7 +65,7 @@ export function useStyle<A extends Object>(
 export function usePropsAndStyle<A extends Object>(
   props: A,
   opts?: UsePropsOptions
-): [FlattenedProps<A>, FlattenedProps<A>, ThemeParsed, UseMediaState] {
+): [PropsWithoutMediaStyles<A>, PropsWithoutMediaStyles<A>, ThemeParsed, UseMediaState] {
   const staticConfig = opts?.forComponent?.staticConfig ?? Stack.staticConfig
   const [themeState, theme] = useThemeWithState({
     componentName: staticConfig.componentName,
