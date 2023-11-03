@@ -1,5 +1,11 @@
 // only used by the studio theme builder generated:
 
+export type BuildThemeSuiteProps = {
+  theme: BuildLightDarkTheme | BuildColorSubTheme | BuildMaskSubTheme
+  // fallback theme is used for mask only theme
+  fallbackTheme?: BuildColorSubTheme
+}
+
 export type ScaleTypeName =
   | 'radix'
   | 'radix-b'
@@ -62,10 +68,4 @@ export type BuildMaskSubTheme = {
   name: string
   masks: BuildMask[]
   errors?: string[]
-}
-
-export type BuildThemeSuiteProps = {
-  theme: BuildLightDarkTheme | BuildColorSubTheme | BuildMaskSubTheme
-  // fallback theme is used for mask only theme
-  fallbackTheme?: BuildColorSubTheme
 }
