@@ -332,20 +332,20 @@ export const components = {
   a: ({ href = '', children, ...props }) => {
     return (
       <NextLink
-        className="link"
         href={href}
         target={href.startsWith('http') ? '_blank' : undefined}
       >
         {/* @ts-ignore */}
         <Paragraph
           tag="span"
+          className='link'
           // @ts-ignore
           fontSize="inherit"
           display="inline"
           cursor="pointer"
           {...props}
         >
-          {children}
+          {children} 
           {href.startsWith('http') ? (
             <>
               &nbsp;
