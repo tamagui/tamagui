@@ -120,7 +120,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/tamagui/tamagui.git",
-    "directory": "packages/tamagi"
+    "directory": "packages/tamagui"
   },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
 }
