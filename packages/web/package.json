@@ -67,7 +67,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/tamagui/tamagui.git",
-    "directory": "packages/core"
+    "directory": "packages/web"
   },
   "publishConfig": {
     "access": "public"
