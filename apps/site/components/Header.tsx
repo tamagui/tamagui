@@ -88,12 +88,7 @@ export function Header(props: HeaderProps) {
             <YStack o={isScrolled ? 0.75 : 0} fullscreen bc="$background" />
             <ContainerLarge>
               <ThemeTint>
-                {React.useMemo(
-                  () => (
-                    <HeaderContents floating {...props} />
-                  ),
-                  [props]
-                )}
+                <HeaderContents floating {...props} />
               </ThemeTint>
             </ContainerLarge>
           </XStack>
@@ -208,7 +203,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
         h={40}
         jc="flex-end"
         miw={160}
-        $xs={{ miw: 130 }}
+        $xs={{ miw: 80 }}
         pointerEvents="auto"
         tag="nav"
       >

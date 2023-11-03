@@ -362,11 +362,11 @@ iframe {
 }
 
 .mask-gradient-right {
-  mask-image: linear-gradient(90deg, rgba(0, 0, 0, 1), transparent 30%);
+  mask-image: linear-gradient(70deg, rgba(0, 0, 0, 1), transparent 50%);
 }
 
 .mask-gradient-left {
-  mask-image: linear-gradient(-90deg, rgba(0, 0, 0, 1), transparent 50%);
+  mask-image: linear-gradient(-100deg, rgba(0, 0, 0, 1), transparent 50%);
 }
 
 /* code highlighting */

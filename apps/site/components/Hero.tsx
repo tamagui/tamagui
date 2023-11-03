@@ -148,7 +148,7 @@ const HeroContents = memo(function HeroContents() {
           >
             <Text color="$color10">Write less,</Text>
             {/* add gradient to other colors: */}
-            <ThemeTintAlt>
+            <ThemeTintAlt offset={1}>
               <Text
                 className="mask-gradient-left"
                 pos="absolute"
@@ -160,7 +160,7 @@ const HeroContents = memo(function HeroContents() {
                 Write less,
               </Text>
             </ThemeTintAlt>
-            <ThemeTintAlt offset={-1}>
+            <ThemeTintAlt offset={-3}>
               <Text
                 className="mask-gradient-right"
                 pos="absolute"
@@ -291,13 +291,13 @@ const HeroContents = memo(function HeroContents() {
 
         {name !== 'tamagui' && (
           <SizableText
-            size="$9"
+            size="$10"
             h={200}
             my={-213 / 2}
             rotate="-8deg"
             als="center"
-            y={-90}
-            x={-110}
+            y={-100}
+            x={-115}
             zi={100}
           >
             {seasons[name]}
