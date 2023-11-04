@@ -275,7 +275,7 @@ export async function addRenewalSubscription(
         currency: 'USD',
         nickname: `${price.nickname} | Subscription for ${price.id} (Auto-generated)`,
         recurring: { interval: 'year', interval_count: 1 },
-        unit_amount: price.unit_amount! / 2, // 50%
+        unit_amount: price.unit_amount!, // change this to `unit_amount: price.unit_amount! / 2` for 50% prices (make sure to remove old prices to trigger this)
         metadata: {
           hide_from_lists: 1,
         },
