@@ -974,17 +974,18 @@ export default function TakeoutPage({
 
                     <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
                       Takeout is a template repo that comes with a novel Github bot that
-                      PRs as we improve the base repo made possible by desinging the repo
-                      in a well-isolated architecture. Whenever we make significant
-                      updates, we trigger TakeoutBot to send&nbsp;a&nbsp;PR.
+                      sends PRs as we improve the base repo. This is done with some git
+                      magic, scripting, and an architecture designed for easy merges.
+                      Whenever we make significant updates, we trigger TakeoutBot to
+                      send&nbsp;a&nbsp;PR.
                     </Paragraph>
 
                     <ThemeTintAlt>
                       <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
                         It's like having a dedicated developer updating dependencies,
                         improving DX and ensuring everything works before upgrading major
-                        versions in sensible, organized PRs. Here's the current working
-                        roadmap:
+                        versions in ongoing well-organized PRs - for only a couple hundred
+                        a year. Here's the current working roadmap:
                       </Paragraph>
                     </ThemeTintAlt>
 
