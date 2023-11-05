@@ -735,7 +735,7 @@ export default function TakeoutPage({
                   $xs={{ size: '$5' }}
                   fow="400"
                 >
-                  Add-on open source packs of{' '}
+                  Add open source packs of{' '}
                   <NextLink href="https://fonts.google.com" target="_blank">
                     1,500 Google fonts
                   </NextLink>{' '}
