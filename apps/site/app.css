@@ -49,10 +49,6 @@ a,
   text-decoration: none;
 }
 
-.is_Paragraph a {
-  text-decoration: underline;
-}
-
 a {
   color: inherit;
   font-weight: 300;
@@ -69,36 +65,22 @@ a {
   font-size: inherit;
 }
 
-.link {
+:is(.is_Paragraph a, .link a, article p a, footer a) {
   text-decoration: underline;
-  text-underline-offset: 5px;
-  text-decoration-thickness: 2px;
-  text-decoration-color: var(--pink6);
+  text-underline-offset: 4px;
+  text-decoration-thickness: 4px;
+  text-decoration-color: var(--color6);
 }
 
-.link:hover {
+:is(.is_Paragraph a, .link a, article p a, footer a):hover {
   text-decoration: underline;
   cursor: pointer;
-  text-decoration-color: var(--pink8);
+  text-decoration-thickness: 4px;
+  text-decoration-color: var(--color8);
 }
 
 .is_Paragraph:has(> ul) {
   margin-bottom: 0;
-}
-
-:is(article p a, footer a) {
-  text-decoration-style: solid;
-  text-decoration-thickness: 3px !important;
-  text-decoration: underline;
-  color: var(--pink10);
-  text-decoration-color: var(--pink6);
-  text-underline-offset: 2px;
-}
-
-:is(article p a):hover {
-  text-decoration-style: solid;
-  text-decoration-thickness: 5px !important;
-  text-decoration-color: var(--pink12);
 }
 
 article li strong {

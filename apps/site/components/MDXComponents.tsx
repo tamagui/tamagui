@@ -336,7 +336,7 @@ export const components = {
       <NextLink className="link" href={href}>
         {/* @ts-ignore */}
         <Paragraph
-          tag="span"
+          tag="a"
           // @ts-ignore
           fontSize="inherit"
           display="inline"
