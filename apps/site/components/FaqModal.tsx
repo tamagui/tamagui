@@ -13,7 +13,7 @@ import {
   YStack,
 } from 'tamagui'
 
-import { useTakeoutStore } from './useTakeoutStore'
+import { useTakeoutStore } from '../hooks/useTakeoutStore'
 
 export const FaqModal = () => {
   const store = useTakeoutStore()

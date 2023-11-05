@@ -76,13 +76,13 @@ import {
 import { LinearGradient } from 'tamagui/linear-gradient'
 
 import { ContainerXL } from '../components/Container'
+import { FaqModal } from '../components/FaqModal'
 import { useHoverGlow } from '../components/HoverGlow'
 import { LoadCherryBomb, LoadMunro } from '../components/LoadFont'
 import { NextLink } from '../components/NextLink'
 import { seasons } from '../components/SeasonToggleButton'
 import { TakeoutLicense } from '../components/TakeoutLicense'
-import { FaqModal } from './FaqModal'
-import { useTakeoutStore } from './useTakeoutStore'
+import { useTakeoutStore } from '../hooks/useTakeoutStore'
 
 const checkCircle = <CheckCircle color="$green9" />
 const xCircle = <XCircle size={28} color="$red9" />
