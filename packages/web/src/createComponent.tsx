@@ -612,7 +612,13 @@ export function createComponent<
       elementType,
       debugProp
     )
-
+    if (process.env.TAMAGUI_TARGET === 'native') {
+      if (Component.name === "Image") {
+        if (splitStyles.props['borderStyle']) {
+          delete splitStyles.props['borderStyle'];
+        }
+      }
+    }
     // hide strategy will set this opacity = 0 until measured
     if (props.group && props.untilMeasured === 'hide' && !stateRef.current.hasMeasured) {
       splitStyles.style.opacity = 0
