@@ -49,6 +49,10 @@ a,
   text-decoration: none;
 }
 
+.is_Paragraph a {
+  text-decoration: underline;
+}
+
 a {
   color: inherit;
   font-weight: 300;

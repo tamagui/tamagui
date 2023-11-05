@@ -7,7 +7,14 @@ import { Database } from '@lib/supabase-types'
 import { getArray } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { getSize } from '@tamagui/get-token'
-import { LogoIcon, LogoWords, ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
+import {
+  LogoIcon,
+  LogoWords,
+  TamaguiLogo,
+  ThemeTint,
+  ThemeTintAlt,
+  useTint,
+} from '@tamagui/logo'
 import {
   Check,
   CheckCircle,
@@ -18,7 +25,6 @@ import {
   XCircle,
 } from '@tamagui/lucide-icons'
 import { useClientValue } from '@tamagui/use-did-finish-ssr'
-import { createUseStore } from '@tamagui/use-store'
 import { useUser } from 'hooks/useUser'
 import { GetStaticProps } from 'next'
 import { NextSeo } from 'next-seo'
@@ -41,7 +47,6 @@ import {
   H2,
   H3,
   H4,
-  H5,
   Input,
   Label,
   Paragraph,
@@ -75,6 +80,8 @@ import { useHoverGlow } from '../components/HoverGlow'
 import { LoadCherryBomb, LoadMunro } from '../components/LoadFont'
 import { NextLink } from '../components/NextLink'
 import { TakeoutLicense } from '../components/TakeoutLicense'
+import { FaqModal } from './FaqModal'
+import { useTakeoutStore } from './useTakeoutStore'
 
 const checkCircle = <CheckCircle color="$green9" />
 const xCircle = <XCircle size={28} color="$red9" />
@@ -656,14 +663,11 @@ export default function TakeoutPage({
 
                 <ThemeTintAlt>
                   <H2
-                    className="text-wrap-balance clip-text"
-                    ff="$cherryBomb"
-                    size="$10"
-                    style={{
-                      // @ts-ignore
-                      backgroundImage: `-webkit-linear-gradient(100deg, var(--color9), yellow)`,
-                    }}
+                    className="text-wrap-balance"
+                    ff="$munro"
+                    size="$11"
                     my="$5"
+                    pr="$10"
                     color="$color10"
                     $gtLg={{
                       mr: 100,
@@ -672,10 +676,14 @@ export default function TakeoutPage({
                       size: '$10',
                       mr: '8%',
                     }}
+                    $md={{
+                      pr: '$2',
+                    }}
                     $sm={{
                       size: '$9',
                       lh: '$8',
                       mr: 0,
+                      pr: '$0',
                     }}
                   >
                     From idea to shipped in less time than ever.
@@ -684,15 +692,15 @@ export default function TakeoutPage({
 
                 <Paragraph
                   className="text-wrap-balance"
-                  size="$8"
-                  $sm={{ size: '$8' }}
-                  $xs={{ size: '$7' }}
+                  ff="$munro"
+                  size="$10"
+                  $sm={{ size: '$9' }}
+                  $xs={{ size: '$8' }}
                   fow="400"
                 >
-                  Takeout 🥡 is a bootstrap that delivers on years of work putting
-                  together a great "universal" stack (built on React and React Native),
-                  and of course powered by{' '}
-                  <LogoWords tag="span" display="inline-flex" mx="$3" scale={1.1} />.
+                  Takeout 🥡 is a bootstrap that makes shipping high quality apps as fast
+                  as possible. Share much more code between native and web while enjoying
+                  best-in-class UX and DX.
                 </Paragraph>
 
                 <Paragraph
@@ -702,10 +710,41 @@ export default function TakeoutPage({
                   $xs={{ size: '$5' }}
                   fow="400"
                 >
-                  Designed to be as easy as possible to get started with thanks to helpful
-                  scripts and a CLI, with a whole ton of helpful stuff out of the box.
-                  Deploy to production with Vercel and Expo EAS in minutes. Plus 150 icon
-                  sets and 1,500 fonts from Google.
+                  Deploy production in minutes with automatic staging previews on Vercel,
+                  git push all the way to both app stores with Expo EAS.
+                </Paragraph>
+
+                <Paragraph
+                  className="text-wrap-balance"
+                  size="$7"
+                  $sm={{ size: '$6' }}
+                  $xs={{ size: '$5' }}
+                  fow="400"
+                >
+                  Takeout is a robust stack and starter built on the Supabase stack with
+                  hard-fought tooling wins everywhere from dev to prod. Highlights include
+                  a complete app with refined onboarding, auth, account, profiles, CI/CD,
+                  testing, forms, validation, Storybook, settings, and gorgeous theme
+                  packs.
+                </Paragraph>
+
+                <Paragraph
+                  className="text-wrap-balance"
+                  size="$7"
+                  $sm={{ size: '$6' }}
+                  $xs={{ size: '$5' }}
+                  fow="400"
+                >
+                  Add-on open source packs of{' '}
+                  <NextLink href="https://fonts.google.com" target="_blank">
+                    1,500 Google fonts
+                  </NextLink>{' '}
+                  and{' '}
+                  <NextLink href="https://icones.js.org" target="_blank">
+                    150 icons
+                  </NextLink>{' '}
+                  that come with a CLI that integrates them as typed React components easy
+                  to style and use with your design system.
                 </Paragraph>
 
                 <Spacer size="$6" />
@@ -939,12 +978,6 @@ export default function TakeoutPage({
                       </Paragraph>
                     </ThemeTintAlt>
 
-                    <Paragraph size="$6" $sm={{ size: '$5' }} fow="400">
-                      It's why we've set up pricing like so: you get lifetime rights to
-                      use the assets, with 1-year of updates. Each year renewal is 50% of
-                      the original price.
-                    </Paragraph>
-
                     <Paragraph
                       className="text-shadow text-wrap-balance"
                       size="$6"
@@ -1130,22 +1163,12 @@ const IconFrame = styled(Stack, {
   bc: 'rgba(255, 255, 255, 0.035)',
 })
 
-class TakeoutStore {
-  showPurchase = false
-  showFaq = false
-  showAgreement = false
-  promoInputIsOpen = false
-  appliedCoupon: Stripe.Coupon | null = null
-  appliedPromoCode: string | null = null
-}
-
 function formatPrice(amount: number, currency: string) {
   return new Intl.NumberFormat('en', {
     style: 'currency',
     currency: currency.toUpperCase(),
   }).format(amount)
 }
-const useTakeoutStore = createUseStore(TakeoutStore)
 
 const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPageProps) => {
   const products = [starter, iconsPack, fontsPack]
@@ -2157,198 +2180,6 @@ const HeartsRow = () => (
     <img src="/heart.svg" style={{ width: 16, height: 16 }} />
   </XStack>
 )
-
-const FaqModal = () => {
-  const store = useTakeoutStore()
-  return (
-    <Dialog
-      modal
-      open={store.showFaq}
-      onOpenChange={(val) => {
-        store.showFaq = val
-      }}
-    >
-      <Dialog.Adapt when="sm">
-        <Sheet zIndex={200000} modal dismissOnSnapToBottom>
-          <Sheet.Frame padding="$4" space>
-            <Sheet.ScrollView>
-              <Dialog.Adapt.Contents />
-            </Sheet.ScrollView>
-          </Sheet.Frame>
-          <Sheet.Overlay
-            animation="lazy"
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
-          />
-        </Sheet>
-      </Dialog.Adapt>
-
-      <Dialog.Portal>
-        <Dialog.Overlay
-          key="overlay"
-          animation="medium"
-          className="blur-medium"
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
-        />
-
-        <Dialog.Content
-          bordered
-          elevate
-          key="content"
-          animation={[
-            'quick',
-            {
-              opacity: {
-                overshootClamping: true,
-              },
-            },
-          ]}
-          enterStyle={{ y: -10, opacity: 0, scale: 0.975 }}
-          exitStyle={{ y: 10, opacity: 0, scale: 0.975 }}
-          w="90%"
-          maw={900}
-        >
-          <ScrollView>
-            <YStack $gtSm={{ maxHeight: '90vh' }}>
-              <H1 px="$4" $sm={{ size: '$8' }}>
-                Frequently Asked Questions
-              </H1>
-              <XStack mt="$4" flexWrap="wrap" gap="$6" p="$4">
-                <YStack gap="$4" f={1} fb={0} minWidth={300}>
-                  <H5>Can I still use the starter after my subscription has ended?</H5>
-                  <Paragraph>
-                    Of course! the subscription is only for the bot updates. If you cancel
-                    your subscription you will stop receiving updates but can still use
-                    your starter.
-                  </Paragraph>
-                </YStack>
-
-                <YStack gap="$4" f={1} fb={0} minWidth={300}>
-                  <H5>Can I suggest a feature for the upcoming updates?</H5>
-                  <Paragraph>
-                    Yes. You will have access to an exclusive Discord channel in which you
-                    can chat directly with the creators of the template, suggest features,
-                    ask questions and so forth.
-                  </Paragraph>
-                </YStack>
-
-                <YStack gap="$4" f={1} fb={0} minWidth={300}>
-                  <H5>Is there a refund policy?</H5>
-                  <Paragraph>
-                    No, to prevent abuse we have a no refund policy, but reach out to us
-                    if you are non-profit or a student with a .edu email address if you
-                    would like a discount.
-                  </Paragraph>
-                </YStack>
-
-                <YStack gap="$4" f={1} fb={0} minWidth={300}>
-                  <H5>
-                    Can I use some of the features? What about merge conflicts with the
-                    bot?
-                  </H5>
-                  <Paragraph>
-                    Yes. We've designed the repo to be as well isolated as possible. We
-                    are working on settings for takeout.json that let you configure which
-                    types of updates you'd like to receive.
-                  </Paragraph>
-                </YStack>
-
-                <YStack gap="$4" f={1} fb={0} minWidth={300}>
-                  <H5>How does the GitHub bot work?</H5>
-                  <Paragraph>
-                    Whenever we make changes to the starter, we may trigger the bot to
-                    send update PRs to all the repositories that have the bot installed
-                    and have an active subscription. You may tweak the changes on the PR
-                    and merge, or just disable it if you want to.
-                  </Paragraph>
-                </YStack>
-
-                <YStack gap="$4" f={1} fb={0} minWidth={300}>
-                  <H5>How often does the bot trigger updates?</H5>
-                  <Paragraph>
-                    We do this manually to avoid constant PRs and try to schedule them at
-                    most once a week. We're also working on a UI for users to manually
-                    trigger older updates in case they've missed them.
-                  </Paragraph>
-                </YStack>
-
-                <YStack gap="$4" f={1} fb={0} minWidth={300}>
-                  <H5>What are the next steps after I purchase the starter?</H5>
-                  <Paragraph>
-                    You will see the full instructions after purchase. You can gain access
-                    to the source code repository on GitHub, which allows you to install
-                    the starter through the create-tamagui CLI. Simply run `yarn create
-                    tamagui --template=takeout-starter` and follow the steps.
-                  </Paragraph>
-                </YStack>
-
-                <YStack gap="$4" f={1} fb={0} minWidth={300}>
-                  <H5>
-                    What are the next steps after I purchase the font/icon packages?
-                  </H5>
-                  <Paragraph>
-                    You will see the full instructions after purchase. You can gain access
-                    to the source code of icon or font packages on GitHub, which allows
-                    you to install packages through the `@tamagui/cli` package. Simply
-                    install the cli and run `yarn tamagui add icon` or `yarn tamagui add
-                    font` and follow the steps to install the packages.
-                  </Paragraph>
-                </YStack>
-
-                <YStack gap="$4" f={1} fb={0} minWidth={300}>
-                  <H5>Can I use the Takeout starter for an open-source project?</H5>
-                  <Paragraph>
-                    You aren't allowed to publish the source-code to the public. So no,
-                    you can't use the starter for an open-source project.
-                  </Paragraph>
-                </YStack>
-
-                <YStack gap="$4" f={1} fb={0} minWidth={300}>
-                  <H5>How many projects can I use this for?</H5>
-                  <Paragraph
-                    cursor="pointer"
-                    textDecorationLine="underline"
-                    onPress={() => {
-                      store.showAgreement = true
-                    }}
-                  >
-                    See License
-                  </Paragraph>
-                </YStack>
-
-                {/* 
-                <YStack gap="$4" f={1} fb={0} minWidth={300}>
-                  <H5 >
-                    Can I get auto-updates if I have my repository on a git server that
-                    doesn't support GitHub bots?
-                  </H5>
-                  <Paragraph>
-                    You can't use the bot outside of GitHub but you can write a custom
-                    script / workflow to look for new changes on the repository source and
-                    create PRs.
-                  </Paragraph>
-                </YStack> */}
-              </XStack>
-            </YStack>
-          </ScrollView>
-          <Unspaced>
-            <Dialog.Close asChild>
-              <Button
-                position="absolute"
-                top="$2"
-                right="$2"
-                size="$2"
-                circular
-                icon={X}
-              />
-            </Dialog.Close>
-          </Unspaced>
-        </Dialog.Content>
-      </Dialog.Portal>
-    </Dialog>
-  )
-}
 
 const AgreementModal = () => {
   const store = useTakeoutStore()
