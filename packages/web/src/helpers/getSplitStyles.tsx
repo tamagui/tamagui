@@ -944,6 +944,9 @@ export const getSplitStyles: StyleSplitter = (
               false,
               priority
             )
+            if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+              console.info(`📺 media style:`, out)
+            }
             const fullKey = `${style.property}${PROP_SPLIT}${mediaKeyShort}`
             if (fullKey in usedKeys) continue
             addStyleToInsertRules(rulesToInsert, out as any)

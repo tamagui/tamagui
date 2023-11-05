@@ -163,6 +163,12 @@ const TakeoutCard2Frame = styled(YStack, {
   minHeight: 312,
   maxHeight: 312,
   overflow: 'hidden',
+  scale: 1,
+
+  '$group-takeoutBody-gtSm': {
+    scale: 0.915,
+    m: -12,
+  },
 
   variants: {
     size: {
@@ -329,6 +335,12 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
         <ThemeTint>
           <TAKEOUT className="text-3d" zi={1000} color="$color10" />
         </ThemeTint>
+      </YStack>
+
+      <YStack pos="absolute" zi={-1} o={0.2}>
+        <ThemeTintAlt>
+          <TAKEOUT className="text-3d" zi={1000} color="$color8" />
+        </ThemeTintAlt>
       </YStack>
 
       <YStack
@@ -646,7 +658,7 @@ export default function TakeoutPage({
                 <StarterCard product={starter} />
               </YStack>
 
-              <YStack f={1} space="$5">
+              <YStack group="takeoutBody" f={1} space="$5">
                 <MunroP
                   className="mix-blend pixelate"
                   mt={-400}
@@ -961,33 +973,20 @@ export default function TakeoutPage({
                     </ThemeTintAlt>
 
                     <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
-                      Takeout is a template repo <b>with a GitHub bot</b> that lets us
-                      send PRs easily thanks to a pluggable, well-isolated architecture.
-                      Whenever we make significant updates, we trigger TakeoutBot to
-                      send&nbsp;a&nbsp;PR.
+                      Takeout is a template repo that comes with a novel Github bot that
+                      PRs as we improve the base repo made possible by desinging the repo
+                      in a well-isolated architecture. Whenever we make significant
+                      updates, we trigger TakeoutBot to send&nbsp;a&nbsp;PR.
                     </Paragraph>
 
                     <ThemeTintAlt>
-                      <Paragraph
-                        size="$6"
-                        $sm={{ size: '$5' }}
-                        fow="400"
-                        className="text-shadow text-wrap-balance"
-                      >
+                      <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
                         It's like having a dedicated developer updating dependencies,
-                        improving DX and ensuring everything works while upgrading your
-                        versions in sensible, organized PRs.
+                        improving DX and ensuring everything works before upgrading major
+                        versions in sensible, organized PRs. Here's the current working
+                        roadmap:
                       </Paragraph>
                     </ThemeTintAlt>
-
-                    <Paragraph
-                      className="text-shadow text-wrap-balance"
-                      size="$6"
-                      $sm={{ size: '$5' }}
-                      fow="400"
-                    >
-                      Here's the roadmap:
-                    </Paragraph>
 
                     <ThemeTintAlt>
                       <XStack tag="ul" fw="wrap" gap="$5" my="$4">
@@ -1025,7 +1024,7 @@ export default function TakeoutPage({
                 <Spacer />
 
                 <ThemeTint>
-                  <Paragraph als="center" fontFamily="$cherryBomb" size="$9">
+                  <Paragraph als="center" fontFamily="$munro" size="$9">
                     Take a peek
                   </Paragraph>
                 </ThemeTint>
