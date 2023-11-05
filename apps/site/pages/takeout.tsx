@@ -79,6 +79,7 @@ import { ContainerXL } from '../components/Container'
 import { useHoverGlow } from '../components/HoverGlow'
 import { LoadCherryBomb, LoadMunro } from '../components/LoadFont'
 import { NextLink } from '../components/NextLink'
+import { seasons } from '../components/SeasonToggleButton'
 import { TakeoutLicense } from '../components/TakeoutLicense'
 import { FaqModal } from './FaqModal'
 import { useTakeoutStore } from './useTakeoutStore'
@@ -1715,8 +1716,24 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
     return dispose
   }, [ref, media.md])
 
+  const { name } = useTint()
+
   return (
     <div ref={setRef}>
+      {name !== 'tamagui' && (
+        <SizableText
+          size="$10"
+          h={200}
+          rotate="-8deg"
+          als="center"
+          zi={100}
+          pos="absolute"
+          t={0}
+        >
+          {seasons[name]}
+        </SizableText>
+      )}
+
       <ThemeTint>
         <TakeoutCardFrame
           className="blur-medium"
