@@ -304,6 +304,7 @@ const HeroContents = memo(function HeroContents() {
             y={-100}
             x={-115}
             zi={100}
+            pe="none"
           >
             {seasons[name]}
           </SizableText>

@@ -666,19 +666,20 @@ export default function TakeoutPage({
                   <H2
                     className="text-wrap-balance"
                     ff="$munro"
-                    size="$11"
+                    size="$12"
                     my="$5"
                     pr="$10"
                     color="$color10"
                     $gtLg={{
-                      mr: 100,
+                      mr: 140,
                     }}
                     $lg={{
-                      size: '$10',
+                      size: '$11',
                       mr: '8%',
                     }}
                     $md={{
                       pr: '$2',
+                      size: '$10',
                     }}
                     $sm={{
                       size: '$9',
@@ -1722,13 +1723,14 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
     <div ref={setRef}>
       {name !== 'tamagui' && (
         <SizableText
-          size="$10"
+          size="$11"
           h={200}
           rotate="-8deg"
           als="center"
           zi={100}
           pos="absolute"
-          t={0}
+          t={-10}
+          pe="none"
         >
           {seasons[name]}
         </SizableText>
@@ -1874,14 +1876,14 @@ function PurchaseButton(props: ButtonProps) {
     <ThemeTint>
       <Button
         size="$6"
-        backgroundColor="$color9"
+        backgroundColor="$color8"
         borderWidth={2}
         borderColor="$color10"
         hoverStyle={{
-          backgroundColor: '$color10',
+          backgroundColor: '$color9',
         }}
         pressStyle={{
-          backgroundColor: '$color7',
+          backgroundColor: '$color8',
         }}
         {...props}
       >
