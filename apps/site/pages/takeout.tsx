@@ -7,14 +7,7 @@ import { Database } from '@lib/supabase-types'
 import { getArray } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { getSize } from '@tamagui/get-token'
-import {
-  LogoIcon,
-  LogoWords,
-  TamaguiLogo,
-  ThemeTint,
-  ThemeTintAlt,
-  useTint,
-} from '@tamagui/logo'
+import { LogoIcon, ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
 import {
   Check,
   CheckCircle,
@@ -2725,6 +2718,10 @@ const getTakeoutProducts = async (): Promise<TakeoutPageProps> => {
 
   if (couponsList.data.length > 0) {
     coupon = couponsList.data[0].coupon
+  }
+
+  if (!products.length) {
+    throw new Error(`No products found`)
   }
 
   for (const product of products) {
