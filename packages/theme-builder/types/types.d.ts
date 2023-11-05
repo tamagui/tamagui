@@ -1,3 +1,7 @@
+export type BuildThemeSuiteProps = {
+    theme: BuildLightDarkTheme | BuildColorSubTheme | BuildMaskSubTheme;
+    fallbackTheme?: BuildColorSubTheme;
+};
 export type ScaleTypeName = 'radix' | 'radix-b' | 'radius-bold' | 'radius-bright' | 'linear' | 'pastel' | 'pastel-desaturating' | 'neon' | 'neon-bright' | 'neon-c';
 export type BuildThemeBasicProperties = {
     id: string;
@@ -40,9 +44,5 @@ export type BuildMaskSubTheme = {
     name: string;
     masks: BuildMask[];
     errors?: string[];
-};
-export type BuildThemeSuiteProps = {
-    theme: BuildLightDarkTheme | BuildColorSubTheme | BuildMaskSubTheme;
-    fallbackTheme?: BuildColorSubTheme;
 };
 //# sourceMappingURL=types.d.ts.map
