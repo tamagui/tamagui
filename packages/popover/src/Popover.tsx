@@ -472,11 +472,18 @@ export const PopoverClose = React.forwardRef<
 
 export type PopoverArrowProps = PopperArrowProps
 
-export const PopoverArrow = React.forwardRef<
-  TamaguiElement,
-  ScopedPopoverProps<PopoverArrowProps>
->(function PopoverArrow(props: ScopedPopoverProps<PopoverArrowProps>, forwardedRef) {
+export const PopoverArrow = PopperArrow.styleable(function PopoverArrow(
+  props: ScopedPopoverProps<PopoverArrowProps>,
+  forwardedRef
+) {
   const { __scopePopover, ...rest } = props
+  const context = usePopoverContext(__scopePopover)
+  const sheetActive = useSheetBreakpointActive(context.sheetBreakpoint)
+
+  if (sheetActive) {
+    return null
+  }
+
   return (
     <PopperArrow
       __scopePopper={__scopePopover || POPOVER_SCOPE}
