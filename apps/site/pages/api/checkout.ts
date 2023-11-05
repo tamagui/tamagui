@@ -33,7 +33,13 @@ export default apiRoute(async (req, res) => {
     ? req.query.product_id
     : [req.query.product_id]
   const products = await stripe.products.list({ ids: productIds })
-
+  for (const product of products.data) {
+    if (!product.default_price) {
+      throw new Error(
+        `Product with id of ${product.id} does not have a default price and no price id is provided.`
+      )
+    }
+  }
   let couponId: string | undefined
 
   if (req.query.coupon_id && typeof req.query.coupon_id === 'string') {
@@ -55,6 +61,11 @@ export default apiRoute(async (req, res) => {
     }
   }
 
+  // priceId =
+  //   typeof product.default_price === 'string'
+  //     ? product.default_price
+  //     : product.default_price.id
+
   const stripeCustomerId = await createOrRetrieveCustomer({
     email: user.email!,
     uuid: user.id,
@@ -63,24 +74,19 @@ export default apiRoute(async (req, res) => {
   if (!stripeCustomerId) {
     throw new Error(`Something went wrong with createOrRetrieveCustomer.`)
   }
-
   // if stripe customer doesn't exist, create one and insert it into supabase
 
   const stripeSession = await stripe.checkout.sessions.create({
     line_items: products.data.map((product) => {
       // can use ! cause we've checked before
       const queryPriceId = req.query[`price-${product.id}`]
-      const priceId =
-        typeof queryPriceId === 'string'
-          ? queryPriceId
-          : typeof product.default_price === 'string'
+      let priceId =
+        typeof product.default_price! === 'string'
           ? product.default_price
-          : product.default_price?.id
+          : product.default_price!.id
 
-      if (!priceId) {
-        throw new Error(
-          `No priceId for product ${product.id}, queryPriceId: ${queryPriceId}, maybe no product.default_price set`
-        )
+      if (typeof queryPriceId === 'string') {
+        priceId = queryPriceId
       }
 
       return {
