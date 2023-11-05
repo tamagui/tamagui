@@ -101,23 +101,25 @@ const HeroContents = memo(function HeroContents() {
           pb: '$4',
         }}
       >
-        <XStack pos="absolute" als="center" y={-80}>
-          <Link prefetch={false} href="/takeout">
-            <Button
-              bw={2}
-              boc="$color5"
-              size="$3"
-              br="$10"
-              elevation="$1"
-              fontFamily="$silkscreen"
-            >
-              Introducing Takeout 🥡
-              <Text ff="$body" fontSize="$3" color="$color10" $sm={{ dsp: 'none' }}>
-                pro starter kit
-              </Text>
-            </Button>
-          </Link>
-        </XStack>
+        <ThemeTintAlt>
+          <XStack pos="absolute" als="center" y={-80}>
+            <Link prefetch={false} href="/takeout">
+              <Button
+                bw={2}
+                boc="$color5"
+                size="$3"
+                br="$10"
+                elevation="$1"
+                fontFamily="$silkscreen"
+              >
+                Introducing Takeout 🥡
+                <Text ff="$body" fontSize="$3" color="$color10" $sm={{ dsp: 'none' }}>
+                  pro starter kit
+                </Text>
+              </Button>
+            </Link>
+          </XStack>
+        </ThemeTintAlt>
 
         <YStack ai="flex-start" $gtSm={{ ai: 'center' }} gap="$4">
           <H1
@@ -251,27 +253,30 @@ const HeroContents = memo(function HeroContents() {
             </TooltipSimple>
           </NextLink>
 
-          <NextLink prefetch={false} href="/docs/intro/introduction">
-            <Button
-              h={52}
-              accessibilityLabel="Get started (docs)"
-              fontFamily="$silkscreen"
-              size="$5"
-              fontSize="$6"
-              borderRadius={1000}
-              bordered
-              bw={2}
-              mx="$2"
-              tabIndex="0"
-              elevation="$1"
-              letterSpacing={-2}
-              pressStyle={{
-                elevation: '$0',
-              }}
-            >
-              Get started
-            </Button>
-          </NextLink>
+          <ThemeTintAlt>
+            <NextLink prefetch={false} href="/docs/intro/introduction">
+              <Button
+                theme="active"
+                h={52}
+                accessibilityLabel="Get started (docs)"
+                fontFamily="$silkscreen"
+                size="$5"
+                fontSize="$6"
+                borderRadius={1000}
+                bordered
+                bw={2}
+                mx="$2"
+                tabIndex="0"
+                elevation="$1"
+                letterSpacing={-2}
+                pressStyle={{
+                  elevation: '$0',
+                }}
+              >
+                Get started
+              </Button>
+            </NextLink>
+          </ThemeTintAlt>
 
           <NextLink
             target="_blank"
