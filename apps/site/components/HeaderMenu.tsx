@@ -38,9 +38,9 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
           dismissOnSnapToBottom
           animationConfig={{
             type: 'spring',
-            damping: 20,
+            damping: 25,
             mass: 1.2,
-            stiffness: 250,
+            stiffness: 200,
           }}
         >
           <Popover.Sheet.Frame>

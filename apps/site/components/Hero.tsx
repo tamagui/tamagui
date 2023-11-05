@@ -113,7 +113,7 @@ const HeroContents = memo(function HeroContents() {
             >
               Introducing Takeout 🥡
               <Text ff="$body" fontSize="$3" color="$color10" $sm={{ dsp: 'none' }}>
-                starter kit
+                pro starter kit
               </Text>
             </Button>
           </Link>
