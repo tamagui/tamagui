@@ -1092,7 +1092,7 @@ export const getSplitStyles: StyleSplitter = (
   if (!avoidNormalize) {
     fixStyles(style)
 
-    // shouldnt this be better? but breaks some tests wierdly, need to check
+    // shouldn't this be better? but breaks some tests weirdly, need to check
     // if (isWeb && !staticConfig.isReactNative) {
     if (isWeb && !staticConfig.isReactNative) {
       styleToCSS(style)
