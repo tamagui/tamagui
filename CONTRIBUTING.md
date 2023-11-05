@@ -109,9 +109,9 @@ yarn sandbox
 
 This runs a client-side only vite build of Tamagui, with a complete configuration already set up.
 
-To test on native, `kitchen-sink` is equally well set up.
+native test are run in `apps/kitchen-sink`
 
-You'll need to create a [development build](https://docs.expo.dev/develop/development-builds/create-a-build/) to run this.
+Create a development build run `yarn ios` from `apps/kitchen-sink`
 
 ```bash
 # Android
