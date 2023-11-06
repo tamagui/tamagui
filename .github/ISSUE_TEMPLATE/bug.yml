@@ -2,46 +2,46 @@ name: Reproducible Bug Report
 description: If you don't add a reproduction, your issue *will be closed on sight without so much as an apology*.
 labels: [Bug]
 body:
-- type: textarea
-  attributes:
-    label: Current Behavior
-    description: Describe what's happening in 1-2 sentences.
-  validations:
-    required: false
-- type: textarea
-  attributes:
-    label: Expected Behavior
-    description: A concise description of what you expected to happen.
-  validations:
-    required: false
-- type: textarea
-  attributes:
-    label: Tamagui Version
-    render: markdown
-  validations:
-    required: true
-- type: textarea
-  attributes:
-    label: Platform (Web, iOS, Android)
-    render: markdown
-  validations:
-    required: true
-- type: textarea
-  attributes:
-    label: Reproduction
-    render: markdown
-    description: |
-      - If you don't include an actual reproduction, you are a bad person and breaking the rules.
-      - You can always create a new Tamagui starter using `npm create tamagui` and then push that somewhere.
-      - Be sure to have the reproduction be in its own separate commit.
-      - For simpler bugs you can fork [this CodeSandbox](https://codesandbox.io/p/sandbox/github/tamagui/tamagui/tree/master/starters/next-expo-solito) to reproduce the issue.
-      - For simple web bugs, try [this one](https://github.com/tamagui/issue-template-webpack) and run `yarn upgrade` to update tamagui to latest.
-      - For native-only bugs, fork this repo and use `apps/kitchen-sink` to reproduce the bug. Once reproduced, submit a PR with the title `[Issue] ...`
-  validations:
-    required: true
-- type: textarea
-  attributes:
-    label: System Info
-    render: markdown
-    description: |
-      - Output of `npx envinfo --system --npmPackages --binaries --browsers`
+  - type: textarea
+    attributes:
+      label: Current Behavior
+      description: Describe what's happening in 1-2 sentences.
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: Expected Behavior
+      description: A concise description of what you expected to happen.
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: Tamagui Version
+      render: markdown
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Platform (Web, iOS, Android)
+      render: markdown
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Reproduction
+      render: markdown
+      description: |
+        - If you don't include an actual reproduction, you are a bad person and breaking the rules.
+        - You can always create a new Tamagui starter using `npm create tamagui` and then push that somewhere.
+        - Be sure to have the reproduction be in its own separate commit.
+        - For simpler bugs you can fork [this CodeSandbox](https://codesandbox.io/p/sandbox/github/tamagui/tamagui/tree/master/starters/next-expo-solito) to reproduce the issue.
+        - For simple web bugs, try [this one](https://github.com/tamagui/issue-template-webpack) and run `yarn upgrade` to update tamagui to latest.
+        - For native-only bugs, fork this repo and use `apps/kitchen-sink` to reproduce the bug. Once reproduced, submit a PR with the title `[Issue] ...`
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: System Info
+      render: markdown
+      description: |
+        - Output of `npx envinfo --system --npmPackages --binaries --browsers`
