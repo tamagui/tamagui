@@ -31,6 +31,7 @@ import {
   mergeIfNotShallowEqual,
 } from './helpers/createShallowSetState'
 import { useSplitStyles } from './helpers/getSplitStyles'
+import { log } from './helpers/log'
 import { mergeProps } from './helpers/mergeProps'
 import { proxyThemeVariables } from './helpers/proxyThemeVariables'
 import { themeable } from './helpers/themeable'
@@ -160,7 +161,7 @@ export function createComponent<
         initialTheme = proxyThemeVariables(next)
         if (process.env.NODE_ENV === 'development') {
           if (!initialTheme) {
-            console.info('Warning: Missing theme')
+            log('Warning: Missing theme')
           }
         }
       }
@@ -181,7 +182,7 @@ export function createComponent<
 
   if (process.env.NODE_ENV === 'development' && staticConfig.defaultProps?.['debug']) {
     if (process.env.IS_STATIC !== 'is_static') {
-      console.info(`🐛 [${staticConfig.componentName || 'Component'}]`, {
+      log(`🐛 [${staticConfig.componentName || 'Component'}]`, {
         staticConfig,
         defaultProps,
         defaultPropsKeyOrder: defaultProps ? Object.keys(defaultProps) : [],
@@ -545,7 +546,7 @@ export function createComponent<
             }${state.focus ? 'FOCUSED' : ' '}`
           )
 
-          console.info({
+          log({
             propsIn,
             props,
             state,
@@ -649,19 +650,12 @@ export function createComponent<
       if (debugProp && debugProp !== 'profile') {
         console.groupCollapsed('>>>')
 
-        console.info(
-          'props in',
-          propsIn,
-          'mapped to',
-          props,
-          'in order',
-          Object.keys(props)
-        )
-        console.info('splitStyles', splitStyles)
-        console.info('media', { shouldListenForMedia, isMediaArray, mediaListeningKeys })
-        console.info('className', Object.values(splitStyles.classNames))
+        log('props in', propsIn, 'mapped to', props, 'in order', Object.keys(props))
+        log('splitStyles', splitStyles)
+        log('media', { shouldListenForMedia, isMediaArray, mediaListeningKeys })
+        log('className', Object.values(splitStyles.classNames))
         if (isClient) {
-          console.info('ref', hostRef, '(click to view)')
+          log('ref', hostRef, '(click to view)')
         }
         console.groupEnd()
         if (debugProp === 'break') {
@@ -1091,7 +1085,7 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development' && time) time`events`
 
     if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
-      console.info(`events`, { events, isHoverable, attachPress })
+      log(`events`, { events, isHoverable, attachPress })
     }
 
     // EVENTS native
@@ -1244,14 +1238,14 @@ export function createComponent<
         const element = typeof elementType === 'string' ? elementType : 'Component'
         console.groupCollapsed(`render <${element} /> with props`)
         try {
-          console.info('viewProps', viewProps)
-          console.info('viewPropsOrder', Object.keys(viewProps))
+          log('viewProps', viewProps)
+          log('viewPropsOrder', Object.keys(viewProps))
           for (const key in viewProps) {
-            console.info(' - ', key, viewProps[key])
+            log(' - ', key, viewProps[key])
           }
-          console.info('children', content)
+          log('children', content)
           if (typeof window !== 'undefined') {
-            console.info({
+            log({
               viewProps,
               state,
               styleProps,
@@ -1540,7 +1534,7 @@ export function spacedChildren(props: SpacedChildrenProps) {
 
   if (process.env.NODE_ENV === 'development') {
     if (props.debug) {
-      console.info(`  Spaced children`, final, props)
+      log(`  Spaced children`, final, props)
     }
   }
 

@@ -69,6 +69,7 @@ import {
   shouldInsertStyleRules,
   updateRules,
 } from './insertStyleRule'
+import { log } from './log'
 import {
   normalizeValueWithProperty,
   reverseMapClassNameToValue,
@@ -209,8 +210,7 @@ export const getSplitStyles: StyleSplitter = (
     isClient
   ) {
     console.groupCollapsed('getSplitStyles (collapsed)')
-
-    console.info({
+    log({
       props,
       staticConfig,
       shouldDoClasses,
@@ -296,7 +296,7 @@ export const getSplitStyles: StyleSplitter = (
       if (valInitType === 'string' && valInit[0] === '_') {
         if (keyInit in validStyleProps || keyInit.includes('-')) {
           if (process.env.NODE_ENV === 'development' && debug) {
-            console.info(`Adding compiled style ${keyInit}: ${valInit}`)
+            log(`Adding compiled style ${keyInit}: ${valInit}`)
           }
 
           if (shouldDoClasses) {
@@ -498,7 +498,7 @@ export const getSplitStyles: StyleSplitter = (
 
           if (isValidClassName || isMediaOrPseudo) {
             if (process.env.NODE_ENV === 'development' && debug) {
-              console.info('tamagui classname prop', keyInit, valInit)
+              log('tamagui classname prop', keyInit, valInit)
             }
 
             if (shouldDoClasses) {
@@ -569,9 +569,9 @@ export const getSplitStyles: StyleSplitter = (
           shouldPassThrough ? '(pass)' : ''
         } 🔹🔹🔹🔹`
       )
-      console.info({ isVariant, valInit, shouldPassProp })
+      log({ isVariant, valInit, shouldPassProp })
       if (isClient) {
-        console.info({
+        log({
           variants,
           variant: variants?.[keyInit],
           isVariant,
@@ -655,7 +655,7 @@ export const getSplitStyles: StyleSplitter = (
       console.groupCollapsed('  💠 expanded', keyInit, valInit)
       try {
         if (!isServer && isDevTools) {
-          console.info({
+          log({
             expanded,
             styleProps,
             componentState,
@@ -667,7 +667,7 @@ export const getSplitStyles: StyleSplitter = (
             usedKeys: { ...usedKeys },
             curProps: { ...styleState.curProps },
           })
-          console.info('expanded', expanded, '\nusedKeys', { ...usedKeys }, '\ncurrent', {
+          log('expanded', expanded, '\nusedKeys', { ...usedKeys }, '\ncurrent', {
             ...style,
           })
         }
@@ -702,7 +702,7 @@ export const getSplitStyles: StyleSplitter = (
         passDownProp(viewProps, key, val, isMediaOrPseudo)
         if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
           console.groupCollapsed(` - passing down prop ${key}`)
-          console.info({ val, after: { ...viewProps[key] } })
+          log({ val, after: { ...viewProps[key] } })
           console.groupEnd()
         }
         continue
@@ -761,7 +761,7 @@ export const getSplitStyles: StyleSplitter = (
             // prettier-ignore
             console.groupCollapsed("pseudo (classes)", key);
 
-            console.info({ pseudoStyleObject, pseudoStyles })
+            log({ pseudoStyleObject, pseudoStyles })
             console.groupEnd()
           }
 
@@ -800,7 +800,7 @@ export const getSplitStyles: StyleSplitter = (
             // prettier-ignore
             console.groupCollapsed("pseudo", key, { isDisabled });
 
-            console.info(pseudoStyleObject, {
+            log(pseudoStyleObject, {
               isDisabled,
               descriptorKey,
               descriptor,
@@ -833,7 +833,7 @@ export const getSplitStyles: StyleSplitter = (
               }
 
               if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-                console.info('    subKey', pkey, shouldMerge, {
+                log('    subKey', pkey, shouldMerge, {
                   importance,
                   curImportance,
                   pkey,
@@ -888,7 +888,7 @@ export const getSplitStyles: StyleSplitter = (
         const mediaKeyShort = key.slice(1)
 
         if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-          console.info(`  📺 ${key}`, {
+          log(`  📺 ${key}`, {
             key,
             val,
             mediaStyle,
@@ -923,7 +923,7 @@ export const getSplitStyles: StyleSplitter = (
                 space = val['space']
                 usedKeys['space'] = importance
                 if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-                  console.info(
+                  log(
                     `Found more important space for current media ${mediaKeyShort}: ${val} (importance: ${importance})`
                   )
                 }
@@ -945,7 +945,7 @@ export const getSplitStyles: StyleSplitter = (
               priority
             )
             if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-              console.info(`📺 media style:`, out)
+              log(`📺 media style:`, out)
             }
             const fullKey = `${style.property}${PROP_SPLIT}${mediaKeyShort}`
             if (fullKey in usedKeys) continue
@@ -1066,9 +1066,9 @@ export const getSplitStyles: StyleSplitter = (
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
       console.groupCollapsed(` ✔️ expand complete`, keyInit)
       try {
-        console.info('style', { ...style })
-        console.info('transforms', { ...transforms })
-        console.info('viewProps', { ...viewProps })
+        log('style', { ...style })
+        log('transforms', { ...transforms })
+        log('viewProps', { ...viewProps })
       } catch {
         // RN can run into PayloadTooLargeError: request entity too large
       }
@@ -1298,7 +1298,7 @@ export const getSplitStyles: StyleSplitter = (
         }
       }
       if (process.env.NODE_ENV === 'development' && debug && debug !== 'profile') {
-        console.info(`Found fontFamily native: ${style.fontFamily}`, faceInfo)
+        log(`Found fontFamily native: ${style.fontFamily}`, faceInfo)
       }
     }
   }
@@ -1323,7 +1323,7 @@ export const getSplitStyles: StyleSplitter = (
           parentSplitStyles,
         };
         for (const key in logs) {
-          console.info(key, logs[key])
+          log(key, logs[key])
         }
       } catch {
         // RN can run into PayloadTooLargeError: request entity too large
