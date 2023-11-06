@@ -1,5 +1,11 @@
 name: Reproducible Bug Report
-description: If you don't add a reproduction, your issue *will be closed on sight without so much as an apology*.
+description: |
+  Please provide reproduction steps, your issue *will be closed without review* if reproduction steps are omitted. Before submitting an issue, please first
+   - search through github to confirm that it is not a duplicate.
+   - search discord to see if someone else has already answered your question.
+   - search the [docs](https://tamagui.dev/docs/intro/introduction) to see if the issue has been documented.
+   - google error messages to see if the issue has been reported elsewhere.
+   - take a moment to think about any additional context might be helpful to provide for the human on the other end of the screen who is trying to help you. We appreciate you taking the time to help make Tamagui better!
 labels: [Bug]
 body:
   - type: textarea
@@ -31,7 +37,7 @@ body:
       label: Reproduction
       render: markdown
       description: |
-        - If you don't include an actual reproduction, you are a bad person and breaking the rules.
+        - If you don't include reproduction, the issue will be automatically closed.
         - You can always create a new Tamagui starter using `npm create tamagui` and then push that somewhere.
         - Be sure to have the reproduction be in its own separate commit.
         - For simpler bugs you can fork [this CodeSandbox](https://codesandbox.io/p/sandbox/github/tamagui/tamagui/tree/master/starters/next-expo-solito) to reproduce the issue.
