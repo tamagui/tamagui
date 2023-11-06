@@ -99,6 +99,5 @@ function Example() {
 
 ## Contributing
 
-We're welcoming and glad to have contributions to Tamagui. If you would like to contribute to Tamagui please check out our [contributing guide](https://github.com/tamagui/tamagui/blob/master/CONTRIBUTING.md) for how to do so. If you would like to contribute to the Tamagui documentation, then please read our [writing guide](https://github.com/tamagui/tamagui/apps/site/WRITING-GUIDE.md)
-
-If these kinds of contributions don't suit your style, you can always contribute by writing articles, making videos or joining our [discord](https://discord.gg/vhEKmdCZw6) and helping other people solve problems.
+To contribute to Tamagui reference the [contributing guide](https://github.com/tamagui/tamagui/blob/master/CONTRIBUTING.md).
+To contribute to documentation reference the [writing guide](https://github.com/tamagui/tamagui/apps/site/WRITING-GUIDE.md).
