@@ -49,7 +49,7 @@ export function Hero() {
 const HeroSubTitle = memo(() => {
   const [hovered, setHovered] = useHeroHovered()
   return (
-    <Subtitle>
+    <Subtitle textAlign="center">
       <NextLink prefetch={false} href="/docs/core/configuration">
         <Tag theme="green_alt2" onHoverIn={() => setHovered(0)} active={hovered === 0}>
           styles
@@ -121,7 +121,7 @@ const HeroContents = memo(function HeroContents() {
 
         <YStack ai="flex-start" $gtSm={{ ai: 'center' }} gap="$4">
           <H1
-            ta="left"
+            m="auto"
             size="$10"
             maw={500}
             pos="relative"
