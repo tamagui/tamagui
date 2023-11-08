@@ -1,26 +1,29 @@
 {
   "name": "@tamagui/stack",
-  "version": "1.71.0",
+  "version": "1.76.0",
   "private": true,
   "main": "index.jsx",
   "scripts": {
-    "dev": "tama dev"
+    "dev": "vertql dev"
   },
   "dependencies": {
     "@react-navigation/native": "^6.1.7",
-    "@tamagui/colors": "1.71.0",
-    "@tamagui/config": "1.71.0",
-    "@tamagui/core": "1.71.0",
-    "@tamagui/shorthands": "1.71.0",
-    "@tamagui/themes": "1.71.0",
-    "@tamagui/vite-native-client": "1.71.0",
-    "grats": "^0.0.2",
+    "@tamagui/colors": "1.76.0",
+    "@tamagui/config": "1.76.0",
+    "@tamagui/core": "1.76.0",
+    "@tamagui/shorthands": "1.76.0",
+    "@tamagui/themes": "1.76.0",
+    "express": "^4.18.2",
+    "express-graphql": "^0.12.0",
+    "gqty": "^3.0.0-alpha-7b21563c.0",
+    "grats": "0.0.0-main-998b014c",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-native": "^0.72.1",
-    "tamagui": "1.71.0"
+    "tamagui": "1.76.0",
+    "vertql": "1.76.0"
   },
   "devDependencies": {
-    "@tamagui/cli": "1.71.0"
+    "@tamagui/cli": "1.76.0"
   }
 }

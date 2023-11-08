@@ -5,16 +5,11 @@ import {
   StackProps,
   ThemeValueFallback,
   isWeb,
-  setupReactNative,
   styled,
-  useProps,
+  usePropsAndStyle,
 } from '@tamagui/core'
 import React, { forwardRef } from 'react'
 import { Image as RNImage } from 'react-native'
-
-setupReactNative({
-  Image: RNImage,
-})
 
 const StyledImage = styled(RNImage, {
   name: 'Image',
@@ -53,7 +48,7 @@ let hasWarned = false
 
 export const Image = StyledImage.extractable(
   forwardRef((inProps: ImageProps, ref) => {
-    const props = useProps(inProps)
+    const [props, style] = usePropsAndStyle(inProps)
     const { src, source, ...rest } = props
 
     if (process.env.NODE_ENV === 'development') {
@@ -72,13 +67,35 @@ export const Image = StyledImage.extractable(
       }
     }
 
-    const finalSource =
+    let finalSource =
       typeof src === 'string'
         ? { uri: src, ...(isWeb && { width: props.width, height: props.height }) }
         : source ?? src
 
+    if (finalSource && typeof finalSource === 'object') {
+      if (process.env.TAMAGUI_TARGET === 'native') {
+        // fix: normalize import style images
+        if (!Array.isArray(finalSource)) {
+          if (typeof finalSource.uri === 'number') {
+            finalSource = finalSource.uri
+            if (source && typeof source === 'object' && !Array.isArray(source)) {
+              // @ts-ignore
+              style.width ??= source.width
+              // @ts-ignore
+              style.height ??= source.height
+            }
+          }
+        }
+      }
+
+      // require compat across native/web
+      if (finalSource['default']) {
+        finalSource = finalSource['default']
+      }
+    }
+
     // must set defaultSource to allow SSR, default it to the same as src
-    return <StyledImage ref={ref} source={finalSource} {...(rest as any)} />
+    return <StyledImage ref={ref} source={finalSource} style={style} {...(rest as any)} />
   })
 ) as any as ImageType
 

@@ -74,7 +74,8 @@ export function Header(props: HeaderProps) {
             br="$10"
             $sm={{
               br: 0,
-              y: 0,
+              bw: 0,
+              y: -1,
               py: '$2',
             }}
             {...(isScrolled && {
@@ -88,12 +89,7 @@ export function Header(props: HeaderProps) {
             <YStack o={isScrolled ? 0.75 : 0} fullscreen bc="$background" />
             <ContainerLarge>
               <ThemeTint>
-                {React.useMemo(
-                  () => (
-                    <HeaderContents floating {...props} />
-                  ),
-                  [props]
-                )}
+                <HeaderContents floating {...props} />
               </ThemeTint>
             </ContainerLarge>
           </XStack>
@@ -145,7 +141,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
           </YStack>
         ) : (
           <NextLink href="/">
-            <YStack px="$3" cur="pointer" my={-20}>
+            <YStack tag="a" px="$3" cur="pointer" my={-20}>
               <TamaguiLogo downscale={props.floating ? 2 : 1.5} />
             </YStack>
           </NextLink>
@@ -162,7 +158,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
               <ColorToggleButton borderWidth={0} chromeless />
             </XGroup.Item>
             <XGroup.Item>
-              <SeasonToggleButton $xs={{ display: 'none' }} borderWidth={0} chromeless />
+              <SeasonToggleButton borderWidth={0} chromeless />
             </XGroup.Item>
           </XGroup>
         </TooltipGroup>
@@ -208,7 +204,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
         h={40}
         jc="flex-end"
         miw={160}
-        $xs={{ miw: 130 }}
+        $xs={{ miw: 80 }}
         pointerEvents="auto"
         tag="nav"
       >
@@ -236,7 +232,11 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
               </NextLink>
             </XStack>
           ) : (
-            <NextLink target="_blank" href="https://github.com/tamagui/tamagui">
+            <NextLink
+              legacyBehavior={false}
+              target="_blank"
+              href="https://github.com/tamagui/tamagui"
+            >
               <TooltipSimple delay={0} restMs={25} label="Star on Github">
                 <YStack p="$2" opacity={0.7} hoverStyle={{ opacity: 1 }}>
                   <VisuallyHidden>

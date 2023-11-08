@@ -4,6 +4,7 @@ import { ComponentContextI, GroupStateListener } from '../types'
 const listeners = new Set<GroupStateListener>()
 
 export const ComponentContext = createStyledContext<ComponentContextI>({
+  disableSSR: undefined,
   inText: false,
   language: null,
   animationDriver: null,

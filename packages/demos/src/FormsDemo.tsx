@@ -17,7 +17,7 @@ export function FormsDemo(props: { size: SizeTokens }) {
     <Form
       alignItems="center"
       minWidth={300}
-      gap
+      gap="$2"
       onSubmit={() => setStatus('submitting')}
       borderWidth={1}
       borderRadius="$4"

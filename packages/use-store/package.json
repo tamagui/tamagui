@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-store",
-  "version": "1.71.0",
+  "version": "1.76.0",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -12,7 +12,7 @@
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
-    "test": "vitest --config ../vite-plugin-internal/src/vite.config.ts --run",
+    "test": "DISABLE_REACT_NATIVE=1 vitest --config ../vite-plugin-internal/src/vite.config.ts --run",
     "lint": "../../node_modules/.bin/biome check src",
     "lint:fix": "../../node_modules/.bin/biome check --apply-unsafe src",
     "clean": "tamagui-build clean",
@@ -27,10 +27,10 @@
     }
   },
   "dependencies": {
-    "@tamagui/simple-hash": "1.71.0"
+    "@tamagui/simple-hash": "1.76.0"
   },
   "devDependencies": {
-    "@tamagui/build": "1.71.0",
+    "@tamagui/build": "1.76.0",
     "@testing-library/react": "^14.0.0",
     "react": "^18.2.0",
     "vitest": "^0.34.3"

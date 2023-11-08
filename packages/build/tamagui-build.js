@@ -45,11 +45,23 @@ const pkgTypes = Boolean(pkg['types'] || pkg['typings'])
 
 const flatOut = [pkgMain, pkgModule, pkgModuleJSX].filter(Boolean).length === 1
 
+const replaceRNWeb = {
+  esm: {
+    from: 'from "react-native"',
+    to: 'from "react-native-web"'
+  },
+  cjs: {
+    from: 'require("react-native")',
+    to: 'require("react-native-web")'
+  }
+}
+
 async function clean() {
   try {
     await Promise.allSettled([
       //
       fs.remove('.turbo'),
+      fs.remove('node_modules'),
       fs.remove('.ultra.cache.json'),
       fs.remove('types'),
       fs.remove('dist'),
@@ -58,7 +70,7 @@ async function clean() {
     // ok
   }
   if (shouldCleanBuildOnly) {
-    console.log('🔹 cleaned', pkg.name)
+    console.info('🔹 cleaned', pkg.name)
     process.exit(0)
   }
   try {
@@ -66,7 +78,7 @@ async function clean() {
   } catch {
     // ok
   }
-  console.log('🔹 cleaned', pkg.name)
+  console.info('🔹 cleaned', pkg.name)
   process.exit(0)
 }
 
@@ -103,7 +115,7 @@ if (shouldWatch) {
 build()
 
 async function build({ skipTypes } = {}) {
-  if (process.env.DEBUG) console.log('🔹', pkg.name)
+  if (process.env.DEBUG) console.info('🔹', pkg.name)
   try {
     const start = Date.now()
     await Promise.all([
@@ -111,7 +123,7 @@ async function build({ skipTypes } = {}) {
       skipTypes ? null : buildTsc(),
       buildJs(),
     ])
-    console.log('built', pkg.name, 'in', Date.now() - start, 'ms')
+    console.info('built', pkg.name, 'in', Date.now() - start, 'ms')
   } catch (error) {
     console.error(`Error building:`, error.message)
   }
@@ -149,11 +161,10 @@ async function buildTsc() {
     const tsProjectFlag = tsProject ? ` --project ${tsProject}` : ''
     const cmd = `tsc${baseUrlFlag}${tsProjectFlag} --outDir ${targetDir} --rootDir src ${declarationToRootFlag}--emitDeclarationOnly --declarationMap`
 
-    console.log('\x1b[2m$', `npx ${cmd}`)
+    console.info('\x1b[2m$', `npx ${cmd}`)
     await exec('npx', cmd.split(' '))
   } catch (err) {
-    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-    console.log(err.message)
+    console.info(err.message)
     if (!shouldWatch) {
       process.exit(1)
     }
@@ -192,26 +203,37 @@ async function buildJs() {
           plugins: [
             alias({
               '@tamagui/web': require.resolve('@tamagui/web/native'),
-              'react-native': require.resolve('@tamagui/fake-react-native'),
-              'react-native/Libraries/Renderer/shims/ReactFabric': require.resolve(
-                '@tamagui/fake-react-native'
-              ),
-              'react-native/Libraries/Renderer/shims/ReactNative': require.resolve(
-                '@tamagui/fake-react-native'
-              ),
+
+              // for test mode we want real react-native
+              ...(!bundleNativeTest && {
+                'react-native': require.resolve('@tamagui/fake-react-native'),
+                'react-native/Libraries/Renderer/shims/ReactFabric': require.resolve(
+                  '@tamagui/fake-react-native'
+                ),
+                'react-native/Libraries/Renderer/shims/ReactNative': require.resolve(
+                  '@tamagui/fake-react-native'
+                ),
+              }),
+
               'react-native/Libraries/Pressability/Pressability': require.resolve(
                 '@tamagui/fake-react-native'
               ),
+
               'react-native/Libraries/Pressability/usePressability': require.resolve(
                 '@tamagui/fake-react-native/idFn'
               ),
+
               'react-native-safe-area-context': require.resolve(
                 '@tamagui/fake-react-native'
               ),
               'react-native-gesture-handler': require.resolve('@tamagui/proxy-worm'),
             }),
           ],
-          external: ['react', 'react-dom'],
+          external: [
+            'react',
+            'react-dom',
+            bundleNativeTest ? 'react-native' : undefined,
+          ].filter(Boolean),
           resolveExtensions: [
             '.native.ts',
             '.native.tsx',
@@ -229,47 +251,46 @@ async function buildJs() {
       : {}
 
   const start = Date.now()
+
+  const cjsConfig = {
+    entryPoints: files,
+    outdir: flatOut ? 'dist' : 'dist/cjs',
+    bundle: shouldBundle,
+    external,
+    target: 'node16',
+    format: 'cjs',
+    jsx: 'automatic',
+    plugins: shouldBundleNodeModules ? [] : [externalPlugin],
+    minify: process.env.MINIFY ? true : false,
+    platform: 'node',
+  }
+
+  const esmConfig = {
+    entryPoints: files,
+    outdir: flatOut ? 'dist' : 'dist/esm',
+    bundle: shouldBundle,
+    external,
+    target: 'esnext',
+    jsx: 'automatic',
+    allowOverwrite: true,
+    format: 'esm',
+    minify: process.env.MINIFY ? true : false,
+    platform: shouldBundle ? 'node' : 'neutral',
+  }
+
   return await Promise.all([
     // web output to cjs
     pkgMain
-      ? esbuildWriteIfChanged(
-          {
-            entryPoints: files,
-            outdir: flatOut ? 'dist' : 'dist/cjs',
-            bundle: shouldBundle,
-            external,
-            target: 'node16',
-            format: 'cjs',
-            jsx: 'automatic',
-            plugins: shouldBundleNodeModules ? [] : [externalPlugin],
-            minify: process.env.MINIFY ? true : false,
-            platform: 'node',
-          },
-          {
-            platform: 'web',
-          }
-        )
+      ? esbuildWriteIfChanged(cjsConfig, {
+          platform: 'web',
+        })
       : null,
 
     // native output to cjs
     pkgMain
-      ? esbuildWriteIfChanged(
-          {
-            entryPoints: files,
-            outdir: flatOut ? 'dist' : 'dist/cjs',
-            bundle: shouldBundle,
-            external,
-            target: 'node16',
-            format: 'cjs',
-            jsx: 'automatic',
-            plugins: shouldBundleNodeModules ? [] : [externalPlugin],
-            minify: process.env.MINIFY ? true : false,
-            platform: 'node',
-          },
-          {
-            platform: 'native',
-          }
-        )
+      ? esbuildWriteIfChanged(cjsConfig, {
+          platform: 'native',
+        })
       : null,
 
     // for tests to load native-mode from node
@@ -301,23 +322,16 @@ async function buildJs() {
 
     // web output to esm
     pkgModule
-      ? esbuildWriteIfChanged(
-          {
-            entryPoints: files,
-            outdir: flatOut ? 'dist' : 'dist/esm',
-            bundle: shouldBundle,
-            external,
-            target: 'esnext',
-            jsx: 'automatic',
-            allowOverwrite: true,
-            format: 'esm',
-            minify: process.env.MINIFY ? true : false,
-            platform: shouldBundle ? 'node' : 'neutral',
-          },
-          {
-            platform: 'web',
-          }
-        )
+      ? esbuildWriteIfChanged(esmConfig, {
+          platform: 'web',
+        })
+      : null,
+
+    // web output to esm
+    pkgModule
+      ? esbuildWriteIfChanged(esmConfig, {
+          platform: 'native',
+        })
       : null,
 
     // jsx web
@@ -362,8 +376,7 @@ async function buildJs() {
         )
       : null,
   ]).then(() => {
-    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-    if (process.env.DEBUG) console.log(`built js in ${Date.now() - start}ms`)
+    if (process.env.DEBUG) console.info(`built js in ${Date.now() - start}ms`)
   })
 }
 
@@ -383,9 +396,28 @@ async function esbuildWriteIfChanged(
   if (!shouldWatch && !platform) {
     return await esbuild.build(opts)
   }
-
+  
   const built = await esbuild.build({
     ...opts,
+
+    plugins: [
+      ...(opts.plugins || []),
+
+      // not workin
+      // {
+      //   name: 'no-side-effects',
+      //   setup(build) {
+      //     build.onResolve({ filter: /@tamagui.*/ }, async ({ path, ...options }) => {
+      //       const result = await build.resolve(path, {
+      //         ...options,
+      //         namespace: 'noRecurse',
+      //       })
+      //       console.log('no side effects', path)
+      //       return { ...result, sideEffects: false }
+      //     })
+      //   },
+      // },
+    ].filter(Boolean),
 
     treeShaking: true,
     minifySyntax: true,
@@ -468,7 +500,14 @@ async function esbuildWriteIfChanged(
       const outDir = dirname(outPath)
 
       await fs.ensureDir(outDir)
-      const outString = new TextDecoder().decode(file.contents)
+      let outString = new TextDecoder().decode(file.contents)
+
+      if (platform === 'web') {
+        const rnWebReplacer = replaceRNWeb[opts.format]
+        if (rnWebReplacer) {
+          outString = outString.replaceAll(rnWebReplacer.from, rnWebReplacer.to)
+        }
+      }
 
       if (shouldWatch) {
         if (

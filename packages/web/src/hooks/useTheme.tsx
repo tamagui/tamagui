@@ -1,10 +1,10 @@
-/* eslint-disable no-console */
-import { isClient, isServer, isWeb } from '@tamagui/constants'
+import { isClient, isIos, isServer } from '@tamagui/constants'
 import { useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 import { getConfig } from '../config'
 import { Variable, getVariable } from '../createVariable'
 import { createProxy } from '../helpers/createProxy'
+import { isEqualShallow } from '../helpers/createShallowSetState'
 import {
   ThemeManager,
   ThemeManagerState,
@@ -15,15 +15,19 @@ import type {
   DebugProp,
   ThemeParsed,
   ThemeProps,
+  UseThemeWithStateProps,
   VariableVal,
   VariableValGeneric,
 } from '../types'
 import { GetThemeUnwrapped } from './getThemeUnwrapped'
 
 export type ChangedThemeResponse = {
-  state: ThemeManagerState
-  themeManager: ThemeManager
+  state?: ThemeManagerState
+  themeManager?: ThemeManager | null
   isNewTheme: boolean
+  // null = never been inversed
+  // false = was inversed, now not
+  inversed?: null | boolean
   mounted?: boolean
 }
 
@@ -33,13 +37,26 @@ let cached: any
 function getDefaultThemeProxied() {
   if (cached) return cached
   const config = getConfig()
-  const defaultTheme = config.themes.light ?? config.themes[Object.keys(config.themes)[0]]
-  cached = getThemeProxied(defaultTheme)
+  const name = config.themes.light ? 'light' : Object.keys(config.themes)[0]
+  const defaultTheme = config.themes[name]
+  cached = getThemeProxied({ theme: defaultTheme, name })
   return cached
 }
 
 export type ThemeGettable<Val> = Val & {
-  get: () =>
+  /**
+   * Tries to return an optimized value that avoids the need for re-rendering:
+   * On web a CSS variable, on iOS a dynamic color, on Android it doesn't
+   * optimize and returns the underyling value.
+   *
+   * See: https://reactnative.dev/docs/dynamiccolorios
+   *
+   * @param platform when "web" it will only return the dynamic value for web, avoiding the iOS dynamic value.
+   * For things like SVG, gradients, or other external components that don't support it, use this option.
+   */
+  get: (
+    platform?: 'web'
+  ) =>
     | string
     | (Val extends Variable<infer X>
         ? X extends VariableValGeneric
@@ -61,7 +78,7 @@ export const useTheme = (props: ThemeProps = emptyProps) => {
 }
 
 export const useThemeWithState = (
-  props: ThemeProps
+  props: UseThemeWithStateProps
 ): [ChangedThemeResponse, ThemeParsed] => {
   const keys = useRef<string[]>([])
 
@@ -73,13 +90,13 @@ export const useThemeWithState = (
       ? () => {
           const next =
             props.shouldUpdate?.() ?? (keys.current.length > 0 ? true : undefined)
+
           if (
             process.env.NODE_ENV === 'development' &&
             props.debug &&
             props.debug !== 'profile'
           ) {
-            // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-            console.log(`  🎨 useTheme() shouldUpdate?`, next, {
+            console.info(`  🎨 useTheme() shouldUpdate?`, next, {
               shouldUpdateProp: props.shouldUpdate?.(),
               keys: [...keys.current],
             })
@@ -90,27 +107,29 @@ export const useThemeWithState = (
   )
 
   const { themeManager, state } = changedThemeState
-  const { theme, name, className } = state
 
-  if (!theme) {
+  if (!state?.theme) {
     if (process.env.NODE_ENV === 'development') {
-      throw new Error(
-        `No theme found given props ${JSON.stringify(
-          props
-        )}. Themes given to tamagui are: ${Object.keys(getConfig().themes)}`
-      )
+      if (process.env.TAMAGUI_DISABLE_NO_THEME_WARNING !== '1') {
+        console.warn(
+          `[tamagui] No theme found, this could be due to an invalid theme name (given theme props ${JSON.stringify(
+            props
+          )}).\n\nIf this is intended and you are using Tamagui without any themes, you can disable this warning by setting the environment variable TAMAGUI_DISABLE_NO_THEME_WARNING=1`
+        )
+      }
     }
-    throw `❌ 1`
   }
 
   const themeProxied = useMemo(() => {
-    return getThemeProxied(theme, themeManager, keys.current, props.debug)
-  }, [theme, name, className, themeManager])
+    if (!themeManager || !state?.theme) {
+      return {}
+    }
+    return getThemeProxied(state, props.deopt, themeManager, keys.current, props.debug)
+  }, [state?.theme, themeManager, props.deopt, props.debug])
 
   if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
-    console.groupCollapsed('  🔹 useTheme =>', name)
-    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-    console.log('returning state', changedThemeState, 'from props', props)
+    console.groupCollapsed('  🔹 useTheme =>', state?.name)
+    console.info('returning state', changedThemeState, 'from props', props)
     console.groupEnd()
   }
 
@@ -118,11 +137,25 @@ export const useThemeWithState = (
 }
 
 export function getThemeProxied(
-  theme: ThemeParsed,
+  { theme, name, scheme }: ThemeManagerState,
+  deopt = false,
   themeManager?: ThemeManager,
   keys?: string[],
   debug?: DebugProp
 ): UseThemeResult {
+  if (!theme) return {}
+
+  const config = getConfig()
+
+  function track(key: string) {
+    if (keys && !keys.includes(key)) {
+      keys.push(key)
+      if (process.env.NODE_ENV === 'development' && debug) {
+        console.info(` 🎨 useTheme() tracking new key: ${key}`)
+      }
+    }
+  }
+
   return createProxy(theme, {
     has(_, key) {
       if (Reflect.has(theme, key)) {
@@ -137,6 +170,7 @@ export function getThemeProxied(
       if (key === GetThemeUnwrapped) {
         return theme
       }
+
       if (
         // dont ask me, idk why but on hermes you can see that useTheme()[undefined] passes in STRING undefined to proxy
         // if someone is crazy enough to use "undefined" as a theme key then this not working is on them
@@ -146,6 +180,7 @@ export function getThemeProxied(
         // auto convert variables to plain
         const keyString = key[0] === '$' ? key.slice(1) : key
         const val = theme[keyString]
+
         if (val && typeof val === 'object') {
           // TODO this could definitely be done better by at the very minimum
           // proxying it up front and just having a listener here
@@ -153,22 +188,50 @@ export function getThemeProxied(
             // when they touch the actual value we only track it
             // if its a variable (web), its ignored!
             get(_, subkey) {
-              // trigger read key that makes it track updates
-              if (keys) {
-                if (
-                  (subkey === 'val' || (subkey === 'get' && !isWeb)) &&
-                  !keys.includes(keyString)
-                ) {
-                  keys.push(keyString)
-                  if (process.env.NODE_ENV === 'development' && debug) {
-                    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-                    console.log(` 🎨 useTheme() tracking new key: ${keyString}`)
+              if (subkey === 'val') {
+                // always track .val
+                track(keyString)
+              } else if (subkey === 'get') {
+                return (platform?: 'web') => {
+                  const outVal = getVariable(val)
+
+                  if (process.env.TAMAGUI_TARGET === 'native') {
+                    // ios can avoid re-rendering in some cases when we are using a root light/dark
+                    // disabled in cases where we have animations
+                    if (
+                      platform !== 'web' &&
+                      isIos &&
+                      !deopt &&
+                      config.settings.fastSchemeChange &&
+                      !someParentIsInversed(themeManager)
+                    ) {
+                      if (scheme) {
+                        const oppositeThemeName = name.replace(
+                          scheme === 'dark' ? 'dark' : 'light',
+                          scheme === 'dark' ? 'light' : 'dark'
+                        )
+                        const oppositeTheme = config.themes[oppositeThemeName]
+                        const oppositeVal = getVariable(oppositeTheme?.[keyString])
+                        if (oppositeVal) {
+                          const dynamicVal = {
+                            dynamic: {
+                              dark: scheme === 'dark' ? outVal : oppositeVal,
+                              light: scheme === 'light' ? outVal : oppositeVal,
+                            },
+                          }
+                          return dynamicVal
+                        }
+                      }
+                    }
+
+                    // if we dont return early with a dynamic val on native, always track
+                    track(keyString)
                   }
+
+                  return outVal
                 }
               }
-              if (subkey === 'get') {
-                return () => getVariable(val)
-              }
+
               return Reflect.get(val as any, subkey)
             },
           })
@@ -180,26 +243,35 @@ export function getThemeProxied(
   }) as UseThemeResult
 }
 
+// to tell if we are inversing the scheme anywhere in the tree, if so we need to de-opt
+function someParentIsInversed(manager?: ThemeManager) {
+  if (process.env.TAMAGUI_TARGET === 'native') {
+    let cur: ThemeManager | null | undefined = manager
+    while (cur) {
+      if (!cur.parentManager) return false
+      if (cur.parentManager.state.scheme !== cur.state.scheme) return true
+      cur = cur.parentManager
+    }
+  }
+  return false
+}
+
 export const activeThemeManagers = new Set<ThemeManager>()
 
 export const useChangeThemeEffect = (
-  props: ThemeProps,
-  root = false,
+  props: UseThemeWithStateProps,
+  isRoot = false,
   keys?: string[],
   shouldUpdate?: () => boolean | undefined
 ): ChangedThemeResponse => {
-  const {
-    // @ts-expect-error internal use only
-    disable,
-  } = props
+  const { disable } = props
 
   const parentManager = useContext(ThemeManagerContext)
 
-  if (disable) {
-    if (!parentManager) throw `❌ 2`
+  if ((!isRoot && !parentManager) || disable) {
     return {
       isNewTheme: false,
-      state: parentManager.state,
+      state: parentManager?.state,
       themeManager: parentManager,
     }
   }
@@ -218,34 +290,43 @@ export const useChangeThemeEffect = (
   // }
 
   const [themeState, setThemeState] = useState<ChangedThemeResponse>(createState)
-  const { state, mounted, isNewTheme, themeManager } = themeState
+
+  const { state, mounted, isNewTheme, themeManager, inversed } = themeState
   const isInversingOnMount = Boolean(!themeState.mounted && props.inverse)
 
   function getShouldUpdateTheme(
     manager = themeManager,
     nextState?: ThemeManagerState | null,
-    prevState: ThemeManagerState = state,
+    prevState: ThemeManagerState | undefined = state,
     forceShouldChange = false
   ) {
     const forceUpdate = shouldUpdate?.()
-    if (!forceShouldChange && forceUpdate === false) return
+    if (!manager || (!forceShouldChange && forceUpdate === false)) return
     const next = nextState || manager.getState(props, parentManager)
     if (forceShouldChange) return next
     if (!next) return
     if (forceUpdate !== true && !manager.getStateShouldChange(next, prevState)) {
       return
     }
+
     return next
   }
 
   if (!isServer) {
     // listen for parent change + notify children change
     useLayoutEffect(() => {
+      if (!themeManager) return
+
       // SSR safe inverse (because server can't know prefers scheme)
       // could be done through fancy selectors like how we do prefers-media
       // but may be a bit of explosion of selectors
       if (props.inverse && !mounted) {
-        setThemeState({ ...themeState, mounted: true })
+        setThemeState((prev) => {
+          return createState({
+            ...prev,
+            mounted: true,
+          })
+        })
         return
       }
 
@@ -264,26 +345,30 @@ export const useChangeThemeEffect = (
         }
       })
 
-      const disposeChangeListener = parentManager?.onChangeTheme((name, manager) => {
-        const force = shouldUpdate?.()
-        const doUpdate = force ?? Boolean(keys?.length || isNewTheme)
+      const disposeChangeListener = parentManager?.onChangeTheme(
+        (name, manager, forced) => {
+          const force =
+            forced ||
+            shouldUpdate?.() ||
+            props.deopt ||
+            // this fixes themeable() not updating with the new fastSchemeChange setting
+            (process.env.TAMAGUI_TARGET === 'native'
+              ? props['disable-child-theme']
+              : undefined)
 
-        if (process.env.NODE_ENV === 'development' && props.debug) {
-          
-          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-          console.log(` 🔸 onChange`, themeManager.id, {
-            force,
-            doUpdate,
-            props,
-            name,
-            manager,
-            keys,
-          });
-        }
-        if (doUpdate) {
-          setThemeState(createState)
-        }
-      }, themeManager.id)
+          const shouldTryUpdate = force ?? Boolean(keys?.length || isNewTheme)
+
+          if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
+            // prettier-ignore
+            console.info(` 🔸 onChange`, themeManager.id, { force, shouldTryUpdate, props, name, manager, keys, })
+          }
+
+          if (shouldTryUpdate) {
+            setThemeState(createState)
+          }
+        },
+        themeManager.id
+      )
 
       return () => {
         selfListenerDispose()
@@ -313,12 +398,13 @@ export const useChangeThemeEffect = (
   }
 
   if (isInversingOnMount) {
-    if (!parentManager) throw '❌ 3'
     return {
       isNewTheme: false,
+      inversed: false,
       themeManager: parentManager,
       state: {
-        ...parentManager.state,
+        name: '',
+        ...parentManager?.state,
         className: '',
       },
     }
@@ -327,11 +413,12 @@ export const useChangeThemeEffect = (
   return {
     state,
     isNewTheme,
+    inversed,
     themeManager,
   }
 
   function createState(prev?: ChangedThemeResponse, force = false): ChangedThemeResponse {
-    if (prev && shouldUpdate?.() === false) {
+    if (prev && shouldUpdate?.() === false && !force) {
       return prev
     }
 
@@ -342,7 +429,7 @@ export const useChangeThemeEffect = (
 
     if (hasThemeUpdatingProps) {
       const getNewThemeManager = () => {
-        return new ThemeManager(props, root ? 'root' : parentManager)
+        return new ThemeManager(props, isRoot ? 'root' : parentManager)
       }
 
       if (prev?.themeManager) {
@@ -354,7 +441,7 @@ export const useChangeThemeEffect = (
         // at all anymore. this forces updates onChangeTheme for all dynamic style accessed components
         // which is correct, potentially in the future we can avoid forceChange and just know to
         // update if keys.length is set + onChangeTheme called
-        const forceChange = Boolean(keys?.length)
+        const forceChange = force || Boolean(keys?.length)
         const next = themeManager.getState(props, parentManager)
         const nextState = getShouldUpdateTheme(
           themeManager,
@@ -366,7 +453,7 @@ export const useChangeThemeEffect = (
         if (nextState) {
           state = nextState
 
-          if (!prev.isNewTheme || !isWeb) {
+          if (!prev.isNewTheme) {
             themeManager = getNewThemeManager()
           } else {
             themeManager.updateState(nextState)
@@ -388,7 +475,7 @@ export const useChangeThemeEffect = (
     const isNewTheme = Boolean(themeManager !== parentManager || props.inverse)
 
     // only inverse relies on this for ssr
-    const mounted = !props.inverse ? true : root || prev?.mounted
+    const mounted = !props.inverse ? true : isRoot || prev?.mounted
 
     if (!state) {
       if (isNewTheme) {
@@ -399,24 +486,38 @@ export const useChangeThemeEffect = (
       }
     }
 
-    if (!force && state.name === prev?.state.name) {
-      return prev
-    }
+    const wasInversed = prev?.inversed
+    const nextInversed = isNewTheme && state.scheme !== parentManager?.state.scheme
+    const inversed = nextInversed ? true : wasInversed ? false : null
 
-    const response = {
-      state,
+    const response: ChangedThemeResponse = {
       themeManager,
       isNewTheme,
       mounted,
-    } satisfies ChangedThemeResponse
+      inversed,
+    }
+
+    const shouldReturnPrev =
+      !force &&
+      prev &&
+      // isEqualShallow uses the second arg as the keys so this should compare without state first...
+      isEqualShallow(prev, response) &&
+      // ... and then compare just the state, because we make a new state obj but is likely the same
+      isEqualShallow(prev.state, state)
+
+    if (prev && shouldReturnPrev) {
+      return prev
+    }
+
+    // after we compare equal we set the state
+    response.state = state
 
     if (process.env.NODE_ENV === 'development' && props['debug'] && isClient) {
       console.groupCollapsed(` 🔷 ${themeManager.id} useChangeThemeEffect createState`)
       const parentState = { ...parentManager?.state }
       const parentId = parentManager?.id
       const themeManagerState = { ...themeManager.state }
-      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-      console.log({
+      console.info({
         props,
         parentState,
         parentId,

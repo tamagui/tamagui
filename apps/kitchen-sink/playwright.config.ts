@@ -15,6 +15,8 @@ export default defineConfig({
     reuseExistingServer: !process.env.CI,
   },
 
-  // fullyParallel: true,
-  retries: 2,
+  fullyParallel: true,
+  retries: 1,
+
+  timeout: 10_000,
 })

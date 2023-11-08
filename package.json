@@ -9,12 +9,12 @@
     "./apps/*",
     "./packages/*"
   ],
-  "packageManager": "yarn@3.5.0",
+  "packageManager": "yarn@3.6.3",
   "scripts": {
     "build:force": "yarn clean:build && yarn build --force",
     "build:js": "./scripts/build-js.sh",
     "build:types": "SKIP_JS=1 yarn build",
-    "build": "turbo run build --filter=!next-app",
+    "build": "turbo run build --filter=!next-app -vvv",
     "check-deps": "check-dependency-version-consistency .",
     "check": "manypkg check",
     "clean:build": "turbo run clean:build",
@@ -79,10 +79,10 @@
     "@types/node": "16.11.9",
     "react-native": "0.72.0",
     "react": "18.2.0",
-    "next": "13.4.4",
+    "next": "13.5.6",
     "react-dom": "18.2.0",
     "react-native-reanimated@^3.3.0": "patch:react-native-reanimated@npm%3A3.4.1#./.yarn/patches/react-native-reanimated-npm-3.4.1-bf4ac7f6b3.patch",
-    "react-native-screens@~3.22.0": "patch:react-native-screens@npm%3A3.22.0#./.yarn/patches/react-native-screens-npm-3.22.0-9ada8582d1.patch"
+    "react-native-screens@~3.22.0": "patch:react-native-screens@npm%3A3.22.1#./.yarn/patches/react-native-screens-npm-3.22.1-b3da351834.patch"
   },
   "importSort": {
     ".js, .jsx, .ts, .tsx": {

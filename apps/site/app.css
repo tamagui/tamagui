@@ -65,45 +65,22 @@ a {
   font-size: inherit;
 }
 
-.link {
+:is(.is_Paragraph a, .link a, article p a, footer a) {
   text-decoration: underline;
-  text-underline-offset: 5px;
-  text-decoration-thickness: 2px;
-  text-decoration-color: var(--pink6);
+  text-underline-offset: 4px;
+  text-decoration-thickness: 4px;
+  text-decoration-color: var(--color6);
 }
 
-.link:hover {
+:is(.is_Paragraph a, .link a, article p a, footer a):hover {
   text-decoration: underline;
   cursor: pointer;
-  text-decoration-color: var(--pink8);
+  text-decoration-thickness: 4px;
+  text-decoration-color: var(--color8);
 }
 
 .is_Paragraph:has(> ul) {
   margin-bottom: 0;
-}
-
-:is(article p a, footer a) {
-  text-decoration-style: solid;
-  text-decoration-thickness: 3px !important;
-  text-decoration: underline;
-  color: var(--pink10);
-  text-decoration-color: var(--pink6);
-  text-underline-offset: 2px;
-}
-
-:is(article p a):hover {
-  text-decoration-style: solid;
-  text-decoration-thickness: 5px !important;
-  text-decoration-color: var(--pink12);
-}
-
-p.intro-paragraph.large {
-  color: var(--gray12) !important;
-  opacity: 1 !important;
-}
-
-.no-opacity-fade p {
-  opacity: 1 !important;
 }
 
 article li strong {
@@ -112,10 +89,6 @@ article li strong {
 
 .t_dark article li strong {
   color: #fff !important;
-}
-
-.intro-paragraph a {
-  font-weight: inherit;
 }
 
 /* display block > display inline-flex bug */
@@ -374,6 +347,14 @@ iframe {
   mask-image: linear-gradient(transparent 20%, rgba(0, 0, 0, 1));
 }
 
+.mask-gradient-right {
+  mask-image: linear-gradient(70deg, rgba(0, 0, 0, 1), transparent 50%);
+}
+
+.mask-gradient-left {
+  mask-image: linear-gradient(-100deg, rgba(0, 0, 0, 1), transparent 50%);
+}
+
 /* code highlighting */
 
 .token.parameter {
@@ -413,7 +394,7 @@ iframe {
 }
 
 .token.operator {
-  color: (--color);
+  color: var(--color);
 }
 
 .token.attr-name,
@@ -588,6 +569,10 @@ textarea {
   -webkit-font-smoothing: auto;
 }
 
+.font-smooth-aliased {
+  -webkit-font-smoothing: antialiased !important;
+}
+
 .hero-tag:hover,
 .hero-tag.active {
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
@@ -595,10 +580,6 @@ textarea {
 
 .word-break-keep-all {
   word-break: keep-all;
-}
-
-.transition-bg-color {
-  transform: background-color ease-in 1000ms;
 }
 
 .mix-blend {
@@ -688,6 +669,10 @@ textarea {
   text-shadow: 1px 1px 0 var(--orange9), 2px 2px 0 var(--yellow9), 3px 3px 0 var(--green9),
     4px 4px 0 var(--blue9), 5px 5px 0 var(--purple9), 6px 6px 0 var(--pink9),
     7px 7px 0 var(--red9), 0 0 50px rgba(0, 0, 0, 1);
+}
+
+.text-glow {
+  text-shadow: 4px 4px 0 var(--backgroundStrong);
 }
 
 .rotate-slow-right {

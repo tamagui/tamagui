@@ -1,6 +1,6 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { TamaguiElement, isWeb, useIsomorphicLayoutEffect } from '@tamagui/core'
-import { ListItem, ListItemProps } from '@tamagui/list-item'
+import { ListItem, ListItemFrame, ListItemProps, useListItem } from '@tamagui/list-item'
 import * as React from 'react'
 
 import { createSelectContext, useSelectItemParentContext } from './context'
@@ -28,16 +28,24 @@ export interface SelectItemProps extends ListItemProps {
   textValue?: string
 }
 
-export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
-  (props: ScopedProps<SelectItemProps>, forwardedRef) => {
+export const SelectItem = ListItemFrame.styleable<SelectItemProps>(
+  function SelectItem(props: ScopedProps<SelectItemProps>, forwardedRef) {
     const {
       __scopeSelect,
       value,
       disabled = false,
       textValue: textValueProp,
       index,
-      ...itemProps
+      ...restProps
     } = props
+
+    const { props: listItemProps } = useListItem({
+      ...(!props.unstyled && {
+        ellipse: true,
+      }),
+      ...restProps,
+    })
+
     const context = useSelectItemParentContext(ITEM_NAME, __scopeSelect)
 
     const {
@@ -100,54 +108,56 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
       setOpen(false)
     }
 
-    const selectItemProps = interactions
-      ? interactions.getItemProps({
-          onTouchMove() {
-            allowSelectRef!.current = true
-            allowMouseUpRef!.current = false
-          },
-          onTouchEnd() {
-            allowSelectRef!.current = false
-            allowMouseUpRef!.current = true
-          },
-          onKeyDown(event) {
-            if (
-              event.key === 'Enter' ||
-              (event.key === ' ' && !dataRef?.current.typing)
-            ) {
-              event.preventDefault()
-              handleSelect()
-            } else {
+    const selectItemProps = React.useMemo(() => {
+      return interactions
+        ? interactions.getItemProps({
+            onTouchMove() {
               allowSelectRef!.current = true
-            }
-          },
+              allowMouseUpRef!.current = false
+            },
+            onTouchEnd() {
+              allowSelectRef!.current = false
+              allowMouseUpRef!.current = true
+            },
+            onKeyDown(event) {
+              if (
+                event.key === 'Enter' ||
+                (event.key === ' ' && !dataRef?.current.typing)
+              ) {
+                event.preventDefault()
+                handleSelect()
+              } else {
+                allowSelectRef!.current = true
+              }
+            },
 
-          onClick() {
-            if (allowSelectRef!.current) {
-              handleSelect()
-            }
-          },
+            onClick() {
+              if (allowSelectRef!.current) {
+                handleSelect()
+              }
+            },
 
-          onMouseUp() {
-            if (!allowMouseUpRef!.current) {
-              return
-            }
+            onMouseUp() {
+              if (!allowMouseUpRef!.current) {
+                return
+              }
 
-            if (allowSelectRef!.current) {
-              handleSelect()
-            }
+              if (allowSelectRef!.current) {
+                handleSelect()
+              }
 
-            // On touch devices, prevent the element from
-            // immediately closing `onClick` by deferring it
-            clearTimeout(selectTimeoutRef!.current)
-            selectTimeoutRef!.current = setTimeout(() => {
-              allowSelectRef!.current = true
-            })
-          },
-        })
-      : {
-          onPress: handleSelect,
-        }
+              // On touch devices, prevent the element from
+              // immediately closing `onClick` by deferring it
+              clearTimeout(selectTimeoutRef!.current)
+              selectTimeoutRef!.current = setTimeout(() => {
+                allowSelectRef!.current = true
+              })
+            },
+          })
+        : {
+            onPress: handleSelect,
+          }
+    }, [handleSelect])
 
     useIsomorphicLayoutEffect(() => {
       if (isActive) {
@@ -165,7 +175,7 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
         {shouldRenderWebNative ? (
           <option value={value}>{props.children}</option>
         ) : (
-          <ListItem
+          <ListItemFrame
             tag="div"
             componentName={ITEM_NAME}
             ref={composedRefs}
@@ -183,15 +193,15 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
               cursor: 'default',
               outlineWidth: 0,
               size,
-              ellipse: true,
             })}
-            {...itemProps}
+            {...listItemProps}
             {...selectItemProps}
           />
         )}
       </SelectItemContextProvider>
     )
+  },
+  {
+    disableTheme: true,
   }
 )
-
-SelectItem.displayName = ITEM_NAME

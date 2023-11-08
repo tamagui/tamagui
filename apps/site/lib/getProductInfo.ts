@@ -4,7 +4,7 @@ export function getTakeoutPriceInfo(pricingDescription: string) {
 
   const isFirstTier = pricingDescription.toLowerCase().includes('hobby')
 
-  const minMaxMatch = Number(pricingDescription?.match(/.*[0-9]+-([0-9]+) seats.*/)?.[1])
+  const minMaxMatch = Number(pricingDescription?.match(/.*[0-9]+-([0-9]+) seats.*/i)?.[1])
   // e.g. "Team (10-20 seats)"
   if (minMaxMatch && !isNaN(minMaxMatch)) {
     discordSeats = minMaxMatch
@@ -12,7 +12,7 @@ export function getTakeoutPriceInfo(pricingDescription: string) {
   }
 
   // e.g. "Team (+20 seats)"
-  const minOnlyMatch = Number(pricingDescription?.match(/.*\+([0-9]+) seats.*/)?.[1])
+  const minOnlyMatch = Number(pricingDescription?.match(/.*\+([0-9]+) seats.*/i)?.[1])
   if (minOnlyMatch && !isNaN(minOnlyMatch)) {
     discordSeats = 50
     licenseSeats = Infinity

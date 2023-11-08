@@ -342,8 +342,7 @@ export function createAnimations<A extends AnimationsConfig>(
           if (process.env.NODE_ENV === 'development') {
             if (props['debug'] === 'verbose') {
               // prettier-ignore
-              // biome-ignore lint/suspicious/noConsoleLog: ok
-              console.log(' 💠 animate',key,`from (${value['_value']}) to`, valIn, `(${val})`, 'type',type,'interpolate',interpolateArgs)
+              console.info(' 💠 animate',key,`from (${value['_value']}) to`, valIn, `(${val})`, 'type',type,'interpolate',interpolateArgs)
             }
           }
           return value
@@ -368,8 +367,7 @@ export function createAnimations<A extends AnimationsConfig>(
 
       if (process.env.NODE_ENV === 'development') {
         if (props['debug'] === 'verbose') {
-          // biome-ignore lint/suspicious/noConsoleLog: ok
-          console.log(`Returning animated`, res, 'given style', style)
+          console.info(`Returning animated`, res, 'given style', style)
         }
       }
 

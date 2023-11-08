@@ -1,4 +1,4 @@
-import './setup.js'
+import './setup'
 
 export * from '@tamagui/accordion'
 export * from '@tamagui/adapt'
@@ -54,6 +54,7 @@ export * from './views/Input'
 export * from './views/Layouts'
 export * from './views/Spinner'
 export * from './views/TextArea'
+export * from './views/Text'
 
 // since we overlap with StackProps and potentially others
 // lets be explicit on what gets exported
@@ -93,6 +94,7 @@ export type {
   StackNonStyleProps,
   StackProps,
   StackPropsBase,
+  RadiusTokens,
   StaticConfig,
   Styleable,
   TamaguiBaseTheme,
@@ -125,13 +127,12 @@ export type {
 } from '@tamagui/core'
 
 export {
-  AnimationDriverProvider,
+  Configuration,
   ComponentContext,
   FontLanguage,
   // components
   Spacer,
   Stack,
-  Text,
   Theme,
   Unspaced,
   View,
@@ -142,7 +143,6 @@ export {
   createTheme,
   createTokens,
   createVariable,
-  getAnimationDriver,
   getConfig,
   getMedia,
   getStylesAtomic,
@@ -181,7 +181,9 @@ export {
   useIsomorphicLayoutEffect,
   useMedia,
   useProps,
+  usePropsAndStyle,
   useStyle,
+  useConfiguration,
   useTheme,
   useThemeName,
   variableToString,

@@ -1,80 +1,41 @@
 // import './wdyr'
 
-import { SelectDemo } from '@tamagui/demos'
-import { Ban, Search } from '@tamagui/lucide-icons'
-import { Stack, styled } from '@tamagui/web'
-import {
-  Anchor,
-  Button,
-  Paragraph,
-  Popover,
-  SizableText,
-  XStack,
-  YStack,
-  createSwitch,
-} from 'tamagui'
-
-const X = styled(SizableText, {
-  size: '$10',
-})
-
-const ChangeWeight = styled(Stack, {
-  backgroundColor: 'red',
-})
-
-export const MyAnchor = styled(Anchor, {
-  name: 'Link',
-  cursor: 'pointer',
-  fontWeight: '700',
-  textDecorationLine: 'underline',
-})
-
-const StyledSwitch = createSwitch({})
+import { View } from 'react-native'
+import { GetProps, Square, Stack, styled } from 'tamagui'
 
 export const Sandbox = () => {
   return (
-    <div
-      style={{ flex: 1, alignItems: 'center', justifyContent: 'center', display: 'flex' }}
-    >
-      <SelectDemo />
-      {/*  */}
-    </div>
+    <View style={{ width: '100%', height: '100%', padding: 50 }}>
+      <>{/* ok */}</>
+    </View>
   )
 }
 
-// export default function SearchComp() {
-//   return (
-//     <XStack>
-//       <Popover placement="left">
-//         <Popover.Trigger asChild>
-//           <XStack>
-//             <Button p={'$2.5'} theme={'blue'} icon={<Search size={20} />} />
-//           </XStack>
-//         </Popover.Trigger>
-//         <Popover.Content
-//           theme={'blue'}
-//           zIndex={199000}
-//           borderWidth={1}
-//           borderColor="$borderColor"
-//           enterStyle={{ x: 0, y: -10, opacity: 0 }}
-//           exitStyle={{ x: 0, y: -10, opacity: 0 }}
-//           x={0}
-//           y={0}
-//           opacity={1}
-//           p={0}
-//           animation={'lazy'}
-//           elevate
-//         >
-//           <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
-//           <YStack p={'$3'} ai={'flex-start'} w={'100%'}>
-//             <YStack w={'100%'}>
-//               <Paragraph size={'$5'} col={'$color11'}>
-//                 Drivers
-//               </Paragraph>
-//             </YStack>
-//           </YStack>
-//         </Popover.Content>
-//       </Popover>
-//     </XStack>
-//   )
-// }
+const MyStyledComponent = styled(Stack, {
+  variants: {
+    rootBackground: {
+      blue: { backgroundColor: 'red' },
+    },
+  } as const,
+})
+
+export type MyStyledProps = GetProps<typeof MyStyledComponent>
+type MyProps = {
+  myCustomProp?: string
+}
+
+const MyComponent = MyStyledComponent.styleable<MyProps>((props, ref) => {
+  return <MyStyledComponent ref={ref} {...props} />
+})
+
+const NewComponent = styled(MyComponent, {
+  variants: {
+    newBackground: { blue: { backgroundColor: 'red' } },
+  } as const,
+})
+
+const a = <MyStyledComponent rootBackground="blue" />
+const b = <MyComponent myCustomProp="sdasds" />
+const x = <NewComponent newBackground="blue" myCustomProp="asdsa" />
+
+// NewComponent won't have `myCustomProp` anymore, unless you remove variants on MyStyledComponent or NewComponent

@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "[yourprojectsname]",
-    "slug": "[yourprojectsname]",
-    "scheme": "[yourprojectsname]",
+    "name": "yourprojectsname",
+    "slug": "yourprojectsname",
+    "scheme": "yourprojectsname",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -15,25 +15,25 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.[yourprojectsname].app"
+      "bundleIdentifier": "com.yourprojectsname.app"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.[yourprojectsname].app"
+      "package": "com.yourprojectsname.app"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "extra": {
-      "eas": {
-        "projectId": "[your_project_id]"
-      }
-    }
+    "plugins": [
+      "expo-router"
+    ]
   }
 }

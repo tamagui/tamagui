@@ -1,8 +1,9 @@
 import { Page, expect, test } from '@playwright/test'
+
 import { setupPage } from './test-utils'
 
 test.beforeEach(async ({ page }) => {
-  await setupPage(page, { name: "ToastCase", type: "useCase" })
+  await setupPage(page, { name: 'ToastCase', type: 'useCase' })
 })
 
 async function buttonIsFocused(page: Page, identifier: number) {
@@ -14,7 +15,9 @@ async function toastIsFocused(page: Page, identifier: number) {
 }
 
 test.describe('given zero toasts', () => {
-  test('should not interrupt natural tab order in the document', async ({ page }) => {
+  test('should not interrupt natural tab order in the document', async ({
+    page,
+  }) => {
     await page.getByTestId('button-before').focus()
 
     await page.keyboard.press('Tab')

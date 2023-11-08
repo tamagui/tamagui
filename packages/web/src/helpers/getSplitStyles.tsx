@@ -38,6 +38,7 @@ import type {
   DebugProp,
   GetStyleResult,
   GetStyleState,
+  IsMediaType,
   MediaQueryKey,
   PseudoPropKeys,
   PseudoStyles,
@@ -55,7 +56,12 @@ import type {
 import { createMediaStyle } from './createMediaStyle'
 import { fixStyles } from './expandStyles'
 import { getGroupPropParts } from './getGroupPropParts'
-import { generateAtomicStyles, getStylesAtomic, styleToCSS } from './getStylesAtomic'
+import {
+  generateAtomicStyles,
+  getStylesAtomic,
+  styleToCSS,
+  transformsToString,
+} from './getStylesAtomic'
 import {
   insertStyleRules,
   insertedTransforms,
@@ -63,6 +69,7 @@ import {
   shouldInsertStyleRules,
   updateRules,
 } from './insertStyleRule'
+import { log } from './log'
 import {
   normalizeValueWithProperty,
   reverseMapClassNameToValue,
@@ -133,6 +140,17 @@ export const getSplitStyles: StyleSplitter = (
   debug
 ) => {
   conf = conf || getConfig()
+
+  // a bit icky, we need no normalize but not fully
+  if (
+    isWeb &&
+    styleProps.isAnimated &&
+    conf.animations.isReactNative &&
+    !styleProps.noNormalize
+  ) {
+    styleProps.noNormalize = 'values'
+  }
+
   const { shorthands } = conf
   const {
     isHOC,
@@ -144,6 +162,7 @@ export const getSplitStyles: StyleSplitter = (
     parentStaticConfig,
     acceptsClassName,
   } = staticConfig
+
   const validStyleProps = isText ? stylePropsText : validStyles
   const viewProps: GetStyleResult['viewProps'] = {}
   const mediaState = styleProps.mediaState || globalMediaState
@@ -191,9 +210,7 @@ export const getSplitStyles: StyleSplitter = (
     isClient
   ) {
     console.groupCollapsed('getSplitStyles (collapsed)')
-
-    // biome-ignore lint/suspicious/noConsoleLog: ok
-    console.log({
+    log({
       props,
       staticConfig,
       shouldDoClasses,
@@ -204,6 +221,8 @@ export const getSplitStyles: StyleSplitter = (
     })
     console.groupEnd()
   }
+
+  // className first:
 
   // handle before the loop so we can mark usedKeys in className
   // since the compiler will optimize to className we just treat className as the more powerful
@@ -247,8 +266,9 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
-    if (keyInit === 'className') continue // handled above
+    if (keyInit === 'className') continue // handled above first
     if (keyInit in usedKeys) continue
+    // keyInit === 'style' is handled in skipProps
     if (keyInit in skipProps && !isHOC) {
       if (keyInit === 'group') {
         if (process.env.TAMAGUI_TARGET === 'web') {
@@ -276,8 +296,7 @@ export const getSplitStyles: StyleSplitter = (
       if (valInitType === 'string' && valInit[0] === '_') {
         if (keyInit in validStyleProps || keyInit.includes('-')) {
           if (process.env.NODE_ENV === 'development' && debug) {
-            // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-            console.log(`Adding compiled style ${keyInit}: ${valInit}`)
+            log(`Adding compiled style ${keyInit}: ${valInit}`)
           }
 
           if (shouldDoClasses) {
@@ -349,7 +368,7 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     if (keyInit[0] === '_' && keyInit.startsWith('_style')) {
-      mergeStyleProp(styleState, valInit)
+      mergeStylePropIntoStyle(styleState, valInit)
       continue
     }
 
@@ -479,8 +498,7 @@ export const getSplitStyles: StyleSplitter = (
 
           if (isValidClassName || isMediaOrPseudo) {
             if (process.env.NODE_ENV === 'development' && debug) {
-              // biome-ignore lint/suspicious/noConsoleLog: ok
-              console.log('tamagui classname prop', keyInit, valInit)
+              log('tamagui classname prop', keyInit, valInit)
             }
 
             if (shouldDoClasses) {
@@ -511,8 +529,8 @@ export const getSplitStyles: StyleSplitter = (
     const isStyleLikeKey = isShorthand || isValidStyleKeyInit || isVariant
 
     let isPseudo = keyInit in validPseudoKeys
-    let isMedia = !isStyleLikeKey && !isPseudo && isMediaKey(keyInit)
-    let isMediaOrPseudo = isMedia || isPseudo
+    let isMedia: IsMediaType = !isStyleLikeKey && !isPseudo && isMediaKey(keyInit)
+    let isMediaOrPseudo = Boolean(isMedia || isPseudo)
 
     const isStyleProp =
       isMediaOrPseudo ||
@@ -551,11 +569,9 @@ export const getSplitStyles: StyleSplitter = (
           shouldPassThrough ? '(pass)' : ''
         } 🔹🔹🔹🔹`
       )
-      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-      console.log({ isVariant, valInit, shouldPassProp })
+      log({ isVariant, valInit, shouldPassProp })
       if (isClient) {
-        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-        console.log({
+        log({
           variants,
           variant: variants?.[keyInit],
           isVariant,
@@ -639,8 +655,7 @@ export const getSplitStyles: StyleSplitter = (
       console.groupCollapsed('  💠 expanded', keyInit, valInit)
       try {
         if (!isServer && isDevTools) {
-          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-          console.log({
+          log({
             expanded,
             styleProps,
             componentState,
@@ -652,8 +667,7 @@ export const getSplitStyles: StyleSplitter = (
             usedKeys: { ...usedKeys },
             curProps: { ...styleState.curProps },
           })
-          // biome-ignore lint/suspicious/noConsoleLog: ok
-          console.log('expanded', expanded, '\nusedKeys', { ...usedKeys }, '\ncurrent', {
+          log('expanded', expanded, '\nusedKeys', { ...usedKeys }, '\ncurrent', {
             ...style,
           })
         }
@@ -671,7 +685,7 @@ export const getSplitStyles: StyleSplitter = (
 
       isPseudo = key in validPseudoKeys
       isMedia = !isPseudo && !isValidStyleKeyInit && isMediaKey(key)
-      isMediaOrPseudo = isMedia || isPseudo
+      isMediaOrPseudo = Boolean(isMedia || isPseudo)
       isVariant = variants && key in variants
 
       if (inlineProps?.has(key) || (IS_STATIC && inlineWhenUnflattened?.has(key))) {
@@ -680,21 +694,20 @@ export const getSplitStyles: StyleSplitter = (
 
       // have to run this logic again here because expansions may need to be passed down
       // see StyledButtonVariantPseudoMerge test
-      const isHOCShouldPassThrough =
-        isHOC && (isMediaOrPseudo || parentStaticConfig?.variants?.[keyInit])
+      const shouldPassThrough =
+        (styleProps.noExpand && isPseudo) ||
+        (isHOC && (isMediaOrPseudo || parentStaticConfig?.variants?.[keyInit]))
 
-      if (isHOCShouldPassThrough) {
+      if (shouldPassThrough) {
         passDownProp(viewProps, key, val, isMediaOrPseudo)
         if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
           console.groupCollapsed(` - passing down prop ${key}`)
-          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-          console.log({ val, after: { ...viewProps[key] } })
+          log({ val, after: { ...viewProps[key] } })
           console.groupEnd()
         }
         continue
       }
 
-      // pseudo
       if (isPseudo) {
         if (!val) continue
 
@@ -748,8 +761,7 @@ export const getSplitStyles: StyleSplitter = (
             // prettier-ignore
             console.groupCollapsed("pseudo (classes)", key);
 
-            // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-            console.log({ pseudoStyleObject, pseudoStyles })
+            log({ pseudoStyleObject, pseudoStyles })
             console.groupEnd()
           }
 
@@ -788,8 +800,7 @@ export const getSplitStyles: StyleSplitter = (
             // prettier-ignore
             console.groupCollapsed("pseudo", key, { isDisabled });
 
-            // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-            console.log(pseudoStyleObject, {
+            log(pseudoStyleObject, {
               isDisabled,
               descriptorKey,
               descriptor,
@@ -811,7 +822,7 @@ export const getSplitStyles: StyleSplitter = (
                 mergeStyle(styleState, pkey, defaultVal)
               }
             } else {
-              const curImportance = usedKeys[importance] || 0
+              const curImportance = usedKeys[pkey] || 0
               const shouldMerge = importance >= curImportance
 
               if (shouldMerge) {
@@ -819,16 +830,15 @@ export const getSplitStyles: StyleSplitter = (
                 pseudos[key] ||= {}
                 pseudos[key][pkey] = val
                 mergeStyle(styleState, pkey, val)
-                usedKeys[pkey] ||= 1
               }
 
               if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-                // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-                console.log('    subKey', pkey, shouldMerge, {
+                log('    subKey', pkey, shouldMerge, {
                   importance,
                   curImportance,
                   pkey,
                   val,
+                  transforms: { ...styleState.transforms },
                 })
               }
             }
@@ -850,8 +860,7 @@ export const getSplitStyles: StyleSplitter = (
       else if (isMedia) {
         if (!val) continue
 
-        const isPlatformMedia = key.startsWith('$platform-')
-        if (isPlatformMedia) {
+        if (isMedia === 'platform') {
           const platform = key.slice(10)
           if (
             // supports web, ios, android
@@ -879,8 +888,7 @@ export const getSplitStyles: StyleSplitter = (
         const mediaKeyShort = key.slice(1)
 
         if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-          // biome-ignore lint/suspicious/noConsoleLog: ok
-          console.log(`  📺 ${key}`, {
+          log(`  📺 ${key}`, {
             key,
             val,
             mediaStyle,
@@ -915,8 +923,7 @@ export const getSplitStyles: StyleSplitter = (
                 space = val['space']
                 usedKeys['space'] = importance
                 if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-                  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-                  console.log(
+                  log(
                     `Found more important space for current media ${mediaKeyShort}: ${val} (importance: ${importance})`
                   )
                 }
@@ -933,18 +940,22 @@ export const getSplitStyles: StyleSplitter = (
               style,
               mediaKeyShort,
               mediaQueryConfig,
+              isMedia,
               false,
               priority
             )
+            if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+              log(`📺 media style:`, out)
+            }
             const fullKey = `${style.property}${PROP_SPLIT}${mediaKeyShort}`
             if (fullKey in usedKeys) continue
             addStyleToInsertRules(rulesToInsert, out as any)
             mergeClassName(transforms, classNames, fullKey, out.identifier, true, true)
           }
         } else {
-          const isThemeMedia = !isPlatformMedia && mediaKeyShort.startsWith('theme-')
-          const isGroupMedia =
-            !isPlatformMedia && !isThemeMedia && mediaKeyShort.startsWith('group-')
+          const isThemeMedia = isMedia === 'theme'
+          const isGroupMedia = isMedia === 'group'
+          const isPlatformMedia = isMedia === 'platform'
 
           if (!isThemeMedia && !isPlatformMedia && !isGroupMedia) {
             if (!mediaState[mediaKeyShort]) {
@@ -1055,10 +1066,9 @@ export const getSplitStyles: StyleSplitter = (
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
       console.groupCollapsed(` ✔️ expand complete`, keyInit)
       try {
-        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-        console.log('style', { ...style })
-        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-        console.log('viewProps', { ...viewProps })
+        log('style', { ...style })
+        log('transforms', { ...transforms })
+        log('viewProps', { ...viewProps })
       } catch {
         // RN can run into PayloadTooLargeError: request entity too large
       }
@@ -1066,19 +1076,23 @@ export const getSplitStyles: StyleSplitter = (
     }
   } // end prop loop
 
+  // style prop after:
+
   // merge after the prop loop - this way pseudos apply and set usedKeys and then this wont clobber them
   // otherwise styled(styleable(), { bg: 'red', pressStyle: { bg: 'pink' } })
   // will pass down a style={} + pressStyle={} but pressStyle will go behind style depending on how you pass it
   // also it makes sense that props.style is basically the last to apply,
   // at least more sense than "it applies at the position its defined in the prop loop"
   if (props.style) {
-    mergeStyleProp(styleState, props.style)
+    mergeStylePropIntoStyle(styleState, props.style)
   }
 
-  if (!styleProps.noNormalize) {
+  const avoidNormalize = styleProps.noNormalize === false
+
+  if (!avoidNormalize) {
     fixStyles(style)
 
-    // shouldnt this be better? but breaks some tests wierdly, need to check
+    // shouldn't this be better? but breaks some tests weirdly, need to check
     // if (isWeb && !staticConfig.isReactNative) {
     if (isWeb && !staticConfig.isReactNative) {
       styleToCSS(style)
@@ -1102,6 +1116,17 @@ export const getSplitStyles: StyleSplitter = (
         .forEach(([key, val]) => {
           mergeTransform(style, key, val, true)
         })
+
+      // Button for example uses disableClassName: true but renders to a 'button' element, so needs this
+      if (process.env.TAMAGUI_TARGET === 'web') {
+        if (
+          !staticConfig.isReactNative &&
+          !styleProps.isAnimated &&
+          Array.isArray(style.transform)
+        ) {
+          style.transform = transformsToString(style.transform) as any
+        }
+      }
     }
 
     // add in defaults if not set:
@@ -1273,8 +1298,7 @@ export const getSplitStyles: StyleSplitter = (
         }
       }
       if (process.env.NODE_ENV === 'development' && debug && debug !== 'profile') {
-        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-        console.log(`Found fontFamily native: ${style.fontFamily}`, faceInfo)
+        log(`Found fontFamily native: ${style.fontFamily}`, faceInfo)
       }
     }
   }
@@ -1290,6 +1314,7 @@ export const getSplitStyles: StyleSplitter = (
         // prettier-ignore
         const logs = {
           ...result,
+          className,
           componentState,
           transforms,
           viewProps,
@@ -1298,8 +1323,7 @@ export const getSplitStyles: StyleSplitter = (
           parentSplitStyles,
         };
         for (const key in logs) {
-          // biome-ignore lint/suspicious/noConsoleLog: ok
-          console.log(key, logs[key])
+          log(key, logs[key])
         }
       } catch {
         // RN can run into PayloadTooLargeError: request entity too large
@@ -1344,7 +1368,12 @@ function mergeClassName(
   }
 }
 
-function mergeStyle(styleState: GetStyleState, key: string, val: any) {
+function mergeStyle(
+  styleState: GetStyleState,
+  key: string,
+  val: any,
+  disableNormalize = false
+) {
   const { classNames, viewProps, style, usedKeys, styleProps } = styleState
   if (isWeb && val?.[0] === '_') {
     classNames[key] = val
@@ -1353,8 +1382,8 @@ function mergeStyle(styleState: GetStyleState, key: string, val: any) {
     styleState.transforms ||= {}
     styleState.transforms[key] = val
   } else {
-    const out =
-      isWeb && !styleProps.noNormalize ? normalizeValueWithProperty(val, key) : val
+    const shouldNormalize = isWeb && !disableNormalize && !styleProps.noNormalize
+    const out = shouldNormalize ? normalizeValueWithProperty(val, key) : val
     if (key in validStylesOnBaseProps) {
       viewProps[key] = out
     } else {
@@ -1397,21 +1426,16 @@ export const getSubStyle = (
   return styleOut
 }
 
-function mergeStyleProp(styleState: GetStyleState, val: any) {
-  if (!val) return
-  const styles = [].concat(val).flat()
-  for (const cur of styles) {
-    if (!cur) continue
-    const isRNW = cur['$$css']
+function mergeStylePropIntoStyle(styleState: GetStyleState, cur: Object[] | Object) {
+  if (!cur) return
+  const styles = Array.isArray(cur) ? cur : [cur]
+  for (const style of styles) {
+    if (!style) continue
+    const isRNW = style['$$css']
     if (isRNW) {
-      Object.assign(styleState.classNames, cur)
+      Object.assign(styleState.classNames, style)
     } else {
-      for (const key in cur) {
-        if (key in styleState.usedKeys) {
-          continue
-        }
-        mergeStyle(styleState, key, cur[key])
-      }
+      Object.assign(styleState.style, style)
     }
   }
 }

@@ -1,7 +1,13 @@
 import { Search as SearchIcon } from '@tamagui/lucide-icons'
 import React from 'react'
 import { memo, useContext, useEffect, useRef } from 'react'
-import { Button, ButtonProps, TooltipSimple, useIsTouchDevice } from 'tamagui'
+import {
+  Button,
+  ButtonProps,
+  SizableText,
+  TooltipSimple,
+  useIsTouchDevice,
+} from 'tamagui'
 
 import { SearchContext } from './SearchContext'
 
@@ -34,16 +40,14 @@ export const SearchButton = memo((props: ButtonProps) => {
         icon={SearchIcon}
         // dont hide this on touchables to avoid layout shifts...
         iconAfter={
-          <Button
+          <SizableText
             size="$2"
-            $sm={{ display: 'none', size: '$4' }}
-            chromeless
-            borderWidth={0}
-            pe="none"
+            mx="$1.5"
+            $sm={{ maw: 0, ov: 'hidden', mx: -3 }}
             o={0.35}
           >
             /
-          </Button>
+          </SizableText>
         }
         {...props}
       />

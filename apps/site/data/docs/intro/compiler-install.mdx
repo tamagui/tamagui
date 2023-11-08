@@ -3,23 +3,15 @@ title: Install the Compiler
 description: Adding the compiler to your apps.
 ---
 
-Tamagui works 100% at runtime, the compiler is optional, it's easier to get started by [skipping setting it up](/docs/core/configuration) so you can try it out in practice before committing.
+For more background read the [Compiler About](/intro/why-a-compiler) page, for performance see [Benchmarks](/intro/benchmarks).
 
-Install on most platforms is as easy as configuring a library:
-
-- [Webpack](#webpack)
-- [Next.js](#nextjs) ([guide](/docs/guides/next-js))
-- [Vite](#vite) ([guide](/docs/guides/vite))
-- [Metro](#babel--metro)
-- [Expo](/docs/guides/expo)
+It's important to note the compiler is optional, and it's much easier to get started by building your app out before you commit to the setup cost.
 
 <Notice>
   The compiler will generate built versions of your components and config into the
   `.tamagui` directory, relative to your app. You'll want to add this to your `.gitignore`
   if you don't already ignore dotfiles.
 </Notice>
-
-### Setup
 
 ### Webpack
 
@@ -88,6 +80,8 @@ module.exports = {
 
 ### Vite
 
+See the [Vite guide](/docs/guides/vite) for more complete setup.
+
 Add `@tamagui/vite-plugin` and update your `vite.config.ts`:
 
 ```tsx
@@ -107,6 +101,8 @@ export default defineConfig({
 
 ### Next.js
 
+See the ([guide](/docs/guides/next-js)) for more complete setup.
+
 Add `@tamagui/next-plugin` and configure your `next.config.js`. Here we show a fuller scope of the options
 
 ```js
@@ -122,11 +118,6 @@ export default withPlugins([
     components: ['tamagui'],
 
     // rest are all optional:
-
-    // Experimentally opt into react-native-web which drops support for all react-native
-    // built-in List components and removes many deprecated APIs for code-reduction, slimming
-    // bundle sizes down nearly 30-50Kb.
-    useReactNativeWebLite: true,
 
     // disable static extraction, faster to iterate in dev mode (default false)
     disableExtraction: process.env.NODE_ENV === 'development',
@@ -204,6 +195,8 @@ module.exports = {
   ]
 }
 ```
+
+Currently the native compiler doesn't optimize as much as it could. It bails out if it encounters any token or theme usage, like `<Stack backgroundColor="$background" />`. If you are on version `1.75` or greater, you can test enabling this experimental optimization by adding a new property with the key `experimentalFlattenThemesOnNative` set to true in the above config object.
 
 #### Expo
 

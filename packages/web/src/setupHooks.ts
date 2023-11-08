@@ -2,6 +2,7 @@ import { RefObject } from 'react'
 
 import {
   GetStyleResult,
+  StaticConfig,
   TamaguiComponentEvents,
   TamaguiComponentState,
   TamaguiElement,
@@ -25,11 +26,21 @@ type InternalHooks = {
     viewProps: Record<string, any>,
     events: TamaguiComponentEvents | null,
     splitStyles: GetStyleResult,
-    setStateShallow: (next: Partial<TamaguiComponentState>) => void
+    setStateShallow: (next: Partial<TamaguiComponentState>) => void,
+    staticConfig: StaticConfig
+  ) => any
+
+  useChildren?: (
+    elementType: any,
+    children: any,
+    viewProps: Record<string, any>,
+    events: TamaguiComponentEvents | null,
+    staticConfig: StaticConfig
   ) => any
 
   getBaseViews?: () => {
     View: any
     Text: any
+    TextAncestor: any
   }
 }

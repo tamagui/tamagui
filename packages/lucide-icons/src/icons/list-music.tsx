@@ -29,17 +29,17 @@ const Icon = (props) => {
       height={size}
       viewBox="0 0 24 24"
       fill="none"
-      stroke={`${color}`}
+      stroke={color}
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
       {...otherProps}
     >
-      <Path d="M21 15V6" stroke={`${color}`} />
-      <Path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" stroke={`${color}`} />
-      <Path d="M12 12H3" stroke={`${color}`} />
-      <Path d="M16 6H3" stroke={`${color}`} />
-      <Path d="M12 18H3" stroke={`${color}`} />
+      <Path d="M21 15V6" stroke={color} />
+      <Path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" stroke={color} />
+      <Path d="M12 12H3" stroke={color} />
+      <Path d="M16 6H3" stroke={color} />
+      <Path d="M12 18H3" stroke={color} />
     </Svg>
   )
 }

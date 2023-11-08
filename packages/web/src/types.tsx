@@ -29,6 +29,10 @@ import type { ThemeProviderProps } from './views/ThemeProvider'
 
 export type { MediaStyleObject, StyleObject } from '@tamagui/helpers'
 
+export type ColorScheme = 'light' | 'dark'
+
+export type IsMediaType = boolean | 'platform' | 'theme' | 'group'
+
 export type SpaceDirection = 'vertical' | 'horizontal' | 'both'
 
 export type TamaguiElement = HTMLElement | View
@@ -36,9 +40,9 @@ export type TamaguiTextElement = HTMLElement | RNText
 
 export type DebugProp = boolean | 'break' | 'verbose' | 'visualize' | 'profile'
 
-export type TamaguiComponentPropsBase = {
+export type TamaguiComponentPropsBaseBase = {
   target?: string
-  hitSlop?: PressableProps['hitSlop']
+
   /**
    * When truthy passes through all props to a single child element, and avoids rendering its own element.
    * Must pass just one child React element that will receive all the props.
@@ -127,20 +131,28 @@ export type TamaguiComponentPropsBase = {
    */
   disableClassName?: boolean
 
+  // WEB ONLY TODO probably remove these in favor of something better
+
+  onFocus?: (event: React.FocusEvent<HTMLDivElement>) => void
+  onScroll?: (event: React.UIEvent<HTMLDivElement, UIEvent>) => void
+}
+
+export type TamaguiComponentPropsBase<A = {}> = WebOnlyPressEvents &
+  TamaguiComponentPropsBaseBase
+
+export type WebOnlyPressEvents = {
   onPress?: PressableProps['onPress']
   onLongPress?: PressableProps['onLongPress']
   onPressIn?: PressableProps['onPress']
   onPressOut?: PressableProps['onPress']
-
-  // WEB ONLY TODO probably remove these in favor of something better
   onHoverIn?: DivAttributes['onMouseEnter']
   onHoverOut?: DivAttributes['onMouseLeave']
   onMouseEnter?: DivAttributes['onMouseEnter']
   onMouseLeave?: DivAttributes['onMouseLeave']
   onMouseDown?: DivAttributes['onMouseDown']
   onMouseUp?: DivAttributes['onMouseUp']
-  onFocus?: (event: React.FocusEvent<HTMLDivElement>) => void
-  onScroll?: (event: React.UIEvent<HTMLDivElement, UIEvent>) => void
+  onFocus?: DivAttributes['onFocus']
+  onBlur?: DivAttributes['onBlur']
 }
 
 /**
@@ -180,6 +192,7 @@ export type ReactComponentWithRef<Props, Ref> = ForwardRefExoticComponent<
 >
 
 export type ComponentContextI = {
+  disableSSR?: boolean
   inText: boolean
   language: LanguageContextType | null
   animationDriver: AnimationDriver | null
@@ -413,12 +426,12 @@ type ConfProps<
   H extends DefaultFontSetting = DefaultFontSetting,
   I extends GenericTamaguiSettings = GenericTamaguiSettings
 > = {
-  tokens: A
-  themes: B
+  tokens?: A
+  themes?: B
   shorthands?: C
   media?: D
   animations?: AnimationDriver<E>
-  fonts: F
+  fonts?: F
   onlyAllowShorthands?: G
   defaultFont?: H
   settings?: I
@@ -511,6 +524,12 @@ export interface ThemeProps {
   shallow?: boolean
 }
 
+// more low level
+export type UseThemeWithStateProps = ThemeProps & {
+  deopt?: boolean
+  disable?: boolean
+}
+
 type ArrayIntersection<A extends any[]> = A[keyof A]
 
 type GetAltThemeNames<S> =
@@ -596,6 +615,25 @@ type GenericTamaguiSettings = {
    * @default false
    */
   mediaPropOrder?: boolean
+
+  /**
+   * On iOS, this enables a mode where Tamagui returns color values using `DynamicColorIOS`
+   * This is a React Native built in feature, you can read the docs here:
+   *   https://reactnative.dev/docs/dynamiccolorios
+   *
+   * We're working to make this enabled by default without any setting, but Tamagui themes
+   * support inversing and/or changing to light/dark at any point in the tree. We haven't implemented
+   * support for either of these cases when combined with this feature.
+   *
+   * So - as long as you:
+   *
+   *   1. Only use light/dark changes of themes at the root of your app
+   *   2. Don't use <Theme inverse> or themeInverse
+   *   3. Always change light/dark alongside the Appearance.colorSheme
+   *
+   * Then this feature is safe to turn on and will significantly speed up dark/light re-renders.
+   */
+  fastSchemeChange?: boolean
 }
 
 export type TamaguiSettings = TamaguiConfig['settings']
@@ -605,9 +643,9 @@ export type CreateTamaguiProps = {
   shorthands?: CreateShorthands
   media?: GenericTamaguiConfig['media']
   animations?: AnimationDriver<any>
-  fonts: GenericTamaguiConfig['fonts']
-  tokens: GenericTamaguiConfig['tokens']
-  themes: {
+  fonts?: GenericTamaguiConfig['fonts']
+  tokens?: GenericTamaguiConfig['tokens']
+  themes?: {
     [key: string]: {
       [key: string]: string | number | Variable
     }
@@ -1303,22 +1341,35 @@ export type TextPropsBase = TextNonStyleProps & WithThemeAndShorthands<TextStyle
 export type TextStyleProps = WithThemeShorthandsPseudosMediaAnimation<TextStylePropsBase>
 export type TextProps = TextNonStyleProps & TextStyleProps
 
-//
-// StaticComponent
-//
+export interface ThemeableProps {
+  theme?: ThemeName | null
+  themeInverse?: boolean
+  themeReset?: boolean
+  componentName?: string
+  debug?: DebugProp
+}
 
-export type Styleable<Props, Ref> = <
-  CustomProps extends Object,
-  X extends FunctionComponent<Props & CustomProps> = FunctionComponent<
-    Props & CustomProps
-  >
+export type StyleableOptions = {
+  disableTheme?: boolean
+  staticConfig?: Partial<StaticConfig>
+}
+
+export type Styleable<Props, Ref, BaseProps, VariantProps, ParentStaticProperties> = <
+  CustomProps extends Object | void = void,
+  MergedProps = CustomProps extends void
+    ? Props
+    : Omit<Props, keyof CustomProps> & CustomProps,
+  X extends FunctionComponent<MergedProps> = FunctionComponent<MergedProps>
 >(
   a: X,
-  staticConfig?: Partial<StaticConfig>
-) => ReactComponentWithRef<CustomProps & Omit<Props, keyof CustomProps>, Ref> & {
-  staticConfig: StaticConfig
-  styleable: Styleable<Props, Ref>
-}
+  options?: StyleableOptions
+) => TamaguiComponent<
+  MergedProps,
+  Ref,
+  BaseProps & CustomProps,
+  VariantProps,
+  ParentStaticProperties
+>
 
 export type TamaguiComponent<
   Props = any,
@@ -1327,22 +1378,23 @@ export type TamaguiComponent<
   VariantProps = {},
   ParentStaticProperties = {}
 > = ReactComponentWithRef<Props, Ref> &
-  StaticComponentObject<Props, Ref> &
+  StaticComponentObject<Props, Ref, BaseProps, VariantProps, ParentStaticProperties> &
   ParentStaticProperties & {
     __baseProps: BaseProps
     __variantProps: VariantProps
   }
 
-type StaticComponentObject<Props, Ref> = {
-  staticConfig: StaticConfig
+type StaticComponentObject<Props, Ref, BaseProps, VariantProps, ParentStaticProperties> =
+  {
+    staticConfig: StaticConfig
 
-  /** @deprecated use `styleable` instead (same functionality, better name) */
-  extractable: <X>(a: X, staticConfig?: Partial<StaticConfig>) => X
-  /*
-   * If you want your HOC of a styled() component to also be able to be styled(), you need this to wrap it.
-   */
-  styleable: Styleable<Props, Ref>
-}
+    /** @deprecated use `styleable` instead (same functionality, better name) */
+    extractable: <X>(a: X, staticConfig?: Partial<StaticConfig>) => X
+    /*
+     * If you want your HOC of a styled() component to also be able to be styled(), you need this to wrap it.
+     */
+    styleable: Styleable<Props, Ref, BaseProps, VariantProps, ParentStaticProperties>
+  }
 
 export type TamaguiComponentExpectingVariants<
   Props = {},
@@ -1466,7 +1518,7 @@ export type StaticConfigPublic = {
 }
 
 type StaticConfigBase = StaticConfigPublic & {
-  Component?: FunctionComponent<any> & StaticComponentObject<any, any>
+  Component?: FunctionComponent<any> & StaticComponentObject<any, any, any, any, any>
 
   variants?: GenericVariantDefinitions
 
@@ -1809,13 +1861,13 @@ export type TamaguiComponentState = {
   group?: Record<string, GroupState>
 }
 
-export type ResolveVariableAs = 'auto' | 'value' | 'variable' | 'none'
+export type ResolveVariableAs = 'auto' | 'value' | 'variable' | 'none' | 'web'
 
 export type SplitStyleProps = {
   mediaState?: Record<string, boolean>
   noClassNames?: boolean
   noExpand?: boolean
-  noNormalize?: boolean
+  noNormalize?: boolean | 'values'
   noSkip?: boolean
   resolveValues?: ResolveVariableAs
   disableExpandShorthands?: boolean
@@ -1962,6 +2014,8 @@ export type TamaguiComponentEvents = {
   onMouseEnter?: ((e: any) => void) | undefined
   onMouseLeave?: ((e: any) => void) | undefined
   onPressOut: ((e: any) => void) | undefined
+  onFocus?: ((e: any) => void) | undefined
+  onBlur?: ((e: any) => void) | undefined
 }
 
 export type ModifyTamaguiComponentStyleProps<
@@ -2048,3 +2102,7 @@ export type DedupedTheme = {
 }
 
 export type DedupedThemes = DedupedTheme[]
+
+export type UseMediaState = {
+  [key in MediaQueryKey]: boolean
+}

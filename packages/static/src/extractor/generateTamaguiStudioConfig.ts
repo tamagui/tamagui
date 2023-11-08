@@ -54,7 +54,10 @@ export function generateTamaguiStudioConfigSync(
   }
 }
 
-export async function generateTamaguiThemes(tamaguiOptions: TamaguiOptions) {
+export async function generateTamaguiThemes(
+  tamaguiOptions: TamaguiOptions,
+  force = false
+) {
   if (!tamaguiOptions.themeBuilder) {
     return
   }
@@ -65,21 +68,23 @@ export async function generateTamaguiThemes(tamaguiOptions: TamaguiOptions) {
   const generatedOutput = await generateThemes(inPath)
 
   // because this runs in parallel (its cheap) lets avoid logging a bunch, so check to see if changed:
-  const hasChanged = await (async () => {
-    try {
-      const themeBuilderJsonExists = await fs.pathExists(
-        join(tamaguiDir, 'theme-builder.json')
-      )
-      if (!themeBuilderJsonExists) return true
-      if (!generatedOutput) return false
-      const next = generatedOutput.generated
-      const current = await readFile(outPath, 'utf-8')
-      return next !== current
-    } catch (err) {
-      // ok
-    }
-    return true
-  })()
+  const hasChanged =
+    force ||
+    (await (async () => {
+      try {
+        const themeBuilderJsonExists = await fs.pathExists(
+          join(tamaguiDir, 'theme-builder.json')
+        )
+        if (!themeBuilderJsonExists) return true
+        if (!generatedOutput) return false
+        const next = generatedOutput.generated
+        const current = await readFile(outPath, 'utf-8')
+        return next !== current
+      } catch (err) {
+        // ok
+      }
+      return true
+    })())
 
   if (hasChanged) {
     await writeGeneratedThemes(tamaguiDir, outPath, generatedOutput)

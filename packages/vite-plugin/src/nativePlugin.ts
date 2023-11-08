@@ -39,6 +39,12 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
       config.resolve ??= {}
 
       config.resolve.extensions = extensions
+      // config.resolve.conditions = [
+      //   // for rn compat use require over exports
+      //   'require',
+      //   'default',
+      //   'import',
+      // ]
 
       config.optimizeDeps ??= {}
 
@@ -166,8 +172,7 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
       }
 
       if (process.env.DEBUG) {
-        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-        console.log('config..', config)
+        console.debug('config..', config)
       }
 
       const updateOutputOptions = (out: OutputOptions) => {

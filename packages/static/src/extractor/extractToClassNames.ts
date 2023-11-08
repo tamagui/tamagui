@@ -109,8 +109,7 @@ export async function extractToClassNames({
     onStyleRule(identifier, rules) {
       const css = rules.join(';')
       if (shouldPrintDebug) {
-        // biome-ignore lint/suspicious/noConsoleLog: ok
-        console.log(`adding styled() rule: .${identifier} ${css}`)
+        console.info(`adding styled() rule: .${identifier} ${css}`)
       }
       cssMap.set(`.${identifier}`, { css, commentTexts: [] })
     },
@@ -136,8 +135,7 @@ export async function extractToClassNames({
       // bail out of views that don't accept className (falls back to runtime + style={})
       if (staticConfig.acceptsClassName === false) {
         if (shouldPrintDebug) {
-          // biome-ignore lint/suspicious/noConsoleLog: ok
-          console.log(`bail, acceptsClassName is false`)
+          console.info(`bail, acceptsClassName is false`)
         }
         return
       }
@@ -218,8 +216,7 @@ export async function extractToClassNames({
                 // replace existing font_ with new one
                 if (newFontFamily) {
                   if (shouldPrintDebug) {
-                    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-                    console.log(` newFontFamily: ${newFontFamily}`)
+                    console.info(` newFontFamily: ${newFontFamily}`)
                   }
                   previous = previous.replace(/font_[a-z]+/i, '')
                 }
@@ -270,8 +267,7 @@ export async function extractToClassNames({
             )
             if (shouldPrintDebug) {
               if (mediaExtraction) {
-                // biome-ignore lint/suspicious/noConsoleLog: ok
-                console.log(
+                console.info(
                   'ternary (mediaStyles)',
                   mediaExtraction.ternaryWithoutMedia?.inlineMediaQuery ?? '',
                   mediaExtraction.mediaStyles.map((x) => x.identifier).join('.')
@@ -331,8 +327,7 @@ export async function extractToClassNames({
       }
 
       if (shouldPrintDebug) {
-        // biome-ignore lint/suspicious/noConsoleLog: ok
-        console.log(
+        console.info(
           '  finalClassNames\n',
           logLines(finalClassNames.map((x) => x['value']).join(' '))
         )
@@ -414,8 +409,7 @@ export async function extractToClassNames({
 
   if (!res || (!res.modified && !res.optimized && !res.flattened && !res.styled)) {
     if (shouldPrintDebug) {
-      // biome-ignore lint/suspicious/noConsoleLog: ok
-      console.log('no res or none modified', res)
+      console.info('no res or none modified', res)
     }
     return null
   }
@@ -440,16 +434,14 @@ export async function extractToClassNames({
   )
 
   if (shouldPrintDebug) {
-    // biome-ignore lint/suspicious/noConsoleLog: ok
-    console.log(
+    console.info(
       '\n -------- output code ------- \n\n',
       result.code
         .split('\n')
         .filter((x) => !x.startsWith('//'))
         .join('\n')
     )
-    // biome-ignore lint/suspicious/noConsoleLog: ok
-    console.log('\n -------- output style -------- \n\n', styles)
+    console.info('\n -------- output style -------- \n\n', styles)
   }
 
   if (shouldLogTiming) {
@@ -471,8 +463,7 @@ export async function extractToClassNames({
     const timingStr = `${timing}ms`.padStart(6)
     const pre = getPrefixLogs(options)
     const memStr = memory ? `(${memory})` : ''
-    // biome-ignore lint/suspicious/noConsoleLog: ok
-    console.log(
+    console.info(
       `${pre} ${path}   ·  ${numFound} found   ·  ${numOptimized} opt   ·  ${numFlattened} flat  ${timingStr} ${memStr}`
     )
   }

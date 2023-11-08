@@ -87,7 +87,7 @@ export function SelectDemoItem(props: SelectProps) {
             start={[0, 0]}
             end={[0, 1]}
             fullscreen
-            colors={['$background', '$backgroundTransparent']}
+            colors={['$background', 'transparent']}
             borderRadius="$4"
           />
         </Select.ScrollUpButton>
@@ -108,6 +108,7 @@ export function SelectDemoItem(props: SelectProps) {
                 items.map((item, i) => {
                   return (
                     <Select.Item
+                      debug="verbose"
                       index={i}
                       key={item.name}
                       value={item.name.toLowerCase()}
@@ -153,7 +154,7 @@ export function SelectDemoItem(props: SelectProps) {
             start={[0, 0]}
             end={[0, 1]}
             fullscreen
-            colors={['$backgroundTransparent', '$background']}
+            colors={['transparent', '$background']}
             borderRadius="$4"
           />
         </Select.ScrollDownButton>

@@ -105,7 +105,7 @@ const SliderHorizontal = React.forwardRef<View, SliderHorizontalProps>(
         size={state.size}
       >
         <SliderImpl
-          ref={composeRefs(forwardedRef, sliderRef)}
+          ref={composeRefs(forwardedRef, sliderRef) as any}
           dir={direction}
           {...sliderProps}
           orientation="horizontal"
@@ -202,7 +202,7 @@ const SliderVertical = React.forwardRef<View, SliderVerticalProps>(
         direction={1}
       >
         <SliderImpl
-          ref={composeRefs(forwardedRef, sliderRef)}
+          ref={composeRefs(forwardedRef, sliderRef) as any}
           {...sliderProps}
           orientation="vertical"
           onLayout={measure}
@@ -257,7 +257,7 @@ export const SliderTrackFrame = styled(SliderFrame, {
   } as const,
 
   defaultVariants: {
-    unstyled: false,
+    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
   },
 })
 
@@ -382,7 +382,7 @@ export const SliderThumbFrame = styled(ThemeableStack, {
   } as const,
 
   defaultVariants: {
-    unstyled: false,
+    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
   },
 })
 
@@ -488,7 +488,7 @@ const SliderThumb = SliderThumbFrame.styleable<SliderThumbProps>(function Slider
  * Slider
  * -----------------------------------------------------------------------------------------------*/
 
-const SliderComponent = React.forwardRef<View, SliderProps>(
+const SliderComponent = React.forwardRef<TamaguiElement, SliderProps>(
   (props: ScopedProps<SliderProps>, forwardedRef) => {
     const {
       name,
@@ -585,7 +585,7 @@ const SliderComponent = React.forwardRef<View, SliderProps>(
           aria-disabled={disabled}
           data-disabled={disabled ? '' : undefined}
           {...sliderProps}
-          ref={composedRefs}
+          ref={composedRefs as any}
           min={min}
           max={max}
           onSlideEnd={onSlideEnd}

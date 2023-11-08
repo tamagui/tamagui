@@ -1,15 +1,23 @@
 import { existsSync } from 'fs'
 import path, { dirname, join } from 'path'
 
-import type { TamaguiOptions } from '@tamagui/static'
 import browserslist from 'browserslist'
 import buildResolver from 'esm-resolve'
 import { lazyPostCSS } from 'next/dist/build/webpack/config/blocks/css'
 import { getGlobalCssLoader } from 'next/dist/build/webpack/config/blocks/css/loaders'
-import { TamaguiPlugin, shouldExclude as shouldExcludeDefault } from 'tamagui-loader'
+import {
+  PluginOptions as LoaderPluginOptions,
+  TamaguiPlugin,
+  shouldExclude as shouldExcludeDefault,
+} from 'tamagui-loader'
 import webpack from 'webpack'
 
-export type WithTamaguiProps = TamaguiOptions & {
+export type WithTamaguiProps = LoaderPluginOptions & {
+  appDir?: boolean
+
+  /**
+   * @deprecated Deprecated, just leave it off
+   */
   useReactNativeWebLite: boolean
   enableLegacyFontSupport?: boolean
   aliasReactPackages?: boolean
@@ -25,7 +33,7 @@ export type WithTamaguiProps = TamaguiOptions & {
 
 export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
   return (nextConfig: any = {}) => {
-    const isAppDir = nextConfig.experimental?.appDir
+    const isAppDir = tamaguiOptions?.appDir || nextConfig.experimental?.appDir
 
     return {
       ...nextConfig,
@@ -66,8 +74,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
                 continue
               }
               if (process.env.DEBUG?.startsWith('tamagui')) {
-                // biome-ignore lint/suspicious/noConsoleLog: ok
-                console.log(prefix, `withTamagui skipping resolving ${out}`, err)
+                console.info(prefix, `withTamagui skipping resolving ${out}`, err)
               }
             }
           }
@@ -162,8 +169,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
         }
 
         if (process.env.DEBUG) {
-          // biome-ignore lint/suspicious/noConsoleLog: ok
-          console.log('Tamagui alias:', alias)
+          console.info('Tamagui alias:', alias)
         }
 
         if (process.env.ANALYZE === 'true') {
@@ -196,7 +202,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
               '|'
             )}).*js`
             const regex = new RegExp(regexStr)
-            // console.log(prefix, 'exclude', regexStr)
+            // console.info(prefix, 'exclude', regexStr)
             webpackConfig.plugins.push(
               new webpack.NormalModuleReplacementPlugin(
                 regex,
@@ -214,8 +220,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
 
         if (process.env.IGNORE_TS_CONFIG_PATHS) {
           if (process.env.DEBUG) {
-            // biome-ignore lint/suspicious/noConsoleLog: ok
-            console.log(prefix, 'ignoring tsconfig paths')
+            console.info(prefix, 'ignoring tsconfig paths')
           }
           if (webpackConfig.resolve.plugins[0]) {
             delete webpackConfig.resolve.plugins[0].paths['@tamagui/*']
@@ -402,7 +407,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
             isServer,
             exclude: (path: string) => {
               const res = shouldExclude(path, options.dir)
-              // console.log(`shouldExclude`, res, path)
+              // console.info(`shouldExclude`, res, path)
               return res
             },
             ...tamaguiOptions,

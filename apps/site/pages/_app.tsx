@@ -3,6 +3,7 @@ import '@tamagui/core/reset.css'
 import '../app.css'
 
 import { GetLayout } from '@lib/getDefaultLayout'
+import { setTintFamily } from '@tamagui/logo'
 import {
   ColorScheme,
   NextThemeProvider,
@@ -12,7 +13,13 @@ import {
 import { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
-import { TamaguiProvider, Text, useDebounceValue, useDidFinishSSR } from 'tamagui'
+import {
+  TamaguiProvider,
+  Text,
+  isClient,
+  useDebounceValue,
+  useDidFinishSSR,
+} from 'tamagui'
 
 import { LoadCherryBomb, LoadInter900, LoadMunro } from '../components/LoadFont'
 import config from '../tamagui.config'
@@ -24,13 +31,6 @@ Error.stackTraceLimit = Infinity
 if (process.env.NODE_ENV === 'production') {
   require('../public/tamagui.css')
 }
-
-// for auto mode
-// // santa mode
-// if (isClient) {
-//   const goXmas = setTimeout(() => {
-//     setTintFamily('xmas')
-//   }, 2500)
 
 // prevent next.js from prefetching stuff
 if (typeof navigator !== 'undefined') {

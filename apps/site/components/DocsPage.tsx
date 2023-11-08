@@ -164,7 +164,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
         py="$8"
         $gtMd={{
           pb: '$9',
-          pl: 230,
+          pl: 250,
           pr: 100,
         }}
       >

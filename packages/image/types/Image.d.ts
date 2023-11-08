@@ -1,15 +1,7 @@
 import { GetProps, RadiusTokens, SizeTokens, StackProps, ThemeValueFallback } from '@tamagui/core';
 import React from 'react';
 import { Image as RNImage } from 'react-native';
-declare const StyledImage: import("@tamagui/core").TamaguiComponent<(import("react-native").ImageProps & Omit<StackProps, keyof import("react-native").ImageProps>) | (import("react-native").ImageProps & Omit<StackProps, keyof import("react-native").ImageProps> & Omit<{}, string | number> & {
-    [x: string]: undefined;
-} & import("@tamagui/core").PseudoProps<Partial<import("react-native").ImageProps & Omit<StackProps, keyof import("react-native").ImageProps> & Omit<{}, string | number> & {
-    [x: string]: undefined;
-}>> & import("@tamagui/core").MediaProps<Partial<import("react-native").ImageProps & Omit<StackProps, keyof import("react-native").ImageProps> & Omit<{}, string | number> & {
-    [x: string]: undefined;
-}>>), RNImage, import("react-native").ImageProps & Omit<StackProps, keyof import("react-native").ImageProps>, {} | {
-    [x: string]: undefined;
-}, {
+declare const StyledImage: import("@tamagui/core").TamaguiComponent<(import("react-native").ImageProps & Omit<StackProps, keyof import("react-native").ImageProps>) | (import("react-native").ImageProps & Omit<StackProps, keyof import("react-native").ImageProps> & import("@tamagui/core").PseudoProps<Partial<import("react-native").ImageProps & Omit<StackProps, keyof import("react-native").ImageProps>>> & import("@tamagui/core").MediaProps<Partial<import("react-native").ImageProps & Omit<StackProps, keyof import("react-native").ImageProps>>>), RNImage, import("react-native").ImageProps & Omit<StackProps, keyof import("react-native").ImageProps>, {}, {
     prototype: RNImage;
     getSize: typeof RNImage.getSize;
     getSizeWithHeaders: typeof RNImage.getSizeWithHeaders;

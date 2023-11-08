@@ -31,6 +31,7 @@ import {
   mergeIfNotShallowEqual,
 } from './helpers/createShallowSetState'
 import { useSplitStyles } from './helpers/getSplitStyles'
+import { log } from './helpers/log'
 import { mergeProps } from './helpers/mergeProps'
 import { proxyThemeVariables } from './helpers/proxyThemeVariables'
 import { themeable } from './helpers/themeable'
@@ -43,11 +44,13 @@ import {
   DisposeFn,
   GroupState,
   LayoutEvent,
+  SizeTokens,
   SpaceDirection,
   SpaceValue,
   SpacerProps,
   StackProps,
   StaticConfig,
+  StyleableOptions,
   TamaguiComponent,
   TamaguiComponentEvents,
   TamaguiComponentState,
@@ -56,6 +59,8 @@ import {
   TextProps,
   UseAnimationHook,
   UseAnimationProps,
+  UseThemeWithStateProps,
+  WebOnlyPressEvents,
 } from './types'
 import { Slot } from './views/Slot'
 import { useThemedChildren } from './views/Theme'
@@ -156,8 +161,7 @@ export function createComponent<
         initialTheme = proxyThemeVariables(next)
         if (process.env.NODE_ENV === 'development') {
           if (!initialTheme) {
-            // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-            console.log('Warning: Missing theme')
+            log('Warning: Missing theme')
           }
         }
       }
@@ -178,8 +182,7 @@ export function createComponent<
 
   if (process.env.NODE_ENV === 'development' && staticConfig.defaultProps?.['debug']) {
     if (process.env.IS_STATIC !== 'is_static') {
-      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-      console.log(`🐛 [${staticConfig.componentName || 'Component'}]`, {
+      log(`🐛 [${staticConfig.componentName || 'Component'}]`, {
         staticConfig,
         defaultProps,
         defaultPropsKeyOrder: defaultProps ? Object.keys(defaultProps) : [],
@@ -223,6 +226,7 @@ export function createComponent<
     let overriddenContextProps: Object | undefined
     let contextValue: Object | null | undefined
     const { context } = staticConfig
+
     if (context) {
       contextValue = useContext(context)
       const { inverseShorthands } = getConfig()
@@ -258,11 +262,9 @@ export function createComponent<
 
     // React inserts default props after your props for some reason...
     // order important so we do loops, you can't just spread because JS does weird things
-    let props: StackProps | TextProps
+    let props: StackProps | TextProps = propsIn
     if (curDefaultProps) {
       props = mergeProps(curDefaultProps, propsIn)
-    } else {
-      props = propsIn
     }
 
     const debugProp = props['debug'] as DebugProp
@@ -491,7 +493,8 @@ export function createComponent<
     const noClassNames = shouldAvoidClasses || shouldForcePseudo
 
     // internal use only
-    const disableThemeProp = props['data-disable-theme']
+    const disableThemeProp =
+      process.env.TAMAGUI_TARGET === 'native' ? false : props['data-disable-theme']
     const disableTheme = (disableThemeProp && !willBeAnimated) || isHOC
 
     if (process.env.NODE_ENV === 'development' && time) time`theme-props`
@@ -500,17 +503,21 @@ export function createComponent<
       stateRef.current.themeShallow = true
     }
 
-    const themeStateProps = {
+    const themeStateProps: UseThemeWithStateProps = {
       name: props.theme,
       componentName,
-      // @ts-ignore this is internal use only
       disable: disableTheme,
       shallow: stateRef.current.themeShallow,
-      shouldUpdate: () => {
-        // only forces when defined
-        return stateRef.current.isListeningToTheme
-      },
       debug: debugProp,
+    }
+
+    if (typeof stateRef.current.isListeningToTheme === 'boolean') {
+      themeStateProps.shouldUpdate = () => stateRef.current.isListeningToTheme
+    }
+
+    // on native we optimize theme changes if fastSchemeChange is enabled, otherwise deopt
+    if (process.env.TAMAGUI_TARGET === 'native') {
+      themeStateProps.deopt = willBeAnimated
     }
 
     const isExiting = Boolean(!state.unmounted && presence?.[0] === false)
@@ -539,8 +546,7 @@ export function createComponent<
             }${state.focus ? 'FOCUSED' : ' '}`
           )
 
-          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-          console.log({
+          log({
             propsIn,
             props,
             state,
@@ -570,11 +576,7 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`theme`
 
-    const mediaState = useMedia(
-      // @ts-ignore, we just pass a stable object so we can get it later with
-      // should match to the one used in `setMediaShouldUpdate` below
-      stateRef
-    )
+    const mediaState = useMedia(stateRef, componentContext)
 
     if (process.env.NODE_ENV === 'development' && time) time`media`
 
@@ -603,7 +605,7 @@ export function createComponent<
       props,
       staticConfig,
       theme,
-      themeState.state.name,
+      themeState?.state?.name || '',
       state,
       styleProps,
       null,
@@ -648,24 +650,12 @@ export function createComponent<
       if (debugProp && debugProp !== 'profile') {
         console.groupCollapsed('>>>')
 
-        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-        console.log(
-          'props in',
-          propsIn,
-          'mapped to',
-          props,
-          'in order',
-          Object.keys(props)
-        )
-        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-        console.log('splitStyles', splitStyles)
-        // biome-ignore lint/suspicious/noConsoleLog: ok
-        console.log('media', { shouldListenForMedia, isMediaArray, mediaListeningKeys })
-        // biome-ignore lint/suspicious/noConsoleLog: ok
-        console.log('className', Object.values(splitStyles.classNames))
+        log('props in', propsIn, 'mapped to', props, 'in order', Object.keys(props))
+        log('splitStyles', splitStyles)
+        log('media', { shouldListenForMedia, isMediaArray, mediaListeningKeys })
+        log('className', Object.values(splitStyles.classNames))
         if (isClient) {
-          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-          console.log('ref', hostRef, '(click to view)')
+          log('ref', hostRef, '(click to view)')
         }
         console.groupEnd()
         if (debugProp === 'break') {
@@ -697,7 +687,7 @@ export function createComponent<
         presence,
         componentState: state,
         styleProps,
-        theme: themeState.state.theme!,
+        theme: themeState.state?.theme!,
         pseudos: pseudos || null,
         hostRef,
         staticConfig,
@@ -726,6 +716,8 @@ export function createComponent<
       onMouseDown,
       onMouseEnter,
       onMouseLeave,
+      onFocus,
+      onBlur,
       separator,
       // ignore from here on out
       forceStyle: _forceStyle,
@@ -898,12 +890,20 @@ export function createComponent<
     let className: string | undefined
 
     if (process.env.TAMAGUI_TARGET === 'web') {
-      const classList = [
-        componentName ? componentClassName : '',
-        fontFamilyClassName,
-        classNames ? Object.values(classNames).join(' ') : '',
-        groupClassName,
-      ]
+      // TODO this could be moved into getSplitStyles right?
+      // const fromTheme = getThemeCNStyle(themeState)
+
+      let classList: string[] = []
+      if (componentName) classList.push(componentClassName)
+      if (fontFamilyClassName) classList.push(fontFamilyClassName)
+      if (classNames) classList.push(Object.values(classNames).join(' '))
+      if (groupClassName) classList.push(groupClassName)
+
+      // if (fromTheme) {
+      //   classList.push(fromTheme.className)
+      //   style.color ??= fromTheme.style?.color
+      // }
+
       className = classList.join(' ')
 
       if (isAnimatedReactNativeWeb && !avoidAnimationStyle) {
@@ -940,6 +940,8 @@ export function createComponent<
     // if its a group its gotta listen for pseudos to emit them to children
 
     const runtimePressStyle = !disabled && noClassNames && pseudos?.pressStyle
+    const runtimeFocusStyle = !disabled && noClassNames && pseudos?.focusStyle
+    const attachFocus = Boolean(runtimePressStyle || onFocus || onBlur)
     const attachPress = Boolean(
       groupName ||
         runtimePressStyle ||
@@ -959,10 +961,12 @@ export function createComponent<
     // check presence rather than value to prevent reparenting bugs
     // allows for onPress={x ? function : undefined} without re-ordering dom
     const shouldAttach = Boolean(
-      attachPress ||
+      attachFocus ||
+        attachPress ||
         isHoverable ||
-        (noClassNames && 'pressStyle' in props) ||
-        (isWeb && noClassNames && 'hoverStyle' in props)
+        runtimePressStyle ||
+        runtimeHoverStyle ||
+        runtimeFocusStyle
     )
 
     if (process.env.NODE_ENV === 'development' && time) time`events-setup`
@@ -1035,14 +1039,27 @@ export function createComponent<
                   }
                 }
               : undefined,
-            ...(process.env.TAMAGUI_TARGET === 'native' && {
-              onLongPress:
-                attachPress && onLongPress
-                  ? (e) => {
-                      unPress()
-                      onLongPress?.(e)
-                    }
-                  : undefined,
+            ...(process.env.TAMAGUI_TARGET === 'native' &&
+              attachPress &&
+              onLongPress && {
+                onLongPress: (e) => {
+                  unPress()
+                  onLongPress?.(e)
+                },
+              }),
+            ...(attachFocus && {
+              onFocus: (e) => {
+                setStateShallow({
+                  focus: true,
+                })
+                onFocus?.(e)
+              },
+              onBlur: (e) => {
+                setStateShallow({
+                  focus: false,
+                })
+                onBlur?.(e)
+              },
             }),
           }
         : null
@@ -1061,15 +1078,18 @@ export function createComponent<
       })
     }
 
+    if (process.env.TAMAGUI_TARGET === 'web' && events && !isReactNative) {
+      Object.assign(viewProps, getWebEvents(events))
+    }
+
     if (process.env.NODE_ENV === 'development' && time) time`events`
 
     if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
-      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-      console.log(`events`, { events, isHoverable, attachPress })
+      log(`events`, { events, isHoverable, attachPress })
     }
 
     // EVENTS native
-    hooks.useEvents?.(viewProps, events, splitStyles, setStateShallow)
+    hooks.useEvents?.(viewProps, events, splitStyles, setStateShallow, staticConfig)
 
     const direction = props.spaceDirection || 'both'
 
@@ -1091,49 +1111,42 @@ export function createComponent<
       elementType = Slot
       // on native this is already merged into viewProps in hooks.useEvents
       if (process.env.TAMAGUI_TARGET === 'web') {
-        const passEvents = {
-          onPress,
-          onLongPress,
-          onPressIn,
-          onPressOut,
-          onHoverIn,
-          onHoverOut,
-          onMouseUp,
-          onMouseDown,
-          onMouseEnter,
-          onMouseLeave,
-        }
-        Object.assign(
-          viewProps,
-          asChild === 'web' || asChild === 'except-style-web'
-            ? getWebEvents(passEvents as any)
-            : passEvents
+        const webStyleEvents = asChild === 'web' || asChild === 'except-style-web'
+        const passEvents = getWebEvents(
+          {
+            onPress,
+            onLongPress,
+            onPressIn,
+            onPressOut,
+            onHoverIn,
+            onHoverOut,
+            onMouseUp,
+            onMouseDown,
+            onMouseEnter,
+            onMouseLeave,
+          },
+          webStyleEvents
         )
+        Object.assign(viewProps, passEvents)
+      } else {
+        Object.assign(viewProps, { onPress, onLongPress })
       }
     }
 
     if (process.env.NODE_ENV === 'development' && time) time`spaced-as-child`
 
-    // perf - unwrap View
-    if (
-      // in test mode disable perf unwrapping so react-testing-library finds Text properly
-      process.env.NODE_ENV !== 'test' &&
-      process.env.TAMAGUI_TARGET === 'native' &&
-      (elementType === BaseText || elementType === BaseView)
-    ) {
-      if (process.env.TAMAGUI_OPTIMIZE_NATIVE_VIEWS) {
-        // further optimize by not even caling elementType.render
-        viewProps.children = content
-        content = createElement(
-          elementType === BaseText ? 'RCTText' : 'RCTView',
-          viewProps
-        )
-      } else {
-        // instead of rendering a whole sub component, just grab the contents directly
-        // we could further improve this performance by actually just doing this ourselves
-        viewProps.children = content
-        content = elementType.render(viewProps, viewProps.ref)
-      }
+    let useChildrenResult: any
+    if (hooks.useChildren) {
+      useChildrenResult = hooks.useChildren(
+        elementType,
+        content,
+        viewProps,
+        events,
+        staticConfig
+      )
+    }
+    if (useChildrenResult) {
+      content = useChildrenResult
     } else {
       content = createElement(elementType, viewProps, content)
     }
@@ -1175,7 +1188,7 @@ export function createComponent<
     // disable theme prop is deterministic so conditional hook ok here
     content = disableThemeProp
       ? content
-      : useThemedChildren(themeState, content, themeStateProps)
+      : useThemedChildren(themeState, content, themeStateProps, false)
 
     if (process.env.NODE_ENV === 'development' && time) time`themed-children`
 
@@ -1188,7 +1201,7 @@ export function createComponent<
     }
 
     if (process.env.TAMAGUI_TARGET === 'web') {
-      if (events || isAnimatedReactNativeWeb) {
+      if (isReactNative) {
         content = (
           <span
             className={`${isAnimatedReactNativeWeb ? className : ''} _dsp_contents`}
@@ -1197,6 +1210,17 @@ export function createComponent<
             {content}
           </span>
         )
+      }
+    }
+
+    // ensure we override new context with syle resolved values
+    if (staticConfig.context) {
+      const contextProps = staticConfig.context.props
+      for (const key in contextProps) {
+        if (key in style || key in viewProps) {
+          overriddenContextProps ||= {}
+          overriddenContextProps[key] = style[key] ?? viewProps[key]
+        }
       }
     }
 
@@ -1214,19 +1238,14 @@ export function createComponent<
         const element = typeof elementType === 'string' ? elementType : 'Component'
         console.groupCollapsed(`render <${element} /> with props`)
         try {
-          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-          console.log('viewProps', viewProps)
-          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-          console.log('viewPropsOrder', Object.keys(viewProps))
+          log('viewProps', viewProps)
+          log('viewPropsOrder', Object.keys(viewProps))
           for (const key in viewProps) {
-            // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-            console.log(' - ', key, viewProps[key])
+            log(' - ', key, viewProps[key])
           }
-          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-          console.log('children', content)
+          log('children', content)
           if (typeof window !== 'undefined') {
-            // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-            console.log({
+            log({
               viewProps,
               state,
               styleProps,
@@ -1285,11 +1304,11 @@ export function createComponent<
     component.displayName = staticConfig.componentName
   }
 
-  type ComponentType = TamaguiComponent<ComponentPropTypes, Ref, BaseProps, {}>
+  type ComponentType = TamaguiComponent<ComponentPropTypes, Ref, BaseProps, void>
 
   let res: ComponentType = component as any
 
-  if (process.env.TAMAGUI_MEMO_ALL || staticConfig.memo) {
+  if (process.env.TAMAGUI_FORCE_MEMO || staticConfig.memo) {
     res = memo(res) as any
   }
 
@@ -1311,15 +1330,19 @@ export function createComponent<
     return Component
   }
 
-  function styleable(Component: any, extended?: Partial<StaticConfig>) {
+  function styleable(Component: any, options?: StyleableOptions) {
     const isForwardedRefAlready = Component.render?.length === 2
-    const ComponentForwardedRef = isForwardedRefAlready
-      ? (Component as any)
-      : // memo because theme changes otherwise would always re-render
-        memo(forwardRef(Component as any))
 
-    const extendedConfig = extendStyledConfig(extended)
-    const out = themeable(ComponentForwardedRef, extendedConfig) as any
+    let out = isForwardedRefAlready ? (Component as any) : forwardRef(Component as any)
+
+    const extendedConfig = extendStyledConfig(options?.staticConfig)
+
+    out = options?.disableTheme ? out : (themeable(out, extendedConfig) as any)
+
+    if (process.env.TAMAGUI_MEMOIZE_STYLEABLE) {
+      out = memo(out)
+    }
+
     out.staticConfig = extendedConfig
     out.styleable = styleable
     return out
@@ -1331,15 +1354,22 @@ export function createComponent<
   return res
 }
 
-function getWebEvents<E extends TamaguiComponentEvents>(events: E) {
+type EventKeys = keyof (TamaguiComponentEvents & WebOnlyPressEvents)
+type EventLikeObject = {
+  [key in EventKeys]?: any
+}
+
+function getWebEvents<E extends EventLikeObject>(events: E, webStyle = true) {
   return {
-    onMouseEnter: events.onMouseEnter,
-    onMouseLeave: events.onMouseLeave,
-    onClick: events.onPress,
+    onMouseEnter: events.onHoverIn ?? events.onMouseEnter,
+    onMouseLeave: events.onHoverOut ?? events.onMouseLeave,
+    [webStyle ? 'onClick' : 'onPress']: events.onPress,
     onMouseDown: events.onPressIn,
     onMouseUp: events.onPressOut,
     onTouchStart: events.onPressIn,
     onTouchEnd: events.onPressOut,
+    onFocus: events.onFocus,
+    onBlur: events.onBlur,
   }
 }
 
@@ -1348,6 +1378,17 @@ export function Unspaced(props: { children?: any }) {
   return props.children
 }
 Unspaced['isUnspaced'] = true
+
+const getSpacerSize = (size: SizeTokens | number | boolean, { tokens }) => {
+  size = size === true ? '$true' : size
+  const sizePx = tokens.space[size as any] ?? size
+  return {
+    width: sizePx,
+    height: sizePx,
+    minWidth: sizePx,
+    minHeight: sizePx,
+  }
+}
 
 // dont used styled() here to avoid circular deps
 // keep inline to avoid circular deps
@@ -1368,16 +1409,7 @@ export const Spacer = createComponent<SpacerProps>({
 
   variants: {
     size: {
-      '...size': (size, { tokens }) => {
-        size = size === true ? '$true' : size
-        const sizePx = tokens.space[size] ?? size
-        return {
-          width: sizePx,
-          height: sizePx,
-          minWidth: sizePx,
-          minHeight: sizePx,
-        }
-      },
+      '...': getSpacerSize,
     },
 
     flex: {
@@ -1502,8 +1534,7 @@ export function spacedChildren(props: SpacedChildrenProps) {
 
   if (process.env.NODE_ENV === 'development') {
     if (props.debug) {
-      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-      console.log(`  Spaced children`, final, props)
+      log(`  Spaced children`, final, props)
     }
   }
 
@@ -1529,8 +1560,6 @@ function isUnspaced(child: React.ReactNode) {
   const t = child?.['type']
   return t?.['isVisuallyHidden'] || t?.['isUnspaced']
 }
-
-const DefaultProps = new Map()
 
 const AbsoluteFill: any = createComponent({
   defaultProps: {

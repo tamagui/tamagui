@@ -29,14 +29,14 @@ const Icon = (props) => {
       height={size}
       viewBox="0 0 24 24"
       fill="none"
-      stroke={`${color}`}
+      stroke={color}
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
       {...otherProps}
     >
-      <Rect width="4" height="16" x="6" y="4" stroke={`${color}`} />
-      <Rect width="4" height="16" x="14" y="4" stroke={`${color}`} />
+      <Rect width="4" height="16" x="6" y="4" stroke={color} />
+      <Rect width="4" height="16" x="14" y="4" stroke={color} />
     </Svg>
   )
 }

@@ -1,4 +1,4 @@
-import { isAndroid, isWeb } from '@tamagui/constants'
+import { isAndroid } from '@tamagui/constants'
 import { tokenCategories } from '@tamagui/helpers'
 
 import { getConfig } from '../config'
@@ -8,13 +8,12 @@ import type {
   GetStyleState,
   PropMapper,
   ResolveVariableAs,
-  SplitStyleProps,
   StyleResolver,
   TamaguiInternalConfig,
   VariantSpreadFunction,
 } from '../types'
 import { expandStyle } from './expandStyle'
-import { expandStylesAndRemoveNullishValues } from './expandStyles'
+import { expandStylesAndRemoveNullishValues } from './expandStylesAndRemoveNullishValues'
 import { getFontsForLanguage, getVariantExtras } from './getVariantExtras'
 import { isObj } from './isObj'
 import { pseudoDescriptors } from './pseudoDescriptors'
@@ -81,7 +80,7 @@ export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => 
     if (value[0] === '$') {
       value = getTokenForKey(key, value, styleProps.resolveValues, styleState)
     } else if (isVariable(value)) {
-      value = resolveVariableValue(value, styleProps.resolveValues)
+      value = resolveVariableValue(key, value, styleProps.resolveValues)
     }
   }
 
@@ -101,12 +100,11 @@ const resolveVariants: StyleResolver = (
   const { variants } = staticConfig
   if (!variants) return
 
-  let variantValue = getVariantDefinition(variants[key], key, value, conf)
+  let variantValue = getVariantDefinition(variants[key], value, conf)
 
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
     console.groupCollapsed(`♦️♦️♦️ resolve variant ${key}`)
-    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-    console.log({
+    console.info({
       key,
       value,
       variantValue,
@@ -138,8 +136,7 @@ const resolveVariants: StyleResolver = (
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
       console.groupCollapsed('   expanded functional variant', key)
-      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-      console.log({ fn, variantValue, extras })
+      console.info({ fn, variantValue, extras })
       console.groupEnd()
     }
   }
@@ -155,8 +152,7 @@ const resolveVariants: StyleResolver = (
       styleState.fontFamily = fontFamilyResult
 
       if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-        console.log(`   updating font family`, fontFamilyResult)
+        console.info(`   updating font family`, fontFamilyResult)
       }
     }
 
@@ -170,7 +166,10 @@ const resolveVariants: StyleResolver = (
   }
 
   if (variantValue) {
-    const expanded = expandStylesAndRemoveNullishValues(variantValue)
+    const expanded = expandStylesAndRemoveNullishValues(
+      variantValue,
+      !!styleProps.noNormalize
+    )
     const next = Object.entries(expanded)
 
     // store any changed font family (only support variables for now)
@@ -224,31 +223,30 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
   const res = {}
 
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-    console.log(`   - resolveTokensAndVariants`, key, value)
+    console.info(`   - resolveTokensAndVariants`, key, value)
   }
 
-  for (const rKey in value) {
-    const fKey = conf.shorthands[rKey] || rKey
-    const val = value[rKey]
+  for (const _key in value) {
+    const subKey = conf.shorthands[_key] || _key
+    const val = value[_key]
 
     if (styleProps.noExpand) {
-      res[fKey] = val
+      res[subKey] = val
     } else {
-      if (variants && fKey in variants) {
+      if (variants && subKey in variants) {
         // if its a variant expanded, attach to curProps
-        styleState.curProps[fKey] = val
+        styleState.curProps[subKey] = val
 
         // avoids infinite loop if variant is matching a style prop
         // eg: { variants: { flex: { true: { flex: 2 } } } }
         if (parentVariantKey && parentVariantKey === key) {
-          res[fKey] =
+          res[subKey] =
             // SYNC WITH *1
             val[0] === '$'
-              ? getTokenForKey(fKey, val, styleProps.resolveValues, styleState)
+              ? getTokenForKey(subKey, val, styleProps.resolveValues, styleState)
               : val
         } else {
-          const variantOut = resolveVariants(fKey, val, styleProps, styleState, key)
+          const variantOut = resolveVariants(subKey, val, styleProps, styleState, key)
 
           // apply, merging sub-styles
           if (variantOut) {
@@ -268,7 +266,7 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
     }
 
     if (isVariable(val)) {
-      res[fKey] = resolveVariableValue(val, styleProps.resolveValues)
+      res[subKey] = resolveVariableValue(subKey, val, styleProps.resolveValues)
       continue
     }
 
@@ -276,32 +274,37 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
       const fVal =
         // SYNC WITH *1
         val[0] === '$'
-          ? getTokenForKey(fKey, val, styleProps.resolveValues, styleState)
+          ? getTokenForKey(subKey, val, styleProps.resolveValues, styleState)
           : val
-      res[fKey] = fVal
+
+      res[subKey] = fVal
       continue
     }
 
     if (isObj(val)) {
-      const subObject = resolveTokensAndVariants(fKey, val, styleProps, styleState, key)
+      const subObject = resolveTokensAndVariants(subKey, val, styleProps, styleState, key)
 
       if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-        console.log(`object`, fKey, subObject)
+        console.info(`object`, subKey, subObject)
       }
 
       // sub-objects: media queries, pseudos, shadowOffset
-      res[fKey] ??= {}
-      Object.assign(res[fKey], subObject)
+      res[subKey] ??= {}
+      Object.assign(res[subKey], subObject)
     } else {
       // nullish values cant be tokens, need no extra parsing
-      res[fKey] = val
+      res[subKey] = val
     }
 
     if (process.env.NODE_ENV === 'development') {
       if (debug) {
-        if (res[fKey]?.[0] === '$') {
-          console.warn(`⚠️ Missing token in theme ${theme.name}:`, fKey, res[fKey], theme)
+        if (res[subKey]?.[0] === '$') {
+          console.warn(
+            `⚠️ Missing token in theme ${theme.name}:`,
+            subKey,
+            res[subKey],
+            theme
+          )
         }
       }
     }
@@ -316,30 +319,28 @@ const tokenCats = ['size', 'color', 'radius', 'space', 'zIndex'].map((name) => (
 }))
 
 // goes through specificity finding best matching variant function
-function getVariantDefinition(
-  variant: any,
-  key: string,
-  value: any,
-  conf: TamaguiInternalConfig
-) {
+function getVariantDefinition(variant: any, value: any, conf: TamaguiInternalConfig) {
   if (typeof variant === 'function') {
     return variant
   }
-  if (variant[value]) {
-    return variant[value]
+  const exact = variant[value]
+  if (exact) {
+    return exact
   }
-  const { tokensParsed } = conf
-  for (const { name, spreadName } of tokenCats) {
-    if (spreadName in variant && value in tokensParsed[name]) {
-      return variant[spreadName]
+  if (value != null) {
+    const { tokensParsed } = conf
+    for (const { name, spreadName } of tokenCats) {
+      if (spreadName in variant && value in tokensParsed[name]) {
+        return variant[spreadName]
+      }
+    }
+    const fontSizeVariant = variant['...fontSize']
+    if (fontSizeVariant && conf.fontSizeTokens.has(value)) {
+      return fontSizeVariant
     }
   }
-  const fontSizeVariant = variant['...fontSize']
-  if (fontSizeVariant && conf.fontSizeTokens.has(value)) {
-    return fontSizeVariant
-  }
   // fallback to catch all | size
-  return variant[`:${typeof value}`] || variant['...'] || variant['...size']
+  return variant[`:${typeof value}`] || variant['...']
 }
 
 const fontShorthand = {
@@ -364,8 +365,7 @@ export const getTokenForKey = (
   let hasSet = false
   if (theme && value in theme) {
     if (process.env.NODE_ENV === 'development' && styleState.debug === 'verbose') {
-      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-      console.log(` - getting theme value for ${key} from ${value}`)
+      console.info(` - getting theme value for ${key} from ${value}`)
     }
     valOrVar = theme[value]
     hasSet = true
@@ -420,7 +420,10 @@ export const getTokenForKey = (
   }
 
   if (hasSet) {
-    const out = resolveVariableValue(valOrVar, resolveAs)
+    const out = resolveVariableValue(key, valOrVar, resolveAs)
+    if (process.env.NODE_ENV === 'development' && styleState.debug === 'verbose') {
+      console.info(`resolved`, resolveAs, valOrVar.get, out)
+    }
     return out
   }
 
@@ -430,8 +433,7 @@ export const getTokenForKey = (
     styleState.debug === 'verbose'
   ) {
     console.groupCollapsed('  ﹒ propMap (val)', key, value)
-    // biome-ignore lint/suspicious/noConsoleLog: ok
-    console.log({ valOrVar, theme, hasSet }, theme ? theme[key] : '')
+    console.info({ valOrVar, theme, hasSet }, theme ? theme[key] : '')
     console.groupEnd()
   }
 
@@ -439,15 +441,26 @@ export const getTokenForKey = (
 }
 
 function resolveVariableValue(
+  key: string,
   valOrVar: Variable | any,
   resolveValues?: ResolveVariableAs
 ) {
   if (resolveValues === 'none') return valOrVar
   if (isVariable(valOrVar)) {
-    if (!isWeb || resolveValues === 'value') {
+    if (resolveValues === 'value') {
       return valOrVar.val
     }
-    return valOrVar.variable
+    // @ts-expect-error this is fine until we can type better
+    const get = valOrVar.get
+
+    // shadowColor doesn't support dynamic style
+    if (process.env.TAMAGUI_TARGET !== 'native' || key !== 'shadowColor') {
+      if (typeof get === 'function') {
+        return get(resolveValues === 'web' ? 'web' : undefined)
+      }
+    }
+
+    return process.env.TAMAGUI_TARGET === 'native' ? valOrVar.val : valOrVar.variable
   }
   return valOrVar
 }

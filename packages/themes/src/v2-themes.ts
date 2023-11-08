@@ -55,6 +55,7 @@ const themesBuilder = createThemeBuilder()
     purple: colorThemeDefinition('purple'),
     pink: colorThemeDefinition('pink'),
     red: colorThemeDefinition('red'),
+    gray: colorThemeDefinition('gray'),
   })
   .addChildThemes({
     alt1: {
@@ -78,7 +79,7 @@ const themesBuilder = createThemeBuilder()
         {
           parent: 'light',
           avoidNestingWithin: ['active'],
-          mask: 'strengthen',
+          mask: 'identity',
           ...maskOptions.component,
         },
         {

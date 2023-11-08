@@ -25,76 +25,81 @@
 
 Tamagui lets you share more code between web and native apps without sacrificing the two things that typically suffer when you do: performance and code quality.
 
-It does this with an optimizing compiler that outputs platform-specific optimizations, turning even cross-module-imported, logic-infused, inline-styled components into clean, flat DOM + CSS on the web, or on native, hoisted style objects and View/Text. The compiler is also completely optional, as Tamagui also works entirely at runtime.
+It does this with an optimizing compiler that outputs platform-specific optimizations, turning even styles with logic or that use constants imported from other files will flatten into a simple `div` (or other tag) alongside CSS on the web, or on native, a View or Text that references memoized and hoisted style objects.
 
-For example, within the ~500px² responsive browser section on [the homepage](https://tamagui.dev), 49 of the 55 or so inline styled components are flattened to a `div`. The homepage gains nearly 15% on Lighthouse just by turning on the compiler.
+Tamagui aims to be easy to start with and so you can use any of the three independently. The entirety of Tamagui works at compile time and runtime, which means in development you can avoid setting up the compiler at all (though the compiler does add some very nice data-attributes to your DOM). We recommend to start either using a starter (a few are available at `npm create tamagui@latest`).
+
+The compiler can flatten a large amount of views. In the [~500px² responsive browser section](https://tamagui.dev) of the Tamagui website, 49 of the 55 or so [inline styled components](https://github.com/tamagui/tamagui/blob/master/apps/site/components/HeroResponsive.tsx) are flattened to a `div`. The homepage gains nearly 15% on Lighthouse just by turning on the compiler.
 
 [Learn more on the website](https://tamagui.dev/docs/intro/introduction).
 
+## Installing Tamagui
+
+To install Tamagui with all its components run:
+
+```bash
+npm install tamagui @tamagui/config
+```
+
+Next, create a Tamagui config file named `tamagui.config.ts`:
+
+```ts
+import { config } from '@tamagui/config/v2'
+
+import { createTamagui } from 'tamagui'
+const tamaguiConfig = createTamagui(config)
+// this makes typescript properly type everything based on the config
+
+type Conf = typeof tamaguiConfig
+
+declare module 'tamagui' {
+
+  interface TamaguiCustomConfig extends Conf {}
+
+}
+export default tamaguiConfig
+// depending on if you chose tamagui, @tamagui/core, or @tamagui/web
+// be sure the import and declare module lines both use that same name
+```
+
+**Note:** The `v2` config imports the css driver on web and react-native on native. For react-native, import the `@tamagui/config/v2-native` config, and for reanimated, import the `@tamagui/config/v2-reanimated` config.
+
+### Usage
+
+To use Tamagui in your Expo or Next.js projects, all you need to do is wrap your application in the `TamaguiProvider`:
+
+```tsx
+// this provides some helpful reset styles to ensure a more consistent look
+// only import this from your web app, not native
+import '@tamagui/core/reset.css'
+
+import { TamaguiProvider } from 'tamagui'
+import tamaguiConfig from './tamagui.config'
+
+export default function App() {
+  return (
+    <TamaguiProvider config={tamaguiConfig}>
+      {/* your app here */}
+    </TamaguiProvider>
+  )
+}
+```
+
+Done! Now try out some components:
+
+```tsx
+import { Button, Text } from 'tamagui'
+
+function Example() {
+  return (
+    <Button>
+      <Text>My button</Text>
+    </Button>
+  );
+}
+```
+
 ## Contributing
 
-Tamagui is a monorepo that makes it easy to contribute. Install:
-
-```
-yarn
-```
-
-While developing, you'll want to run the build watcher in a dedicated terminal:
-
-```
-yarn watch:build
-```
-
-Note: you may see some errors around "studio" as you run build - this is fine, we encrypt some of the non-open-source projects in the repo. The errors shouldn't block anything.
-
-It's easiest to use the `sandbox` project to test and develop things for web:
-
-```
-yarn sandbox
-```
-
-This runs a client-side only vite build of tamagui, with a complete configuration already set up.
-
-To test on native, `kitchen-sink` is equally well set up.
-
-You'll need to create a [development build](https://docs.expo.dev/develop/development-builds/create-a-build/) to run this.
-
-```
-# Android
-yarn kitchen-sink:build:android
-
-# iOS
-yarn kitchen-sink:build:ios
-```
-
-After the build has been completed, run:
-
-```
-yarn kitchen-sink
-```
-
-Once you've made changes, you can add tests. All compiler and CSS generation tests live in `packages/static-tests`, other tests live in `apps/kitchen-sink/tests` or in other `-tests` packages.
-
-Before submitting a PR, please check everything works across every combination of environments.
-
-To do so, run the site, first in development to test if it works entirely at runtime:
-
-```
-# Make sure you have run `yarn watch:build` before you execute this command.
-
-yarn site
-```
-
-You use `pages/test.tsx` as an easy way to load things. If it looks good, try running again with the compiler on:
-
-```
-yarn site:extract
-```
-
-Finally, if that looks good, build to production and test that:
-
-```
-yarn site:prod
-```
-
-This flow ensures it works with Vite, Webpack, Metro, Next.js with SSR, and with the compiler both on and off.
+To contribute to Tamagui reference the [contributing guide](https://github.com/tamagui/tamagui/blob/master/CONTRIBUTING.md).
+To contribute to documentation reference the [writing guide](https://github.com/tamagui/tamagui/apps/site/WRITING-GUIDE.md).

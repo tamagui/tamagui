@@ -31,8 +31,7 @@ export function getStylesAtomic(stylesIn: ViewStyleWithPseudos, debug?: DebugPro
   res = [...res, ...generateAtomicStyles(stylesIn)]
 
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-    console.log(` 🪮 getStylesAtomic`, { stylesIn, res })
+    console.info(` 🪮 getStylesAtomic`, { stylesIn, res })
   }
   return res
 }
@@ -40,6 +39,24 @@ export function getStylesAtomic(stylesIn: ViewStyleWithPseudos, debug?: DebugPro
 let conf: TamaguiInternalConfig
 
 // mutates...
+
+export function transformsToString(transforms: any[]) {
+  return transforms
+    .map(
+      // { scale: 2 } => 'scale(2)'
+      // { translateX: 20 } => 'translateX(20px)'
+      // { matrix: [1,2,3,4,5,6] } => 'matrix(1,2,3,4,5,6)'
+      (transform) => {
+        const type = Object.keys(transform)[0]
+        const value = transform[type]
+        if (type === 'matrix' || type === 'matrix3d') {
+          return `${type}(${value.join(',')})`
+        }
+        return `${type}(${normalizeValueWithProperty(value, type)})`
+      }
+    )
+    .join(' ')
+}
 
 export const generateAtomicStyles = (
   style: ViewStyleWithPseudos,
@@ -59,21 +76,7 @@ export const generateAtomicStyles = (
 
     // transform
     if (key === 'transform' && Array.isArray(style.transform)) {
-      val = (val as any[])
-        .map(
-          // { scale: 2 } => 'scale(2)'
-          // { translateX: 20 } => 'translateX(20px)'
-          // { matrix: [1,2,3,4,5,6] } => 'matrix(1,2,3,4,5,6)'
-          (transform) => {
-            const type = Object.keys(transform)[0]
-            const value = transform[type]
-            if (type === 'matrix' || type === 'matrix3d') {
-              return `${type}(${value.join(',')})`
-            }
-            return `${type}(${normalizeValueWithProperty(value, type)})`
-          }
-        )
-        .join(' ')
+      val = transformsToString(val)
     }
 
     const value = normalizeValueWithProperty(val, key)

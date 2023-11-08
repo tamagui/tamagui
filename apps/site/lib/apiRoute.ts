@@ -9,8 +9,7 @@ export function apiRoute(handler: NextApiHandler) {
       return result instanceof Promise ? await result : result
     } catch (err) {
       if (err instanceof HandledResponseTermination) {
-        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-        console.log(`Handled termination ${err.message}`)
+        console.info(`Handled termination ${err.message}`)
         return
         // ok we handled it
       } else {

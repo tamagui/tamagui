@@ -6,7 +6,7 @@ import { YStack } from '@tamagui/stacks'
 import { VisuallyHidden } from '@tamagui/visually-hidden'
 import * as React from 'react'
 
-import { TOAST_CONTEXT } from './Toast'
+import { TOAST_CONTEXT } from './constants'
 import {
   Collection,
   ScopedProps,
@@ -39,7 +39,7 @@ const ToastViewportWrapperFrame = styled(YStack, {
   } as const,
 
   defaultVariants: {
-    unstyled: false,
+    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
   },
 })
 
@@ -57,7 +57,7 @@ const ToastViewportFrame = styled(YStack, {
   } as const,
 
   defaultVariants: {
-    unstyled: false,
+    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
   },
 })
 

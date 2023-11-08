@@ -5,9 +5,12 @@ const familiesValues = {
   tamagui: ['orange', 'yellow', 'green', 'blue', 'purple', 'pink', 'red'],
   xmas: ['red', 'green', 'red', 'green', 'red', 'green', 'red'],
   easter: ['yellow', 'pink', 'yellow', 'pink', 'yellow', 'pink', 'yellow'],
+  halloween: ['orange', 'gray', 'orange', 'gray', 'orange', 'gray', 'orange'],
 }
 
 type Family = keyof typeof familiesValues
+
+const DEFAULT_FAMILY: Family = 'tamagui'
 
 const familiesNames = Object.keys(familiesValues) as any as Family[]
 
@@ -17,11 +20,11 @@ const families = familiesValues as {
 
 type TintFamily = keyof typeof families
 
-let fam: TintFamily = 'tamagui'
+let fam: TintFamily = DEFAULT_FAMILY
 
 export function getTints() {
   return {
-    name: fam || 'tamagui',
+    name: fam || DEFAULT_FAMILY,
     tints: families[fam] || families.tamagui,
     families,
   }

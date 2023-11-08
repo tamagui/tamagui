@@ -151,7 +151,7 @@ export const DialogPortalFrame = styled(YStack, {
   } as const,
 
   defaultVariants: {
-    unstyled: false,
+    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
   },
 })
 
@@ -346,7 +346,7 @@ const DialogContentFrame = styled(ThemeableStack, {
 
   defaultVariants: {
     size: '$true',
-    unstyled: false,
+    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
   },
 })
 
@@ -679,7 +679,7 @@ const DialogCloseFrame = styled(View, {
   } as const,
 
   defaultVariants: {
-    unstyled: false,
+    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
   },
 })
 

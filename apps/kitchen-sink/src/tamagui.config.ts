@@ -1,7 +1,7 @@
 import { createAnimations as createAnimationsCSS } from '@tamagui/animations-css'
 import { createAnimations as createAnimationsMoti } from '@tamagui/animations-moti'
 import { createAnimations as createAnimationsNative } from '@tamagui/animations-react-native'
-import { config } from '@tamagui/config'
+import { config } from '@tamagui/config/v2'
 import { createTamagui } from 'tamagui'
 
 export const animationsCSS = createAnimationsCSS({
@@ -11,6 +11,7 @@ export const animationsCSS = createAnimationsCSS({
   slow: 'ease-in 500ms',
   quick: 'ease-in 100ms',
   tooltip: 'ease-in 400ms',
+  medium: 'ease-in 400ms',
 })
 
 export const animationsMoti = createAnimationsMoti({
@@ -35,6 +36,11 @@ export const animationsMoti = createAnimationsMoti({
     damping: 20,
     mass: 1.2,
     stiffness: 250,
+  },
+  medium: {
+    damping: 15,
+    stiffness: 120,
+    mass: 1,
   },
   tooltip: {
     type: 'spring',
@@ -66,6 +72,11 @@ export const animationsNative = createAnimationsNative({
     damping: 20,
     mass: 1.2,
     stiffness: 250,
+  },
+  medium: {
+    damping: 15,
+    stiffness: 120,
+    mass: 1,
   },
   tooltip: {
     type: 'spring',
@@ -104,6 +115,7 @@ const tamaConf = createTamagui({
   settings: {
     allowedStyleValues: 'somewhat-strict',
     autocompleteSpecificTokens: 'except-special',
+    fastSchemeChange: true,
   },
   tokens,
   animations: search.includes('animationDriver=css')

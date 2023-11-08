@@ -18,12 +18,10 @@ const stylePropsAllPlusTransforms = {
 
 export function normalizeValueWithProperty(value: any, property?: string): any {
   if (!isWeb) return value
-  if (typeof value === 'boolean') {
+  if (typeof value === 'boolean' || (property && property in stylePropsUnitless)) {
     return value
   }
-  if (property && property in stylePropsUnitless) {
-    return value
-  }
+  // if not a style prop
   if (property && !(property in stylePropsAllPlusTransforms)) {
     return value
   }
@@ -71,8 +69,7 @@ export function reverseMapClassNameToValue(key: string, className: string) {
   if (process.env.NODE_ENV === 'development') {
     // ensure we are parsing properly
     if (typeof res === 'number' && isNaN(res)) {
-      // biome-ignore lint/suspicious/noConsoleLog: ok
-      console.log('Tamagui invalid parsed value, NaN:', {
+      console.info('Tamagui invalid parsed value, NaN:', {
         res,
         cssVal,
         cssRule,

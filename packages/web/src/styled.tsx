@@ -1,5 +1,3 @@
-import { stylePropsAll } from '@tamagui/helpers'
-
 import { createComponent } from './createComponent'
 import { StyledContext } from './helpers/createStyledContext'
 import { mergeVariants } from './helpers/mergeVariants'
@@ -42,9 +40,16 @@ type GetVariantAcceptedValues<V> = V extends Object
     }
   : undefined
 
+type ValueOf<T> = T[keyof T]
+type AreVariantsUndefined<V> = V extends undefined
+  ? true
+  : ValueOf<V> extends undefined
+  ? true
+  : false
+
 export function styled<
   ParentComponent extends StylableComponent,
-  Variants extends VariantDefinitions<ParentComponent> | void = VariantDefinitions<ParentComponent> | void
+  Variants extends VariantDefinitions<ParentComponent> | void
 >(
   ComponentIn: ParentComponent,
   // this should be Partial<GetProps<ParentComponent>> but causes excessively deep type issues
@@ -57,6 +62,69 @@ export function styled<
   },
   staticExtractionOptions?: Partial<StaticConfig>
 ) {
+  // do type stuff at top for easier readability
+
+  // get parent props without pseudos and medias so we can rebuild both with new variants
+  // get parent props without pseudos and medias so we can rebuild both with new variants
+  type ParentPropsBase = GetBaseProps<ParentComponent>
+  type ParentVariants = GetVariantProps<ParentComponent>
+
+  type OurVariantProps = Variants extends undefined
+    ? {}
+    : GetVariantAcceptedValues<Variants>
+
+  type MergedVariants = AreVariantsUndefined<OurVariantProps> extends true
+    ? ParentVariants
+    : AreVariantsUndefined<ParentVariants> extends true
+    ? OurVariantProps
+    : {
+        [Key in keyof ParentVariants | keyof OurVariantProps]?:
+          | (Key extends keyof ParentVariants ? ParentVariants[Key] : undefined)
+          | (Key extends keyof OurVariantProps ? OurVariantProps[Key] : undefined)
+      }
+
+  type OurPropsBaseBase = ParentPropsBase & MergedVariants
+
+  /**
+   * de-opting a bit of type niceness because were hitting depth issues too soon
+   * before we had:
+   *
+   * type OurPropsBase = OurPropsBaseBase & PseudoProps<Partial<OurPropsBaseBase>>
+   * and then below in type Props you would remove the PseudoProps line
+   * that would give you nicely merged pseudo sub-styles but its just too much for TS
+   * so now pseudos wont be nicely typed inside media queries, but at least we can nest
+   */
+  type OurPropsBase = OurPropsBaseBase
+
+  type Props = Variants extends void
+    ? GetProps<ParentComponent>
+    : // start with base props
+      OurPropsBase &
+        // add in pseudo
+        PseudoProps<Partial<OurPropsBaseBase>> &
+        // add in media
+        MediaProps<Partial<OurPropsBase>>
+
+  type ParentStaticProperties = {
+    [Key in Exclude<
+      keyof ParentComponent,
+      | 'defaultProps'
+      | 'propTypes'
+      | '$$typeof'
+      | 'staticConfig'
+      | 'extractable'
+      | 'styleable'
+    >]: ParentComponent[Key]
+  }
+
+  type StyledComponent = TamaguiComponent<
+    Props,
+    GetRef<ParentComponent>,
+    ParentPropsBase,
+    MergedVariants,
+    ParentStaticProperties
+  >
+
   // validate not using a variant over an existing valid style
   if (process.env.NODE_ENV !== 'production') {
     if (!ComponentIn) {
@@ -77,12 +145,14 @@ export function styled<
       ? ComponentIn
       : parentStaticConfig?.Component || ComponentIn
 
-  const reactNativeConfig = getReactNativeConfig(Component)
+  const reactNativeConfig = !parentStaticConfig
+    ? getReactNativeConfig(Component)
+    : undefined
+
   const isReactNative = Boolean(
     reactNativeConfig ||
       staticExtractionOptions?.isReactNative ||
-      parentStaticConfig?.isReactNative ||
-      getReactNativeConfig(parentStaticConfig?.Component)
+      parentStaticConfig?.isReactNative
   )
 
   const staticConfigProps = (() => {
@@ -165,57 +235,6 @@ export function styled<
   })()
 
   const component = createComponent(staticConfigProps || {})
-
-  // get parent props without pseudos and medias so we can rebuild both with new variants
-  // get parent props without pseudos and medias so we can rebuild both with new variants
-  type ParentPropsBase = GetBaseProps<ParentComponent>
-  type ParentVariants = GetVariantProps<ParentComponent>
-
-  type OurVariantProps = Variants extends void ? {} : GetVariantAcceptedValues<Variants>
-
-  type VariantProps = Omit<ParentVariants, keyof OurVariantProps> & OurVariantProps
-  type OurPropsBaseBase = ParentPropsBase & VariantProps
-
-  /**
-   * de-opting a bit of type niceness because were hitting depth issues too soon
-   * before we had:
-   *
-   * type OurPropsBase = OurPropsBaseBase & PseudoProps<Partial<OurPropsBaseBase>>
-   * and then below in type Props you would remove the PseudoProps line
-   * that would give you nicely merged pseudo sub-styles but its just too much for TS
-   * so now pseudos wont be nicely typed inside media queries, but at least we can nest
-   */
-
-  type OurPropsBase = OurPropsBaseBase
-
-  type Props = Variants extends void
-    ? GetProps<ParentComponent>
-    : // start with base props
-      OurPropsBase &
-        // add in pseudo
-        PseudoProps<Partial<OurPropsBaseBase>> &
-        // add in media
-        MediaProps<Partial<OurPropsBase>>
-
-  type ParentStaticProperties = {
-    [Key in Exclude<
-      keyof ParentComponent,
-      | 'defaultProps'
-      | 'propTypes'
-      | '$$typeof'
-      | 'staticConfig'
-      | 'extractable'
-      | 'styleable'
-    >]: ParentComponent[Key]
-  }
-
-  type StyledComponent = TamaguiComponent<
-    Props,
-    GetRef<ParentComponent>,
-    ParentPropsBase,
-    ParentVariants & OurVariantProps,
-    ParentStaticProperties
-  >
 
   for (const key in ComponentIn) {
     if (key in component) continue
@@ -307,3 +326,54 @@ export function styled<
 
 // const y = <Test someting>sadad</Test>
 // const z = <Test3 someting="$true" ork>sadad</Test3>
+
+//
+// merges variant types properly:
+
+// const OneVariant = styled(Stack, {
+//   variants: {
+//     variant: {
+//       test: { backgroundColor: 'gray' },
+//     },
+//   } as const,
+// })
+// const Second = styled(Stack, {
+//   variants: {
+//     variant: {
+//       simple: { backgroundColor: 'gray' },
+//       colorful: { backgroundColor: 'violet' },
+//     },
+//   } as const,
+// })
+// const TwoVariant = styled(OneVariant, {
+//   variants: {
+//     variant: {
+//       simple: { backgroundColor: 'gray' },
+//       colorful: { backgroundColor: 'violet' },
+//     },
+//   } as const,
+// })
+
+// type X = typeof OneVariant extends TamaguiComponent<any, any, any, infer V> ? V : any
+// type V = typeof Second extends TamaguiComponent<any, any, any, infer V> ? V : any
+
+// type V2 = VariantDefinitions<typeof OneVariant>
+
+// type R = typeof TwoVariant extends TamaguiComponent<any, any, any, infer V> ? V : any
+
+// type Keys = keyof X | keyof V
+// type Z = {
+//   [Key in Keys]: V[Key] | X[Key]
+// }
+
+// const a: Z = {
+//   variant: 'colorful',
+// }
+// const b: Z = {
+//   variant: 'simple',
+// }
+// const c: Z = {
+//   variant: 'invalid',
+// }
+
+// const y = <TwoVariant variant="colorful" />

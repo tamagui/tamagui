@@ -71,7 +71,7 @@ const TooltipArrow = React.forwardRef(
     const { __scopeTooltip, ...rest } = props
     return (
       <PopoverArrow
-        __scopePopover={__scopeTooltip || TOOLTIP_SCOPE}
+        __scopePopper={__scopeTooltip || TOOLTIP_SCOPE}
         componentName="Tooltip"
         ref={ref}
         {...rest}

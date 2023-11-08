@@ -8,7 +8,7 @@ import {
   createStyledContext,
   isWeb,
   styled,
-  useAnimationDriver,
+  useConfiguration,
   useEvent,
   useThemeName,
 } from '@tamagui/core'
@@ -23,8 +23,7 @@ import {
   PanResponderGestureState,
 } from 'react-native'
 
-import { TOAST_NAME } from './constants'
-import { TOAST_CONTEXT } from './Toast'
+import { TOAST_CONTEXT, TOAST_NAME } from './constants'
 import { ToastAnnounce } from './ToastAnnounce'
 import {
   Collection,
@@ -55,7 +54,7 @@ const ToastImplFrame = styled(ThemeableStack, {
     },
   } as const,
   defaultVariants: {
-    unstyled: false,
+    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
   },
 })
 interface ToastProps extends Omit<ToastImplProps, keyof ToastImplPrivateProps> {
@@ -247,17 +246,18 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
       context.swipeDirection
     )
 
-    const driver = useAnimationDriver()
-    if (!driver) {
+    const { animationDriver } = useConfiguration()
+    if (!animationDriver) {
       throw new Error('Must set animations in tamagui.config.ts')
     }
 
-    const { useAnimatedNumber, useAnimatedNumberStyle } = driver
+    const { useAnimatedNumber, useAnimatedNumberStyle } = animationDriver
 
     const animatedNumber = useAnimatedNumber(0)
 
     // temp until reanimated useAnimatedNumber fix
-    const AnimatedView = (driver['NumberView'] ?? driver.View) as typeof Animated.View
+    const AnimatedView = (animationDriver['NumberView'] ??
+      animationDriver.View) as typeof Animated.View
 
     const animatedStyles = useAnimatedNumberStyle(animatedNumber, (val) => {
       'worklet'

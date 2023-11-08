@@ -6,12 +6,16 @@ import { createProxy } from '../helpers/createProxy'
 import { matchMedia } from '../helpers/matchMedia'
 import { pseudoDescriptors } from '../helpers/pseudoDescriptors'
 import type {
+  ComponentContextI,
+  IsMediaType,
   MediaQueries,
   MediaQueryKey,
   MediaQueryObject,
   MediaQueryState,
   TamaguiInternalConfig,
+  UseMediaState,
 } from '../types'
+import { getDisableSSR, useDisableSSR } from './useDisableSSR'
 
 export let mediaState: MediaQueryState =
   // development only safeguard
@@ -40,18 +44,18 @@ export const getMedia = () => mediaState
 
 export const mediaKeys = new Set<string>() // with $ prefix
 
-export const isMediaKey = (key: string) =>
-  mediaKeys.has(key) ||
-  (key[0] === '$' &&
-    (key.startsWith('$platform-') ||
-      key.startsWith('$theme-') ||
-      key.startsWith('$group-')))
+export const isMediaKey = (key: string): IsMediaType => {
+  if (mediaKeys.has(key)) return true
+  if (key[0] === '$') {
+    if (key.startsWith('$platform-')) return 'platform'
+    if (key.startsWith('$theme-')) return 'theme'
+    if (key.startsWith('$group-')) return 'group'
+  }
+  return false
+}
 
 // for SSR capture it at time of startup
 let initState: MediaQueryState
-export const getInitialMediaState = () => {
-  return (getConfig().disableSSR ? mediaState : initState) || {}
-}
 
 // media always above pseudos
 const defaultMediaImportance = Object.keys(pseudoDescriptors).length
@@ -169,10 +173,6 @@ type MediaKeysState = {
   [key: string]: any
 }
 
-type UseMediaState = {
-  [key in MediaQueryKey]: boolean
-}
-
 type UpdateState = {
   enabled: boolean
   keys: MediaQueryKey[]
@@ -194,14 +194,17 @@ function subscribe(subscriber: any) {
   return () => listeners.delete(subscriber)
 }
 
-export function useMedia(uid?: any): UseMediaState {
+export function useMedia(uid?: any, componentContext?: ComponentContextI): UseMediaState {
   const internal = useRef<UseMediaInternalState | undefined>()
+  // performance boost to avoid using context twice
+  const disableSSR = componentContext ? getDisableSSR(componentContext) : useDisableSSR()
+  const initialState = (disableSSR ? mediaState : initState) || {}
 
   const state = useSyncExternalStore<MediaQueryState>(
     subscribe,
     () => {
       if (!internal.current) {
-        return initState
+        return initialState
       }
 
       const { touched, prev } = internal.current
@@ -226,13 +229,13 @@ export function useMedia(uid?: any): UseMediaState {
 
       return mediaState
     },
-    () => initState
+    () => initialState
   )
 
   return new Proxy(state, {
     get(_, key) {
       if (typeof key === 'string') {
-        internal.current ||= { prev: initState }
+        internal.current ||= { prev: initialState }
         internal.current.touched ||= new Set()
         internal.current.touched.add(key)
       }

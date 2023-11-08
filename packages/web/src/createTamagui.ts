@@ -2,7 +2,7 @@ import { isWeb } from '@tamagui/constants'
 
 import { configListeners, setConfig, setTokens } from './config'
 import { Variable } from './createVariable'
-import { createVariables } from './createVariables'
+import { DeepVariableObject, createVariables } from './createVariables'
 import { getThemeCSSRules } from './helpers/getThemeCSSRules'
 import {
   getAllRules,
@@ -19,6 +19,7 @@ import {
   CreateTamaguiProps,
   DedupedTheme,
   DedupedThemes,
+  GenericFont,
   GetCSS,
   InferTamaguiConfig,
   TamaguiInternalConfig,
@@ -38,62 +39,63 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     return configIn as any
   }
 
-  if (process.env.NODE_ENV === 'development') {
-    if (!configIn.tokens) {
-      throw new Error('Must define tokens')
-    }
-    if (!configIn.themes) {
-      throw new Error('Must define themes')
-    }
-    if (!configIn.fonts) {
-      throw new Error('Must define fonts')
-    }
-  }
-
   // ensure variables
-  const tokens = createVariables(configIn.tokens)
-
-  // faster lookups
   const tokensParsed: TokensParsed = {} as any
-  const tokensMerged: TokensMerged = {} as any
-  for (const cat in tokens) {
-    tokensParsed[cat] = {}
-    tokensMerged[cat] = {}
-    const tokenCat = tokens[cat]
-    for (const key in tokenCat) {
-      const val = tokenCat[key]
-      const prefixedKey = `$${key}`
-      tokensParsed[cat][prefixedKey] = val as any
-      tokensMerged[cat][prefixedKey] = val as any
-      tokensMerged[cat][key] = val as any
-    }
-  }
-  setTokens(tokensMerged)
+  const tokens = createVariables(configIn.tokens || {})
 
-  const noThemes = Object.keys(configIn.themes).length === 0
-  const foundThemes = scanAllSheets(noThemes, tokensParsed)
-  listenForSheetChanges()
-
-  const fontTokens = Object.fromEntries(
-    Object.entries(configIn.fonts!).map(([k, v]) => {
-      return [k, createVariables(v, 'f', true)]
-    })
-  )
-
-  let fontSizeTokens: Set<string> | null = null
-
-  const fontsParsed = (() => {
-    const res = {} as typeof fontTokens
-    for (const familyName in fontTokens) {
-      const font = fontTokens[familyName]
-      const fontParsed = parseFont(font)
-      res[`$${familyName}`] = fontParsed
-      if (!fontSizeTokens && fontParsed.size) {
-        fontSizeTokens = new Set(Object.keys(fontParsed.size))
+  if (configIn.tokens) {
+    // faster lookups
+    const tokensMerged: TokensMerged = {} as any
+    for (const cat in tokens) {
+      tokensParsed[cat] = {}
+      tokensMerged[cat] = {}
+      const tokenCat = tokens[cat]
+      for (const key in tokenCat) {
+        const val = tokenCat[key]
+        const prefixedKey = `$${key}`
+        tokensParsed[cat][prefixedKey] = val as any
+        tokensMerged[cat][prefixedKey] = val as any
+        tokensMerged[cat][key] = val as any
       }
     }
-    return res!
-  })()
+    setTokens(tokensMerged)
+  }
+
+  let foundThemes: DedupedThemes | undefined
+  if (configIn.themes) {
+    const noThemes = Object.keys(configIn.themes).length === 0
+    foundThemes = scanAllSheets(noThemes, tokensParsed)
+  }
+
+  listenForSheetChanges()
+
+  let fontSizeTokens: Set<string> | null = null
+  let fontsParsed:
+    | {
+        [k: string]: DeepVariableObject<GenericFont<string>>
+      }
+    | undefined
+
+  if (configIn.fonts) {
+    const fontTokens = Object.fromEntries(
+      Object.entries(configIn.fonts).map(([k, v]) => {
+        return [k, createVariables(v, 'f', true)]
+      })
+    )
+
+    fontsParsed = (() => {
+      const res = {} as typeof fontTokens
+      for (const familyName in fontTokens) {
+        const font = fontTokens[familyName]
+        const fontParsed = parseFont(font)
+        res[`$${familyName}`] = fontParsed
+        if (!fontSizeTokens && fontParsed.size) {
+          fontSizeTokens = new Set(Object.keys(fontParsed.size))
+        }
+      }
+      return res!
+    })()
+  }
 
   const specificTokens = {}
 
@@ -238,14 +240,14 @@ ${runtimeStyles}`
   let defaultFontName =
     configIn.defaultFont ||
     // uses font named "body" if present for compat
-    ('body' in configIn.fonts ? 'body' : '')
+    (configIn.fonts && ('body' in configIn.fonts ? 'body' : ''))
 
   if (!defaultFontName && configIn.fonts) {
     // defaults to the first font to make life easier
     defaultFontName = Object.keys(configIn.fonts)[0]
   }
 
-  if (defaultFontName[0] === '$') {
+  if (defaultFontName?.[0] === '$') {
     defaultFontName = defaultFontName.slice(1)
   }
 
@@ -253,7 +255,7 @@ ${runtimeStyles}`
   const defaultFont = `$${defaultFontName}`
 
   const config: TamaguiInternalConfig = {
-    groupNames: [],
+    fonts: {},
     settings: {},
     onlyAllowShorthands: false,
     fontLanguages: [],
@@ -267,7 +269,7 @@ ${runtimeStyles}`
       ? Object.fromEntries(Object.entries(shorthands).map(([k, v]) => [v, k]))
       : {},
     themes: themeConfig.themes as any,
-    fontsParsed,
+    fontsParsed: fontsParsed || {},
     themeConfig,
     tokensParsed: tokensParsed as any,
     parsed: true,
@@ -292,8 +294,7 @@ ${runtimeStyles}`
 
   if (process.env.NODE_ENV === 'development') {
     if (process.env.DEBUG?.startsWith('tamagui')) {
-      // biome-ignore lint/suspicious/noConsoleLog: ok
-      console.log('Tamagui config:', config)
+      console.info('Tamagui config:', config)
     }
     if (!globalThis['Tamagui']) {
       globalThis['Tamagui'] = Tamagui

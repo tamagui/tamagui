@@ -3,7 +3,7 @@ import { useContext } from 'react'
 import { ComponentContext } from '../contexts/ComponentContext'
 import { defaultComponentStateMounted } from '../defaultComponentState'
 import { useSplitStyles } from '../helpers/getSplitStyles'
-import { SplitStyleProps, StaticConfig } from '../types'
+import { SplitStyleProps, StaticConfig, ThemeParsed, UseMediaState } from '../types'
 import { Stack } from '../views/Stack'
 import { useMedia } from './useMedia'
 import { useThemeWithState } from './useTheme'
@@ -16,7 +16,7 @@ type UsePropsOptions = Pick<
   forComponent?: { staticConfig: StaticConfig }
 }
 
-type FlattenedProps<A> = {
+type PropsWithoutMediaStyles<A> = {
   // remove all media
   [Key in keyof A extends `$${string}` ? never : keyof A]?: A[Key]
 }
@@ -30,7 +30,7 @@ type FlattenedProps<A> = {
 export function useProps<A extends Object>(
   props: A,
   opts?: UsePropsOptions
-): FlattenedProps<A> {
+): PropsWithoutMediaStyles<A> {
   const [propsOut, styleOut] = usePropsAndStyle(props, {
     ...opts,
     noExpand: true,
@@ -52,7 +52,7 @@ export function useProps<A extends Object>(
 export function useStyle<A extends Object>(
   props: A,
   opts?: UsePropsOptions
-): FlattenedProps<A> {
+): PropsWithoutMediaStyles<A> {
   return usePropsAndStyle(props, opts)[1]
 }
 
@@ -65,7 +65,7 @@ export function useStyle<A extends Object>(
 export function usePropsAndStyle<A extends Object>(
   props: A,
   opts?: UsePropsOptions
-): [FlattenedProps<A>, FlattenedProps<A>] {
+): [PropsWithoutMediaStyles<A>, PropsWithoutMediaStyles<A>, ThemeParsed, UseMediaState] {
   const staticConfig = opts?.forComponent?.staticConfig ?? Stack.staticConfig
   const [themeState, theme] = useThemeWithState({
     componentName: staticConfig.componentName,
@@ -76,17 +76,18 @@ export function usePropsAndStyle<A extends Object>(
     props,
     staticConfig,
     theme,
-    themeState.state.name,
+    themeState.state?.name || '',
     defaultComponentStateMounted,
     {
       isAnimated: false,
       mediaState: media,
       noSkip: true,
       noClassNames: true,
+      resolveValues: 'auto',
       ...opts,
     },
     null,
     componentContext
   )
-  return [splitStyles.viewProps, splitStyles.style] as any
+  return [splitStyles.viewProps, splitStyles.style, theme, media] as any
 }

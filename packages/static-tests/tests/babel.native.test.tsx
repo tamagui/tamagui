@@ -23,6 +23,9 @@ test('basic extraction', async () => {
 
 test('theme value extraction should work when no theme variables used', async () => {
   // here we override default "$color" so it should flatten totally
+  // actually since we do unstyled: false and it expands to $color it acceses it
+  // were not smart enough yet to detect its later overriden :/
+  // that could be a perf optimization, but also have work to improve flattening soon anyway
   const output = await extractForNative(`
     import { Paragraph } from 'tamagui'
     export function Test() {

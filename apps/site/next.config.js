@@ -32,7 +32,7 @@ const plugins = [
     components: ['tamagui'],
     importsWhitelist: ['constants.js', 'colors.js'],
     logTimings: true,
-    enableDynamicEvaluation: true,
+    // enableDynamicEvaluation: true,
     disableExtraction,
     excludeReactNativeWebExports: ['Switch', 'ProgressBar', 'Picker', 'CheckBox', 'Touchable', 'Animated', 'FlatList', 'Modal'],
   }),
@@ -143,6 +143,11 @@ module.exports = function (name, { defaultConfig }) {
         {
           source: '/docs',
           destination: '/docs/intro/introduction',
+          permanent: true,
+        },
+        {
+          source: '/vite',
+          destination: 'https://vxrn.dev',
           permanent: true,
         },
       ]

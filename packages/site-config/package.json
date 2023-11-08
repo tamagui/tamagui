@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/site-config",
-  "version": "1.71.0",
+  "version": "1.76.0",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -8,7 +8,8 @@
   "files": [
     "src",
     "types",
-    "dist"
+    "dist",
+    "animations.css"
   ],
   "scripts": {
     "build": "tamagui-build",
@@ -24,25 +25,30 @@
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
+    },
+    "./animations.css": {
+      "types": "./types/animations.css.d.ts",
+      "import": "./dist/esm/animations.js",
+      "require": "./dist/cjs/animations.js"
     }
   },
   "dependencies": {
-    "@tamagui/animations-react-native": "1.71.0",
-    "@tamagui/animations-reanimated": "1.71.0",
-    "@tamagui/colors": "1.71.0",
-    "@tamagui/font-cherry-bomb": "1.71.0",
-    "@tamagui/font-dm-sans": "1.71.0",
-    "@tamagui/font-dm-serif-display": "1.71.0",
-    "@tamagui/font-glusp": "1.71.0",
-    "@tamagui/font-inter": "1.71.0",
-    "@tamagui/font-silkscreen": "1.71.0",
-    "@tamagui/react-native-media-driver": "1.71.0",
-    "@tamagui/shorthands": "1.71.0",
-    "@tamagui/themes": "1.71.0",
-    "@tamagui/web": "1.71.0"
+    "@tamagui/animations-react-native": "1.76.0",
+    "@tamagui/animations-reanimated": "1.76.0",
+    "@tamagui/colors": "1.76.0",
+    "@tamagui/font-cherry-bomb": "1.76.0",
+    "@tamagui/font-dm-sans": "1.76.0",
+    "@tamagui/font-dm-serif-display": "1.76.0",
+    "@tamagui/font-glusp": "1.76.0",
+    "@tamagui/font-inter": "1.76.0",
+    "@tamagui/font-silkscreen": "1.76.0",
+    "@tamagui/react-native-media-driver": "1.76.0",
+    "@tamagui/shorthands": "1.76.0",
+    "@tamagui/themes": "1.76.0",
+    "@tamagui/web": "1.76.0"
   },
   "devDependencies": {
-    "@tamagui/build": "1.71.0"
+    "@tamagui/build": "1.76.0"
   },
   "publishConfig": {
     "access": "public"

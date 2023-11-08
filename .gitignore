@@ -36,7 +36,7 @@ apps/kitchen-sink/ios
 .idea
 
 .env
-[# local env files
+# local env files
 .env.local
 .env.development.local
 .env.test.localp

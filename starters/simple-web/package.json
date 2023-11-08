@@ -9,8 +9,7 @@
     "dev:webpack": "DISABLE_EXTRACTION=true NODE_ENV=development webpack serve",
     "dev:extract": "DISABLE_EXTRACTION=false NODE_ENV=development webpack serve",
     "prod": "NODE_ENV=production webpack --json=dist/compilation-stats.json",
-    "upgrade:tamagui": "yarn up '*tamagui*'@latest '@tamagui/*'@latest",
-    "upgrade:tamagui:canary": "yarn up '*tamagui*'@canary '@tamagui/*'@canary react-native-web-lite@canary"
+    "upgrade:tamagui": "yarn up '*tamagui*'@latest '@tamagui/*'@latest"
   },
   "dependencies": {
     "@tamagui/animations-css": "latest",

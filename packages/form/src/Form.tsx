@@ -7,7 +7,6 @@ import {
   withStaticProperties,
 } from '@tamagui/core'
 import { Scope, createContextScope } from '@tamagui/create-context'
-import { cloneElement } from 'react'
 
 const FORM_NAME = 'Form'
 
@@ -48,21 +47,18 @@ export interface FormTriggerProps extends StackProps {}
 
 export const FormTrigger = FormTriggerFrame.styleable(
   (props: ScopedProps<FormTriggerProps>, forwardedRef) => {
-    const { __scopeForm, children, ...triggerProps } = props
+    const { __scopeForm, children, onPress, ...triggerProps } = props
     const context = useFormContext(TRIGGER_NAME, __scopeForm)
 
     return (
       <FormTriggerFrame
         tag="button"
-        {...triggerProps}
-        children={
-          triggerProps.asChild
-            ? cloneElement(children, { disabled: triggerProps.disabled })
-            : children
-        }
+        {...(triggerProps as any)}
         ref={forwardedRef}
-        onPress={composeEventHandlers(props.onPress as any, context.onSubmit)}
-      />
+        onPress={composeEventHandlers(onPress as any, context.onSubmit)}
+      >
+        {children}
+      </FormTriggerFrame>
     )
   }
 )
@@ -77,7 +73,7 @@ const FormComponent = FormFrame.extractable(function Form({
 }: ScopedProps<FormProps>) {
   return (
     <FormProvider scope={props.__scopeForm} onSubmit={onSubmit}>
-      <FormFrame {...props} onSubmit={((e: any) => e.preventDefault()) as any} />
+      <FormFrame {...(props as any)} onSubmit={(e: any) => e.preventDefault()} />
     </FormProvider>
   )
 })

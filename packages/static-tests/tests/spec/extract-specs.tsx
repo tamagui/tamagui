@@ -1,4 +1,3 @@
-// debug
 import { config } from '@tamagui/config'
 import {
   Spacer,

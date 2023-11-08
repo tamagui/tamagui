@@ -153,6 +153,10 @@ export declare function getDefaultTamaguiConfig(): import("@tamagui/core").Tamag
         background: string;
         color: string;
     };
+    dark_Button: {
+        background: string;
+        color: string;
+    };
     dark_blue_Button: {
         background: string;
         color: string;
@@ -360,5 +364,6 @@ export declare function getDefaultTamaguiConfig(): import("@tamagui/core").Tamag
     }) | undefined;
     autocompleteSpecificTokens?: (boolean | "except-special") | undefined;
     mediaPropOrder?: boolean | undefined;
+    fastSchemeChange?: boolean | undefined;
 }>;
 //# sourceMappingURL=index.d.ts.map

@@ -278,8 +278,7 @@ export function createExtractor(
         console.error(
           `⛔️ Error: Missing "themes" in your tamagui.config file, this may be due to duplicated dependency versions. Try out https://github.com/bmish/check-dependency-version-consistency to see if there are mis-matches, or search your lockfile.`
         )
-        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-        console.log(`  Got config:`, tamaguiConfig)
+        console.info(`  Got config:`, tamaguiConfig)
         process.exit(0)
       }
     }
@@ -289,10 +288,8 @@ export function createExtractor(
 
     if (!firstTheme || typeof firstTheme !== 'object') {
       console.error(`Missing theme, an error occurred when importing your config`)
-      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-      console.log(`Got config:`, tamaguiConfig)
-      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-      console.log(`Looking for theme:`, firstThemeName)
+      console.info(`Got config:`, tamaguiConfig)
+      console.info(`Looking for theme:`, firstThemeName)
       process.exit(0)
     }
 
@@ -318,8 +315,7 @@ export function createExtractor(
           `Warning: Tamagui didn't find any valid components (DEBUG=tamagui for more)`
         )
         if (process.env.DEBUG === 'tamagui') {
-          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-          console.log(`components`, Object.keys(components || []), components)
+          console.info(`components`, Object.keys(components || []), components)
         }
       }
     }
@@ -329,6 +325,13 @@ export function createExtractor(
         `allLoadedComponent modules ${propsWithFileInfo.allLoadedComponents
           .map((k) => k.moduleName)
           .join(', ')}`
+      )
+      logger.info(
+        `valid import paths: ${JSON.stringify(
+          getValidComponentsPaths(propsWithFileInfo),
+          null,
+          2
+        )}`
       )
     }
 
@@ -347,6 +350,10 @@ export function createExtractor(
 
       if (valid) {
         importDeclarations.push(node)
+      }
+
+      if (shouldPrintDebug === 'verbose') {
+        logger.info(` - import ${moduleName} ${valid}`)
       }
 
       if (extractStyledDefinitions) {
@@ -676,11 +683,19 @@ export function createExtractor(
         const componentName = findComponentName(traversePath.scope)
         const closingElement = traversePath.node.closingElement
 
+        if (shouldPrintDebug) {
+          logger.info(` start ${node.name}`)
+        }
+
         // skip non-identifier opening elements (member expressions, etc.)
         if (
-          t.isJSXMemberExpression(closingElement?.name) ||
+          (closingElement && t.isJSXMemberExpression(closingElement?.name)) ||
           !t.isJSXIdentifier(node.name)
         ) {
+          if (shouldPrintDebug) {
+            logger.info(` skip non-identifier element`)
+          }
+
           return
         }
 
@@ -772,8 +787,7 @@ export function createExtractor(
 
         if (shouldDisableExtraction) {
           if (shouldPrintDebug === 'verbose') {
-            // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-            console.log(` Extraction disabled`)
+            console.info(` Extraction disabled`)
           }
           return
         }
@@ -800,8 +814,7 @@ export function createExtractor(
             })
 
           if (shouldPrintDebug === 'verbose') {
-            // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-            console.log(` Start tag ${tagName}`)
+            console.info(` Start tag ${tagName}`)
           }
 
           const flatNode = getFlattenedNode?.({ isTextView, tag: tagName })
@@ -817,6 +830,8 @@ export function createExtractor(
             // always de-opt animation these
             'animation',
             'disableOptimization',
+
+            ...(!isTargetingHTML ? ['pressStyle', 'focusStyle'] : []),
 
             // when using a non-CSS driver, de-opt on enterStyle/exitStyle
             ...(tamaguiConfig?.animations.isReactNative
@@ -1597,16 +1612,19 @@ export function createExtractor(
           const shouldWrapTheme = shouldFlatten && themeVal
           const usedThemeKeys = new Set<string>()
 
-          if (disableExtractVariables) {
-            // if it accesses any theme values during evaluation
-            themeAccessListeners.add((key) => {
-              shouldFlatten = false
+          // if it accesses any theme values during evaluation
+          themeAccessListeners.add((key) => {
+            if (options.experimentalFlattenThemesOnNative) {
               usedThemeKeys.add(key)
+            }
+            if (disableExtractVariables) {
+              usedThemeKeys.add(key)
+              shouldFlatten = false
               if (shouldPrintDebug === 'verbose') {
                 logger.info([' ! accessing theme key, avoid flatten', key].join(' '))
               }
-            })
-          }
+            }
+          })
 
           if (shouldPrintDebug) {
             try {
@@ -1725,7 +1743,10 @@ export function createExtractor(
               if (staticConfig.variants && key in staticConfig.variants) {
                 mergeToEnd(res, key, style[key])
               } else {
-                const expanded = expandStylesAndRemoveNullishValues({ [key]: style[key] })
+                const expanded = expandStylesAndRemoveNullishValues(
+                  { [key]: style[key] },
+                  true
+                )
                 for (const key in expanded) {
                   mergeToEnd(res, key, expanded[key])
                 }
@@ -1942,10 +1963,27 @@ export function createExtractor(
                 debugPropValue || shouldPrintDebug
               )
 
-              const outProps = {
+              let outProps = {
                 ...(includeProps ? out.viewProps : {}),
                 ...out.style,
                 ...out.pseudos,
+              }
+
+              // check de-opt props again
+              for (const key in outProps) {
+                if (deoptProps.has(key)) {
+                  shouldFlatten = false
+                }
+              }
+
+              if (options.experimentalFlattenThemesOnNative) {
+                if (usedThemeKeys.size > 0) {
+                  Object.entries(props).forEach(([key, value]) => {
+                    if (usedThemeKeys.has(value)) {
+                      outProps[key] = value
+                    }
+                  })
+                }
               }
 
               if (shouldPrintDebug) {
@@ -2037,8 +2075,7 @@ export function createExtractor(
           for (const attr of attrs) {
             try {
               if (shouldPrintDebug) {
-                // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-                console.log(`  Processing ${attr.type}:`)
+                console.info(`  Processing ${attr.type}:`)
               }
 
               switch (attr.type) {

@@ -1,12 +1,12 @@
 {
   "name": "@tamagui/core",
-  "version": "1.71.0",
-  "source": "src/index.ts",
+  "version": "1.76.0",
+  "source": "src/index.tsx",
   "main": "dist/cjs",
   "module": "dist/esm",
   "tamagui": {
-    "bundle.native": "./src/index.ts",
-    "bundle.native.test": "./src/index.ts"
+    "bundle.native": "./src/index.tsx",
+    "bundle.native.test": "./src/index.tsx"
   },
   "types": "./types/index.d.ts",
   "license": "MIT",
@@ -14,8 +14,7 @@
     "name": "Nate Wienert"
   },
   "sideEffects": [
-    "*.css",
-    "index.ts"
+    "*.css"
   ],
   "scripts": {
     "build": "tamagui-build",
@@ -31,19 +30,21 @@
     "src",
     "reset.css",
     "native.js",
-    "native.d.ts"
+    "native.d.ts",
+    "native-test.js",
+    "native-test.d.ts"
   ],
   "dependencies": {
-    "@tamagui/react-native-use-pressable": "1.71.0",
-    "@tamagui/react-native-use-responder-events": "1.71.0",
-    "@tamagui/use-event": "1.71.0",
-    "@tamagui/web": "1.71.0"
+    "@tamagui/react-native-use-pressable": "1.76.0",
+    "@tamagui/react-native-use-responder-events": "1.76.0",
+    "@tamagui/use-event": "1.76.0",
+    "@tamagui/web": "1.76.0"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.71.0",
+    "@tamagui/build": "1.76.0",
     "@testing-library/react": "^14.0.0",
     "csstype": "^3.0.10",
     "react": "^18.2.0",

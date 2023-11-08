@@ -505,7 +505,7 @@ const AccordionTriggerFrame = styled(Collapsible.Trigger, {
   } as const,
 
   defaultVariants: {
-    unstyled: false,
+    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
   },
 })
 
@@ -555,7 +555,7 @@ const AccordionContentFrame = styled(Collapsible.Content, {
   } as const,
 
   defaultVariants: {
-    unstyled: false,
+    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
   },
 })
 
@@ -576,6 +576,7 @@ const AccordionContent = AccordionContentFrame.styleable(function AccordionConte
       role="region"
       aria-labelledby={itemContext.triggerId}
       data-orientation={accordionContext.orientation}
+      // @ts-ignore
       __scopeCollapsible={__scopeAccordion || ACCORDION_CONTEXT}
       {...contentProps}
       ref={forwardedRef}

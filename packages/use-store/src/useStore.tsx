@@ -1,4 +1,4 @@
-import { useCallback, useRef, useSyncExternalStore } from 'react'
+import { useCallback, useMemo, useRef, useSyncExternalStore } from 'react'
 
 import { isEqualSubsetShallow } from './comparators'
 import { configureOpts } from './configureUseStore'
@@ -21,8 +21,7 @@ export function useStore<A, B extends Object>(
   props?: B | null,
   options: UseStoreOptions<A, any> = defaultOptions
 ): A {
-  const selectorCb = useCallback(options.selector || idFn, [])
-  const selector = options.selector ? selectorCb : options.selector
+  const selector = useMemo(() => options.selector, [])
   const info = getOrCreateStoreInfo(StoreKlass, props, options)
   return useStoreFromInfo(info, selector, options)
 }
@@ -331,8 +330,7 @@ function useStoreFromInfo(
         }))
 
     if (shouldPrintDebug) {
-      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-      console.log('🌑 getSnapshot', {
+      console.info('🌑 getSnapshot', {
         storeState: selectKeys(store, Object.keys(store)),
         userSelector,
         info,
@@ -378,8 +376,7 @@ function useStoreFromInfo(
 
       if (info.stateKeys.has(keyString) || keyString in info.getters) {
         if (shouldPrintDebug) {
-          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-          console.log('👀 tracking', keyString)
+          console.info('👀 tracking', keyString)
         }
         curInternal.tracked.add(keyString)
       }
@@ -423,8 +420,7 @@ function createProxiedStore(storeInfo: StoreInfo) {
         return Reflect.apply(actionFn, proxiedStore, args)
       }
       if (process.env.NODE_ENV === 'development' && shouldDebug) {
-        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-        console.log('(debug) startAction', key)
+        console.info('(debug) startAction', key)
       }
       res = Reflect.apply(actionFn, proxiedStore, args)
       if (res instanceof Promise) {
@@ -503,23 +499,19 @@ function createProxiedStore(storeInfo: StoreInfo) {
                     if (head) {
                       console.groupCollapsed(...head)
                       console.groupCollapsed('...')
-                      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-                      console.log('args', args)
-                      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-                      console.log('response', res)
+                      console.info('args', args)
+                      console.info('response', res)
                       console.groupCollapsed('trace')
                       console.trace()
                       console.groupEnd()
                       console.groupEnd()
                       for (const [name, ...log] of rest) {
                         console.groupCollapsed(name)
-                        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-                        console.log(...log)
+                        console.info(...log)
                         console.groupEnd()
                       }
                     } else {
-                      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-                      console.log('Weird log', head, ...rest)
+                      console.info('Weird log', head, ...rest)
                     }
                   }
                 } catch (err: any) {
@@ -557,8 +549,7 @@ function createProxiedStore(storeInfo: StoreInfo) {
 
   const finishAction = (val?: any) => {
     if (process.env.NODE_ENV === 'development' && shouldDebug) {
-      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-      console.log('(debug) finishAction', { didSet })
+      console.info('(debug) finishAction', { didSet })
     }
     if (didSet) {
       storeInfo.triggerUpdate()
@@ -647,13 +638,11 @@ function createProxiedStore(storeInfo: StoreInfo) {
         if (shouldDebug) {
           setters.add({ key, value })
           if (getShouldDebug(storeInfo)) {
-            // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-            console.log('(debug) SET', res, key, value)
+            console.info('(debug) SET', res, key, value)
           }
         }
         if (process.env.NODE_ENV === 'development' && shouldDebug) {
-          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-          console.log('SET...', { key, value })
+          console.info('SET...', { key, value })
         }
 
         if (!isTriggering) {

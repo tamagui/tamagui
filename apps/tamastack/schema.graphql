@@ -6,6 +6,7 @@ directive @exported(filename: String!, functionName: String!) on FIELD_DEFINITIO
 
 directive @methodName(name: String!) on FIELD_DEFINITION
 
+"""Test comment"""
 type Query {
-  hello(name: String!): String!
+  greet(greeting: String!): String @exported(filename: "../../../../dist/apps/tamastack/graph/user.js", functionName: "greet")
 }

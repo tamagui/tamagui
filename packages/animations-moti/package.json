@@ -1,23 +1,26 @@
 {
   "name": "@tamagui/animations-moti",
-  "version": "1.71.0",
+  "version": "1.76.0",
   "source": "src/index.ts",
   "license": "MIT",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
+  "sideEffects": [
+    "polyfill.js"
+  ],
   "files": [
     "src",
     "types",
     "dist"
   ],
   "dependencies": {
-    "@tamagui/use-presence": "1.71.0",
-    "@tamagui/web": "1.71.0",
+    "@tamagui/use-presence": "1.76.0",
+    "@tamagui/web": "1.76.0",
     "moti": "^0.25.3"
   },
   "devDependencies": {
-    "@tamagui/build": "1.71.0",
+    "@tamagui/build": "1.76.0",
     "react-native-reanimated": "^3.3.0"
   },
   "scripts": {
@@ -31,9 +34,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
-  "sideEffects": [
-    "./index.tsx",
-    "./polyfill.ts"
-  ]
+  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
 }

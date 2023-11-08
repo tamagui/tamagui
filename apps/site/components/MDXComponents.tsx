@@ -1,10 +1,11 @@
-import { ThemeTint } from '@tamagui/logo'
-import { Link } from '@tamagui/lucide-icons'
+import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
+import { Link, Subtitles } from '@tamagui/lucide-icons'
 import { NextLink } from 'components/NextLink'
 import React, { useState } from 'react'
 import { ScrollView } from 'react-native'
 import {
   Button,
+  Card,
   H1,
   H2,
   H3,
@@ -31,6 +32,7 @@ import { BenchmarkChart } from './BenchmarkChart'
 import { BenchmarkChartNative } from './BenchmarkChartNative'
 import { BenchmarkChartWeb } from './BenchmarkChartWeb'
 import { Code, CodeInline } from './Code'
+import { Preview } from './ComponentPreview'
 import { DataTable } from './DataTable'
 import * as Demos from './demos'
 import { DocCodeBlock } from './DocsCodeBlock'
@@ -44,7 +46,6 @@ import { LI } from './LI'
 import { MediaPlayer } from './MediaPlayer'
 import { Notice, NoticeFrame } from './Notice'
 import { OffsetBox } from './OffsetBox'
-import { Preview } from './Preview'
 import { PropsTable } from './PropsTable'
 import { SocialLinksRow } from './SocialLinksRow'
 import { SponsorButton } from './SponsorButton'
@@ -250,13 +251,11 @@ export const components = {
     return (
       <Paragraph
         tag="p"
-        size={large ? '$10' : '$9'}
-        fontSize={large ? 32 : 26}
-        className={'intro-paragraph' + (large ? ' large' : '')}
+        size={large ? '$9' : '$8'}
         my="$4"
         fow={large ? '200' : '300'}
         $sm={{
-          size: '$8',
+          size: '$7',
         }}
         {...props}
       >
@@ -337,7 +336,7 @@ export const components = {
       <NextLink className="link" href={href}>
         {/* @ts-ignore */}
         <Paragraph
-          tag="span"
+          tag="a"
           // @ts-ignore
           fontSize="inherit"
           display="inline"
@@ -564,6 +563,50 @@ export const components = {
     },
   },
 
+  GetStarted: () => {
+    return (
+      <XStack gap="$4" f={1} fw="wrap" mt="$6">
+        <ThemeTintAlt>
+          <Card f={1}>
+            <Card.Header gap="$2">
+              <H4 size="$4" color="$color8">
+                Quick start
+              </H4>
+              <Paragraph size="$6" color="$color9">
+                Bootstrap a production-ready app in seconds:
+              </Paragraph>
+            </Card.Header>
+
+            <Card.Footer p="$6" pt={0}>
+              <Code f={1} bc="$color4" p="$3" br="$4" size="$6">
+                npm create tamagui@latest
+              </Code>
+            </Card.Footer>
+          </Card>
+        </ThemeTintAlt>
+
+        <NextLink passHref href="/docs/intro/installation">
+          <Card
+            tag="a"
+            animation="quickest"
+            f={1}
+            y={0}
+            hoverStyle={{ y: -10, bc: '$backgroundHover' }}
+          >
+            <Card.Header gap="$2">
+              <H4 size="$4" color="$color8">
+                Install
+              </H4>
+              <Paragraph size="$6" color="$color9">
+                Set up an app.
+              </Paragraph>
+            </Card.Header>
+          </Card>
+        </NextLink>
+      </XStack>
+    )
+  },
+
   Aside: ({ children, ...props }) => {
     const [cutoff, setCutoff] = useState(true)
 
@@ -632,7 +675,6 @@ const LinkHeading = ({ id, children, ...props }: { id: string } & XStackProps) =
 )
 
 const getNonTextChildren = (children) => {
-  // biome-ignore lint/complexity/useFlatMap: <explanation>
   return React.Children.map(children, (x) => {
     if (typeof x === 'string') return null
     if (x['type'] === code) return null

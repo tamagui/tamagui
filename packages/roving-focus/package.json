@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/roving-focus",
-  "version": "1.71.0",
+  "version": "1.76.0",
   "sideEffects": [
     "*.css"
   ],
@@ -16,7 +16,11 @@
   ],
   "scripts": {
     "build": "tamagui-build",
-    "watch": "tamagui-build --watch"
+    "watch": "tamagui-build --watch",
+    "lint": "../../node_modules/.bin/biome check src",
+    "lint:fix": "../../node_modules/.bin/biome check --apply-unsafe src",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
   },
   "exports": {
     "./package.json": "./package.json",
@@ -27,19 +31,19 @@
     }
   },
   "dependencies": {
-    "@tamagui/collection": "1.71.0",
-    "@tamagui/compose-refs": "1.71.0",
-    "@tamagui/core": "1.71.0",
-    "@tamagui/create-context": "1.71.0",
-    "@tamagui/use-controllable-state": "1.71.0",
-    "@tamagui/use-direction": "1.71.0",
-    "@tamagui/use-event": "1.71.0"
+    "@tamagui/collection": "1.76.0",
+    "@tamagui/compose-refs": "1.76.0",
+    "@tamagui/core": "1.76.0",
+    "@tamagui/create-context": "1.76.0",
+    "@tamagui/use-controllable-state": "1.76.0",
+    "@tamagui/use-direction": "1.76.0",
+    "@tamagui/use-event": "1.76.0"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.71.0",
+    "@tamagui/build": "1.76.0",
     "react": "^18.2.0"
   },
   "publishConfig": {

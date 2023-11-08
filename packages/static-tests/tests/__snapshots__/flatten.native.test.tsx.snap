@@ -1,8 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`flatten-tests > flattened media queries 1`] = `
-"import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
-const _sheet = ReactNativeStyleSheet.create({
+"const __ReactNativeStyleSheet = require('react-native').StyleSheet;
+const _sheet = __ReactNativeStyleSheet.create({
   \\"0\\": {
     \\"alignItems\\": \\"stretch\\",
     \\"flexDirection\\": \\"column\\",
@@ -33,7 +33,8 @@ const _sheet = ReactNativeStyleSheet.create({
   },
   \\"6\\": {}
 });
-import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
+const __ReactNativeView = require('react-native').View;
+const __ReactNativeText = require('react-native').Text;
 import { YStack } from 'tamagui/src/YStack';
 import { useMedia } from 'tamagui';
 export function Test(isLoading) {

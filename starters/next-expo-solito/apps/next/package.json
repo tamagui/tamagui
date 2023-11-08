@@ -17,9 +17,8 @@
     "raf": "^3.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-native": "^0.71.4",
-    "react-native-web": "^0.18.12",
-    "react-native-web-lite": "latest",
+    "react-native": "0.72.5",
+    "react-native-web": "~0.19.6",
     "vercel": "latest"
   },
   "devDependencies": {

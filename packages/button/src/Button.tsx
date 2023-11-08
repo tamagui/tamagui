@@ -17,6 +17,7 @@ import {
   getVariableValue,
   spacedChildren,
   styled,
+  useDidFinishSSR,
   useProps,
   withStaticProperties,
 } from '@tamagui/web'
@@ -28,13 +29,24 @@ export const ButtonContext = createStyledContext<
       size: SizeTokens
     }
   >
->({})
+>({
+  // keeping these here means they work with styled() passing down color to text
+  color: undefined,
+  ellipse: undefined,
+  fontFamily: undefined,
+  fontSize: undefined,
+  fontStyle: undefined,
+  fontWeight: undefined,
+  letterSpacing: undefined,
+  maxFontSizeMultiplier: undefined,
+  size: undefined,
+  textAlign: undefined,
+})
 
 type ButtonIconProps = { color?: string; size?: number }
 type IconProp = JSX.Element | FunctionComponent<ButtonIconProps> | null
 
-type ButtonProps = TextParentStyles &
-  GetProps<typeof ButtonFrame> &
+type ButtonExtraProps = TextParentStyles &
   ThemeableProps & {
     /**
      * add icon before, passes color and size automatically if Component
@@ -63,6 +75,8 @@ type ButtonProps = TextParentStyles &
      */
     unstyled?: boolean
   }
+
+type ButtonProps = ButtonExtraProps & GetProps<typeof ButtonFrame>
 
 const BUTTON_NAME = 'Button'
 
@@ -131,12 +145,12 @@ const ButtonFrame = styled(ThemeableStack, {
   } as const,
 
   defaultVariants: {
-    unstyled: false,
+    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
   },
 })
 
 const ButtonText = styled(SizableText, {
-  name: 'Button', // same name as the frame so they can share a single theme
+  name: 'Button',
   context: ButtonContext,
 
   variants: {
@@ -154,7 +168,7 @@ const ButtonText = styled(SizableText, {
   } as const,
 
   defaultVariants: {
-    unstyled: false,
+    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
   },
 })
 
@@ -170,7 +184,10 @@ const ButtonIcon = (props: { children: React.ReactNode; scaleIcon?: number }) =>
   return getThemedIcon(children)
 }
 
-const ButtonComponent = ButtonFrame.styleable<ButtonProps>(function Button(props, ref) {
+const ButtonComponent = ButtonFrame.styleable<ButtonExtraProps>(function Button(
+  props,
+  ref
+) {
   const { props: buttonProps } = useButton(props)
   return <ButtonFrame {...buttonProps} ref={ref} />
 })
@@ -204,37 +221,26 @@ export const ButtonNestingContext = createContext(false)
  * @deprecated Instead of useButton, see the Button docs for the newer and much improved Advanced customization pattern: https://tamagui.dev/docs/components/button
  */
 function useButton<Props extends ButtonProps>(
-  propsIn: Props,
+  { textProps, ...propsIn }: Props,
   { Text = Button.Text }: { Text: any } = { Text: Button.Text }
 ) {
-  // careful not to desctructure and re-order props, order is important
+  const isNested = useContext(ButtonNestingContext)
+  const didFinishSSR = useDidFinishSSR()
+  const propsActive = useProps(propsIn) as any as ButtonProps
+
+  // careful not to destructure and re-order props, order is important
   const {
-    children,
     icon,
     iconAfter,
-    noTextWrap,
-    theme: themeName,
     space,
     spaceFlex,
     scaleIcon = 1,
     scaleSpace = 0.66,
     separator,
-
-    // text props
-    color,
-    fontWeight,
-    letterSpacing,
-    fontSize,
+    noTextWrap,
     fontFamily,
-    fontStyle,
-    textAlign,
-    textProps,
-
-    ...rest
-  } = propsIn
-
-  const isNested = useContext(ButtonNestingContext)
-  const propsActive = useProps(propsIn) as any as ButtonProps
+    fontSize,
+  } = propsActive
 
   const size = propsActive.size || (propsActive.unstyled ? undefined : '$true')
 
@@ -242,19 +248,24 @@ function useButton<Props extends ButtonProps>(
     (typeof size === 'number' ? size * 0.5 : getFontSize(size as FontSizeTokens)) *
     scaleIcon
 
-  const getThemedIcon = useGetThemedIcon({ size: iconSize, color: color as any })
+  const getThemedIcon = useGetThemedIcon({
+    size: iconSize,
+    color: propsActive.color as any,
+  })
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)
-  const spaceSize = propsActive.space ?? getVariableValue(iconSize) * scaleSpace
-  const contents = wrapChildrenInText(
-    Text,
-    propsActive,
-    Text === ButtonText && propsIn.unstyled !== true
-      ? {
-          unstyled: false,
-          size,
-        }
-      : undefined
-  )
+  const spaceSize = space ?? getVariableValue(iconSize) * scaleSpace
+  const contents = noTextWrap
+    ? [propsIn.children]
+    : wrapChildrenInText(
+        Text,
+        { children: propsIn.children, fontFamily, fontSize, textProps },
+        Text === ButtonText && propsActive.unstyled !== true
+          ? {
+              unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+              size,
+            }
+          : undefined
+      )
 
   const inner = spacedChildren({
     // a bit arbitrary but scaling to font size is necessary so long as button does
@@ -274,12 +285,16 @@ function useButton<Props extends ButtonProps>(
     ? 'span'
     : // defaults to <a /> when accessibilityRole = link
     // see https://github.com/tamagui/tamagui/issues/505
-    propsIn.accessibilityRole === 'link'
+    propsActive.accessibilityRole === 'link'
     ? 'a'
     : undefined
 
+  // remove the ones we used here
+  const { iconAfter: _1, icon: _2, noTextWrap: _3, ...restProps } = propsIn
+
   const props = {
-    ...(propsActive.disabled && {
+    size,
+    ...(propsIn.disabled && {
       // in rnw - false still has keyboard tabIndex, undefined = not actually focusable
       focusable: undefined,
       // even with tabIndex unset, it will keep focusStyle on web so disable it here
@@ -290,10 +305,12 @@ function useButton<Props extends ButtonProps>(
     ...(tag && {
       tag,
     }),
-    ...rest,
+    ...restProps,
     children: (
       <ButtonNestingContext.Provider value={true}>{inner}</ButtonNestingContext.Provider>
     ),
+    // forces it to be a runtime pressStyle so it passes through context text colors
+    disableClassName: didFinishSSR,
   } as Props
 
   return {

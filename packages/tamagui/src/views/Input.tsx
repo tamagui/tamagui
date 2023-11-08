@@ -1,19 +1,8 @@
-import {
-  ColorStyleProp,
-  GetProps,
-  isWeb,
-  setupReactNative,
-  styled,
-  useTheme,
-} from '@tamagui/core'
+import { ColorStyleProp, GetProps, isWeb, styled, useTheme } from '@tamagui/core'
 import { useFocusable } from '@tamagui/focusable'
 import { TextInput } from 'react-native'
 
 import { inputSizeVariant } from '../helpers/inputHelpers'
-
-setupReactNative({
-  TextInput,
-})
 
 export const defaultStyles = {
   size: '$true',
@@ -48,29 +37,23 @@ export const defaultStyles = {
   },
 } as const
 
-export const InputFrame = styled(
-  TextInput,
-  {
-    name: 'Input',
+export const InputFrame = styled(TextInput, {
+  name: 'Input',
 
-    variants: {
-      unstyled: {
-        false: defaultStyles,
-      },
-
-      size: {
-        '...size': inputSizeVariant,
-      },
-    } as const,
-
-    defaultVariants: {
-      unstyled: false,
+  variants: {
+    unstyled: {
+      false: defaultStyles,
     },
+
+    size: {
+      '...size': inputSizeVariant,
+    },
+  } as const,
+
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
   },
-  {
-    isInput: true,
-  }
-)
+})
 
 export type InputProps = Omit<GetProps<typeof InputFrame>, 'placeholderTextColor'> & {
   placeholderTextColor?: ColorStyleProp

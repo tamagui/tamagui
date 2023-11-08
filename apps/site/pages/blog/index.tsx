@@ -1,11 +1,11 @@
-import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { authors } from '@data/authors'
+import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { getAllFrontmatter } from '@lib/mdx'
-import { NextLink } from 'components/NextLink'
 import { NextSeo } from 'next-seo'
 import { H2, Paragraph, Spacer, XStack } from 'tamagui'
 
 import { ContainerLarge } from '../../components/Container'
+import { NextLink } from '../../components/NextLink'
 import { TamaguiCard } from '../../components/TamaguiCard'
 
 export default function Blog({ frontmatters }) {
@@ -19,7 +19,12 @@ export default function Blog({ frontmatters }) {
       <ContainerLarge mt="$6" mb="$7">
         <XStack flexWrap="wrap" jc="space-between">
           {frontmatters.map((frontmatter) => (
-            <NextLink key={frontmatter.title} href={frontmatter.slug} passHref>
+            <NextLink
+              legacyBehavior={false}
+              key={frontmatter.title}
+              href={frontmatter.slug}
+              passHref
+            >
               <TamaguiCard
                 title={frontmatter.title}
                 subTitle={
