@@ -25,9 +25,11 @@
 
 Tamagui lets you share more code between web and native apps without sacrificing the two things that typically suffer when you do: performance and code quality.
 
-It does this with an optimizing compiler that outputs platform-specific optimizations, turning even cross-module-imported, logic-infused, inline-styled components into clean, flat DOM + CSS on the web, or on native, hoisted style objects and View/Text. The compiler is also optional, as Tamagui also works entirely at runtime.
+It does this with an optimizing compiler that outputs platform-specific optimizations, turning even styles with logic or that use constants imported from other files will flatten into a simple `div` (or other tag) alongside CSS on the web, or on native, a View or Text that references memoized and hoisted style objects.
 
-For example, within the ~500px² responsive browser section on [the homepage](https://tamagui.dev), 49 of the 55 or so inline styled components are flattened to a `div`. The homepage gains nearly 15% on Lighthouse just by turning on the compiler.
+Tamagui aims to be easy to start with and so you can use any of the three independently. The entirety of Tamagui works at compile time and runtime, which means in development you can avoid setting up the compiler at all (though the compiler does add some very nice data-attributes to your DOM). We recommend to start either using a starter (a few are available at `npm create tamagui@latest`).
+
+The compiler can flatten a large amount of views. In the [~500px² responsive browser section](https://tamagui.dev) of the Tamagui website, 49 of the 55 or so [inline styled components](https://github.com/tamagui/tamagui/blob/master/apps/site/components/HeroResponsive.tsx) are flattened to a `div`. The homepage gains nearly 15% on Lighthouse just by turning on the compiler.
 
 [Learn more on the website](https://tamagui.dev/docs/intro/introduction).
 
