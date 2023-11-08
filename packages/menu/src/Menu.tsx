@@ -2,6 +2,7 @@ import { AnimatePresence as Presence } from '@tamagui/animate-presence'
 import { createCollection } from '@tamagui/collection'
 import {
   Slot,
+  Text,
   composeEventHandlers,
   composeRefs,
   createStyledContext,
@@ -16,13 +17,12 @@ import type { PopperContentProps } from '@tamagui/popper'
 import { Portal as PortalPrimitive, PortalProps } from '@tamagui/portal'
 import { RovingFocusGroup } from '@tamagui/roving-focus'
 import type { RovingFocusGroupProps } from '@tamagui/roving-focus'
-import { SizableStack, SizableStackProps, ThemeableStack } from '@tamagui/stacks'
+import { SizableStackProps, ThemeableStack } from '@tamagui/stacks'
 import { useCallbackRef } from '@tamagui/use-callback-ref'
 import { useDirection } from '@tamagui/use-direction'
-import { Stack, isWeb, styled } from '@tamagui/web'
+import { Stack, Theme, isWeb, styled } from '@tamagui/web'
 import { TamaguiElement } from '@tamagui/web/types'
 import { hideOthers } from 'aria-hidden'
-import { useMemo } from 'react'
 import { useId } from 'react'
 import * as React from 'react'
 import { RemoveScroll } from 'react-remove-scroll'
@@ -73,7 +73,7 @@ type MenuRootContextValue = {
 const { Provider: MenuRootProvider, useStyledContext: useMenuRootContext } =
   createStyledContext<MenuRootContextValue>()
 
-interface MenuProps {
+interface MenuProps extends PopperPrimitive.PopperProps {
   children?: React.ReactNode
   open?: boolean
   onOpenChange?(open: boolean): void
@@ -84,37 +84,48 @@ interface MenuProps {
 const MENU_CONTEXT = 'MenuContext'
 
 const Menu: React.FC<ScopedProps<MenuProps>> = (props: ScopedProps<MenuProps>) => {
-  const { __scopeMenu, open = false, children, dir, onOpenChange, modal = true } = props
+  const {
+    __scopeMenu,
+    open = false,
+    children,
+    dir,
+    onOpenChange,
+    modal = true,
+    ...rest
+  } = props
   const [content, setContent] = React.useState<MenuContentElement | null>(null)
   const isUsingKeyboardRef = React.useRef(false)
   const handleOpenChange = useCallbackRef(onOpenChange)
   const direction = useDirection(dir)
 
-  React.useEffect(() => {
-    // Capture phase ensures we set the boolean before any side effects execute
-    // in response to the key or pointer event as they might depend on this value.
-    const handleKeyDown = () => {
-      isUsingKeyboardRef.current = true
-      document.addEventListener('pointerdown', handlePointer, {
-        capture: true,
-        once: true,
-      })
-      document.addEventListener('pointermove', handlePointer, {
-        capture: true,
-        once: true,
-      })
-    }
-    const handlePointer = () => (isUsingKeyboardRef.current = false)
-    document.addEventListener('keydown', handleKeyDown, { capture: true })
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown, { capture: true })
-      document.removeEventListener('pointerdown', handlePointer, { capture: true })
-      document.removeEventListener('pointermove', handlePointer, { capture: true })
-    }
-  }, [])
+  if (isWeb) {
+    React.useEffect(() => {
+      // Capture phase ensures we set the boolean before any side effects execute
+      // in response to the key or pointer event as they might depend on this value.
+
+      const handleKeyDown = () => {
+        isUsingKeyboardRef.current = true
+        document.addEventListener('pointerdown', handlePointer, {
+          capture: true,
+          once: true,
+        })
+        document.addEventListener('pointermove', handlePointer, {
+          capture: true,
+          once: true,
+        })
+      }
+      const handlePointer = () => (isUsingKeyboardRef.current = false)
+      document.addEventListener('keydown', handleKeyDown, { capture: true })
+      return () => {
+        document.removeEventListener('keydown', handleKeyDown, { capture: true })
+        document.removeEventListener('pointerdown', handlePointer, { capture: true })
+        document.removeEventListener('pointermove', handlePointer, { capture: true })
+      }
+    }, [])
+  }
 
   return (
-    <PopperPrimitive.Popper __scopePopper={__scopeMenu || MENU_CONTEXT}>
+    <PopperPrimitive.Popper __scopePopper={__scopeMenu || MENU_CONTEXT} {...rest}>
       <MenuProvider
         scope={__scopeMenu}
         open={open}
@@ -144,26 +155,15 @@ Menu.displayName = MENU_NAME
 
 const ANCHOR_NAME = 'MenuAnchor'
 
-type MenuAnchorElement = React.ElementRef<typeof PopperPrimitive.PopperAnchor>
+// type MenuAnchorElement = React.ElementRef<typeof PopperPrimitive.PopperAnchor>
 type PopperAnchorProps = React.ComponentPropsWithoutRef<
   typeof PopperPrimitive.PopperAnchor
 >
 interface MenuAnchorProps extends PopperAnchorProps {}
 
-const PopperAnchorFrame = styled(PopperPrimitive.PopperAnchor)
-
-const MenuAnchor = PopperAnchorFrame.styleable<ScopedProps<MenuAnchorProps>>(
-  (props: ScopedProps<MenuAnchorProps>, forwardedRef) => {
-    const { __scopeMenu, ...anchorProps } = props
-    return (
-      <PopperPrimitive.PopperAnchor
-        __scopePopper={__scopeMenu || MENU_CONTEXT}
-        {...anchorProps}
-        ref={forwardedRef}
-      />
-    )
-  }
-)
+const MenuAnchor = styled(PopperPrimitive.PopperAnchor, {
+  __scopePopper: MENU_CONTEXT,
+})
 
 MenuAnchor.displayName = ANCHOR_NAME
 
@@ -394,6 +394,7 @@ const MenuContentImpl = React.forwardRef<
     disableOutsideScroll,
     ...contentProps
   } = props
+
   const context = useMenuContext(__scopeMenu)
   const rootContext = useMenuRootContext(__scopeMenu)
   const getItems = useCollection(__scopeMenu)
@@ -455,15 +456,21 @@ const MenuContentImpl = React.forwardRef<
   const content = (
     <PopperPrimitive.PopperContent
       role="menu"
+      elevation={30}
+      backgroundColor={'$background'}
       aria-orientation="vertical"
       data-state={getOpenState(context.open)}
-      data-radix-menu-content=""
+      data-tamagui-menu-content=""
       // @ts-ignore
       dir={rootContext.dir}
       __scopePopper={__scopeMenu || MENU_CONTEXT}
       {...contentProps}
+      ref={composedRefs}
+      outlineWidth={0}
+      // TODO: why type casting is necessary here?
+      {...(contentProps.style as Object)}
       // @ts-ignore
-      style={{ outline: 'none', ...contentProps.style }}
+      // style={{ outline: 'none', ...contentProps.style }}
       {...(isWeb
         ? {
             onKeyDown: composeEventHandlers(
@@ -473,7 +480,7 @@ const MenuContentImpl = React.forwardRef<
                 // submenu key events bubble through portals. We only care about keys in this menu.
                 const target = event.target as HTMLElement
                 const isKeyDownInside =
-                  target.closest('[data-radix-menu-content]') === event.currentTarget
+                  target.closest('[data-tamagui-menu-content]') === event.currentTarget
                 const isModifierKey = event.ctrlKey || event.altKey || event.metaKey
                 const isCharacterKey = event.key.length === 1
                 if (isKeyDownInside) {
@@ -607,21 +614,14 @@ MenuContent.displayName = CONTENT_NAME
 
 const GROUP_NAME = 'MenuGroup'
 
-type MenuGroupElement = React.ElementRef<typeof Stack>
+// type MenuGroupElement = React.ElementRef<typeof Stack>
 type PrimitiveDivProps = React.ComponentPropsWithoutRef<typeof Stack>
 interface MenuGroupProps extends PrimitiveDivProps {}
 
-const MenuGroupFrame = styled(ThemeableStack, {
+const MenuGroup = styled(ThemeableStack, {
   name: GROUP_NAME,
   role: 'group',
 })
-
-const MenuGroup = MenuGroupFrame.styleable<ScopedProps<MenuGroupProps>>(
-  (props: ScopedProps<MenuGroupProps>, forwardedRef) => {
-    const { __scopeMenu, ...groupProps } = props
-    return <MenuGroupFrame {...groupProps} ref={forwardedRef} />
-  }
-)
 
 MenuGroup.displayName = GROUP_NAME
 
@@ -631,19 +631,12 @@ MenuGroup.displayName = GROUP_NAME
 
 const LABEL_NAME = 'MenuLabel'
 
-type MenuLabelElement = React.ElementRef<typeof Stack>
+// type MenuLabelElement = React.ElementRef<typeof Stack>
 interface MenuLabelProps extends PrimitiveDivProps {}
 
-const MenuLabelFrame = styled(ThemeableStack, {
+const MenuLabel = styled(ThemeableStack, {
   name: LABEL_NAME,
 })
-
-const MenuLabel = MenuLabelFrame.styleable<ScopedProps<MenuLabelProps>>(
-  (props: ScopedProps<MenuLabelProps>, forwardedRef) => {
-    const { __scopeMenu, ...labelProps } = props
-    return <MenuLabelFrame {...labelProps} ref={forwardedRef} />
-  }
-)
 
 MenuLabel.displayName = LABEL_NAME
 
@@ -659,31 +652,9 @@ interface MenuItemProps extends Omit<MenuItemImplProps, 'onSelect'> {
   onSelect?: (event: Event) => void
 }
 
-const MenuItemImplFrame = styled(ThemeableStack, {
-  name: ITEM_NAME,
-  role: 'menuitem',
-})
-
-function findTextInChildren(children): string {
-  return 'bla'
-  if (typeof children === 'string') {
-    return children
-  }
-
-  if (Array.isArray(children)) {
-    return children.map((child) => findTextInChildren(child)).join('')
-  }
-
-  if (children.props && children.props.children) {
-    return findTextInChildren(children.props.children)
-  }
-
-  return ''
-}
-
-const MenuItem = MenuItemImplFrame.styleable<ScopedProps<MenuItemProps>>(
+const MenuItem = ThemeableStack.styleable<ScopedProps<MenuItemProps>>(
   (props: ScopedProps<MenuItemProps>, forwardedRef) => {
-    const { disabled = false, onSelect, ...itemProps } = props
+    const { disabled = false, onSelect, children, ...itemProps } = props
     const ref = React.useRef<HTMLDivElement>(null)
     const rootContext = useMenuRootContext(props.__scopeMenu)
     const contentContext = useMenuContentContext(props.__scopeMenu)
@@ -691,6 +662,7 @@ const MenuItem = MenuItemImplFrame.styleable<ScopedProps<MenuItemProps>>(
     const isPointerDownRef = React.useRef(false)
 
     const handleSelect = () => {
+      // TODO: these things shouldn't work on native
       const menuItem = ref.current
       if (!disabled && menuItem) {
         const itemSelectEvent = new CustomEvent(ITEM_SELECT, {
@@ -709,26 +681,13 @@ const MenuItem = MenuItemImplFrame.styleable<ScopedProps<MenuItemProps>>(
       }
     }
 
-    const textContent = React.useMemo(
-      () => findTextInChildren(itemProps.children) as string,
-      [itemProps.children]
-    )
+    const content = typeof children === 'string' ? <Text>{children}</Text> : children
 
     return (
       <MenuItemImpl
         {...itemProps}
         // @ts-ignore
-        ref={
-          isWeb
-            ? composeRefs
-            : (_ref) => {
-                // @ts-ignore
-                composedRefs({
-                  ..._ref,
-                  textContent,
-                })
-              }
-        }
+        ref={composeRefs}
         disabled={disabled}
         onPress={composeEventHandlers(props.onPress, handleSelect)}
         onPointerDown={(event) => {
@@ -744,6 +703,7 @@ const MenuItem = MenuItemImplFrame.styleable<ScopedProps<MenuItemProps>>(
             if (!isPointerDownRef.current) event.currentTarget?.click()
           }
         })}
+        children={content}
         {...(isWeb
           ? {
               // @ts-ignore
@@ -791,13 +751,15 @@ const MenuItemImpl = React.forwardRef<
 
   // get the item's `.textContent` as default strategy for typeahead `textValue`
   const [textContent, setTextContent] = React.useState('')
-  React.useEffect(() => {
-    const menuItem = ref.current
-    if (menuItem) {
-      // @ts-ignore
-      setTextContent((menuItem.textContent ?? '').trim())
-    }
-  }, [itemProps.children])
+  if (isWeb) {
+    React.useEffect(() => {
+      const menuItem = ref.current
+      if (menuItem) {
+        // @ts-ignore
+        setTextContent((menuItem.textContent ?? '').trim())
+      }
+    }, [itemProps.children])
+  }
 
   return (
     <Collection.ItemSlot
@@ -810,7 +772,9 @@ const MenuItemImpl = React.forwardRef<
         __scopeRovingFocusGroup={__scopeMenu || MENU_CONTEXT}
         focusable={!disabled}
       >
-        <MenuItemImplFrame
+        <ThemeableStack
+          componentName={ITEM_NAME}
+          role="menuitem"
           data-highlighted={isFocused ? '' : undefined}
           aria-disabled={disabled || undefined}
           data-disabled={disabled ? '' : undefined}
@@ -870,7 +834,7 @@ const MenuItemImpl = React.forwardRef<
 
 const CHECKBOX_ITEM_NAME = 'MenuCheckboxItem'
 
-type MenuCheckboxItemElement = MenuItemElement
+// type MenuCheckboxItemElement = MenuItemElement
 
 type CheckedState = boolean | 'indeterminate'
 
@@ -880,36 +844,33 @@ interface MenuCheckboxItemProps extends MenuItemProps {
   onCheckedChange?: (checked: boolean) => void
 }
 
-const MenuCheckBoxItemFrame = styled(MenuItem, {
-  name: CHECKBOX_ITEM_NAME,
-})
-
-const MenuCheckboxItem = MenuCheckBoxItemFrame.styleable<
-  ScopedProps<MenuCheckboxItemProps>
->((props: ScopedProps<MenuCheckboxItemProps>, forwardedRef) => {
-  const { checked = false, onCheckedChange, ...checkboxItemProps } = props
-  return (
-    <ItemIndicatorProvider scope={props.__scopeMenu} checked={checked}>
-      {/* @ts-ignore */}
-      <MenuCheckBoxItemFrame
-        {...(isWeb
-          ? {
-              role: 'menuitemcheckbox',
-            }
-          : null)}
-        aria-checked={isIndeterminate(checked) ? 'mixed' : checked}
-        {...checkboxItemProps}
-        ref={forwardedRef}
-        data-state={getCheckedState(checked)}
-        onSelect={composeEventHandlers(
-          checkboxItemProps.onSelect,
-          () => onCheckedChange?.(isIndeterminate(checked) ? true : !checked),
-          { checkDefaultPrevented: false }
-        )}
-      />
-    </ItemIndicatorProvider>
-  )
-})
+const MenuCheckboxItem = ThemeableStack.styleable<ScopedProps<MenuCheckboxItemProps>>(
+  (props: ScopedProps<MenuCheckboxItemProps>, forwardedRef) => {
+    const { checked = false, onCheckedChange, ...checkboxItemProps } = props
+    return (
+      <ItemIndicatorProvider scope={props.__scopeMenu} checked={checked}>
+        {/* @ts-ignore */}
+        <MenuItem
+          componentName={CHECKBOX_ITEM_NAME}
+          {...(isWeb
+            ? {
+                role: 'menuitemcheckbox',
+              }
+            : null)}
+          aria-checked={isIndeterminate(checked) ? 'mixed' : checked}
+          {...checkboxItemProps}
+          ref={forwardedRef}
+          data-state={getCheckedState(checked)}
+          onSelect={composeEventHandlers(
+            checkboxItemProps.onSelect,
+            () => onCheckedChange?.(isIndeterminate(checked) ? true : !checked),
+            { checkDefaultPrevented: false }
+          )}
+        />
+      </ItemIndicatorProvider>
+    )
+  }
+)
 
 MenuCheckboxItem.displayName = CHECKBOX_ITEM_NAME
 
@@ -922,17 +883,13 @@ const RADIO_GROUP_NAME = 'MenuRadioGroup'
 const { Provider: RadioGroupProvider, useStyledContext: useRadioGroupContext } =
   createStyledContext<MenuRadioGroupProps>()
 
-type MenuRadioGroupElement = React.ElementRef<typeof MenuGroup>
+// type MenuRadioGroupElement = React.ElementRef<typeof MenuGroup>
 interface MenuRadioGroupProps extends MenuGroupProps {
   value?: string
   onValueChange?: (value: string) => void
 }
 
-const MenuRadioGroupFrame = styled(MenuGroup, {
-  name: RADIO_GROUP_NAME,
-})
-
-const MenuRadioGroup = MenuRadioGroupFrame.styleable<ScopedProps<MenuRadioGroupProps>>(
+const MenuRadioGroup = MenuGroup.styleable<ScopedProps<MenuRadioGroupProps>>(
   (props: ScopedProps<MenuRadioGroupProps>, forwardedRef) => {
     const { value, onValueChange, ...groupProps } = props
     const handleValueChange = useCallbackRef(onValueChange)
@@ -942,7 +899,11 @@ const MenuRadioGroup = MenuRadioGroupFrame.styleable<ScopedProps<MenuRadioGroupP
         value={value}
         onValueChange={handleValueChange}
       >
-        <MenuRadioGroupFrame {...groupProps} ref={forwardedRef} />
+        <MenuRadioGroup
+          componentName={RADIO_GROUP_NAME}
+          {...groupProps}
+          ref={forwardedRef}
+        />
       </RadioGroupProvider>
     )
   }
@@ -956,16 +917,12 @@ MenuRadioGroup.displayName = RADIO_GROUP_NAME
 
 const RADIO_ITEM_NAME = 'MenuRadioItem'
 
-type MenuRadioItemElement = React.ElementRef<typeof MenuItem>
+// type MenuRadioItemElement = React.ElementRef<typeof MenuItem>
 interface MenuRadioItemProps extends MenuItemProps {
   value: string
 }
 
-const MenuRadioItemFrame = styled(MenuItem, {
-  name: RADIO_ITEM_NAME,
-})
-
-const MenuRadioItem = MenuRadioItemFrame.styleable<ScopedProps<MenuRadioItemProps>>(
+const MenuRadioItem = ThemeableStack.styleable<ScopedProps<MenuRadioItemProps>>(
   (props: ScopedProps<MenuRadioItemProps>, forwardedRef) => {
     const { value, ...radioItemProps } = props
     const context = useRadioGroupContext(props.__scopeMenu)
@@ -973,7 +930,8 @@ const MenuRadioItem = MenuRadioItemFrame.styleable<ScopedProps<MenuRadioItemProp
     return (
       <ItemIndicatorProvider scope={props.__scopeMenu} checked={checked}>
         {/* @ts-ignore */}
-        <MenuRadioItemFrame
+        <MenuItem
+          componentName={RADIO_ITEM_NAME}
           {...(isWeb
             ? {
                 'aria-checked': { checked },
@@ -1006,7 +964,7 @@ type CheckboxContextValue = { checked: CheckedState }
 const { Provider: ItemIndicatorProvider, useStyledContext: useItemIndicatorContext } =
   createStyledContext<CheckboxContextValue>()
 
-type MenuItemIndicatorElement = React.ElementRef<typeof Stack>
+// type MenuItemIndicatorElement = React.ElementRef<typeof Stack>
 type PrimitiveSpanProps = React.ComponentPropsWithoutRef<typeof Stack>
 interface MenuItemIndicatorProps extends PrimitiveSpanProps {
   /**
@@ -1016,29 +974,27 @@ interface MenuItemIndicatorProps extends PrimitiveSpanProps {
   forceMount?: true
 }
 
-const MenuItemIndicatorFrame = styled(ThemeableStack, {
-  name: ITEM_INDICATOR_NAME,
-})
-const MenuItemIndicator = MenuItemIndicatorFrame.styleable<
-  ScopedProps<MenuItemIndicatorProps>
->((props: ScopedProps<MenuItemIndicatorProps>, forwardedRef) => {
-  const { __scopeMenu, forceMount, ...itemIndicatorProps } = props
-  const indicatorContext = useItemIndicatorContext(__scopeMenu)
-  return (
-    <Presence>
-      {forceMount ||
-      isIndeterminate(indicatorContext.checked) ||
-      indicatorContext.checked === true ? (
-        <MenuItemIndicatorFrame
-          tag="span"
-          {...itemIndicatorProps}
-          ref={forwardedRef}
-          data-state={getCheckedState(indicatorContext.checked)}
-        />
-      ) : null}
-    </Presence>
-  )
-})
+const MenuItemIndicator = ThemeableStack.styleable<ScopedProps<MenuItemIndicatorProps>>(
+  (props: ScopedProps<MenuItemIndicatorProps>, forwardedRef) => {
+    const { __scopeMenu, forceMount, ...itemIndicatorProps } = props
+    const indicatorContext = useItemIndicatorContext(__scopeMenu)
+    return (
+      <Presence>
+        {forceMount ||
+        isIndeterminate(indicatorContext.checked) ||
+        indicatorContext.checked === true ? (
+          <ThemeableStack
+            componentName={ITEM_INDICATOR_NAME}
+            tag="span"
+            {...itemIndicatorProps}
+            ref={forwardedRef}
+            data-state={getCheckedState(indicatorContext.checked)}
+          />
+        ) : null}
+      </Presence>
+    )
+  }
+)
 
 MenuItemIndicator.displayName = ITEM_INDICATOR_NAME
 
@@ -1048,25 +1004,15 @@ MenuItemIndicator.displayName = ITEM_INDICATOR_NAME
 
 const SEPARATOR_NAME = 'MenuSeparator'
 
-type MenuSeparatorElement = React.ElementRef<typeof Stack>
+// type MenuSeparatorElement = React.ElementRef<typeof Stack>
 interface MenuSeparatorProps extends PrimitiveDivProps {}
 
-const MenuSeparatorFrame = styled(ThemeableStack, {
+const MenuSeparator = styled(ThemeableStack, {
   name: SEPARATOR_NAME,
   role: 'separator',
+  // @ts-ignore
+  'aria-orientation': 'horizontal',
 })
-const MenuSeparator = MenuSeparatorFrame.styleable<ScopedProps<MenuSeparatorProps>>(
-  (props: ScopedProps<MenuSeparatorProps>, forwardedRef) => {
-    const { __scopeMenu, ...separatorProps } = props
-    return (
-      <MenuSeparatorFrame
-        aria-orientation="horizontal"
-        {...separatorProps}
-        ref={forwardedRef}
-      />
-    )
-  }
-)
 
 MenuSeparator.displayName = SEPARATOR_NAME
 
@@ -1076,21 +1022,19 @@ MenuSeparator.displayName = SEPARATOR_NAME
 
 const ARROW_NAME = 'MenuArrow'
 
-type MenuArrowElement = React.ElementRef<typeof PopperPrimitive.PopperArrow>
+// type MenuArrowElement = React.ElementRef<typeof PopperPrimitive.PopperArrow>
 type PopperArrowProps = React.ComponentPropsWithoutRef<typeof PopperPrimitive.PopperArrow>
 interface MenuArrowProps extends PopperArrowProps {}
 
-const MenuArrowFrame = styled(PopperPrimitive.PopperArrow, {
-  name: ARROW_NAME,
-})
-
-const MenuArrow = MenuArrowFrame.styleable<ScopedProps<MenuArrowProps>>(
-  (props: ScopedProps<MenuArrowProps>, forwardedRef) => {
-    const { __scopeMenu, ...arrowProps } = props
+const MenuArrow = React.forwardRef<TamaguiElement, ScopedProps<MenuArrowProps>>(
+  function PopoverArrow(props: ScopedProps<MenuArrowProps>, forwardedRef) {
+    const { __scopeMenu, ...rest } = props
     return (
-      <MenuArrowFrame
+      <PopperPrimitive.PopperArrow
         __scopePopper={__scopeMenu || MENU_CONTEXT}
-        {...arrowProps}
+        componentName="PopoverArrow"
+        backgroundColor={'$background'}
+        {...rest}
         ref={forwardedRef}
       />
     )
@@ -1170,9 +1114,6 @@ const SUB_TRIGGER_NAME = 'MenuSubTrigger'
 type MenuSubTriggerElement = MenuItemImplElement
 interface MenuSubTriggerProps extends MenuItemImplProps {}
 
-const MenuAnchorFrame = styled(MenuAnchor, {
-  name: SUB_TRIGGER_NAME,
-})
 const MenuSubTrigger = MenuAnchor.styleable<ScopedProps<MenuSubTriggerProps>>(
   (props: ScopedProps<MenuSubTriggerProps>, forwardedRef) => {
     const context = useMenuContext(props.__scopeMenu)
@@ -1199,7 +1140,7 @@ const MenuSubTrigger = MenuAnchor.styleable<ScopedProps<MenuSubTriggerProps>>(
     }, [pointerGraceTimerRef, onPointerGraceIntentChange])
 
     return (
-      <MenuAnchorFrame asChild {...scope}>
+      <MenuAnchor componentName={SUB_TRIGGER_NAME} asChild {...scope}>
         <MenuItemImpl
           id={subContext.triggerId}
           aria-haspopup="menu"
@@ -1304,7 +1245,7 @@ const MenuSubTrigger = MenuAnchor.styleable<ScopedProps<MenuSubTriggerProps>>(
               }
             : null)}
         />
-      </MenuAnchorFrame>
+      </MenuAnchor>
     )
   }
 )

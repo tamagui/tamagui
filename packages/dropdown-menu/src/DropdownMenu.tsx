@@ -1,6 +1,13 @@
 import { Button } from '@tamagui/button'
 import { composeRefs } from '@tamagui/compose-refs'
-import { Slot, composeEventHandlers, createStyledContext, isWeb, styled } from '@tamagui/core'
+import {
+  Slot,
+  TamaguiElement,
+  composeEventHandlers,
+  createStyledContext,
+  isWeb,
+  styled,
+} from '@tamagui/core'
 import * as MenuPrimitive from '@tamagui/menu'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useId } from 'react'
@@ -29,7 +36,7 @@ type DropdownMenuContextValue = {
 const { Provider: DropdownMenuProvider, useStyledContext: useDropdownMenuContext } =
   createStyledContext<DropdownMenuContextValue>()
 
-interface DropdownMenuProps {
+interface DropdownMenuProps extends MenuPrimitive.MenuProps {
   children?: React.ReactNode
   dir?: Direction
   open?: boolean
@@ -49,6 +56,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = (
     defaultOpen,
     onOpenChange,
     modal = true,
+    ...rest
   } = props
   const triggerRef = React.useRef<HTMLButtonElement>(null)
   const [open = false, setOpen] = useControllableState({
@@ -74,6 +82,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = (
         onOpenChange={setOpen}
         dir={dir}
         modal={modal}
+        {...rest}
       >
         {children}
       </MenuPrimitive.Root>
@@ -89,24 +98,28 @@ DropdownMenu.displayName = DROPDOWN_MENU_NAME
 
 const TRIGGER_NAME = 'DropdownMenuTrigger'
 
-type DropdownMenuTriggerElement = React.ElementRef<typeof Button>
+// type DropdownMenuTriggerElement = React.ElementRef<typeof Button>
 type PrimitiveButtonProps = React.ComponentPropsWithoutRef<typeof Button>
 interface DropdownMenuTriggerProps extends PrimitiveButtonProps {}
 
-const DropdownMenuTriggerFrame = styled(MenuPrimitive.Anchor, {
-  name: TRIGGER_NAME
-})
+const DropdownMenuTriggerFrame = MenuPrimitive.Anchor
 
 const DropdownMenuTrigger = DropdownMenuTriggerFrame.styleable<
   ScopedProps<DropdownMenuTriggerProps>
 >((props: ScopedProps<DropdownMenuTriggerProps>, forwardedRef) => {
-  const { __scopeDropdownMenu, asChild, disabled = false, ...triggerProps } = props
+  const {
+    __scopeDropdownMenu,
+    asChild,
+    children,
+    disabled = false,
+    ...triggerProps
+  } = props
   const context = useDropdownMenuContext(__scopeDropdownMenu)
   const Comp = (asChild ? Slot : Button) as typeof Button
   return (
     <DropdownMenuTriggerFrame
-      asChild
-      __scopeMenu={__scopeDropdownMenu || DROPDOWN_MENU_CONTEXT}
+      componentName={TRIGGER_NAME}
+      __scopePopper={__scopeDropdownMenu || DROPDOWN_MENU_CONTEXT}
     >
       <Comp
         tag="button"
@@ -117,6 +130,7 @@ const DropdownMenuTrigger = DropdownMenuTriggerFrame.styleable<
         data-state={context.open ? 'open' : 'closed'}
         data-disabled={disabled ? '' : undefined}
         disabled={disabled}
+        children={asChild ? children : undefined}
         {...triggerProps}
         ref={composeRefs(forwardedRef, context.triggerRef)}
         onPointerDown={
@@ -224,25 +238,7 @@ const DropdownMenuContent = React.forwardRef<
         if (!context.modal || isRightClick) hasInteractedOutsideRef.current = true
       })}
       // TODO: how style prop works here while there's no dom element to style? check radix as reference
-      style={
-        isWeb
-          ? {
-              ...(props.style as Object),
-              // re-namespace exposed content custom properties
-              ...({
-                '--radix-dropdown-menu-content-transform-origin':
-                  'var(--radix-popper-transform-origin)',
-                '--radix-dropdown-menu-content-available-width':
-                  'var(--radix-popper-available-width)',
-                '--radix-dropdown-menu-content-available-height':
-                  'var(--radix-popper-available-height)',
-                '--radix-dropdown-menu-trigger-width': 'var(--radix-popper-anchor-width)',
-                '--radix-dropdown-menu-trigger-height':
-                  'var(--radix-popper-anchor-height)',
-              } as React.CSSProperties),
-            }
-          : undefined
-      }
+      {...(props.style as Object)}
     />
   )
 })
@@ -255,13 +251,11 @@ DropdownMenuContent.displayName = CONTENT_NAME
 
 const GROUP_NAME = 'DropdownMenuGroup'
 
-type DropdownMenuGroupElement = React.ElementRef<typeof MenuPrimitive.Group>
+// type DropdownMenuGroupElement = React.ElementRef<typeof MenuPrimitive.Group>
 type MenuGroupProps = React.ComponentPropsWithoutRef<typeof MenuPrimitive.Group>
-interface DropdownMenuGroupProps extends MenuGroupProps {}
+type DropdownMenuGroupProps = MenuGroupProps & {}
 
-const DropdownMenuGroupFrame = styled(MenuPrimitive.Group, {
-  name: GROUP_NAME
-})
+const DropdownMenuGroupFrame = MenuPrimitive.Group
 
 const DropdownMenuGroup = DropdownMenuGroupFrame.styleable<
   ScopedProps<DropdownMenuGroupProps>
@@ -269,7 +263,7 @@ const DropdownMenuGroup = DropdownMenuGroupFrame.styleable<
   const { __scopeDropdownMenu, ...groupProps } = props
   return (
     <DropdownMenuGroupFrame
-      __scopeMenu={__scopeDropdownMenu || DROPDOWN_MENU_CONTEXT}
+      componentName={GROUP_NAME}
       {...groupProps}
       ref={forwardedRef}
     />
@@ -284,25 +278,12 @@ DropdownMenuGroup.displayName = GROUP_NAME
 
 const LABEL_NAME = 'DropdownMenuLabel'
 
-type DropdownMenuLabelElement = React.ElementRef<typeof MenuPrimitive.Label>
+// type DropdownMenuLabelElement = React.ElementRef<typeof MenuPrimitive.Label>
 type MenuLabelProps = React.ComponentPropsWithoutRef<typeof MenuPrimitive.Label>
-interface DropdownMenuLabelProps extends MenuLabelProps {}
+type DropdownMenuLabelProps = MenuLabelProps & {}
 
-const DropdownMenuLabelFrame = styled(MenuPrimitive.Label, {
-  name: LABEL_NAME
-})
-
-const DropdownMenuLabel = DropdownMenuLabelFrame.styleable<
-  ScopedProps<DropdownMenuLabelProps>
->((props, forwardedRef) => {
-  const { __scopeDropdownMenu, ...labelProps } = props
-  return (
-    <DropdownMenuLabelFrame
-      __scopeMenu={__scopeDropdownMenu || DROPDOWN_MENU_CONTEXT}
-      {...labelProps}
-      ref={forwardedRef}
-    />
-  )
+const DropdownMenuLabel = styled(MenuPrimitive.Label, {
+  name: LABEL_NAME,
 })
 
 DropdownMenuLabel.displayName = LABEL_NAME
@@ -313,26 +294,24 @@ DropdownMenuLabel.displayName = LABEL_NAME
 
 const ITEM_NAME = 'DropdownMenuItem'
 
-type DropdownMenuItemElement = React.ElementRef<typeof MenuPrimitive.Item>
 type MenuItemProps = React.ComponentPropsWithoutRef<typeof MenuPrimitive.Item>
 interface DropdownMenuItemProps extends MenuItemProps {}
 
-const DropdownMenuItemFrame = styled(MenuPrimitive.Item, {
-  name: ITEM_NAME
-})
+const DropdownMenuItemFrame = MenuPrimitive.Item
 
-const DropdownMenuItem = DropdownMenuItemFrame.styleable<ScopedProps<DropdownMenuItemProps>>(
-  (props, forwardedRef) => {
-    const { __scopeDropdownMenu, ...itemProps } = props
-    return (
-      <DropdownMenuItemFrame
-        __scopeMenu={__scopeDropdownMenu || DROPDOWN_MENU_CONTEXT}
-        {...itemProps}
-        ref={forwardedRef}
-      />
-    )
-  }
-)
+const DropdownMenuItem = DropdownMenuItemFrame.styleable<
+  ScopedProps<DropdownMenuItemProps>
+>((props, forwardedRef) => {
+  const { __scopeDropdownMenu, ...itemProps } = props
+  return (
+    <DropdownMenuItemFrame
+      componentName={ITEM_NAME}
+      __scopeMenu={__scopeDropdownMenu || DROPDOWN_MENU_CONTEXT}
+      {...itemProps}
+      ref={forwardedRef}
+    />
+  )
+})
 
 DropdownMenuItem.displayName = ITEM_NAME
 
@@ -342,23 +321,22 @@ DropdownMenuItem.displayName = ITEM_NAME
 
 const CHECKBOX_ITEM_NAME = 'DropdownMenuCheckboxItem'
 
-type DropdownMenuCheckboxItemElement = React.ElementRef<typeof MenuPrimitive.CheckboxItem>
+// type DropdownMenuCheckboxItemElement = React.ElementRef<typeof MenuPrimitive.CheckboxItem>
 type MenuCheckboxItemProps = React.ComponentPropsWithoutRef<
   typeof MenuPrimitive.CheckboxItem
 >
+
 interface DropdownMenuCheckboxItemProps extends MenuCheckboxItemProps {}
 
-const DropdownMenuCheckboxItemFrame = styled(MenuPrimitive.CheckboxItem, {
-  name: CHECKBOX_ITEM_NAME
-})
+const DropdownMenuCheckboxItemFrame = MenuPrimitive.CheckboxItem
 
 const DropdownMenuCheckboxItem = DropdownMenuCheckboxItemFrame.styleable<
   ScopedProps<DropdownMenuCheckboxItemProps>
 >((props, forwardedRef) => {
   const { __scopeDropdownMenu, ...checkboxItemProps } = props
   return (
-    // @ts-ignore explanation: deeply nested types typescript limitation
     <DropdownMenuCheckboxItemFrame
+      componentName={CHECKBOX_ITEM_NAME}
       __scopeMenu={__scopeDropdownMenu || DROPDOWN_MENU_CONTEXT}
       {...checkboxItemProps}
       ref={forwardedRef}
@@ -400,14 +378,11 @@ DropdownMenuRadioGroup.displayName = RADIO_GROUP_NAME
 
 const RADIO_ITEM_NAME = 'DropdownMenuRadioItem'
 
-type DropdownMenuRadioItemElement = React.ElementRef<typeof MenuPrimitive.RadioItem>
+// type DropdownMenuRadioItemElement = React.ElementRef<typeof MenuPrimitive.RadioItem>
 type MenuRadioItemProps = React.ComponentPropsWithoutRef<typeof MenuPrimitive.RadioItem>
 interface DropdownMenuRadioItemProps extends MenuRadioItemProps {}
 
-const DropdownMenuRadioItemFrame = styled(MenuPrimitive.RadioItem, {
-  name: RADIO_ITEM_NAME,
-  value: ''
-}) 
+const DropdownMenuRadioItemFrame = MenuPrimitive.RadioItem
 
 const DropdownMenuRadioItem = DropdownMenuRadioItemFrame.styleable<
   ScopedProps<DropdownMenuRadioItemProps>
@@ -416,6 +391,7 @@ const DropdownMenuRadioItem = DropdownMenuRadioItemFrame.styleable<
   return (
     // @ts-ignore explanation: deeply nested types typescript limitation
     <DropdownMenuRadioItemFrame
+      componentName={RADIO_ITEM_NAME}
       __scopeMenu={__scopeDropdownMenu || DROPDOWN_MENU_CONTEXT}
       {...radioItemProps}
       ref={forwardedRef}
@@ -431,17 +407,12 @@ DropdownMenuRadioItem.displayName = RADIO_ITEM_NAME
 
 const INDICATOR_NAME = 'DropdownMenuItemIndicator'
 
-type DropdownMenuItemIndicatorElement = React.ElementRef<
-  typeof MenuPrimitive.ItemIndicator
->
 type MenuItemIndicatorProps = React.ComponentPropsWithoutRef<
   typeof MenuPrimitive.ItemIndicator
 >
 interface DropdownMenuItemIndicatorProps extends MenuItemIndicatorProps {}
 
-const DropdownMenuItemIndicatorFrame = styled(MenuPrimitive.ItemIndicator, {
-  name: INDICATOR_NAME
-})
+const DropdownMenuItemIndicatorFrame = MenuPrimitive.ItemIndicator
 
 const DropdownMenuItemIndicator = DropdownMenuItemIndicatorFrame.styleable<
   ScopedProps<DropdownMenuItemIndicatorProps>
@@ -449,6 +420,7 @@ const DropdownMenuItemIndicator = DropdownMenuItemIndicatorFrame.styleable<
   const { __scopeDropdownMenu, ...itemIndicatorProps } = props
   return (
     <DropdownMenuItemIndicatorFrame
+      componentName={INDICATOR_NAME}
       __scopeMenu={__scopeDropdownMenu || DROPDOWN_MENU_CONTEXT}
       {...itemIndicatorProps}
       ref={forwardedRef}
@@ -464,26 +436,10 @@ DropdownMenuItemIndicator.displayName = INDICATOR_NAME
 
 const SEPARATOR_NAME = 'DropdownMenuSeparator'
 
-type DropdownMenuSeparatorElement = React.ElementRef<typeof MenuPrimitive.Separator>
 type MenuSeparatorProps = React.ComponentPropsWithoutRef<typeof MenuPrimitive.Separator>
-interface DropdownMenuSeparatorProps extends MenuSeparatorProps {}
+type DropdownMenuSeparatorProps = MenuSeparatorProps & {}
 
-const DropdownMenuSeparatorFrame = styled(MenuPrimitive.Separator, {
-  name: SEPARATOR_NAME
-})
-
-const DropdownMenuSeparator = DropdownMenuSeparatorFrame.styleable<
-  ScopedProps<DropdownMenuSeparatorProps>
->((props, forwardedRef) => {
-  const { __scopeDropdownMenu, ...separatorProps } = props
-  return (
-    <DropdownMenuSeparatorFrame
-      __scopeMenu={__scopeDropdownMenu || DROPDOWN_MENU_CONTEXT}
-      {...separatorProps}
-      ref={forwardedRef}
-    />
-  )
-})
+const DropdownMenuSeparator = MenuPrimitive.Separator
 
 DropdownMenuSeparator.displayName = SEPARATOR_NAME
 
@@ -493,21 +449,19 @@ DropdownMenuSeparator.displayName = SEPARATOR_NAME
 
 const ARROW_NAME = 'DropdownMenuArrow'
 
-type DropdownMenuArrowElement = React.ElementRef<typeof MenuPrimitive.Arrow>
+// type DropdownMenuArrowElement = React.ElementRef<typeof MenuPrimitive.Arrow>
 type MenuArrowProps = React.ComponentPropsWithoutRef<typeof MenuPrimitive.Arrow>
-interface DropdownMenuArrowProps extends MenuArrowProps {}
+type DropdownMenuArrowProps = MenuArrowProps & {}
 
-const DropdownMenuArrowFrame = styled(MenuPrimitive.Arrow, {
-  name: ARROW_NAME
-})
-
-const DropdownMenuArrow = DropdownMenuArrowFrame.styleable<
+const DropdownMenuArrow = React.forwardRef<
+  TamaguiElement,
   ScopedProps<DropdownMenuArrowProps>
->((props, forwardedRef) => {
+>((props: ScopedProps<DropdownMenuArrowProps>, forwardedRef) => {
   const { __scopeDropdownMenu, ...arrowProps } = props
   return (
-    <DropdownMenuArrowFrame
-      __scopeMenu={__scopeDropdownMenu || DROPDOWN_MENU_CONTEXT}
+    <MenuPrimitive.Arrow
+      componentName={ARROW_NAME}
+      __scopePopper={__scopeDropdownMenu || DROPDOWN_MENU_CONTEXT}
       {...arrowProps}
       ref={forwardedRef}
     />
@@ -560,13 +514,11 @@ const DropdownMenuSub: React.FC<DropdownMenuSubProps> = (
 
 const SUB_TRIGGER_NAME = 'DropdownMenuSubTrigger'
 
-type DropdownMenuSubTriggerElement = React.ElementRef<typeof MenuPrimitive.SubTrigger>
+// type DropdownMenuSubTriggerElement = React.ElementRef<typeof MenuPrimitive.SubTrigger>
 type MenuSubTriggerProps = React.ComponentPropsWithoutRef<typeof MenuPrimitive.SubTrigger>
 interface DropdownMenuSubTriggerProps extends MenuSubTriggerProps {}
 
-const DropdownMenuSubTriggerFrame = styled(MenuPrimitive.SubTrigger, {
-  name: SUB_TRIGGER_NAME
-})
+const DropdownMenuSubTriggerFrame = MenuPrimitive.SubTrigger
 
 const DropdownMenuSubTrigger = DropdownMenuSubTriggerFrame.styleable<
   ScopedProps<DropdownMenuSubTriggerProps>
@@ -574,6 +526,7 @@ const DropdownMenuSubTrigger = DropdownMenuSubTriggerFrame.styleable<
   const { __scopeDropdownMenu, ...subTriggerProps } = props
   return (
     <DropdownMenuSubTriggerFrame
+      componentName={SUB_TRIGGER_NAME}
       __scopeMenu={__scopeDropdownMenu || DROPDOWN_MENU_CONTEXT}
       {...subTriggerProps}
       ref={forwardedRef}
