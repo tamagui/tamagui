@@ -265,7 +265,7 @@ export function createExtractor(
         logger.info(
           [
             'loaded:',
-            JSON.stringify(propsWithFileInfo.allLoadedComponents, null, 2),
+            propsWithFileInfo.allLoadedComponents.map((x) => x.moduleName),
           ].join('\n')
         )
       }
