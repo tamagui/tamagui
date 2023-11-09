@@ -1,11 +1,10 @@
 name: Reproducible Bug Report
 description: |
-  Please provide reproduction steps, issues *will be closed without review* if reproduction steps are omitted. Before submitting, please search:
-   - github to confirm that it is not a duplicate.
-   - discord to see if someone else has already answered your question.
-   - the docs to see if the issue has been documented.
-   - google error messages.
-   - provide additional context that might be helpful.
+  Issues *will be closed without review* if reproduction steps are omitted. More context is helpful Before submitting search:
+  - github
+  - discord
+  - the docs
+  - google
 labels: [Bug]
 body:
   - type: textarea
