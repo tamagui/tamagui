@@ -15,14 +15,14 @@ export const ThemeToggle = (props: ButtonProps) => {
   const [clientTheme, setClientTheme] = useState<string>('light')
 
   useIsomorphicLayoutEffect(() => {
-    if (themeSetting.resolvedTheme !== 'system') {
-      document
-        .querySelector('#theme-color')
-        ?.setAttribute(
-          'content',
-          themeSetting.resolvedTheme === 'light' ? '#fff' : '#050505'
-        )
-    }
+    const theme =
+      themeSetting.resolvedTheme === 'system'
+        ? themeSetting.systemTheme
+        : themeSetting.resolvedTheme
+
+    document
+      .querySelector('#theme-color')
+      ?.setAttribute('content', theme === 'light' ? '#fff' : '#050505')
 
     setClientTheme(themeSetting.current || 'light')
   }, [themeSetting.current, themeSetting.resolvedTheme])
