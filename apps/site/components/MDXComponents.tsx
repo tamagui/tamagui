@@ -1,4 +1,5 @@
 import toBool from '@lib/toBool'
+import NextInternalLink from 'next/link'
 import { useClipboard } from '@lib/useClipboard'
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { CheckCircle, Clipboard, Link, Subtitles } from '@tamagui/lucide-icons'
@@ -28,6 +29,7 @@ import {
   YStack,
   styled,
 } from 'tamagui'
+import { ThemeName } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 
 import { BenchmarkChart } from './BenchmarkChart'
@@ -58,7 +60,6 @@ import { TamaguiCard } from './TamaguiCard'
 import { TamaguiExamplesCode } from './TamaguiExamplesCode'
 import { UL } from './UL'
 import { unwrapText } from './unwrapText'
-import { ThemeName } from 'tamagui'
 
 const TableFrame = styled(ThemeableStack, {
   bordered: true,
@@ -331,10 +332,7 @@ export const components = {
 
   a: ({ href = '', children, ...props }) => {
     return (
-      <NextLink
-        href={href}
-        target={href.startsWith('http') ? '_blank' : undefined}
-      >
+      <NextLink href={href} target={href.startsWith('http') ? '_blank' : undefined}>
         {/* @ts-ignore */}
         <Paragraph
           tag="a"
@@ -344,7 +342,7 @@ export const components = {
           cursor="pointer"
           {...props}
         >
-          {children} 
+          {children}
           {href.startsWith('http') ? (
             <>
               &nbsp;
@@ -638,13 +636,13 @@ export const components = {
     theme?: ThemeName
   }) => {
     return (
-      <NextLink passHref href={props.href}>
-        <Theme name={props.theme}>
+      <Theme name={props.theme}>
+        <NextInternalLink passHref href={props.href} className='next-link'>
           <TamaguiCard title={props.title} subTitle={props.description}>
             {props.children}
           </TamaguiCard>
-        </Theme>
-      </NextLink>
+        </NextInternalLink>
+      </Theme>
     )
   },
 
