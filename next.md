@@ -1,3 +1,4 @@
+- Unistack theme change needs a server restart / theme builder not re-building on changing colors.ts
 - Takeout Storybook styles breaking
   - https://discord.com/channels/909986013848412191/1125830682661363794/1169376340491903006
 - Popover native positioning
@@ -381,6 +382,10 @@ Ali:
 
 <Skeleton />
 
+<Skeleton />
+  <Skeleton.Gradient />
+</Skeleton>
+
 ```tsx
 const Skeleton = styled(Stack, {
   animation: {
@@ -393,7 +398,7 @@ const Skeleton = styled(Stack, {
   exitStyle: {
     x: '-100%',
   },
-  background: `linear-gradient(to left, $background, $color, $background)`
+  background: `linear-gradient(to left, $background, $color, $background)`,
 })
 ```
 

@@ -25,8 +25,8 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@babel/plugin-syntax-typescript": "^7.21.4",
-    "@babel/types": "^7.21.5",
+    "@babel/plugin-syntax-typescript": "^7.23.3",
+    "@babel/types": "^7.23.3",
     "@tamagui/sandbox-ui": "1.76.0",
     "@tamagui/test-design-system": "1.76.0",
     "@testing-library/react": "^14.0.0",

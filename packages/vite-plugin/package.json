@@ -25,9 +25,9 @@
     }
   },
   "dependencies": {
-    "@babel/core": "^7.21.8",
-    "@babel/plugin-transform-classes": "^7.22.6",
-    "@babel/plugin-transform-modules-commonjs": "^7.22.5",
+    "@babel/core": "^7.23.3",
+    "@babel/plugin-transform-classes": "^7.23.3",
+    "@babel/plugin-transform-modules-commonjs": "^7.23.3",
     "@originjs/vite-plugin-commonjs": "^1.0.3",
     "@rollup/plugin-babel": "^6.0.3",
     "@rollup/plugin-commonjs": "^25.0.4",
