@@ -50,7 +50,7 @@ export const HeaderLinks = ({ showExtra, forceShowAllLinks, showAuth }: HeaderPr
         <NextLink passHref legacyBehavior={false} prefetch={false} href="/takeout">
           <TooltipSimple delay={0} restMs={25} label="Takeout">
             <HeadAnchor
-              tag="span"
+              tag="a"
               {...(!forceShowAllLinks && {
                 size: '$8',
               })}
