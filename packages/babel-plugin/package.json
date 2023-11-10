@@ -23,15 +23,15 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@babel/generator": "^7.21.5",
-    "@babel/helper-plugin-utils": "^7.21.5",
-    "@babel/template": "^7.20.7",
-    "@babel/traverse": "^7.21.5",
+    "@babel/generator": "^7.23.3",
+    "@babel/helper-plugin-utils": "^7.22.5",
+    "@babel/template": "^7.22.15",
+    "@babel/traverse": "^7.23.3",
     "@tamagui/simple-hash": "1.76.0",
     "@tamagui/static": "1.76.0"
   },
   "devDependencies": {
-    "@babel/types": "^7.21.5",
+    "@babel/types": "^7.23.3",
     "@tamagui/build": "1.76.0"
   },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
