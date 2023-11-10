@@ -189,4 +189,6 @@ const hasWarnedForModules = new Set<string>()
 
 const allowedIgnores = {
   'expo-constants': true,
+  './ExpoHaptics': true,
+  './js/MaskedView': true,
 }

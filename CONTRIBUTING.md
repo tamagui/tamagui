@@ -4,10 +4,16 @@ Welcome to the Tamagui contributing guide. We appreciate your interest in contri
 
 #### Table of content
 
-- [Set up your development environment](#set-up-your-development-environment)
-- [Issue and Pull Request Guidelines](#issue-and-pull-request-guidelines)
-- [UI Kit Contributions](#ui-kit-contributions)
-- [Documentation Contributions](#documentation-contributions)
+- [Contributing to `tamagui`](#contributing-to-tamagui) - [Table of content](#table-of-content)
+  - [Set up your development environment](#set-up-your-development-environment)
+  - [Issue and Pull Request Guidelines](#issue-and-pull-request-guidelines)
+    - [Issues](#issues)
+    - [Pull Requests](#pull-requests)
+  - [UI Kit Contributions](#ui-kit-contributions)
+    - [Bugs and Fixing them](#bugs-and-fixing-them)
+    - [Testing](#testing)
+  - [Documentation Contributions](#documentation-contributions)
+  - [Other ways to Contribute](#other-ways-to-contribute)
 
 ## Set up your development environment
 
@@ -31,7 +37,7 @@ yarn build
 
 You may see some errors due to encryption, as the studio has encrypted contents. This is fine and won't affect contributions to Tamagui.
 
-That's it! You should be good to go. As you are developing you'll also want to have a `yarn watch` running somewhere ongoing to ensure packages JS and types are rebuilt as you iterate. 
+That's it! You should be good to go. As you are developing you'll also want to have a `yarn watch` running somewhere ongoing to ensure packages JS and types are rebuilt as you iterate.
 
 ## Issue and Pull Request Guidelines
 
@@ -98,11 +104,14 @@ It's easiest to use the sandbox project to test and develop things for web:
 yarn sandbox
 ```
 
+`sandbox` runs on
+[port 9000](http://localhost:9000/)
+
 This runs a client-side only vite build of Tamagui, with a complete configuration already set up.
 
-To test on native, `kitchen-sink` is equally well set up.
+native test are run in `apps/kitchen-sink`
 
-You'll need to create a [development build](https://docs.expo.dev/develop/development-builds/create-a-build/) to run this.
+Create a development build run `yarn ios` from `apps/kitchen-sink`
 
 ```bash
 # Android
@@ -129,6 +138,8 @@ To do so, run the site first in development to test if it works entirely at runt
 
 yarn site
 ```
+
+`site` runs on [port 5005](http://localhost:5005)
 
 You use `pages/test.tsx` as an easy way to load things. If it looks good, try running again with the compiler on:
 

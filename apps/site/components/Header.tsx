@@ -74,7 +74,8 @@ export function Header(props: HeaderProps) {
             br="$10"
             $sm={{
               br: 0,
-              y: 0,
+              bw: 0,
+              y: -1,
               py: '$2',
             }}
             {...(isScrolled && {

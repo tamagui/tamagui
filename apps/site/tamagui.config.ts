@@ -19,10 +19,10 @@ export type Conf = typeof tamaConf
 
 declare module 'tamagui' {
   interface TamaguiCustomConfig extends Conf {}
-}
 
-declare module '@tamagui/core' {
-  interface TamaguiCustomConfig extends Conf {}
+  interface TypeOverride {
+    groupNames(): 'takeoutBody'
+  }
 }
 
 export default tamaConf

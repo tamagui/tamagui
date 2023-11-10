@@ -21,6 +21,7 @@
     "check-deps": "check-dependency-version-consistency ."
   },
   "resolutions": {
+    "esbuild": "0.19.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-refresh": "^0.14.0",

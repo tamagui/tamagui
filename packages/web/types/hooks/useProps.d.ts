@@ -5,7 +5,7 @@ type UsePropsOptions = Pick<SplitStyleProps, 'noExpand' | 'noNormalize' | 'noCla
         staticConfig: StaticConfig;
     };
 };
-type FlattenedProps<A> = {
+type PropsWithoutMediaStyles<A> = {
     [Key in keyof A extends `$${string}` ? never : keyof A]?: A[Key];
 };
 /**
@@ -14,20 +14,20 @@ type FlattenedProps<A> = {
  * Use sparingly, it will loop props and trigger re-render on all media queries you access.
  *
  * */
-export declare function useProps<A extends Object>(props: A, opts?: UsePropsOptions): FlattenedProps<A>;
+export declare function useProps<A extends Object>(props: A, opts?: UsePropsOptions): PropsWithoutMediaStyles<A>;
 /**
  * Returns only style values fully resolved and flattened with merged media queries and shorthands with all theme and token values resolved.
  *
  * Use sparingly, it will loop props and trigger re-render on all media queries you access.
  *
  * */
-export declare function useStyle<A extends Object>(props: A, opts?: UsePropsOptions): FlattenedProps<A>;
+export declare function useStyle<A extends Object>(props: A, opts?: UsePropsOptions): PropsWithoutMediaStyles<A>;
 /**
  * Returns [props, styles] fully resolved and flattened with merged media queries and shorthands with all theme and token values resolved.
  *
  * Use sparingly, it will loop props and trigger re-render on all media queries you access.
  *
  * */
-export declare function usePropsAndStyle<A extends Object>(props: A, opts?: UsePropsOptions): [FlattenedProps<A>, FlattenedProps<A>, ThemeParsed, UseMediaState];
+export declare function usePropsAndStyle<A extends Object>(props: A, opts?: UsePropsOptions): [PropsWithoutMediaStyles<A>, PropsWithoutMediaStyles<A>, ThemeParsed, UseMediaState];
 export {};
 //# sourceMappingURL=useProps.d.ts.map

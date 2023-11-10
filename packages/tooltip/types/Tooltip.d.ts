@@ -71,7 +71,7 @@ export declare const Tooltip: React.ForwardRefExoticComponent<PopperProps & {
         onSelectionChangeShouldSetResponderCapture?: unknown;
         href?: string | undefined;
         hrefAttrs?: {
-            target?: "top" | "_self" | "_blank" | "_top" | "blank" | "self" | undefined;
+            target?: "top" | "_blank" | "_self" | "_top" | "blank" | "self" | undefined;
             rel?: string | undefined;
             download?: boolean | undefined;
         } | undefined;
@@ -104,7 +104,7 @@ export declare const Tooltip: React.ForwardRefExoticComponent<PopperProps & {
         onSelectionChangeShouldSetResponderCapture?: unknown;
         href?: string | undefined;
         hrefAttrs?: {
-            target?: "top" | "_self" | "_blank" | "_top" | "blank" | "self" | undefined;
+            target?: "top" | "_blank" | "_self" | "_top" | "blank" | "self" | undefined;
             rel?: string | undefined;
             download?: boolean | undefined;
         } | undefined;
@@ -137,7 +137,7 @@ export declare const Tooltip: React.ForwardRefExoticComponent<PopperProps & {
         onSelectionChangeShouldSetResponderCapture?: unknown;
         href?: string | undefined;
         hrefAttrs?: {
-            target?: "top" | "_self" | "_blank" | "_top" | "blank" | "self" | undefined;
+            target?: "top" | "_blank" | "_self" | "_top" | "blank" | "self" | undefined;
             rel?: string | undefined;
             download?: boolean | undefined;
         } | undefined;

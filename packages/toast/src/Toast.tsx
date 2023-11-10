@@ -5,7 +5,6 @@ import {
   TamaguiElement,
   composeEventHandlers,
   styled,
-  themeable,
   useEvent,
   withStaticProperties,
 } from '@tamagui/core'
@@ -134,6 +133,7 @@ const ToastCloseFrame = styled(ThemeableStack, {
   name: CLOSE_NAME,
   tag: 'button',
 })
+
 type ToastCloseFrameProps = GetProps<typeof ToastCloseFrame>
 type ToastCloseProps = ToastCloseFrameProps & {}
 
@@ -161,8 +161,8 @@ ToastClose.displayName = CLOSE_NAME
  * Toast
  * -----------------------------------------------------------------------------------------------*/
 
-const ToastComponent = React.forwardRef<TamaguiElement, ScopedProps<ToastProps>>(
-  ToastImplFrame.extractable((props: ScopedProps<ToastProps>, forwardedRef) => {
+const ToastComponent = ToastImplFrame.styleable(
+  (props: ScopedProps<ToastProps>, forwardedRef) => {
     const { forceMount, open: openProp, defaultOpen, onOpenChange, ...toastProps } = props
     const [open, setOpen] = useControllableState({
       prop: openProp,
@@ -192,20 +192,17 @@ const ToastComponent = React.forwardRef<TamaguiElement, ScopedProps<ToastProps>>
         })}
       />
     )
-  })
+  }
 )
 
 ToastComponent.displayName = TOAST_NAME
 
-const Toast = withStaticProperties(
-  themeable(ToastComponent, ToastImplFrame.staticConfig),
-  {
-    Title: ToastTitle,
-    Description: ToastDescription,
-    Action: ToastAction,
-    Close: ToastClose,
-  }
-)
+const Toast = withStaticProperties(ToastComponent, {
+  Title: ToastTitle,
+  Description: ToastDescription,
+  Action: ToastAction,
+  Close: ToastClose,
+})
 
 /* ---------------------------------------------------------------------------------------------- */
 

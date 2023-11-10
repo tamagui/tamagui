@@ -3,6 +3,12 @@ title: Benchmarks
 description: Performance tests and comparisons.
 ---
 
+Tamagui compares well to the fastest libraries at runtime, and the compiler further optimizes your styled components, flattening them down and hoisting objects out of your rendering loop (and extracting CSS on the web).
+
+With the compiler on Tamagui will output near optimal React code despite giving many nice shorthand style props. It has a higher impact on web, but with initial support for flattening more dynamic styled components now landed, Tamagui does flatten a very high % of your code on all platforms. We look forward to updating our benchmarks as we expect we've improved in a number of areas.
+
+It's important to note that benchmarks never show a complete picture and that these benchmarks are not being actively updated as of early 2023. Our plan is to build out a better benchmarking setup to update this page.
+
 ## React Native
 
 In [this benchmark](https://github.com/tamagui/benchmarks) Tamagui is within 10% of the speed of vanilla React Native, even when using nearly all of Tamagui's features. We render list of 28 items with a few sections, text and images. Average of 5 runs on a Apple M2 Air:

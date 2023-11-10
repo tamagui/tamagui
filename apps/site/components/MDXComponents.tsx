@@ -337,8 +337,7 @@ export const components = {
       >
         {/* @ts-ignore */}
         <Paragraph
-          tag="span"
-          className='link'
+          tag="a"
           // @ts-ignore
           fontSize="inherit"
           display="inline"

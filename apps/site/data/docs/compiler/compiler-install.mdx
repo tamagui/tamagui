@@ -3,23 +3,15 @@ title: Install the Compiler
 description: Adding the compiler to your apps.
 ---
 
-Tamagui works 100% at runtime, the compiler is optional, it's easier to get started by [skipping setting it up](/docs/core/configuration) so you can try it out in practice before committing.
+For more background read the [Compiler About](/intro/why-a-compiler) page, for performance see [Benchmarks](/intro/benchmarks).
 
-Install on most platforms is as easy as configuring a library:
-
-- [Webpack](#webpack)
-- [Next.js](#nextjs) ([guide](/docs/guides/next-js))
-- [Vite](#vite) ([guide](/docs/guides/vite))
-- [Metro](#babel--metro)
-- [Expo](/docs/guides/expo)
+It's important to note the compiler is optional, and it's much easier to get started by building your app out before you commit to the setup cost.
 
 <Notice>
   The compiler will generate built versions of your components and config into the
   `.tamagui` directory, relative to your app. You'll want to add this to your `.gitignore`
   if you don't already ignore dotfiles.
 </Notice>
-
-### Setup
 
 ### Webpack
 
@@ -110,6 +102,8 @@ module.exports = {
 
 ### Vite
 
+See the [Vite guide](/docs/guides/vite) for more complete setup.
+
 Add `@tamagui/vite-plugin` and update your `vite.config.ts`:
 
 ```tsx
@@ -128,6 +122,8 @@ export default defineConfig({
 ```
 
 ### Next.js
+
+See the ([guide](/docs/guides/next-js)) for more complete setup.
 
 Add `@tamagui/next-plugin` and configure your `next.config.js`. Here we show a fuller scope of the options
 
@@ -304,20 +300,34 @@ All compiler plugins accept the same options:
       default: 'false',
       description: 'Turns off tree-flattening.',
     },
+    {
+      name: 'enableDynamicEvaluation',
+      required: false,
+      type: 'boolean',
+      typeSimple: 'enum',
+      default: 'false',
+      description:
+        '(Experimental) Enables further extracting of any styled component, even if not in your components. See below for more information.',
+    },
+    {
+      name: 'experimentalFlattenThemesOnNative',
+      required: false,
+      type: 'boolean',
+      typeSimple: 'enum',
+      default: 'false',
+      description:
+        '(Experimental) Enables further extracting of components that use theme values on native.',
+    },
   ]}
 />
 
-### Dynamic Loading
+### Dynamic Evaluation
 
 By default the Tamagui compiler only optimizes `styled` expressions found in the modules defined by your `components` config. This means if you do an inline `styled()` inside your actual app directory, it will default to runtime style insertion.
 
 This is typically Good Enough™️. As long as you define most of your common components there, you'll get a very high hit rate of compiled styles being used and runtime generation being skipped, as atomic styles with your design system tokens will be mostly pre-generated.
 
-Tamagui has _experimental_ support for loading any component, even if it occurs somewhere outside your configured components modules. This is called "dynamic loading", for now. You can enable it with the following environment variable:
-
-```
-TAMAGUI_ENABLE_DYNAMIC_LOAD=1
-```
+Tamagui has _experimental_ support for loading any component, even if it occurs somewhere outside your configured components modules. This is called "dynamic loading", for now. You can enable it with the setting `enableDynamicEvaluation` as seen above in the props table.
 
 The way it works is, when the compiler detects a styled() expression outside one of the defined component directories, it will run the following:
 

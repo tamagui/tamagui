@@ -19,7 +19,12 @@ export default function Blog({ frontmatters }) {
       <ContainerLarge mt="$6" mb="$7">
         <XStack flexWrap="wrap" jc="space-between">
           {frontmatters.map((frontmatter) => (
-            <NextLink key={frontmatter.title} href={frontmatter.slug} passHref>
+            <NextLink
+              legacyBehavior={false}
+              key={frontmatter.title}
+              href={frontmatter.slug}
+              passHref
+            >
               <TamaguiCard
                 title={frontmatter.title}
                 subTitle={
