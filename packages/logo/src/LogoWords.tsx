@@ -48,6 +48,7 @@ export const LogoWords = memo(
         onHoverIn={() => setHovered(true)}
         onHoverOut={() => setHovered(false)}
         paddingVertical="$2"
+        data-tauri-drag-region
         marginVertical="$-2"
         position="relative"
         {...props}
@@ -69,11 +70,13 @@ export const LogoWords = memo(
           />
         )}
         <svg
+          data-tauri-drag-region
           width={373 * (1 / downscale) * 0.333333334}
           height={41 * (1 / downscale) * 0.333333334}
           viewBox="0 0 373 41"
         >
           <polygon
+            data-tauri-drag-region
             shapeRendering="crispEdges"
             fill={getColor(0)}
             points="24.3870968 40.1612903 24.3870968 8.67741935 32.2580645 8.67741935 32.2580645 0.806451613 0.774193548 0.806451613 0.774193548 8.67741935 8.64516129 8.67741935 8.64516129 40.1612903"
@@ -87,6 +90,7 @@ export const LogoWords = memo(
             onMouseEnter={() => Tint.setTintIndex(1)}
           />
           <polygon
+            data-tauri-drag-region
             shapeRendering="crispEdges"
             fill={getColor(2)}
             points="130.645161 40.1612903 130.645161 22.4516129 138.516129 22.4516129 138.516129 40.1612903 154.258065 40.1612903 154.258065 0.806451613 142.451613 0.806451613 142.451613 8.67741935 126.709677 8.67741935 126.709677 0.806451613 114.903226 0.806451613 114.903226 40.1612903"
@@ -99,18 +103,21 @@ export const LogoWords = memo(
             onMouseEnter={() => Tint.setTintIndex(3)}
           />
           <polygon
+            data-tauri-drag-region
             shapeRendering="crispEdges"
             fill={getColor(4)}
             points="264.451613 40.1612903 264.451613 32.2903226 272.322581 32.2903226 272.322581 16.5483871 256.580645 16.5483871 256.580645 32.2903226 248.709677 32.2903226 248.709677 8.67741935 272.322581 8.67741935 272.322581 0.806451613 240.83871 0.806451613 240.83871 8.67741935 232.967742 8.67741935 232.967742 32.2903226 240.83871 32.2903226 240.83871 40.1612903"
             onMouseEnter={() => Tint.setTintIndex(4)}
           />
           <polygon
+            data-tauri-drag-region
             shapeRendering="crispEdges"
             fill={getColor(5)}
             points="323.483871 40.1612903 323.483871 32.2903226 331.354839 32.2903226 331.354839 0.806451613 315.612903 0.806451613 315.612903 32.2903226 307.741935 32.2903226 307.741935 0.806451613 292 0.806451613 292 32.2903226 299.870968 32.2903226 299.870968 40.1612903"
             onMouseEnter={() => Tint.setTintIndex(5)}
           />
           <polygon
+            data-tauri-drag-region
             shapeRendering="crispEdges"
             fill={getColor(6)}
             points="372.677419 40.1612903 372.677419 0.806451613 356.935484 0.806451613 356.935484 40.1612903"

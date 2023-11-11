@@ -59,12 +59,12 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 600,
+        "height": 860,
         "resizable": true,
         "hiddenTitle": true,
         "titleBarStyle": "Overlay",
         "title": "Tamagui Studio",
-        "width": 800
+        "width": 1180
       }
     ]
   }
