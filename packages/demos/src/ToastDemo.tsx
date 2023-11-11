@@ -3,7 +3,9 @@ import React from 'react'
 import { Button, Label, Switch, XStack, YStack } from 'tamagui'
 
 /**
- *  IMPORTANT NOTE: if you're copy-pasting this demo into your code, make sure to add the ToastProvider and ToastViewport as well.
+ *  IMPORTANT NOTE: if you're copy-pasting this demo into your code, make sure to add:
+ *    - <ToastProvider> at the root
+ *    - <ToastViewport /> where you want to show the toasts
  */
 export const ToastDemo = () => {
   const [native, setNative] = React.useState(false)
