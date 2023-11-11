@@ -1,6 +1,6 @@
 export type BuildThemeSuiteProps = {
-    theme: BuildLightDarkTheme | BuildColorSubTheme | BuildMaskSubTheme;
-    fallbackTheme?: BuildColorSubTheme;
+    baseTheme: BuildLightDarkTheme;
+    subThemes: (BuildColorSubTheme | BuildMaskSubTheme)[];
 };
 export type ScaleTypeName = 'radix' | 'radix-b' | 'radius-bold' | 'radius-bright' | 'linear' | 'pastel' | 'pastel-desaturating' | 'neon' | 'neon-bright' | 'neon-c';
 export type BuildThemeBasicProperties = {
