@@ -11,7 +11,7 @@
   },
   "scripts": {
     "dev": "../../node_modules/.bin/tama studio",
-    "tauri": "tauri",
+    "dev:tauri": "tauri dev",
     "build": "tamagui-build",
     "ci:build": "tama studio --build",
     "watch": "tamagui-build --watch",

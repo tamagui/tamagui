@@ -2,7 +2,7 @@
 
 export type BuildThemeSuiteProps = {
   baseTheme: BuildLightDarkTheme
-  subThemes: (BuildColorSubTheme | BuildMaskSubTheme)[]
+  subThemes?: (BuildColorSubTheme | BuildMaskSubTheme)[]
 }
 
 export type ScaleTypeName =
