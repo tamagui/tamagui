@@ -1,3 +1,8 @@
+- disableClassName breaking css animation
+- css animateOnly should always force style tag styles
+
+- 2.0 make it just is the current state with fixes, unstyled across everything, and make various smaller breaking changes in api surfaces that need cleanup
+
 - Unistack theme change needs a server restart / theme builder not re-building on changing colors.ts
 - Takeout Storybook styles breaking
   - https://discord.com/channels/909986013848412191/1125830682661363794/1169376340491903006
