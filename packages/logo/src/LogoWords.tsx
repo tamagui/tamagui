@@ -6,9 +6,10 @@ import { useTint } from './useTint'
 export const LogoWords = memo(
   ({
     downscale = 1,
+    grayscale,
     animated,
     ...props
-  }: XStackProps & { downscale?: number; animated?: boolean }) => {
+  }: XStackProps & { downscale?: number; animated?: boolean; grayscale?: boolean }) => {
     const Tint = useTint()
     const { tintIndex: index, tint } = Tint
     const tints = Tint.tints.map((t) => `var(--${t}9)`)
@@ -30,6 +31,13 @@ export const LogoWords = memo(
 
     const getColor = (i: number) => {
       const isActive = mounted !== 'start' && i === index
+      if (grayscale) {
+        return hovered && isActive
+          ? `var(--gray12)`
+          : hovered
+          ? `var(--gray11)`
+          : `var(--gray10)`
+      }
       if (mounted !== 'done' || hovered) {
         return isActive ? 'var(--color)' : tints[index]
       }
