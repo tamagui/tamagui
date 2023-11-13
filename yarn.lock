@@ -6989,6 +6989,7 @@ __metadata:
   dependencies:
     "@supabase/auth-helpers-shared": ^0.5.0
     "@tamagui/build": 1.76.0
+    "@tamagui/cli": 1.76.0
     "@tamagui/linear-gradient": 1.76.0
     "@tamagui/logo": 1.76.0
     "@tamagui/lucide-icons": 1.76.0
