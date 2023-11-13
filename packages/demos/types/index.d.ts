@@ -32,6 +32,7 @@ export * from './SelectDemo';
 export * from './SeparatorDemo';
 export * from './ShapesDemo';
 export * from './SheetDemo';
+export * from './SkeletonDemo';
 export * from './SliderDemo';
 export * from './SpinnerDemo';
 export * from './StacksDemo';
