@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": { "composite": true },
+  "references": [
+    { "path": "../core" },
+    { "path": "../button" },
+    { "path": "../create-context" },
+    { "path": "../compose-refs" },
+    { "path": "../stacks" },
+    { "path": "../text" },
+    { "path": "../use-controllable-state" }
+  ]
+}

@@ -28,6 +28,8 @@ export * from '@tamagui/select'
 export * from '@tamagui/separator'
 export * from '@tamagui/shapes'
 export * from '@tamagui/sheet'
+// Will uncomment when we have a skeleton component
+// export * from '@tamagui/skeleton'
 export * from '@tamagui/slider'
 export * from '@tamagui/stacks'
 export * from '@tamagui/switch'
