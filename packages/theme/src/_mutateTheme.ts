@@ -128,8 +128,6 @@ export function _mutateTheme(props: MutateThemeOptions & MutateOneThemeProps) {
     })
   }
 
-  console.log('adding theme', themeName)
-
   updateThemeConfig(themeName, themeProxied)
   notifyThemeManagersOfUpdate(themeName, themeProxied)
 

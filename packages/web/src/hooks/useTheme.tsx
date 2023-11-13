@@ -474,10 +474,6 @@ export const useChangeThemeEffect = (
 
     const isNewTheme = Boolean(themeManager !== parentManager || props.inverse)
 
-    if (props.debug) {
-      console.log('hello?', isNewTheme, themeManager, props)
-    }
-
     // only inverse relies on this for ssr
     const mounted = !props.inverse ? true : isRoot || prev?.mounted
 
