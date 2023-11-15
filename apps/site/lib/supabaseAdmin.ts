@@ -326,9 +326,13 @@ export async function getOrCreateRenewalPriceId(price: Stripe.Price) {
     price.product && typeof price.product === 'object'
       ? (price.product as Stripe.Product)
       : await stripe.products.retrieve(price.product)
-  if (!product.metadata.has_renewals) {
+  if (
+    !product.metadata.has_renewals || // this product doesn't need renewal prices
+    price.type === 'recurring' // this price is already a subscription price - not having this check might cause an infinite loop of creating prices
+  ) {
     return null
   }
+
   let renewalPriceId = price.metadata.renewal_price_id
   if (!price.metadata.renewal_price_id) {
     const subscriptionPrice = await stripe.prices.create({
