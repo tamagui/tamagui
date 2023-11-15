@@ -17,7 +17,7 @@ import type { PopperContentProps } from '@tamagui/popper'
 import { Portal as PortalPrimitive, PortalProps } from '@tamagui/portal'
 import { RovingFocusGroup } from '@tamagui/roving-focus'
 import type { RovingFocusGroupProps } from '@tamagui/roving-focus'
-import { SizableStackProps, ThemeableStack } from '@tamagui/stacks'
+import { SizableStackProps, ThemeableStack, YStack } from '@tamagui/stacks'
 import { useCallbackRef } from '@tamagui/use-callback-ref'
 import { useDirection } from '@tamagui/use-direction'
 import { Stack, Theme, isWeb, styled } from '@tamagui/web'
@@ -161,9 +161,9 @@ type PopperAnchorProps = React.ComponentPropsWithoutRef<
 >
 interface MenuAnchorProps extends PopperAnchorProps {}
 
-const MenuAnchor = styled(PopperPrimitive.PopperAnchor, {
-  __scopePopper: MENU_CONTEXT,
-})
+const MenuAnchor = (props: MenuAnchorProps) => {
+  return <PopperPrimitive.PopperAnchor __scopePopper={MENU_CONTEXT} {...props} />
+}
 
 MenuAnchor.displayName = ANCHOR_NAME
 
@@ -1114,7 +1114,7 @@ const SUB_TRIGGER_NAME = 'MenuSubTrigger'
 type MenuSubTriggerElement = MenuItemImplElement
 interface MenuSubTriggerProps extends MenuItemImplProps {}
 
-const MenuSubTrigger = MenuAnchor.styleable<ScopedProps<MenuSubTriggerProps>>(
+const MenuSubTrigger = YStack.styleable<ScopedProps<MenuSubTriggerProps>>(
   (props: ScopedProps<MenuSubTriggerProps>, forwardedRef) => {
     const context = useMenuContext(props.__scopeMenu)
     const rootContext = useMenuRootContext(props.__scopeMenu)

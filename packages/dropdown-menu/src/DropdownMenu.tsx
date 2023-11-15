@@ -1,17 +1,18 @@
-import { Button } from '@tamagui/button'
-import { composeRefs } from '@tamagui/compose-refs'
+import { Slot } from '@tamagui/core'
+import * as MenuPrimitive from '@tamagui/menu'
+import { useId } from 'react'
+import * as React from 'react'
 import {
-  Slot,
+  Button,
   TamaguiElement,
+  YStack,
   composeEventHandlers,
+  composeRefs,
   createStyledContext,
   isWeb,
   styled,
-} from '@tamagui/core'
-import * as MenuPrimitive from '@tamagui/menu'
-import { useControllableState } from '@tamagui/use-controllable-state'
-import { useId } from 'react'
-import * as React from 'react'
+  useControllableState,
+} from 'tamagui'
 
 type Direction = 'ltr' | 'rtl'
 
@@ -104,78 +105,71 @@ interface DropdownMenuTriggerProps extends PrimitiveButtonProps {}
 
 const DropdownMenuTriggerFrame = MenuPrimitive.Anchor
 
-const DropdownMenuTrigger = DropdownMenuTriggerFrame.styleable<
-  ScopedProps<DropdownMenuTriggerProps>
->((props: ScopedProps<DropdownMenuTriggerProps>, forwardedRef) => {
-  const {
-    __scopeDropdownMenu,
-    asChild,
-    children,
-    disabled = false,
-    ...triggerProps
-  } = props
-  const context = useDropdownMenuContext(__scopeDropdownMenu)
-  const Comp = (asChild ? Slot : Button) as typeof Button
-  return (
-    <DropdownMenuTriggerFrame
-      componentName={TRIGGER_NAME}
-      __scopePopper={__scopeDropdownMenu || DROPDOWN_MENU_CONTEXT}
-    >
-      <Comp
-        tag="button"
-        id={context.triggerId}
-        aria-haspopup="menu"
-        aria-expanded={context.open}
-        aria-controls={context.open ? context.contentId : undefined}
-        data-state={context.open ? 'open' : 'closed'}
-        data-disabled={disabled ? '' : undefined}
-        disabled={disabled}
-        children={asChild ? children : undefined}
-        {...triggerProps}
-        ref={composeRefs(forwardedRef, context.triggerRef)}
-        onPointerDown={
-          isWeb
-            ? composeEventHandlers(props.onPointerDown, (event) => {
-                // only call handler if it's the left button (mousedown gets triggered by all mouse buttons)
-                // but not when the control key is pressed (avoiding MacOS right click)
-                // TODO: resolve this ts ignore
-                // @ts-ignore
-                if (!disabled && event.button === 0 && event.ctrlKey === false) {
-                  context.onOpenToggle()
-                  // prevent trigger focusing when opening
-                  // this allows the content to be given focus without competition
-                  if (!context.open) event.preventDefault()
-                }
-              })
-            : undefined
-        }
-        // TODO: resolve these ts ignores
-        {...(isWeb && {
-          // @ts-ignore
-          onKeyDown: composeEventHandlers(props.onKeyDown, (event) => {
-            if (disabled) return
+const DropdownMenuTrigger = YStack.styleable<ScopedProps<DropdownMenuTriggerProps>>(
+  (props: ScopedProps<DropdownMenuTriggerProps>, forwardedRef) => {
+    const {
+      __scopeDropdownMenu,
+      asChild,
+      children,
+      disabled = false,
+      ...triggerProps
+    } = props
+    const context = useDropdownMenuContext(__scopeDropdownMenu)
+    const Comp = asChild ? Slot : Button
+    return (
+      <DropdownMenuTriggerFrame
+        asChild
+        componentName={TRIGGER_NAME}
+        __scopePopper={__scopeDropdownMenu || DROPDOWN_MENU_CONTEXT}
+      >
+        <Comp
+          tag="button"
+          id={context.triggerId}
+          aria-haspopup="menu"
+          children={children}
+          aria-expanded={context.open}
+          aria-controls={context.open ? context.contentId : undefined}
+          data-state={context.open ? 'open' : 'closed'}
+          data-disabled={disabled ? '' : undefined}
+          disabled={disabled}
+          ref={composeRefs(forwardedRef, context.triggerRef)}
+          onPointerDown={
+            isWeb
+              ? composeEventHandlers(props.onPointerDown, (event) => {
+                  // only call handler if it's the left button (mousedown gets triggered by all mouse buttons)
+                  // but not when the control key is pressed (avoiding MacOS right click)
+                  // TODO: resolve this ts ignore
+                  // @ts-ignore
+                  if (!disabled && event.button === 0 && event.ctrlKey === false) {
+                    context.onOpenToggle()
+                    // prevent trigger focusing when opening
+                    // this allows the content to be given focus without competition
+                    if (!context.open) event.preventDefault()
+                  }
+                })
+              : undefined
+          }
+          // TODO: resolve these ts ignores
+          {...(isWeb && {
             // @ts-ignore
-            if (['Enter', ' '].includes(event.key)) context.onOpenToggle()
-            // @ts-ignore
-            if (event.key === 'ArrowDown') context.onOpenChange(true)
-            // prevent keydown from scrolling window / first focused item to execute
-            // that keydown (inadvertently closing the menu)
-            // @ts-ignore
-            if (['Enter', ' ', 'ArrowDown'].includes(event.key)) event.preventDefault()
-          }),
-        })}
-        // onKeyDown={composeEventHandlers(props.onKeyDown, (event) => {
-        //   if (disabled) return
-        //   if (['Enter', ' '].includes(event.key)) context.onOpenToggle()
-        //   if (event.key === 'ArrowDown') context.onOpenChange(true)
-        //   // prevent keydown from scrolling window / first focused item to execute
-        //   // that keydown (inadvertently closing the menu)
-        //   if (['Enter', ' ', 'ArrowDown'].includes(event.key)) event.preventDefault()
-        // })}
-      />
-    </DropdownMenuTriggerFrame>
-  )
-})
+            onKeyDown: composeEventHandlers(props.onKeyDown, (event) => {
+              if (disabled) return
+              // @ts-ignore
+              if (['Enter', ' '].includes(event.key)) context.onOpenToggle()
+              // @ts-ignore
+              if (event.key === 'ArrowDown') context.onOpenChange(true)
+              // prevent keydown from scrolling window / first focused item to execute
+              // that keydown (inadvertently closing the menu)
+              // @ts-ignore
+              if (['Enter', ' ', 'ArrowDown'].includes(event.key)) event.preventDefault()
+            }),
+          })}
+          {...triggerProps}
+        />
+      </DropdownMenuTriggerFrame>
+    )
+  }
+)
 
 DropdownMenuTrigger.displayName = TRIGGER_NAME
 
