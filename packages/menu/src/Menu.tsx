@@ -454,82 +454,84 @@ const MenuContentImpl = React.forwardRef<
   }, [])
 
   const content = (
-    <PopperPrimitive.PopperContent
-      role="menu"
-      elevation={30}
-      backgroundColor={'$background'}
-      aria-orientation="vertical"
-      data-state={getOpenState(context.open)}
-      data-tamagui-menu-content=""
-      // @ts-ignore
-      dir={rootContext.dir}
-      __scopePopper={__scopeMenu || MENU_CONTEXT}
-      {...contentProps}
-      ref={composedRefs}
-      outlineWidth={0}
-      // TODO: why type casting is necessary here?
-      {...(contentProps.style as Object)}
-      // @ts-ignore
-      // style={{ outline: 'none', ...contentProps.style }}
-      {...(isWeb
-        ? {
-            onKeyDown: composeEventHandlers(
-              //@ts-ignore
-              contentProps.onKeyDown,
-              (event: KeyboardEvent) => {
-                // submenu key events bubble through portals. We only care about keys in this menu.
-                const target = event.target as HTMLElement
-                const isKeyDownInside =
-                  target.closest('[data-tamagui-menu-content]') === event.currentTarget
-                const isModifierKey = event.ctrlKey || event.altKey || event.metaKey
-                const isCharacterKey = event.key.length === 1
-                if (isKeyDownInside) {
-                  // menus should not be navigated using tab key so we prevent it
-                  if (event.key === 'Tab') event.preventDefault()
-                  if (!isModifierKey && isCharacterKey) handleTypeaheadSearch(event.key)
+    <Stack>
+      <PopperPrimitive.PopperContent
+        role="menu"
+        elevation={30}
+        backgroundColor={'$background'}
+        aria-orientation="vertical"
+        data-state={getOpenState(context.open)}
+        data-tamagui-menu-content=""
+        // @ts-ignore
+        dir={rootContext.dir}
+        __scopePopper={__scopeMenu || MENU_CONTEXT}
+        {...contentProps}
+        ref={composedRefs}
+        outlineWidth={0}
+        // TODO: why type casting is necessary here?
+        {...(contentProps.style as Object)}
+        // @ts-ignore
+        // style={{ outline: 'none', ...contentProps.style }}
+        {...(isWeb
+          ? {
+              onKeyDown: composeEventHandlers(
+                //@ts-ignore
+                contentProps.onKeyDown,
+                (event: KeyboardEvent) => {
+                  // submenu key events bubble through portals. We only care about keys in this menu.
+                  const target = event.target as HTMLElement
+                  const isKeyDownInside =
+                    target.closest('[data-tamagui-menu-content]') === event.currentTarget
+                  const isModifierKey = event.ctrlKey || event.altKey || event.metaKey
+                  const isCharacterKey = event.key.length === 1
+                  if (isKeyDownInside) {
+                    // menus should not be navigated using tab key so we prevent it
+                    if (event.key === 'Tab') event.preventDefault()
+                    if (!isModifierKey && isCharacterKey) handleTypeaheadSearch(event.key)
+                  }
+                  // focus first/last item based on key pressed
+                  const content = contentRef.current
+                  if (event.target !== content) return
+                  if (!FIRST_LAST_KEYS.includes(event.key)) return
+                  event.preventDefault()
+                  const items = getItems().filter((item) => !item.disabled)
+                  const candidateNodes = items.map((item) => item.ref.current!)
+                  if (LAST_KEYS.includes(event.key)) candidateNodes.reverse()
+                  focusFirst(candidateNodes as HTMLElement[])
                 }
-                // focus first/last item based on key pressed
-                const content = contentRef.current
-                if (event.target !== content) return
-                if (!FIRST_LAST_KEYS.includes(event.key)) return
-                event.preventDefault()
-                const items = getItems().filter((item) => !item.disabled)
-                const candidateNodes = items.map((item) => item.ref.current!)
-                if (LAST_KEYS.includes(event.key)) candidateNodes.reverse()
-                focusFirst(candidateNodes as HTMLElement[])
-              }
-            ),
-            // @ts-ignore
-            onBlur: composeEventHandlers(props.onBlur, (event: MouseEvent) => {
-              // clear search buffer when leaving the menu
+              ),
               // @ts-ignore
-              if (!event.currentTarget?.contains(event.target)) {
-                clearTimeout(timerRef.current)
-                searchRef.current = ''
-              }
-            }),
-            onPointerMove: composeEventHandlers(
-              // @ts-ignore
-              props.onPointerMove,
-              // @ts-ignore
-              whenMouse((event: MouseEvent) => {
-                const target = event.target as HTMLElement
-                const pointerXHasChanged = lastPointerXRef.current !== event.clientX
-
-                // We don't use `event.movementX` for this check because Safari will
-                // always return `0` on a pointer event.
+              onBlur: composeEventHandlers(props.onBlur, (event: MouseEvent) => {
+                // clear search buffer when leaving the menu
                 // @ts-ignore
-                if (event.currentTarget?.contains(target) && pointerXHasChanged) {
-                  const newDir =
-                    event.clientX > lastPointerXRef.current ? 'right' : 'left'
-                  pointerDirRef.current = newDir
-                  lastPointerXRef.current = event.clientX
+                if (!event.currentTarget?.contains(event.target)) {
+                  clearTimeout(timerRef.current)
+                  searchRef.current = ''
                 }
-              })
-            ),
-          }
-        : {})}
-    />
+              }),
+              onPointerMove: composeEventHandlers(
+                // @ts-ignore
+                props.onPointerMove,
+                // @ts-ignore
+                whenMouse((event: MouseEvent) => {
+                  const target = event.target as HTMLElement
+                  const pointerXHasChanged = lastPointerXRef.current !== event.clientX
+
+                  // We don't use `event.movementX` for this check because Safari will
+                  // always return `0` on a pointer event.
+                  // @ts-ignore
+                  if (event.currentTarget?.contains(target) && pointerXHasChanged) {
+                    const newDir =
+                      event.clientX > lastPointerXRef.current ? 'right' : 'left'
+                    pointerDirRef.current = newDir
+                    lastPointerXRef.current = event.clientX
+                  }
+                })
+              ),
+            }
+          : {})}
+      />
+    </Stack>
   )
 
   return (

@@ -2758,10 +2758,6 @@ declare const MenuSubTrigger: import("@tamagui/core").TamaguiComponent<Omit<Omit
         onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
         onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-        /**
-         * Used to force mounting when more control is needed. Useful when
-         * controlling animation with React animation libraries.
-         */
         onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderRelease?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -5428,10 +5424,6 @@ declare const SubTrigger: import("@tamagui/core").TamaguiComponent<Omit<Omit<imp
         onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
         onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-        /**
-         * Used to force mounting when more control is needed. Useful when
-         * controlling animation with React animation libraries.
-         */
         onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderRelease?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
