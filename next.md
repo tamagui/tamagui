@@ -1,3 +1,9 @@
+- config: {
+    settings: {
+      styleStrategy: { type: 'prop', prop: 'sx', acceptFlatStyles: true }
+    }
+}
+
 - disableClassName breaking css animation
 - css animateOnly should always force style tag styles
 
