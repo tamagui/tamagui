@@ -33,9 +33,6 @@ export const StudioScreen1 = memo(() => {
     color: 'var(--color10)',
     opacity: isLight ? 0.225 : 0.125,
     background: 'transparent',
-    style: {
-      transition: `all ease-out ms300`,
-    },
   })
 
   const glint = useHoverGlow({
@@ -51,14 +48,11 @@ export const StudioScreen1 = memo(() => {
     opacity: isLight ? 1 : 0.4,
     background: 'transparent',
     inverse: true,
-    style: {
-      transition: `all ease-out ms300`,
-    },
   })
 
   const lettersContainerBounds = {
     width: 1000,
-    height: 600,
+    height: 900,
     left: 0,
     top: 0,
   }
@@ -168,17 +162,17 @@ export const StudioScreen1 = memo(() => {
 
   return (
     <ThemeTint>
-      <YStack o={0.035} fullscreen className="bg-grid" />
+      <YStack pe="none" o={0.035} fullscreen className="bg-grid" />
 
       <YStack
         als="center"
-        py={200}
-        my={-100}
-        x={10}
         pos="relative"
         {...lettersContainerBounds}
         minWidth={lettersContainerBounds.width}
         minHeight={lettersContainerBounds.height}
+        mb={-400}
+        x={15}
+        y={-20}
       >
         <YStack
           ai="center"
@@ -207,7 +201,7 @@ export const StudioScreen1 = memo(() => {
         </YStack>
       </YStack>
 
-      <Container ai="center">
+      <Container pe="none" ai="center">
         <YStack
           ai="center"
           jc="center"
@@ -229,8 +223,12 @@ export const StudioScreen1 = memo(() => {
                 borderRadius="$10"
                 elevation="$2"
                 className="glowing"
+                pe="auto"
                 hoverStyle={{
-                  bg: '$color9',
+                  bg: '$color10',
+                  outlineColor: '$color5',
+                  outlineStyle: 'solid',
+                  outlineWidth: 4,
                   elevation: '$3',
                 }}
                 pressStyle={{
@@ -265,13 +263,11 @@ export const StudioScreen1 = memo(() => {
           /> */}
 
           <NextLink href="/login">
-            <Button variant="outlined" size="$3" borderRadius="$10">
+            <Button pe="auto" variant="outlined" size="$3" borderRadius="$10">
               Login
             </Button>
           </NextLink>
         </YStack>
-
-        <Spacer size="$8" />
 
         <XStack maw={790} space="$8" separator={<Separator vertical />}>
           <H2
@@ -316,7 +312,7 @@ const lettersConf: LetterConf[] = [
         y: 0,
       },
       style: {
-        transition: `all ease-out 300ms`,
+        transition: `transform ease-out 300ms`,
       },
     },
     underlayStyle: {
@@ -342,7 +338,7 @@ const lettersConf: LetterConf[] = [
         y: 0,
       },
       style: {
-        transition: `all ease-out 300ms`,
+        transition: `transform ease-out 300ms`,
       },
     },
     underlayStyle: {
@@ -366,7 +362,7 @@ const lettersConf: LetterConf[] = [
         y: 0,
       },
       style: {
-        transition: `all ease-out 300ms`,
+        transition: `transform ease-out 300ms`,
       },
     },
     underlayStyle: {
@@ -392,7 +388,7 @@ const lettersConf: LetterConf[] = [
         y: 0,
       },
       style: {
-        transition: `all ease-out 300ms`,
+        transition: `transform ease-out 300ms`,
       },
     },
     underlayStyle: {
@@ -417,7 +413,7 @@ const lettersConf: LetterConf[] = [
         y: 0,
       },
       style: {
-        transition: `all ease-out 300ms`,
+        transition: `transform ease-out 300ms`,
       },
     },
     underlayStyle: {
@@ -439,7 +435,7 @@ const lettersConf: LetterConf[] = [
         y: -30,
       },
       style: {
-        transition: `all ease-out 300ms`,
+        transition: `transform ease-out 300ms`,
       },
     },
     underlayStyle: {
