@@ -1,8 +1,8 @@
-// copy from https://github.com/nandorojo/moti/blob/master/packages/moti/src/skeleton/types.ts
-import { LinearGradient } from 'expo-linear-gradient'
+import { MotiTransitionProp } from '@tamagui/animations-moti'
 
-import { MotiTransitionProp } from '../core'
 import { baseColors } from './shared'
+
+// copy from https://github.com/nandorojo/moti/blob/master/packages/moti/src/skeleton/types.ts
 
 export type MotiSkeletonProps = {
   /**
@@ -12,7 +12,7 @@ export type MotiSkeletonProps = {
    */
   boxHeight?: number | string
   /**
-   * Optional height of the skeleton. Defauls to a `minHeight` of `32`
+   * Optional height of the skeleton. Default to a `minHeight` of `32`
    */
   height?: number | string
   children?: React.ReactChild | null
