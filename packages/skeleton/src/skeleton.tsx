@@ -2,7 +2,8 @@ import { AnimatePresence, MotiTransitionProp, MotiView } from '@tamagui/animatio
 import { LinearGradient } from 'expo-linear-gradient'
 // https://github.com/nandorojo/moti/blob/master/packages/moti/src/skeleton/skeleton-new.tsx
 import React, { createContext, useContext, useState } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet } from 'react-native'
+import { YStack } from 'tamagui'
 
 import {
   DEFAULT_SKELETON_SIZE as DEFAULT_SIZE,
@@ -54,13 +55,10 @@ export default function Skeleton(props: MotiSkeletonProps) {
   const outerHeight = getOuterHeight()
 
   return (
-    <View
-      // @ts-expect-error - From Moti, come back to this
-      style={{
-        height: outerHeight,
-        minHeight: height,
-        minWidth: width ?? (children ? undefined : DEFAULT_SIZE),
-      }}
+    <YStack
+      height={outerHeight}
+      minHeight={height}
+      minWidth={width ?? (children ? undefined : DEFAULT_SIZE)}
     >
       {children}
       <AnimatePresence>
@@ -108,7 +106,7 @@ export default function Skeleton(props: MotiSkeletonProps) {
           </MotiView>
         )}
       </AnimatePresence>
-    </View>
+    </YStack>
   )
 }
 
