@@ -7237,7 +7237,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/skeleton@workspace:packages/skeleton":
+"@tamagui/skeleton@1.76.0, @tamagui/skeleton@workspace:packages/skeleton":
   version: 0.0.0-use.local
   resolution: "@tamagui/skeleton@workspace:packages/skeleton"
   dependencies:
