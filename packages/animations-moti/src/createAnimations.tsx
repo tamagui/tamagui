@@ -14,6 +14,7 @@ import Animated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated'
+export { MotiTransition, MotiTransitionProp, MotiView, AnimatePresence } from 'moti'
 
 type ReanimatedAnimatedNumber = SharedValue<number>
 

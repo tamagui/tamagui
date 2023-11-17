@@ -1,9 +1,9 @@
+import { AnimatePresence, MotiTransitionProp, MotiView } from '@tamagui/animations-moti'
 import { LinearGradient } from 'expo-linear-gradient'
+// https://github.com/nandorojo/moti/blob/master/packages/moti/src/skeleton/skeleton-new.tsx
 import React, { createContext, useContext, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 
-import { View as MotiView } from '../components'
-import { AnimatePresence, MotiTransitionProp } from '../core'
 import {
   DEFAULT_SKELETON_SIZE as DEFAULT_SIZE,
   baseColors,
@@ -55,6 +55,7 @@ export default function Skeleton(props: MotiSkeletonProps) {
 
   return (
     <View
+      // @ts-expect-error - From Moti, come back to this
       style={{
         height: outerHeight,
         minHeight: height,
@@ -65,6 +66,7 @@ export default function Skeleton(props: MotiSkeletonProps) {
       <AnimatePresence>
         {show && (
           <MotiView
+            // @ts-expect-error - From Moti, come back to this
             style={{
               position: 'absolute',
               top: 0,

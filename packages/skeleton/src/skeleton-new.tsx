@@ -1,3 +1,4 @@
+import { MotiTransitionProp, MotiView } from '@tamagui/animations-moti'
 // https://github.com/nandorojo/moti/blob/master/packages/moti/src/skeleton/skeleton-new.tsx
 import React, { createContext, useContext } from 'react'
 import { StyleSheet, View } from 'react-native'
@@ -8,8 +9,6 @@ import {
 } from 'react-native-reanimated'
 import type Animated from 'react-native-reanimated'
 
-import { View as MotiView } from '../components'
-import { MotiTransitionProp } from '../core'
 import {
   DEFAULT_SKELETON_SIZE as DEFAULT_SIZE,
   baseColors,
@@ -57,6 +56,7 @@ export default function Skeleton(props: MotiSkeletonProps) {
 
   return (
     <View
+      // @ts-expect-error - From Moti, come back to this
       style={{
         height: outerHeight,
         minHeight: height,
@@ -65,6 +65,7 @@ export default function Skeleton(props: MotiSkeletonProps) {
     >
       {children}
       <View
+        // @ts-expect-error - From Moti, come back to this
         style={{
           position: 'absolute',
           top: 0,
@@ -129,6 +130,7 @@ const AnimatedGradient = React.memo(
           opacity: 0,
           translateX: 0,
         }}
+        // @ts-expect-error - From Moti, come back to this
         animate={useDerivedValue(() => {
           return {
             opacity: show ? 1 : 0,
