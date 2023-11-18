@@ -22,6 +22,7 @@ import {
   useToastState,
 } from './ToastImperative'
 import {
+  ToastExtraProps,
   ToastImpl,
   ToastImplFrame,
   ToastProps,
@@ -161,7 +162,7 @@ ToastClose.displayName = CLOSE_NAME
  * Toast
  * -----------------------------------------------------------------------------------------------*/
 
-const ToastComponent = ToastImplFrame.styleable(
+const ToastComponent = ToastImplFrame.styleable<ToastExtraProps>(
   (props: ScopedProps<ToastProps>, forwardedRef) => {
     const { forceMount, open: openProp, defaultOpen, onOpenChange, ...toastProps } = props
     const [open, setOpen] = useControllableState({

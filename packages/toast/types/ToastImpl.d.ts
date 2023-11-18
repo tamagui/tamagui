@@ -266,11 +266,22 @@ declare const ToastImplFrame: import("@tamagui/core").TamaguiComponent<Omit<impo
         chromeless?: boolean | "all" | undefined;
     };
 }>;
-interface ToastProps extends Omit<ToastImplProps, keyof ToastImplPrivateProps> {
+type ToastProps = Omit<ToastImplProps, keyof ToastImplPrivateProps> & {
     /**
      * The controlled open state of the dialog. Must be used in conjunction with `onOpenChange`.
      */
     open?: boolean;
+};
+type SwipeEvent = GestureResponderEvent;
+declare const useToastInteractiveContext: (scope?: string | undefined) => {
+    onClose(): void;
+};
+type ToastImplPrivateProps = {
+    open?: boolean;
+    onClose(): void;
+};
+type ToastImplFrameProps = GetProps<typeof ToastImplFrame>;
+export type ToastExtraProps = {
     /**
      * The open state of the dialog when it is initially rendered. Use when you do not need to control its open state.
      */
@@ -284,17 +295,6 @@ interface ToastProps extends Omit<ToastImplProps, keyof ToastImplPrivateProps> {
      * controlling animation with React animation libraries.
      */
     forceMount?: true;
-}
-type SwipeEvent = GestureResponderEvent;
-declare const useToastInteractiveContext: (scope?: string | undefined) => {
-    onClose(): void;
-};
-type ToastImplPrivateProps = {
-    open: boolean;
-    onClose(): void;
-};
-type ToastImplFrameProps = GetProps<typeof ToastImplFrame>;
-type ToastImplProps = ToastImplPrivateProps & ToastImplFrameProps & {
     /**
      * Control the sensitivity of the toast for accessibility purposes.
      * For toasts that are the result of a user action, choose foreground. Toasts generated from background tasks should use background.
@@ -347,6 +347,7 @@ type ToastImplProps = ToastImplPrivateProps & ToastImplFrameProps & {
      */
     id?: string;
 };
+type ToastImplProps = ToastImplPrivateProps & ToastImplFrameProps & ToastExtraProps;
 declare const ToastImpl: React.ForwardRefExoticComponent<Omit<ToastImplProps, "ref"> & React.RefAttributes<TamaguiElement>>;
 export { ToastImpl, ToastImplFrame, ToastImplProps, useToastInteractiveContext };
 export type { ToastProps };
