@@ -367,9 +367,13 @@ export async function extractToClassNames({
             // not flat
           } else {
             ensureImportingConcat(programPath)
-            const simpleSpreads = attrs.filter(
-              (x) => t.isJSXSpreadAttribute(x.value) && isSimpleSpread(x.value)
-            )
+            const simpleSpreads = attrs.filter((x) => {
+              return (
+                x.type === 'attr' &&
+                t.isJSXSpreadAttribute(x.value) &&
+                isSimpleSpread(x.value)
+              )
+            })
             expr = t.callExpression(t.identifier('concatClassName'), [
               expr,
               ...simpleSpreads.map((val) => val.value['argument']),
