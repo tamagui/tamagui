@@ -38,10 +38,9 @@ export const LinearGradient = YStack.styleable<LinearGradientExtraProps>(
           end={end}
           colors={colors}
           locations={locations}
-          style={absoluteFill}
-        >
-          {children}
-        </ExpoLinearGradient>
+          style={gradientStyle}
+        />
+        {children}
       </LinearGradientFrame>
     )
   }
@@ -49,12 +48,13 @@ export const LinearGradient = YStack.styleable<LinearGradientExtraProps>(
 
 export type LinearGradientProps = GetProps<typeof LinearGradient>
 
-const absoluteFill: ViewStyle = {
+const gradientStyle: ViewStyle = {
   position: 'absolute',
   top: 0,
   left: 0,
   right: 0,
   bottom: 0,
+  zIndex: 0,
 }
 
 const LinearGradientFrame = styled(YStack, {
