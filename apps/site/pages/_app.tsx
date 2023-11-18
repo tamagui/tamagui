@@ -3,7 +3,6 @@ import '@tamagui/core/reset.css'
 import '../app.css'
 
 import { GetLayout } from '@lib/getDefaultLayout'
-import { setTintFamily } from '@tamagui/logo'
 import {
   ColorScheme,
   NextThemeProvider,
@@ -13,13 +12,7 @@ import {
 import { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
-import {
-  TamaguiProvider,
-  Text,
-  isClient,
-  useDebounceValue,
-  useDidFinishSSR,
-} from 'tamagui'
+import { TamaguiProvider, useDebounceValue, useDidFinishSSR } from 'tamagui'
 
 import { LoadCherryBomb, LoadInter900, LoadMunro } from '../components/LoadFont'
 import config from '../tamagui.config'

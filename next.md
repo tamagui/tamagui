@@ -1,3 +1,9 @@
+- add `style`
+  - style({}) returns tamagui compatible style object
+    - compiler can emit _classname string values on web
+    - passes through basically on native
+  - eg  Input could take { autofillSelectedStyle: Style }
+
 - config: {
     settings: {
       styleStrategy: { type: 'prop', prop: 'sx', acceptFlatStyles: true }

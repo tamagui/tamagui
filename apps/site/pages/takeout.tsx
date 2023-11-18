@@ -699,10 +699,9 @@ export default function TakeoutPage({
 
                 <Paragraph
                   className="text-wrap-balance"
-                  ff="$munro"
-                  size="$10"
-                  $sm={{ size: '$9' }}
-                  $xs={{ size: '$8' }}
+                  size="$9"
+                  $sm={{ size: '$8' }}
+                  $xs={{ size: '$7' }}
                   fow="400"
                 >
                   Takeout 🥡 is a bootstrap that makes shipping high quality apps as fast
@@ -717,8 +716,8 @@ export default function TakeoutPage({
                   $xs={{ size: '$5' }}
                   fow="400"
                 >
-                  Deploy production in minutes with automatic staging previews on Vercel,
-                  git push all the way to both app stores with Expo EAS.
+                  Deploy production in minutes with automatic staging previews on Vercel
+                  and git push all the way to both app stores with Expo EAS.
                 </Paragraph>
 
                 <Paragraph
@@ -728,11 +727,11 @@ export default function TakeoutPage({
                   $xs={{ size: '$5' }}
                   fow="400"
                 >
-                  Takeout is a robust stack and starter built on the Supabase stack with
-                  hard-fought tooling wins everywhere from dev to prod. Highlights include
-                  a complete app with refined onboarding, auth, account, profiles, CI/CD,
-                  testing, forms, validation, Storybook, settings, and gorgeous theme
-                  packs.
+                  Some highlights are onboarding flows, a complete end to end auth
+                  solution, account management, user profiles with avatars, a complete
+                  CI/CD and testing setup, forms validated with Zod, Storybook for native
+                  and web, comprehensive settings panes, and a bunch of nice libraries
+                  like tRPC, Reanimated, and tons of Expo libraries.
                 </Paragraph>
 
                 <Paragraph
@@ -742,16 +741,16 @@ export default function TakeoutPage({
                   $xs={{ size: '$5' }}
                   fow="400"
                 >
-                  Add open source packs of{' '}
+                  Plus{' '}
                   <NextLink href="https://fonts.google.com" target="_blank">
                     1,500 Google fonts
                   </NextLink>{' '}
                   and{' '}
                   <NextLink href="https://icones.js.org" target="_blank">
-                    150 icons
+                    150 open source icons
                   </NextLink>{' '}
-                  that come with a CLI that integrates them as typed React components easy
-                  to style and use with your design system.
+                  packaged into a CLI that installs them in your app as typed React
+                  components that use your themes and tokens.
                 </Paragraph>
 
                 <Spacer size="$6" />
@@ -950,7 +949,7 @@ export default function TakeoutPage({
                     <ThemeTintAlt>
                       <Paragraph
                         fontFamily="$cherryBomb"
-                        size="$9"
+                        size="$10"
                         color="$color10"
                         className="text-wrap-balance"
                         ls={-1}
@@ -1019,7 +1018,7 @@ export default function TakeoutPage({
 
                 <ThemeTint>
                   <Paragraph als="center" fontFamily="$munro" size="$9">
-                    Take a peek
+                    Gallery
                   </Paragraph>
                 </ThemeTint>
 
