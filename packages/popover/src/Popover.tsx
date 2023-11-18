@@ -407,7 +407,7 @@ const PopoverContentImpl = React.forwardRef<
   //     onDismiss={handleDismiss}
   //   >
 
-  const freeze = Boolean(isFullyHidden && freezeContentsWhenHidden)
+  // const freeze = Boolean(isFullyHidden && freezeContentsWhenHidden)
 
   return (
     <Animate
@@ -435,7 +435,15 @@ const PopoverContentImpl = React.forwardRef<
             display: 'contents',
           }}
         >
-          {contents}
+          <FocusScope
+            loop
+            enabled={disableFocusScope ? false : open}
+            trapped={trapFocus}
+            onMountAutoFocus={onOpenAutoFocus}
+            onUnmountAutoFocus={onCloseAutoFocus}
+          >
+            {contents}
+          </FocusScope>
         </RemoveScroll>
       </PopperContent>
     </Animate>
