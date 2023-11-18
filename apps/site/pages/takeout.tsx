@@ -653,8 +653,7 @@ export default function TakeoutPage({
 
               <YStack group="takeoutBody" f={1} space="$5">
                 <MunroP
-                  className="mix-blend pixelate"
-                  mt={-400}
+                  mt={-420}
                   mb={-20}
                   size="$7"
                   ls={3}
@@ -672,7 +671,9 @@ export default function TakeoutPage({
                     className="text-wrap-balance"
                     ff="$munro"
                     size="$12"
-                    my="$5"
+                    fontSize={90}
+                    lineHeight={100}
+                    my="$2"
                     pr="$10"
                     color="$color10"
                     $gtLg={{
@@ -704,8 +705,8 @@ export default function TakeoutPage({
                   $xs={{ size: '$7' }}
                   fow="400"
                 >
-                  Takeout 🥡 is a bootstrap that makes shipping high quality apps as fast
-                  as possible. Share much more code between native and web while enjoying
+                  Takeout 🥡 is a bootstrap that makes shipping high quality apps much
+                  faster. Share nearly all code between native and web while retaining
                   best-in-class UX and DX.
                 </Paragraph>
 
@@ -716,8 +717,8 @@ export default function TakeoutPage({
                   $xs={{ size: '$5' }}
                   fow="400"
                 >
-                  Deploy production in minutes with automatic staging previews on Vercel
-                  and git push all the way to both app stores with Expo EAS.
+                  It all deploys in minutes with automatic PR preview URLs on Vercel, and
+                  automates from git push to both app stores with Expo EAS.
                 </Paragraph>
 
                 <Paragraph
@@ -727,11 +728,11 @@ export default function TakeoutPage({
                   $xs={{ size: '$5' }}
                   fow="400"
                 >
-                  Some highlights are onboarding flows, a complete end to end auth
-                  solution, account management, user profiles with avatars, a complete
-                  CI/CD and testing setup, forms validated with Zod, Storybook for native
-                  and web, comprehensive settings panes, and a bunch of nice libraries
-                  like tRPC, Reanimated, and tons of Expo libraries.
+                  Some highlights are: onboarding flows, a complete end to end auth
+                  solution, account management, user profiles with avatar upload,
+                  comprehensive settings panes, a complete CI/CD and testing setup, well
+                  designed forms validated with Zod, Storybook for native and web, and a
+                  bunch of nice libraries like tRPC, Reanimated, Expo Image and many more.
                 </Paragraph>
 
                 <Paragraph
