@@ -113,6 +113,10 @@ native test are run in `apps/kitchen-sink`
 
 Create a development build run `yarn ios` from `apps/kitchen-sink`
 
+Expo go is not supported in `kitchen-sink`. `kitchen-sink` uses a custom built version of `react-native-reanimated` so we can test everything including the various native integrations (thus kitchen sink), we could probably pin down to match latest Expo but we would still need a custom build to run it.
+
+If you run expo go on `kitchen-sink` Metro's eager require eval errors due to demos folder being glob imported.
+
 ```bash
 # Android
 yarn kitchen-sink:build:android
