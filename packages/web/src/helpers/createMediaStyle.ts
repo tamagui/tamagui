@@ -118,7 +118,9 @@ export const createMediaStyle = (
 
     // add @supports for legacy browser support to not break container queries
     if (groupMediaKey) {
-      styleRule = `@supports (contain: inline-size) {${styleRule}}`
+      styleRule = `@supports (contain: ${
+        conf.settings.webContainerType || 'inline-size'
+      }) {${styleRule}}`
     }
   }
 
