@@ -193,7 +193,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     selectionColor?: import("react-native").ColorValue | undefined;
     textBreakStrategy?: "simple" | "highQuality" | "balanced" | undefined;
     dataDetectorType?: "none" | "link" | "email" | "phoneNumber" | "all" | null | undefined;
-    android_hyphenationFrequency?: "none" | "normal" | "full" | undefined;
+    android_hyphenationFrequency?: "normal" | "none" | "full" | undefined;
     accessible?: boolean | undefined;
     accessibilityActions?: readonly Readonly<{
         name: string;
@@ -230,7 +230,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     onMagicTap?: (() => void) | undefined;
     accessibilityIgnoresInvertColors?: boolean | undefined;
     accessibilityLanguage?: string | undefined;
-    display?: "flex" | "none" | "inherit" | "block" | "inline" | "inline-flex" | "contents" | undefined;
+    display?: "inherit" | "flex" | "none" | "block" | "inline" | "inline-flex" | "contents" | undefined;
     gap?: import("@tamagui/core").SpaceValue | undefined;
     columnGap?: import("@tamagui/core").SpaceValue | undefined;
     rowGap?: import("@tamagui/core").SpaceValue | undefined;

@@ -255,7 +255,7 @@ export interface TamaguiConfig extends Omit<GenericTamaguiConfig, keyof TamaguiC
 }
 type OnlyAllowShorthandsSetting = boolean | undefined;
 type DefaultFontSetting = string | undefined;
-export type CreateTamaguiConfig<A extends GenericTokens, B extends GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts, G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting, H extends DefaultFontSetting = DefaultFontSetting, I extends CreateTamaguiSettings = CreateTamaguiSettings> = {
+export type CreateTamaguiConfig<A extends GenericTokens, B extends GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts, G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting, H extends DefaultFontSetting = DefaultFontSetting, I extends GenericTamaguiSettings = GenericTamaguiSettings> = {
     fonts: RemoveLanguagePostfixes<F>;
     fontLanguages: GetLanguagePostfixes<F> extends never ? string[] : GetLanguagePostfixes<F>[];
     tokens: A;
@@ -277,7 +277,7 @@ type RemoveLanguagePostfixes<F extends GenericFonts> = {
     [Key in OmitLanguagePostfix<keyof F>]: F[Key];
 };
 type GetLanguagePostfixes<F extends GenericFonts> = GetLanguagePostfix<keyof F>;
-type ConfProps<A extends GenericTokens, B extends GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts, G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting, H extends DefaultFontSetting = DefaultFontSetting, I extends CreateTamaguiSettings = CreateTamaguiSettings> = {
+type ConfProps<A extends GenericTokens, B extends GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts, G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting, H extends DefaultFontSetting = DefaultFontSetting, I extends GenericTamaguiSettings = GenericTamaguiSettings> = {
     tokens?: A;
     themes?: B;
     shorthands?: C;
@@ -355,7 +355,7 @@ type AllowedStyleValuesSettingPerCategory = {
 };
 type AllowedStyleValuesSetting = AllowedValueSettingBase | AllowedStyleValuesSettingPerCategory;
 type AutocompleteSpecificTokensSetting = boolean | 'except-special';
-type CreateTamaguiSettings = {
+type GenericTamaguiSettings = {
     /**
      * Set up allowed values on style props, this is only a type-level validation.
      *
@@ -414,7 +414,7 @@ type CreateTamaguiSettings = {
      * On Web, this allows changing the behavior of container groups which by default uses
      * `container-type: normal`.
      */
-    webContainerType: 'normal' | 'size' | 'inline-size' | 'inherit' | 'initial' | 'revert' | 'revert-layer' | 'unset';
+    webContainerType?: 'normal' | 'size' | 'inline-size' | 'inherit' | 'initial' | 'revert' | 'revert-layer' | 'unset';
 };
 export type TamaguiSettings = TamaguiConfig['settings'];
 export type CreateTamaguiProps = {
@@ -429,7 +429,7 @@ export type CreateTamaguiProps = {
             [key: string]: string | number | Variable;
         };
     };
-    settings?: Partial<CreateTamaguiSettings>;
+    settings?: Partial<GenericTamaguiSettings>;
     /**
      * Define a default font, for better types and default font on Text
      */
@@ -480,7 +480,7 @@ export type GetCSS = (opts?: {
     exclude?: 'themes' | 'design-system' | null;
     sinceLastCall?: boolean;
 }) => string;
-export type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B extends GenericThemes = GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts, G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting, H extends DefaultFontSetting = DefaultFontSetting, I extends CreateTamaguiSettings = CreateTamaguiSettings> = Omit<CreateTamaguiProps, keyof GenericTamaguiConfig> & Omit<CreateTamaguiConfig<A, B, C, D, E, F, G, H, I>, 'tokens'> & {
+export type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B extends GenericThemes = GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts, G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting, H extends DefaultFontSetting = DefaultFontSetting, I extends GenericTamaguiSettings = GenericTamaguiSettings> = Omit<CreateTamaguiProps, keyof GenericTamaguiConfig> & Omit<CreateTamaguiConfig<A, B, C, D, E, F, G, H, I>, 'tokens'> & {
     tokens: Tokenify<A>;
     tokensParsed: Tokenify<A>;
     themeConfig: any;
