@@ -368,7 +368,7 @@ export type CreateTamaguiConfig<
   F extends GenericFonts = GenericFonts,
   G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting,
   H extends DefaultFontSetting = DefaultFontSetting,
-  I extends GenericTamaguiSettings = GenericTamaguiSettings
+  I extends CreateTamaguiSettings = CreateTamaguiSettings
 > = {
   fonts: RemoveLanguagePostfixes<F>
   fontLanguages: GetLanguagePostfixes<F> extends never
@@ -424,7 +424,7 @@ type ConfProps<
   F extends GenericFonts = GenericFonts,
   G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting,
   H extends DefaultFontSetting = DefaultFontSetting,
-  I extends GenericTamaguiSettings = GenericTamaguiSettings
+  I extends CreateTamaguiSettings = CreateTamaguiSettings
 > = {
   tokens?: A
   themes?: B
@@ -576,7 +576,7 @@ type AllowedStyleValuesSetting =
 
 type AutocompleteSpecificTokensSetting = boolean | 'except-special'
 
-type GenericTamaguiSettings = {
+type CreateTamaguiSettings = {
   /**
    * Set up allowed values on style props, this is only a type-level validation.
    *
@@ -639,7 +639,7 @@ type GenericTamaguiSettings = {
    * On Web, this allows changing the behavior of container groups which by default uses
    * `container-type: normal`.
    */
-  webContainerType?:
+  webContainerType:
     | 'normal'
     | 'size'
     | 'inline-size'
@@ -665,7 +665,7 @@ export type CreateTamaguiProps = {
     }
   }
 
-  settings?: GenericTamaguiSettings
+  settings?: Partial<CreateTamaguiSettings>
 
   /**
    * Define a default font, for better types and default font on Text
@@ -751,7 +751,7 @@ export type TamaguiInternalConfig<
   F extends GenericFonts = GenericFonts,
   G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting,
   H extends DefaultFontSetting = DefaultFontSetting,
-  I extends GenericTamaguiSettings = GenericTamaguiSettings
+  I extends CreateTamaguiSettings = CreateTamaguiSettings
 > = Omit<CreateTamaguiProps, keyof GenericTamaguiConfig> &
   Omit<CreateTamaguiConfig<A, B, C, D, E, F, G, H, I>, 'tokens'> & {
     // TODO need to make it this but this breaks types, revisit

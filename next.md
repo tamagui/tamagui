@@ -14,6 +14,8 @@
 - css animateOnly should always force style tag styles
 
 - 2.0 make it just is the current state with fixes, unstyled across everything, and make various smaller breaking changes in api surfaces that need cleanup
+  - recommended config with more strict settings etc
+  - a few theme setups you can choose from
 
 - Unistack theme change needs a server restart / theme builder not re-building on changing colors.ts
 - Takeout Storybook styles breaking

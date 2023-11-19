@@ -67,7 +67,7 @@ export declare const useConfiguration: () => {
         autocompleteSpecificTokens?: (boolean | "except-special") | undefined;
         mediaPropOrder?: boolean | undefined;
         fastSchemeChange?: boolean | undefined;
-        webContainerType?: "size" | "inherit" | "initial" | "revert" | "revert-layer" | "unset" | "normal" | "inline-size" | undefined;
+        webContainerType: "size" | "inherit" | "initial" | "revert" | "revert-layer" | "unset" | "normal" | "inline-size";
     };
     tokens: Omit<{
         [x: string]: {
