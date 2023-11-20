@@ -1,14 +1,3 @@
-- add `style`
-  - style({}) returns tamagui compatible style object
-    - compiler can emit _classname string values on web
-    - passes through basically on native
-  - eg  Input could take { autofillSelectedStyle: Style }
-
-- config: {
-    settings: {
-      styleStrategy: { type: 'prop', prop: 'sx', acceptFlatStyles: true }
-    }
-}
 
 - disableClassName breaking css animation
 - css animateOnly should always force style tag styles
@@ -18,11 +7,10 @@
   - a few theme setups you can choose from
 
 - Unistack theme change needs a server restart / theme builder not re-building on changing colors.ts
-- Takeout Storybook styles breaking
-  - https://discord.com/channels/909986013848412191/1125830682661363794/1169376340491903006
-- Popover native positioning
 - Theme reset Button not changing
 - ZStack is abs positioning children...
+
+---
 
 Web:
 
@@ -36,6 +24,45 @@ Web:
   - styled('div')
   - avoid flat style props + plugin for styled() control
   - beforeStyles + afterStyles array
+
+---
+
+`style`
+
+  - enables Input taking { autofillSelectedStyle: Style }, or any component accepting a style object as a prop
+
+
+```tsx
+import { Text, style } from '@tamagui/core'
+
+// assumes base tamagui style props for View
+// style(): StackStyleProps
+const styleObject1 = style({
+  
+})
+
+// ??
+style.native({}) // { base: ViewStyle, press: ViewStyle, ... }
+style.web({}) // { base: DivStyle, press: DivStyle, ... }
+
+// can use variants if they exist
+// they should get expanded so it always returns the base tamagui style type
+// Text.style(): TextStyleProps
+const styleObject = Text.style({
+  someVariant: true,
+})
+
+// on native basically passes through
+// on web passes through but optimizing compiler will make classname values
+```
+
+---
+
+config: {
+    settings: {
+      styleStrategy: { type: 'prop', prop: 'sx', acceptFlatStyles: true }
+    }
+}
 
 ---
 
@@ -62,9 +89,8 @@ Smaller features:
 
 Performance:
 
-  - ehsans branch with theme flattening support
   - TAMAGUI_OPTIMIZE_NATIVE_VIEWS on by default using proper prop mapping
-  - compiler can add `_disableEvents` `_disableTheme` to avoid hooks
+  - compiler can add `disableEvents` `disableTheme` to avoid hooks
   - optimization of useTheme/getSplitStyles seems like it has some decent stuff
   - could lazy expand styles
   - get dynamicEval working automatically

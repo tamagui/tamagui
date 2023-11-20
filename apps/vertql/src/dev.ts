@@ -6,7 +6,6 @@ import { context } from 'esbuild'
 import express, { Express } from 'express'
 import { pathExists } from 'fs-extra'
 import { createProxyMiddleware } from 'http-proxy-middleware'
-import { ViteDevServer } from 'vite'
 import inspectPlugin from 'vite-plugin-inspect'
 import { create } from 'vxrn'
 
@@ -63,7 +62,15 @@ export const dev = async (optionsIn: Options) => {
 
   const userAppServer = await startUserAppServer(options, expressApp)
 
-  const target = `http://${options.host}:${internalNativePort}`
+  const webInfo = viteServer.httpServer?.address()
+
+  if (!webInfo || typeof webInfo === 'string') {
+    throw new Error(`Invalid webinfo`)
+  }
+
+  const target = `http://${options.host}:${webInfo.port}`
+
+  // proxy to web
   expressApp.use(
     '/',
     createProxyMiddleware({
@@ -76,10 +83,10 @@ export const dev = async (optionsIn: Options) => {
     `Native server:\n  `,
     chalk.green(`http://localhost:${externalNativePort}`)
   )
-  console.info(`Web server:`)
-  viteServer.printUrls()
+  console.info(`Web server: http://localhost:3333`)
+  // viteServer.printUrls()
 
-  const expressServer = expressApp.listen(externalNativePort)
+  const expressServer = expressApp.listen(3333)
 
   const vertqlGraphBuilder = await startVertqlGraphBuilder(options)
   vertqlGraphBuilder.watch()

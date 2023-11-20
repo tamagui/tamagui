@@ -1,12 +1,14 @@
 {
-  "name": "@tamagui/stack",
+  "name": "@tamagui/vertql-example",
   "version": "1.77.1",
   "private": true,
   "main": "index.jsx",
   "scripts": {
-    "dev": "vertql dev"
+    "dev": "vertql dev",
+    "gqty:generate": "gqty"
   },
   "dependencies": {
+    "@gqty/react": "latest",
     "@react-navigation/native": "^6.1.7",
     "@tamagui/colors": "1.77.1",
     "@tamagui/config": "1.77.1",
@@ -15,8 +17,8 @@
     "@tamagui/themes": "1.77.1",
     "express": "^4.18.2",
     "express-graphql": "^0.12.0",
-    "gqty": "^3.0.0-alpha-7b21563c.0",
-    "grats": "0.0.0-main-998b014c",
+    "gqty": "latest",
+    "grats": "0.0.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-native": "^0.72.1",
@@ -24,6 +26,7 @@
     "vertql": "1.77.1"
   },
   "devDependencies": {
+    "@gqty/cli": "latest",
     "@tamagui/cli": "1.77.1"
   }
 }
