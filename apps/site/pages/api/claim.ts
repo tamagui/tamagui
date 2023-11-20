@@ -1,4 +1,4 @@
-import { apiRoute } from '@lib/apiRoute'
+import { apiRoute, postgresError } from '@lib/apiRoute'
 import { claimProductAccess } from '@lib/claim-product'
 import { protectApiRoute } from '@lib/protectApiRoute'
 import { getArray, getSingle } from '@lib/supabase-utils'
@@ -38,7 +38,9 @@ export default apiRoute(async (req, res) => {
     .eq('id', subscriptionId)
     .single()
 
-  if (subscriptionRes.error) throw subscriptionRes.error
+  if (subscriptionRes.error) {
+    throw postgresError(subscriptionRes.error)
+  }
 
   const subscription = subscriptionRes.data
 

@@ -1,3 +1,4 @@
+import { PostgrestError } from '@supabase/supabase-js'
 import { NextApiHandler } from 'next'
 
 export class HandledResponseTermination extends Error {}
@@ -27,4 +28,15 @@ export function apiRoute(handler: NextApiHandler) {
       }
     }
   }) satisfies NextApiHandler
+}
+
+export function postgresError(err: PostgrestError): Error {
+  return new Error(`Postgres query error: [${err.code}]:
+  message:
+${err.message}
+  details:
+${err.details}
+  hint:
+${err.hint}
+`)
 }
