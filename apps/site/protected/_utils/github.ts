@@ -254,7 +254,7 @@ export const inviteCollaboratorToRepo = async (
   userLogin: string,
   permission = 'triage'
 ) => {
-  await fetch(
+  const res = await fetch(
     `https://api.github.com/repos/tamagui/${repoName}/collaborators/${userLogin}`,
     {
       body: JSON.stringify({
@@ -267,6 +267,8 @@ export const inviteCollaboratorToRepo = async (
       },
     }
   )
+
+  console.info(`Claim: inviteCollaboratorToRepo response ${res.status} ${res.statusText}`)
 }
 
 export const removeCollaboratorFromRepo = async (repoName: string, userLogin: string) => {

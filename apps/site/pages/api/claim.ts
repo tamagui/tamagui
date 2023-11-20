@@ -61,6 +61,9 @@ export default apiRoute(async (req, res) => {
       if (!product) continue
       if (product.id === productId) {
         try {
+          console.info(`Claim: claiming ${product.id}`)
+          console.info(`Claim: claim data: ${JSON.stringify(product)}`)
+
           const { message } = await claimProductAccess(subscription, product, user)
 
           console.info(`Claim: claimed access for product ${product.id}`)
