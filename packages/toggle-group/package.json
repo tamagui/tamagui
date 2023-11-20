@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/toggle-group",
-  "version": "1.77.0",
+  "version": "1.77.1",
   "sideEffects": [
     "*.css"
   ],
@@ -31,23 +31,23 @@
     }
   },
   "dependencies": {
-    "@tamagui/create-context": "1.77.0",
-    "@tamagui/focusable": "1.77.0",
-    "@tamagui/font-size": "1.77.0",
-    "@tamagui/get-token": "1.77.0",
-    "@tamagui/group": "1.77.0",
-    "@tamagui/helpers-tamagui": "1.77.0",
-    "@tamagui/roving-focus": "1.77.0",
-    "@tamagui/stacks": "1.77.0",
-    "@tamagui/use-controllable-state": "1.77.0",
-    "@tamagui/use-direction": "1.77.0",
-    "@tamagui/web": "1.77.0"
+    "@tamagui/create-context": "1.77.1",
+    "@tamagui/focusable": "1.77.1",
+    "@tamagui/font-size": "1.77.1",
+    "@tamagui/get-token": "1.77.1",
+    "@tamagui/group": "1.77.1",
+    "@tamagui/helpers-tamagui": "1.77.1",
+    "@tamagui/roving-focus": "1.77.1",
+    "@tamagui/stacks": "1.77.1",
+    "@tamagui/use-controllable-state": "1.77.1",
+    "@tamagui/use-direction": "1.77.1",
+    "@tamagui/web": "1.77.1"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.77.0",
+    "@tamagui/build": "1.77.1",
     "react": "^18.2.0"
   },
   "publishConfig": {

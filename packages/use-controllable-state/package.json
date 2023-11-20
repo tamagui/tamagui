@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-controllable-state",
-  "version": "1.77.0",
+  "version": "1.77.1",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -28,13 +28,13 @@
     }
   },
   "dependencies": {
-    "@tamagui/use-event": "1.77.0"
+    "@tamagui/use-event": "1.77.1"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.77.0",
+    "@tamagui/build": "1.77.1",
     "react": "^18.2.0"
   },
   "publishConfig": {
