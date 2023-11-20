@@ -1,8 +1,8 @@
 // only used by the studio theme builder generated:
 
 export type BuildThemeSuiteProps = {
-  baseTheme: BuildLightDarkTheme
-  subThemes?: (BuildColorSubTheme | BuildMaskSubTheme)[]
+  baseTheme: BuildTheme
+  subThemes?: (BuildTheme | BuildThemeMask)[]
 }
 
 export type ScaleTypeName =
@@ -17,25 +17,20 @@ export type ScaleTypeName =
   | 'neon-bright'
   | 'neon-c'
 
-export type BuildThemeBasicProperties = {
+export type BuildThemeBase = {
   id: string
+  name: string
+  errors?: string[]
+}
+
+export type BuildTheme = BuildThemeBase & {
+  type: 'theme'
   color: string
   scale: ScaleTypeName
   // saturation?: 'low' | 'x' | 'high'
   contrast?: string
   contrastColor?: string
   contrastScale?: ScaleTypeName
-  errors?: string[]
-}
-
-export type BuildLightDarkTheme = BuildThemeBasicProperties & {
-  type: 'lightdark'
-}
-
-export type BuildColorSubTheme = BuildThemeBasicProperties & {
-  type: 'base'
-  subThemeType: 'color'
-  name: string
 }
 
 export type BuildMask = { id: string } & (
@@ -60,11 +55,7 @@ export type BuildMask = { id: string } & (
     }
 )
 
-export type BuildMaskSubTheme = {
-  id: string
-  type: 'sub'
-  subThemeType: 'mask'
-  name: string
+export type BuildThemeMask = BuildThemeBase & {
+  type: 'mask'
   masks: BuildMask[]
-  errors?: string[]
 }
