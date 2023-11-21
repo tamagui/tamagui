@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/radio-group",
-  "version": "1.77.1",
+  "version": "1.78.0",
   "sideEffects": [
     "*.css"
   ],
@@ -31,21 +31,21 @@
     }
   },
   "dependencies": {
-    "@tamagui/compose-refs": "1.77.1",
-    "@tamagui/core": "1.77.1",
-    "@tamagui/create-context": "1.77.1",
-    "@tamagui/focusable": "1.77.1",
-    "@tamagui/get-token": "1.77.1",
-    "@tamagui/label": "1.77.1",
-    "@tamagui/stacks": "1.77.1",
-    "@tamagui/use-controllable-state": "1.77.1",
-    "@tamagui/use-previous": "1.77.1"
+    "@tamagui/compose-refs": "1.78.0",
+    "@tamagui/core": "1.78.0",
+    "@tamagui/create-context": "1.78.0",
+    "@tamagui/focusable": "1.78.0",
+    "@tamagui/get-token": "1.78.0",
+    "@tamagui/label": "1.78.0",
+    "@tamagui/stacks": "1.78.0",
+    "@tamagui/use-controllable-state": "1.78.0",
+    "@tamagui/use-previous": "1.78.0"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.77.1",
+    "@tamagui/build": "1.78.0",
     "react": "^18.2.0"
   },
   "publishConfig": {
