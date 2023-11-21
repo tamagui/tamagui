@@ -200,7 +200,7 @@ const MenuPortal: React.FC<ScopedProps<MenuPortalProps>> = (
     <PortalProvider scope={__scopeMenu} forceMount={forceMount}>
       <Presence>
         {forceMount || context.open ? (
-          <PortalPrimitive asChild host={host}>
+          <PortalPrimitive position="relative" asChild host={host}>
             {children}
           </PortalPrimitive>
         ) : null}
@@ -1028,20 +1028,21 @@ const ARROW_NAME = 'MenuArrow'
 type PopperArrowProps = React.ComponentPropsWithoutRef<typeof PopperPrimitive.PopperArrow>
 interface MenuArrowProps extends PopperArrowProps {}
 
-const MenuArrow = React.forwardRef<TamaguiElement, ScopedProps<MenuArrowProps>>(
-  function PopoverArrow(props: ScopedProps<MenuArrowProps>, forwardedRef) {
-    const { __scopeMenu, ...rest } = props
-    return (
-      <PopperPrimitive.PopperArrow
-        __scopePopper={__scopeMenu || MENU_CONTEXT}
-        componentName="PopoverArrow"
-        backgroundColor={'$background'}
-        {...rest}
-        ref={forwardedRef}
-      />
-    )
-  }
-)
+const MenuArrow = PopperPrimitive.PopperArrow.styleable<
+  TamaguiElement,
+  ScopedProps<MenuArrowProps>
+>(function PopoverArrow(props: ScopedProps<MenuArrowProps>, forwardedRef) {
+  const { __scopeMenu, ...rest } = props
+  return (
+    <PopperPrimitive.PopperArrow
+      __scopePopper={__scopeMenu || MENU_CONTEXT}
+      componentName="PopperArrow"
+      backgroundColor={'$background'}
+      {...rest}
+      ref={forwardedRef}
+    />
+  )
+})
 
 MenuArrow.displayName = ARROW_NAME
 
