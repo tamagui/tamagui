@@ -7,6 +7,7 @@ export declare const useConfiguration: () => {
     language: Partial<{
         [x: string]: import("..").FontLanguages;
     }> | null;
+    unset?: import("..").BaseStyleProps | undefined;
     reactNative?: any;
     selectionStyles?: ((theme: Record<string, string>) => {
         backgroundColor?: any;
@@ -67,7 +68,7 @@ export declare const useConfiguration: () => {
         autocompleteSpecificTokens?: (boolean | "except-special") | undefined;
         mediaPropOrder?: boolean | undefined;
         fastSchemeChange?: boolean | undefined;
-        webContainerType?: "size" | "inherit" | "initial" | "revert" | "revert-layer" | "unset" | "normal" | "inline-size" | undefined;
+        webContainerType?: "unset" | "size" | "inherit" | "initial" | "revert" | "revert-layer" | "normal" | "inline-size" | undefined;
     };
     tokens: Omit<{
         [x: string]: {

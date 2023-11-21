@@ -417,7 +417,13 @@ type GenericTamaguiSettings = {
     webContainerType?: 'normal' | 'size' | 'inline-size' | 'inherit' | 'initial' | 'revert' | 'revert-layer' | 'unset';
 };
 export type TamaguiSettings = TamaguiConfig['settings'];
+export type BaseStyleProps = {
+    [Key in keyof TextStylePropsBase]?: TextStyleProps[Key] | GetThemeValueForKey<Key>;
+} & {
+    [Key in keyof StackStylePropsBase]?: StackStyleProps[Key] | GetThemeValueForKey<Key>;
+};
 export type CreateTamaguiProps = {
+    unset?: BaseStyleProps;
     reactNative?: any;
     shorthands?: CreateShorthands;
     media?: GenericTamaguiConfig['media'];
@@ -666,10 +672,11 @@ export type ThemeValueGet<K extends string | number | symbol> = K extends 'theme
     width: SpaceTokens;
     height: SpaceTokens;
 } : SpaceTokens | ThemeValueFallbackSpace : K extends ColorKeys ? ColorTokens | ThemeValueFallbackColor : K extends ZIndexKeys ? ZIndexTokens | ThemeValueFallbackZIndex : K extends LineHeightKeys ? FontLineHeightTokens : K extends FontWeightKeys ? FontWeightTokens : K extends FontLetterSpacingKeys ? FontLetterSpacingTokens : never;
+export type GetThemeValueForKey<K extends string | symbol | number> = ThemeValueGet<K> | ThemeValueFallback | (TamaguiSettings extends {
+    autocompleteSpecificTokens: infer Val;
+} ? Val extends true | undefined ? SpecificTokens : never : never);
 export type WithThemeValues<T extends object> = {
-    [K in keyof T]: ThemeValueGet<K> extends never ? T[K] : ThemeValueGet<K> | Exclude<T[K], string> | ThemeValueFallback | (TamaguiSettings extends {
-        autocompleteSpecificTokens: infer Val;
-    } ? Val extends true | undefined ? SpecificTokens : never : never);
+    [K in keyof T]: ThemeValueGet<K> extends never ? T[K] | 'unset' : GetThemeValueForKey<K> | Exclude<T[K], string> | 'unset';
 };
 type NarrowShorthands = Narrow<Shorthands>;
 export type Longhands = NarrowShorthands[keyof NarrowShorthands];

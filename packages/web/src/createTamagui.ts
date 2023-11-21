@@ -261,6 +261,10 @@ ${runtimeStyles}`
     animations: {} as any,
     media: {},
     ...configIn,
+    unset: {
+      fontFamily: configIn.defaultFont ? defaultFont : undefined,
+      ...configIn.unset,
+    },
     settings: {
       webContainerType: 'size',
       ...configIn.settings,

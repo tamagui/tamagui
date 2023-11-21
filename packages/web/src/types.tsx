@@ -652,7 +652,16 @@ type GenericTamaguiSettings = {
 
 export type TamaguiSettings = TamaguiConfig['settings']
 
+type AllStyleProps = keyof StackStyleProps
+
+export type BaseStyleProps = {
+  [Key in keyof TextStylePropsBase]?: TextStyleProps[Key] | GetThemeValueForKey<Key>
+} & {
+  [Key in keyof StackStylePropsBase]?: StackStyleProps[Key] | GetThemeValueForKey<Key>
+}
+
 export type CreateTamaguiProps = {
+  unset?: BaseStyleProps
   reactNative?: any
   shorthands?: CreateShorthands
   media?: GenericTamaguiConfig['media']
@@ -1184,18 +1193,19 @@ export type ThemeValueGet<K extends string | number | symbol> = K extends 'theme
   ? FontLetterSpacingTokens
   : never
 
+export type GetThemeValueForKey<K extends string | symbol | number> =
+  | ThemeValueGet<K>
+  | ThemeValueFallback
+  | (TamaguiSettings extends { autocompleteSpecificTokens: infer Val }
+      ? Val extends true | undefined
+        ? SpecificTokens
+        : never
+      : never)
+
 export type WithThemeValues<T extends object> = {
   [K in keyof T]: ThemeValueGet<K> extends never
-    ? T[K]
-    :
-        | ThemeValueGet<K>
-        | Exclude<T[K], string>
-        | ThemeValueFallback
-        | (TamaguiSettings extends { autocompleteSpecificTokens: infer Val }
-            ? Val extends true | undefined
-              ? SpecificTokens
-              : never
-            : never)
+    ? T[K] | 'unset'
+    : GetThemeValueForKey<K> | Exclude<T[K], string> | 'unset'
 }
 
 type NarrowShorthands = Narrow<Shorthands>
