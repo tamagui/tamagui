@@ -77,8 +77,6 @@ import {
 import { getPropMappedFontFamily, propMapper } from './propMapper'
 import { pseudoDescriptors, pseudoPriorities } from './pseudoDescriptors'
 
-const fontFamilyKey = 'fontFamily'
-
 // bugfix for some reason it gets reset
 const IS_STATIC = process.env.IS_STATIC === 'is_static'
 
@@ -188,7 +186,7 @@ export const getSplitStyles: StyleSplitter = (
    * Not the biggest fan of creating an object but it is a nice API
    */
   const styleState: GetStyleState = {
-    curProps: Object.assign({}, props),
+    curProps: { ...props },
     classNames,
     conf,
     props,
@@ -623,7 +621,7 @@ export const getSplitStyles: StyleSplitter = (
     if (isText) {
       if (
         valInit &&
-        (keyInit === fontFamilyKey || keyInit === shorthands[fontFamilyKey]) &&
+        (keyInit === 'fontFamily' || keyInit === shorthands['fontFamily']) &&
         valInit in conf.fontsParsed
       ) {
         styleState.fontFamily = valInit
@@ -1032,7 +1030,7 @@ export const getSplitStyles: StyleSplitter = (
               mediaState[mediaKeyShort],
               importanceBump
             )
-            if (key === fontFamilyKey) {
+            if (key === 'fontFamily') {
               styleState.fontFamily = mediaStyle.fontFamily as string
             }
           }
