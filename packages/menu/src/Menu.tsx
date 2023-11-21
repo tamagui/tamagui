@@ -472,6 +472,8 @@ const MenuContentImpl = React.forwardRef<
         {...(contentProps.style as Object)}
         // @ts-ignore
         // style={{ outline: 'none', ...contentProps.style }}
+        // TODO: at the top level (MenuPortal) we have asChild but for some reason we still have className
+        className={contentProps.animation ? undefined : contentProps.className}
         {...(isWeb
           ? {
               onKeyDown: composeEventHandlers(
