@@ -742,7 +742,7 @@ export interface ExtendBaseTextProps {
 }
 type LooseCombinedObjects<A extends Object, B extends Object> = A | B | (A & B);
 type OmitRemovedNonWebProps = 'onLayout' | keyof GestureResponderHandlers;
-export type StackNonStyleProps = Omit<ViewProps, 'display' | 'children' | OmitRemovedNonWebProps | keyof ExtendBaseStackProps | 'style'> & ExtendBaseStackProps & TamaguiComponentPropsBase & {
+export type StackNonStyleProps = Omit<ViewProps, 'pointerEvents' | 'display' | 'children' | OmitRemovedNonWebProps | keyof ExtendBaseStackProps | 'style'> & ExtendBaseStackProps & TamaguiComponentPropsBase & {
     style?: StyleProp<LooseCombinedObjects<React.CSSProperties, ViewStyle>>;
 };
 export type StackStyleProps = WithThemeShorthandsPseudosMediaAnimation<StackStylePropsBase>;
