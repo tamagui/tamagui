@@ -1,0 +1,10 @@
+{
+  "configurations": [
+    {
+      "type": "chrome",
+      "name": "Studio",
+      "request": "launch",
+      "url": "http://localhost:1421/"
+    }
+  ]
+}
