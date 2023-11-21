@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from '@tamagui/dropdown-menu'
 import { ChevronRight } from '@tamagui/lucide-icons'
-import { Button, Text } from 'tamagui'
+import { Button, Text, XStack } from 'tamagui'
 
 export function DropdoownMenuDemo() {
   return (
@@ -24,6 +24,7 @@ export function DropdoownMenuDemo() {
 
       <DropdownMenuPortal>
         <DropdownMenuContent
+          paddingHorizontal={0}
           borderWidth={1}
           width={200}
           ai="flex-start"
@@ -51,10 +52,10 @@ export function DropdoownMenuDemo() {
           </DropdownMenuItem>
           <DropdownMenuSub>
             <DropdownMenuSubTrigger>
-              <Text>
-                More Tools
+              <XStack ai="center" jc="space-between">
+                <Text>More Tools</Text>
                 <ChevronRight />
-              </Text>
+              </XStack>
             </DropdownMenuSubTrigger>
             <DropdownMenuPortal>
               <DropdownMenuSubContent>

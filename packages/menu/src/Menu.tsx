@@ -777,6 +777,12 @@ const MenuItemImpl = React.forwardRef<
         focusable={!disabled}
       >
         <ThemeableStack
+          hoverTheme
+          pressTheme
+          focusTheme
+          paddingVertical="$2"
+          paddingHorizontal="$4"
+          width={'100%'}
           componentName={ITEM_NAME}
           role="menuitem"
           data-highlighted={isFocused ? '' : undefined}
