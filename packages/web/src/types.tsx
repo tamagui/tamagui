@@ -539,7 +539,7 @@ type GetAltThemeNames<S> =
 type SpacerPropsBase = {
   size?: SpaceValue
   flex?: boolean | number
-  direction?: SpaceDirection
+  direction?: SpaceDirection | 'unset'
 }
 
 type SpacerOwnProps = SpacerPropsBase &
@@ -1344,7 +1344,7 @@ export type StackStyleProps =
 export type StackPropsBase = StackNonStyleProps &
   WithThemeAndShorthands<StackStylePropsBase>
 
-export type StackProps = StackNonStyleProps & StackStyleProps
+export type StackProps = StackNonStyleProps | StackStyleProps
 
 //
 // Text props
@@ -1363,7 +1363,7 @@ export type TextNonStyleProps = Omit<
 export type TextPropsBase = TextNonStyleProps & WithThemeAndShorthands<TextStylePropsBase>
 
 export type TextStyleProps = WithThemeShorthandsPseudosMediaAnimation<TextStylePropsBase>
-export type TextProps = TextNonStyleProps & TextStyleProps
+export type TextProps = TextNonStyleProps | TextStyleProps
 
 export interface ThemeableProps {
   theme?: ThemeName | null

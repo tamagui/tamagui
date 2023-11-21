@@ -12,7 +12,7 @@ import {
   useIsomorphicLayoutEffect,
   useProps,
 } from '@tamagui/core'
-import type { ScopedProps } from '@tamagui/core'
+import type { ScopedProps, StackStyleProps } from '@tamagui/core'
 import {
   Coords,
   OffsetOptions,
@@ -366,6 +366,7 @@ export const PopperArrow = PopperArrowFrame.styleable<
   const primaryPlacement = (placement ? placement.split('-')[0] : 'top') as Sides
 
   const arrowStyle: StackProps = { x, y, width: size, height: size }
+
   const innerArrowStyle: StackProps = {}
   const isVertical = primaryPlacement === 'bottom' || primaryPlacement === 'top'
 

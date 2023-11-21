@@ -337,7 +337,7 @@ type GetAltThemeNames<S> = (S extends `${string}_${infer Alt}` ? GetAltThemeName
 type SpacerPropsBase = {
     size?: SpaceValue;
     flex?: boolean | number;
-    direction?: SpaceDirection;
+    direction?: SpaceDirection | 'unset';
 };
 type SpacerOwnProps = SpacerPropsBase & WithThemeShorthandsPseudosMediaAnimation<SpacerPropsBase>;
 export type SpacerProps = Omit<StackProps, 'flex' | 'direction' | 'size'> & SpacerOwnProps;

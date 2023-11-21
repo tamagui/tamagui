@@ -365,6 +365,6 @@ export declare function getDefaultTamaguiConfig(): import("@tamagui/core").Tamag
     autocompleteSpecificTokens?: (boolean | "except-special") | undefined;
     mediaPropOrder?: boolean | undefined;
     fastSchemeChange?: boolean | undefined;
-    webContainerType?: "size" | "normal" | "inline-size" | "inherit" | "initial" | "revert" | "revert-layer" | "unset" | undefined;
+    webContainerType?: "size" | "unset" | "normal" | "inline-size" | "inherit" | "initial" | "revert" | "revert-layer" | undefined;
 }>;
 //# sourceMappingURL=index.d.ts.map

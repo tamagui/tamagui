@@ -1437,7 +1437,7 @@ export type SpacedChildrenProps = {
   children?: React.ReactNode
   space?: SpaceValue
   spaceFlex?: boolean | number
-  direction?: SpaceDirection
+  direction?: SpaceDirection | 'unset'
   separator?: React.ReactNode
   debug?: DebugProp
 }
