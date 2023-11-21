@@ -512,21 +512,20 @@ const SUB_TRIGGER_NAME = 'DropdownMenuSubTrigger'
 type MenuSubTriggerProps = React.ComponentPropsWithoutRef<typeof MenuPrimitive.SubTrigger>
 interface DropdownMenuSubTriggerProps extends MenuSubTriggerProps {}
 
-const DropdownMenuSubTriggerFrame = MenuPrimitive.SubTrigger
-
-const DropdownMenuSubTrigger = DropdownMenuSubTriggerFrame.styleable<
-  ScopedProps<DropdownMenuSubTriggerProps>
->((props, forwardedRef) => {
-  const { __scopeDropdownMenu, ...subTriggerProps } = props
-  return (
-    <DropdownMenuSubTriggerFrame
-      componentName={SUB_TRIGGER_NAME}
-      __scopeMenu={__scopeDropdownMenu || DROPDOWN_MENU_CONTEXT}
-      {...subTriggerProps}
-      ref={forwardedRef}
-    />
-  )
-})
+const DropdownMenuSubTrigger = YStack.styleable<ScopedProps<DropdownMenuSubTriggerProps>>(
+  (props, forwardedRef) => {
+    // TODO: having asChild will create a problem, find a fix for that
+    const { __scopeDropdownMenu, asChild, ...subTriggerProps } = props
+    return (
+      <MenuPrimitive.SubTrigger
+        componentName={SUB_TRIGGER_NAME}
+        __scopeMenu={__scopeDropdownMenu || DROPDOWN_MENU_CONTEXT}
+        {...subTriggerProps}
+        ref={forwardedRef}
+      />
+    )
+  }
+)
 
 DropdownMenuSubTrigger.displayName = SUB_TRIGGER_NAME
 

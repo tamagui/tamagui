@@ -1145,7 +1145,11 @@ const MenuSubTrigger = YStack.styleable<ScopedProps<MenuSubTriggerProps>>(
     }, [pointerGraceTimerRef, onPointerGraceIntentChange])
 
     return (
-      <MenuAnchor componentName={SUB_TRIGGER_NAME} asChild {...scope}>
+      <MenuAnchor
+        componentName={SUB_TRIGGER_NAME}
+        asChild
+        __scopePopper={props.__scopeMenu || MENU_CONTEXT}
+      >
         <MenuItemImpl
           id={subContext.triggerId}
           aria-haspopup="menu"
