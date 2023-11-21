@@ -266,7 +266,7 @@ ${runtimeStyles}`
       ...configIn.unset,
     },
     settings: {
-      webContainerType: 'size',
+      webContainerType: 'inline-size',
       ...configIn.settings,
     },
     tokens: tokens as any,

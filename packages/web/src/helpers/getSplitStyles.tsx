@@ -272,7 +272,7 @@ export const getSplitStyles: StyleSplitter = (
         if (process.env.TAMAGUI_TARGET === 'web') {
           // add container style
           const identifier = `t_group_${valInit}`
-          const containerType = conf.settings.webContainerType || 'size'
+          const containerType = conf.settings.webContainerType || 'inline-size'
           const containerCSS = {
             identifier,
             property: 'container',
