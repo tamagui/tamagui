@@ -56,7 +56,7 @@ export default function StudioSplashPage() {
               <Features
                 size="$5"
                 items={[
-                  `Generate complete theme suites with a step-by-step wizard`,
+                  `Generate complete theme suites step-by-step.`,
                   `Visualize your design system.`,
                   `Helpers for media queries, tokens, fonts and more`,
                 ]}
@@ -67,10 +67,9 @@ export default function StudioSplashPage() {
               <Features
                 size="$5"
                 items={[
-                  `Animations test environment and visualizer`,
-                  <span>{soonButton} Advanced theme editor</span>,
-                  <span>{soonButton} Edit themes in your app in realtime</span>,
-                  <span>{soonButton} Sync tokens & components with Figma</span>,
+                  `Animation test environment and visualizer.`,
+                  <span>{soonButton} Advanced theme editor.</span>,
+                  <span>{soonButton} Figma and local integrations.</span>,
                 ]}
               />
             </YStack>

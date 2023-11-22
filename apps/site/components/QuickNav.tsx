@@ -52,13 +52,13 @@ export function QuickNav() {
       display="none"
       $gtLg={{
         display: 'flex',
-        width: 230,
+        width: 220,
         flexShrink: 0,
         zIndex: 1,
         position: 'fixed' as any,
         left: '50%',
         top: 105,
-        marginLeft: 430,
+        marginLeft: 450,
       }}
     >
       <YStack
