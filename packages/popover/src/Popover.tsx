@@ -244,9 +244,10 @@ function PopoverRepropagateContext(props: {
   children: any
   context: any
   popperContext: any
+  scope: string
 }) {
   return (
-    <PopperContext.Provider {...props.popperContext}>
+    <PopperContext.Provider scope={props.scope} {...props.popperContext}>
       <PopoverContext.Provider {...props.context}>
         {props.children}
       </PopoverContext.Provider>
@@ -266,7 +267,11 @@ function PopoverContentPortal(props: ScopedPopoverProps<PopoverContentTypeProps>
   // native doesnt support portals
   if (Platform.OS === 'android' || Platform.OS === 'ios') {
     contents = (
-      <PopoverRepropagateContext popperContext={popperContext} context={context}>
+      <PopoverRepropagateContext
+        scope={__scopePopover || POPOVER_SCOPE}
+        popperContext={popperContext}
+        context={context}
+      >
         {props.children}
       </PopoverRepropagateContext>
     )
