@@ -248,7 +248,7 @@ function PopoverRepropagateContext(props: {
 }) {
   return (
     <PopperContext.Provider scope={props.scope} {...props.popperContext}>
-      <PopoverContext.Provider scope={props.scope} {...props.context}>
+      <PopoverContext.Provider {...props.context}>
         {props.children}
       </PopoverContext.Provider>
     </PopperContext.Provider>
