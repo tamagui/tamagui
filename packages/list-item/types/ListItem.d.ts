@@ -690,7 +690,7 @@ export declare const useListItem: (propsIn: ListItemProps, { Text, Subtitle, Tit
         disabled?: boolean | undefined;
         className?: string | undefined;
         themeShallow?: boolean | undefined;
-        tag?: string | undefined;
+        tag?: "object" | "article" | "button" | "dialog" | "figure" | "form" | "img" | "main" | "menu" | "meter" | "option" | "summary" | "table" | "li" | "search" | "header" | (string & {}) | "ruby" | "map" | "progress" | "address" | "aside" | "footer" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "nav" | "section" | "blockquote" | "dd" | "div" | "dl" | "dt" | "figcaption" | "hr" | "ol" | "ul" | "p" | "pre" | "a" | "abbr" | "b" | "bdi" | "bdo" | "br" | "cite" | "code" | "data" | "dfn" | "em" | "i" | "kbd" | "mark" | "q" | "rp" | "rt" | "rtc" | "s" | "samp" | "small" | "span" | "strong" | "sub" | "sup" | "time" | "u" | "var" | "wbr" | "area" | "audio" | "track" | "video" | "embed" | "param" | "picture" | "source" | "canvas" | "noscript" | "script" | "del" | "ins" | "caption" | "col" | "colgroup" | "thead" | "tbody" | "td" | "th" | "tr" | "datalist" | "fieldset" | "input" | "label" | "legend" | "optgroup" | "output" | "select" | "textarea" | "details" | "template" | undefined;
         untilMeasured?: "hide" | "show" | undefined;
         componentName?: string | undefined;
         tabIndex?: string | number | undefined;
