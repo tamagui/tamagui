@@ -280,14 +280,15 @@ const ContextMenuContent = React.forwardRef<
           ...(props.style as Object),
           // re-namespace exposed content custom properties
           ...({
-            '--radix-context-menu-content-transform-origin':
-              'var(--radix-popper-transform-origin)',
-            '--radix-context-menu-content-available-width':
-              'var(--radix-popper-available-width)',
-            '--radix-context-menu-content-available-height':
-              'var(--radix-popper-available-height)',
-            '--radix-context-menu-trigger-width': 'var(--radix-popper-anchor-width)',
-            '--radix-context-menu-trigger-height': 'var(--radix-popper-anchor-height)',
+            '--tamagui-context-menu-content-transform-origin':
+              'var(--tamagui-popper-transform-origin)',
+            '--tamagui-context-menu-content-available-width':
+              'var(--tamagui-popper-available-width)',
+            '--tamagui-context-menu-content-available-height':
+              'var(--tamagui-popper-available-height)',
+            '--tamagui-context-menu-trigger-width': 'var(--tamagui-popper-anchor-width)',
+            '--tamagui-context-menu-trigger-height':
+              'var(--tamagui-popper-anchor-height)',
           } as unknown as React.CSSProperties),
         }
       }
@@ -656,14 +657,15 @@ const ContextMenuSubContent = React.forwardRef<
           ...(props.style as Object),
           // re-namespace exposed content custom properties
           ...({
-            '--radix-context-menu-content-transform-origin':
-              'var(--radix-popper-transform-origin)',
-            '--radix-context-menu-content-available-width':
-              'var(--radix-popper-available-width)',
-            '--radix-context-menu-content-available-height':
-              'var(--radix-popper-available-height)',
-            '--radix-context-menu-trigger-width': 'var(--radix-popper-anchor-width)',
-            '--radix-context-menu-trigger-height': 'var(--radix-popper-anchor-height)',
+            '--tamagui-context-menu-content-transform-origin':
+              'var(--tamagui-popper-transform-origin)',
+            '--tamagui-context-menu-content-available-width':
+              'var(--tamagui-popper-available-width)',
+            '--tamagui-context-menu-content-available-height':
+              'var(--tamagui-popper-available-height)',
+            '--tamagui-context-menu-trigger-width': 'var(--tamagui-popper-anchor-width)',
+            '--tamagui-context-menu-trigger-height':
+              'var(--tamagui-popper-anchor-height)',
           } as React.CSSProperties),
         }
       }

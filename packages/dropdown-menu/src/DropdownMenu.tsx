@@ -468,22 +468,21 @@ DropdownMenuArrow.displayName = ARROW_NAME
  * DropdownMenuSub
  * -----------------------------------------------------------------------------------------------*/
 
-interface DropdownMenuSubProps {
+interface DropdownMenuSubProps extends MenuPrimitive.MenuSubProps {
   children?: React.ReactNode
   open?: boolean
   defaultOpen?: boolean
   onOpenChange?(open: boolean): void
 }
 
-const DropdownMenuSub: React.FC<DropdownMenuSubProps> = (
-  props: ScopedProps<DropdownMenuSubProps>
-) => {
+const DropdownMenuSub: React.FC<ScopedProps<DropdownMenuSubProps>> = (props) => {
   const {
     __scopeDropdownMenu,
     children,
     open: openProp,
     onOpenChange,
     defaultOpen,
+    ...rest
   } = props
   const [open = false, setOpen] = useControllableState({
     prop: openProp,
@@ -496,6 +495,7 @@ const DropdownMenuSub: React.FC<DropdownMenuSubProps> = (
       __scopeMenu={__scopeDropdownMenu || DROPDOWN_MENU_CONTEXT}
       open={open}
       onOpenChange={setOpen}
+      {...rest}
     >
       {children}
     </MenuPrimitive.Sub>
@@ -555,16 +555,18 @@ const DropdownMenuSubContent = React.forwardRef<
           ? {
               ...(props.style as Object),
               // re-namespace exposed content custom properties
+              // TODO: find a better way to do this, or maybe not do it at all
               ...({
-                '--radix-dropdown-menu-content-transform-origin':
-                  'var(--radix-popper-transform-origin)',
-                '--radix-dropdown-menu-content-available-width':
-                  'var(--radix-popper-available-width)',
-                '--radix-dropdown-menu-content-available-height':
-                  'var(--radix-popper-available-height)',
-                '--radix-dropdown-menu-trigger-width': 'var(--radix-popper-anchor-width)',
-                '--radix-dropdown-menu-trigger-height':
-                  'var(--radix-popper-anchor-height)',
+                '--tamagui-dropdown-menu-content-transform-origin':
+                  'var(--tamagui-popper-transform-origin)',
+                '--tamagui-dropdown-menu-content-available-width':
+                  'var(--tamagui-popper-available-width)',
+                '--tamagui-dropdown-menu-content-available-height':
+                  'var(--tamagui-popper-available-height)',
+                '--tamagui-dropdown-menu-trigger-width':
+                  'var(--tamagui-popper-anchor-width)',
+                '--tamagui-dropdown-menu-trigger-height':
+                  'var(--tamagui-popper-anchor-height)',
               } as React.CSSProperties),
             }
           : null

@@ -3005,13 +3005,13 @@ declare const DropdownMenuArrow: React.ForwardRefExoticComponent<Omit<MenuPrimit
 } & React.RefAttributes<TamaguiElement>, "ref"> & {
     __scopeDropdownMenu?: string | undefined;
 } & React.RefAttributes<TamaguiElement>>;
-interface DropdownMenuSubProps {
+interface DropdownMenuSubProps extends MenuPrimitive.MenuSubProps {
     children?: React.ReactNode;
     open?: boolean;
     defaultOpen?: boolean;
     onOpenChange?(open: boolean): void;
 }
-declare const DropdownMenuSub: React.FC<DropdownMenuSubProps>;
+declare const DropdownMenuSub: React.FC<ScopedProps<DropdownMenuSubProps>>;
 type MenuSubTriggerProps = React.ComponentPropsWithoutRef<typeof MenuPrimitive.SubTrigger>;
 interface DropdownMenuSubTriggerProps extends MenuSubTriggerProps {
 }
@@ -6150,7 +6150,7 @@ declare const Arrow: React.ForwardRefExoticComponent<Omit<MenuPrimitive.MenuArro
 } & React.RefAttributes<TamaguiElement>, "ref"> & {
     __scopeDropdownMenu?: string | undefined;
 } & React.RefAttributes<TamaguiElement>>;
-declare const Sub: React.FC<DropdownMenuSubProps>;
+declare const Sub: React.FC<ScopedProps<DropdownMenuSubProps>>;
 declare const SubTrigger: import("tamagui").TamaguiComponent<Omit<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {

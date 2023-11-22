@@ -200,7 +200,7 @@ const MenuPortal: React.FC<ScopedProps<MenuPortalProps>> = (
     <PortalProvider scope={__scopeMenu} forceMount={forceMount}>
       <Presence>
         {forceMount || context.open ? (
-          <PortalPrimitive position="relative" asChild host={host}>
+          <PortalPrimitive pointerEvents="auto" position="relative" asChild host={host}>
             {children}
           </PortalPrimitive>
         ) : null}
@@ -285,6 +285,7 @@ const MenuRootContentModal = React.forwardRef<
   // Hide everything from ARIA except the `MenuContent`
   React.useEffect(() => {
     const content = ref.current
+    // TODO: is this a web only
     if (content) return hideOthers(content as HTMLElement)
   }, [])
 
@@ -458,6 +459,7 @@ const MenuContentImpl = React.forwardRef<
       <PopperPrimitive.PopperContent
         role="menu"
         elevation={30}
+        paddingVertical={'$2'}
         backgroundColor={'$background'}
         aria-orientation="vertical"
         data-state={getOpenState(context.open)}
@@ -568,6 +570,8 @@ const MenuContentImpl = React.forwardRef<
       {isWeb ? (
         <ScrollLockWrapper {...scrollLockWrapperProps}>
           <FocusScope
+            // TODO: radix ui has this asChild
+            // asChild
             trapped={trapFocus}
             onMountAutoFocus={composeEventHandlers(onOpenAutoFocus, (event) => {
               // when opening, explicitly focus the content area only and leave
@@ -584,6 +588,8 @@ const MenuContentImpl = React.forwardRef<
               onFocusOutside={onFocusOutside}
               onInteractOutside={onInteractOutside}
               onDismiss={onDismiss}
+              // TODO: radix ui has this asChild
+              // asChild
             >
               <RovingFocusGroup
                 asChild
@@ -691,7 +697,7 @@ const MenuItem = ThemeableStack.styleable<ScopedProps<MenuItemProps>>(
       <MenuItemImpl
         {...itemProps}
         // @ts-ignore
-        ref={composeRefs}
+        ref={composedRefs}
         disabled={disabled}
         onPress={composeEventHandlers(props.onPress, handleSelect)}
         onPointerDown={(event) => {
@@ -832,6 +838,8 @@ const MenuItemImpl = React.forwardRef<
                 onBlur: composeEventHandlers(props.onBlur, () => setIsFocused(false)),
               }
             : null)}
+          onFocus={composeEventHandlers(props.onFocus, () => setIsFocused(true))}
+          onBlur={composeEventHandlers(props.onBlur, () => setIsFocused(false))}
         />
       </RovingFocusGroup.Item>
     </Collection.ItemSlot>
@@ -862,11 +870,7 @@ const MenuCheckboxItem = ThemeableStack.styleable<ScopedProps<MenuCheckboxItemPr
         {/* @ts-ignore */}
         <MenuItem
           componentName={CHECKBOX_ITEM_NAME}
-          {...(isWeb
-            ? {
-                role: 'menuitemcheckbox',
-              }
-            : null)}
+          role={(isWeb ? 'menuitemcheckbox' : 'menuitem') as 'menuitem'}
           aria-checked={isIndeterminate(checked) ? 'mixed' : checked}
           {...checkboxItemProps}
           ref={forwardedRef}
@@ -942,13 +946,10 @@ const MenuRadioItem = ThemeableStack.styleable<ScopedProps<MenuRadioItemProps>>(
         {/* @ts-ignore */}
         <MenuItem
           componentName={RADIO_ITEM_NAME}
-          {...(isWeb
-            ? {
-                'aria-checked': { checked },
-              }
-            : null)}
           {...radioItemProps}
+          aria-checked={checked}
           ref={forwardedRef}
+          role={(isWeb ? 'menuitemradio' : 'menuitem') as 'menuitem'}
           data-state={getCheckedState(checked)}
           onSelect={composeEventHandlers(
             radioItemProps.onSelect,
@@ -1070,16 +1071,14 @@ type MenuSubContextValue = {
 const { Provider: MenuSubProvider, useStyledContext: useMenuSubContext } =
   createStyledContext<MenuSubContextValue>()
 
-interface MenuSubProps {
+export interface MenuSubProps extends PopperPrimitive.PopperProps {
   children?: React.ReactNode
   open?: boolean
   onOpenChange?(open: boolean): void
 }
 
-const MenuSub: React.FC<ScopedProps<MenuSubProps>> = (
-  props: ScopedProps<MenuSubProps>
-) => {
-  const { __scopeMenu, children, open = false, onOpenChange } = props
+const MenuSub: React.FC<ScopedProps<MenuSubProps>> = (props) => {
+  const { __scopeMenu, children, open = false, onOpenChange, ...rest } = props
   const parentMenuContext = useMenuContext(__scopeMenu)
   const [trigger, setTrigger] = React.useState<MenuSubTriggerElement | null>(null)
   const [content, setContent] = React.useState<MenuContentElement | null>(null)
@@ -1092,7 +1091,7 @@ const MenuSub: React.FC<ScopedProps<MenuSubProps>> = (
   }, [parentMenuContext.open, handleOpenChange])
 
   return (
-    <PopperPrimitive.Popper __scopePopper={__scopeMenu || MENU_CONTEXT}>
+    <PopperPrimitive.Popper {...rest} __scopePopper={__scopeMenu || MENU_CONTEXT}>
       <MenuProvider
         scope={__scopeMenu}
         open={open}
@@ -1133,7 +1132,6 @@ const MenuSubTrigger = YStack.styleable<ScopedProps<MenuSubTriggerProps>>(
     const contentContext = useMenuContentContext(props.__scopeMenu)
     const openTimerRef = React.useRef<number | null>(null)
     const { pointerGraceTimerRef, onPointerGraceIntentChange } = contentContext
-    const scope = { __scopeMenu: props.__scopeMenu }
 
     const clearOpenTimer = React.useCallback(() => {
       if (openTimerRef.current) window.clearTimeout(openTimerRef.current)
@@ -1311,6 +1309,7 @@ const MenuSubContent = React.forwardRef<
               aria-labelledby={subContext.triggerId}
               {...subContentProps}
               ref={composedRefs}
+              // TODO what are these align and side props?
               //@ts-ignore
               align="start"
               //@ts-ignore
