@@ -112,7 +112,7 @@ export type TamaguiComponentPropsBaseBase = {
   tabIndex?: string | number
 
   /**
-   * Equivalent to role="" attribute on web for accesibility
+   * Equivalent to role="" attribute on web for accessibility
    */
   role?: Role
 
@@ -629,7 +629,7 @@ type GenericTamaguiSettings = {
    *
    *   1. Only use light/dark changes of themes at the root of your app
    *   2. Don't use <Theme inverse> or themeInverse
-   *   3. Always change light/dark alongside the Appearance.colorSheme
+   *   3. Always change light/dark alongside the Appearance.colorScheme
    *
    * Then this feature is safe to turn on and will significantly speed up dark/light re-renders.
    */
@@ -1521,7 +1521,7 @@ export type StaticConfigPublic = {
   inlineWhenUnflattened?: Set<string>
 
   /**
-   * (compiler) A bit odd, only for more advanced heirarchies.
+   * (compiler) A bit odd, only for more advanced hierarchies.
    * Indicates that the component will set this prop so the
    * static extraction can ensure it sets them to ={undefined}
    * so they get overriddent. In the future, this can be smarter.
@@ -1529,7 +1529,7 @@ export type StaticConfigPublic = {
   ensureOverriddenProp?: { [key: string]: boolean }
 
   /**
-   * Auto-detected, but can ovverride. Wraps children to space them on top
+   * Auto-detected, but can override. Wraps children to space them on top
    */
   isZStack?: boolean
 
@@ -1539,7 +1539,7 @@ export type StaticConfigPublic = {
   isReactNative?: boolean
 
   /**
-   * By default if styled() doesn't recognize a parent Tamagui compoent or specific react-native views,
+   * By default if styled() doesn't recognize a parent Tamagui component or specific react-native views,
    * it will assume the passed in component only accepts style={} for react-native compatibility.
    * Setting `acceptsClassName: true` indicates Tamagui can pass in className props.
    */
@@ -1559,7 +1559,7 @@ type StaticConfigBase = StaticConfigPublic & {
   componentName?: string
 
   /**
-   * Merges into defaultProps later on, used internally yonly
+   * Merges into defaultProps later on, used internally only
    */
   defaultVariants?: { [key: string]: any }
 
@@ -1569,7 +1569,7 @@ type StaticConfigBase = StaticConfigPublic & {
   memo?: boolean
 
   /**
-   * By default if styled() doesn't recognize a parent Tamagui compoent or specific react-native views,
+   * By default if styled() doesn't recognize a parent Tamagui component or specific react-native views,
    * it will assume the passed in component only accepts style={} for react-native compatibility.
    * Setting `acceptsClassName: true` indicates Tamagui can pass in className props.
    */
