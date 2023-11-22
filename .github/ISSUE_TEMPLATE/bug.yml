@@ -1,7 +1,5 @@
 name: Reproducible Bug Report
-render: markdown
-description: |
-  Issues **will be closed without review** if reproduction steps are omitted. More context is helpful before submitting search github, discord, the docs and google.
+description: Issues **will be closed without review** if reproduction steps are omitted. More context is helpful before submitting search github, discord, the docs and google.
 labels: [Bug]
 body:
   - type: textarea
