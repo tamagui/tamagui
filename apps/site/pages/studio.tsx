@@ -56,10 +56,9 @@ export default function StudioSplashPage() {
               <Features
                 size="$5"
                 items={[
-                  `Intuitive views into your design system`,
-                  `Realtime tamagui.config.ts load`,
-                  `Visualize media queries, tokens, fonts and more`,
-                  `View & edit color palettes with accessibility`,
+                  `Generate complete theme suites with a step-by-step wizard`,
+                  `Visualize your design system.`,
+                  `Helpers for media queries, tokens, fonts and more`,
                 ]}
               />
             </YStack>
@@ -68,8 +67,8 @@ export default function StudioSplashPage() {
               <Features
                 size="$5"
                 items={[
-                  `View and edit animations across every driver`,
-                  `See components + themes for every pseudo state`,
+                  `Animations test environment and visualizer`,
+                  <span>{soonButton} Advanced theme editor</span>,
                   <span>{soonButton} Edit themes in your app in realtime</span>,
                   <span>{soonButton} Sync tokens & components with Figma</span>,
                 ]}
@@ -87,9 +86,9 @@ export default function StudioSplashPage() {
 const StudioScreens = () => {
   return (
     <YStack my="$6">
-      <ScreenContainer>
+      <>
         <StudioScreen1 />
-      </ScreenContainer>
+      </>
     </YStack>
   )
 }
