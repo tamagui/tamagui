@@ -102,24 +102,47 @@ yarn sandbox
 
 This runs a client-side only Vite build of Tamagui, with a complete configuration already set up.
 
-native test are run in `apps/kitchen-sink`
+#### Native
 
-Create a development build run `yarn ios` from `apps/kitchen-sink`
-
-Expo go is not supported in `kitchen-sink`. `kitchen-sink` uses a custom built version of `react-native-reanimated` so we can test everything including the various native integrations like native Sheet and native toasts. If you run Expo Go on `kitchen-sink` Metro's eager require eval errors due to demos folder being glob imported.
+In `$ROOT` run
 
 ```bash
 # Android
 yarn kitchen-sink:build:android
+```
 
+```bash
 # iOS
 yarn kitchen-sink:build:ios
 ```
 
-After the build has been completed, run the below command to start the Expo app:
+native test are run in `apps/kitchen-sink`
+
+Expo go is not supported in `kitchen-sink`. `kitchen-sink` uses a custom built version of `react-native-reanimated` so we can test everything including the various native integrations like native Sheet and native toasts. If you run Expo Go on `kitchen-sink` Metro's eager require eval errors due to demos folder being glob imported.
+
+After the build has been completed run
 
 ```bash
 yarn kitchen-sink
+```
+
+to start metro server.
+
+#### Web
+
+In `$ROOT`:
+
+```bash
+yarn kitchen-sink:web
+```
+
+To view a Demo component on web:
+
+```bash
+http://localhost:<PORT>/?demo=ComponentName
+
+# example
+http://localhost:19006/?demo=LinearGradient
 ```
 
 Once you've made changes, you can add tests. All compiler and CSS generation tests live in `packages/static-tests`, other tests live in `apps/kitchen-sink/tests` or in other `-tests` packages.
