@@ -32,7 +32,8 @@
   },
   "dependencies": {
     "@tamagui/core": "1.79.17",
-    "@tamagui/stacks": "1.79.17"
+    "@tamagui/stacks": "1.79.17",
+    "react-native-linear-gradient": "^2.8.3"
   },
   "peerDependencies": {
     "react": "*"

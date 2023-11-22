@@ -7246,6 +7246,7 @@ __metadata:
     "@tamagui/stacks": 1.79.17
     expo-linear-gradient: ~12.3.0
     react: ^18.2.0
+    react-native-linear-gradient: ^2.8.3
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -23296,6 +23297,16 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: c4bc1431057b52f23c3c0db9085f63118b583fccc6127ae44f0ff26e4dab1f639894743d92b35f3e35c284795614c1d2bb51e2ff47aa89d81d12b5e389d71b87
+  languageName: node
+  linkType: hard
+
+"react-native-linear-gradient@npm:^2.8.3":
+  version: 2.8.3
+  resolution: "react-native-linear-gradient@npm:2.8.3"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: f980d324e551bbc475c6406bdc5250a08242020cbe653412fa169bbdf51e28a502e225de105b4d696d6a1a1b733d44782469020f4936d8b3ce0e2c78e51cf58f
   languageName: node
   linkType: hard
 
