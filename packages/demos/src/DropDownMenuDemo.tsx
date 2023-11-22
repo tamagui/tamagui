@@ -10,23 +10,26 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@tamagui/dropdown-menu'
-import { ChevronRight } from '@tamagui/lucide-icons'
+import { Airplay, ChevronRight } from '@tamagui/lucide-icons'
 import { Button, Text, XStack } from 'tamagui'
 
 export function DropdoownMenuDemo() {
   return (
-    <DropdownMenu placement="bottom">
-      <DropdownMenuTrigger width={200} asChild>
-        <Button>
-          <Button.Text>yes trigger</Button.Text>
-        </Button>
+    <DropdownMenu
+      offset={{
+        crossAxis: 25,
+      }}
+      allowFlip
+      placement="bottom-start"
+    >
+      <DropdownMenuTrigger width={50} asChild>
+        <Button icon={Airplay} />
       </DropdownMenuTrigger>
 
       <DropdownMenuPortal>
         <DropdownMenuContent
           paddingHorizontal={0}
           borderWidth={1}
-          width={200}
           ai="flex-start"
           borderColor="$borderColor"
           enterStyle={{ y: -10, opacity: 0 }}
@@ -48,9 +51,9 @@ export function DropdoownMenuDemo() {
             <Text>New Window ⌘+N</Text>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <Text>New Private Window ⇧+⌘+N</Text>
+            <Text numberOfLines={1}>New Private Window ⇧+⌘+N</Text>
           </DropdownMenuItem>
-          <DropdownMenuSub>
+          <DropdownMenuSub placement="right-start">
             <DropdownMenuSubTrigger>
               <XStack ai="center" jc="space-between">
                 <Text>More Tools</Text>
@@ -58,18 +61,18 @@ export function DropdoownMenuDemo() {
               </XStack>
             </DropdownMenuSubTrigger>
             <DropdownMenuPortal>
-              <DropdownMenuSubContent>
-                <DropdownMenuItem className="DropdownMenuItem">
-                  <Text>Save Page As… ⌘+S</Text>
+              <DropdownMenuSubContent paddingHorizontal={0}>
+                <DropdownMenuItem>
+                  <Text numberOfLines={1}>Save Page As… ⌘+S</Text>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="DropdownMenuItem">
+                <DropdownMenuItem>
                   <Text>Create Shortcut…</Text>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="DropdownMenuItem">
+                <DropdownMenuItem>
                   <Text>Name Window…</Text>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="DropdownMenuItem">
+                <DropdownMenuItem>
                   <Text>Developer Tools</Text>
                 </DropdownMenuItem>
               </DropdownMenuSubContent>
