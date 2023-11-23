@@ -35,8 +35,8 @@ export const TakeoutLicense = () => {
             only licensees.
           </Li>
           <Li>
-            Deploy all Takeout stack deliverables to one public domain, and one public app
-            within each of the iOS and Android app stores.
+            Deploy all Takeout stack deliverables to two public domains, and two public
+            apps within each of the iOS and Android app stores.
           </Li>
           <Li>Deliver a product that is commercial in nature with the Takeout stack.</Li>
           <Li>
@@ -63,7 +63,7 @@ export const TakeoutLicense = () => {
             available to users.
           </Li>
           <Li>
-            Use the Takeout stack for more than one public domain per license purchase.
+            Use the Takeout stack for more than two public domains per license purchase.
           </Li>
         </Ul>
       </Paragraph>
