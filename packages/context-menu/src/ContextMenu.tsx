@@ -60,7 +60,7 @@ interface ContextMenuProps {
 const ContextMenu: React.FC<ScopedProps<ContextMenuProps>> = (
   props: ScopedProps<ContextMenuProps>
 ) => {
-  const { __scopeContextMenu, children, onOpenChange, dir, modal = true } = props
+  const { __scopeContextMenu, children, onOpenChange, dir, modal = true, ...rest } = props
   const [open, setOpen] = React.useState(false)
   const handleOpenChangeProp = useCallbackRef(onOpenChange)
 
@@ -85,6 +85,7 @@ const ContextMenu: React.FC<ScopedProps<ContextMenuProps>> = (
         open={open}
         onOpenChange={handleOpenChange}
         modal={modal}
+        {...rest}
       >
         {children}
       </Menu>
@@ -137,7 +138,7 @@ const ContextMenuTrigger = ContextMenuTriggerFrame.styleable<
     <>
       {/* TODO: why it's static here */}
       <MenuAnchor
-        __scopeMenu={__scopeContextMenu || CONTEXTMENU_CONTEXT}
+        __scopePopper={__scopeContextMenu || CONTEXTMENU_CONTEXT}
         virtualRef={virtualRef}
       />
       <ContextMenuTriggerFrame
@@ -306,7 +307,7 @@ const GROUP_NAME = 'ContextMenuGroup'
 
 type ContextMenuGroupElement = React.ElementRef<typeof MenuGroup>
 type MenuGroupProps = React.ComponentPropsWithoutRef<typeof MenuGroup>
-interface ContextMenuGroupProps extends MenuGroupProps {}
+type ContextMenuGroupProps = MenuGroupProps & {}
 
 const ContextMenuGroupFrame = styled(MenuGroup, {
   name: GROUP_NAME,
@@ -316,13 +317,7 @@ const ContextMenuGroup = ContextMenuGroupFrame.styleable<
   ScopedProps<ContextMenuGroupProps>
 >((props: ScopedProps<ContextMenuGroupProps>, forwardedRef) => {
   const { __scopeContextMenu, ...groupProps } = props
-  return (
-    <ContextMenuGroupFrame
-      __scopeMenu={__scopeContextMenu || CONTEXTMENU_CONTEXT}
-      {...groupProps}
-      ref={forwardedRef}
-    />
-  )
+  return <ContextMenuGroupFrame {...groupProps} ref={forwardedRef} />
 })
 
 ContextMenuGroup.displayName = GROUP_NAME
@@ -333,25 +328,10 @@ ContextMenuGroup.displayName = GROUP_NAME
 
 const LABEL_NAME = 'ContextMenuLabel'
 
-type ContextMenuLabelElement = React.ElementRef<typeof MenuLabel>
 type MenuLabelProps = React.ComponentPropsWithoutRef<typeof MenuLabel>
-interface ContextMenuLabelProps extends MenuLabelProps {}
+type ContextMenuLabelProps = MenuLabelProps & {}
 
-const ContextMenuLabelFrame = styled(MenuLabel, {
-  name: LABEL_NAME,
-})
-const ContextMenuLabel = ContextMenuLabelFrame.styleable<
-  ScopedProps<ContextMenuLabelProps>
->((props: ScopedProps<ContextMenuLabelProps>, forwardedRef) => {
-  const { __scopeContextMenu, ...labelProps } = props
-  return (
-    <ContextMenuLabelFrame
-      __scopeMenu={__scopeContextMenu || CONTEXTMENU_CONTEXT}
-      {...labelProps}
-      ref={forwardedRef}
-    />
-  )
-})
+const ContextMenuLabel = MenuLabel
 
 ContextMenuLabel.displayName = LABEL_NAME
 
@@ -422,17 +402,15 @@ type ContextMenuRadioGroupElement = React.ElementRef<typeof MenuRadioGroup>
 type MenuRadioGroupProps = React.ComponentPropsWithoutRef<typeof MenuRadioGroup>
 interface ContextMenuRadioGroupProps extends MenuRadioGroupProps {}
 
-const ContextMenuRadioGroupFrame = styled(MenuRadioGroup, {
-  name: RADIO_GROUP_NAME,
-}) as typeof MenuRadioGroup
-
-const ContextMenuRadioGroup = ContextMenuRadioGroupFrame.styleable<
+const ContextMenuRadioGroup = React.forwardRef<
+  ContextMenuRadioGroupElement,
   ScopedProps<MenuRadioGroupProps>
->((props: ScopedProps<MenuRadioGroupProps>, forwardedRef) => {
+>((props, forwardedRef) => {
   const { __scopeContextMenu, ...radioGroupProps } = props
   return (
-    <ContextMenuRadioGroupFrame
+    <MenuRadioGroup
       __scopeMenu={__scopeContextMenu || CONTEXTMENU_CONTEXT}
+      data-bro
       {...radioGroupProps}
       ref={forwardedRef}
     />
@@ -509,7 +487,7 @@ const SEPARATOR_NAME = 'ContextMenuSeparator'
 
 type ContextMenuSeparatorElement = React.ElementRef<typeof MenuSeparator>
 type MenuSeparatorProps = React.ComponentPropsWithoutRef<typeof MenuSeparator>
-interface ContextMenuSeparatorProps extends MenuSeparatorProps {}
+type ContextMenuSeparatorProps = MenuSeparatorProps & {}
 
 const ContextMenuSeparatorFrame = styled(MenuSeparator, {
   name: SEPARATOR_NAME,
@@ -519,13 +497,7 @@ const ContextMenuSeparator = ContextMenuSeparatorFrame.styleable<
   ScopedProps<ContextMenuSeparatorProps>
 >((props: ScopedProps<ContextMenuSeparatorProps>, forwardedRef) => {
   const { __scopeContextMenu, ...separatorProps } = props
-  return (
-    <ContextMenuSeparatorFrame
-      __scopeMenu={__scopeContextMenu || CONTEXTMENU_CONTEXT}
-      {...separatorProps}
-      ref={forwardedRef}
-    />
-  )
+  return <ContextMenuSeparatorFrame {...separatorProps} ref={forwardedRef} />
 })
 
 ContextMenuSeparator.displayName = SEPARATOR_NAME
@@ -536,26 +508,21 @@ ContextMenuSeparator.displayName = SEPARATOR_NAME
 
 const ARROW_NAME = 'ContextMenuArrow'
 
-type ContextMenuArrowElement = React.ElementRef<typeof MenuArrow>
 type MenuArrowProps = React.ComponentPropsWithoutRef<typeof MenuArrow>
 interface ContextMenuArrowProps extends MenuArrowProps {}
 
-const ContextMenuArrowFrame = styled(MenuArrow, {
-  name: ARROW_NAME,
-})
-
-const ContextMenuArrow = ContextMenuArrowFrame.styleable<
-  ScopedProps<ContextMenuArrowProps>
->((props: ScopedProps<ContextMenuArrowProps>, forwardedRef) => {
-  const { __scopeContextMenu, ...arrowProps } = props
-  return (
-    <ContextMenuArrowFrame
-      __scopeMenu={__scopeContextMenu || CONTEXTMENU_CONTEXT}
-      {...arrowProps}
-      ref={forwardedRef}
-    />
-  )
-})
+const ContextMenuArrow = MenuArrow.styleable<ScopedProps<ContextMenuArrowProps>>(
+  (props, forwardedRef) => {
+    const { __scopeContextMenu, ...arrowProps } = props
+    return (
+      <MenuArrow
+        __scopePopper={__scopeContextMenu || CONTEXTMENU_CONTEXT}
+        {...arrowProps}
+        ref={forwardedRef}
+      />
+    )
+  }
+)
 
 ContextMenuArrow.displayName = ARROW_NAME
 

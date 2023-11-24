@@ -894,11 +894,11 @@ interface MenuRadioGroupProps extends MenuGroupProps {
 
 const MenuRadioGroup = MenuGroup.styleable<ScopedProps<MenuRadioGroupProps>>(
   (props, forwardedRef) => {
-    const { value, onValueChange, ...groupProps } = props
+    const { value, onValueChange, __scopeMenu, ...groupProps } = props
     const handleValueChange = useCallbackRef(onValueChange)
     return (
       <RadioGroupProvider
-        scope={props.__scopeMenu}
+        scope={__scopeMenu}
         value={value}
         onValueChange={handleValueChange}
       >

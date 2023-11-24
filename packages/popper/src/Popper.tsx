@@ -183,6 +183,12 @@ export const PopperAnchor = YStack.extractable(
       const { anchorRef, getReferenceProps } = usePopperContext(__scopePopper)
       const ref = React.useRef<PopperAnchorRef>(null)
       const composedRefs = useComposedRefs(forwardedRef, ref, anchorRef)
+      React.useEffect(() => {
+        // Consumer can anchor the popper to something that isn't
+        // a DOM node e.g. pointer position, so we override the
+        // `anchorRef` with their virtual ref in this case.
+        anchorRef(virtualRef?.current || ref.current)
+      }, [anchorRef, virtualRef])
       if (virtualRef) {
         return null
       }
