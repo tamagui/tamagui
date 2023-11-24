@@ -13,7 +13,10 @@ interface DropdownMenuProps extends MenuPrimitive.MenuProps {
     onOpenChange?(open: boolean): void;
     modal?: boolean;
 }
-declare const DropdownMenu: React.FC<DropdownMenuProps>;
+declare const DropdownMenu: {
+    (props: ScopedProps<DropdownMenuProps>): JSX.Element;
+    displayName: string;
+};
 type PrimitiveButtonProps = React.ComponentPropsWithoutRef<typeof Button>;
 interface DropdownMenuTriggerProps extends PrimitiveButtonProps {
 }
@@ -191,11 +194,16 @@ declare const DropdownMenuTrigger: import("tamagui").TamaguiComponent<Omit<Omit<
 type MenuPortalProps = React.ComponentPropsWithoutRef<typeof MenuPrimitive.Portal>;
 interface DropdownMenuPortalProps extends MenuPortalProps {
 }
-declare const DropdownMenuPortal: React.FC<ScopedProps<DropdownMenuPortalProps>>;
+declare const DropdownMenuPortal: {
+    (props: ScopedProps<DropdownMenuPortalProps>): JSX.Element;
+    displayName: string;
+};
 type MenuContentProps = React.ComponentPropsWithoutRef<typeof MenuPrimitive.Content>;
 interface DropdownMenuContentProps extends Omit<MenuContentProps, 'onEntryFocus'> {
 }
-declare const DropdownMenuContent: React.ForwardRefExoticComponent<DropdownMenuContentProps & React.RefAttributes<HTMLElement | import("react-native").View>>;
+declare const DropdownMenuContent: React.ForwardRefExoticComponent<DropdownMenuContentProps & {
+    __scopeDropdownMenu?: string | undefined;
+} & React.RefAttributes<HTMLElement | import("react-native").View>>;
 type MenuGroupProps = React.ComponentPropsWithoutRef<typeof MenuPrimitive.Group>;
 type DropdownMenuGroupProps = MenuGroupProps & {};
 declare const DropdownMenuGroup: import("tamagui").TamaguiComponent<(Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
@@ -1441,7 +1449,9 @@ declare const DropdownMenuCheckboxItem: import("tamagui").TamaguiComponent<Omit<
 type MenuRadioGroupProps = React.ComponentPropsWithoutRef<typeof MenuPrimitive.RadioGroup>;
 interface DropdownMenuRadioGroupProps extends MenuRadioGroupProps {
 }
-declare const DropdownMenuRadioGroup: React.ForwardRefExoticComponent<DropdownMenuRadioGroupProps & React.RefAttributes<TamaguiElement>>;
+declare const DropdownMenuRadioGroup: React.ForwardRefExoticComponent<DropdownMenuRadioGroupProps & {
+    __scopeDropdownMenu?: string | undefined;
+} & React.RefAttributes<TamaguiElement>>;
 type MenuRadioItemProps = React.ComponentPropsWithoutRef<typeof MenuPrimitive.RadioItem>;
 interface DropdownMenuRadioItemProps extends MenuRadioItemProps {
 }
@@ -2303,7 +2313,7 @@ interface DropdownMenuSubProps extends MenuPrimitive.MenuSubProps {
     defaultOpen?: boolean;
     onOpenChange?(open: boolean): void;
 }
-declare const DropdownMenuSub: React.FC<ScopedProps<DropdownMenuSubProps>>;
+declare const DropdownMenuSub: (props: ScopedProps<DropdownMenuSubProps>) => JSX.Element;
 type MenuSubTriggerProps = React.ComponentPropsWithoutRef<typeof MenuPrimitive.SubTrigger>;
 interface DropdownMenuSubTriggerProps extends MenuSubTriggerProps {
 }
@@ -2481,8 +2491,13 @@ declare const DropdownMenuSubTrigger: import("tamagui").TamaguiComponent<Omit<Om
 type MenuSubContentProps = React.ComponentPropsWithoutRef<typeof MenuPrimitive.SubContent>;
 interface DropdownMenuSubContentProps extends MenuSubContentProps {
 }
-declare const DropdownMenuSubContent: React.ForwardRefExoticComponent<DropdownMenuSubContentProps & React.RefAttributes<HTMLElement | import("react-native").View>>;
-declare const Root: React.FC<DropdownMenuProps>;
+declare const DropdownMenuSubContent: React.ForwardRefExoticComponent<DropdownMenuSubContentProps & {
+    __scopeDropdownMenu?: string | undefined;
+} & React.RefAttributes<HTMLElement | import("react-native").View>>;
+declare const Root: {
+    (props: ScopedProps<DropdownMenuProps>): JSX.Element;
+    displayName: string;
+};
 declare const Trigger: import("tamagui").TamaguiComponent<Omit<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
@@ -2654,8 +2669,13 @@ declare const Trigger: import("tamagui").TamaguiComponent<Omit<Omit<import("reac
     };
     __variantProps: void;
 }>;
-declare const Portal: React.FC<ScopedProps<DropdownMenuPortalProps>>;
-declare const Content: React.ForwardRefExoticComponent<DropdownMenuContentProps & React.RefAttributes<HTMLElement | import("react-native").View>>;
+declare const Portal: {
+    (props: ScopedProps<DropdownMenuPortalProps>): JSX.Element;
+    displayName: string;
+};
+declare const Content: React.ForwardRefExoticComponent<DropdownMenuContentProps & {
+    __scopeDropdownMenu?: string | undefined;
+} & React.RefAttributes<HTMLElement | import("react-native").View>>;
 declare const Group: import("tamagui").TamaguiComponent<(Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
@@ -3888,7 +3908,9 @@ declare const CheckboxItem: import("tamagui").TamaguiComponent<Omit<Omit<Omit<im
         readonly elevation?: number | import("tamagui").SizeTokens | undefined;
     };
 }>;
-declare const RadioGroup: React.ForwardRefExoticComponent<DropdownMenuRadioGroupProps & React.RefAttributes<TamaguiElement>>;
+declare const RadioGroup: React.ForwardRefExoticComponent<DropdownMenuRadioGroupProps & {
+    __scopeDropdownMenu?: string | undefined;
+} & React.RefAttributes<TamaguiElement>>;
 declare const RadioItem: import("tamagui").TamaguiComponent<Omit<Omit<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
@@ -4734,7 +4756,7 @@ declare const Arrow: React.ForwardRefExoticComponent<Omit<MenuPrimitive.MenuArro
 } & React.RefAttributes<TamaguiElement>, "ref"> & {
     __scopeDropdownMenu?: string | undefined;
 } & React.RefAttributes<TamaguiElement>>;
-declare const Sub: React.FC<ScopedProps<DropdownMenuSubProps>>;
+declare const Sub: (props: ScopedProps<DropdownMenuSubProps>) => JSX.Element;
 declare const SubTrigger: import("tamagui").TamaguiComponent<Omit<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
@@ -4906,7 +4928,9 @@ declare const SubTrigger: import("tamagui").TamaguiComponent<Omit<Omit<import("r
     };
     __variantProps: void;
 }>;
-declare const SubContent: React.ForwardRefExoticComponent<DropdownMenuSubContentProps & React.RefAttributes<HTMLElement | import("react-native").View>>;
+declare const SubContent: React.ForwardRefExoticComponent<DropdownMenuSubContentProps & {
+    __scopeDropdownMenu?: string | undefined;
+} & React.RefAttributes<HTMLElement | import("react-native").View>>;
 export { DropdownMenu, DropdownMenuTrigger, DropdownMenuPortal, DropdownMenuContent, DropdownMenuGroup, DropdownMenuLabel, DropdownMenuItem, DropdownMenuCheckboxItem, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuItemIndicator, DropdownMenuSeparator, DropdownMenuArrow, DropdownMenuSub, DropdownMenuSubTrigger, DropdownMenuSubContent, Root, Trigger, Portal, Content, Group, Label, Item, CheckboxItem, RadioGroup, RadioItem, ItemIndicator, Separator, Arrow, Sub, SubTrigger, SubContent, };
 export type { DropdownMenuProps, DropdownMenuTriggerProps, DropdownMenuPortalProps, DropdownMenuContentProps, DropdownMenuGroupProps, DropdownMenuLabelProps, DropdownMenuItemProps, DropdownMenuCheckboxItemProps, DropdownMenuRadioGroupProps, DropdownMenuRadioItemProps, DropdownMenuItemIndicatorProps, DropdownMenuSeparatorProps, DropdownMenuArrowProps, DropdownMenuSubProps, DropdownMenuSubTriggerProps, DropdownMenuSubContentProps, };
 //# sourceMappingURL=DropdownMenu.d.ts.map

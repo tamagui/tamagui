@@ -18,7 +18,10 @@ interface MenuProps extends PopperPrimitive.PopperProps {
     dir?: Direction;
     modal?: boolean;
 }
-declare const Menu: React.FC<ScopedProps<MenuProps>>;
+declare const Menu: {
+    (props: ScopedProps<MenuProps>): JSX.Element;
+    displayName: string;
+};
 type PopperAnchorProps = React.ComponentPropsWithoutRef<typeof PopperPrimitive.PopperAnchor>;
 interface MenuAnchorProps extends PopperAnchorProps {
 }
@@ -38,7 +41,10 @@ interface MenuPortalProps {
      */
     forceMount?: true;
 }
-declare const MenuPortal: React.FC<ScopedProps<MenuPortalProps>>;
+declare const MenuPortal: {
+    (props: ScopedProps<MenuPortalProps>): JSX.Element;
+    displayName: string;
+};
 /**
  * We purposefully don't union MenuRootContent and MenuSubContent props here because
  * they have conflicting prop types. We agreed that we would allow MenuSubContent to
@@ -136,10 +142,7 @@ declare const MenuGroup: import("@tamagui/core").TamaguiComponent<(Omit<import("
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
-    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>; /**
-     * Event handler called when auto-focusing on close.
-     * Can be prevented.
-     */
+    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
@@ -221,17 +224,7 @@ declare const MenuGroup: import("@tamagui/core").TamaguiComponent<(Omit<import("
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined; /**
-     * We focus items on `pointerMove` to achieve the following:
-     *
-     * - Mouse over an item (it focuses)
-     * - Leave mouse where it is and use keyboard to focus a different item
-     * - Wiggle mouse without it leaving previously focused item
-     * - Previously focused item should re-focus
-     *
-     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
-     * wiggles. This is to match native menu implementation.
-     */
+    bordered?: number | boolean | undefined;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
@@ -543,10 +536,7 @@ declare const MenuLabel: import("@tamagui/core").TamaguiComponent<(Omit<import("
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
-    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>; /**
-     * Event handler called when auto-focusing on close.
-     * Can be prevented.
-     */
+    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
@@ -628,17 +618,7 @@ declare const MenuLabel: import("@tamagui/core").TamaguiComponent<(Omit<import("
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined; /**
-     * We focus items on `pointerMove` to achieve the following:
-     *
-     * - Mouse over an item (it focuses)
-     * - Leave mouse where it is and use keyboard to focus a different item
-     * - Wiggle mouse without it leaving previously focused item
-     * - Previously focused item should re-focus
-     *
-     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
-     * wiggles. This is to match native menu implementation.
-     */
+    bordered?: number | boolean | undefined;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
@@ -951,10 +931,7 @@ declare const MenuItem: import("@tamagui/core").TamaguiComponent<Omit<Omit<impor
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
-    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>; /**
-     * Event handler called when auto-focusing on close.
-     * Can be prevented.
-     */
+    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
@@ -1036,17 +1013,7 @@ declare const MenuItem: import("@tamagui/core").TamaguiComponent<Omit<Omit<impor
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined; /**
-     * We focus items on `pointerMove` to achieve the following:
-     *
-     * - Mouse over an item (it focuses)
-     * - Leave mouse where it is and use keyboard to focus a different item
-     * - Wiggle mouse without it leaving previously focused item
-     * - Previously focused item should re-focus
-     *
-     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
-     * wiggles. This is to match native menu implementation.
-     */
+    bordered?: number | boolean | undefined;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
@@ -1193,10 +1160,7 @@ declare const MenuCheckboxItem: import("@tamagui/core").TamaguiComponent<Omit<Om
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
-    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>; /**
-     * Event handler called when auto-focusing on close.
-     * Can be prevented.
-     */
+    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
@@ -1278,17 +1242,7 @@ declare const MenuCheckboxItem: import("@tamagui/core").TamaguiComponent<Omit<Om
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined; /**
-     * We focus items on `pointerMove` to achieve the following:
-     *
-     * - Mouse over an item (it focuses)
-     * - Leave mouse where it is and use keyboard to focus a different item
-     * - Wiggle mouse without it leaving previously focused item
-     * - Previously focused item should re-focus
-     *
-     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
-     * wiggles. This is to match native menu implementation.
-     */
+    bordered?: number | boolean | undefined;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
@@ -1430,10 +1384,7 @@ declare const MenuRadioGroup: import("@tamagui/core").TamaguiComponent<Omit<(Omi
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
-    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>; /**
-     * Event handler called when auto-focusing on close.
-     * Can be prevented.
-     */
+    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
@@ -1515,17 +1466,7 @@ declare const MenuRadioGroup: import("@tamagui/core").TamaguiComponent<Omit<(Omi
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined; /**
-     * We focus items on `pointerMove` to achieve the following:
-     *
-     * - Mouse over an item (it focuses)
-     * - Leave mouse where it is and use keyboard to focus a different item
-     * - Wiggle mouse without it leaving previously focused item
-     * - Previously focused item should re-focus
-     *
-     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
-     * wiggles. This is to match native menu implementation.
-     */
+    bordered?: number | boolean | undefined;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
@@ -1842,10 +1783,7 @@ declare const MenuRadioItem: import("@tamagui/core").TamaguiComponent<Omit<Omit<
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
-    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>; /**
-     * Event handler called when auto-focusing on close.
-     * Can be prevented.
-     */
+    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
@@ -1927,17 +1865,7 @@ declare const MenuRadioItem: import("@tamagui/core").TamaguiComponent<Omit<Omit<
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined; /**
-     * We focus items on `pointerMove` to achieve the following:
-     *
-     * - Mouse over an item (it focuses)
-     * - Leave mouse where it is and use keyboard to focus a different item
-     * - Wiggle mouse without it leaving previously focused item
-     * - Previously focused item should re-focus
-     *
-     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
-     * wiggles. This is to match native menu implementation.
-     */
+    bordered?: number | boolean | undefined;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
@@ -2083,10 +2011,7 @@ declare const MenuItemIndicator: import("@tamagui/core").TamaguiComponent<Omit<O
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
-    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>; /**
-     * Event handler called when auto-focusing on close.
-     * Can be prevented.
-     */
+    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
@@ -2168,17 +2093,7 @@ declare const MenuItemIndicator: import("@tamagui/core").TamaguiComponent<Omit<O
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined; /**
-     * We focus items on `pointerMove` to achieve the following:
-     *
-     * - Mouse over an item (it focuses)
-     * - Leave mouse where it is and use keyboard to focus a different item
-     * - Wiggle mouse without it leaving previously focused item
-     * - Previously focused item should re-focus
-     *
-     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
-     * wiggles. This is to match native menu implementation.
-     */
+    bordered?: number | boolean | undefined;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
@@ -2318,10 +2233,7 @@ declare const MenuSeparator: import("@tamagui/core").TamaguiComponent<(Omit<impo
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
-    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>; /**
-     * Event handler called when auto-focusing on close.
-     * Can be prevented.
-     */
+    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
@@ -2403,17 +2315,7 @@ declare const MenuSeparator: import("@tamagui/core").TamaguiComponent<(Omit<impo
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined; /**
-     * We focus items on `pointerMove` to achieve the following:
-     *
-     * - Mouse over an item (it focuses)
-     * - Leave mouse where it is and use keyboard to focus a different item
-     * - Wiggle mouse without it leaving previously focused item
-     * - Previously focused item should re-focus
-     *
-     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
-     * wiggles. This is to match native menu implementation.
-     */
+    bordered?: number | boolean | undefined;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
@@ -3074,12 +2976,18 @@ interface MenuSubContentProps extends Omit<MenuContentImplProps, keyof MenuConte
     forceMount?: true;
 }
 declare const MenuSubContent: React.ForwardRefExoticComponent<Omit<ScopedProps<MenuSubContentProps>, "ref"> & React.RefAttributes<HTMLElement | import("react-native").View>>;
-declare const Root: React.FC<ScopedProps<MenuProps>>;
+declare const Root: {
+    (props: ScopedProps<MenuProps>): JSX.Element;
+    displayName: string;
+};
 declare const Anchor: {
     (props: MenuAnchorProps): JSX.Element;
     displayName: string;
 };
-declare const Portal: React.FC<ScopedProps<MenuPortalProps>>;
+declare const Portal: {
+    (props: ScopedProps<MenuPortalProps>): JSX.Element;
+    displayName: string;
+};
 declare const Content: React.ForwardRefExoticComponent<Omit<ScopedProps<MenuContentProps>, "ref"> & React.RefAttributes<HTMLElement | import("react-native").View>>;
 declare const Group: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
@@ -3126,10 +3034,7 @@ declare const Group: import("@tamagui/core").TamaguiComponent<(Omit<import("reac
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
-    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>; /**
-     * Event handler called when auto-focusing on close.
-     * Can be prevented.
-     */
+    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
@@ -3211,17 +3116,7 @@ declare const Group: import("@tamagui/core").TamaguiComponent<(Omit<import("reac
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined; /**
-     * We focus items on `pointerMove` to achieve the following:
-     *
-     * - Mouse over an item (it focuses)
-     * - Leave mouse where it is and use keyboard to focus a different item
-     * - Wiggle mouse without it leaving previously focused item
-     * - Previously focused item should re-focus
-     *
-     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
-     * wiggles. This is to match native menu implementation.
-     */
+    bordered?: number | boolean | undefined;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
@@ -3531,10 +3426,7 @@ declare const Label: import("@tamagui/core").TamaguiComponent<(Omit<import("reac
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
-    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>; /**
-     * Event handler called when auto-focusing on close.
-     * Can be prevented.
-     */
+    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
@@ -3616,17 +3508,7 @@ declare const Label: import("@tamagui/core").TamaguiComponent<(Omit<import("reac
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined; /**
-     * We focus items on `pointerMove` to achieve the following:
-     *
-     * - Mouse over an item (it focuses)
-     * - Leave mouse where it is and use keyboard to focus a different item
-     * - Wiggle mouse without it leaving previously focused item
-     * - Previously focused item should re-focus
-     *
-     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
-     * wiggles. This is to match native menu implementation.
-     */
+    bordered?: number | boolean | undefined;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
@@ -3936,10 +3818,7 @@ declare const Item: import("@tamagui/core").TamaguiComponent<Omit<Omit<import("r
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
-    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>; /**
-     * Event handler called when auto-focusing on close.
-     * Can be prevented.
-     */
+    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
@@ -4021,17 +3900,7 @@ declare const Item: import("@tamagui/core").TamaguiComponent<Omit<Omit<import("r
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined; /**
-     * We focus items on `pointerMove` to achieve the following:
-     *
-     * - Mouse over an item (it focuses)
-     * - Leave mouse where it is and use keyboard to focus a different item
-     * - Wiggle mouse without it leaving previously focused item
-     * - Previously focused item should re-focus
-     *
-     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
-     * wiggles. This is to match native menu implementation.
-     */
+    bordered?: number | boolean | undefined;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
@@ -4169,10 +4038,7 @@ declare const CheckboxItem: import("@tamagui/core").TamaguiComponent<Omit<Omit<i
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
-    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>; /**
-     * Event handler called when auto-focusing on close.
-     * Can be prevented.
-     */
+    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
@@ -4254,17 +4120,7 @@ declare const CheckboxItem: import("@tamagui/core").TamaguiComponent<Omit<Omit<i
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined; /**
-     * We focus items on `pointerMove` to achieve the following:
-     *
-     * - Mouse over an item (it focuses)
-     * - Leave mouse where it is and use keyboard to focus a different item
-     * - Wiggle mouse without it leaving previously focused item
-     * - Previously focused item should re-focus
-     *
-     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
-     * wiggles. This is to match native menu implementation.
-     */
+    bordered?: number | boolean | undefined;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
@@ -4402,10 +4258,7 @@ declare const RadioGroup: import("@tamagui/core").TamaguiComponent<Omit<(Omit<im
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
-    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>; /**
-     * Event handler called when auto-focusing on close.
-     * Can be prevented.
-     */
+    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
@@ -4487,17 +4340,7 @@ declare const RadioGroup: import("@tamagui/core").TamaguiComponent<Omit<(Omit<im
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined; /**
-     * We focus items on `pointerMove` to achieve the following:
-     *
-     * - Mouse over an item (it focuses)
-     * - Leave mouse where it is and use keyboard to focus a different item
-     * - Wiggle mouse without it leaving previously focused item
-     * - Previously focused item should re-focus
-     *
-     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
-     * wiggles. This is to match native menu implementation.
-     */
+    bordered?: number | boolean | undefined;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
@@ -4811,10 +4654,7 @@ declare const RadioItem: import("@tamagui/core").TamaguiComponent<Omit<Omit<impo
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
-    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>; /**
-     * Event handler called when auto-focusing on close.
-     * Can be prevented.
-     */
+    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
@@ -4896,17 +4736,7 @@ declare const RadioItem: import("@tamagui/core").TamaguiComponent<Omit<Omit<impo
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined; /**
-     * We focus items on `pointerMove` to achieve the following:
-     *
-     * - Mouse over an item (it focuses)
-     * - Leave mouse where it is and use keyboard to focus a different item
-     * - Wiggle mouse without it leaving previously focused item
-     * - Previously focused item should re-focus
-     *
-     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
-     * wiggles. This is to match native menu implementation.
-     */
+    bordered?: number | boolean | undefined;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
@@ -5044,10 +4874,7 @@ declare const ItemIndicator: import("@tamagui/core").TamaguiComponent<Omit<Omit<
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
-    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>; /**
-     * Event handler called when auto-focusing on close.
-     * Can be prevented.
-     */
+    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
@@ -5129,17 +4956,7 @@ declare const ItemIndicator: import("@tamagui/core").TamaguiComponent<Omit<Omit<
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined; /**
-     * We focus items on `pointerMove` to achieve the following:
-     *
-     * - Mouse over an item (it focuses)
-     * - Leave mouse where it is and use keyboard to focus a different item
-     * - Wiggle mouse without it leaving previously focused item
-     * - Previously focused item should re-focus
-     *
-     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
-     * wiggles. This is to match native menu implementation.
-     */
+    bordered?: number | boolean | undefined;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
@@ -5277,10 +5094,7 @@ declare const Separator: import("@tamagui/core").TamaguiComponent<(Omit<import("
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
-    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>; /**
-     * Event handler called when auto-focusing on close.
-     * Can be prevented.
-     */
+    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
@@ -5362,17 +5176,7 @@ declare const Separator: import("@tamagui/core").TamaguiComponent<(Omit<import("
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined; /**
-     * We focus items on `pointerMove` to achieve the following:
-     *
-     * - Mouse over an item (it focuses)
-     * - Leave mouse where it is and use keyboard to focus a different item
-     * - Wiggle mouse without it leaving previously focused item
-     * - Previously focused item should re-focus
-     *
-     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
-     * wiggles. This is to match native menu implementation.
-     */
+    bordered?: number | boolean | undefined;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
@@ -6017,5 +5821,5 @@ declare const SubTrigger: import("@tamagui/core").TamaguiComponent<Omit<Omit<imp
 }>;
 declare const SubContent: React.ForwardRefExoticComponent<Omit<ScopedProps<MenuSubContentProps>, "ref"> & React.RefAttributes<HTMLElement | import("react-native").View>>;
 export { Menu, MenuAnchor, MenuPortal, MenuContent, MenuGroup, MenuLabel, MenuItem, MenuCheckboxItem, MenuRadioGroup, MenuRadioItem, MenuItemIndicator, MenuSeparator, MenuArrow, MenuSub, MenuSubTrigger, MenuSubContent, Root, Anchor, Portal, Content, Group, Label, Item, CheckboxItem, RadioGroup, RadioItem, ItemIndicator, Separator, Arrow, Sub, SubTrigger, SubContent, };
-export type { MenuProps, MenuAnchorProps, MenuPortalProps, MenuContentProps, MenuGroupProps, MenuLabelProps, MenuItemProps, MenuCheckboxItemProps, MenuRadioGroupProps, MenuRadioItemProps, MenuItemIndicatorProps, MenuSeparatorProps, MenuArrowProps, MenuSubProps, MenuSubTriggerProps, MenuSubContentProps, };
+export type { MenuProps, MenuAnchorProps, MenuPortalProps, MenuContentProps, MenuGroupProps, MenuLabelProps, MenuItemProps, MenuCheckboxItemProps, MenuRadioGroupProps, MenuRadioItemProps, MenuItemIndicatorProps, MenuSeparatorProps, MenuArrowProps, MenuSubTriggerProps, MenuSubContentProps, };
 //# sourceMappingURL=Menu.d.ts.map

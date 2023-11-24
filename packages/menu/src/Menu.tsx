@@ -21,7 +21,7 @@ import type { RovingFocusGroupProps } from '@tamagui/roving-focus'
 import { SizableStackProps, ThemeableStack, YStack } from '@tamagui/stacks'
 import { useCallbackRef } from '@tamagui/use-callback-ref'
 import { useDirection } from '@tamagui/use-direction'
-import { Stack, Theme, isWeb, styled } from '@tamagui/web'
+import { Stack, isWeb, styled } from '@tamagui/web'
 import { TamaguiElement } from '@tamagui/web/types'
 import { hideOthers } from 'aria-hidden'
 import { useId } from 'react'
@@ -84,7 +84,7 @@ interface MenuProps extends PopperPrimitive.PopperProps {
 
 const MENU_CONTEXT = 'MenuContext'
 
-const Menu: React.FC<ScopedProps<MenuProps>> = (props: ScopedProps<MenuProps>) => {
+const Menu = (props: ScopedProps<MenuProps>) => {
   const {
     __scopeMenu,
     open = false,
@@ -192,9 +192,7 @@ interface MenuPortalProps {
   forceMount?: true
 }
 
-const MenuPortal: React.FC<ScopedProps<MenuPortalProps>> = (
-  props: ScopedProps<MenuPortalProps>
-) => {
+const MenuPortal = (props: ScopedProps<MenuPortalProps>) => {
   const { __scopeMenu, forceMount, children, host } = props
   const context = useMenuContext(__scopeMenu)
   return (
@@ -243,10 +241,9 @@ interface MenuContentProps extends MenuRootContentTypeProps {
 }
 
 const MenuContent = React.forwardRef<MenuContentElement, ScopedProps<MenuContentProps>>(
-  (props: ScopedProps<MenuContentProps>, forwardedRef) => {
+  (props, forwardedRef) => {
     const portalContext = usePortalContext(props.__scopeMenu)
     const { forceMount = portalContext.forceMount, ...contentProps } = props
-    const context = useMenuContext(props.__scopeMenu)
     const rootContext = useMenuRootContext(props.__scopeMenu)
 
     return (
@@ -271,8 +268,8 @@ interface MenuRootContentTypeProps
 
 const MenuRootContentModal = React.forwardRef<
   MenuRootContentTypeElement,
-  MenuRootContentTypeProps
->((props: ScopedProps<MenuRootContentTypeProps>, forwardedRef) => {
+  ScopedProps<MenuRootContentTypeProps>
+>((props, forwardedRef) => {
   const context = useMenuContext(props.__scopeMenu)
   const ref = React.useRef<MenuRootContentTypeElement>(null)
   const composedRefs = useComposedRefs(forwardedRef, ref)
@@ -309,8 +306,8 @@ const MenuRootContentModal = React.forwardRef<
 
 const MenuRootContentNonModal = React.forwardRef<
   MenuRootContentTypeElement,
-  MenuRootContentTypeProps
->((props: ScopedProps<MenuRootContentTypeProps>, forwardedRef) => {
+  ScopedProps<MenuRootContentTypeProps>
+>((props, forwardedRef) => {
   const context = useMenuContext(props.__scopeMenu)
   return (
     <MenuContentImpl
@@ -660,7 +657,7 @@ interface MenuItemProps extends Omit<MenuItemImplProps, 'onSelect'> {
 }
 
 const MenuItem = ThemeableStack.styleable<ScopedProps<MenuItemProps>>(
-  (props: ScopedProps<MenuItemProps>, forwardedRef) => {
+  (props, forwardedRef) => {
     const { disabled = false, onSelect, children, ...itemProps } = props
     const ref = React.useRef<HTMLDivElement>(null)
     const rootContext = useMenuRootContext(props.__scopeMenu)
@@ -749,7 +746,7 @@ interface MenuItemImplProps extends PrimitiveDivProps {
 const MenuItemImpl = React.forwardRef<
   MenuItemImplElement,
   ScopedProps<MenuItemImplProps>
->((props: ScopedProps<MenuItemImplProps>, forwardedRef) => {
+>((props, forwardedRef) => {
   const { __scopeMenu, disabled = false, textValue, ...itemProps } = props
   const contentContext = useMenuContentContext(__scopeMenu)
   const ref = React.useRef<TamaguiElement>(null)
@@ -855,7 +852,7 @@ interface MenuCheckboxItemProps extends MenuItemProps {
 }
 
 const MenuCheckboxItem = ThemeableStack.styleable<ScopedProps<MenuCheckboxItemProps>>(
-  (props: ScopedProps<MenuCheckboxItemProps>, forwardedRef) => {
+  (props, forwardedRef) => {
     const { checked = false, onCheckedChange, ...checkboxItemProps } = props
     return (
       <ItemIndicatorProvider scope={props.__scopeMenu} checked={checked}>
@@ -896,7 +893,7 @@ interface MenuRadioGroupProps extends MenuGroupProps {
 }
 
 const MenuRadioGroup = MenuGroup.styleable<ScopedProps<MenuRadioGroupProps>>(
-  (props: ScopedProps<MenuRadioGroupProps>, forwardedRef) => {
+  (props, forwardedRef) => {
     const { value, onValueChange, ...groupProps } = props
     const handleValueChange = useCallbackRef(onValueChange)
     return (
@@ -925,7 +922,7 @@ interface MenuRadioItemProps extends MenuItemProps {
 }
 
 const MenuRadioItem = ThemeableStack.styleable<ScopedProps<MenuRadioItemProps>>(
-  (props: ScopedProps<MenuRadioItemProps>, forwardedRef) => {
+  (props, forwardedRef) => {
     const { value, ...radioItemProps } = props
     const context = useRadioGroupContext(props.__scopeMenu)
     const checked = value === context.value
@@ -974,7 +971,7 @@ interface MenuItemIndicatorProps extends PrimitiveSpanProps {
 }
 
 const MenuItemIndicator = ThemeableStack.styleable<ScopedProps<MenuItemIndicatorProps>>(
-  (props: ScopedProps<MenuItemIndicatorProps>, forwardedRef) => {
+  (props, forwardedRef) => {
     const { __scopeMenu, forceMount, ...itemIndicatorProps } = props
     const indicatorContext = useItemIndicatorContext(__scopeMenu)
     return (
@@ -1034,7 +1031,7 @@ interface MenuArrowProps extends PopperArrowProps {}
 const MenuArrow = PopperPrimitive.PopperArrow.styleable<
   TamaguiElement,
   ScopedProps<MenuArrowProps>
->(function PopoverArrow(props: ScopedProps<MenuArrowProps>, forwardedRef) {
+>(function PopoverArrow(props, forwardedRef) {
   const { __scopeMenu, ...rest } = props
   return (
     <PopperPrimitive.PopperArrow
@@ -1119,7 +1116,7 @@ type MenuSubTriggerElement = MenuItemImplElement
 interface MenuSubTriggerProps extends MenuItemImplProps {}
 
 const MenuSubTrigger = YStack.styleable<ScopedProps<MenuSubTriggerProps>>(
-  (props: ScopedProps<MenuSubTriggerProps>, forwardedRef) => {
+  (props, forwardedRef) => {
     const context = useMenuContext(props.__scopeMenu)
     const rootContext = useMenuRootContext(props.__scopeMenu)
     const subContext = useMenuSubContext(props.__scopeMenu)
@@ -1285,7 +1282,7 @@ interface MenuSubContentProps
 const MenuSubContent = React.forwardRef<
   MenuSubContentElement,
   ScopedProps<MenuSubContentProps>
->((props: ScopedProps<MenuSubContentProps>, forwardedRef) => {
+>((props, forwardedRef) => {
   const portalContext = usePortalContext(props.__scopeMenu)
   const { forceMount = portalContext.forceMount, ...subContentProps } = props
   const context = useMenuContext(props.__scopeMenu)
@@ -1525,7 +1522,6 @@ export type {
   MenuItemIndicatorProps,
   MenuSeparatorProps,
   MenuArrowProps,
-  MenuSubProps,
   MenuSubTriggerProps,
   MenuSubContentProps,
 }

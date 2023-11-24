@@ -10,7 +10,6 @@ import {
   composeRefs,
   createStyledContext,
   isWeb,
-  styled,
   useControllableState,
 } from 'tamagui'
 
@@ -46,9 +45,7 @@ interface DropdownMenuProps extends MenuPrimitive.MenuProps {
   modal?: boolean
 }
 const DROPDOWN_MENU_CONTEXT = 'DropdownMenuContext'
-const DropdownMenu: React.FC<DropdownMenuProps> = (
-  props: ScopedProps<DropdownMenuProps>
-) => {
+const DropdownMenu = (props: ScopedProps<DropdownMenuProps>) => {
   const {
     __scopeDropdownMenu,
     children,
@@ -106,7 +103,7 @@ interface DropdownMenuTriggerProps extends PrimitiveButtonProps {}
 const DropdownMenuTriggerFrame = MenuPrimitive.Anchor
 
 const DropdownMenuTrigger = YStack.styleable<ScopedProps<DropdownMenuTriggerProps>>(
-  (props: ScopedProps<DropdownMenuTriggerProps>, forwardedRef) => {
+  (props, forwardedRef) => {
     const {
       __scopeDropdownMenu,
       asChild,
@@ -182,7 +179,7 @@ const PORTAL_NAME = 'DropdownMenuPortal'
 type MenuPortalProps = React.ComponentPropsWithoutRef<typeof MenuPrimitive.Portal>
 interface DropdownMenuPortalProps extends MenuPortalProps {}
 
-const DropdownMenuPortal: React.FC<ScopedProps<DropdownMenuPortalProps>> = (props) => {
+const DropdownMenuPortal = (props: ScopedProps<DropdownMenuPortalProps>) => {
   const { __scopeDropdownMenu, ...portalProps } = props
   return (
     <MenuPrimitive.Portal
@@ -206,8 +203,8 @@ interface DropdownMenuContentProps extends Omit<MenuContentProps, 'onEntryFocus'
 
 const DropdownMenuContent = React.forwardRef<
   DropdownMenuContentElement,
-  DropdownMenuContentProps
->((props: ScopedProps<DropdownMenuContentProps>, forwardedRef) => {
+  ScopedProps<DropdownMenuContentProps>
+>((props, forwardedRef) => {
   const { __scopeDropdownMenu, ...contentProps } = props
   const context = useDropdownMenuContext(__scopeDropdownMenu)
   const hasInteractedOutsideRef = React.useRef(false)
@@ -337,8 +334,8 @@ interface DropdownMenuRadioGroupProps extends MenuRadioGroupProps {}
 
 const DropdownMenuRadioGroup = React.forwardRef<
   DropdownMenuRadioGroupElement,
-  DropdownMenuRadioGroupProps
->((props: ScopedProps<DropdownMenuRadioGroupProps>, forwardedRef) => {
+  ScopedProps<DropdownMenuRadioGroupProps>
+>((props, forwardedRef) => {
   const { __scopeDropdownMenu, ...radioGroupProps } = props
   return (
     <MenuPrimitive.RadioGroup
@@ -435,7 +432,7 @@ type DropdownMenuArrowProps = MenuArrowProps & {}
 const DropdownMenuArrow = React.forwardRef<
   TamaguiElement,
   ScopedProps<DropdownMenuArrowProps>
->((props: ScopedProps<DropdownMenuArrowProps>, forwardedRef) => {
+>((props, forwardedRef) => {
   const { __scopeDropdownMenu, ...arrowProps } = props
   return (
     <MenuPrimitive.Arrow
@@ -460,7 +457,7 @@ interface DropdownMenuSubProps extends MenuPrimitive.MenuSubProps {
   onOpenChange?(open: boolean): void
 }
 
-const DropdownMenuSub: React.FC<ScopedProps<DropdownMenuSubProps>> = (props) => {
+const DropdownMenuSub = (props: ScopedProps<DropdownMenuSubProps>) => {
   const {
     __scopeDropdownMenu,
     children,
@@ -526,8 +523,8 @@ interface DropdownMenuSubContentProps extends MenuSubContentProps {}
 
 const DropdownMenuSubContent = React.forwardRef<
   DropdownMenuSubContentElement,
-  DropdownMenuSubContentProps
->((props: ScopedProps<DropdownMenuSubContentProps>, forwardedRef) => {
+  ScopedProps<DropdownMenuSubContentProps>
+>((props, forwardedRef) => {
   const { __scopeDropdownMenu, ...subContentProps } = props
 
   return (
