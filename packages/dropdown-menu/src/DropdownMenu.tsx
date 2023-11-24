@@ -249,20 +249,7 @@ const GROUP_NAME = 'DropdownMenuGroup'
 type MenuGroupProps = React.ComponentPropsWithoutRef<typeof MenuPrimitive.Group>
 type DropdownMenuGroupProps = MenuGroupProps & {}
 
-const DropdownMenuGroupFrame = MenuPrimitive.Group
-
-const DropdownMenuGroup = DropdownMenuGroupFrame.styleable<
-  ScopedProps<DropdownMenuGroupProps>
->((props, forwardedRef) => {
-  const { __scopeDropdownMenu, ...groupProps } = props
-  return (
-    <DropdownMenuGroupFrame
-      componentName={GROUP_NAME}
-      {...groupProps}
-      ref={forwardedRef}
-    />
-  )
-})
+const DropdownMenuGroup = MenuPrimitive.Group
 
 DropdownMenuGroup.displayName = GROUP_NAME
 
@@ -276,9 +263,7 @@ const LABEL_NAME = 'DropdownMenuLabel'
 type MenuLabelProps = React.ComponentPropsWithoutRef<typeof MenuPrimitive.Label>
 type DropdownMenuLabelProps = MenuLabelProps & {}
 
-const DropdownMenuLabel = styled(MenuPrimitive.Label, {
-  name: LABEL_NAME,
-})
+const DropdownMenuLabel = MenuPrimitive.Label
 
 DropdownMenuLabel.displayName = LABEL_NAME
 

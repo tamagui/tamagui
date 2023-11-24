@@ -630,6 +630,7 @@ interface MenuGroupProps extends PrimitiveDivProps {}
 
 const MenuGroup = styled(ThemeableStack, {
   name: GROUP_NAME,
+  width: '100%',
   role: 'group',
 })
 
@@ -646,6 +647,7 @@ interface MenuLabelProps extends PrimitiveDivProps {}
 
 const MenuLabel = styled(ThemeableStack, {
   name: LABEL_NAME,
+  paddingHorizontal: '$4',
 })
 
 MenuLabel.displayName = LABEL_NAME
@@ -781,6 +783,8 @@ const MenuItemImpl = React.forwardRef<
         asChild
         __scopeRovingFocusGroup={__scopeMenu || MENU_CONTEXT}
         focusable={!disabled}
+        flexDirection="row"
+        alignItems="center"
       >
         <ThemeableStack
           hoverTheme
@@ -831,13 +835,6 @@ const MenuItemImpl = React.forwardRef<
             // @ts-ignore
             whenMouse((event) => contentContext.onItemLeave(event))
           )}
-          {...(isWeb
-            ? {
-                onFocus: composeEventHandlers(props.onFocus, () => setIsFocused(true)),
-                // @ts-ignore
-                onBlur: composeEventHandlers(props.onBlur, () => setIsFocused(false)),
-              }
-            : null)}
           onFocus={composeEventHandlers(props.onFocus, () => setIsFocused(true))}
           onBlur={composeEventHandlers(props.onBlur, () => setIsFocused(false))}
         />
@@ -913,11 +910,7 @@ const MenuRadioGroup = MenuGroup.styleable<ScopedProps<MenuRadioGroupProps>>(
         value={value}
         onValueChange={handleValueChange}
       >
-        <MenuRadioGroup
-          componentName={RADIO_GROUP_NAME}
-          {...groupProps}
-          ref={forwardedRef}
-        />
+        <MenuGroup componentName={RADIO_GROUP_NAME} {...groupProps} ref={forwardedRef} />
       </RadioGroupProvider>
     )
   }
@@ -1023,8 +1016,14 @@ const MenuSeparator = styled(ThemeableStack, {
   role: 'separator',
   // @ts-ignore
   'aria-orientation': 'horizontal',
+  borderColor: '$borderColor',
+  flexShrink: 0,
+  borderWidth: 0,
+  flex: 1,
+  height: 0,
+  maxHeight: 0,
+  borderBottomWidth: 1,
 })
-
 MenuSeparator.displayName = SEPARATOR_NAME
 
 /* -------------------------------------------------------------------------------------------------

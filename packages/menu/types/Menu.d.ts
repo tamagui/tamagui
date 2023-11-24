@@ -221,17 +221,7 @@ declare const MenuGroup: import("@tamagui/core").TamaguiComponent<(Omit<import("
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined; /**
-     * We focus items on `pointerMove` to achieve the following:
-     *
-     * - Mouse over an item (it focuses)
-     * - Leave mouse where it is and use keyboard to focus a different item
-     * - Wiggle mouse without it leaving previously focused item
-     * - Previously focused item should re-focus
-     *
-     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
-     * wiggles. This is to match native menu implementation.
-     */
+    bordered?: number | boolean | undefined;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
@@ -628,17 +618,7 @@ declare const MenuLabel: import("@tamagui/core").TamaguiComponent<(Omit<import("
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined; /**
-     * We focus items on `pointerMove` to achieve the following:
-     *
-     * - Mouse over an item (it focuses)
-     * - Leave mouse where it is and use keyboard to focus a different item
-     * - Wiggle mouse without it leaving previously focused item
-     * - Previously focused item should re-focus
-     *
-     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
-     * wiggles. This is to match native menu implementation.
-     */
+    bordered?: number | boolean | undefined;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
@@ -1036,17 +1016,7 @@ declare const MenuItem: import("@tamagui/core").TamaguiComponent<Omit<Omit<impor
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined; /**
-     * We focus items on `pointerMove` to achieve the following:
-     *
-     * - Mouse over an item (it focuses)
-     * - Leave mouse where it is and use keyboard to focus a different item
-     * - Wiggle mouse without it leaving previously focused item
-     * - Previously focused item should re-focus
-     *
-     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
-     * wiggles. This is to match native menu implementation.
-     */
+    bordered?: number | boolean | undefined;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
@@ -1278,17 +1248,7 @@ declare const MenuCheckboxItem: import("@tamagui/core").TamaguiComponent<Omit<Om
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined; /**
-     * We focus items on `pointerMove` to achieve the following:
-     *
-     * - Mouse over an item (it focuses)
-     * - Leave mouse where it is and use keyboard to focus a different item
-     * - Wiggle mouse without it leaving previously focused item
-     * - Previously focused item should re-focus
-     *
-     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
-     * wiggles. This is to match native menu implementation.
-     */
+    bordered?: number | boolean | undefined;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
@@ -1515,17 +1475,7 @@ declare const MenuRadioGroup: import("@tamagui/core").TamaguiComponent<Omit<(Omi
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined; /**
-     * We focus items on `pointerMove` to achieve the following:
-     *
-     * - Mouse over an item (it focuses)
-     * - Leave mouse where it is and use keyboard to focus a different item
-     * - Wiggle mouse without it leaving previously focused item
-     * - Previously focused item should re-focus
-     *
-     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
-     * wiggles. This is to match native menu implementation.
-     */
+    bordered?: number | boolean | undefined;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
@@ -1927,17 +1877,7 @@ declare const MenuRadioItem: import("@tamagui/core").TamaguiComponent<Omit<Omit<
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined; /**
-     * We focus items on `pointerMove` to achieve the following:
-     *
-     * - Mouse over an item (it focuses)
-     * - Leave mouse where it is and use keyboard to focus a different item
-     * - Wiggle mouse without it leaving previously focused item
-     * - Previously focused item should re-focus
-     *
-     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
-     * wiggles. This is to match native menu implementation.
-     */
+    bordered?: number | boolean | undefined;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
@@ -2168,17 +2108,7 @@ declare const MenuItemIndicator: import("@tamagui/core").TamaguiComponent<Omit<O
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined; /**
-     * We focus items on `pointerMove` to achieve the following:
-     *
-     * - Mouse over an item (it focuses)
-     * - Leave mouse where it is and use keyboard to focus a different item
-     * - Wiggle mouse without it leaving previously focused item
-     * - Previously focused item should re-focus
-     *
-     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
-     * wiggles. This is to match native menu implementation.
-     */
+    bordered?: number | boolean | undefined;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
@@ -2403,17 +2333,7 @@ declare const MenuSeparator: import("@tamagui/core").TamaguiComponent<(Omit<impo
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined; /**
-     * We focus items on `pointerMove` to achieve the following:
-     *
-     * - Mouse over an item (it focuses)
-     * - Leave mouse where it is and use keyboard to focus a different item
-     * - Wiggle mouse without it leaving previously focused item
-     * - Previously focused item should re-focus
-     *
-     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
-     * wiggles. This is to match native menu implementation.
-     */
+    bordered?: number | boolean | undefined;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
@@ -3046,7 +2966,10 @@ declare const MenuSubTrigger: import("@tamagui/core").TamaguiComponent<Omit<Omit
         onResponderRelease?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderStart?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderTerminationRequest?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-        onResponderTerminate?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+        onResponderTerminate?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+         * Used to force mounting when more control is needed. Useful when
+         * controlling animation with React animation libraries.
+         */
         onStartShouldSetResponderCapture?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
         onMoveShouldSetResponderCapture?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
         elevationAndroid?: string | number | undefined;
@@ -3211,17 +3134,7 @@ declare const Group: import("@tamagui/core").TamaguiComponent<(Omit<import("reac
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined; /**
-     * We focus items on `pointerMove` to achieve the following:
-     *
-     * - Mouse over an item (it focuses)
-     * - Leave mouse where it is and use keyboard to focus a different item
-     * - Wiggle mouse without it leaving previously focused item
-     * - Previously focused item should re-focus
-     *
-     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
-     * wiggles. This is to match native menu implementation.
-     */
+    bordered?: number | boolean | undefined;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
@@ -3616,17 +3529,7 @@ declare const Label: import("@tamagui/core").TamaguiComponent<(Omit<import("reac
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined; /**
-     * We focus items on `pointerMove` to achieve the following:
-     *
-     * - Mouse over an item (it focuses)
-     * - Leave mouse where it is and use keyboard to focus a different item
-     * - Wiggle mouse without it leaving previously focused item
-     * - Previously focused item should re-focus
-     *
-     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
-     * wiggles. This is to match native menu implementation.
-     */
+    bordered?: number | boolean | undefined;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
@@ -4021,17 +3924,7 @@ declare const Item: import("@tamagui/core").TamaguiComponent<Omit<Omit<import("r
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined; /**
-     * We focus items on `pointerMove` to achieve the following:
-     *
-     * - Mouse over an item (it focuses)
-     * - Leave mouse where it is and use keyboard to focus a different item
-     * - Wiggle mouse without it leaving previously focused item
-     * - Previously focused item should re-focus
-     *
-     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
-     * wiggles. This is to match native menu implementation.
-     */
+    bordered?: number | boolean | undefined;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
@@ -4254,17 +4147,7 @@ declare const CheckboxItem: import("@tamagui/core").TamaguiComponent<Omit<Omit<i
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined; /**
-     * We focus items on `pointerMove` to achieve the following:
-     *
-     * - Mouse over an item (it focuses)
-     * - Leave mouse where it is and use keyboard to focus a different item
-     * - Wiggle mouse without it leaving previously focused item
-     * - Previously focused item should re-focus
-     *
-     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
-     * wiggles. This is to match native menu implementation.
-     */
+    bordered?: number | boolean | undefined;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
@@ -4487,17 +4370,7 @@ declare const RadioGroup: import("@tamagui/core").TamaguiComponent<Omit<(Omit<im
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined; /**
-     * We focus items on `pointerMove` to achieve the following:
-     *
-     * - Mouse over an item (it focuses)
-     * - Leave mouse where it is and use keyboard to focus a different item
-     * - Wiggle mouse without it leaving previously focused item
-     * - Previously focused item should re-focus
-     *
-     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
-     * wiggles. This is to match native menu implementation.
-     */
+    bordered?: number | boolean | undefined;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
@@ -4896,17 +4769,7 @@ declare const RadioItem: import("@tamagui/core").TamaguiComponent<Omit<Omit<impo
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined; /**
-     * We focus items on `pointerMove` to achieve the following:
-     *
-     * - Mouse over an item (it focuses)
-     * - Leave mouse where it is and use keyboard to focus a different item
-     * - Wiggle mouse without it leaving previously focused item
-     * - Previously focused item should re-focus
-     *
-     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
-     * wiggles. This is to match native menu implementation.
-     */
+    bordered?: number | boolean | undefined;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
@@ -5129,17 +4992,7 @@ declare const ItemIndicator: import("@tamagui/core").TamaguiComponent<Omit<Omit<
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined; /**
-     * We focus items on `pointerMove` to achieve the following:
-     *
-     * - Mouse over an item (it focuses)
-     * - Leave mouse where it is and use keyboard to focus a different item
-     * - Wiggle mouse without it leaving previously focused item
-     * - Previously focused item should re-focus
-     *
-     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
-     * wiggles. This is to match native menu implementation.
-     */
+    bordered?: number | boolean | undefined;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
@@ -5362,17 +5215,7 @@ declare const Separator: import("@tamagui/core").TamaguiComponent<(Omit<import("
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined; /**
-     * We focus items on `pointerMove` to achieve the following:
-     *
-     * - Mouse over an item (it focuses)
-     * - Leave mouse where it is and use keyboard to focus a different item
-     * - Wiggle mouse without it leaving previously focused item
-     * - Previously focused item should re-focus
-     *
-     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
-     * wiggles. This is to match native menu implementation.
-     */
+    bordered?: number | boolean | undefined;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
@@ -5995,7 +5838,10 @@ declare const SubTrigger: import("@tamagui/core").TamaguiComponent<Omit<Omit<imp
         onResponderRelease?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderStart?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderTerminationRequest?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-        onResponderTerminate?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+        onResponderTerminate?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+         * Used to force mounting when more control is needed. Useful when
+         * controlling animation with React animation libraries.
+         */
         onStartShouldSetResponderCapture?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
         onMoveShouldSetResponderCapture?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
         elevationAndroid?: string | number | undefined;
