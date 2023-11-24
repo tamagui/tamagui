@@ -1,3 +1,4 @@
+import { Animate } from '@tamagui/animate'
 import { AnimatePresence as Presence } from '@tamagui/animate-presence'
 import { createCollection } from '@tamagui/collection'
 import {
@@ -198,13 +199,11 @@ const MenuPortal: React.FC<ScopedProps<MenuPortalProps>> = (
   const context = useMenuContext(__scopeMenu)
   return (
     <PortalProvider scope={__scopeMenu} forceMount={forceMount}>
-      <Presence>
-        {forceMount || context.open ? (
-          <PortalPrimitive pointerEvents="auto" position="relative" asChild host={host}>
-            {children}
-          </PortalPrimitive>
-        ) : null}
-      </Presence>
+      <Animate type="presence" present={forceMount || context.open}>
+        <PortalPrimitive pointerEvents="auto" position="relative" asChild host={host}>
+          {children}
+        </PortalPrimitive>
+      </Animate>
     </PortalProvider>
   )
 }
@@ -252,17 +251,13 @@ const MenuContent = React.forwardRef<MenuContentElement, ScopedProps<MenuContent
 
     return (
       <Collection.Provider __scopeCollection={props.__scopeMenu || MENU_CONTEXT}>
-        <Presence>
-          {forceMount || context.open ? (
-            <Collection.Slot __scopeCollection={props.__scopeMenu || MENU_CONTEXT}>
-              {rootContext.modal ? (
-                <MenuRootContentModal {...contentProps} ref={forwardedRef} />
-              ) : (
-                <MenuRootContentNonModal {...contentProps} ref={forwardedRef} />
-              )}
-            </Collection.Slot>
-          ) : null}
-        </Presence>
+        <Collection.Slot __scopeCollection={props.__scopeMenu || MENU_CONTEXT}>
+          {rootContext.modal ? (
+            <MenuRootContentModal {...contentProps} ref={forwardedRef} />
+          ) : (
+            <MenuRootContentNonModal {...contentProps} ref={forwardedRef} />
+          )}
+        </Collection.Slot>
       </Collection.Provider>
     )
   }
@@ -1300,70 +1295,64 @@ const MenuSubContent = React.forwardRef<
   const composedRefs = useComposedRefs(forwardedRef, ref)
   return (
     <Collection.Provider __scopeCollection={props.__scopeMenu || MENU_CONTEXT}>
-      <Presence>
-        {forceMount || context.open ? (
-          <Collection.Slot __scopeCollection={props.__scopeMenu || MENU_CONTEXT}>
-            <MenuContentImpl
-              id={subContext.contentId}
-              aria-labelledby={subContext.triggerId}
-              {...subContentProps}
-              ref={composedRefs}
-              // TODO what are these align and side props?
-              //@ts-ignore
-              align="start"
-              //@ts-ignore
-              side={rootContext.dir === 'rtl' ? 'left' : 'right'}
-              disableOutsidePointerEvents={false}
-              disableOutsideScroll={false}
-              trapFocus={false}
-              onOpenAutoFocus={(event) => {
-                // when opening a submenu, focus content for keyboard users only
-                if (rootContext.isUsingKeyboardRef.current) ref.current?.focus()
-                event.preventDefault()
-              }}
-              // The menu might close because of focusing another menu item in the parent menu. We
-              // don't want it to refocus the trigger in that case so we handle trigger focus ourselves.
-              onCloseAutoFocus={(event) => event.preventDefault()}
-              onFocusOutside={composeEventHandlers(props.onFocusOutside, (event) => {
-                // We prevent closing when the trigger is focused to avoid triggering a re-open animation
-                // on pointer interaction.
-                if (event.target !== subContext.trigger) context.onOpenChange(false)
-              })}
-              onEscapeKeyDown={composeEventHandlers(props.onEscapeKeyDown, (event) => {
-                rootContext.onClose()
-                // ensure pressing escape in submenu doesn't escape full screen mode
-                event.preventDefault()
-              })}
-              {...(isWeb
-                ? {
+      <Collection.Slot __scopeCollection={props.__scopeMenu || MENU_CONTEXT}>
+        <MenuContentImpl
+          id={subContext.contentId}
+          aria-labelledby={subContext.triggerId}
+          {...subContentProps}
+          ref={composedRefs}
+          // TODO what are these align and side props?
+          //@ts-ignore
+          align="start"
+          //@ts-ignore
+          side={rootContext.dir === 'rtl' ? 'left' : 'right'}
+          disableOutsidePointerEvents={false}
+          disableOutsideScroll={false}
+          trapFocus={false}
+          onOpenAutoFocus={(event) => {
+            // when opening a submenu, focus content for keyboard users only
+            if (rootContext.isUsingKeyboardRef.current) ref.current?.focus()
+            event.preventDefault()
+          }}
+          // The menu might close because of focusing another menu item in the parent menu. We
+          // don't want it to refocus the trigger in that case so we handle trigger focus ourselves.
+          onCloseAutoFocus={(event) => event.preventDefault()}
+          onFocusOutside={composeEventHandlers(props.onFocusOutside, (event) => {
+            // We prevent closing when the trigger is focused to avoid triggering a re-open animation
+            // on pointer interaction.
+            if (event.target !== subContext.trigger) context.onOpenChange(false)
+          })}
+          onEscapeKeyDown={composeEventHandlers(props.onEscapeKeyDown, (event) => {
+            rootContext.onClose()
+            // ensure pressing escape in submenu doesn't escape full screen mode
+            event.preventDefault()
+          })}
+          {...(isWeb
+            ? {
+                // @ts-ignore
+                onKeyDown: composeEventHandlers(
+                  // @ts-ignore
+                  props.onKeyDown,
+                  (event: KeyboardEvent) => {
+                    // Submenu key events bubble through portals. We only care about keys in this menu.
                     // @ts-ignore
-                    onKeyDown: composeEventHandlers(
-                      // @ts-ignore
-                      props.onKeyDown,
-                      (event: KeyboardEvent) => {
-                        // Submenu key events bubble through portals. We only care about keys in this menu.
-                        // @ts-ignore
-                        const isKeyDownInside = event.currentTarget.contains(
-                          event.target as HTMLElement
-                        )
-                        const isCloseKey = SUB_CLOSE_KEYS[rootContext.dir].includes(
-                          event.key
-                        )
-                        if (isKeyDownInside && isCloseKey) {
-                          context.onOpenChange(false)
-                          // We focus manually because we prevented it in `onCloseAutoFocus`
-                          subContext.trigger?.focus()
-                          // prevent window from scrolling
-                          event.preventDefault()
-                        }
-                      }
-                    ),
+                    const isKeyDownInside = event.currentTarget.contains(
+                      event.target as HTMLElement
+                    )
+                    const isCloseKey = SUB_CLOSE_KEYS[rootContext.dir].includes(event.key)
+                    if (isKeyDownInside && isCloseKey) {
+                      context.onOpenChange(false)
+                      // We focus manually because we prevented it in `onCloseAutoFocus`
+                      subContext.trigger?.focus()
+                      // prevent window from scrolling
+                      event.preventDefault()
+                    }
                   }
-                : null)}
-            />
-          </Collection.Slot>
-        ) : null}
-      </Presence>
+                ),
+              }
+            : null)}
+        />
+      </Collection.Slot>
     </Collection.Provider>
   )
 })
