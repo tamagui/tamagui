@@ -1,11 +1,11 @@
 import { Stack } from '@tamagui/core';
-import { MenuArrow, MenuCheckboxItem, MenuContent, MenuGroup, MenuItem, MenuItemIndicator, MenuLabel, MenuPortal, MenuRadioGroup, MenuRadioItem, MenuSeparator, MenuSubContent, MenuSubTrigger } from '@tamagui/menu';
+import { MenuArrow, MenuCheckboxItem, MenuContent, MenuGroup, MenuItem, MenuItemIndicator, MenuLabel, MenuPortal, MenuProps, MenuRadioGroup, MenuRadioItem, MenuSeparator, MenuSubContent, MenuSubProps, MenuSubTrigger } from '@tamagui/menu';
 import * as React from 'react';
 type Direction = 'ltr' | 'rtl';
 type ScopedProps<P> = P & {
     __scopeContextMenu?: string;
 };
-interface ContextMenuProps {
+interface ContextMenuProps extends MenuProps {
     children?: React.ReactNode;
     onOpenChange?(open: boolean): void;
     dir?: Direction;
@@ -5560,7 +5560,7 @@ declare const ContextMenuArrow: import("@tamagui/core").TamaguiComponent<Omit<im
         readonly elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     };
 }>;
-interface ContextMenuSubProps {
+interface ContextMenuSubProps extends MenuSubProps {
     children?: React.ReactNode;
     open?: boolean;
     defaultOpen?: boolean;

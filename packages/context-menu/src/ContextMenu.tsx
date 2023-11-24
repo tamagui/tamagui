@@ -17,11 +17,13 @@ import {
   MenuItemIndicator,
   MenuLabel,
   MenuPortal,
+  MenuProps,
   MenuRadioGroup,
   MenuRadioItem,
   MenuSeparator,
   MenuSub,
   MenuSubContent,
+  MenuSubProps,
   MenuSubTrigger,
 } from '@tamagui/menu'
 import { useCallbackRef } from '@tamagui/use-callback-ref'
@@ -50,7 +52,7 @@ type ScopedProps<P> = P & { __scopeContextMenu?: string }
 const { Provider: ContextMenuProvider, useStyledContext: useContextMenuContext } =
   createStyledContext<ContextMenuContextValue>()
 
-interface ContextMenuProps {
+interface ContextMenuProps extends MenuProps {
   children?: React.ReactNode
   onOpenChange?(open: boolean): void
   dir?: Direction
@@ -532,7 +534,7 @@ ContextMenuArrow.displayName = ARROW_NAME
 
 const SUB_NAME = 'ContextMenuSub'
 
-interface ContextMenuSubProps {
+interface ContextMenuSubProps extends MenuSubProps {
   children?: React.ReactNode
   open?: boolean
   defaultOpen?: boolean
@@ -548,6 +550,7 @@ const ContextMenuSub: React.FC<ScopedProps<ContextMenuSubProps>> = (
     onOpenChange,
     open: openProp,
     defaultOpen,
+    ...rest
   } = props
   const [open, setOpen] = useControllableState({
     prop: openProp,
@@ -560,6 +563,7 @@ const ContextMenuSub: React.FC<ScopedProps<ContextMenuSubProps>> = (
       __scopeMenu={__scopeContextMenu || CONTEXTMENU_CONTEXT}
       open={open}
       onOpenChange={setOpen}
+      {...rest}
     >
       {children}
     </MenuSub>

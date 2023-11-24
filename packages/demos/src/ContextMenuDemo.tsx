@@ -16,7 +16,7 @@ import {
   ContextMenuSubTrigger,
   ContextMenuTrigger,
 } from '@tamagui/context-menu'
-import { Airplay, CheckCircle, ChevronRight, Dot, TentTree } from '@tamagui/lucide-icons'
+import { Airplay, CheckCircle, ChevronRight, Dot } from '@tamagui/lucide-icons'
 import { useState } from 'react'
 import { Button, Text, XStack } from 'tamagui'
 
@@ -25,14 +25,7 @@ export function ContextMenuDemo() {
   const [person, setPerson] = useState('pedro')
 
   return (
-    <ContextMenu
-      offset={{
-        crossAxis: 25,
-      }}
-      allowFlip
-      placement="bottom-start"
-      modal
-    >
+    <ContextMenu allowFlip placement="bottom-start">
       <ContextMenuTrigger borderWidth={2} height={200} width={200} asChild>
         <Text>Right click here</Text>
       </ContextMenuTrigger>
