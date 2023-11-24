@@ -13,6 +13,7 @@ export * from './ThemeBuilderDemo';
 export * from './CardDemo';
 export * from './CheckboxDemo';
 export * from './ColorsDemo';
+export * from './ContextMenuDemo';
 export * from './DropDownMenuDemo';
 export * from './DialogDemo';
 export * from './FormsDemo';
