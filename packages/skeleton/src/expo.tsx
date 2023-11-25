@@ -2,11 +2,11 @@
 import { LinearGradient } from 'expo-linear-gradient'
 import React from 'react'
 
-import SkeletonNative from './skeleton'
+import Skeleton from './skeleton-new'
 import { MotiSkeletonProps } from './types'
 
 export default function SkeletonExpo(props: Omit<MotiSkeletonProps, 'Gradient'>) {
-  return <SkeletonNative {...props} Gradient={LinearGradient as any} />
+  return <Skeleton {...props} Gradient={LinearGradient as any} />
 }
 
-SkeletonExpo.Group = SkeletonNative.Group
+SkeletonExpo.Group = Skeleton.Group
