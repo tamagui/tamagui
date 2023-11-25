@@ -165,7 +165,11 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
         (native.includes('ios') && Platform.OS === 'ios')
 
       const [button, setButton] = React.useState<HTMLButtonElement | null>(null)
-      const composedRefs = useComposedRefs(forwardedRef, (node) => setButton(node as any))
+      const composedRefs = useComposedRefs(
+        forwardedRef,
+        // @ts-expect-error
+        setButton
+      )
       const labelId = useLabelContext(button)
       const labelledBy = ariaLabelledby || labelId
       const hasConsumerStoppedPropagationRef = React.useRef(false)
@@ -211,6 +215,7 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
         <>
           {/* @ts-ignore */}
           <Frame
+            tag="button"
             unstyled={unstyled}
             size={size}
             checked={checked}

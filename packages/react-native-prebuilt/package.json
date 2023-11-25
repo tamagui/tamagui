@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/react-native-prebuilt",
-  "version": "1.76.0",
+  "version": "1.79.1",
   "main": "react-native.js",
   "license": "MIT",
   "sideEffects": true,
@@ -16,7 +16,7 @@
     "./jsx-runtime": "./dist/react-jsx-runtime.js"
   },
   "devDependencies": {
-    "@babel/core": "^7.21.8",
+    "@babel/core": "^7.23.3",
     "esbuild": "~0.19.3",
     "fs-extra": "^11.1.0",
     "metro-react-native-babel-preset": "^0.77.0",

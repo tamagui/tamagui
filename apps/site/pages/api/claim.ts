@@ -1,10 +1,12 @@
-import { apiRoute } from '@lib/apiRoute'
+import { apiRoute, postgresError } from '@lib/apiRoute'
 import { claimProductAccess } from '@lib/claim-product'
 import { protectApiRoute } from '@lib/protectApiRoute'
 import { getArray, getSingle } from '@lib/supabase-utils'
 
 export default apiRoute(async (req, res) => {
   const { supabase, user } = await protectApiRoute({ req, res })
+
+  console.info(`Claim: authed`)
 
   const subscriptionId = req.body['subscription_id']
   const productId = req.body['product_id']
@@ -32,13 +34,19 @@ export default apiRoute(async (req, res) => {
     return
   }
 
+  console.info(`Claim: validated`)
+
   const subscriptionRes = await supabase
     .from('subscriptions')
     .select('*, subscription_items(id, prices(*, products(*)))')
     .eq('id', subscriptionId)
     .single()
 
-  if (subscriptionRes.error) throw subscriptionRes.error
+  console.info(`Claim: found subscription`)
+
+  if (subscriptionRes.error) {
+    throw postgresError(subscriptionRes.error)
+  }
 
   const subscription = subscriptionRes.data
 
@@ -46,12 +54,20 @@ export default apiRoute(async (req, res) => {
     getSingle(s?.prices)
   )
 
+  console.info(`Claim: found prices`)
+
   for (const price of prices) {
     for (const product of getArray(price?.products)) {
       if (!product) continue
       if (product.id === productId) {
         try {
+          console.info(`Claim: claiming ${product.id}`)
+          console.info(`Claim: claim data: ${JSON.stringify(product)}`)
+
           const { message } = await claimProductAccess(subscription, product, user)
+
+          console.info(`Claim: claimed access for product ${product.id}`)
+
           res.json({
             message,
           })

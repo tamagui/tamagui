@@ -657,12 +657,12 @@ textarea {
   border-radius: 1000px;
   box-shadow: 0 0 40px var(--color10);
   opacity: 0.35;
-  transition: all ease-out 500ms;
+  transition: all ease-out 300ms;
 }
 
 .glowing:hover > *::before {
   box-shadow: 0 0 60px var(--color10);
-  opacity: 0.6;
+  opacity: 0.3;
 }
 
 .callout {

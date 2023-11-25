@@ -265,7 +265,7 @@ export function createExtractor(
         logger.info(
           [
             'loaded:',
-            JSON.stringify(propsWithFileInfo.allLoadedComponents, null, 2),
+            propsWithFileInfo.allLoadedComponents.map((x) => x.moduleName),
           ].join('\n')
         )
       }
@@ -2234,7 +2234,22 @@ export function createExtractor(
           const isNativeNotFlat = !shouldFlatten && platform === 'native'
           if (isNativeNotFlat) {
             if (shouldPrintDebug) {
-              logger.info(`Disabled flattening except for simple cases on native for now`)
+              logger.info(
+                `Disabled flattening except for simple cases on native for now: ${JSON.stringify(
+                  {
+                    flatNode,
+                    shouldDeopt,
+                    canFlattenProps,
+                    hasSpread,
+                    'staticConfig.isStyledHOC': staticConfig.isStyledHOC,
+                    '!staticConfig.isHOC': !staticConfig.isHOC,
+                    'staticConfig.isReactNative': staticConfig.isReactNative,
+                    'staticConfig.neverFlatten': staticConfig.neverFlatten,
+                  },
+                  null,
+                  2
+                )}`
+              )
             }
             node.attributes = ogAttributes
             return null

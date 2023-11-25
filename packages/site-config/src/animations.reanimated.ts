@@ -54,6 +54,6 @@ export const animations = createAnimations({
   quickest: {
     damping: 5,
     mass: 0.2,
-    stiffness: 200,
+    stiffness: 300,
   },
 })

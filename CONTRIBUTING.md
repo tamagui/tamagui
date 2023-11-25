@@ -59,20 +59,14 @@ If your issue does not adhere to these guidelines, in order to save everyone's t
 
 ### Pull Requests
 
-Please make sure that your [pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests) adheres to these strict guidelines.
+We're grateful to the community for contributing to the code base.
 
-Your pull request should:
+When opening a Pull Request:
 
-- address a pre-existing issue, unless reviewed and approved in the discord.
-- have a detailed explanation of what it addresses and how you went about the solution.
-- make use of any one of the pull request templates depending on whether you're contributing to the documentation or the UI kit.
-- address a single issue. Do not fix multiple issues in a single PR unless they are connected or closely related.
-
-Endeavour to adhere to these rules and make use of the proper templates, lest your pull requests be closed without review.
+- Give the person reviewing your code context to the problem and the solution.
+- If possible, try to keep PR's small and tightly scoped.
 
 ## UI Kit Contributions
-
-Contributions to the UI Kit otherwise known as code level contributions should come in the form of pull requests or issues. Pull requests can be done by forking the repo, creating a branch for that specific change and making changes locally. For issues, make sure that you follow the guidelines mentioned previously in the Issues section.
 
 **Note**: While developing, you'll want to watch the build watching in a dedicated terminal.
 
@@ -80,21 +74,20 @@ Contributions to the UI Kit otherwise known as code level contributions should c
 yarn watch:build
 ```
 
-**Note**: you may see some errors around "studio" as you run build - this is fine, we encrypt some of the non-open-source projects in the repo. The errors shouldn't block anything.
+**Note**: you may see some errors around "studio" as you run build - this is fine, we encrypt some of the non-open-source projects in the repo. The errors block anything.
 
 ### Bugs and Fixing them
 
-This kind of issue type should be used whenever you would like to report any kind of unexpected behavior, such as components not rendering correctly, unresponsive components, incompatibilities with supported libraries etc. Things like general questions, how tos or feature requests are not eligible to be reported as bugs and will be closed on sight.
+To report unexpected behavior, such as components not rendering correctly, unresponsive components, incompatibilities with supported libraries etc.
 
-When making pull requests addressing bug issues please make sure that they meet the following criteria:
+Thank you for taking the time to let the Tamagui team and community know about the issue.
 
-- [ ] The bug should not be reproducible anymore.
-- [ ] The solution adheres to the code style and quality of the repo.
-- [ ] The solution does not break or change the behavior of any other part of Tamagui.
-- [ ] The solution is up to date with the current release of Tamagui.
-- [ ] The solution should have tests and should not break any pre-existing tests. (reference the [testing section](#testing) below)
+When making pull requests addressing bug, please make sure that the PR:
 
-If your pull request ticks all these boxes then congratulations your PR is ready for review, and you're well on your way to being a Tamagui contributor.
+- [ ] Gives context to the reviewer, step-by-step if possible on how to reproduce the issue before the code change, and what functionality is broken.
+- [ ] The solution does not regress another part of the code base.
+- [ ] The solution is current with `master` branch.
+- [ ] The solution should have tests (if needed)
 
 ### Testing
 
@@ -107,11 +100,13 @@ yarn sandbox
 `sandbox` runs on
 [port 9000](http://localhost:9000/)
 
-This runs a client-side only vite build of Tamagui, with a complete configuration already set up.
+This runs a client-side only Vite build of Tamagui, with a complete configuration already set up.
 
 native test are run in `apps/kitchen-sink`
 
 Create a development build run `yarn ios` from `apps/kitchen-sink`
+
+Expo go is not supported in `kitchen-sink`. `kitchen-sink` uses a custom built version of `react-native-reanimated` so we can test everything including the various native integrations like native Sheet and native toasts. If you run Expo Go on `kitchen-sink` Metro's eager require eval errors due to demos folder being glob imported.
 
 ```bash
 # Android
@@ -161,12 +156,4 @@ Contributions to the documentation can come in many formats such as issues, pull
 
 ## Other ways to Contribute
 
-If you're not quite up to contributing to documentation or code, don't worry you can always contribute in other ways. You can contribute by:
-
-- answering questions other community members might have;
-- helping other community members debug their code;
-- sharing your progress in learning Tamagui;
-- sharing some of your awesome projects built using Tamagui; or
-- advocating for Tamagui by writing blog posts and making tutorials.
-
-We're open and welcoming of all kinds of contributions. Take that first step by joining our [discord](https://discord.gg/vhEKmdCZw6), and get to know more about the Tamagui community.
+We're grateful for all of the community support, and value contributions outside of code and documentation. To get more involved in the community, join the [discord](https://discord.gg/vhEKmdCZw6)

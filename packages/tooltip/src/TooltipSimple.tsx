@@ -7,13 +7,14 @@ import * as React from 'react'
 import { Tooltip, TooltipGroup, TooltipProps } from './Tooltip'
 
 export type TooltipSimpleProps = TooltipProps & {
+  disabled?: boolean
   label?: React.ReactNode
   children?: React.ReactNode
   contentProps?: SizableStackProps
 }
 
 export const TooltipSimple: React.FC<TooltipSimpleProps> = React.forwardRef(
-  ({ label, children, contentProps, ...tooltipProps }, ref) => {
+  ({ label, children, contentProps, disabled, ...tooltipProps }, ref) => {
     let context
     try {
       // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -25,7 +26,13 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = React.forwardRef(
     const child = React.Children.only(children)
 
     const contents = (
-      <Tooltip offset={15} restMs={220} delay={160} {...tooltipProps}>
+      <Tooltip
+        offset={15}
+        restMs={220}
+        delay={160}
+        {...tooltipProps}
+        {...(disabled ? { open: false } : null)}
+      >
         <Tooltip.Trigger
           {...(typeof label === 'string' && {
             'aria-label': label,

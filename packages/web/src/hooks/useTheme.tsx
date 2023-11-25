@@ -236,6 +236,17 @@ export function getThemeProxied(
             },
           })
         }
+
+        if (
+          process.env.NODE_ENV === 'development' &&
+          process.env.TAMAGUI_FEAT_THROW_ON_MISSING_THEME_VALUE === '1'
+        ) {
+          throw new Error(
+            `[tamagui] No theme key "${key}" found in theme ${name}. \n  Keys in theme: ${Object.keys(
+              theme
+            ).join(', ')}`
+          )
+        }
       }
 
       return Reflect.get(_, key)

@@ -24,6 +24,13 @@ export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => 
     if (key === 'elevationAndroid') return
   }
 
+  if (value === 'unset') {
+    const unsetVal = styleStateIn.conf.unset?.[key]
+    if (unsetVal != null) {
+      value = unsetVal
+    }
+  }
+
   // we use this for the sub-props like pseudos so we need to overwrite the "props" in styleState
   // fallbackProps is awkward thanks to static
   // also we need to override the props here because subStyles pass in a sub-style props object
@@ -85,7 +92,15 @@ export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => 
   }
 
   if (shouldReturn || value != null) {
-    return (styleProps.noExpand ? null : expandStyle(key, value)) || [[key, value]]
+    const result = (styleProps.noExpand ? null : expandStyle(key, value)) || [
+      [key, value],
+    ]
+
+    if (key === 'fontFamily') {
+      fontFamilyCache.set(result, lastFontFamilyToken)
+    }
+
+    return result
   }
 }
 
@@ -348,6 +363,8 @@ const fontShorthand = {
   fontWeight: 'weight',
 }
 
+let lastFontFamilyToken: any = null
+
 export const getTokenForKey = (
   key: string,
   value: string,
@@ -380,6 +397,7 @@ export const getTokenForKey = (
             ? getFontsForLanguage(conf.fontsParsed, context.language)
             : conf.fontsParsed
           valOrVar = fontsParsed[value]?.family || value
+          lastFontFamilyToken = value
           hasSet = true
           break
         }

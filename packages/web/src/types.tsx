@@ -80,8 +80,114 @@ export type TamaguiComponentPropsBaseBase = {
 
   /**
    * Controls the output tag on web
+   * {@see https://developer.mozilla.org/en-US/docs/Web/HTML/Element}
    */
-  tag?: string
+  tag?:
+    | (string & {})
+    | 'address'
+    | 'article'
+    | 'aside'
+    | 'footer'
+    | 'header'
+    | 'h1'
+    | 'h2'
+    | 'h3'
+    | 'h4'
+    | 'h5'
+    | 'h6'
+    | 'main'
+    | 'nav'
+    | 'section'
+    | 'search'
+    | 'blockquote'
+    | 'dd'
+    | 'div'
+    | 'dl'
+    | 'dt'
+    | 'figcaption'
+    | 'figure'
+    | 'hr'
+    | 'li'
+    | 'ol'
+    | 'ul'
+    | 'p'
+    | 'pre'
+    | 'a'
+    | 'abbr'
+    | 'p'
+    | 'b'
+    | 'abbr'
+    | 'bdi'
+    | 'bdo'
+    | 'br'
+    | 'cite'
+    | 'code'
+    | 'data'
+    | 'dfn'
+    | 'em'
+    | 'i'
+    | 'kbd'
+    | 'mark'
+    | 'q'
+    | 'rp'
+    | 'rt'
+    | 'rtc'
+    | 'ruby'
+    | 's'
+    | 'samp'
+    | 'small'
+    | 'span'
+    | 'strong'
+    | 'sub'
+    | 'sup'
+    | 'time'
+    | 'u'
+    | 'var'
+    | 'wbr'
+    | 'area'
+    | 'audio'
+    | 'img'
+    | 'map'
+    | 'track'
+    | 'video'
+    | 'embed'
+    | 'object'
+    | 'param'
+    | 'picture'
+    | 'source'
+    | 'canvas'
+    | 'noscript'
+    | 'script'
+    | 'del'
+    | 'ins'
+    | 'caption'
+    | 'col'
+    | 'colgroup'
+    | 'table'
+    | 'thead'
+    | 'tbody'
+    | 'td'
+    | 'th'
+    | 'tr'
+    | 'button'
+    | 'datalist'
+    | 'fieldset'
+    | 'form'
+    | 'input'
+    | 'label'
+    | 'legend'
+    | 'meter'
+    | 'optgroup'
+    | 'option'
+    | 'output'
+    | 'progress'
+    | 'select'
+    | 'textarea'
+    | 'details'
+    | 'dialog'
+    | 'menu'
+    | 'summary'
+    | 'template'
 
   /**
    * Applies a theme to this element
@@ -112,7 +218,7 @@ export type TamaguiComponentPropsBaseBase = {
   tabIndex?: string | number
 
   /**
-   * Equivalent to role="" attribute on web for accesibility
+   * Equivalent to role="" attribute on web for accessibility
    */
   role?: Role
 
@@ -539,7 +645,7 @@ type GetAltThemeNames<S> =
 type SpacerPropsBase = {
   size?: SpaceValue
   flex?: boolean | number
-  direction?: SpaceDirection
+  direction?: SpaceDirection | 'unset'
 }
 
 type SpacerOwnProps = SpacerPropsBase &
@@ -629,16 +735,39 @@ type GenericTamaguiSettings = {
    *
    *   1. Only use light/dark changes of themes at the root of your app
    *   2. Don't use <Theme inverse> or themeInverse
-   *   3. Always change light/dark alongside the Appearance.colorSheme
+   *   3. Always change light/dark alongside the Appearance.colorScheme
    *
    * Then this feature is safe to turn on and will significantly speed up dark/light re-renders.
    */
   fastSchemeChange?: boolean
+
+  /**
+   * On Web, this allows changing the behavior of container groups which by default uses
+   * `container-type: normal`.
+   */
+  webContainerType?:
+    | 'normal'
+    | 'size'
+    | 'inline-size'
+    | 'inherit'
+    | 'initial'
+    | 'revert'
+    | 'revert-layer'
+    | 'unset'
 }
 
 export type TamaguiSettings = TamaguiConfig['settings']
 
+type AllStyleProps = keyof StackStyleProps
+
+export type BaseStyleProps = {
+  [Key in keyof TextStylePropsBase]?: TextStyleProps[Key] | GetThemeValueForKey<Key>
+} & {
+  [Key in keyof StackStylePropsBase]?: StackStyleProps[Key] | GetThemeValueForKey<Key>
+}
+
 export type CreateTamaguiProps = {
+  unset?: BaseStyleProps
   reactNative?: any
   shorthands?: CreateShorthands
   media?: GenericTamaguiConfig['media']
@@ -651,7 +780,7 @@ export type CreateTamaguiProps = {
     }
   }
 
-  settings?: GenericTamaguiSettings
+  settings?: Partial<GenericTamaguiSettings>
 
   /**
    * Define a default font, for better types and default font on Text
@@ -1170,18 +1299,19 @@ export type ThemeValueGet<K extends string | number | symbol> = K extends 'theme
   ? FontLetterSpacingTokens
   : never
 
+export type GetThemeValueForKey<K extends string | symbol | number> =
+  | ThemeValueGet<K>
+  | ThemeValueFallback
+  | (TamaguiSettings extends { autocompleteSpecificTokens: infer Val }
+      ? Val extends true | undefined
+        ? SpecificTokens
+        : never
+      : never)
+
 export type WithThemeValues<T extends object> = {
   [K in keyof T]: ThemeValueGet<K> extends never
-    ? T[K]
-    :
-        | ThemeValueGet<K>
-        | Exclude<T[K], string>
-        | ThemeValueFallback
-        | (TamaguiSettings extends { autocompleteSpecificTokens: infer Val }
-            ? Val extends true | undefined
-              ? SpecificTokens
-              : never
-            : never)
+    ? T[K] | 'unset'
+    : GetThemeValueForKey<K> | Exclude<T[K], string> | 'unset'
 }
 
 type NarrowShorthands = Narrow<Shorthands>
@@ -1306,7 +1436,12 @@ type OmitRemovedNonWebProps = 'onLayout' | keyof GestureResponderHandlers
 
 export type StackNonStyleProps = Omit<
   ViewProps,
-  'display' | 'children' | OmitRemovedNonWebProps | keyof ExtendBaseStackProps | 'style'
+  | 'pointerEvents'
+  | 'display'
+  | 'children'
+  | OmitRemovedNonWebProps
+  | keyof ExtendBaseStackProps
+  | 'style'
 > &
   ExtendBaseStackProps &
   TamaguiComponentPropsBase & {
@@ -1492,7 +1627,7 @@ export type StaticConfigPublic = {
   inlineWhenUnflattened?: Set<string>
 
   /**
-   * (compiler) A bit odd, only for more advanced heirarchies.
+   * (compiler) A bit odd, only for more advanced hierarchies.
    * Indicates that the component will set this prop so the
    * static extraction can ensure it sets them to ={undefined}
    * so they get overriddent. In the future, this can be smarter.
@@ -1500,7 +1635,7 @@ export type StaticConfigPublic = {
   ensureOverriddenProp?: { [key: string]: boolean }
 
   /**
-   * Auto-detected, but can ovverride. Wraps children to space them on top
+   * Auto-detected, but can override. Wraps children to space them on top
    */
   isZStack?: boolean
 
@@ -1510,7 +1645,7 @@ export type StaticConfigPublic = {
   isReactNative?: boolean
 
   /**
-   * By default if styled() doesn't recognize a parent Tamagui compoent or specific react-native views,
+   * By default if styled() doesn't recognize a parent Tamagui component or specific react-native views,
    * it will assume the passed in component only accepts style={} for react-native compatibility.
    * Setting `acceptsClassName: true` indicates Tamagui can pass in className props.
    */
@@ -1530,7 +1665,7 @@ type StaticConfigBase = StaticConfigPublic & {
   componentName?: string
 
   /**
-   * Merges into defaultProps later on, used internally yonly
+   * Merges into defaultProps later on, used internally only
    */
   defaultVariants?: { [key: string]: any }
 
@@ -1540,7 +1675,7 @@ type StaticConfigBase = StaticConfigPublic & {
   memo?: boolean
 
   /**
-   * By default if styled() doesn't recognize a parent Tamagui compoent or specific react-native views,
+   * By default if styled() doesn't recognize a parent Tamagui component or specific react-native views,
    * it will assume the passed in component only accepts style={} for react-native compatibility.
    * Setting `acceptsClassName: true` indicates Tamagui can pass in className props.
    */

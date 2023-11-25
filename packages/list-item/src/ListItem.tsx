@@ -183,7 +183,7 @@ export const useListItem = (
     Text?: any
   } = { Text: ListItemText, Subtitle: ListItemSubtitle, Title: ListItemTitle }
 ) => {
-  // careful not to desctructure and re-order props, order is important
+  // careful not to destructure and re-order props, order is important
   const props = useProps(propsIn)
 
   const {

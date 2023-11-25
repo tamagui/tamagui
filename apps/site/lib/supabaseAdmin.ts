@@ -40,7 +40,7 @@ export const deleteProductRecord = async (id: Stripe.Product['id']) => {
 export const upsertPriceRecord = async (price: Stripe.Price) => {
   const priceData: Price = {
     id: price.id,
-    product_id: typeof price.product === 'string' ? price.product : '',
+    product_id: typeof price.product === 'string' ? price.product : price.product.id,
     active: price.active,
     currency: price.currency,
     description: price.nickname ?? undefined,
@@ -56,6 +56,9 @@ export const upsertPriceRecord = async (price: Stripe.Price) => {
   const { error } = await supabaseAdmin.from('prices').upsert([priceData])
   if (error) throw error
   console.info(`Price inserted/updated: ${price.id}`)
+
+  // we call this to create associated subscription prices upfront - instead of creating it on the fly when someone purchases a one-time price.
+  await getOrCreateRenewalPriceId(price)
 }
 
 export const deletePriceRecord = async (id: Stripe.Price['id']) => {
@@ -264,31 +267,11 @@ export async function addRenewalSubscription(
       console.warn('no product object - returning')
       continue
     }
-    if (!price.product.metadata.has_renewals) {
+    const renewalPriceId = await getOrCreateRenewalPriceId(price)
+    if (!renewalPriceId) {
       console.warn('no has_renewals metadata found - returning')
       continue
     }
-    let renewalPriceId = price.metadata.renewal_price_id
-    if (!price.metadata.renewal_price_id) {
-      const subscriptionPrice = await stripe.prices.create({
-        product: typeof price.product === 'string' ? price.product : price.product.id,
-        currency: 'USD',
-        nickname: `${price.nickname} | Subscription for ${price.id} (Auto-generated)`,
-        recurring: { interval: 'year', interval_count: 1 },
-        unit_amount: price.unit_amount!, // change this to `unit_amount: price.unit_amount! / 2` for 50% prices (make sure to remove old prices to trigger this)
-        metadata: {
-          hide_from_lists: 1,
-        },
-      })
-      renewalPriceId = subscriptionPrice.id
-      await stripe.prices.update(price.id, {
-        metadata: {
-          ...price.metadata,
-          renewal_price_id: subscriptionPrice.id,
-        },
-      })
-    }
-
     renewalPriceIds.push(renewalPriceId)
   }
   console.info('creating the sub...', renewalPriceIds)
@@ -337,3 +320,38 @@ export async function addRenewalSubscription(
 //   createOrRetrieveCustomer,
 //   manageSubscriptionStatusChange,
 // }
+
+export async function getOrCreateRenewalPriceId(price: Stripe.Price) {
+  let product =
+    price.product && typeof price.product === 'object'
+      ? (price.product as Stripe.Product)
+      : await stripe.products.retrieve(price.product)
+  if (
+    !product.metadata.has_renewals || // this product doesn't need renewal prices
+    price.type === 'recurring' // this price is already a subscription price - not having this check might cause an infinite loop of creating prices
+  ) {
+    return null
+  }
+
+  let renewalPriceId = price.metadata.renewal_price_id
+  if (!price.metadata.renewal_price_id) {
+    const subscriptionPrice = await stripe.prices.create({
+      product: typeof price.product === 'string' ? price.product : price.product.id,
+      currency: 'USD',
+      nickname: `${price.nickname} | Subscription for ${price.id} (Auto-generated)`,
+      recurring: { interval: 'year', interval_count: 1 },
+      unit_amount: price.unit_amount!, // change this to `unit_amount: price.unit_amount! / 2` for 50% prices (make sure to remove old prices to trigger this)
+      metadata: {
+        hide_from_lists: 1,
+      },
+    })
+    renewalPriceId = subscriptionPrice.id
+    await stripe.prices.update(price.id, {
+      metadata: {
+        ...price.metadata,
+        renewal_price_id: subscriptionPrice.id,
+      },
+    })
+  }
+  return renewalPriceId
+}

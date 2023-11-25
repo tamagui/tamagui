@@ -8,5 +8,5 @@ directive @methodName(name: String!) on FIELD_DEFINITION
 
 """Test comment"""
 type Query {
-  greet(greeting: String!): String @exported(filename: "../../../../dist/apps/tamastack/graph/user.js", functionName: "greet")
+  greet(greeting: String!): String @exported(filename: "../../../../dist/apps/vertql-example/graph/user.js", functionName: "greet")
 }

@@ -1,4 +1,4 @@
-import { Stack, YStack, styled } from 'tamagui'
+import { Stack, ThemeableStack, YStack, styled } from 'tamagui'
 
 export * as lucideIcons from '@tamagui/lucide-icons'
 
@@ -38,4 +38,14 @@ export const Test14Component = styled(YStack, {
   defaultVariants: {
     fullbleed: false,
   },
+})
+
+export const TestBorderExtraction = styled(ThemeableStack, {
+  theme: 'contentContainer',
+  backgroundColor: '$background',
+  borderColor: '$borderColor',
+  borderWidth: 1,
+  borderRadius: '$10',
+  height: '$10',
+  width: '$10',
 })

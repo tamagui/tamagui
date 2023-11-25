@@ -1,8 +1,18 @@
-- Takeout Storybook styles breaking
-  - https://discord.com/channels/909986013848412191/1125830682661363794/1169376340491903006
-- Popover native positioning
+- // TODO breaks next.js themes page
+- alt themes dont change color1-9 so you can't do color2 and then make the alt theme make it more subtle, but they should
+
+- disableClassName breaking css animation
+- css animateOnly should always force style tag styles
+
+- 2.0 make it just is the current state with fixes, unstyled across everything, and make various smaller breaking changes in api surfaces that need cleanup
+  - recommended config with more strict settings etc
+  - a few theme setups you can choose from
+
+- Unistack theme change needs a server restart / theme builder not re-building on changing colors.ts
 - Theme reset Button not changing
 - ZStack is abs positioning children...
+
+---
 
 Web:
 
@@ -16,6 +26,45 @@ Web:
   - styled('div')
   - avoid flat style props + plugin for styled() control
   - beforeStyles + afterStyles array
+
+---
+
+`style`
+
+  - enables Input taking { autofillSelectedStyle: Style }, or any component accepting a style object as a prop
+
+
+```tsx
+import { Text, style } from '@tamagui/core'
+
+// assumes base tamagui style props for View
+// style(): StackStyleProps
+const styleObject1 = style({
+  
+})
+
+// ??
+style.native({}) // { base: ViewStyle, press: ViewStyle, ... }
+style.web({}) // { base: DivStyle, press: DivStyle, ... }
+
+// can use variants if they exist
+// they should get expanded so it always returns the base tamagui style type
+// Text.style(): TextStyleProps
+const styleObject = Text.style({
+  someVariant: true,
+})
+
+// on native basically passes through
+// on web passes through but optimizing compiler will make classname values
+```
+
+---
+
+config: {
+    settings: {
+      styleStrategy: { type: 'prop', prop: 'sx', acceptFlatStyles: true }
+    }
+}
 
 ---
 
@@ -42,9 +91,8 @@ Smaller features:
 
 Performance:
 
-  - ehsans branch with theme flattening support
   - TAMAGUI_OPTIMIZE_NATIVE_VIEWS on by default using proper prop mapping
-  - compiler can add `_disableEvents` `_disableTheme` to avoid hooks
+  - compiler can add `disableEvents` `disableTheme` to avoid hooks
   - optimization of useTheme/getSplitStyles seems like it has some decent stuff
   - could lazy expand styles
   - get dynamicEval working automatically
@@ -381,6 +429,10 @@ Ali:
 
 <Skeleton />
 
+<Skeleton />
+  <Skeleton.Gradient />
+</Skeleton>
+
 ```tsx
 const Skeleton = styled(Stack, {
   animation: {
@@ -393,7 +445,7 @@ const Skeleton = styled(Stack, {
   exitStyle: {
     x: '-100%',
   },
-  background: `linear-gradient(to left, $background, $color, $background)`
+  background: `linear-gradient(to left, $background, $color, $background)`,
 })
 ```
 

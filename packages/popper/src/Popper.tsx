@@ -12,7 +12,7 @@ import {
   useIsomorphicLayoutEffect,
   useProps,
 } from '@tamagui/core'
-import type { ScopedProps } from '@tamagui/core'
+import type { ScopedProps, StackStyleProps } from '@tamagui/core'
 import {
   Coords,
   OffsetOptions,
@@ -281,7 +281,7 @@ export const PopperContent = React.forwardRef<
     position: strategy,
   }
 
-  // outer frame because we explicitly dont want animation to apply to this
+  // outer frame because we explicitly don't want animation to apply to this
   return (
     <YStack {...(getFloatingProps ? getFloatingProps(frameProps) : frameProps)}>
       {contents}
@@ -367,13 +367,14 @@ export const PopperArrow = PopperArrowFrame.styleable<
   const refs = useComposedRefs(context.arrowRef, forwardedRef)
 
   // Sometimes floating-ui can return NaN during orientation or screen size changes on native
-  // so we explictly force the x,y position types as a number
+  // so we explicitly force the x,y position types as a number
   const x = (context.arrowStyle?.x as number) || 0
   const y = (context.arrowStyle?.y as number) || 0
 
   const primaryPlacement = (placement ? placement.split('-')[0] : 'top') as Sides
 
   const arrowStyle: StackProps = { x, y, width: size, height: size }
+
   const innerArrowStyle: StackProps = {}
   const isVertical = primaryPlacement === 'bottom' || primaryPlacement === 'top'
 

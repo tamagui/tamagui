@@ -254,19 +254,35 @@ export const inviteCollaboratorToRepo = async (
   userLogin: string,
   permission = 'triage'
 ) => {
-  await fetch(
-    `https://api.github.com/repos/tamagui/${repoName}/collaborators/${userLogin}`,
-    {
-      body: JSON.stringify({
-        permission,
-      }),
-      method: 'PUT',
-      headers: {
-        'X-GitHub-Api-Version': '2022-11-28',
-        Authorization: `Bearer ${GITHUB_ADMIN_TOKEN}`,
-      },
-    }
+  console.info(
+    `Claim: inviteCollaboratorToRepo permission ${permission} for ${repoName} user ${userLogin} using token starting with ${GITHUB_ADMIN_TOKEN?.slice(
+      0,
+      5
+    )}`
   )
+
+  try {
+    const res = await fetch(
+      `https://api.github.com/repos/tamagui/${repoName}/collaborators/${userLogin}`,
+      {
+        body: JSON.stringify({
+          permission,
+        }),
+        method: 'PUT',
+        headers: {
+          'X-GitHub-Api-Version': '2022-11-28',
+          Authorization: `Bearer ${GITHUB_ADMIN_TOKEN}`,
+        },
+      }
+    )
+
+    console.info(
+      `Claim: inviteCollaboratorToRepo response ${res.status} ${res.statusText}`
+    )
+  } catch (err) {
+    console.error(`Claim: inviteCollaboratorToRepo Error: ${err}`)
+    throw err
+  }
 }
 
 export const removeCollaboratorFromRepo = async (repoName: string, userLogin: string) => {

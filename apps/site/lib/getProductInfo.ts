@@ -25,8 +25,8 @@ export function getTakeoutPriceInfo(pricingDescription: string) {
     hasDiscordPrivateChannels,
     licenseSeats,
     githubSeats: Math.max(1, Math.floor(licenseSeats / 5)),
-    publicDomainUses: Math.ceil(licenseSeats / 9),
-    androidAppsPublished: Math.ceil(licenseSeats / 9),
-    iosAppsPublished: Math.ceil(licenseSeats / 9),
+    publicDomainUses: 2,
+    androidAppsPublished: 2,
+    iosAppsPublished: 2,
   }
 }

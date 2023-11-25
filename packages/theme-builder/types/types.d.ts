@@ -1,24 +1,20 @@
 export type BuildThemeSuiteProps = {
-    theme: BuildLightDarkTheme | BuildColorSubTheme | BuildMaskSubTheme;
-    fallbackTheme?: BuildColorSubTheme;
+    baseTheme: BuildTheme;
+    subThemes?: (BuildTheme | BuildThemeMask)[];
 };
 export type ScaleTypeName = 'radix' | 'radix-b' | 'radius-bold' | 'radius-bright' | 'linear' | 'pastel' | 'pastel-desaturating' | 'neon' | 'neon-bright' | 'neon-c';
-export type BuildThemeBasicProperties = {
+export type BuildThemeBase = {
     id: string;
+    name: string;
+    errors?: string[];
+};
+export type BuildTheme = BuildThemeBase & {
+    type: 'theme';
     color: string;
     scale: ScaleTypeName;
     contrast?: string;
     contrastColor?: string;
     contrastScale?: ScaleTypeName;
-    errors?: string[];
-};
-export type BuildLightDarkTheme = BuildThemeBasicProperties & {
-    type: 'lightdark';
-};
-export type BuildColorSubTheme = BuildThemeBasicProperties & {
-    type: 'base';
-    subThemeType: 'color';
-    name: string;
 };
 export type BuildMask = {
     id: string;
@@ -37,12 +33,8 @@ export type BuildMask = {
     type: 'softenBorder';
     strength: number;
 });
-export type BuildMaskSubTheme = {
-    id: string;
-    type: 'sub';
-    subThemeType: 'mask';
-    name: string;
+export type BuildThemeMask = BuildThemeBase & {
+    type: 'mask';
     masks: BuildMask[];
-    errors?: string[];
 };
 //# sourceMappingURL=types.d.ts.map

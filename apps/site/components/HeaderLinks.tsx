@@ -1,8 +1,9 @@
 import { useUser } from 'hooks/useUser'
 import { useRouter } from 'next/router'
 import * as React from 'react'
-import { Paragraph, TooltipSimple, styled } from 'tamagui'
+import { Paragraph, TooltipSimple, YStack, styled } from 'tamagui'
 
+import { GithubIcon } from './GithubIcon'
 import { HeaderProps } from './HeaderProps'
 import { NextLink } from './NextLink'
 
@@ -36,6 +37,16 @@ export const HeaderLinks = ({ showExtra, forceShowAllLinks, showAuth }: HeaderPr
         </HeadAnchor>
       </NextLink>
 
+      {/* <NextLink passHref prefetch={false} href="/themes">
+        <HeadAnchor
+          $sm={{
+            display: forceShowAllLinks ? 'flex' : 'none',
+          }}
+        >
+          Themes
+        </HeadAnchor>
+      </NextLink> */}
+
       <NextLink passHref prefetch={false} href="/studio">
         <HeadAnchor
           $md={{
@@ -48,11 +59,17 @@ export const HeaderLinks = ({ showExtra, forceShowAllLinks, showAuth }: HeaderPr
 
       {!router.asPath.startsWith('/takeout') && (
         <NextLink passHref legacyBehavior={false} prefetch={false} href="/takeout">
-          <TooltipSimple delay={0} restMs={25} label="Takeout">
+          <TooltipSimple
+            disabled={forceShowAllLinks}
+            delay={0}
+            restMs={25}
+            label="Takeout"
+          >
             <HeadAnchor
               tag="span"
               {...(!forceShowAllLinks && {
                 size: '$8',
+                mr: '$-3',
               })}
               $sm={{
                 display: forceShowAllLinks ? 'flex' : 'none',
@@ -65,8 +82,18 @@ export const HeaderLinks = ({ showExtra, forceShowAllLinks, showAuth }: HeaderPr
       )}
 
       {forceShowAllLinks && (
-        <NextLink prefetch={false} href="/blog">
-          <HeadAnchor>Blog</HeadAnchor>
+        <NextLink
+          prefetch={false}
+          legacyBehavior={false}
+          target="_blank"
+          href="https://github.com/tamagui/tamagui"
+        >
+          <HeadAnchor>
+            Github{' '}
+            <YStack dsp="inline-block" y={10} my={-20} o={0.8}>
+              <GithubIcon width={16} />
+            </YStack>
+          </HeadAnchor>
         </NextLink>
       )}
 
@@ -82,7 +109,7 @@ export const HeaderLinks = ({ showExtra, forceShowAllLinks, showAuth }: HeaderPr
         </NextLink>
       )}
 
-      {!userSwr.data?.session?.user && (forceShowAllLinks || showAuth) && (
+      {showExtra && !userSwr.data?.session?.user && (forceShowAllLinks || showAuth) && (
         <NextLink prefetch={false} href="/login">
           <HeadAnchor
             $md={{

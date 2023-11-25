@@ -17,8 +17,8 @@ let frameCount = 0
 export default (props) => (
   <Canvas
     style={{
-      width: 735,
-      height: 735,
+      width: 650,
+      height: 650,
     }}
     gl={{ preserveDrawingBuffer: true }}
     dpr={[1, 1]}
@@ -47,13 +47,17 @@ function TakeoutBox3D(props) {
   useFrame((state, delta) => {
     if (!ref.current) return
 
-    const isSlow = frameCount > 40
+    const entryEffectFrames = 50
+    const justStarting = frameCount < entryEffectFrames
+    const entryEffectPercentComplete = frameCount / entryEffectFrames
+    const rotateSpeed = justStarting
+      ? 21 * (1 - entryEffectPercentComplete) + 0.035
+      : 0.035
 
-    // ref.current!.rotation.z += delta * 0.1
-    ref.current.rotation.y += delta * (isSlow ? 0.1 : 0.8)
+    ref.current.rotation.y += delta * rotateSpeed
 
     // effect to spin faster on first entering
-    if (frameCount <= 40) {
+    if (frameCount <= entryEffectFrames) {
       frameCount++
     }
     // ref.current!.rotation.x += delta * 0.1

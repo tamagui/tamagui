@@ -54,6 +54,9 @@ type ClaimFunction = (args: {
 
 const claimRepositoryAccess: ClaimFunction = async ({ user, metadata }) => {
   const permission = 'triage'
+
+  console.info(`Claim: checking private users`)
+
   const userPrivateRes = await supabaseAdmin
     .from('users_private')
     .select()
@@ -71,6 +74,8 @@ const claimRepositoryAccess: ClaimFunction = async ({ user, metadata }) => {
 
   const githubToken = userPrivateRes.data.github_token
 
+  console.info(`Claim: checking github user`)
+
   const githubUser = await fetch('https://api.github.com/user', {
     headers: { Authorization: `Bearer ${githubToken}` },
   }).then((res) => res.json())
@@ -78,6 +83,8 @@ const claimRepositoryAccess: ClaimFunction = async ({ user, metadata }) => {
   const repoName = metadata.repository_name
   if (typeof repoName !== 'string')
     throw new Error('No repository_name is present on metadata')
+
+  console.info(`Claim: inviting collaborator`)
 
   await inviteCollaboratorToRepo(repoName, githubUser.login, permission)
 

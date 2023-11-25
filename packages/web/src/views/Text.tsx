@@ -12,21 +12,25 @@ const ellipseStyle = {
 
 export type Text = TamaguiTextElement
 
+const defaultWebStyle = {
+  display: 'inline',
+  boxSizing: 'border-box',
+  wordWrap: 'break-word',
+  margin: 0,
+}
+
 export const Text = createComponent<TextProps, Text, TextPropsBase>({
   acceptsClassName: true,
   isText: true,
 
-  defaultProps:
-    process.env.TAMAGUI_TARGET === 'web'
-      ? {
-          display: 'inline',
-          boxSizing: 'border-box',
-          wordWrap: 'break-word',
-          margin: 0,
-        }
+  defaultProps: {
+    fontFamily: 'unset',
+    ...(process.env.TAMAGUI_TARGET === 'web'
+      ? defaultWebStyle
       : {
           suppressHighlighting: true,
-        },
+        }),
+  },
 
   inlineWhenUnflattened: new Set(['fontFamily']),
 
