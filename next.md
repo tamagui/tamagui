@@ -1,3 +1,6 @@
+- studio: add outline, outlineHover, etc
+- studio: add partial transparent for each color step?
+
 - // TODO breaks next.js themes page
 - alt themes dont change color1-9 so you can't do color2 and then make the alt theme make it more subtle, but they should
 

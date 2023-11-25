@@ -1,3 +1,4 @@
+import { Template } from '@tamagui/create-theme';
 export type BuildThemeSuiteProps = {
     baseTheme: BuildTheme;
     subThemes?: (BuildTheme | BuildThemeMask)[];
@@ -12,6 +13,7 @@ export type BuildTheme = BuildThemeBase & {
     type: 'theme';
     color: string;
     scale: ScaleTypeName;
+    template?: Template;
     contrast?: string;
     contrastColor?: string;
     contrastScale?: ScaleTypeName;
