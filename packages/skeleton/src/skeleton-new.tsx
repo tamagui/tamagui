@@ -16,11 +16,27 @@ import {
   defaultLightColors,
 } from './shared'
 import { MotiSkeletonProps } from './types'
+import { Circle, CircleProps, Paragraph, Square, YStack } from 'tamagui'
+
+type InnerCompoentProps = CircleProps & {
+  shape?: 'circle' | 'square' | undefined
+}
+
+function InnerComponent(props: InnerCompoentProps) {
+  const { children, shape, borderRadius = 8, ...rest } = props
+  if (shape === 'circle') {
+    return <Circle {...rest}>{children}</Circle>
+  } else if (shape === 'square') {
+    return <Square borderRadius={borderRadius} {...rest}>{children}</Square>
+  } else {
+    return <YStack borderRadius={borderRadius} {...rest}>{children}</YStack>
+  }
+}
 
 export default function Skeleton(props: MotiSkeletonProps) {
   const skeletonGroupContext = useContext(SkeletonGroupContext)
   const {
-    radius = 8,
+    shape,
     children,
     show = skeletonGroupContext ?? !children,
     width,
@@ -36,15 +52,6 @@ export default function Skeleton(props: MotiSkeletonProps) {
 
   const measuredWidthSv = useSharedValue(0)
 
-  const borderRadius = (() => {
-    if (radius === 'square') {
-      return 0
-    }
-    if (radius === 'round') {
-      return 99999
-    }
-    return radius
-  })()
 
   const outerHeight = (() => {
     if (boxHeight != null) return boxHeight
@@ -64,18 +71,15 @@ export default function Skeleton(props: MotiSkeletonProps) {
       }}
     >
       {children}
-      <View
-        // @ts-expect-error - From Moti, come back to this
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          borderRadius,
-          width: width ?? (children ? '100%' : DEFAULT_SIZE),
-          height: height ?? '100%',
-          overflow: 'hidden',
-          backgroundColor: show ? backgroundColor : undefined,
-        }}
+      <InnerComponent
+        position='absolute'
+        top={0}
+        left={0}
+        shape={shape}
+        width={width ?? (children ? '100%' : DEFAULT_SIZE)}
+        height={height ?? '100%'}
+        overflow='hidden'
+        backgroundColor={show ? backgroundColor : undefined}
         onLayout={({ nativeEvent }) => {
           if (measuredWidthSv.value !== nativeEvent.layout.width) {
             measuredWidthSv.value = nativeEvent.layout.width
@@ -95,8 +99,8 @@ export default function Skeleton(props: MotiSkeletonProps) {
             Gradient={props.Gradient}
           />
         )}
-      </View>
-    </View>
+      </InnerComponent>
+    </View >
   )
 }
 

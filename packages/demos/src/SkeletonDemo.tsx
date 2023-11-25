@@ -14,13 +14,15 @@ export function SkeletonDemo() {
           type: 'timing',
         }}
       >
-        <Skeleton colorMode={colorMode} radius="round" height={75} width={75} />
+        <Skeleton colorMode={colorMode} shape='circle' height={75} width={75} />
         <Spacer />
+        <Skeleton colorMode={colorMode} shape='square' height={75} width={75} />
+        <Spacer />
+        <Skeleton colorMode={colorMode} width={25} />
+        <Spacer height={8} />
+        <Skeleton colorMode={colorMode} width={'100%'} />
+        <Spacer height={8} />
         <Skeleton colorMode={colorMode} width={250} />
-        <Spacer height={8} />
-        <Skeleton colorMode={colorMode} width={'100%'} />
-        <Spacer height={8} />
-        <Skeleton colorMode={colorMode} width={'100%'} />
       </MotiView>
     </XStack>
   )

@@ -44,9 +44,9 @@ export type MotiSkeletonProps = {
    */
   width?: string | number
   /**
-   * Border radius. Can be `square`, `round`, or a number. `round` makes it a circle. Defaults to `8`.
+   * Skeleton can be circle or square
    */
-  radius?: number | 'square' | 'round'
+  shape?: 'circle' | 'square' | undefined
   /**
    * Background of the box that contains the skeleton. Should match the main `colors` prop color.
    *
