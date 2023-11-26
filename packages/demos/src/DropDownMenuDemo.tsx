@@ -77,7 +77,9 @@ export function DropdoownMenuDemo() {
             </DropdownMenuCheckboxItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
-          <DropdownMenuLabel>People</DropdownMenuLabel>
+          <DropdownMenuLabel>
+            <Text>People</Text>
+          </DropdownMenuLabel>
           <DropdownMenuRadioGroup value={person} onValueChange={setPerson}>
             <DropdownMenuRadioItem
               value="pedro"

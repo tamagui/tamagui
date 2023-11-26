@@ -21,7 +21,7 @@ import type { RovingFocusGroupProps } from '@tamagui/roving-focus'
 import { SizableStackProps, ThemeableStack, YStack } from '@tamagui/stacks'
 import { useCallbackRef } from '@tamagui/use-callback-ref'
 import { useDirection } from '@tamagui/use-direction'
-import { Stack, isWeb, styled } from '@tamagui/web'
+import { Stack, isAndroid, isWeb, styled } from '@tamagui/web'
 import { TamaguiElement } from '@tamagui/web/types'
 import { hideOthers } from 'aria-hidden'
 import { useId } from 'react'
@@ -141,12 +141,55 @@ const Menu = (props: ScopedProps<MenuProps>) => {
           dir={direction}
           modal={modal}
         >
-          {children}
+          {/** this provider is just to avoid crashing when using useSubMenuContext() inside MenuPortal */}
+          <MenuSubProvider scope={__scopeMenu}>{children}</MenuSubProvider>
         </MenuRootProvider>
       </MenuProvider>
     </PopperPrimitive.Popper>
   )
 }
+
+const RepropagateMenuAndMenuRootProvider = React.forwardRef(
+  (
+    props: ScopedProps<{
+      menuContext: any
+      rootContext: any
+      popperContext: any
+      menuSubContext: any
+      children: React.ReactNode
+    }>,
+    ref
+  ) => {
+    const {
+      __scopeMenu,
+      menuContext,
+      rootContext,
+      popperContext,
+      menuSubContext,
+      children,
+    } = props
+
+    return (
+      <PopperPrimitive.Popper
+        ref={ref}
+        {...popperContext}
+        __scopePopper={__scopeMenu || MENU_CONTEXT}
+      >
+        <MenuProvider scope={__scopeMenu} {...menuContext}>
+          <MenuRootProvider scope={__scopeMenu} {...rootContext}>
+            {menuSubContext ? (
+              <MenuSubProvider scope={__scopeMenu} {...menuSubContext}>
+                {children}
+              </MenuSubProvider>
+            ) : (
+              children
+            )}
+          </MenuRootProvider>
+        </MenuProvider>
+      </PopperPrimitive.Popper>
+    )
+  }
+)
 
 Menu.displayName = MENU_NAME
 
@@ -194,15 +237,31 @@ interface MenuPortalProps {
 
 const MenuPortal = (props: ScopedProps<MenuPortalProps>) => {
   const { __scopeMenu, forceMount, children, host } = props
-  const context = useMenuContext(__scopeMenu)
+  const menuContext = useMenuContext(__scopeMenu)
+  const rootContext = useMenuRootContext(__scopeMenu)
+  const popperContext = PopperPrimitive.usePopperContext(__scopeMenu || MENU_CONTEXT)
+  const menuSubContext = useMenuSubContext(__scopeMenu)
+  const content = isAndroid ? (
+    <RepropagateMenuAndMenuRootProvider
+      menuContext={menuContext}
+      rootContext={rootContext}
+      popperContext={popperContext}
+      menuSubContext={menuSubContext}
+      __scopeMenu={__scopeMenu}
+    >
+      {children}
+    </RepropagateMenuAndMenuRootProvider>
+  ) : (
+    children
+  )
   return (
-    <PortalProvider scope={__scopeMenu} forceMount={forceMount}>
-      <Animate type="presence" present={forceMount || context.open}>
-        <PortalPrimitive pointerEvents="auto" position="relative" asChild host={host}>
-          {children}
-        </PortalPrimitive>
-      </Animate>
-    </PortalProvider>
+    <Animate type="presence" present={forceMount || menuContext.open}>
+      <PortalPrimitive pointerEvents="auto" position="relative" asChild host={host}>
+        <PortalProvider scope={__scopeMenu} forceMount={forceMount}>
+          {content}
+        </PortalProvider>
+      </PortalPrimitive>
+    </Animate>
   )
 }
 
@@ -669,17 +728,24 @@ const MenuItem = ThemeableStack.styleable<ScopedProps<MenuItemProps>>(
       // TODO: these things shouldn't work on native
       const menuItem = ref.current
       if (!disabled && menuItem) {
-        const itemSelectEvent = new CustomEvent(ITEM_SELECT, {
-          bubbles: true,
-          cancelable: true,
-        })
-        menuItem.addEventListener(ITEM_SELECT, (event) => onSelect?.(event), {
-          once: true,
-        })
-        dispatchDiscreteCustomEvent(menuItem, itemSelectEvent)
-        if (itemSelectEvent.defaultPrevented) {
-          isPointerDownRef.current = false
+        if (isWeb) {
+          const itemSelectEvent = new CustomEvent(ITEM_SELECT, {
+            bubbles: true,
+            cancelable: true,
+          })
+          menuItem.addEventListener(ITEM_SELECT, (event) => onSelect?.(event), {
+            once: true,
+          })
+          dispatchDiscreteCustomEvent(menuItem, itemSelectEvent)
+          if (itemSelectEvent.defaultPrevented) {
+            isPointerDownRef.current = false
+          } else {
+            rootContext.onClose()
+          }
         } else {
+          // TODO: find a better way to handle this on native
+          onSelect?.({ target: menuItem } as unknown as Event)
+          isPointerDownRef.current = false
           rootContext.onClose()
         }
       }

@@ -1,4 +1,4 @@
-import { Slot } from '@tamagui/core'
+import { Slot, isAndroid } from '@tamagui/core'
 import * as MenuPrimitive from '@tamagui/menu'
 import { useId } from 'react'
 import * as React from 'react'
@@ -130,22 +130,25 @@ const DropdownMenuTrigger = YStack.styleable<ScopedProps<DropdownMenuTriggerProp
           data-disabled={disabled ? '' : undefined}
           disabled={disabled}
           ref={composeRefs(forwardedRef, context.triggerRef)}
-          onPointerDown={
-            isWeb
-              ? composeEventHandlers(props.onPointerDown, (event) => {
-                  // only call handler if it's the left button (mousedown gets triggered by all mouse buttons)
-                  // but not when the control key is pressed (avoiding MacOS right click)
-                  // TODO: resolve this ts ignore
+          {...{
+            [isWeb ? 'onPointerDown' : 'onPress']: composeEventHandlers(
+              //@ts-ignore
+              props[isWeb ? 'onPointerDown' : 'onPress'],
+              (event) => {
+                // only call handler if it's the left button (mousedown gets triggered by all mouse buttons)
+                // but not when the control key is pressed (avoiding MacOS right click)
+                // TODO: resolve this ts ignore
+                if (!disabled) {
                   // @ts-ignore
-                  if (!disabled && event.button === 0 && event.ctrlKey === false) {
-                    context.onOpenToggle()
-                    // prevent trigger focusing when opening
-                    // this allows the content to be given focus without competition
-                    if (!context.open) event.preventDefault()
-                  }
-                })
-              : undefined
-          }
+                  if (isWeb && event.button !== 0 && event.ctrlKey === true) return
+                  context.onOpenToggle()
+                  // prevent trigger focusing when opening
+                  // this allows the content to be given focus without competition
+                  if (!context.open) event.preventDefault()
+                }
+              }
+            ),
+          }}
           // TODO: resolve these ts ignores
           {...(isWeb && {
             // @ts-ignore
@@ -180,11 +183,20 @@ type MenuPortalProps = React.ComponentPropsWithoutRef<typeof MenuPrimitive.Porta
 interface DropdownMenuPortalProps extends MenuPortalProps {}
 
 const DropdownMenuPortal = (props: ScopedProps<DropdownMenuPortalProps>) => {
-  const { __scopeDropdownMenu, ...portalProps } = props
+  const { __scopeDropdownMenu, children, ...portalProps } = props
+
+  const context = isAndroid ? useDropdownMenuContext(__scopeDropdownMenu) : null
+
+  const content = isAndroid ? (
+    <DropdownMenuProvider {...context}>{children}</DropdownMenuProvider>
+  ) : (
+    children
+  )
   return (
     <MenuPrimitive.Portal
       __scopeMenu={__scopeDropdownMenu || DROPDOWN_MENU_CONTEXT}
       {...portalProps}
+      children={content}
     />
   )
 }
