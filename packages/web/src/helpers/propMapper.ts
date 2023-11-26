@@ -381,10 +381,10 @@ export const getTokenForKey = (
   let valOrVar: any
   let hasSet = false
   if (theme && value in theme) {
-    if (process.env.NODE_ENV === 'development' && styleState.debug === 'verbose') {
-      console.info(` - getting theme value for ${key} from ${value}`)
-    }
     valOrVar = theme[value]
+    if (process.env.NODE_ENV === 'development' && styleState.debug === 'verbose') {
+      console.info(` - resolving ${key} to theme value ${value}: ${valOrVar?.get?.()}`)
+    }
     hasSet = true
   } else {
     if (value in conf.specificTokens) {
@@ -440,7 +440,7 @@ export const getTokenForKey = (
   if (hasSet) {
     const out = resolveVariableValue(key, valOrVar, resolveAs)
     if (process.env.NODE_ENV === 'development' && styleState.debug === 'verbose') {
-      console.info(`resolved`, resolveAs, valOrVar.get, out)
+      console.info(`resolved`, resolveAs, valOrVar, out)
     }
     return out
   }
@@ -469,7 +469,7 @@ function resolveVariableValue(
       return valOrVar.val
     }
     // @ts-expect-error this is fine until we can type better
-    const get = valOrVar.get
+    const get = valOrVar?.get
 
     // shadowColor doesn't support dynamic style
     if (process.env.TAMAGUI_TARGET !== 'native' || key !== 'shadowColor') {

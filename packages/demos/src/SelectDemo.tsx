@@ -108,7 +108,6 @@ export function SelectDemoItem(props: SelectProps) {
                 items.map((item, i) => {
                   return (
                     <Select.Item
-                      debug="verbose"
                       index={i}
                       key={item.name}
                       value={item.name.toLowerCase()}
