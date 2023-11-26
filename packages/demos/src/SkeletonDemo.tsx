@@ -1,5 +1,5 @@
 import { MotiView } from '@tamagui/animations-moti'
-import Skeleton from '@tamagui/skeleton'
+import {Skeleton} from '@tamagui/skeleton'
 import { Paragraph, Spacer, XStack } from 'tamagui'
 
 // TODO: do packages/tamagui/src pattern for Skeleton
@@ -14,15 +14,24 @@ export function SkeletonDemo() {
           type: 'timing',
         }}
       >
-        <Skeleton colorMode={colorMode} shape='circle' height={75} width={75} />
+        <Skeleton show colorMode={colorMode} shape='circle' height={75} width={75}>
+          <Skeleton.Gradient />
+        </Skeleton>
         <Spacer />
-        <Skeleton colorMode={colorMode} shape='square' height={75} width={75} />
+        <Skeleton show colorMode={colorMode} shape='square' height={75} width={75}>
+          <Skeleton.Gradient />
+        </Skeleton>
+        <Spacer width={250}/>
+        <Skeleton show colorMode={colorMode} height={45}  width="100%">
+          <Skeleton.Gradient />
+        </Skeleton>
+        {/* <Skeleton colorMode={colorMode} shape='square' height={75} width={75} />
         <Spacer />
         <Skeleton colorMode={colorMode} width={25} />
         <Spacer height={8} />
         <Skeleton colorMode={colorMode} width={'100%'} />
         <Spacer height={8} />
-        <Skeleton colorMode={colorMode} width={250} />
+        <Skeleton colorMode={colorMode} width={250} /> */}
       </MotiView>
     </XStack>
   )

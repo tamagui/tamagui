@@ -1,10 +1,7 @@
 import React from 'react';
 import { MotiSkeletonProps } from './types';
-declare function Skeleton(props: MotiSkeletonProps): JSX.Element;
-declare namespace Skeleton {
-    var Group: typeof SkeletonGroup;
-}
-export default Skeleton;
+export default function SkeletonFrame(props: MotiSkeletonProps): JSX.Element;
+declare function AnimatedGradient(): JSX.Element | null;
 declare function SkeletonGroup({ children, show, }: {
     children: React.ReactNode;
     /**
@@ -14,4 +11,9 @@ declare function SkeletonGroup({ children, show, }: {
      */
     show: boolean;
 }): JSX.Element;
+export declare const Skeleton: typeof SkeletonFrame & {
+    Group: typeof SkeletonGroup;
+    Gradient: typeof AnimatedGradient;
+};
+export {};
 //# sourceMappingURL=skeleton-new.d.ts.map

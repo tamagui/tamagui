@@ -15,7 +15,7 @@ export type MotiSkeletonProps = {
    * Optional height of the skeleton. Default to a `minHeight` of `32`
    */
   height?: number | string
-  children?: React.ReactChild | null
+  children?: React.ReactNode
   /**
    * `boolean` specifying whether the skeleton should be visible. By default, it shows if there are no children. This way, you can conditionally display children, and automatically hide the skeleton when they exist.
    *
@@ -67,10 +67,10 @@ export type MotiSkeletonProps = {
   colorMode?: keyof typeof baseColors
   disableExitAnimation?: boolean
   transition?: MotiTransitionProp
-  Gradient: React.ComponentType<{
-    colors: Array<string>
-    start?: { x: number; y: number }
-    end?: { x: number; y: number }
-    style?: any
-  }>
+  // Gradient: React.ComponentType<{
+  //   colors: Array<string>
+  //   start?: { x: number; y: number }
+  //   end?: { x: number; y: number }
+  //   style?: any
+  // }>
 }
