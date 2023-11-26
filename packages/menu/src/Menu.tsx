@@ -258,6 +258,12 @@ const MenuPortal = (props: ScopedProps<MenuPortalProps>) => {
     <Animate type="presence" present={forceMount || menuContext.open}>
       <PortalPrimitive pointerEvents="auto" position="relative" asChild host={host}>
         <PortalProvider scope={__scopeMenu} forceMount={forceMount}>
+          {!!menuContext.open && !isWeb && (
+            <YStack
+              fullscreen
+              onPress={() => menuContext.onOpenChange(!menuContext.open)}
+            />
+          )}
           {content}
         </PortalProvider>
       </PortalPrimitive>
@@ -426,6 +432,7 @@ interface MenuContentImplProps
 
 type StyleableMenuContentProps = MenuContentImplProps & SizableStackProps
 
+const Fragment = (props: any) => props.children
 const MenuContentImpl = React.forwardRef<
   MenuContentImplElement,
   ScopedProps<StyleableMenuContentProps>
@@ -460,7 +467,11 @@ const MenuContentImpl = React.forwardRef<
   const pointerDirRef = React.useRef<Side>('right')
   const lastPointerXRef = React.useRef(0)
 
-  const ScrollLockWrapper = disableOutsideScroll ? RemoveScroll : React.Fragment
+  const ScrollLockWrapper = isWeb
+    ? disableOutsideScroll
+      ? RemoveScroll
+      : React.Fragment
+    : Fragment
   const scrollLockWrapperProps = disableOutsideScroll
     ? { as: Slot, allowPinchZoom: true }
     : undefined
@@ -618,51 +629,48 @@ const MenuContentImpl = React.forwardRef<
         pointerGraceIntentRef.current = intent
       }, [])}
     >
-      {isWeb ? (
-        <ScrollLockWrapper {...scrollLockWrapperProps}>
-          <FocusScope
+      <ScrollLockWrapper {...scrollLockWrapperProps}>
+        <FocusScope
+          // TODO: radix ui has this asChild
+          // asChild
+          trapped={trapFocus}
+          onMountAutoFocus={composeEventHandlers(onOpenAutoFocus, (event) => {
+            // when opening, explicitly focus the content area only and leave
+            // `onEntryFocus` in  control of focusing first item
+            event.preventDefault()
+            // TODO: this seems not working
+            contentRef.current?.focus()
+          })}
+          onUnmountAutoFocus={onCloseAutoFocus}
+        >
+          <DismissableLayer
+            disableOutsidePointerEvents={disableOutsidePointerEvents}
+            onEscapeKeyDown={onEscapeKeyDown}
+            onPointerDownOutside={onPointerDownOutside}
+            onFocusOutside={onFocusOutside}
+            onInteractOutside={onInteractOutside}
+            onDismiss={onDismiss}
             // TODO: radix ui has this asChild
             // asChild
-            trapped={trapFocus}
-            onMountAutoFocus={composeEventHandlers(onOpenAutoFocus, (event) => {
-              // when opening, explicitly focus the content area only and leave
-              // `onEntryFocus` in  control of focusing first item
-              event.preventDefault()
-              contentRef.current?.focus()
-            })}
-            onUnmountAutoFocus={onCloseAutoFocus}
           >
-            <DismissableLayer
-              disableOutsidePointerEvents={disableOutsidePointerEvents}
-              onEscapeKeyDown={onEscapeKeyDown}
-              onPointerDownOutside={onPointerDownOutside}
-              onFocusOutside={onFocusOutside}
-              onInteractOutside={onInteractOutside}
-              onDismiss={onDismiss}
-              // TODO: radix ui has this asChild
-              // asChild
+            <RovingFocusGroup
+              asChild
+              __scopeRovingFocusGroup={__scopeMenu || MENU_CONTEXT}
+              dir={rootContext.dir}
+              orientation="vertical"
+              loop={loop}
+              currentTabStopId={currentItemId}
+              onCurrentTabStopIdChange={setCurrentItemId}
+              onEntryFocus={composeEventHandlers(onEntryFocus, (event) => {
+                // only focus first item when using keyboard
+                if (!rootContext.isUsingKeyboardRef.current) event.preventDefault()
+              })}
             >
-              <RovingFocusGroup
-                asChild
-                __scopeRovingFocusGroup={__scopeMenu || MENU_CONTEXT}
-                dir={rootContext.dir}
-                orientation="vertical"
-                loop={loop}
-                currentTabStopId={currentItemId}
-                onCurrentTabStopIdChange={setCurrentItemId}
-                onEntryFocus={composeEventHandlers(onEntryFocus, (event) => {
-                  // only focus first item when using keyboard
-                  if (!rootContext.isUsingKeyboardRef.current) event.preventDefault()
-                })}
-              >
-                {content}
-              </RovingFocusGroup>
-            </DismissableLayer>
-          </FocusScope>
-        </ScrollLockWrapper>
-      ) : (
-        content
-      )}
+              {content}
+            </RovingFocusGroup>
+          </DismissableLayer>
+        </FocusScope>
+      </ScrollLockWrapper>
     </MenuContentProvider>
   )
 })

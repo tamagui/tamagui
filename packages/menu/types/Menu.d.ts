@@ -145,17 +145,11 @@ declare const MenuGroup: import("@tamagui/core").TamaguiComponent<(Omit<import("
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
-    onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined; /**
-     * Whether focus should be trapped within the `MenuContent`
-     * (default: false)
-     */
+    onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-    onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
-     * Whether keyboard navigation should loop around
-     * @defaultValue false
-     */
+    onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderRelease?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderStart?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -545,17 +539,11 @@ declare const MenuLabel: import("@tamagui/core").TamaguiComponent<(Omit<import("
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
-    onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined; /**
-     * Whether focus should be trapped within the `MenuContent`
-     * (default: false)
-     */
+    onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-    onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
-     * Whether keyboard navigation should loop around
-     * @defaultValue false
-     */
+    onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderRelease?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderStart?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -946,17 +934,11 @@ declare const MenuItem: import("@tamagui/core").TamaguiComponent<Omit<Omit<impor
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
-    onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined; /**
-     * Whether focus should be trapped within the `MenuContent`
-     * (default: false)
-     */
+    onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-    onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
-     * Whether keyboard navigation should loop around
-     * @defaultValue false
-     */
+    onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderRelease?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderStart?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -1181,17 +1163,11 @@ declare const MenuCheckboxItem: import("@tamagui/core").TamaguiComponent<Omit<Om
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
-    onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined; /**
-     * Whether focus should be trapped within the `MenuContent`
-     * (default: false)
-     */
+    onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-    onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
-     * Whether keyboard navigation should loop around
-     * @defaultValue false
-     */
+    onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderRelease?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderStart?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -1411,17 +1387,11 @@ declare const MenuRadioGroup: import("@tamagui/core").TamaguiComponent<Omit<(Omi
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
-    onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined; /**
-     * Whether focus should be trapped within the `MenuContent`
-     * (default: false)
-     */
+    onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-    onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
-     * Whether keyboard navigation should loop around
-     * @defaultValue false
-     */
+    onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderRelease?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderStart?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -1816,17 +1786,11 @@ declare const MenuRadioItem: import("@tamagui/core").TamaguiComponent<Omit<Omit<
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
-    onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined; /**
-     * Whether focus should be trapped within the `MenuContent`
-     * (default: false)
-     */
+    onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-    onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
-     * Whether keyboard navigation should loop around
-     * @defaultValue false
-     */
+    onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderRelease?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderStart?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -2050,17 +2014,11 @@ declare const MenuItemIndicator: import("@tamagui/core").TamaguiComponent<Omit<O
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
-    onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined; /**
-     * Whether focus should be trapped within the `MenuContent`
-     * (default: false)
-     */
+    onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-    onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
-     * Whether keyboard navigation should loop around
-     * @defaultValue false
-     */
+    onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderRelease?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderStart?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -2278,17 +2236,11 @@ declare const MenuSeparator: import("@tamagui/core").TamaguiComponent<(Omit<impo
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
-    onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined; /**
-     * Whether focus should be trapped within the `MenuContent`
-     * (default: false)
-     */
+    onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-    onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
-     * Whether keyboard navigation should loop around
-     * @defaultValue false
-     */
+    onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderRelease?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderStart?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -3085,17 +3037,11 @@ declare const Group: import("@tamagui/core").TamaguiComponent<(Omit<import("reac
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
-    onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined; /**
-     * Whether focus should be trapped within the `MenuContent`
-     * (default: false)
-     */
+    onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-    onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
-     * Whether keyboard navigation should loop around
-     * @defaultValue false
-     */
+    onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderRelease?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderStart?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -3483,17 +3429,11 @@ declare const Label: import("@tamagui/core").TamaguiComponent<(Omit<import("reac
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
-    onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined; /**
-     * Whether focus should be trapped within the `MenuContent`
-     * (default: false)
-     */
+    onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-    onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
-     * Whether keyboard navigation should loop around
-     * @defaultValue false
-     */
+    onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderRelease?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderStart?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -3881,17 +3821,11 @@ declare const Item: import("@tamagui/core").TamaguiComponent<Omit<Omit<import("r
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
-    onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined; /**
-     * Whether focus should be trapped within the `MenuContent`
-     * (default: false)
-     */
+    onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-    onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
-     * Whether keyboard navigation should loop around
-     * @defaultValue false
-     */
+    onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderRelease?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderStart?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -4107,17 +4041,11 @@ declare const CheckboxItem: import("@tamagui/core").TamaguiComponent<Omit<Omit<i
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
-    onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined; /**
-     * Whether focus should be trapped within the `MenuContent`
-     * (default: false)
-     */
+    onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-    onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
-     * Whether keyboard navigation should loop around
-     * @defaultValue false
-     */
+    onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderRelease?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderStart?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -4333,17 +4261,11 @@ declare const RadioGroup: import("@tamagui/core").TamaguiComponent<Omit<(Omit<im
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
-    onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined; /**
-     * Whether focus should be trapped within the `MenuContent`
-     * (default: false)
-     */
+    onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-    onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
-     * Whether keyboard navigation should loop around
-     * @defaultValue false
-     */
+    onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderRelease?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderStart?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -4735,17 +4657,11 @@ declare const RadioItem: import("@tamagui/core").TamaguiComponent<Omit<Omit<impo
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
-    onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined; /**
-     * Whether focus should be trapped within the `MenuContent`
-     * (default: false)
-     */
+    onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-    onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
-     * Whether keyboard navigation should loop around
-     * @defaultValue false
-     */
+    onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderRelease?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderStart?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -4961,17 +4877,11 @@ declare const ItemIndicator: import("@tamagui/core").TamaguiComponent<Omit<Omit<
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
-    onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined; /**
-     * Whether focus should be trapped within the `MenuContent`
-     * (default: false)
-     */
+    onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-    onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
-     * Whether keyboard navigation should loop around
-     * @defaultValue false
-     */
+    onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderRelease?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderStart?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -5187,17 +5097,11 @@ declare const Separator: import("@tamagui/core").TamaguiComponent<(Omit<import("
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
-    onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined; /**
-     * Whether focus should be trapped within the `MenuContent`
-     * (default: false)
-     */
+    onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-    onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
-     * Whether keyboard navigation should loop around
-     * @defaultValue false
-     */
+    onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderRelease?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderStart?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
