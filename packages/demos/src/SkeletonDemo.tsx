@@ -1,5 +1,5 @@
 import { MotiView } from '@tamagui/animations-moti'
-import { Skeleton } from '@tamagui/skeleton'
+import Skeleton from '@tamagui/skeleton'
 import { Paragraph, Spacer, XStack } from 'tamagui'
 
 // TODO: do packages/tamagui/src pattern for Skeleton
