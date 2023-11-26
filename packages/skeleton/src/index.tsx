@@ -3,11 +3,11 @@
 import { LinearGradient } from 'expo-linear-gradient'
 // import React from 'react'
 
-import Skeleton from './skeleton-new'
+export {Skeleton} from './skeleton-new'
 import { MotiSkeletonProps } from './types'
 
-export default (props: Omit<MotiSkeletonProps, 'Gradient'>) => {
-  return <Skeleton {...props} Gradient={LinearGradient as any} />
-}
+// export default (props: Omit<MotiSkeletonProps, 'Gradient'>) => {
+//   return <Skeleton {...props} Gradient={LinearGradient as any} />
+// }
 
 // SkeletonExpo.Group = Skeleton.Group
