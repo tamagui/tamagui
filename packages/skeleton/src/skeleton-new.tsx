@@ -17,6 +17,7 @@ import {
 } from './shared'
 import { MotiSkeletonProps } from './types'
 import { Circle, CircleProps, Paragraph, Square, YStack } from 'tamagui'
+import {LinearGradient} from 'expo-linear-gradient'
 
 type InnerCompoentProps = CircleProps & {
   shape?: 'circle' | 'square' | undefined
@@ -32,6 +33,23 @@ function InnerComponent(props: InnerCompoentProps) {
     return <YStack borderRadius={borderRadius} {...rest}>{children}</YStack>
   }
 }
+
+const AnimatedGradientContext = createContext<{
+  measuredWidthSv: Animated.SharedValue<number> | undefined
+  show: boolean
+  backgroundSize: number | undefined,
+  colors: string[] | undefined,
+  colorMode: 'dark' | 'light' | undefined
+  transition: MotiTransitionProp | undefined
+}>({
+  measuredWidthSv: undefined,
+  show: false,
+  backgroundSize: undefined,
+  colors: undefined,
+  colorMode: undefined,
+  transition: undefined
+})
+
 
 export default function Skeleton(props: MotiSkeletonProps) {
   const skeletonGroupContext = useContext(SkeletonGroupContext)
@@ -87,38 +105,33 @@ export default function Skeleton(props: MotiSkeletonProps) {
         }}
         pointerEvents="none"
       >
-        {disableExitAnimation && !show ? null : (
-          <AnimatedGradient
-            // force a key change to make the loop animation re-mount
-            key={colors.join(',')}
-            colors={colors}
-            backgroundSize={backgroundSize}
-            transition={transition}
-            show={show}
-            measuredWidthSv={measuredWidthSv}
-            Gradient={props.Gradient}
-          />
-        )}
+        <AnimatedGradientContext.Provider value={{
+          measuredWidthSv,
+          show,
+          backgroundSize,
+          colors,
+          colorMode,
+          transition
+        }}>
+          {disableExitAnimation && !show ? null : (
+            <AnimatedGradient
+              // force a key change to make the loop animation re-mount
+              key={colors.join(',')}
+            />
+          )}
+        </AnimatedGradientContext.Provider>
       </InnerComponent>
     </View >
   )
 }
 
-const AnimatedGradient = React.memo(
-  function AnimatedGradient({
-    colors,
-    backgroundSize,
-    transition,
-    show,
-    measuredWidthSv,
-    Gradient,
-  }: {
-    colors: string[]
-    backgroundSize: number
-    transition?: MotiTransitionProp
-    show: boolean
-    measuredWidthSv: Animated.SharedValue<number>
-  } & Pick<MotiSkeletonProps, 'Gradient'>) {
+  function AnimatedGradient() {
+    const { show, transition, measuredWidthSv, colorMode, backgroundSize = 6 } = useContext(AnimatedGradientContext)
+
+    const colors = colorMode === 'dark' ? defaultDarkColors : defaultLightColors;
+    if (!measuredWidthSv) {
+      return null
+    }
     return (
       <MotiView
         style={[
@@ -157,7 +170,7 @@ const AnimatedGradient = React.memo(
           ...(transition as any),
         }}
       >
-        <Gradient
+        <LinearGradient
           colors={colors}
           start={{
             x: 0.1,
@@ -171,22 +184,7 @@ const AnimatedGradient = React.memo(
         />
       </MotiView>
     )
-  },
-  function propsAreEqual(prev, next) {
-    if (prev.backgroundSize !== next.backgroundSize) return false
-
-    if (prev.show !== next.show) return false
-
-    const didColorsChange = prev.colors.some((color, index) => {
-      return color !== next.colors[index]
-    })
-
-    if (didColorsChange) return false
-
-    // transition changes will not be respected
-    return true
   }
-)
 
 const SkeletonGroupContext = createContext<boolean | undefined>(undefined)
 
