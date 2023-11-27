@@ -257,15 +257,17 @@ const MenuPortal = (props: ScopedProps<MenuPortalProps>) => {
   return (
     <Animate type="presence" present={forceMount || menuContext.open}>
       <PortalPrimitive pointerEvents="auto" position="relative" asChild host={host}>
-        <PortalProvider scope={__scopeMenu} forceMount={forceMount}>
-          {!!menuContext.open && !isWeb && (
-            <YStack
-              fullscreen
-              onPress={() => menuContext.onOpenChange(!menuContext.open)}
-            />
-          )}
-          {content}
-        </PortalProvider>
+        <>
+          <PortalProvider scope={__scopeMenu} forceMount={forceMount}>
+            {!!menuContext.open && !isWeb && (
+              <YStack
+                fullscreen
+                onPress={() => menuContext.onOpenChange(!menuContext.open)}
+              />
+            )}
+            {content}
+          </PortalProvider>
+        </>
       </PortalPrimitive>
     </Animate>
   )
