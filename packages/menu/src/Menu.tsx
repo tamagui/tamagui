@@ -21,7 +21,7 @@ import type { RovingFocusGroupProps } from '@tamagui/roving-focus'
 import { SizableStackProps, ThemeableStack, YStack } from '@tamagui/stacks'
 import { useCallbackRef } from '@tamagui/use-callback-ref'
 import { useDirection } from '@tamagui/use-direction'
-import { Stack, isAndroid, isWeb, styled } from '@tamagui/web'
+import { Stack, isAndroid, isIos, isWeb, styled } from '@tamagui/web'
 import { TamaguiElement } from '@tamagui/web/types'
 import { hideOthers } from 'aria-hidden'
 import { useId } from 'react'
@@ -255,13 +255,19 @@ const MenuPortal = (props: ScopedProps<MenuPortalProps>) => {
       <PortalPrimitive pointerEvents="auto" position="relative" asChild host={host}>
         <>
           <PortalProvider scope={__scopeMenu} forceMount={forceMount}>
-            {!!menuContext.open && !isWeb && (
+            {!!menuContext.open && !isWeb && isAndroid && (
               <YStack
                 fullscreen
                 onPress={() => menuContext.onOpenChange(!menuContext.open)}
               />
             )}
             {content}
+            {!!menuContext.open && !isWeb && isIos && (
+              <YStack
+                fullscreen
+                onPress={() => menuContext.onOpenChange(!menuContext.open)}
+              />
+            )}
           </PortalProvider>
         </>
       </PortalPrimitive>
@@ -514,11 +520,14 @@ const MenuContentImpl = React.forwardRef<
     )
   }, [])
 
+  const ContentWrapper = isWeb ? Stack : Fragment
+
   const content = (
-    <Stack>
+    <ContentWrapper>
       <PopperPrimitive.PopperContent
         role="menu"
         elevation={30}
+        zIndex={10000}
         paddingVertical={'$2'}
         backgroundColor={'$background'}
         aria-orientation="vertical"
@@ -595,7 +604,7 @@ const MenuContentImpl = React.forwardRef<
             }
           : {})}
       />
-    </Stack>
+    </ContentWrapper>
   )
 
   return (

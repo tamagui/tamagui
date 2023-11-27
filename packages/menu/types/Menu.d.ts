@@ -216,7 +216,12 @@ declare const MenuGroup: import("@tamagui/core").TamaguiComponent<(Omit<import("
         download?: boolean | undefined;
     } | undefined;
 } & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/core").StackProps, "ref" | "pointerEvents" | "display" | "children" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "style" | "hitSlop" | "id" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "space" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "userSelect" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "theme" | "group" | "onFocus" | "onPress" | "onLongPress" | "onPressIn" | "onPressOut" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onBlur" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "disabled" | "className" | "themeShallow" | "tag" | "untilMeasured" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "key" | "elevationAndroid" | "rel" | "download" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "href" | "hrefAttrs"> & {
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined; /**
+     * We prevent default browser behaviour for selection keys as they should trigger
+     * a selection only:
+     * - prevents space from scrolling the page.
+     * - if keydown causes focus to move, prevents keydown from firing on the new target.
+     */
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -235,7 +240,17 @@ declare const MenuGroup: import("@tamagui/core").TamaguiComponent<(Omit<import("
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * We focus items on `pointerMove` to achieve the following:
+     *
+     * - Mouse over an item (it focuses)
+     * - Leave mouse where it is and use keyboard to focus a different item
+     * - Wiggle mouse without it leaving previously focused item
+     * - Previously focused item should re-focus
+     *
+     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+     * wiggles. This is to match native menu implementation.
+     */
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -279,7 +294,17 @@ declare const MenuGroup: import("@tamagui/core").TamaguiComponent<(Omit<import("
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * We focus items on `pointerMove` to achieve the following:
+     *
+     * - Mouse over an item (it focuses)
+     * - Leave mouse where it is and use keyboard to focus a different item
+     * - Wiggle mouse without it leaving previously focused item
+     * - Previously focused item should re-focus
+     *
+     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+     * wiggles. This is to match native menu implementation.
+     */
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -323,7 +348,17 @@ declare const MenuGroup: import("@tamagui/core").TamaguiComponent<(Omit<import("
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * We focus items on `pointerMove` to achieve the following:
+     *
+     * - Mouse over an item (it focuses)
+     * - Leave mouse where it is and use keyboard to focus a different item
+     * - Wiggle mouse without it leaving previously focused item
+     * - Previously focused item should re-focus
+     *
+     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+     * wiggles. This is to match native menu implementation.
+     */
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -367,7 +402,17 @@ declare const MenuGroup: import("@tamagui/core").TamaguiComponent<(Omit<import("
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * We focus items on `pointerMove` to achieve the following:
+     *
+     * - Mouse over an item (it focuses)
+     * - Leave mouse where it is and use keyboard to focus a different item
+     * - Wiggle mouse without it leaving previously focused item
+     * - Previously focused item should re-focus
+     *
+     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+     * wiggles. This is to match native menu implementation.
+     */
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -445,7 +490,17 @@ declare const MenuGroup: import("@tamagui/core").TamaguiComponent<(Omit<import("
         onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
         onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
         onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-        onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+        onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+         * We focus items on `pointerMove` to achieve the following:
+         *
+         * - Mouse over an item (it focuses)
+         * - Leave mouse where it is and use keyboard to focus a different item
+         * - Wiggle mouse without it leaving previously focused item
+         * - Previously focused item should re-focus
+         *
+         * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+         * wiggles. This is to match native menu implementation.
+         */
         onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -610,7 +665,12 @@ declare const MenuLabel: import("@tamagui/core").TamaguiComponent<(Omit<import("
         download?: boolean | undefined;
     } | undefined;
 } & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/core").StackProps, "ref" | "pointerEvents" | "display" | "children" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "style" | "hitSlop" | "id" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "space" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "userSelect" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "theme" | "group" | "onFocus" | "onPress" | "onLongPress" | "onPressIn" | "onPressOut" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onBlur" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "disabled" | "className" | "themeShallow" | "tag" | "untilMeasured" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "key" | "elevationAndroid" | "rel" | "download" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "href" | "hrefAttrs"> & {
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined; /**
+     * We prevent default browser behaviour for selection keys as they should trigger
+     * a selection only:
+     * - prevents space from scrolling the page.
+     * - if keydown causes focus to move, prevents keydown from firing on the new target.
+     */
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -629,7 +689,17 @@ declare const MenuLabel: import("@tamagui/core").TamaguiComponent<(Omit<import("
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * We focus items on `pointerMove` to achieve the following:
+     *
+     * - Mouse over an item (it focuses)
+     * - Leave mouse where it is and use keyboard to focus a different item
+     * - Wiggle mouse without it leaving previously focused item
+     * - Previously focused item should re-focus
+     *
+     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+     * wiggles. This is to match native menu implementation.
+     */
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -673,7 +743,17 @@ declare const MenuLabel: import("@tamagui/core").TamaguiComponent<(Omit<import("
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * We focus items on `pointerMove` to achieve the following:
+     *
+     * - Mouse over an item (it focuses)
+     * - Leave mouse where it is and use keyboard to focus a different item
+     * - Wiggle mouse without it leaving previously focused item
+     * - Previously focused item should re-focus
+     *
+     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+     * wiggles. This is to match native menu implementation.
+     */
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -717,7 +797,17 @@ declare const MenuLabel: import("@tamagui/core").TamaguiComponent<(Omit<import("
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * We focus items on `pointerMove` to achieve the following:
+     *
+     * - Mouse over an item (it focuses)
+     * - Leave mouse where it is and use keyboard to focus a different item
+     * - Wiggle mouse without it leaving previously focused item
+     * - Previously focused item should re-focus
+     *
+     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+     * wiggles. This is to match native menu implementation.
+     */
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -761,7 +851,17 @@ declare const MenuLabel: import("@tamagui/core").TamaguiComponent<(Omit<import("
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * We focus items on `pointerMove` to achieve the following:
+     *
+     * - Mouse over an item (it focuses)
+     * - Leave mouse where it is and use keyboard to focus a different item
+     * - Wiggle mouse without it leaving previously focused item
+     * - Previously focused item should re-focus
+     *
+     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+     * wiggles. This is to match native menu implementation.
+     */
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -839,7 +939,17 @@ declare const MenuLabel: import("@tamagui/core").TamaguiComponent<(Omit<import("
         onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
         onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
         onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-        onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+        onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+         * We focus items on `pointerMove` to achieve the following:
+         *
+         * - Mouse over an item (it focuses)
+         * - Leave mouse where it is and use keyboard to focus a different item
+         * - Wiggle mouse without it leaving previously focused item
+         * - Previously focused item should re-focus
+         *
+         * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+         * wiggles. This is to match native menu implementation.
+         */
         onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -1005,7 +1115,12 @@ declare const MenuItem: import("@tamagui/core").TamaguiComponent<Omit<Omit<impor
         download?: boolean | undefined;
     } | undefined;
 } & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/core").StackProps, "ref" | "pointerEvents" | "display" | "children" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "style" | "hitSlop" | "id" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "space" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "userSelect" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "theme" | "group" | "onFocus" | "onPress" | "onLongPress" | "onPressIn" | "onPressOut" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onBlur" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "disabled" | "className" | "themeShallow" | "tag" | "untilMeasured" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "key" | "elevationAndroid" | "rel" | "download" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "href" | "hrefAttrs"> & {
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined; /**
+     * We prevent default browser behaviour for selection keys as they should trigger
+     * a selection only:
+     * - prevents space from scrolling the page.
+     * - if keydown causes focus to move, prevents keydown from firing on the new target.
+     */
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -1026,7 +1141,17 @@ declare const MenuItem: import("@tamagui/core").TamaguiComponent<Omit<Omit<impor
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * We focus items on `pointerMove` to achieve the following:
+     *
+     * - Mouse over an item (it focuses)
+     * - Leave mouse where it is and use keyboard to focus a different item
+     * - Wiggle mouse without it leaving previously focused item
+     * - Previously focused item should re-focus
+     *
+     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+     * wiggles. This is to match native menu implementation.
+     */
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -1234,7 +1359,12 @@ declare const MenuCheckboxItem: import("@tamagui/core").TamaguiComponent<Omit<Om
         download?: boolean | undefined;
     } | undefined;
 } & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/core").StackProps, "ref" | "pointerEvents" | "display" | "children" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "style" | "hitSlop" | "id" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "space" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "userSelect" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "theme" | "group" | "onFocus" | "onPress" | "onLongPress" | "onPressIn" | "onPressOut" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onBlur" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "disabled" | "className" | "themeShallow" | "tag" | "untilMeasured" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "key" | "elevationAndroid" | "rel" | "download" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "href" | "hrefAttrs"> & {
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined; /**
+     * We prevent default browser behaviour for selection keys as they should trigger
+     * a selection only:
+     * - prevents space from scrolling the page.
+     * - if keydown causes focus to move, prevents keydown from firing on the new target.
+     */
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -1255,7 +1385,17 @@ declare const MenuCheckboxItem: import("@tamagui/core").TamaguiComponent<Omit<Om
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * We focus items on `pointerMove` to achieve the following:
+     *
+     * - Mouse over an item (it focuses)
+     * - Leave mouse where it is and use keyboard to focus a different item
+     * - Wiggle mouse without it leaving previously focused item
+     * - Previously focused item should re-focus
+     *
+     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+     * wiggles. This is to match native menu implementation.
+     */
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -1458,7 +1598,12 @@ declare const MenuRadioGroup: import("@tamagui/core").TamaguiComponent<Omit<(Omi
         download?: boolean | undefined;
     } | undefined;
 } & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/core").StackProps, "ref" | "pointerEvents" | "display" | "children" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "style" | "hitSlop" | "id" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "space" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "userSelect" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "theme" | "group" | "onFocus" | "onPress" | "onLongPress" | "onPressIn" | "onPressOut" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onBlur" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "disabled" | "className" | "themeShallow" | "tag" | "untilMeasured" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "key" | "elevationAndroid" | "rel" | "download" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "href" | "hrefAttrs"> & {
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined; /**
+     * We prevent default browser behaviour for selection keys as they should trigger
+     * a selection only:
+     * - prevents space from scrolling the page.
+     * - if keydown causes focus to move, prevents keydown from firing on the new target.
+     */
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -1477,7 +1622,17 @@ declare const MenuRadioGroup: import("@tamagui/core").TamaguiComponent<Omit<(Omi
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * We focus items on `pointerMove` to achieve the following:
+     *
+     * - Mouse over an item (it focuses)
+     * - Leave mouse where it is and use keyboard to focus a different item
+     * - Wiggle mouse without it leaving previously focused item
+     * - Previously focused item should re-focus
+     *
+     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+     * wiggles. This is to match native menu implementation.
+     */
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -1521,7 +1676,17 @@ declare const MenuRadioGroup: import("@tamagui/core").TamaguiComponent<Omit<(Omi
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * We focus items on `pointerMove` to achieve the following:
+     *
+     * - Mouse over an item (it focuses)
+     * - Leave mouse where it is and use keyboard to focus a different item
+     * - Wiggle mouse without it leaving previously focused item
+     * - Previously focused item should re-focus
+     *
+     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+     * wiggles. This is to match native menu implementation.
+     */
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -1565,7 +1730,17 @@ declare const MenuRadioGroup: import("@tamagui/core").TamaguiComponent<Omit<(Omi
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * We focus items on `pointerMove` to achieve the following:
+     *
+     * - Mouse over an item (it focuses)
+     * - Leave mouse where it is and use keyboard to focus a different item
+     * - Wiggle mouse without it leaving previously focused item
+     * - Previously focused item should re-focus
+     *
+     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+     * wiggles. This is to match native menu implementation.
+     */
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -1611,7 +1786,17 @@ declare const MenuRadioGroup: import("@tamagui/core").TamaguiComponent<Omit<(Omi
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * We focus items on `pointerMove` to achieve the following:
+     *
+     * - Mouse over an item (it focuses)
+     * - Leave mouse where it is and use keyboard to focus a different item
+     * - Wiggle mouse without it leaving previously focused item
+     * - Previously focused item should re-focus
+     *
+     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+     * wiggles. This is to match native menu implementation.
+     */
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -1691,7 +1876,17 @@ declare const MenuRadioGroup: import("@tamagui/core").TamaguiComponent<Omit<(Omi
         onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
         onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
         onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-        onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+        onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+         * We focus items on `pointerMove` to achieve the following:
+         *
+         * - Mouse over an item (it focuses)
+         * - Leave mouse where it is and use keyboard to focus a different item
+         * - Wiggle mouse without it leaving previously focused item
+         * - Previously focused item should re-focus
+         *
+         * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+         * wiggles. This is to match native menu implementation.
+         */
         onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -1857,7 +2052,12 @@ declare const MenuRadioItem: import("@tamagui/core").TamaguiComponent<Omit<Omit<
         download?: boolean | undefined;
     } | undefined;
 } & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/core").StackProps, "ref" | "pointerEvents" | "display" | "children" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "style" | "hitSlop" | "id" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "space" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "userSelect" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "theme" | "group" | "onFocus" | "onPress" | "onLongPress" | "onPressIn" | "onPressOut" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onBlur" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "disabled" | "className" | "themeShallow" | "tag" | "untilMeasured" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "key" | "elevationAndroid" | "rel" | "download" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "href" | "hrefAttrs"> & {
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined; /**
+     * We prevent default browser behaviour for selection keys as they should trigger
+     * a selection only:
+     * - prevents space from scrolling the page.
+     * - if keydown causes focus to move, prevents keydown from firing on the new target.
+     */
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -1878,7 +2078,17 @@ declare const MenuRadioItem: import("@tamagui/core").TamaguiComponent<Omit<Omit<
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * We focus items on `pointerMove` to achieve the following:
+     *
+     * - Mouse over an item (it focuses)
+     * - Leave mouse where it is and use keyboard to focus a different item
+     * - Wiggle mouse without it leaving previously focused item
+     * - Previously focused item should re-focus
+     *
+     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+     * wiggles. This is to match native menu implementation.
+     */
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -2085,7 +2295,12 @@ declare const MenuItemIndicator: import("@tamagui/core").TamaguiComponent<Omit<O
         download?: boolean | undefined;
     } | undefined;
 } & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/core").StackProps, "ref" | "pointerEvents" | "display" | "children" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "style" | "hitSlop" | "id" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "space" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "userSelect" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "theme" | "group" | "onFocus" | "onPress" | "onLongPress" | "onPressIn" | "onPressOut" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onBlur" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "disabled" | "className" | "themeShallow" | "tag" | "untilMeasured" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "key" | "elevationAndroid" | "rel" | "download" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "href" | "hrefAttrs"> & {
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined; /**
+     * We prevent default browser behaviour for selection keys as they should trigger
+     * a selection only:
+     * - prevents space from scrolling the page.
+     * - if keydown causes focus to move, prevents keydown from firing on the new target.
+     */
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -2106,7 +2321,17 @@ declare const MenuItemIndicator: import("@tamagui/core").TamaguiComponent<Omit<O
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * We focus items on `pointerMove` to achieve the following:
+     *
+     * - Mouse over an item (it focuses)
+     * - Leave mouse where it is and use keyboard to focus a different item
+     * - Wiggle mouse without it leaving previously focused item
+     * - Previously focused item should re-focus
+     *
+     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+     * wiggles. This is to match native menu implementation.
+     */
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -2307,7 +2532,12 @@ declare const MenuSeparator: import("@tamagui/core").TamaguiComponent<(Omit<impo
         download?: boolean | undefined;
     } | undefined;
 } & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/core").StackProps, "ref" | "pointerEvents" | "display" | "children" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "style" | "hitSlop" | "id" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "space" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "userSelect" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "theme" | "group" | "onFocus" | "onPress" | "onLongPress" | "onPressIn" | "onPressOut" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onBlur" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "disabled" | "className" | "themeShallow" | "tag" | "untilMeasured" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "key" | "elevationAndroid" | "rel" | "download" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "href" | "hrefAttrs"> & {
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined; /**
+     * We prevent default browser behaviour for selection keys as they should trigger
+     * a selection only:
+     * - prevents space from scrolling the page.
+     * - if keydown causes focus to move, prevents keydown from firing on the new target.
+     */
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -2326,7 +2556,17 @@ declare const MenuSeparator: import("@tamagui/core").TamaguiComponent<(Omit<impo
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * We focus items on `pointerMove` to achieve the following:
+     *
+     * - Mouse over an item (it focuses)
+     * - Leave mouse where it is and use keyboard to focus a different item
+     * - Wiggle mouse without it leaving previously focused item
+     * - Previously focused item should re-focus
+     *
+     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+     * wiggles. This is to match native menu implementation.
+     */
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -2370,7 +2610,17 @@ declare const MenuSeparator: import("@tamagui/core").TamaguiComponent<(Omit<impo
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * We focus items on `pointerMove` to achieve the following:
+     *
+     * - Mouse over an item (it focuses)
+     * - Leave mouse where it is and use keyboard to focus a different item
+     * - Wiggle mouse without it leaving previously focused item
+     * - Previously focused item should re-focus
+     *
+     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+     * wiggles. This is to match native menu implementation.
+     */
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -2414,7 +2664,17 @@ declare const MenuSeparator: import("@tamagui/core").TamaguiComponent<(Omit<impo
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * We focus items on `pointerMove` to achieve the following:
+     *
+     * - Mouse over an item (it focuses)
+     * - Leave mouse where it is and use keyboard to focus a different item
+     * - Wiggle mouse without it leaving previously focused item
+     * - Previously focused item should re-focus
+     *
+     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+     * wiggles. This is to match native menu implementation.
+     */
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -2458,7 +2718,17 @@ declare const MenuSeparator: import("@tamagui/core").TamaguiComponent<(Omit<impo
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * We focus items on `pointerMove` to achieve the following:
+     *
+     * - Mouse over an item (it focuses)
+     * - Leave mouse where it is and use keyboard to focus a different item
+     * - Wiggle mouse without it leaving previously focused item
+     * - Previously focused item should re-focus
+     *
+     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+     * wiggles. This is to match native menu implementation.
+     */
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -2536,7 +2806,17 @@ declare const MenuSeparator: import("@tamagui/core").TamaguiComponent<(Omit<impo
         onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
         onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
         onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-        onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+        onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+         * We focus items on `pointerMove` to achieve the following:
+         *
+         * - Mouse over an item (it focuses)
+         * - Leave mouse where it is and use keyboard to focus a different item
+         * - Wiggle mouse without it leaving previously focused item
+         * - Previously focused item should re-focus
+         *
+         * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+         * wiggles. This is to match native menu implementation.
+         */
         onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -3108,7 +3388,12 @@ declare const Group: import("@tamagui/core").TamaguiComponent<(Omit<import("reac
         download?: boolean | undefined;
     } | undefined;
 } & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/core").StackProps, "ref" | "pointerEvents" | "display" | "children" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "style" | "hitSlop" | "id" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "space" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "userSelect" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "theme" | "group" | "onFocus" | "onPress" | "onLongPress" | "onPressIn" | "onPressOut" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onBlur" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "disabled" | "className" | "themeShallow" | "tag" | "untilMeasured" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "key" | "elevationAndroid" | "rel" | "download" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "href" | "hrefAttrs"> & {
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined; /**
+     * We prevent default browser behaviour for selection keys as they should trigger
+     * a selection only:
+     * - prevents space from scrolling the page.
+     * - if keydown causes focus to move, prevents keydown from firing on the new target.
+     */
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -3127,7 +3412,17 @@ declare const Group: import("@tamagui/core").TamaguiComponent<(Omit<import("reac
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * We focus items on `pointerMove` to achieve the following:
+     *
+     * - Mouse over an item (it focuses)
+     * - Leave mouse where it is and use keyboard to focus a different item
+     * - Wiggle mouse without it leaving previously focused item
+     * - Previously focused item should re-focus
+     *
+     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+     * wiggles. This is to match native menu implementation.
+     */
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -3171,7 +3466,17 @@ declare const Group: import("@tamagui/core").TamaguiComponent<(Omit<import("reac
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * We focus items on `pointerMove` to achieve the following:
+     *
+     * - Mouse over an item (it focuses)
+     * - Leave mouse where it is and use keyboard to focus a different item
+     * - Wiggle mouse without it leaving previously focused item
+     * - Previously focused item should re-focus
+     *
+     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+     * wiggles. This is to match native menu implementation.
+     */
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -3215,7 +3520,17 @@ declare const Group: import("@tamagui/core").TamaguiComponent<(Omit<import("reac
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * We focus items on `pointerMove` to achieve the following:
+     *
+     * - Mouse over an item (it focuses)
+     * - Leave mouse where it is and use keyboard to focus a different item
+     * - Wiggle mouse without it leaving previously focused item
+     * - Previously focused item should re-focus
+     *
+     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+     * wiggles. This is to match native menu implementation.
+     */
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -3259,7 +3574,17 @@ declare const Group: import("@tamagui/core").TamaguiComponent<(Omit<import("reac
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * We focus items on `pointerMove` to achieve the following:
+     *
+     * - Mouse over an item (it focuses)
+     * - Leave mouse where it is and use keyboard to focus a different item
+     * - Wiggle mouse without it leaving previously focused item
+     * - Previously focused item should re-focus
+     *
+     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+     * wiggles. This is to match native menu implementation.
+     */
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -3337,7 +3662,17 @@ declare const Group: import("@tamagui/core").TamaguiComponent<(Omit<import("reac
         onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
         onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
         onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-        onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+        onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+         * We focus items on `pointerMove` to achieve the following:
+         *
+         * - Mouse over an item (it focuses)
+         * - Leave mouse where it is and use keyboard to focus a different item
+         * - Wiggle mouse without it leaving previously focused item
+         * - Previously focused item should re-focus
+         *
+         * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+         * wiggles. This is to match native menu implementation.
+         */
         onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -3500,7 +3835,12 @@ declare const Label: import("@tamagui/core").TamaguiComponent<(Omit<import("reac
         download?: boolean | undefined;
     } | undefined;
 } & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/core").StackProps, "ref" | "pointerEvents" | "display" | "children" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "style" | "hitSlop" | "id" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "space" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "userSelect" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "theme" | "group" | "onFocus" | "onPress" | "onLongPress" | "onPressIn" | "onPressOut" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onBlur" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "disabled" | "className" | "themeShallow" | "tag" | "untilMeasured" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "key" | "elevationAndroid" | "rel" | "download" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "href" | "hrefAttrs"> & {
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined; /**
+     * We prevent default browser behaviour for selection keys as they should trigger
+     * a selection only:
+     * - prevents space from scrolling the page.
+     * - if keydown causes focus to move, prevents keydown from firing on the new target.
+     */
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -3519,7 +3859,17 @@ declare const Label: import("@tamagui/core").TamaguiComponent<(Omit<import("reac
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * We focus items on `pointerMove` to achieve the following:
+     *
+     * - Mouse over an item (it focuses)
+     * - Leave mouse where it is and use keyboard to focus a different item
+     * - Wiggle mouse without it leaving previously focused item
+     * - Previously focused item should re-focus
+     *
+     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+     * wiggles. This is to match native menu implementation.
+     */
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -3563,7 +3913,17 @@ declare const Label: import("@tamagui/core").TamaguiComponent<(Omit<import("reac
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * We focus items on `pointerMove` to achieve the following:
+     *
+     * - Mouse over an item (it focuses)
+     * - Leave mouse where it is and use keyboard to focus a different item
+     * - Wiggle mouse without it leaving previously focused item
+     * - Previously focused item should re-focus
+     *
+     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+     * wiggles. This is to match native menu implementation.
+     */
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -3607,7 +3967,17 @@ declare const Label: import("@tamagui/core").TamaguiComponent<(Omit<import("reac
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * We focus items on `pointerMove` to achieve the following:
+     *
+     * - Mouse over an item (it focuses)
+     * - Leave mouse where it is and use keyboard to focus a different item
+     * - Wiggle mouse without it leaving previously focused item
+     * - Previously focused item should re-focus
+     *
+     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+     * wiggles. This is to match native menu implementation.
+     */
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -3651,7 +4021,17 @@ declare const Label: import("@tamagui/core").TamaguiComponent<(Omit<import("reac
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * We focus items on `pointerMove` to achieve the following:
+     *
+     * - Mouse over an item (it focuses)
+     * - Leave mouse where it is and use keyboard to focus a different item
+     * - Wiggle mouse without it leaving previously focused item
+     * - Previously focused item should re-focus
+     *
+     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+     * wiggles. This is to match native menu implementation.
+     */
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -3729,7 +4109,17 @@ declare const Label: import("@tamagui/core").TamaguiComponent<(Omit<import("reac
         onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
         onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
         onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-        onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+        onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+         * We focus items on `pointerMove` to achieve the following:
+         *
+         * - Mouse over an item (it focuses)
+         * - Leave mouse where it is and use keyboard to focus a different item
+         * - Wiggle mouse without it leaving previously focused item
+         * - Previously focused item should re-focus
+         *
+         * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+         * wiggles. This is to match native menu implementation.
+         */
         onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -3892,7 +4282,12 @@ declare const Item: import("@tamagui/core").TamaguiComponent<Omit<Omit<import("r
         download?: boolean | undefined;
     } | undefined;
 } & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/core").StackProps, "ref" | "pointerEvents" | "display" | "children" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "style" | "hitSlop" | "id" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "space" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "userSelect" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "theme" | "group" | "onFocus" | "onPress" | "onLongPress" | "onPressIn" | "onPressOut" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onBlur" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "disabled" | "className" | "themeShallow" | "tag" | "untilMeasured" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "key" | "elevationAndroid" | "rel" | "download" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "href" | "hrefAttrs"> & {
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined; /**
+     * We prevent default browser behaviour for selection keys as they should trigger
+     * a selection only:
+     * - prevents space from scrolling the page.
+     * - if keydown causes focus to move, prevents keydown from firing on the new target.
+     */
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -3913,7 +4308,17 @@ declare const Item: import("@tamagui/core").TamaguiComponent<Omit<Omit<import("r
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * We focus items on `pointerMove` to achieve the following:
+     *
+     * - Mouse over an item (it focuses)
+     * - Leave mouse where it is and use keyboard to focus a different item
+     * - Wiggle mouse without it leaving previously focused item
+     * - Previously focused item should re-focus
+     *
+     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+     * wiggles. This is to match native menu implementation.
+     */
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -4112,7 +4517,12 @@ declare const CheckboxItem: import("@tamagui/core").TamaguiComponent<Omit<Omit<i
         download?: boolean | undefined;
     } | undefined;
 } & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/core").StackProps, "ref" | "pointerEvents" | "display" | "children" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "style" | "hitSlop" | "id" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "space" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "userSelect" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "theme" | "group" | "onFocus" | "onPress" | "onLongPress" | "onPressIn" | "onPressOut" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onBlur" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "disabled" | "className" | "themeShallow" | "tag" | "untilMeasured" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "key" | "elevationAndroid" | "rel" | "download" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "href" | "hrefAttrs"> & {
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined; /**
+     * We prevent default browser behaviour for selection keys as they should trigger
+     * a selection only:
+     * - prevents space from scrolling the page.
+     * - if keydown causes focus to move, prevents keydown from firing on the new target.
+     */
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -4133,7 +4543,17 @@ declare const CheckboxItem: import("@tamagui/core").TamaguiComponent<Omit<Omit<i
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * We focus items on `pointerMove` to achieve the following:
+     *
+     * - Mouse over an item (it focuses)
+     * - Leave mouse where it is and use keyboard to focus a different item
+     * - Wiggle mouse without it leaving previously focused item
+     * - Previously focused item should re-focus
+     *
+     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+     * wiggles. This is to match native menu implementation.
+     */
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -4332,7 +4752,12 @@ declare const RadioGroup: import("@tamagui/core").TamaguiComponent<Omit<(Omit<im
         download?: boolean | undefined;
     } | undefined;
 } & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/core").StackProps, "ref" | "pointerEvents" | "display" | "children" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "style" | "hitSlop" | "id" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "space" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "userSelect" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "theme" | "group" | "onFocus" | "onPress" | "onLongPress" | "onPressIn" | "onPressOut" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onBlur" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "disabled" | "className" | "themeShallow" | "tag" | "untilMeasured" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "key" | "elevationAndroid" | "rel" | "download" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "href" | "hrefAttrs"> & {
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined; /**
+     * We prevent default browser behaviour for selection keys as they should trigger
+     * a selection only:
+     * - prevents space from scrolling the page.
+     * - if keydown causes focus to move, prevents keydown from firing on the new target.
+     */
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -4351,7 +4776,17 @@ declare const RadioGroup: import("@tamagui/core").TamaguiComponent<Omit<(Omit<im
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * We focus items on `pointerMove` to achieve the following:
+     *
+     * - Mouse over an item (it focuses)
+     * - Leave mouse where it is and use keyboard to focus a different item
+     * - Wiggle mouse without it leaving previously focused item
+     * - Previously focused item should re-focus
+     *
+     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+     * wiggles. This is to match native menu implementation.
+     */
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -4395,7 +4830,17 @@ declare const RadioGroup: import("@tamagui/core").TamaguiComponent<Omit<(Omit<im
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * We focus items on `pointerMove` to achieve the following:
+     *
+     * - Mouse over an item (it focuses)
+     * - Leave mouse where it is and use keyboard to focus a different item
+     * - Wiggle mouse without it leaving previously focused item
+     * - Previously focused item should re-focus
+     *
+     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+     * wiggles. This is to match native menu implementation.
+     */
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -4439,7 +4884,17 @@ declare const RadioGroup: import("@tamagui/core").TamaguiComponent<Omit<(Omit<im
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * We focus items on `pointerMove` to achieve the following:
+     *
+     * - Mouse over an item (it focuses)
+     * - Leave mouse where it is and use keyboard to focus a different item
+     * - Wiggle mouse without it leaving previously focused item
+     * - Previously focused item should re-focus
+     *
+     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+     * wiggles. This is to match native menu implementation.
+     */
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -4485,7 +4940,17 @@ declare const RadioGroup: import("@tamagui/core").TamaguiComponent<Omit<(Omit<im
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * We focus items on `pointerMove` to achieve the following:
+     *
+     * - Mouse over an item (it focuses)
+     * - Leave mouse where it is and use keyboard to focus a different item
+     * - Wiggle mouse without it leaving previously focused item
+     * - Previously focused item should re-focus
+     *
+     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+     * wiggles. This is to match native menu implementation.
+     */
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -4565,7 +5030,17 @@ declare const RadioGroup: import("@tamagui/core").TamaguiComponent<Omit<(Omit<im
         onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
         onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
         onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-        onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+        onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+         * We focus items on `pointerMove` to achieve the following:
+         *
+         * - Mouse over an item (it focuses)
+         * - Leave mouse where it is and use keyboard to focus a different item
+         * - Wiggle mouse without it leaving previously focused item
+         * - Previously focused item should re-focus
+         *
+         * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+         * wiggles. This is to match native menu implementation.
+         */
         onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -4728,7 +5203,12 @@ declare const RadioItem: import("@tamagui/core").TamaguiComponent<Omit<Omit<impo
         download?: boolean | undefined;
     } | undefined;
 } & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/core").StackProps, "ref" | "pointerEvents" | "display" | "children" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "style" | "hitSlop" | "id" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "space" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "userSelect" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "theme" | "group" | "onFocus" | "onPress" | "onLongPress" | "onPressIn" | "onPressOut" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onBlur" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "disabled" | "className" | "themeShallow" | "tag" | "untilMeasured" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "key" | "elevationAndroid" | "rel" | "download" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "href" | "hrefAttrs"> & {
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined; /**
+     * We prevent default browser behaviour for selection keys as they should trigger
+     * a selection only:
+     * - prevents space from scrolling the page.
+     * - if keydown causes focus to move, prevents keydown from firing on the new target.
+     */
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -4749,7 +5229,17 @@ declare const RadioItem: import("@tamagui/core").TamaguiComponent<Omit<Omit<impo
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * We focus items on `pointerMove` to achieve the following:
+     *
+     * - Mouse over an item (it focuses)
+     * - Leave mouse where it is and use keyboard to focus a different item
+     * - Wiggle mouse without it leaving previously focused item
+     * - Previously focused item should re-focus
+     *
+     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+     * wiggles. This is to match native menu implementation.
+     */
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -4948,7 +5438,12 @@ declare const ItemIndicator: import("@tamagui/core").TamaguiComponent<Omit<Omit<
         download?: boolean | undefined;
     } | undefined;
 } & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/core").StackProps, "ref" | "pointerEvents" | "display" | "children" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "style" | "hitSlop" | "id" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "space" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "userSelect" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "theme" | "group" | "onFocus" | "onPress" | "onLongPress" | "onPressIn" | "onPressOut" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onBlur" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "disabled" | "className" | "themeShallow" | "tag" | "untilMeasured" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "key" | "elevationAndroid" | "rel" | "download" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "href" | "hrefAttrs"> & {
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined; /**
+     * We prevent default browser behaviour for selection keys as they should trigger
+     * a selection only:
+     * - prevents space from scrolling the page.
+     * - if keydown causes focus to move, prevents keydown from firing on the new target.
+     */
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -4969,7 +5464,17 @@ declare const ItemIndicator: import("@tamagui/core").TamaguiComponent<Omit<Omit<
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * We focus items on `pointerMove` to achieve the following:
+     *
+     * - Mouse over an item (it focuses)
+     * - Leave mouse where it is and use keyboard to focus a different item
+     * - Wiggle mouse without it leaving previously focused item
+     * - Previously focused item should re-focus
+     *
+     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+     * wiggles. This is to match native menu implementation.
+     */
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -5168,7 +5673,12 @@ declare const Separator: import("@tamagui/core").TamaguiComponent<(Omit<import("
         download?: boolean | undefined;
     } | undefined;
 } & React.RefAttributes<TamaguiElement> & Omit<import("@tamagui/core").StackProps, "ref" | "pointerEvents" | "display" | "children" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "style" | "hitSlop" | "id" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "space" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "userSelect" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "theme" | "group" | "onFocus" | "onPress" | "onLongPress" | "onPressIn" | "onPressOut" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onBlur" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "disabled" | "className" | "themeShallow" | "tag" | "untilMeasured" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "key" | "elevationAndroid" | "rel" | "download" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "href" | "hrefAttrs"> & {
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined; /**
+     * We prevent default browser behaviour for selection keys as they should trigger
+     * a selection only:
+     * - prevents space from scrolling the page.
+     * - if keydown causes focus to move, prevents keydown from firing on the new target.
+     */
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -5187,7 +5697,17 @@ declare const Separator: import("@tamagui/core").TamaguiComponent<(Omit<import("
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * We focus items on `pointerMove` to achieve the following:
+     *
+     * - Mouse over an item (it focuses)
+     * - Leave mouse where it is and use keyboard to focus a different item
+     * - Wiggle mouse without it leaving previously focused item
+     * - Previously focused item should re-focus
+     *
+     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+     * wiggles. This is to match native menu implementation.
+     */
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -5231,7 +5751,17 @@ declare const Separator: import("@tamagui/core").TamaguiComponent<(Omit<import("
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * We focus items on `pointerMove` to achieve the following:
+     *
+     * - Mouse over an item (it focuses)
+     * - Leave mouse where it is and use keyboard to focus a different item
+     * - Wiggle mouse without it leaving previously focused item
+     * - Previously focused item should re-focus
+     *
+     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+     * wiggles. This is to match native menu implementation.
+     */
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -5275,7 +5805,17 @@ declare const Separator: import("@tamagui/core").TamaguiComponent<(Omit<import("
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * We focus items on `pointerMove` to achieve the following:
+     *
+     * - Mouse over an item (it focuses)
+     * - Leave mouse where it is and use keyboard to focus a different item
+     * - Wiggle mouse without it leaving previously focused item
+     * - Previously focused item should re-focus
+     *
+     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+     * wiggles. This is to match native menu implementation.
+     */
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -5319,7 +5859,17 @@ declare const Separator: import("@tamagui/core").TamaguiComponent<(Omit<import("
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * We focus items on `pointerMove` to achieve the following:
+     *
+     * - Mouse over an item (it focuses)
+     * - Leave mouse where it is and use keyboard to focus a different item
+     * - Wiggle mouse without it leaving previously focused item
+     * - Previously focused item should re-focus
+     *
+     * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+     * wiggles. This is to match native menu implementation.
+     */
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -5397,7 +5947,17 @@ declare const Separator: import("@tamagui/core").TamaguiComponent<(Omit<import("
         onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
         onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
         onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-        onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+        onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+         * We focus items on `pointerMove` to achieve the following:
+         *
+         * - Mouse over an item (it focuses)
+         * - Leave mouse where it is and use keyboard to focus a different item
+         * - Wiggle mouse without it leaving previously focused item
+         * - Previously focused item should re-focus
+         *
+         * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+         * wiggles. This is to match native menu implementation.
+         */
         onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
