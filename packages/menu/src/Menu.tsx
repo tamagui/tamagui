@@ -149,47 +149,43 @@ const Menu = (props: ScopedProps<MenuProps>) => {
   )
 }
 
-const RepropagateMenuAndMenuRootProvider = React.forwardRef(
-  (
-    props: ScopedProps<{
-      menuContext: any
-      rootContext: any
-      popperContext: any
-      menuSubContext: any
-      children: React.ReactNode
-    }>,
-    ref
-  ) => {
-    const {
-      __scopeMenu,
-      menuContext,
-      rootContext,
-      popperContext,
-      menuSubContext,
-      children,
-    } = props
+const RepropagateMenuAndMenuRootProvider = (
+  props: ScopedProps<{
+    menuContext: any
+    rootContext: any
+    popperContext: any
+    menuSubContext: any
+    children: React.ReactNode
+  }>
+) => {
+  const {
+    __scopeMenu,
+    menuContext,
+    rootContext,
+    popperContext,
+    menuSubContext,
+    children,
+  } = props
 
-    return (
-      <PopperPrimitive.Popper
-        ref={ref}
-        {...popperContext}
-        __scopePopper={__scopeMenu || MENU_CONTEXT}
-      >
-        <MenuProvider scope={__scopeMenu} {...menuContext}>
-          <MenuRootProvider scope={__scopeMenu} {...rootContext}>
-            {menuSubContext ? (
-              <MenuSubProvider scope={__scopeMenu} {...menuSubContext}>
-                {children}
-              </MenuSubProvider>
-            ) : (
-              children
-            )}
-          </MenuRootProvider>
-        </MenuProvider>
-      </PopperPrimitive.Popper>
-    )
-  }
-)
+  return (
+    <PopperPrimitive.PopperProvider
+      {...popperContext}
+      scope={__scopeMenu || MENU_CONTEXT}
+    >
+      <MenuProvider scope={__scopeMenu} {...menuContext}>
+        <MenuRootProvider scope={__scopeMenu} {...rootContext}>
+          {menuSubContext ? (
+            <MenuSubProvider scope={__scopeMenu} {...menuSubContext}>
+              {children}
+            </MenuSubProvider>
+          ) : (
+            children
+          )}
+        </MenuRootProvider>
+      </MenuProvider>
+    </PopperPrimitive.PopperProvider>
+  )
+}
 
 Menu.displayName = MENU_NAME
 
