@@ -199,7 +199,6 @@ export const stylePropsView = {
     borderTopStyle: true,
     borderLeftStyle: true,
     borderRightStyle: true,
-
     overflowX: true,
     overflowY: true,
     userSelect: true,
@@ -208,6 +207,7 @@ export const stylePropsView = {
     pointerEvents: true,
     boxSizing: true,
     boxShadow: true,
+    inset: true,
     outlineStyle: true,
     outlineOffset: true,
     outlineWidth: true,

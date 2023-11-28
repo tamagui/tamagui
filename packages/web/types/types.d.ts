@@ -49,6 +49,11 @@ export type TamaguiComponentPropsBaseBase = {
      */
     id?: string;
     /**
+     * The inset CSS property is a shorthand that corresponds to the top, right, bottom, and/or left properties. It has the same multi-value syntax of the margin shorthand.
+     * {@see https://developer.mozilla.org/en-US/docs/Web/CSS/inset}
+     */
+    inset?: Properties['inset'];
+    /**
      * Controls the output tag on web
      * {@see https://developer.mozilla.org/en-US/docs/Web/HTML/Element}
      */
@@ -727,6 +732,7 @@ type SharedBaseExtraStyleProps = {
     animation?: AnimationProp | null;
     animateOnly?: string[];
     userSelect?: Properties['userSelect'];
+    inset?: Properties['inset'];
 };
 type OverrideRNStyleProps = 'display' | 'backfaceVisibility' | 'elevation' | 'gap' | 'columnGap' | 'rowGap';
 export type StackStylePropsBase = Omit<ViewStyle, OverrideRNStyleProps | keyof SharedBaseExtraStyleProps> & TransformStyleProps & SharedBaseExtraStyleProps;

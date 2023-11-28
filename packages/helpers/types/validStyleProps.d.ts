@@ -110,6 +110,7 @@ export declare const stylePropsView: {
     pointerEvents?: boolean | undefined;
     boxSizing?: boolean | undefined;
     boxShadow?: boolean | undefined;
+    inset?: boolean | undefined;
     outlineStyle?: boolean | undefined;
     outlineOffset?: boolean | undefined;
     outlineWidth?: boolean | undefined;
@@ -328,6 +329,7 @@ export declare const stylePropsText: {
     pointerEvents?: boolean | undefined;
     boxSizing?: boolean | undefined;
     boxShadow?: boolean | undefined;
+    inset?: boolean | undefined;
     outlineStyle?: boolean | undefined;
     outlineOffset?: boolean | undefined;
     outlineWidth?: boolean | undefined;
@@ -504,6 +506,7 @@ export declare const stylePropsAll: {
     pointerEvents?: boolean | undefined;
     boxSizing?: boolean | undefined;
     boxShadow?: boolean | undefined;
+    inset?: boolean | undefined;
     outlineStyle?: boolean | undefined;
     outlineOffset?: boolean | undefined;
     outlineWidth?: boolean | undefined;
@@ -664,6 +667,7 @@ export declare const validStyles: {
     pointerEvents?: boolean | undefined;
     boxSizing?: boolean | undefined;
     boxShadow?: boolean | undefined;
+    inset?: boolean | undefined;
     outlineStyle?: boolean | undefined;
     outlineOffset?: boolean | undefined;
     outlineWidth?: boolean | undefined;

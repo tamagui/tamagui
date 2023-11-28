@@ -192,7 +192,7 @@ export const tokens = createTokens({
   zIndex,
   space,
   size,
-
+  inset: space,
   // testing
   icon: {
     sm: 16,
