@@ -30,9 +30,9 @@ export type BuildTheme = BuildThemeBase & {
   color: string
   scale: ScaleTypeName
   template?: Template
-  contrast?: string
-  contrastColor?: string
-  contrastScale?: ScaleTypeName
+  accent?: string
+  accentColor?: string
+  accentScale?: ScaleTypeName
 }
 
 export type BuildMask = { id: string } & (
