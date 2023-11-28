@@ -1,3 +1,5 @@
+- themeInverse on base components
+
 - studio: the accent color need an accent color that reverses back
 - studio: make the scales "anchor" around the selected color better
   - exact color should be at the 14 position always
