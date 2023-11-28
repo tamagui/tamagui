@@ -743,7 +743,7 @@ type GenericTamaguiSettings = {
 
   /**
    * On Web, this allows changing the behavior of container groups which by default uses
-   * `container-type: normal`.
+   * `container-type: inline-size`.
    */
   webContainerType?:
     | 'normal'
