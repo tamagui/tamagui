@@ -1,7 +1,9 @@
 import {
+  GestureReponderEvent,
   Stack,
   composeEventHandlers,
   createStyledContext,
+  isAndroid,
   isWeb,
   styled,
 } from '@tamagui/core'
@@ -121,15 +123,34 @@ const ContextMenuTrigger = ContextMenuTriggerFrame.styleable<
   const pointRef = React.useRef<Point>({ x: 0, y: 0 })
   const virtualRef = React.useRef({
     getBoundingClientRect: () =>
-      DOMRect.fromRect({ width: 0, height: 0, ...pointRef.current }),
+      isWeb
+        ? DOMRect.fromRect({ width: 0, height: 0, ...pointRef.current })
+        : {
+            width: 0,
+            height: 0,
+            top: 0,
+            left: 0,
+            ...pointRef.current,
+          },
+
+    ...(!isWeb && {
+      measure: (c) => c(pointRef.current.x, pointRef.current.y, 0, 0),
+      measureInWindow: (c) => c(pointRef.current.x, pointRef.current.y, 0, 0),
+    }),
   })
   const longPressTimerRef = React.useRef(0)
   const clearLongPress = React.useCallback(
     () => window.clearTimeout(longPressTimerRef.current),
     []
   )
-  const handleOpen = (event: React.MouseEvent | React.PointerEvent) => {
-    pointRef.current = { x: event.clientX, y: event.clientY }
+  const handleOpen = (
+    event: React.MouseEvent | React.PointerEvent | GestureReponderEvent
+  ) => {
+    if (isWeb && (event instanceof MouseEvent || event instanceof PointerEvent)) {
+      pointRef.current = { x: event.clientX, y: event.clientY }
+    } else {
+      pointRef.current = { x: event.nativeEvent.pageX, y: event.nativeEvent.pageY }
+    }
     context.onOpenChange(true)
   }
 
@@ -169,8 +190,8 @@ const ContextMenuTrigger = ContextMenuTriggerFrame.styleable<
               ),
         })}
         // TODO: these things only work on web, make them available on native as well
-        onPointerDown={
-          disabled
+        {...(isWeb && {
+          onPointerDown: disabled
             ? props.onPointerDown
             : composeEventHandlers(
                 props.onPointerDown,
@@ -183,27 +204,32 @@ const ContextMenuTrigger = ContextMenuTriggerFrame.styleable<
                     700
                   )
                 })
-              )
-        }
-        onPointerMove={
-          disabled
+              ),
+          onPointerMove: disabled
             ? props.onPointerMove
             : // TODO: resolve these ts-ignores
               // @ts-ignore
-              composeEventHandlers(props.onPointerMove, whenTouchOrPen(clearLongPress))
-        }
-        onPointerCancel={
-          disabled
+              composeEventHandlers(props.onPointerMove, whenTouchOrPen(clearLongPress)),
+          onPointerCancel: disabled
             ? props.onPointerCancel
             : // @ts-ignore
-              composeEventHandlers(props.onPointerCancel, whenTouchOrPen(clearLongPress))
-        }
-        onPointerUp={
-          disabled
+              composeEventHandlers(props.onPointerCancel, whenTouchOrPen(clearLongPress)),
+          onPointerUp: disabled
             ? props.onPointerUp
             : // @ts-ignore
-              composeEventHandlers(props.onPointerUp, whenTouchOrPen(clearLongPress))
-        }
+              composeEventHandlers(props.onPointerUp, whenTouchOrPen(clearLongPress)),
+        })}
+        {...(!isWeb && {
+          onLongPress: disabled
+            ? props.onLongPress
+            : //@ts-ignore
+              composeEventHandlers(props.onLongPress, (event) => {
+                // TODO: is this clearLongPress needed here?
+                clearLongPress()
+                handleOpen(event)
+                event.preventDefault()
+              }),
+        })}
       />
     </>
   )
@@ -223,11 +249,20 @@ interface ContextMenuPortalProps extends MenuPortalProps {}
 const ContextMenuPortal: React.FC<ScopedProps<ContextMenuPortalProps>> = (
   props: ScopedProps<ContextMenuPortalProps>
 ) => {
-  const { __scopeContextMenu, ...portalProps } = props
+  const { __scopeContextMenu, children, ...portalProps } = props
+
+  const context = isAndroid ? useContextMenuContext(__scopeContextMenu) : null
+
+  const content = isAndroid ? (
+    <ContextMenuProvider {...context}>{children}</ContextMenuProvider>
+  ) : (
+    children
+  )
   return (
     <MenuPortal
       __scopeMenu={__scopeContextMenu || CONTEXTMENU_CONTEXT}
       {...portalProps}
+      children={content}
     />
   )
 }
