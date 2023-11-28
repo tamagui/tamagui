@@ -156,7 +156,7 @@ const HeroContents = memo(function HeroContents() {
                 pos="absolute"
                 t={0}
                 l="1.3%"
-                color="$color10"
+                color="$color8"
                 $sm={{ l: 0 }}
               >
                 Write less,
@@ -168,7 +168,7 @@ const HeroContents = memo(function HeroContents() {
                 pos="absolute"
                 t={0}
                 l="1.3%"
-                color="$color10"
+                color="$color6"
                 $sm={{ l: 0 }}
               >
                 Write less,
