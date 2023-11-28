@@ -15,6 +15,7 @@ interface DropdownMenuProps extends MenuProps {
 }
 type PrimitiveButtonProps = React.ComponentPropsWithoutRef<typeof Button>;
 interface DropdownMenuTriggerProps extends PrimitiveButtonProps {
+    onKeydown?(event: React.KeyboardEvent): void;
 }
 type MenuPortalProps = React.ComponentPropsWithoutRef<typeof Menu.Portal>;
 interface DropdownMenuPortalProps extends MenuPortalProps {

@@ -98,7 +98,9 @@ const TRIGGER_NAME = 'DropdownMenuTrigger'
 
 // type DropdownMenuTriggerElement = React.ElementRef<typeof Button>
 type PrimitiveButtonProps = React.ComponentPropsWithoutRef<typeof Button>
-interface DropdownMenuTriggerProps extends PrimitiveButtonProps {}
+interface DropdownMenuTriggerProps extends PrimitiveButtonProps {
+  onKeydown?(event: React.KeyboardEvent): void
+}
 
 const DropdownMenuTriggerFrame = Menu.Anchor
 
@@ -109,6 +111,7 @@ const DropdownMenuTrigger = YStack.styleable<ScopedProps<DropdownMenuTriggerProp
       asChild,
       children,
       disabled = false,
+      onKeydown,
       ...triggerProps
     } = props
     const context = useDropdownMenuContext(__scopeDropdownMenu)
@@ -137,10 +140,14 @@ const DropdownMenuTrigger = YStack.styleable<ScopedProps<DropdownMenuTriggerProp
               (event) => {
                 // only call handler if it's the left button (mousedown gets triggered by all mouse buttons)
                 // but not when the control key is pressed (avoiding MacOS right click)
-                // TODO: resolve this ts ignore
                 if (!disabled) {
-                  // @ts-ignore
-                  if (isWeb && event.button !== 0 && event.ctrlKey === true) return
+                  if (
+                    isWeb &&
+                    event instanceof PointerEvent &&
+                    event.button !== 0 &&
+                    event.ctrlKey === true
+                  )
+                    return
                   context.onOpenToggle()
                   // prevent trigger focusing when opening
                   // this allows the content to be given focus without competition
@@ -149,18 +156,13 @@ const DropdownMenuTrigger = YStack.styleable<ScopedProps<DropdownMenuTriggerProp
               }
             ),
           }}
-          // TODO: resolve these ts ignores
           {...(isWeb && {
-            // @ts-ignore
-            onKeyDown: composeEventHandlers(props.onKeyDown, (event) => {
+            onKeyDown: composeEventHandlers(onKeydown, (event) => {
               if (disabled) return
-              // @ts-ignore
               if (['Enter', ' '].includes(event.key)) context.onOpenToggle()
-              // @ts-ignore
               if (event.key === 'ArrowDown') context.onOpenChange(true)
               // prevent keydown from scrolling window / first focused item to execute
               // that keydown (inadvertently closing the menu)
-              // @ts-ignore
               if (['Enter', ' ', 'ArrowDown'].includes(event.key)) event.preventDefault()
             }),
           })}
@@ -240,7 +242,6 @@ const DropdownMenuContent = React.forwardRef<
         const isRightClick = originalEvent.button === 2 || ctrlLeftClick
         if (!context.modal || isRightClick) hasInteractedOutsideRef.current = true
       })}
-      // TODO: how style prop works here while there's no dom element to style? check radix as reference
       {...(props.style as Object)}
     />
   )

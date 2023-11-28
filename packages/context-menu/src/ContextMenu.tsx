@@ -8,7 +8,6 @@ import {
   styled,
   withStaticProperties,
 } from '@tamagui/core'
-// TODO: use tamagui style to group all Menu components inside it
 import { Menu, MenuProps, MenuSubProps } from '@tamagui/menu'
 import { useCallbackRef } from '@tamagui/use-callback-ref'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -133,7 +132,6 @@ const ContextMenuTrigger = Stack.styleable(
 
     return (
       <>
-        {/* TODO: why it's static here */}
         <Menu.Anchor
           __scopePopper={__scopeContextMenu || CONTEXTMENU_CONTEXT}
           virtualRef={virtualRef}
@@ -148,13 +146,11 @@ const ContextMenuTrigger = Stack.styleable(
           // prevent iOS context menu from appearing
           style={isWeb ? { WebkitTouchCallout: 'none', ...(style as Object) } : null}
           // if trigger is disabled, enable the native Context Menu
-          // TODO: this only works on web. make it to work on native as well
           {...(isWeb && {
             onContextMenu: disabled
               ? (props as React.HTMLProps<'div'>).onContextMenu
               : composeEventHandlers(
                   (props as React.HTMLProps<'div'>).onContextMenu,
-                  // TODO: fix this any
                   (event: any) => {
                     // clearing the long press here because some platforms already support
                     // long press to trigger a `contextmenu` event
@@ -164,7 +160,6 @@ const ContextMenuTrigger = Stack.styleable(
                   }
                 ),
           })}
-          // TODO: these things only work on web, make them available on native as well
           {...(isWeb && {
             onPointerDown: disabled
               ? props.onPointerDown
@@ -182,28 +177,27 @@ const ContextMenuTrigger = Stack.styleable(
                 ),
             onPointerMove: disabled
               ? props.onPointerMove
-              : // TODO: resolve these ts-ignores
-                // @ts-ignore
-                composeEventHandlers(props.onPointerMove, whenTouchOrPen(clearLongPress)),
+              : composeEventHandlers(
+                  props.onPointerMove,
+                  whenTouchOrPen(clearLongPress) as any
+                ),
             onPointerCancel: disabled
               ? props.onPointerCancel
-              : // @ts-ignore
-                composeEventHandlers(
+              : composeEventHandlers(
                   props.onPointerCancel,
-                  // @ts-ignore
-                  whenTouchOrPen(clearLongPress)
+                  whenTouchOrPen(clearLongPress) as any
                 ),
             onPointerUp: disabled
               ? props.onPointerUp
-              : // @ts-ignore
-                composeEventHandlers(props.onPointerUp, whenTouchOrPen(clearLongPress)),
+              : composeEventHandlers(
+                  props.onPointerUp,
+                  whenTouchOrPen(clearLongPress) as any
+                ),
           })}
           {...(!isWeb && {
             onLongPress: disabled
               ? props.onLongPress
-              : //@ts-ignore
-                composeEventHandlers(props.onLongPress, (event) => {
-                  // TODO: is this clearLongPress needed here?
+              : composeEventHandlers(props.onLongPress, (event) => {
                   clearLongPress()
                   handleOpen(event)
                   event.preventDefault()
@@ -271,10 +265,6 @@ const ContextMenuContent = React.forwardRef<
       __scopeMenu={__scopeContextMenu || CONTEXTMENU_CONTEXT}
       {...contentProps}
       ref={forwardedRef}
-      // TODO: these props doesn't exists
-      // side="right"
-      // sideOffset={2}
-      // align="start"
       onCloseAutoFocus={(event) => {
         props.onCloseAutoFocus?.(event)
 
@@ -290,24 +280,24 @@ const ContextMenuContent = React.forwardRef<
         if (!event.defaultPrevented && !context.modal)
           hasInteractedOutsideRef.current = true
       }}
-      // TODO: handle this on native as well
-      style={
-        isWeb && {
-          ...(props.style as Object),
-          // re-namespace exposed content custom properties
-          ...({
-            '--tamagui-context-menu-content-transform-origin':
-              'var(--tamagui-popper-transform-origin)',
-            '--tamagui-context-menu-content-available-width':
-              'var(--tamagui-popper-available-width)',
-            '--tamagui-context-menu-content-available-height':
-              'var(--tamagui-popper-available-height)',
-            '--tamagui-context-menu-trigger-width': 'var(--tamagui-popper-anchor-width)',
-            '--tamagui-context-menu-trigger-height':
-              'var(--tamagui-popper-anchor-height)',
-          } as unknown as React.CSSProperties),
-        }
-      }
+      // TODO: we should probably expose these evn variables at some point
+      // style={
+      //   isWeb && {
+      //     ...(props.style as Object),
+      //     // re-namespace exposed content custom properties
+      //     ...({
+      //       '--tamagui-context-menu-content-transform-origin':
+      //         'var(--tamagui-popper-transform-origin)',
+      //       '--tamagui-context-menu-content-available-width':
+      //         'var(--tamagui-popper-available-width)',
+      //       '--tamagui-context-menu-content-available-height':
+      //         'var(--tamagui-popper-available-height)',
+      //       '--tamagui-context-menu-trigger-width': 'var(--tamagui-popper-anchor-width)',
+      //       '--tamagui-context-menu-trigger-height':
+      //         'var(--tamagui-popper-anchor-height)',
+      //     } as unknown as React.CSSProperties),
+      //   }
+      // }
     />
   )
 })

@@ -356,8 +356,8 @@ const MenuRootContentModal = React.forwardRef<
   // Hide everything from ARIA except the `MenuContent`
   React.useEffect(() => {
     const content = ref.current
-    // TODO: is this a web only
-    if (content) return hideOthers(content as HTMLElement)
+    // FIXME: find a solution for native
+    if (content && isWeb) return hideOthers(content as HTMLElement)
   }, [])
 
   return (
@@ -548,10 +548,7 @@ const MenuContentImpl = React.forwardRef<
         {...contentProps}
         ref={composedRefs}
         outlineWidth={0}
-        // TODO: why type casting is necessary here?
         {...(contentProps.style as Object)}
-        // @ts-ignore
-        // style={{ outline: 'none', ...contentProps.style }}
         // TODO: at the top level (MenuPortal) we have asChild but for some reason we still have className
         className={contentProps.animation ? undefined : contentProps.className}
         {...(isWeb
@@ -749,7 +746,6 @@ const MenuItem = ThemeableStack.styleable<ScopedProps<MenuItemProps>>(
     const isPointerDownRef = React.useRef(false)
 
     const handleSelect = () => {
-      // TODO: these things shouldn't work on native
       const menuItem = ref.current
       if (!disabled && menuItem) {
         if (isWeb) {
