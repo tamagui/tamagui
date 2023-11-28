@@ -26,7 +26,7 @@ export function DropdoownMenuDemo() {
         <Button icon={Airplay} />
       </DropdownMenu.Trigger>
 
-      <DropdownMenu.Portal>
+      <DropdownMenu.Portal zIndex={100}>
         <DropdownMenu.Content
           paddingHorizontal={0}
           borderWidth={1}
@@ -94,7 +94,7 @@ export function DropdoownMenuDemo() {
                 <ChevronRight />
               </XStack>
             </DropdownMenu.SubTrigger>
-            <DropdownMenu.Portal>
+            <DropdownMenu.Portal zIndex={200}>
               <DropdownMenu.SubContent
                 enterStyle={{ y: -10, opacity: 0 }}
                 exitStyle={{ y: -10, opacity: 0 }}

@@ -9,11 +9,7 @@ export function ContextMenuDemo() {
 
   return (
     <ContextMenu allowFlip placement="bottom-start">
-      <ContextMenu.Trigger borderWidth={2} height={200} width={200} asChild>
-        <Text>Right click here</Text>
-      </ContextMenu.Trigger>
-
-      <ContextMenu.Portal>
+      <ContextMenu.Portal zIndex={100}>
         <ContextMenu.Content
           paddingHorizontal={0}
           borderWidth={1}
@@ -81,7 +77,7 @@ export function ContextMenuDemo() {
                 <ChevronRight />
               </XStack>
             </ContextMenu.SubTrigger>
-            <ContextMenu.Portal>
+            <ContextMenu.Portal zIndex={200}>
               <ContextMenu.SubContent
                 enterStyle={{ y: -10, opacity: 0 }}
                 exitStyle={{ y: -10, opacity: 0 }}
@@ -115,6 +111,9 @@ export function ContextMenuDemo() {
           <ContextMenu.Arrow size={'$5'} borderColor={'$borderColor'} borderWidth={1} />
         </ContextMenu.Content>
       </ContextMenu.Portal>
+      <ContextMenu.Trigger zIndex={-1} borderWidth={2} height={200} width={200} asChild>
+        <Text>Right/long press click here</Text>
+      </ContextMenu.Trigger>
     </ContextMenu>
   )
 }

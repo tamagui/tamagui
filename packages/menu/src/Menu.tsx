@@ -236,10 +236,11 @@ interface MenuPortalProps {
    * controlling animation with React animation libraries.
    */
   forceMount?: true
+  zIndex?: number
 }
 
 const MenuPortal = (props: ScopedProps<MenuPortalProps>) => {
-  const { __scopeMenu, forceMount, children, host } = props
+  const { __scopeMenu, forceMount, zIndex, children, host } = props
   const menuContext = useMenuContext(__scopeMenu)
   const rootContext = useMenuRootContext(__scopeMenu)
   const popperContext = PopperPrimitive.usePopperContext(__scopeMenu || MENU_CONTEXT)
@@ -259,22 +260,24 @@ const MenuPortal = (props: ScopedProps<MenuPortalProps>) => {
   )
   return (
     <Animate type="presence" present={forceMount || menuContext.open}>
-      <PortalPrimitive pointerEvents="auto" position="relative" asChild host={host}>
+      <PortalPrimitive
+        zIndex={zIndex || 100}
+        pointerEvents="auto"
+        position="relative"
+        asChild
+        host={host}
+      >
         <>
           <PortalProvider scope={__scopeMenu} forceMount={forceMount}>
-            {!!menuContext.open && !isWeb && isAndroid && (
-              <YStack
-                fullscreen
-                onPress={() => menuContext.onOpenChange(!menuContext.open)}
-              />
-            )}
-            {content}
-            {!!menuContext.open && !isWeb && isIos && (
-              <YStack
-                fullscreen
-                onPress={() => menuContext.onOpenChange(!menuContext.open)}
-              />
-            )}
+            <YStack zIndex={zIndex || 100} fullscreen>
+              {!!menuContext.open && !isWeb && (
+                <YStack
+                  fullscreen
+                  onPress={() => menuContext.onOpenChange(!menuContext.open)}
+                />
+              )}
+              {content}
+            </YStack>
           </PortalProvider>
         </>
       </PortalPrimitive>
@@ -534,7 +537,6 @@ const MenuContentImpl = React.forwardRef<
       <PopperPrimitive.PopperContent
         role="menu"
         elevation={30}
-        zIndex={10000}
         paddingVertical={'$2'}
         backgroundColor={'$background'}
         aria-orientation="vertical"
