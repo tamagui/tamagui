@@ -348,11 +348,24 @@ iframe {
 }
 
 .mask-gradient-right {
-  mask-image: linear-gradient(70deg, rgba(0, 0, 0, 1), transparent 50%);
+  mask-image: linear-gradient(120deg, rgba(0, 0, 0, 1) 10%, transparent 40%);
+  mix-blend-mode: hard-light;
 }
 
 .mask-gradient-left {
   mask-image: linear-gradient(-100deg, rgba(0, 0, 0, 1), transparent 50%);
+  mix-blend-mode: hue;
+}
+
+@media (prefers-color-scheme: light) {
+  .mask-gradient-right {
+    mix-blend-mode: difference;
+  }
+
+  .mask-gradient-left {
+    mix-blend-mode: screen;
+  }
+
 }
 
 /* code highlighting */
