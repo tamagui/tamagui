@@ -6,28 +6,10 @@ import {
   isAndroid,
   isWeb,
   styled,
+  withStaticProperties,
 } from '@tamagui/core'
 // TODO: use tamagui style to group all Menu components inside it
-import {
-  Menu,
-  MenuAnchor,
-  MenuArrow,
-  MenuCheckboxItem,
-  MenuContent,
-  MenuGroup,
-  MenuItem,
-  MenuItemIndicator,
-  MenuLabel,
-  MenuPortal,
-  MenuProps,
-  MenuRadioGroup,
-  MenuRadioItem,
-  MenuSeparator,
-  MenuSub,
-  MenuSubContent,
-  MenuSubProps,
-  MenuSubTrigger,
-} from '@tamagui/menu'
+import { Menu, MenuProps, MenuSubProps } from '@tamagui/menu'
 import { useCallbackRef } from '@tamagui/use-callback-ref'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
@@ -61,9 +43,7 @@ interface ContextMenuProps extends MenuProps {
   modal?: boolean
 }
 
-const ContextMenu: React.FC<ScopedProps<ContextMenuProps>> = (
-  props: ScopedProps<ContextMenuProps>
-) => {
+const ContextMenuComp = (props: ScopedProps<ContextMenuProps>) => {
   const { __scopeContextMenu, children, onOpenChange, dir, modal = true, ...rest } = props
   const [open, setOpen] = React.useState(false)
   const handleOpenChangeProp = useCallbackRef(onOpenChange)
@@ -97,7 +77,7 @@ const ContextMenu: React.FC<ScopedProps<ContextMenuProps>> = (
   )
 }
 
-ContextMenu.displayName = CONTEXT_MENU_NAME
+ContextMenuComp.displayName = CONTEXT_MENU_NAME
 
 /* -------------------------------------------------------------------------------------------------
  * ContextMenuTrigger
@@ -105,135 +85,135 @@ ContextMenu.displayName = CONTEXT_MENU_NAME
 
 const TRIGGER_NAME = 'ContextMenuTrigger'
 
-type ContextMenuTriggerElement = React.ElementRef<typeof Stack>
 type PrimitiveSpanProps = React.ComponentPropsWithoutRef<typeof Stack>
 interface ContextMenuTriggerProps extends PrimitiveSpanProps {
   disabled?: boolean
 }
 
-const ContextMenuTriggerFrame = styled(Stack, {
-  name: TRIGGER_NAME,
-})
+const ContextMenuTrigger = Stack.styleable(
+  (props: ScopedProps<ContextMenuTriggerProps>, forwardedRef) => {
+    const { __scopeContextMenu, style, disabled = false, ...triggerProps } = props
+    const context = useContextMenuContext(__scopeContextMenu)
+    const pointRef = React.useRef<Point>({ x: 0, y: 0 })
+    const virtualRef = React.useRef({
+      getBoundingClientRect: () =>
+        isWeb
+          ? DOMRect.fromRect({ width: 0, height: 0, ...pointRef.current })
+          : {
+              width: 0,
+              height: 0,
+              top: 0,
+              left: 0,
+              ...pointRef.current,
+            },
 
-const ContextMenuTrigger = ContextMenuTriggerFrame.styleable<
-  ScopedProps<ContextMenuTriggerProps>
->((props: ScopedProps<ContextMenuTriggerProps>, forwardedRef) => {
-  const { __scopeContextMenu, style, disabled = false, ...triggerProps } = props
-  const context = useContextMenuContext(__scopeContextMenu)
-  const pointRef = React.useRef<Point>({ x: 0, y: 0 })
-  const virtualRef = React.useRef({
-    getBoundingClientRect: () =>
-      isWeb
-        ? DOMRect.fromRect({ width: 0, height: 0, ...pointRef.current })
-        : {
-            width: 0,
-            height: 0,
-            top: 0,
-            left: 0,
-            ...pointRef.current,
-          },
-
-    ...(!isWeb && {
-      measure: (c) => c(pointRef.current.x, pointRef.current.y, 0, 0),
-      measureInWindow: (c) => c(pointRef.current.x, pointRef.current.y, 0, 0),
-    }),
-  })
-  const longPressTimerRef = React.useRef(0)
-  const clearLongPress = React.useCallback(
-    () => window.clearTimeout(longPressTimerRef.current),
-    []
-  )
-  const handleOpen = (
-    event: React.MouseEvent | React.PointerEvent | GestureReponderEvent
-  ) => {
-    if (isWeb && (event instanceof MouseEvent || event instanceof PointerEvent)) {
-      pointRef.current = { x: event.clientX, y: event.clientY }
-    } else {
-      pointRef.current = { x: event.nativeEvent.pageX, y: event.nativeEvent.pageY }
+      ...(!isWeb && {
+        measure: (c) => c(pointRef.current.x, pointRef.current.y, 0, 0),
+        measureInWindow: (c) => c(pointRef.current.x, pointRef.current.y, 0, 0),
+      }),
+    })
+    const longPressTimerRef = React.useRef(0)
+    const clearLongPress = React.useCallback(
+      () => window.clearTimeout(longPressTimerRef.current),
+      []
+    )
+    const handleOpen = (
+      event: React.MouseEvent | React.PointerEvent | GestureReponderEvent
+    ) => {
+      if (isWeb && (event instanceof MouseEvent || event instanceof PointerEvent)) {
+        pointRef.current = { x: event.clientX, y: event.clientY }
+      } else {
+        pointRef.current = { x: event.nativeEvent.pageX, y: event.nativeEvent.pageY }
+      }
+      context.onOpenChange(true)
     }
-    context.onOpenChange(true)
-  }
 
-  React.useEffect(() => clearLongPress, [clearLongPress])
-  React.useEffect(() => void (disabled && clearLongPress()), [disabled, clearLongPress])
+    React.useEffect(() => clearLongPress, [clearLongPress])
+    React.useEffect(() => void (disabled && clearLongPress()), [disabled, clearLongPress])
 
-  return (
-    <>
-      {/* TODO: why it's static here */}
-      <MenuAnchor
-        __scopePopper={__scopeContextMenu || CONTEXTMENU_CONTEXT}
-        virtualRef={virtualRef}
-      />
-      <ContextMenuTriggerFrame
-        tag="span"
-        data-state={context.open ? 'open' : 'closed'}
-        data-disabled={disabled ? '' : undefined}
-        {...triggerProps}
-        ref={forwardedRef}
-        // prevent iOS context menu from appearing
-        style={isWeb ? { WebkitTouchCallout: 'none', ...(style as Object) } : null}
-        // if trigger is disabled, enable the native Context Menu
-        // TODO: this only works on web. make it to work on native as well
-        {...(isWeb && {
-          onContextMenu: disabled
-            ? (props as React.HTMLProps<'div'>).onContextMenu
-            : composeEventHandlers(
-                (props as React.HTMLProps<'div'>).onContextMenu,
-                // TODO: fix this any
-                (event: any) => {
-                  // clearing the long press here because some platforms already support
-                  // long press to trigger a `contextmenu` event
+    return (
+      <>
+        {/* TODO: why it's static here */}
+        <Menu.Anchor
+          __scopePopper={__scopeContextMenu || CONTEXTMENU_CONTEXT}
+          virtualRef={virtualRef}
+        />
+        <Stack
+          tag="span"
+          componentName={TRIGGER_NAME}
+          data-state={context.open ? 'open' : 'closed'}
+          data-disabled={disabled ? '' : undefined}
+          {...triggerProps}
+          ref={forwardedRef}
+          // prevent iOS context menu from appearing
+          style={isWeb ? { WebkitTouchCallout: 'none', ...(style as Object) } : null}
+          // if trigger is disabled, enable the native Context Menu
+          // TODO: this only works on web. make it to work on native as well
+          {...(isWeb && {
+            onContextMenu: disabled
+              ? (props as React.HTMLProps<'div'>).onContextMenu
+              : composeEventHandlers(
+                  (props as React.HTMLProps<'div'>).onContextMenu,
+                  // TODO: fix this any
+                  (event: any) => {
+                    // clearing the long press here because some platforms already support
+                    // long press to trigger a `contextmenu` event
+                    clearLongPress()
+                    handleOpen(event)
+                    event.preventDefault()
+                  }
+                ),
+          })}
+          // TODO: these things only work on web, make them available on native as well
+          {...(isWeb && {
+            onPointerDown: disabled
+              ? props.onPointerDown
+              : composeEventHandlers(
+                  props.onPointerDown,
+                  // @ts-ignore
+                  whenTouchOrPen<Element>((event) => {
+                    // clear the long press here in case there's multiple touch points
+                    clearLongPress()
+                    longPressTimerRef.current = window.setTimeout(
+                      () => handleOpen(event),
+                      700
+                    )
+                  })
+                ),
+            onPointerMove: disabled
+              ? props.onPointerMove
+              : // TODO: resolve these ts-ignores
+                // @ts-ignore
+                composeEventHandlers(props.onPointerMove, whenTouchOrPen(clearLongPress)),
+            onPointerCancel: disabled
+              ? props.onPointerCancel
+              : // @ts-ignore
+                composeEventHandlers(
+                  props.onPointerCancel,
+                  // @ts-ignore
+                  whenTouchOrPen(clearLongPress)
+                ),
+            onPointerUp: disabled
+              ? props.onPointerUp
+              : // @ts-ignore
+                composeEventHandlers(props.onPointerUp, whenTouchOrPen(clearLongPress)),
+          })}
+          {...(!isWeb && {
+            onLongPress: disabled
+              ? props.onLongPress
+              : //@ts-ignore
+                composeEventHandlers(props.onLongPress, (event) => {
+                  // TODO: is this clearLongPress needed here?
                   clearLongPress()
                   handleOpen(event)
                   event.preventDefault()
-                }
-              ),
-        })}
-        // TODO: these things only work on web, make them available on native as well
-        {...(isWeb && {
-          onPointerDown: disabled
-            ? props.onPointerDown
-            : composeEventHandlers(
-                props.onPointerDown,
-                // @ts-ignore
-                whenTouchOrPen<Element>((event) => {
-                  // clear the long press here in case there's multiple touch points
-                  clearLongPress()
-                  longPressTimerRef.current = window.setTimeout(
-                    () => handleOpen(event),
-                    700
-                  )
-                })
-              ),
-          onPointerMove: disabled
-            ? props.onPointerMove
-            : // TODO: resolve these ts-ignores
-              // @ts-ignore
-              composeEventHandlers(props.onPointerMove, whenTouchOrPen(clearLongPress)),
-          onPointerCancel: disabled
-            ? props.onPointerCancel
-            : // @ts-ignore
-              composeEventHandlers(props.onPointerCancel, whenTouchOrPen(clearLongPress)),
-          onPointerUp: disabled
-            ? props.onPointerUp
-            : // @ts-ignore
-              composeEventHandlers(props.onPointerUp, whenTouchOrPen(clearLongPress)),
-        })}
-        {...(!isWeb && {
-          onLongPress: disabled
-            ? props.onLongPress
-            : //@ts-ignore
-              composeEventHandlers(props.onLongPress, (event) => {
-                // TODO: is this clearLongPress needed here?
-                clearLongPress()
-                handleOpen(event)
-                event.preventDefault()
-              }),
-        })}
-      />
-    </>
-  )
-})
+                }),
+          })}
+        />
+      </>
+    )
+  }
+)
 
 ContextMenuTrigger.displayName = TRIGGER_NAME
 
@@ -243,12 +223,10 @@ ContextMenuTrigger.displayName = TRIGGER_NAME
 
 const PORTAL_NAME = 'ContextMenuPortal'
 
-type MenuPortalProps = React.ComponentPropsWithoutRef<typeof MenuPortal>
+type MenuPortalProps = React.ComponentPropsWithoutRef<typeof Menu.Portal>
 interface ContextMenuPortalProps extends MenuPortalProps {}
 
-const ContextMenuPortal: React.FC<ScopedProps<ContextMenuPortalProps>> = (
-  props: ScopedProps<ContextMenuPortalProps>
-) => {
+const ContextMenuPortal = (props: ScopedProps<ContextMenuPortalProps>) => {
   const { __scopeContextMenu, children, ...portalProps } = props
 
   const context = isAndroid ? useContextMenuContext(__scopeContextMenu) : null
@@ -259,7 +237,7 @@ const ContextMenuPortal: React.FC<ScopedProps<ContextMenuPortalProps>> = (
     children
   )
   return (
-    <MenuPortal
+    <Menu.Portal
       __scopeMenu={__scopeContextMenu || CONTEXTMENU_CONTEXT}
       {...portalProps}
       children={content}
@@ -275,21 +253,21 @@ ContextMenuPortal.displayName = PORTAL_NAME
 
 const CONTENT_NAME = 'ContextMenuContent'
 
-type ContextMenuContentElement = React.ElementRef<typeof MenuContent>
-type MenuContentProps = React.ComponentPropsWithoutRef<typeof MenuContent>
+type ContextMenuContentElement = React.ElementRef<typeof Menu.Content>
+type MenuContentProps = React.ComponentPropsWithoutRef<typeof Menu.Content>
 interface ContextMenuContentProps
   extends Omit<MenuContentProps, 'onEntryFocus' | 'side' | 'sideOffset' | 'align'> {}
 
 const ContextMenuContent = React.forwardRef<
   ContextMenuContentElement,
   ScopedProps<ContextMenuContentProps>
->((props: ScopedProps<ContextMenuContentProps>, forwardedRef) => {
+>((props, forwardedRef) => {
   const { __scopeContextMenu, ...contentProps } = props
   const context = useContextMenuContext(__scopeContextMenu)
   const hasInteractedOutsideRef = React.useRef(false)
 
   return (
-    <MenuContent
+    <Menu.Content
       __scopeMenu={__scopeContextMenu || CONTEXTMENU_CONTEXT}
       {...contentProps}
       ref={forwardedRef}
@@ -342,20 +320,15 @@ ContextMenuContent.displayName = CONTENT_NAME
 
 const GROUP_NAME = 'ContextMenuGroup'
 
-type ContextMenuGroupElement = React.ElementRef<typeof MenuGroup>
-type MenuGroupProps = React.ComponentPropsWithoutRef<typeof MenuGroup>
+type MenuGroupProps = React.ComponentPropsWithoutRef<typeof Menu.Group>
 type ContextMenuGroupProps = MenuGroupProps & {}
 
-const ContextMenuGroupFrame = styled(MenuGroup, {
-  name: GROUP_NAME,
-})
-
-const ContextMenuGroup = ContextMenuGroupFrame.styleable<
-  ScopedProps<ContextMenuGroupProps>
->((props: ScopedProps<ContextMenuGroupProps>, forwardedRef) => {
-  const { __scopeContextMenu, ...groupProps } = props
-  return <ContextMenuGroupFrame {...groupProps} ref={forwardedRef} />
-})
+const ContextMenuGroup = Menu.Group.styleable(
+  (props: ScopedProps<ContextMenuGroupProps>, forwardedRef) => {
+    const { __scopeContextMenu, ...groupProps } = props
+    return <Menu.Group componentName={GROUP_NAME} {...groupProps} ref={forwardedRef} />
+  }
+)
 
 ContextMenuGroup.displayName = GROUP_NAME
 
@@ -365,10 +338,7 @@ ContextMenuGroup.displayName = GROUP_NAME
 
 const LABEL_NAME = 'ContextMenuLabel'
 
-type MenuLabelProps = React.ComponentPropsWithoutRef<typeof MenuLabel>
-type ContextMenuLabelProps = MenuLabelProps & {}
-
-const ContextMenuLabel = MenuLabel
+const ContextMenuLabel = Menu.Label
 
 ContextMenuLabel.displayName = LABEL_NAME
 
@@ -378,19 +348,15 @@ ContextMenuLabel.displayName = LABEL_NAME
 
 const ITEM_NAME = 'ContextMenuItem'
 
-type ContextMenuItemElement = React.ElementRef<typeof MenuItem>
-type MenuItemProps = React.ComponentPropsWithoutRef<typeof MenuItem>
+type MenuItemProps = React.ComponentPropsWithoutRef<typeof Menu.Item>
 interface ContextMenuItemProps extends MenuItemProps {}
 
-const ContextMenuItemFrame = styled(MenuItem, {
-  name: ITEM_NAME,
-})
-
-const ContextMenuItem = ContextMenuItemFrame.styleable<ScopedProps<ContextMenuItemProps>>(
+const ContextMenuItem = Menu.Item.styleable<ScopedProps<ContextMenuItemProps>>(
   (props: ScopedProps<ContextMenuItemProps>, forwardedRef) => {
     const { __scopeContextMenu, ...itemProps } = props
     return (
-      <ContextMenuItemFrame
+      <Menu.Item
+        componentName={ITEM_NAME}
         __scopeMenu={__scopeContextMenu || CONTEXTMENU_CONTEXT}
         {...itemProps}
         ref={forwardedRef}
@@ -407,25 +373,22 @@ ContextMenuItem.displayName = ITEM_NAME
 
 const CHECKBOX_ITEM_NAME = 'ContextMenuCheckboxItem'
 
-type ContextMenuCheckboxItemElement = React.ElementRef<typeof MenuCheckboxItem>
-type MenuCheckboxItemProps = React.ComponentPropsWithoutRef<typeof MenuCheckboxItem>
+type MenuCheckboxItemProps = React.ComponentPropsWithoutRef<typeof Menu.CheckboxItem>
 interface ContextMenuCheckboxItemProps extends MenuCheckboxItemProps {}
 
-const ContextMenuCheckboxItemFrame = styled(MenuCheckboxItem, {
-  name: CHECKBOX_ITEM_NAME,
-}) as typeof MenuCheckboxItem
-const ContextMenuCheckboxItem = ContextMenuCheckboxItemFrame.styleable<
-  ScopedProps<MenuCheckboxItemProps>
->((props: ScopedProps<ContextMenuCheckboxItemProps>, forwardedRef) => {
-  const { __scopeContextMenu, ...checkboxItemProps } = props
-  return (
-    <ContextMenuCheckboxItemFrame
-      __scopeMenu={__scopeContextMenu || CONTEXTMENU_CONTEXT}
-      {...checkboxItemProps}
-      ref={forwardedRef}
-    />
-  )
-})
+const ContextMenuCheckboxItem = Menu.CheckboxItem.styleable(
+  (props: ScopedProps<ContextMenuCheckboxItemProps>, forwardedRef) => {
+    const { __scopeContextMenu, ...checkboxItemProps } = props
+    return (
+      <Menu.CheckboxItem
+        componentName={CHECKBOX_ITEM_NAME}
+        __scopeMenu={__scopeContextMenu || CONTEXTMENU_CONTEXT}
+        {...checkboxItemProps}
+        ref={forwardedRef}
+      />
+    )
+  }
+)
 
 ContextMenuCheckboxItem.displayName = CHECKBOX_ITEM_NAME
 
@@ -435,9 +398,8 @@ ContextMenuCheckboxItem.displayName = CHECKBOX_ITEM_NAME
 
 const RADIO_GROUP_NAME = 'ContextMenuRadioGroup'
 
-type ContextMenuRadioGroupElement = React.ElementRef<typeof MenuRadioGroup>
-type MenuRadioGroupProps = React.ComponentPropsWithoutRef<typeof MenuRadioGroup>
-interface ContextMenuRadioGroupProps extends MenuRadioGroupProps {}
+type ContextMenuRadioGroupElement = React.ElementRef<typeof Menu.RadioGroup>
+type MenuRadioGroupProps = React.ComponentPropsWithoutRef<typeof Menu.RadioGroup>
 
 const ContextMenuRadioGroup = React.forwardRef<
   ContextMenuRadioGroupElement,
@@ -445,7 +407,7 @@ const ContextMenuRadioGroup = React.forwardRef<
 >((props, forwardedRef) => {
   const { __scopeContextMenu, ...radioGroupProps } = props
   return (
-    <MenuRadioGroup
+    <Menu.RadioGroup
       __scopeMenu={__scopeContextMenu || CONTEXTMENU_CONTEXT}
       data-bro
       {...radioGroupProps}
@@ -462,28 +424,21 @@ ContextMenuRadioGroup.displayName = RADIO_GROUP_NAME
 
 const RADIO_ITEM_NAME = 'ContextMenuRadioItem'
 
-type ContextMenuRadioItemElement = React.ElementRef<typeof MenuRadioItem>
-type MenuRadioItemProps = React.ComponentPropsWithoutRef<typeof MenuRadioItem>
-interface ContextMenuRadioItemProps extends MenuRadioItemProps {}
+type MenuRadioItemProps = React.ComponentPropsWithoutRef<typeof Menu.RadioItem>
 
-const MenuRadioItemFrame = styled(MenuRadioItem, {
-  name: RADIO_ITEM_NAME,
-} as any)
-
-const MenuRadioItemFrameTs = MenuRadioItemFrame as typeof MenuRadioItem
-
-const ContextMenuRadioItem = MenuRadioItemFrame.styleable<
-  ScopedProps<MenuRadioItemProps>
->((props: ScopedProps<MenuRadioItemProps>, forwardedRef) => {
-  const { __scopeContextMenu, ...radioItemProps } = props
-  return (
-    <MenuRadioItemFrameTs
-      __scopeMenu={__scopeContextMenu || CONTEXTMENU_CONTEXT}
-      {...radioItemProps}
-      ref={forwardedRef}
-    />
-  )
-})
+const ContextMenuRadioItem = Menu.RadioItem.styleable<ScopedProps<MenuRadioItemProps>>(
+  (props: ScopedProps<MenuRadioItemProps>, forwardedRef) => {
+    const { __scopeContextMenu, ...radioItemProps } = props
+    return (
+      <Menu.RadioItem
+        componentName={RADIO_ITEM_NAME}
+        __scopeMenu={__scopeContextMenu || CONTEXTMENU_CONTEXT}
+        {...radioItemProps}
+        ref={forwardedRef}
+      />
+    )
+  }
+)
 
 ContextMenuRadioItem.displayName = RADIO_ITEM_NAME
 
@@ -493,11 +448,10 @@ ContextMenuRadioItem.displayName = RADIO_ITEM_NAME
 
 const INDICATOR_NAME = 'ContextMenuItemIndicator'
 
-type ContextMenuItemIndicatorElement = React.ElementRef<typeof MenuItemIndicator>
-type MenuItemIndicatorProps = React.ComponentPropsWithoutRef<typeof MenuItemIndicator>
+type MenuItemIndicatorProps = React.ComponentPropsWithoutRef<typeof Menu.ItemIndicator>
 interface ContextMenuItemIndicatorProps extends MenuItemIndicatorProps {}
 
-const MenuItemIndicatorFrame = styled(MenuItemIndicator, {
+const MenuItemIndicatorFrame = styled(Menu.ItemIndicator, {
   name: INDICATOR_NAME,
 })
 
@@ -522,19 +476,20 @@ ContextMenuItemIndicator.displayName = INDICATOR_NAME
 
 const SEPARATOR_NAME = 'ContextMenuSeparator'
 
-type ContextMenuSeparatorElement = React.ElementRef<typeof MenuSeparator>
-type MenuSeparatorProps = React.ComponentPropsWithoutRef<typeof MenuSeparator>
+type MenuSeparatorProps = React.ComponentPropsWithoutRef<typeof Menu.Separator>
 type ContextMenuSeparatorProps = MenuSeparatorProps & {}
 
-const ContextMenuSeparatorFrame = styled(MenuSeparator, {
-  name: SEPARATOR_NAME,
-})
-
-const ContextMenuSeparator = ContextMenuSeparatorFrame.styleable<
+const ContextMenuSeparator = Menu.Separator.styleable<
   ScopedProps<ContextMenuSeparatorProps>
 >((props: ScopedProps<ContextMenuSeparatorProps>, forwardedRef) => {
   const { __scopeContextMenu, ...separatorProps } = props
-  return <ContextMenuSeparatorFrame {...separatorProps} ref={forwardedRef} />
+  return (
+    <Menu.Separator
+      componentName={SEPARATOR_NAME}
+      {...separatorProps}
+      ref={forwardedRef}
+    />
+  )
 })
 
 ContextMenuSeparator.displayName = SEPARATOR_NAME
@@ -545,14 +500,14 @@ ContextMenuSeparator.displayName = SEPARATOR_NAME
 
 const ARROW_NAME = 'ContextMenuArrow'
 
-type MenuArrowProps = React.ComponentPropsWithoutRef<typeof MenuArrow>
+type MenuArrowProps = React.ComponentPropsWithoutRef<typeof Menu.Arrow>
 interface ContextMenuArrowProps extends MenuArrowProps {}
 
-const ContextMenuArrow = MenuArrow.styleable<ScopedProps<ContextMenuArrowProps>>(
+const ContextMenuArrow = Menu.Arrow.styleable<ScopedProps<ContextMenuArrowProps>>(
   (props, forwardedRef) => {
     const { __scopeContextMenu, ...arrowProps } = props
     return (
-      <MenuArrow
+      <Menu.Arrow
         __scopePopper={__scopeContextMenu || CONTEXTMENU_CONTEXT}
         {...arrowProps}
         ref={forwardedRef}
@@ -594,14 +549,14 @@ const ContextMenuSub: React.FC<ScopedProps<ContextMenuSubProps>> = (
   })
 
   return (
-    <MenuSub
+    <Menu.Sub
       __scopeMenu={__scopeContextMenu || CONTEXTMENU_CONTEXT}
       open={open}
       onOpenChange={setOpen}
       {...rest}
     >
       {children}
-    </MenuSub>
+    </Menu.Sub>
   )
 }
 
@@ -613,20 +568,16 @@ ContextMenuSub.displayName = SUB_NAME
 
 const SUB_TRIGGER_NAME = 'ContextMenuSubTrigger'
 
-type ContextMenuSubTriggerElement = React.ElementRef<typeof MenuSubTrigger>
-type MenuSubTriggerProps = React.ComponentPropsWithoutRef<typeof MenuSubTrigger>
+type MenuSubTriggerProps = React.ComponentPropsWithoutRef<typeof Menu.SubTrigger>
 interface ContextMenuSubTriggerProps extends MenuSubTriggerProps {}
 
-const ContextMenuSubTriggerFrame = styled(MenuSubTrigger, {
-  name: SUB_TRIGGER_NAME,
-})
-
-const ContextMenuSubTrigger = ContextMenuSubTriggerFrame.styleable<
+const ContextMenuSubTrigger = Menu.SubTrigger.styleable<
   ScopedProps<ContextMenuSubTriggerProps>
 >((props: ScopedProps<ContextMenuSubTriggerProps>, forwardedRef) => {
   const { __scopeContextMenu, ...triggerItemProps } = props
   return (
-    <ContextMenuSubTriggerFrame
+    <Menu.SubTrigger
+      componentName={SUB_CONTENT_NAME}
       __scopeMenu={__scopeContextMenu || CONTEXTMENU_CONTEXT}
       {...triggerItemProps}
       ref={forwardedRef}
@@ -642,18 +593,18 @@ ContextMenuSubTrigger.displayName = SUB_TRIGGER_NAME
 
 const SUB_CONTENT_NAME = 'ContextMenuSubContent'
 
-type ContextMenuSubContentElement = React.ElementRef<typeof MenuContent>
-type MenuSubContentProps = React.ComponentPropsWithoutRef<typeof MenuSubContent>
+type ContextMenuSubContentElement = React.ElementRef<typeof Menu.Content>
+type MenuSubContentProps = React.ComponentPropsWithoutRef<typeof Menu.SubContent>
 interface ContextMenuSubContentProps extends MenuSubContentProps {}
 
 const ContextMenuSubContent = React.forwardRef<
   ContextMenuSubContentElement,
-  ScopedProps<ContextMenuSubContentProps>
->((props: ScopedProps<ContextMenuSubContentProps>, forwardedRef) => {
+  ScopedProps<React.PropsWithChildren<ContextMenuSubContentProps>>
+>((props, forwardedRef) => {
   const { __scopeContextMenu, ...subContentProps } = props
 
   return (
-    <MenuSubContent
+    <Menu.SubContent
       __scopeMenu={__scopeContextMenu || CONTEXTMENU_CONTEXT}
       {...subContentProps}
       ref={forwardedRef}
@@ -689,7 +640,6 @@ function whenTouchOrPen<E>(
   return (event) => (event.pointerType !== 'mouse' ? handler(event) : undefined)
 }
 
-const Root = ContextMenu
 const Trigger = ContextMenuTrigger
 const Portal = ContextMenuPortal
 const Content = ContextMenuContent
@@ -705,27 +655,7 @@ const Arrow = ContextMenuArrow
 const Sub = ContextMenuSub
 const SubTrigger = ContextMenuSubTrigger
 const SubContent = ContextMenuSubContent
-
-export {
-  //
-  ContextMenu,
-  ContextMenuTrigger,
-  ContextMenuPortal,
-  ContextMenuContent,
-  ContextMenuGroup,
-  ContextMenuLabel,
-  ContextMenuItem,
-  ContextMenuCheckboxItem,
-  ContextMenuRadioGroup,
-  ContextMenuRadioItem,
-  ContextMenuItemIndicator,
-  ContextMenuSeparator,
-  ContextMenuArrow,
-  ContextMenuSub,
-  ContextMenuSubTrigger,
-  ContextMenuSubContent,
-  //
-  Root,
+const ContextMenu = withStaticProperties(ContextMenuComp, {
   Trigger,
   Portal,
   Content,
@@ -741,22 +671,6 @@ export {
   Sub,
   SubTrigger,
   SubContent,
-}
-export type {
-  ContextMenuProps,
-  ContextMenuTriggerProps,
-  ContextMenuPortalProps,
-  ContextMenuContentProps,
-  ContextMenuGroupProps,
-  ContextMenuLabelProps,
-  ContextMenuItemProps,
-  ContextMenuCheckboxItemProps,
-  ContextMenuRadioGroupProps,
-  ContextMenuRadioItemProps,
-  ContextMenuItemIndicatorProps,
-  ContextMenuSeparatorProps,
-  ContextMenuArrowProps,
-  ContextMenuSubProps,
-  ContextMenuSubTriggerProps,
-  ContextMenuSubContentProps,
-}
+})
+
+export { ContextMenu }

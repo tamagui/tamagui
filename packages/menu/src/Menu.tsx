@@ -21,7 +21,14 @@ import type { RovingFocusGroupProps } from '@tamagui/roving-focus'
 import { SizableStackProps, ThemeableStack, YStack } from '@tamagui/stacks'
 import { useCallbackRef } from '@tamagui/use-callback-ref'
 import { useDirection } from '@tamagui/use-direction'
-import { Stack, isAndroid, isIos, isWeb, styled } from '@tamagui/web'
+import {
+  Stack,
+  isAndroid,
+  isIos,
+  isWeb,
+  styled,
+  withStaticProperties,
+} from '@tamagui/web'
 import { TamaguiElement } from '@tamagui/web/types'
 import { hideOthers } from 'aria-hidden'
 import { useId } from 'react'
@@ -84,7 +91,7 @@ interface MenuProps extends PopperPrimitive.PopperProps {
 
 const MENU_CONTEXT = 'MenuContext'
 
-const Menu = (props: ScopedProps<MenuProps>) => {
+const MenuComp = (props: ScopedProps<MenuProps>) => {
   const {
     __scopeMenu,
     open = false,
@@ -187,7 +194,7 @@ const RepropagateMenuAndMenuRootProvider = (
   )
 }
 
-Menu.displayName = MENU_NAME
+MenuComp.displayName = MENU_NAME
 
 /* -------------------------------------------------------------------------------------------------
  * MenuAnchor
@@ -436,7 +443,7 @@ interface MenuContentImplProps
 
 type StyleableMenuContentProps = MenuContentImplProps & SizableStackProps
 
-const Fragment = (props: any) => props.children
+const Fragment = React.forwardRef((props: any, ref) => props.children)
 const MenuContentImpl = React.forwardRef<
   MenuContentImplElement,
   ScopedProps<StyleableMenuContentProps>
@@ -1536,7 +1543,6 @@ function whenMouse<E>(
   return (event) => (event.pointerType === 'mouse' ? handler(event) : undefined)
 }
 
-const Root = Menu
 const Anchor = MenuAnchor
 const Portal = MenuPortal
 const Content = MenuContent
@@ -1553,26 +1559,7 @@ const Sub = MenuSub
 const SubTrigger = MenuSubTrigger
 const SubContent = MenuSubContent
 
-export {
-  //
-  Menu,
-  MenuAnchor,
-  MenuPortal,
-  MenuContent,
-  MenuGroup,
-  MenuLabel,
-  MenuItem,
-  MenuCheckboxItem,
-  MenuRadioGroup,
-  MenuRadioItem,
-  MenuItemIndicator,
-  MenuSeparator,
-  MenuArrow,
-  MenuSub,
-  MenuSubTrigger,
-  MenuSubContent,
-  //
-  Root,
+const Menu = withStaticProperties(MenuComp, {
   Anchor,
   Portal,
   Content,
@@ -1588,6 +1575,11 @@ export {
   Sub,
   SubTrigger,
   SubContent,
+})
+
+export {
+  //
+  Menu,
 }
 export type {
   MenuProps,

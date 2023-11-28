@@ -1,24 +1,7 @@
-import {
-  ContextMenu,
-  ContextMenuArrow,
-  ContextMenuCheckboxItem,
-  ContextMenuContent,
-  ContextMenuGroup,
-  ContextMenuItem,
-  ContextMenuItemIndicator,
-  ContextMenuLabel,
-  ContextMenuPortal,
-  ContextMenuRadioGroup,
-  ContextMenuRadioItem,
-  ContextMenuSeparator,
-  ContextMenuSub,
-  ContextMenuSubContent,
-  ContextMenuSubTrigger,
-  ContextMenuTrigger,
-} from '@tamagui/context-menu'
-import { Airplay, CheckCircle, ChevronRight, Dot } from '@tamagui/lucide-icons'
+import { ContextMenu } from '@tamagui/context-menu'
+import { CheckCircle, ChevronRight, Dot } from '@tamagui/lucide-icons'
 import { useState } from 'react'
-import { Button, Text, XStack } from 'tamagui'
+import { Text, XStack } from 'tamagui'
 
 export function ContextMenuDemo() {
   const [bookmarkChecked, setBookmarkChecked] = useState(false)
@@ -26,12 +9,12 @@ export function ContextMenuDemo() {
 
   return (
     <ContextMenu allowFlip placement="bottom-start">
-      <ContextMenuTrigger borderWidth={2} height={200} width={200} asChild>
+      <ContextMenu.Trigger borderWidth={2} height={200} width={200} asChild>
         <Text>Right click here</Text>
-      </ContextMenuTrigger>
+      </ContextMenu.Trigger>
 
-      <ContextMenuPortal>
-        <ContextMenuContent
+      <ContextMenu.Portal>
+        <ContextMenu.Content
           paddingHorizontal={0}
           borderWidth={1}
           ai="flex-start"
@@ -48,55 +31,58 @@ export function ContextMenuDemo() {
             },
           ]}
         >
-          <ContextMenuGroup>
-            <ContextMenuItem>
+          <ContextMenu.Group>
+            <ContextMenu.Item>
               <Text>New Tab ⌘+T</Text>
-            </ContextMenuItem>
-            <ContextMenuItem>
+            </ContextMenu.Item>
+            <ContextMenu.Item>
               <Text>New Window ⌘+N</Text>
-            </ContextMenuItem>
-            <ContextMenuItem>
+            </ContextMenu.Item>
+            <ContextMenu.Item>
               <Text numberOfLines={1}>New Private Window ⇧+⌘+N</Text>
-            </ContextMenuItem>
-            <ContextMenuSeparator />
-            <ContextMenuCheckboxItem
+            </ContextMenu.Item>
+            <ContextMenu.Separator />
+            <ContextMenu.CheckboxItem
               checked={bookmarkChecked}
               onCheckedChange={setBookmarkChecked}
               height={40}
             >
-              <ContextMenuItemIndicator>
+              <ContextMenu.ItemIndicator>
                 <CheckCircle color="red" width={20} />
-              </ContextMenuItemIndicator>
+              </ContextMenu.ItemIndicator>
               <Text>Show Bookmarks ⌘+B</Text>
-            </ContextMenuCheckboxItem>
-          </ContextMenuGroup>
-          <ContextMenuSeparator />
-          <ContextMenuLabel>
+            </ContextMenu.CheckboxItem>
+          </ContextMenu.Group>
+          <ContextMenu.Separator />
+          <ContextMenu.Label>
             <Text>People</Text>
-          </ContextMenuLabel>
-          <ContextMenuRadioGroup value={person} onValueChange={setPerson}>
-            <ContextMenuRadioItem value="pedro" paddingLeft={person !== 'pedro' ? 24 : 0}>
-              <ContextMenuItemIndicator>
+          </ContextMenu.Label>
+          <ContextMenu.RadioGroup value={person} onValueChange={setPerson}>
+            <ContextMenu.RadioItem
+              value="pedro"
+              paddingLeft={person !== 'pedro' ? 24 : 0}
+            >
+              <ContextMenu.ItemIndicator>
                 <Dot />
-              </ContextMenuItemIndicator>
+              </ContextMenu.ItemIndicator>
               <Text>Pedro Duarte</Text>
-            </ContextMenuRadioItem>
-            <ContextMenuRadioItem value="colm" paddingLeft={person !== 'colm' ? 24 : 0}>
-              <ContextMenuItemIndicator>
+            </ContextMenu.RadioItem>
+            <ContextMenu.RadioItem value="colm" paddingLeft={person !== 'colm' ? 24 : 0}>
+              <ContextMenu.ItemIndicator>
                 <Dot />
-              </ContextMenuItemIndicator>
+              </ContextMenu.ItemIndicator>
               <Text>Colm Tuite</Text>
-            </ContextMenuRadioItem>
-          </ContextMenuRadioGroup>
-          <ContextMenuSub placement="right-start">
-            <ContextMenuSubTrigger>
+            </ContextMenu.RadioItem>
+          </ContextMenu.RadioGroup>
+          <ContextMenu.Sub placement="right-start">
+            <ContextMenu.SubTrigger>
               <XStack ai="center" jc="space-between">
                 <Text>More Tools</Text>
                 <ChevronRight />
               </XStack>
-            </ContextMenuSubTrigger>
-            <ContextMenuPortal>
-              <ContextMenuSubContent
+            </ContextMenu.SubTrigger>
+            <ContextMenu.Portal>
+              <ContextMenu.SubContent
                 enterStyle={{ y: -10, opacity: 0 }}
                 exitStyle={{ y: -10, opacity: 0 }}
                 elevate
@@ -110,25 +96,25 @@ export function ContextMenuDemo() {
                 ]}
                 paddingHorizontal={0}
               >
-                <ContextMenuItem>
+                <ContextMenu.Item>
                   <Text numberOfLines={1}>Save Page As… ⌘+S</Text>
-                </ContextMenuItem>
-                <ContextMenuItem>
+                </ContextMenu.Item>
+                <ContextMenu.Item>
                   <Text>Create Shortcut…</Text>
-                </ContextMenuItem>
-                <ContextMenuItem>
+                </ContextMenu.Item>
+                <ContextMenu.Item>
                   <Text>Name Window…</Text>
-                </ContextMenuItem>
-                <ContextMenuSeparator />
-                <ContextMenuItem>
+                </ContextMenu.Item>
+                <ContextMenu.Separator />
+                <ContextMenu.Item>
                   <Text>Developer Tools</Text>
-                </ContextMenuItem>
-              </ContextMenuSubContent>
-            </ContextMenuPortal>
-          </ContextMenuSub>
-          <ContextMenuArrow size={'$5'} borderColor={'$borderColor'} borderWidth={1} />
-        </ContextMenuContent>
-      </ContextMenuPortal>
+                </ContextMenu.Item>
+              </ContextMenu.SubContent>
+            </ContextMenu.Portal>
+          </ContextMenu.Sub>
+          <ContextMenu.Arrow size={'$5'} borderColor={'$borderColor'} borderWidth={1} />
+        </ContextMenu.Content>
+      </ContextMenu.Portal>
     </ContextMenu>
   )
 }
