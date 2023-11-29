@@ -33,10 +33,17 @@ export type GithubAccessStatus = {
 }
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN
 
+// whitelisting uniswap org for feedback
+const whitelistOrgs = {
+  uniswap: true,
+}
+
 const whitelistGithubUsernames = [
   'natew',
   'alitnk',
   'benschac',
+  'danstepanov',
+
   // gather team member - https://discord.com/channels/909986013848412191/1125830682661363794/1156983395566497834
   'pkretzschmar',
 ]
@@ -58,13 +65,19 @@ export const checkForSponsorship = async (
   // const orgsStatus = allOrgsStatus.filter((org) => org.)
 
   // TODO: can probably do all of these on one github req - see: graphql alias
+
+  const isOrgSponsor = orgs.some((org) => whitelistOrgs[org.login])
+
   return {
-    personal: await isLoginSponsor(login),
+    personal: await isLoginSponsor(login, isOrgSponsor),
     orgs: await Promise.all(orgs.map(async (org) => isLoginSponsor(org.login))),
   }
 }
 
-const isLoginSponsor = async (login: string): Promise<GithubSponsorshipStatus> => {
+const isLoginSponsor = async (
+  login: string,
+  isOrgSponsor = false
+): Promise<GithubSponsorshipStatus> => {
   const res = await fetch('https://api.github.com/graphql', {
     method: 'POST',
     body: JSON.stringify({
@@ -108,28 +121,7 @@ const isLoginSponsor = async (login: string): Promise<GithubSponsorshipStatus> =
   const isSponsoring = !!json.data?.repositoryOwner?.sponsorshipForViewerAsSponsorable
   const tier = json.data?.repositoryOwner?.sponsorshipForViewerAsSponsorable?.tier
 
-  // if (new Date() > nonSponsorDate) {
-  //   return {
-  //     isSponsoring,
-  //     studio: {
-  //       access: true,
-  //     },
-  //     tierId: tier?.id,
-  //   }
-  // }
-  // if (!tier) {
-  //   return {
-
-  //     isSponsoring,
-  //     studio: {
-  //       access: false,
-  //       accessDate: nonSponsorDate,
-  //       message: `You don't have a sponsorship. Sponsor to get early access!`,
-  //     },
-  //   }
-  // }
-
-  if (whitelistGithubUsernames.includes(login)) {
+  if (isOrgSponsor || whitelistGithubUsernames.includes(login)) {
     return {
       hasSponsorAccess: true,
       sponsorshipStatus: 'whitelist',

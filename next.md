@@ -1,5 +1,4 @@
-
-- themeInverse on base components
+- check usePropsAndStyle with group props
 
 - studio: the accent color need an accent color that reverses back
 - studio: make the scales "anchor" around the selected color better
