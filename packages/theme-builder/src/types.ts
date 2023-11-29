@@ -35,6 +35,7 @@ export type BuildTheme = BuildThemeBase & {
   accentScale?: ScaleTypeName
 }
 
+// TODO type here isnt the same as type in BuildTheme
 export type BuildMask = { id: string } & (
   | {
       type: 'strengthen'
