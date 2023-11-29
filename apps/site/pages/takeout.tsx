@@ -671,7 +671,7 @@ export default function TakeoutPage({
                     className="text-wrap-balance"
                     ff="$munro"
                     size="$12"
-                    fontSize={90}
+                    fontSize={85}
                     lineHeight={100}
                     my="$2"
                     pr="$10"
@@ -679,15 +679,15 @@ export default function TakeoutPage({
                     $gtLg={{
                       mr: 140,
                     }}
-                    $lg={{
+                    $group-takeoutBody-sm={{
                       size: '$11',
                       mr: '8%',
                     }}
-                    $md={{
+                    $group-takeoutBody-xs={{
                       pr: '$2',
                       size: '$10',
                     }}
-                    $sm={{
+                    $group-takeoutBody-xxs={{
                       size: '$9',
                       lh: '$8',
                       mr: 0,
@@ -1099,7 +1099,7 @@ export default function TakeoutPage({
             <YStack mt={200} w={3} mih={500} h="100%" $sm={{ display: 'none' }} />
           </XStack>
 
-          <YStack pos="absolute" t={150} r={-520} rotate="120deg" o={0.045} zi={-2}>
+          <YStack pos="absolute" t={150} r={-520} rotate="120deg" o={0.025} zi={-2}>
             <Image
               alt="mandala"
               width={2500}
