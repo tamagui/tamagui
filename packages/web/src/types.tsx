@@ -73,6 +73,8 @@ export type TamaguiComponentPropsBaseBase = {
    */
   themeShallow?: boolean
 
+  themeInverse?: boolean
+
   /**
    * Same as the web id property for setting a uid on an element
    */

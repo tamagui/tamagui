@@ -508,6 +508,7 @@ export function createComponent<
       componentName,
       disable: disableTheme,
       shallow: stateRef.current.themeShallow,
+      inverse: props.themeInverse,
       debug: debugProp,
     }
 
