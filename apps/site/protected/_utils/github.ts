@@ -38,6 +38,10 @@ const whitelistOrgs = {
   uniswap: true,
 }
 
+export function checkOrgSponsor(orgLogin: string) {
+  return whitelistOrgs[orgLogin]
+}
+
 const whitelistGithubUsernames = [
   'natew',
   'alitnk',
@@ -68,7 +72,7 @@ export const checkForSponsorship = async (
 
   // TODO: can probably do all of these on one github req - see: graphql alias
 
-  const isOrgSponsor = orgs.some((org) => whitelistOrgs[org.login])
+  const isOrgSponsor = orgs.some((org) => checkOrgSponsor(org.login))
 
   return {
     personal: await isLoginSponsor(login, isOrgSponsor),
