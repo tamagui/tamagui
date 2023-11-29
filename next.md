@@ -1,3 +1,7 @@
+- studio color scales first class:
+  - adding a color/scale really adds a theme
+  - but also adds $colorName1 => $colorNameX to base theme
+
 - check usePropsAndStyle with group props
 
 - studio: the accent color need an accent color that reverses back

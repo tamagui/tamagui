@@ -44,6 +44,8 @@ const whitelistGithubUsernames = [
   'benschac',
   'danstepanov',
 
+  'pp-hh-ii-ll',
+
   // gather team member - https://discord.com/channels/909986013848412191/1125830682661363794/1156983395566497834
   'pkretzschmar',
 ]
