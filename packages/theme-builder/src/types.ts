@@ -29,6 +29,7 @@ export type BuildTheme = BuildThemeBase & {
   type: 'theme'
   color: string
   scale: ScaleTypeName
+  scaleContrast?: number
   template?: Template
   accent?: string
   accentColor?: string
