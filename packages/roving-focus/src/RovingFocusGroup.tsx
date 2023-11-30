@@ -1,6 +1,7 @@
 import { createCollection } from '@tamagui/collection'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
+  Slot,
   Stack,
   composeEventHandlers,
   createStyledContext,
@@ -41,6 +42,7 @@ const RovingFocusGroupImpl = React.forwardRef<
     defaultCurrentTabStopId,
     onCurrentTabStopIdChange,
     onEntryFocus,
+    asChild,
     ...groupProps
   } = props
   const ref = React.useRef<RovingFocusGroupImplElement>(null)
@@ -65,6 +67,8 @@ const RovingFocusGroupImpl = React.forwardRef<
     }
   }, [handleEntryFocus])
 
+  const Comp = (asChild ? Slot : Stack) as typeof Stack
+
   return (
     <RovingFocusProvider
       scope={__scopeRovingFocusGroup}
@@ -86,13 +90,13 @@ const RovingFocusGroupImpl = React.forwardRef<
         []
       )}
     >
-      <Stack
+      <Comp
         tabIndex={isTabbingBackOut || focusableItemsCount === 0 ? -1 : 0}
         data-orientation={orientation}
         {...groupProps}
         ref={composedRefs}
+        outlineStyle="none"
         // @ts-ignore
-        style={[{ outline: 'none' }, props.style]}
         onMouseDown={composeEventHandlers(props.onMouseDown, () => {
           isClickFocusRef.current = true
         })}
@@ -102,7 +106,6 @@ const RovingFocusGroupImpl = React.forwardRef<
           // We do this because Safari doesn't focus buttons when clicked, and
           // instead, the wrapper will get focused and not through a bubbling event.
           const isKeyboardFocus = !isClickFocusRef.current
-
           if (
             event.target === event.currentTarget &&
             isKeyboardFocus &&
