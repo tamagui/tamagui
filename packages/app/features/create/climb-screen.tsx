@@ -326,7 +326,7 @@ export const CreateScreen = () => {
               {isWeb && <H2 ta="center">Post a Climb</H2>}
               <Paragraph ta="center">Find a belayer in the community</Paragraph>
             </YStack>
-            {Object.values(fields)}
+            <YStack gap="$1">{Object.values(fields)}</YStack>
           </>
         )}
       </SchemaForm>

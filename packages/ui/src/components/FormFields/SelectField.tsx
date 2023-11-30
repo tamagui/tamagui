@@ -57,7 +57,7 @@ export const SelectField = ({
             onValueChange={field.onChange}
             {...props}
           >
-            <Select.Trigger width={180} iconAfter={ChevronDown}>
+            <Select.Trigger width="fit" iconAfter={ChevronDown}>
               <Select.Value placeholder="Something" />
             </Select.Trigger>
 
