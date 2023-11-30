@@ -207,15 +207,6 @@ a package.json etc etc + zip file
   - auto generates CSS
   - bundles it into 
 
-- $web / $native make them work as media queries
-
-- theme based "media queries" automatically:
-  - $dark / $light but could be any theme?
-
-- '> Child' descendent queries
-  - only with css driver it can extract to css
-  - without it uses context
-
 - <Sheet native />
   - https://github.com/dominicstop/react-native-ios-modal
   - we'd want expo module + snap points
@@ -224,10 +215,6 @@ a package.json etc etc + zip file
  - plus `native` prop https://reactnative.dev/docs/actionsheetios
 
 - add test that builds site for prod + checks for header text / no errors
-
-- yarn release --canary
-
-- Popover trigger="hover"
 
 - Switch unstyled - make it so it doesn't do any theme stuff
 
