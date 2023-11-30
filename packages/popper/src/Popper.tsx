@@ -248,11 +248,11 @@ export const PopperContent = React.forwardRef<
   const { __scopePopper, ...rest } = props
   const { strategy, placement, refs, x, y, getFloatingProps, size, isMounted, update } =
     usePopperContext(__scopePopper)
-  const contentRefs = useComposedRefs<any>(refs.setFloating, forwardedRef)
 
   const contents = React.useMemo(() => {
     return (
       <PopperContentFrame
+        ref={forwardedRef}
         key="popper-content-frame"
         data-placement={placement}
         data-strategy={strategy}
@@ -275,7 +275,7 @@ export const PopperContent = React.forwardRef<
   }
 
   const frameProps = {
-    ref: contentRefs,
+    ref: refs.setFloating,
     x: x || 0,
     y: y || 0,
     position: strategy,
