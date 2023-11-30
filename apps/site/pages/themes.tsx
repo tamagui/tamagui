@@ -1,5 +1,5 @@
-// import { StudioThemeBuilder } from '@tamagui/studio'
+import { StudioThemeBuilder } from '@tamagui/studio'
 
 export default function ThemesPage() {
-  // return <StudioThemeBuilder />
+  return <StudioThemeBuilder />
 }
