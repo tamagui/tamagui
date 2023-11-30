@@ -53,7 +53,7 @@
     "@tamagui/remove-scroll": "1.79.2",
     "@tamagui/shorthands": "1.79.2",
     "@tamagui/site-config": "1.79.2",
-    "@tamagui/studio": "*",
+    "@tamagui/studio": "1.79.2",
     "@tamagui/themes": "1.79.2",
     "@tamagui/toast": "1.79.2",
     "@tamagui/use-store": "1.79.2",

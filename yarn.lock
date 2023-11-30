@@ -7300,7 +7300,7 @@ __metadata:
     "@tamagui/shorthands": 1.79.2
     "@tamagui/site-config": 1.79.2
     "@tamagui/static": 1.79.2
-    "@tamagui/studio": "*"
+    "@tamagui/studio": 1.79.2
     "@tamagui/themes": 1.79.2
     "@tamagui/toast": 1.79.2
     "@tamagui/use-store": 1.79.2
@@ -7493,7 +7493,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/studio@*, @tamagui/studio@workspace:apps/studio":
+"@tamagui/studio@1.79.2, @tamagui/studio@workspace:apps/studio":
   version: 0.0.0-use.local
   resolution: "@tamagui/studio@workspace:apps/studio"
   dependencies:
