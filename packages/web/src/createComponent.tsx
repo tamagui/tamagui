@@ -5,6 +5,7 @@ import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import React, {
   Children,
   Fragment,
+  cloneElement,
   createElement,
   forwardRef,
   memo,
@@ -1203,11 +1204,10 @@ export function createComponent<
     if (process.env.TAMAGUI_TARGET === 'web') {
       if (isReactNative) {
         content = (
-          <span
-            className={`${isAnimatedReactNativeWeb ? className : ''} _dsp_contents`}
-            {...(events && getWebEvents(events))}
-          >
-            {content}
+          <span className={`${isAnimatedReactNativeWeb ? className : ''} _dsp_contents`}>
+            {cloneElement(content, {
+              ...(events && getWebEvents(events)),
+            })}
           </span>
         )
       }
