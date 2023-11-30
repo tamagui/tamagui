@@ -2,7 +2,7 @@
 // https://github.com/radix-ui/primitives/blob/cfd8dcba5fa6a0e751486af418d05a7b88a7f541/packages/react/dismissable-layer/src/DismissableLayer.tsx#L324
 
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { Slot, composeEventHandlers } from '@tamagui/core'
+import { Slot, Stack, composeEventHandlers } from '@tamagui/core'
 import { useEscapeKeydown } from '@tamagui/use-escape-keydown'
 import { useEvent } from '@tamagui/use-event'
 import * as React from 'react'
@@ -50,7 +50,7 @@ const Dismissable = React.forwardRef<
     children,
     ...layerProps
   } = props
-  const Comp = asChild ? Slot : 'div'
+  const Comp = (asChild ? Slot : Stack) as any
   const context = React.useContext(DismissableContext)
   const [node, setNode] = React.useState<HTMLDivElement | null>(null)
   const [, force] = React.useState({})
@@ -153,16 +153,14 @@ const Dismissable = React.forwardRef<
       children={children}
       // @ts-ignore
       ref={composedRefs}
-      style={{
-        display: 'contents',
-        pointerEvents: isBodyPointerEventsDisabled
+      display="contents"
+      pointerEvents={
+        isBodyPointerEventsDisabled
           ? isPointerEventsEnabled
             ? 'auto'
             : 'none'
-          : undefined,
-        // @ts-ignore
-        ...props.style,
-      }}
+          : undefined
+      }
       onFocusCapture={composeEventHandlers(
         props.onFocusCapture,
         focusOutside.onFocusCapture
