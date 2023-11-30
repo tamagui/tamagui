@@ -521,7 +521,9 @@ const MenuContentImpl = React.forwardRef<
 
   // Make sure the whole tree has focus guards as our `MenuContent` may be
   // the last element in the DOM (beacuse of the `Portal`)
-  useFocusGuards()
+  if (isWeb) {
+    useFocusGuards()
+  }
 
   const isPointerMovingToSubmenu = React.useCallback((event: React.PointerEvent) => {
     const isMovingTowards = pointerDirRef.current === pointerGraceIntentRef.current?.side
@@ -530,87 +532,81 @@ const MenuContentImpl = React.forwardRef<
     )
   }, [])
 
-  const ContentWrapper = isWeb ? Stack : Fragment
-
   const content = (
-    <ContentWrapper>
-      <PopperPrimitive.PopperContent
-        role="menu"
-        elevation={30}
-        paddingVertical={'$2'}
-        backgroundColor={'$background'}
-        aria-orientation="vertical"
-        data-state={getOpenState(context.open)}
-        data-tamagui-menu-content=""
-        // @ts-ignore
-        dir={rootContext.dir}
-        __scopePopper={__scopeMenu || MENU_CONTEXT}
-        {...contentProps}
-        ref={composedRefs}
-        outlineWidth={0}
-        {...(contentProps.style as Object)}
-        // TODO: at the top level (MenuPortal) we have asChild but for some reason we still have className
-        className={contentProps.animation ? undefined : contentProps.className}
-        {...(isWeb
-          ? {
-              onKeyDown: composeEventHandlers(
-                //@ts-ignore
-                contentProps.onKeyDown,
-                (event: KeyboardEvent) => {
-                  // submenu key events bubble through portals. We only care about keys in this menu.
-                  const target = event.target as HTMLElement
-                  const isKeyDownInside =
-                    target.closest('[data-tamagui-menu-content]') === event.currentTarget
-                  const isModifierKey = event.ctrlKey || event.altKey || event.metaKey
-                  const isCharacterKey = event.key.length === 1
-                  if (isKeyDownInside) {
-                    // menus should not be navigated using tab key so we prevent it
-                    if (event.key === 'Tab') event.preventDefault()
-                    if (!isModifierKey && isCharacterKey) handleTypeaheadSearch(event.key)
-                  }
-                  // focus first/last item based on key pressed
-                  const content = contentRef.current
-                  if (event.target !== content) return
-                  if (!FIRST_LAST_KEYS.includes(event.key)) return
-                  event.preventDefault()
-                  const items = getItems().filter((item) => !item.disabled)
-                  const candidateNodes = items.map((item) => item.ref.current!)
-                  if (LAST_KEYS.includes(event.key)) candidateNodes.reverse()
-                  focusFirst(candidateNodes as HTMLElement[])
+    <PopperPrimitive.PopperContent
+      role="menu"
+      elevation={30}
+      paddingVertical={'$2'}
+      backgroundColor={'$background'}
+      aria-orientation="vertical"
+      data-state={getOpenState(context.open)}
+      data-tamagui-menu-content=""
+      // @ts-ignore
+      dir={rootContext.dir}
+      __scopePopper={__scopeMenu || MENU_CONTEXT}
+      {...contentProps}
+      ref={composedRefs}
+      outlineWidth={0}
+      className={contentProps.animation ? undefined : contentProps.className}
+      {...(isWeb
+        ? {
+            onKeyDown: composeEventHandlers(
+              //@ts-ignore
+              contentProps.onKeyDown,
+              (event: KeyboardEvent) => {
+                // submenu key events bubble through portals. We only care about keys in this menu.
+                const target = event.target as HTMLElement
+                const isKeyDownInside =
+                  target.closest('[data-tamagui-menu-content]') === event.currentTarget
+                const isModifierKey = event.ctrlKey || event.altKey || event.metaKey
+                const isCharacterKey = event.key.length === 1
+                if (isKeyDownInside) {
+                  // menus should not be navigated using tab key so we prevent it
+                  if (event.key === 'Tab') event.preventDefault()
+                  if (!isModifierKey && isCharacterKey) handleTypeaheadSearch(event.key)
                 }
-              ),
+                // focus first/last item based on key pressed
+                const content = contentRef.current
+                if (event.target !== content) return
+                if (!FIRST_LAST_KEYS.includes(event.key)) return
+                event.preventDefault()
+                const items = getItems().filter((item) => !item.disabled)
+                const candidateNodes = items.map((item) => item.ref.current!)
+                if (LAST_KEYS.includes(event.key)) candidateNodes.reverse()
+                focusFirst(candidateNodes as HTMLElement[])
+              }
+            ),
+            // @ts-ignore
+            onBlur: composeEventHandlers(props.onBlur, (event: MouseEvent) => {
+              // clear search buffer when leaving the menu
               // @ts-ignore
-              onBlur: composeEventHandlers(props.onBlur, (event: MouseEvent) => {
-                // clear search buffer when leaving the menu
-                // @ts-ignore
-                if (!event.currentTarget?.contains(event.target)) {
-                  clearTimeout(timerRef.current)
-                  searchRef.current = ''
-                }
-              }),
-              onPointerMove: composeEventHandlers(
-                // @ts-ignore
-                props.onPointerMove,
-                // @ts-ignore
-                whenMouse((event: MouseEvent) => {
-                  const target = event.target as HTMLElement
-                  const pointerXHasChanged = lastPointerXRef.current !== event.clientX
+              if (!event.currentTarget?.contains(event.target)) {
+                clearTimeout(timerRef.current)
+                searchRef.current = ''
+              }
+            }),
+            onPointerMove: composeEventHandlers(
+              // @ts-ignore
+              props.onPointerMove,
+              // @ts-ignore
+              whenMouse((event: MouseEvent) => {
+                const target = event.target as HTMLElement
+                const pointerXHasChanged = lastPointerXRef.current !== event.clientX
 
-                  // We don't use `event.movementX` for this check because Safari will
-                  // always return `0` on a pointer event.
-                  // @ts-ignore
-                  if (event.currentTarget?.contains(target) && pointerXHasChanged) {
-                    const newDir =
-                      event.clientX > lastPointerXRef.current ? 'right' : 'left'
-                    pointerDirRef.current = newDir
-                    lastPointerXRef.current = event.clientX
-                  }
-                })
-              ),
-            }
-          : {})}
-      />
-    </ContentWrapper>
+                // We don't use `event.movementX` for this check because Safari will
+                // always return `0` on a pointer event.
+                // @ts-ignore
+                if (event.currentTarget?.contains(target) && pointerXHasChanged) {
+                  const newDir =
+                    event.clientX > lastPointerXRef.current ? 'right' : 'left'
+                  pointerDirRef.current = newDir
+                  lastPointerXRef.current = event.clientX
+                }
+              })
+            ),
+          }
+        : {})}
+    />
   )
 
   return (
@@ -644,14 +640,12 @@ const MenuContentImpl = React.forwardRef<
     >
       <ScrollLockWrapper {...scrollLockWrapperProps}>
         <FocusScope
-          // TODO: radix ui has this asChild
-          // asChild
+          asChild={false}
           trapped={trapFocus}
           onMountAutoFocus={composeEventHandlers(onOpenAutoFocus, (event) => {
             // when opening, explicitly focus the content area only and leave
             // `onEntryFocus` in  control of focusing first item
             event.preventDefault()
-            // TODO: this seems not working
             contentRef.current?.focus()
           })}
           onUnmountAutoFocus={onCloseAutoFocus}
@@ -663,8 +657,7 @@ const MenuContentImpl = React.forwardRef<
             onFocusOutside={onFocusOutside}
             onInteractOutside={onInteractOutside}
             onDismiss={onDismiss}
-            // TODO: radix ui has this asChild
-            // asChild
+            asChild
           >
             <RovingFocusGroup
               asChild
@@ -775,6 +768,7 @@ const MenuItem = ThemeableStack.styleable<ScopedProps<MenuItemProps>>(
 
     return (
       <MenuItemImpl
+        outlineStyle="none"
         {...itemProps}
         // @ts-ignore
         ref={composedRefs}
@@ -1237,6 +1231,7 @@ const MenuSubTrigger = YStack.styleable<ScopedProps<MenuSubTriggerProps>>(
           aria-expanded={context.open}
           aria-controls={subContext.contentId}
           data-state={getOpenState(context.open)}
+          outlineStyle="none"
           {...props}
           ref={composeRefs(forwardedRef, subContext.onTriggerChange)}
           // This is redundant for mouse users but we cannot determine pointer type from
@@ -1384,11 +1379,7 @@ const MenuSubContent = React.forwardRef<
           aria-labelledby={subContext.triggerId}
           {...subContentProps}
           ref={composedRefs}
-          // TODO what are these align and side props?
-          //@ts-ignore
-          align="start"
-          //@ts-ignore
-          side={rootContext.dir === 'rtl' ? 'left' : 'right'}
+          data-side={rootContext.dir === 'rtl' ? 'left' : 'right'}
           disableOutsidePointerEvents={false}
           disableOutsideScroll={false}
           trapFocus={false}
