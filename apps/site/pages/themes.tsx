@@ -4,3 +4,5 @@
 // export default function ThemesPage() {
 //   return <StudioThemeBuilder />
 // }
+
+export default () => null
