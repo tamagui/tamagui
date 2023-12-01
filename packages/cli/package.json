@@ -46,7 +46,7 @@
     "kill-port": "^2.0.1",
     "marked": "^5.1.0",
     "marked-terminal": "^5.2.0",
-    "open": "^8.4.0",
+    "open": "^9.1.0",
     "prompts": "2.1.0",
     "ts-morph": "^15.1.0",
     "typescript": "^5.2.2",
