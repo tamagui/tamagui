@@ -414,7 +414,7 @@ type GenericTamaguiSettings = {
     fastSchemeChange?: boolean;
     /**
      * On Web, this allows changing the behavior of container groups which by default uses
-     * `container-type: normal`.
+     * `container-type: inline-size`.
      */
     webContainerType?: 'normal' | 'size' | 'inline-size' | 'inherit' | 'initial' | 'revert' | 'revert-layer' | 'unset';
 };
