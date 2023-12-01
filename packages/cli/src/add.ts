@@ -9,7 +9,7 @@ import { pascalCase } from 'change-case'
 import { copy, ensureDir, readFileSync } from 'fs-extra'
 import { marked } from 'marked'
 import TerminalRenderer from 'marked-terminal'
-import open from 'open'
+import open from 'opener'
 import prompts from 'prompts'
 
 marked.setOptions({
@@ -32,7 +32,7 @@ export const installGeneratedPackage = async (type: string, packagesPath?: strin
     )
   }
   const repoName = type === 'font' ? 'tamagui-google-fonts' : 'tamagui-iconify'
-  console.log(`Setting up ${chalk.blueBright(tamaguiDir)}...`)
+  console.info(`Setting up ${chalk.blueBright(tamaguiDir)}...`)
 
   await ensureDir(tamaguiDir)
   const tempDir = path.join(tamaguiDir, repoName)
@@ -56,7 +56,7 @@ export const installGeneratedPackage = async (type: string, packagesPath?: strin
   } catch (error) {
     if (error instanceof Error) {
       if ((error as any)?.stderr.includes('Repository not found')) {
-        console.log(
+        console.info(
           chalk.yellow(
             `You don't have access to Tamagui ${
               type === 'font' ? 'fonts' : 'icons'
@@ -76,7 +76,7 @@ export const installGeneratedPackage = async (type: string, packagesPath?: strin
     )
   )
 
-  console.log(
+  console.info(
     chalk.gray(
       `Use ⇧/⇩ to navigate. Use tab to cycle the result. Use Page Up/Page Down (on Mac: fn + ⇧ / ⇩) to change page. Hit enter to select the highlighted item below the prompt.`
     )
@@ -113,13 +113,13 @@ export const installGeneratedPackage = async (type: string, packagesPath?: strin
   await ensureDir(packagesPath)
   await copy(packageDir, finalDir)
 
-  console.log()
-  console.log(chalk.green(`Created the package under ${finalDir}`))
-  console.log()
+  console.info()
+  console.info(chalk.green(`Created the package under ${finalDir}`))
+  console.info()
 
   const readmePath = path.join(finalDir, 'README.md')
   if (existsSync(readmePath)) {
-    console.log(marked.parse(readFileSync(readmePath).toString()))
+    console.info(marked.parse(readFileSync(readmePath).toString()))
   }
 }
 

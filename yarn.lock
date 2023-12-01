@@ -6091,7 +6091,7 @@ __metadata:
     kill-port: ^2.0.1
     marked: ^5.1.0
     marked-terminal: ^5.2.0
-    open: ^9.1.0
+    opener: ^1.5.2
     prompts: 2.1.0
     ts-morph: ^15.1.0
     typescript: ^5.2.2
@@ -12140,7 +12140,7 @@ __metadata:
     esbuild-register: ^3.4.2
     fs-extra: ^11.1.0
     got: 10.7.0
-    opn: ^6.0.0
+    opener: ^1.5.2
     playwright: ^1.29.0
     prompts: 2.1.0
     rimraf: ^5.0.1
@@ -21884,15 +21884,6 @@ __metadata:
   bin:
     ot: bin/ot
   checksum: 365af0f9a8bd87b772c794502a9e53a6d286faf2bafda51f3016acab21bd6202a0d6a1260d7b71f1d6ad8076ccedfe84f76bd6aabb14704ce42ac9a9f96bae21
-  languageName: node
-  linkType: hard
-
-"opn@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "opn@npm:6.0.0"
-  dependencies:
-    is-wsl: ^1.1.0
-  checksum: aa49c7ffb13d886611d3d74ddca42e132b0437ecde2e86c626fe52eaf223d9cf63c35f01da46b1a91187f275306375c914525c7b98685396d60019861f05b032
   languageName: node
   linkType: hard
 

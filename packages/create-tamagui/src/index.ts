@@ -10,7 +10,7 @@ import chalk from 'chalk'
 import Commander from 'commander'
 import { detect } from 'detect-package-manager'
 import { existsSync, readFileSync, writeFileSync } from 'fs-extra'
-import open from 'opn'
+import open from 'opener'
 import prompts from 'prompts'
 import { $, cd } from 'zx'
 
