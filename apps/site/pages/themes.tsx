@@ -1,6 +1,6 @@
-// @ts-ignore
-import { StudioThemeBuilder } from '@tamagui/studio'
+// // @ts-ignore
+// import { StudioThemeBuilder } from '@tamagui/studio'
 
-export default function ThemesPage() {
-  return <StudioThemeBuilder />
-}
+// export default function ThemesPage() {
+//   return <StudioThemeBuilder />
+// }
