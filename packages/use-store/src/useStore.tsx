@@ -21,9 +21,8 @@ export function useStore<A, B extends Object>(
   props?: B | null,
   options: UseStoreOptions<A, any> = defaultOptions
 ): A {
-  const selector = useMemo(() => options.selector, [])
   const info = getOrCreateStoreInfo(StoreKlass, props, options)
-  return useStoreFromInfo(info, selector, options)
+  return useStoreFromInfo(info, options.selector, options)
 }
 
 export function useStoreDebug<A, B extends Object>(

@@ -47,3 +47,5 @@ apps/kitchen-sink/android
 
 # ignore until videos finalized
 apps/site/public/talk/
+
+apps/studio/types/**
