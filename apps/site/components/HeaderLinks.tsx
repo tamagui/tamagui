@@ -109,7 +109,7 @@ export const HeaderLinks = ({ showExtra, forceShowAllLinks, showAuth }: HeaderPr
         </NextLink>
       )}
 
-      {showExtra && !userSwr.data?.session?.user && (forceShowAllLinks || showAuth) && (
+      {!userSwr.data?.session?.user && (
         <NextLink prefetch={false} href="/login">
           <HeadAnchor
             $md={{
