@@ -3,19 +3,23 @@
     "experimentalDecorators": true,
     "baseUrl": ".",
     "paths": {
-      "tamagui": [
-        "../tamagui"
-      ],
-      "@tamagui/*": [
-        "../../packages/*"
-      ],
-      "src/*": [
-        "./src/*"
-      ],
-      "@protected/*": [
-        "./src/*"
-      ],
-    },
+      "tamagui": ["../tamagui"],
+      "@tamagui/*": ["../../packages/*"],
+      "src/*": ["./src/*"],
+      "@protected/*": ["./src/*"]
+    }
   },
+  "exclude": [
+    "node_modules",
+    ".next",
+    ".turbo",
+    "out",
+    "types",
+    "src-tauri",
+    "**/test",
+    "**/dist",
+    "**/types",
+    "**/__tests__"
+  ],
   "extends": "../../tsconfig"
 }

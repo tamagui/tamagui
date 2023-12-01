@@ -13,7 +13,7 @@
   "scripts": {
     "dev": "../../node_modules/.bin/tama studio",
     "dev:tauri": "tauri dev",
-    "build": "tamagui-build",
+    "build": "SKIP_TYPES=1 tamagui-build",
     "ci:build": "tama studio --build",
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
