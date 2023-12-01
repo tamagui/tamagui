@@ -44,7 +44,7 @@ export const templates = [
     type: 'premium',
     hidden: false,
     repo: {
-      url: `https://github.com/tamagui/unistack`,
+      url: `https://github.com/tamagui/takeout`,
       dir: [],
       branch: 'main',
     },

@@ -22,7 +22,7 @@
   - recommended config with more strict settings etc
   - a few theme setups you can choose from
 
-- Unistack theme change needs a server restart / theme builder not re-building on changing colors.ts
+- Takeout theme change needs a server restart / theme builder not re-building on changing colors.ts
 - Theme reset Button not changing
 - ZStack is abs positioning children...
 
