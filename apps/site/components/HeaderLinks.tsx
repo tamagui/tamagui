@@ -21,7 +21,7 @@ const HeadAnchor = styled(Paragraph, {
   tag: 'a',
 })
 
-export const HeaderLinks = ({ showExtra, forceShowAllLinks, showAuth }: HeaderProps) => {
+export const HeaderLinks = ({ showExtra, forceShowAllLinks, isHeader }: HeaderProps) => {
   const userSwr = useUser()
   const router = useRouter()
   // there is user context and supabase setup in the current page
@@ -109,7 +109,7 @@ export const HeaderLinks = ({ showExtra, forceShowAllLinks, showAuth }: HeaderPr
         </NextLink>
       )}
 
-      {!userSwr.data?.session?.user && (
+      {(!userSwr.data?.session?.user && !isHeader) && (
         <NextLink prefetch={false} href="/login">
           <HeadAnchor
             $md={{

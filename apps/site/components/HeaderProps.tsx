@@ -5,4 +5,5 @@ export type HeaderProps = {
   forceShowAllLinks?: boolean
   minimal?: boolean
   showAuth?: boolean
+  isHeader?: boolean
 }

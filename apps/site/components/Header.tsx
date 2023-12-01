@@ -209,9 +209,9 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
         tag="nav"
       >
         <XStack ai="center" space="$3">
-          <HeaderLinks {...props} />
+          <HeaderLinks isHeader {...props} />
 
-          {userSwr.data?.userDetails && props.showAuth ? (
+          {userSwr.data?.userDetails ? (
             <XStack ai="center" space="$2">
               <NextLink href="/account">
                 <Avatar circular size="$2">
