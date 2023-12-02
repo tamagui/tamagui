@@ -1,10 +1,23 @@
 // only used by the studio theme builder generated:
 
-import { Template } from '@tamagui/create-theme'
+import { MaskOptions, Template } from '@tamagui/create-theme'
 
 export type BuildThemeSuiteProps = {
   baseTheme: BuildTheme
   subThemes?: (BuildTheme | BuildThemeMask)[]
+  componentMask?: MaskOptions
+  templates?: {
+    base: Template
+    accentLight: Template
+    accentDark: Template
+  }
+}
+
+export type BuildThemeSuitePalettes = {
+  light: string[]
+  dark: string[]
+  lightAccent?: string[]
+  darkAccent?: string[]
 }
 
 export type ScaleTypeName =
@@ -29,7 +42,8 @@ export type BuildTheme = BuildThemeBase & {
   type: 'theme'
   color: string
   scale: ScaleTypeName
-  scaleContrast?: number
+  spreadLuminance?: number
+  spreadSaturation?: number
   template?: Template
   accent?: string
   accentColor?: string
