@@ -82,7 +82,7 @@ async function run() {
       if ((await exec(`git rev-parse --abbrev-ref HEAD`)).stdout.trim() !== 'master') {
         throw new Error(`Not on master`)
       }
-      if (!dirty && !rePublish) {
+      if (!dirty && !rePublish && !finish) {
         await spawnify(`git pull --rebase origin master`)
       }
     }
