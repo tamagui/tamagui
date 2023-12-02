@@ -4,24 +4,29 @@ import chalk from 'chalk'
 
 import { IS_TEST } from './create-tamagui-constants'
 import { makeRainbowChalk } from './helpers/rainbowChalk'
-import nextExpoSolito from './steps/next-expo-solito'
 import simpleWeb from './steps/simple-web'
+import starterFree from './steps/starter-free'
 import takeoutSteps from './steps/takeout'
 
 const repoRoot = join(__dirname, '..', '..', '..')
 
+// for local dev/test only
+const starterFreeRoot = join(__dirname, '..', '..', '..', '..', 'starter-free')
+
 export const templates = [
   {
     title: `Next Expo Solito - Prod-ready universal app with a monorepo`,
-    value: 'next-expo-solito',
+    value: 'starter-free',
     type: 'free',
     hidden: false,
     repo: {
-      url: IS_TEST ? `file://${repoRoot}` : `https://github.com/tamagui/starter-free.git`,
+      url: IS_TEST
+        ? `file://${starterFreeRoot}`
+        : `https://github.com/tamagui/starter-free.git`,
       dir: [],
       branch: 'main',
     },
-    extraSteps: nextExpoSolito,
+    extraSteps: starterFree,
   },
 
   {

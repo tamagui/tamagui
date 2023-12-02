@@ -42,7 +42,7 @@ const program = new Commander.Command(packageJson.name)
   )
   .option(
     `--template <template>, -t <template>`,
-    'Choose between next-expo-solito, a more full featured template with Expo and Next.js, a simple client-only web starter that includes a nice simple example configuration to understand the basics more easily, or the premium Takeout 🥡 starter.',
+    'Choose between starter-free, a more full featured template with Expo and Next.js, a simple client-only web starter that includes a nice simple example configuration to understand the basics more easily, or the premium Takeout 🥡 starter.',
     ''
   )
   .allowUnknownOption()

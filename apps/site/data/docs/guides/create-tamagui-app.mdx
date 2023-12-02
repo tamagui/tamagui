@@ -9,7 +9,7 @@ Set up a starter repo to help learn about and/or bootstrap your tamagui app:
 
 Currently, we have two template available:
 
-- `next-expo-solito` Expo, Expo Router, Solito and Next.js (with both `/pages` and `/app` dir)
+- `starter-free` Expo, Expo Router, Solito and Next.js (with both `/pages` and `/app` dir)
 - `simple-web` (recommended for learning) Client-only web app with Webpack or Vite. Useful to understand how to set up tamagui.config.ts.
 
 ### Usage
@@ -30,10 +30,10 @@ To run the app:
 cd myapp
 yarn
 yarn web # Web local dev
-yarn native # Expo local dev (only for `next-expo-solito`)
+yarn native # Expo local dev (only for `starter-free`)
 ```
 
-## 📦 Included packages (`next-expo-solito`)
+## 📦 Included packages (`starter-free`)
 
 - `tamagui` for cross-platform views, themes and animations
 - `solito` for cross-platform navigation
@@ -54,7 +54,7 @@ By integrating `Tamagui`, `expo-router`, `Solito`, and, `Next.js` you can enjoy 
   - `app` you'll be importing most files from `app/`
     - `features` (don't use a `screens` folder. organize by feature.)
     - `provider` (all the providers that wrap the app, and some no-ops for Web.)
-    - `navigation` only for next-expo-solito template, contains the navigation code for RN
+    - `navigation` only for starter-free template, contains the navigation code for RN
 
 You can add other folders inside of `packages/` if you know what you're doing and have a good reason to.
 
