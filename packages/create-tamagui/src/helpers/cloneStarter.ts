@@ -10,7 +10,7 @@ import { $, cd } from 'zx'
 import { IS_TEST } from '../create-tamagui-constants'
 import { templates } from '../templates'
 
-const open = require('opn')
+const open = require('opener')
 
 const home = homedir()
 const tamaguiDir = join(home, '.tamagui')
