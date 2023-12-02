@@ -1,7 +1,19 @@
-import { Template } from '@tamagui/create-theme';
+import { MaskOptions, Template } from '@tamagui/create-theme';
 export type BuildThemeSuiteProps = {
     baseTheme: BuildTheme;
     subThemes?: (BuildTheme | BuildThemeMask)[];
+    componentMask?: MaskOptions;
+    templates?: {
+        base: Template;
+        accentLight: Template;
+        accentDark: Template;
+    };
+};
+export type BuildThemeSuitePalettes = {
+    light: string[];
+    dark: string[];
+    lightAccent?: string[];
+    darkAccent?: string[];
 };
 export type ScaleTypeName = 'radix' | 'radix-b' | 'radius-bold' | 'radius-bright' | 'linear' | 'pastel' | 'pastel-desaturating' | 'neon' | 'neon-bright' | 'neon-c';
 export type BuildThemeBase = {
@@ -13,7 +25,8 @@ export type BuildTheme = BuildThemeBase & {
     type: 'theme';
     color: string;
     scale: ScaleTypeName;
-    scaleContrast?: number;
+    spreadLuminance?: number;
+    spreadSaturation?: number;
     template?: Template;
     accent?: string;
     accentColor?: string;

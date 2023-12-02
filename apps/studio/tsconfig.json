@@ -2,6 +2,7 @@
   "compilerOptions": {
     "experimentalDecorators": true,
     "baseUrl": ".",
+    "noEmit": true,
     "paths": {
       "tamagui": ["../tamagui"],
       "@tamagui/*": ["../../packages/*"],
@@ -9,12 +10,14 @@
       "@protected/*": ["./src/*"]
     }
   },
+  "include": ["src"],
   "exclude": [
     "node_modules",
     ".next",
     ".turbo",
     "out",
     "types",
+    "types/**/*",
     "src-tauri",
     "**/test",
     "**/dist",

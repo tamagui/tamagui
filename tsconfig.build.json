@@ -3,7 +3,8 @@
   "compilerOptions": {
     "typeRoots": ["node_modules/@types"],
     "skipDefaultLibCheck": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "noEmit": true
   },
   "references": [
     { "path": "apps/kitchen-sink" },
