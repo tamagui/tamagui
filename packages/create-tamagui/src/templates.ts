@@ -15,7 +15,7 @@ const starterFreeRoot = join(__dirname, '..', '..', '..', '..', 'starter-free')
 
 export const templates = [
   {
-    title: `Next Expo Solito - Prod-ready universal app with a monorepo`,
+    title: `Free - Production ready base universal app monorepo`,
     value: 'starter-free',
     type: 'free',
     hidden: false,
@@ -30,7 +30,7 @@ export const templates = [
   },
 
   {
-    title: `Simple Web - For learning, client app, Webpack & Vite, custom tamagui.config`,
+    title: `Learning - A full but simple Tamagui setup from scratch`,
     value: 'simple-web',
     type: 'included-in-monorepo',
     hidden: false,
@@ -41,10 +41,11 @@ export const templates = [
     },
     extraSteps: simpleWeb,
   },
+
   {
     title: `${chalk.bold.underline(
       `🥡 ${makeRainbowChalk('Takeout')}`
-    )} - Pro, prod-ready universal app w/onboard, auth, account, settings, testing +++`,
+    )} - Paid stack to ship apps w/users fast: https://tamagui.dev/takeout`,
     value: `takeout-starter`,
     type: 'premium',
     hidden: false,
