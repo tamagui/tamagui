@@ -7613,6 +7613,7 @@ __metadata:
   dependencies:
     "@tamagui/build": 1.79.4
     "@tamagui/create-theme": 1.79.4
+    color2k: ^2.0.2
   languageName: unknown
   linkType: soft
 
