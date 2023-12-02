@@ -360,27 +360,34 @@ async function run() {
 
     await spawnify(`yarn upgrade:starters`)
     await spawnify(`yarn fix`)
+
+    const starterFreeDir = join(process.cwd(), '../starter-free')
     await spawnify(`yarn fix`, {
-      cwd: join(process.cwd(), 'starters/next-expo-solito'),
+      cwd: starterFreeDir,
     })
 
     const tagPrefix = canary ? 'canary' : 'v'
     const gitTag = `${tagPrefix}${version}`
 
-    if (!rePublish || reRun || finish) {
-      await spawnify(`git add -A`)
-      await spawnify(`git commit -m ${gitTag}`)
-      await spawnify(`git tag ${gitTag}`)
+    await finishAndCommit(starterFreeDir)
+    await finishAndCommit()
 
-      if (!dirty) {
-        // pull once more before pushing so if there was a push in interim we get it
-        await spawnify(`git pull --rebase origin master`)
+    async function finishAndCommit(cwd = process.cwd()) {
+      if (!rePublish || reRun || finish) {
+        await spawnify(`git add -A`, { cwd })
+        await spawnify(`git commit -m ${gitTag}`, { cwd })
+        await spawnify(`git tag ${gitTag}`, { cwd })
+
+        if (!dirty) {
+          // pull once more before pushing so if there was a push in interim we get it
+          await spawnify(`git pull --rebase origin master`, { cwd })
+        }
+
+        await spawnify(`git push origin head`, { cwd })
+        await spawnify(`git push origin ${gitTag}`, { cwd })
+
+        console.info(`✅ Pushed and versioned\n`)
       }
-
-      await spawnify(`git push origin head`)
-      await spawnify(`git push origin ${gitTag}`)
-
-      console.info(`✅ Pushed and versioned\n`)
     }
 
     // console.info(`All done, cleanup up in...`)
