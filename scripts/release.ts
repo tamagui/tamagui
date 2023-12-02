@@ -380,7 +380,7 @@ async function run() {
 
         if (!dirty) {
           // pull once more before pushing so if there was a push in interim we get it
-          await spawnify(`git pull --rebase origin master`, { cwd })
+          await spawnify(`git pull --rebase origin HEAD`, { cwd })
         }
 
         await spawnify(`git push origin head`, { cwd })

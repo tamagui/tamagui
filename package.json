@@ -57,7 +57,6 @@
     "starter:native": "yarn workspace @tamagui/starter native",
     "starter:prod": "yarn workspace @tamagui/starter web:prod && yarn workspace @tamagui/starter web:prod:serve",
     "starter": "yarn workspace @tamagui/starter web",
-    "starters:sync": "node ./starters/sync-next-expo-solito.js",
     "studio": "yarn workspace @tamagui/studio dev",
     "studio:tauri": "yarn workspace @tamagui/studio dev:tauri",
     "vertql": "cd apps/vertql-example && yarn dev",
