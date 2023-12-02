@@ -49,6 +49,7 @@ import {
   SpaceValue,
   SpacerProps,
   StackProps,
+  StackPropsBase,
   StaticConfig,
   StyleableOptions,
   TamaguiComponent,
@@ -1394,7 +1395,7 @@ const getSpacerSize = (size: SizeTokens | number | boolean, { tokens }) => {
 // dont used styled() here to avoid circular deps
 // keep inline to avoid circular deps
 // @ts-expect-error we override
-export const Spacer = createComponent<SpacerProps>({
+export const Spacer = createComponent<SpacerProps, TamaguiElement, StackPropsBase>({
   acceptsClassName: true,
   memo: true,
   componentName: 'Spacer',
