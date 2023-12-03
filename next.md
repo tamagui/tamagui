@@ -1,3 +1,9 @@
+- studio:
+  - pre-configure themes
+    - stronger, dimmer
+    - disabled, active
+    - outlined
+
 - get takeout users studio access
 
 - studio color scales first class:

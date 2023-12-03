@@ -21,6 +21,7 @@ export type BuildThemeSuitePalettes = {
 }
 
 export type ScaleTypeName =
+  | 'automatic'
   | 'radix'
   | 'radix-b'
   | 'radius-bold'

@@ -77,8 +77,8 @@ export function getThemeCSSRules(props: {
             continue
           }
 
-          const parents = new Array(depth + 1).fill(0).map((_, psi) => {
-            return `${CNP}${psi % 2 === 0 ? stronger : weaker}`
+          const parents = new Array(depth + 1).fill(0).map((_, idx) => {
+            return `${CNP}${idx % 2 === 0 ? stronger : weaker}`
           })
 
           let parentSelectors = parents.length > 1 ? parents.slice(1) : parents
@@ -103,12 +103,18 @@ export function getThemeCSSRules(props: {
 
     const selectors = [...selectorsSet].sort((a, b) => a.localeCompare(b))
 
+    let specificity = 1 //themeName.split('_').length
+
+    if (themeName.includes('accent_Button')) {
+      specificity = 2
+    }
+
     // only do our :root attach if it's not light/dark - not support sub themes on root saves a lot of effort/size
     // this isBaseTheme logic could probably be done more efficiently above
     const selectorsString = selectors
       .map((x) => {
         const rootSep = isBaseTheme(x) && config.themeClassNameOnRoot ? '' : ' '
-        return `:root${rootSep}${x}`
+        return `${new Array(specificity).fill(`:root`).join('')}${rootSep}${x}`
       })
       .join(', ')
 

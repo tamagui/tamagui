@@ -6,7 +6,7 @@ export const getThemeSuiteScale = (theme: BuildTheme, accent?: boolean): ScaleTy
   const color = accent ? theme.accent || theme.color : theme.color
   const scale = accent ? theme.accentScale || theme.scale : theme.scale
 
-  let base = scaleTypes[theme.scale || '']
+  let base = scaleTypes[scale]
 
   if (!color) {
     return base
@@ -14,6 +14,23 @@ export const getThemeSuiteScale = (theme: BuildTheme, accent?: boolean): ScaleTy
 
   const [h, s, l] = parseToHsla(color)
   // const isColorBright = l > 0.5
+
+  console.log('wtf', theme, scale)
+
+  if (scale === 'automatic') {
+    const scaleLen = 12
+    const arr = new Array(scaleLen).fill(0)
+    const distToTop = 1 - l
+    const distToBottom = l
+    debugger
+    return {
+      ...base,
+      lumScale: {
+        light: arr.map((_, i) => l + distToTop * (i / scaleLen)),
+        dark: arr.map((_, i) => l - distToBottom * (i / scaleLen)),
+      },
+    }
+  }
 
   return {
     ...base,
@@ -44,6 +61,14 @@ export type ScaleType<A extends ScaleTypeName = ScaleTypeName> = {
 }
 
 export const scaleTypes: Record<ScaleTypeName, ScaleType> = {
+  automatic: {
+    createdFrom: 'automatic',
+    name: 'Automatic',
+    lumScale: {
+      light: [],
+      dark: [],
+    },
+  },
   radix: {
     name: 'Radius',
     createdFrom: 'radix',

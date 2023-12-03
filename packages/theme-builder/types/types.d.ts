@@ -15,7 +15,7 @@ export type BuildThemeSuitePalettes = {
     lightAccent?: string[];
     darkAccent?: string[];
 };
-export type ScaleTypeName = 'radix' | 'radix-b' | 'radius-bold' | 'radius-bright' | 'linear' | 'pastel' | 'pastel-desaturating' | 'neon' | 'neon-bright' | 'neon-c';
+export type ScaleTypeName = 'automatic' | 'radix' | 'radix-b' | 'radius-bold' | 'radius-bright' | 'linear' | 'pastel' | 'pastel-desaturating' | 'neon' | 'neon-bright' | 'neon-c';
 export type BuildThemeBase = {
     id: string;
     name: string;

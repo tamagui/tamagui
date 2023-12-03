@@ -117,40 +117,40 @@ export function buildThemeSuite({ baseTheme, subThemes }: BuildThemeSuiteProps) 
       ...baseTemplate,
     }
 
-    const accentTemplateLight = {
-      background: 0,
-      backgroundHover: baseTemplate.backgroundHover + 4,
-      backgroundPress: baseTemplate.backgroundPress + 4,
-      backgroundFocus: baseTemplate.backgroundFocus + 4,
-      borderColor: baseTemplate.borderColor + 2,
-      borderColorHover: baseTemplate.borderColorHover + 2,
-      borderColorFocus: baseTemplate.borderColorFocus + 2,
-      borderColorPress: baseTemplate.borderColorPress + 2,
-      color: -5,
-      colorHover: -6,
-      colorPress: -7,
-      colorFocus: -5,
-    }
+    // const accentTemplateLight = {
+    //   background: 0,
+    //   backgroundHover: 1,
+    //   backgroundPress: baseTemplate.backgroundPress + 4,
+    //   backgroundFocus: baseTemplate.backgroundFocus + 4,
+    //   borderColor: baseTemplate.borderColor + 2,
+    //   borderColorHover: baseTemplate.borderColorHover + 2,
+    //   borderColorFocus: baseTemplate.borderColorFocus + 2,
+    //   borderColorPress: baseTemplate.borderColorPress + 2,
+    //   color: -5,
+    //   colorHover: -6,
+    //   colorPress: -7,
+    //   colorFocus: -5,
+    // }
 
-    const accentTemplateDark = {
-      background: baseTemplate.backgroundHover + 4,
-      backgroundHover: baseTemplate.backgroundHover + 5,
-      backgroundPress: baseTemplate.backgroundPress + 3,
-      backgroundFocus: baseTemplate.backgroundFocus + 5,
-      borderColor: baseTemplate.borderColor + 2,
-      borderColorHover: baseTemplate.borderColorHover + 2,
-      borderColorFocus: baseTemplate.borderColorFocus + 2,
-      borderColorPress: baseTemplate.borderColorPress + 2,
-      color: -5,
-      colorHover: -6,
-      colorPress: -7,
-      colorFocus: -5,
-    }
+    // const accentTemplateDark = {
+    //   background: baseTemplate.background + 4,
+    //   backgroundHover: baseTemplate.backgroundHover + 5,
+    //   backgroundPress: baseTemplate.backgroundPress + 3,
+    //   backgroundFocus: baseTemplate.backgroundFocus + 5,
+    //   borderColor: baseTemplate.borderColor + 2,
+    //   borderColorHover: baseTemplate.borderColorHover + 2,
+    //   borderColorFocus: baseTemplate.borderColorFocus + 2,
+    //   borderColorPress: baseTemplate.borderColorPress + 2,
+    //   color: -5,
+    //   colorHover: -6,
+    //   colorPress: -7,
+    //   colorFocus: -5,
+    // }
 
     return {
       base: template,
-      accentLight: accentTemplateLight,
-      accentDark: accentTemplateDark,
+      accentLight: template,
+      accentDark: template,
     }
   }
 
@@ -366,6 +366,8 @@ export function buildThemeSuite({ baseTheme, subThemes }: BuildThemeSuiteProps) 
     .addChildThemes(getComponentThemeDefinitions())
 
   const built = builder.build()
+
+  console.log('built themes', built)
 
   return {
     built,
