@@ -103,18 +103,18 @@ export function getThemeCSSRules(props: {
 
     const selectors = [...selectorsSet].sort((a, b) => a.localeCompare(b))
 
-    let specificity = 1 //themeName.split('_').length
+    // let specificity = 1 //themeName.split('_').length
 
-    if (themeName.includes('accent_Button')) {
-      specificity = 2
-    }
+    // if (themeName.includes('accent_Button')) {
+    //   specificity = 2
+    // }
 
     // only do our :root attach if it's not light/dark - not support sub themes on root saves a lot of effort/size
     // this isBaseTheme logic could probably be done more efficiently above
     const selectorsString = selectors
       .map((x) => {
         const rootSep = isBaseTheme(x) && config.themeClassNameOnRoot ? '' : ' '
-        return `${new Array(specificity).fill(`:root`).join('')}${rootSep}${x}`
+        return `:root${rootSep}${x}`
       })
       .join(', ')
 
