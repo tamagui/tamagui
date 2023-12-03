@@ -9,6 +9,7 @@ import {
   createStyledContext,
   useComposedRefs,
 } from '@tamagui/core'
+import type { TextProps } from '@tamagui/core'
 import { Dismissable as DismissableLayer } from '@tamagui/dismissable'
 import { dispatchDiscreteCustomEvent } from '@tamagui/dismissable'
 import { useFocusGuards } from '@tamagui/focus-guard'
@@ -18,7 +19,12 @@ import type { PopperContentProps } from '@tamagui/popper'
 import { Portal as PortalPrimitive, PortalProps } from '@tamagui/portal'
 import { RovingFocusGroup } from '@tamagui/roving-focus'
 import type { RovingFocusGroupProps } from '@tamagui/roving-focus'
-import { SizableStackProps, ThemeableStack, YStack } from '@tamagui/stacks'
+import {
+  SizableStackProps,
+  ThemeableStack,
+  ThemeableStackProps,
+  YStack,
+} from '@tamagui/stacks'
 import { useCallbackRef } from '@tamagui/use-callback-ref'
 import { useDirection } from '@tamagui/use-direction'
 import {
@@ -33,7 +39,10 @@ import { TamaguiElement } from '@tamagui/web/types'
 import { hideOthers } from 'aria-hidden'
 import { useId } from 'react'
 import * as React from 'react'
+import { Image } from 'react-native'
 import { RemoveScroll } from 'react-remove-scroll'
+
+import { MenuItemImageProps } from './createMenu/createMenuTypes'
 
 type Direction = 'ltr' | 'rtl'
 
@@ -87,9 +96,13 @@ interface MenuProps extends PopperPrimitive.PopperProps {
   onOpenChange?(open: boolean): void
   dir?: Direction
   modal?: boolean
+  native?: boolean
 }
 
 const MENU_CONTEXT = 'MenuContext'
+
+const { Provider: NativePropProvider, useStyledContext: useNativeProp } =
+  createStyledContext({ native: false })
 
 const MenuComp = (props: ScopedProps<MenuProps>) => {
   const {
@@ -141,16 +154,18 @@ const MenuComp = (props: ScopedProps<MenuProps>) => {
         content={content}
         onContentChange={setContent}
       >
-        <MenuRootProvider
-          scope={__scopeMenu}
-          onClose={React.useCallback(() => handleOpenChange(false), [handleOpenChange])}
-          isUsingKeyboardRef={isUsingKeyboardRef}
-          dir={direction}
-          modal={modal}
-        >
-          {/** this provider is just to avoid crashing when using useSubMenuContext() inside MenuPortal */}
-          <MenuSubProvider scope={__scopeMenu}>{children}</MenuSubProvider>
-        </MenuRootProvider>
+        <NativePropProvider native={false} scope={__scopeMenu}>
+          <MenuRootProvider
+            scope={__scopeMenu}
+            onClose={React.useCallback(() => handleOpenChange(false), [handleOpenChange])}
+            isUsingKeyboardRef={isUsingKeyboardRef}
+            dir={direction}
+            modal={modal}
+          >
+            {/** this provider is just to avoid crashing when using useSubMenuContext() inside MenuPortal */}
+            <MenuSubProvider scope={__scopeMenu}>{children}</MenuSubProvider>
+          </MenuRootProvider>
+        </NativePropProvider>
       </MenuProvider>
     </PopperPrimitive.Popper>
   )
@@ -179,17 +194,19 @@ const RepropagateMenuAndMenuRootProvider = (
       {...popperContext}
       scope={__scopeMenu || MENU_CONTEXT}
     >
-      <MenuProvider scope={__scopeMenu} {...menuContext}>
-        <MenuRootProvider scope={__scopeMenu} {...rootContext}>
-          {menuSubContext ? (
-            <MenuSubProvider scope={__scopeMenu} {...menuSubContext}>
-              {children}
-            </MenuSubProvider>
-          ) : (
-            children
-          )}
-        </MenuRootProvider>
-      </MenuProvider>
+      <NativePropProvider native={false} scope={__scopeMenu}>
+        <MenuProvider scope={__scopeMenu} {...menuContext}>
+          <MenuRootProvider scope={__scopeMenu} {...rootContext}>
+            {menuSubContext ? (
+              <MenuSubProvider scope={__scopeMenu} {...menuSubContext}>
+                {children}
+              </MenuSubProvider>
+            ) : (
+              children
+            )}
+          </MenuRootProvider>
+        </MenuProvider>
+      </NativePropProvider>
     </PopperPrimitive.PopperProvider>
   )
 }
@@ -223,7 +240,7 @@ const PORTAL_NAME = 'MenuPortal'
 type PortalContextValue = { forceMount?: true }
 
 const { Provider: PortalProvider, useStyledContext: usePortalContext } =
-  createStyledContext<PortalContextValue>()
+  createStyledContext<PortalContextValue>(undefined, 'Portal')
 
 interface MenuPortalProps {
   children?: React.ReactNode
@@ -814,6 +831,57 @@ const MenuItem = ThemeableStack.styleable<ScopedProps<MenuItemProps>>(
 )
 
 MenuItem.displayName = ITEM_NAME
+
+/* -------------------------------------------------------------------------------------------------
+ * MenuItemTitle
+ * -----------------------------------------------------------------------------------------------*/
+const ITEM_TITLE_NAME = 'MenuItemTitle'
+interface MenuItemTitleProps extends TextProps {}
+const MenuItemTitle = Text.styleable((props, forwardedRef) => {
+  return <Text {...props} ref={forwardedRef} />
+})
+
+MenuItemTitle.displayName = ITEM_TITLE_NAME
+
+/* ---------------------------------------------------------------------------------------------- */
+
+/* -------------------------------------------------------------------------------------------------
+ * MenuItemSubTitle
+ * -----------------------------------------------------------------------------------------------*/
+const ITEM_SUB_TITLE_NAME = 'MenuItemSubTitle'
+interface MenuItemSubTitleProps extends TextProps {}
+const MenuItemSubTitle = Text.styleable((props, forwardedRef) => {
+  return <Text {...props} ref={forwardedRef} />
+})
+
+MenuItemSubTitle.displayName = ITEM_SUB_TITLE_NAME
+
+/* ---------------------------------------------------------------------------------------------- */
+
+/* -------------------------------------------------------------------------------------------------
+ * MenuItemImage
+ * -----------------------------------------------------------------------------------------------*/
+const ITEM_IMAGE = 'MenuItemImage'
+const MenuItemImage = React.forwardRef<Image, MenuItemImageProps>(
+  (props, forwardedRef) => {
+    return <Image {...props} ref={forwardedRef} />
+  }
+)
+
+MenuItemImage.displayName = ITEM_IMAGE
+
+/* ---------------------------------------------------------------------------------------------- */
+
+/* -------------------------------------------------------------------------------------------------
+ * MenuItemIcon
+ * -----------------------------------------------------------------------------------------------*/
+const ITEM_ICON = 'MenuItemIcon'
+interface MenuItemIconProps extends ThemeableStackProps {}
+const MenuItemIcon = ThemeableStack.styleable((props, forwardedRef) => {
+  return <ThemeableStack {...props} ref={forwardedRef} />
+})
+
+MenuItemIcon.displayName = ITEM_ICON
 
 /* ---------------------------------------------------------------------------------------------- */
 
@@ -1547,6 +1615,10 @@ const Arrow = MenuArrow
 const Sub = MenuSub
 const SubTrigger = MenuSubTrigger
 const SubContent = MenuSubContent
+const ItemTitle = MenuItemTitle
+const ItemSubtitle = MenuItemSubTitle
+const ItemImage = MenuItemImage
+const ItemIcon = MenuItemIcon
 
 const Menu = withStaticProperties(MenuComp, {
   Anchor,
@@ -1564,12 +1636,13 @@ const Menu = withStaticProperties(MenuComp, {
   Sub,
   SubTrigger,
   SubContent,
+  ItemTitle,
+  ItemSubtitle,
+  ItemImage,
+  ItemIcon,
 })
 
-export {
-  //
-  Menu,
-}
+export { Menu, useNativeProp, NativePropProvider }
 export type {
   MenuProps,
   MenuAnchorProps,
@@ -1586,4 +1659,8 @@ export type {
   MenuArrowProps,
   MenuSubTriggerProps,
   MenuSubContentProps,
+  MenuItemTitleProps,
+  MenuItemSubTitleProps,
+  MenuItemImageProps,
+  MenuItemIconProps,
 }
