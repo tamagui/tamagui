@@ -8,7 +8,9 @@ export type StyledContext<Props extends Object = any> = Omit<React.Context<Props
     }>;
     useStyledContext: (scope?: string) => Props;
 };
-export declare function createStyledContext<VariantProps extends Record<string, any>>(defaultValues?: VariantProps): StyledContext<VariantProps>;
+export declare function createStyledContext<VariantProps extends Record<string, any>>(defaultValues?: VariantProps, 
+/** for debugging it's recommended to provided a name */
+name?: string): StyledContext<VariantProps>;
 export type ScopedProps<P, K extends string> = P & {
     [Key in `__scope${K}`]?: string;
 };
