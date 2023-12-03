@@ -31,12 +31,10 @@ body:
       label: Reproduction
       render: markdown
       description: |
-        - If you don't include reproduction, the issue will be automatically closed.
-        - You can always create a new Tamagui starter using `npm create tamagui` and then push that somewhere.
-        - Be sure to have the reproduction be in its own separate commit.
+        - If you don't include reproduction, we will close the issue.
+        - The easiest way to reproduce is using the starter free repo: https://github.com/tamagui/starter-free
+        - Clone that repo and push your reproduction as a new commit.
         - For simpler bugs you can fork [this CodeSandbox](https://codesandbox.io/p/sandbox/github/tamagui/starter-free) to reproduce the issue.
-        - For simple web bugs, try [this one](https://github.com/tamagui/issue-template-webpack) and run `yarn upgrade` to update tamagui to latest.
-        - For native-only bugs, fork this repo and use `apps/kitchen-sink` to reproduce the bug. Once reproduced, submit a PR with the title `[Issue] ...`
     validations:
       required: true
   - type: textarea
