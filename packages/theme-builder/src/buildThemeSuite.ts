@@ -216,10 +216,7 @@ export function buildThemeSuite({ baseTheme, subThemes }: BuildThemeSuiteProps) 
         ...customMaskOptions.component,
       },
 
-      Switch: {
-        mask: 'soften2',
-        ...customMaskOptions.component,
-      },
+      Switch: componentTheme,
 
       SwitchThumb: {
         mask: 'inverse',
