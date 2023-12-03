@@ -15,14 +15,11 @@ export const getThemeSuiteScale = (theme: BuildTheme, accent?: boolean): ScaleTy
   const [h, s, l] = parseToHsla(color)
   // const isColorBright = l > 0.5
 
-  console.log('wtf', theme, scale)
-
   if (scale === 'automatic') {
     const scaleLen = 12
     const arr = new Array(scaleLen).fill(0)
     const distToTop = 1 - l
     const distToBottom = l
-    debugger
     return {
       ...base,
       lumScale: {
