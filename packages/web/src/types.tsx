@@ -1377,6 +1377,7 @@ export type SpaceValue = number | SpaceTokens | ThemeValueFallback
 type SharedBaseExtraStyleProps = {
   columnGap?: SpaceValue
   contain?: Properties['contain']
+  touchAction?: Properties['touchAction']
   cursor?: Properties['cursor']
   display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex'
   gap?: SpaceValue
