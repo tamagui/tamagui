@@ -364,7 +364,7 @@ export function buildThemeSuite({ baseTheme, subThemes }: BuildThemeSuiteProps) 
 
   const built = builder.build()
 
-  console.log('built themes', built)
+  console.info('built themes', built)
 
   return {
     built,
