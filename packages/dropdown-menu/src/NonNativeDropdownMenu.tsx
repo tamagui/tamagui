@@ -332,7 +332,7 @@ DropdownMenuItemImage.displayName = ITEM_IMAGE_NAME
  * DropdownMenuItemIcon
  * -----------------------------------------------------------------------------------------------*/
 
-const ITEM_ICON_NAME = 'DropdownMenuItemImage'
+const ITEM_ICON_NAME = 'DropdownMenuItemIcon'
 const DropdownMenuItemIcon = Menu.ItemIcon
 DropdownMenuItemIcon.displayName = ITEM_ICON_NAME
 /* -------------------------------------------------------------------------------------------------
@@ -496,6 +496,7 @@ interface DropdownMenuSubProps extends MenuSubProps {
   onOpenChange?(open: boolean): void
 }
 
+const DROPDOWN_MENU_SUB_NAME = 'DropdownMenuSub'
 const DropdownMenuSub = (props: ScopedProps<DropdownMenuSubProps>) => {
   const {
     __scopeDropdownMenu,
@@ -522,6 +523,8 @@ const DropdownMenuSub = (props: ScopedProps<DropdownMenuSubProps>) => {
     </Menu.Sub>
   )
 }
+
+DropdownMenuSub.displayName = DROPDOWN_MENU_SUB_NAME
 
 /* -------------------------------------------------------------------------------------------------
  * DropdownMenuSubTrigger
