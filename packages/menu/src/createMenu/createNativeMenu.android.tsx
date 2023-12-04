@@ -1,7 +1,7 @@
 import { MenuView } from '@react-native-menu/menu'
 import { withStaticProperties } from '@tamagui/core'
 import React, { Children, ReactElement, cloneElement } from 'react'
-import { Text, View } from 'tamagui'
+import { View } from 'tamagui'
 
 import { NativePropProvider } from '../Menu'
 import type {
@@ -33,6 +33,8 @@ import {
   isInstanceOfComponent,
   pickChildren,
 } from './utils'
+
+const COMPONENTS_TO_IGNORE = ['Portal', 'Radio']
 
 const createAndroidMenu = (MenuType: 'ContextMenu' | 'DropdownMenu') => {
   const Trigger = create(({ children, asChild, ...rest }: MenuTriggerProps) => {
@@ -141,7 +143,7 @@ If you want to use a custom component as your <Content />, you can use the creat
     }
     return <>{children}</>
   }, `${MenuType}SubTrigger`)
-  const Sub = create((_: MenuSubProps) => <></>, 'Sub')
+  const Sub = create((_: MenuSubProps) => <></>, `${MenuType}Sub`)
   const SubContent = create((_: MenuSubContentProps) => <></>, `${MenuType}SubContent`)
 
   const CheckboxItem = create(({ children }: MenuCheckboxItemProps) => {
@@ -184,13 +186,11 @@ If you want to use a custom component as your <Content />, you can use the creat
 
   const Menu = create((props: MenuProps) => {
     const trigger = pickChildren<MenuTriggerProps>(props.children, Trigger)
-    console.warn('trigger is ', trigger)
     const content = pickChildren<MenuContentProps | ContextMenuContentProps>(
       props.children,
-      Content
+      Content,
+      COMPONENTS_TO_IGNORE
     ).targetChildren?.[0]
-
-    console.warn('content is ', content)
 
     const callbacks: Record<string, () => void> = {}
 
@@ -215,16 +215,14 @@ If you want to use a custom component as your <Content />, you can use the creat
 
       let icon: MenuItem['image']
 
-      // console.warn('about to check child.props.children ', child.props.children)
       if (typeof child.props.children == 'string') {
         title = child.props.children
       } else {
         const titleChild = pickChildren<MenuItemTitleProps>(
           child.props.children,
-          ItemTitle
+          ItemTitle,
+          COMPONENTS_TO_IGNORE
         ).targetChildren
-
-        // console.warn('titleChild is ', titleChild)
 
         const maybeTitle = child.props.textValue ?? titleChild?.[0]?.props.children
 
@@ -325,16 +323,9 @@ If you want to use a custom component as your <Content />, you can use the creat
       children: React.ReactNode
     ): ((MenuItem | MenuConfig) | null)[] => {
       return Children.map(
-        flattenChildren(children).flatMap((item) => {
-          // android menu doesn't support group feature like iOS `displayInline` option in menu
-          if (isInstanceOfComponent(item, Group) && typeof item === 'object') {
-            return flattenChildren(item.props.children)
-          }
-          return item
-        }),
+        flattenChildren(children, [...COMPONENTS_TO_IGNORE, 'Group']),
         (_child, index) => {
           if (isInstanceOfComponent(_child, Item)) {
-            // console.warn('yes it is instance of Item')
             const child = _child as ReactElement<MenuItemProps>
 
             const item = getItemFromChild(child, index)
@@ -382,7 +373,8 @@ If you want to use a custom component as your <Content />, you can use the creat
             if (triggerItem) {
               const nestedContent = pickChildren<MenuContentProps>(
                 child.props.children,
-                SubContent
+                SubContent,
+                COMPONENTS_TO_IGNORE
               ).targetChildren?.[0]
 
               if (nestedContent) {
@@ -425,11 +417,6 @@ If you want to use a custom component as your <Content />, you can use the creat
       shouldOpenOnLongPress = triggerItem.props.action === 'longPress'
     }
 
-    // console.warn('result ', {
-    //   menuTitle,
-    //   menuItems,
-    // })
-
     return (
       <NativePropProvider
         native
@@ -448,7 +435,7 @@ If you want to use a custom component as your <Content />, you can use the creat
         </MenuView>
       </NativePropProvider>
     )
-  }, `${MenuType}Menu`)
+  }, `${MenuType}`)
 
   const Separator = create((_: MenuSeparatorProps) => {
     return <></>
