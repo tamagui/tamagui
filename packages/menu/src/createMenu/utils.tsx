@@ -1,5 +1,5 @@
 /**
- * Credit to geist-ui/react for this file, it's copied from there.
+ * Credit to geist-ui/react and zeego for this file, it's initialy copied from there and updated.
  */
 
 import React, {
@@ -28,39 +28,56 @@ export function flattenChildrenKeyless(children: React.ReactNode): ReactChildArr
 
 export function flattenChildren(
   children: ReactNode,
+  componentNamesToIgnore?: string[],
   depth = 0,
   keys: (string | number)[] = []
 ): ReactChild[] {
-  return Children.toArray(children).reduce((acc: ReactChild[], node: any, nodeIndex) => {
-    if (node.type === React.Fragment) {
-      acc.push.apply(
-        acc,
-        flattenChildren(
-          node.props.children,
-          depth + 1,
-          keys.concat(node.key || nodeIndex)
-        )
-      )
-    } else {
-      if (isValidElement(node)) {
-        acc.push(
-          cloneElement(node, {
-            key: keys.concat(String(node.key)).join('.'),
-          })
-        )
-      } else if (typeof node === 'string' || typeof node === 'number') {
-        acc.push(node)
+  return Children.toArray(children)
+    .flatMap((elem) => {
+      if (isValidElement(elem)) {
+        if (
+          typeof (elem as any)?.type == 'function' &&
+          componentNamesToIgnore?.some((skipComponentName) =>
+            (elem.type as any).displayName.includes(skipComponentName)
+          )
+        ) {
+          return elem.props.children
+        }
       }
-    }
-    return acc
-  }, [])
+      return elem
+    })
+    .reduce((acc: ReactChild[], node: any, nodeIndex) => {
+      if (node.type === React.Fragment) {
+        acc.push.apply(
+          acc,
+          flattenChildren(
+            node.props.children,
+            componentNamesToIgnore,
+            depth + 1,
+            keys.concat(node.key || nodeIndex)
+          )
+        )
+      } else {
+        if (isValidElement(node)) {
+          acc.push(
+            cloneElement(node, {
+              key: keys.concat(String(node.key)).join('.'),
+            })
+          )
+        } else if (typeof node === 'string' || typeof node === 'number') {
+          acc.push(node)
+        }
+      }
+      return acc
+    }, [])
 }
 
 export const pickChildren = <Props = any,>(
   _children: React.ReactNode | undefined,
-  targetChild: React.ElementType
+  targetChild: React.ElementType,
+  componentNamesToIgnore?: string[]
 ) => {
-  const children = flattenChildren(_children)
+  const children = flattenChildren(_children, componentNamesToIgnore)
   const target: ReactElement<Props>[] = []
   const withoutTargetChildren = React.Children.map(children, (item) => {
     if (!isValidElement(item)) return item
@@ -90,7 +107,6 @@ export const isInstanceOfComponent = (
       ((element as any)?.type?.displayName === (targetElement as any).displayName ||
         (element as any)?.type?.displayName ===
           (targetElement as any).displayName + 'Wrapper'))
-
   return matches
 }
 
