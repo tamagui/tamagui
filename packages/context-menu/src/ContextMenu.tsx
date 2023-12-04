@@ -22,7 +22,7 @@ type Point = { x: number; y: number }
 
 const CONTEXT_MENU_NAME = 'ContextMenu'
 
-const CONTEXTMENU_CONTEXT = 'ContextMenu'
+const CONTEXTMENU_CONTEXT = 'ContextMenuContext'
 
 type ContextMenuContextValue = {
   open: boolean

@@ -92,7 +92,7 @@ function withNativeMenu<
 >(Component: C, NativeComponent: N, isRoot = false) {
   if (isWeb) return Component
   const Menu = (
-    props: React.ComponentProps<C> & React.ComponentProps<N> & { native: boolean }
+    props: React.ComponentProps<C> & React.ComponentProps<N> & { native?: boolean }
   ) => {
     let isNative = true
     if (isRoot) {
