@@ -1,3 +1,6 @@
+/**
+ * Credit to the nandorojo/Zeego for the original implementation of this file
+ */
 import { withStaticProperties } from '@tamagui/core'
 import React, { Children, ReactElement, cloneElement, useRef } from 'react'
 import { Image } from 'react-native'
@@ -40,6 +43,8 @@ import {
   isInstanceOfComponent,
   pickChildren,
 } from './utils'
+
+const COMPONENTS_TO_IGNORE = ['Portal', 'Radio']
 
 const createIosMenu = (MenuType: 'ContextMenu' | 'DropdownMenu') => {
   const Trigger = create(({ children, asChild, ...rest }: MenuTriggerProps) => {
@@ -187,7 +192,8 @@ If you want to use a custom component as your <Content />, you can use the creat
     const trigger = pickChildren<MenuTriggerProps>(props.children, Trigger)
     const content = pickChildren<MenuContentProps | ContextMenuContentProps>(
       props.children,
-      Content
+      Content,
+      COMPONENTS_TO_IGNORE
     ).targetChildren?.[0]
 
     const callbacks: Record<string, () => void> = {}
@@ -383,7 +389,7 @@ If you want to use a custom component as your <Content />, you can use the creat
           if (triggerItem) {
             const nestedContent = pickChildren<
               MenuSubContentProps | ContextMenuSubContentProps
-            >(child.props.children, SubContent).targetChildren?.[0]
+            >(child.props.children, SubContent, COMPONENTS_TO_IGNORE).targetChildren?.[0]
 
             if (nestedContent) {
               const nestedItems = mapItemsChildren(nestedContent.props.children).filter(
@@ -572,7 +578,7 @@ If you want to use a custom component as your <Content />, you can use the creat
         </Component>
       </NativePropProvider>
     )
-  }, `${MenuType}Menu`)
+  }, `${MenuType}`)
 
   const Separator = create((_: MenuSeparatorProps) => {
     return <></>

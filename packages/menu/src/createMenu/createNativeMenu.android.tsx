@@ -1,3 +1,6 @@
+/**
+ * Credit to the nandorojo/Zeego for the original implementation of this file
+ */
 import { MenuView } from '@react-native-menu/menu'
 import { withStaticProperties } from '@tamagui/core'
 import React, { Children, ReactElement, cloneElement } from 'react'
