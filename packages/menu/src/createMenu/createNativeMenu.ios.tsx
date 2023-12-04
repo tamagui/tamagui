@@ -429,11 +429,13 @@ If you want to use a custom component as your <Content />, you can use the creat
 
     const menuItems = mapItemsChildren(content?.props.children).filter(filterNull)
 
-    const label = pickChildren<MenuLabelProps>(content?.props.children, Label)
-      .targetChildren?.[0]?.props.children
+    const labelComp = pickChildren<MenuLabelProps>(content?.props.children, Label)
+      .targetChildren?.[0]
     let menuTitle = ''
-    if (typeof label == 'string') {
-      menuTitle = label
+    if (typeof labelComp?.props.children == 'string') {
+      menuTitle = labelComp.props.children
+    } else if (labelComp?.props.textValue) {
+      menuTitle = labelComp.props.textValue
     }
 
     const Component = MenuType === 'ContextMenu' ? ContextMenuView : ContextMenuButton

@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { MenuArrowProps, MenuCheckboxItemProps, MenuContentProps, MenuGroupProps, MenuItemImageProps, MenuItemIndicatorProps, MenuItemProps, MenuItemSubtitleProps, MenuItemTitleProps, MenuLabelProps, MenuProps, MenuSeparatorProps, MenuSubContentProps, MenuSubProps, MenuSubTriggerProps, MenuTriggerProps } from './createMenuTypes';
+import { ContextMenuPreviewProps, MenuArrowProps, MenuCheckboxItemProps, MenuContentProps, MenuGroupProps, MenuItemImageProps, MenuItemIndicatorProps, MenuItemProps, MenuItemSubtitleProps, MenuItemTitleProps, MenuLabelProps, MenuProps, MenuSeparatorProps, MenuSubContentProps, MenuSubProps, MenuSubTriggerProps, MenuTriggerProps } from './createMenuTypes';
 export declare const createNativeMenu: (MenuType: 'ContextMenu' | 'DropdownMenu') => {
     Menu: FC<MenuProps> & {
         Trigger: FC<MenuTriggerProps>;
@@ -18,6 +18,7 @@ export declare const createNativeMenu: (MenuType: 'ContextMenu' | 'DropdownMenu'
         Arrow: FC<MenuArrowProps>;
         Sub: FC<MenuSubProps>;
         SubContent: FC<MenuSubContentProps>;
+        Preview: FC<ContextMenuPreviewProps>;
     };
 };
 //# sourceMappingURL=createNativeMenu.d.ts.map

@@ -147,6 +147,10 @@ export type MenuItemIndicatorProps = {
 
 export type MenuLabelProps = {
   children: string;
+  /**
+   * If you want to pass a React text node to `<Lable />`, then you need to use this prop. This gets used on iOS and Android.
+   */
+  textValue?: string;
 };
 
 type Not<T extends object, O extends keyof NonNullable<T>> = Omit<T, O>;

@@ -727,7 +727,7 @@ const LABEL_NAME = 'MenuLabel'
 // type MenuLabelElement = React.ElementRef<typeof Stack>
 interface MenuLabelProps extends PrimitiveDivProps {}
 
-const MenuLabel = styled(ThemeableStack, {
+const MenuLabel = styled(Text, {
   name: LABEL_NAME,
   paddingHorizontal: '$4',
 })
