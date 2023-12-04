@@ -2,6 +2,7 @@ import { withStaticProperties } from '@tamagui/core'
 import type { FC } from 'react'
 
 import {
+  ContextMenuPreviewProps,
   MenuArrowProps,
   MenuCheckboxItemProps,
   MenuContentProps,
@@ -27,6 +28,7 @@ export const createNativeMenu = (MenuType: 'ContextMenu' | 'DropdownMenu') => {
   const Trigger = {} as FC<MenuTriggerProps>
 
   const Content = {} as FC<MenuContentProps>
+  const Preview = {} as FC<ContextMenuPreviewProps>
 
   const Item = {} as FC<MenuItemProps>
 
@@ -74,6 +76,7 @@ export const createNativeMenu = (MenuType: 'ContextMenu' | 'DropdownMenu') => {
       Arrow,
       Sub,
       SubContent,
+      Preview,
     }),
   }
 }
