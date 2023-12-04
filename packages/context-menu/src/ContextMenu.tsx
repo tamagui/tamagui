@@ -1,9 +1,12 @@
 import { withStaticProperties } from '@tamagui/core'
 import { createNativeMenu, useNativeProp, withNativeMenu } from '@tamagui/menu'
+import type { NativeMenuItemIconProps, NativeMenuSubTriggerProps } from '@tamagui/menu'
 import React from 'react'
 
 import {
   CONTEXTMENU_CONTEXT,
+  ContextMenuItemIconProps,
+  ContextMenuSubTriggerProps,
   ContextMenu as NonNativeContextMenu,
 } from './NonNativeContextMenu'
 
@@ -126,6 +129,11 @@ const SubContent = withNativeMenu({
   NativeComponent: NativeMenuRoot.SubContent,
 })
 
+type ContextMenuCombinedSubTriggerProps = ContextMenuSubTriggerProps &
+  NativeMenuSubTriggerProps
+
+type ContextMenuCombinedItemIconProps = ContextMenuItemIconProps & NativeMenuItemIconProps
+
 export const ContextMenu = withStaticProperties(ContextMenuComp, {
   Trigger,
   Portal,
@@ -140,11 +148,13 @@ export const ContextMenu = withStaticProperties(ContextMenuComp, {
   Separator,
   Arrow,
   Sub,
-  SubTrigger,
+  // cast to React.FC to avoid TS error
+  SubTrigger: SubTrigger as React.FC<ContextMenuCombinedSubTriggerProps>,
   SubContent,
   ItemTitle,
   ItemSubtitle,
-  ItemIcon,
+  // cast to React.FC to avoid TS error
+  ItemIcon: ItemIcon as React.FC<ContextMenuCombinedItemIconProps>,
   ItemImage,
   Preview,
 })

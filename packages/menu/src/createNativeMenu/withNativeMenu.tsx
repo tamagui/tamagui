@@ -1,4 +1,4 @@
-import { isWeb } from '@tamagui/core/types'
+import { isWeb } from '@tamagui/core'
 
 export function withNativeMenu<
   C extends React.ComponentType<any>,

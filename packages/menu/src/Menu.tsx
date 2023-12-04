@@ -39,10 +39,8 @@ import { TamaguiElement } from '@tamagui/web/types'
 import { hideOthers } from 'aria-hidden'
 import { useId } from 'react'
 import * as React from 'react'
-import { Image } from 'react-native'
+import { Image, ImageProps } from 'react-native'
 import { RemoveScroll } from 'react-remove-scroll'
-
-import { MenuItemImageProps } from './createNativeMenu/createNativeMenuTypes'
 
 type Direction = 'ltr' | 'rtl'
 
@@ -862,11 +860,9 @@ MenuItemSubTitle.displayName = ITEM_SUB_TITLE_NAME
  * MenuItemImage
  * -----------------------------------------------------------------------------------------------*/
 const ITEM_IMAGE = 'MenuItemImage'
-const MenuItemImage = React.forwardRef<Image, MenuItemImageProps>(
-  (props, forwardedRef) => {
-    return <Image {...props} ref={forwardedRef} />
-  }
-)
+const MenuItemImage = React.forwardRef<Image, ImageProps>((props, forwardedRef) => {
+  return <Image {...props} ref={forwardedRef} />
+})
 
 MenuItemImage.displayName = ITEM_IMAGE
 
@@ -1663,6 +1659,5 @@ export type {
   MenuSubContentProps,
   MenuItemTitleProps,
   MenuItemSubTitleProps,
-  MenuItemImageProps,
   MenuItemIconProps,
 }

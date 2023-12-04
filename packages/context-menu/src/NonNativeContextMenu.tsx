@@ -15,7 +15,7 @@ import {
   MenuProps,
   MenuSubProps,
 } from '@tamagui/menu'
-import { YStack } from '@tamagui/stacks/types'
+import { YStack } from '@tamagui/stacks'
 import { useCallbackRef } from '@tamagui/use-callback-ref'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
