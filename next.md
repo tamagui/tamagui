@@ -1,4 +1,7 @@
 - studio:
+  - instead of automatic scale:
+    - symettrical (automatic)
+    - mirrored (inverses)
   - pre-configure themes
     - stronger, dimmer
     - disabled, active
