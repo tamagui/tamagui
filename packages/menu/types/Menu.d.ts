@@ -10,7 +10,7 @@ import { Stack } from '@tamagui/web';
 import { TamaguiElement } from '@tamagui/web/types';
 import * as React from 'react';
 import { Image } from 'react-native';
-import { MenuItemImageProps } from './createMenu/createMenuTypes';
+import { MenuItemImageProps } from './createNativeMenu/createNativeMenuTypes';
 type Direction = 'ltr' | 'rtl';
 type ScopedProps<P> = P & {
     __scopeMenu?: string;
@@ -2791,7 +2791,7 @@ declare const Menu: {
         } | undefined;
         dir?: "ltr" | "rtl" | "auto" | undefined;
     } & void, void, {}>;
-    ItemImage: React.ForwardRefExoticComponent<import("./createMenu/createMenuTypes").MenuItemCommonProps & {
+    ItemImage: React.ForwardRefExoticComponent<import("./createNativeMenu/createNativeMenuTypes").MenuItemCommonProps & {
         source: import("react-native").ImageSourcePropType;
         ios?: {
             style?: import("react-native-ios-context-menu/build/types/ImageItemConfig").ImageOptions | undefined;

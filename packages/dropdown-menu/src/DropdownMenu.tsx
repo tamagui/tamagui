@@ -1,5 +1,5 @@
-import { isWeb, withStaticProperties } from '@tamagui/core'
-import { createNativeMenu, useNativeProp } from '@tamagui/menu'
+import { withStaticProperties } from '@tamagui/core'
+import { createNativeMenu, useNativeProp, withNativeMenu } from '@tamagui/menu'
 import React from 'react'
 
 import {
@@ -9,60 +9,117 @@ import {
 
 const { Menu: NativeMenuRoot } = createNativeMenu('DropdownMenu')
 
-const DropdownMenuComp = withNativeMenu(NonNativeDropdownMenu, NativeMenuRoot, true)
+const COMMON_PARAMS = {
+  isRoot: false,
+  useNativeProp,
+  useNativePropScope: DROPDOWN_MENU_CONTEXT,
+}
 
-const Trigger = withNativeMenu(NonNativeDropdownMenu.Trigger, NativeMenuRoot.Trigger)
-const Portal = withNativeMenu(NonNativeDropdownMenu.Portal, React.Fragment)
-const Content = withNativeMenu(NonNativeDropdownMenu.Content, NativeMenuRoot.Content)
-const Group = withNativeMenu(NonNativeDropdownMenu.Group, NativeMenuRoot.Group)
-const Label = withNativeMenu(NonNativeDropdownMenu.Label, NativeMenuRoot.Label)
-const Item = withNativeMenu(NonNativeDropdownMenu.Item, NativeMenuRoot.Item)
-const ItemTitle = withNativeMenu(
-  NonNativeDropdownMenu.ItemTitle,
-  NativeMenuRoot.ItemTitle
-)
-const ItemSubtitle = withNativeMenu(
-  NonNativeDropdownMenu.ItemSubtitle,
-  NativeMenuRoot.ItemSubtitle
-)
+const DropdownMenuComp = withNativeMenu({
+  ...COMMON_PARAMS,
+  Component: NonNativeDropdownMenu.Root,
+  NativeComponent: NativeMenuRoot,
+  isRoot: true,
+})
 
-const ItemIcon = withNativeMenu(NonNativeDropdownMenu.ItemIcon, NativeMenuRoot.ItemIcon)
+const Trigger = withNativeMenu({
+  ...COMMON_PARAMS,
+  Component: NonNativeDropdownMenu.Trigger,
+  NativeComponent: NativeMenuRoot.Trigger,
+})
+const Portal = withNativeMenu({
+  ...COMMON_PARAMS,
+  Component: NonNativeDropdownMenu.Portal,
+  NativeComponent: React.Fragment,
+})
+const Content = withNativeMenu({
+  ...COMMON_PARAMS,
+  Component: NonNativeDropdownMenu.Content,
+  NativeComponent: NativeMenuRoot.Content,
+})
+const Group = withNativeMenu({
+  ...COMMON_PARAMS,
+  Component: NonNativeDropdownMenu.Group,
+  NativeComponent: NativeMenuRoot.Group,
+})
+const Label = withNativeMenu({
+  ...COMMON_PARAMS,
+  Component: NonNativeDropdownMenu.Label,
+  NativeComponent: NativeMenuRoot.Label,
+})
+const Item = withNativeMenu({
+  ...COMMON_PARAMS,
+  Component: NonNativeDropdownMenu.Item,
+  NativeComponent: NativeMenuRoot.Item,
+})
+const ItemTitle = withNativeMenu({
+  ...COMMON_PARAMS,
+  Component: NonNativeDropdownMenu.ItemTitle,
+  NativeComponent: NativeMenuRoot.ItemTitle,
+})
+const ItemSubtitle = withNativeMenu({
+  ...COMMON_PARAMS,
+  Component: NonNativeDropdownMenu.ItemSubtitle,
+  NativeComponent: NativeMenuRoot.ItemSubtitle,
+})
 
-const ItemImage = withNativeMenu(
-  NonNativeDropdownMenu.ItemImage,
-  NativeMenuRoot.ItemImage
-)
+const ItemIcon = withNativeMenu({
+  ...COMMON_PARAMS,
+  Component: NonNativeDropdownMenu.ItemIcon,
+  NativeComponent: NativeMenuRoot.ItemIcon,
+})
 
-const CheckboxItem = withNativeMenu(
-  NonNativeDropdownMenu.CheckboxItem,
-  NativeMenuRoot.CheckboxItem
-)
-const RadioGroup = withNativeMenu(
-  NonNativeDropdownMenu.RadioGroup,
-  ({ children }) => children
-)
-const RadioItem = withNativeMenu(
-  NonNativeDropdownMenu.RadioItem,
-  ({ children }) => children
-)
-const ItemIndicator = withNativeMenu(
-  NonNativeDropdownMenu.ItemIndicator,
-  NativeMenuRoot.ItemIndicator
-)
-const Separator = withNativeMenu(
-  NonNativeDropdownMenu.Separator,
-  NativeMenuRoot.Separator
-)
-const Arrow = withNativeMenu(NonNativeDropdownMenu.Arrow, NativeMenuRoot.Arrow)
-const Sub = withNativeMenu(NonNativeDropdownMenu.Sub, NativeMenuRoot.Sub)
-const SubTrigger = withNativeMenu(
-  NonNativeDropdownMenu.SubTrigger,
-  NativeMenuRoot.SubTrigger
-)
-const SubContent = withNativeMenu(
-  NonNativeDropdownMenu.SubContent,
-  NativeMenuRoot.SubContent
-)
+const ItemImage = withNativeMenu({
+  ...COMMON_PARAMS,
+  Component: NonNativeDropdownMenu.ItemImage,
+  NativeComponent: NativeMenuRoot.ItemImage,
+})
+
+const CheckboxItem = withNativeMenu({
+  ...COMMON_PARAMS,
+  Component: NonNativeDropdownMenu.CheckboxItem,
+  NativeComponent: NativeMenuRoot.CheckboxItem,
+})
+const RadioGroup = withNativeMenu({
+  ...COMMON_PARAMS,
+  Component: NonNativeDropdownMenu.RadioGroup,
+  NativeComponent: ({ children }) => children,
+})
+const RadioItem = withNativeMenu({
+  ...COMMON_PARAMS,
+  Component: NonNativeDropdownMenu.RadioItem,
+  NativeComponent: ({ children }) => children,
+})
+const ItemIndicator = withNativeMenu({
+  ...COMMON_PARAMS,
+  Component: NonNativeDropdownMenu.ItemIndicator,
+  NativeComponent: NativeMenuRoot.ItemIndicator,
+})
+const Separator = withNativeMenu({
+  ...COMMON_PARAMS,
+  Component: NonNativeDropdownMenu.Separator,
+  NativeComponent: NativeMenuRoot.Separator,
+})
+const Arrow = withNativeMenu({
+  ...COMMON_PARAMS,
+  Component: NonNativeDropdownMenu.Arrow,
+  NativeComponent: NativeMenuRoot.Arrow,
+})
+const Sub = withNativeMenu({
+  ...COMMON_PARAMS,
+  Component: NonNativeDropdownMenu.Sub,
+  NativeComponent: NativeMenuRoot.Sub,
+})
+const SubTrigger = withNativeMenu({
+  ...COMMON_PARAMS,
+  Component: NonNativeDropdownMenu.SubTrigger,
+  NativeComponent: NativeMenuRoot.SubTrigger,
+})
+const SubContent = withNativeMenu({
+  ...COMMON_PARAMS,
+  Component: NonNativeDropdownMenu.SubContent,
+  NativeComponent: NativeMenuRoot.SubContent,
+})
 
 export const DropdownMenu = withStaticProperties(DropdownMenuComp, {
   Trigger,
@@ -85,29 +142,3 @@ export const DropdownMenu = withStaticProperties(DropdownMenuComp, {
   ItemIcon,
   ItemImage,
 })
-
-function withNativeMenu<
-  C extends React.ComponentType<any>,
-  N extends React.ComponentType<any>
->(Component: C, NativeComponent: N, isRoot = false) {
-  if (isWeb) return Component
-  const Menu = (
-    props: React.ComponentProps<C> & React.ComponentProps<N> & { native?: boolean }
-  ) => {
-    let isNative = true
-    if (isRoot) {
-      isNative = props.native
-    } else {
-      isNative = useNativeProp(DROPDOWN_MENU_CONTEXT).native
-    }
-    if (isNative) {
-      return <NativeComponent {...(props as React.ComponentProps<N>)} />
-    }
-
-    return <Component {...(props as React.ComponentProps<C>)} />
-  }
-
-  Menu.displayName = `${Component.displayName}Wrapper`
-
-  return Menu
-}

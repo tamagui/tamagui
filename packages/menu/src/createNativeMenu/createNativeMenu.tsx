@@ -20,7 +20,7 @@ import {
   MenuSubProps,
   MenuSubTriggerProps,
   MenuTriggerProps,
-} from './createMenuTypes'
+} from './createNativeMenuTypes'
 
 export const createNativeMenu = (MenuType: 'ContextMenu' | 'DropdownMenu') => {
   const Menu = {} as FC<MenuProps>

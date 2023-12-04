@@ -35,7 +35,7 @@ import type {
   MenuSubProps,
   MenuSubTriggerProps,
   MenuTriggerProps,
-} from './createMenuTypes'
+} from './createNativeMenuTypes'
 import {
   create,
   filterNull,

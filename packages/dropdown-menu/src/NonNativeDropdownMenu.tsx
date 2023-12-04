@@ -603,6 +603,7 @@ DropdownMenuSubContent.displayName = SUB_CONTENT_NAME
 
 /* -----------------------------------------------------------------------------------------------*/
 
+const Root = DropdownMenuComp
 const Trigger = DropdownMenuTrigger
 const Portal = DropdownMenuPortal
 const Content = DropdownMenuContent
@@ -624,6 +625,7 @@ const ItemImage = DropdownMenuItemImage
 const ItemIcon = DropdownMenuItemIcon
 
 export const DropdownMenu = withStaticProperties(DropdownMenuComp, {
+  Root,
   Trigger,
   Portal,
   Content,

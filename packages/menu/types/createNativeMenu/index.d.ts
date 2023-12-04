@@ -1,4 +1,3 @@
-import '@tamagui/polyfill-dev';
-export * from './Menu';
 export * from './createNativeMenu';
+export * from './withNativeMenu';
 //# sourceMappingURL=index.d.ts.map

@@ -8,7 +8,14 @@ import {
   styled,
   withStaticProperties,
 } from '@tamagui/core'
-import { Menu, MenuProps, MenuSubProps } from '@tamagui/menu'
+import {
+  Menu,
+  MenuItemIconProps,
+  MenuItemImageProps,
+  MenuProps,
+  MenuSubProps,
+} from '@tamagui/menu'
+import { YStack } from '@tamagui/stacks/types'
 import { useCallbackRef } from '@tamagui/use-callback-ref'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
@@ -377,6 +384,7 @@ ContextMenuItemSubTitle.displayName = ITEM_SUB_TITLE_NAME
  * ContextMenuItemImage
  * -----------------------------------------------------------------------------------------------*/
 
+type ContextMenuItemImageProps = MenuItemImageProps
 const ITEM_IMAGE_NAME = 'ContextMenuItemImage'
 const ContextMenuItemImage = Menu.ItemImage
 ContextMenuItemImage.displayName = ITEM_IMAGE_NAME
@@ -385,6 +393,7 @@ ContextMenuItemImage.displayName = ITEM_IMAGE_NAME
  * ContextMenuItemIcon
  * -----------------------------------------------------------------------------------------------*/
 
+type ContextMenuItemIconProps = MenuItemIconProps
 const ITEM_ICON_NAME = 'ContextMenuItemIcon'
 const ContextMenuItemIcon = Menu.ItemIcon
 ContextMenuItemIcon.displayName = ITEM_ICON_NAME
@@ -429,11 +438,11 @@ ContextMenuCheckboxItem.displayName = CHECKBOX_ITEM_NAME
 const RADIO_GROUP_NAME = 'ContextMenuRadioGroup'
 
 type ContextMenuRadioGroupElement = React.ElementRef<typeof Menu.RadioGroup>
-type MenuRadioGroupProps = React.ComponentPropsWithoutRef<typeof Menu.RadioGroup>
+type ContextMenuRadioGroupProps = React.ComponentPropsWithoutRef<typeof Menu.RadioGroup>
 
 const ContextMenuRadioGroup = React.forwardRef<
   ContextMenuRadioGroupElement,
-  ScopedProps<MenuRadioGroupProps>
+  ScopedProps<ContextMenuRadioGroupProps>
 >((props, forwardedRef) => {
   const { __scopeContextMenu, ...radioGroupProps } = props
   return (
@@ -454,21 +463,21 @@ ContextMenuRadioGroup.displayName = RADIO_GROUP_NAME
 
 const RADIO_ITEM_NAME = 'ContextMenuRadioItem'
 
-type MenuRadioItemProps = React.ComponentPropsWithoutRef<typeof Menu.RadioItem>
+type ContextMenuRadioItemProps = React.ComponentPropsWithoutRef<typeof Menu.RadioItem>
 
-const ContextMenuRadioItem = Menu.RadioItem.styleable<ScopedProps<MenuRadioItemProps>>(
-  (props: ScopedProps<MenuRadioItemProps>, forwardedRef) => {
-    const { __scopeContextMenu, ...radioItemProps } = props
-    return (
-      <Menu.RadioItem
-        componentName={RADIO_ITEM_NAME}
-        __scopeMenu={__scopeContextMenu || CONTEXTMENU_CONTEXT}
-        {...radioItemProps}
-        ref={forwardedRef}
-      />
-    )
-  }
-)
+const ContextMenuRadioItem = Menu.RadioItem.styleable<
+  ScopedProps<ContextMenuRadioItemProps>
+>((props: ScopedProps<ContextMenuRadioItemProps>, forwardedRef) => {
+  const { __scopeContextMenu, ...radioItemProps } = props
+  return (
+    <Menu.RadioItem
+      componentName={RADIO_ITEM_NAME}
+      __scopeMenu={__scopeContextMenu || CONTEXTMENU_CONTEXT}
+      {...radioItemProps}
+      ref={forwardedRef}
+    />
+  )
+})
 
 ContextMenuRadioItem.displayName = RADIO_ITEM_NAME
 
@@ -599,21 +608,21 @@ ContextMenuSub.displayName = SUB_NAME
 const SUB_TRIGGER_NAME = 'ContextMenuSubTrigger'
 
 type MenuSubTriggerProps = React.ComponentPropsWithoutRef<typeof Menu.SubTrigger>
-interface ContextMenuSubTriggerProps extends MenuSubTriggerProps {}
+type ContextMenuSubTriggerProps = ScopedProps<MenuSubTriggerProps>
 
-const ContextMenuSubTrigger = Menu.SubTrigger.styleable<
-  ScopedProps<ContextMenuSubTriggerProps>
->((props: ScopedProps<ContextMenuSubTriggerProps>, forwardedRef) => {
-  const { __scopeContextMenu, ...triggerItemProps } = props
-  return (
-    <Menu.SubTrigger
-      componentName={SUB_CONTENT_NAME}
-      __scopeMenu={__scopeContextMenu || CONTEXTMENU_CONTEXT}
-      {...triggerItemProps}
-      ref={forwardedRef}
-    />
-  )
-})
+const ContextMenuSubTrigger = YStack.styleable<ContextMenuSubTriggerProps>(
+  (props, forwardedRef) => {
+    const { __scopeContextMenu, ...triggerItemProps } = props
+    return (
+      <Menu.SubTrigger
+        componentName={SUB_CONTENT_NAME}
+        __scopeMenu={__scopeContextMenu || CONTEXTMENU_CONTEXT}
+        {...triggerItemProps}
+        ref={forwardedRef}
+      />
+    )
+  }
+)
 
 ContextMenuSubTrigger.displayName = SUB_TRIGGER_NAME
 
@@ -670,6 +679,7 @@ function whenTouchOrPen<E>(
   return (event) => (event.pointerType !== 'mouse' ? handler(event) : undefined)
 }
 
+const Root = ContextMenuComp
 const Trigger = ContextMenuTrigger
 const Portal = ContextMenuPortal
 const Content = ContextMenuContent
@@ -691,6 +701,7 @@ const ItemIcon = ContextMenuItemIcon
 const ItemImage = ContextMenuItemImage
 const Preview = ContextMenuPreview
 const ContextMenu = withStaticProperties(ContextMenuComp, {
+  Root,
   Trigger,
   Portal,
   Content,
@@ -714,3 +725,23 @@ const ContextMenu = withStaticProperties(ContextMenuComp, {
 })
 
 export { ContextMenu }
+
+export type {
+  ContextMenuProps,
+  ContextMenuTriggerProps,
+  ContextMenuPortalProps,
+  ContextMenuContentProps,
+  ContextMenuGroupProps,
+  ContextMenuItemProps,
+  ContextMenuCheckboxItemProps,
+  ContextMenuRadioGroupProps,
+  ContextMenuRadioItemProps,
+  ContextMenuItemIndicatorProps,
+  ContextMenuSeparatorProps,
+  ContextMenuArrowProps,
+  ContextMenuSubProps,
+  ContextMenuSubTriggerProps,
+  ContextMenuSubContentProps,
+  ContextMenuItemImageProps,
+  ContextMenuItemIconProps,
+}

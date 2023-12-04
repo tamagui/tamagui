@@ -42,7 +42,7 @@ import * as React from 'react'
 import { Image } from 'react-native'
 import { RemoveScroll } from 'react-remove-scroll'
 
-import { MenuItemImageProps } from './createMenu/createMenuTypes'
+import { MenuItemImageProps } from './createNativeMenu/createNativeMenuTypes'
 
 type Direction = 'ltr' | 'rtl'
 
@@ -876,10 +876,12 @@ MenuItemImage.displayName = ITEM_IMAGE
  * MenuItemIcon
  * -----------------------------------------------------------------------------------------------*/
 const ITEM_ICON = 'MenuItemIcon'
-interface MenuItemIconProps extends ThemeableStackProps {}
-const MenuItemIcon = ThemeableStack.styleable((props, forwardedRef) => {
-  return <ThemeableStack {...props} ref={forwardedRef} />
-})
+type MenuItemIconProps = ThemeableStackProps
+const MenuItemIcon = ThemeableStack.styleable(
+  (props: ThemeableStackProps, forwardedRef) => {
+    return <ThemeableStack {...props} ref={forwardedRef} />
+  }
+)
 
 MenuItemIcon.displayName = ITEM_ICON
 
