@@ -207,8 +207,9 @@ type Tokenify<A extends GenericTokens> = Omit<{
     zIndex: TokenifyRecord<A['zIndex']>;
 };
 type TokenifyRecord<A extends CreateTokens[keyof CreateTokens]> = {
-    [Key in keyof A]: A[Key] extends Variable ? A[Key] : Variable<A[Key]>;
+    [Key in keyof A]: CoerceToVariable<A[Key]>;
 };
+type CoerceToVariable<A> = A extends Variable ? A : Variable<A>;
 export type TamaguiBaseTheme = {
     background: VariableColorVal;
     backgroundHover: VariableColorVal;
@@ -263,7 +264,7 @@ export type CreateTamaguiConfig<A extends GenericTokens, B extends GenericThemes
     tokens: A;
     themes: {
         [Name in keyof B]: {
-            [Key in keyof B[Name]]: B[Name][Key] extends Variable ? B[Name][Key] : Variable<B[Name][Key]>;
+            [Key in keyof B[Name]]: CoerceToVariable<B[Name][Key]>;
         };
     };
     shorthands: C;
@@ -298,7 +299,7 @@ type GenericThemeDefinition = TamaguiConfig['themes'][keyof TamaguiConfig['theme
 export type ThemeDefinition = BaseThemeDefinitions extends never ? GenericThemeDefinition : BaseThemeDefinitions;
 export type ThemeKeys = keyof ThemeDefinition;
 export type ThemeParsed = {
-    [key in ThemeKeys]: ThemeDefinition[key];
+    [key in ThemeKeys]: CoerceToVariable<ThemeDefinition[key]>;
 };
 export type Tokens = TamaguiConfig['tokens'];
 export type TokensParsed = {
@@ -712,6 +713,7 @@ export type SpaceValue = number | SpaceTokens | ThemeValueFallback;
 type SharedBaseExtraStyleProps = {
     columnGap?: SpaceValue;
     contain?: Properties['contain'];
+    touchAction?: Properties['touchAction'];
     cursor?: Properties['cursor'];
     display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex';
     gap?: SpaceValue;

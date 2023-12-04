@@ -388,8 +388,10 @@ type Tokenify<A extends GenericTokens> = Omit<
 }
 
 type TokenifyRecord<A extends CreateTokens[keyof CreateTokens]> = {
-  [Key in keyof A]: A[Key] extends Variable ? A[Key] : Variable<A[Key]>
+  [Key in keyof A]: CoerceToVariable<A[Key]>
 }
+
+type CoerceToVariable<A> = A extends Variable ? A : Variable<A>
 
 export type TamaguiBaseTheme = {
   // defined for our tamagui kit , we could do this inside `tamagui`
@@ -486,9 +488,7 @@ export type CreateTamaguiConfig<
   // parsed
   themes: {
     [Name in keyof B]: {
-      [Key in keyof B[Name]]: B[Name][Key] extends Variable
-        ? B[Name][Key]
-        : Variable<B[Name][Key]>
+      [Key in keyof B[Name]]: CoerceToVariable<B[Name][Key]>
     }
   }
   shorthands: C
@@ -582,7 +582,7 @@ export type ThemeDefinition = BaseThemeDefinitions extends never
   : BaseThemeDefinitions
 export type ThemeKeys = keyof ThemeDefinition
 export type ThemeParsed = {
-  [key in ThemeKeys]: ThemeDefinition[key]
+  [key in ThemeKeys]: CoerceToVariable<ThemeDefinition[key]>
 }
 
 export type Tokens = TamaguiConfig['tokens']
