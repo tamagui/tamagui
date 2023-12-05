@@ -2668,12 +2668,7 @@ declare const Menu: {
         onScrollShouldSetResponderCapture?: unknown;
         onSelectionChangeShouldSetResponder?: unknown;
         onSelectionChangeShouldSetResponderCapture?: unknown;
-        href?: string | undefined; /**
-         * We prevent default browser behaviour for selection keys as they should trigger
-         * a selection only:
-         * - prevents space from scrolling the page.
-         * - if keydown causes focus to move, prevents keydown from firing on the new target.
-         */
+        href?: string | undefined;
         hrefAttrs?: {
             target?: "top" | "_blank" | "_self" | "_top" | "blank" | "self" | undefined;
             rel?: string | undefined;

@@ -728,6 +728,9 @@ interface MenuLabelProps extends PrimitiveDivProps {}
 const MenuLabel = styled(Text, {
   name: LABEL_NAME,
   paddingHorizontal: '$4',
+  color: 'gray',
+  textAlign: 'left',
+  width: '100%',
 })
 
 MenuLabel.displayName = LABEL_NAME
@@ -1161,6 +1164,7 @@ const MenuSeparator = styled(ThemeableStack, {
   height: 0,
   maxHeight: 0,
   borderBottomWidth: 1,
+  width: '100%',
 })
 MenuSeparator.displayName = SEPARATOR_NAME
 
