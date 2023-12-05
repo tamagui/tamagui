@@ -1,18 +1,15 @@
+import { isAndroid } from '@tamagui/core'
 import { DropdownMenu } from '@tamagui/dropdown-menu'
-import {
-  Airplay,
-  Box,
-  CheckCircle,
-  ChevronRight,
-  Dot,
-  TentTree,
-} from '@tamagui/lucide-icons'
-import { useState } from 'react'
-import { Button, Text, XStack } from 'tamagui'
+import { Backpack, Calendar, Check } from '@tamagui/lucide-icons'
+import { ChevronRight } from '@tamagui/lucide-icons'
+import React from 'react'
+import { Button, Text, useEvent } from 'tamagui'
 
 export function DropdoownMenuDemo() {
-  const [bookmarkChecked, setBookmarkChecked] = useState(false)
-  const [person, setPerson] = useState('pedro')
+  const [bookmarksChecked, setBookmarksChecked] = React.useState(true)
+  const [native, setNative] = React.useState(false)
+
+  const onSelect = useEvent(() => {})
 
   return (
     <DropdownMenu
@@ -20,15 +17,19 @@ export function DropdoownMenuDemo() {
         crossAxis: 25,
       }}
       allowFlip
+      native={native}
       placement="bottom-start"
     >
-      <DropdownMenu.Trigger width={50} asChild>
-        <Button icon={Airplay} />
+      <DropdownMenu.Trigger asChild>
+        <Button width={60}>
+          <Backpack />
+        </Button>
       </DropdownMenu.Trigger>
 
       <DropdownMenu.Portal zIndex={100}>
         <DropdownMenu.Content
           paddingHorizontal={0}
+          maxWidth={180}
           borderWidth={1}
           ai="flex-start"
           borderColor="$borderColor"
@@ -44,55 +45,52 @@ export function DropdoownMenuDemo() {
             },
           ]}
         >
+          <DropdownMenu.Item onSelect={onSelect} key="about-notes">
+            <DropdownMenu.ItemTitle>About Notes</DropdownMenu.ItemTitle>
+          </DropdownMenu.Item>
+          <DropdownMenu.Separator />
           <DropdownMenu.Group>
-            <DropdownMenu.Item>
-              <Text>New Tab ⌘+T</Text>
+            <DropdownMenu.Item onSelect={onSelect} key="settings">
+              <DropdownMenu.ItemTitle>Settings</DropdownMenu.ItemTitle>
             </DropdownMenu.Item>
-            <DropdownMenu.Item>
-              <Text>New Window ⌘+N</Text>
-            </DropdownMenu.Item>
-            <DropdownMenu.Item>
-              <Text numberOfLines={1}>New Private Window ⇧+⌘+N</Text>
-            </DropdownMenu.Item>
-            <DropdownMenu.Separator />
-            <DropdownMenu.CheckboxItem
-              checked={bookmarkChecked}
-              onCheckedChange={setBookmarkChecked}
-              height={40}
+            <DropdownMenu.Item
+              onSelect={onSelect}
+              jc="space-between"
+              // when title is nested inside a React element then you need to use `textValue`
+              textValue="Calender"
+              key="accounts"
             >
-              <DropdownMenu.ItemIndicator>
-                <CheckCircle color="red" width={20} />
-              </DropdownMenu.ItemIndicator>
-              <Text>Show Bookmarks ⌘+B</Text>
-            </DropdownMenu.CheckboxItem>
+              <DropdownMenu.ItemTitle>
+                <Text>Calender</Text>
+              </DropdownMenu.ItemTitle>
+              <DropdownMenu.ItemIcon
+                androidIconName="ic_menu_today"
+                ios={{
+                  name: 'u.square',
+                  hierarchicalColor: '#000',
+                  pointSize: 20,
+                }}
+              >
+                <Calendar color="gray" size="$1" />
+              </DropdownMenu.ItemIcon>
+            </DropdownMenu.Item>
           </DropdownMenu.Group>
           <DropdownMenu.Separator />
-          <DropdownMenu.Label>
-            <Text>People</Text>
-          </DropdownMenu.Label>
-          <DropdownMenu.RadioGroup value={person} onValueChange={setPerson}>
-            <DropdownMenu.RadioItem
-              value="pedro"
-              paddingLeft={person !== 'pedro' ? 24 : 0}
-            >
-              <DropdownMenu.ItemIndicator>
-                <Dot />
-              </DropdownMenu.ItemIndicator>
-              <Text>Pedro Duarte</Text>
-            </DropdownMenu.RadioItem>
-            <DropdownMenu.RadioItem value="colm" paddingLeft={person !== 'colm' ? 24 : 0}>
-              <DropdownMenu.ItemIndicator>
-                <Dot />
-              </DropdownMenu.ItemIndicator>
-              <Text>Colm Tuite</Text>
-            </DropdownMenu.RadioItem>
-          </DropdownMenu.RadioGroup>
+          <DropdownMenu.Group>
+            <DropdownMenu.Item onSelect={onSelect} key="close-notes" disabled>
+              <DropdownMenu.ItemTitle color="gray">locked notes</DropdownMenu.ItemTitle>
+            </DropdownMenu.Item>
+            <DropdownMenu.Item onSelect={onSelect} destructive key="delete-all">
+              <DropdownMenu.ItemTitle>Delete all</DropdownMenu.ItemTitle>
+            </DropdownMenu.Item>
+          </DropdownMenu.Group>
+          <DropdownMenu.Separator />
           <DropdownMenu.Sub placement="right-start">
-            <DropdownMenu.SubTrigger>
-              <XStack ai="center" jc="space-between">
-                <Text>More Tools</Text>
-                <ChevronRight />
-              </XStack>
+            <DropdownMenu.SubTrigger jc="space-between" key="actions-trigger">
+              <>
+                <DropdownMenu.ItemTitle>Actions</DropdownMenu.ItemTitle>
+                {!native ? <ChevronRight size="$1" /> : null}
+              </>
             </DropdownMenu.SubTrigger>
             <DropdownMenu.Portal zIndex={200}>
               <DropdownMenu.SubContent
@@ -109,23 +107,71 @@ export function DropdoownMenuDemo() {
                 ]}
                 paddingHorizontal={0}
               >
-                <DropdownMenu.Item>
-                  <Text numberOfLines={1}>Save Page As… ⌘+S</Text>
+                <DropdownMenu.Label fontSize={'$1'}>Note settings</DropdownMenu.Label>
+                <DropdownMenu.Item onSelect={onSelect} key="create-note">
+                  <DropdownMenu.ItemTitle>Create note</DropdownMenu.ItemTitle>
                 </DropdownMenu.Item>
-                <DropdownMenu.Item>
-                  <Text>Create Shortcut…</Text>
+                <DropdownMenu.Item onSelect={onSelect} key="delete-all">
+                  <DropdownMenu.ItemTitle>Delete all notes</DropdownMenu.ItemTitle>
                 </DropdownMenu.Item>
-                <DropdownMenu.Item>
-                  <Text>Name Window…</Text>
-                </DropdownMenu.Item>
-                <DropdownMenu.Separator />
-                <DropdownMenu.Item>
-                  <Text>Developer Tools</Text>
+                <DropdownMenu.Item onSelect={onSelect} key="sync-all">
+                  <DropdownMenu.ItemTitle>Sync notes</DropdownMenu.ItemTitle>
                 </DropdownMenu.Item>
               </DropdownMenu.SubContent>
             </DropdownMenu.Portal>
           </DropdownMenu.Sub>
-          <DropdownMenu.Arrow size={'$3'} borderColor={'$borderColor'} borderWidth={1} />
+          <DropdownMenu.Separator className="DropdownMenuSeparator" />
+          <DropdownMenu.CheckboxItem
+            key="show-hidden"
+            checked={bookmarksChecked}
+            onCheckedChange={setBookmarksChecked}
+            // value and onValueChange is necessary for native dropdowns
+            value={bookmarksChecked ? 'on' : 'off'}
+            onValueChange={(v) => setBookmarksChecked(v == 'on')}
+            // android native menu treat checkbox as simple MenuItem
+            {...(isAndroid &&
+              native && {
+                onSelect: () => {
+                  isAndroid && setBookmarksChecked(!bookmarksChecked)
+                },
+              })}
+            gap={'$2'}
+          >
+            <DropdownMenu.ItemIndicator className="DropdownMenuItemIndicator">
+              <Check size="$1" />
+            </DropdownMenu.ItemIndicator>
+            <DropdownMenu.ItemTitle>Mark as read</DropdownMenu.ItemTitle>
+            {/* android native menu treat checkbox as simple MenuItem */}
+            {isAndroid && native && bookmarksChecked && (
+              <DropdownMenu.ItemIcon androidIconName="checkbox_on_background" />
+            )}
+          </DropdownMenu.CheckboxItem>
+          <DropdownMenu.CheckboxItem
+            key="show-other-notes"
+            checked={native}
+            onCheckedChange={setNative}
+            value={native ? 'on' : 'off'}
+            onValueChange={(v) => setNative(v == 'on')}
+            // android native menu treat checkbox as simple MenuItem
+            {...(isAndroid &&
+              native && {
+                onSelect: () => {
+                  setNative(!native)
+                },
+              })}
+            gap={'$2'}
+          >
+            <DropdownMenu.ItemIndicator>
+              <Check size="$1" />
+            </DropdownMenu.ItemIndicator>
+            <DropdownMenu.ItemTitle>Enable Native</DropdownMenu.ItemTitle>
+            {/* android native menu treat checkbox as simple MenuItem */}
+            {isAndroid && native && (
+              <DropdownMenu.ItemIcon androidIconName="checkbox_on_background" />
+            )}
+          </DropdownMenu.CheckboxItem>
+
+          <DropdownMenu.Arrow size={'$2'} />
         </DropdownMenu.Content>
       </DropdownMenu.Portal>
     </DropdownMenu>
