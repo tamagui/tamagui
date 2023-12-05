@@ -1,30 +1,52 @@
-import { parseToHsla } from 'color2k'
+import { hsla, parseToHsla, toHex } from 'color2k'
 
 import { BuildTheme, ScaleTypeName } from './types'
 
+export function getColorForegroundBackground(color: string, isDarkMode = false) {
+  const [h, s, l] = parseToHsla(color)
+  const isColorLight = l > 0.5
+  const oppositeLightness = l > 0.5 ? 1 - l : 0.5 + l
+  const oppositeLightnessColor = toHex(hsla(h, s, oppositeLightness, 1))
+  const foreground = isDarkMode ? color : oppositeLightnessColor
+  const background = foreground === color ? oppositeLightnessColor : color
+  return {
+    foreground,
+    foregroundLightness: foreground === color ? l : oppositeLightness,
+    background,
+    backgroundLightness: foreground !== color ? l : oppositeLightness,
+  }
+}
+
 export const getThemeSuiteScale = (theme: BuildTheme, accent?: boolean): ScaleType => {
-  const color = accent ? theme.accent || theme.color : theme.color
+  const baseColor = accent ? theme.accent || theme.color : theme.color
   const scale = accent ? theme.accentScale || theme.scale : theme.scale
 
   let base = scaleTypes[scale]
 
-  if (!color) {
+  if (!baseColor) {
     return base
   }
 
-  const [h, s, l] = parseToHsla(color)
-  // const isColorBright = l > 0.5
+  const [h, s, l] = parseToHsla(baseColor)
 
   if (scale === 'automatic') {
+    const lightColors = getColorForegroundBackground(baseColor, false)
+    const darkColors = getColorForegroundBackground(baseColor, true)
+    console.log('darkColors', darkColors)
+
     const scaleLen = 12
     const arr = new Array(scaleLen).fill(0)
-    const distToTop = 1 - l
-    const distToBottom = l
+
+    function getScale(bgL: number, fgL: number) {
+      const stepSize = (fgL - bgL) / scaleLen
+      return arr.map((_, i) => bgL + i * stepSize)
+    }
+
     return {
       ...base,
       lumScale: {
-        light: arr.map((_, i) => l + distToTop * (i / scaleLen)),
-        dark: arr.map((_, i) => l - distToBottom * (i / scaleLen)),
+        light: getScale(lightColors.backgroundLightness, lightColors.foregroundLightness),
+        dark: getScale(darkColors.backgroundLightness, darkColors.foregroundLightness),
       },
     }
   }

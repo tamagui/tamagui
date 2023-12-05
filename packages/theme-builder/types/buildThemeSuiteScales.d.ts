@@ -1,4 +1,10 @@
 import { BuildTheme, ScaleTypeName } from './types';
+export declare function getColorForegroundBackground(color: string, isDarkMode?: boolean): {
+    foreground: string;
+    foregroundLightness: number;
+    background: string;
+    backgroundLightness: number;
+};
 export declare const getThemeSuiteScale: (theme: BuildTheme, accent?: boolean) => ScaleType;
 export type ScaleType<A extends ScaleTypeName = ScaleTypeName> = {
     name: string;
