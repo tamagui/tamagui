@@ -1,3 +1,7 @@
+- gradient style
+- "var" mode where it changes types of $ to var(--)
+- calc?
+
 - studio:
   - instead of automatic scale:
     - symettrical (automatic)
