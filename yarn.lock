@@ -4780,6 +4780,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-menu/menu@npm:^0.9.1":
+  version: 0.9.1
+  resolution: "@react-native-menu/menu@npm:0.9.1"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 97de17ddcd4292f9f1cf2f47b62eed2bdb11c7d69734ffc260cbeb1e19e02ee3f279d9df1b9c9be3191ee12b3645842510087c0e6166aa99f87694c1a50787da
+  languageName: node
+  linkType: hard
+
 "@react-native/assets-registry@npm:^0.72.0":
   version: 0.72.0
   resolution: "@react-native/assets-registry@npm:0.72.0"
@@ -6743,6 +6753,7 @@ __metadata:
     "@playwright/test": ^1.29.0
     "@pmmmwh/react-refresh-webpack-plugin": ^0.5.10
     "@react-native-async-storage/async-storage": 1.18.2
+    "@react-native-menu/menu": ^0.9.1
     "@react-native/polyfills": ^2.0.0
     "@react-navigation/native": ^6.1.7
     "@react-navigation/native-stack": ^6.9.13
@@ -6781,7 +6792,9 @@ __metadata:
     react-dom: ^18.2.0
     react-native: ^0.72.1
     react-native-gesture-handler: ~2.12.0
+    react-native-ios-context-menu: ^2.3.0
     react-native-ios-modal: 2.0.0-3
+    react-native-ios-utilities: ^4.2.2
     react-native-reanimated: ^3.3.0
     react-native-safe-area-context: 4.6.3
     react-native-screens: ~3.22.0
@@ -6887,10 +6900,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/menu@workspace:packages/menu"
   dependencies:
+    "@react-native-menu/menu": ^0.9.1
     "@tamagui/build": 1.79.1
     "@tamagui/core": 1.79.1
     "@tamagui/popover": 1.79.1
     react: ^18.2.0
+    react-native-ios-context-menu: ^2.3.0
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -23413,6 +23428,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-ios-context-menu@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "react-native-ios-context-menu@npm:2.3.0"
+  dependencies:
+    "@dominicstop/ts-event-emitter": ^1.1.0
+  peerDependencies:
+    expo: "*"
+    react: "*"
+    react-native: "*"
+    react-native-ios-utilities: 4.2.x
+  checksum: 78e50ed198bf85e04d38c19180a2aa817a394e9dd8aef8880f5369e0a274420a64870be13814c6f59ff57f3471bcc2a393813990fa6bd0b617536e8f062c4370
+  languageName: node
+  linkType: hard
+
 "react-native-ios-modal@npm:2.0.0-3":
   version: 2.0.0-3
   resolution: "react-native-ios-modal@npm:2.0.0-3"
@@ -23422,6 +23451,17 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: c4bc1431057b52f23c3c0db9085f63118b583fccc6127ae44f0ff26e4dab1f639894743d92b35f3e35c284795614c1d2bb51e2ff47aa89d81d12b5e389d71b87
+  languageName: node
+  linkType: hard
+
+"react-native-ios-utilities@npm:^4.2.2":
+  version: 4.2.2
+  resolution: "react-native-ios-utilities@npm:4.2.2"
+  peerDependencies:
+    expo: "*"
+    react: "*"
+    react-native: "*"
+  checksum: 61ff27d62076318c4eacda4b7d04d10ef8f0e0c2e90bec4f2d0cb41a4e76f170a38eac4e49e334456a917044e6ab99f2d947c00561c5cd5c0e9ba1e603916385
   languageName: node
   linkType: hard
 
