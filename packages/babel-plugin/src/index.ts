@@ -147,6 +147,7 @@ export default declare(function snackBabelPlugin(
 
                 assertValidTag(props.node)
                 const stylesExpr = t.arrayExpression([])
+                const forTernary: t.Expression[] = []
                 const finalAttrs: (t.JSXAttribute | t.JSXSpreadAttribute)[] = []
                 const themeKeysUsed = new Set<string>()
 
@@ -156,16 +157,16 @@ export default declare(function snackBabelPlugin(
                   // split theme properties and leave them as props since RN has no concept of theme
                   const { plain, themed } = splitThemeStyles(style)
 
-                  const ident = addSheetStyle(plain, props.node)
-
+                  // TODO: themed is not a good name, because it's not just theme it also includes tokens
                   if (themed && options.experimentalFlattenThemesOnNative) {
                     for (const key in themed) {
-                      themeKeysUsed.add(key)
+                      themeKeysUsed.add(themed[key].split('$')[1])
                     }
 
                     // make a sub-array
-                    return t.arrayExpression([ident, addThemedStyleExpression(themed)])
+                    return addThemedStyleExpression(themed)
                   } else {
+                    const ident = addSheetStyle(plain, props.node)
                     // since we only do flattened disabling this path
                     return ident
                     // when we supported extracting non-flattened
@@ -174,7 +175,11 @@ export default declare(function snackBabelPlugin(
                 }
 
                 function addStyleExpression(expr: any) {
-                  stylesExpr.elements.push(expr)
+                  if (Array.isArray(expr)) {
+                    stylesExpr.elements.push(...expr)
+                  } else {
+                    stylesExpr.elements.push(expr)
+                  }
                 }
 
                 function addThemedStyleExpression(styles: Object) {
@@ -200,16 +205,23 @@ export default declare(function snackBabelPlugin(
                     case 'ternary': {
                       const { consequent, alternate } = attr.value
 
+                      if (options.experimentalFlattenThemesOnNative) {
+                        forTernary.push(attr.value.test)
+                      }
+
                       const consExpr = getStyleExpression(consequent)
                       const altExpr = getStyleExpression(alternate)
 
                       const styleExpr = t.conditionalExpression(
-                        attr.value.test,
+                        options.experimentalFlattenThemesOnNative
+                          ? t.identifier(`forTernary[${forTernary.length - 1}]`)
+                          : attr.value.test,
                         consExpr || t.nullLiteral(),
                         altExpr || t.nullLiteral()
                       )
                       addStyleExpression(
                         styleExpr
+                        // TODO: what is this for ?
                         // isFlattened ? simpleHash(JSON.stringify({ consequent, alternate })) : undefined
                       )
                       break
@@ -231,7 +243,7 @@ export default declare(function snackBabelPlugin(
                 props.node.attributes = finalAttrs
 
                 if (props.isFlattened) {
-                  if (themeKeysUsed.size) {
+                  if (themeKeysUsed.size || forTernary.length) {
                     if (!hasImportedViewWrapper) {
                       root.unshiftContainer('body', importWithTheme())
                       hasImportedViewWrapper = true
@@ -250,11 +262,42 @@ export default declare(function snackBabelPlugin(
                           t.callExpression(t.identifier('__internalWithTheme'), [
                             t.identifier(name),
                             t.arrowFunctionExpression(
-                              [t.identifier('theme')],
-                              t.blockStatement([t.returnStatement(stylesExpr)])
-                            ),
-                            t.arrayExpression(
-                              [...themeKeysUsed].map((k) => t.stringLiteral(k))
+                              [t.identifier('theme'), t.identifier('forTernary')],
+                              t.blockStatement([
+                                t.returnStatement(
+                                  t.callExpression(
+                                    t.memberExpression(
+                                      t.identifier('React'),
+                                      t.identifier('useMemo')
+                                    ),
+                                    [
+                                      t.arrowFunctionExpression(
+                                        [],
+                                        t.blockStatement([
+                                          t.returnStatement(
+                                            t.callExpression(
+                                              t.memberExpression(
+                                                t.identifier('Object'),
+                                                t.identifier('assign')
+                                              ),
+                                              [...stylesExpr.elements, ...[]] as any[]
+                                            )
+                                          ),
+                                        ])
+                                      ),
+                                      t.arrayExpression([
+                                        ...[...themeKeysUsed].map((k) =>
+                                          t.memberExpression(
+                                            t.identifier('theme'),
+                                            t.identifier(k)
+                                          )
+                                        ),
+                                        t.spreadElement(t.identifier('forTernary')),
+                                      ]),
+                                    ]
+                                  )
+                                ),
+                              ])
                             ),
                           ])
                         ),
@@ -263,6 +306,14 @@ export default declare(function snackBabelPlugin(
 
                     // @ts-ignore
                     props.node.name = WrapperIdentifier
+                    if (forTernary.length) {
+                      props.node.attributes.push(
+                        t.jsxAttribute(
+                          t.jsxIdentifier('forTernary'),
+                          t.jsxExpressionContainer(t.arrayExpression(forTernary))
+                        )
+                      )
+                    }
                   } else {
                     props.node.attributes.push(
                       t.jsxAttribute(
