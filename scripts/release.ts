@@ -64,12 +64,10 @@ const sleep = (ms) => {
   return new Promise((res) => setTimeout(res, ms))
 }
 
-if (!finish) {
-  if (!skipVersion) {
-    console.info('Publishing version:', nextVersion, '\n')
-  } else {
-    console.info(`Re-publishing ${curVersion}`)
-  }
+if (!skipVersion) {
+  console.info('Version:', nextVersion, '\n')
+} else {
+  console.info(`Re-publishing ${curVersion}`)
 }
 
 async function run() {
@@ -125,7 +123,11 @@ async function run() {
         return -1
       })
 
-    console.info(`Publishing in order:\n\n${packageJsons.map((x) => x.name).join('\n')}`)
+    if (!finish) {
+      console.info(
+        `Publishing in order:\n\n${packageJsons.map((x) => x.name).join('\n')}`
+      )
+    }
 
     async function checkDistDirs() {
       await Promise.all(
@@ -169,9 +171,8 @@ async function run() {
       await checkDistDirs()
     }
 
-    console.info('run checks')
-
     if (!finish) {
+      console.info('run checks')
       if (!skipTest) {
         await spawnify(`yarn fix`)
         await spawnify(`yarn lint`)
@@ -310,43 +311,45 @@ async function run() {
       }
     }
 
-    await sleep(4 * 1000)
+    if (!finish) {
+      await sleep(4 * 1000)
 
-    if (rePublish) {
-      // if all successful, re-tag as latest
-      await pMap(
-        packageJsons,
-        async ({ name, cwd }) => {
-          const tag = canary ? ` --tag canary` : ''
+      if (rePublish) {
+        // if all successful, re-tag as latest
+        await pMap(
+          packageJsons,
+          async ({ name, cwd }) => {
+            const tag = canary ? ` --tag canary` : ''
 
-          console.info(`Publishing ${name}${tag}`)
+            console.info(`Publishing ${name}${tag}`)
 
-          await spawnify(`npm publish${tag}`, {
-            cwd,
-          }).catch((err) => console.error(err))
-        },
-        {
-          concurrency: 15,
-        }
-      )
-    } else {
-      const distTag = canary ? 'canary' : 'latest'
+            await spawnify(`npm publish${tag}`, {
+              cwd,
+            }).catch((err) => console.error(err))
+          },
+          {
+            concurrency: 15,
+          }
+        )
+      } else {
+        const distTag = canary ? 'canary' : 'latest'
 
-      // if all successful, re-tag as latest (try and be fast)
-      await pMap(
-        packageJsons,
-        async ({ name, cwd }) => {
-          await spawnify(`npm dist-tag add ${name}@${version} ${distTag}`, {
-            cwd,
-          }).catch((err) => console.error(err))
-        },
-        {
-          concurrency: 20,
-        }
-      )
+        // if all successful, re-tag as latest (try and be fast)
+        await pMap(
+          packageJsons,
+          async ({ name, cwd }) => {
+            await spawnify(`npm dist-tag add ${name}@${version} ${distTag}`, {
+              cwd,
+            }).catch((err) => console.error(err))
+          },
+          {
+            concurrency: 20,
+          }
+        )
+      }
+
+      console.info(`✅ Published\n`)
     }
-
-    console.info(`✅ Published\n`)
 
     // then git tag, commit, push
     if (!finish) {

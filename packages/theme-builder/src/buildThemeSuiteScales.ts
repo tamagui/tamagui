@@ -32,7 +32,6 @@ export const getThemeSuiteScale = (theme: BuildTheme, accent?: boolean): ScaleTy
   if (scale === 'automatic') {
     const lightColors = getColorForegroundBackground(baseColor, false)
     const darkColors = getColorForegroundBackground(baseColor, true)
-    console.log('darkColors', darkColors)
 
     const scaleLen = 12
     const arr = new Array(scaleLen).fill(0)
