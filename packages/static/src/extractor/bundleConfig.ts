@@ -293,7 +293,7 @@ export function loadComponents(
             entryPoints: [loadModule],
             outfile: loadModule,
             alias: {
-              'react-native': require.resolve('@tamagui/react-native-prebuilt'),
+              'react-native': require.resolve('react-native-web-lite'),
             },
             bundle: true,
             packages: 'external',
