@@ -10,7 +10,8 @@ export const internalWithTheme = (
   memoArgs: string[]
 ) => {
   return (props) => {
+    const { forTernary, ...rest } = props
     const theme = useTheme()
-    return <Component style={useMemo(() => styleProvider(theme), memoArgs)} {...props} />
+    return <Component style={styleProvider(theme, props.forTernary)} {...rest} />
   }
 }
