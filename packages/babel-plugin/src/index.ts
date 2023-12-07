@@ -147,7 +147,7 @@ export default declare(function snackBabelPlugin(
 
                 assertValidTag(props.node)
                 const stylesExpr = t.arrayExpression([])
-                const forTernary: t.Expression[] = []
+                const expressions: t.Expression[] = []
                 const finalAttrs: (t.JSXAttribute | t.JSXSpreadAttribute)[] = []
                 const themeKeysUsed = new Set<string>()
 
@@ -206,7 +206,7 @@ export default declare(function snackBabelPlugin(
                       const { consequent, alternate } = attr.value
 
                       if (options.experimentalFlattenThemesOnNative) {
-                        forTernary.push(attr.value.test)
+                        expressions.push(attr.value.test)
                       }
 
                       const consExpr = getStyleExpression(consequent)
@@ -214,7 +214,7 @@ export default declare(function snackBabelPlugin(
 
                       const styleExpr = t.conditionalExpression(
                         options.experimentalFlattenThemesOnNative
-                          ? t.identifier(`forTernary[${forTernary.length - 1}]`)
+                          ? t.identifier(`expressions[${expressions.length - 1}]`)
                           : attr.value.test,
                         consExpr || t.nullLiteral(),
                         altExpr || t.nullLiteral()
@@ -223,6 +223,18 @@ export default declare(function snackBabelPlugin(
                         styleExpr
                         // TODO: what is this for ?
                         // isFlattened ? simpleHash(JSON.stringify({ consequent, alternate })) : undefined
+                      )
+                      break
+                    }
+                    case 'dynamic-style': {
+                      expressions.push(attr.value as t.Expression)
+                      addStyleExpression(
+                        t.objectExpression([
+                          t.objectProperty(
+                            t.identifier(attr.name as string),
+                            t.identifier(`expressions[${expressions.length - 1}]`)
+                          ),
+                        ])
                       )
                       break
                     }
@@ -243,7 +255,7 @@ export default declare(function snackBabelPlugin(
                 props.node.attributes = finalAttrs
 
                 if (props.isFlattened) {
-                  if (themeKeysUsed.size || forTernary.length) {
+                  if (themeKeysUsed.size || expressions.length) {
                     if (!hasImportedViewWrapper) {
                       root.unshiftContainer('body', importWithTheme())
                       hasImportedViewWrapper = true
@@ -262,7 +274,7 @@ export default declare(function snackBabelPlugin(
                           t.callExpression(t.identifier('__internalWithTheme'), [
                             t.identifier(name),
                             t.arrowFunctionExpression(
-                              [t.identifier('theme'), t.identifier('forTernary')],
+                              [t.identifier('theme'), t.identifier('expressions')],
                               t.blockStatement([
                                 t.returnStatement(
                                   t.callExpression(
@@ -292,7 +304,7 @@ export default declare(function snackBabelPlugin(
                                             t.identifier(k)
                                           )
                                         ),
-                                        t.spreadElement(t.identifier('forTernary')),
+                                        t.spreadElement(t.identifier('expressions')),
                                       ]),
                                     ]
                                   )
@@ -306,11 +318,11 @@ export default declare(function snackBabelPlugin(
 
                     // @ts-ignore
                     props.node.name = WrapperIdentifier
-                    if (forTernary.length) {
+                    if (expressions.length) {
                       props.node.attributes.push(
                         t.jsxAttribute(
-                          t.jsxIdentifier('forTernary'),
-                          t.jsxExpressionContainer(t.arrayExpression(forTernary))
+                          t.jsxIdentifier('expressions'),
+                          t.jsxExpressionContainer(t.arrayExpression(expressions))
                         )
                       )
                     }
