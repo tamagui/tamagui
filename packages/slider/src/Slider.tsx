@@ -522,8 +522,14 @@ const SliderComponent = React.forwardRef<TamaguiElement, SliderProps>(
       transition: true,
       onChange: (value) => {
         if (isWeb) {
-          const thumbs = [...thumbRefs.current.keys()]
-          thumbs[valueIndexToChangeRef.current]?.focus()
+          const thumbsByIndex = [...thumbRefs.current.entries()].reduce(
+            (acc, [node, index]) => {
+              acc[index] = node
+              return acc
+            },
+            {}
+          )
+          thumbsByIndex[valueIndexToChangeRef.current]?.focus()
         }
         onValueChange(value)
       },
