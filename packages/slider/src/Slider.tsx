@@ -420,12 +420,12 @@ const SliderThumb = SliderThumbFrame.styleable<SliderThumbProps>(function Slider
 
   React.useEffect(() => {
     if (thumb) {
-      context.thumbs.add(thumb)
+      context.thumbs.set(thumb, index)
       return () => {
         context.thumbs.delete(thumb)
       }
     }
-  }, [thumb, context.thumbs])
+  }, [thumb, context.thumbs, index])
 
   const positionalStyles =
     context.orientation === 'horizontal'
@@ -509,7 +509,7 @@ const SliderComponent = React.forwardRef<TamaguiElement, SliderProps>(
     } = props
     const sliderRef = React.useRef<View>(null)
     const composedRefs = useComposedRefs(sliderRef, forwardedRef)
-    const thumbRefs = React.useRef<SliderContextValue['thumbs']>(new Set())
+    const thumbRefs = React.useRef<SliderContextValue['thumbs']>(new Map())
     const valueIndexToChangeRef = React.useRef<number>(0)
     const isHorizontal = orientation === 'horizontal'
     // We set this to true by default so that events bubble to forms without JS (SSR)
@@ -522,7 +522,7 @@ const SliderComponent = React.forwardRef<TamaguiElement, SliderProps>(
       transition: true,
       onChange: (value) => {
         if (isWeb) {
-          const thumbs = [...thumbRefs.current]
+          const thumbs = [...thumbRefs.current.keys()]
           thumbs[valueIndexToChangeRef.current]?.focus()
         }
         onValueChange(value)
