@@ -38,7 +38,7 @@ export function SwitchWithLabel(props: { size: SizeTokens; defaultChecked?: bool
       </Label>
       <Separator minHeight={20} vertical />
       <Switch id={id} size={props.size} defaultChecked={props.defaultChecked}>
-        <Switch.Thumb animation="quickest" />
+        <Switch.Thumb animation="quicker" />
       </Switch>
     </XStack>
   )
