@@ -2,7 +2,13 @@
  * SliderImpl
  * -----------------------------------------------------------------------------------------------*/
 
-import { composeEventHandlers, getVariableValue, isWeb, styled } from '@tamagui/core'
+import {
+  TamaguiElement,
+  composeEventHandlers,
+  getVariableValue,
+  isWeb,
+  styled,
+} from '@tamagui/core'
 import { getSize } from '@tamagui/get-token'
 import { YStack } from '@tamagui/stacks'
 import * as React from 'react'
@@ -88,9 +94,11 @@ export const SliderImpl = React.forwardRef<View, SliderImplProps>(
           return false
         }}
         onResponderGrant={composeEventHandlers(props.onResponderGrant, (event) => {
-          const target = event.target as unknown as HTMLElement | number
-          const isStartingOnThumb = context.thumbs.has(target)
-          // // Prevent browser focus behaviour because we focus a thumb manually when values change.
+          const target = event.target as unknown as TamaguiElement | number
+          const thumbIndex = context.thumbs.get(target as TamaguiElement)
+          const isStartingOnThumb = thumbIndex !== undefined
+
+          // Prevent browser focus behaviour because we focus a thumb manually when values change.
           // Touch devices have a delay before focusing so won't focus if touch immediately moves
           // away from target (sliding). We want thumb to focus regardless.
           if (isWeb && target instanceof HTMLElement) {
@@ -98,6 +106,13 @@ export const SliderImpl = React.forwardRef<View, SliderImplProps>(
               target.focus()
             }
           }
+
+          // Thumbs won't receive focus events on native, so we have to manually
+          // set the value index to change when sliding starts on a thumb.
+          if (!isWeb && isStartingOnThumb) {
+            context.valueIndexToChangeRef.current = thumbIndex
+          }
+
           onSlideStart(event, isStartingOnThumb ? 'thumb' : 'track')
         })}
         onResponderMove={composeEventHandlers(props.onResponderMove, (event) => {
