@@ -1303,6 +1303,16 @@ export function createExtractor(
               return { type: 'ternary', value: staticLogical }
             }
 
+            if (options.experimentalFlattenThemesOnNative) {
+              if (isValidStyleKey(name, staticConfig)) {
+                return {
+                  type: 'dynamic-style',
+                  value,
+                  name,
+                }
+              }
+            }
+
             // if we've made it this far, the prop stays inline
             inlined.set(name, true)
             if (shouldPrintDebug) {
@@ -2191,6 +2201,17 @@ export function createExtractor(
                 }
               }
             }
+            if (attr.type === 'dynamic-style') {
+              if (existingStyleKeys.has(attr.name)) {
+                //@ts-ignore
+                attrs[i] = undefined
+              } else {
+                existingStyleKeys.add(attr.name)
+              }
+            }
+          }
+          if (options.experimentalFlattenThemesOnNative) {
+            attrs = attrs.filter(Boolean)
           }
 
           // inlineWhenUnflattened

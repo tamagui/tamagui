@@ -48,10 +48,17 @@ export type ExtractedAttrStyle = {
   name?: string
 }
 
+export type ExtractedDynAttrStyle = {
+  type: 'dynamic-style'
+  name?: string
+  value: t.Expression | t.JSXEmptyExpression
+}
+
 export type ExtractedAttr =
   | ExtractedAttrAttr
   | { type: 'ternary'; value: Ternary }
   | ExtractedAttrStyle
+  | ExtractedDynAttrStyle
 
 export type ExtractTagProps = {
   parserProps: TamaguiOptionsWithFileInfo
