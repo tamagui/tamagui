@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/animations-reanimated",
-  "version": "1.79.7",
+  "version": "1.79.8",
   "source": "src/index.ts",
   "sideEffects": true,
   "license": "MIT",
@@ -13,7 +13,7 @@
     "dist"
   ],
   "devDependencies": {
-    "@tamagui/build": "1.79.7"
+    "@tamagui/build": "1.79.8"
   },
   "scripts": {
     "build": "tamagui-build",
