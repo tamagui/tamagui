@@ -25,11 +25,8 @@ export type BuildTheme = BuildThemeBase & {
     type: 'theme';
     color: string;
     scale: ScaleTypeName;
-    spreadLuminance?: number;
-    spreadSaturation?: number;
     template?: Template;
     accent?: string;
-    accentColor?: string;
     accentScale?: ScaleTypeName;
 };
 export type BuildMask = {
