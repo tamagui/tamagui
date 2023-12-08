@@ -4,15 +4,12 @@ import {
   SizeTokens,
   StackProps,
   TamaguiComponentExpectingVariants,
-  TamaguiElement,
   composeEventHandlers,
-  getVariableValue,
   isWeb,
   useProps,
   withStaticProperties,
 } from '@tamagui/core'
 import { registerFocusable } from '@tamagui/focusable'
-import { getSize } from '@tamagui/get-token'
 import { useLabelContext } from '@tamagui/label'
 import { YStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
