@@ -521,16 +521,7 @@ const SliderComponent = React.forwardRef<TamaguiElement, SliderProps>(
       defaultProp: defaultValue,
       transition: true,
       onChange: (value) => {
-        if (isWeb) {
-          const thumbsByIndex = [...thumbRefs.current.entries()].reduce(
-            (acc, [node, index]) => {
-              acc[index] = node
-              return acc
-            },
-            {}
-          )
-          thumbsByIndex[valueIndexToChangeRef.current]?.focus()
-        }
+        updateThumbFocus(valueIndexToChangeRef.current)
         onValueChange(value)
       },
     })
@@ -548,6 +539,18 @@ const SliderComponent = React.forwardRef<TamaguiElement, SliderProps>(
           node.removeEventListener('touchstart', preventDefault)
         }
       }, [])
+    }
+
+    function updateThumbFocus(focusIndex: number) {
+      // Thumbs are not focusable on native
+      if (!isWeb) return
+
+      for (const [node, index] of thumbRefs.current.entries()) {
+        if (index === focusIndex) {
+          node.focus()
+          return
+        }
+      }
     }
 
     function handleSlideMove(value: number, event: GestureReponderEvent) {
