@@ -1,0 +1,45 @@
+{
+  "expo": {
+    "name": "bento",
+    "slug": "bento",
+    "scheme": "bento",
+    "version": "1.0.0",
+    "jsEngine": "hermes",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.tamagui.bento"
+    },
+    "android": {
+      "package": "com.tamagui.bento",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "061b4470-78c7-4d6a-b850-8167fb0a3434"
+      }
+    },
+    "plugins": [
+      "expo-build-properties"
+    ]
+  }
+}
