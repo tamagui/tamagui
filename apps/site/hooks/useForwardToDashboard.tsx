@@ -3,6 +3,8 @@ import { useEffect } from 'react'
 
 import { useUser } from './useUser'
 
+const ALLOWED_REDIRECT_DOMAINS = ['tamagui.dev']
+
 export function useForwardToDashboard() {
   const { data, isLoading } = useUser()
   const user = data?.session?.user
@@ -17,11 +19,22 @@ export function useForwardToDashboard() {
               ? 'http://localhost:1421'
               : 'https://studio.tamagui.dev'
         } else {
-          await router.replace(
-            typeof router.query.redirect_to === 'string'
-              ? router.query.redirect_to
-              : '/account'
-          )
+          let redirectTo = '/account' // default
+          if (router.query.redirect_to === 'string') {
+            if (router.query.redirect_to.startsWith('/')) {
+              redirectTo = router.query.redirect_to
+            } else {
+              try {
+                const url = new URL(router.query.redirect_to)
+                if (ALLOWED_REDIRECT_DOMAINS.includes(url.host) || process.env.NODE_ENV !== "production") {
+                  redirectTo = router.query.redirect_to
+                }
+              } catch {
+                // just use the default "/account"
+              }
+            }
+          }
+          await router.replace(redirectTo)
         }
       }
     }
