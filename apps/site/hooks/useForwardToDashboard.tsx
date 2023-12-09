@@ -20,7 +20,7 @@ export function useForwardToDashboard() {
               : 'https://studio.tamagui.dev'
         } else {
           let redirectTo = '/account' // default
-          if (router.query.redirect_to === 'string') {
+          if (typeof router.query.redirect_to === 'string') {
             const decodedUrl = decodeURIComponent(router.query.redirect_to)
             if (decodedUrl.startsWith('/')) { // e.g. /account/subscriptions
               redirectTo = decodedUrl
