@@ -328,9 +328,7 @@ export function createExtractor(
       )
       logger.info(
         `valid import paths: ${JSON.stringify(
-          getValidComponentsPaths(propsWithFileInfo),
-          null,
-          2
+          getValidComponentsPaths(propsWithFileInfo)
         )}`
       )
     }

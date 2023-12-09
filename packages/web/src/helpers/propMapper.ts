@@ -28,6 +28,9 @@ export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => 
     const unsetVal = styleStateIn.conf.unset?.[key]
     if (unsetVal != null) {
       value = unsetVal
+    } else {
+      // if no unset found, return nothing
+      return
     }
   }
 
