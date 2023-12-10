@@ -15,19 +15,34 @@ export type BuildThemeSuitePalettes = {
     lightAccent?: string[];
     darkAccent?: string[];
 };
-export type ScaleTypeName = 'automatic' | 'radix' | 'radix-b' | 'radius-bold' | 'radius-bright' | 'linear' | 'pastel' | 'pastel-desaturating' | 'neon' | 'neon-bright' | 'neon-c';
+export type ScaleTypeName = 'custom' | 'radix' | 'radix-b' | 'radius-bold' | 'radius-bright' | 'linear' | 'pastel' | 'pastel-desaturating' | 'neon' | 'neon-bright' | 'neon-c';
 export type BuildThemeBase = {
     id: string;
     name: string;
     errors?: string[];
 };
-export type BuildTheme = BuildThemeBase & {
+type BuildThemeFromScale = BuildThemeBase & {
     type: 'theme';
-    color: string;
-    scale: ScaleTypeName;
+    hue: number;
+    hueColor?: number;
+    createdFrom?: ScaleTypeName;
+    satScale: {
+        light: number[];
+        dark: number[];
+    };
+    lumScale: {
+        light: number[];
+        dark: number[];
+    };
+    strategy?: {
+        type: 'automatic';
+        foreground: string;
+        background: string;
+    };
     template?: Template;
-    accent?: string;
-    accentScale?: ScaleTypeName;
+};
+export type BuildTheme = BuildThemeFromScale & {
+    accent?: BuildThemeFromScale;
 };
 export type BuildMask = {
     id: string;
@@ -50,4 +65,5 @@ export type BuildThemeMask = BuildThemeBase & {
     type: 'mask';
     masks: BuildMask[];
 };
+export {};
 //# sourceMappingURL=types.d.ts.map
