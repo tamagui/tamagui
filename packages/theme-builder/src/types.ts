@@ -21,7 +21,7 @@ export type BuildThemeSuitePalettes = {
 }
 
 export type ScaleTypeName =
-  | 'automatic'
+  | 'custom'
   | 'radix'
   | 'radix-b'
   | 'radius-bold'
@@ -39,13 +39,37 @@ export type BuildThemeBase = {
   errors?: string[]
 }
 
-export type BuildTheme = BuildThemeBase & {
+type BuildThemeFromScale = BuildThemeBase & {
   type: 'theme'
-  color: string
-  scale: ScaleTypeName
+
+  hue: number // 0-360
+  hueColor?: number // 0-360 (if distinguished from background)
+
+  // if you use a preset it sets this then clears when changed
+  createdFrom?: ScaleTypeName
+
+  satScale: {
+    light: number[]
+    dark: number[]
+  }
+
+  lumScale: {
+    light: number[]
+    dark: number[]
+  }
+
+  // overrides the above hue/scales, avoiding too much mess refactoring
+  strategy?: {
+    type: 'automatic'
+    foreground: string
+    background: string
+  }
+
   template?: Template
-  accent?: string
-  accentScale?: ScaleTypeName
+}
+
+export type BuildTheme = BuildThemeFromScale & {
+  accent?: BuildThemeFromScale
 }
 
 // TODO type here isnt the same as type in BuildTheme

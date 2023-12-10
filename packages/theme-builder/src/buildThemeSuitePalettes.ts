@@ -1,6 +1,5 @@
 import { hsla, parseToHsla, toHex } from 'color2k'
 
-import { getThemeSuiteScale } from './buildThemeSuiteScales'
 import { BuildTheme, BuildThemeSuitePalettes } from './types'
 
 /**
@@ -18,27 +17,69 @@ const generateColorPalette = ({
   scheme: 'light' | 'dark'
   forAccent?: boolean
 }) => {
-  // const { color, scale, accent, accentColor, accentScale } = theme
+  const baseTheme = forAccent ? theme.accent || theme : theme
 
-  const color = forAccent ? theme.accent || theme.color : theme.color
-  const scale = forAccent ? theme.accentScale || theme.scale : theme.scale
-
-  const { lumScale, satScale } = getThemeSuiteScale(theme, forAccent)
-  const [hue, sat, lum] = parseToHsla(color)
+  const { hue, lumScale, satScale, strategy } = baseTheme
   const isDark = scheme === 'dark'
 
-  const lumValues = isDark ? lumScale.dark : lumScale.light
+  let palette: string[]
 
-  let palette: string[] = lumValues.map((lum, idx) => {
-    if (sat > 0) {
-      if (satScale) {
-        return hsla(hue, satScale[scheme][idx], lum, 1)
-      }
-      return hsla(hue, sat, lum, 1)
+  if (strategy?.type === 'automatic') {
+    const hslas = {
+      background: parseToHsla(strategy.background),
+      foreground: parseToHsla(strategy.foreground),
     }
-    return hsla(0, 0, lum, 1)
-  })
 
+    palette = [
+      // backgrounds
+      ...new Array(10).fill(0).map((_, i) => {
+        const [h, s, l] = hslas.background
+
+        if (isDark) {
+          const str = 9 - i
+          const minLum = 0.05
+          const by = (l - minLum) / 10
+
+          return hsla(
+            h,
+            s,
+            // go to dark or light
+            l - by * str,
+            1
+          )
+        } else {
+          const str = 9 - i
+          const maxLum = 0.95
+          const by = (maxLum - l) / 10
+          return hsla(h, s, l + by * str, 1)
+        }
+      }),
+      // colors
+      ...new Array(2).fill(0).map((_, i) => {
+        const [h, s, l] = hslas.foreground
+        return hsla(
+          h,
+          s,
+          // go to dark or light
+          l - (i === 0 ? 0.1 : 0),
+          1
+        )
+      }),
+    ]
+  } else {
+    const lumValues = isDark ? lumScale.dark : lumScale.light
+    palette = lumValues.map((lum, idx) => {
+      const sat = satScale[scheme][idx]
+
+      if (theme.hueColor && idx >= 10) {
+        return hsla(theme.hueColor, sat, lum, 1)
+      }
+
+      return hsla(hue, sat, lum, 1)
+    })
+  }
+
+  // add transparent values
   const [background] = palette
   const foreground = palette[palette.length - 1]
 
@@ -55,28 +96,27 @@ const generateColorPalette = ({
   const reverseForeground = [...transparentValues[1]].reverse()
   palette = [...transparentValues[0], ...palette, ...reverseForeground]
 
-  if (theme.accent) {
-    const baseAccent = forAccent ? theme.color : theme.accent
-    const accentHsla = parseToHsla(baseAccent)
-    const accentLum = accentHsla[2]
-    const isAccentLight = accentLum > 0.5
+  // if (theme.accent) {
+  //   const accentHsla = parseToHsla(theme.accent)
+  //   const accentLum = accentHsla[2]
+  //   const isAccentLight = accentLum > 0.5
 
-    const oppositeLightnessAccent = isAccentLight
-      ? toHex(hsla(accentHsla[0], accentHsla[1], 1 - accentLum, 1))
-      : theme.accent
+  //   const oppositeLightnessAccent = isAccentLight
+  //     ? toHex(hsla(accentHsla[0], accentHsla[1], 1 - accentLum, 1))
+  //     : theme.accent
 
-    const fg = isAccentLight && !isDark ? oppositeLightnessAccent : baseAccent
-    const bg = fg === baseAccent ? oppositeLightnessAccent : baseAccent
+  //   const fg = isAccentLight && !isDark ? oppositeLightnessAccent : theme.accent
+  //   const bg = fg === theme.accent ? oppositeLightnessAccent : theme.accent
 
-    // unshift bg
-    palette.unshift(bg)
-    // push color
-    palette.push(fg)
-  } else {
-    // were keeping the palettes the same length with or without accent to avoid headache
-    palette.unshift('rgba(0,0,0,0)')
-    palette.push('rgba(0,0,0,0)')
-  }
+  //   // unshift bg
+  //   palette.unshift(bg)
+  //   // push color
+  //   palette.push(fg)
+  // } else {
+  // were keeping the palettes the same length with or without accent to avoid headache
+  palette.unshift('rgba(0,0,0,0)')
+  palette.push('rgba(0,0,0,0)')
+  // }
 
   return palette
 }
