@@ -207,52 +207,54 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
 
     return (
       <>
-        {/* @ts-expect-error todo */}
-        <Frame
-          tag={isInsideButton ? 'span' : 'button'}
-          unstyled={unstyled}
-          size={size}
-          checked={checked}
-          disabled={disabled}
-          frameWidth={frameWidth}
-          themeShallow
-          {...(!disableActiveTheme && {
-            theme: checked ? 'active' : null,
-            themeShallow: true,
-          })}
-          role="switch"
-          aria-checked={checked}
-          aria-labelledby={labelledBy}
-          aria-required={required}
-          data-state={getState(checked)}
-          data-disabled={disabled ? '' : undefined}
-          // @ts-ignore
-          tabIndex={disabled ? undefined : 0}
-          // @ts-ignore
-          value={value}
-          {...switchProps}
-          ref={composedRefs}
-          onPress={composeEventHandlers(props.onPress, (event) => {
-            setChecked((prevChecked) => !prevChecked)
-            if (isWeb && isFormControl) {
-              hasConsumerStoppedPropagationRef.current = event.isPropagationStopped()
-              // if switch is in a form, stop propagation from the button so that we only propagate
-              // one click event (from the input). We propagate changes from an input so that native
-              // form validation works and form events reflect switch updates.
-              if (!hasConsumerStoppedPropagationRef.current) event.stopPropagation()
-            }
-          })}
-        >
-          <YStack
-            alignSelf="stretch"
-            flex={1}
-            onLayout={(e) => {
-              setFrameWidth(e.nativeEvent.layout.width)
-            }}
+        <ButtonNestingContext.Provider value={true}>
+          {/* @ts-expect-error todo */}
+          <Frame
+            tag={isInsideButton ? 'span' : 'button'}
+            unstyled={unstyled}
+            size={size}
+            checked={checked}
+            disabled={disabled}
+            frameWidth={frameWidth}
+            themeShallow
+            {...(!disableActiveTheme && {
+              theme: checked ? 'active' : null,
+              themeShallow: true,
+            })}
+            role="switch"
+            aria-checked={checked}
+            aria-labelledby={labelledBy}
+            aria-required={required}
+            data-state={getState(checked)}
+            data-disabled={disabled ? '' : undefined}
+            // @ts-ignore
+            tabIndex={disabled ? undefined : 0}
+            // @ts-ignore
+            value={value}
+            {...switchProps}
+            ref={composedRefs}
+            onPress={composeEventHandlers(props.onPress, (event) => {
+              setChecked((prevChecked) => !prevChecked)
+              if (isWeb && isFormControl) {
+                hasConsumerStoppedPropagationRef.current = event.isPropagationStopped()
+                // if switch is in a form, stop propagation from the button so that we only propagate
+                // one click event (from the input). We propagate changes from an input so that native
+                // form validation works and form events reflect switch updates.
+                if (!hasConsumerStoppedPropagationRef.current) event.stopPropagation()
+              }
+            })}
           >
-            {typeof children === 'function' ? children(checked) : children}
-          </YStack>
-        </Frame>
+            <YStack
+              alignSelf="stretch"
+              flex={1}
+              onLayout={(e) => {
+                setFrameWidth(e.nativeEvent.layout.width)
+              }}
+            >
+              {typeof children === 'function' ? children(checked) : children}
+            </YStack>
+          </Frame>
+        </ButtonNestingContext.Provider>
         {isWeb && isFormControl && (
           <BubbleInput
             control={button}
