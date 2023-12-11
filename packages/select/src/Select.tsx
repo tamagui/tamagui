@@ -1,11 +1,11 @@
 import { Adapt, useAdaptParent } from '@tamagui/adapt'
 import { useComposedRefs } from '@tamagui/compose-refs'
+import { isWeb } from '@tamagui/constants'
 import {
   FontSizeTokens,
   GetProps,
   TamaguiElement,
   getVariableValue,
-  isWeb,
   styled,
   useEvent,
   useGet,

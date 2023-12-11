@@ -1,10 +1,10 @@
 import { createCollection } from '@tamagui/collection'
 import { useComposedRefs } from '@tamagui/compose-refs'
+import { isWeb } from '@tamagui/constants'
 import {
   Stack,
   composeEventHandlers,
   createStyledContext,
-  isWeb,
   useEvent,
   withStaticProperties,
 } from '@tamagui/core'

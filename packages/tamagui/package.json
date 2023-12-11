@@ -65,6 +65,7 @@
     "@tamagui/card": "1.79.9",
     "@tamagui/checkbox": "1.79.9",
     "@tamagui/compose-refs": "1.79.9",
+    "@tamagui/constants": "1.79.9",
     "@tamagui/core": "1.79.9",
     "@tamagui/create-context": "1.79.9",
     "@tamagui/dialog": "1.79.9",

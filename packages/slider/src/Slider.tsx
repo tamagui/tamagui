@@ -1,6 +1,7 @@
 // forked from radix-ui
 
 import { composeRefs, useComposedRefs } from '@tamagui/compose-refs'
+import { isWeb } from '@tamagui/constants'
 import {
   GestureReponderEvent,
   GetProps,
@@ -10,7 +11,6 @@ import {
   getTokens,
   getVariableValue,
   isClient,
-  isWeb,
   styled,
   withStaticProperties,
 } from '@tamagui/core'

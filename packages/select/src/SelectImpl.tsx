@@ -14,9 +14,9 @@ import {
   useRole,
   useTypeahead,
 } from '@floating-ui/react'
+import { isWeb } from '@tamagui/constants'
 import {
   isClient,
-  isWeb,
   useEvent,
   useIsTouchDevice,
   useIsomorphicLayoutEffect,

@@ -33,6 +33,7 @@
   "dependencies": {
     "@tamagui/animate-presence": "1.79.9",
     "@tamagui/compose-refs": "1.79.9",
+    "@tamagui/constants": "1.79.9",
     "@tamagui/core": "1.79.9",
     "@tamagui/create-context": "1.79.9",
     "@tamagui/dismissable": "1.79.9",

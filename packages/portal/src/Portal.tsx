@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import '@tamagui/polyfill-dev'
 
-import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/core'
+import { isWeb } from '@tamagui/constants'
+import { useIsomorphicLayoutEffect } from '@tamagui/core'
 import { YStack } from '@tamagui/stacks'
 import * as React from 'react'
 import { createPortal } from 'react-dom'

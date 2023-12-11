@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "@tamagui/compose-refs": "1.79.9",
+    "@tamagui/constants": "1.79.9",
     "@tamagui/create-context": "1.79.9",
     "@tamagui/focusable": "1.79.9",
     "@tamagui/get-button-sized": "1.79.9",

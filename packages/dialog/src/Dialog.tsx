@@ -2,6 +2,7 @@ import { Adapt, useAdaptParent } from '@tamagui/adapt'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { hideOthers } from '@tamagui/aria-hidden'
 import { useComposedRefs } from '@tamagui/compose-refs'
+import { isWeb } from '@tamagui/constants'
 import {
   GetProps,
   GetRef,
@@ -11,7 +12,6 @@ import {
   Theme,
   View,
   composeEventHandlers,
-  isWeb,
   spacedChildren,
   styled,
   useGet,

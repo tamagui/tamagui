@@ -2,11 +2,11 @@
  * SliderImpl
  * -----------------------------------------------------------------------------------------------*/
 
+import { isWeb } from '@tamagui/constants'
 import {
   TamaguiElement,
   composeEventHandlers,
   getVariableValue,
-  isWeb,
   styled,
 } from '@tamagui/core'
 import { getSize } from '@tamagui/get-token'

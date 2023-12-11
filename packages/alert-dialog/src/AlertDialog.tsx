@@ -2,13 +2,13 @@
 // https://github.com/radix-ui/primitives/blob/main/packages/react/alert-dialog/src/AlertDialog.tsx
 
 import { useComposedRefs } from '@tamagui/compose-refs'
+import { isWeb } from '@tamagui/constants'
 import {
   Slottable,
   TamaguiElement,
   View,
   composeEventHandlers,
   isTamaguiElement,
-  isWeb,
   styled,
   useIsomorphicLayoutEffect,
   withStaticProperties,

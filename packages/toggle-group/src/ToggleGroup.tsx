@@ -1,3 +1,4 @@
+import { isWeb } from '@tamagui/constants'
 import { registerFocusable } from '@tamagui/focusable'
 import { getFontSize } from '@tamagui/font-size'
 import { getSize } from '@tamagui/get-token'
@@ -12,7 +13,6 @@ import {
   SizeTokens,
   createStyledContext,
   getVariableValue,
-  isWeb,
   styled,
   useTheme,
   withStaticProperties,

@@ -1,3 +1,4 @@
+import { isWeb } from '@tamagui/constants'
 import { getButtonSized } from '@tamagui/get-button-sized'
 import { Group, GroupProps, useGroupItem } from '@tamagui/group'
 import { RovingFocusGroup } from '@tamagui/roving-focus'
@@ -12,7 +13,6 @@ import {
   composeEventHandlers,
   composeRefs,
   createStyledContext,
-  isWeb,
   styled,
   useEvent,
   withStaticProperties,

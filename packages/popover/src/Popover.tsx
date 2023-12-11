@@ -4,6 +4,7 @@ import { Adapt, useAdaptParent } from '@tamagui/adapt'
 import { Animate } from '@tamagui/animate'
 import { hideOthers } from '@tamagui/aria-hidden'
 import { useComposedRefs } from '@tamagui/compose-refs'
+import { isWeb } from '@tamagui/constants'
 import {
   MediaQueryKey,
   ScopedProps,
@@ -15,7 +16,6 @@ import {
   View,
   composeEventHandlers,
   createStyledContext,
-  isWeb,
   useEvent,
   useGet,
   useMedia,

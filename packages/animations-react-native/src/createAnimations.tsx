@@ -1,10 +1,10 @@
+import { isWeb } from '@tamagui/constants'
 import { usePresence } from '@tamagui/use-presence'
 import {
   AnimatedNumberStrategy,
   AnimationDriver,
   AnimationProp,
   UniversalAnimatedNumber,
-  isWeb,
   useEvent,
   useIsomorphicLayoutEffect,
 } from '@tamagui/web'

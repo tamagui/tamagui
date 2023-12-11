@@ -1,12 +1,12 @@
 import { useIsPresent } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
+import { isWeb } from '@tamagui/constants'
 import {
   GetProps,
   TamaguiElement,
   Theme,
   composeEventHandlers,
   createStyledContext,
-  isWeb,
   styled,
   useConfiguration,
   useEvent,

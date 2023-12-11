@@ -1,6 +1,7 @@
 // fork of radix
 // https://github.com/radix-ui/primitives/tree/main/packages/react/checkbox/src/Checkbox.tsx
 
+import { isWeb } from '@tamagui/constants'
 import {
   GetProps,
   SizeTokens,
@@ -8,7 +9,6 @@ import {
   composeEventHandlers,
   createStyledContext,
   getVariableValue,
-  isWeb,
   styled,
   useComposedRefs,
   useProps,

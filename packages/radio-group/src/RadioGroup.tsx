@@ -1,11 +1,11 @@
 // forked from Radix UI
 // https://github.com/radix-ui/primitives/blob/main/packages/react/radio-group/src/RadioGroup.tsx
 
+import { isWeb } from '@tamagui/constants'
 import {
   GetProps,
   composeEventHandlers,
   getVariableValue,
-  isWeb,
   styled,
   useComposedRefs,
   withStaticProperties,

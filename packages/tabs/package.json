@@ -29,6 +29,7 @@
     }
   },
   "dependencies": {
+    "@tamagui/constants": "1.79.9",
     "@tamagui/create-context": "1.79.9",
     "@tamagui/get-button-sized": "1.79.9",
     "@tamagui/group": "1.79.9",

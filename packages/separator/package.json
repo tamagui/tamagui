@@ -29,6 +29,7 @@
     }
   },
   "dependencies": {
+    "@tamagui/constants": "1.79.9",
     "@tamagui/core": "1.79.9"
   },
   "peerDependencies": {

@@ -1,7 +1,7 @@
+import { isWeb } from '@tamagui/constants'
 import {
   MediaQueryKey,
   isTouchable,
-  isWeb,
   useIsomorphicLayoutEffect,
   useMedia,
   withStaticProperties,

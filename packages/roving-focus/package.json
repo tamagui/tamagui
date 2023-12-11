@@ -33,6 +33,7 @@
   "dependencies": {
     "@tamagui/collection": "1.79.9",
     "@tamagui/compose-refs": "1.79.9",
+    "@tamagui/constants": "1.79.9",
     "@tamagui/core": "1.79.9",
     "@tamagui/create-context": "1.79.9",
     "@tamagui/use-controllable-state": "1.79.9",
