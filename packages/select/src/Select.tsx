@@ -389,6 +389,10 @@ export const Select = withStaticProperties(
       }
     }, [open])
 
+    React.useEffect(() => {
+      emitValue(value)
+    }, [value])
+
     const [activeIndex, setActiveIndex] = React.useState<number | null>(0)
 
     const [emitValue, valueSubscribe] = useEmitter<any>()
