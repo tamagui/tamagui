@@ -227,3 +227,8 @@ export const RadioGroupDemo = lazyDemo(
   // @ts-ignore
   import('@tamagui/demos/demo/RadioGroupDemo').then((x) => x.RadioGroupDemo)
 )
+
+export const ContextMenuDemo = lazyDemo(
+  // @ts-ignore
+  import('@tamagui/demos/demo/ContextMenuDemo').then((x) => x.ContextMenuDemo)
+)
