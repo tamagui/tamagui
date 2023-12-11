@@ -48,14 +48,14 @@ export function Header(props: HeaderProps) {
       <XStack
         // @ts-ignore
         pos="fixed"
-        top={0}
-        left={0}
-        right={0}
+        t={0}
+        l={0}
+        r={0}
         ai="center"
         jc="center"
         zi={50000}
         $gtSm={{
-          px: '$4',
+          px: '$1',
         }}
       >
         <XStack width="100%" maw={1120} pos="relative">
