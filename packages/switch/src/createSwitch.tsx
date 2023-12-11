@@ -207,7 +207,7 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
 
     return (
       <>
-        {/* @ts-ignore */}
+        {/* @ts-expect-error todo */}
         <Frame
           tag={isInsideButton ? 'span' : 'button'}
           unstyled={unstyled}

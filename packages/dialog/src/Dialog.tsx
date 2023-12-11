@@ -25,7 +25,12 @@ import { FocusScope, FocusScopeProps } from '@tamagui/focus-scope'
 import { PortalHost, PortalItem, PortalItemProps } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
 import { Overlay, Sheet, SheetController } from '@tamagui/sheet'
-import { ThemeableStack, YStack, YStackProps } from '@tamagui/stacks'
+import {
+  ButtonNestingContext,
+  ThemeableStack,
+  YStack,
+  YStackProps,
+} from '@tamagui/stacks'
 import { H2, Paragraph } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
@@ -92,11 +97,12 @@ interface DialogTriggerProps extends StackProps {}
 const DialogTrigger = DialogTriggerFrame.styleable(
   (props: ScopedProps<DialogTriggerProps>, forwardedRef) => {
     const { __scopeDialog, ...triggerProps } = props
+    const isInsideButton = React.useContext(ButtonNestingContext)
     const context = useDialogContext(TRIGGER_NAME, __scopeDialog)
     const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef)
     return (
       <DialogTriggerFrame
-        tag="button"
+        tag={isInsideButton ? 'span' : 'button'}
         aria-haspopup="dialog"
         aria-expanded={context.open}
         aria-controls={context.contentId}
