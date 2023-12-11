@@ -16,12 +16,6 @@ export const getStaticPaths = (async () => {
       {
         params: {
           section: 'forms',
-          part: 'auth',
-        },
-      },
-      {
-        params: {
-          section: 'forms',
           part: 'inputs',
         },
       },
