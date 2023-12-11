@@ -5,7 +5,6 @@ import {
   GetProps,
   TamaguiElement,
   Theme,
-  composeEventHandlers,
   createStyledContext,
   styled,
   useConfiguration,
@@ -13,6 +12,7 @@ import {
   useThemeName,
 } from '@tamagui/core'
 import { Dismissable, DismissableProps } from '@tamagui/dismissable'
+import { composeEventHandlers } from '@tamagui/helpers'
 import { PortalItem } from '@tamagui/portal'
 import { ThemeableStack } from '@tamagui/stacks'
 import * as React from 'react'

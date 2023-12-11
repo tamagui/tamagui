@@ -2,7 +2,7 @@
 import '@tamagui/polyfill-dev'
 
 import { isWeb } from '@tamagui/constants'
-import { useIsomorphicLayoutEffect } from '@tamagui/core'
+import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { YStack } from '@tamagui/stacks'
 import * as React from 'react'
 import { createPortal } from 'react-dom'

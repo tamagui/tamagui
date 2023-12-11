@@ -14,17 +14,16 @@ import {
   TamaguiElement,
   Theme,
   View,
-  composeEventHandlers,
   createStyledContext,
   useEvent,
   useGet,
   useMedia,
   useThemeName,
-  withStaticProperties,
 } from '@tamagui/core'
 import { DismissableProps } from '@tamagui/dismissable'
 import { FloatingOverrideContext } from '@tamagui/floating'
 import { FocusScope, FocusScopeProps } from '@tamagui/focus-scope'
+import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import {
   Popper,
   PopperAnchor,

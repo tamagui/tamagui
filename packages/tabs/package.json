@@ -34,6 +34,7 @@
     "@tamagui/create-context": "1.79.9",
     "@tamagui/get-button-sized": "1.79.9",
     "@tamagui/group": "1.79.9",
+    "@tamagui/helpers": "1.79.9",
     "@tamagui/roving-focus": "1.79.9",
     "@tamagui/stacks": "1.79.9",
     "@tamagui/use-controllable-state": "1.79.9",

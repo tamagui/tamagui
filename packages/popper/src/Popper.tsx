@@ -2,6 +2,7 @@
 
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
+import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import {
   SizeTokens,
   StackProps,
@@ -9,7 +10,6 @@ import {
   createStyledContext,
   getVariableValue,
   styled,
-  useIsomorphicLayoutEffect,
   useProps,
 } from '@tamagui/core'
 import type { ScopedProps } from '@tamagui/core'

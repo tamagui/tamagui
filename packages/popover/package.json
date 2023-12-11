@@ -41,6 +41,7 @@
     "@tamagui/dismissable": "1.79.9",
     "@tamagui/floating": "1.79.9",
     "@tamagui/focus-scope": "1.79.9",
+    "@tamagui/helpers": "1.79.9",
     "@tamagui/polyfill-dev": "1.79.9",
     "@tamagui/popper": "1.79.9",
     "@tamagui/portal": "1.79.9",

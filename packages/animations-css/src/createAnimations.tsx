@@ -1,13 +1,8 @@
-import {
-  AnimationDriver,
-  Stack,
-  Text,
-  UniversalAnimatedNumber,
-  useIsomorphicLayoutEffect,
-} from '@tamagui/core'
+import { useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { AnimationDriver, Stack, Text, UniversalAnimatedNumber } from '@tamagui/core'
 // import { animate } from '@tamagui/cubic-bezier-animator'
 import { usePresence } from '@tamagui/use-presence'
-import { useEffect, useId, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export function createAnimations<A extends Object>(animations: A): AnimationDriver<A> {
   const reactionListeners = new WeakMap<any, Set<Function>>()

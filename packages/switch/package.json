@@ -37,6 +37,7 @@
     "@tamagui/create-context": "1.79.9",
     "@tamagui/focusable": "1.79.9",
     "@tamagui/get-token": "1.79.9",
+    "@tamagui/helpers": "1.79.9",
     "@tamagui/label": "1.79.9",
     "@tamagui/stacks": "1.79.9",
     "@tamagui/use-controllable-state": "1.79.9",

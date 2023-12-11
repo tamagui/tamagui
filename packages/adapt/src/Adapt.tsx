@@ -1,11 +1,7 @@
-import { isWeb } from '@tamagui/constants'
-import {
-  MediaQueryKey,
-  isTouchable,
-  useIsomorphicLayoutEffect,
-  useMedia,
-  withStaticProperties,
-} from '@tamagui/core'
+import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { isTouchable } from '@tamagui/constants'
+import { MediaQueryKey, useMedia } from '@tamagui/core'
+import { withStaticProperties } from '@tamagui/helpers'
 import { createContext, createElement, useContext, useMemo, useState } from 'react'
 
 type MediaQueryKeyString = MediaQueryKey extends string ? MediaQueryKey : never

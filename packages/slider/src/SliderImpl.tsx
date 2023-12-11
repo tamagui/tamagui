@@ -3,13 +3,9 @@
  * -----------------------------------------------------------------------------------------------*/
 
 import { isWeb } from '@tamagui/constants'
-import {
-  TamaguiElement,
-  composeEventHandlers,
-  getVariableValue,
-  styled,
-} from '@tamagui/core'
+import { TamaguiElement, getVariableValue, styled } from '@tamagui/core'
 import { getSize } from '@tamagui/get-token'
+import { composeEventHandlers } from '@tamagui/helpers'
 import { YStack } from '@tamagui/stacks'
 import * as React from 'react'
 import { View } from 'react-native'

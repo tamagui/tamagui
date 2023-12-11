@@ -1,7 +1,7 @@
 // forked from radix-ui
 
 import { composeRefs, useComposedRefs } from '@tamagui/compose-refs'
-import { isWeb } from '@tamagui/constants'
+import { isClient, isWeb } from '@tamagui/constants'
 import {
   GestureReponderEvent,
   GetProps,
@@ -10,11 +10,10 @@ import {
   createShallowSetState,
   getTokens,
   getVariableValue,
-  isClient,
   styled,
-  withStaticProperties,
 } from '@tamagui/core'
 import { getSize } from '@tamagui/get-token'
+import { withStaticProperties } from '@tamagui/helpers'
 import { clamp, composeEventHandlers } from '@tamagui/helpers'
 import { SizableStackProps, ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'

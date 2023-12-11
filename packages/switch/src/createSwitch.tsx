@@ -5,11 +5,10 @@ import {
   SizeTokens,
   StackProps,
   TamaguiComponentExpectingVariants,
-  composeEventHandlers,
   useProps,
-  withStaticProperties,
 } from '@tamagui/core'
 import { registerFocusable } from '@tamagui/focusable'
+import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { useLabelContext } from '@tamagui/label'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { usePrevious } from '@tamagui/use-previous'

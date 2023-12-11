@@ -43,6 +43,7 @@
     "@tamagui/dismissable": "1.79.9",
     "@tamagui/focus-scope": "1.79.9",
     "@tamagui/get-token": "1.79.9",
+    "@tamagui/helpers": "1.79.9",
     "@tamagui/list-item": "1.79.9",
     "@tamagui/portal": "1.79.9",
     "@tamagui/remove-scroll": "1.79.9",

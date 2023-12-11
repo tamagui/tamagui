@@ -7,19 +7,18 @@ import {
   GetProps,
   SizeTokens,
   TamaguiElement,
-  composeEventHandlers,
   createStyledContext,
   getVariableValue,
   styled,
   useProps,
   useTheme,
-  withStaticProperties,
 } from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
 import { registerFocusable } from '@tamagui/focusable'
 import { getFontSize } from '@tamagui/font-size'
 import { getSize } from '@tamagui/get-token'
+import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { useLabelContext } from '@tamagui/label'
 import { ThemeableStack } from '@tamagui/stacks'

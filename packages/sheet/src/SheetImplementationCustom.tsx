@@ -1,14 +1,13 @@
 import { AdaptParentContext } from '@tamagui/adapt'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { isWeb } from '@tamagui/constants'
+import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import {
   Theme,
   getConfig,
   themeable,
   useConfiguration,
   useEvent,
-  useIsomorphicLayoutEffect,
   useThemeName,
 } from '@tamagui/core'
 import { Portal } from '@tamagui/portal'

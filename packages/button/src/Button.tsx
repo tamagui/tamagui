@@ -1,5 +1,6 @@
 import { getFontSize } from '@tamagui/font-size'
 import { getButtonSized } from '@tamagui/get-button-sized'
+import { withStaticProperties } from '@tamagui/helpers'
 import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { ThemeableStack } from '@tamagui/stacks'
 import {
@@ -19,7 +20,6 @@ import {
   styled,
   useDidFinishSSR,
   useProps,
-  withStaticProperties,
 } from '@tamagui/web'
 import { FunctionComponent, createContext, useContext } from 'react'
 

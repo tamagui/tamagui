@@ -37,6 +37,7 @@
     "@tamagui/constants": "1.79.9",
     "@tamagui/core": "1.79.9",
     "@tamagui/create-context": "1.79.9",
+    "@tamagui/helpers": "1.79.9",
     "@tamagui/portal": "1.79.9",
     "@tamagui/remove-scroll": "1.79.9",
     "@tamagui/scroll-view": "1.79.9",

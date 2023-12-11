@@ -48,7 +48,6 @@ export * from './helpers/pseudoDescriptors'
 export * from './helpers/themeable'
 export * from './helpers/themes'
 export * from './helpers/createShallowSetState'
-export * from './helpers/withStaticProperties'
 
 export {
   configureMedia,

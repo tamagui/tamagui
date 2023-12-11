@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "@tamagui/core": "1.79.9",
+    "@tamagui/helpers": "1.79.9",
     "@tamagui/image": "1.79.9",
     "@tamagui/shapes": "1.79.9",
     "@tamagui/text": "1.79.9"

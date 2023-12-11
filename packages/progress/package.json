@@ -35,6 +35,7 @@
     "@tamagui/core": "1.79.9",
     "@tamagui/create-context": "1.79.9",
     "@tamagui/get-token": "1.79.9",
+    "@tamagui/helpers": "1.79.9",
     "@tamagui/stacks": "1.79.9"
   },
   "peerDependencies": {

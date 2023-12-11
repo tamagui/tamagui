@@ -1,16 +1,15 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
+import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import {
   GetProps,
   Stack,
   StackProps,
   TamaguiComponent,
   TamaguiComponentExpectingVariants,
-  composeEventHandlers,
-  useDidFinishSSR,
-  useIsomorphicLayoutEffect,
-  withStaticProperties,
 } from '@tamagui/core'
+import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { RemoveScroll } from '@tamagui/remove-scroll'
+import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import { FunctionComponent, RefAttributes, forwardRef, memo, useMemo } from 'react'
 import { Platform, View } from 'react-native'
 

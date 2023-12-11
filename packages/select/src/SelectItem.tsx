@@ -1,6 +1,5 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { isWeb } from '@tamagui/constants'
-import { useIsomorphicLayoutEffect } from '@tamagui/core'
+import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { ListItemFrame, ListItemProps, useListItem } from '@tamagui/list-item'
 import * as React from 'react'
 

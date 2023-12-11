@@ -31,6 +31,7 @@
   "dependencies": {
     "@tamagui/compose-refs": "1.79.9",
     "@tamagui/core": "1.79.9",
+    "@tamagui/helpers": "1.79.9",
     "@tamagui/use-escape-keydown": "1.79.9",
     "@tamagui/use-event": "1.79.9"
   },

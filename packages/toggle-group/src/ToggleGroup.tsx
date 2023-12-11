@@ -3,6 +3,7 @@ import { registerFocusable } from '@tamagui/focusable'
 import { getFontSize } from '@tamagui/font-size'
 import { getSize } from '@tamagui/get-token'
 import { Group, GroupProps, useGroupItem } from '@tamagui/group'
+import { withStaticProperties } from '@tamagui/helpers'
 import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { RovingFocusGroup } from '@tamagui/roving-focus'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -15,7 +16,6 @@ import {
   getVariableValue,
   styled,
   useTheme,
-  withStaticProperties,
 } from '@tamagui/web'
 import React from 'react'
 

@@ -1,4 +1,5 @@
-import { Stack, withStaticProperties } from '@tamagui/core'
+import { Stack } from '@tamagui/core'
+import { withStaticProperties } from '@tamagui/helpers'
 import React from 'react'
 
 import { RovingFocusGroupProps, RovingFocusItemProps } from './RovingFocusGroup'

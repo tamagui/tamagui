@@ -2,6 +2,7 @@ import { composeRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
 import { getButtonSized } from '@tamagui/get-button-sized'
 import { Group, GroupProps, useGroupItem } from '@tamagui/group'
+import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { RovingFocusGroup } from '@tamagui/roving-focus'
 import { SizableStack, ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -11,11 +12,9 @@ import {
   SizeTokens,
   TamaguiElement,
   Theme,
-  composeEventHandlers,
   createStyledContext,
   styled,
   useEvent,
-  withStaticProperties,
 } from '@tamagui/web'
 import * as React from 'react'
 import type { LayoutRectangle } from 'react-native'

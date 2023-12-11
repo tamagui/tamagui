@@ -1,6 +1,6 @@
 import { Adapt, useAdaptParent } from '@tamagui/adapt'
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { isWeb } from '@tamagui/constants'
+import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import {
   FontSizeTokens,
   GetProps,
@@ -9,10 +9,9 @@ import {
   styled,
   useEvent,
   useGet,
-  useIsomorphicLayoutEffect,
-  withStaticProperties,
 } from '@tamagui/core'
 import { getSpace } from '@tamagui/get-token'
+import { withStaticProperties } from '@tamagui/helpers'
 import { ListItem, ListItemProps } from '@tamagui/list-item'
 import { PortalHost } from '@tamagui/portal'
 import { Separator } from '@tamagui/separator'

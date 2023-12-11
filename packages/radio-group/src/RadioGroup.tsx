@@ -3,16 +3,11 @@
 
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
-import {
-  GetProps,
-  composeEventHandlers,
-  getVariableValue,
-  styled,
-  withStaticProperties,
-} from '@tamagui/core'
+import { GetProps, getVariableValue, styled } from '@tamagui/core'
 import { Scope, createContextScope } from '@tamagui/create-context'
 import { registerFocusable } from '@tamagui/focusable'
 import { getSize } from '@tamagui/get-token'
+import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { useLabelContext } from '@tamagui/label'
 import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
