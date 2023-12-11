@@ -4052,13 +4052,7 @@ declare const ContextMenu: {
             readonly elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         };
     }>;
-    ItemImage: React.ForwardRefExoticComponent<import("@tamagui/menu/types/createNativeMenu/createNativeMenuTypes").MenuItemCommonProps & {
-        source: import("react-native").ImageSourcePropType;
-        ios?: {
-            style?: import("react-native-ios-context-menu/build/types/ImageItemConfig").ImageOptions | undefined;
-            lazy?: boolean | undefined;
-        } | undefined;
-    } & React.RefAttributes<import("react-native").Image>>;
+    ItemImage: React.ForwardRefExoticComponent<import("react-native").ImageProps & React.RefAttributes<import("react-native").Image>>;
     Preview: {
         (): null;
         displayName: string;

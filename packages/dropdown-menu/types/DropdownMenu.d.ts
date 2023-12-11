@@ -3963,20 +3963,8 @@ export declare const DropdownMenu: ({
         }): JSX.Element;
         displayName: string;
     };
-    ItemImage: React.ForwardRefExoticComponent<import("@tamagui/menu/types/createNativeMenu/createNativeMenuTypes").MenuItemCommonProps & {
-        source: import("react-native").ImageSourcePropType;
-        ios?: {
-            style?: import("react-native-ios-context-menu/build/types/ImageItemConfig").ImageOptions | undefined;
-            lazy?: boolean | undefined;
-        } | undefined;
-    } & React.RefAttributes<import("react-native").Image>> | {
-        (props: import("@tamagui/menu/types/createNativeMenu/createNativeMenuTypes").MenuItemCommonProps & {
-            source: import("react-native").ImageSourcePropType;
-            ios?: {
-                style?: import("react-native-ios-context-menu/build/types/ImageItemConfig").ImageOptions | undefined;
-                lazy?: boolean | undefined;
-            } | undefined;
-        } & React.RefAttributes<import("react-native").Image> & {
+    ItemImage: React.ForwardRefExoticComponent<import("react-native").ImageProps & React.RefAttributes<import("react-native").Image>> | {
+        (props: import("react-native").ImageProps & React.RefAttributes<import("react-native").Image> & import("@tamagui/menu/types/createNativeMenu/createNativeMenuTypes").MenuItemCommonProps & {
             source: import("react-native").ImageSourcePropType;
             ios?: {
                 style?: import("react-native-ios-context-menu/build/types/ImageItemConfig").ImageOptions | undefined;
