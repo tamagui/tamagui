@@ -24,9 +24,9 @@
   },
   "dependencies": {
     "@react-native-menu/menu": "^0.9.1",
-    "react-native-ios-context-menu": "^2.3.0"
     "@tamagui/core": "1.79.9",
-    "@tamagui/popover": "1.79.9"
+    "@tamagui/popover": "1.79.9",
+    "react-native-ios-context-menu": "^2.3.0"
   },
   "peerDependencies": {
     "react": "*"

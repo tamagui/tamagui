@@ -6253,9 +6253,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/context-menu@workspace:packages/context-menu"
   dependencies:
-    "@tamagui/build": 1.79.1
-    "@tamagui/core": 1.79.1
-    "@tamagui/popover": 1.79.1
+    "@tamagui/build": 1.79.9
+    "@tamagui/core": 1.79.9
+    "@tamagui/popover": 1.79.9
     react: ^18.2.0
   peerDependencies:
     react: "*"
@@ -6404,20 +6404,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-
 "@tamagui/dropdown-menu@workspace:packages/dropdown-menu":
   version: 0.0.0-use.local
   resolution: "@tamagui/dropdown-menu@workspace:packages/dropdown-menu"
   dependencies:
-    "@tamagui/build": 1.79.1
-    "@tamagui/core": 1.79.1
-    "@tamagui/popover": 1.79.1
+    "@tamagui/build": 1.79.9
+    "@tamagui/core": 1.79.9
+    "@tamagui/popover": 1.79.9
     react: ^18.2.0
   peerDependencies:
     react: "*"
   languageName: unknown
   linkType: soft
-
 
 "@tamagui/fake-react-native@1.79.9, @tamagui/fake-react-native@workspace:packages/fake-react-native":
   version: 0.0.0-use.local
@@ -6440,20 +6438,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-
 "@tamagui/focus-guard@workspace:packages/focus-guard":
   version: 0.0.0-use.local
   resolution: "@tamagui/focus-guard@workspace:packages/focus-guard"
   dependencies:
-    "@tamagui/build": 1.79.1
-    "@tamagui/compose-refs": 1.79.1
-    "@tamagui/use-event": 1.79.1
+    "@tamagui/build": 1.79.9
+    "@tamagui/compose-refs": 1.79.9
+    "@tamagui/use-event": 1.79.9
     react: ^18.2.0
   peerDependencies:
     react: "*"
   languageName: unknown
   linkType: soft
-
 
 "@tamagui/focus-scope@1.79.9, @tamagui/focus-scope@workspace:packages/focus-scope":
   version: 0.0.0-use.local
