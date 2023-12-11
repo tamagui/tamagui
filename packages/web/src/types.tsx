@@ -2182,12 +2182,6 @@ type NarrowRaw<A> =
 
 export type Narrow<A> = Try<A, [], NarrowRaw<A>>
 
-export type NativePlatform = 'web' | 'mobile' | 'android' | 'ios'
-export type NativeValue<Platform extends NativePlatform = NativePlatform> =
-  | boolean
-  | Platform
-  | Platform[]
-
 /**
  * `StyleProp` copied from React Native:
  *  Exported to fix https://github.com/tamagui/tamagui/issues/1258
