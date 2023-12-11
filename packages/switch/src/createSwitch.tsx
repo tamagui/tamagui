@@ -11,7 +11,7 @@ import {
 } from '@tamagui/core'
 import { registerFocusable } from '@tamagui/focusable'
 import { useLabelContext } from '@tamagui/label'
-import { YStack } from '@tamagui/stacks'
+import { ButtonNestingContext, YStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { usePrevious } from '@tamagui/use-previous'
 import * as React from 'react'
@@ -203,11 +203,13 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
       }, [props.id, setChecked])
     }
 
+    const isInsideButton = React.useContext(ButtonNestingContext)
+
     return (
       <>
         {/* @ts-ignore */}
         <Frame
-          tag="button"
+          tag={isInsideButton ? 'span' : 'button'}
           unstyled={unstyled}
           size={size}
           checked={checked}
