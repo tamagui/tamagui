@@ -1,3 +1,3 @@
 /// <reference types="react" />
-export declare function DropdoownMenuDemo(): JSX.Element;
+export declare function DropDownMenuDemo(): JSX.Element;
 //# sourceMappingURL=DropDownMenuDemo.d.ts.map

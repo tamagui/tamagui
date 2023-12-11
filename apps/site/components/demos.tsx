@@ -232,3 +232,8 @@ export const ContextMenuDemo = lazyDemo(
   // @ts-ignore
   import('@tamagui/demos/demo/ContextMenuDemo').then((x) => x.ContextMenuDemo)
 )
+
+export const DropDownMenuDemo = lazyDemo(
+  // @ts-ignore
+  import('@tamagui/demos/demo/DropDownMenuDemo').then((x) => x.DropDownMenuDemo)
+)

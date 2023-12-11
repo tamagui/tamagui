@@ -5,7 +5,7 @@ import { ChevronRight } from '@tamagui/lucide-icons'
 import React from 'react'
 import { Button, Text, useEvent } from 'tamagui'
 
-export function DropdoownMenuDemo() {
+export function DropDownMenuDemo() {
   const [bookmarksChecked, setBookmarksChecked] = React.useState(true)
   const [native, setNative] = React.useState(false)
 
