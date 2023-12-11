@@ -1,15 +1,14 @@
 {
   "name": "@tamagui/bento",
   "version": "1.79.7",
-  "private": true,
   "sideEffects": [
     "*.css"
   ],
-  "source": "src/outside.ts",
+  "source": "src/index.ts",
   "types": "./types/index.d.ts",
-  "main": "dist/cjs/outside.js",
-  "module": "dist/esm/outside.js",
-  "module:jsx": "dist/jsx/outside.js",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "module:jsx": "dist/jsx",
   "files": [
     "src",
     "types",
@@ -90,6 +89,7 @@
     "@rnx-kit/metro-config": "^1.3.5",
     "@rnx-kit/metro-resolver-symlinks": "^0.1.26",
     "@tamagui/babel-plugin": "1.79.7",
+    "@tamagui/build": "1.79.7",
     "@welldone-software/why-did-you-render": "^7.0.1",
     "babel-plugin-transform-inline-environment-variables": "^0.4.4",
     "html-webpack-plugin": "^5.5.0",

@@ -5992,6 +5992,7 @@ __metadata:
     "@shopify/restyle": ^2.4.2
     "@tamagui/animations-reanimated": 1.79.7
     "@tamagui/babel-plugin": 1.79.7
+    "@tamagui/build": 1.79.7
     "@tamagui/cli": 1.79.7
     "@tamagui/colors": 1.79.7
     "@tamagui/config": 1.79.7
