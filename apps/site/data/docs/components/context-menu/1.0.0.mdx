@@ -465,3 +465,100 @@ Use inside CheckboxItem or RadioItem to render when item is checked, so basicall
   <CheckmarkIcon /> {/* doesn't work with native prop */}
 </ContextMenu.ItemIndicator>
 ```
+
+### Lable
+
+Render and non focusable Label
+
+on native Menus only one Label is supported per each Menu and SubMenu
+
+### Arrow
+
+Render an Arrow componen
+
+on native Menus only one Label is supported per each Menu and SubMenu
+
+<PropsTable
+  data={[
+    {
+      name: 'size',
+      type: 'number|SizeToken',
+      required: true,
+    },
+  ]}
+/>
+
+### Separator
+
+Render a content Separator component
+only work with non Native Menus
+
+### Sub
+
+Component hold Sub Menu part
+
+### SubContent
+
+Render Content of SubMenu
+
+### SubTrigger
+
+same as Trigger but for SubMenu
+
+### Preview (iOS only)
+
+When Context Menu is Visible render a Custom Component
+needs to pass a function as a child
+only works with native menu iOS
+
+<Notice>
+  Should be rendered as a child of `<Item.Content />`
+</Notice>
+
+<PropsTable
+  data={[
+    {
+      name: 'size',
+      type: 'number',
+      platform: 'ios',
+    },
+    {
+      name: 'onPress',
+      type: 'function',
+      platform: 'ios',
+    },
+    {
+      name: 'isResizeAnimated',
+      type: 'boolean',
+      default: true,
+      platform: 'ios',
+    },
+    {
+      name: 'borderRadius',
+      type: 'number',
+      required: false,
+    },
+    {
+      name: 'backgroundColor',
+      type: 'object',
+    },
+    {
+      name: 'preferredCommitStyle',
+      type: 'pop|dismiss',
+    },
+  ]}
+/>
+
+```jsx line=1
+<ContextMenu.Preview
+  // optional props:
+  preferredCommitStyle="pop" // or "dismiss"
+  backgroundColor={{
+    // or a color string directly
+    dark: 'black',
+    light: 'white',
+  }}
+>
+  {() => <Preview />}
+</ContextMenu.Preview>
+```
