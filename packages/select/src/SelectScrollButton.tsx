@@ -1,6 +1,6 @@
 import { autoUpdate, offset, useFloating } from '@floating-ui/react'
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { TamaguiElement, useIsomorphicLayoutEffect } from '@tamagui/core'
+import { TamaguiElement } from '@tamagui/core'
 import { YStack } from '@tamagui/stacks'
 import * as React from 'react'
 import { flushSync } from 'react-dom'

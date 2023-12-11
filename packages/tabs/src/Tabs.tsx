@@ -1,3 +1,4 @@
+import { composeRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
 import { getButtonSized } from '@tamagui/get-button-sized'
 import { Group, GroupProps, useGroupItem } from '@tamagui/group'
@@ -11,7 +12,6 @@ import {
   TamaguiElement,
   Theme,
   composeEventHandlers,
-  composeRefs,
   createStyledContext,
   styled,
   useEvent,

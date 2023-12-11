@@ -359,7 +359,9 @@ declare const TabsContentFrame: import("@tamagui/web").TamaguiComponent<(Omit<im
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderRelease?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-    onResponderStart?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderStart?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * @deprecated Use Tabs.Tab instead
+     */
     onResponderTerminationRequest?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onResponderTerminate?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onStartShouldSetResponderCapture?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
@@ -1907,7 +1909,9 @@ export declare const Tabs: import("@tamagui/web").ReactComponentWithRef<Omit<(Om
         onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderRelease?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-        onResponderStart?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+        onResponderStart?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+         * @deprecated Use Tabs.Tab instead
+         */
         onResponderTerminationRequest?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
         onResponderTerminate?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onStartShouldSetResponderCapture?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;

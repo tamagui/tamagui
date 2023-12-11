@@ -6045,6 +6045,7 @@ __metadata:
   resolution: "@tamagui/checkbox@workspace:packages/checkbox"
   dependencies:
     "@tamagui/build": 1.79.9
+    "@tamagui/compose-refs": 1.79.9
     "@tamagui/constants": 1.79.9
     "@tamagui/core": 1.79.9
     "@tamagui/create-context": 1.79.9
@@ -7558,6 +7559,7 @@ __metadata:
   resolution: "@tamagui/tabs@workspace:packages/tabs"
   dependencies:
     "@tamagui/build": 1.79.9
+    "@tamagui/compose-refs": 1.79.9
     "@tamagui/constants": 1.79.9
     "@tamagui/create-context": 1.79.9
     "@tamagui/get-button-sized": 1.79.9

@@ -1,13 +1,13 @@
 // forked from Radix UI
 // https://github.com/radix-ui/primitives/blob/main/packages/react/radio-group/src/RadioGroup.tsx
 
+import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
 import {
   GetProps,
   composeEventHandlers,
   getVariableValue,
   styled,
-  useComposedRefs,
   withStaticProperties,
 } from '@tamagui/core'
 import { Scope, createContextScope } from '@tamagui/create-context'

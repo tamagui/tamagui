@@ -12,7 +12,7 @@ import {
   useIsomorphicLayoutEffect,
   useProps,
 } from '@tamagui/core'
-import type { ScopedProps, StackStyleProps } from '@tamagui/core'
+import type { ScopedProps } from '@tamagui/core'
 import {
   Coords,
   OffsetOptions,
