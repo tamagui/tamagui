@@ -1,5 +1,5 @@
 import { ContextMenu } from '@tamagui/context-menu'
-import { isAndroid } from '@tamagui/core'
+import { isAndroid, isWeb } from '@tamagui/core'
 import { Calendar, Check } from '@tamagui/lucide-icons'
 import { ChevronRight } from '@tamagui/lucide-icons'
 import React from 'react'
@@ -105,7 +105,7 @@ export function ContextMenuDemo() {
             <ContextMenu.SubTrigger jc="space-between" key="actions-trigger">
               <>
                 <ContextMenu.ItemTitle>Actions</ContextMenu.ItemTitle>
-                {!native ? <ChevronRight size="$1" /> : null}
+                {!native || isWeb ? <ChevronRight size="$1" /> : null}
               </>
             </ContextMenu.SubTrigger>
             <ContextMenu.Portal zIndex={200}>

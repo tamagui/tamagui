@@ -1,4 +1,4 @@
-import { isAndroid } from '@tamagui/core'
+import { isAndroid, isWeb } from '@tamagui/core'
 import { DropdownMenu } from '@tamagui/dropdown-menu'
 import { Backpack, Calendar, Check } from '@tamagui/lucide-icons'
 import { ChevronRight } from '@tamagui/lucide-icons'
@@ -89,7 +89,7 @@ export function DropdoownMenuDemo() {
             <DropdownMenu.SubTrigger jc="space-between" key="actions-trigger">
               <>
                 <DropdownMenu.ItemTitle>Actions</DropdownMenu.ItemTitle>
-                {!native ? <ChevronRight size="$1" /> : null}
+                {!native || isWeb ? <ChevronRight size="$1" /> : null}
               </>
             </DropdownMenu.SubTrigger>
             <DropdownMenu.Portal zIndex={200}>
