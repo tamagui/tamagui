@@ -23,10 +23,13 @@ import {
 } from '@tamagui/web'
 import { FunctionComponent, createContext, useContext } from 'react'
 
+type ButtonVariant = 'outlined'
+
 export const ButtonContext = createStyledContext<
   Partial<
     TextContextStyles & {
       size: SizeTokens
+      variant?: ButtonVariant
     }
   >
 >({
@@ -41,6 +44,7 @@ export const ButtonContext = createStyledContext<
   maxFontSizeMultiplier: undefined,
   size: undefined,
   textAlign: undefined,
+  variant: undefined,
 })
 
 type ButtonIconProps = { color?: string; size?: number }
@@ -244,14 +248,17 @@ function useButton<Props extends ButtonProps>(
 
   const size = propsActive.size || (propsActive.unstyled ? undefined : '$true')
 
+  const color = propsActive.color as any
+
   const iconSize =
     (typeof size === 'number' ? size * 0.5 : getFontSize(size as FontSizeTokens)) *
     scaleIcon
 
   const getThemedIcon = useGetThemedIcon({
     size: iconSize,
-    color: propsActive.color as any,
+    color,
   })
+
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)
   const spaceSize = space ?? getVariableValue(iconSize) * scaleSpace
   const contents = noTextWrap

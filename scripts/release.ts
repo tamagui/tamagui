@@ -64,12 +64,10 @@ const sleep = (ms) => {
   return new Promise((res) => setTimeout(res, ms))
 }
 
-if (!finish) {
-  if (!skipVersion) {
-    console.info('Publishing version:', nextVersion, '\n')
-  } else {
-    console.info(`Re-publishing ${curVersion}`)
-  }
+if (!skipVersion) {
+  console.info('Version:', nextVersion, '\n')
+} else {
+  console.info(`Re-publishing ${curVersion}`)
 }
 
 async function run() {
@@ -82,7 +80,7 @@ async function run() {
       if ((await exec(`git rev-parse --abbrev-ref HEAD`)).stdout.trim() !== 'master') {
         throw new Error(`Not on master`)
       }
-      if (!dirty && !rePublish) {
+      if (!dirty && !rePublish && !finish) {
         await spawnify(`git pull --rebase origin master`)
       }
     }
@@ -125,7 +123,11 @@ async function run() {
         return -1
       })
 
-    console.info(`Publishing in order:\n\n${packageJsons.map((x) => x.name).join('\n')}`)
+    if (!finish) {
+      console.info(
+        `Publishing in order:\n\n${packageJsons.map((x) => x.name).join('\n')}`
+      )
+    }
 
     async function checkDistDirs() {
       await Promise.all(
@@ -169,9 +171,8 @@ async function run() {
       await checkDistDirs()
     }
 
-    console.info('run checks')
-
     if (!finish) {
+      console.info('run checks')
       if (!skipTest) {
         await spawnify(`yarn fix`)
         await spawnify(`yarn lint`)
@@ -310,43 +311,45 @@ async function run() {
       }
     }
 
-    await sleep(4 * 1000)
+    if (!finish) {
+      await sleep(4 * 1000)
 
-    if (rePublish) {
-      // if all successful, re-tag as latest
-      await pMap(
-        packageJsons,
-        async ({ name, cwd }) => {
-          const tag = canary ? ` --tag canary` : ''
+      if (rePublish) {
+        // if all successful, re-tag as latest
+        await pMap(
+          packageJsons,
+          async ({ name, cwd }) => {
+            const tag = canary ? ` --tag canary` : ''
 
-          console.info(`Publishing ${name}${tag}`)
+            console.info(`Publishing ${name}${tag}`)
 
-          await spawnify(`npm publish${tag}`, {
-            cwd,
-          }).catch((err) => console.error(err))
-        },
-        {
-          concurrency: 15,
-        }
-      )
-    } else {
-      const distTag = canary ? 'canary' : 'latest'
+            await spawnify(`npm publish${tag}`, {
+              cwd,
+            }).catch((err) => console.error(err))
+          },
+          {
+            concurrency: 15,
+          }
+        )
+      } else {
+        const distTag = canary ? 'canary' : 'latest'
 
-      // if all successful, re-tag as latest (try and be fast)
-      await pMap(
-        packageJsons,
-        async ({ name, cwd }) => {
-          await spawnify(`npm dist-tag add ${name}@${version} ${distTag}`, {
-            cwd,
-          }).catch((err) => console.error(err))
-        },
-        {
-          concurrency: 20,
-        }
-      )
+        // if all successful, re-tag as latest (try and be fast)
+        await pMap(
+          packageJsons,
+          async ({ name, cwd }) => {
+            await spawnify(`npm dist-tag add ${name}@${version} ${distTag}`, {
+              cwd,
+            }).catch((err) => console.error(err))
+          },
+          {
+            concurrency: 20,
+          }
+        )
+      }
+
+      console.info(`✅ Published\n`)
     }
-
-    console.info(`✅ Published\n`)
 
     // then git tag, commit, push
     if (!finish) {
@@ -360,27 +363,34 @@ async function run() {
 
     await spawnify(`yarn upgrade:starters`)
     await spawnify(`yarn fix`)
+
+    const starterFreeDir = join(process.cwd(), '../starter-free')
     await spawnify(`yarn fix`, {
-      cwd: join(process.cwd(), 'starters/next-expo-solito'),
+      cwd: starterFreeDir,
     })
 
     const tagPrefix = canary ? 'canary' : 'v'
     const gitTag = `${tagPrefix}${version}`
 
-    if (!rePublish || reRun || finish) {
-      await spawnify(`git add -A`)
-      await spawnify(`git commit -m ${gitTag}`)
-      await spawnify(`git tag ${gitTag}`)
+    await finishAndCommit(starterFreeDir)
+    await finishAndCommit()
 
-      if (!dirty) {
-        // pull once more before pushing so if there was a push in interim we get it
-        await spawnify(`git pull --rebase origin master`)
+    async function finishAndCommit(cwd = process.cwd()) {
+      if (!rePublish || reRun || finish) {
+        await spawnify(`git add -A`, { cwd })
+        await spawnify(`git commit -m ${gitTag}`, { cwd })
+        await spawnify(`git tag ${gitTag}`, { cwd })
+
+        if (!dirty) {
+          // pull once more before pushing so if there was a push in interim we get it
+          await spawnify(`git pull --rebase origin HEAD`, { cwd })
+        }
+
+        await spawnify(`git push origin head`, { cwd })
+        await spawnify(`git push origin ${gitTag}`, { cwd })
+
+        console.info(`✅ Pushed and versioned\n`)
       }
-
-      await spawnify(`git push origin head`)
-      await spawnify(`git push origin ${gitTag}`)
-
-      console.info(`✅ Pushed and versioned\n`)
     }
 
     // console.info(`All done, cleanup up in...`)

@@ -9,13 +9,6 @@ import { $, ProcessPromise, cd, fetch, fs, sleep } from 'zx'
 let server: ProcessPromise | null = null
 
 const PACKAGE_ROOT = __dirname
-const PACKAGES_ROOT = join(PACKAGE_ROOT, '..')
-
-// if (process.env.NODE_ENV === 'test') {
-//   if (execSync(`git status --porcelain`).toString().trim()) {
-//     throw new Error(`-- ⚠️ Must commit changes to git repo before running test --`)
-//   }
-// }
 
 process.env.NODE_ENV = 'test'
 $.env.NODE_ENV = 'test'
@@ -44,7 +37,7 @@ test.beforeAll(async () => {
 
     cd(dir)
 
-    await $`YARN_ENABLE_IMMUTABLE_INSTALLS=false node ${tamaguiBin} ${appName} --template next-expo-solito`
+    await $`YARN_ENABLE_IMMUTABLE_INSTALLS=false node ${tamaguiBin} ${appName} --template starter-free`
 
     cd(appName)
 

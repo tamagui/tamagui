@@ -2,6 +2,7 @@ import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import { useMemo, useState } from 'react'
 import {
   Adapt,
+  FontSizeTokens,
   Label,
   Select,
   SelectProps,
@@ -108,7 +109,6 @@ export function SelectDemoItem(props: SelectProps) {
                 items.map((item, i) => {
                   return (
                     <Select.Item
-                      debug="verbose"
                       index={i}
                       key={item.name}
                       value={item.name.toLowerCase()}
@@ -135,7 +135,9 @@ export function SelectDemoItem(props: SelectProps) {
               width={'$4'}
               pointerEvents="none"
             >
-              <ChevronDown size={getFontSize((props.size ?? '$true') as any)} />
+              <ChevronDown
+                size={getFontSize((props.size as FontSizeTokens) ?? '$true')}
+              />
             </YStack>
           )}
         </Select.Viewport>

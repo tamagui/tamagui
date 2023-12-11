@@ -1,13 +1,14 @@
 import { createTamagui } from '@tamagui/core'
 import { shorthands } from '@tamagui/shorthands'
 
-import { themes } from './themes'
-import { tokens } from './tokens'
+import { animations } from './animations'
 import { fonts } from './fonts'
 import { media } from './media'
-import { animations } from './animations'
+import { themes } from './themes'
+import { tokens } from './tokens'
 
 const config = createTamagui({
+  defaultFont: 'body',
   animations,
   shouldAddPrefersColorThemes: true,
   themeClassNameOnRoot: true,
@@ -15,15 +16,15 @@ const config = createTamagui({
   fonts,
   themes,
   tokens,
-  media
+  media,
 })
 
-type AppConfig = typeof config;
+type AppConfig = typeof config
 
-declare module "tamagui" {
+declare module 'tamagui' {
   // overrides TamaguiCustomConfig so that custom types
   // work everywhere `tamagui` is imported
   interface TamaguiCustomConfig extends AppConfig {}
 }
 
-export default config;
+export default config

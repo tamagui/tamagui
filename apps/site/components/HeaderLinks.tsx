@@ -21,7 +21,7 @@ const HeadAnchor = styled(Paragraph, {
   tag: 'a',
 })
 
-export const HeaderLinks = ({ showExtra, forceShowAllLinks, showAuth }: HeaderProps) => {
+export const HeaderLinks = ({ showExtra, forceShowAllLinks, isHeader }: HeaderProps) => {
   const userSwr = useUser()
   const router = useRouter()
   // there is user context and supabase setup in the current page
@@ -90,7 +90,7 @@ export const HeaderLinks = ({ showExtra, forceShowAllLinks, showAuth }: HeaderPr
         >
           <HeadAnchor>
             Github{' '}
-            <YStack dsp="inline-block" y={10} my={-20} o={0.8}>
+            <YStack dsp={'inline-block' as any} y={10} my={-20} o={0.8}>
               <GithubIcon width={16} />
             </YStack>
           </HeadAnchor>
@@ -109,7 +109,7 @@ export const HeaderLinks = ({ showExtra, forceShowAllLinks, showAuth }: HeaderPr
         </NextLink>
       )}
 
-      {showExtra && !userSwr.data?.session?.user && (forceShowAllLinks || showAuth) && (
+      {(!userSwr.data?.session?.user && !isHeader) && (
         <NextLink prefetch={false} href="/login">
           <HeadAnchor
             $md={{

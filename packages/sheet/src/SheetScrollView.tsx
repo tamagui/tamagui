@@ -15,7 +15,10 @@ import { SheetScopedProps } from './types'
 const SHEET_SCROLL_VIEW_NAME = 'SheetScrollView'
 
 export const SheetScrollView = forwardRef<GetRef<typeof ScrollView>, ScrollViewProps>(
-  ({ __scopeSheet, children, ...props }: SheetScopedProps<ScrollViewProps>, ref) => {
+  (
+    { __scopeSheet, children, onScroll, ...props }: SheetScopedProps<ScrollViewProps>,
+    ref
+  ) => {
     const context = useSheetContext(SHEET_SCROLL_VIEW_NAME, __scopeSheet)
     const { scrollBridge } = context
     // const [scrollEnabled, setScrollEnabled_] = useState(true)
@@ -75,6 +78,17 @@ export const SheetScrollView = forwardRef<GetRef<typeof ScrollView>, ScrollViewP
           if (y > 0) {
             scrollBridge.scrollStartY = -1
           }
+
+          // Process the "onScroll" prop here if any
+          onScroll?.(e)
+
+          // This assures that we do not skip the "scrollBridge" values processing
+          // when passing this prop into a <Sheet.ScrollView /> overriding it here
+
+          // Useful when using this ScrollView with lists such as "FlashList", i.e.
+          // ```
+          // renderScrollComponent={Sheet.ScrollView}
+          // ```
         }}
         onStartShouldSetResponder={() => {
           scrollBridge.scrollStartY = -1

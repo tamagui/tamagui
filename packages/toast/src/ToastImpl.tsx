@@ -208,10 +208,12 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
       },
       [handleClose]
     )
+
     const handleResume = React.useCallback(() => {
       startTimer(closeTimerRemainingTimeRef.current)
       onResume?.()
     }, [onResume, startTimer])
+
     const handlePause = React.useCallback(() => {
       const elapsedTime = new Date().getTime() - closeTimerStartTimeRef.current
       closeTimerRemainingTimeRef.current =
@@ -366,7 +368,7 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
                       data-state={open ? 'open' : 'closed'}
                       data-swipe-direction={context.swipeDirection}
                       pointerEvents="auto"
-                      // touchAction="none"
+                      touchAction="none"
                       userSelect="none"
                       {...toastProps}
                       ref={composedRefs}

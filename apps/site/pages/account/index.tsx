@@ -56,7 +56,7 @@ const Account = () => {
   } = data
 
   return (
-    <Container f={1}>
+    <Container gap="$4" f={1}>
       <XStack mt="$10" space>
         <Avatar circular size="$10">
           <Avatar.Image
@@ -98,13 +98,19 @@ const Account = () => {
         </YStack>
       </XStack>
 
-      <YStack mt="$4" ai="flex-start">
+      <Separator />
+
+      <XStack mt="$4" gap="$4" ai="flex-start">
         <ThemeTint>
           <ButtonLink href="/account/subscriptions" size="$5">
             View Subscriptions
           </ButtonLink>
+
+          <ButtonLink href="https://studio.tamagui.dev" size="$5">
+            Studio
+          </ButtonLink>
         </ThemeTint>
-      </YStack>
+      </XStack>
 
       <YStack>
         <UserSettings />

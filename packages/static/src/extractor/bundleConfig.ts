@@ -197,7 +197,8 @@ export async function bundleConfig(props: TamaguiOptions) {
     // map from built back to original module names
     for (const component of components) {
       component.moduleName =
-        baseComponents[componentOutPaths.indexOf(component.moduleName)]
+        baseComponents[componentOutPaths.indexOf(component.moduleName)] ||
+        component.moduleName
 
       if (!component.moduleName) {
         if (process.env.DEBUG?.includes('tamagui') || process.env.IS_TAMAGUI_DEV) {
@@ -208,16 +209,6 @@ export async function bundleConfig(props: TamaguiOptions) {
           )
         }
       }
-    }
-
-    // always load core so we can optimize if directly importing
-    const coreComponents = loadComponents({
-      ...props,
-      components: ['@tamagui/core'],
-    })
-    if (coreComponents) {
-      coreComponents[0].moduleName = '@tamagui/core'
-      components = [...components, ...coreComponents]
     }
 
     if (
@@ -250,7 +241,32 @@ export async function bundleConfig(props: TamaguiOptions) {
   }
 }
 
-export function loadComponents(
+export function loadComponents(props: TamaguiOptions, forceExports = false) {
+  const coreComponents = getCoreComponents(props)
+  const otherComponents = loadComponentsInner(props, forceExports)
+  return [...coreComponents, ...(otherComponents || [])]
+}
+
+function getCoreComponents(props: TamaguiOptions) {
+  const loaded = loadComponentsInner({
+    ...props,
+    components: ['@tamagui/core'],
+  })
+
+  if (!loaded) {
+    throw new Error(`Core should always load`)
+  }
+
+  // always load core so we can optimize if directly importing
+  return [
+    {
+      ...loaded[0],
+      moduleName: '@tamagui/core',
+    },
+  ]
+}
+
+export function loadComponentsInner(
   props: TamaguiOptions,
   forceExports = false
 ): null | LoadedComponents[] {
@@ -293,7 +309,7 @@ export function loadComponents(
             entryPoints: [loadModule],
             outfile: loadModule,
             alias: {
-              'react-native': require.resolve('@tamagui/react-native-prebuilt'),
+              'react-native': require.resolve('react-native-web-lite'),
             },
             bundle: true,
             packages: 'external',

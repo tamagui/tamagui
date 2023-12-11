@@ -1,6 +1,6 @@
 {
   "name": "create-tamagui",
-  "version": "1.79.1",
+  "version": "1.79.9",
   "bin": "./run.js",
   "main": "dist",
   "files": [
@@ -21,7 +21,7 @@
   "devDependencies": {
     "@expo/package-manager": "^0.0.50",
     "@playwright/test": "^1.29.0",
-    "@tamagui/build": "1.79.1",
+    "@tamagui/build": "1.79.9",
     "@types/async-retry": "1.4.2",
     "@types/cross-spawn": "^6.0.2",
     "@types/node": "^16.11.9",
@@ -38,7 +38,7 @@
     "esbuild-register": "^3.4.2",
     "fs-extra": "^11.1.0",
     "got": "10.7.0",
-    "opn": "^6.0.0",
+    "opener": "^1.5.2",
     "playwright": "^1.29.0",
     "prompts": "2.1.0",
     "rimraf": "^5.0.1",

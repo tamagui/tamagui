@@ -39,7 +39,7 @@ export function getPragmaOptions({
   }
 
   if (process.env.DEBUG?.includes('tamagui')) {
-    shouldPrintDebug = true
+    shouldPrintDebug ||= true
   }
 
   if (process.env.DEBUG?.includes('tamagui-verbose')) {

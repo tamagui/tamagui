@@ -41,7 +41,7 @@ export default apiRoute(async (req, res) => {
   const { error: subscriptionItemError } = await supabase
     .from('subscription_items')
     .select('id')
-    .eq('id', installation.data?.subscription_item_id)
+    .eq('id', installation.data?.subscription_item_id || '')
     .single()
 
   if (subscriptionItemError) {

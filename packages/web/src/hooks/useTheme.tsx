@@ -325,7 +325,7 @@ export const useChangeThemeEffect = (
 
   if (!isServer) {
     // listen for parent change + notify children change
-    useLayoutEffect(() => {
+    useEffect(() => {
       if (!themeManager) return
 
       // SSR safe inverse (because server can't know prefers scheme)
@@ -375,7 +375,7 @@ export const useChangeThemeEffect = (
           }
 
           if (shouldTryUpdate) {
-            setThemeState(createState)
+            setThemeState((prev) => createState(prev, force))
           }
         },
         themeManager.id

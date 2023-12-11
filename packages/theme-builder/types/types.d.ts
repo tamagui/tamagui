@@ -1,8 +1,21 @@
+import { MaskOptions, Template } from '@tamagui/create-theme';
 export type BuildThemeSuiteProps = {
     baseTheme: BuildTheme;
     subThemes?: (BuildTheme | BuildThemeMask)[];
+    componentMask?: MaskOptions;
+    templates?: {
+        base: Template;
+        accentLight: Template;
+        accentDark: Template;
+    };
 };
-export type ScaleTypeName = 'radix' | 'radix-b' | 'radius-bold' | 'radius-bright' | 'linear' | 'pastel' | 'pastel-desaturating' | 'neon' | 'neon-bright' | 'neon-c';
+export type BuildThemeSuitePalettes = {
+    light: string[];
+    dark: string[];
+    lightAccent?: string[];
+    darkAccent?: string[];
+};
+export type ScaleTypeName = 'automatic' | 'radix' | 'radix-b' | 'radius-bold' | 'radius-bright' | 'linear' | 'pastel' | 'pastel-desaturating' | 'neon' | 'neon-bright' | 'neon-c';
 export type BuildThemeBase = {
     id: string;
     name: string;
@@ -12,9 +25,9 @@ export type BuildTheme = BuildThemeBase & {
     type: 'theme';
     color: string;
     scale: ScaleTypeName;
-    contrast?: string;
-    contrastColor?: string;
-    contrastScale?: ScaleTypeName;
+    template?: Template;
+    accent?: string;
+    accentScale?: ScaleTypeName;
 };
 export type BuildMask = {
     id: string;

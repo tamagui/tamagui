@@ -211,6 +211,7 @@ export const stylePropsView = {
     outlineStyle: true,
     outlineOffset: true,
     outlineWidth: true,
+    touchAction: true,
   }),
   ...(isAndroid ? { elevationAndroid: true } : {}),
 }

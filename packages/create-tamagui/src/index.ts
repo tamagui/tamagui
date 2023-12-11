@@ -10,6 +10,8 @@ import chalk from 'chalk'
 import Commander from 'commander'
 import { detect } from 'detect-package-manager'
 import { existsSync, readFileSync, writeFileSync } from 'fs-extra'
+import open from 'opener'
+import prompts from 'prompts'
 import { $, cd } from 'zx'
 
 import packageJson from '../package.json'
@@ -40,7 +42,7 @@ const program = new Commander.Command(packageJson.name)
   )
   .option(
     `--template <template>, -t <template>`,
-    'Choose between next-expo-solito, a more full featured template with Expo and Next.js, a simple client-only web starter that includes a nice simple example configuration to understand the basics more easily, or the premium Takeout 🥡 starter.',
+    'Choose between starter-free, a more full featured template with Expo and Next.js, a simple client-only web starter that includes a nice simple example configuration to understand the basics more easily, or the premium Takeout 🥡 starter.',
     ''
   )
   .allowUnknownOption()
@@ -61,6 +63,7 @@ const skipCloning = !!program.skipCloning
 
 async function run() {
   const packageManager = await detect()
+
   if (!skipCloning) {
     console.info() // this newline prevents the ascii art from breaking
     console.info(tamaguiRainbowAsciiArt)
@@ -78,6 +81,25 @@ async function run() {
   projectPath = skipCloning ? cwd() : await getProjectName(projectPath)
 
   let template = await getTemplateInfo(program.template)
+
+  if (template.type === 'premium') {
+    const didPurchase = (
+      await prompts({
+        type: 'confirm',
+        name: 'purchased',
+        message: `Have you purchased Takeout on https://tamagui.dev/takeout`,
+      })
+    ).purchased
+
+    if (!didPurchase) {
+      await open(`https://tamagui.dev/takeout`)
+      console.info(
+        `\nOpening Takeout website - once you purchase you can restart the create process. Thank you!\n`
+      )
+      process.exit(0)
+    }
+  }
+
   if (!skipCloning) {
     // space
     console.info()

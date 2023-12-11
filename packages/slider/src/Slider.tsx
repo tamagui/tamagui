@@ -420,12 +420,12 @@ const SliderThumb = SliderThumbFrame.styleable<SliderThumbProps>(function Slider
 
   React.useEffect(() => {
     if (thumb) {
-      context.thumbs.add(thumb)
+      context.thumbs.set(thumb, index)
       return () => {
         context.thumbs.delete(thumb)
       }
     }
-  }, [thumb, context.thumbs])
+  }, [thumb, context.thumbs, index])
 
   const positionalStyles =
     context.orientation === 'horizontal'
@@ -509,7 +509,7 @@ const SliderComponent = React.forwardRef<TamaguiElement, SliderProps>(
     } = props
     const sliderRef = React.useRef<View>(null)
     const composedRefs = useComposedRefs(sliderRef, forwardedRef)
-    const thumbRefs = React.useRef<SliderContextValue['thumbs']>(new Set())
+    const thumbRefs = React.useRef<SliderContextValue['thumbs']>(new Map())
     const valueIndexToChangeRef = React.useRef<number>(0)
     const isHorizontal = orientation === 'horizontal'
     // We set this to true by default so that events bubble to forms without JS (SSR)
@@ -521,10 +521,7 @@ const SliderComponent = React.forwardRef<TamaguiElement, SliderProps>(
       defaultProp: defaultValue,
       transition: true,
       onChange: (value) => {
-        if (isWeb) {
-          const thumbs = [...thumbRefs.current]
-          thumbs[valueIndexToChangeRef.current]?.focus()
-        }
+        updateThumbFocus(valueIndexToChangeRef.current)
         onValueChange(value)
       },
     })
@@ -542,6 +539,18 @@ const SliderComponent = React.forwardRef<TamaguiElement, SliderProps>(
           node.removeEventListener('touchstart', preventDefault)
         }
       }, [])
+    }
+
+    function updateThumbFocus(focusIndex: number) {
+      // Thumbs are not focusable on native
+      if (!isWeb) return
+
+      for (const [node, index] of thumbRefs.current.entries()) {
+        if (index === focusIndex) {
+          node.focus()
+          return
+        }
+      }
     }
 
     function handleSlideMove(value: number, event: GestureReponderEvent) {
@@ -598,8 +607,8 @@ const SliderComponent = React.forwardRef<TamaguiElement, SliderProps>(
                   if (target !== 'thumb') {
                     const closestIndex = getClosestValueIndex(values, value)
                     updateValues(value, closestIndex)
-                    onSlideStart?.(event, value, target)
                   }
+                  onSlideStart?.(event, value, target)
                 }
           }
           onSlideMove={disabled ? undefined : handleSlideMove}

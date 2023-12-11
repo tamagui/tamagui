@@ -70,7 +70,6 @@ export function HeroContainer({
             mah="100%"
             maw="100%"
             miw="100%"
-            // @ts-expect-error
             position="unset"
             justifyContent="flex-start"
           >

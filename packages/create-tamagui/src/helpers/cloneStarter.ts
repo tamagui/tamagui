@@ -10,7 +10,7 @@ import { $, cd } from 'zx'
 import { IS_TEST } from '../create-tamagui-constants'
 import { templates } from '../templates'
 
-const open = require('opn')
+const open = require('opener')
 
 const home = homedir()
 const tamaguiDir = join(home, '.tamagui')
@@ -62,10 +62,7 @@ async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry 
     }
   }
 
-  const branch = IS_TEST
-    ? // use current branch
-      (await $`git rev-parse --abbrev-ref HEAD`).stdout.trim()
-    : template.repo.branch
+  const branch = template.repo.branch
 
   // setup tests for CI
   if (IS_TEST) {

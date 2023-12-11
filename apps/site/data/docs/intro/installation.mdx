@@ -27,7 +27,7 @@ And you can now import and start using Tamagui. We do recommend [walking through
 
 Once you start using libraries from the React Native ecosystem, you likely need some extra setup. For example, React Native supports "platform specific" file extensions (ie, bundlers should import `index.web.js` when targeting web and importing `./index.js`). Many packages also import `react-native` directly and so on the web you'll need to alias `react` to `react-native-web`.
 
-Tamagui require this to work out of the box, but eventually you'll probably want to add one of the plugins which automates a variety of these types of compatibility fixes and features, alongside the optimizing compiler.
+Tamagui does not require this to work out of the box, but eventually you'll probably want compatibility with the rest of the React Native ecosystem, so we have plugins which automate it, alongside allowing you to opt-in to the optimizing compiler.
 
 If you just want to get going, don't worry about it for now and continue to [quick configuration](#quick-configuration) or [the full configuration docs](/docs/core/configuration).
 

@@ -1,11 +1,27 @@
 // only used by the studio theme builder generated:
 
+import { MaskOptions, Template } from '@tamagui/create-theme'
+
 export type BuildThemeSuiteProps = {
   baseTheme: BuildTheme
   subThemes?: (BuildTheme | BuildThemeMask)[]
+  componentMask?: MaskOptions
+  templates?: {
+    base: Template
+    accentLight: Template
+    accentDark: Template
+  }
+}
+
+export type BuildThemeSuitePalettes = {
+  light: string[]
+  dark: string[]
+  lightAccent?: string[]
+  darkAccent?: string[]
 }
 
 export type ScaleTypeName =
+  | 'automatic'
   | 'radix'
   | 'radix-b'
   | 'radius-bold'
@@ -27,12 +43,12 @@ export type BuildTheme = BuildThemeBase & {
   type: 'theme'
   color: string
   scale: ScaleTypeName
-  // saturation?: 'low' | 'x' | 'high'
-  contrast?: string
-  contrastColor?: string
-  contrastScale?: ScaleTypeName
+  template?: Template
+  accent?: string
+  accentScale?: ScaleTypeName
 }
 
+// TODO type here isnt the same as type in BuildTheme
 export type BuildMask = { id: string } & (
   | {
       type: 'strengthen'

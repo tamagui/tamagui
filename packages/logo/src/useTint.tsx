@@ -70,7 +70,7 @@ export const ThemeTintAlt = ({
   offset?: number
 }) => {
   const tint = useTint()
-  const curTint = tint.tints[(tint.tintIndex + offset) % tint.tints.length]
+  const curTint = tint.tints[Math.abs((tint.tintIndex + offset) % tint.tints.length)]
 
   return (
     <Theme name={disable ? null : curTint}>

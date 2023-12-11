@@ -633,6 +633,7 @@ export const getSplitStyles: StyleSplitter = (
       process.env.TAMAGUI_TARGET === 'native' &&
       isValidStyleKeyInit &&
       !variants &&
+      valInit !== 'unset' &&
       (valInitType === 'number' || (valInitType === 'string' && valInit[0] !== '$'))
     ) {
       style[keyInit] = valInit

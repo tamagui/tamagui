@@ -328,9 +328,7 @@ export function createExtractor(
       )
       logger.info(
         `valid import paths: ${JSON.stringify(
-          getValidComponentsPaths(propsWithFileInfo),
-          null,
-          2
+          getValidComponentsPaths(propsWithFileInfo)
         )}`
       )
     }
@@ -1303,6 +1301,16 @@ export function createExtractor(
               return { type: 'ternary', value: staticLogical }
             }
 
+            if (options.experimentalFlattenThemesOnNative) {
+              if (isValidStyleKey(name, staticConfig)) {
+                return {
+                  type: 'dynamic-style',
+                  value,
+                  name,
+                }
+              }
+            }
+
             // if we've made it this far, the prop stays inline
             inlined.set(name, true)
             if (shouldPrintDebug) {
@@ -2191,6 +2199,17 @@ export function createExtractor(
                 }
               }
             }
+            if (attr.type === 'dynamic-style') {
+              if (existingStyleKeys.has(attr.name)) {
+                //@ts-ignore
+                attrs[i] = undefined
+              } else {
+                existingStyleKeys.add(attr.name)
+              }
+            }
+          }
+          if (options.experimentalFlattenThemesOnNative) {
+            attrs = attrs.filter(Boolean)
           }
 
           // inlineWhenUnflattened
@@ -2279,7 +2298,12 @@ export function createExtractor(
           })
         } catch (err: any) {
           node.attributes = ogAttributes
-          console.error(`@tamagui/static Error: ${err.message} ${err.stack}`)
+          console.error(
+            `@tamagui/static error, reverting optimization. In ${filePath} ${lineNumbers} on ${originalNodeName}: ${err.message}. For stack trace set environment TAMAGUI_DEBUG=1`
+          )
+          if (process.env.TAMAGUI_DEBUG === '1') {
+            console.error(err.stack)
+          }
         } finally {
           if (debugPropValue) {
             shouldPrintDebug = ogDebug

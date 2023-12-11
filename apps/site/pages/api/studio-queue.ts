@@ -12,17 +12,23 @@ export default apiRoute(async (req, res) => {
     res.status(400).json({ error: 'Bad data' })
   }
 
-  const teamResult = await supabase.from('teams').select('*').eq('id', teamId).single()
+  const teamResult = await supabase
+    .from('teams')
+    .select('*')
+    .eq('id', teamId || '')
+    .single()
+
   if (teamResult.error) {
     throw new Error(teamResult.error.message)
   }
+
   const team = teamResult.data
 
   const priorTeamsResult = team.is_active
     ? await supabaseAdmin
         .from('teams')
         .select('id')
-        .eq('tier', team.tier)
+        .eq('tier', team.tier || '')
         .lte('studio_queued_at', team.studio_queued_at)
     : await supabaseAdmin
         .from('teams')

@@ -25,11 +25,13 @@
 
 Tamagui lets you share more code between web and native apps without sacrificing the two things that typically suffer when you do: performance and code quality.
 
-It does this with an optimizing compiler that outputs platform-specific optimizations, turning even styles with logic or that use constants imported from other files will flatten into a simple `div` (or other tag) alongside CSS on the web, or on native, a View or Text that references memoized and hoisted style objects.
+It does this with an optimizing compiler that outputs platform-specific optimizations, turning styled components, even with complex logic or cross-module imports, into a simple `div` alongiside atomic CSS on the web, or a View with its style objects hoisted on native.
 
-Tamagui aims to be easy to start with and so you can use any of the three independently. The entirety of Tamagui works at compile time and runtime, which means in development you can avoid setting up the compiler at all (though the compiler does add some very nice data-attributes to your DOM). We recommend to start either using a starter (a few are available at `npm create tamagui@latest`).
+The entirety of Tamagui works at compile time and runtime, and can be set up gradually, with initial usage as simple as importing it and using the base views and styled function.
 
-The compiler can flatten a large amount of views. In the [~500px² responsive browser section](https://tamagui.dev) of the Tamagui website, 49 of the 55 or so [inline styled components](https://github.com/tamagui/tamagui/blob/master/apps/site/components/HeroResponsive.tsx) are flattened to a `div`. The homepage gains nearly 15% on Lighthouse just by turning on the compiler.
+We do recomment to check out the starters with `npm create tamagui@latest`, they range from simple to production-ready.
+
+The compiler optimizes most and ultimately flattens a majority of styled components. In the [~500px² responsive browser section](https://tamagui.dev) of the Tamagui website, 49 of the 55 or so [inline styled components](https://github.com/tamagui/tamagui/blob/master/apps/site/components/HeroResponsive.tsx) are flattened to a `div`. The homepage gains nearly 15% on Lighthouse with the compiler on.
 
 [Learn more on the website](https://tamagui.dev/docs/intro/introduction).
 

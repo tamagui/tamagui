@@ -1,4 +1,4 @@
-import { useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useRef, useSyncExternalStore } from 'react'
 
 import { getConfig } from '../config'
@@ -198,7 +198,7 @@ export function useMedia(uid?: any, componentContext?: ComponentContextI): UseMe
   const internal = useRef<UseMediaInternalState | undefined>()
   // performance boost to avoid using context twice
   const disableSSR = componentContext ? getDisableSSR(componentContext) : useDisableSSR()
-  const initialState = (disableSSR ? mediaState : initState) || {}
+  const initialState = (disableSSR || !isWeb ? mediaState : initState) || {}
 
   const state = useSyncExternalStore<MediaQueryState>(
     subscribe,

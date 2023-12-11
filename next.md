@@ -1,3 +1,30 @@
+- gradient style
+- "var" mode where it changes types of $ to var(--)
+- calc?
+
+- studio:
+  - instead of automatic scale:
+    - symettrical (automatic)
+    - mirrored (inverses)
+  - pre-configure themes
+    - stronger, dimmer
+    - disabled, active
+    - outlined
+
+- get takeout users studio access
+
+- studio color scales first class:
+  - adding a color/scale really adds a theme
+  - but also adds $colorName1 => $colorNameX to base theme
+
+- check usePropsAndStyle with group props
+
+- studio: the accent color need an accent color that reverses back
+- studio: make the scales "anchor" around the selected color better
+  - exact color should be at the 14 position always
+- studio: add outline, outlineHover, etc
+- studio: add partial transparent for each color step?
+
 - // TODO breaks next.js themes page
 - alt themes dont change color1-9 so you can't do color2 and then make the alt theme make it more subtle, but they should
 
@@ -8,7 +35,7 @@
   - recommended config with more strict settings etc
   - a few theme setups you can choose from
 
-- Unistack theme change needs a server restart / theme builder not re-building on changing colors.ts
+- Takeout theme change needs a server restart / theme builder not re-building on changing colors.ts
 - Theme reset Button not changing
 - ZStack is abs positioning children...
 
@@ -193,15 +220,6 @@ a package.json etc etc + zip file
   - auto generates CSS
   - bundles it into 
 
-- $web / $native make them work as media queries
-
-- theme based "media queries" automatically:
-  - $dark / $light but could be any theme?
-
-- '> Child' descendent queries
-  - only with css driver it can extract to css
-  - without it uses context
-
 - <Sheet native />
   - https://github.com/dominicstop/react-native-ios-modal
   - we'd want expo module + snap points
@@ -210,10 +228,6 @@ a package.json etc etc + zip file
  - plus `native` prop https://reactnative.dev/docs/actionsheetios
 
 - add test that builds site for prod + checks for header text / no errors
-
-- yarn release --canary
-
-- Popover trigger="hover"
 
 - Switch unstyled - make it so it doesn't do any theme stuff
 

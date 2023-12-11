@@ -35,14 +35,6 @@ export const SponsorshipGuard = ({ children }: { children: React.ReactNode }) =>
   if (!teams.main) {
     return <Spinner />
   }
-  // if (accessStatus.isWhitelisted) {
-  //   return (
-  //     <>
-  //       <WhitelistNotice />
-  //       {children}
-  //     </>
-  //   )
-  // }
 
   if (!hasAccess && !isLocal && !router.query?.showStudio) {
     return <StudioQueueCard teamId={teams?.main?.id} />
