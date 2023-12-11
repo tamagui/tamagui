@@ -193,13 +193,7 @@ const ButtonComponent = ButtonFrame.styleable<ButtonExtraProps>(function Button(
   ref
 ) {
   const { props: buttonProps } = useButton(props)
-  return (
-    <ButtonFrame
-      debug={props.scaleIcon === 1.42 ? 'verbose' : false}
-      {...buttonProps}
-      ref={ref}
-    />
-  )
+  return <ButtonFrame {...buttonProps} ref={ref} />
 })
 
 /**

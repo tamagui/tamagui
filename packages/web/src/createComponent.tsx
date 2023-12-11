@@ -192,6 +192,8 @@ export function createComponent<
   }
 
   const component = forwardRef<Ref, ComponentPropTypes>((propsIn, forwardedRef) => {
+    const internalID = process.env.NODE_ENV === 'development' ? useId() : ''
+
     if (process.env.NODE_ENV === 'development') {
       if (startVisualizer) {
         startVisualizer()
@@ -525,8 +527,6 @@ export function createComponent<
     const isExiting = Boolean(!state.unmounted && presence?.[0] === false)
 
     if (process.env.NODE_ENV === 'development') {
-      const id = useId()
-
       if (debugProp && debugProp !== 'profile') {
         // prettier-ignore
         const name = `${
@@ -534,7 +534,7 @@ export function createComponent<
         }`;
         const type = isAnimatedReactNative ? '(animated)' : isReactNative ? '(rnw)' : ''
         const dataIs = propsIn['data-is'] || ''
-        const banner = `${name}${dataIs ? ` ${dataIs}` : ''} ${type} id ${id}`
+        const banner = `${name}${dataIs ? ` ${dataIs}` : ''} ${type} id ${internalID}`
         console.group(
           `%c ${banner} (unmounted: ${state.unmounted})${
             presence ? ` (presence: ${presence[0]})` : ''
@@ -815,7 +815,7 @@ export function createComponent<
     // combined multiple effects into one for performance so be careful with logic
     // should not be a layout effect because otherwise it wont render the initial state
     // for example css driver needs to render once with the first styles, then again with the next
-    // if its a layout effect it will just skip that first render output
+    // if its a layout effect it will just skip that first <render >output
     const shouldSetMounted = needsMount && state.unmounted
     const { pseudoGroups, mediaGroups } = splitStyles
 
@@ -1109,6 +1109,12 @@ export function createComponent<
             debug: debugProp,
           })
 
+    // needs to reset the presence state for nested children
+    const ResetPresence = config?.animations?.ResetPresence
+    if (willBeAnimated && presence && ResetPresence) {
+      content = <ResetPresence>{content}</ResetPresence>
+    }
+
     if (asChild) {
       elementType = Slot
       // on native this is already merged into viewProps in hooks.useEvents
@@ -1238,7 +1244,7 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development') {
       if (debugProp && debugProp !== 'profile') {
         const element = typeof elementType === 'string' ? elementType : 'Component'
-        console.groupCollapsed(`render <${element} /> with props`)
+        console.groupCollapsed(`render <${element} /> (${internalID}) with props`)
         try {
           log('viewProps', viewProps)
           log('viewPropsOrder', Object.keys(viewProps))
