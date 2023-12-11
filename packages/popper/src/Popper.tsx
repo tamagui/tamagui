@@ -67,7 +67,7 @@ export type PopperProps = {
 
 type ScopedPopperProps<P> = ScopedProps<P, 'Popper'>
 
-export function Popper(props: ScopedPopperProps<PopperProps>) {
+export const Popper = React.forwardRef((props: ScopedPopperProps<PopperProps>, _ref) => {
   const {
     children,
     size,
@@ -162,7 +162,9 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
   }
 
   return <PopperProvider {...popperContext}>{children}</PopperProvider>
-}
+})
+
+Popper.displayName = 'Popper'
 
 /* -------------------------------------------------------------------------------------------------
  * PopperAnchor
@@ -181,6 +183,12 @@ export const PopperAnchor = YStack.extractable(
       const { anchorRef, getReferenceProps } = usePopperContext(__scopePopper)
       const ref = React.useRef<PopperAnchorRef>(null)
       const composedRefs = useComposedRefs(forwardedRef, ref, anchorRef)
+      React.useEffect(() => {
+        // Consumer can anchor the popper to something that isn't
+        // a DOM node e.g. pointer position, so we override the
+        // `anchorRef` with their virtual ref in this case.
+        anchorRef(virtualRef?.current || ref.current)
+      }, [anchorRef, virtualRef])
       if (virtualRef) {
         return null
       }
@@ -240,11 +248,11 @@ export const PopperContent = React.forwardRef<
   const { __scopePopper, ...rest } = props
   const { strategy, placement, refs, x, y, getFloatingProps, size, isMounted, update } =
     usePopperContext(__scopePopper)
-  const contentRefs = useComposedRefs<any>(refs.setFloating, forwardedRef)
 
   const contents = React.useMemo(() => {
     return (
       <PopperContentFrame
+        ref={forwardedRef}
         key="popper-content-frame"
         data-placement={placement}
         data-strategy={strategy}
@@ -267,7 +275,7 @@ export const PopperContent = React.forwardRef<
   }
 
   const frameProps = {
-    ref: contentRefs,
+    ref: refs.setFloating,
     x: x || 0,
     y: y || 0,
     position: strategy,

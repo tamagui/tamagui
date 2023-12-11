@@ -18,7 +18,9 @@ export type StyledContext<Props extends Object = any> = Omit<
 }
 
 export function createStyledContext<VariantProps extends Record<string, any>>(
-  defaultValues?: VariantProps
+  defaultValues?: VariantProps,
+  /** for debugging it's recommended to provided a name */
+  name?: string
 ): StyledContext<VariantProps> {
   const OGContext = createContext<VariantProps | undefined>(defaultValues)
   const OGProvider = OGContext.Provider
@@ -50,8 +52,15 @@ export function createStyledContext<VariantProps extends Record<string, any>>(
   }
 
   // use consumerComponent just to give a better error message
-  const useStyledContext = (scope?: string) => {
+  const useStyledContext = (scope?: string, consumer?: string) => {
     const context = scope ? scopedContexts.get(scope) : OGContext
+    if (!context) {
+      throw new Error(
+        `no ${String(name)}Provider found${
+          consumer ? `for the consumer: ${consumer} and` : ' for the'
+        } scope: ${scope}. available scopes are: ${Array.from(scopedContexts.keys())} `
+      )
+    }
     return useContext(context!) as VariantProps
   }
 

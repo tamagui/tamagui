@@ -100,6 +100,8 @@ export const docsRoutes = [
       { title: 'Sheet', route: '/docs/components/sheet' },
       { title: 'Tooltip', route: '/docs/components/tooltip' },
       { title: 'Toast', route: '/docs/components/toast' },
+      { title: 'Context Menu', route: '/docs/components/context-menu' },
+      { title: 'DropDown Menu', route: '/docs/components/dropdown-menu' },
     ],
   },
 
