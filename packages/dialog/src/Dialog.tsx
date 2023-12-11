@@ -101,16 +101,18 @@ const DialogTrigger = DialogTriggerFrame.styleable(
     const context = useDialogContext(TRIGGER_NAME, __scopeDialog)
     const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef)
     return (
-      <DialogTriggerFrame
-        tag={isInsideButton ? 'span' : 'button'}
-        aria-haspopup="dialog"
-        aria-expanded={context.open}
-        aria-controls={context.contentId}
-        data-state={getState(context.open)}
-        {...triggerProps}
-        ref={composedTriggerRef}
-        onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
-      />
+      <ButtonNestingContext.Provider value={true}>
+        <DialogTriggerFrame
+          tag={isInsideButton ? 'span' : 'button'}
+          aria-haspopup="dialog"
+          aria-expanded={context.open}
+          aria-controls={context.contentId}
+          data-state={getState(context.open)}
+          {...triggerProps}
+          ref={composedTriggerRef}
+          onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
+        />
+      </ButtonNestingContext.Provider>
     )
   }
 )
