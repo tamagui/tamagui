@@ -193,7 +193,13 @@ const ButtonComponent = ButtonFrame.styleable<ButtonExtraProps>(function Button(
   ref
 ) {
   const { props: buttonProps } = useButton(props)
-  return <ButtonFrame {...buttonProps} ref={ref} />
+  return (
+    <ButtonFrame
+      debug={props.scaleIcon === 1.42 ? 'verbose' : false}
+      {...buttonProps}
+      ref={ref}
+    />
+  )
 })
 
 /**
@@ -242,6 +248,7 @@ function useButton<Props extends ButtonProps>(
     noTextWrap,
     fontFamily,
     fontSize,
+    ...restProps
   } = propsActive
 
   const size = propsActive.size || (propsActive.unstyled ? undefined : '$true')
@@ -293,9 +300,6 @@ function useButton<Props extends ButtonProps>(
     propsActive.accessibilityRole === 'link'
     ? 'a'
     : undefined
-
-  // remove the ones we used here
-  const { iconAfter: _1, icon: _2, noTextWrap: _3, ...restProps } = propsIn
 
   const props = {
     size,
