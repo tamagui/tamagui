@@ -1,4 +1,4 @@
-import { usePresence } from '@tamagui/use-presence'
+import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import {
   AnimatedNumberStrategy,
   AnimationDriver,
@@ -172,6 +172,7 @@ export function createAnimations<A extends AnimationsConfig>(
     useAnimatedNumberReaction,
     useAnimatedNumberStyle,
     usePresence,
+    ResetPresence,
     useAnimations: ({ props, onDidAnimate, style, componentState, presence }) => {
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
