@@ -43,6 +43,7 @@ import {
   DebugProp,
   DisposeFn,
   GroupState,
+  GroupStateListener,
   LayoutEvent,
   SizeTokens,
   SpaceDirection,
@@ -1155,8 +1156,10 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`create-element`
 
+    const groupListeners = useRef(new Set<GroupStateListener>())
     // must override context so siblings don't clobber initial state
     const subGroupContext = useMemo(() => {
+      groupListeners.current.clear()
       if (!groupName) return
       // change reference so context value updates
       return {
@@ -1173,6 +1176,15 @@ export function createComponent<
               height: fromPx(splitStyles.style.height as any),
             } as any,
           },
+        },
+        emit: (name, state) => {
+          groupListeners.current.forEach((l) => l(name, state))
+        },
+        subscribe(cb) {
+          groupListeners.current.add(cb)
+          return () => {
+            groupListeners.current.delete(cb)
+          }
         },
       } satisfies ComponentContextI['groups']
     }, [groupName])

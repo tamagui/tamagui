@@ -1,7 +1,5 @@
 import { createStyledContext } from '../helpers/createStyledContext'
-import { ComponentContextI, GroupStateListener } from '../types'
-
-const listeners = new Set<GroupStateListener>()
+import { ComponentContextI, DisposeFn } from '../types'
 
 export const ComponentContext = createStyledContext<ComponentContextI>({
   disableSSR: undefined,
@@ -9,14 +7,9 @@ export const ComponentContext = createStyledContext<ComponentContextI>({
   language: null,
   animationDriver: null,
   groups: {
-    emit: (name, state) => {
-      listeners.forEach((l) => l(name, state))
-    },
-    subscribe(cb) {
-      listeners.add(cb)
-      return () => {
-        listeners.delete(cb)
-      }
+    emit: () => {},
+    subscribe: (cb) => {
+      return {} as DisposeFn
     },
     state: {},
   },
