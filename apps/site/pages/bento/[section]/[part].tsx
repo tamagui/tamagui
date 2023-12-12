@@ -1,13 +1,13 @@
 import * as sections from '@tamagui/bento'
-import { GetStaticPaths, GetStaticProps } from 'next'
+import { GetStaticPaths } from 'next'
 import { useRouter } from 'next/router'
 
-export default function page() {
+export default function page({ codes }) {
   const router = useRouter()
-  const params = router.query
+  const params = router.query as { section: string; part: string }
   const Comp = sections[params.section][params.part]
 
-  return <Comp />
+  return <Comp codes={codes} />
 }
 
 export const getStaticPaths = (async () => {
@@ -24,8 +24,11 @@ export const getStaticPaths = (async () => {
   }
 }) satisfies GetStaticPaths
 
-export const getStaticProps = () => {
+export const getStaticProps = (ctx) => {
+  const { section, part } = ctx.params as { section: string; part: string }
+  const getCodes = sections[section][`${part}GetComponentCodes`]
+
   return {
-    props: { repo: '' },
+    props: getCodes(),
   }
 }
