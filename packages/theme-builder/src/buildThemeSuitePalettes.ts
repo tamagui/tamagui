@@ -96,27 +96,23 @@ const generateColorPalette = ({
   const reverseForeground = [...transparentValues[1]].reverse()
   palette = [...transparentValues[0], ...palette, ...reverseForeground]
 
-  // if (theme.accent) {
-  //   const accentHsla = parseToHsla(theme.accent)
-  //   const accentLum = accentHsla[2]
-  //   const isAccentLight = accentLum > 0.5
+  if (theme.accent) {
+    const accentPalette = generateColorPalette({
+      theme: theme.accent,
+      scheme,
+    })
 
-  //   const oppositeLightnessAccent = isAccentLight
-  //     ? toHex(hsla(accentHsla[0], accentHsla[1], 1 - accentLum, 1))
-  //     : theme.accent
+    debugger
 
-  //   const fg = isAccentLight && !isDark ? oppositeLightnessAccent : theme.accent
-  //   const bg = fg === theme.accent ? oppositeLightnessAccent : theme.accent
-
-  //   // unshift bg
-  //   palette.unshift(bg)
-  //   // push color
-  //   palette.push(fg)
-  // } else {
-  // were keeping the palettes the same length with or without accent to avoid headache
-  palette.unshift('rgba(0,0,0,0)')
-  palette.push('rgba(0,0,0,0)')
-  // }
+    // unshift bg
+    palette.unshift(accentPalette[11])
+    // push color
+    palette.push(accentPalette[accentPalette.length - 6])
+  } else {
+    // were keeping the palettes the same length with or without accent to avoid headache
+    palette.unshift('rgba(0,0,0,0)')
+    palette.push('rgba(0,0,0,0)')
+  }
 
   return palette
 }
