@@ -18,12 +18,13 @@ const generateColorPalette = ({
   forAccent?: boolean
 }) => {
   const baseTheme = forAccent ? theme.accent || theme : theme
-
   const { anchors, scale } = baseTheme
-  const isDark = scheme === 'dark'
 
   let palette: string[] = []
-  let at = 0
+
+  const add = (h: number, s: number, l: number) => {
+    palette.push(hsla(h, s, l, 1))
+  }
 
   for (const [anchorIndex, anchor] of anchors.entries()) {
     const [h, s, l] = [anchor.hue, anchor.sat, anchor.lum[scheme]]
@@ -43,15 +44,12 @@ const generateColorPalette = ({
       // backfill:
       for (let step = lastAnchor.index; step <= anchor.index; step++) {
         const str = anchor.index - step
-        palette.push(hsla(h + stepHue * str, s + stepSat * str, l + stepLum * str, 1))
+        add(h + stepHue * str, s + stepSat * str, l + stepLum * str)
       }
     }
 
-    palette.push(hsla(h, s, l, 1))
-    at = anchor.index + 1
+    add(h, s, l)
   }
-
-  return palette
 
   // if (strategy?.type === 'automatic') {
   //   const hslas = {
@@ -108,40 +106,40 @@ const generateColorPalette = ({
   //   })
   // }
 
-  // // add transparent values
-  // const [background] = palette
-  // const foreground = palette[palette.length - 1]
+  // add transparent values
+  const [background] = palette
+  const foreground = palette[palette.length - 1]
 
-  // const transparentValues = [background, foreground].map((color) => {
-  //   const [h, s, l] = parseToHsla(color)
-  //   // fully transparent to partially
-  //   return [
-  //     hsla(h, s, l, 0),
-  //     hsla(h, s, l, 0.25),
-  //     hsla(h, s, l, 0.5),
-  //     hsla(h, s, l, 0.75),
-  //   ] as const
-  // })
-  // const reverseForeground = [...transparentValues[1]].reverse()
-  // palette = [...transparentValues[0], ...palette, ...reverseForeground]
+  const transparentValues = [background, foreground].map((color) => {
+    const [h, s, l] = parseToHsla(color)
+    // fully transparent to partially
+    return [
+      hsla(h, s, l, 0),
+      hsla(h, s, l, 0.25),
+      hsla(h, s, l, 0.5),
+      hsla(h, s, l, 0.75),
+    ] as const
+  })
+  const reverseForeground = [...transparentValues[1]].reverse()
+  palette = [...transparentValues[0], ...palette, ...reverseForeground]
 
-  // if (theme.accent) {
-  //   const accentPalette = generateColorPalette({
-  //     theme: theme.accent,
-  //     scheme,
-  //   })
+  if (theme.accent) {
+    const accentPalette = generateColorPalette({
+      theme: theme.accent,
+      scheme,
+    })
 
-  //   // unshift bg
-  //   palette.unshift(accentPalette[11])
-  //   // push color
-  //   palette.push(accentPalette[accentPalette.length - 6])
-  // } else {
-  //   // were keeping the palettes the same length with or without accent to avoid headache
-  //   palette.unshift('rgba(0,0,0,0)')
-  //   palette.push('rgba(0,0,0,0)')
-  // }
+    // unshift bg
+    palette.unshift(accentPalette[11])
+    // push color
+    palette.push(accentPalette[accentPalette.length - 6])
+  } else {
+    // were keeping the palettes the same length with or without accent to avoid headache
+    palette.unshift('rgba(0,0,0,0)')
+    palette.push('rgba(0,0,0,0)')
+  }
 
-  // return palette
+  return palette
 }
 
 export function getThemeSuitePalettes(theme: BuildTheme): BuildThemeSuitePalettes {

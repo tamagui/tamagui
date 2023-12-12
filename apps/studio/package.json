@@ -14,10 +14,7 @@
     "dev": "../../node_modules/.bin/tama studio",
     "dev:tauri": "tauri dev",
     "build": "SKIP_TYPES=1 tamagui-build",
-    "ci:build": "tama studio --build",
-    "watch": "tamagui-build --watch",
-    "clean": "tamagui-build clean",
-    "clean:build": "tamagui-build clean:build"
+    "ci:build": "tama studio --build"
   },
   "dependencies": {
     "@supabase/auth-helpers-shared": "^0.5.0",
