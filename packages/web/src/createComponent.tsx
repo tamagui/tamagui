@@ -399,13 +399,33 @@ export function createComponent<
     const groupName = props.group as any as string
     const groupClassName = groupName ? `t_group_${props.group}` : ''
 
+    const groupListeners = useRef(new Set<GroupStateListener>())
+    const groupHandlers = useMemo(
+      () =>
+        ({
+          emit: (name, state) => {
+            groupListeners.current.forEach((l) => l(name, state))
+          },
+          subscribe(cb) {
+            groupListeners.current.add(cb)
+            return () => {
+              groupListeners.current.delete(cb)
+            }
+          },
+        } as {
+          emit: GroupStateListener
+          subscribe: (cb: GroupStateListener) => DisposeFn
+        }),
+      []
+    )
+
     if (groupName) {
       // when we set state we also set our group state and emit an event for children listening:
       const groupContextState = componentContext.groups.state
       const og = setStateShallow
       setStateShallow = (state) => {
         og(state)
-        componentContext.groups.emit(groupName, {
+        groupHandlers.emit(groupName, {
           pseudo: state,
         })
         // and mutate the current since its concurrent safe (children throw it in useState on mount)
@@ -758,7 +778,7 @@ export function createComponent<
       nonTamaguiProps.onLayout = composeEventHandlers(
         nonTamaguiProps.onLayout,
         (e: LayoutEvent) => {
-          componentContext.groups.emit(groupName, {
+          groupHandlers.emit(groupName, {
             layout: e.nativeEvent.layout,
           })
 
@@ -1156,7 +1176,6 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`create-element`
 
-    const groupListeners = useRef(new Set<GroupStateListener>())
     // must override context so siblings don't clobber initial state
     const subGroupContext = useMemo(() => {
       groupListeners.current.clear()
@@ -1177,15 +1196,7 @@ export function createComponent<
             } as any,
           },
         },
-        emit: (name, state) => {
-          groupListeners.current.forEach((l) => l(name, state))
-        },
-        subscribe(cb) {
-          groupListeners.current.add(cb)
-          return () => {
-            groupListeners.current.delete(cb)
-          }
-        },
+        ...groupHandlers,
       } satisfies ComponentContextI['groups']
     }, [groupName])
 
