@@ -1,12 +1,14 @@
 import { hsla, parseToHsla, toHex } from 'color2k'
 
-import { BuildTheme, BuildThemeSuitePalettes } from './types'
+import { BuildTheme, BuildThemeAnchor, BuildThemeSuitePalettes } from './types'
 
 /**
  * palette generally is:
  *
  * [constrastBackground, backgroundTransparent, ...background, ...foreground, foregroundTransparent, accentForeground]
  */
+
+const paletteSize = 12
 
 const generateColorPalette = ({
   theme,
@@ -26,6 +28,8 @@ const generateColorPalette = ({
     palette.push(hsla(h, s, l, 1))
   }
 
+  const numAnchors = Object.keys(anchors).length
+
   for (const [anchorIndex, anchor] of anchors.entries()) {
     const [h, s, l] = [anchor.hue, anchor.sat, anchor.lum[scheme]]
 
@@ -42,13 +46,21 @@ const generateColorPalette = ({
       const stepLum = (lastLum - l) / steps
 
       // backfill:
-      for (let step = lastAnchor.index; step <= anchor.index; step++) {
+      for (let step = lastAnchor.index + 1; step < anchor.index; step++) {
         const str = anchor.index - step
         add(h + stepHue * str, s + stepSat * str, l + stepLum * str)
       }
     }
 
     add(h, s, l)
+
+    const isLastAnchor = anchorIndex === numAnchors - 1
+    if (isLastAnchor && palette.length < paletteSize) {
+      // forwardfill:
+      for (let step = anchor.index + 1; step < paletteSize; step++) {
+        add(h, s, l)
+      }
+    }
   }
 
   // if (strategy?.type === 'automatic') {

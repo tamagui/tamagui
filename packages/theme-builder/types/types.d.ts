@@ -21,18 +21,19 @@ export type BuildThemeBase = {
     name: string;
     errors?: string[];
 };
+export type BuildThemeAnchor = {
+    index: number;
+    hue: number;
+    sat: number;
+    lum: {
+        light: number;
+        dark: number;
+    };
+};
 type BuildThemeFromScale = BuildThemeBase & {
     type: 'theme';
     scale: ScaleTypeName;
-    anchors: {
-        index: number;
-        hue: number;
-        sat: number;
-        lum: {
-            light: number;
-            dark: number;
-        };
-    }[];
+    anchors: BuildThemeAnchor[];
     template?: Template;
 };
 export type BuildTheme = BuildThemeFromScale & {

@@ -39,20 +39,22 @@ export type BuildThemeBase = {
   errors?: string[]
 }
 
+export type BuildThemeAnchor = {
+  index: number
+  hue: number
+  sat: number
+  lum: {
+    light: number
+    dark: number
+  }
+}
+
 type BuildThemeFromScale = BuildThemeBase & {
   type: 'theme'
 
   scale: ScaleTypeName
 
-  anchors: {
-    index: number
-    hue: number
-    sat: number
-    lum: {
-      light: number
-      dark: number
-    }
-  }[]
+  anchors: BuildThemeAnchor[]
 
   template?: Template
 }
