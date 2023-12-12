@@ -61,7 +61,7 @@ const generateColorPalette = ({
           h,
           s,
           // go to dark or light
-          l - (i === 0 ? 0.1 : 0),
+          l - (i === 0 ? 0.1 : 0) - (forAccent ? 1 - l : 0),
           1
         )
       }),
@@ -101,8 +101,6 @@ const generateColorPalette = ({
       theme: theme.accent,
       scheme,
     })
-
-    debugger
 
     // unshift bg
     palette.unshift(accentPalette[11])
