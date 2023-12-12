@@ -42,28 +42,17 @@ export type BuildThemeBase = {
 type BuildThemeFromScale = BuildThemeBase & {
   type: 'theme'
 
-  hue: number // 0-360
-  hueColor?: number // 0-360 (if distinguished from background)
+  scale: ScaleTypeName
 
-  // if you use a preset it sets this then clears when changed
-  createdFrom?: ScaleTypeName
-
-  satScale: {
-    light: number[]
-    dark: number[]
-  }
-
-  lumScale: {
-    light: number[]
-    dark: number[]
-  }
-
-  // overrides the above hue/scales, avoiding too much mess refactoring
-  strategy?: {
-    type: 'automatic'
-    foreground: string
-    background: string
-  }
+  anchors: {
+    index: number
+    hue: number
+    sat: number
+    lum: {
+      light: number
+      dark: number
+    }
+  }[]
 
   template?: Template
 }

@@ -23,22 +23,16 @@ export type BuildThemeBase = {
 };
 type BuildThemeFromScale = BuildThemeBase & {
     type: 'theme';
-    hue: number;
-    hueColor?: number;
-    createdFrom?: ScaleTypeName;
-    satScale: {
-        light: number[];
-        dark: number[];
-    };
-    lumScale: {
-        light: number[];
-        dark: number[];
-    };
-    strategy?: {
-        type: 'automatic';
-        foreground: string;
-        background: string;
-    };
+    scale: ScaleTypeName;
+    anchors: {
+        index: number;
+        hue: number;
+        sat: number;
+        lum: {
+            light: number;
+            dark: number;
+        };
+    }[];
     template?: Template;
 };
 export type BuildTheme = BuildThemeFromScale & {

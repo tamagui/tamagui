@@ -48,6 +48,7 @@ studio:
 Web:
 
   - createTamagui({ settings: { webMode: true } })
+  - No Text/Stack, just `styled.div` ?
   - avoids console warning on Text
   - `@tamagui/style` separate from core
   - instead of validStyleProps use validNONStyleProps
