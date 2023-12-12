@@ -41,15 +41,21 @@ export type BuildThemeBase = {
 
 export type BuildThemeAnchor = {
   index: number
-  hue: number
-  sat: number
+  hue: {
+    light: number
+    dark: number
+  }
+  sat: {
+    light: number
+    dark: number
+  }
   lum: {
     light: number
     dark: number
   }
 }
 
-type BuildThemeFromScale = BuildThemeBase & {
+export type BuildTheme = BuildThemeBase & {
   type: 'theme'
 
   scale: ScaleTypeName
@@ -57,10 +63,8 @@ type BuildThemeFromScale = BuildThemeBase & {
   anchors: BuildThemeAnchor[]
 
   template?: Template
-}
 
-export type BuildTheme = BuildThemeFromScale & {
-  accent?: BuildThemeFromScale
+  accent?: BuildTheme
 }
 
 // TODO type here isnt the same as type in BuildTheme

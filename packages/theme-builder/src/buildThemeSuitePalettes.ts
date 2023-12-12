@@ -31,14 +31,14 @@ const generateColorPalette = ({
   const numAnchors = Object.keys(anchors).length
 
   for (const [anchorIndex, anchor] of anchors.entries()) {
-    const [h, s, l] = [anchor.hue, anchor.sat, anchor.lum[scheme]]
+    const [h, s, l] = [anchor.hue[scheme], anchor.sat[scheme], anchor.lum[scheme]]
 
     if (anchorIndex !== 0) {
       const lastAnchor = anchors[anchorIndex - 1]
       const steps = anchor.index - lastAnchor.index
 
-      const lastHue = lastAnchor.hue
-      const lastSat = lastAnchor.sat
+      const lastHue = lastAnchor.hue[scheme]
+      const lastSat = lastAnchor.sat[scheme]
       const lastLum = lastAnchor.lum[scheme]
 
       const stepHue = (lastHue - h) / steps

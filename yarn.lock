@@ -7506,6 +7506,7 @@ __metadata:
     react-router-dom: ^6.14.1
     tamagui: 1.79.10
     tinybase: ^4.0.4
+    ts-deepmerge: ^6.2.0
     victory: ^36.6.11
     vite: ^5.0.2
   languageName: unknown
@@ -26818,6 +26819,13 @@ __metadata:
   version: 2.1.0
   resolution: "trough@npm:2.1.0"
   checksum: a577bb561c2b401cc0e1d9e188fcfcdf63b09b151ff56a668da12197fe97cac15e3d77d5b51f426ccfd94255744a9118e9e9935afe81a3644fa1be9783c82886
+  languageName: node
+  linkType: hard
+
+"ts-deepmerge@npm:^6.2.0":
+  version: 6.2.0
+  resolution: "ts-deepmerge@npm:6.2.0"
+  checksum: 88014409051cf614c5cd26c60eb2605a59b0b98896609b0483503083a2727362409b1db9b7e4bf4446733396881f32cd504ef8141dd448e38304dcdf1f9d39d0
   languageName: node
   linkType: hard
 

@@ -35,6 +35,7 @@
     "react-router-dom": "^6.14.1",
     "tamagui": "1.79.10",
     "tinybase": "^4.0.4",
+    "ts-deepmerge": "^6.2.0",
     "victory": "^36.6.11"
   },
   "devDependencies": {

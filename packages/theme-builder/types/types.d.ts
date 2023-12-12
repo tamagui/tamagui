@@ -23,21 +23,25 @@ export type BuildThemeBase = {
 };
 export type BuildThemeAnchor = {
     index: number;
-    hue: number;
-    sat: number;
+    hue: {
+        light: number;
+        dark: number;
+    };
+    sat: {
+        light: number;
+        dark: number;
+    };
     lum: {
         light: number;
         dark: number;
     };
 };
-type BuildThemeFromScale = BuildThemeBase & {
+export type BuildTheme = BuildThemeBase & {
     type: 'theme';
     scale: ScaleTypeName;
     anchors: BuildThemeAnchor[];
     template?: Template;
-};
-export type BuildTheme = BuildThemeFromScale & {
-    accent?: BuildThemeFromScale;
+    accent?: BuildTheme;
 };
 export type BuildMask = {
     id: string;
@@ -60,5 +64,4 @@ export type BuildThemeMask = BuildThemeBase & {
     type: 'mask';
     masks: BuildMask[];
 };
-export {};
 //# sourceMappingURL=types.d.ts.map

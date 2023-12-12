@@ -677,18 +677,6 @@ const CLOSE_NAME = 'DialogClose'
 const DialogCloseFrame = styled(View, {
   name: CLOSE_NAME,
   tag: 'button',
-
-  variants: {
-    unstyled: {
-      false: {
-        zIndex: 100,
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
-  },
 })
 
 type DialogCloseProps = GetProps<typeof DialogCloseFrame> & {
@@ -703,6 +691,7 @@ const DialogClose = DialogCloseFrame.styleable<DialogCloseProps>(
       fallback: {},
     })
     const isSheet = useShowDialogSheet(context)
+    const isInsideButton = React.useContext(ButtonNestingContext)
 
     if (isSheet && !displayWhenAdapted) {
       return null
@@ -711,6 +700,7 @@ const DialogClose = DialogCloseFrame.styleable<DialogCloseProps>(
     return (
       <DialogCloseFrame
         accessibilityLabel="Dialog Close"
+        tag={isInsideButton ? 'span' : 'button'}
         {...closeProps}
         ref={forwardedRef}
         onPress={composeEventHandlers(props.onPress as any, () =>
