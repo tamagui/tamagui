@@ -29,6 +29,7 @@
     }
   },
   "dependencies": {
+    "@tamagui/stacks": "1.79.10",
     "@tamagui/font-size": "1.79.10",
     "@tamagui/get-button-sized": "1.79.10",
     "@tamagui/helpers-tamagui": "1.79.10",
