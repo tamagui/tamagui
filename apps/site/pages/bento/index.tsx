@@ -1,7 +1,8 @@
-import { ButtonDemo, CardDemo } from '@tamagui/demos'
+import { ButtonDemo, InputsDemo, SelectDemo } from '@components/demos'
 import {
   Anchor,
   Button,
+  Card,
   H1,
   H2,
   H4,
@@ -10,28 +11,84 @@ import {
   Paragraph,
   Separator,
   Spacer,
+  Text,
+  Theme,
   XStack,
   YStack,
 } from 'tamagui'
-
 export default function page() {
   return (
-    <YStack p={'$6'} f={1} bc="$blue1">
-      <XStack jc="space-between" w={'100%'}>
-        <YStack jc="space-between" fs={1} ai="flex-start">
-          <H1>Beatiful, Responsive, And CrossPlatform UI Components</H1>
-          <Button boc="$blue5">
-            <Button.Text>Documentation</Button.Text>
-          </Button>
-        </YStack>
-        <XStack>
-          <CardDemo />
-          <ButtonDemo />
+    <YStack p={28} f={1} bc="transparent">
+      <div
+        style={{
+          background: 'linear-gradient(120deg, #e5fafa, #edf8fc, #e8e2f7);',
+          margin: -24,
+        }}
+      >
+        <XStack gap="$6" p={24} bc="transparent" py="$10" jc="space-between" w={'100%'}>
+          <YStack bc="transparent" jc="space-between" fs={1} ai="flex-start">
+            <H1 fontWeight={'600'} fontSize={'$10'}>
+              Beautiful CrossPlafrom
+              <br />
+              UI Components
+              <br />
+              <Text fontSize={'$9'} color={'$blue10'}>
+                Ready for React and React Native
+              </Text>
+            </H1>
+            <Paragraph fontWeight={'300'} color="$gray11" fontSize={'$6'}>
+              Well designed, beautiful, responsive and accessible cross-platform UI
+              components for React and React Native
+            </Paragraph>
+
+            <XStack gap="$3">
+              <Theme name={'light'}>
+                <Button
+                  bc="#fff"
+                  boc="$gray12"
+                  hoverStyle={{
+                    bc: '$gray2',
+                    boc: '$gray12',
+                  }}
+                  pressStyle={{
+                    bc: '$gray1',
+                    boc: '$gray12',
+                  }}
+                >
+                  <Button.Text>Getting Started</Button.Text>
+                </Button>
+              </Theme>
+              <Button
+                color={'#fff'}
+                bc="$blue9Dark"
+                boc="$blue5"
+                hoverStyle={{
+                  bc: '$blue10Dark',
+                  boc: '$blue5',
+                }}
+                pressStyle={{
+                  bc: '$blue9Dark',
+                  boc: '$blue5',
+                }}
+              >
+                <Button.Text>Make it yours</Button.Text>
+              </Button>
+            </XStack>
+          </YStack>
+          <XStack gap="$2">
+            <Card elevate bc="#fff">
+              <ButtonDemo />
+            </Card>
+            <Card elevate bc="#fff">
+              <InputsDemo />
+            </Card>
+            <Card p="$4" elevate bc="#fff">
+              <SelectDemo />
+            </Card>
+          </XStack>
         </XStack>
-      </XStack>
+      </div>
       <Spacer size={'$8'} />
-      <Separator />
-      <Spacer size={'$4'} />
       <H2>Sections</H2>
       <Paragraph size={'$5'} color={'$gray11'}>
         components are divided into multiple sections and each section has multiple group
