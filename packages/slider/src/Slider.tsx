@@ -390,99 +390,102 @@ interface SliderThumbProps extends SizableStackProps {
   index: number
 }
 
-const SliderThumb = SliderThumbFrame.styleable<SliderThumbProps>(function SliderThumb(
-  props: ScopedProps<SliderThumbProps>,
-  forwardedRef
-) {
-  const { __scopeSlider, index, size: sizeProp, ...thumbProps } = props
-  const context = useSliderContext(THUMB_NAME, __scopeSlider)
-  const orientation = useSliderOrientationContext(THUMB_NAME, __scopeSlider)
-  const [thumb, setThumb] = React.useState<TamaguiElement | null>(null)
-  const composedRefs = useComposedRefs(forwardedRef, (node) =>
-    setThumb(node as TamaguiElement)
-  )
+// since it doesn't take children usually we can memoize
+const SliderThumb = React.memo(
+  SliderThumbFrame.styleable<SliderThumbProps>(function SliderThumb(
+    props: ScopedProps<SliderThumbProps>,
+    forwardedRef
+  ) {
+    const { __scopeSlider, index, size: sizeProp, ...thumbProps } = props
+    const context = useSliderContext(THUMB_NAME, __scopeSlider)
+    const orientation = useSliderOrientationContext(THUMB_NAME, __scopeSlider)
+    const [thumb, setThumb] = React.useState<TamaguiElement | null>(null)
+    const composedRefs = useComposedRefs(forwardedRef, (node) =>
+      setThumb(node as TamaguiElement)
+    )
 
-  // We cast because index could be `-1` which would return undefined
-  const value = context.values[index] as number | undefined
-  const percent =
-    value === undefined ? 0 : convertValueToPercentage(value, context.min, context.max)
-  const label = getLabel(index, context.values.length)
-  const sizeIn = sizeProp ?? context.size ?? '$true'
-  const [size, setSize] = React.useState(() => {
-    // for SSR
-    const estimatedSize = getVariableValue(getThumbSize(sizeIn).width) as number
-    return estimatedSize
-  })
+    // We cast because index could be `-1` which would return undefined
+    const value = context.values[index] as number | undefined
+    const percent =
+      value === undefined ? 0 : convertValueToPercentage(value, context.min, context.max)
+    const label = getLabel(index, context.values.length)
+    const sizeIn = sizeProp ?? context.size ?? '$true'
+    const [size, setSize] = React.useState(() => {
+      // for SSR
+      const estimatedSize = getVariableValue(getThumbSize(sizeIn).width) as number
+      return estimatedSize
+    })
 
-  const thumbInBoundsOffset = size
-    ? getThumbInBoundsOffset(size, percent, orientation.direction)
-    : 0
+    const thumbInBoundsOffset = size
+      ? getThumbInBoundsOffset(size, percent, orientation.direction)
+      : 0
 
-  React.useEffect(() => {
-    if (thumb) {
-      context.thumbs.set(thumb, index)
-      return () => {
-        context.thumbs.delete(thumb)
+    React.useEffect(() => {
+      if (thumb) {
+        context.thumbs.set(thumb, index)
+        return () => {
+          context.thumbs.delete(thumb)
+        }
       }
-    }
-  }, [thumb, context.thumbs, index])
+    }, [thumb, context.thumbs, index])
 
-  const positionalStyles =
-    context.orientation === 'horizontal'
-      ? {
-          x: thumbInBoundsOffset - size / 2,
-          y: -size / 2,
-          top: '50%',
-          ...(size === 0 && {
-            top: 'auto',
-            bottom: 'auto',
-          }),
-        }
-      : {
-          x: -size / 2,
-          y: size / 2,
-          left: '50%',
-          ...(size === 0 && {
-            left: 'auto',
-            right: 'auto',
-          }),
-        }
+    const positionalStyles =
+      context.orientation === 'horizontal'
+        ? {
+            x: thumbInBoundsOffset - size / 2,
+            y: -size / 2,
+            top: '50%',
+            ...(size === 0 && {
+              top: 'auto',
+              bottom: 'auto',
+            }),
+          }
+        : {
+            x: -size / 2,
+            y: size / 2,
+            left: '50%',
+            ...(size === 0 && {
+              left: 'auto',
+              right: 'auto',
+            }),
+          }
 
-  return (
-    <SliderThumbFrame
-      ref={composedRefs}
-      role="slider"
-      aria-label={props['aria-label'] || label}
-      aria-valuemin={context.min}
-      aria-valuenow={value}
-      aria-valuemax={context.max}
-      aria-orientation={context.orientation}
-      data-orientation={context.orientation}
-      data-disabled={context.disabled ? '' : undefined}
-      tabIndex={context.disabled ? undefined : 0}
-      animateOnly={['transform', 'left', 'top', 'right', 'bottom']}
-      {...positionalStyles}
-      {...{
-        [orientation.startEdge]: `${percent}%`,
-      }}
-      size={sizeIn}
-      {...thumbProps}
-      onLayout={(e) => {
-        setSize(e.nativeEvent.layout[orientation.sizeProp])
-      }}
-      /**
-       * There will be no value on initial render while we work out the index so we hide thumbs
-       * without a value, otherwise SSR will render them in the wrong position before they
-       * snap into the correct position during hydration which would be visually jarring for
-       * slower connections.
-       */
-      // style={value === undefined ? { display: 'none' } : props.style}
-      onFocus={composeEventHandlers(props.onFocus, () => {
-        context.valueIndexToChangeRef.current = index
-      })}
-    />
-  )
-})
+    return (
+      <SliderThumbFrame
+        ref={composedRefs}
+        role="slider"
+        aria-label={props['aria-label'] || label}
+        aria-valuemin={context.min}
+        aria-valuenow={value}
+        aria-valuemax={context.max}
+        aria-orientation={context.orientation}
+        data-orientation={context.orientation}
+        data-disabled={context.disabled ? '' : undefined}
+        tabIndex={context.disabled ? undefined : 0}
+        animateOnly={['transform', 'left', 'top', 'right', 'bottom']}
+        {...positionalStyles}
+        {...{
+          [orientation.startEdge]: `${percent}%`,
+        }}
+        size={sizeIn}
+        {...thumbProps}
+        onLayout={(e) => {
+          setSize(e.nativeEvent.layout[orientation.sizeProp])
+        }}
+        /**
+         * There will be no value on initial render while we work out the index so we hide thumbs
+         * without a value, otherwise SSR will render them in the wrong position before they
+         * snap into the correct position during hydration which would be visually jarring for
+         * slower connections.
+         */
+        // style={value === undefined ? { display: 'none' } : props.style}
+        onFocus={composeEventHandlers(props.onFocus, () => {
+          context.valueIndexToChangeRef.current = index
+        })}
+      />
+    )
+  })
+)
 
 /* -------------------------------------------------------------------------------------------------
  * Slider
