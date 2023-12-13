@@ -16,7 +16,12 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
+
 export default function page() {
+  return <div>soon...</div>
+}
+
+function _page() {
   return (
     <YStack p={28} f={1} bc="transparent">
       <div
