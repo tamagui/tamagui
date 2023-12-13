@@ -5990,19 +5990,19 @@ __metadata:
     "@rnx-kit/metro-config": ^1.3.5
     "@rnx-kit/metro-resolver-symlinks": ^0.1.26
     "@shopify/restyle": ^2.4.2
-    "@tamagui/animations-reanimated": 1.79.7
-    "@tamagui/babel-plugin": 1.79.7
-    "@tamagui/build": 1.79.7
-    "@tamagui/cli": 1.79.7
-    "@tamagui/colors": 1.79.7
-    "@tamagui/config": 1.79.7
-    "@tamagui/core": 1.79.7
-    "@tamagui/demos": 1.79.7
-    "@tamagui/font-inter": 1.79.7
-    "@tamagui/lucide-icons": 1.79.7
-    "@tamagui/shorthands": 1.79.7
-    "@tamagui/themes": 1.79.7
-    "@tamagui/web": 1.79.7
+    "@tamagui/animations-reanimated": 1.79.11
+    "@tamagui/babel-plugin": 1.79.11
+    "@tamagui/build": 1.79.11
+    "@tamagui/cli": 1.79.11
+    "@tamagui/colors": 1.79.11
+    "@tamagui/config": 1.79.11
+    "@tamagui/core": 1.79.11
+    "@tamagui/demos": 1.79.11
+    "@tamagui/font-inter": 1.79.11
+    "@tamagui/lucide-icons": 1.79.11
+    "@tamagui/shorthands": 1.79.11
+    "@tamagui/themes": 1.79.11
+    "@tamagui/web": 1.79.11
     "@welldone-software/why-did-you-render": ^7.0.1
     babel-plugin-transform-inline-environment-variables: ^0.4.4
     burnt: ^0.12.1
@@ -6030,7 +6030,7 @@ __metadata:
     react-native-svg: ^13.9.0
     react-native-web: ^0.19.6
     solito: ^4.0.0-alpha.4
-    tamagui: 1.79.7
+    tamagui: 1.79.11
     tilg: 0.1.1
     webpack: ^5.88.2
     webpack-bundle-analyzer: ^4.9.0
@@ -6038,6 +6038,7 @@ __metadata:
     webpack-dev-server: ^4.8.1
   languageName: unknown
   linkType: soft
+
 "@tamagui/build@1.79.11, @tamagui/build@workspace:packages/build":
   version: 0.0.0-use.local
   resolution: "@tamagui/build@workspace:packages/build"
@@ -23506,7 +23507,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"react-native-web@npm:^0.19.9":
+"react-native-web@npm:^0.19.6, react-native-web@npm:^0.19.9":
   version: 0.19.9
   resolution: "react-native-web@npm:0.19.9"
   dependencies:
