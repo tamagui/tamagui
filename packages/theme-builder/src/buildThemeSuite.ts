@@ -4,10 +4,10 @@ import {
   createMask,
   createSoftenMask,
 } from '@tamagui/create-theme'
-import { masks as defaultMasks, maskOptions } from '@tamagui/themes'
 
 import { buildMask } from './buildMask'
 import { getThemeSuitePalettes } from './buildThemeSuitePalettes'
+import { masks as defaultMasks, maskOptions } from './masks'
 import { createThemeBuilder } from './ThemeBuilder'
 import { BuildThemeMask, BuildThemeSuiteProps } from './types'
 
