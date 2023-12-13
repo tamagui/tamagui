@@ -1,4 +1,5 @@
 export * from './InputWithLeftAddOn';
+export * from './InputWithRightAddOn';
 export * from './InputBothSideIcons';
 export * from './InputWithError';
 export * from './InputWithLabel';

@@ -8,6 +8,7 @@ export declare function inputs(props: {
         InputWithRightIcon: string;
         InputBothSideIcons: string;
         InputWithLeftAddOn: string;
+        InputWithRightAddOn: string;
     };
 }): JSX.Element;
 export declare function inputsGetComponentCodes(): {
@@ -19,6 +20,7 @@ export declare function inputsGetComponentCodes(): {
         InputWithRightIcon: any;
         InputBothSideIcons: any;
         InputWithLeftAddOn: any;
+        InputWithRightAddOn: any;
     };
 };
 //# sourceMappingURL=inputs.d.ts.map
