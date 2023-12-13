@@ -2077,6 +2077,7 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
   supportsCSSVars?: boolean
   useAnimations: UseAnimationHook
   usePresence: () => UsePresenceResult
+  ResetPresence: (props: { children?: any }) => JSX.Element
   useAnimatedNumber: (initial: number) => UniversalAnimatedNumber<any>
   useAnimatedNumberStyle: <V extends UniversalAnimatedNumber<any>>(
     val: V,

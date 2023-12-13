@@ -48,14 +48,14 @@ export function Header(props: HeaderProps) {
       <XStack
         // @ts-ignore
         pos="fixed"
-        top={0}
-        left={0}
-        right={0}
+        t={0}
+        l={0}
+        r={0}
         ai="center"
         jc="center"
         zi={50000}
         $gtSm={{
-          px: '$4',
+          px: '$1',
         }}
       >
         <XStack width="100%" maw={1120} pos="relative">
@@ -134,7 +134,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
       py={props.floating ? 0 : '$2'}
       zi={50000}
     >
-      <XStack ai="center" space="$4">
+      <XStack ai="center" gap="$4">
         {isHome ? (
           <YStack my={-20} onPress={setNextTint} px="$3">
             <TamaguiLogo downscale={props.floating ? 2 : 1.5} />
@@ -208,11 +208,11 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
         pointerEvents="auto"
         tag="nav"
       >
-        <XStack ai="center" space="$3">
+        <XStack ai="center" gap="$3">
           <HeaderLinks isHeader {...props} />
 
-          {userSwr.data?.userDetails ? (
-            <XStack ai="center" space="$2">
+          {userSwr.data?.userDetails && (
+            <XStack ai="center" gap="$2">
               <NextLink href="/account">
                 <Avatar circular size="$2">
                   <Avatar.Image
@@ -231,22 +231,22 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
                 </Avatar>
               </NextLink>
             </XStack>
-          ) : (
-            <NextLink
-              legacyBehavior={false}
-              target="_blank"
-              href="https://github.com/tamagui/tamagui"
-            >
-              <TooltipSimple delay={0} restMs={25} label="Star on Github">
-                <YStack mr="$-1" p="$2" opacity={0.7} hoverStyle={{ opacity: 1 }}>
-                  <VisuallyHidden>
-                    <Text>Github</Text>
-                  </VisuallyHidden>
-                  <GithubIcon width={23} />
-                </YStack>
-              </TooltipSimple>
-            </NextLink>
           )}
+
+          <NextLink
+            legacyBehavior={false}
+            target="_blank"
+            href="https://github.com/tamagui/tamagui"
+          >
+            <TooltipSimple delay={0} restMs={25} label="Star on Github">
+              <YStack mr="$-1" p="$2" opacity={0.7} hoverStyle={{ opacity: 1 }}>
+                <VisuallyHidden>
+                  <Text>Github</Text>
+                </VisuallyHidden>
+                <GithubIcon width={23} />
+              </YStack>
+            </TooltipSimple>
+          </NextLink>
 
           <HeaderMenu />
         </XStack>

@@ -15,22 +15,33 @@ export type BuildThemeSuitePalettes = {
     lightAccent?: string[];
     darkAccent?: string[];
 };
-export type ScaleTypeName = 'automatic' | 'radix' | 'radix-b' | 'radius-bold' | 'radius-bright' | 'linear' | 'pastel' | 'pastel-desaturating' | 'neon' | 'neon-bright' | 'neon-c';
+export type ScaleTypeName = 'custom' | 'radix' | 'radix-b' | 'radius-bold' | 'radius-bright' | 'linear' | 'pastel' | 'pastel-desaturating' | 'neon' | 'neon-bright' | 'neon-c';
 export type BuildThemeBase = {
     id: string;
     name: string;
     errors?: string[];
 };
+export type BuildThemeAnchor = {
+    index: number;
+    hue: {
+        light: number;
+        dark: number;
+    };
+    sat: {
+        light: number;
+        dark: number;
+    };
+    lum: {
+        light: number;
+        dark: number;
+    };
+};
 export type BuildTheme = BuildThemeBase & {
     type: 'theme';
-    color: string;
     scale: ScaleTypeName;
-    spreadLuminance?: number;
-    spreadSaturation?: number;
+    anchors: BuildThemeAnchor[];
     template?: Template;
-    accent?: string;
-    accentColor?: string;
-    accentScale?: ScaleTypeName;
+    accent?: BuildTheme;
 };
 export type BuildMask = {
     id: string;

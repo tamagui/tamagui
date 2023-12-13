@@ -6,7 +6,7 @@ import {
   useIsomorphicLayoutEffect,
 } from '@tamagui/core'
 // import { animate } from '@tamagui/cubic-bezier-animator'
-import { usePresence } from '@tamagui/use-presence'
+import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import { useEffect, useId, useState } from 'react'
 
 export function createAnimations<A extends Object>(animations: A): AnimationDriver<A> {
@@ -17,6 +17,7 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
     Text: Text,
     animations,
     usePresence,
+    ResetPresence,
     supportsCSSVars: true,
 
     useAnimatedNumber(initial): UniversalAnimatedNumber<Function> {

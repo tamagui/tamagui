@@ -1,4 +1,4 @@
-// debug
+// debug-verbose
 // import './wdyr'
 
 import { Text } from '@tamagui/core'

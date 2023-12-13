@@ -1132,7 +1132,6 @@ declare const Button: import("@tamagui/web").ReactComponentWithRef<Omit<Omit<imp
         scaleIcon?: number;
     }) => any;
 };
-export declare const ButtonNestingContext: import("react").Context<boolean>;
 /**
  * @deprecated Instead of useButton, see the Button docs for the newer and much improved Advanced customization pattern: https://tamagui.dev/docs/components/button
  */

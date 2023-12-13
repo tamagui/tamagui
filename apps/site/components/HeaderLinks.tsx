@@ -17,7 +17,6 @@ const HeadAnchor = styled(Paragraph, {
   hoverStyle: { opacity: 1, color: '$color' },
   pressStyle: { opacity: 0.25 },
   tabIndex: -1,
-  w: '100%',
   tag: 'a',
 })
 
@@ -59,25 +58,14 @@ export const HeaderLinks = ({ showExtra, forceShowAllLinks, isHeader }: HeaderPr
 
       {!router.asPath.startsWith('/takeout') && (
         <NextLink passHref legacyBehavior={false} prefetch={false} href="/takeout">
-          <TooltipSimple
-            disabled={forceShowAllLinks}
-            delay={0}
-            restMs={25}
-            label="Takeout"
+          <HeadAnchor
+            tag="span"
+            $sm={{
+              display: forceShowAllLinks ? 'flex' : 'none',
+            }}
           >
-            <HeadAnchor
-              tag="span"
-              {...(!forceShowAllLinks && {
-                size: '$8',
-                mr: '$-3',
-              })}
-              $sm={{
-                display: forceShowAllLinks ? 'flex' : 'none',
-              }}
-            >
-              {forceShowAllLinks ? ' Takeout 🥡' : '🥡'}
-            </HeadAnchor>
-          </TooltipSimple>
+            Takeout 🥡
+          </HeadAnchor>
         </NextLink>
       )}
 
@@ -98,19 +86,25 @@ export const HeaderLinks = ({ showExtra, forceShowAllLinks, isHeader }: HeaderPr
       )}
 
       {forceShowAllLinks && (
-        <NextLink prefetch={false} href="/community">
+        <NextLink passHref prefetch={false} href="/community">
           <HeadAnchor>Community</HeadAnchor>
         </NextLink>
       )}
 
       {showExtra && (
-        <NextLink prefetch={false} href="/studio">
+        <NextLink passHref prefetch={false} href="/studio">
           <HeadAnchor>Studio</HeadAnchor>
         </NextLink>
       )}
 
-      {(!userSwr.data?.session?.user && !isHeader) && (
-        <NextLink prefetch={false} href="/login">
+      {forceShowAllLinks && (
+        <NextLink passHref prefetch={false} href="/blog">
+          <HeadAnchor>Blog</HeadAnchor>
+        </NextLink>
+      )}
+
+      {!userSwr.data?.session?.user && !isHeader && (
+        <NextLink passHref prefetch={false} href="/login">
           <HeadAnchor
             $md={{
               display: forceShowAllLinks ? 'flex' : 'none',

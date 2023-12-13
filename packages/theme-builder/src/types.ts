@@ -21,7 +21,7 @@ export type BuildThemeSuitePalettes = {
 }
 
 export type ScaleTypeName =
-  | 'automatic'
+  | 'custom'
   | 'radix'
   | 'radix-b'
   | 'radius-bold'
@@ -39,16 +39,32 @@ export type BuildThemeBase = {
   errors?: string[]
 }
 
+export type BuildThemeAnchor = {
+  index: number
+  hue: {
+    light: number
+    dark: number
+  }
+  sat: {
+    light: number
+    dark: number
+  }
+  lum: {
+    light: number
+    dark: number
+  }
+}
+
 export type BuildTheme = BuildThemeBase & {
   type: 'theme'
-  color: string
+
   scale: ScaleTypeName
-  spreadLuminance?: number
-  spreadSaturation?: number
+
+  anchors: BuildThemeAnchor[]
+
   template?: Template
-  accent?: string
-  accentColor?: string
-  accentScale?: ScaleTypeName
+
+  accent?: BuildTheme
 }
 
 // TODO type here isnt the same as type in BuildTheme

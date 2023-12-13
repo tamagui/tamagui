@@ -4,12 +4,27 @@ import {
   createMask,
   createSoftenMask,
 } from '@tamagui/create-theme'
-import { masks as defaultMasks, maskOptions } from '@tamagui/themes'
 
 import { buildMask } from './buildMask'
 import { getThemeSuitePalettes } from './buildThemeSuitePalettes'
+import { masks as defaultMasks, maskOptions } from './masks'
 import { createThemeBuilder } from './ThemeBuilder'
 import { BuildThemeMask, BuildThemeSuiteProps } from './types'
+
+// its offset by some transparent values etc
+const basePaletteOffset = 5
+const namedTemplateSlots = {
+  background: basePaletteOffset,
+  subtleBackground: basePaletteOffset + 1,
+  uiBackground: basePaletteOffset + 2,
+  hoverUIBackround: basePaletteOffset + 3,
+  activeUIBackround: basePaletteOffset + 4,
+  subtleBorder: basePaletteOffset + 5,
+  strongBorder: basePaletteOffset + 6,
+  hoverBorder: basePaletteOffset + 7,
+  strongBackground: basePaletteOffset + 8,
+  hoverStrongBackground: basePaletteOffset + 9,
+}
 
 export function buildThemeSuite({ baseTheme, subThemes }: BuildThemeSuiteProps) {
   const theme = baseTheme
@@ -25,7 +40,7 @@ export function buildThemeSuite({ baseTheme, subThemes }: BuildThemeSuiteProps) 
   )
 
   // base palletes need to add in sub theme palettes if customized
-  const palettes = getThemeSuitePalettes(theme as any)
+  const palettes = getThemeSuitePalettes(theme)
 
   const max = palettes.dark.length - 1
   const min = 1
@@ -149,6 +164,13 @@ export function buildThemeSuite({ baseTheme, subThemes }: BuildThemeSuiteProps) 
 
     return {
       base: template,
+      active: {
+        ...template,
+        background: namedTemplateSlots.strongBackground,
+        backgroundHover: namedTemplateSlots.hoverStrongBackground,
+        backgroundPress: namedTemplateSlots.hoverBorder,
+        backgroundFocus: namedTemplateSlots.strongBackground,
+      },
       accentLight: template,
       accentDark: template,
     }
@@ -180,13 +202,13 @@ export function buildThemeSuite({ baseTheme, subThemes }: BuildThemeSuiteProps) 
     const componentTheme = [
       {
         parent: 'light_accent',
-        template: 'accentLight',
+        template: 'active',
         palette: 'lightAccent',
       },
 
       {
         parent: 'dark_accent',
-        template: 'accentDark',
+        template: 'active',
         palette: 'darkAccent',
       },
 

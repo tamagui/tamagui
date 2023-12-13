@@ -19,10 +19,10 @@ import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
 import { registerFocusable } from '@tamagui/focusable'
 import { getFontSize } from '@tamagui/font-size'
-import { getSize, stepTokenUpOrDown } from '@tamagui/get-token'
+import { getSize } from '@tamagui/get-token'
 import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { useLabelContext } from '@tamagui/label'
-import { ThemeableStack } from '@tamagui/stacks'
+import { ButtonNestingContext, ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { usePrevious } from '@tamagui/use-previous'
 import * as React from 'react'
@@ -308,6 +308,8 @@ const CheckboxComponent = CheckboxFrame.styleable<CheckboxExtraProps>(function C
     scaleIcon,
     ...checkboxProps
   } = props
+
+  const isInsideButton = React.useContext(ButtonNestingContext)
   const [button, setButton] = React.useState<HTMLButtonElement | null>(null)
   const composedRefs = useComposedRefs(forwardedRef, (node) => setButton(node as any))
   const hasConsumerStoppedPropagationRef = React.useRef(false)
@@ -365,7 +367,7 @@ const CheckboxComponent = CheckboxFrame.styleable<CheckboxExtraProps>(function C
           <CheckboxFrame
             width={size}
             height={size}
-            tag="button"
+            tag={isInsideButton ? 'span' : 'button'}
             role="checkbox"
             aria-labelledby={labelledBy}
             aria-checked={isIndeterminate(checked) ? 'mixed' : checked}

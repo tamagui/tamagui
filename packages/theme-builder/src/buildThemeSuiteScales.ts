@@ -2,73 +2,46 @@ import { hsla, parseToHsla, toHex } from 'color2k'
 
 import { BuildTheme, ScaleTypeName } from './types'
 
-export function getColorForegroundBackground(color: string, isDarkMode = false) {
-  const [h, s, l] = parseToHsla(color)
-  const isColorLight = l > 0.5
-  const oppositeLightness = l > 0.5 ? 1 - l : 0.5 + l
-  const oppositeLightnessColor = toHex(hsla(h, s, oppositeLightness, 1))
-  const foreground = isDarkMode ? color : oppositeLightnessColor
-  const background = foreground === color ? oppositeLightnessColor : color
-  return {
-    foreground,
-    foregroundLightness: foreground === color ? l : oppositeLightness,
-    background,
-    backgroundLightness: foreground !== color ? l : oppositeLightness,
-  }
-}
+// export function getColorForegroundBackground(color: string, isDarkMode = false) {
+//   const [h, s, l] = parseToHsla(color)
+//   const isColorLight = l > 0.5
+//   const oppositeLightness = l > 0.5 ? 1 - l : 0.5 + l
+//   const oppositeLightnessColor = toHex(hsla(h, s, oppositeLightness, 1))
+//   const foreground = isDarkMode ? color : oppositeLightnessColor
+//   const background = foreground === color ? oppositeLightnessColor : color
+//   return {
+//     foreground,
+//     foregroundLightness: foreground === color ? l : oppositeLightness,
+//     background,
+//     backgroundLightness: foreground !== color ? l : oppositeLightness,
+//   }
+// }
 
-export const getThemeSuiteScale = (theme: BuildTheme, accent?: boolean): ScaleType => {
-  const baseColor = accent ? theme.accent || theme.color : theme.color
-  const scale = accent ? theme.accentScale || theme.scale : theme.scale
+// if (scale === 'automatic') {
+//   const lightColors = getColorForegroundBackground(baseColor, false)
+//   const darkColors = getColorForegroundBackground(baseColor, true)
 
-  let base = scaleTypes[scale]
+//   const scaleLen = 12
+//   const arr = new Array(scaleLen).fill(0)
 
-  if (!baseColor) {
-    return base
-  }
+//   function getScale(bgL: number, fgL: number) {
+//     const stepSize = (fgL - bgL) / scaleLen
+//     return arr.map((_, i) => bgL + i * stepSize)
+//   }
 
-  const [h, s, l] = parseToHsla(baseColor)
-
-  if (scale === 'automatic') {
-    const lightColors = getColorForegroundBackground(baseColor, false)
-    const darkColors = getColorForegroundBackground(baseColor, true)
-
-    const scaleLen = 12
-    const arr = new Array(scaleLen).fill(0)
-
-    function getScale(bgL: number, fgL: number) {
-      const stepSize = (fgL - bgL) / scaleLen
-      return arr.map((_, i) => bgL + i * stepSize)
-    }
-
-    return {
-      ...base,
-      lumScale: {
-        light: getScale(lightColors.backgroundLightness, lightColors.foregroundLightness),
-        dark: getScale(darkColors.backgroundLightness, darkColors.foregroundLightness),
-      },
-    }
-  }
-
-  return {
-    ...base,
-    lumScale: {
-      light: adjustScale(theme, base.lumScale.light, l, true),
-      dark: adjustScale(theme, base.lumScale.dark, 1 - l),
-    },
-    ...(base.satScale && {
-      satScale: {
-        light: adjustScale(theme, base.satScale.light, s, true),
-        dark: adjustScale(theme, base.satScale.dark, s),
-      },
-    }),
-  }
-}
+//   return {
+//     ...base,
+//     lumScale: {
+//       light: getScale(lightColors.backgroundLightness, lightColors.foregroundLightness),
+//       dark: getScale(darkColors.backgroundLightness, darkColors.foregroundLightness),
+//     },
+//   }
+// }
 
 export type ScaleType<A extends ScaleTypeName = ScaleTypeName> = {
   name: string
   createdFrom?: A // we copy the scale values - keeping this helps us refer back to the scale. also helpful if we change scales in the future
-  lumScale: {
+  lumScale?: {
     light: Array<number>
     dark: Array<number>
   }
@@ -78,15 +51,23 @@ export type ScaleType<A extends ScaleTypeName = ScaleTypeName> = {
   }
 }
 
-export const scaleTypes: Record<ScaleTypeName, ScaleType> = {
-  automatic: {
-    createdFrom: 'automatic',
-    name: 'Automatic',
-    lumScale: {
-      light: [],
-      dark: [],
-    },
+export function getScalePreset<Name extends ScaleTypeName>(
+  a: Name
+): (typeof scaleTypes)[Name] {
+  return scaleTypes[a]
+}
+
+const fullSatScale = {
+  light: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  dark: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+}
+
+export const scaleTypes = {
+  custom: {
+    name: 'Custom',
+    createdFrom: 'custom',
   },
+
   radix: {
     name: 'Radius',
     createdFrom: 'radix',
@@ -115,6 +96,10 @@ export const scaleTypes: Record<ScaleTypeName, ScaleType> = {
         0.11, 0.136, 0.158, 0.179, 0.205, 0.243, 0.313, 0.439, 0.47, 0.52, 0.56, 0.61,
       ],
     },
+    satScale: {
+      light: [0.65, 0.55, 0.4, 0.4, 0.35, 0.35, 0.35, 0.35, 0.4, 0.4, 0.3, 0.2],
+      dark: [0.65, 0.55, 0.4, 0.4, 0.35, 0.35, 0.35, 0.35, 0.4, 0.4, 0.3, 0.2],
+    },
   },
 
   'radius-bright': {
@@ -123,6 +108,10 @@ export const scaleTypes: Record<ScaleTypeName, ScaleType> = {
     lumScale: {
       light: [1, 0.954, 0.94, 0.9, 0.85, 0.804, 0.747, 0.659, 0.541, 0.453, 0.27, 0.086],
       dark: [0, 0.1, 0.16, 0.2, 0.24, 0.36, 0.42, 0.46, 0.5, 0.54, 0.84, 0.97],
+    },
+    satScale: {
+      light: [0.65, 0.55, 0.4, 0.4, 0.35, 0.35, 0.35, 0.35, 0.4, 0.4, 0.3, 0.2],
+      dark: [0.65, 0.55, 0.4, 0.4, 0.35, 0.35, 0.35, 0.35, 0.4, 0.4, 0.3, 0.2],
     },
   },
 
@@ -133,6 +122,10 @@ export const scaleTypes: Record<ScaleTypeName, ScaleType> = {
       light: [1, 0.9, 0.885, 0.82, 0.77, 0.54, 0.32, 0.25, 0.16, 0.12, 0.075, 0],
       dark: [0, 0.13, 0.2, 0.24, 0.3, 0.34, 0.45, 0.55, 0.65, 0.885, 0.9, 1],
     },
+    satScale: {
+      light: [0.65, 0.55, 0.4, 0.4, 0.35, 0.35, 0.35, 0.35, 0.4, 0.4, 0.3, 0.2],
+      dark: [0.65, 0.55, 0.4, 0.4, 0.35, 0.35, 0.35, 0.35, 0.4, 0.4, 0.3, 0.2],
+    },
   },
 
   linear: {
@@ -141,6 +134,10 @@ export const scaleTypes: Record<ScaleTypeName, ScaleType> = {
     lumScale: {
       light: [1, 0.925, 0.9, 0.85, 0.75, 0.6, 0.4, 0.3, 0.25, 0.15, 0.125, 0],
       dark: [0, 0.075, 0.125, 0.15, 0.25, 0.4, 0.6, 0.75, 0.85, 0.9, 0.925, 1],
+    },
+    satScale: {
+      light: [0.65, 0.55, 0.4, 0.4, 0.35, 0.35, 0.35, 0.35, 0.4, 0.4, 0.3, 0.2],
+      dark: [0.65, 0.55, 0.4, 0.4, 0.35, 0.35, 0.35, 0.35, 0.4, 0.4, 0.3, 0.2],
     },
   },
 
@@ -155,6 +152,10 @@ export const scaleTypes: Record<ScaleTypeName, ScaleType> = {
         0.07, 0.11, 0.136, 0.158, 0.179, 0.205, 0.243, 0.313, 0.439, 0.52, 0.61, 0.93,
       ],
     },
+    satScale: {
+      light: [0.65, 0.55, 0.4, 0.4, 0.35, 0.35, 0.35, 0.35, 0.4, 0.4, 0.3, 0.2],
+      dark: [0.65, 0.55, 0.4, 0.4, 0.35, 0.35, 0.35, 0.35, 0.4, 0.4, 0.3, 0.2],
+    },
   },
 
   'neon-bright': {
@@ -163,6 +164,10 @@ export const scaleTypes: Record<ScaleTypeName, ScaleType> = {
     lumScale: {
       light: [0.45, 0.475, 0.5, 0.525, 0.55, 0.575, 0.6, 0.625, 0.65, 0.2, 0.1, 0],
       dark: [0.45, 0.475, 0.5, 0.525, 0.55, 0.575, 0.6, 0.625, 0.65, 0.2, 0.1, 0],
+    },
+    satScale: {
+      light: [0.65, 0.55, 0.4, 0.4, 0.35, 0.35, 0.35, 0.35, 0.4, 0.4, 0.3, 0.2],
+      dark: [0.65, 0.55, 0.4, 0.4, 0.35, 0.35, 0.35, 0.35, 0.4, 0.4, 0.3, 0.2],
     },
   },
 
@@ -173,10 +178,7 @@ export const scaleTypes: Record<ScaleTypeName, ScaleType> = {
       light: [0.45, 0.475, 0.5, 0.525, 0.55, 0.575, 0.6, 0.625, 0.65, 0.2, 0.1, 0],
       dark: [0.45, 0.475, 0.5, 0.525, 0.55, 0.575, 0.6, 0.625, 0.65, 0.2, 0.1, 0],
     },
-    satScale: {
-      light: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-      dark: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    },
+    satScale: fullSatScale,
   },
 
   pastel: {
@@ -208,7 +210,7 @@ export const scaleTypes: Record<ScaleTypeName, ScaleType> = {
       dark: [0.6, 0.5, 0.4, 0.35, 0.3, 0.3, 0.3, 0.3, 0.4, 0.35, 0.25, 0.15],
     },
   },
-}
+} satisfies Record<ScaleTypeName, ScaleType>
 
 const adjustScale = (
   theme: BuildTheme,

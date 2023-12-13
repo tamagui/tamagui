@@ -1,3 +1,4 @@
+import { existsSync } from 'fs'
 import { join } from 'path'
 
 import chalk from 'chalk'
@@ -12,6 +13,7 @@ const repoRoot = join(__dirname, '..', '..', '..')
 
 // for local dev/test only
 const starterFreeRoot = join(__dirname, '..', '..', '..', '..', 'starter-free')
+const starterExists = existsSync(starterFreeRoot)
 
 export const templates = [
   {
@@ -20,9 +22,10 @@ export const templates = [
     type: 'free',
     hidden: false,
     repo: {
-      url: IS_TEST
-        ? `file://${starterFreeRoot}`
-        : `https://github.com/tamagui/starter-free.git`,
+      url:
+        IS_TEST && starterExists
+          ? `file://${starterFreeRoot}`
+          : `https://github.com/tamagui/starter-free.git`,
       dir: [],
       branch: 'main',
     },

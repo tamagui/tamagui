@@ -35,10 +35,15 @@ export type ExtractedAttrStyle = {
     attr?: t.JSXAttribute | t.JSXSpreadAttribute;
     name?: string;
 };
+export type ExtractedDynAttrStyle = {
+    type: 'dynamic-style';
+    name?: string;
+    value: t.Expression | t.JSXEmptyExpression;
+};
 export type ExtractedAttr = ExtractedAttrAttr | {
     type: 'ternary';
     value: Ternary;
-} | ExtractedAttrStyle;
+} | ExtractedAttrStyle | ExtractedDynAttrStyle;
 export type ExtractTagProps = {
     parserProps: TamaguiOptionsWithFileInfo;
     attrs: ExtractedAttr[];
