@@ -26,10 +26,12 @@ export type BuildThemeAnchor = {
     hue: {
         light: number;
         dark: number;
+        sync?: boolean;
     };
     sat: {
         light: number;
         dark: number;
+        sync?: boolean;
     };
     lum: {
         light: number;

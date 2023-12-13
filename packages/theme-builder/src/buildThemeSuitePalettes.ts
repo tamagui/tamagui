@@ -1,6 +1,6 @@
-import { hsla, parseToHsla, toHex } from 'color2k'
+import { hsla, parseToHsla } from 'color2k'
 
-import { BuildTheme, BuildThemeAnchor, BuildThemeSuitePalettes } from './types'
+import { BuildTheme, BuildThemeSuitePalettes } from './types'
 
 /**
  * palette generally is:
@@ -20,7 +20,7 @@ const generateColorPalette = ({
   forAccent?: boolean
 }) => {
   const baseTheme = forAccent ? theme.accent || theme : theme
-  const { anchors, scale } = baseTheme
+  const { anchors } = baseTheme
 
   let palette: string[] = []
 
