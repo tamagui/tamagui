@@ -649,9 +649,9 @@ export declare const InputArea: import("tamagui").TamaguiComponent<import("react
         readonly unstyled?: boolean | undefined;
         readonly size?: import("tamagui").SizeTokens | undefined;
     };
-    prototype: any;
     State: import("react-native").TextInputState;
     contextType: import("react").Context<any> | undefined;
+    prototype: any;
 }>;
 export declare const InputIcon: import("tamagui").TamaguiComponent<(Omit<import("react-native").ViewProps, "pointerEvents" | "display" | "style" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & import("@tamagui/web").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | import("react").CSSProperties | (import("react").CSSProperties & import("react-native").ViewStyle)>;
@@ -2603,9 +2603,9 @@ export declare const Input: import("@tamagui/web").ReactComponentWithRef<(Omit<i
             readonly unstyled?: boolean | undefined;
             readonly size?: import("tamagui").SizeTokens | undefined;
         };
-        prototype: any;
         State: import("react-native").TextInputState;
         contextType: import("react").Context<any> | undefined;
+        prototype: any;
     }>;
     AddOn: import("tamagui").TamaguiComponent<Omit<import("react-native").ViewProps, "pointerEvents" | "display" | "style" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & import("@tamagui/web").TamaguiComponentPropsBaseBase & {
         style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | import("react").CSSProperties | (import("react").CSSProperties & import("react-native").ViewStyle)>;
