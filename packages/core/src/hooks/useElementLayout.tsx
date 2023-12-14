@@ -31,10 +31,10 @@ if (typeof window !== 'undefined' && 'ResizeObserver' in window) {
     for (const { target } of entries) {
       const onLayout = LayoutHandlers.get(target)
       if (typeof onLayout !== 'function') return
-      measureLayout(target as HTMLElement, null, (layout) => {
+      measureLayout(target as HTMLElement, null, (x, y, width, height, left, top) => {
         onLayout({
           nativeEvent: {
-            layout,
+            layout: { x, y, width, height, left, top },
             target,
           },
           timeStamp: Date.now(),
@@ -59,7 +59,7 @@ export const measureLayout = (
       const { height, left, top, width } = getRect(node)!
       const x = left - relativeRect.left
       const y = top - relativeRect.top
-      callback({ x, y, width, height, left, top })
+      callback(x, y, width, height, left, top)
       LayoutTimeouts.delete(relativeNode)
     }, 0)
     LayoutTimeouts.set(relativeNode, tm)
