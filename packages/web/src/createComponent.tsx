@@ -339,14 +339,18 @@ export function createComponent<
     // conditional but if ever true stays true
     // [animated, inversed]
     const stateRef = useRef(
-      undefined as any as {
+      {} as any as {
         hasMeasured?: boolean
         hasAnimated?: boolean
         themeShallow?: boolean
         isListeningToTheme?: boolean
+        groupThings?: {
+          groupListeners: Set<GroupStateListener>
+          emit: GroupStateListener
+          subscribe: (cb: GroupStateListener) => () => void
+        }
       }
     )
-    stateRef.current ||= {}
 
     if (process.env.NODE_ENV === 'development' && time) time`stateref`
 
@@ -399,25 +403,20 @@ export function createComponent<
     const groupName = props.group as any as string
     const groupClassName = groupName ? `t_group_${props.group}` : ''
 
-    const groupListeners = useRef(new Set<GroupStateListener>())
-    const groupHandlers = useMemo(
-      () =>
-        ({
-          emit: (name, state) => {
-            groupListeners.current.forEach((l) => l(name, state))
-          },
-          subscribe(cb) {
-            groupListeners.current.add(cb)
-            return () => {
-              groupListeners.current.delete(cb)
-            }
-          },
-        } as {
-          emit: GroupStateListener
-          subscribe: (cb: GroupStateListener) => DisposeFn
-        }),
-      []
-    )
+    if (groupName && !stateRef.current.groupThings) {
+      stateRef.current.groupThings = {
+        groupListeners: new Set(),
+        emit: (name, state) => {
+          stateRef.current.groupThings!.groupListeners.forEach((l) => l(name, state))
+        },
+        subscribe(cb) {
+          stateRef.current.groupThings!.groupListeners.add(cb)
+          return () => {
+            stateRef.current.groupThings!.groupListeners.delete(cb)
+          }
+        },
+      }
+    }
 
     if (groupName) {
       // when we set state we also set our group state and emit an event for children listening:
@@ -425,7 +424,7 @@ export function createComponent<
       const og = setStateShallow
       setStateShallow = (state) => {
         og(state)
-        groupHandlers.emit(groupName, {
+        stateRef.current.groupThings!.emit(groupName, {
           pseudo: state,
         })
         // and mutate the current since its concurrent safe (children throw it in useState on mount)
@@ -778,7 +777,7 @@ export function createComponent<
       nonTamaguiProps.onLayout = composeEventHandlers(
         nonTamaguiProps.onLayout,
         (e: LayoutEvent) => {
-          groupHandlers.emit(groupName, {
+          stateRef.current.groupThings!.emit(groupName, {
             layout: e.nativeEvent.layout,
           })
 
@@ -1178,7 +1177,9 @@ export function createComponent<
 
     // must override context so siblings don't clobber initial state
     const subGroupContext = useMemo(() => {
-      groupListeners.current.clear()
+      if (stateRef.current.groupThings) {
+        stateRef.current.groupThings.groupListeners.clear()
+      }
       if (!groupName) return
       // change reference so context value updates
       return {
@@ -1196,7 +1197,8 @@ export function createComponent<
             } as any,
           },
         },
-        ...groupHandlers,
+        emit: stateRef.current.groupThings!.emit,
+        subscribe: stateRef.current.groupThings!.subscribe,
       } satisfies ComponentContextI['groups']
     }, [groupName])
 

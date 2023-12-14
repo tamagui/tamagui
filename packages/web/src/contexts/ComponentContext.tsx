@@ -1,5 +1,5 @@
 import { createStyledContext } from '../helpers/createStyledContext'
-import { ComponentContextI, DisposeFn } from '../types'
+import { ComponentContextI, GroupStateListener } from '../types'
 
 export const ComponentContext = createStyledContext<ComponentContextI>({
   disableSSR: undefined,
@@ -7,10 +7,8 @@ export const ComponentContext = createStyledContext<ComponentContextI>({
   language: null,
   animationDriver: null,
   groups: {
-    emit: () => {},
-    subscribe: (cb) => {
-      return {} as DisposeFn
-    },
+    emit: null as unknown as GroupStateListener,
+    subscribe: null as unknown as (cb: GroupStateListener) => () => void,
     state: {},
   },
 })
