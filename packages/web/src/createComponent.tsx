@@ -1178,8 +1178,14 @@ export function createComponent<
     // must override context so siblings don't clobber initial state
     const groupState = stateRef.current.group
     const subGroupContext = useMemo(() => {
+<<<<<<< HEAD
       if (!groupState) return
       groupState.listeners.clear()
+=======
+      if (stateRef.current.group) {
+        stateRef.current.group.listeners.clear()
+      }
+>>>>>>> origin/fix/group-global-listeners
       if (!groupName) return
       // change reference so context value updates
       return {
@@ -1197,8 +1203,13 @@ export function createComponent<
             } as any,
           },
         },
+<<<<<<< HEAD
         emit: groupState!.emit,
         subscribe: groupState!.subscribe,
+=======
+        emit: stateRef.current.group!.emit,
+        subscribe: stateRef.current.group!.subscribe,
+>>>>>>> origin/fix/group-global-listeners
       } satisfies ComponentContextI['groups']
     }, [groupName])
 
