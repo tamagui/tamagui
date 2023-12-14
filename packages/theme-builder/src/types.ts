@@ -45,11 +45,13 @@ export type BuildThemeAnchor = {
     light: number
     dark: number
     sync?: boolean
+    syncLeft?: boolean
   }
   sat: {
     light: number
     dark: number
     sync?: boolean
+    syncLeft?: boolean
   }
   lum: {
     light: number

@@ -60,6 +60,7 @@ export const measureLayout = (
       const x = left - relativeRect.left
       const y = top - relativeRect.top
       callback({ x, y, width, height, left, top })
+      LayoutTimeouts.delete(relativeNode)
     }, 0)
     LayoutTimeouts.set(relativeNode, tm)
   }
