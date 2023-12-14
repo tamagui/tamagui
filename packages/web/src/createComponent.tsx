@@ -344,8 +344,8 @@ export function createComponent<
         hasAnimated?: boolean
         themeShallow?: boolean
         isListeningToTheme?: boolean
-        groupThings?: {
-          groupListeners: Set<GroupStateListener>
+        group?: {
+          listeners: Set<GroupStateListener>
           emit: GroupStateListener
           subscribe: (cb: GroupStateListener) => () => void
         }
@@ -403,16 +403,16 @@ export function createComponent<
     const groupName = props.group as any as string
     const groupClassName = groupName ? `t_group_${props.group}` : ''
 
-    if (groupName && !stateRef.current.groupThings) {
-      stateRef.current.groupThings = {
-        groupListeners: new Set(),
-        emit: (name, state) => {
-          stateRef.current.groupThings!.groupListeners.forEach((l) => l(name, state))
+    if (groupName && !stateRef.current.group) {
+      stateRef.current.group = {
+        listeners: new Set(),
+        emit(name, state) {
+          this.listeners.forEach((l) => l(name, state))
         },
         subscribe(cb) {
-          stateRef.current.groupThings!.groupListeners.add(cb)
+          this.listeners.add(cb)
           return () => {
-            stateRef.current.groupThings!.groupListeners.delete(cb)
+            this.listeners.delete(cb)
           }
         },
       }
@@ -424,7 +424,7 @@ export function createComponent<
       const og = setStateShallow
       setStateShallow = (state) => {
         og(state)
-        stateRef.current.groupThings!.emit(groupName, {
+        stateRef.current.group!.emit(groupName, {
           pseudo: state,
         })
         // and mutate the current since its concurrent safe (children throw it in useState on mount)
@@ -777,7 +777,7 @@ export function createComponent<
       nonTamaguiProps.onLayout = composeEventHandlers(
         nonTamaguiProps.onLayout,
         (e: LayoutEvent) => {
-          stateRef.current.groupThings!.emit(groupName, {
+          stateRef.current.group!.emit(groupName, {
             layout: e.nativeEvent.layout,
           })
 
@@ -1176,10 +1176,10 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development' && time) time`create-element`
 
     // must override context so siblings don't clobber initial state
+    const groupState = stateRef.current.group
     const subGroupContext = useMemo(() => {
-      if (stateRef.current.groupThings) {
-        stateRef.current.groupThings.groupListeners.clear()
-      }
+      if (!groupState) return
+      groupState.listeners.clear()
       if (!groupName) return
       // change reference so context value updates
       return {
@@ -1197,8 +1197,8 @@ export function createComponent<
             } as any,
           },
         },
-        emit: stateRef.current.groupThings!.emit,
-        subscribe: stateRef.current.groupThings!.subscribe,
+        emit: groupState!.emit,
+        subscribe: groupState!.subscribe,
       } satisfies ComponentContextI['groups']
     }, [groupName])
 
