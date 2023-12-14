@@ -142,7 +142,7 @@ const generateColorPalette = ({
     })
 
     // unshift bg
-    palette.unshift(accentPalette[11])
+    palette.unshift(accentPalette[5 + 8])
     // push color
     palette.push(accentPalette[accentPalette.length - 6])
   } else {
