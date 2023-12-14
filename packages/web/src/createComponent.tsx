@@ -921,11 +921,6 @@ export function createComponent<
       if (classNames) classList.push(Object.values(classNames).join(' '))
       if (groupClassName) classList.push(groupClassName)
 
-      // if (fromTheme) {
-      //   classList.push(fromTheme.className)
-      //   style.color ??= fromTheme.style?.color
-      // }
-
       className = classList.join(' ')
 
       if (isAnimatedReactNativeWeb && !avoidAnimationStyle) {
