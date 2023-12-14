@@ -48,7 +48,9 @@ const whitelistGithubUsernames = [
   'benschac',
   'danstepanov',
 
+  // uniswap
   'pp-hh-ii-ll',
+  'danielcolinjames',
 
   // gather team member - https://discord.com/channels/909986013848412191/1125830682661363794/1156983395566497834
   'pkretzschmar',
@@ -59,21 +61,7 @@ export const checkForSponsorship = async (
   userToken: string
 ): Promise<GithubAccessStatus> => {
   const orgs = await getOrgs(userToken)
-  // const personalStatus = await isLoginSponsor(login)
-  // const allOrgsStatus = await Promise.all(
-  //   orgs.map(async (org) => {
-  //     return {
-  //       ...org,
-  //       isSponsoring: await isLoginSponsor(org.login),
-  //     }
-  //   })
-  // )
-  // const orgsStatus = allOrgsStatus.filter((org) => org.)
-
-  // TODO: can probably do all of these on one github req - see: graphql alias
-
   const isOrgSponsor = orgs.some((org) => checkOrgSponsor(org.login))
-
   return {
     personal: await isLoginSponsor(login, isOrgSponsor),
     orgs: await Promise.all(orgs.map(async (org) => isLoginSponsor(org.login))),
