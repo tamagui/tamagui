@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@tamagui/core": "1.79.9",
+    "@tamagui/menu": "1.79.9",
     "@tamagui/popover": "1.79.9"
   },
   "peerDependencies": {

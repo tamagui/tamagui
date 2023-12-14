@@ -94,7 +94,7 @@ export function ContextMenuDemo() {
           <ContextMenu.Separator />
           <ContextMenu.Group>
             <ContextMenu.Item onSelect={onSelect} key="close-notes" disabled>
-              <ContextMenu.ItemTitle color="gray">locked notes</ContextMenu.ItemTitle>
+              <ContextMenu.ItemTitle color="gray">Locked</ContextMenu.ItemTitle>
             </ContextMenu.Item>
             <ContextMenu.Item onSelect={onSelect} destructive key="delete-all">
               <ContextMenu.ItemTitle>Delete all</ContextMenu.ItemTitle>

@@ -78,7 +78,7 @@ export function DropDownMenuDemo() {
           <DropdownMenu.Separator />
           <DropdownMenu.Group>
             <DropdownMenu.Item onSelect={onSelect} key="close-notes" disabled>
-              <DropdownMenu.ItemTitle color="gray">locked notes</DropdownMenu.ItemTitle>
+              <DropdownMenu.ItemTitle color="gray">Locked</DropdownMenu.ItemTitle>
             </DropdownMenu.Item>
             <DropdownMenu.Item onSelect={onSelect} destructive key="delete-all">
               <DropdownMenu.ItemTitle>Delete all</DropdownMenu.ItemTitle>

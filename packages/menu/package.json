@@ -24,8 +24,17 @@
   },
   "dependencies": {
     "@react-native-menu/menu": "^0.9.1",
+    "@tamagui/animate": "1.79.9",
     "@tamagui/core": "1.79.9",
+    "@tamagui/dismissable": "1.79.9",
+    "@tamagui/focus-guard": "1.79.9",
+    "@tamagui/focus-scope": "1.79.9",
     "@tamagui/popover": "1.79.9",
+    "@tamagui/popper": "1.79.9",
+    "@tamagui/portal": "1.79.9",
+    "@tamagui/roving-focus": "1.79.9",
+    "@tamagui/text": "1.79.9",
+    "@tamagui/use-callback-ref": "1.79.9",
     "react-native-ios-context-menu": "^2.3.0"
   },
   "peerDependencies": {

@@ -1,6 +1,7 @@
 import { Animate } from '@tamagui/animate'
 import { AnimatePresence as Presence } from '@tamagui/animate-presence'
 import { createCollection } from '@tamagui/collection'
+import type { TamaguiElement, TextProps } from '@tamagui/core'
 import {
   Slot,
   Text,
@@ -9,36 +10,30 @@ import {
   createStyledContext,
   useComposedRefs,
 } from '@tamagui/core'
-import type { TextProps } from '@tamagui/core'
-import { Dismissable as DismissableLayer } from '@tamagui/dismissable'
-import { dispatchDiscreteCustomEvent } from '@tamagui/dismissable'
+import {
+  Dismissable as DismissableLayer,
+  dispatchDiscreteCustomEvent,
+} from '@tamagui/dismissable'
 import { useFocusGuards } from '@tamagui/focus-guard'
 import { FocusScope } from '@tamagui/focus-scope'
-import * as PopperPrimitive from '@tamagui/popper'
 import type { PopperContentProps } from '@tamagui/popper'
+import * as PopperPrimitive from '@tamagui/popper'
 import { Portal as PortalPrimitive, PortalProps } from '@tamagui/portal'
-import { RovingFocusGroup } from '@tamagui/roving-focus'
 import type { RovingFocusGroupProps } from '@tamagui/roving-focus'
+import { RovingFocusGroup } from '@tamagui/roving-focus'
 import {
   SizableStackProps,
   ThemeableStack,
   ThemeableStackProps,
   YStack,
 } from '@tamagui/stacks'
+import { SizableText } from '@tamagui/text'
 import { useCallbackRef } from '@tamagui/use-callback-ref'
 import { useDirection } from '@tamagui/use-direction'
-import {
-  Stack,
-  isAndroid,
-  isIos,
-  isWeb,
-  styled,
-  withStaticProperties,
-} from '@tamagui/web'
-import { TamaguiElement } from '@tamagui/web/types'
+import { Stack, isAndroid, isWeb, styled, withStaticProperties } from '@tamagui/web'
 import { hideOthers } from 'aria-hidden'
-import { useId } from 'react'
 import * as React from 'react'
+import { useId } from 'react'
 import { Image, ImageProps } from 'react-native'
 import { RemoveScroll } from 'react-remove-scroll'
 
@@ -836,26 +831,22 @@ MenuItem.displayName = ITEM_NAME
 /* -------------------------------------------------------------------------------------------------
  * MenuItemTitle
  * -----------------------------------------------------------------------------------------------*/
-const ITEM_TITLE_NAME = 'MenuItemTitle'
-interface MenuItemTitleProps extends TextProps {}
-const MenuItemTitle = Text.styleable((props, forwardedRef) => {
-  return <Text {...props} ref={forwardedRef} />
-})
 
-MenuItemTitle.displayName = ITEM_TITLE_NAME
+interface MenuItemTitleProps extends TextProps {}
+const MenuItemTitle = styled(SizableText, {
+  name: 'MenuItemTitle',
+})
 
 /* ---------------------------------------------------------------------------------------------- */
 
 /* -------------------------------------------------------------------------------------------------
  * MenuItemSubTitle
  * -----------------------------------------------------------------------------------------------*/
-const ITEM_SUB_TITLE_NAME = 'MenuItemSubTitle'
-interface MenuItemSubTitleProps extends TextProps {}
-const MenuItemSubTitle = Text.styleable((props, forwardedRef) => {
-  return <Text {...props} ref={forwardedRef} />
-})
 
-MenuItemSubTitle.displayName = ITEM_SUB_TITLE_NAME
+interface MenuItemSubTitleProps extends TextProps {}
+const MenuItemSubTitle = styled(SizableText, {
+  name: 'MenuItemSubTitle',
+})
 
 /* ---------------------------------------------------------------------------------------------- */
 
@@ -874,15 +865,11 @@ MenuItemImage.displayName = ITEM_IMAGE
 /* -------------------------------------------------------------------------------------------------
  * MenuItemIcon
  * -----------------------------------------------------------------------------------------------*/
-const ITEM_ICON = 'MenuItemIcon'
-type MenuItemIconProps = ThemeableStackProps
-const MenuItemIcon = ThemeableStack.styleable(
-  (props: ThemeableStackProps, forwardedRef) => {
-    return <ThemeableStack {...props} ref={forwardedRef} />
-  }
-)
 
-MenuItemIcon.displayName = ITEM_ICON
+type MenuItemIconProps = ThemeableStackProps
+const MenuItemIcon = styled(ThemeableStack, {
+  name: 'MenuItemIcon',
+})
 
 /* ---------------------------------------------------------------------------------------------- */
 
@@ -1644,24 +1631,24 @@ const Menu = withStaticProperties(MenuComp, {
   ItemIcon,
 })
 
-export { Menu, useNativeProp, NativePropProvider }
+export { Menu, NativePropProvider, useNativeProp }
 export type {
-  MenuProps,
   MenuAnchorProps,
-  MenuPortalProps,
+  MenuArrowProps,
+  MenuCheckboxItemProps,
   MenuContentProps,
   MenuGroupProps,
-  MenuLabelProps,
+  MenuItemIconProps,
+  MenuItemIndicatorProps,
   MenuItemProps,
-  MenuCheckboxItemProps,
+  MenuItemSubTitleProps,
+  MenuItemTitleProps,
+  MenuLabelProps,
+  MenuPortalProps,
+  MenuProps,
   MenuRadioGroupProps,
   MenuRadioItemProps,
-  MenuItemIndicatorProps,
   MenuSeparatorProps,
-  MenuArrowProps,
-  MenuSubTriggerProps,
   MenuSubContentProps,
-  MenuItemTitleProps,
-  MenuItemSubTitleProps,
-  MenuItemIconProps,
+  MenuSubTriggerProps,
 }
