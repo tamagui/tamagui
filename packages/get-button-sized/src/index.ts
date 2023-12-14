@@ -5,7 +5,7 @@ export const getButtonSized = (
   val: SizeTokens | number,
   { tokens, props }: VariantSpreadExtras<any>
 ) => {
-  if (!val) {
+  if (!val || props.circular) {
     return
   }
   if (typeof val === 'number') {
