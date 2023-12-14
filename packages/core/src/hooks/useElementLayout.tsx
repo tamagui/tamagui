@@ -5,6 +5,7 @@ import { getBoundingClientRect } from '../helpers/getBoundingClientRect'
 import { getRect } from '../helpers/getRect'
 
 const LayoutHandlers = new WeakMap<Element, Function>()
+const LayoutTimeouts = new WeakMap<Element, any>()
 
 export type LayoutValue = {
   x: number
@@ -30,10 +31,10 @@ if (typeof window !== 'undefined' && 'ResizeObserver' in window) {
     for (const { target } of entries) {
       const onLayout = LayoutHandlers.get(target)
       if (typeof onLayout !== 'function') return
-      measureLayout(target as HTMLElement, null, (x, y, width, height, left, top) => {
+      measureLayout(target as HTMLElement, null, (layout) => {
         onLayout({
           nativeEvent: {
-            layout: { x, y, width, height, left, top },
+            layout,
             target,
           },
           timeStamp: Date.now(),
@@ -50,13 +51,17 @@ export const measureLayout = (
 ) => {
   const relativeNode = relativeTo || node?.parentNode
   if (relativeNode instanceof HTMLElement) {
-    setTimeout(() => {
+    // avoid double onLayout
+    clearTimeout(LayoutTimeouts.get(relativeNode))
+    // according to react-native-web https://github.com/necolas/react-native-web/commit/b4e3427fea9bd943e3b3be13def0f4ffb3df917c
+    const tm = setTimeout(() => {
       const relativeRect = getBoundingClientRect(relativeNode)!
       const { height, left, top, width } = getRect(node)!
       const x = left - relativeRect.left
       const y = top - relativeRect.top
-      callback(x, y, width, height, left, top)
+      callback({ x, y, width, height, left, top })
     }, 0)
+    LayoutTimeouts.set(relativeNode, tm)
   }
 }
 
