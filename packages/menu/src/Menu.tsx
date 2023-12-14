@@ -919,8 +919,8 @@ const MenuItemImpl = React.forwardRef<
           pressTheme
           focusTheme
           paddingVertical="$2"
-          paddingHorizontal="$4"
-          width={'100%'}
+          paddingHorizontal="$3"
+          width="100%"
           componentName={ITEM_NAME}
           role="menuitem"
           data-highlighted={isFocused ? '' : undefined}
