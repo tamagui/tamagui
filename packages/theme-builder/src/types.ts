@@ -2,9 +2,11 @@
 
 import { MaskOptions, Template } from '@tamagui/create-theme'
 
+export type SubTheme = BuildTheme | BuildThemeMask
+
 export type BuildThemeSuiteProps = {
   baseTheme: BuildTheme
-  subThemes?: (BuildTheme | BuildThemeMask)[]
+  subThemes?: SubTheme[]
   componentMask?: MaskOptions
   templates?: {
     base: Template
