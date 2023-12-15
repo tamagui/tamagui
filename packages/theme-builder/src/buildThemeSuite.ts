@@ -132,36 +132,6 @@ export function buildThemeSuite({ baseTheme, subThemes }: BuildThemeSuiteProps) 
       ...baseTemplate,
     }
 
-    // const accentTemplateLight = {
-    //   background: 0,
-    //   backgroundHover: 1,
-    //   backgroundPress: baseTemplate.backgroundPress + 4,
-    //   backgroundFocus: baseTemplate.backgroundFocus + 4,
-    //   borderColor: baseTemplate.borderColor + 2,
-    //   borderColorHover: baseTemplate.borderColorHover + 2,
-    //   borderColorFocus: baseTemplate.borderColorFocus + 2,
-    //   borderColorPress: baseTemplate.borderColorPress + 2,
-    //   color: -5,
-    //   colorHover: -6,
-    //   colorPress: -7,
-    //   colorFocus: -5,
-    // }
-
-    // const accentTemplateDark = {
-    //   background: baseTemplate.background + 4,
-    //   backgroundHover: baseTemplate.backgroundHover + 5,
-    //   backgroundPress: baseTemplate.backgroundPress + 3,
-    //   backgroundFocus: baseTemplate.backgroundFocus + 5,
-    //   borderColor: baseTemplate.borderColor + 2,
-    //   borderColorHover: baseTemplate.borderColorHover + 2,
-    //   borderColorFocus: baseTemplate.borderColorFocus + 2,
-    //   borderColorPress: baseTemplate.borderColorPress + 2,
-    //   color: -5,
-    //   colorHover: -6,
-    //   colorPress: -7,
-    //   colorFocus: -5,
-    // }
-
     return {
       base: template,
       active: {
@@ -171,8 +141,6 @@ export function buildThemeSuite({ baseTheme, subThemes }: BuildThemeSuiteProps) 
         backgroundPress: namedTemplateSlots.hoverBorder,
         backgroundFocus: namedTemplateSlots.strongBackground,
       },
-      accentLight: template,
-      accentDark: template,
     }
   }
 
