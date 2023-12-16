@@ -648,7 +648,7 @@ export default function TakeoutPage({
                 px: '$2',
               }}
             >
-              <YStack mt={-500} $md={{ mt: 0 }} ml={20} mr={0}>
+              <YStack mt={-600} $md={{ mt: 0 }} ml={20} mr={0}>
                 <StarterCard product={starter} />
               </YStack>
 
@@ -659,19 +659,16 @@ export default function TakeoutPage({
                     ff="$silkscreen"
                     my="$2"
                     pr={200}
+                    maw={800}
                     size="$10"
                     color="$color10"
-                    $group-takeoutBody-sm={{
+                    $group-takeoutBody-xs={{
                       size: '$9',
                       pr: '8%',
                     }}
-                    $group-takeoutBody-xs={{
+                    $group-takeoutBody-xxs={{
                       size: '$8',
                       pr: '$1',
-                    }}
-                    $group-takeoutBody-xxs={{
-                      size: '$7',
-                      pr: '$0',
                     }}
                   >
                     From idea to shipped in less time than ever.
