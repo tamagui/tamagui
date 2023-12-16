@@ -152,7 +152,7 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
           ref={composedRefs}
           onPress={composeEventHandlers(props.onPress, (event: GestureResponderEvent) => {
             setChecked((prevChecked) => !prevChecked)
-            if (isWeb && isFormControl) {
+            if (isWeb && isFormControl && 'isPropagationStopped' in event) {
               hasConsumerStoppedPropagationRef.current = event.isPropagationStopped()
               // if switch is in a form, stop propagation from the button so that we only propagate
               // one click event (from the input). We propagate changes from an input so that native
