@@ -123,7 +123,6 @@
     "mini-css-extract-plugin": "^2.7.6",
     "next-remote-watch": "^2.0.0",
     "react-refresh": "^0.14.0",
-    "supabase": "^1.100.1",
     "tamagui-loader": "1.79.12",
     "webpack-stats-plugin": "^1.1.0"
   }
