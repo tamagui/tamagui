@@ -1,7 +1,5 @@
 import { SizeTokens } from '@tamagui/core';
-export declare const SwitchContext: import("@tamagui/core").StyledContext<{
-    checked: boolean;
-    disabled?: boolean | undefined;
+export declare const SwitchStyledContext: import("@tamagui/core").StyledContext<{
     frameWidth: number;
     size?: SizeTokens | undefined;
     unstyled?: boolean | undefined;

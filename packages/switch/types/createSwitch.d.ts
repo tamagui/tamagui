@@ -17,7 +17,7 @@ export type SwitchExtraProps = {
     nativeProps?: NativeSwitchProps;
     onCheckedChange?(checked: boolean): void;
 };
-export type SwitchProps = Omit<SwitchBaseProps & SwitchExtraProps, 'children'> & {
+export type SwitchProps = StackProps & Omit<SwitchBaseProps & SwitchExtraProps, 'children'> & {
     children?: React.ReactNode | ((checked: boolean) => React.ReactNode);
 };
 type SwitchComponent = TamaguiComponentExpectingVariants<SwitchProps, SwitchSharedProps & SwitchExtraProps>;
@@ -26,15 +26,15 @@ export declare function createSwitch<F extends SwitchComponent, T extends Switch
     disableActiveTheme?: boolean;
     Frame?: F;
     Thumb?: T;
-}): import("@tamagui/core").ReactComponentWithRef<Omit<SwitchProps, keyof SwitchExtraProps> & SwitchExtraProps, any> & {
+}): import("@tamagui/core").ReactComponentWithRef<SwitchProps, any> & {
     staticConfig: import("@tamagui/core").StaticConfig;
     extractable: <X>(a: X, staticConfig?: Partial<import("@tamagui/core").StaticConfig> | undefined) => X;
-    styleable: import("@tamagui/core").Styleable<Omit<SwitchProps, keyof SwitchExtraProps> & SwitchExtraProps, any, any, SwitchSharedProps & SwitchExtraProps, {}>;
+    styleable: import("@tamagui/core").Styleable<SwitchProps, any, any, SwitchSharedProps & SwitchExtraProps, {}>;
 } & {
     __baseProps: any;
     __variantProps: SwitchSharedProps & SwitchExtraProps;
 } & {
-    Thumb: import("@tamagui/core").TamaguiComponent<SwitchBaseProps, any, any, SwitchSharedProps, {}>;
+    Thumb: SwitchThumbComponent;
 };
 export {};
 //# sourceMappingURL=createSwitch.d.ts.map
