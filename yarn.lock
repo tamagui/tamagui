@@ -6146,7 +6146,7 @@ __metadata:
     "@tamagui/compose-refs": 1.79.12
     "@tamagui/core": 1.79.12
     "@tamagui/create-context": 1.79.12
-    "@tamagui/helpers": 1.79.9
+    "@tamagui/helpers": 1.79.12
     "@tamagui/polyfill-dev": 1.79.12
     "@tamagui/stacks": 1.79.12
     "@tamagui/use-controllable-state": 1.79.12
@@ -6255,15 +6255,6 @@ __metadata:
     react: "*"
   languageName: unknown
   linkType: soft
-
-"@tamagui/constants@npm:1.79.9":
-  version: 1.79.9
-  resolution: "@tamagui/constants@npm:1.79.9"
-  peerDependencies:
-    react: "*"
-  checksum: 153f83ada80c7ccc4de10b5c2ddcb033f7e2f7a3ce4be37282b817373e79e1a3e18edd3e5aced031a30d282935ce5b212e8336388b24e9efd7d433362d4dfbcb
-  languageName: node
-  linkType: hard
 
 "@tamagui/core-test@workspace:packages/core-test":
   version: 0.0.0-use.local
@@ -6713,16 +6704,6 @@ __metadata:
     "@tamagui/simple-hash": 1.79.12
   languageName: unknown
   linkType: soft
-
-"@tamagui/helpers@npm:1.79.9":
-  version: 1.79.9
-  resolution: "@tamagui/helpers@npm:1.79.9"
-  dependencies:
-    "@tamagui/constants": 1.79.9
-    "@tamagui/simple-hash": 1.79.9
-  checksum: 07be81f6ba02f8255c580351253132bf63f3e2a16b5360554dded12e0a0b390afb29a6c2613dacbb772818c9a760901c32895a236f11ae68974958033692aaf5
-  languageName: node
-  linkType: hard
 
 "@tamagui/image@1.79.12, @tamagui/image@workspace:packages/image":
   version: 0.0.0-use.local
@@ -7289,13 +7270,6 @@ __metadata:
     "@tamagui/build": 1.79.12
   languageName: unknown
   linkType: soft
-
-"@tamagui/simple-hash@npm:1.79.9":
-  version: 1.79.9
-  resolution: "@tamagui/simple-hash@npm:1.79.9"
-  checksum: 8f76232247892a97e2f92922167c5909e0c7e8e37df3fde34fa5065e964ab98dfdd741622c5127702cf7d090ba1443c6d955ca114368df5edd5402b194489609
-  languageName: node
-  linkType: hard
 
 "@tamagui/site-config@1.79.12, @tamagui/site-config@workspace:packages/site-config":
   version: 0.0.0-use.local
@@ -7877,7 +7851,7 @@ __metadata:
   resolution: "@tamagui/use-event@workspace:packages/use-event"
   dependencies:
     "@tamagui/build": 1.79.12
-    "@tamagui/constants": 1.79.9
+    "@tamagui/constants": 1.79.12
     react: ^18.2.0
   peerDependencies:
     react: "*"
