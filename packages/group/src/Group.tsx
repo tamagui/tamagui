@@ -12,9 +12,9 @@ import {
   spacedChildren,
   styled,
   useProps,
-  withStaticProperties,
 } from '@tamagui/core'
 import { Scope, createContextScope } from '@tamagui/create-context'
+import { withStaticProperties } from '@tamagui/helpers'
 import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import React, { Children, forwardRef, isValidElement } from 'react'

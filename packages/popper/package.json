@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "@tamagui/compose-refs": "1.79.12",
+    "@tamagui/constants": "1.79.12",
     "@tamagui/core": "1.79.12",
     "@tamagui/floating": "1.79.12",
     "@tamagui/get-token": "1.79.12",

@@ -4,6 +4,7 @@ import { Adapt, useAdaptParent } from '@tamagui/adapt'
 import { Animate } from '@tamagui/animate'
 import { hideOthers } from '@tamagui/aria-hidden'
 import { useComposedRefs } from '@tamagui/compose-refs'
+import { isWeb } from '@tamagui/constants'
 import {
   MediaQueryKey,
   ScopedProps,
@@ -13,18 +14,16 @@ import {
   TamaguiElement,
   Theme,
   View,
-  composeEventHandlers,
   createStyledContext,
-  isWeb,
   useEvent,
   useGet,
   useMedia,
   useThemeName,
-  withStaticProperties,
 } from '@tamagui/core'
 import { DismissableProps } from '@tamagui/dismissable'
 import { FloatingOverrideContext } from '@tamagui/floating'
 import { FocusScope, FocusScopeProps } from '@tamagui/focus-scope'
+import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import {
   Popper,
   PopperAnchor,

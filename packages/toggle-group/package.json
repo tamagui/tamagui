@@ -31,11 +31,13 @@
     }
   },
   "dependencies": {
+    "@tamagui/constants": "1.79.12",
     "@tamagui/create-context": "1.79.12",
     "@tamagui/focusable": "1.79.12",
     "@tamagui/font-size": "1.79.12",
     "@tamagui/get-token": "1.79.12",
     "@tamagui/group": "1.79.12",
+    "@tamagui/helpers": "1.79.12",
     "@tamagui/helpers-tamagui": "1.79.12",
     "@tamagui/roving-focus": "1.79.12",
     "@tamagui/stacks": "1.79.12",

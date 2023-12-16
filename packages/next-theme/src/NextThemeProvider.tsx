@@ -1,13 +1,13 @@
+import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useEvent } from '@tamagui/use-event'
 import NextHead from 'next/head'
 import * as React from 'react'
-import { memo, useEffect, useMemo, useRef, useState } from 'react'
+import { memo, useEffect, useMemo, useState } from 'react'
 
 import { MEDIA, colorSchemes } from './constants'
 import { getSystemTheme, getTheme } from './helpers'
 import { ThemeSettingContext } from './ThemeSettingContext'
 import { ValueObject } from './types'
-import { useIsomorphicLayoutEffect } from './useIsomorphicLayoutEffect'
 import { ThemeProviderProps, UseThemeProps } from './UseThemeProps'
 
 export const NextThemeProvider = memo(

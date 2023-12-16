@@ -20,6 +20,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
+    "@tamagui/constants": "1.79.12",
     "@tamagui/use-event": "1.79.12"
   },
   "peerDependencies": {

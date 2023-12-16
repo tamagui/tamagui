@@ -1,7 +1,9 @@
+import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 // from https://github.com/gorhom/react-native-portal
 // MIT License Copyright (c) 2020 Mo Gorhom
+import { useEvent } from '@tamagui/core'
 // fixing SSR issue
-import { useDidFinishSSR, useEvent, useIsomorphicLayoutEffect } from '@tamagui/core'
+import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import React, {
   ReactNode,
   createContext,

@@ -33,9 +33,11 @@
   "dependencies": {
     "@tamagui/animate-presence": "1.79.12",
     "@tamagui/compose-refs": "1.79.12",
+    "@tamagui/constants": "1.79.12",
     "@tamagui/core": "1.79.12",
     "@tamagui/create-context": "1.79.12",
     "@tamagui/dismissable": "1.79.12",
+    "@tamagui/helpers": "1.79.12",
     "@tamagui/polyfill-dev": "1.79.12",
     "@tamagui/portal": "1.79.12",
     "@tamagui/stacks": "1.79.12",

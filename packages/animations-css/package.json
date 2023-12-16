@@ -13,6 +13,7 @@
     "dist"
   ],
   "dependencies": {
+    "@tamagui/constants": "1.79.12",
     "@tamagui/cubic-bezier-animator": "1.79.12",
     "@tamagui/use-presence": "1.79.12",
     "@tamagui/web": "1.79.12",

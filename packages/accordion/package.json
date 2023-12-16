@@ -25,6 +25,7 @@
     "@tamagui/collapsible": "1.79.12",
     "@tamagui/collection": "1.79.12",
     "@tamagui/compose-refs": "1.79.12",
+    "@tamagui/constants": "1.79.12",
     "@tamagui/core": "1.79.12",
     "@tamagui/create-context": "1.79.12",
     "@tamagui/polyfill-dev": "1.79.12",

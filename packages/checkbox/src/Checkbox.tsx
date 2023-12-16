@@ -1,25 +1,24 @@
 // fork of radix
 // https://github.com/radix-ui/primitives/tree/main/packages/react/checkbox/src/Checkbox.tsx
 
+import { useComposedRefs } from '@tamagui/compose-refs'
+import { isWeb } from '@tamagui/constants'
 import {
   GetProps,
   SizeTokens,
   TamaguiElement,
-  composeEventHandlers,
   createStyledContext,
   getVariableValue,
-  isWeb,
   styled,
-  useComposedRefs,
   useProps,
   useTheme,
-  withStaticProperties,
 } from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
 import { registerFocusable } from '@tamagui/focusable'
 import { getFontSize } from '@tamagui/font-size'
 import { getSize } from '@tamagui/get-token'
+import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { useLabelContext } from '@tamagui/label'
 import { ButtonNestingContext, ThemeableStack } from '@tamagui/stacks'

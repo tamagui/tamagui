@@ -25,6 +25,7 @@
   "dependencies": {
     "@tamagui/core": "1.79.12",
     "@tamagui/create-context": "1.79.12",
+    "@tamagui/helpers": "1.79.12",
     "@tamagui/stacks": "1.79.12",
     "@tamagui/use-controllable-state": "1.79.12",
     "reforest": "^0.13.0"

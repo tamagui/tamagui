@@ -1,12 +1,11 @@
 import { ResetPresence, usePresence } from '@tamagui/use-presence'
+import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import {
   AnimatedNumberStrategy,
   AnimationDriver,
   AnimationProp,
   UniversalAnimatedNumber,
-  isWeb,
   useEvent,
-  useIsomorphicLayoutEffect,
 } from '@tamagui/web'
 import { useEffect, useMemo, useRef } from 'react'
 import { Animated } from 'react-native'
