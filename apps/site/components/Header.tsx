@@ -239,7 +239,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
             href="https://github.com/tamagui/tamagui"
           >
             <TooltipSimple delay={0} restMs={25} label="Star on Github">
-              <YStack p="$2" opacity={0.7} hoverStyle={{ opacity: 1 }}>
+              <YStack p="$2" opacity={0.9} hoverStyle={{ opacity: 1 }}>
                 <VisuallyHidden>
                   <Text>Github</Text>
                 </VisuallyHidden>

@@ -343,7 +343,7 @@ const Subtitle = styled(Paragraph, {
 
 const Tag = styled(Text, {
   className: 'hero-tag text-decoration-none',
-  fontFamily: 'inherit' as any,
+  fontFamily: '$silkscreen',
   fontSize: 'inherit' as any,
   borderRadius: '$2',
   px: '$1',
