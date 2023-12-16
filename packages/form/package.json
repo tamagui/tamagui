@@ -37,6 +37,7 @@
     "@tamagui/focusable": "1.79.12",
     "@tamagui/get-button-sized": "1.79.12",
     "@tamagui/get-font-sized": "1.79.12",
+    "@tamagui/helpers": "1.79.12",
     "@tamagui/text": "1.79.12"
   },
   "peerDependencies": {

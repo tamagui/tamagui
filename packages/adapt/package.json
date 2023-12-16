@@ -26,7 +26,9 @@
     }
   },
   "dependencies": {
-    "@tamagui/core": "1.79.12"
+    "@tamagui/constants": "1.79.12",
+    "@tamagui/core": "1.79.12",
+    "@tamagui/helpers": "1.79.12"
   },
   "devDependencies": {
     "@tamagui/build": "1.79.12"

@@ -25,6 +25,7 @@
     "@tamagui/compose-refs": "1.79.12",
     "@tamagui/core": "1.79.12",
     "@tamagui/create-context": "1.79.12",
+    "@tamagui/helpers": "1.79.9",
     "@tamagui/polyfill-dev": "1.79.12",
     "@tamagui/stacks": "1.79.12",
     "@tamagui/use-controllable-state": "1.79.12"

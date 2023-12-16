@@ -15,6 +15,7 @@
     "dist"
   ],
   "dependencies": {
+    "@tamagui/constants": "1.79.12",
     "@tamagui/use-presence": "1.79.12",
     "@tamagui/web": "1.79.12"
   },

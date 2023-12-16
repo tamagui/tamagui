@@ -1,5 +1,5 @@
 import { isClient, isIos, isServer } from '@tamagui/constants'
-import { useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useContext, useEffect, useMemo, useRef, useState } from 'react'
 
 import { getConfig } from '../config'
 import { Variable, getVariable } from '../createVariable'

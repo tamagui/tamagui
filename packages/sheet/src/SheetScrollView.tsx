@@ -1,4 +1,5 @@
-import { GetRef, composeRefs } from '@tamagui/core'
+import { composeRefs } from '@tamagui/compose-refs'
+import { GetRef } from '@tamagui/core'
 import { ScrollView, ScrollViewProps } from '@tamagui/scroll-view'
 import { forwardRef, useMemo, useRef } from 'react'
 import { ScrollView as RNScrollView } from 'react-native'

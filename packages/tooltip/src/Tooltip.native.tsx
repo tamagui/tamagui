@@ -1,4 +1,4 @@
-import { withStaticProperties } from '@tamagui/core'
+import { withStaticProperties } from '@tamagui/helpers'
 
 // no output on native for now
 // could have an option to long-press or similar to show in a context menu/drawer

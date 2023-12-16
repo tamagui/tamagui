@@ -6,11 +6,10 @@ import {
   TamaguiElement,
   getTokens,
   getVariableValue,
-  getVariantExtras,
   styled,
-  withStaticProperties,
 } from '@tamagui/core'
 import { Scope, createContextScope } from '@tamagui/create-context'
+import { withStaticProperties } from '@tamagui/helpers'
 import { Image, ImageProps } from '@tamagui/image'
 import { Square, getShapeSize } from '@tamagui/shapes'
 import { YStack } from '@tamagui/stacks'

@@ -1,12 +1,5 @@
-import {
-  GetProps,
-  Stack,
-  TamaguiElement,
-  Text,
-  styled,
-  useEvent,
-  useIsomorphicLayoutEffect,
-} from '@tamagui/core'
+import { useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { GetProps, Stack, TamaguiElement, Text, styled, useEvent } from '@tamagui/core'
 import { Portal } from '@tamagui/portal'
 import { VisuallyHidden } from '@tamagui/visually-hidden'
 import * as React from 'react'

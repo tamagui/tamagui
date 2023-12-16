@@ -1,18 +1,18 @@
 import { useIsPresent } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
+import { isWeb } from '@tamagui/constants'
 import {
   GetProps,
   TamaguiElement,
   Theme,
-  composeEventHandlers,
   createStyledContext,
-  isWeb,
   styled,
   useConfiguration,
   useEvent,
   useThemeName,
 } from '@tamagui/core'
 import { Dismissable, DismissableProps } from '@tamagui/dismissable'
+import { composeEventHandlers } from '@tamagui/helpers'
 import { PortalItem } from '@tamagui/portal'
 import { ThemeableStack } from '@tamagui/stacks'
 import * as React from 'react'

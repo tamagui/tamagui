@@ -1,4 +1,5 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
+import { isWeb } from '@tamagui/constants'
 import { createContext } from '@tamagui/create-context'
 import { focusFocusable } from '@tamagui/focusable'
 import { getButtonSized } from '@tamagui/get-button-sized'
@@ -8,7 +9,6 @@ import {
   FontSizeTokens,
   GetProps,
   ReactComponentWithRef,
-  isWeb,
   styled,
   themeable,
 } from '@tamagui/web'

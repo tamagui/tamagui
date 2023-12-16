@@ -2,6 +2,7 @@ import { Adapt, useAdaptParent } from '@tamagui/adapt'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { hideOthers } from '@tamagui/aria-hidden'
 import { useComposedRefs } from '@tamagui/compose-refs'
+import { isWeb } from '@tamagui/constants'
 import {
   GetProps,
   GetRef,
@@ -10,18 +11,16 @@ import {
   TamaguiTextElement,
   Theme,
   View,
-  composeEventHandlers,
-  isWeb,
   spacedChildren,
   styled,
   useGet,
   useMedia,
   useThemeName,
-  withStaticProperties,
 } from '@tamagui/core'
 import { Scope, createContext, createContextScope } from '@tamagui/create-context'
 import { Dismissable, DismissableProps } from '@tamagui/dismissable'
 import { FocusScope, FocusScopeProps } from '@tamagui/focus-scope'
+import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { PortalHost, PortalItem, PortalItemProps } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
 import { Overlay, Sheet, SheetController } from '@tamagui/sheet'

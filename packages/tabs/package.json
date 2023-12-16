@@ -29,9 +29,12 @@
     }
   },
   "dependencies": {
+    "@tamagui/compose-refs": "1.79.12",
+    "@tamagui/constants": "1.79.12",
     "@tamagui/create-context": "1.79.12",
     "@tamagui/get-button-sized": "1.79.12",
     "@tamagui/group": "1.79.12",
+    "@tamagui/helpers": "1.79.12",
     "@tamagui/roving-focus": "1.79.12",
     "@tamagui/stacks": "1.79.12",
     "@tamagui/use-controllable-state": "1.79.12",

@@ -5817,6 +5817,7 @@ __metadata:
     "@tamagui/collapsible": 1.79.12
     "@tamagui/collection": 1.79.12
     "@tamagui/compose-refs": 1.79.12
+    "@tamagui/constants": 1.79.12
     "@tamagui/core": 1.79.12
     "@tamagui/create-context": 1.79.12
     "@tamagui/polyfill-dev": 1.79.12
@@ -5833,7 +5834,9 @@ __metadata:
   resolution: "@tamagui/adapt@workspace:packages/adapt"
   dependencies:
     "@tamagui/build": 1.79.12
+    "@tamagui/constants": 1.79.12
     "@tamagui/core": 1.79.12
+    "@tamagui/helpers": 1.79.12
   languageName: unknown
   linkType: soft
 
@@ -5845,11 +5848,13 @@ __metadata:
     "@tamagui/aria-hidden": 1.79.12
     "@tamagui/build": 1.79.12
     "@tamagui/compose-refs": 1.79.12
+    "@tamagui/constants": 1.79.12
     "@tamagui/core": 1.79.12
     "@tamagui/create-context": 1.79.12
     "@tamagui/dialog": 1.79.12
     "@tamagui/dismissable": 1.79.12
     "@tamagui/focus-scope": 1.79.12
+    "@tamagui/helpers": 1.79.12
     "@tamagui/polyfill-dev": 1.79.12
     "@tamagui/popper": 1.79.12
     "@tamagui/portal": 1.79.12
@@ -5870,6 +5875,7 @@ __metadata:
   resolution: "@tamagui/animate-presence@workspace:packages/animate-presence"
   dependencies:
     "@tamagui/build": 1.79.12
+    "@tamagui/helpers": 1.79.12
     "@tamagui/use-force-update": 1.79.12
     "@tamagui/use-presence": 1.79.12
     "@tamagui/web": 1.79.12
@@ -5890,6 +5896,7 @@ __metadata:
   resolution: "@tamagui/animations-css@workspace:packages/animations-css"
   dependencies:
     "@tamagui/build": 1.79.12
+    "@tamagui/constants": 1.79.12
     "@tamagui/cubic-bezier-animator": 1.79.12
     "@tamagui/use-presence": 1.79.12
     "@tamagui/web": 1.79.12
@@ -5914,6 +5921,7 @@ __metadata:
   resolution: "@tamagui/animations-react-native@workspace:packages/animations-react-native"
   dependencies:
     "@tamagui/build": 1.79.12
+    "@tamagui/constants": 1.79.12
     "@tamagui/use-presence": 1.79.12
     "@tamagui/web": 1.79.12
     react: ^18.2.0
@@ -5950,6 +5958,7 @@ __metadata:
   dependencies:
     "@tamagui/build": 1.79.12
     "@tamagui/core": 1.79.12
+    "@tamagui/helpers": 1.79.12
     "@tamagui/image": 1.79.12
     "@tamagui/shapes": 1.79.12
     "@tamagui/text": 1.79.12
@@ -6001,6 +6010,7 @@ __metadata:
     "@tamagui/build": 1.79.12
     "@tamagui/font-size": 1.79.12
     "@tamagui/get-button-sized": 1.79.12
+    "@tamagui/helpers": 1.79.12
     "@tamagui/helpers-tamagui": 1.79.12
     "@tamagui/stacks": 1.79.12
     "@tamagui/text": 1.79.12
@@ -6027,6 +6037,7 @@ __metadata:
   dependencies:
     "@tamagui/build": 1.79.12
     "@tamagui/create-context": 1.79.12
+    "@tamagui/helpers": 1.79.12
     "@tamagui/stacks": 1.79.12
     "@tamagui/web": 1.79.12
     react: ^18.2.0
@@ -6042,11 +6053,14 @@ __metadata:
   resolution: "@tamagui/checkbox@workspace:packages/checkbox"
   dependencies:
     "@tamagui/build": 1.79.12
+    "@tamagui/compose-refs": 1.79.12
+    "@tamagui/constants": 1.79.12
     "@tamagui/core": 1.79.12
     "@tamagui/create-context": 1.79.12
     "@tamagui/focusable": 1.79.12
     "@tamagui/font-size": 1.79.12
     "@tamagui/get-token": 1.79.12
+    "@tamagui/helpers": 1.79.12
     "@tamagui/helpers-tamagui": 1.79.12
     "@tamagui/label": 1.79.12
     "@tamagui/stacks": 1.79.12
@@ -6132,6 +6146,7 @@ __metadata:
     "@tamagui/compose-refs": 1.79.12
     "@tamagui/core": 1.79.12
     "@tamagui/create-context": 1.79.12
+    "@tamagui/helpers": 1.79.9
     "@tamagui/polyfill-dev": 1.79.12
     "@tamagui/stacks": 1.79.12
     "@tamagui/use-controllable-state": 1.79.12
@@ -6147,6 +6162,7 @@ __metadata:
   dependencies:
     "@tamagui/build": 1.79.12
     "@tamagui/compose-refs": 1.79.12
+    "@tamagui/constants": 1.79.12
     "@tamagui/core": 1.79.12
     "@tamagui/create-context": 1.79.12
     "@tamagui/polyfill-dev": 1.79.12
@@ -6239,6 +6255,15 @@ __metadata:
     react: "*"
   languageName: unknown
   linkType: soft
+
+"@tamagui/constants@npm:1.79.9":
+  version: 1.79.9
+  resolution: "@tamagui/constants@npm:1.79.9"
+  peerDependencies:
+    react: "*"
+  checksum: 153f83ada80c7ccc4de10b5c2ddcb033f7e2f7a3ce4be37282b817373e79e1a3e18edd3e5aced031a30d282935ce5b212e8336388b24e9efd7d433362d4dfbcb
+  languageName: node
+  linkType: hard
 
 "@tamagui/core-test@workspace:packages/core-test":
   version: 0.0.0-use.local
@@ -6347,10 +6372,12 @@ __metadata:
     "@tamagui/aria-hidden": 1.79.12
     "@tamagui/build": 1.79.12
     "@tamagui/compose-refs": 1.79.12
+    "@tamagui/constants": 1.79.12
     "@tamagui/core": 1.79.12
     "@tamagui/create-context": 1.79.12
     "@tamagui/dismissable": 1.79.12
     "@tamagui/focus-scope": 1.79.12
+    "@tamagui/helpers": 1.79.12
     "@tamagui/polyfill-dev": 1.79.12
     "@tamagui/popper": 1.79.12
     "@tamagui/portal": 1.79.12
@@ -6374,6 +6401,7 @@ __metadata:
     "@tamagui/build": 1.79.12
     "@tamagui/compose-refs": 1.79.12
     "@tamagui/core": 1.79.12
+    "@tamagui/helpers": 1.79.12
     "@tamagui/use-escape-keydown": 1.79.12
     "@tamagui/use-event": 1.79.12
     react: ^18.2.0
@@ -6434,6 +6462,7 @@ __metadata:
   resolution: "@tamagui/font-cherry-bomb@workspace:packages/font-cherry-bomb"
   dependencies:
     "@tamagui/build": 1.79.12
+    "@tamagui/constants": 1.79.12
     "@tamagui/core": 1.79.12
     subset-font: ^1.6.1
   languageName: unknown
@@ -6551,6 +6580,7 @@ __metadata:
     "@tamagui/focusable": 1.79.12
     "@tamagui/get-button-sized": 1.79.12
     "@tamagui/get-font-sized": 1.79.12
+    "@tamagui/helpers": 1.79.12
     "@tamagui/text": 1.79.12
     react: ^18.2.0
   peerDependencies:
@@ -6624,6 +6654,7 @@ __metadata:
     "@tamagui/build": 1.79.12
     "@tamagui/core": 1.79.12
     "@tamagui/create-context": 1.79.12
+    "@tamagui/helpers": 1.79.12
     "@tamagui/stacks": 1.79.12
     "@tamagui/use-controllable-state": 1.79.12
     react: ^18.2.0
@@ -6683,11 +6714,22 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/helpers@npm:1.79.9":
+  version: 1.79.9
+  resolution: "@tamagui/helpers@npm:1.79.9"
+  dependencies:
+    "@tamagui/constants": 1.79.9
+    "@tamagui/simple-hash": 1.79.9
+  checksum: 07be81f6ba02f8255c580351253132bf63f3e2a16b5360554dded12e0a0b390afb29a6c2613dacbb772818c9a760901c32895a236f11ae68974958033692aaf5
+  languageName: node
+  linkType: hard
+
 "@tamagui/image@1.79.12, @tamagui/image@workspace:packages/image":
   version: 0.0.0-use.local
   resolution: "@tamagui/image@workspace:packages/image"
   dependencies:
     "@tamagui/build": 1.79.12
+    "@tamagui/constants": 1.79.12
     "@tamagui/core": 1.79.12
     react: ^18.2.0
     react-native: ^0.72.1
@@ -6765,6 +6807,7 @@ __metadata:
   dependencies:
     "@tamagui/build": 1.79.12
     "@tamagui/compose-refs": 1.79.12
+    "@tamagui/constants": 1.79.12
     "@tamagui/create-context": 1.79.12
     "@tamagui/focusable": 1.79.12
     "@tamagui/get-button-sized": 1.79.12
@@ -6801,6 +6844,7 @@ __metadata:
     "@tamagui/font-size": 1.79.12
     "@tamagui/get-font-sized": 1.79.12
     "@tamagui/get-token": 1.79.12
+    "@tamagui/helpers": 1.79.12
     "@tamagui/helpers-tamagui": 1.79.12
     "@tamagui/stacks": 1.79.12
     "@tamagui/text": 1.79.12
@@ -6852,6 +6896,7 @@ __metadata:
   dependencies:
     "@tamagui/build": 1.79.12
     "@tamagui/core": 1.79.12
+    "@tamagui/helpers": 1.79.12
     "@tamagui/popover": 1.79.12
     react: ^18.2.0
   peerDependencies:
@@ -6889,6 +6934,7 @@ __metadata:
   resolution: "@tamagui/next-theme@workspace:packages/next-theme"
   dependencies:
     "@tamagui/build": 1.79.12
+    "@tamagui/constants": 1.79.12
     "@tamagui/use-event": 1.79.12
     react: ^18.2.0
   peerDependencies:
@@ -6921,10 +6967,12 @@ __metadata:
     "@tamagui/aria-hidden": 1.79.12
     "@tamagui/build": 1.79.12
     "@tamagui/compose-refs": 1.79.12
+    "@tamagui/constants": 1.79.12
     "@tamagui/core": 1.79.12
     "@tamagui/dismissable": 1.79.12
     "@tamagui/floating": 1.79.12
     "@tamagui/focus-scope": 1.79.12
+    "@tamagui/helpers": 1.79.12
     "@tamagui/polyfill-dev": 1.79.12
     "@tamagui/popper": 1.79.12
     "@tamagui/portal": 1.79.12
@@ -6948,6 +6996,7 @@ __metadata:
   dependencies:
     "@tamagui/build": 1.79.12
     "@tamagui/compose-refs": 1.79.12
+    "@tamagui/constants": 1.79.12
     "@tamagui/core": 1.79.12
     "@tamagui/floating": 1.79.12
     "@tamagui/get-token": 1.79.12
@@ -6966,6 +7015,7 @@ __metadata:
   resolution: "@tamagui/portal@workspace:packages/portal"
   dependencies:
     "@tamagui/build": 1.79.12
+    "@tamagui/constants": 1.79.12
     "@tamagui/core": 1.79.12
     "@tamagui/stacks": 1.79.12
     "@tamagui/use-event": 1.79.12
@@ -6986,6 +7036,7 @@ __metadata:
     "@tamagui/core": 1.79.12
     "@tamagui/create-context": 1.79.12
     "@tamagui/get-token": 1.79.12
+    "@tamagui/helpers": 1.79.12
     "@tamagui/stacks": 1.79.12
     react: ^18.2.0
     react-native: ^0.72.1
@@ -7007,10 +7058,12 @@ __metadata:
   dependencies:
     "@tamagui/build": 1.79.12
     "@tamagui/compose-refs": 1.79.12
+    "@tamagui/constants": 1.79.12
     "@tamagui/core": 1.79.12
     "@tamagui/create-context": 1.79.12
     "@tamagui/focusable": 1.79.12
     "@tamagui/get-token": 1.79.12
+    "@tamagui/helpers": 1.79.12
     "@tamagui/label": 1.79.12
     "@tamagui/stacks": 1.79.12
     "@tamagui/use-controllable-state": 1.79.12
@@ -7091,8 +7144,10 @@ __metadata:
     "@tamagui/build": 1.79.12
     "@tamagui/collection": 1.79.12
     "@tamagui/compose-refs": 1.79.12
+    "@tamagui/constants": 1.79.12
     "@tamagui/core": 1.79.12
     "@tamagui/create-context": 1.79.12
+    "@tamagui/helpers": 1.79.12
     "@tamagui/use-controllable-state": 1.79.12
     "@tamagui/use-direction": 1.79.12
     "@tamagui/use-event": 1.79.12
@@ -7140,11 +7195,13 @@ __metadata:
     "@tamagui/animate-presence": 1.79.12
     "@tamagui/build": 1.79.12
     "@tamagui/compose-refs": 1.79.12
+    "@tamagui/constants": 1.79.12
     "@tamagui/core": 1.79.12
     "@tamagui/create-context": 1.79.12
     "@tamagui/dismissable": 1.79.12
     "@tamagui/focus-scope": 1.79.12
     "@tamagui/get-token": 1.79.12
+    "@tamagui/helpers": 1.79.12
     "@tamagui/list-item": 1.79.12
     "@tamagui/portal": 1.79.12
     "@tamagui/remove-scroll": 1.79.12
@@ -7169,6 +7226,7 @@ __metadata:
   resolution: "@tamagui/separator@workspace:packages/separator"
   dependencies:
     "@tamagui/build": 1.79.12
+    "@tamagui/constants": 1.79.12
     "@tamagui/core": 1.79.12
     react: ^18.2.0
   peerDependencies:
@@ -7197,8 +7255,10 @@ __metadata:
     "@tamagui/animations-react-native": 1.79.12
     "@tamagui/build": 1.79.12
     "@tamagui/compose-refs": 1.79.12
+    "@tamagui/constants": 1.79.12
     "@tamagui/core": 1.79.12
     "@tamagui/create-context": 1.79.12
+    "@tamagui/helpers": 1.79.12
     "@tamagui/portal": 1.79.12
     "@tamagui/remove-scroll": 1.79.12
     "@tamagui/scroll-view": 1.79.12
@@ -7229,6 +7289,13 @@ __metadata:
     "@tamagui/build": 1.79.12
   languageName: unknown
   linkType: soft
+
+"@tamagui/simple-hash@npm:1.79.9":
+  version: 1.79.9
+  resolution: "@tamagui/simple-hash@npm:1.79.9"
+  checksum: 8f76232247892a97e2f92922167c5909e0c7e8e37df3fde34fa5065e964ab98dfdd741622c5127702cf7d090ba1443c6d955ca114368df5edd5402b194489609
+  languageName: node
+  linkType: hard
 
 "@tamagui/site-config@1.79.12, @tamagui/site-config@workspace:packages/site-config":
   version: 0.0.0-use.local
@@ -7365,6 +7432,7 @@ __metadata:
   dependencies:
     "@tamagui/build": 1.79.12
     "@tamagui/compose-refs": 1.79.12
+    "@tamagui/constants": 1.79.12
     "@tamagui/core": 1.79.12
     "@tamagui/create-context": 1.79.12
     "@tamagui/get-token": 1.79.12
@@ -7520,10 +7588,12 @@ __metadata:
   dependencies:
     "@tamagui/build": 1.79.12
     "@tamagui/compose-refs": 1.79.12
+    "@tamagui/constants": 1.79.12
     "@tamagui/core": 1.79.12
     "@tamagui/create-context": 1.79.12
     "@tamagui/focusable": 1.79.12
     "@tamagui/get-token": 1.79.12
+    "@tamagui/helpers": 1.79.12
     "@tamagui/label": 1.79.12
     "@tamagui/stacks": 1.79.12
     "@tamagui/use-controllable-state": 1.79.12
@@ -7541,9 +7611,12 @@ __metadata:
   resolution: "@tamagui/tabs@workspace:packages/tabs"
   dependencies:
     "@tamagui/build": 1.79.12
+    "@tamagui/compose-refs": 1.79.12
+    "@tamagui/constants": 1.79.12
     "@tamagui/create-context": 1.79.12
     "@tamagui/get-button-sized": 1.79.12
     "@tamagui/group": 1.79.12
+    "@tamagui/helpers": 1.79.12
     "@tamagui/roving-focus": 1.79.12
     "@tamagui/stacks": 1.79.12
     "@tamagui/use-controllable-state": 1.79.12
@@ -7649,9 +7722,11 @@ __metadata:
     "@tamagui/animate-presence": 1.79.12
     "@tamagui/build": 1.79.12
     "@tamagui/compose-refs": 1.79.12
+    "@tamagui/constants": 1.79.12
     "@tamagui/core": 1.79.12
     "@tamagui/create-context": 1.79.12
     "@tamagui/dismissable": 1.79.12
+    "@tamagui/helpers": 1.79.12
     "@tamagui/polyfill-dev": 1.79.12
     "@tamagui/portal": 1.79.12
     "@tamagui/stacks": 1.79.12
@@ -7672,11 +7747,13 @@ __metadata:
   resolution: "@tamagui/toggle-group@workspace:packages/toggle-group"
   dependencies:
     "@tamagui/build": 1.79.12
+    "@tamagui/constants": 1.79.12
     "@tamagui/create-context": 1.79.12
     "@tamagui/focusable": 1.79.12
     "@tamagui/font-size": 1.79.12
     "@tamagui/get-token": 1.79.12
     "@tamagui/group": 1.79.12
+    "@tamagui/helpers": 1.79.12
     "@tamagui/helpers-tamagui": 1.79.12
     "@tamagui/roving-focus": 1.79.12
     "@tamagui/stacks": 1.79.12
@@ -7700,6 +7777,7 @@ __metadata:
     "@tamagui/create-context": 1.79.12
     "@tamagui/floating": 1.79.12
     "@tamagui/get-token": 1.79.12
+    "@tamagui/helpers": 1.79.12
     "@tamagui/polyfill-dev": 1.79.12
     "@tamagui/popover": 1.79.12
     "@tamagui/popper": 1.79.12
@@ -7799,6 +7877,7 @@ __metadata:
   resolution: "@tamagui/use-event@workspace:packages/use-event"
   dependencies:
     "@tamagui/build": 1.79.12
+    "@tamagui/constants": 1.79.9
     react: ^18.2.0
   peerDependencies:
     react: "*"
@@ -26200,6 +26279,7 @@ __metadata:
     "@tamagui/card": 1.79.12
     "@tamagui/checkbox": 1.79.12
     "@tamagui/compose-refs": 1.79.12
+    "@tamagui/constants": 1.79.12
     "@tamagui/core": 1.79.12
     "@tamagui/create-context": 1.79.12
     "@tamagui/dialog": 1.79.12
