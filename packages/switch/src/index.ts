@@ -9,4 +9,5 @@ export const Switch = createSwitch({
   Frame: SwitchFrame,
   Thumb: SwitchThumb,
 })
+
 export { createHeadlessSwitch, SwitchContext }

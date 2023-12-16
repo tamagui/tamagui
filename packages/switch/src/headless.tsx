@@ -16,8 +16,6 @@ import {
   ViewProps,
 } from 'react-native'
 
-import { SwitchFrame as DefaultSwitchFrame, SwitchThumb } from './Switch'
-
 type SwitchBaseProps = ViewProps
 
 export type SwitchExtraProps = {
@@ -49,14 +47,15 @@ export const SwitchContext = React.createContext<{
   checked: false,
   disabled: false,
 })
+
 export function createSwitch<F extends SwitchComponent, T extends SwitchThumbComponent>({
   disableActiveTheme,
-  Frame = DefaultSwitchFrame as any,
-  Thumb = SwitchThumb as any,
+  Frame,
+  Thumb,
 }: {
   disableActiveTheme?: boolean
-  Frame?: F
-  Thumb?: T
+  Frame: F
+  Thumb: T
 }) {
   const SwitchThumbComponent = React.forwardRef<View>(function SwitchThumb(
     props,
