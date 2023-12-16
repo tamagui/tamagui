@@ -354,7 +354,7 @@ const GITHUB_ADMIN_TOKEN = process.env.GITHUB_ADMIN_TOKEN
 export const inviteCollaboratorToRepo = async (
   repoName: string,
   userLogin: string,
-  permission = 'triage'
+  permission = 'read'
 ) => {
   console.info(
     `Claim: inviteCollaboratorToRepo permission ${permission} for ${repoName} user ${userLogin} using token starting with ${GITHUB_ADMIN_TOKEN?.slice(
