@@ -21,7 +21,7 @@ export const SupabaseProvider = ({
 }) => {
   const [supabaseClient] = useState(() =>
     createPagesBrowserClient<Database>({
-      // supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
+      supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
       cookieOptions: supabaseCookieOptions,
     })
   )

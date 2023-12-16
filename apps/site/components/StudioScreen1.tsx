@@ -30,24 +30,23 @@ export const StudioScreen1 = memo(() => {
     },
     strategy: 'blur',
     blurPct: 100,
-    color: 'var(--color10)',
-    opacity: isLight ? 0.225 : 0.125,
+    color: 'var(--color6)',
+    opacity: isLight ? 0.225 : 0.3,
     background: 'transparent',
   })
 
-  const glint = useHoverGlow({
+  const shadow = useHoverGlow({
     resist: 95,
     size: isLight ? 100 : 200,
     strategy: 'blur',
-    blurPct: isLight ? 10 : 10,
-    color: isLight ? '#fff' : '#000',
+    blurPct: isLight ? 10 : 15,
+    color: '#000',
     offset: {
       x: 200,
       y: -200,
     },
-    opacity: isLight ? 1 : 0.4,
+    opacity: isLight ? 0.05 : 0.3,
     background: 'transparent',
-    inverse: true,
   })
 
   const lettersContainerBounds = {
@@ -156,7 +155,7 @@ export const StudioScreen1 = memo(() => {
 
   const parentRef = useComposedRefs(
     glow.parentRef,
-    glint.parentRef,
+    shadow.parentRef,
     ...letters.map((l) => l.Glow.parentRef)
   )
 
@@ -189,7 +188,7 @@ export const StudioScreen1 = memo(() => {
         >
           <YStack>
             {glow.Component()}
-            {glint.Component()}
+            {shadow.Component()}
             <YStack ai="center" pos="relative" w="100%">
               <YStack w="100%" h={lettersContainerBounds.height}>
                 {letters.map(({ Component }) => {
@@ -200,89 +199,6 @@ export const StudioScreen1 = memo(() => {
           </YStack>
         </YStack>
       </YStack>
-
-      <Container pe="none" ai="center">
-        <YStack
-          ai="center"
-          jc="center"
-          gap="$5"
-          als="center"
-          py="$8"
-          f={1}
-          w="100%"
-          $sm={{ mt: -100, fd: 'column' }}
-        >
-          <ThemeTintAlt>
-            <NextLink target="_blank" href="https://github.com/sponsors/natew">
-              <Button
-                mt={60}
-                animation="quick"
-                bg="$color10"
-                color="$color1"
-                size="$6"
-                borderRadius="$10"
-                elevation="$2"
-                className="glowing"
-                pe="auto"
-                hoverStyle={{
-                  bg: '$color10',
-                  outlineColor: '$color5',
-                  outlineStyle: 'solid',
-                  outlineWidth: 4,
-                  elevation: '$3',
-                }}
-                pressStyle={{
-                  bg: '$color8',
-                  scale: 0.98,
-                }}
-              >
-                Sponsor for early access
-              </Button>
-            </NextLink>
-          </ThemeTintAlt>
-
-          {/* <Button
-            animation="quicker"
-            bg="$color10"
-            color="$color1"
-            circular
-            size="$10"
-            icon={Play}
-            borderRadius="$12"
-            elevation="$2"
-            className="glowing"
-            hoverStyle={{
-              bg: '$color9',
-              elevation: '$3',
-              scale: 1.1,
-              y: -5,
-            }}
-            pressStyle={{
-              bg: '$color8',
-            }}
-          /> */}
-
-          <NextLink href="/login">
-            <Button pe="auto" variant="outlined" size="$3" borderRadius="$10">
-              Login
-            </Button>
-          </NextLink>
-        </YStack>
-
-        <XStack maw={790} space="$8" separator={<Separator vertical />}>
-          <H2
-            theme="alt1"
-            className="text-glow"
-            als="center"
-            ff="$silkscreen"
-            size="$8"
-            fow="900"
-            $sm={{ size: '$5' }}
-          >
-            Your design system!
-          </H2>
-        </XStack>
-      </Container>
     </ThemeTint>
   )
 })
