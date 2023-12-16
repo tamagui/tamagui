@@ -659,20 +659,18 @@ export default function TakeoutPage({
                     ff="$silkscreen"
                     my="$2"
                     pr={200}
-                    size="$12"
+                    size="$10"
                     color="$color10"
                     $group-takeoutBody-sm={{
-                      size: '$11',
-                      mr: '8%',
+                      size: '$9',
+                      pr: '8%',
                     }}
                     $group-takeoutBody-xs={{
-                      pr: '$2',
-                      size: '$10',
+                      size: '$8',
+                      pr: '$1',
                     }}
                     $group-takeoutBody-xxs={{
-                      size: '$9',
-                      lh: '$8',
-                      mr: 0,
+                      size: '$7',
                       pr: '$0',
                     }}
                   >
@@ -692,8 +690,8 @@ export default function TakeoutPage({
                   <a target="_blank" href="https://supabase.com">
                     Supabase
                   </a>{' '}
-                  for data and auth, all your flows for any user-based app, and a lot of
-                  small wins all over that normally take ~weeks.
+                  for data and auth, all the flows you'd want for any user-based app, and
+                  a bunch of other goodies that take a while to set up well.
                 </Paragraph>
 
                 <Paragraph
