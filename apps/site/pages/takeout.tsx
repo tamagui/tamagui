@@ -909,14 +909,13 @@ export default function TakeoutPage({
                     <ThemeTintAlt>
                       <Paragraph
                         fontFamily="$silkscreen"
-                        size="$10"
+                        size="$11"
                         color="$color10"
                         className="text-wrap-balance"
                         ls={-1}
-                        $lg={{ size: '$8' }}
-                        $md={{ size: '$7' }}
-                        $sm={{ size: '$6' }}
-                        $xs={{ size: '$5' }}
+                        $lg={{ size: '$10' }}
+                        $md={{ size: '$9' }}
+                        $sm={{ size: '$8' }}
                         fow="400"
                         mb="$4"
                       >
