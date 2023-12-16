@@ -787,6 +787,10 @@ const DescriptionWarning: React.FC<DescriptionWarningProps> = ({
  * Dialog
  * -----------------------------------------------------------------------------------------------*/
 
+export type DialogHandle = {
+  open: (val: boolean) => void
+}
+
 const Dialog = withStaticProperties(
   React.forwardRef<{ open: (val: boolean) => void }, DialogProps>(function Dialog(
     props: ScopedProps<DialogProps>,
