@@ -115,8 +115,6 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
         : true
       : false
 
-    const [frameWidth, setFrameWidth] = React.useState(0)
-
     const [checked = false, setChecked] = useControllableState({
       prop: checkedProp,
       defaultProp: defaultChecked || false,
@@ -128,10 +126,8 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
       <>
         {/* @ts-ignore */}
         <Frame
-          tag="button"
           checked={checked}
           disabled={disabled}
-          frameWidth={frameWidth}
           themeShallow
           {...(!disableActiveTheme && {
             theme: checked ? 'active' : null,
@@ -164,9 +160,6 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
             style={{
               alignSelf: 'stretch',
               flex: 1,
-            }}
-            onLayout={(e) => {
-              setFrameWidth(e.nativeEvent.layout.width)
             }}
           >
             {typeof children === 'function' ? children(checked) : children}

@@ -50,7 +50,6 @@ export const SwitchFrame = styled(YStack, {
   variants: {
     unstyled: {
       false: {
-        size: '$true',
         borderRadius: 1000,
         backgroundColor: '$background',
         borderWidth: 2,

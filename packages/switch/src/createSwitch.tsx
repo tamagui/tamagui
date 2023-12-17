@@ -82,21 +82,24 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
     const { checked } = context
     const styledContext = React.useContext(SwitchStyledContext)
     const { frameWidth, unstyled: unstyledContext, size: sizeContext } = styledContext
-    const unstyled = unstyledProp ?? unstyledContext ?? false
+    const unstyled =
+      process.env.TAMAGUI_HEADLESS === '1'
+        ? true
+        : unstyledProp ?? unstyledContext ?? false
+    const size = sizeProp ?? sizeContext ?? '$true'
 
     const initialChecked = React.useRef(checked).current
 
     const [thumbWidth, setThumbWidth] = React.useState(0)
     const distance = frameWidth - thumbWidth
     const x = initialChecked ? (checked ? 0 : -distance) : checked ? distance : 0
-
     return (
       // @ts-ignore
       <Thumb
         ref={forwardedRef}
+        unstyled={unstyled}
         {...(unstyled === false && {
-          unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
-          size: sizeProp ?? sizeContext ?? '$true',
+          size,
           ...(!disableActiveTheme && {
             theme: checked ? 'active' : null,
           }),
@@ -111,10 +114,7 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
     )
   })
 
-  const SwitchComponent = React.forwardRef<
-    TamaguiComponent,
-    SwitchSharedProps & SwitchExtraProps
-  >(function SwitchFrame(propsIn, forwardedRef) {
+  const SwitchComponent = Frame.styleable(function SwitchFrame(propsIn, forwardedRef) {
     const styledContext = React.useContext(SwitchStyledContext)
     const props = useProps(propsIn, {
       noNormalize: true,
@@ -122,13 +122,25 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
       resolveValues: 'none',
       forComponent: Frame,
     })
+    const [frameWidth, setFrameWidth] = React.useState(0)
 
-    props.size = styledContext.size ?? '$true'
-    props.unstyled = styledContext.unstyled ?? false
+    props.size = styledContext.size ?? propsIn.size ?? '$true'
+    props.unstyled = styledContext.unstyled ?? propsIn.unstyled ?? false
+    console.log(props.unstyled)
 
     return (
       // @ts-ignore
-      <Frame ref={forwardedRef} {...props} />
+      <Frame
+        ref={forwardedRef}
+        tag="button"
+        {...props}
+        frameWidth={frameWidth}
+        onLayout={
+          composeEventHandlers((props as ViewProps).onLayout, (e) => {
+            setFrameWidth(e.nativeEvent.layout.width)
+          }) as ViewProps['onLayout']
+        }
+      />
     )
   })
 

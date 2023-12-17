@@ -26,8 +26,8 @@ export declare const SwitchContext: React.Context<{
 }>;
 export declare function createSwitch<F extends SwitchComponent, T extends SwitchThumbComponent>({ disableActiveTheme, Frame, Thumb, }: {
     disableActiveTheme?: boolean;
-    Frame?: F;
-    Thumb?: T;
+    Frame: F;
+    Thumb: T;
 }): React.ForwardRefExoticComponent<Omit<ViewProps & SwitchExtraProps, "children"> & {
     children?: React.ReactNode | ((checked: boolean) => React.ReactNode);
     disabled?: boolean | undefined;
