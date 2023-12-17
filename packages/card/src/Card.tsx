@@ -1,6 +1,6 @@
-import { withStaticProperties } from '@tamagui/helpers'
 import { ThemeableStack } from '@tamagui/stacks'
 import { GetProps, SizeTokens, createStyledContext, styled } from '@tamagui/web'
+
 const CardContext = createStyledContext({
   size: '$true' as SizeTokens,
 })
@@ -97,21 +97,6 @@ export const CardBackground = styled(ThemeableStack, {
     unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
   },
 })
-
-type CreateCardProps = {
-  Frame: React.FC<{}>
-  Background: React.FC<{}>
-  Footer: React.FC<{}>
-  Header: React.FC<{}>
-}
-
-export function createCard(props: CreateCardProps) {
-  return withStaticProperties(props.Frame, {
-    Header: props.Header,
-    Footer: props.Footer,
-    Background: props.Background,
-  })
-}
 
 export type CardHeaderProps = GetProps<typeof CardHeader>
 export type CardFooterProps = GetProps<typeof CardFooter>

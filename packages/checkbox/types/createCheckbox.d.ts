@@ -1,10 +1,7 @@
-import { MaybeTamaguiComponent, TamaguiElement } from '@tamagui/core';
+import { SizeTokens, StackProps, TamaguiComponentExpectingVariants, TamaguiElement } from '@tamagui/core';
 import { Scope } from '@tamagui/create-context';
 import React from 'react';
 import { CheckboxIndicatorProps } from './Checkbox';
-type ScopedProps<P> = P & {
-    __scopeCheckbox?: Scope;
-};
 export declare const CHECKBOX_NAME = "Checkbox";
 export declare const INDICATOR_NAME = "CheckboxIndicator";
 declare const createCheckboxScope: import("@tamagui/create-context").CreateScope;
@@ -13,7 +10,7 @@ type CheckboxContextValue = {
     state: CheckedState;
     disabled?: boolean;
 };
-export type CreateCheckboxProps = {
+export type CheckboxBaseProps = {
     children?: React.ReactNode;
     id?: string;
     disabled?: boolean;
@@ -44,13 +41,23 @@ export declare const CheckboxProvider: {
     fallback?: Partial<CheckboxContextValue> | undefined;
 } | undefined) => CheckboxContextValue;
 export { createCheckboxScope };
-export declare function createCheckbox({ Frame, Indicator, }: {
-    Frame: MaybeTamaguiComponent<CreateCheckboxProps>;
-    Indicator: MaybeTamaguiComponent<CheckboxIndicatorProps>;
-}): ((props: ScopedProps<CreateCheckboxProps>, forwardedRef: any) => JSX.Element) & {
+type ExpectingVariantProps = {
+    size?: SizeTokens | number;
+    unstyled?: boolean;
+};
+type BaseProps = StackProps & Omit<CheckboxBaseProps, 'children'> & {
+    children?: React.ReactNode | ((checked: boolean) => React.ReactNode);
+} & ExpectingVariantProps;
+type CheckboxComponent = TamaguiComponentExpectingVariants<BaseProps, ExpectingVariantProps>;
+type CheckboxIndicatorComponent = TamaguiComponentExpectingVariants<StackProps, {}>;
+export declare function createCheckbox<F extends CheckboxComponent, T extends CheckboxIndicatorComponent>({ disableActiveTheme, Frame, Indicator, }: {
+    disableActiveTheme?: boolean;
+    Frame?: F;
+    Indicator?: T;
+}): React.ForwardRefExoticComponent<CheckboxIndicatorProps & React.RefAttributes<TamaguiElement>> & {
     Indicator: React.ForwardRefExoticComponent<CheckboxIndicatorProps & React.RefAttributes<TamaguiElement>>;
     Props: React.ProviderExoticComponent<Partial<{
-        size: import("@tamagui/core").SizeTokens;
+        size: SizeTokens;
         scaleIcon: number;
     }> & {
         children?: React.ReactNode;

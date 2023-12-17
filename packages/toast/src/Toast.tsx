@@ -161,8 +161,8 @@ ToastClose.displayName = CLOSE_NAME
  * Toast
  * -----------------------------------------------------------------------------------------------*/
 
-const ToastComponent = ToastImplFrame.styleable(
-  (props: ScopedProps<ToastProps>, forwardedRef) => {
+const ToastComponent = ToastImplFrame.styleable<ToastExtraProps>(
+  (props, forwardedRef) => {
     const { forceMount, open: openProp, defaultOpen, onOpenChange, ...toastProps } = props
     const [open, setOpen] = useControllableState({
       prop: openProp,

@@ -6,8 +6,8 @@ import * as React from 'react'
 import { CheckboxStyledContext } from './CheckboxStyledContext'
 import {
   CHECKBOX_NAME,
+  CheckboxBaseProps,
   CheckedState,
-  CreateCheckboxProps,
   INDICATOR_NAME,
 } from './createCheckbox'
 
@@ -51,7 +51,7 @@ export type CheckboxIndicatorProps = {
  * -----------------------------------------------------------------------------------------------*/
 
 export type CheckboxProps = Omit<CheckboxFrameProps, 'checked' | 'defaultChecked'> &
-  CreateCheckboxProps
+  CheckboxBaseProps
 
 export const CheckboxFrame = styled(ThemeableStack, {
   name: CHECKBOX_NAME,

@@ -1,8 +1,9 @@
 /// <reference types="react" />
-export * from './Switch';
-export * from './StyledContext';
+import { SwitchContext } from '@tamagui/switch-headless';
 export * from './createSwitch';
-export { SwitchContext } from '@tamagui/switch-headless';
+export * from './StyledContext';
+export * from './Switch';
+export { SwitchContext };
 export declare const Switch: import("@tamagui/web").ReactComponentWithRef<import("./createSwitch").SwitchProps, any> & {
     staticConfig: import("@tamagui/web").StaticConfig;
     extractable: <X>(a: X, staticConfig?: Partial<import("@tamagui/web").StaticConfig> | undefined) => X;
