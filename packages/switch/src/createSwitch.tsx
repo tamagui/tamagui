@@ -7,12 +7,15 @@ import {
   composeEventHandlers,
   useProps,
 } from '@tamagui/core'
+import {
+  SwitchContext,
+  createSwitch as createHeadlessSwitch,
+} from '@tamagui/switch-headless'
 import * as React from 'react'
 import { SwitchProps as NativeSwitchProps, ViewProps } from 'react-native'
 
-import { SwitchContext, createSwitch as createHeadlessSwitch } from './headless'
+import { SwitchStyledContext } from './StyledContext'
 import { SwitchFrame as DefaultSwitchFrame, SwitchThumb } from './Switch'
-import { SwitchStyledContext } from './SwitchContext'
 
 type SwitchSharedProps = {
   size?: SizeTokens | number
@@ -126,7 +129,6 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
 
     props.size = styledContext.size ?? propsIn.size ?? '$true'
     props.unstyled = styledContext.unstyled ?? propsIn.unstyled ?? false
-    console.log(props.unstyled)
 
     return (
       // @ts-ignore

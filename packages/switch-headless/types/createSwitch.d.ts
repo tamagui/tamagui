@@ -36,4 +36,4 @@ export declare function createSwitch<F extends SwitchComponent, T extends Switch
     Thumb: React.ForwardRefExoticComponent<React.RefAttributes<View>>;
 };
 export {};
-//# sourceMappingURL=headless.d.ts.map
+//# sourceMappingURL=createSwitch.d.ts.map

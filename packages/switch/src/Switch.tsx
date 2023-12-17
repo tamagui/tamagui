@@ -2,7 +2,7 @@ import { SizeTokens, getVariableValue, styled } from '@tamagui/core'
 import { getSize } from '@tamagui/get-token'
 import { ThemeableStack, YStack } from '@tamagui/stacks'
 
-import { SwitchStyledContext } from './SwitchContext'
+import { SwitchStyledContext } from './StyledContext'
 
 export const SwitchThumb = styled(ThemeableStack, {
   name: 'SwitchThumb',

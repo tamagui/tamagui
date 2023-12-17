@@ -7555,21 +7555,35 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/switch-headless@1.79.12, @tamagui/switch-headless@workspace:packages/switch-headless":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/switch-headless@workspace:packages/switch-headless"
+  dependencies:
+    "@tamagui/build": 1.79.12
+    "@tamagui/compose-refs": 1.79.12
+    "@tamagui/constants": 1.79.12
+    "@tamagui/focusable": 1.79.12
+    "@tamagui/helpers": 1.79.12
+    "@tamagui/label": 1.79.12
+    "@tamagui/use-controllable-state": 1.79.12
+    "@tamagui/use-previous": 1.79.12
+    react: ^18.2.0
+    react-native: ^0.72.1
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/switch@1.79.12, @tamagui/switch@workspace:packages/switch":
   version: 0.0.0-use.local
   resolution: "@tamagui/switch@workspace:packages/switch"
   dependencies:
     "@tamagui/build": 1.79.12
-    "@tamagui/compose-refs": 1.79.12
-    "@tamagui/constants": 1.79.12
     "@tamagui/core": 1.79.12
-    "@tamagui/focusable": 1.79.12
     "@tamagui/get-token": 1.79.12
-    "@tamagui/helpers": 1.79.12
-    "@tamagui/label": 1.79.12
     "@tamagui/stacks": 1.79.12
-    "@tamagui/use-controllable-state": 1.79.12
-    "@tamagui/use-previous": 1.79.12
+    "@tamagui/switch-headless": 1.79.12
     react: ^18.2.0
     react-native: ^0.72.1
   peerDependencies:

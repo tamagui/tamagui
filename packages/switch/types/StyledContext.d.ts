@@ -4,4 +4,4 @@ export declare const SwitchStyledContext: import("@tamagui/core").StyledContext<
     size?: SizeTokens | undefined;
     unstyled?: boolean | undefined;
 }>;
-//# sourceMappingURL=SwitchContext.d.ts.map
+//# sourceMappingURL=StyledContext.d.ts.map
