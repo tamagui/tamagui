@@ -1,7 +1,7 @@
 import type { FillInFont, GenericFont } from '@tamagui/core'
 import { createFont, getVariableValue, isWeb } from '@tamagui/core'
 
-const LINE_HEIGHT = 1.6
+const LINE_HEIGHT = 1.2
 
 export const createDmSerifDisplayFont = <A extends GenericFont>(
   font: Partial<A> = {},
