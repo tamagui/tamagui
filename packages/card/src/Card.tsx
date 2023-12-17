@@ -98,12 +98,21 @@ export const CardBackground = styled(ThemeableStack, {
   },
 })
 
+type CreateCardProps = {
+  Frame: React.FC<{}>
+  Background: React.FC<{}>
+  Footer: React.FC<{}>
+  Header: React.FC<{}>
+}
+
+export function createCard(props: CreateCardProps) {
+  return withStaticProperties(props.Frame, {
+    Header: props.Header,
+    Footer: props.Footer,
+    Background: props.Background,
+  })
+}
+
 export type CardHeaderProps = GetProps<typeof CardHeader>
 export type CardFooterProps = GetProps<typeof CardFooter>
 export type CardProps = GetProps<typeof CardFrame>
-
-export const Card = withStaticProperties(CardFrame, {
-  Header: CardHeader,
-  Footer: CardFooter,
-  Background: CardBackground,
-})
