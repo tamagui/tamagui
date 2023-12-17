@@ -4,7 +4,12 @@ import { ThemeableStack } from '@tamagui/stacks'
 import * as React from 'react'
 
 import { CheckboxStyledContext } from './CheckboxStyledContext'
-import { CHECKBOX_NAME, CheckedState, CreateCheckboxProps } from './createCheckbox'
+import {
+  CHECKBOX_NAME,
+  CheckedState,
+  CreateCheckboxProps,
+  INDICATOR_NAME,
+} from './createCheckbox'
 
 type CheckboxFrameProps = GetProps<typeof CheckboxFrame>
 type InputProps = any //Radix.ComponentPropsWithoutRef<'input'>
@@ -20,8 +25,6 @@ export interface BubbleInputProps extends Omit<InputProps, 'checked'> {
 /* -------------------------------------------------------------------------------------------------
  * CheckboxIndicator
  * -----------------------------------------------------------------------------------------------*/
-
-const INDICATOR_NAME = 'CheckboxIndicator'
 
 export const CheckboxIndicatorFrame = styled(ThemeableStack, {
   // use Checkbox for easier themes

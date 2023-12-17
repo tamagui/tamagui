@@ -23,9 +23,10 @@ import { CheckboxIndicatorProps } from './Checkbox'
 import { CheckboxStyledContext } from './CheckboxStyledContext'
 import { getState, isIndeterminate } from './utils'
 
-export type ScopedProps<P> = P & { __scopeCheckbox?: Scope }
+type ScopedProps<P> = P & { __scopeCheckbox?: Scope }
 // TODO: add nested button provider
 export const CHECKBOX_NAME = 'Checkbox'
+export const INDICATOR_NAME = 'CheckboxIndicator'
 
 const [createCheckboxContext, createCheckboxScope] = createContextScope(CHECKBOX_NAME)
 
@@ -243,7 +244,7 @@ export function createCheckbox({
 
       if (forceMount || isIndeterminate(context.state) || context.state === true)
         return (
-          <CheckboxIndicatorFrame
+          <Indicator
             data-state={getState(context.state)}
             data-disabled={context.disabled ? '' : undefined}
             pointerEvents="none"
@@ -251,7 +252,7 @@ export function createCheckbox({
             ref={forwardedRef}
           >
             {children}
-          </CheckboxIndicatorFrame>
+          </Indicator>
         )
 
       return null

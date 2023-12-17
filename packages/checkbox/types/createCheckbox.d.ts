@@ -2,10 +2,11 @@ import { MaybeTamaguiComponent, TamaguiElement } from '@tamagui/core';
 import { Scope } from '@tamagui/create-context';
 import React from 'react';
 import { CheckboxIndicatorProps } from './Checkbox';
-export type ScopedProps<P> = P & {
+type ScopedProps<P> = P & {
     __scopeCheckbox?: Scope;
 };
 export declare const CHECKBOX_NAME = "Checkbox";
+export declare const INDICATOR_NAME = "CheckboxIndicator";
 declare const createCheckboxScope: import("@tamagui/create-context").CreateScope;
 export type CheckedState = boolean | 'indeterminate';
 type CheckboxContextValue = {
