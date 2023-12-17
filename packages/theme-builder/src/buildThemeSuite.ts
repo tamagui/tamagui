@@ -378,8 +378,6 @@ export function buildThemeSuite({ baseTheme, subThemes }: BuildThemeSuiteProps) 
 
   const built = builder.build()
 
-  console.info('built themes', built)
-
   return {
     built,
     palettes: basePalettes,
