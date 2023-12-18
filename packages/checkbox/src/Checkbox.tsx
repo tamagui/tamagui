@@ -1,30 +1,14 @@
-import { GetProps, getVariableValue, styled } from '@tamagui/core'
+import { getVariableValue, styled } from '@tamagui/core'
 import { getSize } from '@tamagui/get-token'
 import { ThemeableStack } from '@tamagui/stacks'
-import * as React from 'react'
 
 import { CheckboxStyledContext } from './CheckboxStyledContext'
-import {
-  CHECKBOX_NAME,
-  CheckboxBaseProps,
-  CheckedState,
-  INDICATOR_NAME,
-} from './createCheckbox'
-
-type CheckboxFrameProps = GetProps<typeof CheckboxFrame>
-type InputProps = any //Radix.ComponentPropsWithoutRef<'input'>
-
-export interface BubbleInputProps extends Omit<InputProps, 'checked'> {
-  checked: CheckedState
-  control: HTMLElement | null
-  bubbles: boolean
-
-  isHidden?: boolean
-}
+import { CheckedState } from './createCheckbox'
 
 /* -------------------------------------------------------------------------------------------------
  * CheckboxIndicator
  * -----------------------------------------------------------------------------------------------*/
+const INDICATOR_NAME = 'CheckboxIndicator'
 
 export const CheckboxIndicatorFrame = styled(ThemeableStack, {
   // use Checkbox for easier themes
@@ -32,26 +16,11 @@ export const CheckboxIndicatorFrame = styled(ThemeableStack, {
   context: CheckboxStyledContext,
 })
 
-export type CheckboxIndicatorProps = {
-  children?: React.ReactNode
-
-  /**
-   * Used to force mounting when more control is needed. Useful when
-   * controlling animation with React animation libraries.
-   */
-  forceMount?: true
-  /**
-   * Used to disable passing styles down to children.
-   */
-  disablePassStyles?: boolean
-}
-
 /* -------------------------------------------------------------------------------------------------
  * Checkbox
  * -----------------------------------------------------------------------------------------------*/
 
-export type CheckboxProps = Omit<CheckboxFrameProps, 'checked' | 'defaultChecked'> &
-  CheckboxBaseProps
+const CHECKBOX_NAME = 'Checkbox'
 
 export const CheckboxFrame = styled(ThemeableStack, {
   name: CHECKBOX_NAME,

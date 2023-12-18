@@ -6048,24 +6048,36 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/checkbox-headless@1.79.12, @tamagui/checkbox-headless@workspace:packages/checkbox-headless":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/checkbox-headless@workspace:packages/checkbox-headless"
+  dependencies:
+    "@tamagui/build": 1.79.12
+    "@tamagui/compose-refs": 1.79.12
+    "@tamagui/constants": 1.79.12
+    "@tamagui/create-context": 1.79.12
+    "@tamagui/focusable": 1.79.12
+    "@tamagui/helpers": 1.79.12
+    "@tamagui/label": 1.79.12
+    "@tamagui/use-controllable-state": 1.79.12
+    "@tamagui/use-previous": 1.79.12
+    react: ^18.2.0
+  peerDependencies:
+    react: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/checkbox@1.79.12, @tamagui/checkbox@workspace:packages/checkbox":
   version: 0.0.0-use.local
   resolution: "@tamagui/checkbox@workspace:packages/checkbox"
   dependencies:
     "@tamagui/build": 1.79.12
-    "@tamagui/compose-refs": 1.79.12
-    "@tamagui/constants": 1.79.12
+    "@tamagui/checkbox-headless": 1.79.12
     "@tamagui/core": 1.79.12
-    "@tamagui/create-context": 1.79.12
-    "@tamagui/focusable": 1.79.12
     "@tamagui/font-size": 1.79.12
     "@tamagui/get-token": 1.79.12
-    "@tamagui/helpers": 1.79.12
     "@tamagui/helpers-tamagui": 1.79.12
-    "@tamagui/label": 1.79.12
     "@tamagui/stacks": 1.79.12
-    "@tamagui/use-controllable-state": 1.79.12
-    "@tamagui/use-previous": 1.79.12
     react: ^18.2.0
   peerDependencies:
     react: "*"

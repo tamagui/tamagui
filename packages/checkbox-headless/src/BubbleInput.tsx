@@ -1,8 +1,16 @@
 import { usePrevious } from '@tamagui/use-previous'
 import * as React from 'react'
 
-import { BubbleInputProps } from './Checkbox'
+import { CheckedState } from './createCheckbox'
 import { isIndeterminate } from './utils'
+
+export interface BubbleInputProps extends Omit<React.ComponentProps<'input'>, 'checked'> {
+  checked: CheckedState
+  control: HTMLElement | null
+  bubbles: boolean
+
+  isHidden?: boolean
+}
 
 export const BubbleInput = (props: BubbleInputProps) => {
   const { checked, bubbles = true, control, isHidden, ...inputProps } = props
