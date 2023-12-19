@@ -105,7 +105,10 @@ export function useFocusScope(
       container.addEventListener(AUTOFOCUS_ON_MOUNT, onMountAutoFocus)
       container.dispatchEvent(mountEvent)
       if (!mountEvent.defaultPrevented) {
-        focusFirst(removeLinks(getTabbableCandidates(container)), { select: true })
+        const candidates = removeLinks(getTabbableCandidates(container))
+
+        focusFirst(candidates, { select: true })
+
         if (document.activeElement === previouslyFocusedElement) {
           focus(container)
         }
@@ -252,19 +255,15 @@ function isSelectableInput(
 }
 
 function focus(element?: FocusableTarget | null, { select = false } = {}) {
-  // setTimeout because this is triggered often by an action that opens something with an animation
-  // so to avoid issues conflicting with the open render / animation wait for next free period
-  setTimeout(() => {
-    // only focus if that element is focusable
-    if (element?.focus) {
-      const previouslyFocusedElement = document.activeElement
-      // NOTE: we prevent scrolling on focus, to minimize jarring transitions for users
-      element.focus({ preventScroll: true })
-      // only select if its not the same element, it supports selection and we need to select
-      if (element !== previouslyFocusedElement && isSelectableInput(element) && select)
-        element.select()
-    }
-  })
+  // only focus if that element is focusable
+  if (element?.focus) {
+    const previouslyFocusedElement = document.activeElement
+    // NOTE: we prevent scrolling on focus, to minimize jarring transitions for users
+    element.focus({ preventScroll: true })
+    // only select if its not the same element, it supports selection and we need to select
+    if (element !== previouslyFocusedElement && isSelectableInput(element) && select)
+      element.select()
+  }
 }
 
 /* -------------------------------------------------------------------------------------------------

@@ -156,6 +156,6 @@ declare const AlertDialog: React.FC<AlertDialogProps> & {
         readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
     }>>, "ref">) & React.RefAttributes<TamaguiElement>>;
 };
-export { createAlertDialogScope, AlertDialog, AlertDialogTrigger, AlertDialogPortal, AlertDialogOverlay, AlertDialogContent, AlertDialogAction, AlertDialogCancel, AlertDialogTitle, AlertDialogDescription, };
-export type { AlertDialogProps, AlertDialogTriggerProps, AlertDialogPortalProps, AlertDialogOverlayProps, AlertDialogContentProps, AlertDialogActionProps, AlertDialogCancelProps, AlertDialogTitleProps, AlertDialogDescriptionProps, };
+export { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogOverlay, AlertDialogPortal, AlertDialogTitle, AlertDialogTrigger, createAlertDialogScope, };
+export type { AlertDialogActionProps, AlertDialogCancelProps, AlertDialogContentProps, AlertDialogDescriptionProps, AlertDialogOverlayProps, AlertDialogPortalProps, AlertDialogProps, AlertDialogTitleProps, AlertDialogTriggerProps, };
 //# sourceMappingURL=AlertDialog.d.ts.map

@@ -13,6 +13,9 @@
       "@tamagui/*": [
         "packages/*"
       ],
+      "@tamagui/studio": [
+        "apps/studio"
+      ],
       "@takeout/*": [
         "takeout/*"
       ],

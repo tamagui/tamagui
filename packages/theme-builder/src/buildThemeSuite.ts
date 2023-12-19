@@ -9,7 +9,7 @@ import { buildMask } from './buildMask'
 import { getThemeSuitePalettes } from './buildThemeSuitePalettes'
 import { masks as defaultMasks, maskOptions } from './masks'
 import { createThemeBuilder } from './ThemeBuilder'
-import { BuildThemeMask, BuildThemeSuiteProps } from './types'
+import { BuildTheme, BuildThemeMask, BuildThemeSuiteProps } from './types'
 
 // its offset by some transparent values etc
 const basePaletteOffset = 5
@@ -33,6 +33,10 @@ export function buildThemeSuite({ baseTheme, subThemes }: BuildThemeSuiteProps) 
     (x) => x.type === 'mask'
   ) as BuildThemeMask[]
 
+  const nonMaskSubThemes = (subThemes || []).filter(
+    (x) => x.type !== 'mask'
+  ) as BuildTheme[]
+
   const customMasks = Object.fromEntries(
     maskThemes.map((maskTheme) => {
       return [maskTheme.name, buildMask(maskTheme.masks)]
@@ -40,9 +44,18 @@ export function buildThemeSuite({ baseTheme, subThemes }: BuildThemeSuiteProps) 
   )
 
   // base palletes need to add in sub theme palettes if customized
-  const palettes = getThemeSuitePalettes(theme)
+  const basePalettes = getThemeSuitePalettes(theme)
+  const subThemePalettes = Object.fromEntries(
+    nonMaskSubThemes.flatMap((t) => {
+      const palettes = getThemeSuitePalettes(t)
+      return [
+        [`${t.name}PaletteLight`, palettes.light],
+        [`${t.name}PaletteDark`, palettes.dark],
+      ]
+    })
+  )
 
-  const max = palettes.dark.length - 1
+  const max = basePalettes.dark.length - 1
   const min = 1
 
   const componentMask = {
@@ -132,36 +145,6 @@ export function buildThemeSuite({ baseTheme, subThemes }: BuildThemeSuiteProps) 
       ...baseTemplate,
     }
 
-    // const accentTemplateLight = {
-    //   background: 0,
-    //   backgroundHover: 1,
-    //   backgroundPress: baseTemplate.backgroundPress + 4,
-    //   backgroundFocus: baseTemplate.backgroundFocus + 4,
-    //   borderColor: baseTemplate.borderColor + 2,
-    //   borderColorHover: baseTemplate.borderColorHover + 2,
-    //   borderColorFocus: baseTemplate.borderColorFocus + 2,
-    //   borderColorPress: baseTemplate.borderColorPress + 2,
-    //   color: -5,
-    //   colorHover: -6,
-    //   colorPress: -7,
-    //   colorFocus: -5,
-    // }
-
-    // const accentTemplateDark = {
-    //   background: baseTemplate.background + 4,
-    //   backgroundHover: baseTemplate.backgroundHover + 5,
-    //   backgroundPress: baseTemplate.backgroundPress + 3,
-    //   backgroundFocus: baseTemplate.backgroundFocus + 5,
-    //   borderColor: baseTemplate.borderColor + 2,
-    //   borderColorHover: baseTemplate.borderColorHover + 2,
-    //   borderColorFocus: baseTemplate.borderColorFocus + 2,
-    //   borderColorPress: baseTemplate.borderColorPress + 2,
-    //   color: -5,
-    //   colorHover: -6,
-    //   colorPress: -7,
-    //   colorFocus: -5,
-    // }
-
     return {
       base: template,
       active: {
@@ -171,8 +154,6 @@ export function buildThemeSuite({ baseTheme, subThemes }: BuildThemeSuiteProps) 
         backgroundPress: namedTemplateSlots.hoverBorder,
         backgroundFocus: namedTemplateSlots.strongBackground,
       },
-      accentLight: template,
-      accentDark: template,
     }
   }
 
@@ -314,7 +295,10 @@ export function buildThemeSuite({ baseTheme, subThemes }: BuildThemeSuiteProps) 
   }
 
   const builder = createThemeBuilder()
-    .addPalettes(palettes)
+    .addPalettes({
+      ...basePalettes,
+      ...subThemePalettes,
+    })
     .addMasks({
       ...defaultMasks,
       soften3Border2: createMask((template, options) => {
@@ -342,30 +326,38 @@ export function buildThemeSuite({ baseTheme, subThemes }: BuildThemeSuiteProps) 
       },
     })
     .addChildThemes(
-      Object.fromEntries(
-        maskThemes.map((theme) => {
+      Object.fromEntries([
+        ...maskThemes.map((theme) => {
           return [
             theme.name,
             {
               mask: theme.name,
             },
           ]
-        })
-      )
+        }),
+        ...nonMaskSubThemes.flatMap((theme) => {
+          return [
+            [
+              theme.name,
+              [
+                {
+                  parent: 'dark',
+                  template: 'base',
+                  palette: `${theme.name}PaletteDark`,
+                },
+                {
+                  parent: 'light',
+                  template: 'base',
+                  palette: `${theme.name}PaletteLight`,
+                },
+              ],
+            ],
+          ]
+        }),
+      ])
     )
-    .addChildThemes({
-      // disabling as we don't need to preview these
-      alt1: {
-        mask: 'soften2Border1',
-        ...maskOptions.alt,
-      },
-      alt2: {
-        mask: 'soften3Border2',
-        ...maskOptions.alt,
-      },
-    })
     .addChildThemes(
-      palettes.lightAccent
+      basePalettes.lightAccent
         ? {
             accent: [
               {
@@ -386,11 +378,9 @@ export function buildThemeSuite({ baseTheme, subThemes }: BuildThemeSuiteProps) 
 
   const built = builder.build()
 
-  console.info('built themes', built)
-
   return {
     built,
-    palettes,
+    palettes: basePalettes,
   }
 }
 

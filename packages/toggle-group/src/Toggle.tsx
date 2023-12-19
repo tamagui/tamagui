@@ -1,6 +1,7 @@
+import { composeEventHandlers } from '@tamagui/helpers'
 import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
-import { GetProps, composeEventHandlers, styled } from '@tamagui/web'
+import { GetProps, styled } from '@tamagui/web'
 import * as React from 'react'
 
 /* -------------------------------------------------------------------------------------------------

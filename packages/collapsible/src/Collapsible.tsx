@@ -1,16 +1,8 @@
 import { AnimatePresence, AnimatePresenceProps } from '@tamagui/animate-presence'
+import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { ThemeableStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
-import {
-  GetProps,
-  Stack,
-  StackProps,
-  TamaguiComponent,
-  composeEventHandlers,
-  createStyledContext,
-  styled,
-  withStaticProperties,
-} from '@tamagui/web'
+import { GetProps, Stack, StackProps, createStyledContext, styled } from '@tamagui/web'
 import * as React from 'react'
 
 /* -------------------------------------------------------------------------------------------------

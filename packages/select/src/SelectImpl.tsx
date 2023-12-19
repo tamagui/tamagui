@@ -14,13 +14,8 @@ import {
   useRole,
   useTypeahead,
 } from '@floating-ui/react'
-import {
-  isClient,
-  isWeb,
-  useEvent,
-  useIsTouchDevice,
-  useIsomorphicLayoutEffect,
-} from '@tamagui/core'
+import { isClient, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { useEvent, useIsTouchDevice } from '@tamagui/core'
 import * as React from 'react'
 import { flushSync } from 'react-dom'
 

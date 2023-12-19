@@ -1,4 +1,5 @@
-import { isWeb, styled } from '@tamagui/core'
+import { isWeb } from '@tamagui/constants'
+import { styled } from '@tamagui/core'
 import { SizableText, SizableTextProps } from '@tamagui/text'
 import { Linking } from 'react-native'
 

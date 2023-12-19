@@ -1,7 +1,7 @@
 import type { FillInFont, GenericFont } from '@tamagui/core'
 import { createFont, getVariableValue, isWeb } from '@tamagui/core'
 
-const LINE_HEIGHT = 1.5
+const LINE_HEIGHT = 1.35
 
 export const createNohemi = <A extends GenericFont>(
   font: Partial<A> = {},

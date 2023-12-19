@@ -1,3 +1,5 @@
+outlineWidth get smaller at smaller size
+
 studio:
   - Scale / ScaleSelect 
     should be a Menu with mini visualizations of the lum/sat scales for each

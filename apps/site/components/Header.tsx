@@ -2,6 +2,7 @@ import { ThemeToggle } from '@components/ThemeToggle'
 import { getDefaultAvatarImage } from '@lib/avatar'
 import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
 import { useUser } from 'hooks/useUser'
+import { usePathname } from 'next/navigation'
 // import { useUser } from 'hooks/useUser'
 import { useRouter } from 'next/router'
 import * as React from 'react'
@@ -30,6 +31,8 @@ import { SponsorButton } from './SponsorButton'
 
 export function Header(props: HeaderProps) {
   const [isScrolled, setIsScrolled] = React.useState(false)
+  // const isStudio = usePathname().startsWith('/studio')
+  // const isScrolled = isStudio ? true : isScrolled_
 
   if (isClient) {
     React.useEffect(() => {
@@ -52,13 +55,16 @@ export function Header(props: HeaderProps) {
         l={0}
         r={0}
         ai="center"
+        pe="none"
         jc="center"
         zi={50000}
+        className="all ease-out s1"
+        // y={isStudio ? -70 : 0}
         $gtSm={{
           px: '$1',
         }}
       >
-        <XStack width="100%" maw={1120} pos="relative">
+        <XStack pe="auto" width="100%" maw={1120} pos="relative">
           <XStack
             className={`ease-out all ms200 ${
               isScrolled ? 'blur-medium hover-highlights ' : ''
@@ -69,7 +75,6 @@ export function Header(props: HeaderProps) {
             ov="hidden"
             contain="paint"
             width="100%"
-            bw={1}
             boc="transparent"
             br="$10"
             $sm={{
@@ -103,6 +108,7 @@ export function Header(props: HeaderProps) {
               $gtSm: {
                 py: '$2',
                 y: 5,
+                // elevation: isStudio ? '$0.5' : '$3',
                 elevation: '$3',
                 boc: '$borderColor',
               },
@@ -208,7 +214,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
         pointerEvents="auto"
         tag="nav"
       >
-        <XStack ai="center" gap="$3">
+        <XStack ai="center" gap="$2">
           <HeaderLinks isHeader {...props} />
 
           {userSwr.data?.userDetails && (
@@ -239,7 +245,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
             href="https://github.com/tamagui/tamagui"
           >
             <TooltipSimple delay={0} restMs={25} label="Star on Github">
-              <YStack mr="$-1" p="$2" opacity={0.7} hoverStyle={{ opacity: 1 }}>
+              <YStack p="$2" opacity={0.9} hoverStyle={{ opacity: 1 }}>
                 <VisuallyHidden>
                   <Text>Github</Text>
                 </VisuallyHidden>

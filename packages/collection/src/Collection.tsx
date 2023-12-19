@@ -1,11 +1,6 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
-import {
-  ScopedProps,
-  Slot,
-  TamaguiElement,
-  createStyledContext,
-  isWeb,
-} from '@tamagui/core'
+import { isWeb } from '@tamagui/constants'
+import { ScopedProps, Slot, TamaguiElement, createStyledContext } from '@tamagui/core'
 import React from 'react'
 
 type SlotProps = React.ComponentPropsWithoutRef<typeof Slot>

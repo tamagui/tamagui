@@ -1,9 +1,10 @@
 // forked from Radix UI
 // https://github.com/radix-ui/primitives/blob/main/packages/react/progress/src/Progress.tsx
 
-import { GetProps, getVariableValue, styled, withStaticProperties } from '@tamagui/core'
+import { GetProps, getVariableValue, styled } from '@tamagui/core'
 import { Scope, createContextScope } from '@tamagui/create-context'
 import { getSize } from '@tamagui/get-token'
+import { withStaticProperties } from '@tamagui/helpers'
 import { ThemeableStack, YStackProps } from '@tamagui/stacks'
 import * as React from 'react'
 import { View } from 'react-native'

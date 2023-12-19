@@ -57,26 +57,30 @@ export const HeaderLinks = ({ showExtra, forceShowAllLinks, isHeader }: HeaderPr
       </NextLink>
 
       {!router.asPath.startsWith('/takeout') && (
-        <NextLink passHref legacyBehavior={false} prefetch={false} href="/takeout">
-          <HeadAnchor
-            tag="span"
-            $sm={{
-              display: forceShowAllLinks ? 'flex' : 'none',
-            }}
-          >
-            Takeout 🥡
-          </HeadAnchor>
+        <NextLink legacyBehavior={false} prefetch={false} href="/takeout">
+          <TooltipSimple disabled={forceShowAllLinks} label="Takeout Starter Kit">
+            <HeadAnchor
+              tag="span"
+              size={forceShowAllLinks ? '$4' : '$8'}
+              $sm={{
+                display: forceShowAllLinks ? 'flex' : 'none',
+              }}
+            >
+              {forceShowAllLinks ? `Takeout 🥡` : `🥡`}
+            </HeadAnchor>
+          </TooltipSimple>
         </NextLink>
       )}
 
       {forceShowAllLinks && (
         <NextLink
           prefetch={false}
-          legacyBehavior={false}
+          legacyBehavior={true}
+          passHref
           target="_blank"
           href="https://github.com/tamagui/tamagui"
         >
-          <HeadAnchor>
+          <HeadAnchor tag="span">
             Github{' '}
             <YStack dsp={'inline-block' as any} y={10} my={-20} o={0.8}>
               <GithubIcon width={16} />

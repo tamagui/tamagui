@@ -1,15 +1,14 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
+import { isWeb } from '@tamagui/constants'
 import {
   NativeValue,
   SizeTokens,
   StackProps,
   TamaguiComponentExpectingVariants,
-  composeEventHandlers,
-  isWeb,
   useProps,
-  withStaticProperties,
 } from '@tamagui/core'
 import { registerFocusable } from '@tamagui/focusable'
+import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { useLabelContext } from '@tamagui/label'
 import { ButtonNestingContext, YStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -19,6 +18,7 @@ import {
   Switch as NativeSwitch,
   SwitchProps as NativeSwitchProps,
   Platform,
+  View,
 } from 'react-native'
 
 import { SwitchFrame as DefaultSwitchFrame, SwitchThumb } from './Switch'
