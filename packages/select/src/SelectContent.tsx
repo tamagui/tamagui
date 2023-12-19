@@ -54,7 +54,7 @@ export const SelectContent = ({
         style={overlayStyle}
         lockScroll={!context.disablePreventBodyScroll && !!context.open && !touch}
       >
-        <RemoveScroll as={Slot} allowPinchZoom>
+        <RemoveScroll enabled={!!context.open} as={Slot} allowPinchZoom>
           <FocusScope loop enabled={!!context.open} trapped {...focusScopeProps}>
             {contents}
           </FocusScope>
