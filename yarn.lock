@@ -5985,6 +5985,69 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/bento@workspace:apps/bento":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/bento@workspace:apps/bento"
+  dependencies:
+    "@babel/core": ^7.23.3
+    "@playwright/test": ^1.29.0
+    "@pmmmwh/react-refresh-webpack-plugin": ^0.5.10
+    "@react-native-async-storage/async-storage": 1.18.2
+    "@react-native/polyfills": ^2.0.0
+    "@react-navigation/native": ^6.1.7
+    "@react-navigation/native-stack": ^6.9.13
+    "@rnx-kit/metro-config": ^1.3.5
+    "@rnx-kit/metro-resolver-symlinks": ^0.1.26
+    "@shopify/restyle": ^2.4.2
+    "@tamagui/animations-reanimated": 1.79.12
+    "@tamagui/babel-plugin": 1.79.12
+    "@tamagui/build": 1.79.12
+    "@tamagui/cli": 1.79.12
+    "@tamagui/colors": 1.79.12
+    "@tamagui/config": 1.79.12
+    "@tamagui/core": 1.79.12
+    "@tamagui/demos": 1.79.12
+    "@tamagui/font-inter": 1.79.12
+    "@tamagui/lucide-icons": 1.79.12
+    "@tamagui/shorthands": 1.79.12
+    "@tamagui/themes": 1.79.12
+    "@tamagui/web": 1.79.12
+    "@welldone-software/why-did-you-render": ^7.0.1
+    babel-plugin-transform-inline-environment-variables: ^0.4.4
+    burnt: ^0.12.1
+    expo: 49.0.16
+    expo-build-properties: ~0.8.3
+    expo-dev-client: ~2.4.6
+    expo-font: ~11.4.0
+    expo-linear-gradient: ~12.3.0
+    expo-linking: ^5.0.2
+    expo-splash-screen: ~0.20.4
+    expo-status-bar: ^1.6.0
+    expo-updates: ~0.18.11
+    html-webpack-plugin: ^5.5.0
+    metro-runtime: "*"
+    mini-css-extract-plugin: ^2.7.6
+    pod-install: ^0.1.38
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    react-native: ^0.72.1
+    react-native-gesture-handler: ~2.12.0
+    react-native-ios-modal: 2.0.0-3
+    react-native-reanimated: ^3.3.0
+    react-native-safe-area-context: 4.6.3
+    react-native-screens: ~3.22.0
+    react-native-svg: ^13.9.0
+    react-native-web: ^0.19.6
+    solito: ^4.0.0-alpha.4
+    tamagui: 1.79.12
+    tilg: 0.1.1
+    webpack: ^5.88.2
+    webpack-bundle-analyzer: ^4.9.0
+    webpack-cli: ^4.9.2
+    webpack-dev-server: ^4.8.1
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/build@1.79.12, @tamagui/build@workspace:packages/build":
   version: 0.0.0-use.local
   resolution: "@tamagui/build@workspace:packages/build"
@@ -23450,7 +23513,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"react-native-web@npm:^0.19.9":
+"react-native-web@npm:^0.19.6, react-native-web@npm:^0.19.9":
   version: 0.19.9
   resolution: "react-native-web@npm:0.19.9"
   dependencies:

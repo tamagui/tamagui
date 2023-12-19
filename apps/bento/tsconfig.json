@@ -1,0 +1,4 @@
+{
+  "extends": "../../tsconfig",
+  "compilerOptions": { "composite": true}
+}
