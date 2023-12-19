@@ -1,3 +1,14 @@
+- takeout: accent scale tokens
+
+- if media is left out of TamaguiConfig, expression complexity gets hit
+  https://discord.com/channels/909986013848412191/1184789973354938459
+
+- createCSSVariable expected string, got: undefined
+  - add clearer warning which one 
+  https://discord.com/channels/909986013848412191/1186341608917045248/1186341608917045248
+
+- tamagui auto check dependencies in node_modules
+
 outlineWidth get smaller at smaller size
 
 studio:

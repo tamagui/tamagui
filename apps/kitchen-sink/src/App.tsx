@@ -46,6 +46,7 @@ const SandboxFrame = (props: { children: any }) => {
   const showThemeSwitch = !screenshot
   const splitView = params.has('splitView')
   const centered = params.has('centered')
+  const isDemo = params.has('demo')
 
   return (
     <Provider defaultTheme={theme as any}>
@@ -80,8 +81,31 @@ const SandboxFrame = (props: { children: any }) => {
             })}
             f={1}
             h="100%"
+            {...(isDemo && {
+              ai: 'center',
+              jc: 'center',
+              bg: '$color2',
+            })}
           >
-            {props.children}
+            {isDemo ? (
+              <XStack
+                w="80%"
+                h="80%"
+                bc="$color1"
+                als="center"
+                ai="center"
+                jc="center"
+                ov="scroll"
+              >
+                {/* simulate a scrollable page */}
+                <YStack w="100%" h={2000} />
+                <YStack fullscreen zi={10} ai="center" jc="center">
+                  {props.children}
+                </YStack>
+              </XStack>
+            ) : (
+              props.children
+            )}
           </YStack>
 
           {splitView ? (

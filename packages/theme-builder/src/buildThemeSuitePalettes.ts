@@ -10,6 +10,11 @@ import { BuildTheme, BuildThemeSuitePalettes } from './types'
 
 const paletteSize = 12
 
+const toHsla = (color: string) => {
+  const [h, s, l, a] = parseToHsla(color)
+  return { h, s, l, a }
+}
+
 const generateColorPalette = ({
   theme,
   scheme,
@@ -122,8 +127,9 @@ const generateColorPalette = ({
   const [background] = palette
   const foreground = palette[palette.length - 1]
 
-  const transparentValues = [background, foreground].map((color) => {
-    const [h, s, l] = parseToHsla(color)
+  const [backgroundHsla, foregroundHsla] = [background, foreground].map(toHsla)
+
+  const transparentValues = [backgroundHsla, foregroundHsla].map(({ h, s, l }) => {
     // fully transparent to partially
     return [
       hsla(h, s, l, 0),
@@ -132,6 +138,9 @@ const generateColorPalette = ({
       hsla(h, s, l, 0.75),
     ] as const
   })
+
+  const isBackgroundDarker = backgroundHsla.l < foregroundHsla.l
+
   const reverseForeground = [...transparentValues[1]].reverse()
   palette = [...transparentValues[0], ...palette, ...reverseForeground]
 
@@ -141,8 +150,24 @@ const generateColorPalette = ({
       scheme,
     })
 
+    const accentPaletteHslas = accentPalette.map(toHsla)
+
+    const darkest = (() => {
+      let darkestIndex = accentPaletteHslas.indexOf(
+        accentPaletteHslas.reduce((a, b) => (a.l < b.l ? a : b), accentPaletteHslas[0])
+      )
+      return accentPalette[darkestIndex]
+    })()
+
+    const lightest = (() => {
+      let lightestIndex = accentPaletteHslas.indexOf(
+        accentPaletteHslas.reduce((a, b) => (a.l >= b.l ? a : b), accentPaletteHslas[0])
+      )
+      return accentPalette[lightestIndex]
+    })()
+
     // unshift bg
-    palette.unshift(accentPalette[5 + 8])
+    palette.unshift(accentPalette[5])
     // push color
     palette.push(accentPalette[accentPalette.length - 6])
   } else {

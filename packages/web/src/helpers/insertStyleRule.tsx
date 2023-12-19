@@ -389,6 +389,5 @@ export function shouldInsertStyleRules(identifier: string) {
     }
   }
 
-  // note we are being conservative allowing duplicates
   return total === undefined || total < 1
 }
