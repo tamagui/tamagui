@@ -1,7 +1,6 @@
 import { FloatingOverlay, FloatingPortal } from '@floating-ui/react'
-import { Slot, Theme, useIsTouchDevice, useThemeName } from '@tamagui/core'
+import { Theme, useIsTouchDevice, useThemeName } from '@tamagui/core'
 import { FocusScope, FocusScopeProps } from '@tamagui/focus-scope'
-import { RemoveScroll } from '@tamagui/remove-scroll'
 import { useMemo } from 'react'
 
 import { useSelectContext, useSelectItemParentContext } from './context'
@@ -54,11 +53,9 @@ export const SelectContent = ({
         style={overlayStyle}
         lockScroll={!context.disablePreventBodyScroll && !!context.open && !touch}
       >
-        <RemoveScroll enabled={!!context.open} as={Slot} allowPinchZoom>
-          <FocusScope loop enabled={!!context.open} trapped {...focusScopeProps}>
-            {contents}
-          </FocusScope>
-        </RemoveScroll>
+        <FocusScope loop enabled={!!context.open} trapped {...focusScopeProps}>
+          {contents}
+        </FocusScope>
       </FloatingOverlay>
     </FloatingPortal>
   )
