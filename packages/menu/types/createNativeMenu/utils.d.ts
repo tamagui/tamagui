@@ -1,5 +1,5 @@
 /**
- * Credit to geist-ui/react and zeego for this file, it's initialy copied from there and updated.
+ * Credit to geist-ui/react, it's initialy copied from there and updated.
  */
 import React, { ReactChild, ReactElement, ReactNode } from 'react';
 type ReactChildArray = ReturnType<typeof React.Children.toArray>;

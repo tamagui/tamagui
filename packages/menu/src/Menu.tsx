@@ -27,14 +27,7 @@ import {
 } from '@tamagui/stacks'
 import { useCallbackRef } from '@tamagui/use-callback-ref'
 import { useDirection } from '@tamagui/use-direction'
-import {
-  Stack,
-  isAndroid,
-  isIos,
-  isWeb,
-  styled,
-  withStaticProperties,
-} from '@tamagui/web'
+import { Stack, isAndroid, isWeb, styled, withStaticProperties } from '@tamagui/web'
 import { TamaguiElement } from '@tamagui/web/types'
 import { hideOthers } from 'aria-hidden'
 import { useId } from 'react'
@@ -710,8 +703,17 @@ interface MenuGroupProps extends PrimitiveDivProps {}
 
 const MenuGroup = styled(ThemeableStack, {
   name: GROUP_NAME,
-  width: '100%',
-  role: 'group',
+  variants: {
+    unstyled: {
+      false: {
+        role: 'group',
+        width: '100%',
+      },
+    },
+  } as const,
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+  },
 })
 
 MenuGroup.displayName = GROUP_NAME
@@ -727,10 +729,19 @@ interface MenuLabelProps extends PrimitiveDivProps {}
 
 const MenuLabel = styled(Text, {
   name: LABEL_NAME,
-  paddingHorizontal: '$4',
-  color: 'gray',
-  textAlign: 'left',
-  width: '100%',
+  variants: {
+    unstyled: {
+      false: {
+        paddingHorizontal: '$4',
+        color: 'gray',
+        textAlign: 'left',
+        width: '100%',
+      },
+    },
+  } as const,
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+  },
 })
 
 MenuLabel.displayName = LABEL_NAME
@@ -1157,14 +1168,23 @@ const MenuSeparator = styled(ThemeableStack, {
   role: 'separator',
   // @ts-ignore
   'aria-orientation': 'horizontal',
-  borderColor: '$borderColor',
-  flexShrink: 0,
-  borderWidth: 0,
-  flex: 1,
-  height: 0,
-  maxHeight: 0,
-  borderBottomWidth: 1,
-  width: '100%',
+  variants: {
+    unstyled: {
+      false: {
+        borderColor: '$borderColor',
+        flexShrink: 0,
+        borderWidth: 0,
+        flex: 1,
+        height: 0,
+        maxHeight: 0,
+        borderBottomWidth: 1,
+        width: '100%',
+      },
+    },
+  } as const,
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+  },
 })
 MenuSeparator.displayName = SEPARATOR_NAME
 
