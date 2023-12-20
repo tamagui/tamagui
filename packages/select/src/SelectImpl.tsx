@@ -152,8 +152,6 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
         floatingRef.current.clientHeight -
         SCROLL_ARROW_THRESHOLD
 
-  const arrowsAreVisible = !!showUpArrow || !!showDownArrow
-
   const onMatch = useEvent((index: number) => {
     const fn = open ? setActiveIndex : setSelectedIndex
     return fn(index)
@@ -164,7 +162,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     useDismiss(context, { outsidePress: false }),
     useRole(context, { role: 'listbox' }),
     useInnerOffset(context, {
-      enabled: !fallback && arrowsAreVisible,
+      enabled: !fallback && (!!showUpArrow || !!showDownArrow),
       onChange: setInnerOffset,
       overflowRef,
       scrollRef: refs.floating,
