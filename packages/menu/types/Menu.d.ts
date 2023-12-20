@@ -101,6 +101,7 @@ interface MenuLabelProps extends PrimitiveDivProps {
 }
 interface MenuItemProps extends Omit<MenuItemImplProps, 'onSelect'> {
     onSelect?: (event: Event) => void;
+    unstyled?: boolean;
 }
 interface MenuItemTitleProps extends TextProps {
 }
@@ -110,6 +111,7 @@ type MenuItemIconProps = ThemeableStackProps;
 interface MenuItemImplProps extends PrimitiveDivProps {
     disabled?: boolean;
     textValue?: string;
+    unstyled?: boolean;
 }
 type CheckedState = boolean | 'indeterminate';
 interface MenuCheckboxItemProps extends MenuItemProps {
@@ -135,6 +137,7 @@ interface MenuSeparatorProps extends PrimitiveDivProps {
 }
 type PopperArrowProps = React.ComponentPropsWithoutRef<typeof PopperPrimitive.PopperArrow>;
 interface MenuArrowProps extends PopperArrowProps {
+    unstyled?: boolean;
 }
 export interface MenuSubProps extends PopperPrimitive.PopperProps {
     children?: React.ReactNode;
@@ -662,6 +665,12 @@ declare const Menu: {
         focusTheme?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
+        /**
+         * We prevent default browser behaviour for selection keys as they should trigger
+         * a selection only:
+         * - prevents space from scrolling the page.
+         * - if keydown causes focus to move, prevents keydown from firing on the new target.
+         */
         backgrounded?: boolean | undefined;
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
@@ -886,6 +895,12 @@ declare const Menu: {
         focusTheme?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
+        /**
+         * We prevent default browser behaviour for selection keys as they should trigger
+         * a selection only:
+         * - prevents space from scrolling the page.
+         * - if keydown causes focus to move, prevents keydown from firing on the new target.
+         */
         backgrounded?: boolean | undefined;
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
@@ -1378,6 +1393,12 @@ declare const Menu: {
         focusTheme?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
+        /**
+         * We prevent default browser behaviour for selection keys as they should trigger
+         * a selection only:
+         * - prevents space from scrolling the page.
+         * - if keydown causes focus to move, prevents keydown from firing on the new target.
+         */
         backgrounded?: boolean | undefined;
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
@@ -1602,6 +1623,12 @@ declare const Menu: {
         focusTheme?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
+        /**
+         * We prevent default browser behaviour for selection keys as they should trigger
+         * a selection only:
+         * - prevents space from scrolling the page.
+         * - if keydown causes focus to move, prevents keydown from firing on the new target.
+         */
         backgrounded?: boolean | undefined;
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
@@ -2232,10 +2259,7 @@ declare const Menu: {
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "pointerEvents" | "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
-        style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>; /**
-         * Imperative focus during keydown is risky so we prevent React's batching updates
-         * to avoid potential bugs. See: https://github.com/facebook/react/issues/20332
-         */
+        style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
         onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
         onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
@@ -2547,6 +2571,12 @@ declare const Menu: {
         focusTheme?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
+        /**
+         * We prevent default browser behaviour for selection keys as they should trigger
+         * a selection only:
+         * - prevents space from scrolling the page.
+         * - if keydown causes focus to move, prevents keydown from firing on the new target.
+         */
         backgrounded?: boolean | undefined;
         radiused?: boolean | undefined;
         padded?: boolean | undefined;

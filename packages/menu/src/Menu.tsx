@@ -452,7 +452,10 @@ interface MenuContentImplProps
   onInteractOutside?: DismissableLayerProps['onInteractOutside']
 }
 
-type StyleableMenuContentProps = MenuContentImplProps & SizableStackProps
+type StyleableMenuContentProps = MenuContentImplProps &
+  SizableStackProps & {
+    unstyled?: boolean
+  }
 
 const Fragment = React.forwardRef((props: any, ref) => props.children)
 const MenuContentImpl = React.forwardRef<
@@ -473,6 +476,7 @@ const MenuContentImpl = React.forwardRef<
     onInteractOutside,
     onDismiss,
     disableOutsideScroll,
+    unstyled = process.env.TAMAGUI_HEADLESS === '1',
     ...contentProps
   } = props
 
@@ -543,9 +547,12 @@ const MenuContentImpl = React.forwardRef<
   const content = (
     <PopperPrimitive.PopperContent
       role="menu"
-      elevation={30}
-      paddingVertical={'$2'}
-      backgroundColor={'$background'}
+      {...(!unstyled && {
+        elevation: 30,
+        paddingVertical: '$2',
+        backgroundColor: '$background',
+        outlineWidth: 0,
+      })}
       aria-orientation="vertical"
       data-state={getOpenState(context.open)}
       data-tamagui-menu-content=""
@@ -554,7 +561,6 @@ const MenuContentImpl = React.forwardRef<
       __scopePopper={__scopeMenu || MENU_CONTEXT}
       {...contentProps}
       ref={composedRefs}
-      outlineWidth={0}
       className={contentProps.animation ? undefined : contentProps.className}
       {...(isWeb
         ? {
@@ -756,6 +762,7 @@ const ITEM_SELECT = 'menu.itemSelect'
 type MenuItemElement = MenuItemImplElement
 interface MenuItemProps extends Omit<MenuItemImplProps, 'onSelect'> {
   onSelect?: (event: Event) => void
+  unstyled?: boolean
 }
 
 const MenuItem = ThemeableStack.styleable<ScopedProps<MenuItemProps>>(
@@ -901,13 +908,20 @@ type MenuItemImplElement = React.ElementRef<typeof Stack>
 interface MenuItemImplProps extends PrimitiveDivProps {
   disabled?: boolean
   textValue?: string
+  unstyled?: boolean
 }
 
 const MenuItemImpl = React.forwardRef<
   MenuItemImplElement,
   ScopedProps<MenuItemImplProps>
 >((props, forwardedRef) => {
-  const { __scopeMenu, disabled = false, textValue, ...itemProps } = props
+  const {
+    __scopeMenu,
+    disabled = false,
+    textValue,
+    unstyled = process.env.TAMAGUI_HEADLESS === '1',
+    ...itemProps
+  } = props
   const contentContext = useMenuContentContext(__scopeMenu)
   const ref = React.useRef<TamaguiElement>(null)
   const composedRefs = useComposedRefs(forwardedRef, ref)
@@ -935,16 +949,21 @@ const MenuItemImpl = React.forwardRef<
         asChild
         __scopeRovingFocusGroup={__scopeMenu || MENU_CONTEXT}
         focusable={!disabled}
-        flexDirection="row"
-        alignItems="center"
+        {...(!unstyled && {
+          flexDirection: 'row',
+          alignItems: 'center',
+        })}
+        {...itemProps}
       >
         <ThemeableStack
-          hoverTheme
-          pressTheme
-          focusTheme
-          paddingVertical="$2"
-          paddingHorizontal="$4"
-          width={'100%'}
+          {...(!unstyled && {
+            hoverTheme: true,
+            pressTheme: true,
+            focusTheme: true,
+            paddingVertical: '$2',
+            paddingHorizontal: '$4',
+            width: '100%',
+          })}
           componentName={ITEM_NAME}
           role="menuitem"
           data-highlighted={isFocused ? '' : undefined}
@@ -1196,18 +1215,22 @@ const ARROW_NAME = 'MenuArrow'
 
 // type MenuArrowElement = React.ElementRef<typeof PopperPrimitive.PopperArrow>
 type PopperArrowProps = React.ComponentPropsWithoutRef<typeof PopperPrimitive.PopperArrow>
-interface MenuArrowProps extends PopperArrowProps {}
+interface MenuArrowProps extends PopperArrowProps {
+  unstyled?: boolean
+}
 
 const MenuArrow = PopperPrimitive.PopperArrow.styleable<
   TamaguiElement,
   ScopedProps<MenuArrowProps>
 >(function PopoverArrow(props, forwardedRef) {
-  const { __scopeMenu, ...rest } = props
+  const { __scopeMenu, unstyled = process.env.TAMAGUI_HEADLESS === '1', ...rest } = props
   return (
     <PopperPrimitive.PopperArrow
       __scopePopper={__scopeMenu || MENU_CONTEXT}
       componentName="PopperArrow"
-      backgroundColor={'$background'}
+      {...(!unstyled && {
+        backgroundColor: '$background',
+      })}
       {...rest}
       ref={forwardedRef}
     />
