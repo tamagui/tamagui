@@ -1,6 +1,7 @@
 // fork of radix
 // https://github.com/radix-ui/primitives/tree/main/packages/react/checkbox/src/Checkbox.tsx
 
+import { Animate } from '@tamagui/animate'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
 import {
@@ -404,7 +405,9 @@ const CheckboxComponent = CheckboxFrame.styleable<CheckboxExtraProps>(function C
               size={propsActive.size ?? styledContext?.size ?? '$true'}
               scaleIcon={scaleIcon ?? styledContext?.scaleIcon ?? 1}
             >
-              {propsActive.children}
+              <Animate type="presence" present={Boolean(checked)}>
+                {propsActive.children}
+              </Animate>
             </CheckboxStyledContext.Provider>
           </CheckboxFrame>
 
