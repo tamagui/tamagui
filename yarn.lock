@@ -6037,7 +6037,7 @@ __metadata:
     react-native-safe-area-context: 4.6.3
     react-native-screens: ~3.22.0
     react-native-svg: ^13.9.0
-    react-native-web: ^0.19.6
+    react-native-web: ^0.19.9
     solito: ^4.0.0-alpha.4
     tamagui: 1.79.12
     tilg: 0.1.1
@@ -23513,7 +23513,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"react-native-web@npm:^0.19.6, react-native-web@npm:^0.19.9":
+"react-native-web@npm:^0.19.9":
   version: 0.19.9
   resolution: "react-native-web@npm:0.19.9"
   dependencies:
