@@ -1,5 +1,5 @@
 import { ThemeableStack } from '@tamagui/stacks'
-import { Text, styled } from 'tamagui'
+import { Image, Text, styled } from 'tamagui'
 
 /* -------------------------------------------------------------------------------------------------
  * MenuGroup
@@ -7,7 +7,7 @@ import { Text, styled } from 'tamagui'
 
 const GROUP_NAME = 'MenuGroup'
 
-export const MenuGroup = styled(ThemeableStack, {
+const MenuGroup = styled(ThemeableStack, {
   name: GROUP_NAME,
   variants: {
     unstyled: {
@@ -30,7 +30,7 @@ MenuGroup.displayName = GROUP_NAME
 
 const LABEL_NAME = 'MenuLabel'
 
-export const MenuLabel = styled(Text, {
+const MenuLabel = styled(Text, {
   name: LABEL_NAME,
   variants: {
     unstyled: {
@@ -55,7 +55,7 @@ MenuLabel.displayName = LABEL_NAME
 
 const SEPARATOR_NAME = 'MenuSeparator'
 
-export const MenuSeparator = styled(ThemeableStack, {
+const MenuSeparator = styled(ThemeableStack, {
   name: SEPARATOR_NAME,
   role: 'separator',
   // @ts-ignore
@@ -79,3 +79,22 @@ export const MenuSeparator = styled(ThemeableStack, {
   },
 })
 MenuSeparator.displayName = SEPARATOR_NAME
+
+const MenuIcon = ThemeableStack
+const MenuImage = Image
+const MenuIndicator = ThemeableStack
+const MenuItem = ThemeableStack
+const Title = Text
+const SubTitle = Text
+
+export const MenuPredefinied = {
+  MenuIcon,
+  MenuImage,
+  MenuIndicator,
+  MenuItem,
+  Title,
+  SubTitle,
+  MenuGroup,
+  MenuSeparator,
+  MenuLabel,
+}
