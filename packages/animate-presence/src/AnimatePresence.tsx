@@ -1,5 +1,6 @@
+import { useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import { useForceUpdate } from '@tamagui/use-force-update'
-import { useDidFinishSSR, useIsomorphicLayoutEffect } from '@tamagui/web'
 import React, {
   Children,
   ReactElement,

@@ -1,18 +1,13 @@
 // forked from Radix UI
 // https://github.com/radix-ui/primitives/blob/main/packages/react/radio-group/src/RadioGroup.tsx
 
-import {
-  GetProps,
-  composeEventHandlers,
-  getVariableValue,
-  isWeb,
-  styled,
-  useComposedRefs,
-  withStaticProperties,
-} from '@tamagui/core'
+import { useComposedRefs } from '@tamagui/compose-refs'
+import { isWeb } from '@tamagui/constants'
+import { GetProps, getVariableValue, styled } from '@tamagui/core'
 import { Scope, createContextScope } from '@tamagui/create-context'
 import { registerFocusable } from '@tamagui/focusable'
 import { getSize } from '@tamagui/get-token'
+import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { useLabelContext } from '@tamagui/label'
 import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'

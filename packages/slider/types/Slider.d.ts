@@ -1023,7 +1023,7 @@ export declare const SliderThumbFrame: import("@tamagui/core").TamaguiComponent<
 interface SliderThumbProps extends SizableStackProps {
     index: number;
 }
-declare const SliderThumb: import("@tamagui/core").TamaguiComponent<Omit<Omit<import("react-native").ViewProps, "children" | "onLayout" | "pointerEvents" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
+declare const SliderThumb: React.MemoExoticComponent<import("@tamagui/core").TamaguiComponent<Omit<Omit<import("react-native").ViewProps, "children" | "onLayout" | "pointerEvents" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
@@ -1290,7 +1290,7 @@ declare const SliderThumb: import("@tamagui/core").TamaguiComponent<Omit<Omit<im
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
     };
-}>;
+}>>;
 declare const Slider: React.ForwardRefExoticComponent<Omit<SliderProps, "ref"> & React.RefAttributes<TamaguiElement>> & {
     Track: React.ForwardRefExoticComponent<Omit<SliderTrackProps, "ref"> & React.RefAttributes<SliderTrackElement>>;
     TrackActive: React.ForwardRefExoticComponent<(Omit<Omit<import("react-native").ViewProps, "children" | "onLayout" | "pointerEvents" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
@@ -1504,7 +1504,7 @@ declare const Slider: React.ForwardRefExoticComponent<Omit<SliderProps, "ref"> &
         fullscreen?: boolean | undefined;
         orientation?: "vertical" | "horizontal" | undefined;
     }>>, "ref">) & React.RefAttributes<View>>;
-    Thumb: import("@tamagui/core").TamaguiComponent<Omit<Omit<import("react-native").ViewProps, "children" | "onLayout" | "pointerEvents" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
+    Thumb: React.MemoExoticComponent<import("@tamagui/core").TamaguiComponent<Omit<Omit<import("react-native").ViewProps, "children" | "onLayout" | "pointerEvents" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
         style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
         onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
@@ -1771,7 +1771,7 @@ declare const Slider: React.ForwardRefExoticComponent<Omit<SliderProps, "ref"> &
             padded?: boolean | undefined;
             chromeless?: boolean | "all" | undefined;
         };
-    }>;
+    }>>;
 };
 declare const Track: React.ForwardRefExoticComponent<Omit<SliderTrackProps, "ref"> & React.RefAttributes<SliderTrackElement>>;
 declare const Range: React.ForwardRefExoticComponent<(Omit<Omit<import("react-native").ViewProps, "children" | "onLayout" | "pointerEvents" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
@@ -1985,7 +1985,7 @@ declare const Range: React.ForwardRefExoticComponent<(Omit<Omit<import("react-na
     fullscreen?: boolean | undefined;
     orientation?: "vertical" | "horizontal" | undefined;
 }>>, "ref">) & React.RefAttributes<View>>;
-declare const Thumb: import("@tamagui/core").TamaguiComponent<Omit<Omit<import("react-native").ViewProps, "children" | "onLayout" | "pointerEvents" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
+declare const Thumb: React.MemoExoticComponent<import("@tamagui/core").TamaguiComponent<Omit<Omit<import("react-native").ViewProps, "children" | "onLayout" | "pointerEvents" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
@@ -2252,7 +2252,7 @@ declare const Thumb: import("@tamagui/core").TamaguiComponent<Omit<Omit<import("
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
     };
-}>;
+}>>;
 export { Slider, SliderTrack, SliderTrackActive, SliderThumb, Track, Range, Thumb, };
 export type { SliderProps, SliderTrackProps, SliderTrackActiveProps, SliderThumbProps };
 //# sourceMappingURL=Slider.d.ts.map

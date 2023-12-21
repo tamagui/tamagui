@@ -2077,6 +2077,7 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
   supportsCSSVars?: boolean
   useAnimations: UseAnimationHook
   usePresence: () => UsePresenceResult
+  ResetPresence: (props: { children?: any }) => JSX.Element
   useAnimatedNumber: (initial: number) => UniversalAnimatedNumber<any>
   useAnimatedNumberStyle: <V extends UniversalAnimatedNumber<any>>(
     val: V,
@@ -2181,12 +2182,6 @@ type NarrowRaw<A> =
     }
 
 export type Narrow<A> = Try<A, [], NarrowRaw<A>>
-
-export type NativePlatform = 'web' | 'mobile' | 'android' | 'ios'
-export type NativeValue<Platform extends NativePlatform = NativePlatform> =
-  | boolean
-  | Platform
-  | Platform[]
 
 /**
  * `StyleProp` copied from React Native:

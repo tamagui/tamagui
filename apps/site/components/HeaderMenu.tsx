@@ -21,6 +21,7 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
       <Popover.Trigger asChild>
         <Button
           size="$3"
+          ml="$2"
           bc="transparent"
           circular
           noTextWrap

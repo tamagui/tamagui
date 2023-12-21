@@ -1,6 +1,7 @@
 import { getFontSize } from '@tamagui/font-size'
 import { getFontSized } from '@tamagui/get-font-sized'
 import { getSize, getSpace } from '@tamagui/get-token'
+import { withStaticProperties } from '@tamagui/helpers'
 import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { ThemeableStack, YStack } from '@tamagui/stacks'
 import { SizableText, TextParentStyles, wrapChildrenInText } from '@tamagui/text'
@@ -14,7 +15,6 @@ import {
   getVariableValue,
   styled,
   useProps,
-  withStaticProperties,
 } from '@tamagui/web'
 import React, { FunctionComponent } from 'react'
 

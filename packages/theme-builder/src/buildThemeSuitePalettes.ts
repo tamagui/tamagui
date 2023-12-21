@@ -1,6 +1,5 @@
-import { hsla, parseToHsla, toHex } from 'color2k'
+import { hsla, parseToHsla } from 'color2k'
 
-import { getThemeSuiteScale } from './buildThemeSuiteScales'
 import { BuildTheme, BuildThemeSuitePalettes } from './types'
 
 /**
@@ -8,6 +7,8 @@ import { BuildTheme, BuildThemeSuitePalettes } from './types'
  *
  * [constrastBackground, backgroundTransparent, ...background, ...foreground, foregroundTransparent, accentForeground]
  */
+
+const paletteSize = 12
 
 const generateColorPalette = ({
   theme,
@@ -18,27 +19,106 @@ const generateColorPalette = ({
   scheme: 'light' | 'dark'
   forAccent?: boolean
 }) => {
-  // const { color, scale, accent, accentColor, accentScale } = theme
+  const baseTheme = forAccent ? theme.accent || theme : theme
+  const { anchors } = baseTheme
 
-  const color = forAccent ? theme.accent || theme.color : theme.color
-  const scale = forAccent ? theme.accentScale || theme.scale : theme.scale
+  let palette: string[] = []
 
-  const { lumScale, satScale } = getThemeSuiteScale(theme, forAccent)
-  const [hue, sat, lum] = parseToHsla(color)
-  const isDark = scheme === 'dark'
+  const add = (h: number, s: number, l: number) => {
+    palette.push(hsla(h, s, l, 1))
+  }
 
-  const lumValues = isDark ? lumScale.dark : lumScale.light
+  const numAnchors = Object.keys(anchors).length
 
-  let palette: string[] = lumValues.map((lum, idx) => {
-    if (sat > 0) {
-      if (satScale) {
-        return hsla(hue, satScale[scheme][idx], lum, 1)
+  for (const [anchorIndex, anchor] of anchors.entries()) {
+    const [h, s, l] = [anchor.hue[scheme], anchor.sat[scheme], anchor.lum[scheme]]
+
+    if (anchorIndex !== 0) {
+      const lastAnchor = anchors[anchorIndex - 1]
+      const steps = anchor.index - lastAnchor.index
+
+      const lastHue = lastAnchor.hue[scheme]
+      const lastSat = lastAnchor.sat[scheme]
+      const lastLum = lastAnchor.lum[scheme]
+
+      const stepHue = (lastHue - h) / steps
+      const stepSat = (lastSat - s) / steps
+      const stepLum = (lastLum - l) / steps
+
+      // backfill:
+      for (let step = lastAnchor.index + 1; step < anchor.index; step++) {
+        const str = anchor.index - step
+        add(h + stepHue * str, s + stepSat * str, l + stepLum * str)
       }
-      return hsla(hue, sat, lum, 1)
     }
-    return hsla(0, 0, lum, 1)
-  })
 
+    add(h, s, l)
+
+    const isLastAnchor = anchorIndex === numAnchors - 1
+    if (isLastAnchor && palette.length < paletteSize) {
+      // forwardfill:
+      for (let step = anchor.index + 1; step < paletteSize; step++) {
+        add(h, s, l)
+      }
+    }
+  }
+
+  // if (strategy?.type === 'automatic') {
+  //   const hslas = {
+  //     background: parseToHsla(strategy.background),
+  //     foreground: parseToHsla(strategy.foreground),
+  //   }
+
+  //   palette = [
+  //     // backgrounds
+  //     ...new Array(10).fill(0).map((_, i) => {
+  //       const [h, s, l] = hslas.background
+
+  //       if (isDark) {
+  //         const str = 9 - i
+  //         const minLum = 0.05
+  //         const by = (l - minLum) / 10
+
+  //         return hsla(
+  //           h,
+  //           s,
+  //           // go to dark or light
+  //           l - by * str,
+  //           1
+  //         )
+  //       } else {
+  //         const str = 9 - i
+  //         const maxLum = 0.95
+  //         const by = (maxLum - l) / 10
+  //         return hsla(h, s, l + by * str, 1)
+  //       }
+  //     }),
+  //     // colors
+  //     ...new Array(2).fill(0).map((_, i) => {
+  //       const [h, s, l] = hslas.foreground
+  //       return hsla(
+  //         h,
+  //         s,
+  //         // go to dark or light
+  //         l - (i === 0 ? 0.1 : 0) - (forAccent ? 1 - l : 0),
+  //         1
+  //       )
+  //     }),
+  //   ]
+  // } else {
+  //   const lumValues = isDark ? lumScale.dark : lumScale.light
+  //   palette = lumValues.map((lum, idx) => {
+  //     const sat = satScale[scheme][idx]
+
+  //     if (theme.hueColor && idx >= 10) {
+  //       return hsla(theme.hueColor, sat, lum, 1)
+  //     }
+
+  //     return hsla(hue, sat, lum, 1)
+  //   })
+  // }
+
+  // add transparent values
   const [background] = palette
   const foreground = palette[palette.length - 1]
 
@@ -56,22 +136,15 @@ const generateColorPalette = ({
   palette = [...transparentValues[0], ...palette, ...reverseForeground]
 
   if (theme.accent) {
-    const baseAccent = forAccent ? theme.color : theme.accent
-    const accentHsla = parseToHsla(baseAccent)
-    const accentLum = accentHsla[2]
-    const isAccentLight = accentLum > 0.5
-
-    const oppositeLightnessAccent = isAccentLight
-      ? toHex(hsla(accentHsla[0], accentHsla[1], 1 - accentLum, 1))
-      : theme.accent
-
-    const fg = isAccentLight && !isDark ? oppositeLightnessAccent : baseAccent
-    const bg = fg === baseAccent ? oppositeLightnessAccent : baseAccent
+    const accentPalette = generateColorPalette({
+      theme: theme.accent,
+      scheme,
+    })
 
     // unshift bg
-    palette.unshift(bg)
+    palette.unshift(accentPalette[5 + 8])
     // push color
-    palette.push(fg)
+    palette.push(accentPalette[accentPalette.length - 6])
   } else {
     // were keeping the palettes the same length with or without accent to avoid headache
     palette.unshift('rgba(0,0,0,0)')

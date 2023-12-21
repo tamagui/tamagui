@@ -47,10 +47,10 @@ export function getClosestValueIndex(values: number[], nextValue: number) {
  * within the bounds of the slider when reaching the edges
  */
 export function getThumbInBoundsOffset(width: number, left: number, direction: number) {
-  const halfWidth = width / 2
+  const quarterWidth = width / 4 // changed to quarter width to allow some overlap but not so much
   const halfPercent = 50
-  const offset = linearScale([0, halfPercent], [0, halfWidth])
-  return (halfWidth - offset(left) * direction) * direction
+  const offset = linearScale([0, halfPercent], [0, quarterWidth])
+  return (quarterWidth - offset(left) * direction) * direction
 }
 
 /**

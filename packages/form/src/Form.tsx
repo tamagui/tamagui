@@ -1,12 +1,6 @@
-import {
-  Stack,
-  StackProps,
-  View,
-  composeEventHandlers,
-  styled,
-  withStaticProperties,
-} from '@tamagui/core'
+import { Stack, StackProps, View, styled } from '@tamagui/core'
 import { Scope, createContextScope } from '@tamagui/create-context'
+import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 
 const FORM_NAME = 'Form'
 

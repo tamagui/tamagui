@@ -2,6 +2,7 @@ import { Adapt, useAdaptParent } from '@tamagui/adapt'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { hideOthers } from '@tamagui/aria-hidden'
 import { useComposedRefs } from '@tamagui/compose-refs'
+import { isWeb } from '@tamagui/constants'
 import {
   GetProps,
   GetRef,
@@ -10,22 +11,25 @@ import {
   TamaguiTextElement,
   Theme,
   View,
-  composeEventHandlers,
-  isWeb,
   spacedChildren,
   styled,
   useGet,
   useMedia,
   useThemeName,
-  withStaticProperties,
 } from '@tamagui/core'
 import { Scope, createContext, createContextScope } from '@tamagui/create-context'
 import { Dismissable, DismissableProps } from '@tamagui/dismissable'
 import { FocusScope, FocusScopeProps } from '@tamagui/focus-scope'
+import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { PortalHost, PortalItem, PortalItemProps } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
 import { Overlay, Sheet, SheetController } from '@tamagui/sheet'
-import { ThemeableStack, YStack, YStackProps } from '@tamagui/stacks'
+import {
+  ButtonNestingContext,
+  ThemeableStack,
+  YStack,
+  YStackProps,
+} from '@tamagui/stacks'
 import { H2, Paragraph } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
@@ -92,19 +96,22 @@ interface DialogTriggerProps extends StackProps {}
 const DialogTrigger = DialogTriggerFrame.styleable(
   (props: ScopedProps<DialogTriggerProps>, forwardedRef) => {
     const { __scopeDialog, ...triggerProps } = props
+    const isInsideButton = React.useContext(ButtonNestingContext)
     const context = useDialogContext(TRIGGER_NAME, __scopeDialog)
     const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef)
     return (
-      <DialogTriggerFrame
-        tag="button"
-        aria-haspopup="dialog"
-        aria-expanded={context.open}
-        aria-controls={context.contentId}
-        data-state={getState(context.open)}
-        {...triggerProps}
-        ref={composedTriggerRef}
-        onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
-      />
+      <ButtonNestingContext.Provider value={true}>
+        <DialogTriggerFrame
+          tag={isInsideButton ? 'span' : 'button'}
+          aria-haspopup="dialog"
+          aria-expanded={context.open}
+          aria-controls={context.contentId}
+          data-state={getState(context.open)}
+          {...triggerProps}
+          ref={composedTriggerRef}
+          onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
+        />
+      </ButtonNestingContext.Provider>
     )
   }
 )
@@ -669,18 +676,6 @@ const CLOSE_NAME = 'DialogClose'
 const DialogCloseFrame = styled(View, {
   name: CLOSE_NAME,
   tag: 'button',
-
-  variants: {
-    unstyled: {
-      false: {
-        zIndex: 100,
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
-  },
 })
 
 type DialogCloseProps = GetProps<typeof DialogCloseFrame> & {
@@ -695,6 +690,7 @@ const DialogClose = DialogCloseFrame.styleable<DialogCloseProps>(
       fallback: {},
     })
     const isSheet = useShowDialogSheet(context)
+    const isInsideButton = React.useContext(ButtonNestingContext)
 
     if (isSheet && !displayWhenAdapted) {
       return null
@@ -703,6 +699,7 @@ const DialogClose = DialogCloseFrame.styleable<DialogCloseProps>(
     return (
       <DialogCloseFrame
         accessibilityLabel="Dialog Close"
+        tag={isInsideButton ? 'span' : 'button'}
         {...closeProps}
         ref={forwardedRef}
         onPress={composeEventHandlers(props.onPress as any, () =>
@@ -789,6 +786,10 @@ const DescriptionWarning: React.FC<DescriptionWarningProps> = ({
 /* -------------------------------------------------------------------------------------------------
  * Dialog
  * -----------------------------------------------------------------------------------------------*/
+
+export type DialogHandle = {
+  open: (val: boolean) => void
+}
 
 const Dialog = withStaticProperties(
   React.forwardRef<{ open: (val: boolean) => void }, DialogProps>(function Dialog(

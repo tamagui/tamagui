@@ -1,8 +1,5 @@
-import { useCallback, useEffect, useLayoutEffect, useRef } from 'react'
-
-const isWeb = process.env.TAMAGUI_TARGET === 'web'
-const isClient = typeof window !== 'undefined'
-const useIsomorphicLayoutEffect = !isWeb || isClient ? useLayoutEffect : useEffect
+import { useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { useCallback, useRef } from 'react'
 
 // keeps a reference to the current value easily
 

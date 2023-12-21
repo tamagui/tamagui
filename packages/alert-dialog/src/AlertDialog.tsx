@@ -2,17 +2,8 @@
 // https://github.com/radix-ui/primitives/blob/main/packages/react/alert-dialog/src/AlertDialog.tsx
 
 import { useComposedRefs } from '@tamagui/compose-refs'
-import {
-  Slottable,
-  TamaguiElement,
-  View,
-  composeEventHandlers,
-  isTamaguiElement,
-  isWeb,
-  styled,
-  useIsomorphicLayoutEffect,
-  withStaticProperties,
-} from '@tamagui/core'
+import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { Slottable, TamaguiElement, View, isTamaguiElement, styled } from '@tamagui/core'
 import { Scope, createContextScope } from '@tamagui/create-context'
 import {
   Dialog,
@@ -35,7 +26,7 @@ import {
   DialogWarningProvider,
   createDialogScope,
 } from '@tamagui/dialog'
-import { YStack } from '@tamagui/stacks'
+import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
 import { Alert } from 'react-native'
@@ -430,26 +421,26 @@ const AlertDialog = withStaticProperties(AlertDialogInner, {
 AlertDialog.displayName = ROOT_NAME
 
 export {
-  createAlertDialogScope,
   //
   AlertDialog,
-  AlertDialogTrigger,
-  AlertDialogPortal,
-  AlertDialogOverlay,
-  AlertDialogContent,
   AlertDialogAction,
   AlertDialogCancel,
-  AlertDialogTitle,
+  AlertDialogContent,
   AlertDialogDescription,
+  AlertDialogOverlay,
+  AlertDialogPortal,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+  createAlertDialogScope,
 }
 export type {
-  AlertDialogProps,
-  AlertDialogTriggerProps,
-  AlertDialogPortalProps,
-  AlertDialogOverlayProps,
-  AlertDialogContentProps,
   AlertDialogActionProps,
   AlertDialogCancelProps,
-  AlertDialogTitleProps,
+  AlertDialogContentProps,
   AlertDialogDescriptionProps,
+  AlertDialogOverlayProps,
+  AlertDialogPortalProps,
+  AlertDialogProps,
+  AlertDialogTitleProps,
+  AlertDialogTriggerProps,
 }

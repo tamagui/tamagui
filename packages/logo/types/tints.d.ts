@@ -1,3 +1,4 @@
+type ChangeHandler = (next: TintFamily) => void;
 declare const families: {
     tamagui: string[];
     xmas: string[];
@@ -25,9 +26,8 @@ export declare function useTints(): {
         halloween: string[];
     };
 };
-export declare const setTintFamily: (next: TintFamily) => void;
+export declare function setTintFamily(next: TintFamily): void;
 export declare const setNextTintFamily: () => void;
-type ChangeHandler = (next: TintFamily) => void;
 export declare const onTintFamilyChange: (cb: ChangeHandler) => () => void;
 export {};
 //# sourceMappingURL=tints.d.ts.map

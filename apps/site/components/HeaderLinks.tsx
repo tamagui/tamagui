@@ -17,7 +17,6 @@ const HeadAnchor = styled(Paragraph, {
   hoverStyle: { opacity: 1, color: '$color' },
   pressStyle: { opacity: 0.25 },
   tabIndex: -1,
-  w: '100%',
   tag: 'a',
 })
 
@@ -58,24 +57,16 @@ export const HeaderLinks = ({ showExtra, forceShowAllLinks, isHeader }: HeaderPr
       </NextLink>
 
       {!router.asPath.startsWith('/takeout') && (
-        <NextLink passHref legacyBehavior={false} prefetch={false} href="/takeout">
-          <TooltipSimple
-            disabled={forceShowAllLinks}
-            delay={0}
-            restMs={25}
-            label="Takeout"
-          >
+        <NextLink legacyBehavior={false} prefetch={false} href="/takeout">
+          <TooltipSimple disabled={forceShowAllLinks} label="Takeout Starter Kit">
             <HeadAnchor
               tag="span"
-              {...(!forceShowAllLinks && {
-                size: '$8',
-                mr: '$-3',
-              })}
+              size={forceShowAllLinks ? '$4' : '$8'}
               $sm={{
                 display: forceShowAllLinks ? 'flex' : 'none',
               }}
             >
-              {forceShowAllLinks ? ' Takeout 🥡' : '🥡'}
+              {forceShowAllLinks ? `Takeout 🥡` : `🥡`}
             </HeadAnchor>
           </TooltipSimple>
         </NextLink>
@@ -84,11 +75,12 @@ export const HeaderLinks = ({ showExtra, forceShowAllLinks, isHeader }: HeaderPr
       {forceShowAllLinks && (
         <NextLink
           prefetch={false}
-          legacyBehavior={false}
+          legacyBehavior={true}
+          passHref
           target="_blank"
           href="https://github.com/tamagui/tamagui"
         >
-          <HeadAnchor>
+          <HeadAnchor tag="span">
             Github{' '}
             <YStack dsp={'inline-block' as any} y={10} my={-20} o={0.8}>
               <GithubIcon width={16} />
@@ -98,19 +90,25 @@ export const HeaderLinks = ({ showExtra, forceShowAllLinks, isHeader }: HeaderPr
       )}
 
       {forceShowAllLinks && (
-        <NextLink prefetch={false} href="/community">
+        <NextLink passHref prefetch={false} href="/community">
           <HeadAnchor>Community</HeadAnchor>
         </NextLink>
       )}
 
       {showExtra && (
-        <NextLink prefetch={false} href="/studio">
+        <NextLink passHref prefetch={false} href="/studio">
           <HeadAnchor>Studio</HeadAnchor>
         </NextLink>
       )}
 
-      {(!userSwr.data?.session?.user && !isHeader) && (
-        <NextLink prefetch={false} href="/login">
+      {forceShowAllLinks && (
+        <NextLink passHref prefetch={false} href="/blog">
+          <HeadAnchor>Blog</HeadAnchor>
+        </NextLink>
+      )}
+
+      {!userSwr.data?.session?.user && !isHeader && (
+        <NextLink passHref prefetch={false} href="/login">
           <HeadAnchor
             $md={{
               display: forceShowAllLinks ? 'flex' : 'none',

@@ -11,7 +11,8 @@ export const getDefaultLayout: GetLayout = (page, pageProps, path) => {
   const isHome = path === '/'
   const isAuthPage = path.startsWith('/login')
   const isAccountPage = path.startsWith('/account')
-  const isProductLandingPage = path.startsWith('/takeout') || path.startsWith('/studio')
+  const isStudio = path.startsWith('/studio')
+  const isProductLandingPage = path.startsWith('/takeout') || isStudio
   const isBlog = path.startsWith('/blog')
   const isDocs = path.startsWith('/docs')
 
@@ -30,5 +31,3 @@ export const getDefaultLayout: GetLayout = (page, pageProps, path) => {
 
   return layout
 }
-
-

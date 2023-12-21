@@ -1,18 +1,18 @@
 // adapted from radix-ui popper
 
 import { useComposedRefs } from '@tamagui/compose-refs'
+import { isWeb } from '@tamagui/constants'
+import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import {
   SizeTokens,
   StackProps,
   View as TamaguiView,
   createStyledContext,
   getVariableValue,
-  isWeb,
   styled,
-  useIsomorphicLayoutEffect,
   useProps,
 } from '@tamagui/core'
-import type { ScopedProps, StackStyleProps } from '@tamagui/core'
+import type { ScopedProps } from '@tamagui/core'
 import {
   Coords,
   OffsetOptions,

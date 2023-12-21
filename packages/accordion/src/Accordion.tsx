@@ -1,5 +1,8 @@
 import { Collapsible } from '@tamagui/collapsible'
 import { createCollection } from '@tamagui/collection'
+import { useComposedRefs } from '@tamagui/compose-refs'
+import { isWeb } from '@tamagui/constants'
+import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { YStack } from '@tamagui/stacks'
 import { H1, H3 } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -9,12 +12,8 @@ import {
   GetRef,
   Stack,
   TamaguiElement,
-  composeEventHandlers,
   createStyledContext,
-  isWeb,
   styled,
-  useComposedRefs,
-  withStaticProperties,
 } from '@tamagui/web'
 import * as React from 'react'
 

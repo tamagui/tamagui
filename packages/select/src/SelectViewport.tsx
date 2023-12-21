@@ -1,15 +1,11 @@
 import { FloatingFocusManager } from '@floating-ui/react'
 import { AnimatePresence } from '@tamagui/animate-presence'
-import {
-  TamaguiElement,
-  composeRefs,
-  isWeb,
-  useIsomorphicLayoutEffect,
-} from '@tamagui/core'
+import { composeRefs } from '@tamagui/compose-refs'
+import { isWeb } from '@tamagui/constants'
+import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { styled } from '@tamagui/core'
 import { PortalItem } from '@tamagui/portal'
 import { ThemeableStack } from '@tamagui/stacks'
-import * as React from 'react'
 
 import { VIEWPORT_NAME } from './constants'
 import {

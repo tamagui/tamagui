@@ -5,6 +5,7 @@ import { getBoundingClientRect } from '../helpers/getBoundingClientRect'
 import { getRect } from '../helpers/getRect'
 
 const LayoutHandlers = new WeakMap<Element, Function>()
+const LayoutTimeouts = new WeakMap<Element, any>()
 
 export type LayoutValue = {
   x: number
@@ -50,13 +51,18 @@ export const measureLayout = (
 ) => {
   const relativeNode = relativeTo || node?.parentNode
   if (relativeNode instanceof HTMLElement) {
-    setTimeout(() => {
+    // avoid double onLayout
+    clearTimeout(LayoutTimeouts.get(relativeNode))
+    // according to react-native-web https://github.com/necolas/react-native-web/commit/b4e3427fea9bd943e3b3be13def0f4ffb3df917c
+    const tm = setTimeout(() => {
       const relativeRect = getBoundingClientRect(relativeNode)!
       const { height, left, top, width } = getRect(node)!
       const x = left - relativeRect.left
       const y = top - relativeRect.top
       callback(x, y, width, height, left, top)
+      LayoutTimeouts.delete(relativeNode)
     }, 0)
+    LayoutTimeouts.set(relativeNode, tm)
   }
 }
 

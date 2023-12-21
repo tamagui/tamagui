@@ -1,4 +1,4 @@
-import { PresenceContext, usePresence } from '@tamagui/use-presence'
+import { PresenceContext, ResetPresence, usePresence } from '@tamagui/use-presence'
 import { AnimationDriver, UniversalAnimatedNumber } from '@tamagui/web'
 import type { MotiTransition } from 'moti'
 import { useMotify } from 'moti/author'
@@ -28,6 +28,7 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
     supportsCSSVars: true,
     animations,
     usePresence,
+    ResetPresence,
 
     useAnimatedNumber(initial): UniversalAnimatedNumber<ReanimatedAnimatedNumber> {
       const sharedValue = useSharedValue(initial)
