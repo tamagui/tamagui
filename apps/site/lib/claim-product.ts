@@ -3,6 +3,8 @@ import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { User } from '@supabase/auth-helpers-nextjs'
 import { inviteCollaboratorToRepo } from 'protected/_utils/github'
 
+export class ClaimError extends Error {}
+
 export const claimProductAccess = async (
   subscription: Database['public']['Tables']['subscriptions']['Row'],
   product: Database['public']['Tables']['products']['Row'],
@@ -86,18 +88,24 @@ const claimRepositoryAccess: ClaimFunction = async ({ user, metadata }) => {
 
   console.info(`Claim: inviting collaborator`)
 
-  await inviteCollaboratorToRepo(repoName, githubUser.login, permission)
+  try {
+    await inviteCollaboratorToRepo(repoName, githubUser.login, permission)
 
-  return {
-    data: {
-      user_github: {
-        id: githubUser.id,
-        node_id: githubUser.node_id,
-        login: githubUser.login,
+    return {
+      data: {
+        user_github: {
+          id: githubUser.id,
+          node_id: githubUser.node_id,
+          login: githubUser.login,
+        },
+        repository_name: repoName,
+        permission,
       },
-      repository_name: repoName,
-      permission,
-    },
-    message: 'Check your email for an invitation to the repository.',
+      message: 'Check your email for an invitation to the repository.',
+    }
+  } catch (error) {
+    throw new ClaimError(
+      'Invitation failed. It could be that you are already invited. Check your email or GitHub notifications for the invite. Otherwise, contact support@tamagui.dev or get help on Discord.'
+    )
   }
 }

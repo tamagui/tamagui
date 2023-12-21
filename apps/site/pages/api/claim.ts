@@ -1,5 +1,5 @@
 import { apiRoute, postgresError } from '@lib/apiRoute'
-import { claimProductAccess } from '@lib/claim-product'
+import { ClaimError, claimProductAccess } from '@lib/claim-product'
 import { protectApiRoute } from '@lib/protectApiRoute'
 import { getArray, getSingle } from '@lib/supabase-utils'
 
@@ -72,9 +72,14 @@ export default apiRoute(async (req, res) => {
             message,
           })
         } catch (error) {
-          res.status(500).json({
-            message: error.message,
-          })
+          if (error instanceof ClaimError) {
+            res.json({
+              message: error.message,
+            })
+          } else {
+            console.error(`Claim: claim failed. error message: ${error.message}`)
+            res.status(500).json({})
+          }
         }
         return
       }
