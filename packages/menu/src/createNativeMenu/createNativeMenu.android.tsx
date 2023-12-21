@@ -6,7 +6,7 @@ import { withStaticProperties } from '@tamagui/core'
 import React, { Children, ReactElement, cloneElement } from 'react'
 import { View } from 'tamagui'
 
-import { NativePropProvider } from '../Menu'
+import { NativePropProvider } from '../createMenu'
 import type {
   ContextMenuAuxliliaryProps,
   ContextMenuContentProps,

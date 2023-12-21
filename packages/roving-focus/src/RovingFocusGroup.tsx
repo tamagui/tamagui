@@ -1,14 +1,8 @@
 import { createCollection } from '@tamagui/collection'
 import { useComposedRefs } from '@tamagui/compose-refs'
-import {
-  Slot,
-  Stack,
-  composeEventHandlers,
-  createStyledContext,
-  isWeb,
-  useEvent,
-  withStaticProperties,
-} from '@tamagui/core'
+import { isWeb } from '@tamagui/constants'
+import { Slot, Stack, createStyledContext, useEvent } from '@tamagui/core'
+import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
 import * as React from 'react'

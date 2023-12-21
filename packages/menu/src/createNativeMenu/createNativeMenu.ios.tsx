@@ -12,7 +12,7 @@ import {
 import type { ImageSystemConfig } from 'react-native-ios-context-menu/src/types/ImageItemConfig'
 import { View } from 'tamagui'
 
-import { NativePropProvider } from '../Menu'
+import { NativePropProvider } from '../createMenu'
 import type {
   ContextMenuAuxliliaryProps,
   ContextMenuContentProps,

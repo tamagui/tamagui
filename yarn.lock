@@ -6333,9 +6333,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/context-menu@workspace:packages/context-menu"
   dependencies:
-    "@tamagui/build": 1.79.9
-    "@tamagui/core": 1.79.9
-    "@tamagui/popover": 1.79.9
+    "@tamagui/build": 1.79.13
+    "@tamagui/core": 1.79.13
+    "@tamagui/popover": 1.79.13
     react: ^18.2.0
   peerDependencies:
     react: "*"
@@ -6491,9 +6491,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/dropdown-menu@workspace:packages/dropdown-menu"
   dependencies:
-    "@tamagui/build": 1.79.9
-    "@tamagui/core": 1.79.9
-    "@tamagui/popover": 1.79.9
+    "@tamagui/build": 1.79.13
+    "@tamagui/core": 1.79.13
+    "@tamagui/popover": 1.79.13
     react: ^18.2.0
   peerDependencies:
     react: "*"
@@ -6525,9 +6525,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/focus-guard@workspace:packages/focus-guard"
   dependencies:
-    "@tamagui/build": 1.79.9
-    "@tamagui/compose-refs": 1.79.9
-    "@tamagui/use-event": 1.79.9
+    "@tamagui/build": 1.79.13
+    "@tamagui/compose-refs": 1.79.13
+    "@tamagui/use-event": 1.79.13
     react: ^18.2.0
   peerDependencies:
     react: "*"
