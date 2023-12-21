@@ -372,6 +372,10 @@ export function insertStyleRules(rulesToInsert: RulesToInsert) {
   }
 }
 
+const minInsertAmt = process.env.TAMAGUI_INSERT_SELECTOR_TRIES
+  ? +process.env.TAMAGUI_INSERT_SELECTOR_TRIES
+  : 2
+
 export function shouldInsertStyleRules(identifier: string) {
   if (process.env.IS_STATIC === 'is_static') {
     return true
@@ -390,5 +394,5 @@ export function shouldInsertStyleRules(identifier: string) {
   }
 
   // note we are being conservative allowing duplicates
-  return total === undefined || total < 1
+  return total === undefined || total < minInsertAmt
 }
