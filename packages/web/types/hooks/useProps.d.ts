@@ -5,7 +5,7 @@ type UsePropsOptions = Pick<SplitStyleProps, 'noExpand' | 'noNormalize' | 'noCla
         staticConfig: StaticConfig;
     };
 };
-type PropsWithoutMediaStyles<A> = {
+export type PropsWithoutMediaStyles<A> = {
     [Key in keyof A extends `$${string}` ? never : keyof A]?: A[Key];
 };
 /**
