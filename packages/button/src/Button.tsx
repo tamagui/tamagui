@@ -1,7 +1,8 @@
 import { getFontSize } from '@tamagui/font-size'
 import { getButtonSized } from '@tamagui/get-button-sized'
+import { withStaticProperties } from '@tamagui/helpers'
 import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
-import { ThemeableStack } from '@tamagui/stacks'
+import { ButtonNestingContext, ThemeableStack } from '@tamagui/stacks'
 import {
   SizableText,
   TextContextStyles,
@@ -19,9 +20,8 @@ import {
   styled,
   useDidFinishSSR,
   useProps,
-  withStaticProperties,
 } from '@tamagui/web'
-import { FunctionComponent, createContext, useContext } from 'react'
+import { FunctionComponent, useContext } from 'react'
 
 type ButtonVariant = 'outlined'
 
@@ -219,8 +219,6 @@ const Button = withStaticProperties(ButtonComponent, {
   Icon: ButtonIcon,
 })
 
-export const ButtonNestingContext = createContext(false)
-
 /**
  * @deprecated Instead of useButton, see the Button docs for the newer and much improved Advanced customization pattern: https://tamagui.dev/docs/components/button
  */
@@ -244,6 +242,7 @@ function useButton<Props extends ButtonProps>(
     noTextWrap,
     fontFamily,
     fontSize,
+    ...restProps
   } = propsActive
 
   const size = propsActive.size || (propsActive.unstyled ? undefined : '$true')
@@ -295,9 +294,6 @@ function useButton<Props extends ButtonProps>(
     propsActive.accessibilityRole === 'link'
     ? 'a'
     : undefined
-
-  // remove the ones we used here
-  const { iconAfter: _1, icon: _2, noTextWrap: _3, ...restProps } = propsIn
 
   const props = {
     size,

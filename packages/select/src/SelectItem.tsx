@@ -1,6 +1,6 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { TamaguiElement, isWeb, useIsomorphicLayoutEffect } from '@tamagui/core'
-import { ListItem, ListItemFrame, ListItemProps, useListItem } from '@tamagui/list-item'
+import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { ListItemFrame, ListItemProps, useListItem } from '@tamagui/list-item'
 import * as React from 'react'
 
 import { createSelectContext, useSelectItemParentContext } from './context'

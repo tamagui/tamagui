@@ -1049,6 +1049,9 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
     supportsCSSVars?: boolean;
     useAnimations: UseAnimationHook;
     usePresence: () => UsePresenceResult;
+    ResetPresence: (props: {
+        children?: any;
+    }) => JSX.Element;
     useAnimatedNumber: (initial: number) => UniversalAnimatedNumber<any>;
     useAnimatedNumberStyle: <V extends UniversalAnimatedNumber<any>>(val: V, getStyle: (current: any) => any) => any;
     useAnimatedNumberReaction: <V extends UniversalAnimatedNumber<any>>(opts: {
@@ -1120,8 +1123,6 @@ type NarrowRaw<A> = (A extends [] ? [] : never) | (A extends Narrowable ? A : ne
     [K in keyof A]: A[K] extends Function ? A[K] : NarrowRaw<A[K]>;
 };
 export type Narrow<A> = Try<A, [], NarrowRaw<A>>;
-export type NativePlatform = 'web' | 'mobile' | 'android' | 'ios';
-export type NativeValue<Platform extends NativePlatform = NativePlatform> = boolean | Platform | Platform[];
 /**
  * `StyleProp` copied from React Native:
  *  Exported to fix https://github.com/tamagui/tamagui/issues/1258

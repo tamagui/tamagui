@@ -1,4 +1,4 @@
-import { useIsomorphicLayoutEffect } from '@tamagui/web'
+import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { RefObject } from 'react'
 
 import { getRect } from '../helpers/getRect'

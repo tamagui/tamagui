@@ -1,6 +1,7 @@
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { GetProps, TamaguiElement, isWeb, styled } from '@tamagui/core'
+import { isWeb } from '@tamagui/constants'
+import { GetProps, TamaguiElement, styled } from '@tamagui/core'
 import { PortalHost } from '@tamagui/portal'
 import { YStack } from '@tamagui/stacks'
 import { VisuallyHidden } from '@tamagui/visually-hidden'

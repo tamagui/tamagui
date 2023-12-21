@@ -2,9 +2,11 @@
 
 import { MaskOptions, Template } from '@tamagui/create-theme'
 
+export type SubTheme = BuildTheme | BuildThemeMask
+
 export type BuildThemeSuiteProps = {
   baseTheme: BuildTheme
-  subThemes?: (BuildTheme | BuildThemeMask)[]
+  subThemes?: SubTheme[]
   componentMask?: MaskOptions
   templates?: {
     base: Template
@@ -21,7 +23,7 @@ export type BuildThemeSuitePalettes = {
 }
 
 export type ScaleTypeName =
-  | 'automatic'
+  | 'custom'
   | 'radix'
   | 'radix-b'
   | 'radius-bold'
@@ -39,13 +41,36 @@ export type BuildThemeBase = {
   errors?: string[]
 }
 
+export type BuildThemeAnchor = {
+  index: number
+  hue: {
+    light: number
+    dark: number
+    sync?: boolean
+    syncLeft?: boolean
+  }
+  sat: {
+    light: number
+    dark: number
+    sync?: boolean
+    syncLeft?: boolean
+  }
+  lum: {
+    light: number
+    dark: number
+  }
+}
+
 export type BuildTheme = BuildThemeBase & {
   type: 'theme'
-  color: string
+
   scale: ScaleTypeName
+
+  anchors: BuildThemeAnchor[]
+
   template?: Template
-  accent?: string
-  accentScale?: ScaleTypeName
+
+  accent?: BuildTheme
 }
 
 // TODO type here isnt the same as type in BuildTheme

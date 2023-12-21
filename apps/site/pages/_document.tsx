@@ -50,6 +50,7 @@ export default class Document extends NextDocument {
           <meta name="docsearch:language" content="en" />
           <meta name="docsearch:version" content="1.0.0,latest" />
           <meta id="theme-color" name="theme-color" />
+          <meta name="color-scheme" content="light dark" />
 
           <LoadInter700 />
           <LoadInter400 />

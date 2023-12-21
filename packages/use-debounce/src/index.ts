@@ -50,7 +50,7 @@ export function useDebounce<
   fn: A,
   wait: number,
   options: DebounceSettings = defaultOpts,
-  mountArgs: any[] = []
+  mountArgs: any[] = [fn]
 ): DebouncedFn {
   const dbEffect = useRef<DebouncedFn | null>(null)
 

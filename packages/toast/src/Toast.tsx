@@ -3,11 +3,10 @@ import {
   NativePlatform,
   NativeValue,
   TamaguiElement,
-  composeEventHandlers,
   styled,
   useEvent,
-  withStaticProperties,
 } from '@tamagui/core'
+import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { ThemeableStack } from '@tamagui/stacks'
 import { SizableText } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'

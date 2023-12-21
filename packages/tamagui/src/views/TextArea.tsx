@@ -1,4 +1,5 @@
-import { isWeb, styled } from '@tamagui/core'
+import { isWeb } from '@tamagui/constants'
+import { styled } from '@tamagui/core'
 
 import { textAreaSizeVariant } from '../helpers/inputHelpers'
 import { InputFrame, InputProps, defaultStyles, useInputProps } from './Input'

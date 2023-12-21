@@ -1,3 +1,9 @@
+outlineWidth get smaller at smaller size
+
+studio:
+  - Scale / ScaleSelect 
+    should be a Menu with mini visualizations of the lum/sat scales for each
+
 - gradient style
 - "var" mode where it changes types of $ to var(--)
 - calc?
@@ -44,6 +50,7 @@
 Web:
 
   - createTamagui({ settings: { webMode: true } })
+  - No Text/Stack, just `styled.div` ?
   - avoids console warning on Text
   - `@tamagui/style` separate from core
   - instead of validStyleProps use validNONStyleProps
@@ -60,29 +67,34 @@ Web:
 
   - enables Input taking { autofillSelectedStyle: Style }, or any component accepting a style object as a prop
 
-
 ```tsx
-import { Text, style } from '@tamagui/core'
+import { Stack, style } from '@tamagui/core'
 
-// assumes base tamagui style props for View
-// style(): StackStyleProps
-const styleObject1 = style({
+// make it so style props accepts either a regular style object
+// or something like this (can be exported from core):
+
+type StackStyle = {
+  base: ViewStyle
+  press?: ViewStyle
+  hover?: ViewStyle
+  focus?: ViewStyle
+}
+
+const mySubStyle: StackStyle = style(Stack, {
+  backgroundColor: 'red', // optimizes on web to _bg-red
   
+  pressStyle: {
+    backgroundColor: 'blue', // optimizes on web to _press-bg-blue
+  }
 })
 
-// ??
-style.native({}) // { base: ViewStyle, press: ViewStyle, ... }
-style.web({}) // { base: DivStyle, press: DivStyle, ... }
+const MyComponent = (props: { accentedStyle?: StackStyle }) => {
+  return (
+    <Stack style={[accentedStyle]} />
+  )
+}
 
-// can use variants if they exist
-// they should get expanded so it always returns the base tamagui style type
-// Text.style(): TextStyleProps
-const styleObject = Text.style({
-  someVariant: true,
-})
 
-// on native basically passes through
-// on web passes through but optimizing compiler will make classname values
 ```
 
 ---

@@ -1,10 +1,10 @@
+import { isWeb } from '@tamagui/constants'
 import {
   GetProps,
   RadiusTokens,
   SizeTokens,
   StackProps,
   ThemeValueFallback,
-  isWeb,
   styled,
   usePropsAndStyle,
 } from '@tamagui/core'

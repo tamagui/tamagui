@@ -14,13 +14,8 @@ import {
   useRole,
   useTypeahead,
 } from '@floating-ui/react'
-import {
-  isClient,
-  isWeb,
-  useEvent,
-  useIsTouchDevice,
-  useIsomorphicLayoutEffect,
-} from '@tamagui/core'
+import { isClient, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { useEvent, useIsTouchDevice } from '@tamagui/core'
 import * as React from 'react'
 import { flushSync } from 'react-dom'
 
@@ -167,7 +162,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     useDismiss(context, { outsidePress: false }),
     useRole(context, { role: 'listbox' }),
     useInnerOffset(context, {
-      enabled: !fallback,
+      enabled: !fallback && (!!showUpArrow || !!showDownArrow),
       onChange: setInnerOffset,
       overflowRef,
       scrollRef: refs.floating,

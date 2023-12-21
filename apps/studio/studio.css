@@ -1,3 +1,10 @@
+iframe {
+  background: transparent;
+}
+
+body {
+  background-color: transparent !important;
+}
 
 .anim {
   transition: all ease 100ms;

@@ -68,6 +68,7 @@ import {
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 
+import { CodeInline } from '../components/Code'
 import { ContainerXL } from '../components/Container'
 import { FaqModal } from '../components/FaqModal'
 import { useHoverGlow } from '../components/HoverGlow'
@@ -84,8 +85,8 @@ const points = {
   // this one's only shown on modal
   monorepo: [
     'Well-isolated configuration.',
-    '100% shared code between web and native.',
-    'Scripts for running your dev env in one command.',
+    'Nearly all code shared between web and native.',
+    'Guided setup script, easily generate common patterns.',
   ],
   design: [
     'Complete design system with the new ThemeBuilder for easy customization.',
@@ -647,51 +648,27 @@ export default function TakeoutPage({
                 px: '$2',
               }}
             >
-              <YStack mt={-500} $md={{ mt: 0 }} ml={20} mr={0}>
+              <YStack mt={-600} $md={{ mt: 0 }} ml={20} mr={0}>
                 <StarterCard product={starter} />
               </YStack>
 
-              <YStack group="takeoutBody" f={1} space="$5">
-                <MunroP
-                  mt={-420}
-                  mb={-20}
-                  size="$7"
-                  ls={3}
-                  o={0.25}
-                  $sm={{
-                    size: '$4',
-                    ls: 1,
-                  }}
-                >
-                  Universal React Native + Web Starter Kit
-                </MunroP>
-
+              <YStack mt={-420} group="takeoutBody" f={1} gap="$5">
                 <ThemeTintAlt>
                   <H2
                     className="text-wrap-balance"
-                    ff="$munro"
-                    size="$12"
-                    fontSize={85}
-                    lineHeight={100}
+                    ff="$silkscreen"
                     my="$2"
-                    pr="$10"
+                    pr={200}
+                    maw={800}
+                    size="$10"
                     color="$color10"
-                    $gtLg={{
-                      mr: 140,
-                    }}
-                    $group-takeoutBody-sm={{
-                      size: '$11',
-                      mr: '8%',
-                    }}
                     $group-takeoutBody-xs={{
-                      pr: '$2',
-                      size: '$10',
+                      size: '$9',
+                      pr: '8%',
                     }}
                     $group-takeoutBody-xxs={{
-                      size: '$9',
-                      lh: '$8',
-                      mr: 0,
-                      pr: '$0',
+                      size: '$8',
+                      pr: '$1',
                     }}
                   >
                     From idea to shipped in less time than ever.
@@ -700,14 +677,18 @@ export default function TakeoutPage({
 
                 <Paragraph
                   className="text-wrap-balance"
-                  size="$9"
-                  $sm={{ size: '$8' }}
-                  $xs={{ size: '$7' }}
+                  size="$8"
+                  $sm={{ size: '$7' }}
                   fow="400"
                 >
-                  Takeout 🥡 is a bootstrap that makes shipping high quality apps much
-                  faster. Share nearly all code between native and web while retaining
-                  best-in-class UX and DX.
+                  Takeout 🥡 is a bootstrap extracted from our experience creating and
+                  consulting on apps with Tamagui. It builds off the OSS starter{' '}
+                  <CodeInline>(npm create tamagui)</CodeInline>, adding{' '}
+                  <a target="_blank" href="https://supabase.com">
+                    Supabase
+                  </a>{' '}
+                  for data and auth, all the flows you'd want for any user-based app, and
+                  a bunch of other goodies that take a while to set up well.
                 </Paragraph>
 
                 <Paragraph
@@ -717,41 +698,16 @@ export default function TakeoutPage({
                   $xs={{ size: '$5' }}
                   fow="400"
                 >
-                  It all deploys in minutes with automatic PR preview URLs on Vercel, and
-                  automates from git push to both app stores with Expo EAS.
-                </Paragraph>
-
-                <Paragraph
-                  className="text-wrap-balance"
-                  size="$7"
-                  $sm={{ size: '$6' }}
-                  $xs={{ size: '$5' }}
-                  fow="400"
-                >
-                  Some highlights are: onboarding flows, a complete end to end auth
-                  solution, account management, user profiles with avatar upload,
-                  comprehensive settings panes, a complete CI/CD and testing setup, well
-                  designed forms validated with Zod, Storybook for native and web, and a
-                  bunch of nice libraries like tRPC, Reanimated, Expo Image and many more.
-                </Paragraph>
-
-                <Paragraph
-                  className="text-wrap-balance"
-                  size="$7"
-                  $sm={{ size: '$6' }}
-                  $xs={{ size: '$5' }}
-                  fow="400"
-                >
-                  Plus{' '}
+                  With <CodeInline>npx tamagui add font</CodeInline> and{' '}
+                  <CodeInline>npx tamagui add icon</CodeInline>, add on the ~1,500{' '}
                   <NextLink href="https://fonts.google.com" target="_blank">
-                    1,500 Google fonts
+                    Google Fonts
                   </NextLink>{' '}
-                  and{' '}
+                  and 120{' '}
                   <NextLink href="https://icones.js.org" target="_blank">
-                    150 open source icons
+                    icones.js.org
                   </NextLink>{' '}
-                  packaged into a CLI that installs them in your app as typed React
-                  components that use your themes and tokens.
+                  icon packs to your app as typed and Tamagui styled components.
                 </Paragraph>
 
                 <Spacer size="$6" />
@@ -949,15 +905,14 @@ export default function TakeoutPage({
 
                     <ThemeTintAlt>
                       <Paragraph
-                        fontFamily="$cherryBomb"
-                        size="$10"
+                        fontFamily="$silkscreen"
+                        size="$11"
                         color="$color10"
                         className="text-wrap-balance"
                         ls={-1}
-                        $lg={{ size: '$8' }}
-                        $md={{ size: '$7' }}
-                        $sm={{ size: '$6' }}
-                        $xs={{ size: '$5' }}
+                        $lg={{ size: '$10' }}
+                        $md={{ size: '$9' }}
+                        $sm={{ size: '$8' }}
                         fow="400"
                         mb="$4"
                       >
@@ -966,19 +921,26 @@ export default function TakeoutPage({
                     </ThemeTintAlt>
 
                     <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
-                      Takeout is a template repo that comes with a novel Github bot that
-                      sends PRs as we improve the base repo. This is done with some git
-                      magic, scripting, and an architecture designed for easy merges.
-                      Whenever we make significant updates, we trigger TakeoutBot to
+                      Takeout is a template repo that comes with a Github bot that sends
+                      PRs as we improve the starter. This is done with some git magic,
+                      scripting, and an architecture designed for easy merges. When we
+                      make significant updates, we trigger TakeoutBot to
                       send&nbsp;a&nbsp;PR.
+                    </Paragraph>
+
+                    <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
+                      As you diverge we can't be perfect at sending updates, but we also
+                      have an ignorefile you can configure that gives you a lot of
+                      control. Ultimately, if you diverge enough, then turn the automatic
+                      PRs off at no cost.
                     </Paragraph>
 
                     <ThemeTintAlt>
                       <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
-                        It's like having a dedicated developer updating dependencies,
-                        improving DX and ensuring everything works before upgrading major
-                        versions in ongoing well-organized PRs - for only a couple hundred
-                        a year. Here's the current working roadmap:
+                        It's like having a developer updating dependencies, improving DX
+                        and ensuring everything works before upgrading major versions in
+                        more thoughful PRs than a typical bot. Here's a rough working
+                        roadmap:
                       </Paragraph>
                     </ThemeTintAlt>
 
@@ -1076,18 +1038,13 @@ export default function TakeoutPage({
                   />
                 </XStack>
 
-                <MunroP size="$10" $sm={{ size: '$9' }}>
-                  A reference design for a building a truly high quality app - that keeps
-                  improving.
-                </MunroP>
-
                 <HeartsRow />
 
                 <MunroP size="$9" $sm={{ size: '$8' }} color="$yellow10">
                   We hope you enjoy.
                 </MunroP>
 
-                <MunroP size="$3" o={0.3}>
+                <MunroP size="$1" o={0.3}>
                   These statements have not been approved by the FDA. Talk to your doctor
                   before trying Tamagui Takeout. Side effects may include spending way too
                   much time tweaking color palettes when you should be just shipping your

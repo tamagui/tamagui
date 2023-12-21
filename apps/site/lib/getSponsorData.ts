@@ -3,6 +3,7 @@ import { getCookie, setCookie } from 'cookies-next'
 import jwt from 'jsonwebtoken'
 import { NextApiRequest, NextApiResponse } from 'next'
 
+import { whitelistGithubUsernames } from '../protected/_utils/github'
 import { HandledResponseTermination } from './apiRoute'
 import { Database } from './supabase-types'
 import { getArray } from './supabase-utils'
@@ -44,7 +45,10 @@ export async function checkSponsorAccess({
     throw teamsResult.error
   }
   const teams = getArray(teamsResult.data)
-  const teamsWithAccess = teams.filter((team) => team.is_active)
+  const teamsWithAccess = teams.filter(
+    (team) =>
+      team.is_active || whitelistGithubUsernames.some((name) => team.name === name)
+  )
   const hasStudioAccess = teamsWithAccess.length > 0
 
   const payload: PayloadShape = { hasStudioAccess, teamId: teamsWithAccess[0]?.id }

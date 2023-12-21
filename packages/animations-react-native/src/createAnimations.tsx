@@ -1,12 +1,11 @@
-import { usePresence } from '@tamagui/use-presence'
+import { ResetPresence, usePresence } from '@tamagui/use-presence'
+import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import {
   AnimatedNumberStrategy,
   AnimationDriver,
   AnimationProp,
   UniversalAnimatedNumber,
-  isWeb,
   useEvent,
-  useIsomorphicLayoutEffect,
 } from '@tamagui/web'
 import { useEffect, useMemo, useRef } from 'react'
 import { Animated } from 'react-native'
@@ -172,6 +171,7 @@ export function createAnimations<A extends AnimationsConfig>(
     useAnimatedNumberReaction,
     useAnimatedNumberStyle,
     usePresence,
+    ResetPresence,
     useAnimations: ({ props, onDidAnimate, style, componentState, presence }) => {
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
