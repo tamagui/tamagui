@@ -58,7 +58,7 @@ interface DropdownMenuSubTriggerProps extends MenuSubTriggerProps {
 type MenuSubContentProps = React.ComponentPropsWithoutRef<typeof MenuTypes.SubContent>;
 interface DropdownMenuSubContentProps extends MenuSubContentProps {
 }
-export declare function createDropdownMenu(params: Parameters<typeof createMenu>[0]): {
+export declare function createNonNativeDropdownMenu(params: Parameters<typeof createMenu>[0]): {
     (props: ScopedProps<DropdownMenuProps>): JSX.Element;
     displayName: string;
 } & {
@@ -1118,4 +1118,4 @@ export declare function createDropdownMenu(params: Parameters<typeof createMenu>
     ItemIcon: import("tamagui").TamaguiComponent<any, any, {} & void, {}, {}>;
 };
 export type { DropdownMenuProps, DropdownMenuTriggerProps, DropdownMenuPortalProps, DropdownMenuContentProps, DropdownMenuGroupProps, DropdownMenuLabelProps, DropdownMenuItemProps, DropdownMenuCheckboxItemProps, DropdownMenuRadioGroupProps, DropdownMenuRadioItemProps, DropdownMenuItemIndicatorProps, DropdownMenuArrowProps, DropdownMenuSubProps, DropdownMenuSubTriggerProps, DropdownMenuSubContentProps, };
-//# sourceMappingURL=createDropdownMenu.d.ts.map
+//# sourceMappingURL=createNonNativeDropdownMenu.d.ts.map

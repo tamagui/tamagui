@@ -1,5 +1,6 @@
 import { Slot, isAndroid, withStaticProperties } from '@tamagui/core'
-import { Menu, MenuProps, MenuSubProps } from '@tamagui/menu'
+import { MenuProps, MenuSubProps, createMenu } from '@tamagui/menu'
+import type { Menu as MenuTypes } from '@tamagui/menu'
 import { useId } from 'react'
 import * as React from 'react'
 import {
@@ -56,63 +57,65 @@ interface DropdownMenuTriggerProps extends PrimitiveButtonProps {
  * DropdownMenuPortal
  * -----------------------------------------------------------------------------------------------*/
 
-type MenuPortalProps = React.ComponentPropsWithoutRef<typeof Menu.Portal>
+type MenuPortalProps = React.ComponentPropsWithoutRef<typeof MenuTypes.Portal>
 interface DropdownMenuPortalProps extends MenuPortalProps {}
 
 /* -------------------------------------------------------------------------------------------------
  * DropdownMenuContent
  * -----------------------------------------------------------------------------------------------*/
 
-type DropdownMenuContentElement = React.ElementRef<typeof Menu.Content>
-type MenuContentProps = React.ComponentPropsWithoutRef<typeof Menu.Content>
+type DropdownMenuContentElement = React.ElementRef<typeof MenuTypes.Content>
+type MenuContentProps = React.ComponentPropsWithoutRef<typeof MenuTypes.Content>
 interface DropdownMenuContentProps extends Omit<MenuContentProps, 'onEntryFocus'> {}
 
 /* -------------------------------------------------------------------------------------------------
  * DropdownMenuGroup
  * -----------------------------------------------------------------------------------------------*/
 
-type MenuGroupProps = React.ComponentPropsWithoutRef<typeof Menu.Group>
+type MenuGroupProps = React.ComponentPropsWithoutRef<typeof MenuTypes.Group>
 type DropdownMenuGroupProps = MenuGroupProps & {}
 
 /* -------------------------------------------------------------------------------------------------
  * DropdownMenuLabel
  * -----------------------------------------------------------------------------------------------*/
 
-type MenuLabelProps = React.ComponentPropsWithoutRef<typeof Menu.Label>
+type MenuLabelProps = React.ComponentPropsWithoutRef<typeof MenuTypes.Label>
 type DropdownMenuLabelProps = MenuLabelProps & {}
 
 /* -------------------------------------------------------------------------------------------------
  * DropdownMenuItem
  * -----------------------------------------------------------------------------------------------*/
 
-type MenuItemProps = React.ComponentPropsWithoutRef<typeof Menu.Item>
+type MenuItemProps = React.ComponentPropsWithoutRef<typeof MenuTypes.Item>
 interface DropdownMenuItemProps extends MenuItemProps {}
 
-type MenuCheckboxItemProps = React.ComponentPropsWithoutRef<typeof Menu.CheckboxItem>
+type MenuCheckboxItemProps = React.ComponentPropsWithoutRef<typeof MenuTypes.CheckboxItem>
 
 interface DropdownMenuCheckboxItemProps extends MenuCheckboxItemProps {}
 
-type DropdownMenuRadioGroupElement = React.ElementRef<typeof Menu.RadioGroup>
-type MenuRadioGroupProps = React.ComponentPropsWithoutRef<typeof Menu.RadioGroup>
+type DropdownMenuRadioGroupElement = React.ElementRef<typeof MenuTypes.RadioGroup>
+type MenuRadioGroupProps = React.ComponentPropsWithoutRef<typeof MenuTypes.RadioGroup>
 interface DropdownMenuRadioGroupProps extends MenuRadioGroupProps {}
 
-type MenuRadioItemProps = React.ComponentPropsWithoutRef<typeof Menu.RadioItem>
+type MenuRadioItemProps = React.ComponentPropsWithoutRef<typeof MenuTypes.RadioItem>
 interface DropdownMenuRadioItemProps extends MenuRadioItemProps {}
 
-type MenuItemIndicatorProps = React.ComponentPropsWithoutRef<typeof Menu.ItemIndicator>
+type MenuItemIndicatorProps = React.ComponentPropsWithoutRef<
+  typeof MenuTypes.ItemIndicator
+>
 interface DropdownMenuItemIndicatorProps extends MenuItemIndicatorProps {}
 
 /* -------------------------------------------------------------------------------------------------
  * DropdownMenuSeparator
  * -----------------------------------------------------------------------------------------------*/
 
-type MenuSeparatorProps = React.ComponentPropsWithoutRef<typeof Menu.Separator>
+type MenuSeparatorProps = React.ComponentPropsWithoutRef<typeof MenuTypes.Separator>
 
 /* -------------------------------------------------------------------------------------------------
  * DropdownMenuArrow
  * -----------------------------------------------------------------------------------------------*/
 
-type MenuArrowProps = React.ComponentPropsWithoutRef<typeof Menu.Arrow>
+type MenuArrowProps = React.ComponentPropsWithoutRef<typeof MenuTypes.Arrow>
 type DropdownMenuArrowProps = MenuArrowProps & {}
 
 /* -------------------------------------------------------------------------------------------------
@@ -130,20 +133,21 @@ interface DropdownMenuSubProps extends MenuSubProps {
  * DropdownMenuSubTrigger
  * -----------------------------------------------------------------------------------------------*/
 
-type MenuSubTriggerProps = React.ComponentPropsWithoutRef<typeof Menu.SubTrigger>
+type MenuSubTriggerProps = React.ComponentPropsWithoutRef<typeof MenuTypes.SubTrigger>
 interface DropdownMenuSubTriggerProps extends MenuSubTriggerProps {}
 
 /* -------------------------------------------------------------------------------------------------
  * DropdownMenuSubContent
  * -----------------------------------------------------------------------------------------------*/
 
-type DropdownMenuSubContentElement = React.ElementRef<typeof Menu.Content>
-type MenuSubContentProps = React.ComponentPropsWithoutRef<typeof Menu.SubContent>
+type DropdownMenuSubContentElement = React.ElementRef<typeof MenuTypes.Content>
+type MenuSubContentProps = React.ComponentPropsWithoutRef<typeof MenuTypes.SubContent>
 interface DropdownMenuSubContentProps extends MenuSubContentProps {}
 
 /* -----------------------------------------------------------------------------------------------*/
 
-export function createDropdownMenu() {
+export function createNonNativeDropdownMenu(params: Parameters<typeof createMenu>[0]) {
+  const { Menu } = createMenu(params)
   /* -------------------------------------------------------------------------------------------------
    * DropdownMenu
    * -----------------------------------------------------------------------------------------------*/
