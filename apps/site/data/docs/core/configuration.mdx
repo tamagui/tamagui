@@ -595,6 +595,11 @@ For a full configuration, see [@tamagui/shorthands](https://github.com/tamagui/t
 <PropsTable
   data={[
     {
+      name: `disableSSR`,
+      type: `boolean`,
+      description: `For SSR compatibility on the web, Tamagui will render once with the settings from mediaQueryDefaultActive set for all media queries. Then, it will render again after the initial render using the proper media query values. This is so that the hydrating components will match the server. Setting disableSSR to true will avoid this and instead immediately render using the up to date media state, which is the preferrable behavior for client-side only (SPA) style apps.`,
+    },
+    {
       name: `defaultFont`,
       required: false,
       type: `Map it to the regular key of the font given to createTamgui, so "body" or "heading" make sense as valiues here. This will ensure this font is the fallback for any views that don't define it.`,
