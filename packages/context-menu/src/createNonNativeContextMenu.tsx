@@ -14,6 +14,7 @@ import {
   MenuItemImageProps,
   MenuProps,
   MenuSubProps,
+  createMenu,
 } from '@tamagui/menu'
 import { YStack } from '@tamagui/stacks'
 import { useCallbackRef } from '@tamagui/use-callback-ref'
@@ -166,7 +167,7 @@ function whenTouchOrPen<E>(
 
 export const CONTEXTMENU_CONTEXT = 'ContextMenuContext'
 
-export function createContextMenu() {
+export function createNonNativeContextMenu(param: Parameters<typeof createMenu>[0]) {
   /* -------------------------------------------------------------------------------------------------
    * ContextMenu
    * -----------------------------------------------------------------------------------------------*/
@@ -810,7 +811,7 @@ export function createContextMenu() {
     Preview,
   })
 
-  return { ContextMenu }
+  return ContextMenu
 }
 
 export type {

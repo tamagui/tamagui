@@ -53,7 +53,7 @@ type MenuSubContentProps = React.ComponentPropsWithoutRef<typeof Menu.SubContent
 interface ContextMenuSubContentProps extends MenuSubContentProps {
 }
 export declare const CONTEXTMENU_CONTEXT = "ContextMenuContext";
-export declare function createContextMenu(): {
+export declare function createNonNativeContextMenu(): {
     ContextMenu: {
         (props: ScopedProps<ContextMenuProps>): JSX.Element;
         displayName: string;
