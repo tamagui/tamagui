@@ -94,7 +94,7 @@ export const configureMedia = (config: TamaguiInternalConfig) => {
   initState = { ...mediaState }
   mediaKeysOrdered = Object.keys(media)
 
-  if (config.disableSSR) {
+  if (config.disableSSR || !isWeb) {
     setupMediaListeners()
   } else {
     updateCurrentState()
