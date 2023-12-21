@@ -1,8 +1,8 @@
-import { isClient, isServer, isWeb } from '@tamagui/constants'
+import { isClient } from '@tamagui/constants'
 import * as React from 'react'
 
 import { ComponentContext } from '../contexts/ComponentContext'
-import { useMediaListeners } from '../hooks/useMedia'
+import { setupMediaListeners } from '../hooks/useMedia'
 import type { TamaguiProviderProps } from '../types'
 import { ThemeProvider } from './ThemeProvider'
 
@@ -12,9 +12,7 @@ export function TamaguiProvider({
   config,
   ...themePropsProvider
 }: TamaguiProviderProps) {
-  if (!(isWeb && isServer)) {
-    useMediaListeners(config)
-  }
+  setupMediaListeners()
 
   if (isClient) {
     // inject CSS if asked to (not SSR compliant)
