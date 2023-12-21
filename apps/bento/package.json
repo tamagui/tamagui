@@ -31,16 +31,7 @@
     "android": "EXPO_NO_TELEMETRY=true yarn expo run:android",
     "ios": "yarn pod && EXPO_NO_TELEMETRY=true yarn expo run:ios",
     "web": "EXPO_NO_TELEMETRY=true yarn expo start --web",
-    "eject": "EXPO_NO_TELEMETRY=true expo eject",
-    "screenshot": "node -r esbuild-register ../../node_modules/.bin/playwright test --config ./playwright-screenshot.config.ts",
-    "test:native": "maestro test ./flows --exclude-tags=util",
-    "test:web": "yarn test:web:driver-rn && yarn test:web:driver-css && yarn test:web:driver-moti",
-    "test:web:driver-css": "TAMAGUI_TEST_ANIMATION_DRIVER=css node -r esbuild-register ../../node_modules/.bin/playwright test",
-    "test:web:driver-rn": "TAMAGUI_TEST_ANIMATION_DRIVER=native node -r esbuild-register ../../node_modules/.bin/playwright test",
-    "test:web:driver-moti": "TAMAGUI_TEST_ANIMATION_DRIVER=moti node -r esbuild-register ../../node_modules/.bin/playwright test",
-    "test:web:debug": "yarn test:web --debug",
-    "prod:web": "NODE_ENV=production webpack --json=dist/compilation-stats.json",
-    "test": "yarn test:web"
+    "prod:web": "NODE_ENV=production webpack --json=dist/compilation-stats.json"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "1.18.2",
