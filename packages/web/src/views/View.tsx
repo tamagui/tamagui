@@ -9,6 +9,7 @@ export const View = createComponent<StackProps, View, StackPropsBase>({
   acceptsClassName: true,
   defaultProps: {
     display: 'flex',
+    flexDirection: 'column',
   },
   validStyles,
 })
