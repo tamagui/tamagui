@@ -9,7 +9,7 @@ import {
   createStyledContext,
   useComposedRefs,
 } from '@tamagui/core'
-import type { TextProps } from '@tamagui/core'
+import type { TamaguiComponent, TextProps } from '@tamagui/core'
 import { Dismissable as DismissableLayer } from '@tamagui/dismissable'
 import { dispatchDiscreteCustomEvent } from '@tamagui/dismissable'
 import { useFocusGuards } from '@tamagui/focus-guard'
@@ -329,8 +329,8 @@ interface MenuSubTriggerProps extends MenuItemImplProps {}
  * MenuSubContent
  * -----------------------------------------------------------------------------------------------*/
 
-type MenuSubContentElement = MenuContentImplElement
-interface MenuSubContentProps
+export type MenuSubContentElement = MenuContentImplElement
+export interface MenuSubContentProps
   extends Omit<
     MenuContentImplProps,
     | keyof MenuContentImplPrivateProps
@@ -351,7 +351,24 @@ type Polygon = Point[]
 type Side = 'left' | 'right'
 type GraceIntent = { area: Polygon; side: Side }
 
-function createMenu({
+/* -------------------------------------------------------------------------------------------------
+ * Menu
+ * -----------------------------------------------------------------------------------------------*/
+
+const [Collection, useCollection] = createCollection<MenuItemElement, ItemData>(MENU_NAME)
+
+const { Provider: MenuProvider, useStyledContext: useMenuContext } =
+  createStyledContext<MenuContextValue>()
+
+const { Provider: MenuRootProvider, useStyledContext: useMenuRootContext } =
+  createStyledContext<MenuRootContextValue>()
+
+const MENU_CONTEXT = 'MenuContext'
+
+export const { Provider: NativePropProvider, useStyledContext: useNativeProp } =
+  createStyledContext({ native: false })
+
+export function createMenu({
   Item: _Item,
   Title: _Title,
   SubTitle: _SubTitle,
@@ -359,36 +376,19 @@ function createMenu({
   Icon: _Icon,
   Indicator: _Indicator,
   Separator: _Separator,
+  MenuGroup: _MenuGroup,
+  Label: _Label,
 }: {
-  Item: any
-  Title: any
-  SubTitle: any
-  Image: any
-  Icon: any
-  Indicator: any
-  Separator
+  Item: TamaguiComponent
+  MenuGroup: TamaguiComponent
+  Title: TamaguiComponent
+  SubTitle: TamaguiComponent
+  Image: React.ElementType
+  Icon: TamaguiComponent
+  Indicator: TamaguiComponent
+  Separator: TamaguiComponent
+  Label: TamaguiComponent
 }) {
-  /* -------------------------------------------------------------------------------------------------
-   * Menu
-   * -----------------------------------------------------------------------------------------------*/
-
-  const MENU_NAME = 'Menu'
-
-  const [Collection, useCollection] = createCollection<MenuItemElement, ItemData>(
-    MENU_NAME
-  )
-
-  const { Provider: MenuProvider, useStyledContext: useMenuContext } =
-    createStyledContext<MenuContextValue>()
-
-  const { Provider: MenuRootProvider, useStyledContext: useMenuRootContext } =
-    createStyledContext<MenuRootContextValue>()
-
-  const MENU_CONTEXT = 'MenuContext'
-
-  const { Provider: NativePropProvider, useStyledContext: useNativeProp } =
-    createStyledContext({ native: false })
-
   const MenuComp = (props: ScopedProps<MenuProps>) => {
     const {
       __scopeMenu,
@@ -905,53 +905,6 @@ function createMenu({
   MenuContent.displayName = CONTENT_NAME
 
   /* -------------------------------------------------------------------------------------------------
-   * MenuGroup
-   * -----------------------------------------------------------------------------------------------*/
-
-  const GROUP_NAME = 'MenuGroup'
-
-  const MenuGroup = styled(ThemeableStack, {
-    name: GROUP_NAME,
-    variants: {
-      unstyled: {
-        false: {
-          role: 'group',
-          width: '100%',
-        },
-      },
-    } as const,
-    defaultVariants: {
-      unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
-    },
-  })
-
-  MenuGroup.displayName = GROUP_NAME
-
-  /* -------------------------------------------------------------------------------------------------
-   * MenuLabel
-   * -----------------------------------------------------------------------------------------------*/
-
-  const LABEL_NAME = 'MenuLabel'
-
-  const MenuLabel = styled(Text, {
-    name: LABEL_NAME,
-    variants: {
-      unstyled: {
-        false: {
-          paddingHorizontal: '$4',
-          color: 'gray',
-          textAlign: 'left',
-          width: '100%',
-        },
-      },
-    } as const,
-    defaultVariants: {
-      unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
-    },
-  })
-
-  MenuLabel.displayName = LABEL_NAME
-  /* -------------------------------------------------------------------------------------------------
    * MenuItem
    * -----------------------------------------------------------------------------------------------*/
 
@@ -1019,8 +972,8 @@ function createMenu({
           children={content}
           {...(isWeb
             ? {
-                // @ts-ignore
                 onKeyDown: composeEventHandlers(
+                  // @ts-ignore
                   props.onKeyDown,
                   (event: KeyboardEvent) => {
                     const isTypingAhead = contentContext.searchRef.current !== ''
@@ -1238,7 +1191,7 @@ function createMenu({
   const { Provider: RadioGroupProvider, useStyledContext: useRadioGroupContext } =
     createStyledContext<MenuRadioGroupProps>()
 
-  const MenuRadioGroup = MenuGroup.styleable<ScopedProps<MenuRadioGroupProps>>(
+  const MenuRadioGroup = _MenuGroup.styleable<ScopedProps<MenuRadioGroupProps>>(
     (props, forwardedRef) => {
       const { value, onValueChange, __scopeMenu, ...groupProps } = props
       const handleValueChange = useCallbackRef(onValueChange)
@@ -1248,7 +1201,7 @@ function createMenu({
           value={value}
           onValueChange={handleValueChange}
         >
-          <MenuGroup
+          <_MenuGroup
             componentName={RADIO_GROUP_NAME}
             {...groupProps}
             ref={forwardedRef}
@@ -1325,37 +1278,6 @@ function createMenu({
   )
 
   MenuItemIndicator.displayName = ITEM_INDICATOR_NAME
-
-  /* -------------------------------------------------------------------------------------------------
-   * MenuSeparator
-   * -----------------------------------------------------------------------------------------------*/
-
-  const SEPARATOR_NAME = 'MenuSeparator'
-
-  const MenuSeparator = styled(_Separator, {
-    name: SEPARATOR_NAME,
-    role: 'separator',
-    // @ts-ignore
-    'aria-orientation': 'horizontal',
-    variants: {
-      unstyled: {
-        false: {
-          borderColor: '$borderColor',
-          flexShrink: 0,
-          borderWidth: 0,
-          flex: 1,
-          height: 0,
-          maxHeight: 0,
-          borderBottomWidth: 1,
-          width: '100%',
-        },
-      },
-    } as const,
-    defaultVariants: {
-      unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
-    },
-  })
-  MenuSeparator.displayName = SEPARATOR_NAME
 
   /* -------------------------------------------------------------------------------------------------
    * MenuArrow
@@ -1438,9 +1360,6 @@ function createMenu({
    * -----------------------------------------------------------------------------------------------*/
 
   const SUB_TRIGGER_NAME = 'MenuSubTrigger'
-
-  type MenuSubTriggerElement = MenuItemImplElement
-  interface MenuSubTriggerProps extends MenuItemImplProps {}
 
   const MenuSubTrigger = YStack.styleable<ScopedProps<MenuSubTriggerProps>>(
     (props, forwardedRef) => {
@@ -1590,23 +1509,6 @@ function createMenu({
 
   const SUB_CONTENT_NAME = 'MenuSubContent'
 
-  type MenuSubContentElement = MenuContentImplElement
-  interface MenuSubContentProps
-    extends Omit<
-      MenuContentImplProps,
-      | keyof MenuContentImplPrivateProps
-      | 'onCloseAutoFocus'
-      | 'onEntryFocus'
-      | 'side'
-      | 'align'
-    > {
-    /**
-     * Used to force mounting when more control is needed. Useful when
-     * controlling animation with React animation libraries.
-     */
-    forceMount?: true
-  }
-
   const MenuSubContent = React.forwardRef<
     MenuSubContentElement,
     ScopedProps<MenuSubContentProps>
@@ -1682,117 +1584,17 @@ function createMenu({
 
   MenuSubContent.displayName = SUB_CONTENT_NAME
 
-  /* -----------------------------------------------------------------------------------------------*/
-
-  function getOpenState(open: boolean) {
-    return open ? 'open' : 'closed'
-  }
-
-  function isIndeterminate(checked?: CheckedState): checked is 'indeterminate' {
-    return checked === 'indeterminate'
-  }
-
-  function getCheckedState(checked: CheckedState) {
-    return isIndeterminate(checked) ? 'indeterminate' : checked ? 'checked' : 'unchecked'
-  }
-
-  function focusFirst(candidates: HTMLElement[]) {
-    const PREVIOUSLY_FOCUSED_ELEMENT = document.activeElement
-    for (const candidate of candidates) {
-      // if focus is already where we want to go, we don't want to keep going through the candidates
-      if (candidate === PREVIOUSLY_FOCUSED_ELEMENT) return
-      candidate.focus()
-      if (document.activeElement !== PREVIOUSLY_FOCUSED_ELEMENT) return
-    }
-  }
-
-  /**
-   * Wraps an array around itself at a given start index
-   * Example: `wrapArray(['a', 'b', 'c', 'd'], 2) === ['c', 'd', 'a', 'b']`
-   */
-  function wrapArray<T>(array: T[], startIndex: number) {
-    return array.map((_, index) => array[(startIndex + index) % array.length])
-  }
-
-  /**
-   * This is the "meat" of the typeahead matching logic. It takes in all the values,
-   * the search and the current match, and returns the next match (or `undefined`).
-   *
-   * We normalize the search because if a user has repeatedly pressed a character,
-   * we want the exact same behavior as if we only had that one character
-   * (ie. cycle through options starting with that character)
-   *
-   * We also reorder the values by wrapping the array around the current match.
-   * This is so we always look forward from the current match, and picking the first
-   * match will always be the correct one.
-   *
-   * Finally, if the normalized search is exactly one character, we exclude the
-   * current match from the values because otherwise it would be the first to match always
-   * and focus would never move. This is as opposed to the regular case, where we
-   * don't want focus to move if the current match still matches.
-   */
-  function getNextMatch(values: string[], search: string, currentMatch?: string) {
-    const isRepeated =
-      search.length > 1 && Array.from(search).every((char) => char === search[0])
-    const normalizedSearch = isRepeated ? search[0] : search
-    const currentMatchIndex = currentMatch ? values.indexOf(currentMatch) : -1
-    let wrappedValues = wrapArray(values, Math.max(currentMatchIndex, 0))
-    const excludeCurrentMatch = normalizedSearch.length === 1
-    if (excludeCurrentMatch)
-      wrappedValues = wrappedValues.filter((v) => v !== currentMatch)
-    const nextMatch = wrappedValues.find((value) =>
-      value.toLowerCase().startsWith(normalizedSearch.toLowerCase())
-    )
-    return nextMatch !== currentMatch ? nextMatch : undefined
-  }
-
-  type Point = { x: number; y: number }
-  type Polygon = Point[]
-  type Side = 'left' | 'right'
-  type GraceIntent = { area: Polygon; side: Side }
-
-  // Determine if a point is inside of a polygon.
-  // Based on https://github.com/substack/point-in-polygon
-  function isPointInPolygon(point: Point, polygon: Polygon) {
-    const { x, y } = point
-    let inside = false
-    for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
-      const xi = polygon[i].x
-      const yi = polygon[i].y
-      const xj = polygon[j].x
-      const yj = polygon[j].y
-
-      // prettier-ignore
-      const intersect = ((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
-      if (intersect) inside = !inside
-    }
-
-    return inside
-  }
-
-  function isPointerInGraceArea(event: React.PointerEvent, area?: Polygon) {
-    if (!area) return false
-    const cursorPos = { x: event.clientX, y: event.clientY }
-    return isPointInPolygon(cursorPos, area)
-  }
-
-  function whenMouse<E>(
-    handler: React.PointerEventHandler<E>
-  ): React.PointerEventHandler<E> {
-    return (event) => (event.pointerType === 'mouse' ? handler(event) : undefined)
-  }
-
   const Anchor = MenuAnchor
   const Portal = MenuPortal
   const Content = MenuContent
-  const Group = MenuGroup
-  const Label = MenuLabel
+  const Group = _MenuGroup
+  const Label = _Label
   const Item = MenuItem
   const CheckboxItem = MenuCheckboxItem
   const RadioGroup = MenuRadioGroup
   const RadioItem = MenuRadioItem
   const ItemIndicator = MenuItemIndicator
-  const Separator = MenuSeparator
+  const Separator = _Separator
   const Arrow = MenuArrow
   const Sub = MenuSub
   const SubTrigger = MenuSubTrigger
@@ -1826,9 +1628,101 @@ function createMenu({
 
   return {
     Menu,
-    useNativeProp,
-    NativePropProvider,
   }
+}
+
+/* -----------------------------------------------------------------------------------------------*/
+
+function getOpenState(open: boolean) {
+  return open ? 'open' : 'closed'
+}
+
+function isIndeterminate(checked?: CheckedState): checked is 'indeterminate' {
+  return checked === 'indeterminate'
+}
+
+function getCheckedState(checked: CheckedState) {
+  return isIndeterminate(checked) ? 'indeterminate' : checked ? 'checked' : 'unchecked'
+}
+
+function focusFirst(candidates: HTMLElement[]) {
+  const PREVIOUSLY_FOCUSED_ELEMENT = document.activeElement
+  for (const candidate of candidates) {
+    // if focus is already where we want to go, we don't want to keep going through the candidates
+    if (candidate === PREVIOUSLY_FOCUSED_ELEMENT) return
+    candidate.focus()
+    if (document.activeElement !== PREVIOUSLY_FOCUSED_ELEMENT) return
+  }
+}
+
+/**
+ * Wraps an array around itself at a given start index
+ * Example: `wrapArray(['a', 'b', 'c', 'd'], 2) === ['c', 'd', 'a', 'b']`
+ */
+function wrapArray<T>(array: T[], startIndex: number) {
+  return array.map((_, index) => array[(startIndex + index) % array.length])
+}
+
+/**
+ * This is the "meat" of the typeahead matching logic. It takes in all the values,
+ * the search and the current match, and returns the next match (or `undefined`).
+ *
+ * We normalize the search because if a user has repeatedly pressed a character,
+ * we want the exact same behavior as if we only had that one character
+ * (ie. cycle through options starting with that character)
+ *
+ * We also reorder the values by wrapping the array around the current match.
+ * This is so we always look forward from the current match, and picking the first
+ * match will always be the correct one.
+ *
+ * Finally, if the normalized search is exactly one character, we exclude the
+ * current match from the values because otherwise it would be the first to match always
+ * and focus would never move. This is as opposed to the regular case, where we
+ * don't want focus to move if the current match still matches.
+ */
+function getNextMatch(values: string[], search: string, currentMatch?: string) {
+  const isRepeated =
+    search.length > 1 && Array.from(search).every((char) => char === search[0])
+  const normalizedSearch = isRepeated ? search[0] : search
+  const currentMatchIndex = currentMatch ? values.indexOf(currentMatch) : -1
+  let wrappedValues = wrapArray(values, Math.max(currentMatchIndex, 0))
+  const excludeCurrentMatch = normalizedSearch.length === 1
+  if (excludeCurrentMatch) wrappedValues = wrappedValues.filter((v) => v !== currentMatch)
+  const nextMatch = wrappedValues.find((value) =>
+    value.toLowerCase().startsWith(normalizedSearch.toLowerCase())
+  )
+  return nextMatch !== currentMatch ? nextMatch : undefined
+}
+
+// Determine if a point is inside of a polygon.
+// Based on https://github.com/substack/point-in-polygon
+function isPointInPolygon(point: Point, polygon: Polygon) {
+  const { x, y } = point
+  let inside = false
+  for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+    const xi = polygon[i].x
+    const yi = polygon[i].y
+    const xj = polygon[j].x
+    const yj = polygon[j].y
+
+    // prettier-ignore
+    const intersect = ((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+    if (intersect) inside = !inside
+  }
+
+  return inside
+}
+
+function isPointerInGraceArea(event: React.PointerEvent, area?: Polygon) {
+  if (!area) return false
+  const cursorPos = { x: event.clientX, y: event.clientY }
+  return isPointInPolygon(cursorPos, area)
+}
+
+function whenMouse<E>(
+  handler: React.PointerEventHandler<E>
+): React.PointerEventHandler<E> {
+  return (event) => (event.pointerType === 'mouse' ? handler(event) : undefined)
 }
 
 export type {
@@ -1846,7 +1740,6 @@ export type {
   MenuSeparatorProps,
   MenuArrowProps,
   MenuSubTriggerProps,
-  MenuSubContentProps,
   MenuItemTitleProps,
   MenuItemSubTitleProps,
   MenuItemIconProps,
