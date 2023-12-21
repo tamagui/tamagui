@@ -8,6 +8,7 @@ import { SizableText, TextParentStyles, wrapChildrenInText } from '@tamagui/text
 import {
   FontSizeTokens,
   GetProps,
+  PropsWithoutMediaStyles,
   SizeTokens,
   Spacer,
   ThemeableProps,
@@ -182,7 +183,7 @@ export const useListItem = (
     Subtitle?: any
     Text?: any
   } = { Text: ListItemText, Subtitle: ListItemSubtitle, Title: ListItemTitle }
-) => {
+): { props: PropsWithoutMediaStyles<ListItemProps> } => {
   // careful not to destructure and re-order props, order is important
   const props = useProps(propsIn)
 

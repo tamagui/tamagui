@@ -16,7 +16,7 @@ type UsePropsOptions = Pick<
   forComponent?: { staticConfig: StaticConfig }
 }
 
-type PropsWithoutMediaStyles<A> = {
+export type PropsWithoutMediaStyles<A> = {
   // remove all media
   [Key in keyof A extends `$${string}` ? never : keyof A]?: A[Key]
 }
