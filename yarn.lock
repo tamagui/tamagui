@@ -8839,6 +8839,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/opener@npm:^1.4.3":
+  version: 1.4.3
+  resolution: "@types/opener@npm:1.4.3"
+  dependencies:
+    "@types/node": "*"
+  checksum: 9a41f86b73f86b7f44d5bcbdd35330565c01df00183d00a45bbb509c3508d0f2cdcb4670f8620097b8b928912bc4fc5b58a46990fad915b91a4c680dc6c0efbd
+  languageName: node
+  linkType: hard
+
 "@types/parse5@npm:^6.0.0":
   version: 6.0.3
   resolution: "@types/parse5@npm:6.0.3"
@@ -12203,6 +12212,7 @@ __metadata:
     "@types/async-retry": 1.4.2
     "@types/cross-spawn": ^6.0.2
     "@types/node": ^16.11.9
+    "@types/opener": ^1.4.3
     "@types/prompts": 2.0.1
     "@types/rimraf": 3.0.0
     "@types/tar": 4.0.3

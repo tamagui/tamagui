@@ -92,7 +92,7 @@ async function run() {
     ).purchased
 
     if (!didPurchase) {
-      await open(`https://tamagui.dev/takeout`)
+      open(`https://tamagui.dev/takeout`)
       console.info(
         `\nOpening Takeout website - once you purchase you can restart the create process. Thank you!\n`
       )
