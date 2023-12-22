@@ -5,14 +5,13 @@ import { declare } from '@babel/helper-plugin-utils'
 import template from '@babel/template'
 import { Visitor } from '@babel/traverse'
 import * as t from '@babel/types'
-import { simpleHash } from '@tamagui/simple-hash'
+import type { TamaguiOptions } from '@tamagui/static'
 import {
   createExtractor,
   getPragmaOptions,
   isSimpleSpread,
   literalToAst,
 } from '@tamagui/static'
-import type { TamaguiOptions } from '@tamagui/static'
 
 const importNativeView = template(`
 const __ReactNativeView = require('react-native').View;

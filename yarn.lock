@@ -5980,7 +5980,6 @@ __metadata:
     "@babel/traverse": ^7.23.3
     "@babel/types": ^7.23.3
     "@tamagui/build": 1.79.16
-    "@tamagui/simple-hash": 1.79.16
     "@tamagui/static": 1.79.16
   languageName: unknown
   linkType: soft
