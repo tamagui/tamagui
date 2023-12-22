@@ -1,5 +1,9 @@
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { AnimationDriver, Stack, Text, UniversalAnimatedNumber } from '@tamagui/core'
+import {
+  AnimationDriver,
+  UniversalAnimatedNumber,
+  transformsToString,
+} from '@tamagui/core'
 // import { animate } from '@tamagui/cubic-bezier-animator'
 import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import { useEffect, useState } from 'react'
@@ -8,8 +12,6 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
   const reactionListeners = new WeakMap<any, Set<Function>>()
 
   return {
-    View: Stack,
-    Text: Text,
     animations,
     usePresence,
     ResetPresence,
@@ -116,6 +118,10 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
         return null
       }
 
+      if (Array.isArray(style.transform)) {
+        style.transform = transformsToString(style.transform)
+      }
+
       // add css transition
       // TODO: we disabled the transform transition, because it will create issue for inverse function and animate function
       // for non layout transform properties either use animate function or find a workaround to do it with css
@@ -131,7 +137,7 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
       // }`
 
       if (process.env.NODE_ENV === 'development' && props['debug']) {
-        console.info('CSS animation', style, { isEntering, isExiting })
+        console.info('CSS animation', style, style.transition, { isEntering, isExiting })
       }
 
       return { style }

@@ -474,12 +474,15 @@ export function createComponent<
     const BaseTextComponent = BaseText || element || 'span'
     const BaseViewComponent = BaseView || element || (hasTextAncestor ? 'span' : 'div')
 
-    AnimatedText = animationsConfig ? animationsConfig.Text : BaseTextComponent
-    AnimatedView = animationsConfig ? animationsConfig.View : BaseViewComponent
-
-    let elementType = isText
-      ? (isAnimated ? AnimatedText : null) || BaseTextComponent
-      : (isAnimated ? AnimatedView : null) || BaseViewComponent
+    let elementType = isText ? BaseTextComponent : BaseViewComponent
+    if (animationsConfig && willBeAnimated) {
+      if (animationsConfig.Text) {
+        elementType = animationsConfig.Text
+      }
+      if (animationsConfig.View) {
+        elementType = animationsConfig.View
+      }
+    }
 
     // set enter/exit variants onto our new props object
     if (isAnimated && presence) {
