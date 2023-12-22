@@ -23,7 +23,7 @@ export declare function useProps<A extends Object>(props: A, opts?: UsePropsOpti
  * */
 export declare function useStyle<A extends Object>(props: A, opts?: UsePropsOptions): PropsWithoutMediaStyles<A>;
 /**
- * Returns [props, styles] fully resolved and flattened with merged media queries and shorthands with all theme and token values resolved.
+ * Returns [props, styles, theme, media] fully resolved and flattened with merged media queries and shorthands with all theme and token values resolved.
  *
  * Use sparingly, it will loop props and trigger re-render on all media queries you access.
  *
