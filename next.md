@@ -3,7 +3,7 @@
 outlineWidth get smaller at smaller size
 
 studio:
-  - Scale / ScaleSelect 
+  - Scale / ScaleSelect
     should be a Menu with mini visualizations of the lum/sat scales for each
 
 - gradient style
@@ -12,7 +12,7 @@ studio:
 
 - studio:
   - instead of automatic scale:
-    - symettrical (automatic)
+    - symmetrical (automatic)
     - mirrored (inverses)
   - pre-configure themes
     - stronger, dimmer
@@ -34,7 +34,7 @@ studio:
 - studio: add partial transparent for each color step?
 
 - // TODO breaks next.js themes page
-- alt themes dont change color1-9 so you can't do color2 and then make the alt theme make it more subtle, but they should
+- alt themes don't change color1-9 so you can't do color2 and then make the alt theme make it more subtle, but they should
 
 - disableClassName breaking css animation
 - css animateOnly should always force style tag styles
@@ -84,7 +84,7 @@ type StackStyle = {
 
 const mySubStyle: StackStyle = style(Stack, {
   backgroundColor: 'red', // optimizes on web to _bg-red
-  
+
   pressStyle: {
     backgroundColor: 'blue', // optimizes on web to _press-bg-blue
   }
@@ -151,7 +151,7 @@ Studio:
   - Contrast
     - needs to be able to pick the foreground color manually
     - by default it picks a nice contrast (opposite scale end) foreground
-    - 
+    -
   - Mask themes
     - Need to be fixed in general and improved defaults
   - Final Step
@@ -176,7 +176,7 @@ Components:
 
   - Native
     - Select
-      - iOS Select as well as the newer SwiftUI menu style Picker      
+      - iOS Select as well as the newer SwiftUI menu style Picker
     - Sheet native android - https://github.com/intergalacticspacehighway/react-native-android-bottomsheet
 
   - Menu
@@ -200,7 +200,7 @@ V2:
       - col => c
       - remove bg/bc confusion
     - remove suppressHighlighting / margin 0 default from Text
-    - compiler can accummulate them and emit a file?
+    - compiler can accumulate them and emit a file?
   - basic plugins system
   - no separate UI package necessary for optimization
   - if dynamic eval flattens every usage, remove the definition
@@ -219,7 +219,7 @@ V2:
 
 - cli needs a start update command just runs diff against your `~/.tamagui/tamagui`
 
-- sheet native ios snapPoints
+- sheet native iOS snapPoints
   - pre release 2.0 version of library
   - https://github.com/dominicstop/react-native-ios-modal/blob/wip/example/src/examples/Test09.tsx
 
@@ -232,7 +232,7 @@ a package.json etc etc + zip file
 - Studio: drag and drop a font and you can configure the subset
   - automatically converts to the right output formats
   - auto generates CSS
-  - bundles it into 
+  - bundles it into
 
 - <Sheet native />
   - https://github.com/dominicstop/react-native-ios-modal
@@ -256,13 +256,13 @@ a package.json etc etc + zip file
   - add `defaultSize`, and `defaultColor`
   - add `relative()` helpers
 
-- bug: inputs rendering twice due to focusableInputHOC, if you remove that it doesnt, this is due to styled() + how it determines ComponentIn and grabs the component
+- bug: inputs rendering twice due to focusableInputHOC, if you remove that it doesn't, this is due to styled() + how it determines ComponentIn and grabs the component
 
 - document `unstyled` prop for components
 
 - docs for `@tamagui/font` and `@tamagui/theme`
 
-- https://github.com/tamagui/tamagui/pull/765 
+- https://github.com/tamagui/tamagui/pull/765
 
 - getVariableValue(props.fontFamily) doesn't look right
 
@@ -272,13 +272,13 @@ https://reactnative.dev/blog/2023/01/12/version-071#web-inspired-props-for-acces
 Ali:
 
 - [ ] document keyboard avoiding view in `Sheet.mdx`
-- [ ] input bug 
+- [ ] input bug
 - [ ] @tamagui/change-animation-driver document
 - [ ] Disable warning ENV + configuration.md docs
   - [ ] (nate) make focusStyle border darker
 - [ ] bezier on css animations
   - [ ] disablePassBorderRadius feels like a weird thing to need by default
-    - change Group's disablePassBorderRadius to something else - perhaps the negation, passBorderRadius? i'm not sure. what do you think about this @natew 
+    - change Group's disablePassBorderRadius to something else - perhaps the negation, passBorderRadius? i'm not sure. what do you think about this @natew
     alternatively we could have disablePassBorderRadius default to true only on Tabs.List. but then overriding it would feel awkward (having to pass disablePassBorderRadius={false})
   - [ ] and document on styled() page
 - native component modes
@@ -292,7 +292,7 @@ Ali:
 - light/dark theme buttons bad colors (contrast + pressStyle borders)
 
 - add JSDoc help with links to docs for components
-  - also can we somehow make intellisense sort the props in a way we want by default? itd be ncie to have style props after the others
+  - also can we somehow make intellisense sort the props in a way we want by default? it would be nice to have style props after the others
 
 - Card has a good use case for size being passed through context/css vars
 - linear-gradient next.js issue
@@ -302,7 +302,7 @@ Ali:
 - add Themes page in docs under Theme, change Theme => Design System
 - move packages to have unstyled
 - move packages from /core to /web
-- // TODO move into getSplitStyles inital `if (process.env.TAMAGUI_TARGET === 'web')` block
+- // TODO move into getSplitStyles initial `if (process.env.TAMAGUI_TARGET === 'web')` block
 
 ----
 
@@ -313,7 +313,7 @@ Ali:
 - check into shadow/elevation not showing
 - survey https://tripetto.app or gforms
 
-- unset: useful for unstyled to usnet the defaultVariatn size
+- unset: useful for unstyled to unset the defaultVariant size
 
 ---
 
@@ -421,7 +421,7 @@ Ali:
 - <UL /> <LI /> <OL />
 - hoverStyle={{ [XStack]: {} }}
 - <List.Section /> see (https://developer.apple.com/documentation/swiftui/list Section)
-- <GradientText /> can work native with 
+- <GradientText /> can work native with
   - https://github.com/react-native-masked-view/masked-view
 - react-native-skia / svg image support
 - beforeStyle, afterStyle could work ...
@@ -448,7 +448,7 @@ Ali:
     - Zeego uses react-native-ios-context-menu
     - https://github.com/nandorojo/zeego/blob/master/packages/zeego/src/menu/create-ios-menu/index.ios.tsx
   - android:
-    - Zeego uses 
+    - Zeego uses
     - @react-native-menu/menu
     - https://github.com/nandorojo/zeego/blob/master/packages/zeego/src/menu/create-android-menu/index.android.tsx
 
