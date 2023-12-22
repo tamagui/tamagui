@@ -2,6 +2,7 @@ import '@tamagui/polyfill-dev'
 
 import { Adapt, useAdaptParent } from '@tamagui/adapt'
 import { Animate } from '@tamagui/animate'
+import { ResetPresence } from '@tamagui/animate-presence'
 import { hideOthers } from '@tamagui/aria-hidden'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
@@ -390,9 +391,11 @@ const PopoverContentImpl = React.forwardRef<
           scope={__scopePopover || POPOVER_SCOPE}
           {...popperContext}
         >
-          {childrenWithoutScrollView}
+          <ResetPresence>{childrenWithoutScrollView}</ResetPresence>
         </PopperContext.Provider>
       )
+    } else {
+      content = <ResetPresence>{content}</ResetPresence>
     }
 
     // doesn't show as popover yet on native, must use as sheet
@@ -446,7 +449,7 @@ const PopoverContentImpl = React.forwardRef<
             onMountAutoFocus={onOpenAutoFocus}
             onUnmountAutoFocus={onCloseAutoFocus}
           >
-            {contents}
+            <ResetPresence>{contents}</ResetPresence>
           </FocusScope>
         </RemoveScroll>
       </PopperContent>
