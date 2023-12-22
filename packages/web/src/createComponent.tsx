@@ -406,15 +406,16 @@ export function createComponent<
     const groupClassName = groupName ? `t_group_${props.group}` : ''
 
     if (groupName && !stateRef.current.group) {
+      const listeners = new Set<GroupStateListener>()
       stateRef.current.group = {
-        listeners: new Set(),
+        listeners,
         emit(name, state) {
-          this.listeners.forEach((l) => l(name, state))
+          listeners.forEach((l) => l(name, state))
         },
         subscribe(cb) {
-          this.listeners.add(cb)
+          listeners.add(cb)
           return () => {
-            this.listeners.delete(cb)
+            listeners.delete(cb)
           }
         },
       }
