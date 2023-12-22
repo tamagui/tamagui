@@ -405,9 +405,7 @@ const CheckboxComponent = CheckboxFrame.styleable<CheckboxExtraProps>(function C
               size={propsActive.size ?? styledContext?.size ?? '$true'}
               scaleIcon={scaleIcon ?? styledContext?.scaleIcon ?? 1}
             >
-              <Animate type="presence" present={Boolean(checked)}>
-                {propsActive.children}
-              </Animate>
+              {propsActive.children}
             </CheckboxStyledContext.Provider>
           </CheckboxFrame>
 
