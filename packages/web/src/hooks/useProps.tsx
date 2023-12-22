@@ -57,7 +57,7 @@ export function useStyle<A extends Object>(
 }
 
 /**
- * Returns [props, styles] fully resolved and flattened with merged media queries and shorthands with all theme and token values resolved.
+ * Returns [props, styles, theme, media] fully resolved and flattened with merged media queries and shorthands with all theme and token values resolved.
  *
  * Use sparingly, it will loop props and trigger re-render on all media queries you access.
  *
