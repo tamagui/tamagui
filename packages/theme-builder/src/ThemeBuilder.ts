@@ -72,7 +72,7 @@ type GetParentName<N extends string> =
     ? `${A}`
     : never
 
-export class ThemeBuilder<State extends ThemeBuilderState> {
+export class ThemeBuilder<State extends ThemeBuilderState = ThemeBuilderState> {
   constructor(public state: State) {}
 
   addPalettes<const P extends PaletteDefinitions>(palettes: P) {

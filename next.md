@@ -1,5 +1,3 @@
-- not outputting `npx tamagui generate-themes ./src/themes-in.ts ./src/themes-out.ts`
-
 outlineWidth get smaller at smaller size
 
 studio:

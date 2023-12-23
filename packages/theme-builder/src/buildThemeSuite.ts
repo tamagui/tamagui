@@ -1,34 +1,19 @@
-import {
-  MaskOptions,
-  ThemeDefinitions,
-  createMask,
-  createSoftenMask,
-} from '@tamagui/create-theme'
+import { MaskOptions, ThemeDefinitions } from '@tamagui/create-theme'
 
 import { buildMask } from './buildMask'
-import { getThemeSuitePalettes } from './buildThemeSuitePalettes'
 import { masks as defaultMasks, maskOptions } from './masks'
 import { createThemeBuilder } from './ThemeBuilder'
-import { BuildTheme, BuildThemeMask, BuildThemeSuiteProps } from './types'
+import { BuildTheme, BuildThemeMask, BuildThemeSuiteProps, Templates } from './types'
 
-// its offset by some transparent values etc
-const basePaletteOffset = 5
-const namedTemplateSlots = {
-  background: basePaletteOffset,
-  subtleBackground: basePaletteOffset + 1,
-  uiBackground: basePaletteOffset + 2,
-  hoverUIBackround: basePaletteOffset + 3,
-  activeUIBackround: basePaletteOffset + 4,
-  subtleBorder: basePaletteOffset + 5,
-  strongBorder: basePaletteOffset + 6,
-  hoverBorder: basePaletteOffset + 7,
-  strongBackground: basePaletteOffset + 8,
-  hoverStrongBackground: basePaletteOffset + 9,
+export function buildThemeSuite(props: BuildThemeSuiteProps) {
+  return getThemeSuiteBuilder(props).build()
 }
 
-export function buildThemeSuite({ baseTheme, subThemes }: BuildThemeSuiteProps) {
-  const theme = baseTheme
-
+export function getThemeSuiteBuilder({
+  subThemes,
+  templates = getDefaultTemplates(),
+  palettes,
+}: BuildThemeSuiteProps) {
   const maskThemes = (subThemes || []).filter(
     (x) => x.type === 'mask'
   ) as BuildThemeMask[]
@@ -43,19 +28,7 @@ export function buildThemeSuite({ baseTheme, subThemes }: BuildThemeSuiteProps) 
     })
   )
 
-  // base palletes need to add in sub theme palettes if customized
-  const basePalettes = getThemeSuitePalettes(theme)
-  const subThemePalettes = Object.fromEntries(
-    nonMaskSubThemes.flatMap((t) => {
-      const palettes = getThemeSuitePalettes(t)
-      return [
-        [`${t.name}PaletteLight`, palettes.light],
-        [`${t.name}PaletteDark`, palettes.dark],
-      ]
-    })
-  )
-
-  const max = basePalettes.dark.length - 1
+  const max = palettes.dark.length - 1
   const min = 1
 
   const componentMask = {
@@ -91,73 +64,7 @@ export function buildThemeSuite({ baseTheme, subThemes }: BuildThemeSuiteProps) 
       },
     },
     component: componentMask,
-    componentInverse: {
-      ...componentMask,
-    },
   } satisfies Record<string, MaskOptions>
-
-  const baseTemplate = {
-    accentBackground: 0,
-    accentColor: -0,
-
-    background0: 1,
-    background025: 2,
-    background05: 3,
-    background075: 4,
-
-    color0: -4,
-    color025: -3,
-    color05: -2,
-    color075: -1,
-
-    background: 5,
-    backgroundHover: 6,
-    backgroundPress: 7,
-    backgroundFocus: 8,
-
-    color: -5,
-    colorHover: -6,
-    colorPress: -5,
-    colorFocus: -6,
-
-    placeholderColor: -6,
-
-    borderColor: 7,
-    borderColorHover: 8,
-    borderColorFocus: 9,
-    borderColorPress: 8,
-  }
-
-  function createTemplates() {
-    const template = {
-      color1: 5,
-      color2: 6,
-      color3: 7,
-      color4: 8,
-      color5: 9,
-      color6: 10,
-      color7: 11,
-      color8: 12,
-      color9: 13,
-      color10: 14,
-      color11: 15,
-      color12: 16,
-      ...baseTemplate,
-    }
-
-    return {
-      base: template,
-      active: {
-        ...template,
-        background: namedTemplateSlots.strongBackground,
-        backgroundHover: namedTemplateSlots.hoverStrongBackground,
-        backgroundPress: namedTemplateSlots.hoverBorder,
-        backgroundFocus: namedTemplateSlots.strongBackground,
-      },
-    }
-  }
-
-  const templates = createTemplates()
 
   function getComponentThemeDefinitions() {
     const overlayThemes = {
@@ -223,7 +130,7 @@ export function buildThemeSuite({ baseTheme, subThemes }: BuildThemeSuiteProps) 
 
       SwitchThumb: {
         mask: 'inverse',
-        ...customMaskOptions.componentInverse,
+        ...customMaskOptions.component,
       },
 
       TooltipContent: {
@@ -263,7 +170,7 @@ export function buildThemeSuite({ baseTheme, subThemes }: BuildThemeSuiteProps) 
 
       SliderThumb: {
         mask: 'inverse',
-        ...customMaskOptions.componentInverse,
+        ...customMaskOptions.component,
       },
 
       Tooltip: {
@@ -273,7 +180,7 @@ export function buildThemeSuite({ baseTheme, subThemes }: BuildThemeSuiteProps) 
 
       ProgressIndicator: {
         mask: 'inverse',
-        ...customMaskOptions.componentInverse,
+        ...customMaskOptions.component,
       },
 
       SheetOverlay: overlayThemeDefinitions,
@@ -294,24 +201,10 @@ export function buildThemeSuite({ baseTheme, subThemes }: BuildThemeSuiteProps) 
     return componentThemeDefinitions
   }
 
-  const builder = createThemeBuilder()
-    .addPalettes({
-      ...basePalettes,
-      ...subThemePalettes,
-    })
+  return createThemeBuilder()
+    .addPalettes(palettes)
     .addMasks({
       ...defaultMasks,
-      soften3Border2: createMask((template, options) => {
-        const softer2 = createSoftenMask({ strength: 3 }).mask(template, options)
-        const softer1 = createSoftenMask({ strength: 2 }).mask(template, options)
-        return {
-          ...softer2,
-          borderColor: softer1.borderColor,
-          borderColorHover: softer1.borderColorHover,
-          borderColorPress: softer1.borderColorPress,
-          borderColorFocus: softer1.borderColorFocus,
-        }
-      }),
       ...customMasks,
     })
     .addTemplates(templates)
@@ -357,7 +250,7 @@ export function buildThemeSuite({ baseTheme, subThemes }: BuildThemeSuiteProps) 
       ])
     )
     .addChildThemes(
-      basePalettes.lightAccent
+      palettes.lightAccent
         ? {
             accent: [
               {
@@ -374,11 +267,83 @@ export function buildThemeSuite({ baseTheme, subThemes }: BuildThemeSuiteProps) 
           }
         : {}
     )
-    .addChildThemes(getComponentThemeDefinitions())
-
-  const built = builder.build()
-
-  return built
+    .addChildThemes(getComponentThemeDefinitions()) as any
 }
 
 export type BuildBaseThemesResult = ReturnType<typeof buildThemeSuite>
+
+function getDefaultTemplates() {
+  // its offset by some transparent values etc
+  const basePaletteOffset = 5
+  const namedTemplateSlots = {
+    background: basePaletteOffset,
+    subtleBackground: basePaletteOffset + 1,
+    uiBackground: basePaletteOffset + 2,
+    hoverUIBackround: basePaletteOffset + 3,
+    activeUIBackround: basePaletteOffset + 4,
+    subtleBorder: basePaletteOffset + 5,
+    strongBorder: basePaletteOffset + 6,
+    hoverBorder: basePaletteOffset + 7,
+    strongBackground: basePaletteOffset + 8,
+    hoverStrongBackground: basePaletteOffset + 9,
+  }
+
+  const baseTemplate = {
+    accentBackground: 0,
+    accentColor: -0,
+
+    background0: 1,
+    background025: 2,
+    background05: 3,
+    background075: 4,
+
+    color0: -4,
+    color025: -3,
+    color05: -2,
+    color075: -1,
+
+    background: 5,
+    backgroundHover: 6,
+    backgroundPress: 7,
+    backgroundFocus: 8,
+
+    color: -5,
+    colorHover: -6,
+    colorPress: -5,
+    colorFocus: -6,
+
+    placeholderColor: -6,
+
+    borderColor: 7,
+    borderColorHover: 8,
+    borderColorFocus: 9,
+    borderColorPress: 8,
+  }
+
+  const template = {
+    color1: 5,
+    color2: 6,
+    color3: 7,
+    color4: 8,
+    color5: 9,
+    color6: 10,
+    color7: 11,
+    color8: 12,
+    color9: 13,
+    color10: 14,
+    color11: 15,
+    color12: 16,
+    ...baseTemplate,
+  }
+
+  return {
+    base: template,
+    active: {
+      ...template,
+      background: namedTemplateSlots.strongBackground,
+      backgroundHover: namedTemplateSlots.hoverStrongBackground,
+      backgroundPress: namedTemplateSlots.hoverBorder,
+      backgroundFocus: namedTemplateSlots.strongBackground,
+    },
+  } satisfies Templates
+}

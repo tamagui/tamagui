@@ -1,14 +1,15 @@
-import { MaskOptions, Template } from '@tamagui/create-theme';
+import { MaskOptions, PaletteDefinitions, Template } from '@tamagui/create-theme';
 export type SubTheme = BuildTheme | BuildThemeMask;
+export type Templates = Record<string, Template> & {
+    base: Template;
+    accentLight?: Template;
+    accentDark?: Template;
+};
 export type BuildThemeSuiteProps = {
-    baseTheme: BuildTheme;
+    palettes: PaletteDefinitions;
     subThemes?: SubTheme[];
+    templates?: Templates;
     componentMask?: MaskOptions;
-    templates?: {
-        base: Template;
-        accentLight: Template;
-        accentDark: Template;
-    };
 };
 export type BuildThemeSuitePalettes = {
     light: string[];
