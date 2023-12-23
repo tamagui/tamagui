@@ -3,6 +3,7 @@ import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
 import {
   GetProps,
+  Stack,
   TamaguiElement,
   Theme,
   createStyledContext,
@@ -269,7 +270,8 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
 
     // temp until reanimated useAnimatedNumber fix
     const AnimatedView = (animationDriver['NumberView'] ??
-      animationDriver.View) as typeof Animated.View
+      animationDriver.View ??
+      Stack) as typeof Animated.View
 
     const animatedStyles = useAnimatedNumberStyle(animatedNumber, (val) => {
       'worklet'

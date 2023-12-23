@@ -311,11 +311,7 @@ export declare function getDefaultTamaguiConfig(): import("@tamagui/core").Tamag
     pointerCoarse: {
         pointer: string;
     };
-}, {
-    [key: string]: string | any[] | {
-        [key: string]: any;
-    };
-}, {
+}, {}, {
     heading: {
         family: string;
         size: {
@@ -354,17 +350,5 @@ export declare function getDefaultTamaguiConfig(): import("@tamagui/core").Tamag
             1: number;
         };
     };
-}, boolean | undefined, string | undefined, {
-    allowedStyleValues?: ((boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | {
-        space?: ("number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "percent") | undefined;
-        size?: ("number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "percent") | undefined;
-        radius?: ("number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web")) | undefined;
-        zIndex?: ("number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web")) | undefined;
-        color?: ((boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "named") | undefined;
-    }) | undefined;
-    autocompleteSpecificTokens?: (boolean | "except-special") | undefined;
-    mediaPropOrder?: boolean | undefined;
-    fastSchemeChange?: boolean | undefined;
-    webContainerType?: "size" | "unset" | "normal" | "inline-size" | "inherit" | "initial" | "revert" | "revert-layer" | undefined;
-}>;
+}, boolean | undefined, string | undefined, {}>;
 //# sourceMappingURL=index.d.ts.map

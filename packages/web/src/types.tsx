@@ -523,27 +523,31 @@ type GetLanguagePostfixes<F extends GenericFonts> = GetLanguagePostfix<keyof F>
 //   body_en: any
 // }>['fonts']
 
-type ConfProps<
-  A extends GenericTokens,
-  B extends GenericThemes,
-  C extends GenericShorthands = GenericShorthands,
-  D extends GenericMedia = GenericMedia,
-  E extends GenericAnimations = GenericAnimations,
-  F extends GenericFonts = GenericFonts,
-  G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting,
-  H extends DefaultFontSetting = DefaultFontSetting,
-  I extends GenericTamaguiSettings = GenericTamaguiSettings
-> = {
+type ConfProps<A, B, C, D, E, F, G, H, I> = {
   tokens?: A
   themes?: B
   shorthands?: C
   media?: D
-  animations?: AnimationDriver<E>
+  animations?: E extends AnimationConfig ? AnimationDriver<E> : undefined
   fonts?: F
   onlyAllowShorthands?: G
   defaultFont?: H
   settings?: I
 }
+
+type EmptyTokens = {
+  color: {}
+  space: {}
+  size: {}
+  radius: {}
+  zIndex: {}
+}
+type EmptyThemes = {}
+type EmptyShorthands = {}
+type EmptyMedia = {}
+type EmptyAnimations = {}
+type EmptyFonts = {}
+type EmptyTamaguiSettings = {}
 
 export type InferTamaguiConfig<Conf> = Conf extends ConfProps<
   infer A,
@@ -556,7 +560,17 @@ export type InferTamaguiConfig<Conf> = Conf extends ConfProps<
   infer H,
   infer I
 >
-  ? TamaguiInternalConfig<A, B, C, D, E, F, G, H, I>
+  ? TamaguiInternalConfig<
+      A extends GenericTokens ? A : EmptyTokens,
+      B extends GenericThemes ? B : EmptyThemes,
+      C extends GenericShorthands ? C : EmptyShorthands,
+      D extends GenericMedia ? D : EmptyMedia,
+      E extends GenericAnimations ? E : EmptyAnimations,
+      F extends GenericFonts ? F : EmptyFonts,
+      G extends OnlyAllowShorthandsSetting ? G : OnlyAllowShorthandsSetting,
+      H extends DefaultFontSetting ? H : DefaultFontSetting,
+      I extends GenericTamaguiSettings ? I : EmptyTamaguiSettings
+    >
   : unknown
 
 // for use in creation functions so it doesnt get overwritten

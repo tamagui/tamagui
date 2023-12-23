@@ -1,0 +1,120 @@
+---
+title: Tamagui 2.0 🎉
+publishedAt: '2023-12-29'
+draft: true
+description: More stability, more features, and a roadmap.
+by: nate
+poster: banner-one.jpg
+---
+
+<IntroParagraph large>
+  Tamagui 1.0 came out a year ago, and boy a lot has happened since. We welcomed over 100
+  new community contributors, brought on two new full-time developers, and have released
+  over 1k bugfixes and 40 new features since January.
+</IntroParagraph>
+
+<IntroParagraph>
+  Tamagui is an all-in-one React UI solution with three parts: style, UI, and optimizing
+  compiler. The core style library works on native and web with **no dependency on React
+  Native at all**. It features a robust typed design system builer, a powerful `styled`
+  function with typed variants, and a suite of hooks and helpers that make building apps a
+  breeze, all in ~20Kb. You can use it web-only, or let it really shine by allowing you
+  share all your code between React Native and web.
+</IntroParagraph>
+
+The UI kit has also grown considerably. We added Tabs, ToggleGroup, Checkbox, RadioGroup. It's also now partially headless across the entire suite of components with the `unstyled` prop, and we've upgraded and refined every component many times over to add new functionality, catch many bugs and edge cases, and have generally upgraded the accessibility and keyboard navigation everywhere.
+
+Finally Tamagui's optimizing compiler has gotten a lot better. It still uses advanced optimizations like partial evaluation, CSS extraction, and tree-flattening. But it also goes much further now - it flattens many more views on Native, it can do dynamic inline optimization, and the correctness and ease of use has gone up significantly.
+
+Maybe most importantly since 1.0 is our new 0-setup and 0-config install. One of the biggest complaints with Tamagui was that it involved too much effort to set up initially. We took that to heart and shipped a bunch of iterative improvements:
+
+First we removed all dependencies on React Native from core and made it so you didn't need any environment variables or special bundler setup at all to get started. That still meant you needed some small bundler config to use the UI kit, though, so we went further and adapted our custom build tool to automate aliasing `react-native` to `react-native-web`, as well as splitting out all the conditional logic into platform-specific files at build-time. The result is that you can install _any_ Tamagui package and assume it "just works" with Node, React Native, or with any web bundler, out of the box, without config.
+
+The other onboarding complaint was around the complexity of setting up your design system, so we focused on that next: we made `createTamagui` altogether optional. This was also a big lift, but it achieved something important: you can now npm install and start styling with `@tamagui/core` immediately without needing to set up any design system at all.
+
+We also released `@tamagui/config`, a recommended default design system config that gives you a robust set of tokens, themes, fonts, and colors based on the Radix out of the box.
+
+The theme of this year has been singular: keep our heads down and made Tamagui 1.0 as good as we can: easier to install, lighter, faster, a lot less buggy, and with a bunch of helpers we found necessary as we grew it with various teams we collaborated with.
+
+---
+
+## What is Tamagui
+
+If you're familiar with Tamagui you can skip to [What's New](#whats-new).
+
+Tamagui is still three main things in at the core: a style library (`@tamagui/core`), a UI kit (`tamagui`), and an optimizing compiler (`@tamagui/static`). Each can be used independently, though the compiler only optimizes Tamagui styled components.
+
+### `@tamagui/core`
+
+**Core is a complete cross-platform style library with no external dependencies**. It gives you a powerful `styled` factory that works well on web by itself or with React Native, using the React Native style API with a whole lot of goodies on top:
+
+- Works **100% the same across Native and Web**.
+- **Works completely at runtime**, no compiler necessary, but optimizes away at compile-time.
+- Size of 22Kb `@tamagui/web` to 31Kb `@tamagui/core` (gzip, excluding react).
+- SSR, React Server Component, Concurrent mode support for 100% of the features.
+- Custom typed design systems.
+- Powerful typed variants, including functional variants.
+- Prop-order based styling means no more CSS specificity fights!
+- Inline styles with tokens, media and pseudo styles that all optimize away.
+- Typed shorthands.
+- Pluggable animation drivers, allows swapping JS-based animations to pure CSS on the web.
+
+### `tamagui`
+
+...
+
+### `@tamagui/static`
+
+...
+
+---
+
+## What's new in `@tamagui/core`
+
+Over a thousand bugfixes since beta with large performance and memory improvements, much higher test coverage, and compatibility with the latest and greatest in React and React Native.
+
+---
+
+## What's new in `@tamagui/static`
+
+---
+
+## What's new in `tamagui`
+
+#### ToggleGroup
+
+<HeroContainer tinted>
+  <ToggleGroupDemo />
+</HeroContainer>
+
+#### Tabs
+
+#### Checkbox
+
+#### RadioGroup
+
+---
+
+## What else has changed
+
+---
+
+## Going forward
+
+---
+
+## Sponsors
+
+---
+
+## Acknowledgements
+
+We've had 100 new contributors since last year, still exponentially increasing! Thanks to all of them, and also to the many QA testers that join in our Discord chat every day :).
+
+---
+
+### Join the community
+
+<Wide>
+  <SocialLinksRow />
+</Wide>

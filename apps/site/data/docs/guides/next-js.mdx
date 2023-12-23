@@ -183,7 +183,7 @@ Add this to your `_app.tsx` render output:
 
 ### Server components
 
-Tamagui includes Server Components support for the Next.js app directory. It should work fully server side eventually, but we have to work with the Next.js team to figure out the final steps here. Until then, `use client` support is here already.
+Tamagui includes Server Components support for the Next.js app directory with `use client` support. We're working on a mode with limitations that enables full server support.
 
 Create a new component:
 
@@ -197,7 +197,7 @@ export function NextTamaguiProvider({ children }) {
   useServerInsertedHTML(() => {
     // this first time this runs you'll get the full CSS including all themes
     // after that, it will only return CSS generated since the last call
-    return <>{Tamagui.getNewCSS()}</>
+    return <style dangerouslySetInnerHTML={{ __html: Tamagui.getNewCSS() }} />
   })
 
   // see Tamagui provider setup in the example above

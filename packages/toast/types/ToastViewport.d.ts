@@ -230,6 +230,6 @@ type ToastViewportProps = ToastViewportFrameProps & {
      */
     multipleToasts?: boolean;
 };
-declare const ToastViewport: React.ForwardRefExoticComponent<Omit<ScopedProps<ToastViewportProps>, "ref"> & React.RefAttributes<HTMLDivElement>>;
+declare const ToastViewport: React.MemoExoticComponent<React.ForwardRefExoticComponent<Omit<ScopedProps<ToastViewportProps>, "ref"> & React.RefAttributes<HTMLDivElement>>>;
 export { ToastViewport, ToastViewportProps, VIEWPORT_DEFAULT_HOTKEY, VIEWPORT_PAUSE, VIEWPORT_RESUME, };
 //# sourceMappingURL=ToastViewport.d.ts.map

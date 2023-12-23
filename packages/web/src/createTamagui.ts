@@ -292,12 +292,12 @@ ${runtimeStyles}`
   configureMedia(config)
   setConfig(config)
 
+  createdConfigs.set(config, true)
+
   if (configListeners.size) {
     configListeners.forEach((cb) => cb(config))
     configListeners.clear()
   }
-
-  createdConfigs.set(config, true)
 
   if (process.env.NODE_ENV === 'development') {
     if (process.env.DEBUG?.startsWith('tamagui')) {

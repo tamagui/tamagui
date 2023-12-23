@@ -372,6 +372,10 @@ export function insertStyleRules(rulesToInsert: RulesToInsert) {
   }
 }
 
+const minInsertAmt = process.env.TAMAGUI_INSERT_SELECTOR_TRIES
+  ? +process.env.TAMAGUI_INSERT_SELECTOR_TRIES
+  : 2
+
 export function shouldInsertStyleRules(identifier: string) {
   if (process.env.IS_STATIC === 'is_static') {
     return true
@@ -381,7 +385,7 @@ export function shouldInsertStyleRules(identifier: string) {
   if (process.env.NODE_ENV === 'development') {
     if (
       totalSelectorsInserted.size >
-      +(process.env.TAMAGUI_STYLE_INSERTION_WARNING_LIMIT || 50000)
+      +(process.env.TAMAGUI_STYLE_INSERTION_WARNING_LIMIT || 10000)
     ) {
       console.warn(
         `Warning: inserting many CSS rules, you may be animating something and generating many CSS insertions, which can degrade performance. Instead, try using the "disableClassName" property on elements that change styles often. To disable this warning set TAMAGUI_STYLE_INSERTION_WARNING_LIMIT from 50000 to something higher`
@@ -390,5 +394,5 @@ export function shouldInsertStyleRules(identifier: string) {
   }
 
   // note we are being conservative allowing duplicates
-  return total === undefined || total < 2
+  return total === undefined || total < minInsertAmt
 }

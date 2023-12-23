@@ -7,7 +7,6 @@ export declare const isMediaKey: (key: string) => IsMediaType;
 export declare const getMediaKeyImportance: (key: string) => number;
 export declare const configureMedia: (config: TamaguiInternalConfig) => void;
 export declare function setupMediaListeners(): void;
-export declare function useMediaListeners(config: TamaguiInternalConfig): void;
 type UpdateState = {
     enabled: boolean;
     keys: MediaQueryKey[];

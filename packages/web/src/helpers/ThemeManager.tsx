@@ -281,7 +281,14 @@ function getState(
     const found = potentials.find((t) => t in themes)
 
     if (process.env.NODE_ENV !== 'production' && typeof props.debug === 'string') {
-      console.info(' - ', { found, potentials, baseManager, nextName, baseName, prefix })
+      console.info(' getState ', {
+        found,
+        potentials,
+        baseManager,
+        nextName,
+        baseName,
+        prefix,
+      })
     }
 
     if (found) {

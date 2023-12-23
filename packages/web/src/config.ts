@@ -12,7 +12,6 @@ let conf: TamaguiInternalConfig | null
 
 export const setConfig = (next: TamaguiInternalConfig) => {
   conf = next
-  configListeners.forEach((cb) => cb(next))
 }
 
 export const setConfigFont = (name: string, font: any, fontParsed: any) => {

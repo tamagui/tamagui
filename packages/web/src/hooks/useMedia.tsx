@@ -1,4 +1,4 @@
-import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useRef, useSyncExternalStore } from 'react'
 
 import { getConfig } from '../config'
@@ -113,6 +113,8 @@ function unlisten() {
  */
 let setupVersion = -1
 export function setupMediaListeners() {
+  if (isWeb && isServer) return
+
   // avoid setting up more than once per config
   if (setupVersion === mediaVersion) return
   setupVersion = mediaVersion
@@ -143,14 +145,6 @@ export function setupMediaListeners() {
       updateCurrentState()
     }
   }
-}
-
-export function useMediaListeners(config: TamaguiInternalConfig) {
-  if (config.disableSSR) return
-
-  useIsomorphicLayoutEffect(() => {
-    setupMediaListeners()
-  }, [])
 }
 
 const listeners = new Set<any>()

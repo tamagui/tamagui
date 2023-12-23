@@ -162,7 +162,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     useDismiss(context, { outsidePress: false }),
     useRole(context, { role: 'listbox' }),
     useInnerOffset(context, {
-      enabled: !fallback,
+      enabled: !fallback && (!!showUpArrow || !!showDownArrow),
       onChange: setInnerOffset,
       overflowRef,
       scrollRef: refs.floating,

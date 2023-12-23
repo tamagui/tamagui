@@ -1780,6 +1780,9 @@ declare const DialogWarningProvider: {
     }): JSX.Element;
     displayName: string;
 };
+export type DialogHandle = {
+    open: (val: boolean) => void;
+};
 declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAttributes<{
     open: (val: boolean) => void;
 }>> & {

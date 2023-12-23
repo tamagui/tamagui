@@ -16,7 +16,7 @@ type UsePropsOptions = Pick<
   forComponent?: { staticConfig: StaticConfig }
 }
 
-type PropsWithoutMediaStyles<A> = {
+export type PropsWithoutMediaStyles<A> = {
   // remove all media
   [Key in keyof A extends `$${string}` ? never : keyof A]?: A[Key]
 }
@@ -57,7 +57,7 @@ export function useStyle<A extends Object>(
 }
 
 /**
- * Returns [props, styles] fully resolved and flattened with merged media queries and shorthands with all theme and token values resolved.
+ * Returns [props, styles, theme, media] fully resolved and flattened with merged media queries and shorthands with all theme and token values resolved.
  *
  * Use sparingly, it will loop props and trigger re-render on all media queries you access.
  *

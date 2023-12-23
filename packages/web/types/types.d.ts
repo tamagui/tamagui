@@ -280,18 +280,31 @@ type RemoveLanguagePostfixes<F extends GenericFonts> = {
     [Key in OmitLanguagePostfix<keyof F>]: F[Key];
 };
 type GetLanguagePostfixes<F extends GenericFonts> = GetLanguagePostfix<keyof F>;
-type ConfProps<A extends GenericTokens, B extends GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts, G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting, H extends DefaultFontSetting = DefaultFontSetting, I extends GenericTamaguiSettings = GenericTamaguiSettings> = {
+type ConfProps<A, B, C, D, E, F, G, H, I> = {
     tokens?: A;
     themes?: B;
     shorthands?: C;
     media?: D;
-    animations?: AnimationDriver<E>;
+    animations?: E extends AnimationConfig ? AnimationDriver<E> : undefined;
     fonts?: F;
     onlyAllowShorthands?: G;
     defaultFont?: H;
     settings?: I;
 };
-export type InferTamaguiConfig<Conf> = Conf extends ConfProps<infer A, infer B, infer C, infer D, infer E, infer F, infer G, infer H, infer I> ? TamaguiInternalConfig<A, B, C, D, E, F, G, H, I> : unknown;
+type EmptyTokens = {
+    color: {};
+    space: {};
+    size: {};
+    radius: {};
+    zIndex: {};
+};
+type EmptyThemes = {};
+type EmptyShorthands = {};
+type EmptyMedia = {};
+type EmptyAnimations = {};
+type EmptyFonts = {};
+type EmptyTamaguiSettings = {};
+export type InferTamaguiConfig<Conf> = Conf extends ConfProps<infer A, infer B, infer C, infer D, infer E, infer F, infer G, infer H, infer I> ? TamaguiInternalConfig<A extends GenericTokens ? A : EmptyTokens, B extends GenericThemes ? B : EmptyThemes, C extends GenericShorthands ? C : EmptyShorthands, D extends GenericMedia ? D : EmptyMedia, E extends GenericAnimations ? E : EmptyAnimations, F extends GenericFonts ? F : EmptyFonts, G extends OnlyAllowShorthandsSetting ? G : OnlyAllowShorthandsSetting, H extends DefaultFontSetting ? H : DefaultFontSetting, I extends GenericTamaguiSettings ? I : EmptyTamaguiSettings> : unknown;
 export type GenericTamaguiConfig = CreateTamaguiConfig<GenericTokens, GenericThemes, GenericShorthands, GenericMedia, GenericAnimations, GenericFonts>;
 type NonSubThemeNames<A extends string | number> = A extends `${string}_${string}` ? never : A;
 type BaseThemeDefinitions = TamaguiConfig['themes'][NonSubThemeNames<keyof TamaguiConfig['themes']>];

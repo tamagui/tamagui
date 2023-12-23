@@ -15,9 +15,7 @@ async function toastIsFocused(page: Page, identifier: number) {
 }
 
 test.describe('given zero toasts', () => {
-  test('should not interrupt natural tab order in the document', async ({
-    page,
-  }) => {
+  test('should not interrupt natural tab order in the document', async ({ page }) => {
     await page.getByTestId('button-before').focus()
 
     await page.keyboard.press('Tab')
