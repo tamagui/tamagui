@@ -22,7 +22,7 @@ type ThemeBuilderBuildResult<S extends ThemeBuilderState> = {
     [Key in keyof S['themes']]: GetGeneratedTheme<S['themes'][Key], S>;
 };
 type GetParentName<N extends string> = N extends `${infer A}_${infer B}_${infer C}_${infer D}_${string}` ? `${A}_${B}_${C}_${D}` : N extends `${infer A}_${infer B}_${infer C}_${string}` ? `${A}_${B}_${C}` : N extends `${infer A}_${infer B}_${string}` ? `${A}_${B}` : N extends `${infer A}_${string}` ? `${A}` : never;
-export declare class ThemeBuilder<State extends ThemeBuilderState> {
+export declare class ThemeBuilder<State extends ThemeBuilderState = ThemeBuilderState> {
     state: State;
     constructor(state: State);
     addPalettes<const P extends PaletteDefinitions>(palettes: P): ThemeBuilder<State & {

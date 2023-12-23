@@ -5,5 +5,3 @@ export * from './types'
 
 // theme suite builders
 export * from './buildThemeSuite'
-export * from './buildThemeSuitePalettes'
-export * from './buildThemeSuiteScales'
