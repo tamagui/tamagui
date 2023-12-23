@@ -1,13 +1,14 @@
+import { SwitchContext } from '@tamagui/switch-headless'
+
 import { createSwitch } from './createSwitch'
-import { SwitchContext, createSwitch as createHeadlessSwitch } from './headless'
 import { SwitchFrame, SwitchThumb } from './Switch'
-export * from './Switch'
-export * from './SwitchContext'
+
 export * from './createSwitch'
+export * from './StyledContext'
+export * from './Switch'
+export { SwitchContext }
 
 export const Switch = createSwitch({
   Frame: SwitchFrame,
   Thumb: SwitchThumb,
 })
-
-export { createHeadlessSwitch, SwitchContext }

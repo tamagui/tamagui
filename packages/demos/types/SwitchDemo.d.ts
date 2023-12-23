@@ -40,7 +40,7 @@ export declare const Switch: import("@tamagui/web").ReactComponentWithRef<import
         };
     };
 };
-export declare const HeadlessSwitch: import("react").ForwardRefExoticComponent<Omit<import("react-native").ViewProps & import("@tamagui/switch/types/headless").SwitchExtraProps, "children"> & {
+export declare const HeadlessSwitch: import("react").ForwardRefExoticComponent<Omit<import("react-native").ViewProps & import("@tamagui/switch-headless").SwitchExtraProps, "children"> & {
     children?: import("react").ReactNode | ((checked: boolean) => import("react").ReactNode);
     disabled?: boolean | undefined;
     onPress?: ((event: import("react-native").GestureResponderEvent) => void) | null | undefined;

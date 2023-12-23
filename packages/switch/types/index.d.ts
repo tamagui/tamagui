@@ -1,8 +1,9 @@
 /// <reference types="react" />
-import { SwitchContext, createSwitch as createHeadlessSwitch } from './headless';
-export * from './Switch';
-export * from './SwitchContext';
+import { SwitchContext } from '@tamagui/switch-headless';
 export * from './createSwitch';
+export * from './StyledContext';
+export * from './Switch';
+export { SwitchContext };
 export declare const Switch: import("@tamagui/web").ReactComponentWithRef<import("./createSwitch").SwitchProps, any> & {
     staticConfig: import("@tamagui/web").StaticConfig;
     extractable: <X>(a: X, staticConfig?: Partial<import("@tamagui/web").StaticConfig> | undefined) => X;
@@ -42,5 +43,4 @@ export declare const Switch: import("@tamagui/web").ReactComponentWithRef<import
         };
     };
 };
-export { createHeadlessSwitch, SwitchContext };
 //# sourceMappingURL=index.d.ts.map

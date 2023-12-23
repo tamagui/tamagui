@@ -1,3 +1,4 @@
+import { createSwitch as createHeadlessSwitch } from '@tamagui/switch-headless'
 import { useContext } from 'react'
 import { Pressable, View } from 'react-native'
 import {
@@ -9,7 +10,6 @@ import {
   SwitchThumb,
   XStack,
   YStack,
-  createHeadlessSwitch,
   createSwitch,
 } from 'tamagui'
 

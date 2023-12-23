@@ -31,16 +31,10 @@
     }
   },
   "dependencies": {
-    "@tamagui/compose-refs": "1.79.19",
-    "@tamagui/constants": "1.79.19",
     "@tamagui/core": "1.79.19",
-    "@tamagui/focusable": "1.79.19",
     "@tamagui/get-token": "1.79.19",
-    "@tamagui/helpers": "1.79.19",
-    "@tamagui/label": "1.79.19",
     "@tamagui/stacks": "1.79.19",
-    "@tamagui/use-controllable-state": "1.79.19",
-    "@tamagui/use-previous": "1.79.19"
+    "@tamagui/switch-headless": "1.79.19"
   },
   "peerDependencies": {
     "react": "*",

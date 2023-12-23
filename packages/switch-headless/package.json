@@ -1,5 +1,5 @@
 {
-  "name": "@tamagui/checkbox",
+  "name": "@tamagui/switch-headless",
   "version": "1.79.19",
   "sideEffects": [
     "*.css"
@@ -22,14 +22,6 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
-  "dependencies": {
-    "@tamagui/checkbox-headless": "1.79.19",
-    "@tamagui/core": "1.79.19",
-    "@tamagui/font-size": "1.79.19",
-    "@tamagui/get-token": "1.79.19",
-    "@tamagui/helpers-tamagui": "1.79.19",
-    "@tamagui/stacks": "1.79.19"
-  },
   "exports": {
     "./package.json": "./package.json",
     ".": {
@@ -38,15 +30,25 @@
       "require": "./dist/cjs/index.js"
     }
   },
+  "dependencies": {
+    "@tamagui/compose-refs": "1.79.12",
+    "@tamagui/constants": "1.79.12",
+    "@tamagui/focusable": "1.79.12",
+    "@tamagui/helpers": "1.79.12",
+    "@tamagui/label": "1.79.12",
+    "@tamagui/use-controllable-state": "1.79.12",
+    "@tamagui/use-previous": "1.79.12"
+  },
   "peerDependencies": {
-    "react": "*"
+    "react": "*",
+    "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.79.19",
-    "react": "^18.2.0"
+    "@tamagui/build": "1.79.12",
+    "react": "^18.2.0",
+    "react-native": "^0.72.1"
   },
   "publishConfig": {
     "access": "public"
-  },
-  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
+  }
 }

@@ -1084,7 +1084,19 @@ export declare const CardBackground: import("@tamagui/web").TamaguiComponent<Omi
         chromeless?: boolean | "all" | undefined;
     };
 }>;
+type CreateCardProps = {
+    Frame: React.FC<{}>;
+    Background: React.FC<{}>;
+    Footer: React.FC<{}>;
+    Header: React.FC<{}>;
+};
+export declare function createCard(props: CreateCardProps): import("react").FC<{}> & {
+    Header: import("react").FC<{}>;
+    Footer: import("react").FC<{}>;
+    Background: import("react").FC<{}>;
+};
 export type CardHeaderProps = GetProps<typeof CardHeader>;
 export type CardFooterProps = GetProps<typeof CardFooter>;
 export type CardProps = GetProps<typeof CardFrame>;
-//# sourceMappingURL=Card.d.ts.map
+export {};
+//# sourceMappingURL=createCartd.d.ts.map
