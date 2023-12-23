@@ -124,6 +124,12 @@ const tamaConf = createTamagui({
     ? animationsNative
     : animationsMoti, // default moti
   themeClassNameOnRoot: false,
+
+  defaultProps: {
+    Square: {
+      backgroundColor: 'violet',
+    },
+  },
 })
 
 export type Conf = typeof tamaConf

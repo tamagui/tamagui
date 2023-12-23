@@ -150,9 +150,17 @@ export function createComponent<
   BaseProps = never
 >(staticConfig: StaticConfig) {
   let config: TamaguiInternalConfig | null = null
+  let defaultProps = staticConfig.defaultProps
 
   onConfiguredOnce((conf) => {
     config = conf
+
+    if (staticConfig.componentName) {
+      const defaultForComponent = conf.defaultProps?.[staticConfig.componentName]
+      if (defaultForComponent) {
+        defaultProps = { ...defaultForComponent, ...defaultProps }
+      }
+    }
 
     // one time only setup
     if (!tamaguiConfig) {
@@ -180,7 +188,6 @@ export function createComponent<
   } = staticConfig
 
   const defaultComponentClassName = `is_${staticConfig.componentName}`
-  const defaultProps = staticConfig.defaultProps
 
   if (process.env.NODE_ENV === 'development' && staticConfig.defaultProps?.['debug']) {
     if (process.env.IS_STATIC !== 'is_static') {
