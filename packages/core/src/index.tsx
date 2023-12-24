@@ -122,12 +122,12 @@ setupHooks({
 
     // TODO move into getSplitStyles inital `if (process.env.TAMAGUI_TARGET === 'web')` block
 
-    if (viewProps.href !== undefined && hrefAttrs !== undefined) {
+    if (viewProps.href && hrefAttrs) {
       const { download, rel, target } = hrefAttrs
       if (download != null) {
         viewProps.download = download
       }
-      if (rel != null) {
+      if (rel) {
         viewProps.rel = rel
       }
       if (typeof target === 'string') {
