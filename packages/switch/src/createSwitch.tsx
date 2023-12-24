@@ -18,7 +18,6 @@ import {
   Switch as NativeSwitch,
   SwitchProps as NativeSwitchProps,
   Platform,
-  View,
 } from 'react-native'
 
 import { SwitchFrame as DefaultSwitchFrame, SwitchThumb } from './Switch'

@@ -807,12 +807,7 @@ export function createComponent<
     }
 
     // if react-native-web view just pass all props down
-    if (
-      process.env.TAMAGUI_TARGET === 'web' &&
-      !isReactNative &&
-      !willBeAnimated &&
-      !asChild
-    ) {
+    if (process.env.TAMAGUI_TARGET === 'web' && !isReactNative && !asChild) {
       viewProps = hooks.usePropsTransform?.(elementType, nonTamaguiProps, hostRef)
     } else {
       viewProps = nonTamaguiProps
