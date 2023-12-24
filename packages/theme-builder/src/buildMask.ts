@@ -16,6 +16,9 @@ import { BuildMask } from './types'
 export function buildMask(masks: BuildMask[]) {
   return combineMasks(
     ...masks.map((mask) => {
+      if (mask.type === 'override') {
+        return skipMask
+      }
       if (mask.type === 'inverse') {
         return createInverseMask()
       }

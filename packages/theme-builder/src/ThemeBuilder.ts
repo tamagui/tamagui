@@ -116,22 +116,27 @@ export class ThemeBuilder<State extends ThemeBuilderState = ThemeBuilderState> {
     >
   }
 
+  // for dev mode only really
+  _addedThemes: { type: 'themes' | 'childThemes'; args: any }[] = []
+
   addThemes<const T extends ThemeDefinitions<ObjectStringKeys<State['masks']>>>(
     themes: T
   ) {
+    this._addedThemes.push({ type: 'themes', args: [themes] })
+
     this.state.themes = {
       // as {} prevents generic string key merge messing up types
       ...(this.state.themes as {}),
       ...themes,
     }
 
-    type TemplateToTheme<X> = State['templates'] extends {}
-      ? X extends { template: infer Y; nonInheritedValues: infer Z }
-        ? Y extends keyof State['templates']
-          ? { theme: Record<keyof State['templates'][Y] | keyof Z, string> }
-          : X
-        : X
-      : X
+    // type TemplateToTheme<X> = State['templates'] extends {}
+    //   ? X extends { template: infer Y; nonInheritedValues: infer Z }
+    //     ? Y extends keyof State['templates']
+    //       ? { theme: Record<keyof State['templates'][Y] | keyof Z, string> }
+    //       : X
+    //     : X
+    //   : X
 
     return this as any as ThemeBuilder<
       Omit<State, 'themes'> & {
@@ -159,6 +164,8 @@ export class ThemeBuilder<State extends ThemeBuilderState = ThemeBuilderState> {
         `No themes defined yet, use addThemes first to set your base themes`
       )
     }
+
+    this._addedThemes.push({ type: 'childThemes', args: [childThemeDefinition, options] })
 
     // AvoidNestingWithin[number] exclude isn't working here...
     type CurrentNames = Exclude<keyof typeof currentThemes, symbol | number>

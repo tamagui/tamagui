@@ -13,8 +13,8 @@ export type Templates = Record<string, Template> & {
 export type BuildThemeSuiteProps = {
   palettes: PaletteDefinitions
   subThemes?: SubTheme[]
+  componentThemes?: SubTheme[]
   templates?: Templates
-  componentMask?: MaskOptions
 }
 
 export type BuildThemeSuitePalettes = {
@@ -78,6 +78,10 @@ export type BuildTheme = BuildThemeBase & {
 // TODO type here isnt the same as type in BuildTheme
 export type BuildMask = { id: string } & (
   | {
+      type: 'override'
+      override: Record<string, number>
+    }
+  | {
       type: 'strengthen'
       strength: number
     }
@@ -101,4 +105,5 @@ export type BuildMask = { id: string } & (
 export type BuildThemeMask = BuildThemeBase & {
   type: 'mask'
   masks: BuildMask[]
+  maskOptions?: MaskOptions
 }
