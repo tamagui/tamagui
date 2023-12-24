@@ -1,4 +1,9 @@
-import { MaskOptions, PaletteDefinitions, ThemeDefinitions } from '@tamagui/create-theme'
+import {
+  MaskOptions,
+  PaletteDefinitions,
+  ThemeDefinitions,
+  ThemeWithParent,
+} from '@tamagui/create-theme'
 
 import { buildMask } from './buildMask'
 import { masks as defaultMasks, maskOptions } from './masks'
@@ -153,25 +158,20 @@ function getComponentThemes(
     component: componentMask,
   } satisfies Record<string, MaskOptions>
 
-  const overlayThemes = {
-    light: {
-      background: 'rgba(0,0,0,0.5)',
-    },
-    dark: {
-      background: 'rgba(0,0,0,0.9)',
-    },
-  }
-
   const overlayThemeDefinitions = [
     {
       parent: 'light',
-      theme: overlayThemes.light,
+      theme: {
+        background: 'rgba(0,0,0,0.5)',
+      },
     },
     {
       parent: 'dark',
-      theme: overlayThemes.dark,
+      theme: {
+        background: 'rgba(0,0,0,0.9)',
+      },
     },
-  ]
+  ] satisfies ThemeWithParent[]
 
   const componentTheme = [
     {
@@ -197,7 +197,7 @@ function getComponentThemes(
       mask: 'soften2',
       ...customMaskOptions.component,
     },
-  ]
+  ] satisfies ThemeWithParent[]
 
   return {
     Card: {
