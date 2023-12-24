@@ -1,9 +1,15 @@
-import { MaskOptions, ThemeDefinitions } from '@tamagui/create-theme'
+import { MaskOptions, PaletteDefinitions, ThemeDefinitions } from '@tamagui/create-theme'
 
 import { buildMask } from './buildMask'
 import { masks as defaultMasks, maskOptions } from './masks'
-import { createThemeBuilder } from './ThemeBuilder'
-import { BuildTheme, BuildThemeMask, BuildThemeSuiteProps, Templates } from './types'
+import { ThemeBuilder, createThemeBuilder } from './ThemeBuilder'
+import {
+  BuildTheme,
+  BuildThemeMask,
+  BuildThemeSuiteProps,
+  SubTheme,
+  Templates,
+} from './types'
 
 export function buildThemeSuite(props: BuildThemeSuiteProps) {
   return getThemeSuiteBuilder(props).build()
@@ -13,8 +19,13 @@ export function getThemeSuiteBuilder({
   subThemes,
   templates = getDefaultTemplates(),
   palettes,
+  componentThemes,
 }: BuildThemeSuiteProps) {
-  const maskThemes = (subThemes || []).filter(
+  const subThemeMaskThemes = (subThemes || []).filter(
+    (x) => x.type === 'mask'
+  ) as BuildThemeMask[]
+
+  const componentThemeMaskThemes = (componentThemes || []).filter(
     (x) => x.type === 'mask'
   ) as BuildThemeMask[]
 
@@ -22,190 +33,17 @@ export function getThemeSuiteBuilder({
     (x) => x.type !== 'mask'
   ) as BuildTheme[]
 
-  const customMasks = Object.fromEntries(
-    maskThemes.map((maskTheme) => {
+  const createdMasks = Object.fromEntries(
+    [...componentThemeMaskThemes, ...subThemeMaskThemes].map((maskTheme) => {
       return [maskTheme.name, buildMask(maskTheme.masks)]
     })
   )
-
-  const max = palettes.dark.length - 1
-  const min = 1
-
-  const componentMask = {
-    ...maskOptions.component,
-    max,
-    min,
-    overrideSwap: {
-      accentBackground: 0,
-      accentColor: -0,
-    },
-    overrideShift: {
-      ...maskOptions.component.override,
-    },
-    skip: {
-      ...maskOptions.component.skip,
-    },
-  } satisfies MaskOptions
-
-  const customMaskOptions = {
-    alt: {
-      ...maskOptions.alt,
-      max,
-      min,
-      overrideSwap: {
-        accentBackground: 0,
-        accentColor: -0,
-      },
-      overrideShift: {
-        ...maskOptions.alt.override,
-      },
-      skip: {
-        ...maskOptions.alt.skip,
-      },
-    },
-    component: componentMask,
-  } satisfies Record<string, MaskOptions>
-
-  function getComponentThemeDefinitions() {
-    const overlayThemes = {
-      light: {
-        background: 'rgba(0,0,0,0.5)',
-      },
-      dark: {
-        background: 'rgba(0,0,0,0.9)',
-      },
-    }
-
-    const overlayThemeDefinitions = [
-      {
-        parent: 'light',
-        theme: overlayThemes.light,
-      },
-      {
-        parent: 'dark',
-        theme: overlayThemes.dark,
-      },
-    ]
-
-    const componentTheme = [
-      {
-        parent: 'light_accent',
-        template: 'active',
-        palette: 'lightAccent',
-      },
-
-      {
-        parent: 'dark_accent',
-        template: 'active',
-        palette: 'darkAccent',
-      },
-
-      {
-        parent: 'light',
-        mask: 'soften2',
-        ...customMaskOptions.component,
-      },
-
-      {
-        parent: 'dark',
-        mask: 'soften2',
-        ...customMaskOptions.component,
-      },
-    ]
-
-    const componentThemeDefinitions = {
-      Card: {
-        mask: 'soften',
-        ...customMaskOptions.component,
-      },
-
-      Button: componentTheme,
-
-      Checkbox: {
-        mask: 'softenBorder2',
-        ...customMaskOptions.component,
-      },
-
-      Switch: componentTheme,
-
-      SwitchThumb: {
-        mask: 'inverse',
-        ...customMaskOptions.component,
-      },
-
-      TooltipContent: {
-        mask: 'soften2',
-        ...customMaskOptions.component,
-      },
-
-      DrawerFrame: {
-        mask: 'soften',
-        ...customMaskOptions.component,
-      },
-
-      Progress: {
-        mask: 'soften',
-        ...customMaskOptions.component,
-      },
-
-      RadioGroupItem: {
-        mask: 'softenBorder2',
-        ...customMaskOptions.component,
-      },
-
-      TooltipArrow: {
-        mask: 'soften',
-        ...customMaskOptions.component,
-      },
-
-      SliderTrackActive: {
-        mask: 'inverseSoften',
-        ...customMaskOptions.component,
-      },
-
-      SliderTrack: {
-        mask: 'soften2',
-        ...customMaskOptions.component,
-      },
-
-      SliderThumb: {
-        mask: 'inverse',
-        ...customMaskOptions.component,
-      },
-
-      Tooltip: {
-        mask: 'inverse',
-        ...customMaskOptions.component,
-      },
-
-      ProgressIndicator: {
-        mask: 'inverse',
-        ...customMaskOptions.component,
-      },
-
-      SheetOverlay: overlayThemeDefinitions,
-      DialogOverlay: overlayThemeDefinitions,
-      ModalOverlay: overlayThemeDefinitions,
-
-      Input: {
-        mask: 'softenBorder2',
-        ...customMaskOptions.component,
-      },
-
-      TextArea: {
-        mask: 'softenBorder2',
-        ...customMaskOptions.component,
-      },
-    } satisfies ThemeDefinitions<keyof typeof defaultMasks>
-
-    return componentThemeDefinitions
-  }
 
   return createThemeBuilder()
     .addPalettes(palettes)
     .addMasks({
       ...defaultMasks,
-      ...customMasks,
+      ...createdMasks,
     })
     .addTemplates(templates)
     .addThemes({
@@ -220,7 +58,7 @@ export function getThemeSuiteBuilder({
     })
     .addChildThemes(
       Object.fromEntries([
-        ...maskThemes.map((theme) => {
+        ...subThemeMaskThemes.map((theme) => {
           return [
             theme.name,
             {
@@ -267,7 +105,184 @@ export function getThemeSuiteBuilder({
           }
         : {}
     )
-    .addChildThemes(getComponentThemeDefinitions()) as any
+    .addChildThemes(
+      getComponentThemes(palettes, componentThemes || [])
+    ) as ThemeBuilder<any>
+}
+
+function getComponentThemes(
+  palettes: PaletteDefinitions,
+  // TODO we can build it using this
+  componentThemes: SubTheme[]
+) {
+  const max = palettes.dark.length - 1
+  const min = 1
+
+  const componentMask = {
+    ...maskOptions.component,
+    max,
+    min,
+    overrideSwap: {
+      accentBackground: 0,
+      accentColor: -0,
+    },
+    overrideShift: {
+      ...maskOptions.component.override,
+    },
+    skip: {
+      ...maskOptions.component.skip,
+    },
+  } satisfies MaskOptions
+
+  const customMaskOptions = {
+    alt: {
+      ...maskOptions.alt,
+      max,
+      min,
+      overrideSwap: {
+        accentBackground: 0,
+        accentColor: -0,
+      },
+      overrideShift: {
+        ...maskOptions.alt.override,
+      },
+      skip: {
+        ...maskOptions.alt.skip,
+      },
+    },
+    component: componentMask,
+  } satisfies Record<string, MaskOptions>
+
+  const overlayThemes = {
+    light: {
+      background: 'rgba(0,0,0,0.5)',
+    },
+    dark: {
+      background: 'rgba(0,0,0,0.9)',
+    },
+  }
+
+  const overlayThemeDefinitions = [
+    {
+      parent: 'light',
+      theme: overlayThemes.light,
+    },
+    {
+      parent: 'dark',
+      theme: overlayThemes.dark,
+    },
+  ]
+
+  const componentTheme = [
+    {
+      parent: 'light_accent',
+      template: 'active',
+      palette: 'lightAccent',
+    },
+
+    {
+      parent: 'dark_accent',
+      template: 'active',
+      palette: 'darkAccent',
+    },
+
+    {
+      parent: 'light',
+      mask: 'soften2',
+      ...customMaskOptions.component,
+    },
+
+    {
+      parent: 'dark',
+      mask: 'soften2',
+      ...customMaskOptions.component,
+    },
+  ]
+
+  return {
+    Card: {
+      mask: 'soften',
+      ...customMaskOptions.component,
+    },
+
+    Button: componentTheme,
+
+    Checkbox: {
+      mask: 'softenBorder2',
+      ...customMaskOptions.component,
+    },
+
+    Switch: componentTheme,
+
+    SwitchThumb: {
+      mask: 'inverse',
+      ...customMaskOptions.component,
+    },
+
+    TooltipContent: {
+      mask: 'soften2',
+      ...customMaskOptions.component,
+    },
+
+    DrawerFrame: {
+      mask: 'soften',
+      ...customMaskOptions.component,
+    },
+
+    Progress: {
+      mask: 'soften',
+      ...customMaskOptions.component,
+    },
+
+    RadioGroupItem: {
+      mask: 'softenBorder2',
+      ...customMaskOptions.component,
+    },
+
+    TooltipArrow: {
+      mask: 'soften',
+      ...customMaskOptions.component,
+    },
+
+    SliderTrackActive: {
+      mask: 'inverseSoften',
+      ...customMaskOptions.component,
+    },
+
+    SliderTrack: {
+      mask: 'soften2',
+      ...customMaskOptions.component,
+    },
+
+    SliderThumb: {
+      mask: 'inverse',
+      ...customMaskOptions.component,
+    },
+
+    Tooltip: {
+      mask: 'inverse',
+      ...customMaskOptions.component,
+    },
+
+    ProgressIndicator: {
+      mask: 'inverse',
+      ...customMaskOptions.component,
+    },
+
+    SheetOverlay: overlayThemeDefinitions,
+    DialogOverlay: overlayThemeDefinitions,
+    ModalOverlay: overlayThemeDefinitions,
+
+    Input: {
+      mask: 'softenBorder2',
+      ...customMaskOptions.component,
+    },
+
+    TextArea: {
+      mask: 'softenBorder2',
+      ...customMaskOptions.component,
+    },
+  } satisfies ThemeDefinitions<keyof typeof defaultMasks>
 }
 
 export type BuildBaseThemesResult = ReturnType<typeof buildThemeSuite>

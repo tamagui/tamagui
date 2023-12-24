@@ -8,8 +8,8 @@ export type Templates = Record<string, Template> & {
 export type BuildThemeSuiteProps = {
     palettes: PaletteDefinitions;
     subThemes?: SubTheme[];
+    componentThemes?: SubTheme[];
     templates?: Templates;
-    componentMask?: MaskOptions;
 };
 export type BuildThemeSuitePalettes = {
     light: string[];
@@ -52,6 +52,9 @@ export type BuildTheme = BuildThemeBase & {
 export type BuildMask = {
     id: string;
 } & ({
+    type: 'override';
+    override: Record<string, number>;
+} | {
     type: 'strengthen';
     strength: number;
 } | {
@@ -69,5 +72,6 @@ export type BuildMask = {
 export type BuildThemeMask = BuildThemeBase & {
     type: 'mask';
     masks: BuildMask[];
+    maskOptions?: MaskOptions;
 };
 //# sourceMappingURL=types.d.ts.map

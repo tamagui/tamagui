@@ -34,6 +34,10 @@ export declare class ThemeBuilder<State extends ThemeBuilderState = ThemeBuilder
     addMasks<const M extends MaskDefinitions>(masks: M): ThemeBuilder<State & {
         masks: M;
     }>;
+    _addedThemes: {
+        type: 'themes' | 'childThemes';
+        args: any;
+    }[];
     addThemes<const T extends ThemeDefinitions<ObjectStringKeys<State['masks']>>>(themes: T): ThemeBuilder<Omit<State, "themes"> & {
         themes: T;
     }>;
