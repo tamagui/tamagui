@@ -12,7 +12,7 @@ import {
 } from '@tamagui/create-theme'
 import type { Narrow } from '@tamagui/web'
 
-type ThemeBuilderState = {
+export type ThemeBuilderState = {
   palettes?: PaletteDefinitions
   templates?: TemplateDefinitions
   themes?: ThemeDefinitions
