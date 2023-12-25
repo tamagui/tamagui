@@ -35,6 +35,8 @@ import * as React from 'react'
 import { Image, ImageProps } from 'react-native'
 import { RemoveScroll } from 'react-remove-scroll'
 
+import { MenuPredefinied } from './Menu'
+
 type Direction = 'ltr' | 'rtl'
 
 const SELECTION_KEYS = ['Enter', ' ']
@@ -369,25 +371,25 @@ export const { Provider: NativePropProvider, useStyledContext: useNativeProp } =
   createStyledContext({ native: false })
 
 export function createMenu({
-  Item: _Item,
-  Title: _Title,
-  SubTitle: _SubTitle,
-  Image: _Image,
-  Icon: _Icon,
-  Indicator: _Indicator,
-  Separator: _Separator,
-  MenuGroup: _MenuGroup,
-  Label: _Label,
+  Item: _Item = MenuPredefinied.MenuItem,
+  Title: _Title = MenuPredefinied.Title,
+  SubTitle: _SubTitle = MenuPredefinied.SubTitle,
+  Image: _Image = MenuPredefinied.MenuImage,
+  Icon: _Icon = MenuPredefinied.MenuIcon,
+  Indicator: _Indicator = MenuPredefinied.MenuIndicator,
+  Separator: _Separator = MenuPredefinied.MenuSeparator,
+  MenuGroup: _MenuGroup = MenuPredefinied.MenuGroup,
+  Label: _Label = MenuPredefinied.MenuLabel,
 }: {
-  Item: TamaguiComponent
-  MenuGroup: TamaguiComponent
-  Title: TamaguiComponent
-  SubTitle: TamaguiComponent
-  Image: React.ElementType
-  Icon: TamaguiComponent
-  Indicator: TamaguiComponent
-  Separator: TamaguiComponent
-  Label: TamaguiComponent
+  Item?: TamaguiComponent
+  MenuGroup?: TamaguiComponent
+  Title?: TamaguiComponent
+  SubTitle?: TamaguiComponent
+  Image?: React.ElementType
+  Icon?: TamaguiComponent
+  Indicator?: TamaguiComponent
+  Separator?: TamaguiComponent
+  Label?: TamaguiComponent
 }) {
   const MenuComp = (props: ScopedProps<MenuProps>) => {
     const {
