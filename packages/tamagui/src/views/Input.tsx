@@ -82,7 +82,7 @@ export function useInputProps(props: InputProps, ref: any) {
 
   return {
     ref: combinedRef,
-    editable: !props.disabled,
+    readOnly: props.disabled,
     ...props,
     placeholderTextColor,
     onChangeText,
