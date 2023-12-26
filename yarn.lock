@@ -5062,6 +5062,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rehookify/datepicker@npm:^6.5.0":
+  version: 6.5.0
+  resolution: "@rehookify/datepicker@npm:6.5.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17 || ^18
+  checksum: 82de2a98eb905630529ddecead4e784089cfebea4ff900f34358cf137ee1a21f9db5ed922eddf6c8e3b8e3545b310e8c930df56f8a6a7fd8973344eb573a183a
+  languageName: node
+  linkType: hard
+
 "@remix-run/router@npm:1.7.1":
   version: 1.7.1
   resolution: "@remix-run/router@npm:1.7.1"
@@ -5995,6 +6004,7 @@ __metadata:
     "@react-native/polyfills": ^2.0.0
     "@react-navigation/native": ^6.1.7
     "@react-navigation/native-stack": ^6.9.13
+    "@rehookify/datepicker": ^6.5.0
     "@rnx-kit/metro-config": ^1.3.5
     "@rnx-kit/metro-resolver-symlinks": ^0.1.26
     "@shopify/restyle": ^2.4.2
