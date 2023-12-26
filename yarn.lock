@@ -5062,6 +5062,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rehookify/datepicker@npm:^6.5.0":
+  version: 6.5.0
+  resolution: "@rehookify/datepicker@npm:6.5.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17 || ^18
+  checksum: 82de2a98eb905630529ddecead4e784089cfebea4ff900f34358cf137ee1a21f9db5ed922eddf6c8e3b8e3545b310e8c930df56f8a6a7fd8973344eb573a183a
+  languageName: node
+  linkType: hard
+
 "@remix-run/router@npm:1.7.1":
   version: 1.7.1
   resolution: "@remix-run/router@npm:1.7.1"
@@ -5995,6 +6004,7 @@ __metadata:
     "@react-native/polyfills": ^2.0.0
     "@react-navigation/native": ^6.1.7
     "@react-navigation/native-stack": ^6.9.13
+    "@rehookify/datepicker": ^6.5.0
     "@rnx-kit/metro-config": ^1.3.5
     "@rnx-kit/metro-resolver-symlinks": ^0.1.26
     "@shopify/restyle": ^2.4.2
@@ -6017,7 +6027,9 @@ __metadata:
     expo: 49.0.16
     expo-build-properties: ~0.8.3
     expo-dev-client: ~2.4.6
+    expo-document-picker: ^11.7.0
     expo-font: ~11.4.0
+    expo-image-picker: ^14.5.0
     expo-linear-gradient: ~12.3.0
     expo-linking: ^5.0.2
     expo-splash-screen: ~0.20.4
@@ -6029,6 +6041,7 @@ __metadata:
     pod-install: ^0.1.38
     react: ^18.2.0
     react-dom: ^18.2.0
+    react-dropzone: ^14.2.3
     react-native: ^0.72.1
     react-native-gesture-handler: ~2.12.0
     react-native-ios-modal: 2.0.0-3
@@ -10388,6 +10401,13 @@ __metadata:
   version: 1.0.0
   resolution: "atomic-sleep@npm:1.0.0"
   checksum: b95275afb2f80732f22f43a60178430c468906a415a7ff18bcd0feeebc8eec3930b51250aeda91a476062a90e07132b43a1794e8d8ffcf9b650e8139be75fa36
+  languageName: node
+  linkType: hard
+
+"attr-accept@npm:^2.2.2":
+  version: 2.2.2
+  resolution: "attr-accept@npm:2.2.2"
+  checksum: 496f7249354ab53e522510c1dc8f67a1887382187adde4dc205507d2f014836a247073b05e9d9ea51e2e9c7f71b0d2aa21730af80efa9af2d68303e5f0565c4d
   languageName: node
   linkType: hard
 
@@ -14880,6 +14900,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"expo-document-picker@npm:^11.7.0":
+  version: 11.10.1
+  resolution: "expo-document-picker@npm:11.10.1"
+  peerDependencies:
+    expo: "*"
+  checksum: 6b0421df8042384d00cda2b09ad389996d0ae8194c73d24c70b1744c1796ac469c8fe46271e399fdb2701bd5468ed7d37e7851bd64bd5feef591c7bdba465d63
+  languageName: node
+  linkType: hard
+
 "expo-eas-client@npm:~0.6.0":
   version: 0.6.0
   resolution: "expo-eas-client@npm:0.6.0"
@@ -14906,6 +14935,26 @@ __metadata:
   peerDependencies:
     expo: "*"
   checksum: 3eff92ba5c62de5f37cfdfd86a5daf1d448e4f3e82a9ff401b4c4da1c4e5a7241da26edf32fb049763147e442d74ae8b4575b7e5a4ae0d935750c6d3f70f4355
+  languageName: node
+  linkType: hard
+
+"expo-image-loader@npm:~4.6.0":
+  version: 4.6.0
+  resolution: "expo-image-loader@npm:4.6.0"
+  peerDependencies:
+    expo: "*"
+  checksum: 02981667f03dc429cd9db37e0acc302e4a0c4bb5875dc087b1c26388ef64563481e52dddc1d42dd32794eb7051d1acf5bc0c078413469c29025a02d4d4af1154
+  languageName: node
+  linkType: hard
+
+"expo-image-picker@npm:^14.5.0":
+  version: 14.7.1
+  resolution: "expo-image-picker@npm:14.7.1"
+  dependencies:
+    expo-image-loader: ~4.6.0
+  peerDependencies:
+    expo: "*"
+  checksum: f9022cc9162365471b8e979df2c7a2156f43819b4717fb6ba376aedb6b55352a7b60b3a50a279dd58cf2551fbdd8a0719c5c903dcde4703436029e0fdca9c035
   languageName: node
   linkType: hard
 
@@ -15489,6 +15538,15 @@ __metadata:
   peerDependencies:
     webpack: ^4.0.0 || ^5.0.0
   checksum: faf43eecf233f4897b0150aaa874eeeac214e4f9de49738a9e0ef734a30b5260059e85b7edadf852b98e415f875bd5f12587768a93fd52aaf2e479ecf95fab20
+  languageName: node
+  linkType: hard
+
+"file-selector@npm:^0.6.0":
+  version: 0.6.0
+  resolution: "file-selector@npm:0.6.0"
+  dependencies:
+    tslib: ^2.4.0
+  checksum: 7d051b6e5d793f3c6e2ab287ba5e7c2c6a0971bccc9d56e044c8047ba483e18f60fc0b5771c951dc707c0d15f4f36ccb4f1f1aaf385d21ec8f7700dadf8325ba
   languageName: node
   linkType: hard
 
@@ -23311,6 +23369,19 @@ __metadata:
     react: ">= 16.3.0"
     react-dom: ">= 16.3.0"
   checksum: 21c3775db086e13020967627c20acd41d1ddbc7c7d7fca51491a5bbb54a0aa7e1730a4bc9af17141eb50a4954e547a5e25b2368f5f54b70db6f2686a897bacf2
+  languageName: node
+  linkType: hard
+
+"react-dropzone@npm:^14.2.3":
+  version: 14.2.3
+  resolution: "react-dropzone@npm:14.2.3"
+  dependencies:
+    attr-accept: ^2.2.2
+    file-selector: ^0.6.0
+    prop-types: ^15.8.1
+  peerDependencies:
+    react: ">= 16.8 || 18.0.0"
+  checksum: 174b744d5ca898cf3d84ec1aeb6cef5211c446697e45dc8ece8287a03d291f8d07253206d5a1247ef156fd385d65e7de666d4d5c2986020b8543b8f2434e8b40
   languageName: node
   linkType: hard
 

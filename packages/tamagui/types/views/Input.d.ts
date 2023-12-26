@@ -421,7 +421,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     caretHidden?: boolean | undefined;
     contextMenuHidden?: boolean | undefined;
     defaultValue?: string | undefined;
-    editable: boolean;
+    editable?: boolean | undefined;
     keyboardType?: import("react-native").KeyboardTypeOptions | undefined;
     inputMode?: import("react-native").InputModeOptions | undefined;
     maxLength?: number | undefined;
@@ -464,5 +464,6 @@ export declare function useInputProps(props: InputProps, ref: any): {
     showSoftInputOnFocus?: boolean | undefined;
     rows?: number | undefined;
     ref: (node: any) => void;
+    readOnly: boolean | undefined;
 };
 //# sourceMappingURL=Input.d.ts.map
