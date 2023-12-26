@@ -38,6 +38,7 @@
     "@react-native/polyfills": "^2.0.0",
     "@react-navigation/native": "^6.1.7",
     "@react-navigation/native-stack": "^6.9.13",
+    "@rehookify/datepicker": "^6.5.0",
     "@shopify/restyle": "^2.4.2",
     "@tamagui/animations-reanimated": "1.79.19",
     "@tamagui/cli": "1.79.19",
