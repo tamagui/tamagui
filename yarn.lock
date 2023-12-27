@@ -6021,6 +6021,7 @@ __metadata:
     "@tamagui/shorthands": 1.79.19
     "@tamagui/themes": 1.79.19
     "@tamagui/web": 1.79.19
+    "@tanstack/react-table": ^8.11.2
     "@welldone-software/why-did-you-render": ^7.0.1
     babel-plugin-transform-inline-environment-variables: ^0.4.4
     burnt: ^0.12.1
@@ -8107,6 +8108,25 @@ __metadata:
     react: "*"
   languageName: unknown
   linkType: soft
+
+"@tanstack/react-table@npm:^8.11.2":
+  version: 8.11.2
+  resolution: "@tanstack/react-table@npm:8.11.2"
+  dependencies:
+    "@tanstack/table-core": 8.11.2
+  peerDependencies:
+    react: ">=16"
+    react-dom: ">=16"
+  checksum: 783a7bc53aeb011dbcfbd8b79aa2f2fe943fe46f7e27a599fcb04e45574e02f3a36605cfc43900b25cf3544c2e273664990a062e33dcc0826477ddb3a643592b
+  languageName: node
+  linkType: hard
+
+"@tanstack/table-core@npm:8.11.2":
+  version: 8.11.2
+  resolution: "@tanstack/table-core@npm:8.11.2"
+  checksum: 9b97d30bc80882a17d3f8ebdfecdc580905f1708dee73897b6c451f676a4b35beaf57b0939e05d80a395d5ef23cf515fa2a1159554f9928dfacddadd69ba7f7c
+  languageName: node
+  linkType: hard
 
 "@tauri-apps/api@npm:^1.5.1":
   version: 1.5.1
