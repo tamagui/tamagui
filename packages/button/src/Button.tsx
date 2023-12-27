@@ -287,13 +287,14 @@ function useButton<Props extends ButtonProps>(
   })
 
   // fixes SSR issue + DOM nesting issue of not allowing button in button
-  const tag = isNested
-    ? 'span'
-    : // defaults to <a /> when accessibilityRole = link
-    // see https://github.com/tamagui/tamagui/issues/505
-    propsActive.accessibilityRole === 'link'
-    ? 'a'
-    : undefined
+  const tag =
+    propsIn.tag ?? isNested
+      ? 'span'
+      : // defaults to <a /> when accessibilityRole = link
+      // see https://github.com/tamagui/tamagui/issues/505
+      propsActive.accessibilityRole === 'link'
+      ? 'a'
+      : undefined
 
   const props = {
     size,
