@@ -1,4 +1,8 @@
-import { AnimatePresence, AnimatePresenceProps } from '@tamagui/animate-presence'
+import {
+  AnimatePresence,
+  AnimatePresenceProps,
+  ResetPresence,
+} from '@tamagui/animate-presence'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { ThemeableStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -136,7 +140,7 @@ const CollapsibleContent = CollapsibleContentFrame.styleable<
     <AnimatePresence {...contentProps}>
       {forceMount || context.open ? (
         <CollapsibleContentFrame ref={forwardedRef} {...contentProps}>
-          {children}
+          <ResetPresence>{children}</ResetPresence>
         </CollapsibleContentFrame>
       ) : null}
     </AnimatePresence>

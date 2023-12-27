@@ -1,3 +1,5 @@
+import path from 'path'
+
 import { TamaguiOptions, loadTamagui, watchTamaguiConfig } from '@tamagui/static'
 import type { Compiler, RuleSetRule } from 'webpack'
 
@@ -21,6 +23,22 @@ export class TamaguiPlugin {
       components: ['@tamagui/core'],
     }
   ) {}
+
+  // TODO: make sure this is working correctly
+  removeDuplicates(cssContent) {
+    const rules = cssContent.split(/(?<={)/g)
+    const uniqueRules = new Set()
+
+    for (let i = 0; i < rules.length; i++) {
+      const rule = rules[i].trim()
+
+      if (rule) {
+        uniqueRules.add(rule)
+      }
+    }
+
+    return Array.from(uniqueRules).join('\n')
+  }
 
   apply(compiler: Compiler) {
     if (compiler.watchMode && !this.options.disableWatchConfig) {
@@ -48,6 +66,79 @@ export class TamaguiPlugin {
         }
       )
     })
+
+    const cssFileName = this.options.cssFileName
+
+    if (cssFileName) {
+      compiler.hooks.make.tap(this.pluginName, (compilation) => {
+        const getContentHash = (source: string) => {
+          const { outputOptions } = compilation
+          const { hashDigest, hashDigestLength, hashFunction, hashSalt } = outputOptions
+          const hash = compiler.webpack.util.createHash(hashFunction)
+
+          if (hashSalt) {
+            hash.update(hashSalt)
+          }
+
+          hash.update(source)
+
+          const fullContentHash = hash.digest(hashDigest)
+
+          return fullContentHash.toString().slice(0, hashDigestLength)
+        }
+
+        compilation.hooks.processAssets.tap(
+          {
+            name: this.pluginName,
+            stage: compiler.webpack.Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL,
+          },
+          (assets) => {
+            try {
+              const cssFiles = Object.keys(assets).filter((asset) =>
+                asset.endsWith('.css')
+              )
+
+              if (cssFiles.length === 0) {
+                return
+              }
+
+              const combinedCSS = cssFiles.reduce((acc, file) => {
+                const cssContent = compilation.assets[file].source()
+                return `${acc}${cssContent}`
+              }, '')
+
+              const contentHash = getContentHash(combinedCSS)
+
+              const data = {
+                fileName: cssFileName,
+                contentHash,
+                chunk: {
+                  id: cssFileName,
+                  name: path.parse(cssFileName).name,
+                  hash: contentHash,
+                },
+              }
+
+              const { path: hashedPath, info: hashedInfo } = compilation.getPathWithInfo(
+                data.fileName,
+                data
+              )
+              compilation.emitAsset(
+                hashedPath,
+                new compiler.webpack.sources.RawSource(combinedCSS),
+                hashedInfo
+              )
+
+              cssFiles.forEach((file) => {
+                compilation.deleteAsset(file)
+              })
+            } catch (error: any) {
+              compilation.errors.push(error)
+            }
+          }
+        )
+      })
+    }
 
     compiler.options.resolve.extensions = [
       ...new Set([

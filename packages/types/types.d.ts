@@ -101,6 +101,10 @@ export interface TamaguiOptions {
    * (Experimental) Will flatten theme value usages on native as well
    */
   experimentalFlattenThemesOnNative?: boolean
+  /**
+   * combine all css files into one file
+   */
+  cssFileName?: string
 }
 
 // for cli
