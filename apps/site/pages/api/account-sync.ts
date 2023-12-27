@@ -6,8 +6,6 @@ import { Session } from '@supabase/auth-helpers-nextjs'
 import { checkForSponsorship } from 'protected/_utils/github'
 import { siteRootDir } from 'protected/constants'
 
-// const usernameWhitelist = ['natew', 'alitnk']
-
 async function githubTokenSync(session: Session) {
   const token = session?.provider_token ?? session?.user?.user_metadata.github_token
   if (token) {
