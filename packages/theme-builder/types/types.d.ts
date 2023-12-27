@@ -1,14 +1,15 @@
-import { MaskOptions, Template } from '@tamagui/create-theme';
+import { MaskOptions, PaletteDefinitions, Template } from '@tamagui/create-theme';
 export type SubTheme = BuildTheme | BuildThemeMask;
+export type Templates = Record<string, Template> & {
+    base: Template;
+    accentLight?: Template;
+    accentDark?: Template;
+};
 export type BuildThemeSuiteProps = {
-    baseTheme: BuildTheme;
+    palettes: PaletteDefinitions;
     subThemes?: SubTheme[];
-    componentMask?: MaskOptions;
-    templates?: {
-        base: Template;
-        accentLight: Template;
-        accentDark: Template;
-    };
+    componentThemes?: SubTheme[];
+    templates?: Templates;
 };
 export type BuildThemeSuitePalettes = {
     light: string[];
@@ -51,6 +52,9 @@ export type BuildTheme = BuildThemeBase & {
 export type BuildMask = {
     id: string;
 } & ({
+    type: 'override';
+    override: Record<string, number>;
+} | {
     type: 'strengthen';
     strength: number;
 } | {
@@ -68,5 +72,6 @@ export type BuildMask = {
 export type BuildThemeMask = BuildThemeBase & {
     type: 'mask';
     masks: BuildMask[];
+    maskOptions?: MaskOptions;
 };
 //# sourceMappingURL=types.d.ts.map

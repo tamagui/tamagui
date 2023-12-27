@@ -147,7 +147,7 @@ const uniswapGithubUsers = [
 
 export const whitelistGithubUsernames = [
   'natew',
-  'alitnk',
+  // 'alitnk', // commented out to test `takeout -> studio` access
   'benschac',
   'danstepanov',
 

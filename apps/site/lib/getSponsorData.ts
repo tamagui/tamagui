@@ -7,6 +7,7 @@ import { whitelistGithubUsernames } from '../protected/_utils/github'
 import { HandledResponseTermination } from './apiRoute'
 import { Database } from './supabase-types'
 import { getArray } from './supabase-utils'
+import { userHasTakeout } from './user-helpers'
 
 const STUDIO_COOKIE_NAME = 'studio_jwt'
 const JWT_SECRET = process.env.STUDIO_JWT_SECRET!
@@ -49,7 +50,12 @@ export async function checkSponsorAccess({
     (team) =>
       team.is_active || whitelistGithubUsernames.some((name) => team.name === name)
   )
-  const hasStudioAccess = teamsWithAccess.length > 0
+  // if the user has purchased takeout, we give studio access
+  const hasTakeout = await userHasTakeout(supabase)
+  // if the user has at least one team (this could be a personal team too - so basically a personal sponsorship) with active sponsorship, we give studio access
+  const hasTeamAccess = teamsWithAccess.length > 0
+
+  const hasStudioAccess = hasTakeout || hasTeamAccess
 
   const payload: PayloadShape = { hasStudioAccess, teamId: teamsWithAccess[0]?.id }
 
