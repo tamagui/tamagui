@@ -241,12 +241,10 @@ const RadioGroupItem = RadioGroupItemFrame.extractable(
         if (isWeb) {
           const handleKeyDown = (event: KeyboardEvent) => {
             if (ARROW_KEYS.includes(event.key)) {
-              console.log('pressing down')
               isArrowKeyPressedRef.current = true
             }
           }
           const handleKeyUp = () => {
-            console.log('pressing up')
             isArrowKeyPressedRef.current = false
           }
           document.addEventListener('keydown', handleKeyDown)
@@ -342,7 +340,6 @@ const RadioGroupItem = RadioGroupItemFrame.extractable(
                        * and we need to "check" it in that case. We click it to "check" it (instead
                        * of updating `context.value`) so that the radio change event fires.
                        */
-                      console.log(isArrowKeyPressedRef.current)
                       if (isArrowKeyPressedRef.current) {
                         ;(ref.current as HTMLButtonElement)?.click()
                       }
