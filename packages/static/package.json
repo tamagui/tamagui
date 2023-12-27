@@ -53,6 +53,7 @@
     "find-root": "^1.1.0",
     "fs-extra": "^11.1.0",
     "invariant": "^2.2.4",
+    "lightningcss": "^1.22.1",
     "lodash": "^4.17.21",
     "react-native-web": "^0.19.9",
     "react-native-web-internals": "1.79.19",

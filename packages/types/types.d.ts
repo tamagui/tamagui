@@ -104,7 +104,7 @@ export interface TamaguiOptions {
   /**
    * combine all css files into one file
    */
-  cssFileName?: string
+  emitSingleCSSFile?: boolean
 }
 
 // for cli

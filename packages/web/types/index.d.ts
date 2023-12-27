@@ -17,6 +17,7 @@ export * from './constants/constants';
 export * from './contexts/ComponentContext';
 export * from './helpers/createStyledContext';
 export * from './helpers/expandStyles';
+export * from './helpers/createMediaStyle';
 export * from './helpers/expandStylesAndRemoveNullishValues';
 export * from './helpers/propMapper';
 export * from './helpers/getExpandedShorthands';
