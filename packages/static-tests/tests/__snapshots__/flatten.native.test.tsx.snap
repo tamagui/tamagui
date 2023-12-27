@@ -4,7 +4,6 @@ exports[`flatten-tests > flattened media queries 1`] = `
 "const __ReactNativeStyleSheet = require('react-native').StyleSheet;
 const _sheet = __ReactNativeStyleSheet.create({
   \\"0\\": {
-    \\"alignItems\\": \\"stretch\\",
     \\"flexDirection\\": \\"column\\",
     \\"transform\\": [{
       \\"translateY\\": 10

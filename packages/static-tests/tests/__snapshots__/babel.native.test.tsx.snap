@@ -4,7 +4,6 @@ exports[`basic conditional extraction 1`] = `
 "const __ReactNativeStyleSheet = require('react-native').StyleSheet;
 const _sheet = __ReactNativeStyleSheet.create({
   \\"0\\": {
-    \\"alignItems\\": \\"stretch\\",
     \\"flexDirection\\": \\"column\\"
   },
   \\"1\\": {
@@ -14,7 +13,6 @@ const _sheet = __ReactNativeStyleSheet.create({
     \\"backgroundColor\\": \\"blue\\"
   },
   \\"3\\": {
-    \\"alignItems\\": \\"stretch\\",
     \\"flexDirection\\": \\"column\\"
   },
   \\"4\\": {
@@ -37,7 +35,6 @@ exports[`basic extraction 1`] = `
 "const __ReactNativeStyleSheet = require('react-native').StyleSheet;
 const _sheet = __ReactNativeStyleSheet.create({
   \\"0\\": {
-    \\"alignItems\\": \\"stretch\\",
     \\"flexDirection\\": \\"column\\",
     \\"backgroundColor\\": \\"red\\"
   }
@@ -54,7 +51,6 @@ exports[`flat transform props 1`] = `
 "const __ReactNativeStyleSheet = require('react-native').StyleSheet;
 const _sheet = __ReactNativeStyleSheet.create({
   \\"0\\": {
-    \\"alignItems\\": \\"stretch\\",
     \\"flexDirection\\": \\"column\\"
   },
   \\"1\\": {
@@ -97,9 +93,7 @@ export function Test(props) {
 exports[`normalize ternaries flips the conditional properly 1`] = `
 "const __ReactNativeStyleSheet = require('react-native').StyleSheet;
 const _sheet = __ReactNativeStyleSheet.create({
-  \\"0\\": {
-    \\"alignItems\\": \\"stretch\\"
-  },
+  \\"0\\": {},
   \\"1\\": {
     \\"marginBottom\\": 0
   },
