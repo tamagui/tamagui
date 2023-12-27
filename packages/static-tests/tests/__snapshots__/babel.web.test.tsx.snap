@@ -3,7 +3,7 @@
 exports[`className + conditional styles get full base styles merged onto + shorthand 1`] = `
 "const _cn3 = \\" _bg-blue\\";
 const _cn2 = \\" _bg-red\\";
-const _cn = \\" _ai-stretch _dsp-flex _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _w-10px  \\";
+const _cn = \\" _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _w-10px  \\";
 import { Stack } from '@tamagui/core';
 export function Test(props) {
   return <div className={concatClassName(\\"\\" + (_cn + (props.green ? _cn2 : _cn3) + (props.className ? \\" \\" + props.className : \\"\\")))} />;
@@ -12,8 +12,8 @@ import { concatClassName } from \\"@tamagui/helpers\\";"
 `;
 
 exports[`className + conditional styles get full base styles merged onto + shorthand 2`] = `
-":root ._ai-stretch{align-items:stretch;}
-:root ._dsp-flex{display:flex;}
+":root ._dsp-flex{display:flex;}
+:root ._ai-stretch{align-items:stretch;}
 :root ._fd-column{flex-direction:column;}
 :root ._fb-auto{flex-basis:auto;}
 :root ._bxs-border-box{box-sizing:border-box;}
@@ -29,7 +29,7 @@ exports[`className + conditional styles get full base styles merged onto + short
 exports[`conditional styles get full base styles merged onto + shorthand 1`] = `
 "const _cn3 = \\" _bg-blue\\";
 const _cn2 = \\" _bg-red\\";
-const _cn = \\" _ai-stretch _dsp-flex _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _w-10px  \\";
+const _cn = \\" _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _w-10px  \\";
 import { Stack } from '@tamagui/core';
 export function Test(props) {
   return <div className={concatClassName(\\"\\" + (_cn + (props.green ? _cn2 : _cn3)))} />;
@@ -38,8 +38,8 @@ import { concatClassName } from \\"@tamagui/helpers\\";"
 `;
 
 exports[`conditional styles get full base styles merged onto + shorthand 2`] = `
-":root ._ai-stretch{align-items:stretch;}
-:root ._dsp-flex{display:flex;}
+":root ._dsp-flex{display:flex;}
+:root ._ai-stretch{align-items:stretch;}
 :root ._fd-column{flex-direction:column;}
 :root ._fb-auto{flex-basis:auto;}
 :root ._bxs-border-box{box-sizing:border-box;}

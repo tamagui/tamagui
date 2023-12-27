@@ -1,3 +1,5 @@
+studio: export for takeout option
+
 outlineWidth get smaller at smaller size
 
 studio:

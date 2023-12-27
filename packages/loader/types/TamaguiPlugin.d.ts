@@ -14,7 +14,6 @@ export declare class TamaguiPlugin {
     options: PluginOptions;
     pluginName: string;
     constructor(options?: PluginOptions);
-    removeDuplicates(cssContent: any): string;
     apply(compiler: Compiler): void;
 }
 //# sourceMappingURL=TamaguiPlugin.d.ts.map
