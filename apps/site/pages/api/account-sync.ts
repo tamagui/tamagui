@@ -29,7 +29,7 @@ export default apiRoute(async (req, res) => {
     session.user?.identities?.find((identity) => identity.provider === 'github')
       ?.identity_data?.user_name
   if (
-    session.user.app_metadata.provider !== 'github' ||
+    !session.user.app_metadata.providers.includes('github') ||
     !githubLogin ||
     !userGithubToken
   ) {
