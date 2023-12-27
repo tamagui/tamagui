@@ -35,6 +35,7 @@
     "@tamagui/constants": "1.80.0",
     "@tamagui/core": "1.80.0",
     "@tamagui/create-context": "1.80.0",
+    "@tamagui/roving-focus": "1.80.0",
     "@tamagui/focusable": "1.80.0",
     "@tamagui/get-token": "1.80.0",
     "@tamagui/helpers": "1.80.0",
