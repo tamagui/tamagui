@@ -6,6 +6,8 @@ import { Session } from '@supabase/auth-helpers-nextjs'
 import { checkForSponsorship } from 'protected/_utils/github'
 import { siteRootDir } from 'protected/constants'
 
+// const usernameWhitelist = ['natew', 'alitnk']
+
 async function githubTokenSync(session: Session) {
   const token = session?.provider_token ?? session?.user?.user_metadata.github_token
   if (token) {
@@ -31,7 +33,10 @@ export default apiRoute(async (req, res) => {
     !githubLogin ||
     !userGithubToken
   ) {
-    console.error(`Failed to get github data for ${user.email}.`, { session })
+    console.error(
+      `Failed to get github data for ${user.email}. session: `,
+      JSON.stringify(session)
+    )
     res.status(403).json({
       error: 'No GitHub connection found. Connect or sync GitHub account and try again.',
       action: `${siteRootDir}/account`,
