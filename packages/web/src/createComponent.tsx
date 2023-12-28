@@ -921,47 +921,36 @@ export function createComponent<
 
     let className: string | undefined
 
-    if (process.env.TAMAGUI_TARGET === 'web') {
-      // TODO this could be moved into getSplitStyles right?
-      // const fromTheme = getThemeCNStyle(themeState)
+    const asChildExceptStyleLike =
+      asChild === 'except-style' || asChild === 'except-style-web'
 
-      let classList: string[] = []
-      if (componentName) classList.push(componentClassName)
-      if (fontFamilyClassName) classList.push(fontFamilyClassName)
-      if (classNames) classList.push(Object.values(classNames).join(' '))
-      if (groupClassName) classList.push(groupClassName)
+    if (!asChildExceptStyleLike) {
+      if (process.env.TAMAGUI_TARGET === 'web') {
+        let classList: string[] = []
+        if (componentName) classList.push(componentClassName)
+        if (fontFamilyClassName) classList.push(fontFamilyClassName)
+        if (classNames) classList.push(Object.values(classNames).join(' '))
+        if (groupClassName) classList.push(groupClassName)
 
-      className = classList.join(' ')
+        className = classList.join(' ')
 
-      if (isAnimatedReactNativeWeb && !avoidAnimationStyle) {
-        viewProps.style = style
-      } else if (isReactNative) {
-        // TODO these shouldn't really return from getSplitStyles when in Native mode
-        const cnStyles = { $$css: true }
-        for (const name of className.split(' ')) {
-          cnStyles[name] = name
+        if (isAnimatedReactNativeWeb && !avoidAnimationStyle) {
+          viewProps.style = style
+        } else if (isReactNative) {
+          // TODO these shouldn't really return from getSplitStyles when in Native mode
+          const cnStyles = { $$css: true }
+          for (const name of className.split(' ')) {
+            cnStyles[name] = name
+          }
+          viewProps.style = [...(Array.isArray(style) ? style : [style]), cnStyles]
+        } else {
+          viewProps.className = className
+          viewProps.style = style
         }
-        viewProps.style = [...(Array.isArray(style) ? style : [style]), cnStyles]
       } else {
-        viewProps.className = className
+        // native assign styles
         viewProps.style = style
       }
-
-      // turn debug data- props into dataSet in dev mode
-      if (isReactNative) {
-        if (process.env.NODE_ENV === 'development') {
-          Object.keys(viewProps).forEach((key) => {
-            if (key.startsWith('data-')) {
-              viewProps.dataSet ??= {}
-              viewProps.dataSet[key.replace('data-', '')] = viewProps[key]
-              delete viewProps[key]
-            }
-          })
-        }
-      }
-    } else {
-      // native assign styles
-      viewProps.style = style
     }
 
     // if its a group its gotta listen for pseudos to emit them to children

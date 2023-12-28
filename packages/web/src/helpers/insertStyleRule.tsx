@@ -372,6 +372,10 @@ export function insertStyleRules(rulesToInsert: RulesToInsert) {
   }
 }
 
+// The way browser or next.js work you end up with CSS being removed *after* the new CSS loads for the upcoming page
+// this causes many bugs. We defaulted to "2" here for safety, meaning we sacrificed some performance
+// setting TAMAGUI_INSERT_SELECTOR_TRIES=1 will be faster so long as you are concatting your CSS together
+
 const minInsertAmt = process.env.TAMAGUI_INSERT_SELECTOR_TRIES
   ? +process.env.TAMAGUI_INSERT_SELECTOR_TRIES
   : 2

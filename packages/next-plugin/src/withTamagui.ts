@@ -16,7 +16,7 @@ export type WithTamaguiProps = LoaderPluginOptions & {
   appDir?: boolean
 
   /**
-   * @deprecated Deprecated, just leave it off
+   * @deprecated Deprecated
    */
   useReactNativeWebLite: boolean
   enableLegacyFontSupport?: boolean
@@ -190,6 +190,11 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
               process.env.TAMAGUI_DOES_SSR_CSS ??
                 (tamaguiOptions?.doesMutateThemes === false ? true : 'mutates-themes')
             ),
+          }),
+
+          // optimizes inserts automatically assuming CSS wont be "removed" on page change
+          ...(tamaguiOptions.emitSingleCSSFile && {
+            'process.env.TAMAGUI_INSERT_SELECTOR_TRIES': JSON.stringify('1'),
           }),
         }
 

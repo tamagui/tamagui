@@ -174,7 +174,13 @@ const TooltipComponent = React.forwardRef(function Tooltip(
     } as any
   }
 
-  const useFloatingContext = React.useCallback(useFloatingFn, [id, delay, open])
+  const useFloatingContext = React.useCallback(useFloatingFn, [
+    id,
+    delay,
+    open,
+    restMs,
+    focus ? JSON.stringify(focus) : 0,
+  ])
   const onCustomAnchorAdd = React.useCallback(() => setHasCustomAnchor(true), [])
   const onCustomAnchorRemove = React.useCallback(() => setHasCustomAnchor(false), [])
   const contentId = React.useId()

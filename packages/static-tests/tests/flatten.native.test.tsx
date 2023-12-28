@@ -55,7 +55,6 @@ describe('flatten-tests', () => {
         },
       ],
       flexDirection: 'column',
-      alignItems: 'stretch',
     })
 
     expect(sheetStyles['1']).toEqual({

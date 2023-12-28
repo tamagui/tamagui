@@ -34,7 +34,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
 
   // const frontmatter = useContext(FrontmatterContext)
 
-  const isPreVisible = !isCollapsed || !isCollapsible;
+  const isPreVisible = !isCollapsed || !isCollapsible
 
   useEffect(() => {
     try {
@@ -158,8 +158,8 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
             {!disableCopy && (
               <TooltipSimple label={hasCopied ? 'Copied' : 'Copy to clipboard'}>
                 <Button
-                  aria-label="Copy code to clipboard"
                   position="absolute"
+                  aria-label="Copy code to clipboard"
                   size="$2"
                   top="$3"
                   right="$3"
