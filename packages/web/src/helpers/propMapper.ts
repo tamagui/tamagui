@@ -378,7 +378,7 @@ export const getTokenForKey = (
     return value
   }
 
-  const { theme, conf = getConfig(), context, fontFamily } = styleState
+  const { theme, conf = getConfig(), context, fontFamily, staticConfig } = styleState
 
   const tokensParsed = conf.tokensParsed
   let valOrVar: any
@@ -394,42 +394,52 @@ export const getTokenForKey = (
       hasSet = true
       valOrVar = conf.specificTokens[value]
     } else {
-      switch (key) {
-        case 'fontFamily': {
-          const fontsParsed = context?.language
-            ? getFontsForLanguage(conf.fontsParsed, context.language)
-            : conf.fontsParsed
-          valOrVar = fontsParsed[value]?.family || value
-          lastFontFamilyToken = value
+      const customTokenAccept = staticConfig?.acceptTokens?.[key]
+      if (customTokenAccept) {
+        const val = tokensParsed[customTokenAccept][value]
+        if (val) {
+          valOrVar = val
           hasSet = true
-          break
         }
-        case 'fontSize':
-        case 'lineHeight':
-        case 'letterSpacing':
-        case 'fontWeight': {
-          const defaultFont = conf.defaultFont || '$body'
-          const fam = fontFamily || defaultFont
-          if (fam) {
+      } else {
+        switch (key) {
+          case 'fontFamily': {
             const fontsParsed = context?.language
               ? getFontsForLanguage(conf.fontsParsed, context.language)
               : conf.fontsParsed
-            const font = fontsParsed[fam] || fontsParsed[defaultFont]
-            valOrVar = font?.[fontShorthand[key] || key]?.[value] || value
+            valOrVar = fontsParsed[value]?.family || value
+            lastFontFamilyToken = value
             hasSet = true
+            break
           }
-          break
+          case 'fontSize':
+          case 'lineHeight':
+          case 'letterSpacing':
+          case 'fontWeight': {
+            const defaultFont = conf.defaultFont || '$body'
+            const fam = fontFamily || defaultFont
+            if (fam) {
+              const fontsParsed = context?.language
+                ? getFontsForLanguage(conf.fontsParsed, context.language)
+                : conf.fontsParsed
+              const font = fontsParsed[fam] || fontsParsed[defaultFont]
+              valOrVar = font?.[fontShorthand[key] || key]?.[value] || value
+              hasSet = true
+            }
+            break
+          }
+        }
+        for (const cat in tokenCategories) {
+          if (key in tokenCategories[cat]) {
+            const res = tokensParsed[cat][value]
+            if (res != null) {
+              valOrVar = res
+              hasSet = true
+            }
+          }
         }
       }
-      for (const cat in tokenCategories) {
-        if (key in tokenCategories[cat]) {
-          const res = tokensParsed[cat][value]
-          if (res != null) {
-            valOrVar = res
-            hasSet = true
-          }
-        }
-      }
+
       if (!hasSet) {
         const spaceVar = tokensParsed.space[value]
         if (spaceVar != null) {
