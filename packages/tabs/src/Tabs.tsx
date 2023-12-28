@@ -210,7 +210,7 @@ const TabsTrigger = TabsTriggerFrame.extractable(
       }, [isSelected, value, layout])
 
       return (
-        <Theme name={isSelected ? 'active' : null}>
+        <Theme name={isSelected ? 'active' : null} forceClassName>
           <RovingFocusGroup.Item
             __scopeRovingFocusGroup={__scopeTabs || TABS_CONTEXT}
             asChild="except-style"
