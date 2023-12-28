@@ -3,6 +3,7 @@ import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import {
+  Stack,
   Theme,
   getConfig,
   themeable,
@@ -119,7 +120,7 @@ export const SheetImplementationCustom = themeable(
     const { animationDriver } = useConfiguration()
     const { useAnimatedNumber, useAnimatedNumberStyle, useAnimatedNumberReaction } =
       animationDriver
-    const AnimatedView = animationDriver.View as typeof Animated.View
+    const AnimatedView = (animationDriver.View ?? Stack) as typeof Animated.View
 
     useIsomorphicLayoutEffect(() => {
       if (!(parentSheetContext && open)) return
