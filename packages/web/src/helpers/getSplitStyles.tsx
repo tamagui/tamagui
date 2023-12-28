@@ -23,6 +23,7 @@ import {
   nativeAccessibilityValue,
   webToNativeAccessibilityDirectMap,
 } from '../constants/accessibilityDirectMap'
+import { webViewFlexCompatStyles } from '../constants/constants'
 import { isDevTools } from '../constants/isDevTools'
 import {
   getMediaImportanceIfMoreImportant,
@@ -266,6 +267,14 @@ export const getSplitStyles: StyleSplitter = (
 
     if (keyInit === 'className') continue // handled above first
     if (keyInit in usedKeys) continue
+
+    if (process.env.TAMAGUI_TARGET === 'web') {
+      // skip the webViewFlexCompatStyles when asChild on web
+      if (props.asChild && webViewFlexCompatStyles[keyInit] === valInit) {
+        continue
+      }
+    }
+
     // keyInit === 'style' is handled in skipProps
     if (keyInit in skipProps && !isHOC) {
       if (keyInit === 'group') {
