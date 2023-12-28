@@ -243,6 +243,20 @@ If order wasn't important, how would you expect these two different usages to wo
 
 You can skip this section unless you're building out very rich components that are nested multiple levels and need variants at each level.
 
+### Custom props that accepts tokens with `acceptTokens`
+
+If you are wrapping something like an SVG, you may want it to accept theme and token values on certain props, for example `fill`. You can do so using `acceptTokens`:
+
+```tsx
+const StyledSVG = styled(SVG, {}, {
+  acceptsTokens: {
+    fill: 'color'
+  }
+})
+```
+
+Now your StyledSVG will properly type the `fill` property to accept token and theme values. It will then map any values it recieves to the style prop with any token or theme values resolved.
+
 ### styleable
 
 <Notice>

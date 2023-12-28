@@ -126,6 +126,15 @@ export const PROP_SPLIT = '-'
 //   dynamicThemeAccess,
 // }
 
+function isValidStyleKey(key: string, staticConfig: StaticConfig) {
+  const validStyleProps =
+    staticConfig.validStyles ?? (staticConfig.isText ? stylePropsText : validStyles)
+  return (
+    key in validStyleProps ||
+    (staticConfig.acceptTokens && key in staticConfig.acceptTokens)
+  )
+}
+
 export const getSplitStyles: StyleSplitter = (
   props,
   staticConfig,
@@ -162,7 +171,6 @@ export const getSplitStyles: StyleSplitter = (
     acceptsClassName,
   } = staticConfig
 
-  const validStyleProps = isText ? stylePropsText : validStyles
   const viewProps: GetStyleResult['viewProps'] = {}
   const mediaState = styleProps.mediaState || globalMediaState
   const usedKeys: Record<string, number> = {}
@@ -296,13 +304,12 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     const valInitType = typeof valInit
-
-    styleState.curProps[keyInit] = valInit
+    const isValidStyleKeyInit = isValidStyleKey(keyInit, staticConfig)
 
     // TODO this is duplicated! but seems to be fixing some bugs so leaving got now
     if (process.env.TAMAGUI_TARGET === 'web') {
       if (valInitType === 'string' && valInit[0] === '_') {
-        if (keyInit in validStyleProps || keyInit.includes('-')) {
+        if (isValidStyleKeyInit || keyInit.includes('-')) {
           if (process.env.NODE_ENV === 'development' && debug) {
             log(`Adding compiled style ${keyInit}: ${valInit}`)
           }
@@ -318,6 +325,8 @@ export const getSplitStyles: StyleSplitter = (
         }
       }
     }
+
+    styleState.curProps[keyInit] = valInit
 
     if (process.env.TAMAGUI_TARGET === 'native') {
       if (!isAndroid) {
@@ -529,7 +538,6 @@ export const getSplitStyles: StyleSplitter = (
      * for if there's a pseudo/media returned from it.
      */
 
-    const isValidStyleKeyInit = keyInit in validStyleProps
     const isShorthand = keyInit in shorthands
 
     let isVariant = !isValidStyleKeyInit && variants && keyInit in variants
@@ -1059,7 +1067,7 @@ export const getSplitStyles: StyleSplitter = (
         // is HOC we can just pass through the styles as props
         // this fixes issues where style prop got merged with wrong priority
         !isHOC &&
-        (key in validStyleProps ||
+        (isValidStyleKey(key, staticConfig) ||
           (process.env.TAMAGUI_TARGET === 'native' && isAndroid && key === 'elevation'))
       ) {
         mergeStyle(styleState, key, val)

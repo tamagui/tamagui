@@ -637,7 +637,7 @@ export type ThemeValueFallbackSize = GetThemeValueFallbackFor<AllowedValueSettin
 export type ThemeValueFallbackColor = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingColor, never, SomewhatSpecificColorValue, UnionableString | UnionableNumber, WebStyleValueUniversal>;
 export type ThemeValueFallbackRadius = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingRadius, never, UnionableNumber, UnionableNumber, WebStyleValueUniversal>;
 export type ThemeValueFallbackZIndex = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingZIndex, never, UnionableNumber, UnionableNumber, WebStyleValueUniversal>;
-type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`;
+export type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`;
 export type SpecificTokens<Record = Tokens, RK extends keyof Record = keyof Record> = RK extends string ? `$${RK}.${keyof Record[RK] extends string | number ? keyof Record[RK] : never}` : never;
 export type SpecificTokensSpecial = TamaguiSettings extends {
     autocompleteSpecificTokens: infer Val;
@@ -677,7 +677,7 @@ type ParseFont<A extends GenericFont> = {
     face: TokenPrefixedIfExists<A['face']>;
 };
 type TokenPrefixedIfExists<A> = A extends Object ? TokenPrefixed<A> : {};
-export type ThemeValueByCategory<K extends string | number | symbol> = K extends 'theme' ? ThemeTokens : K extends 'size' ? SizeTokens : K extends 'font' ? FontTokens : K extends 'fontSize' ? FontSizeTokens : K extends 'space' ? SpaceTokens : K extends 'color' ? ColorTokens : K extends 'zIndex' ? ZIndexTokens : K extends 'lineHeight' ? FontLineHeightTokens : K extends 'fontWeight' ? FontWeightTokens : K extends 'letterSpacing' ? FontLetterSpacingTokens : K extends keyof Tokens ? GetTokenString<Tokens[K]> : never;
+export type ThemeValueByCategory<K extends string | number | symbol> = K extends 'theme' ? ThemeTokens : K extends 'size' ? SizeTokens : K extends 'font' ? FontTokens : K extends 'fontSize' ? FontSizeTokens : K extends 'space' ? SpaceTokens : K extends 'color' ? ColorTokens : K extends 'zIndex' ? ZIndexTokens : K extends 'lineHeight' ? FontLineHeightTokens : K extends 'fontWeight' ? FontWeightTokens : K extends 'letterSpacing' ? FontLetterSpacingTokens : K extends keyof Tokens ? GetTokenString<keyof Tokens[K]> : never;
 type FontKeys = 'fontFamily';
 type FontSizeKeys = 'fontSize';
 type FontWeightKeys = 'fontWeight';
@@ -847,9 +847,11 @@ export type StaticConfigPublic = {
         [key: string]: boolean;
     };
     /**
-     * (compiler) If these props are encountered, bail on all optimization.
+     * Accept Tamagui tokens for these props (key for the prop key, val for the token category)
      */
-    deoptProps?: Set<string>;
+    acceptTokens?: {
+        [key: string]: keyof Tokens;
+    };
     /**
      * (compiler) If these props are encountered, leave them un-extracted.
      */
@@ -859,15 +861,6 @@ export type StaticConfigPublic = {
      * Only applies to style attributes
      */
     inlineWhenUnflattened?: Set<string>;
-    /**
-     * (compiler) A bit odd, only for more advanced hierarchies.
-     * Indicates that the component will set this prop so the
-     * static extraction can ensure it sets them to ={undefined}
-     * so they get overriddent. In the future, this can be smarter.
-     */
-    ensureOverriddenProp?: {
-        [key: string]: boolean;
-    };
     /**
      * Auto-detected, but can override. Wraps children to space them on top
      */
@@ -901,12 +894,6 @@ type StaticConfigBase = StaticConfigPublic & {
      * Memoize the component
      */
     memo?: boolean;
-    /**
-     * By default if styled() doesn't recognize a parent Tamagui component or specific react-native views,
-     * it will assume the passed in component only accepts style={} for react-native compatibility.
-     * Setting `acceptsClassName: true` indicates Tamagui can pass in className props.
-     */
-    acceptsClassName?: boolean;
     /**
      * Used internally for handling focus
      */

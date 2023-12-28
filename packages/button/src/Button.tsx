@@ -242,6 +242,7 @@ function useButton<Props extends ButtonProps>(
     noTextWrap,
     fontFamily,
     fontSize,
+    tag,
     ...restProps
   } = propsActive
 
@@ -286,15 +287,6 @@ function useButton<Props extends ButtonProps>(
     children: [themedIcon, ...contents, themedIconAfter],
   })
 
-  // fixes SSR issue + DOM nesting issue of not allowing button in button
-  const tag = isNested
-    ? 'span'
-    : // defaults to <a /> when accessibilityRole = link
-    // see https://github.com/tamagui/tamagui/issues/505
-    propsActive.accessibilityRole === 'link'
-    ? 'a'
-    : undefined
-
   const props = {
     size,
     ...(propsIn.disabled && {
@@ -305,9 +297,16 @@ function useButton<Props extends ButtonProps>(
         borderColor: '$background',
       },
     }),
-    ...(tag && {
-      tag,
-    }),
+    // fixes SSR issue + DOM nesting issue of not allowing button in button
+    tag:
+      tag ??
+      (isNested
+        ? 'span'
+        : // defaults to <a /> when accessibilityRole = link
+        // see https://github.com/tamagui/tamagui/issues/505
+        propsActive.accessibilityRole === 'link'
+        ? 'a'
+        : undefined),
     ...restProps,
     children: (
       <ButtonNestingContext.Provider value={true}>{inner}</ButtonNestingContext.Provider>

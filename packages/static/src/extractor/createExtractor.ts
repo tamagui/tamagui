@@ -545,7 +545,6 @@ export function createExtractor(
         const componentSkipProps = new Set([
           ...(Component.staticConfig.inlineWhenUnflattened || []),
           ...(Component.staticConfig.inlineProps || []),
-          ...(Component.staticConfig.deoptProps || []),
           // for now skip variants, will return to them
           'variants',
           'defaultVariants',
@@ -835,9 +834,6 @@ export function createExtractor(
             ...(tamaguiConfig?.animations.isReactNative
               ? ['enterStyle', 'exitStyle']
               : []),
-
-            ...(restProps.deoptProps || []),
-            ...(staticConfig.deoptProps || []),
           ])
 
           const inlineWhenUnflattened = new Set([
@@ -1031,16 +1027,6 @@ export function createExtractor(
               inlined.set(name, name)
               if (shouldPrintDebug) {
                 logger.info(['  ! inlining, inline prop', name].join(' '))
-              }
-              return attr
-            }
-
-            // can still optimize the object... see hoverStyle on native
-            if (deoptProps.has(name)) {
-              shouldDeopt = true
-              inlined.set(name, name)
-              if (shouldPrintDebug) {
-                logger.info(['  ! inlining, deopted prop', name].join(' '))
               }
               return attr
             }

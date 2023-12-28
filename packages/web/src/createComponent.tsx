@@ -944,7 +944,9 @@ export function createComponent<
           }
           viewProps.style = [...(Array.isArray(style) ? style : [style]), cnStyles]
         } else {
-          viewProps.className = className
+          if (className) {
+            viewProps.className = className
+          }
           viewProps.style = style
         }
       } else {
