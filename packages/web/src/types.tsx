@@ -1628,11 +1628,6 @@ export type StaticConfigPublic = {
   validStyles?: { [key: string]: boolean }
 
   /**
-   * (compiler) If these props are encountered, bail on all optimization.
-   */
-  deoptProps?: Set<string>
-
-  /**
    * (compiler) If these props are encountered, leave them un-extracted.
    */
   inlineProps?: Set<string>

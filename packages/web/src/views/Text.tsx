@@ -80,8 +80,6 @@ export const Text = createComponent<TextProps, Text, TextPropsBase>({
     },
   },
 
-  deoptProps: new Set(process.env.TAMAGUI_TARGET === 'web' ? [] : ['ellipse']),
-
   validStyles: {
     ...validStyles,
     ...stylePropsTextOnly,

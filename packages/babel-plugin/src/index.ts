@@ -96,12 +96,6 @@ export default declare(function snackBabelPlugin(
               platform: 'native',
               shouldPrintDebug,
               importsWhitelist: ['constants.js', 'colors.js'],
-              deoptProps: new Set([
-                'focusStyle',
-                'hoverStyle',
-                'pressStyle',
-                'pointerEvents',
-              ]),
               extractStyledDefinitions: options.forceExtractStyleDefinitions,
               excludeProps: new Set([
                 'className',
