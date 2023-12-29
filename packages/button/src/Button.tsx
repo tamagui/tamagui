@@ -286,8 +286,6 @@ function useButton<Props extends ButtonProps>(
     children: [themedIcon, ...contents, themedIconAfter],
   })
 
-  const didFinishSSR = useDidFinishSSR()
-
   const props = {
     size,
     ...(propsIn.disabled && {
@@ -313,7 +311,7 @@ function useButton<Props extends ButtonProps>(
       <ButtonNestingContext.Provider value={true}>{inner}</ButtonNestingContext.Provider>
     ),
     // forces it to be a runtime pressStyle so it passes through context text colors
-    disableClassName: didFinishSSR,
+    disableClassName: true,
   } as Props
 
   return {
