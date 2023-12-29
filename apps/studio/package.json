@@ -25,6 +25,7 @@
     "@tamagui/theme-builder": "1.80.4",
     "@tamagui/themes": "1.80.4",
     "@tamagui/use-store": "1.80.4",
+    "@tanstack/react-query": "^5.15.0",
     "@tauri-apps/api": "^1.5.1",
     "color2k": "^2.0.2",
     "prettier": "^2.8.1",
@@ -34,7 +35,6 @@
     "react-native-web": "^0.19.9",
     "react-router-dom": "^6.14.1",
     "tamagui": "1.80.4",
-    "tinybase": "^4.0.4",
     "ts-deepmerge": "^6.2.0",
     "victory": "^36.6.11"
   },
