@@ -108,7 +108,7 @@ export function styled<
    */
 
   type Props = Variants extends void
-    ? ParentPropsBase & CustomTokenProps
+    ? GetProps<ParentComponent>
     : // start with base props
       OurPropsBaseBase &
         // add in pseudo
