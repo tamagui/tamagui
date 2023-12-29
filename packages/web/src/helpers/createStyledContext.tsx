@@ -30,20 +30,13 @@ export function createStyledContext<VariantProps extends Record<string, any>>(
     scope,
     ...values
   }: VariantProps & { children?: React.ReactNode; scope: string }) => {
-    let current: any
-    try {
-      current = useStyledContext(scope)
-    } catch {
-      // ok
-    }
     const next = useMemo(() => {
       return {
         // this ! is a workaround for ts error
         ...defaultValues!,
-        ...current,
         ...values,
       }
-    }, [objectIdentityKey(values), current])
+    }, [objectIdentityKey(values)])
     let Provider = OGProvider
     if (scope) {
       let ScopedContext = scopedContexts.get(scope)

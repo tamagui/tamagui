@@ -1205,7 +1205,7 @@ export function createComponent<
 
     if (groupName && subGroupContext) {
       content = (
-        <ComponentContext.Provider groups={subGroupContext}>
+        <ComponentContext.Provider {...componentContext} groups={subGroupContext}>
           {content}
         </ComponentContext.Provider>
       )
