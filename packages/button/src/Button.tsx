@@ -227,7 +227,6 @@ function useButton<Props extends ButtonProps>(
   { Text = Button.Text }: { Text: any } = { Text: Button.Text }
 ) {
   const isNested = useContext(ButtonNestingContext)
-  const didFinishSSR = useDidFinishSSR()
   const propsActive = useProps(propsIn) as any as ButtonProps
 
   // careful not to destructure and re-order props, order is important
@@ -287,6 +286,8 @@ function useButton<Props extends ButtonProps>(
     children: [themedIcon, ...contents, themedIconAfter],
   })
 
+  const didFinishSSR = useDidFinishSSR()
+
   const props = {
     size,
     ...(propsIn.disabled && {
@@ -306,7 +307,7 @@ function useButton<Props extends ButtonProps>(
         // see https://github.com/tamagui/tamagui/issues/505
         propsActive.accessibilityRole === 'link'
         ? 'a'
-        : undefined),
+        : 'button'),
     ...restProps,
     children: (
       <ButtonNestingContext.Provider value={true}>{inner}</ButtonNestingContext.Provider>
