@@ -25,7 +25,7 @@ const handler: NextApiHandler = async (req, res) => {
     })
     return
   }
-  console.log(results.data)
+
   res.json([
     {
       themes: Object.fromEntries(

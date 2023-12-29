@@ -34,7 +34,6 @@
     "react-native-web": "^0.19.9",
     "react-router-dom": "^6.14.1",
     "tamagui": "1.81.0",
-    "tinybase": "^4.0.4",
     "ts-deepmerge": "^6.2.0",
     "victory": "^36.6.11"
   },

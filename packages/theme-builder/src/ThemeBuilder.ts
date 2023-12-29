@@ -12,7 +12,7 @@ import {
 } from '@tamagui/create-theme'
 import type { Narrow } from '@tamagui/web'
 
-type ThemeBuilderState = {
+export type ThemeBuilderInternalState = {
   palettes?: PaletteDefinitions
   templates?: TemplateDefinitions
   themes?: ThemeDefinitions
@@ -45,7 +45,7 @@ type GetParentTheme<P, Themes extends ThemeDefinitions | undefined> = P extends 
     : never
   : never
 
-type GetGeneratedTheme<TD, S extends ThemeBuilderState> = TD extends {
+type GetGeneratedTheme<TD, S extends ThemeBuilderInternalState> = TD extends {
   theme: infer T
 }
   ? T
@@ -57,7 +57,7 @@ type GetGeneratedTheme<TD, S extends ThemeBuilderState> = TD extends {
     : TD
   : TD
 
-type ThemeBuilderBuildResult<S extends ThemeBuilderState> = {
+type ThemeBuilderBuildResult<S extends ThemeBuilderInternalState> = {
   [Key in keyof S['themes']]: GetGeneratedTheme<S['themes'][Key], S>
 }
 
@@ -72,7 +72,9 @@ type GetParentName<N extends string> =
     ? `${A}`
     : never
 
-export class ThemeBuilder<State extends ThemeBuilderState = ThemeBuilderState> {
+export class ThemeBuilder<
+  State extends ThemeBuilderInternalState = ThemeBuilderInternalState
+> {
   constructor(public state: State) {}
 
   addPalettes<const P extends PaletteDefinitions>(palettes: P) {
