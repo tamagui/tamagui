@@ -481,7 +481,7 @@ export function createComponent<
 
     let elementType = isText ? BaseTextComponent : BaseViewComponent
     if (animationsConfig && willBeAnimated) {
-      elementType = animationsConfig[isText ? 'Text' : 'View']
+      elementType = animationsConfig[isText ? 'Text' : 'View'] || elementType
     }
 
     // set enter/exit variants onto our new props object
