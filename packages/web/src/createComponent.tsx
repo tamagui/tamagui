@@ -75,8 +75,6 @@ process.env.TAMAGUI_TARGET
  * All things that need one-time setup after createTamagui is called
  */
 let tamaguiConfig: TamaguiInternalConfig
-let AnimatedText: any
-let AnimatedView: any
 let initialTheme: any
 let time: any
 
@@ -483,12 +481,7 @@ export function createComponent<
 
     let elementType = isText ? BaseTextComponent : BaseViewComponent
     if (animationsConfig && willBeAnimated) {
-      if (animationsConfig.Text) {
-        elementType = animationsConfig.Text
-      }
-      if (animationsConfig.View) {
-        elementType = animationsConfig.View
-      }
+      elementType = animationsConfig[isText ? 'Text' : 'View']
     }
 
     // set enter/exit variants onto our new props object
