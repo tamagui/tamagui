@@ -1125,12 +1125,6 @@ export function createComponent<
             debug: debugProp,
           })
 
-    // needs to reset the presence state for nested children
-    const ResetPresence = config?.animations?.ResetPresence
-    if (willBeAnimated && presence && ResetPresence) {
-      content = <ResetPresence>{content}</ResetPresence>
-    }
-
     if (asChild) {
       elementType = Slot
       // on native this is already merged into viewProps in hooks.useEvents
@@ -1173,6 +1167,12 @@ export function createComponent<
       content = useChildrenResult
     } else {
       content = createElement(elementType, viewProps, content)
+    }
+
+    // needs to reset the presence state for nested children
+    const ResetPresence = config?.animations?.ResetPresence
+    if (willBeAnimated && presence && ResetPresence && typeof content !== 'string') {
+      content = <ResetPresence>{content}</ResetPresence>
     }
 
     if (process.env.NODE_ENV === 'development' && time) time`create-element`
