@@ -614,9 +614,9 @@ function createProxiedStore(storeInfo: StoreInfo) {
         }
         // TODO i added this !isSubGetter, seems logical but haven't validated
         // has diff performance tradeoffs, not sure whats desirable
-        // if (!isSubGetter) {
-        getCache.set(key, res)
-        // }
+        if (!isSubGetter) {
+          getCache.set(key, res)
+        }
         return res
       }
 
