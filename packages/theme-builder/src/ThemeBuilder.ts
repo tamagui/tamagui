@@ -7,12 +7,13 @@ import {
   applyMask,
   createMask,
   createTheme,
+  createThemeWithPalettes,
   objectEntries,
   objectFromEntries,
 } from '@tamagui/create-theme'
 import type { Narrow } from '@tamagui/web'
 
-type ThemeBuilderState = {
+export type ThemeBuilderInternalState = {
   palettes?: PaletteDefinitions
   templates?: TemplateDefinitions
   themes?: ThemeDefinitions
@@ -45,7 +46,7 @@ type GetParentTheme<P, Themes extends ThemeDefinitions | undefined> = P extends 
     : never
   : never
 
-type GetGeneratedTheme<TD, S extends ThemeBuilderState> = TD extends {
+type GetGeneratedTheme<TD, S extends ThemeBuilderInternalState> = TD extends {
   theme: infer T
 }
   ? T
@@ -57,7 +58,7 @@ type GetGeneratedTheme<TD, S extends ThemeBuilderState> = TD extends {
     : TD
   : TD
 
-type ThemeBuilderBuildResult<S extends ThemeBuilderState> = {
+type ThemeBuilderBuildResult<S extends ThemeBuilderInternalState> = {
   [Key in keyof S['themes']]: GetGeneratedTheme<S['themes'][Key], S>
 }
 
@@ -72,7 +73,9 @@ type GetParentName<N extends string> =
     ? `${A}`
     : never
 
-export class ThemeBuilder<State extends ThemeBuilderState = ThemeBuilderState> {
+export class ThemeBuilder<
+  State extends ThemeBuilderInternalState = ThemeBuilderInternalState
+> {
   constructor(public state: State) {}
 
   addPalettes<const P extends PaletteDefinitions>(palettes: P) {
@@ -269,11 +272,7 @@ export class ThemeBuilder<State extends ThemeBuilderState = ThemeBuilderState> {
       } else if ('mask' in themeDefinition) {
         maskedThemes.push({ parentName, themeName, mask: themeDefinition })
       } else {
-        const {
-          palette: paletteName,
-          template: templateName,
-          ...options
-        } = themeDefinition
+        let { palette: paletteName, template: templateName, ...options } = themeDefinition
 
         if (!this.state.palettes) {
           throw new Error(
@@ -283,13 +282,17 @@ export class ThemeBuilder<State extends ThemeBuilderState = ThemeBuilderState> {
 
         let palette = this.state.palettes[paletteName]
         if (!palette) {
-          const fullPaletteName = `${parentName}_${paletteName}`
-          palette = this.state.palettes[fullPaletteName]
+          paletteName = `${parentName}_${paletteName}`
+          palette = this.state.palettes[paletteName]
           // try using the prefix
         }
 
         if (!palette) {
-          throw new Error(`No palette for theme ${themeName}: ${paletteName}`)
+          throw new Error(
+            `No palette for theme ${themeName}: ${paletteName} (${Object.keys(
+              this.state.palettes
+            ).join(', ')})`
+          )
         }
 
         const template = this.state.templates?.[templateName]
@@ -297,7 +300,14 @@ export class ThemeBuilder<State extends ThemeBuilderState = ThemeBuilderState> {
           throw new Error(`No template for theme ${themeName}: ${templateName}`)
         }
 
-        out[themeName] = createTheme(palette, template, options, themeName, true)
+        out[themeName] = createThemeWithPalettes(
+          this.state.palettes,
+          paletteName,
+          template,
+          options,
+          themeName,
+          true
+        )
       }
     }
 

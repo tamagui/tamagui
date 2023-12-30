@@ -9,6 +9,43 @@ import { setThemeInfo } from './themeInfo'
 
 const identityCache = new Map()
 
+export function createThemeWithPalettes<
+  Definition extends ThemeMask,
+  Extras extends GenericTheme = {}
+>(
+  palettes: Record<string, CreateThemePalette>,
+  defaultPalette: string,
+  definition: Definition,
+  options?: CreateThemeOptions,
+  name?: string,
+  skipCache = false
+): {
+  [key in keyof Definition | keyof Extras]: string
+} {
+  if (!palettes[defaultPalette]) {
+    throw new Error(`No pallete: ${defaultPalette}`)
+  }
+  const newDef = { ...definition }
+  for (const key in definition) {
+    let val = definition[key]
+    if (typeof val === 'string' && val[0] === '$') {
+      const [altPaletteName$, altPaletteIndex] = val.split('.')
+      const altPaletteName = altPaletteName$.slice(1)
+      const parentName = defaultPalette.split('_')[0]
+      const altPalette =
+        palettes[altPaletteName] || palettes[`${parentName}_${altPaletteName}`]
+
+      if (altPalette) {
+        const next = getValue(altPalette, +altPaletteIndex)
+        if (typeof next !== 'undefined') {
+          newDef[key] = next as any
+        }
+      }
+    }
+  }
+  return createTheme(palettes[defaultPalette], newDef, options, name, skipCache)
+}
+
 export function createTheme<
   Definition extends ThemeMask,
   Extras extends GenericTheme = {}
@@ -38,7 +75,7 @@ export function createTheme<
   }
 
   setThemeInfo(theme, { palette, definition, options, name })
-  
+
   if (cacheKey) {
     identityCache.set(cacheKey, theme)
   }
@@ -47,7 +84,12 @@ export function createTheme<
 }
 
 const getValue = (palette: CreateThemePalette, value: string | number) => {
-  if (typeof value === 'string') return value
+  if (!palette) {
+    throw new Error(`No palette!`)
+  }
+  if (typeof value === 'string') {
+    return value
+  }
   const max = palette.length - 1
   const isPositive = value === 0 ? !isMinusZero(value) : value >= 0
   const next = isPositive ? value : max + value

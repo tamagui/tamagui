@@ -7539,10 +7539,10 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
     react-freeze: ^1.0.3
+    react-hotkeys-hook: ^4.4.1
     react-native-web: ^0.19.9
     react-router-dom: ^6.14.1
     tamagui: 1.81.4
-    tinybase: ^4.0.4
     ts-deepmerge: ^6.2.0
     victory: ^36.6.11
     vite: ^5.0.2
@@ -23206,6 +23206,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-hotkeys-hook@npm:^4.4.1":
+  version: 4.4.1
+  resolution: "react-hotkeys-hook@npm:4.4.1"
+  peerDependencies:
+    react: ">=16.8.1"
+    react-dom: ">=16.8.1"
+  checksum: c03d5d013ec41f3a63a3dd7d704d2fc98fba227811f7a1222af8651705f1cef983b7ccc4325f9910fec920156b14b4f05101882dc7d0bde1601ba56c01d5f162
+  languageName: node
+  linkType: hard
+
 "react-is@npm:^16.12.0 || ^17.0.0 || ^18.0.0, react-is@npm:^18.0.0, react-is@npm:^18.2.0":
   version: 18.2.0
   resolution: "react-is@npm:18.2.0"
@@ -26464,38 +26474,6 @@ __metadata:
   version: 8.0.2
   resolution: "tiny-lru@npm:8.0.2"
   checksum: ec4d884914626760eef05cd57850f21a153adeeb7c4242eb8d44a031f1bd8489f18c1bf5d6f10f0a11c5dcfe03b302f26b00f2b879b38853599486bf0dca8c97
-  languageName: node
-  linkType: hard
-
-"tinybase@npm:^4.0.4":
-  version: 4.0.4
-  resolution: "tinybase@npm:4.0.4"
-  peerDependencies:
-    "@sqlite.org/sqlite-wasm": ^3.42.0-build4
-    "@vlcn.io/crsqlite-wasm": ^0.14.0
-    automerge-repo: ^0.1.0
-    prettier: ^2.8.8
-    react: ^18.2.0
-    sqlite3: ^5.1.6
-    yjs: ^13.6.7
-  peerDependenciesMeta:
-    "@sqlite.org/sqlite-wasm":
-      optional: true
-    "@vlcn.io/crsqlite-wasm":
-      optional: true
-    automerge-repo:
-      optional: true
-    prettier:
-      optional: true
-    react:
-      optional: true
-    sqlite3:
-      optional: true
-    yjs:
-      optional: true
-  bin:
-    tinybase: bin/cli.js
-  checksum: 316dcc44df8e4687f761fea3110ab060caadc03c1ee0691c5df695257c9a931fafdda6930cb7959cc0507f895e17aa3ebf170822ae6e9e86dde13e85d6a3554e
   languageName: node
   linkType: hard
 
