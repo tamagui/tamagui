@@ -47,6 +47,7 @@
     "@tamagui/shorthands": "1.81.4",
     "@tamagui/types": "1.81.4",
     "babel-literal-to-ast": "^2.1.0",
+    "browserslist": "^4.22.2",
     "esbuild": "~0.19.3",
     "esbuild-register": "^3.4.2",
     "find-cache-dir": "^3.3.2",
