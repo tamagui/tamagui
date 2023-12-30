@@ -1,4 +1,3 @@
-import { esbuildCommonjs } from '@originjs/vite-plugin-commonjs'
 import type { TamaguiOptions } from '@tamagui/static'
 import { watchTamaguiConfig } from '@tamagui/static'
 import type { Plugin } from 'vite'
