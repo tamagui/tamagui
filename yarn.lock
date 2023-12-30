@@ -3178,17 +3178,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo/json-file@npm:8.2.34":
-  version: 8.2.34
-  resolution: "@expo/json-file@npm:8.2.34"
-  dependencies:
-    "@babel/code-frame": ~7.10.4
-    json5: ^1.0.1
-    write-file-atomic: ^2.3.0
-  checksum: c047d7f638509be7ec6316f50b19aeb7134970f0531da24727d73fcd3f16e8fd626ddc044ee3bc82cc7e0098c69758196ede9f406c392baa31649c53df9118c3
-  languageName: node
-  linkType: hard
-
 "@expo/json-file@npm:^8.2.37, @expo/json-file@npm:~8.2.37":
   version: 8.2.37
   resolution: "@expo/json-file@npm:8.2.37"
@@ -3242,20 +3231,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo/package-manager@npm:^0.0.50":
-  version: 0.0.50
-  resolution: "@expo/package-manager@npm:0.0.50"
+"@expo/package-manager@npm:^1.1.2":
+  version: 1.4.1
+  resolution: "@expo/package-manager@npm:1.4.1"
   dependencies:
-    "@expo/json-file": 8.2.34
+    "@expo/json-file": ^8.2.37
     "@expo/spawn-async": ^1.5.0
     ansi-regex: ^5.0.0
     chalk: ^4.0.0
+    find-up: ^5.0.0
     find-yarn-workspace-root: ~2.0.0
+    js-yaml: ^3.13.1
+    micromatch: ^4.0.2
     npm-package-arg: ^7.0.0
-    rimraf: ^3.0.2
+    ora: ^3.4.0
     split: ^1.0.1
     sudo-prompt: 9.1.1
-  checksum: 16493455b8152bf86b38978f8366e70dd751b868f57314af28e87ebbde471c155f997a1828bec8f84a432b77220889783bf415959222d89005c090dc4cbeebba
+  checksum: 901cdabbecb652c8f5c394a86e6c98c1cfcd50eea8fcff00af902472d6462686a7ee3a112380dba02ef8181b37e0c70ff16d53265a9e61a517d553ef684775fe
   languageName: node
   linkType: hard
 
@@ -7353,7 +7345,6 @@ __metadata:
     lodash-es: ^4.17.21
     mdx-bundler: ^9.0.1
     micro: ^10.0.1
-    mini-css-extract-plugin: ^2.7.6
     next: ^13.5.6
     next-remote-watch: ^2.0.0
     next-seo: ^6.0.0
@@ -12171,7 +12162,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "create-tamagui@workspace:packages/create-tamagui"
   dependencies:
-    "@expo/package-manager": ^0.0.50
+    "@expo/package-manager": ^1.1.2
     "@playwright/test": ^1.29.0
     "@tamagui/build": 1.81.4
     "@types/async-retry": 1.4.2
@@ -18469,7 +18460,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"json5@npm:^1.0.1, json5@npm:^1.0.2":
+"json5@npm:^1.0.2":
   version: 1.0.2
   resolution: "json5@npm:1.0.2"
   dependencies:
@@ -21765,7 +21756,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ora@npm:3.4.0":
+"ora@npm:3.4.0, ora@npm:^3.4.0":
   version: 3.4.0
   resolution: "ora@npm:3.4.0"
   dependencies:

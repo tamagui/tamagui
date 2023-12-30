@@ -19,7 +19,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
-    "@expo/package-manager": "^0.0.50",
+    "@expo/package-manager": "^1.1.2",
     "@playwright/test": "^1.29.0",
     "@tamagui/build": "1.81.4",
     "@types/async-retry": "1.4.2",

@@ -166,10 +166,7 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
       console.info('installing with ' + packageManager)
       await installDependencies(resolvedProjectPath, packageManager)
     } catch (e: any) {
-      console.error(
-        '[tamagui] error installing with ' + packageManager + '\n',
-        e?.message
-      )
+      console.error('[tamagui] error installing with ' + packageManager + '\n' + `${e}`)
       process.exit(1)
     }
 
