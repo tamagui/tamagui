@@ -7387,7 +7387,7 @@ __metadata:
     typescript: ^5.2.2
     unified: ^10.1.2
     unist-util-visit: ^2.0.3
-    webpack-stats-plugin: ^1.1.0
+    webpack-stats-plugin: ^1.1.3
   languageName: unknown
   linkType: soft
 
@@ -28818,10 +28818,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack-stats-plugin@npm:^1.1.0":
-  version: 1.1.1
-  resolution: "webpack-stats-plugin@npm:1.1.1"
-  checksum: aa553ccfb9389f2d8a2d04eb6289230bc323edb11b0cbdd676d41617dd790a7f0d0844c46b927a9465139b3edb9da2cc7a2ef664891920c052ef4fa5f2797230
+"webpack-stats-plugin@npm:^1.1.3":
+  version: 1.1.3
+  resolution: "webpack-stats-plugin@npm:1.1.3"
+  checksum: 9a71d329c5d55e33105abfe4c72d715a0a6ce4ab8da6faa2bc5a65953915d656cdf3c420b3fc0628b0d9859cc59c09e49f731645746739e417da531130a7a9a8
   languageName: node
   linkType: hard
 

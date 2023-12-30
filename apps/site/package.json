@@ -120,10 +120,9 @@
     "@welldone-software/why-did-you-render": "^7.0.1",
     "babel-polyfill": "^6.26.0",
     "esbuild-loader": "^3.0.1",
-    "mini-css-extract-plugin": "^2.7.6",
     "next-remote-watch": "^2.0.0",
     "react-refresh": "^0.14.0",
     "tamagui-loader": "1.81.4",
-    "webpack-stats-plugin": "^1.1.0"
+    "webpack-stats-plugin": "^1.1.3"
   }
 }

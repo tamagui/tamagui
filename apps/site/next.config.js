@@ -22,12 +22,17 @@ const plugins = [
     openAnalyzer: process.env.ANALYZE === 'true',
   }),
   withTamagui({
-    emitSingleCSSFile: process.env.NODE_ENV === 'production',
+    emitSingleCSSFile:
+      process.env.NODE_ENV === 'production',
     useReactNativeWebLite: true,
     config: './tamagui.config.ts',
     themeBuilder: {
       input: '@tamagui/themes/src/themes-new.ts',
-      output: join(require.resolve('@tamagui/themes/src/themes-new.ts'), '..', 'generated-new.ts'),
+      output: join(
+        require.resolve('@tamagui/themes/src/themes-new.ts'),
+        '..',
+        'generated-new.ts'
+      ),
     },
     outputCSS: process.env.NODE_ENV === 'production' ? './public/tamagui.css' : null,
     components: ['tamagui'],
@@ -35,7 +40,16 @@ const plugins = [
     logTimings: true,
     // enableDynamicEvaluation: true,
     disableExtraction,
-    excludeReactNativeWebExports: ['Switch', 'ProgressBar', 'Picker', 'CheckBox', 'Touchable', 'Animated', 'FlatList', 'Modal'],
+    excludeReactNativeWebExports: [
+      'Switch',
+      'ProgressBar',
+      'Picker',
+      'CheckBox',
+      'Touchable',
+      'Animated',
+      'FlatList',
+      'Modal',
+    ],
   }),
   (config) => {
     return {
@@ -123,7 +137,7 @@ module.exports = function (name, { defaultConfig }) {
           port: '',
           pathname: '/**/**',
         },
-      ]
+      ],
     },
     experimental: {
       esmExternals: true,
