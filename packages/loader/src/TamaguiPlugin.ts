@@ -72,8 +72,6 @@ export class TamaguiPlugin {
               }, '')
             )
 
-            const cssString = combinedCSS.code.toString()
-
             for (const [index, cssFile] of cssFiles.entries()) {
               if (index > 0) {
                 compilation.updateAsset(
@@ -81,13 +79,11 @@ export class TamaguiPlugin {
                   new compiler.webpack.sources.RawSource(``)
                 )
               } else {
-                console.info(
-                  `    ➡ [tamagui] 🎨 emitting single css to ${cssFile} (${cssString.length} characters long)`
-                )
+                console.info(`    ➡ [tamagui] 🎨 emitting single css to ${cssFile}`)
                 // just replace the first one? hacky
                 compilation.updateAsset(
                   cssFile,
-                  new compiler.webpack.sources.RawSource(cssString)
+                  new compiler.webpack.sources.RawSource(Buffer.from(combinedCSS.code))
                 )
               }
             }
