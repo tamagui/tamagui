@@ -25,7 +25,7 @@
     "@tamagui/react-native-svg": "1.81.4",
     "@tamagui/static": "1.81.4",
     "babel-loader": "^9.1.2",
-    "browserslist": "^4.21.1",
+    "browserslist": "^4.22.2",
     "css-loader": "^6.7.4",
     "esbuild-loader": "^3.0.1",
     "esm-resolve": "^1.0.8",
