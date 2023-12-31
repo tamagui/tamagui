@@ -28,7 +28,8 @@ ${takeoutAsciiArt}
   console.info()
   const { setupSupabase } = await prompts({
     name: 'setupSupabase',
-    message: 'Set up Supabase?',
+    message:
+      'Do you want us to configure Supabase for you? (setting up the local instance, env variables, etc.)',
     type: 'confirm',
     initial: true,
   })
