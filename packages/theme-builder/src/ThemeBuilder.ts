@@ -6,7 +6,6 @@ import {
   ThemeUsingMask,
   applyMask,
   createMask,
-  createTheme,
   createThemeWithPalettes,
   objectEntries,
   objectFromEntries,
@@ -23,12 +22,6 @@ export type ThemeBuilderInternalState = {
 type ObjectStringKeys<A extends Object | undefined> = A extends Object
   ? Exclude<keyof A, symbol | number>
   : never
-
-// type GetNonInheritedKeys<TD> = TD extends { nonInheritedValues: infer X }
-//   ? X extends { [key: string]: any }
-//     ? keyof X
-//     : never
-//   : never
 
 type GetGeneratedThemeFromTemplate<Template, TD> = {
   [key in keyof Template]: string
