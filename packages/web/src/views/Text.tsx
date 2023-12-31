@@ -22,6 +22,7 @@ const defaultWebStyle = {
 export const Text = createComponent<TextProps, Text, TextPropsBase>({
   acceptsClassName: true,
   isText: true,
+  componentName: 'Text',
 
   defaultProps: {
     fontFamily: 'unset',

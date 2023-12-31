@@ -10,3 +10,5 @@ export const FontLanguage = ({ children, ...props }: FontLanguageProps) => {
     <ComponentContext.Provider language={language}>{children}</ComponentContext.Provider>
   )
 }
+
+FontLanguage['displayName'] = 'FontLanguage'

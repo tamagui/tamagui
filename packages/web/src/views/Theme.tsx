@@ -55,7 +55,7 @@ export const Theme = forwardRef(function Theme(props: ThemeProps, ref) {
 
   return useThemedChildren(themeState, children, props, isRoot)
 })
-
+Theme['displayName'] = 'Theme'
 Theme['avoidForwardRef'] = true
 
 export function useThemedChildren(
