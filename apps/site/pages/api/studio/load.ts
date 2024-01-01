@@ -2,8 +2,6 @@ import { checkSponsorAccess } from '@lib/getSponsorData'
 import { protectApiRoute } from '@lib/protectApiRoute'
 import { NextApiHandler } from 'next'
 
-import { StoreData } from './save'
-
 const handler: NextApiHandler = async (req, res) => {
   const { supabase, user } = await protectApiRoute({ req, res })
   const { teamId } = await checkSponsorAccess({
@@ -26,13 +24,15 @@ const handler: NextApiHandler = async (req, res) => {
     return
   }
 
-  res.json([
-    {
-      themes: Object.fromEntries(
-        results.data.map((theme) => [theme.id.toString(), theme.data as any])
-      ),
-    },
-  ] satisfies StoreData)
+  const response = {
+    themeSuites: {},
+  }
+
+  for (const item of results.data) {
+    response.themeSuites[item.id] = item.data
+  }
+
+  res.json(response)
 }
 
 export default handler

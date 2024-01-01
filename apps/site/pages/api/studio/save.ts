@@ -2,9 +2,8 @@ import { apiRoute } from '@lib/apiRoute'
 import { checkSponsorAccess } from '@lib/getSponsorData'
 import { protectApiRoute } from '@lib/protectApiRoute'
 
-export type StoreData = Array<{
-  themes: Record<string, any>
-}>
+export type StoreData = { themeSuites: Record<string, any> }
+
 export default apiRoute(async (req, res) => {
   const { supabase, user } = await protectApiRoute({ req, res })
   const { teamId } = await checkSponsorAccess({
@@ -29,19 +28,15 @@ export default apiRoute(async (req, res) => {
     .delete()
     .eq('user_id', user.id)
     .eq('team_id', teamId)
-  for (const { themes } of body) {
-    if (!themes) {
-      continue
-    }
-    await supabase.from('studio_themes').insert(
-      Object.entries(themes).map(([idStr, theme]) => ({
-        id: Number(idStr),
-        data: theme,
-        user_id: user.id,
-        team_id: teamId,
-      }))
-    )
+
+  for (const id in body.themeSuites) {
+    await supabase.from('studio_themes').insert({
+      id: +id,
+      data: body.themeSuites[id],
+      user_id: user.id,
+      team_id: teamId,
+    })
   }
-  console.log('store state: ', JSON.stringify(body, null, 2))
+
   res.json({ message: 'successfully saved' })
 })
