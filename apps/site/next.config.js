@@ -23,7 +23,7 @@ const plugins = [
   }),
   withTamagui({
     emitSingleCSSFile:
-      process.env.NODE_ENV === 'production',
+      false,
     useReactNativeWebLite: true,
     config: './tamagui.config.ts',
     themeBuilder: {
