@@ -1407,6 +1407,7 @@ type SharedBaseExtraStyleProps = {
   animation?: AnimationProp | null
   animateOnly?: string[]
   userSelect?: Properties['userSelect']
+  transformOrigin?: Properties['transformOrigin']
 }
 
 type OverrideRNStyleProps =
