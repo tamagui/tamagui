@@ -29,10 +29,17 @@ export default apiRoute(async (req, res) => {
     .eq('user_id', user.id)
     .eq('team_id', teamId)
 
-  for (const id in body.themeSuites) {
+  try {
+    console.info(`Saving theme suite ids ${Object.keys(body.themeSuites).join(', ')}`)
+  } catch {
+    // ok
+  }
+
+  for (const themeId in body.themeSuites) {
     await supabase.from('studio_themes').insert({
-      id: +id,
-      data: body.themeSuites[id],
+      id: +`${Math.random()}`.replace('.', ''),
+      theme_id: themeId,
+      data: body.themeSuites[themeId],
       user_id: user.id,
       team_id: teamId,
     })
