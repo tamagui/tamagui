@@ -24,6 +24,8 @@ const handler: NextApiHandler = async (req, res) => {
     return
   }
 
+  console.info(`Loaded ${results.data.length} results`)
+
   const response = {
     themeSuites: {},
   }
@@ -31,6 +33,8 @@ const handler: NextApiHandler = async (req, res) => {
   for (const item of results.data) {
     response.themeSuites[item.id] = item.data
   }
+
+  console.info(`Sending themeSuites for ids: ${results.data.map((x) => x.id).join(', ')}`)
 
   res.json(response)
 }
