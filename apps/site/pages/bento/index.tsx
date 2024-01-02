@@ -36,10 +36,7 @@ function Gradient() {
   )
 }
 
-export default () => null
-
-// export default this component
-function _page() {
+export default function _page() {
   return (
     <YStack p={28} f={1} bc="transparent">
       <XStack m={-24}>
