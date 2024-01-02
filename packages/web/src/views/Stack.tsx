@@ -7,6 +7,7 @@ import type { StackProps, StackPropsBase, TamaguiElement } from '../types'
 export type Stack = TamaguiElement
 
 export const Stack = createComponent<StackProps, Stack, StackPropsBase>({
+  componentName: 'Stack',
   acceptsClassName: true,
   defaultProps: stackDefaultStyles,
   validStyles,
