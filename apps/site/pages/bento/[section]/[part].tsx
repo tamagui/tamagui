@@ -3,7 +3,7 @@
 // import { useRouter } from 'next/router'
 
 export default function page() {
-  return <div>soon....</div>
+  return <div>soon...</div>
 }
 
 // export default function page({ codes }) {
@@ -16,14 +16,7 @@ export default function page() {
 
 // export const getStaticPaths = (async () => {
 //   return {
-//     paths: [
-//       {
-//         params: {
-//           section: 'forms',
-//           part: 'inputs',
-//         },
-//       },
-//     ],
+//     paths: sections.paths,
 //     fallback: false,
 //   }
 // }) satisfies GetStaticPaths

@@ -1,4 +1,5 @@
-import { ButtonDemo, InputsDemo, SelectDemo } from '@components/demos'
+import * as sections from '@tamagui/bento'
+import { ButtonDemo, InputsDemo, SelectDemo } from '@tamagui/demos'
 import {
   Anchor,
   Button,
@@ -15,23 +16,34 @@ import {
   Theme,
   XStack,
   YStack,
+  useThemeName,
 } from 'tamagui'
+import { LinearGradient } from 'tamagui/linear-gradient'
 
-export default function page() {
-  return <div>soon...</div>
+function Gradient() {
+  const theme = useThemeName()
+  return (
+    <LinearGradient
+      colors={
+        theme === 'light'
+          ? ['#e5fafa', '#edf8fc', '#e8e2f7']
+          : ['#1a202c', '#2d3748', '#4a5568']
+      }
+      start={[0, 1]}
+      end={[0, 0]}
+      fullscreen
+    />
+  )
 }
 
+// export default this component
 function _page() {
   return (
     <YStack p={28} f={1} bc="transparent">
-      <div
-        style={{
-          background: 'linear-gradient(120deg, #e5fafa, #edf8fc, #e8e2f7);',
-          margin: -24,
-        }}
-      >
+      <XStack m={-24}>
         <XStack gap="$6" p={24} bc="transparent" py="$10" jc="space-between" w={'100%'}>
-          <YStack bc="transparent" jc="space-between" fs={1} ai="flex-start">
+          <Gradient />
+          <YStack zi={100} bc="transparent" jc="space-between" fs={1} ai="flex-start">
             <H1 fontWeight={'600'} fontSize={'$10'}>
               Beautiful CrossPlafrom
               <br />
@@ -50,10 +62,9 @@ function _page() {
               <Theme name={'light'}>
                 <Button
                   bc="#fff"
-                  boc="$gray12"
+                  boc="$gray7"
                   hoverStyle={{
                     bc: '$gray2',
-                    boc: '$gray12',
                   }}
                   pressStyle={{
                     bc: '$gray1',
@@ -80,7 +91,7 @@ function _page() {
               </Button>
             </XStack>
           </YStack>
-          <XStack gap="$2">
+          <XStack zi={100} gap="$2">
             <Card elevate bc="#fff">
               <ButtonDemo />
             </Card>
@@ -92,7 +103,7 @@ function _page() {
             </Card>
           </XStack>
         </XStack>
-      </div>
+      </XStack>
       <Spacer size={'$8'} />
       <H2>Sections</H2>
       <Paragraph size={'$5'} color={'$gray11'}>
@@ -100,25 +111,24 @@ function _page() {
         of related components
       </Paragraph>
       <Spacer size={'$8'} />
-      <Separator />
-      <Spacer size={'$4'} />
-      <YStack>
-        {data.sections.map(({ name, parts }) => {
+      <YStack gap="$12">
+        {sections.listingData.sections.map(({ sectionName, parts }) => {
           return (
-            <XStack jc={'space-between'}>
-              <H2 fontSize={'$8'} f={2} flexBasis={0}>
-                {name}
+            <YStack gap="$4" jc={'space-between'}>
+              <H2 fontSize={'$8'} f={2}>
+                {sectionName}
               </H2>
-              <XStack gap={'$6'} f={4} flexBasis={0} fw="wrap" fs={1}>
-                {parts.map(({ name: partsName, numberOfComponents, path }) => (
-                  <ComponentGropusBanner
-                    path={path}
+              <Separator />
+              <XStack gap={'$6'} f={4} fw="wrap" fs={1}>
+                {parts.map(({ name: partsName, numberOfComponents, route }) => (
+                  <ComponentGroupsBanner
+                    path={route}
                     name={partsName}
                     numberOfComponents={numberOfComponents}
                   />
                 ))}
               </XStack>
-            </XStack>
+            </YStack>
           )
         })}
       </YStack>
@@ -126,7 +136,7 @@ function _page() {
   )
 }
 
-function ComponentGropusBanner({
+function ComponentGroupsBanner({
   name,
   numberOfComponents,
   path,
@@ -148,7 +158,7 @@ function ComponentGropusBanner({
       cursor="pointer"
       href={BASE_PATH + path}
     >
-      <Image width={200} height={200} source={{ uri: './bento/sections/comp.png' }} />
+      <Image bc="$background" w={200} h={200} source={{ uri: '' }} />
       <YStack px="$4" py="$2">
         <H4 fontWeight={'normal'} fontSize="$4">
           {name}
@@ -162,18 +172,3 @@ function ComponentGropusBanner({
 }
 
 const BASE_PATH = ' /bento'
-
-const data = {
-  sections: [
-    {
-      name: 'forms',
-      parts: [
-        {
-          name: 'Inputs',
-          numberOfComponents: 10,
-          path: '/forms/inputs',
-        },
-      ],
-    },
-  ],
-}
