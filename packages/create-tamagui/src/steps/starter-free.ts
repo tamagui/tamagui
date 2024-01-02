@@ -9,6 +9,8 @@ const runCommand = (scriptName: string) =>
   `${packageManager} ${useYarn ? '' : 'run '}${scriptName}`
 
 const main: ExtraSteps = async ({ isFullClone, projectName }) => {
+  console.info(`Note: you need yarn for this repo.`)
+
   if (isFullClone) {
     console.info(`${chalk.green.bold(
       'Done!'

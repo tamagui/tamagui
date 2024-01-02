@@ -21,6 +21,7 @@ export const templates = [
     value: 'starter-free',
     type: 'free',
     hidden: false,
+    packageManager: 'yarn',
     repo: {
       url:
         IS_TEST && starterExists
@@ -51,6 +52,7 @@ export const templates = [
     )} - Paid stack to ship apps w/users fast: https://tamagui.dev/takeout`,
     value: `takeout-starter`,
     type: 'premium',
+    packageManager: 'yarn',
     hidden: false,
     repo: {
       url: `https://github.com/tamagui/takeout`,
@@ -59,4 +61,4 @@ export const templates = [
     },
     extraSteps: takeoutSteps,
   },
-]
+] as const
