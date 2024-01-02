@@ -36,6 +36,8 @@ function Gradient() {
   )
 }
 
+export default () => null
+
 // export default this component
 function _page() {
   return (
