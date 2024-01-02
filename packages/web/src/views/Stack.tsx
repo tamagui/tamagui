@@ -12,6 +12,8 @@ export const Stack = createComponent<StackProps, Stack, StackPropsBase>({
   validStyles,
 })
 
+Stack['displayName'] = 'Stack'
+
 // test types
 // export const YStack = styled(Stack, {
 //   flexDirection: 'column',
