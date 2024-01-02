@@ -37,7 +37,8 @@
     ".": {
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.js",
+      "react-native": "./dist/cjs/index.native.js"
     },
     "./native": {
       "types": "./types/index.d.ts",
@@ -52,7 +53,8 @@
     "./linear-gradient": {
       "types": "./types/linear-gradient.d.ts",
       "import": "./dist/esm/linear-gradient.js",
-      "require": "./dist/cjs/linear-gradient.js"
+      "require": "./dist/cjs/linear-gradient.js",
+      "react-native": "./dist/cjs/linear-gradient.native.js"
     }
   },
   "dependencies": {

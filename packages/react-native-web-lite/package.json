@@ -20,7 +20,8 @@
     "./package.json": "./package.json",
     ".": {
       "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.js",
+      "react-native": "./dist/cjs/index.native.js"
     },
     "./dist/modules/*": "./dist/esm/modules/*/index.js",
     "./dist/exports/*": "./dist/esm/exports/*/index.js",

@@ -53,16 +53,19 @@
     ".": {
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.js",
+      "react-native": "./dist/cjs/index.native.js"
     },
     "./native": {
       "import": "./dist/esm/index.native.js",
-      "require": "./dist/cjs/index.native.js"
+      "require": "./dist/cjs/index.native.js",
+      "react-native": "./dist/cjs/index.native.native.js"
     },
     "./inject-styles": {
       "types": "./types/inject-styles.d.ts",
       "import": "./dist/esm/inject-styles.js",
-      "require": "./dist/cjs/inject-styles.js"
+      "require": "./dist/cjs/inject-styles.js",
+      "react-native": "./dist/cjs/inject-styles.native.js"
     }
   },
   "repository": {

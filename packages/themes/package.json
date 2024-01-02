@@ -31,17 +31,20 @@
     ".": {
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.js",
+      "react-native": "./dist/cjs/index.native.js"
     },
     "./v2": {
       "types": "./types/v2.d.ts",
       "import": "./dist/esm/v2.js",
-      "require": "./dist/cjs/v2.js"
+      "require": "./dist/cjs/v2.js",
+      "react-native": "./dist/cjs/v2.native.js"
     },
     "./v2-themes": {
       "types": "./types/v2-themes.d.ts",
       "import": "./dist/esm/v2-themes.js",
-      "require": "./dist/cjs/v2-themes.js"
+      "require": "./dist/cjs/v2-themes.js",
+      "react-native": "./dist/cjs/v2-themes.native.js"
     }
   },
   "dependencies": {
