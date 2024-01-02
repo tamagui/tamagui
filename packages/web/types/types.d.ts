@@ -742,6 +742,7 @@ type SharedBaseExtraStyleProps = {
     animation?: AnimationProp | null;
     animateOnly?: string[];
     userSelect?: Properties['userSelect'];
+    transformOrigin?: Properties['transformOrigin'];
 };
 type OverrideRNStyleProps = 'display' | 'backfaceVisibility' | 'elevation' | 'gap' | 'columnGap' | 'rowGap';
 export type StackStylePropsBase = Omit<ViewStyle, OverrideRNStyleProps | keyof SharedBaseExtraStyleProps> & TransformStyleProps & SharedBaseExtraStyleProps;
