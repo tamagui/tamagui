@@ -6,6 +6,7 @@ export function setupCors(req: NextApiRequest, res: NextApiResponse) {
   if (isValidOrigin(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin)
     res.setHeader('Access-Control-Allow-Credentials', 'true')
+    res.setHeader('Allow', 'GET, POST, PUT, DELETE, PATCH')
   }
 }
 
