@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/label",
-  "version": "1.81.4",
+  "version": "1.82.0",
   "sideEffects": [
     "*.css"
   ],
@@ -32,21 +32,21 @@
     }
   },
   "dependencies": {
-    "@tamagui/compose-refs": "1.81.4",
-    "@tamagui/constants": "1.81.4",
-    "@tamagui/create-context": "1.81.4",
-    "@tamagui/focusable": "1.81.4",
-    "@tamagui/get-button-sized": "1.81.4",
-    "@tamagui/get-font-sized": "1.81.4",
-    "@tamagui/text": "1.81.4",
-    "@tamagui/web": "1.81.4"
+    "@tamagui/compose-refs": "1.82.0",
+    "@tamagui/constants": "1.82.0",
+    "@tamagui/create-context": "1.82.0",
+    "@tamagui/focusable": "1.82.0",
+    "@tamagui/get-button-sized": "1.82.0",
+    "@tamagui/get-font-sized": "1.82.0",
+    "@tamagui/text": "1.82.0",
+    "@tamagui/web": "1.82.0"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.81.4",
+    "@tamagui/build": "1.82.0",
     "react": "^18.2.0",
     "react-native": "^0.72.1"
   },
