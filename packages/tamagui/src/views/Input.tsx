@@ -56,6 +56,8 @@ export const InputFrame = styled(TextInput, {
   },
 })
 
+export type Input = TextInput
+
 export type InputProps = Omit<GetProps<typeof InputFrame>, 'placeholderTextColor'> & {
   placeholderTextColor?: ColorStyleProp
   rows?: number
