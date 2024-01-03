@@ -57,6 +57,7 @@ export declare const InputFrame: import("@tamagui/core").TamaguiComponent<import
     State: import("react-native").TextInputState;
     contextType: import("react").Context<any> | undefined;
 }>;
+export type Input = TextInput;
 export type InputProps = Omit<GetProps<typeof InputFrame>, 'placeholderTextColor'> & {
     placeholderTextColor?: ColorStyleProp;
     rows?: number;
