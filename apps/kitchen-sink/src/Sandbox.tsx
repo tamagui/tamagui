@@ -14,7 +14,9 @@ export const Sandbox = () => {
   return (
     <View style={{ width: '100%', height: '100%', padding: 50 }}>
       <>
-        <Button fontWeight="800">hi</Button>
+        <Button fontFamily="$silkscreen" size="$10" fontWeight="800">
+          hi
+        </Button>
       </>
     </View>
   )

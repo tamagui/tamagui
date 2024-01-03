@@ -254,8 +254,11 @@ function useButton<Props extends ButtonProps>(
   const color = propsActive.color as any
 
   const iconSize =
-    (typeof size === 'number' ? size * 0.5 : getFontSize(size as FontSizeTokens)) *
-    scaleIcon
+    (typeof size === 'number'
+      ? size * 0.5
+      : getFontSize(size as FontSizeTokens, {
+          font: fontFamily?.[0] === '$' ? (fontFamily as any) : undefined,
+        })) * scaleIcon
 
   const getThemedIcon = useGetThemedIcon({
     size: iconSize,

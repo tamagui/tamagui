@@ -257,7 +257,6 @@ const HeroContents = memo(function HeroContents() {
             <NextLink prefetch={false} href="/docs/intro/introduction">
               <Button
                 theme="active"
-                h={52}
                 accessibilityLabel="Get started (docs)"
                 fontFamily="$silkscreen"
                 size="$5"
@@ -268,7 +267,6 @@ const HeroContents = memo(function HeroContents() {
                 mx="$2"
                 tabIndex="0"
                 elevation="$1"
-                letterSpacing={-2}
                 pressStyle={{
                   elevation: '$0',
                 }}
