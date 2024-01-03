@@ -42,6 +42,9 @@ import {
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 
+import { ContainerLarge } from '../../components/Container'
+import { getDefaultLayout } from '../../lib/getDefaultLayout'
+
 const Point = ({
   size = '$4',
   children,
@@ -661,25 +664,19 @@ const PurchaseModal = ({ starter, coupon }) => {
   )
 }
 
-// export default this component
-export default function _page() {
+const Hero = () => {
   const store = useBentoStore()
   return (
-    <YStack p={28} f={1} bc="transparent">
-      <XStack m={-24}>
-        <XStack gap="$6" p={24} bc="transparent" py="$10" jc="space-between" w={'100%'}>
-          <Gradient />
-          <YStack zi={100} bc="transparent" jc="space-between" fs={1} ai="flex-start">
-            <H1 fontWeight={'600'} fontSize={'$10'}>
-              Beautiful CrossPlafrom
-              <br />
-              UI Components
-              <br />
-              <Text fontSize={'$9'} color={'$blue10'}>
-                Ready for React and React Native
-              </Text>
-            </H1>
-            <Paragraph fontWeight={'300'} color="$gray11" fontSize={'$6'}>
+    <YStack pos="relative">
+      <Gradient />
+      <ContainerLarge>
+        <XStack gap="$6" py="$12" bc="transparent" jc="space-between" w={'100%'}>
+          <YStack zi={100} jc="space-between" f={10} ai="flex-start" gap="$4">
+            <H1 fos="$12">Get Started Quicker</H1>
+            <Text fontSize={'$9'} color={'$blue10'}>
+              Ready for React and React Native
+            </Text>
+            <Paragraph color="$gray11" fontSize={'$6'}>
               Well designed, beautiful, responsive and accessible cross-platform UI
               components for React and React Native
             </Paragraph>
@@ -720,7 +717,8 @@ export default function _page() {
               </Button>
             </XStack>
           </YStack>
-          <XStack zi={100} gap="$2">
+
+          <XStack zi={100} gap="$4" mr={-200}>
             <Card elevate bc="#fff">
               <ButtonDemo />
             </Card>
@@ -732,11 +730,18 @@ export default function _page() {
             </Card>
           </XStack>
         </XStack>
-      </XStack>
-      <Spacer size={'$8'} />
+      </ContainerLarge>
+    </YStack>
+  )
+}
+
+const Body = () => {
+  const store = useBentoStore()
+  return (
+    <ContainerLarge>
       <H2>Sections</H2>
       <Paragraph size={'$5'} color={'$gray11'}>
-        components are divided into multiple sections and each section has multiple group
+        Components are divided into multiple sections and each section has multiple group
         of related components
       </Paragraph>
       <Spacer size={'$8'} />
@@ -761,28 +766,7 @@ export default function _page() {
           )
         })}
       </YStack>
-      <PurchaseModal
-        coupon={
-          {
-            // stripe coupon
-          } as Stripe.Coupon
-        }
-        starter={{
-          active: true,
-          description: 'a collection of components',
-          id: 'bento',
-          image: '/img',
-          name: 'Bento',
-          prices: [
-            {
-              active: true,
-              currency: 'usd',
-              unit_amount: 20000,
-            },
-          ],
-        }}
-      />
-    </YStack>
+    </ContainerLarge>
   )
 }
 
@@ -822,3 +806,42 @@ function ComponentGroupsBanner({
 }
 
 const BASE_PATH = ' /bento'
+
+export default () => null
+
+// export default this component
+export function ProPage() {
+  const store = useBentoStore()
+  return (
+    <>
+      <Hero />
+      <Spacer size={'$8'} />
+      <Body />
+      <PurchaseModal
+        coupon={
+          {
+            // stripe coupon
+          } as Stripe.Coupon
+        }
+        starter={{
+          active: true,
+          description: 'a collection of components',
+          id: 'bento',
+          image: '/img',
+          name: 'Bento',
+          prices: [
+            {
+              active: true,
+              currency: 'usd',
+              unit_amount: 20000,
+            },
+          ],
+        }}
+      />
+
+      <Spacer size="$10" />
+    </>
+  )
+}
+
+ProPage.getLayout = getDefaultLayout
