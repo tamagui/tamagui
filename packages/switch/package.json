@@ -32,10 +32,10 @@
     }
   },
   "dependencies": {
-    "@tamagui/core": "1.79.19",
-    "@tamagui/get-token": "1.79.19",
-    "@tamagui/stacks": "1.79.19",
-    "@tamagui/switch-headless": "1.79.19"
+    "@tamagui/core": "1.82.0",
+    "@tamagui/get-token": "1.82.0",
+    "@tamagui/stacks": "1.82.0",
+    "@tamagui/switch-headless": "1.82.0"
   },
   "peerDependencies": {
     "react": "*",

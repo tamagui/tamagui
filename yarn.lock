@@ -6031,46 +6031,43 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/checkbox-headless@1.79.19, @tamagui/checkbox-headless@workspace:packages/checkbox-headless":
-
+"@tamagui/checkbox-headless@1.82.0, @tamagui/checkbox-headless@workspace:packages/checkbox-headless":
   version: 0.0.0-use.local
   resolution: "@tamagui/checkbox-headless@workspace:packages/checkbox-headless"
   dependencies:
-    "@tamagui/build": 1.79.19
-    "@tamagui/compose-refs": 1.79.19
-    "@tamagui/constants": 1.79.19
-    "@tamagui/create-context": 1.79.19
-    "@tamagui/focusable": 1.79.19
-    "@tamagui/helpers": 1.79.19
-    "@tamagui/label": 1.79.19
-    "@tamagui/use-controllable-state": 1.79.19
-    "@tamagui/use-previous": 1.79.19
-
+    "@tamagui/build": 1.82.0
+    "@tamagui/compose-refs": 1.82.0
+    "@tamagui/constants": 1.82.0
+    "@tamagui/create-context": 1.82.0
+    "@tamagui/focusable": 1.82.0
+    "@tamagui/helpers": 1.82.0
+    "@tamagui/label": 1.82.0
+    "@tamagui/use-controllable-state": 1.82.0
+    "@tamagui/use-previous": 1.82.0
     react: ^18.2.0
   peerDependencies:
     react: "*"
   languageName: unknown
   linkType: soft
 
-"@tamagui/checkbox@1.79.19, @tamagui/checkbox@workspace:packages/checkbox":
+"@tamagui/checkbox@1.82.0, @tamagui/checkbox@workspace:packages/checkbox":
   version: 0.0.0-use.local
   resolution: "@tamagui/checkbox@workspace:packages/checkbox"
   dependencies:
-    "@tamagui/build": 1.79.19
-    "@tamagui/checkbox-headless": 1.79.19
-    "@tamagui/core": 1.79.19
-    "@tamagui/font-size": 1.79.19
-    "@tamagui/get-token": 1.79.19
-    "@tamagui/helpers-tamagui": 1.79.19
-    "@tamagui/stacks": 1.79.19
+    "@tamagui/build": 1.82.0
+    "@tamagui/checkbox-headless": 1.82.0
+    "@tamagui/core": 1.82.0
+    "@tamagui/font-size": 1.82.0
+    "@tamagui/get-token": 1.82.0
+    "@tamagui/helpers-tamagui": 1.82.0
+    "@tamagui/stacks": 1.82.0
     react: ^18.2.0
   peerDependencies:
     react: "*"
   languageName: unknown
   linkType: soft
 
-"@tamagui/cli-color@1.79.19, @tamagui/cli-color@workspace:packages/cli-color":
-
+"@tamagui/cli-color@1.82.0, @tamagui/cli-color@workspace:packages/cli-color":
   version: 0.0.0-use.local
   resolution: "@tamagui/cli-color@workspace:packages/cli-color"
   languageName: unknown
@@ -7555,18 +7552,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/switch-headless@1.79.19, @tamagui/switch-headless@workspace:packages/switch-headless":
+"@tamagui/switch-headless@1.82.0, @tamagui/switch-headless@workspace:packages/switch-headless":
   version: 0.0.0-use.local
   resolution: "@tamagui/switch-headless@workspace:packages/switch-headless"
   dependencies:
-    "@tamagui/build": 1.79.19
-    "@tamagui/compose-refs": 1.79.19
-    "@tamagui/constants": 1.79.19
-    "@tamagui/focusable": 1.79.19
-    "@tamagui/helpers": 1.79.19
-    "@tamagui/label": 1.79.19
-    "@tamagui/use-controllable-state": 1.79.19
-    "@tamagui/use-previous": 1.79.19
+    "@tamagui/build": 1.82.0
+    "@tamagui/compose-refs": 1.82.0
+    "@tamagui/constants": 1.82.0
+    "@tamagui/focusable": 1.82.0
+    "@tamagui/helpers": 1.82.0
+    "@tamagui/label": 1.82.0
+    "@tamagui/use-controllable-state": 1.82.0
+    "@tamagui/use-previous": 1.82.0
     react: ^18.2.0
     react-native: ^0.72.1
   peerDependencies:
@@ -7575,15 +7572,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/switch@1.79.19, @tamagui/switch@workspace:packages/switch":
+"@tamagui/switch@1.82.0, @tamagui/switch@workspace:packages/switch":
   version: 0.0.0-use.local
   resolution: "@tamagui/switch@workspace:packages/switch"
   dependencies:
-    "@tamagui/build": 1.79.19
-    "@tamagui/core": 1.79.19
-    "@tamagui/get-token": 1.79.19
-    "@tamagui/stacks": 1.79.19
-    "@tamagui/switch-headless": 1.79.19
+    "@tamagui/build": 1.82.0
+    "@tamagui/core": 1.82.0
+    "@tamagui/get-token": 1.82.0
+    "@tamagui/stacks": 1.82.0
+    "@tamagui/switch-headless": 1.82.0
     react: ^18.2.0
     react-native: ^0.72.1
   peerDependencies:
@@ -7592,7 +7589,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/tabs@1.79.19, @tamagui/tabs@workspace:packages/tabs":
+"@tamagui/tabs@1.82.0, @tamagui/tabs@workspace:packages/tabs":
   version: 0.0.0-use.local
   resolution: "@tamagui/tabs@workspace:packages/tabs"
   dependencies:
