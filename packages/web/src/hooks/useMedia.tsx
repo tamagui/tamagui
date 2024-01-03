@@ -14,7 +14,7 @@ import type {
   TamaguiInternalConfig,
   UseMediaState,
 } from '../types'
-import { getDisableSSR, useDisableSSR } from './useDisableSSR'
+import { getDisableSSR } from './useDisableSSR'
 
 export let mediaState: MediaQueryState =
   // development only safeguard
@@ -190,7 +190,7 @@ function subscribe(subscriber: any) {
 export function useMedia(uid?: any, componentContext?: ComponentContextI): UseMediaState {
   const internal = useRef<UseMediaInternalState | undefined>()
   // performance boost to avoid using context twice
-  const disableSSR = componentContext ? getDisableSSR(componentContext) : useDisableSSR()
+  const disableSSR = getDisableSSR(componentContext)
   const initialState = (disableSSR || !isWeb ? mediaState : initState) || {}
 
   const state = useSyncExternalStore<MediaQueryState>(
