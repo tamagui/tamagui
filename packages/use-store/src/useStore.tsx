@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useSyncExternalStore } from 'react'
+import { useCallback, useRef, useSyncExternalStore } from 'react'
 
 import { isEqualSubsetShallow } from './comparators'
 import { configureOpts } from './configureUseStore'
@@ -95,11 +95,7 @@ export function createUseStoreSelector<
 }
 
 // selector hook
-export function useStoreSelector<
-  A extends Store<B>,
-  B extends Object,
-  S extends Selector<A, any>
->(
+export function useStoreSelector<A, B extends Object, S extends Selector<A, any>>(
   StoreKlass: (new (props: B) => A) | (new () => A),
   selector: S,
   props?: B
@@ -322,7 +318,7 @@ function useStoreFromInfo(
 
     // this wasn't updating in AnimationsStore
     const isUnchanged =
-      (!isTracking && last) ||
+      (!userSelector && !isTracking && last) ||
       (typeof last !== 'undefined' &&
         isEqualSubsetShallow(last, snap, {
           keyComparators: info.keyComparators,
