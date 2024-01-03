@@ -130,6 +130,7 @@ export const PopoverTrigger = React.forwardRef<
 >(function PopoverTrigger(props: ScopedPopoverProps<PopoverTriggerProps>, forwardedRef) {
   const { __scopePopover, ...rest } = props
   const context = usePopoverContext(__scopePopover)
+
   const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef)
 
   const trigger = (
@@ -280,7 +281,9 @@ function PopoverContentPortal(props: ScopedPopoverProps<PopoverContentTypeProps>
   // Portal the contents and add a transparent bg overlay to handle dismiss on native
   return (
     <Portal zIndex={zIndex}>
-      <Theme name={themeName}>
+      {/* forceClassName avoids forced re-mount renders for some reason... see the HeadMenu as you change tints a few times */}
+      {/* without this you'll see the site menu re-rendering. It must be something in wrapping children in Theme */}
+      <Theme forceClassName name={themeName}>
         {!!context.open && !context.breakpointActive && (
           <YStack
             fullscreen
@@ -575,10 +578,13 @@ export const Popover = withStaticProperties(
       keepChildrenMounted,
     }
 
-    // debug if changing too often
+    // // debug if changing too often
     // if (process.env.NODE_ENV === 'development') {
     //   Object.keys(popoverContext).forEach((key) => {
-    //     React.useEffect(() => console.log(`changed`, key), [popoverContext[key]])
+    //     React.useEffect(
+    //       () => console.log(`changed`, key, popoverContext[key]),
+    //       [popoverContext[key]]
+    //     )
     //   })
     // }
 
