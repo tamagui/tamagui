@@ -10,8 +10,10 @@ export function themeable<ComponentType extends (props: any) => any>(
   const withThemeComponent = forwardRef(function WithTheme(props: ThemeableProps, ref) {
     const { themeInverse, theme, componentName, themeReset, ...rest } = props
 
-    // @ts-expect-error its ok
-    const element = <Component ref={ref} {...rest} data-disable-theme />
+    const element = (
+      // @ts-expect-error its ok
+      <Component ref={ref} {...rest} data-disable-theme />
+    )
 
     let contents = (
       <Theme
