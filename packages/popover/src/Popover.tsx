@@ -442,15 +442,17 @@ const PopoverContentImpl = React.forwardRef<
             display: 'contents',
           }}
         >
-          <FocusScope
-            loop
-            enabled={disableFocusScope ? false : open}
-            trapped={trapFocus}
-            onMountAutoFocus={onOpenAutoFocus}
-            onUnmountAutoFocus={onCloseAutoFocus}
-          >
-            <ResetPresence>{contents}</ResetPresence>
-          </FocusScope>
+          <ResetPresence>
+            <FocusScope
+              loop
+              enabled={disableFocusScope ? false : open}
+              trapped={trapFocus}
+              onMountAutoFocus={onOpenAutoFocus}
+              onUnmountAutoFocus={onCloseAutoFocus}
+            >
+              {contents}
+            </FocusScope>
+          </ResetPresence>
         </RemoveScroll>
       </PopperContent>
     </Animate>

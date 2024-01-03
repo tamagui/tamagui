@@ -19,6 +19,14 @@ const defaultWebStyle = {
   margin: 0,
 }
 
+const ellipsisStyle =
+  process.env.TAMAGUI_TARGET === 'web'
+    ? ellipseStyle
+    : {
+        numberOfLines: 1,
+        lineBreakMode: 'clip',
+      }
+
 export const Text = createComponent<TextProps, Text, TextPropsBase>({
   acceptsClassName: true,
   isText: true,
@@ -69,21 +77,22 @@ export const Text = createComponent<TextProps, Text, TextPropsBase>({
       },
     }),
 
+    /**
+     * @deprecated Use ellipsis instead
+     */
     ellipse: {
-      true:
-        process.env.TAMAGUI_TARGET === 'web'
-          ? ellipseStyle
-          : {
-              numberOfLines: 1,
-              lineBreakMode: 'clip',
-            },
+      true: ellipsisStyle,
+    },
+
+    ellipsis: {
+      true: ellipsisStyle,
     },
   },
-
-  deoptProps: new Set(process.env.TAMAGUI_TARGET === 'web' ? [] : ['ellipse']),
 
   validStyles: {
     ...validStyles,
     ...stylePropsTextOnly,
   },
 })
+
+Text['displayName'] = 'Text'

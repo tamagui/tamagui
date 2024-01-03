@@ -47,3 +47,5 @@ export function TamaguiProvider({
     </ComponentContext.Provider>
   )
 }
+
+TamaguiProvider['displayName'] = 'TamaguiProvider'

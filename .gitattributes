@@ -1,5 +1,5 @@
-takeout/*/src/** filter=git-crypt diff=git-crypt
-apps/**/(protected)/** filter=git-crypt diff=git-crypt
-apps/*/pages/studio/** filter=git-crypt diff=git-crypt
-apps/studio/src/** filter=git-crypt diff=git-crypt
-apps/bento/src/** filter=git-crypt diff=git-crypt
+takeout/*/src/** filter=git-crypt diff=git-crypt merge=git-crypt
+apps/**/(protected)/** filter=git-crypt diff=git-crypt merge=git-crypt
+apps/*/pages/studio/** filter=git-crypt diff=git-crypt merge=git-crypt
+apps/studio/src/** filter=git-crypt diff=git-crypt merge=git-crypt
+apps/bento/src/** filter=git-crypt diff=git-crypt merge=git-crypt

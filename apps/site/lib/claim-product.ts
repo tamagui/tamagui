@@ -55,7 +55,7 @@ type ClaimFunction = (args: {
 }>
 
 const claimRepositoryAccess: ClaimFunction = async ({ user, metadata }) => {
-  const permission = 'read'
+  const permission = 'pull'
 
   console.info(`Claim: checking private users`)
 

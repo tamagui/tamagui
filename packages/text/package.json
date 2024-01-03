@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/text",
-  "version": "1.79.19",
+  "version": "1.82.0",
   "sideEffects": [
     "*.css"
   ],
@@ -27,19 +27,20 @@
     ".": {
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.js",
+      "react-native": "./dist/cjs/index.native.js"
     }
   },
   "dependencies": {
-    "@tamagui/get-font-sized": "1.79.19",
-    "@tamagui/helpers-tamagui": "1.79.19",
-    "@tamagui/web": "1.79.19"
+    "@tamagui/get-font-sized": "1.82.0",
+    "@tamagui/helpers-tamagui": "1.82.0",
+    "@tamagui/web": "1.82.0"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.79.19",
+    "@tamagui/build": "1.82.0",
     "react": "^18.2.0"
   },
   "publishConfig": {

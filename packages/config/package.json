@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/config",
-  "version": "1.79.19",
+  "version": "1.82.0",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -29,43 +29,48 @@
     ".": {
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.js",
+      "react-native": "./dist/cjs/index.native.js"
     },
     "./v2": {
       "types": "./types/v2.d.ts",
       "import": "./dist/esm/v2.js",
-      "require": "./dist/cjs/v2.js"
+      "require": "./dist/cjs/v2.js",
+      "react-native": "./dist/cjs/v2.native.js"
     },
     "./v2-reanimated": {
       "types": "./types/v2-reanimated.d.ts",
       "import": "./dist/esm/v2-reanimated.js",
-      "require": "./dist/cjs/v2-reanimated.js"
+      "require": "./dist/cjs/v2-reanimated.js",
+      "react-native": "./dist/cjs/v2-reanimated.native.js"
     },
     "./v2-native": {
       "types": "./types/v2-native.d.ts",
       "import": "./dist/esm/v2-native.js",
-      "require": "./dist/cjs/v2-native.js"
+      "require": "./dist/cjs/v2-native.js",
+      "react-native": "./dist/cjs/v2-native.native.js"
     },
     "./reanimated": {
       "types": "./types/index.reanimated.d.ts",
       "import": "./dist/esm/index.reanimated.js",
-      "require": "./dist/cjs/index.reanimated.js"
+      "require": "./dist/cjs/index.reanimated.js",
+      "react-native": "./dist/cjs/index.reanimated.native.js"
     }
   },
   "dependencies": {
-    "@tamagui/animations-css": "1.79.19",
-    "@tamagui/animations-moti": "1.79.19",
-    "@tamagui/animations-react-native": "1.79.19",
-    "@tamagui/colors": "1.79.19",
-    "@tamagui/font-inter": "1.79.19",
-    "@tamagui/font-silkscreen": "1.79.19",
-    "@tamagui/react-native-media-driver": "1.79.19",
-    "@tamagui/shorthands": "1.79.19",
-    "@tamagui/themes": "1.79.19",
-    "@tamagui/web": "1.79.19"
+    "@tamagui/animations-css": "1.82.0",
+    "@tamagui/animations-moti": "1.82.0",
+    "@tamagui/animations-react-native": "1.82.0",
+    "@tamagui/colors": "1.82.0",
+    "@tamagui/font-inter": "1.82.0",
+    "@tamagui/font-silkscreen": "1.82.0",
+    "@tamagui/react-native-media-driver": "1.82.0",
+    "@tamagui/shorthands": "1.82.0",
+    "@tamagui/themes": "1.82.0",
+    "@tamagui/web": "1.82.0"
   },
   "devDependencies": {
-    "@tamagui/build": "1.79.19"
+    "@tamagui/build": "1.82.0"
   },
   "publishConfig": {
     "access": "public"

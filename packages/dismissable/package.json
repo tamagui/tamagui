@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/dismissable",
-  "version": "1.79.19",
+  "version": "1.82.0",
   "sideEffects": true,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -25,21 +25,22 @@
     ".": {
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.js",
+      "react-native": "./dist/cjs/index.native.js"
     }
   },
   "dependencies": {
-    "@tamagui/compose-refs": "1.79.19",
-    "@tamagui/core": "1.79.19",
-    "@tamagui/helpers": "1.79.19",
-    "@tamagui/use-escape-keydown": "1.79.19",
-    "@tamagui/use-event": "1.79.19"
+    "@tamagui/compose-refs": "1.82.0",
+    "@tamagui/core": "1.82.0",
+    "@tamagui/helpers": "1.82.0",
+    "@tamagui/use-escape-keydown": "1.82.0",
+    "@tamagui/use-event": "1.82.0"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.79.19",
+    "@tamagui/build": "1.82.0",
     "react": "^18.2.0"
   },
   "publishConfig": {

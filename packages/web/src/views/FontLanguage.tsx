@@ -14,3 +14,5 @@ export const FontLanguage = ({ children, ...props }: FontLanguageProps) => {
     </div>
   )
 }
+
+FontLanguage['displayName'] = 'FontLanguage'

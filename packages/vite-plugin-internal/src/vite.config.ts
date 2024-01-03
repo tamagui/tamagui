@@ -1,11 +1,10 @@
+/// <reference types="vitest" />
+
 import { join } from 'path'
 
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
 import react from '@vitejs/plugin-react-swc'
-/// <reference types="vitest" />
 import { defineConfig } from 'vite'
-
-// import { esbuildCommonjs, viteCommonjs } from '@originjs/vite-plugin-commonjs'
 
 const reactNative = require('vitest-react-native')
 
@@ -36,6 +35,7 @@ export default defineConfig({
       },
     }),
 
+  // @ts-ignore
   test: {
     // for compat with some jest libs (like @testing-library/jest-dom)
     globals: true,

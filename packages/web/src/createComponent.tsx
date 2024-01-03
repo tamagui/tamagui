@@ -75,8 +75,6 @@ process.env.TAMAGUI_TARGET
  * All things that need one-time setup after createTamagui is called
  */
 let tamaguiConfig: TamaguiInternalConfig
-let AnimatedText: any
-let AnimatedView: any
 let initialTheme: any
 let time: any
 
@@ -483,12 +481,7 @@ export function createComponent<
 
     let elementType = isText ? BaseTextComponent : BaseViewComponent
     if (animationsConfig && willBeAnimated) {
-      if (animationsConfig.Text) {
-        elementType = animationsConfig.Text
-      }
-      if (animationsConfig.View) {
-        elementType = animationsConfig.View
-      }
+      elementType = animationsConfig[isText ? 'Text' : 'View'] || elementType
     }
 
     // set enter/exit variants onto our new props object
@@ -921,47 +914,38 @@ export function createComponent<
 
     let className: string | undefined
 
-    if (process.env.TAMAGUI_TARGET === 'web') {
-      // TODO this could be moved into getSplitStyles right?
-      // const fromTheme = getThemeCNStyle(themeState)
+    const asChildExceptStyleLike =
+      asChild === 'except-style' || asChild === 'except-style-web'
 
-      let classList: string[] = []
-      if (componentName) classList.push(componentClassName)
-      if (fontFamilyClassName) classList.push(fontFamilyClassName)
-      if (classNames) classList.push(Object.values(classNames).join(' '))
-      if (groupClassName) classList.push(groupClassName)
+    if (!asChildExceptStyleLike) {
+      if (process.env.TAMAGUI_TARGET === 'web') {
+        let classList: string[] = []
+        if (componentName) classList.push(componentClassName)
+        if (fontFamilyClassName) classList.push(fontFamilyClassName)
+        if (classNames) classList.push(Object.values(classNames).join(' '))
+        if (groupClassName) classList.push(groupClassName)
 
-      className = classList.join(' ')
+        className = classList.join(' ')
 
-      if (isAnimatedReactNativeWeb && !avoidAnimationStyle) {
-        viewProps.style = style
-      } else if (isReactNative) {
-        // TODO these shouldn't really return from getSplitStyles when in Native mode
-        const cnStyles = { $$css: true }
-        for (const name of className.split(' ')) {
-          cnStyles[name] = name
+        if (isAnimatedReactNativeWeb && !avoidAnimationStyle) {
+          viewProps.style = style
+        } else if (isReactNative) {
+          // TODO these shouldn't really return from getSplitStyles when in Native mode
+          const cnStyles = { $$css: true }
+          for (const name of className.split(' ')) {
+            cnStyles[name] = name
+          }
+          viewProps.style = [...(Array.isArray(style) ? style : [style]), cnStyles]
+        } else {
+          if (className) {
+            viewProps.className = className
+          }
+          viewProps.style = style
         }
-        viewProps.style = [...(Array.isArray(style) ? style : [style]), cnStyles]
       } else {
-        viewProps.className = className
+        // native assign styles
         viewProps.style = style
       }
-
-      // turn debug data- props into dataSet in dev mode
-      if (isReactNative) {
-        if (process.env.NODE_ENV === 'development') {
-          Object.keys(viewProps).forEach((key) => {
-            if (key.startsWith('data-')) {
-              viewProps.dataSet ??= {}
-              viewProps.dataSet[key.replace('data-', '')] = viewProps[key]
-              delete viewProps[key]
-            }
-          })
-        }
-      }
-    } else {
-      // native assign styles
-      viewProps.style = style
     }
 
     // if its a group its gotta listen for pseudos to emit them to children
@@ -982,8 +966,6 @@ export function createComponent<
     const needsHoverState = runtimeHoverStyle || onHoverIn || onHoverOut
     const isHoverable =
       isWeb && !!(groupName || needsHoverState || onMouseEnter || onMouseLeave)
-
-    const handlesPressEvents = !(isWeb || asChild)
 
     // check presence rather than value to prevent reparenting bugs
     // allows for onPress={x ? function : undefined} without re-ordering dom
@@ -1134,12 +1116,6 @@ export function createComponent<
             debug: debugProp,
           })
 
-    // needs to reset the presence state for nested children
-    const ResetPresence = config?.animations?.ResetPresence
-    if (willBeAnimated && presence && ResetPresence) {
-      content = <ResetPresence>{content}</ResetPresence>
-    }
-
     if (asChild) {
       elementType = Slot
       // on native this is already merged into viewProps in hooks.useEvents
@@ -1184,6 +1160,12 @@ export function createComponent<
       content = createElement(elementType, viewProps, content)
     }
 
+    // needs to reset the presence state for nested children
+    const ResetPresence = config?.animations?.ResetPresence
+    if (willBeAnimated && presence && ResetPresence && typeof content !== 'string') {
+      content = <ResetPresence>{content}</ResetPresence>
+    }
+
     if (process.env.NODE_ENV === 'development' && time) time`create-element`
 
     // must override context so siblings don't clobber initial state
@@ -1214,7 +1196,7 @@ export function createComponent<
 
     if (groupName && subGroupContext) {
       content = (
-        <ComponentContext.Provider groups={subGroupContext}>
+        <ComponentContext.Provider {...componentContext} groups={subGroupContext}>
           {content}
         </ComponentContext.Provider>
       )
@@ -1292,7 +1274,6 @@ export function createComponent<
               defaultProps,
               splitStyles,
               animationStyles,
-              handlesPressEvents,
               willBeAnimated,
               isStringElement,
               classNamesIn: props.className?.split(' '),

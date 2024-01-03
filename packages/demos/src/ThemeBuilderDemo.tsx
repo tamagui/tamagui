@@ -1,5 +1,4 @@
-import { Drumstick, Hand } from '@tamagui/lucide-icons'
-import { ButtonProps, Square, SquareProps, ThemeName, XStack, YStack } from 'tamagui'
+import { Square, SquareProps, ThemeName, XStack, YStack } from 'tamagui'
 
 export function ThemeBuilderDemo() {
   return (

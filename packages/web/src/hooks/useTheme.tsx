@@ -3,7 +3,6 @@ import { useContext, useEffect, useMemo, useRef, useState } from 'react'
 
 import { getConfig } from '../config'
 import { Variable, getVariable } from '../createVariable'
-import { createProxy } from '../helpers/createProxy'
 import { isEqualShallow } from '../helpers/createShallowSetState'
 import {
   ThemeManager,
@@ -19,7 +18,6 @@ import type {
   VariableVal,
   VariableValGeneric,
 } from '../types'
-import { GetThemeUnwrapped } from './getThemeUnwrapped'
 
 export type ChangedThemeResponse = {
   state?: ThemeManagerState
@@ -156,7 +154,7 @@ export function getThemeProxied(
     }
   }
 
-  return createProxy(theme, {
+  return new Proxy(theme, {
     has(_, key) {
       if (Reflect.has(theme, key)) {
         return true
@@ -167,10 +165,6 @@ export function getThemeProxied(
       }
     },
     get(_, key) {
-      if (key === GetThemeUnwrapped) {
-        return theme
-      }
-
       if (
         // dont ask me, idk why but on hermes you can see that useTheme()[undefined] passes in STRING undefined to proxy
         // if someone is crazy enough to use "undefined" as a theme key then this not working is on them

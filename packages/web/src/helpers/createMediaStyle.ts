@@ -111,7 +111,10 @@ export const createMediaStyle = (
     // combines media queries if they already exist
     if (styleInner.includes(prefix)) {
       // combine
-      styleRule = styleInner.replace('{', ` and ${mediaQuery} {`)
+      styleRule = styleInner
+        .replace('{', ` and ${mediaQuery} {`)
+        // temp bugfix can be better done
+        .replace(`and screen and`, `and`)
     } else {
       styleRule = `${prefix} ${mediaQuery}{${precedenceImportancePrefix}${styleInner}}`
     }

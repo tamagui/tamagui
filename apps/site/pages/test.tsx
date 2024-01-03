@@ -1,12 +1,11 @@
 // import '../lib/wdyr'
 
-import { SelectDemo, SwitchDemo } from '@tamagui/demos'
-import { memo } from 'react'
-import { Button, Label, Separator, Square, Switch, Theme, XStack } from 'tamagui'
+import { Clipboard } from '@tamagui/lucide-icons'
+import { Button } from 'tamagui'
 
-import { ThemeToggle } from '../components/ThemeToggle'
+import { getDefaultLayout } from '../lib/getDefaultLayout'
 
-export default memo(() => {
+function TestPage() {
   return (
     <div
       style={{
@@ -21,27 +20,28 @@ export default memo(() => {
         <ThemeToggle />
       </div> */}
 
-      <XStack width={200} alignItems="center" space="$4">
-        <Label
-          paddingRight="$0"
-          minWidth={90}
-          justifyContent="flex-end"
-          size="$4"
-          htmlFor="test"
-        >
-          Accept
-        </Label>
-        <Separator minHeight={20} vertical />
-        <Switch id="test" size="$4">
-          <Switch.Thumb animation="quick" />
-        </Switch>
-      </XStack>
-      {/* <Square size={100} bc="$background">
-          hi
-        </Square> */}
+      <Button
+        aria-label="Copy code to clipboard"
+        position="absolute"
+        size="$10"
+        top="$3"
+        right="$3"
+        display="inline-flex"
+        $xs={{
+          display: 'none',
+        }}
+        icon={Clipboard}
+        onPress={() => {}}
+      >
+        hello
+      </Button>
     </div>
   )
-})
+}
+
+export default TestPage
+
+TestPage.getLayout = getDefaultLayout
 
 // export async function getStaticProps() {
 //   return {

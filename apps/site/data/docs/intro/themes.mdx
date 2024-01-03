@@ -395,22 +395,18 @@ You can configure Tamagui to not send any themes JS to the client side, so long 
 
 To enable this you need to have your bundler tree shake away the themes object you'd typically pass to `createTamagui` for the client bundle. Note this is a somewhat advanced optimization and not necessary to do right away.
 
-Here's how we do it for example on Next.js:
+For examle:
 
 ```tsx
-// we check for both
-//   - TAMAGUI_IS_SERVER (set to true by the @tamagui/next-plugin only when isServer = true)
-//
-// if true we keep the JS themes so the server side can use them for rendering
-// but if this is the client side bundle we just pass `{}` cast as the same type as our themes object
-//
-// tamagui automatically detects if you pass an empty object on client side and will then try and hydrate
-// your themes from CSS. this typically only takes less than a handful of ms,
-// and can save a lot of JS bundle size especially if you have many themes
-// if you only have simple themes, don't worry so much about this optimization
+import { themes as themesIn } from './your-themes-file'
+
+// We leave this value empty for production client side bundles to save on bundle size.
+// The `@tamagui/next-plugin` sets TAMAGUI_IS_SERVER automatically.
+// If you pass an empty themes object Tamagui will try to hydrate by scanning CSS in browser environments.
+// It typically takes low single-digit ms to scan and can save significantly on JS size.
 
 const themes =
-  process.env.TAMAGUI_IS_SERVER
+  process.env.TAMAGUI_IS_SERVER || process.env.NODE_ENV !== 'production'
     ? themesIn
     : ({} as typeof themesIn)
 

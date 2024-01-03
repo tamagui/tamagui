@@ -2,7 +2,7 @@ import { PluginOptions as LoaderPluginOptions } from 'tamagui-loader';
 export type WithTamaguiProps = LoaderPluginOptions & {
     appDir?: boolean;
     /**
-     * @deprecated Deprecated, just leave it off
+     * @deprecated Deprecated
      */
     useReactNativeWebLite: boolean;
     enableLegacyFontSupport?: boolean;

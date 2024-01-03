@@ -18,7 +18,6 @@ import {
   getVariableValue,
   spacedChildren,
   styled,
-  useDidFinishSSR,
   useProps,
 } from '@tamagui/web'
 import { FunctionComponent, useContext } from 'react'
@@ -227,7 +226,6 @@ function useButton<Props extends ButtonProps>(
   { Text = Button.Text }: { Text: any } = { Text: Button.Text }
 ) {
   const isNested = useContext(ButtonNestingContext)
-  const didFinishSSR = useDidFinishSSR()
   const propsActive = useProps(propsIn) as any as ButtonProps
 
   // careful not to destructure and re-order props, order is important
@@ -242,6 +240,12 @@ function useButton<Props extends ButtonProps>(
     noTextWrap,
     fontFamily,
     fontSize,
+    fontWeight,
+    fontStyle,
+    letterSpacing,
+    tag,
+    ellipse,
+    maxFontSizeMultiplier,
     ...restProps
   } = propsActive
 
@@ -250,8 +254,11 @@ function useButton<Props extends ButtonProps>(
   const color = propsActive.color as any
 
   const iconSize =
-    (typeof size === 'number' ? size * 0.5 : getFontSize(size as FontSizeTokens)) *
-    scaleIcon
+    (typeof size === 'number'
+      ? size * 0.5
+      : getFontSize(size as FontSizeTokens, {
+          font: fontFamily?.[0] === '$' ? (fontFamily as any) : undefined,
+        })) * scaleIcon
 
   const getThemedIcon = useGetThemedIcon({
     size: iconSize,
@@ -264,7 +271,17 @@ function useButton<Props extends ButtonProps>(
     ? [propsIn.children]
     : wrapChildrenInText(
         Text,
-        { children: propsIn.children, fontFamily, fontSize, textProps },
+        {
+          children: propsIn.children,
+          fontFamily,
+          fontSize,
+          textProps,
+          fontWeight,
+          fontStyle,
+          letterSpacing,
+          ellipse,
+          maxFontSizeMultiplier,
+        },
         Text === ButtonText && propsActive.unstyled !== true
           ? {
               unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
@@ -286,15 +303,6 @@ function useButton<Props extends ButtonProps>(
     children: [themedIcon, ...contents, themedIconAfter],
   })
 
-  // fixes SSR issue + DOM nesting issue of not allowing button in button
-  const tag = isNested
-    ? 'span'
-    : // defaults to <a /> when accessibilityRole = link
-    // see https://github.com/tamagui/tamagui/issues/505
-    propsActive.accessibilityRole === 'link'
-    ? 'a'
-    : undefined
-
   const props = {
     size,
     ...(propsIn.disabled && {
@@ -305,15 +313,22 @@ function useButton<Props extends ButtonProps>(
         borderColor: '$background',
       },
     }),
-    ...(tag && {
-      tag,
-    }),
+    // fixes SSR issue + DOM nesting issue of not allowing button in button
+    tag:
+      tag ??
+      (isNested
+        ? 'span'
+        : // defaults to <a /> when accessibilityRole = link
+        // see https://github.com/tamagui/tamagui/issues/505
+        propsActive.accessibilityRole === 'link'
+        ? 'a'
+        : 'button'),
     ...restProps,
     children: (
       <ButtonNestingContext.Provider value={true}>{inner}</ButtonNestingContext.Provider>
     ),
     // forces it to be a runtime pressStyle so it passes through context text colors
-    disableClassName: didFinishSSR,
+    disableClassName: true,
   } as Props
 
   return {

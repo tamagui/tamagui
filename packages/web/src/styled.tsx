@@ -5,15 +5,19 @@ import type { GetRef } from './interfaces/GetRef'
 import { getReactNativeConfig } from './setupReactNative'
 import type {
   GetProps,
+  GetTokenString,
   GetVariantValues,
   MediaProps,
   PseudoProps,
   StaticConfig,
   StylableComponent,
   TamaguiComponent,
+  ThemeValueByCategory,
+  Tokens,
   VariantDefinitions,
   VariantSpreadFunction,
 } from './types'
+import { Stack } from './views/Stack'
 
 type GetBaseProps<A extends StylableComponent> = A extends TamaguiComponent<
   any,
@@ -49,7 +53,8 @@ type AreVariantsUndefined<V> = V extends undefined
 
 export function styled<
   ParentComponent extends StylableComponent,
-  Variants extends VariantDefinitions<ParentComponent> | void
+  Variants extends VariantDefinitions<ParentComponent> | void,
+  StyledStaticConfig extends Partial<StaticConfig>
 >(
   ComponentIn: ParentComponent,
   // this should be Partial<GetProps<ParentComponent>> but causes excessively deep type issues
@@ -60,7 +65,7 @@ export function styled<
     context?: StyledContext
     acceptsClassName?: boolean
   },
-  staticExtractionOptions?: Partial<StaticConfig>
+  staticExtractionOptions?: StyledStaticConfig
 ) {
   // do type stuff at top for easier readability
 
@@ -83,7 +88,14 @@ export function styled<
           | (Key extends keyof OurVariantProps ? OurVariantProps[Key] : undefined)
       }
 
-  type OurPropsBaseBase = ParentPropsBase & MergedVariants
+  type AcceptedTokens = StyledStaticConfig['acceptTokens']
+  type CustomTokenProps = AcceptedTokens extends Object
+    ? {
+        [Key in keyof AcceptedTokens]: ThemeValueByCategory<AcceptedTokens[Key]>
+      }
+    : {}
+
+  type OurPropsBaseBase = ParentPropsBase & MergedVariants & CustomTokenProps
 
   /**
    * de-opting a bit of type niceness because were hitting depth issues too soon
@@ -94,16 +106,15 @@ export function styled<
    * that would give you nicely merged pseudo sub-styles but its just too much for TS
    * so now pseudos wont be nicely typed inside media queries, but at least we can nest
    */
-  type OurPropsBase = OurPropsBaseBase
 
   type Props = Variants extends void
     ? GetProps<ParentComponent>
     : // start with base props
-      OurPropsBase &
+      OurPropsBaseBase &
         // add in pseudo
         PseudoProps<Partial<OurPropsBaseBase>> &
         // add in media
-        MediaProps<Partial<OurPropsBase>>
+        MediaProps<Partial<OurPropsBaseBase>>
 
   type ParentStaticProperties = {
     [Key in Exclude<

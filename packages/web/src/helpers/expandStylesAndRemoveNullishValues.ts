@@ -1,4 +1,3 @@
-import { SplitStyleProps } from '../types'
 import { expandStyle } from './expandStyle'
 import { fixStyles } from './expandStyles'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'

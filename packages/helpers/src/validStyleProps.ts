@@ -131,6 +131,7 @@ export const stylePropsView = {
   borderTopWidth: true,
   borderWidth: true,
   transform: true,
+  transformOrigin: true,
   alignContent: true,
   alignItems: true,
   alignSelf: true,

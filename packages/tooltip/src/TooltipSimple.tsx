@@ -37,9 +37,9 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = React.forwardRef(
           {...(typeof label === 'string' && {
             'aria-label': label,
           })}
-          asChild
+          asChild="except-style"
         >
-          {React.isValidElement(child)
+          {ref && React.isValidElement(child)
             ? React.cloneElement(child, { ref } as any)
             : child}
         </Tooltip.Trigger>

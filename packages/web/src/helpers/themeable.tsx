@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react'
+import { forwardRef } from 'react'
 
 import { StaticConfig, ThemeableProps } from '../types'
 import { Theme } from '../views/Theme'

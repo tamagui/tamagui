@@ -30,7 +30,7 @@ export function createStyledContext<VariantProps extends Record<string, any>>(
     scope,
     ...values
   }: VariantProps & { children?: React.ReactNode; scope: string }) => {
-    const value = useMemo(() => {
+    const next = useMemo(() => {
       return {
         // this ! is a workaround for ts error
         ...defaultValues!,
@@ -46,7 +46,7 @@ export function createStyledContext<VariantProps extends Record<string, any>>(
       }
       Provider = ScopedContext.Provider
     }
-    return <Provider value={value}>{children}</Provider>
+    return <Provider value={next}>{children}</Provider>
   }
 
   // use consumerComponent just to give a better error message

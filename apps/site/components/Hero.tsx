@@ -257,7 +257,6 @@ const HeroContents = memo(function HeroContents() {
             <NextLink prefetch={false} href="/docs/intro/introduction">
               <Button
                 theme="active"
-                h={52}
                 accessibilityLabel="Get started (docs)"
                 fontFamily="$silkscreen"
                 size="$5"
@@ -268,10 +267,17 @@ const HeroContents = memo(function HeroContents() {
                 mx="$2"
                 tabIndex="0"
                 elevation="$1"
-                letterSpacing={-2}
                 pressStyle={{
                   elevation: '$0',
                 }}
+                // TODO this is applying in dark mode...
+                // $theme-light={{
+                //   bc: '$color1',
+                //   hoverStyle: {
+                //     bc: '$color2',
+                //     color: '$color10',
+                //   },
+                // }}
               >
                 Get started
               </Button>

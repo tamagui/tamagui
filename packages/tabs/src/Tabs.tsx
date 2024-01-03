@@ -29,7 +29,6 @@ const TAB_LIST_NAME = 'TabsList'
 
 const TabsListFrame = styled(Group, {
   name: TAB_LIST_NAME,
-  focusable: true,
 })
 
 type TabsListFrameProps = GroupProps
@@ -51,7 +50,6 @@ const TabsList = TabsListFrame.extractable(
       return (
         <RovingFocusGroup
           __scopeRovingFocusGroup={__scopeTabs || TABS_CONTEXT}
-          asChild="except-style"
           orientation={context.orientation}
           dir={context.dir}
           loop={loop}
@@ -81,12 +79,12 @@ const TRIGGER_NAME = 'TabsTrigger'
 
 const TabsTriggerFrame = styled(ThemeableStack, {
   name: TRIGGER_NAME,
+  tag: 'button',
   justifyContent: 'center',
   alignItems: 'center',
   flexWrap: 'nowrap',
   flexDirection: 'row',
   cursor: 'pointer',
-  focusable: true,
   userSelect: 'none',
 
   variants: {
@@ -210,10 +208,10 @@ const TabsTrigger = TabsTriggerFrame.extractable(
       }, [isSelected, value, layout])
 
       return (
-        <Theme name={isSelected ? 'active' : null}>
+        <Theme name={isSelected ? 'active' : null} forceClassName>
           <RovingFocusGroup.Item
             __scopeRovingFocusGroup={__scopeTabs || TABS_CONTEXT}
-            asChild="except-style"
+            asChild
             focusable={!disabled}
             active={isSelected}
           >

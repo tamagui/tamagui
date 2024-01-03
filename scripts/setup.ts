@@ -13,7 +13,7 @@ setup()
 /**
  * Should be immutable function that runs and ensures all the packages are setup correctly
  * Allowing you to make a new package just by adding a folder to packages and then running
- * `yarn setup` once.
+ * `yarn scripts:setup` once.
  */
 
 async function setup() {
