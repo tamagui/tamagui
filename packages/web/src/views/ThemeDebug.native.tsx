@@ -14,3 +14,5 @@ export function ThemeDebug({
 
   return children
 }
+
+ThemeDebug['displayName'] = 'ThemeDebug'

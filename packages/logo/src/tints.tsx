@@ -26,24 +26,25 @@ type TintFamily = keyof typeof families
 
 let fam: TintFamily = DEFAULT_FAMILY
 
-const seasonalTheme = (() => {
-  const month = new Date().getMonth()
-  const day = new Date().getDate()
+// disabling - server time diff from client :/
+// const seasonalTheme = (() => {
+//   const month = new Date().getMonth()
+//   const day = new Date().getDate()
 
-  if (month === 11 && day >= 14) {
-    return 'xmas'
-  }
-  if (month === 9 && day >= 20) {
-    return 'halloween'
-  }
-  if (month === 2 && day >= 30) {
-    return 'easter'
-  }
-})()
+//   if (month === 11 && day >= 14) {
+//     return 'xmas'
+//   }
+//   if (month === 9 && day >= 20) {
+//     return 'halloween'
+//   }
+//   if (month === 2 && day >= 30) {
+//     return 'easter'
+//   }
+// })()
 
-if (seasonalTheme) {
-  setTintFamily(seasonalTheme)
-}
+// if (seasonalTheme) {
+//   setTintFamily(seasonalTheme)
+// }
 
 export function getTints() {
   return {

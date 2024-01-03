@@ -203,6 +203,7 @@ export declare const stylePropsView: {
     borderTopWidth: boolean;
     borderWidth: boolean;
     transform: boolean;
+    transformOrigin: boolean;
     alignContent: boolean;
     alignItems: boolean;
     alignSelf: boolean;
@@ -416,6 +417,7 @@ export declare const stylePropsText: {
     borderTopWidth: boolean;
     borderWidth: boolean;
     transform: boolean;
+    transformOrigin: boolean;
     alignContent: boolean;
     alignItems: boolean;
     alignSelf: boolean;
@@ -593,6 +595,7 @@ export declare const stylePropsAll: {
     borderTopWidth: boolean;
     borderWidth: boolean;
     transform: boolean;
+    transformOrigin: boolean;
     alignContent: boolean;
     alignItems: boolean;
     alignSelf: boolean;
@@ -760,6 +763,7 @@ export declare const validStyles: {
     borderTopWidth: boolean;
     borderWidth: boolean;
     transform: boolean;
+    transformOrigin: boolean;
     alignContent: boolean;
     alignItems: boolean;
     alignSelf: boolean;

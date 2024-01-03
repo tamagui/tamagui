@@ -12,3 +12,5 @@ export const Configuration = (props: ConfigurationProps) => {
   const current = useContext(ComponentContext)
   return <ComponentContext.Provider {...current} {...props} />
 }
+
+Configuration['displayName'] = 'Configuration'

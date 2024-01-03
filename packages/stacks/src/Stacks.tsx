@@ -29,10 +29,14 @@ export const YStack = styled(Stack, {
   variants,
 })
 
+YStack['displayName'] = 'YStack'
+
 export const XStack = styled(Stack, {
   flexDirection: 'row',
   variants,
 })
+
+XStack['displayName'] = 'XStack'
 
 export const ZStack = styled(
   YStack,
@@ -44,3 +48,5 @@ export const ZStack = styled(
     isZStack: true,
   }
 )
+
+ZStack['displayName'] = 'ZStack'

@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useSyncExternalStore } from 'react'
+import { useCallback, useRef, useSyncExternalStore } from 'react'
 
 import { isEqualSubsetShallow } from './comparators'
 import { configureOpts } from './configureUseStore'
@@ -95,11 +95,7 @@ export function createUseStoreSelector<
 }
 
 // selector hook
-export function useStoreSelector<
-  A extends Store<B>,
-  B extends Object,
-  S extends Selector<A, any>
->(
+export function useStoreSelector<A, B extends Object, S extends Selector<A, any>>(
   StoreKlass: (new (props: B) => A) | (new () => A),
   selector: S,
   props?: B
@@ -322,7 +318,7 @@ function useStoreFromInfo(
 
     // this wasn't updating in AnimationsStore
     const isUnchanged =
-      (!isTracking && last) ||
+      (!userSelector && !isTracking && last) ||
       (typeof last !== 'undefined' &&
         isEqualSubsetShallow(last, snap, {
           keyComparators: info.keyComparators,
@@ -614,9 +610,9 @@ function createProxiedStore(storeInfo: StoreInfo) {
         }
         // TODO i added this !isSubGetter, seems logical but haven't validated
         // has diff performance tradeoffs, not sure whats desirable
-        if (!isSubGetter) {
-          getCache.set(key, res)
-        }
+        // if (!isSubGetter) {
+        getCache.set(key, res)
+        // }
         return res
       }
 
@@ -633,15 +629,15 @@ function createProxiedStore(storeInfo: StoreInfo) {
         // clear getters cache that rely on this
         if (typeof key === 'string') {
           clearGetterCache(key)
-        }
-        if (shouldDebug) {
-          setters.add({ key, value })
-          if (getShouldDebug(storeInfo)) {
-            console.info('(debug) SET', res, key, value)
+          if (shouldDebug) {
+            setters.add({ key, value })
+            if (getShouldDebug(storeInfo)) {
+              console.info('(debug) SET', res, key, value)
+            }
           }
-        }
-        if (process.env.NODE_ENV === 'development' && shouldDebug) {
-          console.info('SET...', { key, value })
+          if (process.env.NODE_ENV === 'development' && shouldDebug) {
+            console.info('SET...', { key, value })
+          }
         }
 
         if (!isTriggering) {
@@ -660,6 +656,7 @@ function createProxiedStore(storeInfo: StoreInfo) {
   function clearGetterCache(setKey: string) {
     const parentGetters = depsToGetter.get(setKey)
     getCache.delete(setKey)
+
     if (!parentGetters) {
       return
     }
@@ -675,7 +672,9 @@ function createProxiedStore(storeInfo: StoreInfo) {
 }
 
 const waitForEventLoop =
-  process.env.NODE_ENV === 'test' ? (cb: Function) => cb() : queueMicrotask
+  process.env.NODE_ENV === 'test' || process.env.TAMAGUI_TARGET === 'native'
+    ? (cb: Function) => cb()
+    : queueMicrotask
 
 let counter = 0
 

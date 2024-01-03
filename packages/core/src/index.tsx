@@ -140,15 +140,14 @@ setupHooks({
 
   useEvents(viewProps, events, { pseudos }, setStateShallow, staticConfig) {
     if (process.env.TAMAGUI_TARGET === 'native') {
-      if (events?.onFocus) {
-        viewProps['onFocus'] = events.onFocus
-      }
-      if (events?.onBlur) {
-        viewProps['onBlur'] = events.onBlur
-      }
-
-      if (staticConfig.isInput) {
-        if (events) {
+      if (events) {
+        if (events.onFocus) {
+          viewProps['onFocus'] = events.onFocus
+        }
+        if (events.onBlur) {
+          viewProps['onBlur'] = events.onBlur
+        }
+        if (staticConfig.isInput) {
           const { onPressIn, onPressOut, onPress } = events
           const inputEvents = {
             onPressIn,
@@ -159,17 +158,24 @@ setupHooks({
             inputEvents.onPressOut = composeEventHandlers(onPress, onPressOut)
           }
           Object.assign(viewProps, inputEvents)
-        }
-      } else {
-        // use Pressability to get smooth unPress when you press + hold + move out
-        // only ever create once, use .configure() to update later
-        if (events && viewProps.hitSlop) {
-          events.hitSlop = viewProps.hitSlop
-        }
+        } else {
+          // use Pressability to get smooth unPress when you press + hold + move out
+          // only ever create once, use .configure() to update later
+          if (viewProps.hitSlop) {
+            events.hitSlop = viewProps.hitSlop
+          }
+          const pressability = usePressability(events)
 
-        const pressability = usePressability(events || null)
+          if (process.env.NODE_ENV === 'development') {
+            if (viewProps['debug']) {
+              console.info(
+                `Checking for press ${!!events.onPress} then applying pressability props: ${Object.keys(
+                  pressability || {}
+                )}`
+              )
+            }
+          }
 
-        if (events) {
           if (events.onPress) {
             for (const key in pressability) {
               const og = viewProps[key]

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/roving-focus",
-  "version": "1.81.4",
+  "version": "1.82.0",
   "sideEffects": [
     "*.css"
   ],
@@ -27,25 +27,26 @@
     ".": {
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.js",
+      "react-native": "./dist/cjs/index.native.js"
     }
   },
   "dependencies": {
-    "@tamagui/collection": "1.81.4",
-    "@tamagui/compose-refs": "1.81.4",
-    "@tamagui/constants": "1.81.4",
-    "@tamagui/core": "1.81.4",
-    "@tamagui/create-context": "1.81.4",
-    "@tamagui/helpers": "1.81.4",
-    "@tamagui/use-controllable-state": "1.81.4",
-    "@tamagui/use-direction": "1.81.4",
-    "@tamagui/use-event": "1.81.4"
+    "@tamagui/collection": "1.82.0",
+    "@tamagui/compose-refs": "1.82.0",
+    "@tamagui/constants": "1.82.0",
+    "@tamagui/core": "1.82.0",
+    "@tamagui/create-context": "1.82.0",
+    "@tamagui/helpers": "1.82.0",
+    "@tamagui/use-controllable-state": "1.82.0",
+    "@tamagui/use-direction": "1.82.0",
+    "@tamagui/use-event": "1.82.0"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.81.4",
+    "@tamagui/build": "1.82.0",
     "react": "^18.2.0"
   },
   "publishConfig": {

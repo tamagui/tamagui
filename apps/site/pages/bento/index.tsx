@@ -7,32 +7,36 @@ import { getSize } from '@tamagui/get-token'
 import { ThemeTint } from '@tamagui/logo'
 import { Check, CheckCircle, X, XCircle } from '@tamagui/lucide-icons'
 import { useBentoStore } from 'hooks/useBentoStore'
-import { useUser } from 'hooks/useUser'
 import React, { useMemo, useState } from 'react'
 import Stripe from 'stripe'
-import { AnimatePresence, Checkbox, H3, ScrollView, SizableText, Unspaced } from 'tamagui'
-import { RadioGroup } from 'tamagui'
-import { XStackProps } from 'tamagui'
-import { Input } from 'tamagui'
-import { ButtonProps } from 'tamagui'
-import { FontSizeTokens } from 'tamagui'
-import { Label } from 'tamagui'
-import { Dialog, Sheet } from 'tamagui'
 import {
   Anchor,
+  AnimatePresence,
   Button,
+  ButtonProps,
   Card,
+  Dialog,
+  FontSizeTokens,
   H1,
   H2,
+  H3,
   H4,
   H5,
   Image,
+  Input,
+  Label,
   Paragraph,
+  RadioGroup,
+  ScrollView,
   Separator,
+  Sheet,
+  SizableText,
   Spacer,
   Text,
   Theme,
+  Unspaced,
   XStack,
+  XStackProps,
   YStack,
   useThemeName,
 } from 'tamagui'

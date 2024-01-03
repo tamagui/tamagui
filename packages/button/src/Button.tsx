@@ -18,7 +18,6 @@ import {
   getVariableValue,
   spacedChildren,
   styled,
-  useDidFinishSSR,
   useProps,
 } from '@tamagui/web'
 import { FunctionComponent, useContext } from 'react'
@@ -241,7 +240,12 @@ function useButton<Props extends ButtonProps>(
     noTextWrap,
     fontFamily,
     fontSize,
+    fontWeight,
+    fontStyle,
+    letterSpacing,
     tag,
+    ellipse,
+    maxFontSizeMultiplier,
     ...restProps
   } = propsActive
 
@@ -250,8 +254,11 @@ function useButton<Props extends ButtonProps>(
   const color = propsActive.color as any
 
   const iconSize =
-    (typeof size === 'number' ? size * 0.5 : getFontSize(size as FontSizeTokens)) *
-    scaleIcon
+    (typeof size === 'number'
+      ? size * 0.5
+      : getFontSize(size as FontSizeTokens, {
+          font: fontFamily?.[0] === '$' ? (fontFamily as any) : undefined,
+        })) * scaleIcon
 
   const getThemedIcon = useGetThemedIcon({
     size: iconSize,
@@ -264,7 +271,17 @@ function useButton<Props extends ButtonProps>(
     ? [propsIn.children]
     : wrapChildrenInText(
         Text,
-        { children: propsIn.children, fontFamily, fontSize, textProps },
+        {
+          children: propsIn.children,
+          fontFamily,
+          fontSize,
+          textProps,
+          fontWeight,
+          fontStyle,
+          letterSpacing,
+          ellipse,
+          maxFontSizeMultiplier,
+        },
         Text === ButtonText && propsActive.unstyled !== true
           ? {
               unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,

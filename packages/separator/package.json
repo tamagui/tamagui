@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/separator",
-  "version": "1.81.4",
+  "version": "1.82.0",
   "sideEffects": [
     "*.css"
   ],
@@ -25,18 +25,19 @@
     ".": {
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.js",
+      "react-native": "./dist/cjs/index.native.js"
     }
   },
   "dependencies": {
-    "@tamagui/constants": "1.81.4",
-    "@tamagui/core": "1.81.4"
+    "@tamagui/constants": "1.82.0",
+    "@tamagui/core": "1.82.0"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.81.4",
+    "@tamagui/build": "1.82.0",
     "react": "^18.2.0"
   },
   "publishConfig": {

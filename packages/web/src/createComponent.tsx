@@ -967,8 +967,6 @@ export function createComponent<
     const isHoverable =
       isWeb && !!(groupName || needsHoverState || onMouseEnter || onMouseLeave)
 
-    const handlesPressEvents = !(isWeb || asChild)
-
     // check presence rather than value to prevent reparenting bugs
     // allows for onPress={x ? function : undefined} without re-ordering dom
     const shouldAttach = Boolean(
@@ -1276,7 +1274,6 @@ export function createComponent<
               defaultProps,
               splitStyles,
               animationStyles,
-              handlesPressEvents,
               willBeAnimated,
               isStringElement,
               classNamesIn: props.className?.split(' '),

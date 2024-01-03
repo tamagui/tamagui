@@ -32,6 +32,8 @@ export const Slot = forwardRef<any, SlotProps>(function Slot(props, forwardedRef
   return Children.count(children) > 1 ? Children.only(null) : null
 })
 
+Slot['displayName'] = 'Slot'
+
 /* -------------------------------------------------------------------------------------------------
  * Slottable
  * -----------------------------------------------------------------------------------------------*/
@@ -39,6 +41,8 @@ export const Slot = forwardRef<any, SlotProps>(function Slot(props, forwardedRef
 export const Slottable = ({ children }: { children: ReactNode }) => {
   return <>{children}</>
 }
+
+Slottable['displayName'] = 'Slottable'
 
 /* ---------------------------------------------------------------------------------------------- */
 

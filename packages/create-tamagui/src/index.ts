@@ -62,8 +62,6 @@ if (process.argv.includes('--version')) {
 const skipCloning = !!program.skipCloning
 
 async function run() {
-  const packageManager = await detect()
-
   if (!skipCloning) {
     console.info() // this newline prevents the ascii art from breaking
     console.info(tamaguiRainbowAsciiArt)
@@ -161,6 +159,10 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
 
     console.info('Installing packages. This might take a couple of minutes.')
     console.info()
+
+    const packageManager =
+      ('packageManager' in template ? template.packageManager : undefined) ||
+      (await detect())
 
     try {
       console.info('installing with ' + packageManager)

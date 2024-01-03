@@ -3,8 +3,11 @@ interface SlotProps {
     children: ReactNode;
 }
 export declare const Slot: import("react").ForwardRefExoticComponent<SlotProps & import("react").RefAttributes<any>>;
-export declare const Slottable: ({ children }: {
-    children: ReactNode;
-}) => JSX.Element;
+export declare const Slottable: {
+    ({ children }: {
+        children: ReactNode;
+    }): JSX.Element;
+    displayName: string;
+};
 export {};
 //# sourceMappingURL=Slot.d.ts.map
