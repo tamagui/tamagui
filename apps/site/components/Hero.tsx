@@ -1,4 +1,4 @@
-import { ThemeTintAlt, useTint } from '@tamagui/logo'
+import { ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
 import { NextLink } from 'components/NextLink'
 import Link from 'next/link'
 import { memo } from 'react'
@@ -25,10 +25,10 @@ import { seasons } from './SeasonToggleButton'
 import { TwitterIcon } from './TwitterIcon'
 
 export function Hero() {
-  const { tint, name } = useTint()
+  const { name } = useTint()
 
   return (
-    <Theme name={tint as any}>
+    <ThemeTint>
       <div className={`${name}-season _dsp-contents`}>
         <YStack
           o={0.75}
@@ -42,7 +42,7 @@ export function Hero() {
         />
         <HeroContents />
       </div>
-    </Theme>
+    </ThemeTint>
   )
 }
 

@@ -8,7 +8,6 @@ export type GetLayout<Props = any> = (
 ) => React.ReactElement
 
 export const getDefaultLayout: GetLayout = (page, pageProps, path) => {
-  const isHome = path === '/'
   const isAuthPage = path.startsWith('/login')
   const isAccountPage = path.startsWith('/account')
   const isStudio = path.startsWith('/studio')
