@@ -19,6 +19,8 @@ import { isObj } from './isObj'
 import { pseudoDescriptors } from './pseudoDescriptors'
 
 export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => {
+  lastFontFamilyToken = null
+
   if (!(process.env.TAMAGUI_TARGET === 'native' && isAndroid)) {
     // this shouldnt be necessary and handled in the outer loop
     if (key === 'elevationAndroid') return
@@ -99,7 +101,7 @@ export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => 
       [key, value],
     ]
 
-    if (key === 'fontFamily') {
+    if (key === 'fontFamily' && lastFontFamilyToken) {
       fontFamilyCache.set(result, lastFontFamilyToken)
     }
 
