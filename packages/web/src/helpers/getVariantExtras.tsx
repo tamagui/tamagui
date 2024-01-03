@@ -1,7 +1,6 @@
 import { getVariableValue } from '../createVariable'
 import { GenericFonts, GetStyleState } from '../types'
 import { LanguageContextType } from '../views/FontLanguage.types'
-import { createProxy } from './createProxy'
 
 export function getVariantExtras(styleState: GetStyleState) {
   const { curProps, conf, context, theme } = styleState
@@ -23,7 +22,7 @@ export function getVariantExtras(styleState: GetStyleState) {
     font: fonts[fontFamily] || fonts[styleState.conf.defaultFont!],
     // TODO do this in splitstlye
     // we avoid passing in default props for media queries because that would confuse things like SizableText.size:
-    props: createProxy(curProps, {
+    props: new Proxy(curProps, {
       // handles shorthands
       get(target, key) {
         const shorthand = conf.inverseShorthands[key as any]

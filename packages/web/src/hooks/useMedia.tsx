@@ -1,8 +1,7 @@
-import { isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { isServer, isWeb } from '@tamagui/constants'
 import { useRef, useSyncExternalStore } from 'react'
 
 import { getConfig } from '../config'
-import { createProxy } from '../helpers/createProxy'
 import { matchMedia } from '../helpers/matchMedia'
 import { pseudoDescriptors } from '../helpers/pseudoDescriptors'
 import type {
@@ -20,7 +19,7 @@ import { getDisableSSR, useDisableSSR } from './useDisableSSR'
 export let mediaState: MediaQueryState =
   // development only safeguard
   process.env.NODE_ENV === 'development'
-    ? createProxy(
+    ? new Proxy(
         {},
         {
           get(target, key) {

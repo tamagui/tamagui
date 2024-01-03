@@ -3,7 +3,6 @@ import { useContext, useEffect, useMemo, useRef, useState } from 'react'
 
 import { getConfig } from '../config'
 import { Variable, getVariable } from '../createVariable'
-import { createProxy } from '../helpers/createProxy'
 import { isEqualShallow } from '../helpers/createShallowSetState'
 import {
   ThemeManager,
@@ -155,7 +154,7 @@ export function getThemeProxied(
     }
   }
 
-  return createProxy(theme, {
+  return new Proxy(theme, {
     has(_, key) {
       if (Reflect.has(theme, key)) {
         return true
