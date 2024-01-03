@@ -1,14 +1,10 @@
-import { isWeb } from '@tamagui/constants'
 import { normalizeCSSColor, rgba } from '@tamagui/normalize-css-color'
 
 export { rgba } from '@tamagui/normalize-css-color'
 
 export const normalizeColor = (color?: string | null, opacity?: number) => {
   if (!color) return
-  if (color[0] === '$' || (color[0] === 'v' && color.startsWith('var('))) {
-    return color
-  }
-  if (isWeb && opacity === 1) {
+  if (color[0] === '$' || color.startsWith('var(')) {
     return color
   }
   const colorProcessed = normalizeCSSColor(color)
