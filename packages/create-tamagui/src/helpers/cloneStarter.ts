@@ -84,6 +84,7 @@ async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry 
     console.info()
 
     const sourceGitRepo = template.repo.url
+    const sourceGitRepoSshFallback = template.repo.sshFallback
 
     const cmd = `git clone --branch ${branch} ${
       isInSubDir ? '--depth 1 --sparse --filter=blob:none ' : ''
@@ -97,7 +98,7 @@ async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry 
       } catch (error) {
         if (cmd.includes('https://')) {
           console.info(`https failed - trying with ssh now...`)
-          const sshCmd = cmd.replace('https://', 'ssh://')
+          const sshCmd = cmd.replace(sourceGitRepo, sourceGitRepoSshFallback)
           console.info(`$ ${sshCmd}`)
           console.info()
           execSync(sshCmd)
