@@ -79,11 +79,11 @@ const SelectValue = SelectValueFrame.styleable<SelectValueProps>(function Select
       {...(!props.unstyled && {
         size: itemParentContext.size as any,
         ellipse: true,
+        // we don't want events from the portalled `SelectValue` children to bubble
+        // through the item they came from
+        pointerEvents: 'none',
       })}
       ref={composedRefs}
-      // we don't want events from the portalled `SelectValue` children to bubble
-      // through the item they came from
-      pointerEvents="none"
       {...props}
     >
       {unwrapSelectItem(selectValueChildren)}
