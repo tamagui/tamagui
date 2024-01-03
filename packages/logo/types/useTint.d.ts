@@ -1,4 +1,5 @@
 /// <reference types="react" />
+import { ThemeProps } from 'tamagui';
 export declare const initialTint = 3;
 export declare const onTintChange: (listener: (cur: number) => void) => () => void;
 export declare const setTintIndex: (next: number) => void;
@@ -17,12 +18,10 @@ export declare const useTint: () => {
         halloween: string[];
     };
 };
-export declare const ThemeTint: (props: {
-    children: any;
-    disable?: boolean;
+export declare const ThemeTint: ({ disable, children, ...rest }: ThemeProps & {
+    disable?: boolean | undefined;
 }) => JSX.Element;
-export declare const ThemeTintAlt: ({ children, disable, offset, }: {
-    children: any;
+export declare const ThemeTintAlt: ({ children, disable, offset, ...rest }: ThemeProps & {
     disable?: boolean | undefined;
     offset?: number | undefined;
 }) => JSX.Element;
