@@ -19,7 +19,6 @@ import type {
   VariableVal,
   VariableValGeneric,
 } from '../types'
-import { GetThemeUnwrapped } from './getThemeUnwrapped'
 
 export type ChangedThemeResponse = {
   state?: ThemeManagerState
@@ -167,10 +166,6 @@ export function getThemeProxied(
       }
     },
     get(_, key) {
-      if (key === GetThemeUnwrapped) {
-        return theme
-      }
-
       if (
         // dont ask me, idk why but on hermes you can see that useTheme()[undefined] passes in STRING undefined to proxy
         // if someone is crazy enough to use "undefined" as a theme key then this not working is on them
