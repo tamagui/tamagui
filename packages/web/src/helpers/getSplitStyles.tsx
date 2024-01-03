@@ -284,7 +284,7 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     // keyInit === 'style' is handled in skipProps
-    if (keyInit in skipProps && !isHOC) {
+    if (keyInit in skipProps && !styleProps.noSkip && !isHOC) {
       if (keyInit === 'group') {
         if (process.env.TAMAGUI_TARGET === 'web') {
           // add container style
