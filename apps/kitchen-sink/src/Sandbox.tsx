@@ -1,6 +1,7 @@
 // debug-verbose
 // import './wdyr'
 
+import { useState } from 'react'
 import { View } from 'react-native'
 import { Button, H2, Square, styled } from 'tamagui'
 
@@ -11,12 +12,12 @@ const Test = styled(Square, {
 })
 
 export const Sandbox = () => {
+  const [disabled, setDisabled] = useState(true)
   return (
     <View style={{ width: '100%', height: '100%', padding: 50 }}>
       <>
-        <Button fontFamily="$silkscreen" size="$10" fontWeight="800">
-          hi
-        </Button>
+        <Button disabled={disabled}>Go to user page</Button>
+        <Button onPress={() => setDisabled(!disabled)}>Go to tabs page</Button>
       </>
     </View>
   )

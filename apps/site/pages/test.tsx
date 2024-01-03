@@ -1,6 +1,7 @@
 // import '../lib/wdyr'
 
 import { Clipboard } from '@tamagui/lucide-icons'
+import { useState } from 'react'
 import { Button } from 'tamagui'
 
 import { getDefaultLayout } from '../lib/getDefaultLayout'
@@ -19,22 +20,6 @@ function TestPage() {
       {/* <div style={{ position: 'absolute', top: 10, right: 10, zIndex: 1000 }}>
         <ThemeToggle />
       </div> */}
-
-      <Button
-        aria-label="Copy code to clipboard"
-        position="absolute"
-        size="$10"
-        top="$3"
-        right="$3"
-        display="inline-flex"
-        $xs={{
-          display: 'none',
-        }}
-        icon={Clipboard}
-        onPress={() => {}}
-      >
-        hello
-      </Button>
     </div>
   )
 }
