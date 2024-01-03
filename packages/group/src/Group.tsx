@@ -4,7 +4,6 @@ import {
   UnionableString,
   Variable,
   getConfig,
-  getExpandedShorthands,
   getTokens,
   getVariableValue,
   isTamaguiElement,
@@ -100,7 +99,7 @@ function createGroup(verticalDefault: boolean) {
         borderRadius,
         forceUseItem,
         ...restProps
-      } = getExpandedShorthands(activeProps)
+      } = activeProps
 
       const vertical = orientation === 'vertical'
       const [itemChildrenCount, setItemChildrenCount] = useControllableState({
