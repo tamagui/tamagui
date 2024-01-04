@@ -9,7 +9,6 @@ import {
   SizableText,
   Spacer,
   Text,
-  Theme,
   TooltipSimple,
   VisuallyHidden,
   XStack,
