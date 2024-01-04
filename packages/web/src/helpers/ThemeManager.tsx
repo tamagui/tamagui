@@ -257,11 +257,17 @@ function getState(
     }
 
     if (componentName && !props.reset) {
+      const baseLen = base.length
       let componentPotentials: string[] = []
+      // components only look for component themes
+      if (nextName && baseLen > 1) {
+        const beforeSeparator = base[0]
+        componentPotentials.push(`${beforeSeparator}_${nextName}_${componentName}`)
+      }
       componentPotentials.push(`${prefix}_${componentName}`)
       if (nextName) {
         // do this one and one level up
-        if (i > base.length) {
+        if (i > baseLen) {
           const prefixLessOne = base.slice(0, i - 1).join(THEME_NAME_SEPARATOR)
           if (prefixLessOne) {
             const lessSpecific = `${prefixLessOne}_${nextName}_${componentName}`
