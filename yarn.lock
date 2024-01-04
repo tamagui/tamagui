@@ -4240,16 +4240,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nderscore/tamagui-typescript-plugin@npm:^0.3.1":
-  version: 0.3.1
-  resolution: "@nderscore/tamagui-typescript-plugin@npm:0.3.1"
+"@nderscore/tamagui-typescript-plugin@npm:^0.6.0":
+  version: 0.6.0
+  resolution: "@nderscore/tamagui-typescript-plugin@npm:0.6.0"
   dependencies:
     color: 4.2.3
   peerDependencies:
     "@tamagui/core": "*"
     "@tamagui/helpers": "*"
     typescript: ">=4.8"
-  checksum: 5aab2be1cc2bd09e303914c1a90e1a61963941d41e50e3cdaec73e447066eabfa8e680db0489019dc7d2cf9c06d49d44f179b8d942e49844576879e8fb56fd22
+  checksum: c6e865e546a04a0e179670399117e93108970d3b9467eaaecf991f83e7200ae60fcbf8fc51ba75efe8017be53ec0c044303a45b26068a1555597ae3ba4d6a9b6
   languageName: node
   linkType: hard
 
@@ -4436,19 +4436,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@playwright/test@npm:^1.29.0":
-  version: 1.32.3
-  resolution: "@playwright/test@npm:1.32.3"
+"@playwright/test@npm:^1.40.1":
+  version: 1.40.1
+  resolution: "@playwright/test@npm:1.40.1"
   dependencies:
-    "@types/node": "*"
-    fsevents: 2.3.2
-    playwright-core: 1.32.3
-  dependenciesMeta:
-    fsevents:
-      optional: true
+    playwright: 1.40.1
   bin:
     playwright: cli.js
-  checksum: f248e5851d04183954ec6f3a5f2c8e3b0ea0085a83e0e695068c5c2eb6acd4dddb16829a429829a4eb9fe0a4518f6a5594890cf9bf4259255c9e07a5964be625
+  checksum: ae094e6cb809365c0707ee2b184e42d2a2542569ada020d2d44ca5866066941262bd9a67af185f86c2fb0133c9b712ea8cb73e2959a289e4261c5fd17077283c
   languageName: node
   linkType: hard
 
@@ -5905,7 +5900,7 @@ __metadata:
   resolution: "@tamagui/bento@workspace:apps/bento"
   dependencies:
     "@babel/core": ^7.23.3
-    "@playwright/test": ^1.29.0
+    "@playwright/test": ^1.40.1
     "@pmmmwh/react-refresh-webpack-plugin": ^0.5.10
     "@react-native-async-storage/async-storage": 1.18.2
     "@react-native/polyfills": ^2.0.0
@@ -6708,7 +6703,7 @@ __metadata:
   resolution: "@tamagui/kitchen-sink@workspace:apps/kitchen-sink"
   dependencies:
     "@babel/core": ^7.23.3
-    "@playwright/test": ^1.29.0
+    "@playwright/test": ^1.40.1
     "@pmmmwh/react-refresh-webpack-plugin": ^0.5.10
     "@react-native-async-storage/async-storage": 1.18.2
     "@react-native/polyfills": ^2.0.0
@@ -7287,6 +7282,7 @@ __metadata:
     "@github/mini-throttle": ^2.1.0
     "@monaco-editor/react": ^4.2.2
     "@next/bundle-analyzer": ^12.2.0
+    "@playwright/test": ^1.40.1
     "@react-three/drei": ^9.68.3
     "@react-three/fiber": ^8.13.0
     "@stripe/react-stripe-js": ^2.1.0
@@ -7335,6 +7331,7 @@ __metadata:
     eslint: 8.37.0
     eslint-config-next: 13.2.4
     file-system-access: ^1.0.4
+    fs-extra: ^11.1.0
     glob: ^7.1.6
     graphql-tag: ^2.12.6
     gray-matter: ^4.0.2
@@ -7378,7 +7375,9 @@ __metadata:
     typescript: ^5.2.2
     unified: ^10.1.2
     unist-util-visit: ^2.0.3
+    wait-port: ^0.3.0
     webpack-stats-plugin: ^1.1.3
+    zx: ^7.2.3
   languageName: unknown
   linkType: soft
 
@@ -9066,10 +9065,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/which@npm:^2.0.2":
-  version: 2.0.2
-  resolution: "@types/which@npm:2.0.2"
-  checksum: 8626a3c2f6db676c449142e1082e33ea0c9d88b8a2bd796366b944891e6da0088b2aa83d3fa9c79e6696f7381a851fc76d43bd353eb6c4d98a7775b4ae0a96a5
+"@types/which@npm:^3.0.0":
+  version: 3.0.3
+  resolution: "@types/which@npm:3.0.3"
+  checksum: eee298875ff62f7d56a2267cd70789a7032647c599d6abc684864281923763c082626b9742d4cfa7ea3e0790ac5d05aff48edd6ecba0f61eb69a6d57cc83c6f5
   languageName: node
   linkType: hard
 
@@ -12163,7 +12162,7 @@ __metadata:
   resolution: "create-tamagui@workspace:packages/create-tamagui"
   dependencies:
     "@expo/package-manager": ^1.1.2
-    "@playwright/test": ^1.29.0
+    "@playwright/test": ^1.40.1
     "@tamagui/build": 1.82.2
     "@types/async-retry": 1.4.2
     "@types/cross-spawn": ^6.0.2
@@ -12183,14 +12182,13 @@ __metadata:
     fs-extra: ^11.1.0
     got: 10.7.0
     opener: ^1.5.2
-    playwright: ^1.29.0
     prompts: 2.1.0
     rimraf: ^5.0.1
     tar: 4.4.10
     update-check: 1.5.4
     validate-npm-package-name: 3.0.0
     wait-port: ^0.3.0
-    zx: ^7.1.1
+    zx: ^7.2.3
   bin:
     create-tamagui: ./run.js
   languageName: unknown
@@ -15012,6 +15010,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fast-glob@npm:^3.3.0":
+  version: 3.3.2
+  resolution: "fast-glob@npm:3.3.2"
+  dependencies:
+    "@nodelib/fs.stat": ^2.0.2
+    "@nodelib/fs.walk": ^1.2.3
+    glob-parent: ^5.1.2
+    merge2: ^1.3.0
+    micromatch: ^4.0.4
+  checksum: 900e4979f4dbc3313840078419245621259f349950411ca2fa445a2f9a1a6d98c3b5e7e0660c5ccd563aa61abe133a21765c6c0dec8e57da1ba71d8000b05ec1
+  languageName: node
+  linkType: hard
+
 "fast-json-stable-stringify@npm:^2.0.0":
   version: 2.1.0
   resolution: "fast-json-stable-stringify@npm:2.1.0"
@@ -15825,6 +15836,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fx@npm:*":
+  version: 31.0.0
+  resolution: "fx@npm:31.0.0"
+  bin:
+    fx: index.js
+  checksum: ed3a939348f4e4569c066f126cb32cd0dc36a114c99d9916d0cf849851db89ec4bdd06505e1bb72e52c865b7de9ebd994ac9b81d474f5a137958da621993ce96
+  languageName: node
+  linkType: hard
+
 "gauge@npm:^4.0.3":
   version: 4.0.4
   resolution: "gauge@npm:4.0.4"
@@ -16152,6 +16172,19 @@ __metadata:
     merge2: ^1.4.1
     slash: ^4.0.0
   checksum: e8bc13879972082d590cd1b0e27080d90d2e12fff7eeb2cee9329c29115ace14cc5b9f899e3d6beb136ba826307a727016658919a6f383e1511d698acee81741
+  languageName: node
+  linkType: hard
+
+"globby@npm:^13.1.4":
+  version: 13.2.2
+  resolution: "globby@npm:13.2.2"
+  dependencies:
+    dir-glob: ^3.0.1
+    fast-glob: ^3.3.0
+    ignore: ^5.2.4
+    merge2: ^1.4.1
+    slash: ^4.0.0
+  checksum: f3d84ced58a901b4fcc29c846983108c426631fe47e94872868b65565495f7bee7b3defd68923bd480582771fd4bbe819217803a164a618ad76f1d22f666f41e
   languageName: node
   linkType: hard
 
@@ -17096,6 +17129,13 @@ __metadata:
   version: 5.2.4
   resolution: "ignore@npm:5.2.4"
   checksum: 3d4c309c6006e2621659311783eaea7ebcd41fe4ca1d78c91c473157ad6666a57a2df790fe0d07a12300d9aac2888204d7be8d59f9aaf665b1c7fcdb432517ef
+  languageName: node
+  linkType: hard
+
+"ignore@npm:^5.2.4":
+  version: 5.3.0
+  resolution: "ignore@npm:5.3.0"
+  checksum: 2736da6621f14ced652785cb05d86301a66d70248597537176612bd0c8630893564bd5f6421f8806b09e8472e75c591ef01672ab8059c07c6eb2c09cefe04bf9
   languageName: node
   linkType: hard
 
@@ -21207,14 +21247,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-fetch@npm:3.2.10":
-  version: 3.2.10
-  resolution: "node-fetch@npm:3.2.10"
+"node-fetch@npm:3.3.1, node-fetch@npm:^3.0.0":
+  version: 3.3.1
+  resolution: "node-fetch@npm:3.3.1"
   dependencies:
     data-uri-to-buffer: ^4.0.0
     fetch-blob: ^3.1.4
     formdata-polyfill: ^4.0.10
-  checksum: e65322431f4897ded04197aa5923eaec63a8d53e00432de4e70a4f7006625c8dc32629c5c35f4fe8ee719a4825544d07bf53f6e146a7265914262f493e8deac1
+  checksum: 62145fd3ba4770a76110bc31fdc0054ab2f5442b5ce96e9c4b39fc9e94a3d305560eec76e1165d9259eab866e02a8eecf9301062bb5dfc9f08a4d08b69d223dd
   languageName: node
   linkType: hard
 
@@ -21229,17 +21269,6 @@ __metadata:
     encoding:
       optional: true
   checksum: acb04f9ce7224965b2b59e71b33c639794d8991efd73855b0b250921382b38331ffc9d61bce502571f6cc6e11a8905ca9b1b6d4aeb586ab093e2756a1fd190d0
-  languageName: node
-  linkType: hard
-
-"node-fetch@npm:^3.0.0":
-  version: 3.3.1
-  resolution: "node-fetch@npm:3.3.1"
-  dependencies:
-    data-uri-to-buffer: ^4.0.0
-    fetch-blob: ^3.1.4
-    formdata-polyfill: ^4.0.10
-  checksum: 62145fd3ba4770a76110bc31fdc0054ab2f5442b5ce96e9c4b39fc9e94a3d305560eec76e1165d9259eab866e02a8eecf9301062bb5dfc9f08a4d08b69d223dd
   languageName: node
   linkType: hard
 
@@ -22458,23 +22487,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"playwright-core@npm:1.32.3":
-  version: 1.32.3
-  resolution: "playwright-core@npm:1.32.3"
+"playwright-core@npm:1.40.1":
+  version: 1.40.1
+  resolution: "playwright-core@npm:1.40.1"
   bin:
-    playwright: cli.js
-  checksum: 7ea091c41a7d1bb97b445bc541a85b123ffcf167bcc00fb7e13e9079f06c92f59fd27caf9d1c1d7e0054f2b5765d1a16d198833c2be7266cebb9dbb916cd90f4
+    playwright-core: cli.js
+  checksum: 84d92fb9b86e3c225b16b6886bf858eb5059b4e60fa1205ff23336e56a06dcb2eac62650992dede72f406c8e70a7b6a5303e511f9b4bc0b85022ede356a01ee0
   languageName: node
   linkType: hard
 
-"playwright@npm:^1.29.0":
-  version: 1.32.3
-  resolution: "playwright@npm:1.32.3"
+"playwright@npm:1.40.1":
+  version: 1.40.1
+  resolution: "playwright@npm:1.40.1"
   dependencies:
-    playwright-core: 1.32.3
+    fsevents: 2.3.2
+    playwright-core: 1.40.1
+  dependenciesMeta:
+    fsevents:
+      optional: true
   bin:
     playwright: cli.js
-  checksum: 9627771a131ab96a26d702757e89dcf09a228f0038c43a14f982cc59a2eca672cb27c9d92c324ddc2c44457b82d77c30b3562b386601969e0456b52dba5df176
+  checksum: 9e36791c1b4a649c104aa365fdd9d049924eeb518c5967c0e921aa38b9b00994aa6ee54784d6c2af194b3b494b6f69772673081ef53c6c4a4b2065af9955c4ba
   languageName: node
   linkType: hard
 
@@ -26076,7 +26109,8 @@ __metadata:
     "@biomejs/biome": ^1.2.2
     "@faker-js/faker": ^8.3.1
     "@manypkg/cli": ^0.19.1
-    "@nderscore/tamagui-typescript-plugin": ^0.3.1
+    "@nderscore/tamagui-typescript-plugin": ^0.6.0
+    "@playwright/test": ^1.40.1
     "@vercel/og": ^0.5.8
     check-dependency-version-consistency: ^3.0.3
     import-sort-style-module: ^6.0.0
@@ -29276,6 +29310,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"yaml@npm:^2.2.2":
+  version: 2.3.4
+  resolution: "yaml@npm:2.3.4"
+  checksum: e6d1dae1c6383bcc8ba11796eef3b8c02d5082911c6723efeeb5ba50fc8e881df18d645e64de68e421b577296000bea9c75d6d9097c2f6699da3ae0406c030d8
+  languageName: node
+  linkType: hard
+
 "yamljs@npm:^0.3.0":
   version: 0.3.0
   resolution: "yamljs@npm:0.3.0"
@@ -29429,26 +29470,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zx@npm:^7.1.1":
-  version: 7.2.1
-  resolution: "zx@npm:7.2.1"
+"zx@npm:^7.2.3":
+  version: 7.2.3
+  resolution: "zx@npm:7.2.3"
   dependencies:
     "@types/fs-extra": ^11.0.1
     "@types/minimist": ^1.2.2
-    "@types/node": ^18.14.2
+    "@types/node": ^18.16.3
     "@types/ps-tree": ^1.1.2
-    "@types/which": ^2.0.2
+    "@types/which": ^3.0.0
     chalk: ^5.2.0
-    fs-extra: ^11.1.0
-    globby: ^13.1.3
+    fs-extra: ^11.1.1
+    fx: "*"
+    globby: ^13.1.4
     minimist: ^1.2.8
-    node-fetch: 3.2.10
+    node-fetch: 3.3.1
     ps-tree: ^1.2.0
     webpod: ^0
     which: ^3.0.0
-    yaml: ^2.2.1
+    yaml: ^2.2.2
   bin:
     zx: build/cli.js
-  checksum: fbd9d2534ff87594d6d35632b14c2585ce67b347cab7beb9f898d64255675aa2597bbce8d4f4762f4933d1e399bb5cd7a5e5835131afdb7850e177588ec2ba2f
+  checksum: 33b05e26ec3a429de6ff8db759d7b7857b947f4845025416db410bedaa8e613608a6d1916f257e129625d0192b6ba43e482356c6844ff90d15b0fd06dd9b98d2
   languageName: node
   linkType: hard

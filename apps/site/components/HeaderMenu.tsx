@@ -27,6 +27,7 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
           noTextWrap
           onPress={() => setOpen(!open)}
           theme={open ? 'alt1' : undefined}
+          aria-label="Open the main menu"
         >
           <Menu size={16} color="var(--color)" />
         </Button>
@@ -85,7 +86,7 @@ const HeaderMenuContent = React.memo(function HeaderMenuContent() {
       <Popover.Arrow borderWidth={1} boc="$borderColor" />
 
       <Popover.ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
-        <YStack miw={230} p="$3" ai="flex-end">
+        <YStack aria-label="Home menu contents" miw={230} p="$3" ai="flex-end">
           <HeaderLinks forceShowAllLinks />
           <Separator my="$4" w="100%" />
           <SponsorButton />
