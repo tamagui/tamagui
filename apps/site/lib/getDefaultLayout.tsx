@@ -19,7 +19,6 @@ export const getDefaultLayout: GetLayout = (page, pageProps, path) => {
     <DefaultLayout
       headerProps={{
         disableNew: isBlog || isAuthPage || isProductLandingPage || isAccountPage,
-        minimal: isAuthPage || isProductLandingPage || isAccountPage,
         showAuth: isAuthPage || isProductLandingPage || isAccountPage,
       }}
       hideFooter={isDocs}
