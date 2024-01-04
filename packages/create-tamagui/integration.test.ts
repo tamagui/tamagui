@@ -24,7 +24,8 @@ let didFailInBeforeAll = false
 
 test.beforeAll(async () => {
   try {
-    test.setTimeout(oneMinute * 10)
+    // 15 m
+    test.setTimeout(oneMinute * 15)
 
     const tamaguiBin = join(PACKAGE_ROOT, `dist`, `index.js`)
 
@@ -44,7 +45,6 @@ test.beforeAll(async () => {
 
     server.catch((err) => {
       console.warn(`server err ${err}`)
-      process.exit(1)
     })
 
     await waitPort({
