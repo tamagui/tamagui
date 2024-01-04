@@ -28,6 +28,7 @@ import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import {
   Popper,
   PopperAnchor,
+  PopperAnchorProps,
   PopperArrow,
   PopperArrowProps,
   PopperContent,
@@ -122,16 +123,27 @@ export const PopoverAnchor = React.forwardRef<
  * PopoverTrigger
  * -----------------------------------------------------------------------------------------------*/
 
-export type PopoverTriggerProps = StackProps
+export type PopoverTriggerProps = StackProps & {
+  virtualRef?: React.RefObject<any>
+}
 
 export const PopoverTrigger = React.forwardRef<
   TamaguiElement,
   ScopedPopoverProps<PopoverTriggerProps>
 >(function PopoverTrigger(props: ScopedPopoverProps<PopoverTriggerProps>, forwardedRef) {
-  const { __scopePopover, ...rest } = props
+  const { __scopePopover, virtualRef, ...rest } = props
   const context = usePopoverContext(__scopePopover)
 
   const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef)
+
+  if (virtualRef) {
+    return (
+      <PopperAnchor
+        virtualRef={virtualRef}
+        __scopePopper={__scopePopover || POPOVER_SCOPE}
+      />
+    )
+  }
 
   const trigger = (
     <View
@@ -170,6 +182,8 @@ export interface PopoverContentTypeProps
    * @see https://github.com/theKashey/react-remove-scroll#usage
    */
   allowPinchZoom?: RemoveScrollProps['allowPinchZoom']
+  /** enable animation for content position changing */
+  enableAnimationForPositionChange?: boolean
 }
 
 export const PopoverContent = PopperContentFrame.extractable(
