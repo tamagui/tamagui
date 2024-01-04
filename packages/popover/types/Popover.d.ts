@@ -36,6 +36,7 @@ type PopoverContextValue = {
     sheetBreakpoint: any;
     breakpointActive?: boolean;
     keepChildrenMounted?: boolean;
+    anchorTo?: Rect;
 };
 export declare const PopoverContext: import("@tamagui/core").StyledContext<PopoverContextValue>;
 export declare const usePopoverContext: (scope?: string | undefined) => PopoverContextValue;
@@ -140,14 +141,10 @@ export declare const PopoverAnchor: React.ForwardRefExoticComponent<Omit<ScopedP
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: number | SizeTokens | undefined;
 }>>>, "ref"> & React.RefAttributes<TamaguiElement>>;
-export type PopoverTriggerProps = StackProps & {
-    virtualRef?: React.RefObject<any>;
-};
+export type PopoverTriggerProps = StackProps;
 export declare const PopoverTrigger: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "pointerEvents" | "display" | "children" | "style" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<React.CSSProperties | import("react-native").ViewStyle | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
-    virtualRef?: React.RefObject<any> | undefined;
-} & {
     __scopePopover?: string | undefined;
 } & React.RefAttributes<TamaguiElement>>;
 export type PopoverContentProps = PopoverContentTypeProps;
@@ -698,7 +695,31 @@ export declare const PopoverArrow: import("@tamagui/core").TamaguiComponent<Omit
         readonly elevation?: number | SizeTokens | undefined;
     };
 }>;
-export declare const Popover: React.FC<PopoverProps> & {
+type Rect = {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+};
+export type PopoverRef = {
+    anchorTo: (rect: Rect) => void;
+};
+export declare const Popover: React.ForwardRefExoticComponent<PopperProps & {
+    open?: boolean | undefined;
+    defaultOpen?: boolean | undefined;
+    onOpenChange?: ((open: boolean) => void) | undefined;
+    keepChildrenMounted?: boolean | undefined;
+    /**
+     * Enable staying open while mouseover
+     */
+    hoverable?: boolean | undefined;
+    /**
+     * Disable focusing behavior on open
+     */
+    disableFocus?: boolean | undefined;
+} & {
+    __scopePopover?: string | undefined;
+} & React.RefAttributes<PopoverRef>> & {
     Anchor: React.ForwardRefExoticComponent<Omit<ScopedPopoverProps<Omit<import("react-native").ViewProps, "pointerEvents" | "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
         style?: import("@tamagui/core").StyleProp<React.CSSProperties | import("react-native").ViewStyle | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
@@ -1214,8 +1235,6 @@ export declare const Popover: React.FC<PopoverProps> & {
     Trigger: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "pointerEvents" | "display" | "children" | "style" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
         style?: import("@tamagui/core").StyleProp<React.CSSProperties | import("react-native").ViewStyle | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
-        virtualRef?: React.RefObject<any> | undefined;
-    } & {
         __scopePopover?: string | undefined;
     } & React.RefAttributes<TamaguiElement>>;
     Content: React.ForwardRefExoticComponent<Omit<ScopedPopoverProps<PopoverContentTypeProps>, "ref"> & React.RefAttributes<HTMLElement | import("react-native").View>>;
