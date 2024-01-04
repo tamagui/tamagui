@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "./scripts/dev.sh",
     "studio": "./scripts/kill-existing.sh && PORT=5005 next dev",
-    "clean:build": "./scripts/clean.sh",
+    "clean:build": "tamagui-build clean:build",
     "ci:build": "yarn next:build",
     "ci:build:no-extract": "DISABLE_EXTRACTION=true yarn ci:build",
     "ci:build:debug": "DEBUG=tamagui yarn ci:build",
@@ -24,7 +24,8 @@
     "watch:site-data": "next-remote-watch ./data",
     "env:pull": "vc env pull .env.local",
     "supabase:generate": "npx supabase gen types typescript --local > lib/supabase-types.ts",
-    "stripe:listen": "stripe listen --forward-to localhost:5005/api/stripe/webhook"
+    "stripe:listen": "stripe listen --forward-to localhost:5005/api/stripe/webhook",
+    "clean": "tamagui-build clean"
   },
   "dependencies": {
     "@discordjs/core": "^0.6.0",

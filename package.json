@@ -49,6 +49,7 @@
     "scripts:setup": "node -r esbuild-register ./scripts/setup.ts",
     "scripts:format": "node -r esbuild-register ./scripts/format.ts",
     "scripts:fix-exports": "node -r esbuild-register ./scripts/fix-exports.ts",
+    "scripts:fix-scripts": "node -r esbuild-register ./scripts/fix-scripts.ts",
     "site:extract": "yarn workspace @tamagui/site dev:extract",
     "site:prod:analyze": "ANALYZE=true yarn site:prod",
     "site:prod:no-extract": "yarn workspace @tamagui/site ci:build:no-extract && yarn workspace @tamagui/site next:start",
