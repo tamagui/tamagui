@@ -33,9 +33,10 @@
   },
   "dependencies": {
     "@tamagui/core": "1.82.4",
-    "@tamagui/get-token": "1.82.4",'
+    "@tamagui/get-token": "1.82.4",
     "@tamagui/stacks": "1.82.4",
-    "@tamagui/switch-headless": "1.82.4"
+    "@tamagui/switch-headless": "1.82.4",
+    "@tamagui/use-controllable-state": "1.82.4"
   },
   "peerDependencies": {
     "react": "*",
