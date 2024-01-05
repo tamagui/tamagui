@@ -1,11 +1,11 @@
-import { createSwitch as createHeadlessSwitch } from '@tamagui/switch-headless'
-import { useContext } from 'react'
+import { SwitchProps, useSwitch } from '@tamagui/switch-headless'
+import { forwardRef, useState } from 'react'
 import { Pressable, View } from 'react-native'
 import {
   Label,
   Separator,
   SizeTokens,
-  SwitchContext,
+  Switch,
   SwitchFrame,
   SwitchThumb,
   XStack,
@@ -13,64 +13,18 @@ import {
   createSwitch,
 } from 'tamagui'
 
-export const Switch = createSwitch({
-  Frame: SwitchFrame,
-  Thumb: SwitchThumb,
-})
-
-export const HeadlessSwitch = createHeadlessSwitch({
-  Frame: function ({ children: childrenProp, ...props }) {
-    const context = useContext(SwitchContext)
-    const { checked } = context
-    const children =
-      typeof childrenProp === 'function' ? childrenProp(checked || false) : childrenProp
-
-    return (
-      <Pressable
-        style={{
-          width: 50,
-          height: 20,
-          borderRadius: 100,
-          backgroundColor: checked ? 'gray' : 'darkgray',
-        }}
-        {...props}
-      >
-        {children}
-      </Pressable>
-    )
-  },
-  Thumb: function ({ children, ...props }) {
-    const context = useContext(SwitchContext)
-    const { checked } = context
-    return (
-      <View
-        style={{
-          backgroundColor: 'black',
-          width: 20,
-          height: 20,
-          borderRadius: 100,
-          transform: [
-            {
-              translateX: checked ? 30 : 0,
-            },
-          ],
-        }}
-        {...props}
-      >
-        {children}
-      </View>
-    )
-  },
-})
-
 export function SwitchDemo() {
   return (
     <YStack width={200} alignItems="center" space="$3">
       <XStack space="$3" alignItems="center">
-        <Label htmlFor="headless">Headless</Label>
-        <HeadlessSwitch id="headless">
-          <HeadlessSwitch.Thumb />
-        </HeadlessSwitch>
+        <Label htmlFor="createSwitch">createSwitch</Label>
+        <CustomSwitch id="createSwitch">
+          <CustomSwitch.Thumb />
+        </CustomSwitch>
+      </XStack>
+      <XStack space="$3" alignItems="center">
+        <Label htmlFor="useSwitch">useSwitch</Label>
+        <HeadlessSwitch defaultChecked id="useSwitch" />
       </XStack>
       <XStack space="$3" $xs={{ flexDirection: 'column' }}>
         <SwitchWithLabel size="$2" />
@@ -112,3 +66,40 @@ export function SwitchWithLabel(props: { size: SizeTokens; defaultChecked?: bool
     </XStack>
   )
 }
+
+export const CustomSwitch = createSwitch({
+  Frame: SwitchFrame,
+  Thumb: SwitchThumb,
+})
+
+export const HeadlessSwitch = forwardRef<View, SwitchProps>(function (props, ref) {
+  const [checked, setChecked] = useState(props.defaultChecked || false)
+  const { switchProps, bubbleInput } = useSwitch(props, [checked, setChecked], ref)
+
+  return (
+    <Pressable
+      style={{
+        width: 60,
+        height: 20,
+        borderRadius: 100,
+        backgroundColor: checked ? 'gray' : 'darkgray',
+      }}
+      {...switchProps}
+    >
+      <View
+        style={{
+          backgroundColor: 'black',
+          borderRadius: 100,
+          width: 20,
+          height: 20,
+          transform: [
+            {
+              translateX: checked ? 40 : 0,
+            },
+          ],
+        }}
+      />
+      {bubbleInput}
+    </Pressable>
+  )
+})

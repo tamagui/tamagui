@@ -14,8 +14,8 @@ const Test = styled(Square, {
 export const Sandbox = () => {
   return (
     <View>
-      {/* <SwitchDemo /> */}
-      <CheckboxDemo />
+      <SwitchDemo />
+      {/* <CheckboxDemo /> */}
     </View>
   )
 }
