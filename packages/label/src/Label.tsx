@@ -170,5 +170,3 @@ export const useLabelContext = (element?: HTMLElement | null) => {
 
   return context.id
 }
-
-const Root = Label
