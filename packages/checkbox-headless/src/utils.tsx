@@ -1,4 +1,4 @@
-import { CheckedState } from './createCheckbox'
+import { CheckedState } from './useCheckbox'
 
 export function isIndeterminate(checked?: CheckedState): checked is 'indeterminate' {
   return checked === 'indeterminate'

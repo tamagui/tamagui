@@ -1,5 +1,5 @@
 import { NativeValue, SizeTokens, StackProps, TamaguiComponent, TamaguiComponentExpectingVariants } from '@tamagui/core';
-import { SwitchExtraProps as HeadlessSwitchExtraProps } from '@tamagui/switch-headless';
+import { SwitchBaseProps as HeadlessSwitchExtraProps, SwitchState } from '@tamagui/switch-headless';
 import * as React from 'react';
 import { SwitchProps as NativeSwitchProps, ViewProps } from 'react-native';
 type SwitchSharedProps = {
@@ -15,7 +15,7 @@ export type SwitchProps = SwitchBaseProps & SwitchExtraProps;
 type SwitchComponent = TamaguiComponentExpectingVariants<SwitchProps, SwitchSharedProps & SwitchExtraProps>;
 type SwitchThumbComponent = TamaguiComponentExpectingVariants<SwitchBaseProps, SwitchSharedProps>;
 export declare const SwitchContext: React.Context<{
-    checked: boolean;
+    checked: SwitchState;
     disabled?: boolean | undefined;
 }>;
 export declare function createSwitch<F extends SwitchComponent, T extends SwitchThumbComponent>({ disableActiveTheme, Frame, Thumb, }: {

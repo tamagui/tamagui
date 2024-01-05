@@ -10,7 +10,8 @@ import {
   withStaticProperties,
 } from '@tamagui/core'
 import {
-  SwitchExtraProps as HeadlessSwitchExtraProps,
+  SwitchBaseProps as HeadlessSwitchExtraProps,
+  SwitchState,
   useSwitch,
 } from '@tamagui/switch-headless'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -46,7 +47,7 @@ type SwitchThumbComponent = TamaguiComponentExpectingVariants<
 >
 
 export const SwitchContext = React.createContext<{
-  checked: boolean
+  checked: SwitchState
   disabled?: boolean
 }>({
   checked: false,
@@ -140,18 +141,18 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
 
     const [frameWidth, setFrameWidth] = React.useState(0)
 
-    const tamaguiProps = useProps(props, {
+    const propsActive = useProps(props, {
       noNormalize: true,
       noExpand: true,
       resolveValues: 'none',
       forComponent: Frame,
     })
-    tamaguiProps.size = styledContext.size ?? props.size ?? '$true'
-    tamaguiProps.unstyled = styledContext.unstyled ?? props.unstyled ?? false
+    propsActive.size = styledContext.size ?? props.size ?? '$true'
+    propsActive.unstyled = styledContext.unstyled ?? props.unstyled ?? false
 
     const { switchProps, bubbleInput } = useSwitch(
       // @ts-ignore
-      tamaguiProps,
+      propsActive,
       [checked, setChecked],
       forwardedRef
     )

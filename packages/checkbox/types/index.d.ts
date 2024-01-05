@@ -1,19 +1,21 @@
 /// <reference types="react" />
 export * from './createCheckbox';
 export * from './Checkbox';
-export declare const Checkbox: import("react").ForwardRefExoticComponent<Omit<import("react-native").PressableProps, "children"> & Omit<import("@tamagui/checkbox-headless").CheckboxBaseProps, "children"> & {
-    children?: import("react").ReactNode | ((checked: import("@tamagui/checkbox-headless").CheckedState) => import("react").ReactNode);
-} & {
+export declare const Checkbox: import("react").ForwardRefExoticComponent<import("@tamagui/checkbox-headless").CheckboxBaseProps & {
+    scaleIcon?: number | undefined;
+    scaleSize?: number | undefined;
+    sizeAdjust?: number | undefined;
+    native?: import("@tamagui/helpers").NativeValue<"web"> | undefined;
+} & Omit<import("react-native").ViewProps, "pointerEvents" | "display" | "children" | "style" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & import("@tamagui/web").TamaguiComponentPropsBaseBase & {
+    style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | import("react").CSSProperties | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+} & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> & import("@tamagui/web").MediaProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & import("./createCheckbox").ExpectingVariantProps & {
     __scopeCheckbox?: import("@tamagui/create-context").Scope;
-} & import("react").RefAttributes<import("react").ForwardRefExoticComponent<import("react-native").PressableProps & import("react").RefAttributes<import("react-native").View>>>> & {
-    Indicator: import("react").ForwardRefExoticComponent<import("@tamagui/checkbox-headless").CheckboxIndicatorBaseProps & import("react-native").ViewProps & import("react").RefAttributes<import("react").ForwardRefExoticComponent<import("react-native").ViewProps>>>;
-} & {
-    Props: import("react").ProviderExoticComponent<Partial<{
-        size: import("@tamagui/web").SizeTokens;
-        scaleIcon: number;
-    }> & {
-        children?: import("react").ReactNode;
-        scope?: string | undefined;
-    }>;
+} & import("react").RefAttributes<import("@tamagui/web").TamaguiElement>> & {
+    Indicator: import("react").ForwardRefExoticComponent<{
+        forceMount?: boolean | undefined;
+        disablePassStyles?: boolean | undefined;
+    } & Omit<import("react-native").ViewProps, "pointerEvents" | "display" | "children" | "style" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & import("@tamagui/web").TamaguiComponentPropsBaseBase & {
+        style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | import("react").CSSProperties | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+    } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> & import("@tamagui/web").MediaProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & import("react").RefAttributes<import("@tamagui/web").TamaguiElement>>;
 };
 //# sourceMappingURL=index.d.ts.map

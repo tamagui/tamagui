@@ -1,7 +1,7 @@
 import { usePrevious } from '@tamagui/use-previous'
 import * as React from 'react'
 
-import { CheckedState } from './createCheckbox'
+import { CheckedState } from './useCheckbox'
 import { isIndeterminate } from './utils'
 
 export interface BubbleInputProps extends Omit<React.ComponentProps<'input'>, 'checked'> {

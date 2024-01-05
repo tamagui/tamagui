@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { GestureResponderEvent, PressableProps, View, ViewProps } from 'react-native';
-type SwitchBaseProps = ViewProps;
-export type SwitchExtraProps = {
+export type SwitchBaseProps = {
     labeledBy?: string;
     disabled?: boolean;
     name?: string;
@@ -11,15 +10,16 @@ export type SwitchExtraProps = {
     required?: boolean;
     onCheckedChange?(checked: boolean): void;
 };
-export type SwitchProps = SwitchBaseProps & SwitchExtraProps & {
+export type SwitchProps = ViewProps & SwitchBaseProps & {
     onPress?: PressableProps['onPress'];
 };
-type SwitchState = boolean;
-export declare function useSwitch<R extends View, P extends SwitchProps>(props: P, [checked, setChecked]: [SwitchState, React.Dispatch<React.SetStateAction<boolean>>], ref: React.Ref<R>): {
+export type SwitchState = boolean;
+export declare function useSwitch<R extends View, P extends SwitchProps>(props: P, [checked, setChecked]: [SwitchState, React.Dispatch<React.SetStateAction<SwitchState>>], ref: React.Ref<R>): {
     switchProps: {
         tabIndex?: number | undefined;
         'data-state'?: string | undefined;
         'data-disabled'?: string | undefined;
+        disabled?: boolean | undefined;
         role: "switch";
         'aria-checked': boolean;
     } & P & {
@@ -32,5 +32,4 @@ export declare function useSwitch<R extends View, P extends SwitchProps>(props: 
      */
     bubbleInput: JSX.Element | null;
 };
-export {};
 //# sourceMappingURL=useSwitch.d.ts.map

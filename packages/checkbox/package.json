@@ -28,6 +28,7 @@
     "@tamagui/font-size": "1.82.4",
     "@tamagui/get-token": "1.82.4",
     "@tamagui/helpers-tamagui": "1.82.4",
+    "@tamagui/use-controllable-state": "1.82.4",
     "@tamagui/stacks": "1.82.4"
   },
   "exports": {

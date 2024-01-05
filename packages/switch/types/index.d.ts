@@ -7,7 +7,7 @@ export declare const Switch: import("@tamagui/web").ReactComponentWithRef<Omit<i
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> & import("@tamagui/web").MediaProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & {
     size?: number | import("@tamagui/web").SizeTokens | undefined;
     unstyled?: boolean | undefined;
-} & import("@tamagui/switch-headless").SwitchExtraProps & {
+} & import("@tamagui/switch-headless").SwitchBaseProps & {
     native?: import("@tamagui/helpers").NativeValue<"android" | "ios" | "mobile"> | undefined;
     nativeProps?: import("react-native").SwitchProps | undefined;
 }, any> & {
@@ -18,13 +18,13 @@ export declare const Switch: import("@tamagui/web").ReactComponentWithRef<Omit<i
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> & import("@tamagui/web").MediaProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & {
         size?: number | import("@tamagui/web").SizeTokens | undefined;
         unstyled?: boolean | undefined;
-    } & import("@tamagui/switch-headless").SwitchExtraProps & {
+    } & import("@tamagui/switch-headless").SwitchBaseProps & {
         native?: import("@tamagui/helpers").NativeValue<"android" | "ios" | "mobile"> | undefined;
         nativeProps?: import("react-native").SwitchProps | undefined;
     }, any, any, {
         size?: number | import("@tamagui/web").SizeTokens | undefined;
         unstyled?: boolean | undefined;
-    } & import("@tamagui/switch-headless").SwitchExtraProps & {
+    } & import("@tamagui/switch-headless").SwitchBaseProps & {
         native?: import("@tamagui/helpers").NativeValue<"android" | "ios" | "mobile"> | undefined;
         nativeProps?: import("react-native").SwitchProps | undefined;
     }, {}>;
@@ -33,7 +33,7 @@ export declare const Switch: import("@tamagui/web").ReactComponentWithRef<Omit<i
     __variantProps: {
         size?: number | import("@tamagui/web").SizeTokens | undefined;
         unstyled?: boolean | undefined;
-    } & import("@tamagui/switch-headless").SwitchExtraProps & {
+    } & import("@tamagui/switch-headless").SwitchBaseProps & {
         native?: import("@tamagui/helpers").NativeValue<"android" | "ios" | "mobile"> | undefined;
         nativeProps?: import("react-native").SwitchProps | undefined;
     };

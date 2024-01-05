@@ -1,21 +1,26 @@
 import {
   CheckboxBaseProps,
-  CheckboxIndicatorBaseProps,
-  createCheckbox as createCheckboxHeadless,
+  CheckedState,
+  isIndeterminate,
+  useCheckbox,
 } from '@tamagui/checkbox-headless'
 import {
+  NativeValue,
   SizeTokens,
   StackProps,
   TamaguiElement,
   getVariableValue,
+  shouldRenderNativePlatform,
   useProps,
   useTheme,
+  withStaticProperties,
 } from '@tamagui/core'
 import { Scope } from '@tamagui/create-context'
 import { getFontSize } from '@tamagui/font-size'
 import { getSize } from '@tamagui/get-token'
 import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
-import React from 'react'
+import { useControllableState } from '@tamagui/use-controllable-state'
+import React, { useContext } from 'react'
 
 import { CheckboxFrame, CheckboxIndicatorFrame } from './Checkbox'
 import { CheckboxStyledContext } from './CheckboxStyledContext'
@@ -23,8 +28,6 @@ import { CheckboxStyledContext } from './CheckboxStyledContext'
 type ScopedProps<P> = P & { __scopeCheckbox?: Scope }
 // TODO: add nested button provider
 // TODO: remove all ts-ignore's
-
-export type CheckedState = boolean | 'indeterminate'
 
 export type ExpectingVariantProps = {
   size?: SizeTokens
@@ -35,14 +38,28 @@ export type CheckboxProps = CheckboxBaseProps & {
   scaleIcon?: number
   scaleSize?: number
   sizeAdjust?: number
+  native?: NativeValue<'web'>
 } & StackProps
 
-export type CheckboxIndicatorProps = CheckboxIndicatorBaseProps & {
+export type CheckboxIndicatorProps = {
+  /**
+   * Used to force mounting when more control is needed. Useful when
+   * controlling animation with React animation libraries.
+   */
+  forceMount?: boolean
   /**
    * Used to disable passing styles down to children.
    */
   disablePassStyles?: boolean
 } & StackProps
+
+export const CheckboxContext = React.createContext<{
+  checked: CheckedState
+  disabled?: boolean
+}>({
+  checked: false,
+  disabled: false,
+})
 
 export function createCheckbox<
   F extends typeof CheckboxFrame,
@@ -59,28 +76,75 @@ export function createCheckbox<
   const FrameComponent = React.forwardRef<
     TamaguiElement,
     ScopedProps<CheckboxProps & ExpectingVariantProps>
-  >(function Checkbox(props, forwardedRef) {
-    const { scaleSize = 0.45, sizeAdjust = 0, scaleIcon, ...checkboxProps } = props
-    const propsActive = useProps(checkboxProps)
+  >(function Checkbox(_props, forwardedRef) {
+    const {
+      scaleSize = 0.45,
+      sizeAdjust = 0,
+      scaleIcon,
+      checked: checkedProp,
+      defaultChecked,
+      onCheckedChange,
+      native,
+      ...props
+    } = _props
+    const propsActive = useProps(props)
 
     // TODO: this could be null - fix the type
     const styledContext = React.useContext(CheckboxStyledContext)
     const adjustedSize = getVariableValue(
-      // @ts-ignore
       getSize(propsActive.size ?? styledContext?.size ?? '$true', {
         shift: sizeAdjust,
       })
     ) as number
     const size = scaleSize ? Math.round(adjustedSize * scaleSize) : adjustedSize
 
+    const [checked = false, setChecked] = useControllableState({
+      prop: checkedProp,
+      defaultProp: defaultChecked!,
+      onChange: onCheckedChange,
+    })
+
+    const { checkboxProps, bubbleInput } = useCheckbox(
+      // @ts-ignore
+      propsActive,
+      [checked, setChecked],
+      forwardedRef
+    )
+
+    const renderNative = shouldRenderNativePlatform(native)
+    if ((native && renderNative === 'android') || renderNative === 'web') {
+      return (
+        <input
+          type="checkbox"
+          defaultChecked={isIndeterminate(checked) ? false : checked}
+          tabIndex={-1}
+          ref={checkboxProps.ref}
+          disabled={checkboxProps.disabled}
+          style={{
+            appearance: 'auto',
+            accentColor: 'var(--color6)',
+            ...(checkboxProps.style as any), // TODO: any
+          }}
+        />
+      )
+    }
+
     return (
-      <Frame width={size} height={size} tag="button" {...propsActive} ref={forwardedRef}>
-        <CheckboxStyledContext.Provider
-          size={propsActive.size ?? styledContext?.size ?? '$true'}
-          scaleIcon={scaleIcon ?? styledContext?.scaleIcon ?? 1}
+      <Frame width={size} height={size} tag="button" {...checkboxProps}>
+        <CheckboxContext.Provider
+          value={{
+            checked,
+            disabled: checkboxProps.disabled,
+          }}
         >
-          {propsActive.children}
-        </CheckboxStyledContext.Provider>
+          <CheckboxStyledContext.Provider
+            size={propsActive.size ?? styledContext?.size ?? '$true'}
+            scaleIcon={scaleIcon ?? styledContext?.scaleIcon ?? 1}
+          >
+            {propsActive.children}
+            {bubbleInput}
+          </CheckboxStyledContext.Provider>
+        </CheckboxContext.Provider>
       </Frame>
     )
   })
@@ -110,21 +174,19 @@ export function createCheckbox<
         return getThemedIcon(child)
       })
 
-      return (
-        // @ts-ignore
-        <Indicator pointerEvents="none" {...indicatorProps} ref={forwardedRef}>
-          {children}
-        </Indicator>
-      )
+      const context = useContext(CheckboxContext)
+      if (forceMount || isIndeterminate(context.checked) || context.checked === true)
+        return (
+          <Indicator pointerEvents="none" {...indicatorProps} ref={forwardedRef}>
+            {children}
+          </Indicator>
+        )
+
+      return null
     }
   )
 
-  const Checkbox = createCheckboxHeadless({
-    Frame: FrameComponent as any,
-    Indicator: IndicatorComponent as any,
+  return withStaticProperties(FrameComponent, {
+    Indicator: IndicatorComponent,
   })
-  Checkbox['Props'] = CheckboxStyledContext.Provider
-  return Checkbox as typeof Checkbox & {
-    Props: (typeof CheckboxStyledContext)['Provider']
-  }
 }

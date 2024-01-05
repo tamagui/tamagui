@@ -6,9 +6,7 @@ import { usePrevious } from '@tamagui/use-previous'
 import * as React from 'react'
 import { GestureResponderEvent, PressableProps, View, ViewProps } from 'react-native'
 
-type SwitchBaseProps = ViewProps
-
-export type SwitchExtraProps = {
+export type SwitchBaseProps = {
   labeledBy?: string
   disabled?: boolean
   name?: string
@@ -19,12 +17,12 @@ export type SwitchExtraProps = {
   onCheckedChange?(checked: boolean): void
 }
 
-export type SwitchProps = SwitchBaseProps &
-  SwitchExtraProps & {
+export type SwitchProps = ViewProps &
+  SwitchBaseProps & {
     onPress?: PressableProps['onPress']
   }
 
-type SwitchState = boolean
+export type SwitchState = boolean
 
 function getState(checked: boolean) {
   return checked ? 'checked' : 'unchecked'
@@ -84,7 +82,7 @@ const BubbleInput = (props: BubbleInputProps) => {
 
 export function useSwitch<R extends View, P extends SwitchProps>(
   props: P,
-  [checked, setChecked]: [SwitchState, React.Dispatch<React.SetStateAction<boolean>>],
+  [checked, setChecked]: [SwitchState, React.Dispatch<React.SetStateAction<SwitchState>>],
   ref: React.Ref<R>
 ) {
   const { disabled, name, value, required } = props
@@ -106,12 +104,14 @@ export function useSwitch<R extends View, P extends SwitchProps>(
             tabIndex: disabled ? undefined : 0,
             'data-state': getState(checked),
             'data-disabled': disabled ? '' : undefined,
+            disabled: disabled,
           }
         : {}),
       ...props,
       'aria-labelledby': ariaLabelledBy,
       ref: composedRefs,
       onPress: composeEventHandlers(props.onPress, (event: GestureResponderEvent) => {
+        if (disabled) return
         setChecked((prevChecked) => !prevChecked)
         if (isWeb && isFormControl && 'isPropagationStopped' in event) {
           hasConsumerStoppedPropagationRef.current = event.isPropagationStopped()
