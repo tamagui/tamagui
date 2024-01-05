@@ -1521,47 +1521,6 @@ export function createExtractor(
             modifiedComponents.add(parentFn)
           }
 
-          // combine ternaries
-          let ternaries: Ternary[] = []
-          attrs = attrs
-            .reduce<(ExtractedAttr | ExtractedAttr[])[]>((out, cur) => {
-              const next = attrs[attrs.indexOf(cur) + 1]
-              if (cur.type === 'ternary') {
-                ternaries.push(cur.value)
-              }
-              if ((!next || next.type !== 'ternary') && ternaries.length) {
-                // finish, process
-                const normalized = normalizeTernaries(ternaries).map(
-                  ({ alternate, consequent, ...rest }) => {
-                    return {
-                      type: 'ternary' as const,
-                      value: {
-                        ...rest,
-                        alternate: alternate || null,
-                        consequent: consequent || null,
-                      },
-                    }
-                  }
-                )
-                try {
-                  return [...out, ...normalized]
-                } finally {
-                  if (shouldPrintDebug) {
-                    logger.info(
-                      `    normalizeTernaries (${ternaries.length} => ${normalized.length})`
-                    )
-                  }
-                  ternaries = []
-                }
-              }
-              if (cur.type === 'ternary') {
-                return out
-              }
-              out.push(cur)
-              return out
-            }, [])
-            .flat()
-
           // flatten logic!
           // fairly simple check to see if all children are text
           const hasSpread = attrs.some(
@@ -1694,6 +1653,28 @@ export function createExtractor(
                 shouldDeopt = true
                 return
               }
+              if (name[0] === '$' && mediaQueryConfig[name.slice(1)]) {
+                defaultProps[key] = undefined
+                return evaluateAttribute({
+                  node: t.jsxAttribute(
+                    t.jsxIdentifier(name),
+                    t.jsxExpressionContainer(
+                      t.objectExpression(
+                        Object.keys(value)
+                          .filter((k) => {
+                            return typeof value[k] !== 'undefined'
+                          })
+                          .map((k) => {
+                            return t.objectProperty(
+                              t.identifier(k),
+                              literalToAst(value[k])
+                            )
+                          })
+                      )
+                    )
+                  ),
+                } as any)
+              }
               const attr: ExtractedAttrStyle = {
                 type: 'style',
                 name,
@@ -1706,6 +1687,47 @@ export function createExtractor(
               attrs = [...defaultStyleAttrs, ...attrs]
             }
           }
+
+          // combine ternaries
+          let ternaries: Ternary[] = []
+          attrs = attrs
+            .reduce<(ExtractedAttr | ExtractedAttr[])[]>((out, cur) => {
+              const next = attrs[attrs.indexOf(cur) + 1]
+              if (cur.type === 'ternary') {
+                ternaries.push(cur.value)
+              }
+              if ((!next || next.type !== 'ternary') && ternaries.length) {
+                // finish, process
+                const normalized = normalizeTernaries(ternaries).map(
+                  ({ alternate, consequent, ...rest }) => {
+                    return {
+                      type: 'ternary' as const,
+                      value: {
+                        ...rest,
+                        alternate: alternate || null,
+                        consequent: consequent || null,
+                      },
+                    }
+                  }
+                )
+                try {
+                  return [...out, ...normalized]
+                } finally {
+                  if (shouldPrintDebug) {
+                    logger.info(
+                      `    normalizeTernaries (${ternaries.length} => ${normalized.length})`
+                    )
+                  }
+                  ternaries = []
+                }
+              }
+              if (cur.type === 'ternary') {
+                return out
+              }
+              out.push(cur)
+              return out
+            }, [])
+            .flat()
 
           if (shouldDeopt || !shouldFlatten) {
             if (shouldPrintDebug) {
