@@ -1,37 +1,36 @@
-import { createCheckbox } from '@tamagui/checkbox-headless'
+import { useCheckbox } from '@tamagui/checkbox-headless'
 import { Check as CheckIcon } from '@tamagui/lucide-icons'
+import { forwardRef, useState } from 'react'
 import { Pressable, Text, View } from 'react-native'
-import { Checkbox, CheckboxProps, Label, SizeTokens, XStack, YStack } from 'tamagui'
-const HeadlessCheckbox = createCheckbox({
-  Frame: ({ children: childrenProp, style, ...props }) => {
-    const children = childrenProp
-    return (
-      <Pressable
-        style={{
-          width: 100,
-          height: 100,
-          backgroundColor: 'red',
-        }}
-        {...props}
-      >
-        {children}
-      </Pressable>
-    )
-  },
-  Indicator: (props) => (
-    <View {...props}>
-      <Text>checked</Text>
-    </View>
-  ),
-})
+import {
+  Checkbox,
+  CheckboxFrame,
+  CheckboxIndicatorFrame,
+  CheckboxProps,
+  Label,
+  SizeTokens,
+  XStack,
+  YStack,
+  createCheckbox,
+} from 'tamagui'
+
 export function CheckboxDemo() {
   return (
     <YStack width={300} alignItems="center" space="$2">
-      <form>
-        <HeadlessCheckbox>
-          <HeadlessCheckbox.Indicator />
-        </HeadlessCheckbox>
-      </form>
+      <XStack width={300} alignItems="center" space="$4">
+        <HeadlessCheckbox id="useCheckbox" />
+
+        <Label htmlFor="useCheckbox">useCheckbox</Label>
+      </XStack>
+      <XStack width={300} alignItems="center" space="$4">
+        <CustomCheckbox id="createCheckbox">
+          <CustomCheckbox.Indicator>
+            <CheckIcon />
+          </CustomCheckbox.Indicator>
+        </CustomCheckbox>
+
+        <Label htmlFor="createCheckbox">createCheckbox</Label>
+      </XStack>
       <CheckboxWithLabel size="$3" />
       <CheckboxWithLabel size="$4" defaultChecked />
       <CheckboxWithLabel size="$5" disabled label="Accept terms (disabled)" />
@@ -59,3 +58,28 @@ export function CheckboxWithLabel({
     </XStack>
   )
 }
+
+export const CustomCheckbox = createCheckbox({
+  Frame: CheckboxFrame,
+  Indicator: CheckboxIndicatorFrame,
+})
+
+export const HeadlessCheckbox = forwardRef<View, CheckboxProps>(function (props, ref) {
+  const [checked, setChecked] = useState(props.defaultChecked || false)
+  const { checkboxProps, bubbleInput } = useCheckbox(props, [checked, setChecked], ref)
+
+  return (
+    <Pressable
+      style={{
+        width: 40,
+        height: 40,
+        backgroundColor: 'red',
+      }}
+      {...checkboxProps}
+    >
+      {checked === 'indeterminate' && <Text>Indeterminate</Text>}
+      {checked === true && <Text>Checked</Text>}
+      {bubbleInput}
+    </Pressable>
+  )
+})

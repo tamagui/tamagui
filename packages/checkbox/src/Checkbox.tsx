@@ -3,7 +3,6 @@ import { getSize } from '@tamagui/get-token'
 import { ThemeableStack } from '@tamagui/stacks'
 
 import { CheckboxStyledContext } from './CheckboxStyledContext'
-import { CheckedState } from './createCheckbox'
 
 /* -------------------------------------------------------------------------------------------------
  * CheckboxIndicator

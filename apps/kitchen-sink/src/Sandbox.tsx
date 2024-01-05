@@ -9,8 +9,8 @@ export const Sandbox = () => {
   const [disabled, setDisabled] = useState(true)
   return (
     <View>
-      <SwitchDemo />
-      {/* <CheckboxDemo /> */}
+      {/* <SwitchDemo /> */}
+      <CheckboxDemo />
     </View>
   )
 }

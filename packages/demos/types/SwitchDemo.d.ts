@@ -11,7 +11,7 @@ export declare const CustomSwitch: import("@tamagui/web").ReactComponentWithRef<
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> & import("@tamagui/web").MediaProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & {
     size?: number | SizeTokens | undefined;
     unstyled?: boolean | undefined;
-} & import("@tamagui/switch-headless").SwitchExtraProps & {
+} & import("@tamagui/switch-headless").SwitchBaseProps & {
     native?: import("tamagui").NativeValue<"android" | "ios" | "mobile"> | undefined;
     nativeProps?: import("react-native").SwitchProps | undefined;
 }, any> & {
@@ -22,13 +22,13 @@ export declare const CustomSwitch: import("@tamagui/web").ReactComponentWithRef<
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>> & import("@tamagui/web").MediaProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/web").PseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>>> & {
         size?: number | SizeTokens | undefined;
         unstyled?: boolean | undefined;
-    } & import("@tamagui/switch-headless").SwitchExtraProps & {
+    } & import("@tamagui/switch-headless").SwitchBaseProps & {
         native?: import("tamagui").NativeValue<"android" | "ios" | "mobile"> | undefined;
         nativeProps?: import("react-native").SwitchProps | undefined;
     }, any, any, {
         size?: number | SizeTokens | undefined;
         unstyled?: boolean | undefined;
-    } & import("@tamagui/switch-headless").SwitchExtraProps & {
+    } & import("@tamagui/switch-headless").SwitchBaseProps & {
         native?: import("tamagui").NativeValue<"android" | "ios" | "mobile"> | undefined;
         nativeProps?: import("react-native").SwitchProps | undefined;
     }, {}>;
@@ -37,7 +37,7 @@ export declare const CustomSwitch: import("@tamagui/web").ReactComponentWithRef<
     __variantProps: {
         size?: number | SizeTokens | undefined;
         unstyled?: boolean | undefined;
-    } & import("@tamagui/switch-headless").SwitchExtraProps & {
+    } & import("@tamagui/switch-headless").SwitchBaseProps & {
         native?: import("tamagui").NativeValue<"android" | "ios" | "mobile"> | undefined;
         nativeProps?: import("react-native").SwitchProps | undefined;
     };
@@ -49,7 +49,7 @@ export declare const CustomSwitch: import("@tamagui/web").ReactComponentWithRef<
         unstyled?: boolean | undefined;
     } & import("react-native").ViewProps & import("react").RefAttributes<import("tamagui").TamaguiComponent>>;
 };
-export declare const HeadlessSwitch: import("react").ForwardRefExoticComponent<import("react-native").ViewProps & import("@tamagui/switch-headless").SwitchExtraProps & {
+export declare const HeadlessSwitch: import("react").ForwardRefExoticComponent<import("react-native").ViewProps & import("@tamagui/switch-headless").SwitchBaseProps & {
     onPress?: ((event: import("react-native").GestureResponderEvent) => void) | null | undefined;
 } & import("react").RefAttributes<View>>;
 //# sourceMappingURL=SwitchDemo.d.ts.map
