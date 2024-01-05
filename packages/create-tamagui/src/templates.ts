@@ -27,6 +27,7 @@ export const templates = [
         IS_TEST && starterExists
           ? `file://${starterFreeRoot}`
           : `https://github.com/tamagui/starter-free.git`,
+      sshFallback: `git@github.com:tamagui/starter-free.git`,
       dir: [],
       branch: 'main',
     },
@@ -40,6 +41,7 @@ export const templates = [
     hidden: false,
     repo: {
       url: IS_TEST ? `file://${repoRoot}` : `https://github.com/tamagui/tamagui.git`,
+      sshFallback: `git@github.com:tamagui/tamagui.git`,
       dir: [`starters`, `simple-web`],
       branch: 'master',
     },
@@ -56,6 +58,7 @@ export const templates = [
     hidden: false,
     repo: {
       url: `https://github.com/tamagui/takeout`,
+      sshFallback: `git@github.com:tamagui/takeout.git`,
       dir: [],
       branch: 'main',
     },

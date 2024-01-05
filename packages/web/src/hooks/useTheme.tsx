@@ -493,7 +493,7 @@ export const useChangeThemeEffect = (
 
     const wasInversed = prev?.inversed
     const nextInversed = isNewTheme && state.scheme !== parentManager?.state.scheme
-    const inversed = nextInversed ? true : wasInversed ? false : null
+    const inversed = nextInversed ? true : wasInversed != null ? false : null
 
     const response: ChangedThemeResponse = {
       themeManager,

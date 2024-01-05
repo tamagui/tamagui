@@ -1,3 +1,5 @@
+import { isServer } from '@tamagui/constants'
+import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import { useForceUpdate } from '@tamagui/use-force-update'
 import { useEffect, useId, useState } from 'react'
 import { createPortal } from 'react-dom'
@@ -16,12 +18,8 @@ export function ThemeDebug({
   themeProps: ThemeProps
   children: any
 }) {
-  // disabled
-  if (themeProps['disable-child-theme']) {
-    return children
-  }
-
   if (process.env.NODE_ENV === 'development') {
+    const isHydrated = useDidFinishSSR()
     const [onChangeCount, setOnChangeCount] = useState(0)
     const rerender = useForceUpdate()
     const id = useId()
@@ -59,6 +57,10 @@ export function ThemeDebug({
       const tm = setInterval(rerender, 1000)
       return () => clearTimeout(tm as any)
     }, [])
+
+    if (themeProps['disable-child-theme'] || !isHydrated) {
+      return children
+    }
 
     return (
       <>

@@ -1087,7 +1087,7 @@ type GetThemeValueFallbackFor<
 export type ThemeValueFallback =
   // for backwards compat with overriding the type we make this either UnionableString
   // or never if they don't define any UserAllowedStyleValuesSetting
-  | (TamaguiSettings['allowedStyleValues'] extends undefined ? UnionableString : never)
+  | (TamaguiSettings extends { allowedStyleValues: any } ? never : UnionableString)
   | Variable
 
 type AllowedValueSettingSpace = GetThemeValueSettingForCategory<'space'>

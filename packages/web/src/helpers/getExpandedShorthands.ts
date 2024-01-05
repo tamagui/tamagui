@@ -1,6 +1,9 @@
 import { getConfig } from '../config'
 import { Shorthands } from '../types'
 
+/**
+ * @deprecated use useProps instead
+ */
 export function getExpandedShorthands<A extends Object>(
   props: A
 ): Omit<A, keyof Shorthands> {

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/create-context",
-  "version": "1.82.0",
+  "version": "1.82.4",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -16,7 +16,9 @@
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "lint": "../../node_modules/.bin/biome check src",
-    "lint:fix": "../../node_modules/.bin/biome check --apply-unsafe src"
+    "lint:fix": "../../node_modules/.bin/biome check --apply-unsafe src",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
   },
   "exports": {
     "./package.json": "./package.json",
@@ -31,7 +33,7 @@
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.82.0",
+    "@tamagui/build": "1.82.4",
     "react": "^18.2.0"
   },
   "publishConfig": {

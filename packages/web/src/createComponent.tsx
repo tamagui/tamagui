@@ -65,7 +65,7 @@ import {
   WebOnlyPressEvents,
 } from './types'
 import { Slot } from './views/Slot'
-import { useThemedChildren } from './views/Theme'
+import { getThemedChildren } from './views/Theme'
 import { ThemeDebug } from './views/ThemeDebug'
 
 // this appears to fix expo / babel not picking this up sometimes? really odd
@@ -1205,9 +1205,9 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development' && time) time`group-context`
 
     // disable theme prop is deterministic so conditional hook ok here
-    content = disableThemeProp
+    content = disableTheme
       ? content
-      : useThemedChildren(themeState, content, themeStateProps, false)
+      : getThemedChildren(themeState, content, themeStateProps, false)
 
     if (process.env.NODE_ENV === 'development' && time) time`themed-children`
 

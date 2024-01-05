@@ -30,7 +30,7 @@ export type ThemeManagerState = {
 const emptyState: ThemeManagerState = { name: '' }
 
 export function getHasThemeUpdatingProps(props: ThemeProps) {
-  return props.name || props.componentName || props.inverse || props.reset
+  return Boolean(props.name || props.componentName || props.inverse || props.reset)
 }
 
 let uid = 0
@@ -228,7 +228,7 @@ function getState(
 
   if (
     process.env.NODE_ENV !== 'production' &&
-    typeof props.debug === 'string' &&
+    props.debug &&
     typeof window !== 'undefined'
   ) {
     console.groupCollapsed('ThemeManager.getState()')
@@ -257,19 +257,22 @@ function getState(
     }
 
     if (componentName && !props.reset) {
+      const baseLen = base.length
       let componentPotentials: string[] = []
       // components only look for component themes
-      if (nextName) {
-        const beforeSeparator = prefix.slice(0, prefix.indexOf(THEME_NAME_SEPARATOR))
+      if (nextName && baseLen > 1) {
+        const beforeSeparator = base[0]
         componentPotentials.push(`${beforeSeparator}_${nextName}_${componentName}`)
       }
       componentPotentials.push(`${prefix}_${componentName}`)
       if (nextName) {
         // do this one and one level up
-        const prefixLessOne = base.slice(0, i - 1).join(THEME_NAME_SEPARATOR)
-        if (prefixLessOne) {
-          const lessSpecific = `${prefixLessOne}_${nextName}_${componentName}`
-          componentPotentials.unshift(lessSpecific)
+        if (i > baseLen) {
+          const prefixLessOne = base.slice(0, i - 1).join(THEME_NAME_SEPARATOR)
+          if (prefixLessOne) {
+            const lessSpecific = `${prefixLessOne}_${nextName}_${componentName}`
+            componentPotentials.unshift(lessSpecific)
+          }
         }
         const moreSpecific = `${prefix}_${nextName}_${componentName}`
         componentPotentials.unshift(moreSpecific)
@@ -282,6 +285,7 @@ function getState(
 
     if (process.env.NODE_ENV !== 'production' && typeof props.debug === 'string') {
       console.info(' getState ', {
+        props,
         found,
         potentials,
         baseManager,

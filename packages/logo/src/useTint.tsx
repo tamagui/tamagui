@@ -1,5 +1,5 @@
 import { startTransition, useMemo, useSyncExternalStore } from 'react'
-import { Theme, ThemeName } from 'tamagui'
+import { Theme, ThemeName, ThemeProps } from 'tamagui'
 
 import { getTints, setNextTintFamily, useTints } from './tints'
 
@@ -54,28 +54,34 @@ export const useTint = () => {
   } as const
 }
 
-export const ThemeTint = (props: { children: any; disable?: boolean }) => {
+export const ThemeTint = ({
+  disable,
+  children,
+  ...rest
+}: ThemeProps & { disable?: boolean }) => {
   const curTint = useTint().tint
-
-  return <Theme name={props.disable ? null : curTint}>{props.children}</Theme>
+  return (
+    <Theme {...rest} name={disable ? null : curTint}>
+      {children}
+    </Theme>
+  )
 }
 
 export const ThemeTintAlt = ({
   children,
   disable,
   offset = 1,
-}: {
-  children: any
+  ...rest
+}: ThemeProps & {
   disable?: boolean
   offset?: number
 }) => {
   const tint = useTint()
   const curTint = tint.tints[Math.abs((tint.tintIndex + offset) % tint.tints.length)]
-
+  const name = disable ? null : curTint
   return (
-    <Theme name={disable ? null : curTint}>
-      {/*  */}
-      {useMemo(() => children, [children])}
+    <Theme {...rest} name={name}>
+      {children}
     </Theme>
   )
 }

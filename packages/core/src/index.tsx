@@ -147,7 +147,10 @@ setupHooks({
         if (events.onBlur) {
           viewProps['onBlur'] = events.onBlur
         }
-        if (staticConfig.isInput) {
+      }
+
+      if (staticConfig.isInput) {
+        if (events) {
           const { onPressIn, onPressOut, onPress } = events
           const inputEvents = {
             onPressIn,
@@ -158,14 +161,18 @@ setupHooks({
             inputEvents.onPressOut = composeEventHandlers(onPress, onPressOut)
           }
           Object.assign(viewProps, inputEvents)
-        } else {
-          // use Pressability to get smooth unPress when you press + hold + move out
-          // only ever create once, use .configure() to update later
-          if (viewProps.hitSlop) {
-            events.hitSlop = viewProps.hitSlop
-          }
-          const pressability = usePressability(events)
+        }
+      } else {
+        // use Pressability to get smooth unPress when you press + hold + move out
+        // only ever create once, use .configure() to update later
+        if (events && viewProps.hitSlop) {
+          events.hitSlop = viewProps.hitSlop
+        }
 
+        // note we do events checks more than we should because we need this hook to always run
+        const pressability = usePressability(events)
+
+        if (events) {
           if (process.env.NODE_ENV === 'development') {
             if (viewProps['debug']) {
               console.info(

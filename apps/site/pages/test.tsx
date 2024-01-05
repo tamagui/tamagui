@@ -1,7 +1,9 @@
 // import '../lib/wdyr'
 
-import { Clipboard } from '@tamagui/lucide-icons'
-import { Button } from 'tamagui'
+import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
+import { Header } from '@tamagui/site/components/Header'
+import { SearchProvider } from '@tamagui/site/components/Search'
+import { Button, Square } from 'tamagui'
 
 import { getDefaultLayout } from '../lib/getDefaultLayout'
 
@@ -16,32 +18,33 @@ function TestPage() {
         flex: 1,
       }}
     >
-      {/* <div style={{ position: 'absolute', top: 10, right: 10, zIndex: 1000 }}>
-        <ThemeToggle />
-      </div> */}
-
-      <Button
-        aria-label="Copy code to clipboard"
-        position="absolute"
-        size="$10"
-        top="$3"
-        right="$3"
-        display="inline-flex"
-        $xs={{
-          display: 'none',
-        }}
-        icon={Clipboard}
-        onPress={() => {}}
-      >
-        hello
-      </Button>
+      <DebugNestedThemeChange />
     </div>
   )
 }
 
 export default TestPage
 
-TestPage.getLayout = getDefaultLayout
+const DebugNestedThemeChange = () => {
+  return (
+    <ThemeTint debug="visualize">
+      <ThemeTintAlt debug="visualize">
+        <Square theme="active" debug="visualize" size={100} bc="$color5" />
+      </ThemeTintAlt>
+    </ThemeTint>
+  )
+}
+
+TestPage.getLayout = (page) => {
+  return (
+    <>
+      <SearchProvider>
+        <Header minimal />
+        {page}
+      </SearchProvider>
+    </>
+  )
+}
 
 // export async function getStaticProps() {
 //   return {

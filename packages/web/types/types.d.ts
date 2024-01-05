@@ -626,7 +626,9 @@ type WebOnlySizeValue = `${number}vw` | `${number}dvw` | `${number}lvw` | `${num
 type UserAllowedStyleValuesSetting = Exclude<TamaguiSettings['allowedStyleValues'], undefined>;
 type GetThemeValueSettingForCategory<Cat extends keyof AllowedStyleValuesSettingPerCategory> = UserAllowedStyleValuesSetting extends AllowedValueSettingBase | undefined ? UserAllowedStyleValuesSetting : UserAllowedStyleValuesSetting extends AllowedStyleValuesSettingPerCategory ? UserAllowedStyleValuesSetting[Cat] : true;
 type GetThemeValueFallbackFor<Setting, StrictValue, SomewhatStrictValue, LooseValue, WebOnlyValue> = Setting extends 'strict' ? StrictValue : Setting extends 'strict-web' ? StrictValue | WebOnlyValue : Setting extends 'somewhat-strict' ? SomewhatStrictValue : Setting extends 'somewhat-strict-web' ? SomewhatStrictValue | WebOnlyValue : LooseValue;
-export type ThemeValueFallback = (TamaguiSettings['allowedStyleValues'] extends undefined ? UnionableString : never) | Variable;
+export type ThemeValueFallback = (TamaguiSettings extends {
+    allowedStyleValues: any;
+} ? never : UnionableString) | Variable;
 type AllowedValueSettingSpace = GetThemeValueSettingForCategory<'space'>;
 type AllowedValueSettingSize = GetThemeValueSettingForCategory<'size'>;
 type AllowedValueSettingColor = GetThemeValueSettingForCategory<'color'>;

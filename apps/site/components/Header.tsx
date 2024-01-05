@@ -136,50 +136,52 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
       tag="header"
       jc="space-between"
       pos="relative"
-      py={props.floating ? 0 : '$2'}
+      py={props.minimal ? '$4' : props.floating ? 0 : '$2'}
       zi={50000}
     >
-      <XStack ai="center" gap="$4">
-        {isHome ? (
-          <YStack my={-20} onPress={setNextTint} px="$3">
-            <TamaguiLogo downscale={props.floating ? 2 : 1.5} />
-          </YStack>
-        ) : (
-          <NextLink href="/">
-            <YStack tag="a" px="$3" cur="pointer" my={-20}>
+      {!props.minimal && (
+        <XStack ai="center" gap="$4">
+          {isHome ? (
+            <YStack my={-20} onPress={setNextTint} px="$3">
               <TamaguiLogo downscale={props.floating ? 2 : 1.5} />
             </YStack>
-          </NextLink>
-        )}
+          ) : (
+            <NextLink href="/">
+              <YStack tag="a" px="$3" cur="pointer" my={-20}>
+                <TamaguiLogo downscale={props.floating ? 2 : 1.5} />
+              </YStack>
+            </NextLink>
+          )}
 
-        <TooltipGroup delay={tooltipDelay}>
-          <XGroup boc="$color2" bw={1} mah={32} bc="transparent" ai="center" size="$3">
-            {!isTakeout && (
+          <TooltipGroup delay={tooltipDelay}>
+            <XGroup boc="$color2" bw={1} mah={32} bc="transparent" ai="center" size="$3">
+              {!isTakeout && (
+                <XGroup.Item>
+                  <ThemeToggle borderWidth={0} chromeless />
+                </XGroup.Item>
+              )}
               <XGroup.Item>
-                <ThemeToggle borderWidth={0} chromeless />
+                <ColorToggleButton borderWidth={0} chromeless />
               </XGroup.Item>
-            )}
-            <XGroup.Item>
-              <ColorToggleButton borderWidth={0} chromeless />
-            </XGroup.Item>
-            <XGroup.Item>
-              <SeasonToggleButton borderWidth={0} chromeless />
-            </XGroup.Item>
-          </XGroup>
-        </TooltipGroup>
+              <XGroup.Item>
+                <SeasonToggleButton borderWidth={0} chromeless />
+              </XGroup.Item>
+            </XGroup>
+          </TooltipGroup>
 
-        <SearchButton
-          size="$2"
-          br="$10"
-          elevation="$1"
-          shadowRadius={6}
-          shadowOpacity={0.0025}
-        />
+          <SearchButton
+            size="$2"
+            br="$10"
+            elevation="$1"
+            shadowRadius={6}
+            shadowOpacity={0.0025}
+          />
 
-        <YStack $md={{ display: 'none' }}>
-          <SponsorButton tiny />
-        </YStack>
-      </XStack>
+          <YStack $md={{ display: 'none' }}>
+            <SponsorButton tiny />
+          </YStack>
+        </XStack>
+      )}
 
       <XStack
         position="absolute"
@@ -205,57 +207,59 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
       </XStack>
 
       {/*  prevent layout shift */}
-      <XStack
-        h={40}
-        jc="flex-end"
-        miw={160}
-        $xs={{ miw: 80 }}
-        pointerEvents="auto"
-        tag="nav"
-      >
-        <XStack ai="center" gap="$2">
-          <HeaderLinks isHeader {...props} />
+      {!props.minimal && (
+        <XStack
+          h={40}
+          jc="flex-end"
+          miw={160}
+          $xs={{ miw: 80 }}
+          pointerEvents="auto"
+          tag="nav"
+        >
+          <XStack ai="center" gap="$2">
+            <HeaderLinks isHeader {...props} />
 
-          {userSwr.data?.userDetails && (
-            <XStack ai="center" gap="$2">
-              <NextLink href="/account">
-                <Avatar circular size="$2">
-                  <Avatar.Image
-                    source={{
-                      width: 28,
-                      height: 28,
-                      uri:
-                        userSwr.data.userDetails?.avatar_url ||
-                        getDefaultAvatarImage(
-                          userSwr.data?.userDetails?.full_name ||
-                            userSwr.data?.session?.user?.email ||
-                            'User'
-                        ),
-                    }}
-                  />
-                </Avatar>
-              </NextLink>
-            </XStack>
-          )}
+            {userSwr.data?.userDetails && (
+              <XStack ai="center" gap="$2">
+                <NextLink href="/account">
+                  <Avatar circular size="$2">
+                    <Avatar.Image
+                      source={{
+                        width: 28,
+                        height: 28,
+                        uri:
+                          userSwr.data.userDetails?.avatar_url ||
+                          getDefaultAvatarImage(
+                            userSwr.data?.userDetails?.full_name ||
+                              userSwr.data?.session?.user?.email ||
+                              'User'
+                          ),
+                      }}
+                    />
+                  </Avatar>
+                </NextLink>
+              </XStack>
+            )}
 
-          <NextLink
-            legacyBehavior={false}
-            target="_blank"
-            href="https://github.com/tamagui/tamagui"
-          >
-            <TooltipSimple delay={0} restMs={25} label="Star on Github">
-              <YStack p="$2" opacity={0.9} hoverStyle={{ opacity: 1 }}>
-                <VisuallyHidden>
-                  <Text>Github</Text>
-                </VisuallyHidden>
-                <GithubIcon width={23} />
-              </YStack>
-            </TooltipSimple>
-          </NextLink>
+            <NextLink
+              legacyBehavior={false}
+              target="_blank"
+              href="https://github.com/tamagui/tamagui"
+            >
+              <TooltipSimple delay={0} restMs={25} label="Star on Github">
+                <YStack p="$2" opacity={0.9} hoverStyle={{ opacity: 1 }}>
+                  <VisuallyHidden>
+                    <Text>Github</Text>
+                  </VisuallyHidden>
+                  <GithubIcon width={23} />
+                </YStack>
+              </TooltipSimple>
+            </NextLink>
 
-          <HeaderMenu />
+            <HeaderMenu />
+          </XStack>
         </XStack>
-      </XStack>
+      )}
     </XStack>
   )
 })

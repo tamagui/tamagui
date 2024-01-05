@@ -8,7 +8,6 @@ export type GetLayout<Props = any> = (
 ) => React.ReactElement
 
 export const getDefaultLayout: GetLayout = (page, pageProps, path) => {
-  const isHome = path === '/'
   const isAuthPage = path.startsWith('/login')
   const isAccountPage = path.startsWith('/account')
   const isStudio = path.startsWith('/studio')
@@ -20,7 +19,6 @@ export const getDefaultLayout: GetLayout = (page, pageProps, path) => {
     <DefaultLayout
       headerProps={{
         disableNew: isBlog || isAuthPage || isProductLandingPage || isAccountPage,
-        minimal: isAuthPage || isProductLandingPage || isAccountPage,
         showAuth: isAuthPage || isProductLandingPage || isAccountPage,
       }}
       hideFooter={isDocs}
