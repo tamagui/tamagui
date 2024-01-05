@@ -1,1 +1,1 @@
-export * from './createSwitch'
+export * from './useSwitch'

@@ -1,2 +1,2 @@
-export * from './createSwitch';
+export * from './useSwitch';
 //# sourceMappingURL=index.d.ts.map

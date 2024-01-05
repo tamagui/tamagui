@@ -5,13 +5,17 @@ import {
   TamaguiComponent,
   TamaguiComponentExpectingVariants,
   composeEventHandlers,
+  shouldRenderNativePlatform,
   useProps,
+  withStaticProperties,
 } from '@tamagui/core'
 import {
-  SwitchContext,
-  createSwitch as createHeadlessSwitch,
+  SwitchExtraProps as HeadlessSwitchExtraProps,
+  useSwitch,
 } from '@tamagui/switch-headless'
+import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
+import { Switch as NativeSwitch } from 'react-native'
 import { SwitchProps as NativeSwitchProps, ViewProps } from 'react-native'
 
 import { SwitchStyledContext } from './StyledContext'
@@ -24,22 +28,12 @@ type SwitchSharedProps = {
 
 type SwitchBaseProps = StackProps & SwitchSharedProps
 
-export type SwitchExtraProps = {
-  labeledBy?: string
-  name?: string
-  value?: string
-  checked?: boolean
-  defaultChecked?: boolean
-  required?: boolean
+export type SwitchExtraProps = HeadlessSwitchExtraProps & {
   native?: NativeValue<'mobile' | 'ios' | 'android'>
   nativeProps?: NativeSwitchProps
-  onCheckedChange?(checked: boolean): void
 }
 
-export type SwitchProps = StackProps &
-  Omit<SwitchBaseProps & SwitchExtraProps, 'children'> & {
-    children?: React.ReactNode | ((checked: boolean) => React.ReactNode)
-  }
+export type SwitchProps = SwitchBaseProps & SwitchExtraProps
 
 type SwitchComponent = TamaguiComponentExpectingVariants<
   SwitchProps,
@@ -50,6 +44,14 @@ type SwitchThumbComponent = TamaguiComponentExpectingVariants<
   SwitchBaseProps,
   SwitchSharedProps
 >
+
+export const SwitchContext = React.createContext<{
+  checked: boolean
+  disabled?: boolean
+}>({
+  checked: false,
+  disabled: false,
+})
 
 export function createSwitch<F extends SwitchComponent, T extends SwitchThumbComponent>({
   disableActiveTheme,
@@ -78,7 +80,7 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
     TamaguiComponent,
     SwitchBaseProps & ViewProps
   >(function SwitchThumb(props, forwardedRef) {
-    const { size: sizeProp, unstyled: unstyledProp, ...thumbProps } = props
+    const { size: sizeProp, unstyled: unstyledProp, nativeID, ...thumbProps } = props
     const context = React.useContext(SwitchContext)
     const { checked } = context
     const styledContext = React.useContext(SwitchStyledContext)
@@ -115,40 +117,74 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
     )
   })
 
-  const SwitchComponent = Frame.styleable(function SwitchFrame(propsIn, forwardedRef) {
+  const SwitchComponent = Frame.styleable<SwitchProps>(function SwitchFrame(
+    _props,
+    forwardedRef
+  ) {
+    const {
+      native,
+      nativeProps,
+      checked: checkedProp,
+      defaultChecked,
+      onCheckedChange,
+      ...props
+    } = _props
+    const [checked, setChecked] = useControllableState({
+      prop: checkedProp,
+      defaultProp: defaultChecked || false,
+      onChange: onCheckedChange,
+      transition: true,
+    })
+
     const styledContext = React.useContext(SwitchStyledContext)
-    const props = useProps(propsIn, {
+
+    const [frameWidth, setFrameWidth] = React.useState(0)
+
+    const tamaguiProps = useProps(props, {
       noNormalize: true,
       noExpand: true,
       resolveValues: 'none',
       forComponent: Frame,
     })
-    const [frameWidth, setFrameWidth] = React.useState(0)
+    tamaguiProps.size = styledContext.size ?? props.size ?? '$true'
+    tamaguiProps.unstyled = styledContext.unstyled ?? props.unstyled ?? false
 
-    props.size = styledContext.size ?? propsIn.size ?? '$true'
-    props.unstyled = styledContext.unstyled ?? propsIn.unstyled ?? false
+    const { switchProps, bubbleInput } = useSwitch(
+      // @ts-ignore
+      tamaguiProps,
+      [checked, setChecked],
+      forwardedRef
+    )
+
+    const renderNative = shouldRenderNativePlatform(native)
+    if ((native && renderNative === 'android') || renderNative === 'ios') {
+      return <NativeSwitch value={checked} onValueChange={setChecked} {...nativeProps} />
+    }
 
     return (
-      // @ts-ignore
-      <Frame
-        ref={forwardedRef}
-        tag="button"
-        {...props}
-        frameWidth={frameWidth}
-        onLayout={
-          composeEventHandlers((props as ViewProps).onLayout, (e) => {
-            setFrameWidth(e.nativeEvent.layout.width)
-          }) as ViewProps['onLayout']
-        }
-      />
+      <SwitchContext.Provider value={{ checked, disabled: switchProps.disabled }}>
+        <Frame
+          tag="button"
+          {...(!disableActiveTheme && {
+            theme: checked ? 'active' : null,
+            themeShallow: true,
+          })}
+          {...(switchProps as any)}
+          frameWidth={frameWidth}
+          onLayout={
+            composeEventHandlers((switchProps as ViewProps).onLayout, (e) => {
+              setFrameWidth(e.nativeEvent.layout.width)
+            }) as ViewProps['onLayout']
+          }
+        >
+          {switchProps.children}
+          {bubbleInput}
+        </Frame>
+      </SwitchContext.Provider>
     )
   })
 
-  return createHeadlessSwitch({
-    disableActiveTheme,
-    Frame: SwitchComponent as any, // TODO: remove any
-    Thumb: SwitchThumbComponent as any, // TODO: remove any
-  }) as unknown as SwitchComponent & {
-    Thumb: SwitchThumbComponent
-  }
+  return withStaticProperties(SwitchComponent, {
+    Thumb: SwitchThumbComponent,
+  })
 }
