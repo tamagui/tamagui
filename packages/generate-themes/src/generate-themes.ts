@@ -44,7 +44,26 @@ export async function generateThemes(inputFile: string) {
     const requiredThemes = require(inputFilePath)
     const themes = requiredThemes['default'] || requiredThemes['themes']
     const generatedThemes = generatedThemesToTypescript(themes)
+
+    let tm: any
+    if (promise) {
+      let finished = false
+      promise.then(() => {
+        finished = true
+      })
+      // handle never finishing promise with nice error
+      tm = setTimeout(() => {
+        if (!finished) {
+          console.warn(
+            `Warning: ThemeBuilder didn't finish after a couple seconds, did you forget to call .build()?`
+          )
+        }
+      }, 2000)
+    }
+
     const themeBuilder = promise ? await promise : null
+    clearTimeout(tm)
+
     return {
       generated: generatedThemes,
       state: themeBuilder?.state,
