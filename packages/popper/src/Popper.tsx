@@ -181,6 +181,13 @@ export const PopperAnchor = YStack.extractable(
       const { anchorRef, getReferenceProps } = usePopperContext(__scopePopper)
       const ref = React.useRef<PopperAnchorRef>(null)
       const composedRefs = useComposedRefs(forwardedRef, ref, anchorRef)
+      React.useEffect(() => {
+        // Consumer can anchor the popper to something that isn't
+        // a DOM node e.g. pointer position, so we override the
+        // `anchorRef` with their virtual ref in this case.
+        anchorRef(virtualRef?.current || ref.current)
+      }, [anchorRef, virtualRef])
+
       if (virtualRef) {
         return null
       }
@@ -203,7 +210,9 @@ export const PopperAnchor = YStack.extractable(
 
 type PopperContentElement = HTMLElement | View
 
-export type PopperContentProps = SizableStackProps
+export type PopperContentProps = SizableStackProps & {
+  enableAnimationForPositionChange?: boolean
+}
 
 export const PopperContentFrame = styled(ThemeableStack, {
   name: 'PopperContent',
@@ -237,7 +246,7 @@ export const PopperContent = React.forwardRef<
   PopperContentElement,
   ScopedPopperProps<PopperContentProps>
 >(function PopperContent(props: ScopedPopperProps<PopperContentProps>, forwardedRef) {
-  const { __scopePopper, ...rest } = props
+  const { __scopePopper, enableAnimationForPositionChange, ...rest } = props
   const { strategy, placement, refs, x, y, getFloatingProps, size, isMounted, update } =
     usePopperContext(__scopePopper)
   const contentRefs = useComposedRefs<any>(refs.setFloating, forwardedRef)
@@ -255,6 +264,14 @@ export const PopperContent = React.forwardRef<
     )
   }, [placement, strategy, props])
 
+  const [hasInitialPosition, setHasInitialPosition] = React.useState(true)
+
+  React.useEffect(() => {
+    if (x || y) {
+      setHasInitialPosition(false)
+    }
+  }, [x, y])
+
   useIsomorphicLayoutEffect(() => {
     if (isMounted) {
       update()
@@ -271,6 +288,16 @@ export const PopperContent = React.forwardRef<
     x: x || 0,
     y: y || 0,
     position: strategy,
+    ...(enableAnimationForPositionChange && {
+      // apply animation but disable it on initial render to avoid animating from 0 to the first position
+      animation: rest.animation,
+      animateOnly: ['none'],
+    }),
+    ...(enableAnimationForPositionChange &&
+      !hasInitialPosition && {
+        animation: rest.animation,
+        animateOnly: rest.animateOnly,
+      }),
   }
 
   // outer frame because we explicitly don't want animation to apply to this
