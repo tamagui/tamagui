@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { GestureResponderEvent, PressableProps, View, ViewProps } from 'react-native';
-export type SwitchBaseProps = {
+type SwitchBaseProps = ViewProps & Pick<PressableProps, 'onPress'>;
+export type SwitchExtraProps = {
     labeledBy?: string;
     disabled?: boolean;
     name?: string;
@@ -10,9 +11,7 @@ export type SwitchBaseProps = {
     required?: boolean;
     onCheckedChange?(checked: boolean): void;
 };
-export type SwitchProps = ViewProps & SwitchBaseProps & {
-    onPress?: PressableProps['onPress'];
-};
+export type SwitchProps = SwitchBaseProps & SwitchExtraProps;
 export type SwitchState = boolean;
 export declare function useSwitch<R extends View, P extends SwitchProps>(props: P, [checked, setChecked]: [SwitchState, React.Dispatch<React.SetStateAction<SwitchState>>], ref: React.Ref<R>): {
     switchProps: {
@@ -24,12 +23,13 @@ export declare function useSwitch<R extends View, P extends SwitchProps>(props: 
         'aria-checked': boolean;
     } & P & {
         'aria-labelledby': string | undefined;
-        ref: (node: View) => void;
         onPress: import("@tamagui/helpers").EventHandler<GestureResponderEvent> | undefined;
     };
+    switchRef: (node: View) => void;
     /**
      * insert inside your switch
      */
     bubbleInput: JSX.Element | null;
 };
+export {};
 //# sourceMappingURL=useSwitch.d.ts.map

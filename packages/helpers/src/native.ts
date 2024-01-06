@@ -24,6 +24,12 @@ export type NativeValue<Platform extends NativePlatform = NativePlatform> =
 const ALL_PLATFORMS: ExplicitNativePlatform[] = ['web', 'android', 'ios']
 /**
  *
+ * takes in what user has inputted the native-supporting component and returns the name of the native platform we should render
+ *
+ * @example ['android'] => 'android' (when current platform is android)
+ * @example ['android'] => null      (when current platform is not android)
+ * @example ['mobile']  => 'ios'     (when current platform is ios)
+ *
  * @param supportedSpecificNativeValues the platforms your component/system supports
  * @param nativeProp the platforms your user is requesting you to use
  * @returns

@@ -11,7 +11,9 @@ import { getState, isIndeterminate } from './utils'
 
 export type CheckedState = boolean | 'indeterminate'
 
-export type CheckboxBaseProps = {
+type CheckboxBaseProps = ViewProps & Pick<PressableProps, 'onPress'>
+
+export type CheckboxExtraProps = {
   children?: React.ReactNode
   id?: string
   disabled?: boolean
@@ -28,10 +30,7 @@ export type CheckboxBaseProps = {
   value?: string
 }
 
-export type CheckboxProps = ViewProps &
-  CheckboxBaseProps & {
-    onPress?: PressableProps['onPress']
-  }
+export type CheckboxProps = CheckboxBaseProps & CheckboxExtraProps
 
 export function useCheckbox<R extends View, P extends CheckboxProps>(
   props: P,
@@ -73,12 +72,12 @@ export function useCheckbox<R extends View, P extends CheckboxProps>(
           disabled={disabled}
         />
       ) : null,
+    checkboxRef: composedRefs,
     checkboxProps: {
       role: 'checkbox',
       'aria-labelledby': labelledBy,
       'aria-checked': isIndeterminate(checked) ? 'mixed' : checked,
       ...checkboxProps,
-      ref: composedRefs as any,
       ...(isWeb && {
         type: 'button',
         value,
@@ -108,9 +107,6 @@ export function useCheckbox<R extends View, P extends CheckboxProps>(
           }
         }
       ),
-    } satisfies ViewProps & {
-      ref: React.Ref<View>
-      onPress: PressableProps['onPress']
-    },
+    } satisfies CheckboxBaseProps,
   }
 }

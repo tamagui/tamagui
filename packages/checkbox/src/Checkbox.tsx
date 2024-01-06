@@ -13,6 +13,14 @@ export const CheckboxIndicatorFrame = styled(ThemeableStack, {
   // use Checkbox for easier themes
   name: INDICATOR_NAME,
   context: CheckboxStyledContext,
+  variants: {
+    unstyled: {
+      false: {},
+    },
+  } as const,
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+  },
 })
 
 /* -------------------------------------------------------------------------------------------------

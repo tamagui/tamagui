@@ -1,7 +1,8 @@
 import React from 'react';
 import { PressableProps, View, ViewProps } from 'react-native';
 export type CheckedState = boolean | 'indeterminate';
-export type CheckboxBaseProps = {
+type CheckboxBaseProps = ViewProps & Pick<PressableProps, 'onPress'>;
+export type CheckboxExtraProps = {
     children?: React.ReactNode;
     id?: string;
     disabled?: boolean;
@@ -17,19 +18,18 @@ export type CheckboxBaseProps = {
     name?: string;
     value?: string;
 };
-export type CheckboxProps = ViewProps & CheckboxBaseProps & {
-    onPress?: PressableProps['onPress'];
-};
+export type CheckboxProps = CheckboxBaseProps & CheckboxExtraProps;
 export declare function useCheckbox<R extends View, P extends CheckboxProps>(props: P, [checked, setChecked]: [
     CheckedState,
     React.Dispatch<React.SetStateAction<CheckedState>>
 ], ref: React.Ref<R>): {
     bubbleInput: JSX.Element | null;
+    checkboxRef: (node: R) => void;
     checkboxProps: {
         role: "checkbox";
         'aria-labelledby': string | undefined;
         'aria-checked': boolean | "mixed";
-    } & Omit<P, "labelledBy" | "name" | "required" | "disabled" | "value" | "onCheckedChange"> & {
+    } & Omit<P, "disabled" | "labelledBy" | "name" | "required" | "value" | "onCheckedChange"> & {
         onPress: import("@tamagui/helpers").EventHandler<import("react-native").GestureResponderEvent> | undefined;
         type?: string | undefined;
         value?: string | undefined;
@@ -37,7 +37,7 @@ export declare function useCheckbox<R extends View, P extends CheckboxProps>(pro
         'data-disabled'?: string | undefined;
         disabled?: boolean | undefined;
         onKeyDown?: import("@tamagui/helpers").EventHandler<React.KeyboardEvent<HTMLButtonElement>> | undefined;
-        ref: any;
     };
 };
+export {};
 //# sourceMappingURL=useCheckbox.d.ts.map

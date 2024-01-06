@@ -1,4 +1,7 @@
-import { useCheckbox } from '@tamagui/checkbox-headless'
+import {
+  CheckboxProps as CheckboxHeadlessProps,
+  useCheckbox,
+} from '@tamagui/checkbox-headless'
 import { Check as CheckIcon } from '@tamagui/lucide-icons'
 import { forwardRef, useState } from 'react'
 import { Pressable, Text, View } from 'react-native'
@@ -64,7 +67,10 @@ export const CustomCheckbox = createCheckbox({
   Indicator: CheckboxIndicatorFrame,
 })
 
-export const HeadlessCheckbox = forwardRef<View, CheckboxProps>(function (props, ref) {
+export const HeadlessCheckbox = forwardRef<View, CheckboxHeadlessProps>(function (
+  props,
+  ref
+) {
   const [checked, setChecked] = useState(props.defaultChecked || false)
   const { checkboxProps, bubbleInput } = useCheckbox(props, [checked, setChecked], ref)
 
@@ -73,7 +79,7 @@ export const HeadlessCheckbox = forwardRef<View, CheckboxProps>(function (props,
       style={{
         width: 40,
         height: 40,
-        backgroundColor: 'red',
+        backgroundColor: 'gray',
       }}
       {...checkboxProps}
     >

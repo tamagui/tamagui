@@ -1,4 +1,4 @@
-import { SwitchProps, useSwitch } from '@tamagui/switch-headless'
+import { SwitchProps as SwitchHeadlessProps, useSwitch } from '@tamagui/switch-headless'
 import { forwardRef, useState } from 'react'
 import { Pressable, View } from 'react-native'
 import {
@@ -72,7 +72,10 @@ export const CustomSwitch = createSwitch({
   Thumb: SwitchThumb,
 })
 
-export const HeadlessSwitch = forwardRef<View, SwitchProps>(function (props, ref) {
+export const HeadlessSwitch = forwardRef<View, SwitchHeadlessProps>(function (
+  props,
+  ref
+) {
   const [checked, setChecked] = useState(props.defaultChecked || false)
   const { switchProps, bubbleInput } = useSwitch(props, [checked, setChecked], ref)
 

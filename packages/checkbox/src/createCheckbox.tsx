@@ -1,6 +1,6 @@
 import {
-  CheckboxBaseProps,
   CheckedState,
+  CheckboxExtraProps as HeadlessCheckboxExtraProps,
   isIndeterminate,
   useCheckbox,
 } from '@tamagui/checkbox-headless'
@@ -8,14 +8,13 @@ import {
   NativeValue,
   SizeTokens,
   StackProps,
-  TamaguiElement,
+  TamaguiComponentExpectingVariants,
   getVariableValue,
   shouldRenderNativePlatform,
   useProps,
   useTheme,
   withStaticProperties,
 } from '@tamagui/core'
-import { Scope } from '@tamagui/create-context'
 import { getFontSize } from '@tamagui/font-size'
 import { getSize } from '@tamagui/get-token'
 import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
@@ -25,23 +24,39 @@ import React, { useContext } from 'react'
 import { CheckboxFrame, CheckboxIndicatorFrame } from './Checkbox'
 import { CheckboxStyledContext } from './CheckboxStyledContext'
 
-type ScopedProps<P> = P & { __scopeCheckbox?: Scope }
+// type ScopedProps<P> = P & { __scopeCheckbox?: Scope }
 // TODO: add nested button provider
 // TODO: remove all ts-ignore's
 
-export type ExpectingVariantProps = {
+type CheckboxExpectingVariantProps = {
   size?: SizeTokens
   unstyled?: boolean
 }
 
-export type CheckboxProps = CheckboxBaseProps & {
+type CheckboxExtraProps = HeadlessCheckboxExtraProps & {
   scaleIcon?: number
   scaleSize?: number
   sizeAdjust?: number
   native?: NativeValue<'web'>
-} & StackProps
+}
+type CheckboxBaseProps = StackProps
+export type CheckboxProps = CheckboxBaseProps & CheckboxExtraProps
 
-export type CheckboxIndicatorProps = {
+type CheckboxComponent = TamaguiComponentExpectingVariants<
+  CheckboxProps & CheckboxExpectingVariantProps,
+  CheckboxExpectingVariantProps
+>
+
+type CheckboxIndicatorExpectingVariantProps = {
+  unstyled?: boolean
+}
+type CheckboxIndicatorComponent = TamaguiComponentExpectingVariants<
+  CheckboxIndicatorProps & CheckboxIndicatorExpectingVariantProps,
+  CheckboxIndicatorExpectingVariantProps
+>
+
+type CheckboxIndicatorBaseProps = StackProps
+type CheckboxIndicatorExtraProps = {
   /**
    * Used to force mounting when more control is needed. Useful when
    * controlling animation with React animation libraries.
@@ -51,7 +66,10 @@ export type CheckboxIndicatorProps = {
    * Used to disable passing styles down to children.
    */
   disablePassStyles?: boolean
-} & StackProps
+}
+
+export type CheckboxIndicatorProps = CheckboxIndicatorBaseProps &
+  CheckboxIndicatorExtraProps
 
 export const CheckboxContext = React.createContext<{
   checked: CheckedState
@@ -62,21 +80,16 @@ export const CheckboxContext = React.createContext<{
 })
 
 export function createCheckbox<
-  F extends typeof CheckboxFrame,
-  T extends typeof CheckboxIndicatorFrame
+  F extends CheckboxComponent,
+  T extends CheckboxIndicatorComponent
 >({
-  Frame: _Frame = CheckboxFrame as any,
-  Indicator: _Indicator = CheckboxIndicatorFrame as any,
+  Frame = CheckboxFrame as any,
+  Indicator = CheckboxIndicatorFrame as any,
 }: {
   Frame?: F
   Indicator?: T
 }) {
-  const Frame = _Frame as typeof CheckboxFrame
-  const Indicator = _Indicator as typeof CheckboxIndicatorFrame
-  const FrameComponent = React.forwardRef<
-    TamaguiElement,
-    ScopedProps<CheckboxProps & ExpectingVariantProps>
-  >(function Checkbox(_props, forwardedRef) {
+  const FrameComponent = Frame.styleable(function Checkbox(_props, forwardedRef) {
     const {
       scaleSize = 0.45,
       sizeAdjust = 0,
@@ -85,18 +98,23 @@ export function createCheckbox<
       defaultChecked,
       onCheckedChange,
       native,
+      unstyled = false,
       ...props
     } = _props
     const propsActive = useProps(props)
 
     // TODO: this could be null - fix the type
     const styledContext = React.useContext(CheckboxStyledContext)
-    const adjustedSize = getVariableValue(
-      getSize(propsActive.size ?? styledContext?.size ?? '$true', {
-        shift: sizeAdjust,
-      })
-    ) as number
-    const size = scaleSize ? Math.round(adjustedSize * scaleSize) : adjustedSize
+    let adjustedSize = 0
+    let size = 0
+    if (!unstyled) {
+      adjustedSize = getVariableValue(
+        getSize(propsActive.size ?? styledContext?.size ?? '$true', {
+          shift: sizeAdjust,
+        })
+      ) as number
+      size = scaleSize ? Math.round(adjustedSize * scaleSize) : adjustedSize
+    }
 
     const [checked = false, setChecked] = useControllableState({
       prop: checkedProp,
@@ -104,7 +122,7 @@ export function createCheckbox<
       onChange: onCheckedChange,
     })
 
-    const { checkboxProps, bubbleInput } = useCheckbox(
+    const { checkboxProps, checkboxRef, bubbleInput } = useCheckbox(
       // @ts-ignore
       propsActive,
       [checked, setChecked],
@@ -112,13 +130,13 @@ export function createCheckbox<
     )
 
     const renderNative = shouldRenderNativePlatform(native)
-    if ((native && renderNative === 'android') || renderNative === 'web') {
+    if (renderNative === 'web') {
       return (
         <input
           type="checkbox"
           defaultChecked={isIndeterminate(checked) ? false : checked}
           tabIndex={-1}
-          ref={checkboxProps.ref}
+          ref={checkboxRef as any}
           disabled={checkboxProps.disabled}
           style={{
             appearance: 'auto',
@@ -130,7 +148,16 @@ export function createCheckbox<
     }
 
     return (
-      <Frame width={size} height={size} tag="button" {...checkboxProps}>
+      // @ts-ignore
+      <Frame
+        {...(!unstyled && {
+          width: size,
+          height: size,
+        })}
+        tag="button"
+        ref={checkboxRef}
+        {...checkboxProps}
+      >
         <CheckboxContext.Provider
           value={{
             checked,
@@ -149,16 +176,19 @@ export function createCheckbox<
     )
   })
 
-  const IndicatorComponent = React.forwardRef<TamaguiElement, CheckboxIndicatorProps>(
-    (props: ScopedProps<CheckboxIndicatorProps>, forwardedRef) => {
-      const {
-        __scopeCheckbox,
-        children: childrenProp,
-        forceMount,
-        disablePassStyles,
-        ...indicatorProps
-      } = props
-      const styledContext = React.useContext(CheckboxStyledContext)
+  const IndicatorComponent = Indicator.styleable((props, forwardedRef) => {
+    const {
+      // __scopeCheckbox,
+      children: childrenProp,
+      forceMount,
+      disablePassStyles,
+      unstyled = false,
+      ...indicatorProps
+    } = props
+    const styledContext = React.useContext(CheckboxStyledContext)
+    let children = childrenProp
+
+    if (!unstyled) {
       const iconSize =
         (typeof styledContext.size === 'number'
           ? styledContext.size * 0.65
@@ -167,24 +197,25 @@ export function createCheckbox<
       const getThemedIcon = useGetThemedIcon({ size: iconSize, color: theme.color })
 
       const childrens = React.Children.toArray(childrenProp)
-      const children = childrens.map((child) => {
+      children = childrens.map((child) => {
         if (disablePassStyles || !React.isValidElement(child)) {
           return child
         }
         return getThemedIcon(child)
       })
-
-      const context = useContext(CheckboxContext)
-      if (forceMount || isIndeterminate(context.checked) || context.checked === true)
-        return (
-          <Indicator pointerEvents="none" {...indicatorProps} ref={forwardedRef}>
-            {children}
-          </Indicator>
-        )
-
-      return null
     }
-  )
+
+    const context = useContext(CheckboxContext)
+    if (forceMount || isIndeterminate(context.checked) || context.checked === true)
+      return (
+        // @ts-ignore
+        <Indicator pointerEvents="none" {...indicatorProps} ref={forwardedRef}>
+          {children}
+        </Indicator>
+      )
+
+    return null
+  })
 
   return withStaticProperties(FrameComponent, {
     Indicator: IndicatorComponent,

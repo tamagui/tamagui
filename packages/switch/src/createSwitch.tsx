@@ -2,7 +2,6 @@ import {
   NativeValue,
   SizeTokens,
   StackProps,
-  TamaguiComponent,
   TamaguiComponentExpectingVariants,
   composeEventHandlers,
   shouldRenderNativePlatform,
@@ -10,24 +9,27 @@ import {
   withStaticProperties,
 } from '@tamagui/core'
 import {
-  SwitchBaseProps as HeadlessSwitchExtraProps,
+  SwitchExtraProps as HeadlessSwitchExtraProps,
   SwitchState,
   useSwitch,
 } from '@tamagui/switch-headless'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
-import { Switch as NativeSwitch } from 'react-native'
-import { SwitchProps as NativeSwitchProps, ViewProps } from 'react-native'
+import {
+  Switch as NativeSwitch,
+  SwitchProps as NativeSwitchProps,
+  ViewProps,
+} from 'react-native'
 
 import { SwitchStyledContext } from './StyledContext'
 import { SwitchFrame as DefaultSwitchFrame, SwitchThumb } from './Switch'
 
-type SwitchSharedProps = {
+type ExpectingVariantProps = {
   size?: SizeTokens | number
   unstyled?: boolean
 }
 
-type SwitchBaseProps = StackProps & SwitchSharedProps
+type SwitchBaseProps = StackProps & ExpectingVariantProps
 
 export type SwitchExtraProps = HeadlessSwitchExtraProps & {
   native?: NativeValue<'mobile' | 'ios' | 'android'>
@@ -37,13 +39,17 @@ export type SwitchExtraProps = HeadlessSwitchExtraProps & {
 export type SwitchProps = SwitchBaseProps & SwitchExtraProps
 
 type SwitchComponent = TamaguiComponentExpectingVariants<
-  SwitchProps,
-  SwitchSharedProps & SwitchExtraProps
+  SwitchProps & ExpectingVariantProps,
+  ExpectingVariantProps
 >
 
+type SwitchThumbBaseProps = StackProps
+type SwitchThumbExtraProps = {}
+export type SwitchThumbProps = SwitchThumbBaseProps & SwitchThumbExtraProps
+
 type SwitchThumbComponent = TamaguiComponentExpectingVariants<
-  SwitchBaseProps,
-  SwitchSharedProps
+  SwitchThumbProps & ExpectingVariantProps,
+  ExpectingVariantProps
 >
 
 export const SwitchContext = React.createContext<{
@@ -77,10 +83,7 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
   Frame.staticConfig.context = SwitchStyledContext
   Thumb.staticConfig.context = SwitchStyledContext
 
-  const SwitchThumbComponent = React.forwardRef<
-    TamaguiComponent,
-    SwitchBaseProps & ViewProps
-  >(function SwitchThumb(props, forwardedRef) {
+  const SwitchThumbComponent = Thumb.styleable(function SwitchThumb(props, forwardedRef) {
     const { size: sizeProp, unstyled: unstyledProp, nativeID, ...thumbProps } = props
     const context = React.useContext(SwitchContext)
     const { checked } = context
@@ -110,7 +113,8 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
         })}
         alignSelf={initialChecked ? 'flex-end' : 'flex-start'}
         x={x}
-        onLayout={composeEventHandlers(props.onLayout, (e) =>
+        // TODO: remove ViewProps cast
+        onLayout={composeEventHandlers((props as ViewProps).onLayout, (e) =>
           setThumbWidth(e.nativeEvent.layout.width)
         )}
         {...thumbProps}
@@ -118,10 +122,7 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
     )
   })
 
-  const SwitchComponent = Frame.styleable<SwitchProps>(function SwitchFrame(
-    _props,
-    forwardedRef
-  ) {
+  const SwitchComponent = Frame.styleable(function SwitchFrame(_props, forwardedRef) {
     const {
       native,
       nativeProps,
@@ -158,7 +159,7 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
     )
 
     const renderNative = shouldRenderNativePlatform(native)
-    if ((native && renderNative === 'android') || renderNative === 'ios') {
+    if (renderNative === 'android' || renderNative === 'ios') {
       return <NativeSwitch value={checked} onValueChange={setChecked} {...nativeProps} />
     }
 
@@ -172,11 +173,9 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
           })}
           {...(switchProps as any)}
           frameWidth={frameWidth}
-          onLayout={
-            composeEventHandlers((switchProps as ViewProps).onLayout, (e) => {
-              setFrameWidth(e.nativeEvent.layout.width)
-            }) as ViewProps['onLayout']
-          }
+          onLayout={composeEventHandlers((switchProps as ViewProps).onLayout, (e) => {
+            setFrameWidth(e.nativeEvent.layout.width)
+          })}
         >
           {switchProps.children}
           {bubbleInput}

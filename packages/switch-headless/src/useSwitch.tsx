@@ -6,7 +6,9 @@ import { usePrevious } from '@tamagui/use-previous'
 import * as React from 'react'
 import { GestureResponderEvent, PressableProps, View, ViewProps } from 'react-native'
 
-export type SwitchBaseProps = {
+type SwitchBaseProps = ViewProps & Pick<PressableProps, 'onPress'>
+
+export type SwitchExtraProps = {
   labeledBy?: string
   disabled?: boolean
   name?: string
@@ -17,14 +19,10 @@ export type SwitchBaseProps = {
   onCheckedChange?(checked: boolean): void
 }
 
-export type SwitchProps = ViewProps &
-  SwitchBaseProps & {
-    onPress?: PressableProps['onPress']
-  }
-
+export type SwitchProps = SwitchBaseProps & SwitchExtraProps
 export type SwitchState = boolean
 
-function getState(checked: boolean) {
+function getState(checked: SwitchState) {
   return checked ? 'checked' : 'unchecked'
 }
 
@@ -109,7 +107,6 @@ export function useSwitch<R extends View, P extends SwitchProps>(
         : {}),
       ...props,
       'aria-labelledby': ariaLabelledBy,
-      ref: composedRefs,
       onPress: composeEventHandlers(props.onPress, (event: GestureResponderEvent) => {
         if (disabled) return
         setChecked((prevChecked) => !prevChecked)
@@ -121,10 +118,8 @@ export function useSwitch<R extends View, P extends SwitchProps>(
           if (!hasConsumerStoppedPropagationRef.current) event.stopPropagation()
         }
       }),
-    } satisfies ViewProps & {
-      ref: React.Ref<View>
-      onPress: PressableProps['onPress']
-    },
+    } satisfies SwitchBaseProps,
+    switchRef: composedRefs,
     /**
      * insert inside your switch
      */
