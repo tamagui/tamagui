@@ -154,7 +154,7 @@ const HeroContents = memo(function HeroContents() {
                 className="mask-gradient-left"
                 pos="absolute"
                 t={0}
-                l="3.9%"
+                l="4%"
                 color="$color8"
                 $sm={{ l: 0 }}
               >
@@ -166,7 +166,7 @@ const HeroContents = memo(function HeroContents() {
                 className="mask-gradient-right"
                 pos="absolute"
                 t={0}
-                l="4.8%"
+                l="4.7%"
                 color="$color8"
                 $sm={{ l: 0 }}
               >
