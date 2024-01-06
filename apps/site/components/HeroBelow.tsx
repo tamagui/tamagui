@@ -84,8 +84,8 @@ export const HeroBelowContent = memo(() => {
           </IconStack>
           <TitleLink href="/docs/core/configuration">Core</TitleLink>
           <Paragraph o={0.7} size="$4">
-            Light design-system and style library for React Native + Web with themes,
-            animations, responsive and pseudo styles, and much more.
+            0-dependency style library for React, works the same on Native and web. Fully
+            typed with themes, animations, variants, and more.
           </Paragraph>
         </Section>
 
