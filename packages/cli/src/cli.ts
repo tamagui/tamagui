@@ -35,11 +35,15 @@ const COMMAND_MAP = {
 
       const { generateThemes, writeGeneratedThemes } = require('@tamagui/generate-themes')
 
-      await writeGeneratedThemes(
-        options.paths.dotDir,
-        outPath,
-        await generateThemes(inPath)
-      )
+      try {
+        const generated = await generateThemes(inPath)
+        await writeGeneratedThemes(options.paths.dotDir, outPath, generated)
+      } catch (err) {
+        console.error(`Error generating themes: ${err}`)
+        return
+      }
+
+      console.info(`Successfully generated themes to ${outPath}`)
     },
   },
 
