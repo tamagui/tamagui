@@ -6594,7 +6594,7 @@ __metadata:
     "@tamagui/build": 1.82.4
     "@tamagui/constants": 1.82.4
     "@tamagui/core": 1.82.4
-    subset-font: ^1.6.1
+    subset-font: ^2.1.0
   languageName: unknown
   linkType: soft
 
@@ -6604,7 +6604,7 @@ __metadata:
   dependencies:
     "@tamagui/build": 1.82.4
     "@tamagui/core": 1.82.4
-    subset-font: ^1.6.1
+    subset-font: ^2.1.0
   languageName: unknown
   linkType: soft
 
@@ -6614,7 +6614,7 @@ __metadata:
   dependencies:
     "@tamagui/build": 1.82.4
     "@tamagui/core": 1.82.4
-    subset-font: ^1.6.1
+    subset-font: ^2.1.0
   languageName: unknown
   linkType: soft
 
@@ -6642,7 +6642,7 @@ __metadata:
   dependencies:
     "@tamagui/build": 1.82.4
     "@tamagui/core": 1.82.4
-    subset-font: ^1.6.1
+    subset-font: ^2.1.0
   languageName: unknown
   linkType: soft
 
@@ -6661,7 +6661,7 @@ __metadata:
   dependencies:
     "@tamagui/build": 1.82.4
     "@tamagui/core": 1.82.4
-    subset-font: ^1.6.1
+    subset-font: ^2.1.0
   languageName: unknown
   linkType: soft
 
@@ -16703,10 +16703,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"harfbuzzjs@npm:^0.3.0":
-  version: 0.3.3
-  resolution: "harfbuzzjs@npm:0.3.3"
-  checksum: 2f17d536d339538312c2fdd2da825d5533ced4d923f4ad02bfabce8acc74c249b95290593dc5aa78e760a4f2906552a6c47e16a1122a4ae4780c1958792f043a
+"harfbuzzjs@npm:^0.3.2":
+  version: 0.3.4
+  resolution: "harfbuzzjs@npm:0.3.4"
+  checksum: ce8738827dce3b5df0e0d704ec348ab9bb906cfc7d138816794954909475f7a996ea89ca2fc9bbff1330d335a7119646fe297214136c5eeca68fa0b5389ac45f
   languageName: node
   linkType: hard
 
@@ -26166,15 +26166,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"subset-font@npm:^1.6.1":
-  version: 1.7.1
-  resolution: "subset-font@npm:1.7.1"
+"subset-font@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "subset-font@npm:2.1.0"
   dependencies:
     fontverter: ^2.0.0
-    harfbuzzjs: ^0.3.0
+    harfbuzzjs: ^0.3.2
     lodash: ^4.17.21
     p-limit: ^3.1.0
-  checksum: 39f11491d97e2d66caeea742cc1c03e686720f2e89096a65c01c65b3aba7726ee45f43fa16aa1c79f204fd6db8fbc805291cd72628005d080f03dd67dcf6e755
+  checksum: 70544e4d024c10c5de1c68569f43842e8321d224240d4867b169cda61ae480c82a43775b8c58ff85a2d746e0ff918e58aa70b86a8523144c6faa3e19d866e181
   languageName: node
   linkType: hard
 
