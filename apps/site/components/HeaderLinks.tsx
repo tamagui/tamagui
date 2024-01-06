@@ -1,7 +1,17 @@
 import { useUser } from 'hooks/useUser'
 import { useRouter } from 'next/router'
 import * as React from 'react'
-import { Paragraph, TooltipSimple, YStack, styled } from 'tamagui'
+import {
+  Button,
+  Paragraph,
+  Popover,
+  SizableText,
+  TooltipSimple,
+  XStack,
+  YStack,
+  styled,
+} from 'tamagui'
+import { Text } from 'tamagui'
 
 import { GithubIcon } from './GithubIcon'
 import { HeaderProps } from './HeaderProps'
@@ -20,7 +30,8 @@ const HeadAnchor = styled(Paragraph, {
   tag: 'a',
 })
 
-export const HeaderLinks = ({ showExtra, forceShowAllLinks, isHeader }: HeaderProps) => {
+export const HeaderLinks = (props: HeaderProps) => {
+  const { showExtra, forceShowAllLinks, isHeader } = props
   const userSwr = useUser()
   const router = useRouter()
   // there is user context and supabase setup in the current page
@@ -57,19 +68,22 @@ export const HeaderLinks = ({ showExtra, forceShowAllLinks, isHeader }: HeaderPr
       </NextLink>
 
       {!router.asPath.startsWith('/takeout') && (
-        <NextLink legacyBehavior={false} prefetch={false} href="/takeout">
-          <TooltipSimple disabled={forceShowAllLinks} label="Takeout Starter Kit">
-            <HeadAnchor
-              tag="span"
-              size={forceShowAllLinks ? '$4' : '$8'}
-              $sm={{
-                display: forceShowAllLinks ? 'flex' : 'none',
-              }}
-            >
-              {forceShowAllLinks ? `Takeout 🥡` : `🥡`}
-            </HeadAnchor>
-          </TooltipSimple>
-        </NextLink>
+        <>
+          {forceShowAllLinks && (
+            <NextLink legacyBehavior={false} prefetch={false} href="/takeout">
+              <HeadAnchor
+                tag="span"
+                size={forceShowAllLinks ? '$4' : '$8'}
+                $sm={{
+                  display: forceShowAllLinks ? 'flex' : 'none',
+                }}
+              >
+                Starter Kit 🥡
+              </HeadAnchor>
+            </NextLink>
+          )}
+          {!forceShowAllLinks && <TakeoutHeaderLink {...props} />}
+        </>
       )}
 
       {forceShowAllLinks && (
@@ -119,5 +133,106 @@ export const HeaderLinks = ({ showExtra, forceShowAllLinks, isHeader }: HeaderPr
         </NextLink>
       )}
     </>
+  )
+}
+
+const TakeoutHeaderLink = ({ forceShowAllLinks }: HeaderProps) => {
+  const router = useRouter()
+  const isDisabledRoute = router.asPath === '/'
+  const [disabled, setDisabled] = React.useState(isDisabledRoute)
+  const [open, setOpen] = React.useState(false)
+  const [hasOpenedOnce, setHasOpenedOnce] = React.useState(false)
+
+  if (disabled && open) {
+    setOpen(false)
+  }
+
+  const openIt = () => {
+    setOpen(true)
+    setHasOpenedOnce(true)
+  }
+
+  // open just a touch delayed to show the animation
+  React.useEffect(() => {
+    if (open || disabled || hasOpenedOnce) return
+
+    const tm = setTimeout(openIt, 2000)
+
+    return () => {
+      clearTimeout(tm)
+    }
+  }, [open, disabled])
+
+  // remember if you closed it
+  React.useEffect(() => {
+    const key = 'takeout-cta-times-closed'
+    const timesClosed = +(localStorage.getItem(key) || 0)
+    if (timesClosed > 2) {
+      setDisabled(true)
+    }
+    localStorage.setItem(key, `${timesClosed + 1}`)
+  }, [])
+
+  return (
+    <NextLink legacyBehavior={false} prefetch={false} href="/takeout">
+      <Popover
+        open={open}
+        onOpenChange={(open) => {
+          if (open) {
+            openIt()
+          } else {
+            setOpen(false)
+          }
+        }}
+        offset={12}
+      >
+        <Popover.Trigger asChild>
+          <HeadAnchor
+            tag="span"
+            fontSize={24}
+            $sm={{
+              display: 'none',
+            }}
+          >
+            🥡
+          </HeadAnchor>
+        </Popover.Trigger>
+
+        <Popover.Content
+          unstyled
+          animation={[
+            'bouncy',
+            {
+              opacity: {
+                overshootClamping: true,
+              },
+            },
+          ]}
+          enterStyle={{ y: -10, opacity: 0 }}
+          exitStyle={{ y: -10, opacity: 0 }}
+        >
+          <Popover.Arrow size="$3" />
+          <XStack
+            tag="a"
+            cur="pointer"
+            bg="$background"
+            py="$2"
+            px="$3"
+            br="$4"
+            hoverStyle={{
+              bg: '$backgroundHover',
+            }}
+            elevation="$0.25"
+          >
+            <SizableText ff="$silkscreen">
+              Takeout{' '}
+              <Text ff="$body" fontSize="$3" color="$color10" $sm={{ dsp: 'none' }}>
+                starter kit
+              </Text>
+            </SizableText>
+          </XStack>
+        </Popover.Content>
+      </Popover>
+    </NextLink>
   )
 }

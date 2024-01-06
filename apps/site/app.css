@@ -349,7 +349,7 @@ iframe {
 
 .mask-gradient-right {
   mask-image: linear-gradient(120deg, rgba(0, 0, 0, 1) 10%, transparent 60%);
-  mix-blend-mode: difference;
+  mix-blend-mode: hue;
 }
 
 .mask-gradient-left {
@@ -362,7 +362,7 @@ iframe {
 }
 
 .t_dark .mask-gradient-left {
-  mix-blend-mode: screen;
+  mix-blend-mode: hue;
 }
 
 

@@ -256,9 +256,9 @@ createTamagui({
 Note the `_subtle`. An underscore defines a sub-theme, so `dark_subtle` is a sub-theme of `dark`. In your code you can now do this:
 
 ```tsx
-import { Stack, Theme, styled } from '@tamagui/core'
+import { View, Theme, styled } from '@tamagui/core'
 
-const Square = styled(Stack, {
+const Square = styled(View, {
   background: '$background',
   width: 100,
   height: 100,
@@ -286,9 +286,9 @@ Where it gets interesting is in a final feature of sub-themes: component themes,
 Taking our example above, we can add a `name` to our `styled` call:
 
 ```tsx
-import { Stack, styled } from '@tamagui/core'
+import { View, styled } from '@tamagui/core'
 
-const Square = styled(Stack, {
+const Square = styled(View, {
   name: 'Square',
   backgroundColor: '$background',
   width: 100,
