@@ -95,8 +95,8 @@ export const HeroBelowContent = memo(() => {
           </IconStack>
           <TitleLink href="/docs/intro/why-a-compiler">Static</TitleLink>
           <Paragraph o={0.7} size="$4">
-            Flatten your component tree with partial evaluation, outputs minimal CSS. Easy
-            install with Next, Webpack, Vite, Babel and Metro.
+            Optional compiler with advanced optimiziation for extreme speed. Easy install
+            with Next, Webpack, Vite, Babel and Metro.
           </Paragraph>
         </Section>
 
@@ -106,8 +106,8 @@ export const HeroBelowContent = memo(() => {
           </IconStack>
           <TitleLink href="/docs/components/stacks">Tamagui</TitleLink>
           <Paragraph o={0.7} size="$4">
-            A total UI kit for Native and Web. Composable components, themeable, sizable,
-            adapts to each platform properly.
+            Universal UI kit for Native + Web. Composable components, unstyled mode,
+            sizable, themeable, animatable with 3 drivers.
           </Paragraph>
         </Section>
       </XStack>
