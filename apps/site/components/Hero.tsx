@@ -147,18 +147,18 @@ const HeroContents = memo(function HeroContents() {
               h: 310,
             }}
           >
-            <Text color="$color10">Write less,</Text>
+            <Text color="$color8">Write less</Text>
             {/* add gradient to other colors: */}
-            <ThemeTintAlt offset={1}>
+            <ThemeTintAlt offset={2}>
               <Text
                 className="mask-gradient-left"
                 pos="absolute"
                 t={0}
-                l="1.3%"
+                l="3.9%"
                 color="$color8"
                 $sm={{ l: 0 }}
               >
-                Write less,
+                Write less
               </Text>
             </ThemeTintAlt>
             <ThemeTintAlt offset={-3}>
@@ -166,11 +166,11 @@ const HeroContents = memo(function HeroContents() {
                 className="mask-gradient-right"
                 pos="absolute"
                 t={0}
-                l="1.3%"
-                color="$color6"
+                l="4.8%"
+                color="$color8"
                 $sm={{ l: 0 }}
               >
-                Write less,
+                Write less
               </Text>
             </ThemeTintAlt>
             <br />

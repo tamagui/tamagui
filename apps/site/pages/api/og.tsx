@@ -11,11 +11,11 @@ export const config = {
 const fetchAsset = (url: URL) => fetch(url).then((res) => res.arrayBuffer())
 
 const interRegularFontP = fetchAsset(
-  new URL('../../public/fonts/subset-Inter-Regular.woff', import.meta.url)
+  new URL('../../public/fonts/Inter-Regular.woff', import.meta.url)
 )
 
 const interBoldFontP = fetchAsset(
-  new URL('../../public/fonts/subset-Inter-Black.woff', import.meta.url)
+  new URL('../../public/fonts/Inter-Black.woff', import.meta.url)
 )
 
 const logo = fetchAsset(new URL('../../public/tamagui-words-logo.png', import.meta.url))

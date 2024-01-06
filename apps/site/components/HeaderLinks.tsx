@@ -139,7 +139,7 @@ export const HeaderLinks = (props: HeaderProps) => {
 const TakeoutHeaderLink = ({ forceShowAllLinks }: HeaderProps) => {
   const router = useRouter()
   const isDisabledRoute = router.asPath === '/'
-  const disabled = isDisabledRoute
+  const [disabled, setDisabled] = React.useState(isDisabledRoute)
   const [open, setOpen] = React.useState(false)
   const [hasOpenedOnce, setHasOpenedOnce] = React.useState(false)
 
@@ -162,6 +162,16 @@ const TakeoutHeaderLink = ({ forceShowAllLinks }: HeaderProps) => {
       clearTimeout(tm)
     }
   }, [open, disabled])
+
+  // remember if you closed it
+  React.useEffect(() => {
+    const key = 'takeout-cta-times-closed'
+    const timesClosed = +(localStorage.getItem(key) || 0)
+    if (timesClosed > 2) {
+      setDisabled(true)
+    }
+    localStorage.setItem(key, `${timesClosed + 1}`)
+  }, [])
 
   return (
     <NextLink legacyBehavior={false} prefetch={false} href="/takeout">
@@ -215,7 +225,7 @@ const TakeoutHeaderLink = ({ forceShowAllLinks }: HeaderProps) => {
             elevation="$0.25"
           >
             <SizableText ff="$silkscreen">
-              Takeout 🥡{' '}
+              Takeout{' '}
               <Text ff="$body" fontSize="$3" color="$color10" $sm={{ dsp: 'none' }}>
                 starter kit
               </Text>

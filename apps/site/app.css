@@ -362,7 +362,7 @@ iframe {
 }
 
 .t_dark .mask-gradient-left {
-  mix-blend-mode: screen;
+  mix-blend-mode: hue;
 }
 
 
