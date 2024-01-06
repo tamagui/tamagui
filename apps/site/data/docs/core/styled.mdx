@@ -11,9 +11,9 @@ description: Extend and build custom and optimizable components.
 Create a new component by extending an existing one:
 
 ```tsx
-import { GetProps, Stack, styled } from 'tamagui' // or '@tamagui/core'
+import { GetProps, View, styled } from 'tamagui' // or '@tamagui/core'
 
-export const Circle = styled(Stack, {
+export const Circle = styled(View, {
   name: 'Circle', // useful for debugging, and Component themes
   borderRadius: 100_000_000,
 })
@@ -42,9 +42,9 @@ You can pass any prop that is supported by the component you are extending, even
 Let's add some variants:
 
 ```tsx
-import { Stack, styled } from 'tamagui' // or '@tamagui/core'
+import { View, styled } from 'tamagui' // or '@tamagui/core'
 
-export const Circle = styled(Stack, {
+export const Circle = styled(View, {
   borderRadius: 100_000_000,
 
   variants: {
@@ -132,7 +132,7 @@ You can set it up as follows:
 ```tsx
 import {
   SizeTokens,
-  Stack,
+  View,
   Text,
   createStyledContext,
   styled,
@@ -145,7 +145,7 @@ export const ButtonContext = createStyledContext<{
   size: '$medium',
 })
 
-export const ButtonFrame = styled(Stack, {
+export const ButtonFrame = styled(View, {
   name: 'Button',
   context: ButtonContext,
 
@@ -202,10 +202,10 @@ Finally, it's important to note that the order of style properties is significan
 Lets see how it lets us control overriding styles:
 
 ```tsx
-import { Stack, StackProps } from 'tamagui' // or @tamagui/core
+import { View, StackProps } from 'tamagui' // or @tamagui/core
 
 export default (props: StackProps) => (
-  <Stack
+  <View
     background="red"
     {...props}
     width={200}
