@@ -22,12 +22,12 @@ The highest level part of Tamagui is `tamagui` itself, a complete UI kit built o
 After [configuring](/docs/core/configuration), use `@tamagui/core` as simply as:
 
 ```tsx
-import { Stack, Text } from 'tamagui' // or '@tamagui/core'
+import { View, Text } from 'tamagui' // or '@tamagui/core'
 
 export const App = () => (
-  <Stack backgroundColor="red" borderRadius={10}>
+  <View backgroundColor="red" borderRadius={10}>
     <Text color="white">Hello</Text>
-  </Stack>
+  </View>
 )
 ```
 
@@ -35,9 +35,9 @@ Core also includes a `styled` utility with a `variants` field that is a very qui
 props by letting you quickly type both the key and the value of the prop you expect:
 
 ```tsx
-import { Stack, Theme, styled } from 'tamagui' // or '@tamagui/core'
+import { View, Theme, styled } from 'tamagui' // or '@tamagui/core'
 
-export const AvatarCircle = styled(Stack, {
+export const AvatarCircle = styled(View, {
   // use direct values
   backgroundColor: '#000',
 
@@ -78,9 +78,9 @@ Variants can also take functions to catch either all values or specific types of
 You can nest styled components multiple times:
 
 ```tsx
-import { Stack, styled } from 'tamagui' // or '@tamagui/core'
+import { View, styled } from 'tamagui' // or '@tamagui/core'
 
-export const SizedHorizontal = styled(Stack, {
+export const SizedHorizontal = styled(View, {
   variants: {
     size: {
       sm: {
@@ -163,7 +163,7 @@ There's a lot to it, and good reasons it exists, but are [discussed more on the 
 
 ### `tamagui`
 
-Above that, [the Tamagui UI Kit](/docs/components/stacks) for building full-featured app interfaces right out of the box. Featuring powerful, themeable components that scale across every size in your design system. Enjoy Radix-like composable component APIs that always visually adapt properly to each platform.
+Above that, [the Tamagui UI Kit](/docs/components/views) for building full-featured app interfaces right out of the box. Featuring powerful, themeable components that scale across every size in your design system. Enjoy Radix-like composable component APIs that always visually adapt properly to each platform.
 
 ---
 

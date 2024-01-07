@@ -1,5 +1,5 @@
 import { TamaguiLogo, setNextTintFamily, setTintFamily, useTint } from '@tamagui/logo'
-import { Button, ButtonProps, Popover, Square, Text, YStack } from 'tamagui'
+import { Button, ButtonProps, Circle, Popover, Square, Text, YStack } from 'tamagui'
 
 export const seasons = {
   tamagui: <TamaguiLogo downscale={2.5} />,
@@ -9,7 +9,7 @@ export const seasons = {
 }
 
 export const SeasonToggleButton = (props: ButtonProps) => {
-  const { name } = useTint()
+  const { name, tint } = useTint()
 
   return (
     <Popover hoverable>
@@ -21,7 +21,13 @@ export const SeasonToggleButton = (props: ButtonProps) => {
           {...props}
           aria-label="Toggle theme"
         >
-          <Text>{seasons[name]}</Text>
+          <Circle
+            bw={1}
+            boc="var(--color9)"
+            m={2}
+            size={12}
+            backgroundColor={tint as any}
+          />
         </Button>
       </Popover.Trigger>
 

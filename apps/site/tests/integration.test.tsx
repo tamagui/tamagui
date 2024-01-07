@@ -70,7 +70,7 @@ test(`Loads home screen with no errors or logs`, async ({ page }) => {
 
 test(`Loads home screen content properly`, async ({ page }) => {
   await page.goto(domain)
-  await expect(page.getByText('Write less,').first()).toBeVisible()
+  await expect(page.getByText('Write less').first()).toBeVisible()
   const menuButton = page.locator(`button[aria-label="Open the main menu"]`).first()
   await expect(menuButton).toBeVisible()
   await menuButton.click()

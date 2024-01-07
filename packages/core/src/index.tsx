@@ -34,19 +34,16 @@ export * from './reactNativeTypes'
 
 type RNExclusiveViewProps = Omit<RNViewProps, keyof StackProps>
 
-export const View = WebView as any as TamaguiComponent<
+type ViewType = TamaguiComponent<
   StackProps & RNExclusiveViewProps,
   TamaguiElement,
   StackPropsBase & RNExclusiveViewProps,
   void
 >
 
-export const Stack = WebStack as any as TamaguiComponent<
-  StackProps & RNExclusiveViewProps,
-  TamaguiElement,
-  StackPropsBase & RNExclusiveViewProps,
-  void
->
+// the same:
+export const View = WebView as any as ViewType
+export const Stack = WebStack as any as ViewType
 
 type RNExclusiveTextProps = Omit<RNTextProps, keyof TextProps>
 

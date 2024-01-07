@@ -1,7 +1,6 @@
 @font-face {
   font-family: 'Inter';
-  src: url('subset-Inter-Medium.woff2') format('woff2'),
-      url('subset-Inter-Medium.woff') format('woff');
+  src: url('Inter-Medium.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -9,8 +8,7 @@
 
 @font-face {
   font-family: 'Inter';
-  src: url('subset-Inter-ExtraBold.woff2') format('woff2'),
-      url('subset-Inter-ExtraBold.woff') format('woff');
+  src: url('Inter-ExtraBold.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
   font-display: swap;

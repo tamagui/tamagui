@@ -8,9 +8,9 @@ Variants allow for a nice balance between simplicity and power, with affordances
 In a style library you want to be able to succinctly add on conditional values that expand into groups of styles. Variants do just that. Before explaining more on why and how they work, an example:
 
 ```tsx
-import { Stack, styled } from 'tamagui' // or '@tamagui/core'
+import { View, styled } from 'tamagui' // or '@tamagui/core'
 
-export const Circle = styled(Stack, {
+export const Circle = styled(View, {
   borderRadius: 100_000_000,
 
   variants: {
@@ -77,9 +77,9 @@ And because Variants work with the styled function, they nest without adding an 
 If you need more complex types, or simply prefer a shorter syntax, you can use a single function instead of using the object syntax for variants:
 
 ```tsx
-import { Stack, styled } from 'tamagui' // or '@tamagui/core'
+import { View, styled } from 'tamagui' // or '@tamagui/core'
 
-export const MyStack = styled(Stack, {
+export const MyView = styled(View, {
   variants: {
     doubleMargin: (val: number) => ({
       margin: val * 2,
@@ -97,9 +97,9 @@ Tamagui also provides a few types of other variant definition patterns that work
 The special keys `true` and `false` will map to a boolean. So the `centered` prop will be typed to accept true or false, and when true it will apply it's styles.
 
 ```tsx
-import { Stack, styled } from 'tamagui' // or '@tamagui/core'
+import { View, styled } from 'tamagui' // or '@tamagui/core'
 
-export const MyStack = styled(Stack, {
+export const MyView = styled(View, {
   variants: {
     selectable: {
       true: {
@@ -122,9 +122,9 @@ You can use a pseudo Typescript syntax for other variants:
 - `:number` - Accepts a `number`
 
 ```tsx
-import { Stack, styled } from 'tamagui' // or '@tamagui/core'
+import { View, styled } from 'tamagui' // or '@tamagui/core'
 
-export const ColorfulStack = styled(Stack, {
+export const ColorfulView = styled(View, {
   variants: {
     color: {
       ':string': (color) => {
@@ -160,7 +160,7 @@ export default createTamagui({
 })
 
 // somewhere in your app:
-const MyButton = styled(Stack, {
+const MyButton = styled(View, {
   variants: {
     pad: {
       sm: {
@@ -202,7 +202,7 @@ export default createTamagui({
 })
 
 // somewhere in your app:
-const MyButton = styled(Stack, {
+const MyButton = styled(View, {
   variants: {
     pad: {
       '...size': (val, { tokens }) => ({
@@ -286,7 +286,7 @@ The Spread variant function will receive two arguments: the first is the value g
 If you want full control, a simple function works as a Variant:
 
 ```tsx
-const Square = styled(Stack, {
+const Square = styled(View, {
   variants: {
     size: (size: number) => {
       return {
@@ -303,9 +303,9 @@ const Square = styled(Stack, {
 Much like a dynamic variant, except it lets you use it alongside the other typed variants you need. Use '...' and it will grab all variants that don't match:
 
 ```tsx
-import { Stack, styled } from 'tamagui' // or '@tamagui/core'
+import { View, styled } from 'tamagui' // or '@tamagui/core'
 
-export const ColorfulStack = styled(Stack, {
+export const ColorfulView = styled(View, {
   variants: {
     colorful: {
       true: {
@@ -329,7 +329,7 @@ Sometimes you'd like to set a default value for a variant you've just set on you
 The `defaultVariants` option allows you to set these, properly typed:
 
 ```tsx
-const Square = styled(Stack, {
+const Square = styled(View, {
   variants: {
     size: {
       '...size': (size, { tokens }) => {
