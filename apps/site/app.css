@@ -358,7 +358,7 @@ iframe {
 }
 
 .t_dark .mask-gradient-right {
-  mix-blend-mode: difference;
+  mix-blend-mode: hue;
 }
 
 .t_dark .mask-gradient-left {
