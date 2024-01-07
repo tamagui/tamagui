@@ -323,7 +323,7 @@ export interface Database {
         Insert: {
           created_at?: string | null
           data?: Json | null
-          id: number
+          id?: number
           team_id: number
           theme_id?: string | null
           user_id: string
