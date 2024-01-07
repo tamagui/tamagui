@@ -1533,8 +1533,6 @@ export function createExtractor(
               (traversePath.node.children &&
                 traversePath.node.children.every((x) => x.type === 'JSXText')))
 
-          const themeVal = inlined.get('theme')
-
           // on native we can't flatten when theme prop is set
           if (platform !== 'native') {
             inlined.delete('theme')
@@ -1562,7 +1560,6 @@ export function createExtractor(
               (staticConfig.neverFlatten === 'jsx' ? hasOnlyStringChildren : true)
           )
 
-          const shouldWrapTheme = shouldFlatten && themeVal
           const usedThemeKeys = new Set<string>()
 
           // if it accesses any theme values during evaluation
@@ -1579,72 +1576,17 @@ export function createExtractor(
             }
           })
 
-          if (shouldPrintDebug) {
-            try {
-              // prettier-ignore
-              logger.info([' flatten?', shouldFlatten, objToStr({ hasSpread, shouldDeopt, canFlattenProps, shouldWrapTheme, hasOnlyStringChildren }), 'inlined', inlined.size, [...inlined]].join(' '))
-            } catch {
-              // ok
-            }
-          }
-
-          // wrap theme around children on flatten
-          // TODO move this to bottom and re-check shouldFlatten
-          // account for shouldFlatten could change w the above block "if (disableExtractVariables)"
-          if (shouldFlatten && shouldWrapTheme) {
-            if (!programPath) {
-              console.warn(
-                `No program path found, avoiding importing flattening / importing theme in ${sourcePath}`
-              )
-            } else {
-              if (shouldPrintDebug) {
-                logger.info(['  - wrapping theme', themeVal].join(' '))
-              }
-
-              // remove theme attribute from flattened node
-              attrs = attrs.filter((x) =>
-                x.type === 'attr' &&
-                t.isJSXAttribute(x.value) &&
-                x.value.name.name === 'theme'
-                  ? false
-                  : true
-              )
-
-              // add import
-              if (!hasImportedTheme) {
-                hasImportedTheme = true
-                programPath.node.body.push(
-                  t.importDeclaration(
-                    [
-                      t.importSpecifier(
-                        t.identifier('_TamaguiTheme'),
-                        t.identifier('Theme')
-                      ),
-                    ],
-                    t.stringLiteral('@tamagui/web')
-                  )
-                )
-              }
-
-              traversePath.replaceWith(
-                t.jsxElement(
-                  t.jsxOpeningElement(t.jsxIdentifier('_TamaguiTheme'), [
-                    t.jsxAttribute(t.jsxIdentifier('name'), themeVal.value),
-                  ]),
-                  t.jsxClosingElement(t.jsxIdentifier('_TamaguiTheme')),
-                  [traversePath.node]
-                )
-              )
-            }
-          }
-
           // only if we flatten, ensure the default styles are there
           if (shouldFlatten) {
             const defaultStyleAttrs = Object.keys(defaultProps).flatMap((key) => {
+              const value = defaultProps[key]
+              if (key === 'theme') {
+                inlined.set('theme', literalToAst(value))
+                return []
+              }
               if (!isValidStyleKey(key, staticConfig)) {
                 return []
               }
-              const value = defaultProps[key]
               const name = tamaguiConfig?.shorthands[key] || key
               if (value === undefined) {
                 logger.warn(
@@ -1728,6 +1670,68 @@ export function createExtractor(
               return out
             }, [])
             .flat()
+
+          const themeVal = inlined.get('theme')
+          const shouldWrapTheme = shouldFlatten && themeVal
+          // wrap theme around children on flatten
+          // TODO move this to bottom and re-check shouldFlatten
+          // account for shouldFlatten could change w the above block "if (disableExtractVariables)"
+          if (shouldFlatten && shouldWrapTheme) {
+            debugger
+            if (!programPath) {
+              console.warn(
+                `No program path found, avoiding importing flattening / importing theme in ${sourcePath}`
+              )
+            } else {
+              if (shouldPrintDebug) {
+                logger.info(['  - wrapping theme', themeVal].join(' '))
+              }
+
+              // remove theme attribute from flattened node
+              attrs = attrs.filter((x) =>
+                x.type === 'attr' &&
+                t.isJSXAttribute(x.value) &&
+                x.value.name.name === 'theme'
+                  ? false
+                  : true
+              )
+
+              // add import
+              if (!hasImportedTheme) {
+                hasImportedTheme = true
+                programPath.node.body.push(
+                  t.importDeclaration(
+                    [
+                      t.importSpecifier(
+                        t.identifier('_TamaguiTheme'),
+                        t.identifier('Theme')
+                      ),
+                    ],
+                    t.stringLiteral('@tamagui/web')
+                  )
+                )
+              }
+
+              traversePath.replaceWith(
+                t.jsxElement(
+                  t.jsxOpeningElement(t.jsxIdentifier('_TamaguiTheme'), [
+                    t.jsxAttribute(t.jsxIdentifier('name'), themeVal.value),
+                  ]),
+                  t.jsxClosingElement(t.jsxIdentifier('_TamaguiTheme')),
+                  [traversePath.node]
+                )
+              )
+            }
+          }
+
+          if (shouldPrintDebug) {
+            try {
+              // prettier-ignore
+              logger.info([' flatten?', shouldFlatten, objToStr({ hasSpread, shouldDeopt, canFlattenProps, shouldWrapTheme, hasOnlyStringChildren }), 'inlined', inlined.size, [...inlined]].join(' '))
+            } catch {
+              // ok
+            }
+          }
 
           if (shouldDeopt || !shouldFlatten) {
             if (shouldPrintDebug) {
