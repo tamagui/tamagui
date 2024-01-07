@@ -1763,6 +1763,12 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
                 />
 
                 <Row
+                  title="RPC"
+                  description="We've set up tRPC, which you can optionally use, that works alongside Zod to provide easy, type-safe APIs."
+                  after="01"
+                />
+
+                <Row
                   title="Icons"
                   description="~180k icons in total across +150 different packs, integrated with your theme color and sizes, tree-shakeable, from iconify.design"
                   after="+150"
