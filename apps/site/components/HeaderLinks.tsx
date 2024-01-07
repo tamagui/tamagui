@@ -78,7 +78,7 @@ export const HeaderLinks = (props: HeaderProps) => {
                   display: forceShowAllLinks ? 'flex' : 'none',
                 }}
               >
-                Starter Kit 🥡
+                Starter Kit
               </HeadAnchor>
             </NextLink>
           )}
