@@ -1043,13 +1043,6 @@ export default function TakeoutPage({
                 <MunroP size="$9" $sm={{ size: '$8' }} color="$yellow10">
                   We hope you enjoy.
                 </MunroP>
-
-                <MunroP size="$1" o={0.3}>
-                  These statements have not been approved by the FDA. Talk to your doctor
-                  before trying Tamagui Takeout. Side effects may include spending way too
-                  much time tweaking color palettes when you should be just shipping your
-                  damn app.
-                </MunroP>
               </YStack>
             </XStack>
 
