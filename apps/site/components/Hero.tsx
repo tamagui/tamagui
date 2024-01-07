@@ -152,10 +152,23 @@ const HeroContents = memo(function HeroContents() {
             <br />
             <span style={{ position: 'relative' }}>
               <span>runs&nbsp;faster</span>
-              <Text pos="absolute" className="clip-text rainbow" t={7} l={-3}>
+              <Text
+                pos="absolute"
+                className="clip-text rainbow"
+                t={7}
+                $sm={{ t: 1 }}
+                l={-3}
+              >
                 runs&nbsp;faster
               </Text>
-              <Text pos="absolute" className="clip-text grain" t={9} l={-2} o={0.5}>
+              <Text
+                pos="absolute"
+                className="clip-text grain"
+                t={9}
+                l={-2}
+                o={0.5}
+                $sm={{ t: 1 }}
+              >
                 runs&nbsp;faster
               </Text>
               <ThemeTintAlt offset={2}>
@@ -163,6 +176,7 @@ const HeroContents = memo(function HeroContents() {
                   className="mask-gradient-left"
                   pos="absolute"
                   t={9}
+                  $sm={{ t: 1 }}
                   pe="none"
                   l={-1}
                   o={0.5}
@@ -176,6 +190,7 @@ const HeroContents = memo(function HeroContents() {
                   className="mask-gradient-left"
                   pos="absolute"
                   t={9}
+                  $sm={{ t: 1 }}
                   pe="none"
                   l={-3}
                   o={0.25}
@@ -189,6 +204,7 @@ const HeroContents = memo(function HeroContents() {
                   className="mask-gradient-right"
                   pos="absolute"
                   t={9}
+                  $sm={{ t: 1 }}
                   pe="none"
                   l={-5}
                   color="$color8"
@@ -202,6 +218,7 @@ const HeroContents = memo(function HeroContents() {
                   className="mask-gradient-right"
                   pos="absolute"
                   t={9}
+                  $sm={{ t: 1 }}
                   pe="none"
                   l={2}
                   color="$color8"
