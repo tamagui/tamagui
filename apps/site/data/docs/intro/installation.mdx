@@ -94,14 +94,93 @@ export default function Demo() {
 
 From here, [spend some time understanding configuration](/docs/core/configuration). You can set up the Compiler, but we'd recommend waiting and doing that once you're ready to deploy.
 
----
+We have more in depth guides for [Next.js](http://localhost:5005/docs/guides/next-js), [Expo](http://localhost:5005/docs/guides/expo) and [Vite](http://localhost:5005/docs/guides/vite). Note that while Tamagui generally doesn't require any special bundler setup, React Native Web and the ecosystem sometimes does, so we do recommend a few configurations for the bundlers:
 
-#### Web-only
+#### Webpack
 
-If you are only targeting web, want to save some bundle size, and are ok going without the React Native specific props like gesture handlers and onLayout, you can just use `web`:
+```tsx
+const { TamaguiPlugin } = require('tamagui-loader')
 
-```bash
-yarn add @tamagui/web
+config.plugins.push(
+  new TamaguiPlugin({
+    config: './src/tamagui.config.ts',
+    components: ['tamagui'], // matching the yarn add you chose above
+  }),
+)
 ```
 
-Note that `@tamagui/web` is the same library as `@tamagui/core`, just dropping support for a few React Native specific things, mostly props: the `GestureResponderHandlers` and `onLayout` props are absent, and the platform methods on refs like `measureInWindow` are as well.
+Or manually:
+
+```tsx
+// some stuff for react-native
+config.plugins.push(
+  new webpack.DefinePlugin({
+    process: {
+      env: {
+        __DEV__: process.env.NODE_ENV === 'development' ? 'true' : 'false',
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+      },
+    },
+  })
+)
+
+config.resolve.alias['react-native$'] = 'react-native-web'
+
+// set up web extensions
+compiler.options.resolve.extensions = [
+  '.web.tsx',
+  '.web.ts',
+  '.web.js',
+  '.ts',
+  '.tsx',
+  '.js',
+]
+```
+
+#### Vite
+
+```tsx
+import { tamaguiExtractPlugin, tamaguiPlugin } from '@tamagui/vite-plugin'
+import react from '@vitejs/plugin-react-swc'
+
+export default {
+  plugins: [
+    react(),
+    tamaguiPlugin(tamaguiConfig),
+    // optional:
+    process.env.NODE_ENV === 'production' ? tamaguiExtractPlugin(tamaguiConfig) : null,
+  ].filter(Boolean),
+}
+```
+
+Or manually:
+
+```tsx
+config.define = {
+  __DEV__: `${process.env.NODE_ENV === 'development' ? true : false}`,
+  'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+}
+
+config.resolve.alias['react-native'] = 'react-native-web'
+
+// set up web extensions
+config.optimizeDeps.esbuildOptions = {
+  ...config.optimizeDeps.esbuildOptions,
+  resolveExtensions: [
+    '.web.js',
+    '.web.jsx',
+    '.web.ts',
+    '.web.tsx',
+    '.mjs',
+    '.js',
+    '.mts',
+    '.ts',
+    '.jsx',
+    '.tsx',
+    '.json'
+  ],
+  loader: {
+    '.js': 'jsx',
+  },
+}
+```
