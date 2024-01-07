@@ -148,6 +148,63 @@ const HeroContents = memo(function HeroContents() {
             }}
           >
             <Text className="clip-text rainbow">Write less</Text>
+            {/* add gradient to other colors: */}
+            <ThemeTintAlt offset={2}>
+              <Text
+                className="mask-gradient-left"
+                pos="absolute"
+                t={0}
+                pe="none"
+                l="5%"
+                color="$color8"
+                $sm={{ l: 0 }}
+                o={0.25}
+              >
+                Write less
+              </Text>
+            </ThemeTintAlt>
+            <ThemeTintAlt offset={1}>
+              <Text
+                className="mask-gradient-left"
+                pos="absolute"
+                t={0}
+                pe="none"
+                l="4%"
+                color="$color8"
+                $sm={{ l: 0 }}
+                o={0.25}
+              >
+                Write less
+              </Text>
+            </ThemeTintAlt>
+            <ThemeTintAlt offset={-2}>
+              <Text
+                className="mask-gradient-right"
+                pos="absolute"
+                t={0}
+                pe="none"
+                l="5%"
+                color="$color8"
+                $sm={{ l: 0 }}
+                o={0.25}
+              >
+                Write less
+              </Text>
+            </ThemeTintAlt>
+            <ThemeTintAlt offset={-3}>
+              <Text
+                className="mask-gradient-right"
+                pos="absolute"
+                t={0}
+                pe="none"
+                l="3.8%"
+                color="$color8"
+                $sm={{ l: 0 }}
+                o={0.25}
+              >
+                Write less
+              </Text>
+            </ThemeTintAlt>
             <br />
             runs&nbsp;faster
           </H1>
