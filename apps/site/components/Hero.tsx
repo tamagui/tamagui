@@ -100,7 +100,7 @@ const HeroContents = memo(function HeroContents() {
           pb: '$4',
         }}
       >
-        <ThemeTintAlt>
+        <>
           <XStack pos="absolute" als="center" y={-80}>
             <Link prefetch={false} href="/takeout">
               <Button
@@ -118,7 +118,7 @@ const HeroContents = memo(function HeroContents() {
               </Button>
             </Link>
           </XStack>
-        </ThemeTintAlt>
+        </>
 
         <YStack ai="flex-start" $gtSm={{ ai: 'center' }} gap="$4">
           <H1
@@ -230,7 +230,6 @@ const HeroContents = memo(function HeroContents() {
           <ThemeTintAlt>
             <NextLink prefetch={false} href="/docs/intro/introduction">
               <Button
-                theme="active"
                 accessibilityLabel="Get started (docs)"
                 fontFamily="$silkscreen"
                 size="$5"
@@ -297,7 +296,7 @@ const HeroContents = memo(function HeroContents() {
 })
 
 const Subtitle = styled(Paragraph, {
-  color: '$color9',
+  color: '$gray10',
   size: '$6',
   fontFamily: '$silkscreen',
   ta: 'left',
