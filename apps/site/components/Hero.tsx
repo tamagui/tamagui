@@ -130,15 +130,15 @@ const HeroContents = memo(function HeroContents() {
             $gtSm={{
               mx: 0,
               maxWidth: 800,
-              size: '$13',
-              h: 190,
+              size: '$14',
+              h: 250,
               ta: 'center',
               als: 'center',
             }}
             $gtMd={{
               maxWidth: 900,
-              size: '$14',
-              h: 240,
+              size: '$15',
+              h: 310,
             }}
             $gtLg={{
               size: '$16',

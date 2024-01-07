@@ -161,9 +161,6 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
                 </XGroup.Item>
               )}
               <XGroup.Item>
-                <ColorToggleButton borderWidth={0} chromeless />
-              </XGroup.Item>
-              <XGroup.Item>
                 <SeasonToggleButton borderWidth={0} chromeless />
               </XGroup.Item>
             </XGroup>
