@@ -88,9 +88,6 @@ const HeaderMenuContent = React.memo(function HeaderMenuContent() {
       <Popover.ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
         <YStack aria-label="Home menu contents" miw={230} p="$3" ai="flex-end">
           <HeaderLinks forceShowAllLinks />
-          <Separator my="$4" w="100%" />
-          <SponsorButton />
-          <Separator my="$4" w="100%" />
           <DocsMenuContents />
         </YStack>
       </Popover.ScrollView>
