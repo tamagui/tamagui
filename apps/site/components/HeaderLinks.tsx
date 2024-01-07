@@ -164,14 +164,14 @@ const TakeoutHeaderLink = ({ forceShowAllLinks }: HeaderProps) => {
   }, [open, disabled])
 
   // remember if you closed it
-  // React.useEffect(() => {
-  //   const key = 'tkt-cta-times-close2'
-  //   const timesClosed = +(localStorage.getItem(key) || 0)
-  //   if (timesClosed > 2) {
-  //     setDisabled(true)
-  //   }
-  //   localStorage.setItem(key, `${timesClosed + 1}`)
-  // }, [])
+  React.useEffect(() => {
+    const key = 'tkt-cta-times-close2'
+    const timesClosed = +(localStorage.getItem(key) || 0)
+    if (timesClosed > 3) {
+      setDisabled(true)
+    }
+    localStorage.setItem(key, `${timesClosed + 1}`)
+  }, [])
 
   return (
     <NextLink legacyBehavior={false} prefetch={false} href="/takeout">
