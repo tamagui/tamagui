@@ -141,11 +141,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
     >
       {!props.minimal && (
         <XStack ai="center" gap="$4">
-          {isHome ? (
-            <YStack my={-20} onPress={setNextTint} px="$3">
-              <TamaguiLogo downscale={props.floating ? 2 : 1.5} />
-            </YStack>
-          ) : (
+          {isHome ? null : (
             <NextLink href="/">
               <YStack tag="a" px="$3" cur="pointer" my={-20}>
                 <TamaguiLogo downscale={props.floating ? 2 : 1.5} />
@@ -248,7 +244,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
                   <VisuallyHidden>
                     <Text>Github</Text>
                   </VisuallyHidden>
-                  <GithubIcon width={23} />
+                  <GithubIcon width={26} />
                 </YStack>
               </TooltipSimple>
             </NextLink>

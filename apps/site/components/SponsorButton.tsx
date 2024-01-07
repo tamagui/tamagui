@@ -20,7 +20,6 @@ export const SponsorButton = (props: { tiny?: boolean }) => {
       borderColor="$borderColor"
       size={props.tiny ? '$3' : '$4'}
       fontFamily="$silkscreen"
-      bc="$color1"
       br="$10"
       circular={props.tiny ? true : false}
       chromeless={props.tiny ? true : false}

@@ -11,7 +11,7 @@ import {
 } from 'tamagui'
 
 export const seasons = {
-  tamagui: <TamaguiLogo downscale={2.5} />,
+  tamagui: <TamaguiLogo downscale={2} />,
   easter: '🐣',
   xmas: '🎅🏻',
   halloween: '🎃',
@@ -72,7 +72,7 @@ export const SeasonToggleButton = (props: ButtonProps) => {
             return (
               <Square
                 key={optionName}
-                size="$3"
+                size="$4"
                 $sm={{ size: '$5' }}
                 hoverStyle={{
                   bc: '$backgroundHover',
@@ -90,7 +90,9 @@ export const SeasonToggleButton = (props: ButtonProps) => {
                   setTintFamily(optionName as any)
                 }}
               >
-                <Text cursor="default">{seasons[optionName]}</Text>
+                <SizableText size="$6" cursor="default">
+                  {seasons[optionName]}
+                </SizableText>
               </Square>
             )
           })}

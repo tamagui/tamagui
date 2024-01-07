@@ -156,7 +156,7 @@ const TakeoutHeaderLink = ({ forceShowAllLinks }: HeaderProps) => {
   React.useEffect(() => {
     if (open || disabled || hasOpenedOnce) return
 
-    const tm = setTimeout(openIt, 2000)
+    const tm = setTimeout(openIt, 0)
 
     return () => {
       clearTimeout(tm)
@@ -164,14 +164,14 @@ const TakeoutHeaderLink = ({ forceShowAllLinks }: HeaderProps) => {
   }, [open, disabled])
 
   // remember if you closed it
-  React.useEffect(() => {
-    const key = 'takeout-cta-times-closed'
-    const timesClosed = +(localStorage.getItem(key) || 0)
-    if (timesClosed > 2) {
-      setDisabled(true)
-    }
-    localStorage.setItem(key, `${timesClosed + 1}`)
-  }, [])
+  // React.useEffect(() => {
+  //   const key = 'tkt-cta-times-close2'
+  //   const timesClosed = +(localStorage.getItem(key) || 0)
+  //   if (timesClosed > 2) {
+  //     setDisabled(true)
+  //   }
+  //   localStorage.setItem(key, `${timesClosed + 1}`)
+  // }, [])
 
   return (
     <NextLink legacyBehavior={false} prefetch={false} href="/takeout">
@@ -216,6 +216,7 @@ const TakeoutHeaderLink = ({ forceShowAllLinks }: HeaderProps) => {
             tag="a"
             cur="pointer"
             bg="$background"
+            ai="center"
             py="$2"
             px="$3"
             br="$4"
@@ -224,12 +225,17 @@ const TakeoutHeaderLink = ({ forceShowAllLinks }: HeaderProps) => {
             }}
             elevation="$0.25"
           >
-            <SizableText ff="$silkscreen">
-              Takeout{' '}
-              <Text ff="$body" fontSize="$3" color="$color10" $sm={{ dsp: 'none' }}>
-                starter kit
-              </Text>
-            </SizableText>
+            <SizableText ff="$silkscreen">Takeout </SizableText>
+            <Text
+              ff="$body"
+              fontSize="$3"
+              color="$color10"
+              $sm={{ dsp: 'none' }}
+              y={0.98}
+              ml={6}
+            >
+              starter kit
+            </Text>
           </XStack>
         </Popover.Content>
       </Popover>

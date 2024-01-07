@@ -29,7 +29,7 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
           theme={open ? 'alt1' : undefined}
           aria-label="Open the main menu"
         >
-          <Menu size={16} color="var(--color)" />
+          <Menu size={18} color="var(--color)" />
         </Button>
       </Popover.Trigger>
 
