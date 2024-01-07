@@ -4,22 +4,21 @@ description: Universal styles for React Native and Web
 ---
 
 <IntroParagraph>
-  Tamagui is a complete UI solution for cross-platform apps on React (web and native),
-  featuring best-in-class performance and highly platform-optimized output thanks to a
-  smart compiler.
+  Tamagui is a modular style solution for React that brings powerful new style abilities
+  to React Native, while aiming to be competetive with the best web-only style libraries.
 </IntroParagraph>
 
 <GetStarted />
 
----
+You can pick and choose which parts of Tamagui you use:
 
-## High level
-
-The highest level part of Tamagui is `tamagui` itself, a complete UI kit built on top of `@tamagui/core`. This gives you a huge amount of progress towards a beautiful, fully working app consisting of some of the hardest components to get right, all done in a way that gives you control over their styling.
+- [`@tamagui/core`](/docs/core/configuration) is a typed style library with design system features, like [Stitches](https://stitches.dev).
+- [`@tamagui/static`](/docs/intro/why-a-compiler) is a smart optimizing compiler that emits 0-runtime code, even when faced with logic-filled inline styles, like [JSXStyle](https://github.com/jsxstyle/jsxstyle).
+- [`tamagui`](/docs/components/stacks) is a large suite of components and hooks that are made to work well on all platforms.
 
 ### `@tamagui/core`
 
-After [configuring](/docs/core/configuration), use `@tamagui/core` as simply as:
+After [configuring](/docs/core/configuration), use `@tamagui/core` inline:
 
 ```tsx
 import { View, Text } from 'tamagui' // or '@tamagui/core'
@@ -31,8 +30,7 @@ export const App = () => (
 )
 ```
 
-Core also includes a `styled` utility with a `variants` field that is a very quick way to author
-props by letting you quickly type both the key and the value of the prop you expect:
+or with the `styled` utility:
 
 ```tsx
 import { View, Theme, styled } from 'tamagui' // or '@tamagui/core'
@@ -73,79 +71,9 @@ export const App = () => (
 )
 ```
 
-Variants can also take functions to catch either all values or specific types of tokens you define in your themes.
+Core also has a complete design system you can set up easily with `createTamagui`.
 
-You can nest styled components multiple times:
-
-```tsx
-import { View, styled } from 'tamagui' // or '@tamagui/core'
-
-export const SizedHorizontal = styled(View, {
-  variants: {
-    size: {
-      sm: {
-        minWidth: 44,
-        height: 44,
-      },
-      lg: {
-        minWidth: 68,
-        height: 68,
-      },
-    },
-  },
-})
-
-export const SizedButton = styled(SizedHorizontal, {
-  tag: 'button',
-
-  variants: {
-    disabled: {
-      true: {
-        backgroundColor: '#ccc',
-        pointerEvents: 'none',
-      },
-    },
-  },
-})
-```
-
-Tamagui has the nice feature of fully-deterministic rendering based on the order of their definition, where the last key of the style object wins. This works both on props and styled() calls:
-
-```tsx
-import { styled } from 'tamagui' // or '@tamagui/core'
-
-import { SizedButton } from './example-above'
-
-const HeroButton = styled(SizedButton, {
-  // bigger border, of course
-  borderWidth: 4,
-  size: 'lg',
-
-  variants: {
-    outlined: {
-      true: {
-        backgroundColor: 'transparent',
-        borderColor: 'black',
-      },
-    },
-  },
-})
-
-export default (props) => (
-  <HeroButton
-    outlined
-    // overrides the borderColor in outlined
-    borderColor="red"
-    // props can override
-    {...props}
-    // eg if props = { outlined: true }, borderColor is black again
-    borderRadius={12}
-    // borderRadius is *always* 12
-  />
-)
-```
-
-This works across the Web and Native with the full typed APIs of React Native, with additional web-only API's and escape hatches that make it a great experience no matter if you're targeting Native only, Native and Web, or Web only.
+[Read more about Core](http://localhost:5005/docs/core/configuration)
 
 #### Design System
 
