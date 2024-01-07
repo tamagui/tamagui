@@ -53,20 +53,20 @@ const HeroSubTitle = memo(() => {
         <Tag theme="green_alt2" onHoverIn={() => setHovered(0)} active={hovered === 0}>
           styles
         </Tag>
-      </NextLink>
-      ,{' '}
+      </NextLink>{' '}
+      +{' '}
       <NextLink prefetch={false} href="/docs/intro/why-a-compiler">
         <Tag theme="blue_alt2" onHoverIn={() => setHovered(1)} active={hovered === 1}>
           optimizing compiler
         </Tag>
       </NextLink>{' '}
-      &{' '}
+      +{' '}
       <NextLink prefetch={false} href="/docs/components/stacks">
         <Tag theme="purple_alt2" onHoverIn={() => setHovered(2)} active={hovered === 2}>
           UI&nbsp;kit
         </Tag>
       </NextLink>{' '}
-      that&nbsp;unify&nbsp;React Native + Web
+      that&nbsp;unify&nbsp;React Native & Web
     </Subtitle>
   )
 })
@@ -147,66 +147,70 @@ const HeroContents = memo(function HeroContents() {
               h: 310,
             }}
           >
-            <Text className="clip-text rainbow">Write less</Text>
+            <Text>Write less</Text>
             {/* add gradient to other colors: */}
-            <ThemeTintAlt offset={2}>
-              <Text
-                className="mask-gradient-left"
-                pos="absolute"
-                t={0}
-                pe="none"
-                l="5%"
-                color="$color8"
-                $sm={{ l: 0 }}
-                o={0.25}
-              >
-                Write less
-              </Text>
-            </ThemeTintAlt>
-            <ThemeTintAlt offset={1}>
-              <Text
-                className="mask-gradient-left"
-                pos="absolute"
-                t={0}
-                pe="none"
-                l="4%"
-                color="$color8"
-                $sm={{ l: 0 }}
-                o={0.25}
-              >
-                Write less
-              </Text>
-            </ThemeTintAlt>
-            <ThemeTintAlt offset={-2}>
-              <Text
-                className="mask-gradient-right"
-                pos="absolute"
-                t={0}
-                pe="none"
-                l="5%"
-                color="$color8"
-                $sm={{ l: 0 }}
-                o={0.25}
-              >
-                Write less
-              </Text>
-            </ThemeTintAlt>
-            <ThemeTintAlt offset={-3}>
-              <Text
-                className="mask-gradient-right"
-                pos="absolute"
-                t={0}
-                pe="none"
-                l="3.8%"
-                color="$color8"
-                $sm={{ l: 0 }}
-                o={0.25}
-              >
-                Write less
-              </Text>
-            </ThemeTintAlt>
             <br />
-            runs&nbsp;faster
+            <span style={{ position: 'relative' }}>
+              <span>runs&nbsp;faster</span>
+              <Text pos="absolute" className="clip-text rainbow" t={7} l={-3}>
+                runs&nbsp;faster
+              </Text>
+              <Text pos="absolute" className="clip-text grain" t={9} l={-2} o={0.5}>
+                runs&nbsp;faster
+              </Text>
+              <ThemeTintAlt offset={2}>
+                <Text
+                  className="mask-gradient-left"
+                  pos="absolute"
+                  t={9}
+                  pe="none"
+                  l={-1}
+                  o={0.5}
+                  color="$color8"
+                >
+                  runs&nbsp;faster
+                </Text>
+              </ThemeTintAlt>
+              <ThemeTintAlt offset={1}>
+                <Text
+                  className="mask-gradient-left"
+                  pos="absolute"
+                  t={9}
+                  pe="none"
+                  l={-3}
+                  o={0.25}
+                  color="$color8"
+                >
+                  runs&nbsp;faster
+                </Text>
+              </ThemeTintAlt>
+              <ThemeTintAlt offset={-2}>
+                <Text
+                  className="mask-gradient-right"
+                  pos="absolute"
+                  t={9}
+                  pe="none"
+                  l={-5}
+                  color="$color8"
+                  o={0.1}
+                >
+                  runs&nbsp;faster
+                </Text>
+              </ThemeTintAlt>
+              <ThemeTintAlt offset={-3}>
+                <Text
+                  className="mask-gradient-right"
+                  pos="absolute"
+                  t={9}
+                  pe="none"
+                  l={2}
+                  color="$color8"
+                  o={0.5}
+                >
+                  runs&nbsp;faster
+                </Text>
+              </ThemeTintAlt>
+            </span>
           </H1>
 
           {name === 'halloween' && (
