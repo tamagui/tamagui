@@ -21,8 +21,8 @@ const TitleLink = ({ href, children, ...props }: any) => {
           hoverStyle={{
             backgroundColor: '$color3',
           }}
-          size="$9"
-          fontSize="$7"
+          size="$10"
+          fontSize="$8"
           ls={0}
           {...props}
         >
@@ -83,9 +83,9 @@ export const HeroBelowContent = memo(() => {
             <Code size={16} color="var(--color9)" />
           </IconStack>
           <TitleLink href="/docs/core/configuration">Core</TitleLink>
-          <Paragraph o={0.7} size="$4">
-            0-dependency style library for React, works the same on Native and web. Fully
-            typed with themes, animations, variants, and more.
+          <Paragraph o={0.7} size="$5">
+            0-dependency style library for React. Use it for web-only, or target React
+            Native with the same code and 100% RN style API support in about 24Kb.
           </Paragraph>
         </Section>
 
@@ -94,9 +94,9 @@ export const HeroBelowContent = memo(() => {
             <Cpu size={16} color="var(--color9)" />
           </IconStack>
           <TitleLink href="/docs/intro/why-a-compiler">Static</TitleLink>
-          <Paragraph o={0.7} size="$4">
-            Optional compiler with advanced optimiziation for extreme speed. Easy install
-            with Next, Webpack, Vite, Babel and Metro.
+          <Paragraph o={0.7} size="$5">
+            An smart optimizer that does partial analysis, extracts CSS, flattens your
+            tree, and removes code. Supports Next, Webpack, Vite, Babel and Metro.
           </Paragraph>
         </Section>
 
@@ -105,9 +105,9 @@ export const HeroBelowContent = memo(() => {
             <Layers size={16} color="var(--color9)" />
           </IconStack>
           <TitleLink href="/docs/components/stacks">Tamagui</TitleLink>
-          <Paragraph o={0.7} size="$4">
-            Universal UI kit for Native + Web. Composable components, unstyled mode,
-            sizable, themeable, animatable with 3 drivers.
+          <Paragraph o={0.7} size="$5">
+            All the base components you'd want to work cross platform. Composable APIs,
+            unstyled and styled, sizable, themeable, with robust animation support.
           </Paragraph>
         </Section>
       </XStack>
