@@ -194,7 +194,9 @@ const TakeoutHeaderLink = ({ forceShowAllLinks }: HeaderProps) => {
               display: 'none',
             }}
           >
-            🥡
+            <TooltipSimple label="Starter kit">
+              <Text>🥡</Text>
+            </TooltipSimple>
           </HeadAnchor>
         </Popover.Trigger>
 
