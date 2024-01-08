@@ -105,7 +105,9 @@ const ToastViewport = React.memo(
       const ref = React.useRef<HTMLDivElement>(null)
       const onViewportChange = React.useCallback(
         (el: TamaguiElement) => {
-          if (context.viewports[name] !== el) context.onViewportChange(name, el)
+          if (el && !context.viewports[name]) {
+            context.onViewportChange(name, el)
+          }
         },
         [name, context.viewports]
       )
