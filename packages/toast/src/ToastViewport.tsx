@@ -2,7 +2,7 @@ import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
 import { GetProps, TamaguiElement, styled } from '@tamagui/core'
-import { Portal, PortalHost } from '@tamagui/portal'
+import { PortalHost } from '@tamagui/portal'
 import { YStack } from '@tamagui/stacks'
 import { VisuallyHidden } from '@tamagui/visually-hidden'
 import * as React from 'react'
@@ -83,14 +83,7 @@ type ToastViewportProps = ToastViewportFrameProps & {
    * Pass this when you want to have multiple/duplicated toasts.
    */
   multipleToasts?: boolean
-  zIndex?: number
-  /** if true it will render the toast in root (help to avoid z-index issues)
-   *  if false it will render the toast in place of <ToastViewport/>
-   *  @default true */
-  renderToRoot?: boolean
 }
-
-const Empty = (props) => props.children
 
 const ToastViewport = React.memo(
   React.forwardRef<HTMLDivElement, ScopedProps<ToastViewportProps>>(
@@ -102,7 +95,6 @@ const ToastViewport = React.memo(
         name = 'default',
         multipleToasts,
         zIndex,
-        renderToRoot = true,
         ...viewportProps
       } = props
       const context = useToastProviderContext(__scopeToast)
@@ -264,68 +256,64 @@ const ToastViewport = React.memo(
         }
       }, [getItems, getSortedTabbableCandidates, context.toastCount])
 
-      const Wrapper = renderToRoot ? Portal : Empty
-
       return (
-        <Wrapper zIndex={zIndex || 1000_000_000}>
-          <ToastViewportWrapperFrame
-            ref={wrapperRef}
-            role="region"
-            aria-label={label.replace('{hotkey}', hotkeyLabel)}
-            // // Ensure virtual cursor from landmarks menus triggers focus/blur for pause/resume
-            tabIndex={-1}
-            // // incase list has size when empty (e.g. padding), we remove pointer events so
-            // // it doesn't prevent interactions with page elements that it overlays
-            // pointerEvents={hasToasts ? undefined : 'none'}
-          >
-            {hasToasts && (
-              <FocusProxy
-                __scopeToast={__scopeToast}
-                viewportName={name}
-                ref={headFocusProxyRef}
-                onFocusFromOutsideViewport={() => {
-                  const tabbableCandidates = getSortedTabbableCandidates({
-                    tabbingDirection: 'forwards',
-                  })
-                  focusFirst(tabbableCandidates)
-                }}
+        <ToastViewportWrapperFrame
+          ref={wrapperRef}
+          role="region"
+          aria-label={label.replace('{hotkey}', hotkeyLabel)}
+          // // Ensure virtual cursor from landmarks menus triggers focus/blur for pause/resume
+          tabIndex={-1}
+          // // incase list has size when empty (e.g. padding), we remove pointer events so
+          // // it doesn't prevent interactions with page elements that it overlays
+          // pointerEvents={hasToasts ? undefined : 'none'}
+        >
+          {hasToasts && (
+            <FocusProxy
+              __scopeToast={__scopeToast}
+              viewportName={name}
+              ref={headFocusProxyRef}
+              onFocusFromOutsideViewport={() => {
+                const tabbableCandidates = getSortedTabbableCandidates({
+                  tabbingDirection: 'forwards',
+                })
+                focusFirst(tabbableCandidates)
+              }}
+            />
+          )}
+          {/**
+           * tabindex on the the list so that it can be focused when items are removed. we focus
+           * the list instead of the viewport so it announces number of items remaining.
+           */}
+          <Collection.Slot __scopeCollection={__scopeToast || TOAST_CONTEXT}>
+            <ToastViewportFrame
+              focusable={context.toastCount > 0}
+              ref={composedRefs}
+              {...viewportProps}
+            >
+              <PortalHost
+                render={(children) => (
+                  <AnimatePresence exitBeforeEnter={!multipleToasts}>
+                    {children}
+                  </AnimatePresence>
+                )}
+                name={name ?? 'default'}
               />
-            )}
-            {/**
-             * tabindex on the the list so that it can be focused when items are removed. we focus
-             * the list instead of the viewport so it announces number of items remaining.
-             */}
-            <Collection.Slot __scopeCollection={__scopeToast || TOAST_CONTEXT}>
-              <ToastViewportFrame
-                focusable={context.toastCount > 0}
-                ref={composedRefs}
-                {...viewportProps}
-              >
-                <PortalHost
-                  render={(children) => (
-                    <AnimatePresence exitBeforeEnter={!multipleToasts}>
-                      {children}
-                    </AnimatePresence>
-                  )}
-                  name={name ?? 'default'}
-                />
-              </ToastViewportFrame>
-            </Collection.Slot>
-            {hasToasts && (
-              <FocusProxy
-                __scopeToast={__scopeToast}
-                viewportName={name}
-                ref={tailFocusProxyRef}
-                onFocusFromOutsideViewport={() => {
-                  const tabbableCandidates = getSortedTabbableCandidates({
-                    tabbingDirection: 'backwards',
-                  })
-                  focusFirst(tabbableCandidates)
-                }}
-              />
-            )}
-          </ToastViewportWrapperFrame>
-        </Wrapper>
+            </ToastViewportFrame>
+          </Collection.Slot>
+          {hasToasts && (
+            <FocusProxy
+              __scopeToast={__scopeToast}
+              viewportName={name}
+              ref={tailFocusProxyRef}
+              onFocusFromOutsideViewport={() => {
+                const tabbableCandidates = getSortedTabbableCandidates({
+                  tabbingDirection: 'backwards',
+                })
+                focusFirst(tabbableCandidates)
+              }}
+            />
+          )}
+        </ToastViewportWrapperFrame>
       )
     }
   )
