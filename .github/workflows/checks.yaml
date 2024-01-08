@@ -50,6 +50,9 @@ jobs:
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
 
+      - name: Link Vercel Project
+        run: cd apps/site && vercel link --project site --scope=tamagui --yes --token=${{ secrets.VERCEL_TOKEN }}
+
       - name: Pull Vercel Environment Information
         run: cd apps/site && vercel env pull .env.local --scope=tamagui --yes --token=${{ secrets.VERCEL_TOKEN }}
 
