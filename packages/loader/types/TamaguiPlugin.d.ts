@@ -20,7 +20,7 @@ export declare class TamaguiPlugin {
     get componentsFullPaths(): string[][];
     get componentsBaseDirs(): string[];
     isInComponentModule: (fullPath: string) => boolean;
-    defaultAliases: any;
+    get defaultAliases(): any;
     apply(compiler: Compiler): void;
 }
 //# sourceMappingURL=TamaguiPlugin.d.ts.map

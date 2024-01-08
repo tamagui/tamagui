@@ -151,6 +151,10 @@ export class TamaguiPlugin {
       await loadTamagui(this.options)
     })
 
+    console.info(
+      `\n\nNote: the [ignored-bare-import] warning for some Tamagui packages is ignorable, it's an artifact of esbuild that we will eventually find a decent fix for.\n\n`
+    )
+
     // mark as side effect
     compiler.hooks.normalModuleFactory.tap(this.pluginName, (nmf) => {
       nmf.hooks.createModule.tap(
