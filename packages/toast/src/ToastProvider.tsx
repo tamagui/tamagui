@@ -170,13 +170,11 @@ function ReprogapateToastProvider(props: {
   )
 }
 
-function ToastProtal({
+function ToastPortal({
   children,
-  name,
   zIndex,
 }: {
   children: React.ReactNode
-  name?: string
   zIndex?: number
 }) {
   let content = children
@@ -202,5 +200,5 @@ ToastProvider.propTypes = {
 
 ToastProvider.displayName = PROVIDER_NAME
 
-export { Collection, ToastProvider, useCollection, useToastProviderContext, ToastProtal }
+export { Collection, ToastProvider, useCollection, useToastProviderContext, ToastPortal }
 export type { ScopedProps, ToastProviderProps }

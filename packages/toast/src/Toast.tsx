@@ -29,7 +29,7 @@ import {
 } from './ToastImpl'
 import {
   ScopedProps,
-  ToastProtal,
+  ToastPortal,
   ToastProvider,
   ToastProviderProps,
 } from './ToastProvider'
@@ -220,7 +220,7 @@ export {
   useToast,
   useToastController,
   useToastState,
-  ToastProtal,
+  ToastPortal,
 }
 export type {
   // imperative

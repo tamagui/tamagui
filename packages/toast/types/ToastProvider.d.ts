@@ -80,11 +80,10 @@ interface ToastProviderProps {
     notificationOptions?: NotificationOptions;
 }
 declare const ToastProvider: React.FC<ToastProviderProps>;
-declare function ToastProtal({ children, name, zIndex, }: {
+declare function ToastPortal({ children, zIndex, }: {
     children: React.ReactNode;
-    name?: string;
     zIndex?: number;
 }): JSX.Element;
-export { Collection, ToastProvider, useCollection, useToastProviderContext, ToastProtal };
+export { Collection, ToastProvider, useCollection, useToastProviderContext, ToastPortal };
 export type { ScopedProps, ToastProviderProps };
 //# sourceMappingURL=ToastProvider.d.ts.map

@@ -2,7 +2,7 @@ import { GetProps, NativePlatform, NativeValue, TamaguiElement } from '@tamagui/
 import * as React from 'react';
 import { CustomData, useToast, useToastController, useToastState } from './ToastImperative';
 import { ToastExtraProps, ToastProps } from './ToastImpl';
-import { ToastProtal, ToastProvider, ToastProviderProps } from './ToastProvider';
+import { ToastPortal, ToastProvider, ToastProviderProps } from './ToastProvider';
 import { ToastViewport, ToastViewportProps } from './ToastViewport';
 declare const ToastTitle: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").TextProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<React.CSSProperties | import("react-native").TextStyle | (React.CSSProperties & import("react-native").TextStyle)>;
@@ -1616,6 +1616,6 @@ declare const Toast: import("@tamagui/core").ReactComponentWithRef<Omit<Omit<imp
         chromeless?: boolean | "all" | undefined;
     }>>, "ref">) & React.RefAttributes<TamaguiElement>>;
 };
-export { Toast, ToastProvider, ToastViewport, useToast, useToastController, useToastState, ToastProtal, };
+export { Toast, ToastProvider, ToastViewport, useToast, useToastController, useToastState, ToastPortal, };
 export type { CustomData, ToastActionProps, ToastCloseProps, ToastDescriptionProps, NativePlatform as ToastNativePlatform, NativeValue as ToastNativeValue, ToastProps, ToastProviderProps, ToastTitleProps, ToastViewportProps, };
 //# sourceMappingURL=Toast.d.ts.map
