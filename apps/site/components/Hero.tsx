@@ -152,81 +152,7 @@ const HeroContents = memo(function HeroContents() {
             <br />
             <span style={{ position: 'relative' }}>
               <span>runs&nbsp;faster</span>
-              <Text
-                pos="absolute"
-                className="clip-text rainbow"
-                t={7}
-                $sm={{ t: 1 }}
-                l={-3}
-              >
-                runs&nbsp;faster
-              </Text>
-              <Text
-                pos="absolute"
-                className="clip-text grain"
-                t={9}
-                l={-2}
-                o={0.5}
-                $sm={{ t: 1 }}
-              >
-                runs&nbsp;faster
-              </Text>
-              <ThemeTintAlt offset={2}>
-                <Text
-                  className="mask-gradient-left"
-                  pos="absolute"
-                  t={9}
-                  $sm={{ t: 1 }}
-                  pe="none"
-                  l={-1}
-                  o={0.5}
-                  color="$color8"
-                >
-                  runs&nbsp;faster
-                </Text>
-              </ThemeTintAlt>
-              <ThemeTintAlt offset={1}>
-                <Text
-                  className="mask-gradient-left"
-                  pos="absolute"
-                  t={9}
-                  $sm={{ t: 1 }}
-                  pe="none"
-                  l={-3}
-                  o={0.25}
-                  color="$color8"
-                >
-                  runs&nbsp;faster
-                </Text>
-              </ThemeTintAlt>
-              <ThemeTintAlt offset={-2}>
-                <Text
-                  className="mask-gradient-right"
-                  pos="absolute"
-                  t={9}
-                  $sm={{ t: 1 }}
-                  pe="none"
-                  l={-5}
-                  color="$color8"
-                  o={0.1}
-                >
-                  runs&nbsp;faster
-                </Text>
-              </ThemeTintAlt>
-              <ThemeTintAlt offset={-3}>
-                <Text
-                  className="mask-gradient-right"
-                  pos="absolute"
-                  t={9}
-                  $sm={{ t: 1 }}
-                  pe="none"
-                  l={2}
-                  color="$color8"
-                  o={0.5}
-                >
-                  runs&nbsp;faster
-                </Text>
-              </ThemeTintAlt>
+              <RunsFasterTextEffects />
             </span>
           </H1>
 
@@ -428,3 +354,54 @@ const Tag = styled(Text, {
     },
   } as const,
 })
+
+const HeroText = styled(Text, {
+  position: 'absolute',
+
+  $sm: {
+    t: 0,
+    l: -2,
+  },
+
+  $gtSm: {
+    t: 2,
+  },
+
+  $gtMd: {
+    t: 4,
+  },
+
+  $gtLg: {
+    t: 8,
+  },
+})
+
+const RunsFasterTextEffects = () => {
+  return (
+    <YStack fullscreen>
+      <HeroText className="clip-text rainbow" l={-3}>
+        runs&nbsp;faster
+      </HeroText>
+      <ThemeTintAlt offset={2}>
+        <HeroText className="mask-gradient-left" pe="none" l={-2} o={0.5} col="$color8">
+          runs&nbsp;faster
+        </HeroText>
+      </ThemeTintAlt>
+      <ThemeTintAlt offset={1}>
+        <HeroText l={-3} className="mask-gradient-left" pe="none" col="$color8">
+          runs&nbsp;faster
+        </HeroText>
+      </ThemeTintAlt>
+      <ThemeTintAlt offset={-2}>
+        <HeroText l={3} className="mask-gradient-right" pe="none" col="$color8" o={0.1}>
+          runs&nbsp;faster
+        </HeroText>
+      </ThemeTintAlt>
+      <ThemeTintAlt offset={-3}>
+        <HeroText l={-3} className="mask-gradient-right" pe="none" col="$color8" o={0.5}>
+          runs&nbsp;faster
+        </HeroText>
+      </ThemeTintAlt>
+    </YStack>
+  )
+}
