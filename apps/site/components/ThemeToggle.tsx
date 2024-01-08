@@ -32,7 +32,7 @@ export const ThemeToggle = (props: ButtonProps) => {
   return (
     <TooltipSimple
       groupId="header-actions-theme"
-      label={`Switch theme (${themeSetting.current})`}
+      label={`Scheme (${themeSetting.current})`}
     >
       <Button
         size="$3"

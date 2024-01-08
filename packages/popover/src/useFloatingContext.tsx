@@ -33,6 +33,7 @@ export const useFloatingContext = ({
                 requireIntent: true,
                 blockPointerEvents: true,
               }),
+              ...(hoverable && typeof hoverable === 'object' && hoverable),
             })
           : useHover(floating.context, {
               enabled: false,

@@ -1,15 +1,24 @@
-import { TamaguiLogo, setNextTintFamily, setTintFamily, useTint } from '@tamagui/logo'
-import { Button, ButtonProps, Popover, Square, Text, YStack } from 'tamagui'
+import { TamaguiLogo, setTintFamily, useTint } from '@tamagui/logo'
+import {
+  Button,
+  ButtonProps,
+  Circle,
+  Popover,
+  SizableText,
+  Square,
+  Text,
+  YStack,
+} from 'tamagui'
 
 export const seasons = {
-  tamagui: <TamaguiLogo downscale={2.5} />,
+  tamagui: <TamaguiLogo downscale={2} />,
   easter: '🐣',
   xmas: '🎅🏻',
   halloween: '🎃',
 }
 
 export const SeasonToggleButton = (props: ButtonProps) => {
-  const { name } = useTint()
+  const { name, tint, setNextTint } = useTint()
 
   return (
     <Popover hoverable>
@@ -17,11 +26,28 @@ export const SeasonToggleButton = (props: ButtonProps) => {
         <Button
           size="$3"
           w={38}
-          onPress={setNextTintFamily}
+          h={30}
+          onPress={(e) => {
+            setNextTint()
+            e.stopPropagation()
+          }}
           {...props}
           aria-label="Toggle theme"
+          ov="hidden"
         >
-          <Text>{seasons[name]}</Text>
+          <Circle
+            bw={1}
+            boc="var(--color9)"
+            m={2}
+            size={12}
+            backgroundColor={tint as any}
+          />
+
+          {name !== 'tamagui' && (
+            <SizableText size="$8" pos="absolute" b={-10} r={-10} rotate="-10deg">
+              {seasons[name]}
+            </SizableText>
+          )}
         </Button>
       </Popover.Trigger>
 
@@ -46,7 +72,7 @@ export const SeasonToggleButton = (props: ButtonProps) => {
             return (
               <Square
                 key={optionName}
-                size="$3"
+                size="$4"
                 $sm={{ size: '$5' }}
                 hoverStyle={{
                   bc: '$backgroundHover',
@@ -64,7 +90,9 @@ export const SeasonToggleButton = (props: ButtonProps) => {
                   setTintFamily(optionName as any)
                 }}
               >
-                <Text cursor="default">{seasons[optionName]}</Text>
+                <SizableText size="$6" cursor="default">
+                  {seasons[optionName]}
+                </SizableText>
               </Square>
             )
           })}

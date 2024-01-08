@@ -1043,13 +1043,6 @@ export default function TakeoutPage({
                 <MunroP size="$9" $sm={{ size: '$8' }} color="$yellow10">
                   We hope you enjoy.
                 </MunroP>
-
-                <MunroP size="$1" o={0.3}>
-                  These statements have not been approved by the FDA. Talk to your doctor
-                  before trying Tamagui Takeout. Side effects may include spending way too
-                  much time tweaking color palettes when you should be just shipping your
-                  damn app.
-                </MunroP>
               </YStack>
             </XStack>
 
@@ -1766,6 +1759,12 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
                 <Row
                   title="Data & Auth"
                   description="Supabase pre-configured with migrations, email and OAuth (Google + Apple) authentication, utilities, automatic setup and everything to get rolling immediately."
+                  after="01"
+                />
+
+                <Row
+                  title="RPC"
+                  description="We've set up tRPC, which you can optionally use, that works alongside Zod to provide easy, type-safe APIs."
                   after="01"
                 />
 

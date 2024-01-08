@@ -93,6 +93,7 @@ export type {
   SpaceTokens,
   SpecificTokens,
   StackNonStyleProps,
+  ViewProps,
   StackProps,
   StackPropsBase,
   StaticConfig,

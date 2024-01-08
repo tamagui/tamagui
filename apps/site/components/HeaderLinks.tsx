@@ -78,7 +78,7 @@ export const HeaderLinks = (props: HeaderProps) => {
                   display: forceShowAllLinks ? 'flex' : 'none',
                 }}
               >
-                Starter Kit 🥡
+                Starter Kit
               </HeadAnchor>
             </NextLink>
           )}
@@ -121,6 +121,16 @@ export const HeaderLinks = (props: HeaderProps) => {
         </NextLink>
       )}
 
+      {forceShowAllLinks && (
+        <NextLink
+          legacyBehavior={false}
+          target="_blank"
+          href="https://github.com/sponsors/natew"
+        >
+          <HeadAnchor>Sponsor</HeadAnchor>
+        </NextLink>
+      )}
+
       {!userSwr.data?.session?.user && !isHeader && (
         <NextLink passHref prefetch={false} href="/login">
           <HeadAnchor
@@ -139,7 +149,7 @@ export const HeaderLinks = (props: HeaderProps) => {
 const TakeoutHeaderLink = ({ forceShowAllLinks }: HeaderProps) => {
   const router = useRouter()
   const isDisabledRoute = router.asPath === '/'
-  const disabled = isDisabledRoute
+  const [disabled, setDisabled] = React.useState(isDisabledRoute)
   const [open, setOpen] = React.useState(false)
   const [hasOpenedOnce, setHasOpenedOnce] = React.useState(false)
 
@@ -156,12 +166,22 @@ const TakeoutHeaderLink = ({ forceShowAllLinks }: HeaderProps) => {
   React.useEffect(() => {
     if (open || disabled || hasOpenedOnce) return
 
-    const tm = setTimeout(openIt, 2000)
+    const tm = setTimeout(openIt, 0)
 
     return () => {
       clearTimeout(tm)
     }
   }, [open, disabled])
+
+  // remember if you closed it
+  React.useEffect(() => {
+    const key = 'tkt-cta-times-close2'
+    const timesClosed = +(localStorage.getItem(key) || 0)
+    if (timesClosed > 3) {
+      setDisabled(true)
+    }
+    localStorage.setItem(key, `${timesClosed + 1}`)
+  }, [])
 
   return (
     <NextLink legacyBehavior={false} prefetch={false} href="/takeout">
@@ -184,7 +204,9 @@ const TakeoutHeaderLink = ({ forceShowAllLinks }: HeaderProps) => {
               display: 'none',
             }}
           >
-            🥡
+            <TooltipSimple label="Starter kit">
+              <Text>🥡</Text>
+            </TooltipSimple>
           </HeadAnchor>
         </Popover.Trigger>
 
@@ -206,6 +228,7 @@ const TakeoutHeaderLink = ({ forceShowAllLinks }: HeaderProps) => {
             tag="a"
             cur="pointer"
             bg="$background"
+            ai="center"
             py="$2"
             px="$3"
             br="$4"
@@ -214,12 +237,17 @@ const TakeoutHeaderLink = ({ forceShowAllLinks }: HeaderProps) => {
             }}
             elevation="$0.25"
           >
-            <SizableText ff="$silkscreen">
-              Takeout 🥡{' '}
-              <Text ff="$body" fontSize="$3" color="$color10" $sm={{ dsp: 'none' }}>
-                starter kit
-              </Text>
-            </SizableText>
+            <SizableText ff="$silkscreen">Takeout </SizableText>
+            <Text
+              ff="$body"
+              fontSize="$3"
+              color="$color10"
+              $sm={{ dsp: 'none' }}
+              y={0.98}
+              ml={6}
+            >
+              starter kit
+            </Text>
           </XStack>
         </Popover.Content>
       </Popover>

@@ -28,8 +28,8 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = React.forwardRef(
     const contents = (
       <Tooltip
         offset={15}
-        restMs={220}
-        delay={160}
+        restMs={0}
+        delay={0}
         {...tooltipProps}
         {...(disabled ? { open: false } : null)}
       >
@@ -57,7 +57,7 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = React.forwardRef(
           })}
           animateOnly={['transform', 'opacity']}
           animation={[
-            'quick',
+            '75ms',
             {
               opacity: {
                 overshootClamping: true,

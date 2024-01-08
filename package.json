@@ -9,7 +9,7 @@
     "./apps/*",
     "./packages/*"
   ],
-  "packageManager": "yarn@3.6.3",
+  "packageManager": "yarn@4.0.2",
   "scripts": {
     "build:force": "yarn clean:build && yarn build --force",
     "build:js": "./scripts/build-js.sh",
@@ -105,7 +105,7 @@
     "prettier": "^2.8.1",
     "pretty-quick": "^3.1.2",
     "prompts": "2.1.0",
-    "turbo": "^1.10.13",
+    "turbo": "^1.11.3",
     "typescript": "^5.2.2",
     "ultra-runner": "^3.10.5"
   },

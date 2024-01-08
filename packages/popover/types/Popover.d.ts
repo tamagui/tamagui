@@ -1,4 +1,5 @@
 import '@tamagui/polyfill-dev';
+import { UseHoverProps } from '@floating-ui/react';
 import { ScopedProps, SizeTokens, StackProps, TamaguiElement } from '@tamagui/core';
 import { DismissableProps } from '@tamagui/dismissable';
 import { FocusScopeProps } from '@tamagui/focus-scope';
@@ -15,7 +16,7 @@ export type PopoverProps = PopperProps & {
     /**
      * Enable staying open while mouseover
      */
-    hoverable?: boolean;
+    hoverable?: boolean | UseHoverProps;
     /**
      * Disable focusing behavior on open
      */
@@ -36,6 +37,7 @@ type PopoverContextValue = {
     sheetBreakpoint: any;
     breakpointActive?: boolean;
     keepChildrenMounted?: boolean;
+    anchorTo?: Rect;
 };
 export declare const PopoverContext: import("@tamagui/core").StyledContext<PopoverContextValue>;
 export declare const usePopoverContext: (scope?: string | undefined) => PopoverContextValue;
@@ -82,7 +84,10 @@ export declare const PopoverAnchor: React.ForwardRefExoticComponent<Omit<ScopedP
     onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-    onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * Event handler called when auto-focusing on open.
+     * Can be prevented.
+     */
     onResponderRelease?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderStart?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderTerminationRequest?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
@@ -152,6 +157,8 @@ export interface PopoverContentTypeProps extends Omit<PopoverContentImplProps, '
      * @see https://github.com/theKashey/react-remove-scroll#usage
      */
     allowPinchZoom?: RemoveScrollProps['allowPinchZoom'];
+    /** enable animation for content position changing */
+    enableAnimationForPositionChange?: boolean;
 }
 export declare const PopoverContent: React.ForwardRefExoticComponent<Omit<ScopedPopoverProps<PopoverContentTypeProps>, "ref"> & React.RefAttributes<HTMLElement | import("react-native").View>>;
 export interface PopoverContentImplProps extends PopperContentProps, Omit<DismissableProps, 'onDismiss' | 'children' | 'onPointerDownCapture'> {
@@ -221,7 +228,10 @@ export declare const PopoverClose: React.ForwardRefExoticComponent<Omit<ScopedPo
     onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-    onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * Event handler called when auto-focusing on open.
+     * Can be prevented.
+     */
     onResponderRelease?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderStart?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderTerminationRequest?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
@@ -692,7 +702,31 @@ export declare const PopoverArrow: import("@tamagui/core").TamaguiComponent<Omit
         readonly elevation?: number | SizeTokens | undefined;
     };
 }>;
-export declare const Popover: React.FC<PopoverProps> & {
+type Rect = {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+};
+export type PopoverRef = {
+    anchorTo: (rect: Rect) => void;
+};
+export declare const Popover: React.ForwardRefExoticComponent<PopperProps & {
+    open?: boolean | undefined;
+    defaultOpen?: boolean | undefined;
+    onOpenChange?: ((open: boolean) => void) | undefined;
+    keepChildrenMounted?: boolean | undefined;
+    /**
+     * Enable staying open while mouseover
+     */
+    hoverable?: boolean | UseHoverProps<import("@floating-ui/react").ReferenceType> | undefined;
+    /**
+     * Disable focusing behavior on open
+     */
+    disableFocus?: boolean | undefined;
+} & {
+    __scopePopover?: string | undefined;
+} & React.RefAttributes<PopoverRef>> & {
     Anchor: React.ForwardRefExoticComponent<Omit<ScopedPopoverProps<Omit<import("react-native").ViewProps, "pointerEvents" | "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
         style?: import("@tamagui/core").StyleProp<React.CSSProperties | import("react-native").ViewStyle | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
@@ -735,7 +769,10 @@ export declare const Popover: React.FC<PopoverProps> & {
         onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-        onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+        onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+         * Event handler called when auto-focusing on open.
+         * Can be prevented.
+         */
         onResponderRelease?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderStart?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderTerminationRequest?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
@@ -1253,7 +1290,10 @@ export declare const Popover: React.FC<PopoverProps> & {
         onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-        onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+        onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+         * Event handler called when auto-focusing on open.
+         * Can be prevented.
+         */
         onResponderRelease?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderStart?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderTerminationRequest?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;

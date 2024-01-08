@@ -22,21 +22,15 @@ export const LoadSilkscreen = () => (
 )
 
 export const LoadInter400 = () => (
-  <LoadFont
-    woff2File="/fonts/subset-Inter-Regular.woff2"
-    cssFile="/fonts/inter-400.css"
-  />
+  <LoadFont woff2File="/fonts/Inter-Regular.woff2" cssFile="/fonts/inter-400.css" />
 )
 
 export const LoadInter700 = () => (
-  <LoadFont
-    woff2File="/fonts/subset-Inter-ExtraBold.woff2"
-    cssFile="/fonts/inter-700.css"
-  />
+  <LoadFont woff2File="/fonts/Inter-ExtraBold.woff2" cssFile="/fonts/inter-700.css" />
 )
 
 export const LoadInter900 = () => (
-  <LoadFont woff2File="/fonts/subset-Inter-Black.woff2" cssFile="/fonts/inter-900.css" />
+  <LoadFont woff2File="/fonts/Inter-Black.woff2" cssFile="/fonts/inter-900.css" />
 )
 
 export const LoadGlusp = () => (

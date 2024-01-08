@@ -1,5 +1,5 @@
 import { Heart } from '@tamagui/lucide-icons'
-import { Button, TooltipSimple } from 'tamagui'
+import { Button, TooltipSimple, YStack } from 'tamagui'
 
 import { NextLink } from './NextLink'
 
@@ -20,7 +20,6 @@ export const SponsorButton = (props: { tiny?: boolean }) => {
       borderColor="$borderColor"
       size={props.tiny ? '$3' : '$4'}
       fontFamily="$silkscreen"
-      bc="$color1"
       br="$10"
       circular={props.tiny ? true : false}
       chromeless={props.tiny ? true : false}
@@ -31,13 +30,15 @@ export const SponsorButton = (props: { tiny?: boolean }) => {
   )
   return (
     <NextLink target="_blank" href="https://github.com/sponsors/natew">
-      {props.tiny ? (
-        <TooltipSimple delay={0} restMs={25} label="Support OSS development of Tamagui">
-          {el}
-        </TooltipSimple>
-      ) : (
-        el
-      )}
+      <YStack>
+        {props.tiny ? (
+          <TooltipSimple delay={0} restMs={25} label="Support OSS development of Tamagui">
+            {el}
+          </TooltipSimple>
+        ) : (
+          el
+        )}
+      </YStack>
     </NextLink>
   )
 }

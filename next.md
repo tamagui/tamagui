@@ -1,3 +1,4 @@
+studio: add outlineColor and the pseudos
 studio: export for takeout option
 
 outlineWidth get smaller at smaller size
