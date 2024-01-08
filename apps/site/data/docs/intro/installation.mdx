@@ -3,7 +3,7 @@ title: Installation
 description: Get Tamagui set up, step by step
 ---
 
-We recommend using the CLI to bootstrap an example app, even if it's only as a reference as you set up your existing app:
+We recommend using the CLI to bootstrap an example app, even if it's only for reference as you set up your existing app:
 
 ```bash
 npm create tamagui
@@ -11,7 +11,7 @@ npm create tamagui
 
 ## Install
 
-You can use the 0-dependency core, or move higher level with `tamagui`, which is a superset of core adding many components and hooks. We recommend yarn in general because it works well with monorepos and yarn, both of which are common with universal apps. But pnpm and npm are both viable alternatives.
+You can use the 0-dependency `@tamagui/core`, or move higher level with `tamagui`, which is a superset of core adding many components and hooks. We recommend yarn in general because it works well with monorepos and yarn, both of which are common with universal apps. But pnpm and npm are both viable alternatives.
 
 For just the core style library:
 
@@ -27,11 +27,9 @@ yarn add tamagui
 
 Tamagui doesn't require any special bundler setup. It also doesn't necessarily require you to set up your design system with `createTamagui`, but we provide some helpful default setups if you want.
 
-Beyond adding the `TamaguiProvider` somehere at the root of your app, you are ready to go.
+Beyond adding the `TamaguiProvider` at the root of your app, you are ready to go. For a more detailed design system setup, [follow the configuration docs](/docs/core/configuration).
 
-## Quick configuration
-
-For setting up a customi design system, [follow the configuration docs](/docs/core/configuration). At the rot of your app you'll want to add the Provider with config, which can be as simple as an empty object:
+At the root of your app:
 
 ```tsx
 // some helpful reset styles for web:
@@ -43,6 +41,7 @@ import { TamaguiProvider, createTamagui } from 'tamagui'
 import { config } from '@tamagui/config/v2'
 
 // you usually export this from a tamagui.config.ts file:
+// this can be as simple as an empty object
 const tamaguiConfig = createTamagui(config)
 
 // this makes typescript properly type everything based on the config
