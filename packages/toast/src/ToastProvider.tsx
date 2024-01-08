@@ -187,11 +187,7 @@ function ToastProtal({
       </ReprogapateToastProvider>
     )
   }
-  return (
-    <Portal zIndex={zIndex || 1000_000_000} host={name || 'default'}>
-      {content}
-    </Portal>
-  )
+  return <Portal zIndex={zIndex || 1000_000_000}>{content}</Portal>
 }
 
 ToastProvider.propTypes = {
