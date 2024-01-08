@@ -1533,8 +1533,9 @@ export function createExtractor(
               (traversePath.node.children &&
                 traversePath.node.children.every((x) => x.type === 'JSXText')))
 
-          // on native we can't flatten when theme prop is set
           let themeVal = inlined.get('theme')
+
+          // on native we can't flatten when theme prop is set
           if (platform !== 'native') {
             inlined.delete('theme')
           }
@@ -1578,9 +1579,16 @@ export function createExtractor(
 
           // only if we flatten, ensure the default styles are there
           if (shouldFlatten) {
+            let skipMap = false
             const defaultStyleAttrs = Object.keys(defaultProps).flatMap((key) => {
+              if (skipMap) return []
               const value = defaultProps[key]
               if (key === 'theme' && !themeVal) {
+                if (platform === 'native') {
+                  shouldFlatten = false
+                  skipMap = true
+                  inlined.set('theme', { value: t.stringLiteral(value) })
+                }
                 themeVal = { value: t.stringLiteral(value) }
                 return []
               }
@@ -1625,8 +1633,10 @@ export function createExtractor(
               return attr
             }) as ExtractedAttr[]
 
-            if (defaultStyleAttrs.length) {
-              attrs = [...defaultStyleAttrs, ...attrs]
+            if (!skipMap) {
+              if (defaultStyleAttrs.length) {
+                attrs = [...defaultStyleAttrs, ...attrs]
+              }
             }
           }
 
@@ -1675,7 +1685,7 @@ export function createExtractor(
           // wrap theme around children on flatten
           // TODO move this to bottom and re-check shouldFlatten
           // account for shouldFlatten could change w the above block "if (disableExtractVariables)"
-          if (shouldFlatten && shouldWrapTheme) {
+          if (shouldWrapTheme) {
             if (!programPath) {
               console.warn(
                 `No program path found, avoiding importing flattening / importing theme in ${sourcePath}`
