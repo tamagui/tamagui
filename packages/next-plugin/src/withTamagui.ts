@@ -1,15 +1,9 @@
-import { existsSync } from 'fs'
-import path, { dirname, join } from 'path'
+import path from 'path'
 
 import browserslist from 'browserslist'
-import buildResolver from 'esm-resolve'
 import { lazyPostCSS } from 'next/dist/build/webpack/config/blocks/css'
 import { getGlobalCssLoader } from 'next/dist/build/webpack/config/blocks/css/loaders'
-import {
-  PluginOptions as LoaderPluginOptions,
-  TamaguiPlugin,
-  shouldExclude as shouldExcludeDefault,
-} from 'tamagui-loader'
+import { PluginOptions as LoaderPluginOptions, TamaguiPlugin } from 'tamagui-loader'
 import webpack from 'webpack'
 
 export type WithTamaguiProps = LoaderPluginOptions & {
@@ -40,10 +34,6 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
       webpack: (webpackConfig: any, options: any) => {
         const { dir, config, dev, isServer } = options
 
-        const resolver = buildResolver(join(dir, 'index.js'), {
-          constraints: 'node',
-        })
-
         // @ts-ignore
         if (typeof globalThis['__DEV__'] === 'undefined') {
           // @ts-ignore
@@ -56,121 +46,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
         }
 
         const prefix = `${isServer ? ' ssr ' : ' web '} |`
-
-        const safeResolves = (resolves: [string, string][], multiple = false) => {
-          const res: string[][] = []
-          for (const [out, mod] of resolves) {
-            if (out.endsWith('$')) {
-              res.push([out, mod])
-              continue
-            }
-            try {
-              res.push([out, resolveEsm(mod)])
-              if (multiple) {
-                res.push([out, resolveEsm(mod, true)])
-              }
-            } catch (err) {
-              if (out.includes(`@gorhom/bottom-sheet`)) {
-                continue
-              }
-              if (process.env.DEBUG?.startsWith('tamagui')) {
-                console.info(prefix, `withTamagui skipping resolving ${out}`, err)
-              }
-            }
-          }
-          return res
-        }
-
-        const resolveEsm = (relativePath: string, onlyRequire = false) => {
-          if (isServer || onlyRequire) {
-            return require.resolve(relativePath)
-          }
-          const esm = resolver(relativePath)
-          return esm ? path.join(dir, esm) : require.resolve(relativePath)
-        }
-
         const SEP = path.sep
-
-        // automatically compile our given components
-        const componentsFullPaths = safeResolves(
-          tamaguiOptions.components.map(
-            (moduleName) => [moduleName, moduleName] as [string, string]
-          ),
-          true
-        )
-
-        const componentsBaseDirs = componentsFullPaths.map(([_, fullPath]) => {
-          let rootPath = dirname(fullPath as string)
-          while (rootPath.length > 1) {
-            const pkg = join(rootPath, 'package.json')
-            const hasPkg = existsSync(pkg)
-            if (hasPkg) {
-              return rootPath
-            } else {
-              rootPath = join(rootPath, '..')
-            }
-          }
-          throw new Error(`Couldn't find package.json in any path above: ${fullPath}`)
-        })
-
-        function isInComponentModule(fullPath: string) {
-          return componentsBaseDirs.some((componentDir) =>
-            fullPath.startsWith(componentDir)
-          )
-        }
-
-        // allows configuration
-        const shouldExclude = (path: string, projectRoot: string) => {
-          const res = tamaguiOptions.shouldExtract?.(path, projectRoot)
-          if (typeof res === 'boolean') {
-            return !res
-          }
-          if (isInComponentModule(path)) {
-            return false
-          }
-          return shouldExcludeDefault(path, projectRoot)
-        }
-
-        const rnw = tamaguiOptions.useReactNativeWebLite
-          ? 'react-native-web-lite'
-          : 'react-native-web'
-
-        const tamaguiAliases = Object.fromEntries(
-          safeResolves([
-            ['@tamagui/core/reset.css', '@tamagui/core/reset.css'],
-            ['@tamagui/core', '@tamagui/core'],
-            ['@tamagui/web', '@tamagui/web'],
-            // web specific light react-native-svg, optional, can use svgs but had issues with compat
-            ['react-native-svg', '@tamagui/react-native-svg'],
-            // fixes https://github.com/kentcdodds/mdx-bundler/issues/143
-            ['react/jsx-runtime.js', 'react/jsx-runtime'],
-            ['react/jsx-runtime', 'react/jsx-runtime'],
-            ['react/jsx-dev-runtime.js', 'react/jsx-dev-runtime'],
-            ['react/jsx-dev-runtime', 'react/jsx-dev-runtime'],
-            ['react-native-reanimated', 'react-native-reanimated'],
-            ['react-native$', rnw],
-            ['react-native-web$', rnw],
-            ['@testing-library/react-native', '@tamagui/proxy-worm'],
-            ['@gorhom/bottom-sheet$', '@gorhom/bottom-sheet'],
-            // fix reanimated 3
-            ['react-native/Libraries/Renderer/shims/ReactFabric', '@tamagui/proxy-worm'],
-            ...(tamaguiOptions.aliasReactPackages
-              ? ([
-                  ['react', 'react'],
-                  ['react-dom', 'react-dom'],
-                ] as any)
-              : []),
-          ])
-        )
-
-        const alias = {
-          ...(webpackConfig.resolve.alias || {}),
-          ...tamaguiAliases,
-        }
-
-        if (process.env.DEBUG) {
-          console.info('Tamagui alias:', alias)
-        }
 
         if (process.env.ANALYZE === 'true') {
           Object.assign(webpackConfig.optimization, {
@@ -178,7 +54,12 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
           })
         }
 
-        webpackConfig.resolve.alias = alias
+        const enableStudio = options.dev && options.nextRuntime === 'nodejs' && isServer
+        const tamaguiPlugin = new TamaguiPlugin({
+          enableStudio,
+          isServer,
+          ...tamaguiOptions,
+        })
 
         const defines = {
           'process.env.IS_STATIC': JSON.stringify(''),
@@ -192,6 +73,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
             ),
           }),
 
+          // TODO move to TamaguiPlugin
           // optimizes inserts automatically assuming CSS wont be "removed" on page change
           ...(tamaguiOptions.emitSingleCSSFile && {
             'process.env.TAMAGUI_INSERT_SELECTOR_TRIES': JSON.stringify('1'),
@@ -199,29 +81,6 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
         }
 
         webpackConfig.plugins.push(new webpack.DefinePlugin(defines))
-
-        const excludeExports = tamaguiOptions.excludeReactNativeWebExports
-        if (Array.isArray(excludeExports)) {
-          try {
-            const regexStr = `react-native-web(-lite)?/.*(${excludeExports.join(
-              '|'
-            )}).*js`
-            const regex = new RegExp(regexStr)
-            // console.info(prefix, 'exclude', regexStr)
-            webpackConfig.plugins.push(
-              new webpack.NormalModuleReplacementPlugin(
-                regex,
-                resolveEsm('@tamagui/proxy-worm')
-              )
-            )
-          } catch (err) {
-            console.warn(
-              `Invalid names provided to excludeReactNativeWebExports: ${excludeExports.join(
-                ', '
-              )}`
-            )
-          }
-        }
 
         if (process.env.IGNORE_TS_CONFIG_PATHS) {
           if (process.env.DEBUG) {
@@ -260,7 +119,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
               }
             }
 
-            if (isInComponentModule(fullPath)) {
+            if (tamaguiPlugin.isInComponentModule(fullPath)) {
               return false
             }
 
@@ -404,20 +263,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
           }
         }
 
-        const enableStudio = options.dev && options.nextRuntime === 'nodejs' && isServer
-
-        webpackConfig.plugins.push(
-          new TamaguiPlugin({
-            enableStudio,
-            isServer,
-            exclude: (path: string) => {
-              const res = shouldExclude(path, options.dir)
-              // console.info(`shouldExclude`, res, path)
-              return res
-            },
-            ...tamaguiOptions,
-          })
-        )
+        webpackConfig.plugins.push(tamaguiPlugin)
 
         if (typeof nextConfig.webpack === 'function') {
           return nextConfig.webpack(webpackConfig, options)

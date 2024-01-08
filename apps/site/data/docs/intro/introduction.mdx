@@ -4,22 +4,24 @@ description: Universal styles for React Native and Web
 ---
 
 <IntroParagraph>
-  Tamagui is a complete UI solution for cross-platform apps on React (web and native),
-  featuring best-in-class performance and highly platform-optimized output thanks to a
-  smart compiler.
+  Tamagui is a modular style solution for React - web or native. It aims to compete with
+  the best web-only style libraries, while bringing many much-needed styling capabilities
+  to React Native.
 </IntroParagraph>
 
 <GetStarted />
 
----
+You can pick and choose which parts of Tamagui you use:
 
-## High level
-
-The highest level part of Tamagui is `tamagui` itself, a complete UI kit built on top of `@tamagui/core`. This gives you a huge amount of progress towards a beautiful, fully working app consisting of some of the hardest components to get right, all done in a way that gives you control over their styling.
+- [`@tamagui/core`](/docs/core/configuration) is a 0-dependency, fully typed style library with some design system features, much like [Stitches](https://stitches.dev)
+- [`@tamagui/static`](/docs/intro/why-a-compiler) is a smart optimizing compiler that emits 0-runtime code, even when faced with logic-filled inline styles, forked from [JSXStyle](https://github.com/jsxstyle/jsxstyle)
+- [`tamagui`](/docs/components/stacks) is a large suite UI kit with helpful hooks, made to work well and adapt to native platforms and web.
 
 ### `@tamagui/core`
 
-After [configuring](/docs/core/configuration), use `@tamagui/core` as simply as:
+Core combines a typed styled CSS-in-JS solution with [createTamagui](/docs/core/configuration) which takes a variety of configuration alongside a complete typed design system consisting of colors, tokens, spacing, sizing, fonts, themes, shorthands, animations, media queries, and more, alongside hooks like [useMedia](/docs/core/use-media) and [useTheme](/docs/core/use-theme) that are all designed to be removable by the compiler.
+
+After [configuring](/docs/core/configuration), use `@tamagui/core` inline:
 
 ```tsx
 import { View, Text } from 'tamagui' // or '@tamagui/core'
@@ -31,8 +33,7 @@ export const App = () => (
 )
 ```
 
-Core also includes a `styled` utility with a `variants` field that is a very quick way to author
-props by letting you quickly type both the key and the value of the prop you expect:
+or with the `styled` utility:
 
 ```tsx
 import { View, Theme, styled } from 'tamagui' // or '@tamagui/core'
@@ -73,93 +74,13 @@ export const App = () => (
 )
 ```
 
-Variants can also take functions to catch either all values or specific types of tokens you define in your themes.
-
-You can nest styled components multiple times:
-
-```tsx
-import { View, styled } from 'tamagui' // or '@tamagui/core'
-
-export const SizedHorizontal = styled(View, {
-  variants: {
-    size: {
-      sm: {
-        minWidth: 44,
-        height: 44,
-      },
-      lg: {
-        minWidth: 68,
-        height: 68,
-      },
-    },
-  },
-})
-
-export const SizedButton = styled(SizedHorizontal, {
-  tag: 'button',
-
-  variants: {
-    disabled: {
-      true: {
-        backgroundColor: '#ccc',
-        pointerEvents: 'none',
-      },
-    },
-  },
-})
-```
-
-Tamagui has the nice feature of fully-deterministic rendering based on the order of their definition, where the last key of the style object wins. This works both on props and styled() calls:
-
-```tsx
-import { styled } from 'tamagui' // or '@tamagui/core'
-
-import { SizedButton } from './example-above'
-
-const HeroButton = styled(SizedButton, {
-  // bigger border, of course
-  borderWidth: 4,
-  size: 'lg',
-
-  variants: {
-    outlined: {
-      true: {
-        backgroundColor: 'transparent',
-        borderColor: 'black',
-      },
-    },
-  },
-})
-
-export default (props) => (
-  <HeroButton
-    outlined
-    // overrides the borderColor in outlined
-    borderColor="red"
-    // props can override
-    {...props}
-    // eg if props = { outlined: true }, borderColor is black again
-    borderRadius={12}
-    // borderRadius is *always* 12
-  />
-)
-```
-
-This works across the Web and Native with the full typed APIs of React Native, with additional web-only API's and escape hatches that make it a great experience no matter if you're targeting Native only, Native and Web, or Web only.
-
-#### Design System
-
-Using [createTamagui](/docs/core/configuration) you can generate a fully-typed design system with colors, tokens, spacing, sizing, fonts, themes, shorthands, animations, and more, that work with well-optimized and easy to use hooks like [useMedia](/docs/core/use-media) and [useTheme](/docs/core/use-theme).
-
----
+Core also has a complete design system you can set up easily with `createTamagui`.
 
 ### `@tamagui/static`
 
-The `@tamagui/static` package is an optimizing compiler for React that does much more than just extracting CSS styles. It significantly speeds up the runtime of apps by flattening your styled views as their call-sites, handling even tricky dynamic styles there, and outputting a `div` (on the web) or `View` (on native).
+The `@tamagui/static` package is an optimizing compiler that works with `@tamagui/core` taking your styled components and emitting highly optimized code. On the web that looks like CSS and `div` elements, while on native it means hoisted and memoized styles passed to a plain React Native `View`. It can handle even somewhat complex logic-filled styles, and you can easily introspect its output with debug props and pragmas.
 
-There's a lot to it, and good reasons it exists, but are [discussed more on the compiler introduction](/docs/intro/why-a-compiler).
-
----
+[Read more about Static](/docs/intro/why-a-compiler).
 
 ### `tamagui`
 
@@ -182,6 +103,7 @@ We're excited to see the community adopt Tamagui, raise issues, and provide feed
 
 A big thanks to:
 
+- [Stitches](https://stitches.dev) for the variants pattern.
 - [JSXStyle](https://github.com/jsxstyle/jsxstyle) for providing the original version of the compiler.
 - [Modulz](https://github.com/modulz) for the bones of the website and inspiration on some Radix-like component APIs.
 - [Moti](https://moti.fyi) for the foundation of the reanimated driver.

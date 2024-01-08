@@ -3,47 +3,45 @@ title: Installation
 description: Get Tamagui set up, step by step
 ---
 
-We recommend using the cli to bootstrap an example app, even if only as a reference for you as your set an existing app up:
+We recommend using the CLI to bootstrap an example app, even if it's only for reference as you set up your existing app:
 
 ```bash
-npm create tamagui@latest
+npm create tamagui
 ```
 
 ## Install
 
-You can use the 0-dependency core, or move on level higher to using `tamagui` itself which has many components and is a superset of core.
+You can use the 0-dependency `@tamagui/core`, or move higher level with `tamagui`, which is a superset of core adding many components and hooks. We recommend yarn in general because it works well with both monorepos and React Native. Still, pnpm and npm work well too.
 
-For the lighter core style library:
+For just the core style library:
 
 ```bash
 yarn add @tamagui/core
 ```
 
-If you are going to use the Tamagui components, you can avoid core and just:
+If you want `tamagui`, you can avoid core and just:
 
 ```bash
 yarn add tamagui
 ```
 
-Tamagui doesn't require any special bundler or configuration, but it does let you set up a design system if you'd like. Beyond adding the core `TamaguiProvider`, you are ready to start styling your app.
+Tamagui doesn't require any special bundler setup. It also doesn't necessarily require you to set up your design system with `createTamagui`, but we provide some helpful default setups if you want.
 
-## Quick configuration
+Beyond adding the `TamaguiProvider` at the root of your app, you are ready to go. For a more detailed design system setup, [follow the configuration docs](/docs/core/configuration).
 
-For an in-depth setup, check out [the full configuration docs](/docs/core/configuration). We also provide a nice set of defaults, the same setup the Tamagui site itself uses:
-
-```sh
-yarn add @tamagui/config
-```
-
-Create a `tamagui.config.ts` file at the root of your project:
+At the root of your app:
 
 ```tsx
-// the v2 config imports the css driver on web and react-native on native
-// for reanimated: @tamagui/config/v2-reanimated
-// for react-native only: @tamagui/config/v2-native
-import { config } from '@tamagui/config/v2'
-import { createTamagui } from 'tamagui'
+// some helpful reset styles for web:
+import '@tamagui/core/reset.css'
 
+import { TamaguiProvider, createTamagui } from 'tamagui'
+
+// some nice defaults:
+import { config } from '@tamagui/config/v2'
+
+// you usually export this from a tamagui.config.ts file:
+// this can be as simple as an empty object
 const tamaguiConfig = createTamagui(config)
 
 // this makes typescript properly type everything based on the config
@@ -52,33 +50,16 @@ declare module 'tamagui' {
   interface TamaguiCustomConfig extends Conf {}
 }
 
-export default tamaguiConfig
-
-// depending on if you chose tamagui, @tamagui/core, or @tamagui/web
-// be sure the import and declare module lines both use that same name
-```
-
-Add TamaguiProvider to your root:
-
-```tsx line=8-14
-// this provides some helpful reset styles to ensure a more consistent look
-// only import this from your web app, not native
-import '@tamagui/core/reset.css'
-
-import { TamaguiProvider } from 'tamagui'
-
-import config from './tamagui.config'
-
-export default function App() {
+export default () => {
   return (
-    <TamaguiProvider config={config}>
+    <TamaguiProvider config={tamaguiConfig}>
       {/* your app here */}
     </TamaguiProvider>
   )
 }
 ```
 
-You're all set!
+You should be ready to use any component:
 
 <Preview>
   <DemoButton />
@@ -92,9 +73,11 @@ export default function Demo() {
 }
 ```
 
-From here, [spend some time understanding configuration](/docs/core/configuration). You can [setup the compiler](/docs/intro/compiler-install), but we'd recommend waiting to do that once you're well into developing your app as Tamagui works 100% the same at runtime as compile-time.
+From here, we'd recommend [spending some time understanding configuration](/docs/core/configuration). You could also [setup the compiler](/docs/intro/compiler-install), but we'd recommend waiting to do that once you're well into developing your app, as Tamagui works 100% the same at runtime as at compile.
 
-We have more in depth guides for [Next.js](http://localhost:5005/docs/guides/next-js), [Expo](http://localhost:5005/docs/guides/expo) and [Vite](http://localhost:5005/docs/guides/vite). Note that while Tamagui generally doesn't require any special bundler setup, React Native Web and the ecosystem sometimes does, so we do recommend a few configurations for the bundlers:
+We also have more in depth guides for [Next.js](http://localhost:5005/docs/guides/next-js), [Expo](http://localhost:5005/docs/guides/expo) and [Vite](http://localhost:5005/docs/guides/vite).
+
+Note that while Tamagui generally doesn't require any special bundler setup, React Native Web and the ecosystem sometimes does, so we do recommend a few simple configurations for them:
 
 #### Webpack
 

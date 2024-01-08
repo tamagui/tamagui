@@ -320,7 +320,7 @@ function useButton<Props extends ButtonProps>(
         ? 'span'
         : // defaults to <a /> when accessibilityRole = link
         // see https://github.com/tamagui/tamagui/issues/505
-        propsActive.accessibilityRole === 'link'
+        propsActive.accessibilityRole === 'link' || propsActive.role === 'link'
         ? 'a'
         : 'button'),
     ...restProps,
