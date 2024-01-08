@@ -953,8 +953,25 @@ export type GroupMediaKeys =
   | `$group-${GroupNames}-${MediaQueryKey}`
   | `$group-${GroupNames}-${MediaQueryKey}-${ParentMediaStates}`
 
-export type MediaProps<A> = {
-  [key in MediaPropKeys | GroupMediaKeys | ThemeMediaKeys | PlatformMediaKeys]?: A
+export type MediaProps<A> =
+  | {
+      [key in MediaPropKeys | GroupMediaKeys | ThemeMediaKeys]?: A
+    }
+  | {
+      [key in Exclude<PlatformMediaKeys, '$platform-web'>]: A
+    }
+  | {
+      [key in `$platform-web`]: {
+        [SubKey in keyof A]?:
+          | A[SubKey]
+          | (SubKey extends keyof WebOnlyValidStyleValues
+              ? WebOnlyValidStyleValues[SubKey]
+              : never)
+      }
+    }
+
+type WebOnlyValidStyleValues = {
+  position: '-webkit-sticky' | 'fixed' | 'static' | 'sticky'
 }
 
 export type MediaQueries = {
