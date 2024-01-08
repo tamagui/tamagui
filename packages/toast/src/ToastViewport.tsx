@@ -8,6 +8,7 @@ import { VisuallyHidden } from '@tamagui/visually-hidden'
 import * as React from 'react'
 
 import { TOAST_CONTEXT } from './constants'
+import { ToastPortal } from './ToastPortal'
 import {
   Collection,
   ScopedProps,
@@ -83,6 +84,10 @@ type ToastViewportProps = ToastViewportFrameProps & {
    * Pass this when you want to have multiple/duplicated toasts.
    */
   multipleToasts?: boolean
+  /**
+   * When true, uses a portal to render at the very top of the root TamaguiProvider.
+   */
+  portalToRoot?: boolean
 }
 
 const ToastViewport = React.memo(
@@ -95,6 +100,7 @@ const ToastViewport = React.memo(
         name = 'default',
         multipleToasts,
         zIndex,
+        portalToRoot,
         ...viewportProps
       } = props
       const context = useToastProviderContext(__scopeToast)
@@ -256,7 +262,7 @@ const ToastViewport = React.memo(
         }
       }, [getItems, getSortedTabbableCandidates, context.toastCount])
 
-      return (
+      const contents = (
         <ToastViewportWrapperFrame
           ref={wrapperRef}
           role="region"
@@ -315,6 +321,16 @@ const ToastViewport = React.memo(
           )}
         </ToastViewportWrapperFrame>
       )
+
+      if (portalToRoot) {
+        return (
+          <ToastPortal {...(typeof zIndex === 'number' ? { zIndex } : {})}>
+            {contents}
+          </ToastPortal>
+        )
+      }
+
+      return contents
     }
   )
 )

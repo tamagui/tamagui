@@ -27,12 +27,8 @@ import {
   ToastProps,
   useToastInteractiveContext,
 } from './ToastImpl'
-import {
-  ScopedProps,
-  ToastPortal,
-  ToastProvider,
-  ToastProviderProps,
-} from './ToastProvider'
+import { ToastPortal } from './ToastPortal'
+import { ScopedProps, ToastProvider, ToastProviderProps } from './ToastProvider'
 import { ToastViewport, ToastViewportProps } from './ToastViewport'
 
 /* -------------------------------------------------------------------------------------------------

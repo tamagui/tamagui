@@ -1,8 +1,6 @@
 import { createCollection } from '@tamagui/collection'
 import { NativeValue, TamaguiElement, createStyledContext } from '@tamagui/core'
-import { Portal } from '@tamagui/portal'
 import * as React from 'react'
-import { Platform } from 'react-native'
 
 import { TOAST_CONTEXT } from './constants'
 import { ToastImperativeOptions, ToastImperativeProvider } from './ToastImperative'
@@ -154,7 +152,7 @@ const ToastProvider: React.FC<ToastProviderProps> = (
   )
 }
 
-function ReprogapateToastProvider(props: {
+export function ReprogapateToastProvider(props: {
   children: React.ReactNode
   context: ToastProviderContextValue
 }) {
@@ -168,24 +166,6 @@ function ReprogapateToastProvider(props: {
       </ToastProviderProvider>
     </Collection.Provider>
   )
-}
-
-function ToastPortal({
-  children,
-  zIndex,
-}: {
-  children: React.ReactNode
-  zIndex?: number
-}) {
-  let content = children
-  if (Platform.OS === 'android') {
-    content = (
-      <ReprogapateToastProvider context={useToastProviderContext()}>
-        {children}
-      </ReprogapateToastProvider>
-    )
-  }
-  return <Portal zIndex={zIndex || 1000_000_000}>{content}</Portal>
 }
 
 ToastProvider.propTypes = {
