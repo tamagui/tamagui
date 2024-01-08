@@ -106,6 +106,7 @@
     "seamless-scroll-polyfill": "^1.2.3",
     "sharp": "^0.32.0",
     "stripe": "^9.1.0",
+    "supabase": "1.127.4",
     "swr": "^2.2.0",
     "tamagui": "1.82.9",
     "three": "^0.152.2",
