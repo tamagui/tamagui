@@ -1,5 +1,6 @@
 import { NativeValue, TamaguiElement } from '@tamagui/core';
 import * as React from 'react';
+import { ToastImperativeOptions } from './ToastImperative';
 import { BurntToastOptions } from './types';
 declare const Collection: {
     readonly Provider: React.FC<{
@@ -31,6 +32,7 @@ type ToastProviderContextValue = {
     onToastRemove(): void;
     isFocusedToastEscapeKeyDownRef: React.MutableRefObject<boolean>;
     isClosePausedRef: React.MutableRefObject<boolean>;
+    options: ToastImperativeOptions;
 };
 type ScopedProps<P> = P & {
     __scopeToast?: string;
@@ -78,6 +80,11 @@ interface ToastProviderProps {
     notificationOptions?: NotificationOptions;
 }
 declare const ToastProvider: React.FC<ToastProviderProps>;
-export { Collection, ToastProvider, useCollection, useToastProviderContext };
+declare function ToastProtal({ children, name, zIndex, }: {
+    children: React.ReactNode;
+    name?: string;
+    zIndex?: number;
+}): JSX.Element;
+export { Collection, ToastProvider, useCollection, useToastProviderContext, ToastProtal };
 export type { ScopedProps, ToastProviderProps };
 //# sourceMappingURL=ToastProvider.d.ts.map

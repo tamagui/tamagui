@@ -1,9 +1,11 @@
 import { createCollection } from '@tamagui/collection'
 import { NativeValue, TamaguiElement, createStyledContext } from '@tamagui/core'
+import { Portal } from '@tamagui/portal'
 import * as React from 'react'
+import { Platform } from 'react-native'
 
 import { TOAST_CONTEXT } from './constants'
-import { ToastImperativeProvider } from './ToastImperative'
+import { ToastImperativeOptions, ToastImperativeProvider } from './ToastImperative'
 import { BurntToastOptions } from './types'
 
 /* -------------------------------------------------------------------------------------------------
@@ -29,6 +31,7 @@ type ToastProviderContextValue = {
   onToastRemove(): void
   isFocusedToastEscapeKeyDownRef: React.MutableRefObject<boolean>
   isClosePausedRef: React.MutableRefObject<boolean>
+  options: ToastImperativeOptions
 }
 
 type ScopedProps<P> = P & { __scopeToast?: string }
@@ -143,10 +146,51 @@ const ToastProvider: React.FC<ToastProviderProps> = (
         }, [])}
         isFocusedToastEscapeKeyDownRef={isFocusedToastEscapeKeyDownRef}
         isClosePausedRef={isClosePausedRef}
+        options={options}
       >
         <ToastImperativeProvider options={options}>{children}</ToastImperativeProvider>
       </ToastProviderProvider>
     </Collection.Provider>
+  )
+}
+
+function ReprogapateToastProvider(props: {
+  children: React.ReactNode
+  context: ToastProviderContextValue
+}) {
+  const { children, context } = props
+  return (
+    <Collection.Provider __scopeCollection={TOAST_CONTEXT}>
+      <ToastProviderProvider {...context}>
+        <ToastImperativeProvider options={context.options}>
+          {children}
+        </ToastImperativeProvider>
+      </ToastProviderProvider>
+    </Collection.Provider>
+  )
+}
+
+function ToastProtal({
+  children,
+  name,
+  zIndex,
+}: {
+  children: React.ReactNode
+  name?: string
+  zIndex?: number
+}) {
+  let content = children
+  if (Platform.OS === 'android') {
+    content = (
+      <ReprogapateToastProvider context={useToastProviderContext()}>
+        {children}
+      </ReprogapateToastProvider>
+    )
+  }
+  return (
+    <Portal zIndex={zIndex || 1000_000_000} host={name || 'default'}>
+      {content}
+    </Portal>
   )
 }
 
@@ -162,5 +206,5 @@ ToastProvider.propTypes = {
 
 ToastProvider.displayName = PROVIDER_NAME
 
-export { Collection, ToastProvider, useCollection, useToastProviderContext }
+export { Collection, ToastProvider, useCollection, useToastProviderContext, ToastProtal }
 export type { ScopedProps, ToastProviderProps }
