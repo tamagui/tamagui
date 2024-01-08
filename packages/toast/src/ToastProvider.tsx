@@ -180,5 +180,5 @@ ToastProvider.propTypes = {
 
 ToastProvider.displayName = PROVIDER_NAME
 
-export { Collection, ToastProvider, useCollection, useToastProviderContext, ToastPortal }
+export { Collection, ToastProvider, useCollection, useToastProviderContext }
 export type { ScopedProps, ToastProviderProps }
