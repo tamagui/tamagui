@@ -1683,7 +1683,6 @@ export function createExtractor(
 
           const shouldWrapTheme = shouldFlatten && themeVal
           // wrap theme around children on flatten
-          // TODO move this to bottom and re-check shouldFlatten
           // account for shouldFlatten could change w the above block "if (disableExtractVariables)"
           if (shouldWrapTheme) {
             if (!programPath) {
