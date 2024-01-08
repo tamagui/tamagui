@@ -568,13 +568,9 @@ export type GroupNames = ReturnType<TypeOverride['groupNames']> extends 1 ? neve
 type ParentMediaStates = 'hover' | 'press' | 'focus';
 export type GroupMediaKeys = `$group-${GroupNames}` | `$group-${GroupNames}-${ParentMediaStates}` | `$group-${GroupNames}-${MediaQueryKey}` | `$group-${GroupNames}-${MediaQueryKey}-${ParentMediaStates}`;
 export type MediaProps<A> = {
-    [key in MediaPropKeys | GroupMediaKeys | ThemeMediaKeys]?: A;
-} | {
-    [key in Exclude<PlatformMediaKeys, '$platform-web'>]: A;
-} | {
-    [key in `$platform-web`]: {
+    [Key in MediaPropKeys | GroupMediaKeys | ThemeMediaKeys | PlatformMediaKeys]?: Key extends `$platform-web` ? {
         [SubKey in keyof A]?: A[SubKey] | (SubKey extends keyof WebOnlyValidStyleValues ? WebOnlyValidStyleValues[SubKey] : never);
-    };
+    } : A;
 };
 type WebOnlyValidStyleValues = {
     position: '-webkit-sticky' | 'fixed' | 'static' | 'sticky';
