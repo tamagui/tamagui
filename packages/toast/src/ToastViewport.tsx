@@ -87,7 +87,7 @@ type ToastViewportProps = ToastViewportFrameProps & {
   /** if true it will render the toast in root (help to avoid z-index issues)
    *  if false it will render the toast in place of <ToastViewport/>
    *  @default true */
-  portal?: boolean
+  renderToRoot?: boolean
 }
 
 const Empty = (props) => props.children
@@ -102,7 +102,7 @@ const ToastViewport = React.memo(
         name = 'default',
         multipleToasts,
         zIndex,
-        portal = true,
+        renderToRoot = true,
         ...viewportProps
       } = props
       const context = useToastProviderContext(__scopeToast)
@@ -264,7 +264,7 @@ const ToastViewport = React.memo(
         }
       }, [getItems, getSortedTabbableCandidates, context.toastCount])
 
-      const Wrapper = portal ? Portal : Empty
+      const Wrapper = renderToRoot ? Portal : Empty
 
       return (
         <Wrapper zIndex={zIndex || 1000_000_000}>
