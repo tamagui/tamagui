@@ -124,6 +124,14 @@ The portal for toasts to be directed to. Should be used inside [ToastProvider](#
 <PropsTable
   data={[
     {
+      name: 'portal',
+      type: 'string',
+      default: true,
+      required: false,
+      description:
+        'Used to render Toast in the root which will help with z-index or in place of <ToastViewport/>',
+    },
+    {
       name: 'hotkey',
       type: 'string[]',
       default: "['F8']",
