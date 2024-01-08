@@ -5,7 +5,8 @@ import { Platform } from 'react-native'
 import { createNativeToast } from './createNativeToast'
 import { CreateNativeToastOptions, NativeToastRef } from './types'
 
-interface ToastImperativeOptions extends Omit<CreateNativeToastOptions, 'message'> {
+export interface ToastImperativeOptions
+  extends Omit<CreateNativeToastOptions, 'message'> {
   /**
    * Will show a native toast if is true or is set to the current platform. On iOS, it wraps `SPIndicator` and `SPAlert`. On Android, it wraps `ToastAndroid`. On web, it wraps Notification API. Mobile's native features are handled by `burnt`.
    */

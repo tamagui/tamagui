@@ -27,6 +27,7 @@ import {
   ToastProps,
   useToastInteractiveContext,
 } from './ToastImpl'
+import { ToastPortal } from './ToastPortal'
 import { ScopedProps, ToastProvider, ToastProviderProps } from './ToastProvider'
 import { ToastViewport, ToastViewportProps } from './ToastViewport'
 
@@ -215,6 +216,7 @@ export {
   useToast,
   useToastController,
   useToastState,
+  ToastPortal,
 }
 export type {
   // imperative
