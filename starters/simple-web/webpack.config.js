@@ -3,11 +3,9 @@ const webpack = require('webpack')
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { TamaguiPlugin } = require('tamagui-loader')
-// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const MiniCSSExtractPlugin = require('mini-css-extract-plugin')
 
 const NODE_ENV = process.env.NODE_ENV || 'development'
-const target = 'web'
 const isProduction = NODE_ENV === 'production'
 
 const boolVals = {
@@ -16,13 +14,6 @@ const boolVals = {
 }
 const disableExtraction =
   boolVals[process.env.DISABLE_EXTRACTION] ?? process.env.NODE_ENV === 'development'
-
-const tamaguiOptions = {
-  config: './src/tamagui.config.ts',
-  components: ['tamagui'],
-  importsWhitelist: ['constants.js'],
-  disableExtraction,
-}
 
 /** @type { import('webpack').Configuration } */
 module.exports = {
@@ -89,7 +80,13 @@ module.exports = {
     ],
   },
   plugins: [
-    new TamaguiPlugin(tamaguiOptions),
+    new TamaguiPlugin({
+      config: './src/tamagui.config.ts',
+      components: ['tamagui'],
+      importsWhitelist: ['constants.js'],
+      disableExtraction,
+      emitSingleCSSFile: true,
+    }),
 
     // new BundleAnalyzerPlugin(),
 

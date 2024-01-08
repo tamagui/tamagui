@@ -110,7 +110,7 @@ export const Sandbox = () => {
         }}
         onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
       >
-        Switch theme
+        Scheme
       </button>
 
       <style

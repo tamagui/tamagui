@@ -9,11 +9,18 @@ export type PluginOptions = TamaguiOptions & {
     disableEsbuildLoader?: boolean;
     disableModuleJSXEntry?: boolean;
     disableWatchConfig?: boolean;
+    disableAliases?: boolean;
 };
 export declare class TamaguiPlugin {
     options: PluginOptions;
     pluginName: string;
     constructor(options?: PluginOptions);
+    resolveEsm: (relativePath: string, onlyRequire?: boolean) => string;
+    safeResolves: (resolves: [string, string][], multiple?: boolean) => string[][];
+    get componentsFullPaths(): string[][];
+    get componentsBaseDirs(): string[];
+    isInComponentModule: (fullPath: string) => boolean;
+    get defaultAliases(): any;
     apply(compiler: Compiler): void;
 }
 //# sourceMappingURL=TamaguiPlugin.d.ts.map

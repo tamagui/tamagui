@@ -549,7 +549,7 @@ export const components = {
 
   GetStarted: () => {
     return (
-      <XStack gap="$4" f={1} fw="wrap" mt="$6">
+      <XStack gap="$4" f={1} fw="wrap" mt="$2" mb="$4">
         <ThemeTintAlt>
           <Card f={1}>
             <Card.Header gap="$2">
@@ -557,7 +557,7 @@ export const components = {
                 Quick start
               </H4>
               <Paragraph size="$6" color="$color9">
-                Bootstrap a production-ready app in seconds:
+                Choose from a few starters with:
               </Paragraph>
             </Card.Header>
 
@@ -575,7 +575,8 @@ export const components = {
             animation="quickest"
             f={1}
             y={0}
-            hoverStyle={{ y: -10, bc: '$backgroundHover' }}
+            hoverStyle={{ y: -2, bc: '$backgroundHover' }}
+            pressStyle={{ y: 2, bc: '$color2' }}
           >
             <Card.Header gap="$2">
               <H4 size="$4" color="$color8">

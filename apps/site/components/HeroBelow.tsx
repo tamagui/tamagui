@@ -107,8 +107,8 @@ export const HeroBelowContent = memo(() => {
           </IconStack>
           <TitleLink href="/docs/components/stacks">Tamagui</TitleLink>
           <Paragraph o={0.7} size="$5">
-            All the base components you'd want to work cross platform. Composable APIs,
-            unstyled and styled, sizable, themeable, with robust animation support.
+            All the components you'd want, cross platform and adaptable to each other.
+            Composable Component APIs, styled or unstyled, sizable, themeable, and more.
           </Paragraph>
         </Section>
       </XStack>

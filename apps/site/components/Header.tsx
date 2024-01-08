@@ -120,7 +120,7 @@ export function Header(props: HeaderProps) {
   )
 }
 
-const tooltipDelay = { open: 500, close: 150 }
+const tooltipDelay = { open: 0, close: 150 }
 
 export const HeaderContents = React.memo((props: HeaderProps) => {
   const router = useRouter()
@@ -141,11 +141,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
     >
       {!props.minimal && (
         <XStack ai="center" gap="$4">
-          {isHome ? (
-            <YStack my={-20} onPress={setNextTint} px="$3">
-              <TamaguiLogo downscale={props.floating ? 2 : 1.5} />
-            </YStack>
-          ) : (
+          {isHome ? null : (
             <NextLink href="/">
               <YStack tag="a" px="$3" cur="pointer" my={-20}>
                 <TamaguiLogo downscale={props.floating ? 2 : 1.5} />
@@ -243,12 +239,12 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
               target="_blank"
               href="https://github.com/tamagui/tamagui"
             >
-              <TooltipSimple delay={0} restMs={25} label="Star on Github">
+              <TooltipSimple delay={0} restMs={25} label="Github">
                 <YStack p="$2" opacity={0.9} hoverStyle={{ opacity: 1 }}>
                   <VisuallyHidden>
                     <Text>Github</Text>
                   </VisuallyHidden>
-                  <GithubIcon width={23} />
+                  <GithubIcon width={26} />
                 </YStack>
               </TooltipSimple>
             </NextLink>

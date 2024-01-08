@@ -1,6 +1,6 @@
 import { Menu } from '@tamagui/lucide-icons'
 import * as React from 'react'
-import { Adapt, Button, Popover, Separator, YStack } from 'tamagui'
+import { Adapt, Button, Popover, Separator, Spacer, XStack, YStack } from 'tamagui'
 
 import { DocsMenuContents } from './DocsMenuContents'
 import { HeaderLinks } from './HeaderLinks'
@@ -29,7 +29,7 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
           theme={open ? 'alt1' : undefined}
           aria-label="Open the main menu"
         >
-          <Menu size={16} color="var(--color)" />
+          <Menu size={18} color="var(--color)" />
         </Button>
       </Popover.Trigger>
 
@@ -88,9 +88,11 @@ const HeaderMenuContent = React.memo(function HeaderMenuContent() {
       <Popover.ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
         <YStack aria-label="Home menu contents" miw={230} p="$3" ai="flex-end">
           <HeaderLinks forceShowAllLinks />
-          <Separator my="$4" w="100%" />
-          <SponsorButton />
-          <Separator my="$4" w="100%" />
+
+          <Spacer />
+          <XStack w="100%" h={1} bc="$color5" />
+          <Spacer />
+
           <DocsMenuContents />
         </YStack>
       </Popover.ScrollView>

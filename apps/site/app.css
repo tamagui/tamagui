@@ -216,8 +216,8 @@ pre {
     0deg,
     var(--orange10),
     var(--yellow10),
-    var(--green10) 56%,
-    var(--blue10) 56.1%,
+    var(--green10),
+    var(--blue10),
     var(--pink10),
     var(--red10)
   );
@@ -348,21 +348,21 @@ iframe {
 }
 
 .mask-gradient-right {
-  mask-image: linear-gradient(120deg, rgba(0, 0, 0, 1), transparent 100%);
-  mix-blend-mode: screen;
+  mask-image: linear-gradient(120deg, rgba(0, 0, 0, 1) 50%, transparent 100%);
+  mix-blend-mode: color-dodge;
 }
 
 .mask-gradient-left {
   mask-image: linear-gradient(-100deg, rgba(0, 0, 0, 1), transparent 100%);
-  mix-blend-mode: screen;
+  mix-blend-mode: color-dodge;
 }
 
 .t_dark .mask-gradient-right {
-  mix-blend-mode: difference;
+  mix-blend-mode: color-dodge;
 }
 
 .t_dark .mask-gradient-left {
-  mix-blend-mode: hue;
+  mix-blend-mode: hard-light;
 }
 
 
