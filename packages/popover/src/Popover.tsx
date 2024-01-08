@@ -1,5 +1,6 @@
 import '@tamagui/polyfill-dev'
 
+import { UseHoverProps } from '@floating-ui/react'
 import { Adapt, useAdaptParent } from '@tamagui/adapt'
 import { Animate } from '@tamagui/animate'
 import { ResetPresence } from '@tamagui/animate-presence'
@@ -59,7 +60,7 @@ export type PopoverProps = PopperProps & {
   /**
    * Enable staying open while mouseover
    */
-  hoverable?: boolean
+  hoverable?: boolean | UseHoverProps
 
   /**
    * Disable focusing behavior on open

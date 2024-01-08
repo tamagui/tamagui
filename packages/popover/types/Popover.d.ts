@@ -1,4 +1,5 @@
 import '@tamagui/polyfill-dev';
+import { UseHoverProps } from '@floating-ui/react';
 import { ScopedProps, SizeTokens, StackProps, TamaguiElement } from '@tamagui/core';
 import { DismissableProps } from '@tamagui/dismissable';
 import { FocusScopeProps } from '@tamagui/focus-scope';
@@ -15,7 +16,7 @@ export type PopoverProps = PopperProps & {
     /**
      * Enable staying open while mouseover
      */
-    hoverable?: boolean;
+    hoverable?: boolean | UseHoverProps;
     /**
      * Disable focusing behavior on open
      */
@@ -83,7 +84,10 @@ export declare const PopoverAnchor: React.ForwardRefExoticComponent<Omit<ScopedP
     onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-    onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * Event handler called when auto-focusing on open.
+     * Can be prevented.
+     */
     onResponderRelease?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderStart?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderTerminationRequest?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
@@ -224,7 +228,10 @@ export declare const PopoverClose: React.ForwardRefExoticComponent<Omit<ScopedPo
     onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-    onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+     * Event handler called when auto-focusing on open.
+     * Can be prevented.
+     */
     onResponderRelease?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderStart?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderTerminationRequest?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
@@ -712,7 +719,7 @@ export declare const Popover: React.ForwardRefExoticComponent<PopperProps & {
     /**
      * Enable staying open while mouseover
      */
-    hoverable?: boolean | undefined;
+    hoverable?: boolean | UseHoverProps<import("@floating-ui/react").ReferenceType> | undefined;
     /**
      * Disable focusing behavior on open
      */
@@ -762,7 +769,10 @@ export declare const Popover: React.ForwardRefExoticComponent<PopperProps & {
         onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-        onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+        onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+         * Event handler called when auto-focusing on open.
+         * Can be prevented.
+         */
         onResponderRelease?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderStart?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderTerminationRequest?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
@@ -1280,7 +1290,10 @@ export declare const Popover: React.ForwardRefExoticComponent<PopperProps & {
         onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-        onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+        onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined; /**
+         * Event handler called when auto-focusing on open.
+         * Can be prevented.
+         */
         onResponderRelease?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderStart?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onResponderTerminationRequest?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
