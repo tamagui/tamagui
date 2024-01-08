@@ -28,7 +28,6 @@
     "browserslist": "^4.22.2",
     "css-loader": "^6.7.4",
     "esbuild-loader": "^3.0.1",
-    "esm-resolve": "^1.0.8",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
     "tamagui-loader": "1.82.8",
