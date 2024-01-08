@@ -1534,6 +1534,7 @@ export function createExtractor(
                 traversePath.node.children.every((x) => x.type === 'JSXText')))
 
           // on native we can't flatten when theme prop is set
+          let themeVal = inlined.get('theme')
           if (platform !== 'native') {
             inlined.delete('theme')
           }
@@ -1561,7 +1562,6 @@ export function createExtractor(
           )
 
           const usedThemeKeys = new Set<string>()
-
           // if it accesses any theme values during evaluation
           themeAccessListeners.add((key) => {
             if (options.experimentalFlattenThemesOnNative) {
@@ -1580,8 +1580,8 @@ export function createExtractor(
           if (shouldFlatten) {
             const defaultStyleAttrs = Object.keys(defaultProps).flatMap((key) => {
               const value = defaultProps[key]
-              if (key === 'theme') {
-                inlined.set('theme', literalToAst(value))
+              if (key === 'theme' && !themeVal) {
+                themeVal = { value: t.stringLiteral(value) }
                 return []
               }
               if (!isValidStyleKey(key, staticConfig)) {
@@ -1671,13 +1671,11 @@ export function createExtractor(
             }, [])
             .flat()
 
-          const themeVal = inlined.get('theme')
           const shouldWrapTheme = shouldFlatten && themeVal
           // wrap theme around children on flatten
           // TODO move this to bottom and re-check shouldFlatten
           // account for shouldFlatten could change w the above block "if (disableExtractVariables)"
           if (shouldFlatten && shouldWrapTheme) {
-            debugger
             if (!programPath) {
               console.warn(
                 `No program path found, avoiding importing flattening / importing theme in ${sourcePath}`
