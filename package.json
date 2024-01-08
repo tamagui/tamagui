@@ -9,7 +9,7 @@
     "./apps/*",
     "./packages/*"
   ],
-  "packageManager": "yarn@3.6.3",
+  "packageManager": "yarn@4.0.2",
   "scripts": {
     "build:force": "yarn clean:build && yarn build --force",
     "build:js": "./scripts/build-js.sh",
