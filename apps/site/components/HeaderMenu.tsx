@@ -1,6 +1,6 @@
 import { Menu } from '@tamagui/lucide-icons'
 import * as React from 'react'
-import { Adapt, Button, Popover, Separator, YStack } from 'tamagui'
+import { Adapt, Button, Popover, Separator, Spacer, XStack, YStack } from 'tamagui'
 
 import { DocsMenuContents } from './DocsMenuContents'
 import { HeaderLinks } from './HeaderLinks'
@@ -86,9 +86,13 @@ const HeaderMenuContent = React.memo(function HeaderMenuContent() {
       <Popover.Arrow borderWidth={1} boc="$borderColor" />
 
       <Popover.ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
-        <YStack aria-label="Home menu contents" miw={230} p="$3" ai="flex-end" gap="$2">
+        <YStack aria-label="Home menu contents" miw={230} p="$3" ai="flex-end">
           <HeaderLinks forceShowAllLinks />
-          <Separator />
+
+          <Spacer />
+          <XStack w="100%" h={1} bc="$color5" />
+          <Spacer />
+
           <DocsMenuContents />
         </YStack>
       </Popover.ScrollView>
