@@ -1533,7 +1533,7 @@ export function createExtractor(
               (traversePath.node.children &&
                 traversePath.node.children.every((x) => x.type === 'JSXText')))
 
-          const themeVal = inlined.get('theme')
+          let themeVal = inlined.get('theme')
 
           // on native we can't flatten when theme prop is set
           if (platform !== 'native') {
@@ -1562,9 +1562,7 @@ export function createExtractor(
               (staticConfig.neverFlatten === 'jsx' ? hasOnlyStringChildren : true)
           )
 
-          const shouldWrapTheme = shouldFlatten && themeVal
           const usedThemeKeys = new Set<string>()
-
           // if it accesses any theme values during evaluation
           themeAccessListeners.add((key) => {
             if (options.experimentalFlattenThemesOnNative) {
@@ -1579,19 +1577,115 @@ export function createExtractor(
             }
           })
 
-          if (shouldPrintDebug) {
-            try {
-              // prettier-ignore
-              logger.info([' flatten?', shouldFlatten, objToStr({ hasSpread, shouldDeopt, canFlattenProps, shouldWrapTheme, hasOnlyStringChildren }), 'inlined', inlined.size, [...inlined]].join(' '))
-            } catch {
-              // ok
+          // only if we flatten, ensure the default styles are there
+          if (shouldFlatten) {
+            let skipMap = false
+            const defaultStyleAttrs = Object.keys(defaultProps).flatMap((key) => {
+              if (skipMap) return []
+              const value = defaultProps[key]
+              if (key === 'theme' && !themeVal) {
+                if (platform === 'native') {
+                  shouldFlatten = false
+                  skipMap = true
+                  inlined.set('theme', { value: t.stringLiteral(value) })
+                }
+                themeVal = { value: t.stringLiteral(value) }
+                return []
+              }
+              if (!isValidStyleKey(key, staticConfig)) {
+                return []
+              }
+              const name = tamaguiConfig?.shorthands[key] || key
+              if (value === undefined) {
+                logger.warn(
+                  `⚠️ Error evaluating default style for component, prop ${key} ${value}`
+                )
+                shouldDeopt = true
+                return
+              }
+              if (name[0] === '$' && mediaQueryConfig[name.slice(1)]) {
+                defaultProps[key] = undefined
+                return evaluateAttribute({
+                  node: t.jsxAttribute(
+                    t.jsxIdentifier(name),
+                    t.jsxExpressionContainer(
+                      t.objectExpression(
+                        Object.keys(value)
+                          .filter((k) => {
+                            return typeof value[k] !== 'undefined'
+                          })
+                          .map((k) => {
+                            return t.objectProperty(
+                              t.identifier(k),
+                              literalToAst(value[k])
+                            )
+                          })
+                      )
+                    )
+                  ),
+                } as any)
+              }
+              const attr: ExtractedAttrStyle = {
+                type: 'style',
+                name,
+                value: { [name]: value },
+              }
+              return attr
+            }) as ExtractedAttr[]
+
+            if (!skipMap) {
+              if (defaultStyleAttrs.length) {
+                attrs = [...defaultStyleAttrs, ...attrs]
+              }
             }
           }
 
+          // combine ternaries
+          let ternaries: Ternary[] = []
+          attrs = attrs
+            .reduce<(ExtractedAttr | ExtractedAttr[])[]>((out, cur) => {
+              const next = attrs[attrs.indexOf(cur) + 1]
+              if (cur.type === 'ternary') {
+                ternaries.push(cur.value)
+              }
+              if ((!next || next.type !== 'ternary') && ternaries.length) {
+                // finish, process
+                const normalized = normalizeTernaries(ternaries).map(
+                  ({ alternate, consequent, ...rest }) => {
+                    return {
+                      type: 'ternary' as const,
+                      value: {
+                        ...rest,
+                        alternate: alternate || null,
+                        consequent: consequent || null,
+                      },
+                    }
+                  }
+                )
+                try {
+                  return [...out, ...normalized]
+                } finally {
+                  if (shouldPrintDebug) {
+                    logger.info(
+                      `    normalizeTernaries (${ternaries.length} => ${normalized.length})`
+                    )
+                  }
+                  ternaries = []
+                }
+              }
+              if (cur.type === 'ternary') {
+                return out
+              }
+              out.push(cur)
+              return out
+            }, [])
+            .flat()
+
+          const shouldWrapTheme = shouldFlatten && themeVal
           // wrap theme around children on flatten
           // TODO move this to bottom and re-check shouldFlatten
           // account for shouldFlatten could change w the above block "if (disableExtractVariables)"
-          if (shouldFlatten && shouldWrapTheme) {
+          if (shouldWrapTheme) {
             if (!programPath) {
               console.warn(
                 `No program path found, avoiding importing flattening / importing theme in ${sourcePath}`
@@ -1638,96 +1732,14 @@ export function createExtractor(
             }
           }
 
-          // only if we flatten, ensure the default styles are there
-          if (shouldFlatten) {
-            const defaultStyleAttrs = Object.keys(defaultProps).flatMap((key) => {
-              if (!isValidStyleKey(key, staticConfig)) {
-                return []
-              }
-              const value = defaultProps[key]
-              const name = tamaguiConfig?.shorthands[key] || key
-              if (value === undefined) {
-                logger.warn(
-                  `⚠️ Error evaluating default style for component, prop ${key} ${value}`
-                )
-                shouldDeopt = true
-                return
-              }
-              if (name[0] === '$' && mediaQueryConfig[name.slice(1)]) {
-                defaultProps[key] = undefined
-                return evaluateAttribute({
-                  node: t.jsxAttribute(
-                    t.jsxIdentifier(name),
-                    t.jsxExpressionContainer(
-                      t.objectExpression(
-                        Object.keys(value)
-                          .filter((k) => {
-                            return typeof value[k] !== 'undefined'
-                          })
-                          .map((k) => {
-                            return t.objectProperty(
-                              t.identifier(k),
-                              literalToAst(value[k])
-                            )
-                          })
-                      )
-                    )
-                  ),
-                } as any)
-              }
-              const attr: ExtractedAttrStyle = {
-                type: 'style',
-                name,
-                value: { [name]: value },
-              }
-              return attr
-            }) as ExtractedAttr[]
-
-            if (defaultStyleAttrs.length) {
-              attrs = [...defaultStyleAttrs, ...attrs]
+          if (shouldPrintDebug) {
+            try {
+              // prettier-ignore
+              logger.info([' flatten?', shouldFlatten, objToStr({ hasSpread, shouldDeopt, canFlattenProps, shouldWrapTheme, hasOnlyStringChildren }), 'inlined', inlined.size, [...inlined]].join(' '))
+            } catch {
+              // ok
             }
           }
-
-          // combine ternaries
-          let ternaries: Ternary[] = []
-          attrs = attrs
-            .reduce<(ExtractedAttr | ExtractedAttr[])[]>((out, cur) => {
-              const next = attrs[attrs.indexOf(cur) + 1]
-              if (cur.type === 'ternary') {
-                ternaries.push(cur.value)
-              }
-              if ((!next || next.type !== 'ternary') && ternaries.length) {
-                // finish, process
-                const normalized = normalizeTernaries(ternaries).map(
-                  ({ alternate, consequent, ...rest }) => {
-                    return {
-                      type: 'ternary' as const,
-                      value: {
-                        ...rest,
-                        alternate: alternate || null,
-                        consequent: consequent || null,
-                      },
-                    }
-                  }
-                )
-                try {
-                  return [...out, ...normalized]
-                } finally {
-                  if (shouldPrintDebug) {
-                    logger.info(
-                      `    normalizeTernaries (${ternaries.length} => ${normalized.length})`
-                    )
-                  }
-                  ternaries = []
-                }
-              }
-              if (cur.type === 'ternary') {
-                return out
-              }
-              out.push(cur)
-              return out
-            }, [])
-            .flat()
 
           if (shouldDeopt || !shouldFlatten) {
             if (shouldPrintDebug) {
