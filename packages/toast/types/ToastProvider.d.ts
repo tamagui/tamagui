@@ -76,6 +76,7 @@ interface ToastProviderProps {
      * Options for the notification API if you're using native toasts on web
      */
     notificationOptions?: NotificationOptions;
+    zIndex?: number;
 }
 declare const ToastProvider: React.FC<ToastProviderProps>;
 export { Collection, ToastProvider, useCollection, useToastProviderContext };

@@ -1,9 +1,11 @@
 import { createCollection } from '@tamagui/collection'
 import { NativeValue, TamaguiElement, createStyledContext } from '@tamagui/core'
+import { Portal } from '@tamagui/portal'
 import * as React from 'react'
 
 import { TOAST_CONTEXT } from './constants'
 import { ToastImperativeProvider } from './ToastImperative'
+import { ToastViewport } from './ToastViewport'
 import { BurntToastOptions } from './types'
 
 /* -------------------------------------------------------------------------------------------------
@@ -80,6 +82,7 @@ interface ToastProviderProps {
    * Options for the notification API if you're using native toasts on web
    */
   notificationOptions?: NotificationOptions
+  zIndex?: number
 }
 
 const ToastProvider: React.FC<ToastProviderProps> = (
@@ -95,6 +98,7 @@ const ToastProvider: React.FC<ToastProviderProps> = (
     duration = 5000,
     swipeDirection = 'right',
     swipeThreshold = 50,
+    zIndex,
     children,
   } = props
   const id = providedId ?? React.useId()
@@ -145,6 +149,9 @@ const ToastProvider: React.FC<ToastProviderProps> = (
         isClosePausedRef={isClosePausedRef}
       >
         <ToastImperativeProvider options={options}>{children}</ToastImperativeProvider>
+        <Portal zIndex={zIndex === undefined ? 1000_000_000 : zIndex}>
+          <ToastViewport name="root-toast" />
+        </Portal>
       </ToastProviderProvider>
     </Collection.Provider>
   )

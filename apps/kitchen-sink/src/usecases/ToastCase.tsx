@@ -37,7 +37,7 @@ export function ToastCase() {
           )
         })}
 
-        <ToastViewport renderToRoot={false} />
+        <ToastViewport />
 
         <Button data-testid="button-after">Focusable after viewport</Button>
       </YStack>

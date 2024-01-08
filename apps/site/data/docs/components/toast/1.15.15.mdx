@@ -63,6 +63,13 @@ Your toasts should be wrapped within a `ToastProvider`. This is usually done at 
 <PropsTable
   data={[
     {
+      name: 'zIndex',
+      required: false,
+      type: number,
+      description: `root <ToastViewPort/> zIndex`,
+      default: `1000_000_000`,
+    },
+    {
       name: 'label',
       required: false,
       type: 'string',
@@ -123,14 +130,6 @@ The portal for toasts to be directed to. Should be used inside [ToastProvider](#
 
 <PropsTable
   data={[
-    {
-      name: 'renderToRoot',
-      type: 'string',
-      default: true,
-      required: false,
-      description:
-        'Used to render ToastViewport at the root alongside TamaguiProvider, with the highest z-index set by default.',
-    },
     {
       name: 'hotkey',
       type: 'string[]',
@@ -252,7 +251,7 @@ Contains the Title, Description, Action and Close component. Should be used insi
     },
     {
       name: 'viewportName',
-      type: 'string',
+      type: 'string' | 'root-toast',
       required: false,
       description: `The viewport's name to send the toast to. Used when using multiple viewports and want to forward toasts to different ones.`,
       default: 'default',
@@ -265,6 +264,11 @@ Contains the Title, Description, Action and Close component. Should be used insi
     },
   ]}
 />
+
+<Notice theme="blue">
+  if you want to render the toast in the root viewport, then you can pass `"root-toast"`
+  to the `viewportName` prop that will help you to render toast on top of everything.
+</Notice>
 
 ### Toast.Title
 
@@ -379,12 +383,6 @@ Or for bottom center:
 ```tsx
 <ToastViewport flexDirection="column" bottom={0} left={0} right={0} />
 ```
-
-<Notice theme="blue">
-  When using multiple toasts, you can change the order of toasts by setting
-  `flexDirection` to `column` or `column-reverse`. Or even have them stack horizontally
-  using `row` or `row-reverse`.
-</Notice>
 
 ### Mobile safe area
 
