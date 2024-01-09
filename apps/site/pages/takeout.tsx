@@ -1492,7 +1492,11 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                               </RadioGroup.Item>
 
                               <YStack gap="$0" f={1}>
-                                <H4 mt="$-1">{price.description === `Hobby (3-8 seats)` ? `Team (2-8 seats)` : price.description}</H4>
+                                <H4 mt="$-1">{price.description === `Unlimited (+9 Seats)` ?
+                                  `Unlimited` :
+                                  price.description === `Hobby (3-8 seats)` ?
+                                    `Team (2-8 seats)` : price.description
+                                }</H4>
 
                                 <Paragraph theme="alt2">
                                   {formatPrice(price.unit_amount! / 100, 'usd')} base + 1
