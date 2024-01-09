@@ -34,6 +34,7 @@ import {
   Checkbox,
   Circle,
   Dialog,
+  EnsureFlexed,
   FontSizeTokens,
   GetProps,
   H1,
@@ -77,6 +78,7 @@ import { NextLink } from '../components/NextLink'
 import { seasons } from '../components/SeasonToggleButton'
 import { TakeoutLicense } from '../components/TakeoutLicense'
 import { useTakeoutStore } from '../hooks/useTakeoutStore'
+import { Notice } from '../components/Notice'
 
 const checkCircle = <CheckCircle color="$green9" />
 const xCircle = <XCircle size={28} color="$red9" />
@@ -306,7 +308,7 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
         scale: 0.85,
         y: '20%',
       }}
-      // ref={glow.parentRef as any}
+    // ref={glow.parentRef as any}
     >
       {/* <ThemeTint>
         <glow.Component />
@@ -490,9 +492,9 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
 const useDisableMotion = () => {
   return useClientValue(
     isClient &&
-      (window.matchMedia(`(prefers-reduced-motion: reduce)`)?.matches ||
-        window.location.search?.includes('disable-motion') ||
-        /firefox/i.test(navigator.userAgent))
+    (window.matchMedia(`(prefers-reduced-motion: reduce)`)?.matches ||
+      window.location.search?.includes('disable-motion') ||
+      /firefox/i.test(navigator.userAgent))
   )
 }
 
@@ -1191,7 +1193,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
     >
       <Dialog.Adapt when="sm">
         <Sheet zIndex={200000} modal dismissOnSnapToBottom animation="medium">
-          <Sheet.Frame padding="$4" space>
+          <Sheet.Frame padding={0} gap>
             <Sheet.ScrollView>
               <Dialog.Adapt.Contents />
             </Sheet.ScrollView>
@@ -1232,14 +1234,14 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
           maw={900}
           p={0}
         >
-          <ScrollView p="$6" $gtSm={{ maxHeight: '90vh' }}>
-            <YStack space>
+          <ScrollView $gtSm={{ maxHeight: '90vh' }}>
+            <YStack p="$6" space>
               <XStack ai="center" jc="center" gap="$6" mx="$8">
                 <Dialog.Title
                   ff="$silkscreen"
                   size="$9"
                   $sm={{ size: '$7' }}
-                  my="$1"
+                  mt="$-4"
                   als="center"
                 >
                   Purchase 🥡
@@ -1294,7 +1296,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                           borderColor={active ? '$color8' : '$color7'}
                           borderRadius="$4"
                           space="$4"
-                          ai="flex-start"
+                          ai="center"
                           $gtSm={{
                             maw: 'calc(33% - 8px)',
                           }}
@@ -1316,7 +1318,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                             </Checkbox.Indicator>
                           </Checkbox>
 
-                          <YStack gap="$2" f={1}>
+                          <YStack gap="$1" f={1}>
                             <H3 lh="$6">{product?.name}</H3>
                             <Paragraph size="$3" lh="$1" theme="alt2">
                               {product?.description}
@@ -1335,7 +1337,8 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                 separator={<Separator vertical />}
                 $sm={{ fd: 'column-reverse' }}
               >
-                <YStack maxWidth={450}>
+                <YStack maw={450} $sm={{ maw: '98%' }}>
+                  <EnsureFlexed />
                   <YStack
                     separator={<Separator o={0.35} />}
                     borderWidth="$0.5"
@@ -1345,7 +1348,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                     <XStack px="$4" py="$4" gap="$3">
                       <YStack width="80%">
                         <Paragraph size="$6" fow="bold">
-                          Lifetime access + 1 year of updates
+                          Lifetime access, 1 year of updates
                         </Paragraph>
                         <Paragraph size="$3" theme="alt1">
                           You own the code for life, with updates for a year
@@ -1418,17 +1421,6 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                     </XStack>
                     <XStack px="$4" py="$4" gap="$3">
                       <YStack width="80%">
-                        <Paragraph size="$6">Discord #takeout-general channel</Paragraph>
-                        <Paragraph size="$3" theme="alt1">
-                          Private group chat for all Takeout purchasers
-                        </Paragraph>
-                      </YStack>
-                      <XStack f={1} ai="center" gap="$2" jc="center">
-                        <Paragraph size="$8">{checkCircle}</Paragraph>
-                      </XStack>
-                    </XStack>
-                    <XStack px="$4" py="$4" gap="$3">
-                      <YStack width="80%">
                         <Paragraph size="$6">Discord Private Channel</Paragraph>
                         <Paragraph size="$3" theme="alt1">
                           Private chat for your team only
@@ -1455,9 +1447,13 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                     </XStack>
                   </YStack>
 
-                  <YStack mt="$6" space="$4">
-                    <H4>Every plan includes all the same assets:</H4>
-                    <Points />
+                  <YStack mt="$6" space="$4" ai="center">
+                    <XStack theme="green" bc="$background" p="$4" bw={1} boc="$color5" br="$4" gap="$3">
+                      <Check size={30} color="$color9" />
+                      <MunroP size="$7" color="$color11" ls={0.75}>
+                        Every plan includes the same assets
+                      </MunroP>
+                    </XStack>
                   </YStack>
                 </YStack>
 
@@ -1496,9 +1492,9 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                               </RadioGroup.Item>
 
                               <YStack gap="$0" f={1}>
-                                <H4 mt="$-1">{price.description}</H4>
+                                <H4 mt="$-1">{price.description === `Hobby (3-8 seats)` ? `Team (3-8 seats)` : price.description}</H4>
 
-                                <Paragraph theme="alt1">
+                                <Paragraph theme="alt2">
                                   {formatPrice(price.unit_amount! / 100, 'usd')} base + 1
                                   year of updates
                                 </Paragraph>
@@ -1520,13 +1516,13 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                     <XStack ai="flex-end" jc="flex-end" gap="$2">
                       {hasDiscountApplied ? (
                         <>
-                          <H3 textDecorationLine="line-through" size="$8" theme="alt2">
+                          <H3 textDecorationLine="line-through" size="$4" theme="alt2">
                             {formatPrice(sum! / 100, 'usd')}
                           </H3>
-                          <H3 size="$10">{formatPrice(finalPrice! / 100, 'usd')}</H3>
+                          <H3 size="$11">{formatPrice(finalPrice! / 100, 'usd')}</H3>
                         </>
                       ) : (
-                        <H3 size="$10">{formatPrice(finalPrice! / 100, 'usd')}</H3>
+                        <H3 size="$11">{formatPrice(finalPrice! / 100, 'usd')}</H3>
                       )}
                     </XStack>
                     <Unspaced>
@@ -1567,7 +1563,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                           Purchase
                         </PurchaseButton>
                       </NextLink>
-                      <XStack jc="space-between" space="$2" ai="center">
+                      <XStack jc="space-between" space="$2" ai="center" mb="$2">
                         <XStack
                           ai="center"
                           separator={<Separator vertical bc="$color8" my="$2" />}
@@ -1604,7 +1600,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                           </SizableText>
                         </XStack>
                         <Theme name="alt1">
-                          <PoweredByStripeIcon width={96} />
+                          <PoweredByStripeIcon width={96} height={40} />
                         </Theme>
                       </XStack>
                     </YStack>
@@ -1646,7 +1642,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
       return
     }
 
-    let dispose = () => {}
+    let dispose = () => { }
 
     // @ts-ignore
     import('../lib/sticksy').then(({ Sticksy }) => {
@@ -1725,8 +1721,8 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
             </PurchaseButton>
           </YStack>
 
-          <ScrollView disabled={media.md} showsVerticalScrollIndicator={false}>
-            <YStack space="$2" p="$6">
+          <ScrollView p="$6" disabled={media.md} showsVerticalScrollIndicator={false}>
+            <YStack space="$2">
               <MunroP size="$3" o={0.1} mt={-5} mb={-5}>
                 Drop 0001
               </MunroP>
@@ -1822,7 +1818,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
 
 function PurchaseButton(props: ButtonProps) {
   return (
-    <ThemeTint>
+    <ThemeTintAlt>
       <Button
         size="$6"
         backgroundColor="$color8"
@@ -1840,7 +1836,7 @@ function PurchaseButton(props: ButtonProps) {
           {props.children}
         </Button.Text>
       </Button>
-    </ThemeTint>
+    </ThemeTintAlt>
   )
 }
 
@@ -2235,8 +2231,8 @@ const DiscountText = ({
   const text = coupon.amount_off
     ? `${formatPrice(coupon.amount_off, 'usd')} ${coupon.name}`
     : coupon.percent_off
-    ? `${coupon.percent_off}% ${coupon.name}`
-    : ''
+      ? `${coupon.percent_off}% ${coupon.name}`
+      : ''
   return (
     <ThemeTintAlt offset={6}>
       <YStack m="auto" scale={1} $xs={{ scale: 1.2, rotate: '0deg' }} rotate="7deg">
@@ -2455,7 +2451,7 @@ const PromotionInput = () => {
             store.promoInputIsOpen = true
           }}
         >
-          Have a coupon code?
+          Coupon
         </Paragraph>
       )}
     </AnimatePresence>
@@ -2554,9 +2550,8 @@ const PromoVideo = () => {
             width: 840,
             height: 480,
           }}
-          src={`https://www.youtube.com/embed/Guwa1oPBvmU?modestbranding=1&rel=0&showinfo=0&autoplay=${
-            open ? 1 : 0
-          }`}
+          src={`https://www.youtube.com/embed/Guwa1oPBvmU?modestbranding=1&rel=0&showinfo=0&autoplay=${open ? 1 : 0
+            }`}
           title="YouTube video player"
           frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
