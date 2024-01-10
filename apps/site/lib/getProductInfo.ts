@@ -15,7 +15,7 @@ export function getTakeoutPriceInfo(pricingDescription: string) {
   const minOnlyMatch = Number(pricingDescription?.match(/.*\+([0-9]+) seats.*/i)?.[1])
   if (minOnlyMatch && !isNaN(minOnlyMatch)) {
     discordSeats = 50
-    licenseSeats = Infinity
+    licenseSeats = 4
   }
 
   const hasDiscordPrivateChannels = !isFirstTier
