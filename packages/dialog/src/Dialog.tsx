@@ -628,7 +628,7 @@ const DialogTitleFrame = styled(H2, {
 
 type DialogTitleProps = GetProps<typeof DialogTitleFrame>
 
-const DialogTitle = React.forwardRef<TamaguiTextElement, DialogTitleProps>(
+const DialogTitle = DialogTitleFrame.styleable(
   (props: ScopedProps<DialogTitleProps>, forwardedRef) => {
     const { __scopeDialog, ...titleProps } = props
     const context = useDialogContext(TITLE_NAME, __scopeDialog)
@@ -650,10 +650,7 @@ type DialogDescriptionProps = GetProps<typeof DialogDescriptionFrame>
 
 const DESCRIPTION_NAME = 'DialogDescription'
 
-const DialogDescription = React.forwardRef<
-  GetRef<typeof DialogDescriptionFrame>,
-  DialogDescriptionProps
->((props: ScopedProps<DialogDescriptionProps>, forwardedRef) => {
+const DialogDescription = DialogDescriptionFrame.styleable((props: ScopedProps<DialogDescriptionProps>, forwardedRef) => {
   const { __scopeDialog, ...descriptionProps } = props
   const context = useDialogContext(DESCRIPTION_NAME, __scopeDialog)
   return (
