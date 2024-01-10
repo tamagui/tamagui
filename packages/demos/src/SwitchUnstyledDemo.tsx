@@ -41,8 +41,11 @@ const Thumb = styled(Stack, {
   } as const,
 })
 
+// TODO: remove ts-ignores
 export const Switch = createSwitch({
+  // @ts-ignore
   Frame,
+  // @ts-ignore
   Thumb,
 })
 

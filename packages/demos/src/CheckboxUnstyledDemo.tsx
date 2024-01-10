@@ -22,8 +22,11 @@ const Indicator = styled(Stack, {
   context: CheckboxStyledContext,
 })
 
+// TODO: remove ts-ignores
 export const Checkbox = createCheckbox({
+  // @ts-ignore
   Frame,
+  // @ts-ignore
   Indicator,
 })
 
