@@ -1,6 +1,7 @@
 export function getTakeoutPriceInfo(pricingDescription: string) {
   let discordSeats = 1
   let licenseSeats = 1
+  let githubSeats = 1
 
   const isFirstTier = pricingDescription.toLowerCase().includes('hobby')
 
@@ -9,6 +10,7 @@ export function getTakeoutPriceInfo(pricingDescription: string) {
   if (minMaxMatch && !isNaN(minMaxMatch)) {
     discordSeats = minMaxMatch
     licenseSeats = minMaxMatch
+    githubSeats = 2
   }
 
   // e.g. "Team (+20 seats)"
@@ -16,6 +18,7 @@ export function getTakeoutPriceInfo(pricingDescription: string) {
   if (minOnlyMatch && !isNaN(minOnlyMatch)) {
     discordSeats = 50
     licenseSeats = 4
+    githubSeats = 4
   }
 
   const hasDiscordPrivateChannels = !isFirstTier
@@ -24,7 +27,7 @@ export function getTakeoutPriceInfo(pricingDescription: string) {
     discordSeats,
     hasDiscordPrivateChannels,
     licenseSeats,
-    githubSeats: Math.max(1, Math.floor(licenseSeats / 5)),
+    githubSeats,
     publicDomainUses: 2,
     androidAppsPublished: 2,
     iosAppsPublished: 2,
