@@ -1,5 +1,11 @@
 import { ThemeableStack } from '@tamagui/stacks'
-import { GetProps, SizeTokens, createStyledContext, styled } from '@tamagui/web'
+import {
+  GetProps,
+  SizeTokens,
+  createStyledContext,
+  styled,
+  withStaticProperties,
+} from '@tamagui/web'
 
 const CardContext = createStyledContext({
   size: '$true' as SizeTokens,
@@ -101,3 +107,9 @@ export const CardBackground = styled(ThemeableStack, {
 export type CardHeaderProps = GetProps<typeof CardHeader>
 export type CardFooterProps = GetProps<typeof CardFooter>
 export type CardProps = GetProps<typeof CardFrame>
+
+export const Card = withStaticProperties(CardFrame, {
+  Header: CardHeader,
+  Footer: CardFooter,
+  Background: CardBackground,
+})
