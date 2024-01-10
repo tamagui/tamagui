@@ -1,31 +1,8 @@
-import { SwitchProps as SwitchHeadlessProps, useSwitch } from '@tamagui/switch-headless'
-import { forwardRef, useState } from 'react'
-import { Pressable, View } from 'react-native'
-import {
-  Label,
-  Separator,
-  SizeTokens,
-  Switch,
-  SwitchFrame,
-  SwitchThumb,
-  XStack,
-  YStack,
-  createSwitch,
-} from 'tamagui'
+import { Label, Separator, SizeTokens, Switch, XStack, YStack } from 'tamagui'
 
 export function SwitchDemo() {
   return (
     <YStack width={200} alignItems="center" space="$3">
-      <XStack space="$3" alignItems="center">
-        <Label htmlFor="createSwitch">createSwitch</Label>
-        <CustomSwitch id="createSwitch">
-          <CustomSwitch.Thumb />
-        </CustomSwitch>
-      </XStack>
-      <XStack space="$3" alignItems="center">
-        <Label htmlFor="useSwitch">useSwitch</Label>
-        <HeadlessSwitch defaultChecked id="useSwitch" />
-      </XStack>
       <XStack space="$3" $xs={{ flexDirection: 'column' }}>
         <SwitchWithLabel size="$2" />
         <SwitchWithLabel size="$2" defaultChecked />
@@ -66,43 +43,3 @@ export function SwitchWithLabel(props: { size: SizeTokens; defaultChecked?: bool
     </XStack>
   )
 }
-
-export const CustomSwitch = createSwitch({
-  Frame: SwitchFrame,
-  Thumb: SwitchThumb,
-})
-
-export const HeadlessSwitch = forwardRef<View, SwitchHeadlessProps>(function (
-  props,
-  ref
-) {
-  const [checked, setChecked] = useState(props.defaultChecked || false)
-  const { switchProps, bubbleInput } = useSwitch(props, [checked, setChecked], ref)
-
-  return (
-    <Pressable
-      style={{
-        width: 60,
-        height: 20,
-        borderRadius: 100,
-        backgroundColor: checked ? 'gray' : 'darkgray',
-      }}
-      {...switchProps}
-    >
-      <View
-        style={{
-          backgroundColor: 'black',
-          borderRadius: 100,
-          width: 20,
-          height: 20,
-          transform: [
-            {
-              translateX: checked ? 40 : 0,
-            },
-          ],
-        }}
-      />
-      {bubbleInput}
-    </Pressable>
-  )
-})

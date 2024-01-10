@@ -41,7 +41,15 @@ export default function App() {
 
 const SandboxFrame = (props: { children: any }) => {
   const params = new URLSearchParams(window.location.search)
-  const [theme, setTheme] = useState(params.get('theme') === 'dark' ? 'dark' : 'light')
+  const [theme, setTheme] = useState(
+    params.get('theme') === 'dark'
+      ? 'dark'
+      : params.get('theme') === 'light'
+      ? 'light'
+      : window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light'
+  )
   const [screenshot] = useState(params.has('screenshot'))
   const showThemeSwitch = !screenshot
   const splitView = params.has('splitView')
