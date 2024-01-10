@@ -4,6 +4,7 @@ import {
   StackProps,
   TamaguiComponentExpectingVariants,
   composeEventHandlers,
+  isWeb,
   shouldRenderNativePlatform,
   useProps,
   withStaticProperties,
@@ -86,7 +87,7 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
   const SwitchThumbComponent = Thumb.styleable(function SwitchThumb(props, forwardedRef) {
     const { size: sizeProp, unstyled: unstyledProp, nativeID, ...thumbProps } = props
     const context = React.useContext(SwitchContext)
-    const { checked } = context
+    const { checked, disabled } = context
     const styledContext = React.useContext(SwitchStyledContext)
     const { frameWidth, unstyled: unstyledContext, size: sizeContext } = styledContext
     const unstyled =
@@ -117,6 +118,9 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
         onLayout={composeEventHandlers((props as ViewProps).onLayout, (e) =>
           setThumbWidth(e.nativeEvent.layout.width)
         )}
+        // expected variants
+        checked={checked}
+        disabled={disabled}
         {...thumbProps}
       />
     )
@@ -151,7 +155,7 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
     propsActive.size = styledContext.size ?? props.size ?? '$true'
     propsActive.unstyled = styledContext.unstyled ?? props.unstyled ?? false
 
-    const { switchProps, bubbleInput } = useSwitch(
+    const { switchProps, bubbleInput, switchRef } = useSwitch(
       // @ts-ignore
       propsActive,
       [checked, setChecked],
@@ -166,20 +170,25 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
     return (
       <SwitchContext.Provider value={{ checked, disabled: switchProps.disabled }}>
         <Frame
+          ref={switchRef}
           tag="button"
+          {...(isWeb && { type: 'button' })}
           {...(!disableActiveTheme && {
             theme: checked ? 'active' : null,
             themeShallow: true,
           })}
-          {...(switchProps as any)}
           frameWidth={frameWidth}
           onLayout={composeEventHandlers((switchProps as ViewProps).onLayout, (e) => {
             setFrameWidth(e.nativeEvent.layout.width)
           })}
+          {...(switchProps as any)}
+          // expected variants
+          checked={checked}
+          disabled={switchProps.disabled}
         >
           {switchProps.children}
-          {bubbleInput}
         </Frame>
+        {bubbleInput}
       </SwitchContext.Provider>
     )
   })
