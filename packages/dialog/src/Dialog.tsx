@@ -650,17 +650,19 @@ type DialogDescriptionProps = GetProps<typeof DialogDescriptionFrame>
 
 const DESCRIPTION_NAME = 'DialogDescription'
 
-const DialogDescription = DialogDescriptionFrame.styleable((props: ScopedProps<DialogDescriptionProps>, forwardedRef) => {
-  const { __scopeDialog, ...descriptionProps } = props
-  const context = useDialogContext(DESCRIPTION_NAME, __scopeDialog)
-  return (
-    <DialogDescriptionFrame
-      id={context.descriptionId}
-      {...descriptionProps}
-      ref={forwardedRef}
-    />
-  )
-})
+const DialogDescription = DialogDescriptionFrame.styleable(
+  (props: ScopedProps<DialogDescriptionProps>, forwardedRef) => {
+    const { __scopeDialog, ...descriptionProps } = props
+    const context = useDialogContext(DESCRIPTION_NAME, __scopeDialog)
+    return (
+      <DialogDescriptionFrame
+        id={context.descriptionId}
+        {...descriptionProps}
+        ref={forwardedRef}
+      />
+    )
+  }
+)
 
 DialogDescription.displayName = DESCRIPTION_NAME
 
