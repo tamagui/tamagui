@@ -24,19 +24,21 @@ const reRun = process.argv.includes('--rerun')
 const rePublish = reRun || process.argv.includes('--republish')
 const finish = process.argv.includes('--finish')
 
+const skipStarters = process.argv.includes('--skip-starters')
 const canary = process.argv.includes('--canary')
-const skipVersion = rePublish || process.argv.includes('--skip-version')
+const skipVersion = finish || rePublish || process.argv.includes('--skip-version')
 const patch = process.argv.includes('--patch')
 const dirty = process.argv.includes('--dirty')
 const skipPublish = process.argv.includes('--skip-publish')
 const skipTest =
+  finish ||
   rePublish ||
   process.argv.includes('--skip-test') ||
   process.argv.includes('--skip-tests')
-const skipBuild = rePublish || process.argv.includes('--skip-build')
+const skipBuild = finish || rePublish || process.argv.includes('--skip-build')
 const dryRun = process.argv.includes('--dry-run')
 const tamaguiGitUser = process.argv.includes('--tamagui-git-user')
-const isCI = process.argv.includes('--ci')
+const isCI = finish || process.argv.includes('--ci')
 
 const curVersion = fs.readJSONSync('./packages/tamagui/package.json').version
 
@@ -297,7 +299,7 @@ async function run() {
       )
     }
 
-    if (!finish) {
+    if (!finish && !skipPublish) {
       if (confirmFinalPublish) {
         const { confirmed } = await prompts({
           type: 'confirm',
@@ -361,7 +363,10 @@ async function run() {
       await sleep(4 * 1000)
     }
 
-    await spawnify(`yarn upgrade:starters`)
+    if (!skipStarters) {
+      await spawnify(`yarn upgrade:starters`)
+    }
+
     await spawnify(`yarn fix`)
 
     const starterFreeDir = join(process.cwd(), '../starter-free')
@@ -372,7 +377,10 @@ async function run() {
     const tagPrefix = canary ? 'canary' : 'v'
     const gitTag = `${tagPrefix}${version}`
 
-    await finishAndCommit(starterFreeDir)
+    if (!skipStarters) {
+      await finishAndCommit(starterFreeDir)
+    }
+
     await finishAndCommit()
 
     async function finishAndCommit(cwd = process.cwd()) {

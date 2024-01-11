@@ -229,11 +229,10 @@ type ToastViewportProps = ToastViewportFrameProps & {
      * Pass this when you want to have multiple/duplicated toasts.
      */
     multipleToasts?: boolean;
-    zIndex?: number;
-    /** if true it will render the toast in root (help to avoid z-index issues)
-     *  if false it will render the toast in place of <ToastViewport/>
-     *  @default true */
-    renderToRoot?: boolean;
+    /**
+     * When true, uses a portal to render at the very top of the root TamaguiProvider.
+     */
+    portalToRoot?: boolean;
 };
 declare const ToastViewport: React.MemoExoticComponent<React.ForwardRefExoticComponent<Omit<ScopedProps<ToastViewportProps>, "ref"> & React.RefAttributes<HTMLDivElement>>>;
 export { ToastViewport, ToastViewportProps, VIEWPORT_DEFAULT_HOTKEY, VIEWPORT_PAUSE, VIEWPORT_RESUME, };

@@ -117,7 +117,7 @@ export default function Community({ frontmatters }) {
             <Spacer size="$2" />
             <YStack ai="center" space>
               <H4 size="$5">Figma Design Kit</H4>
-              <NextLink href="https://www.figma.com/community/file/1125992524818379922">
+              <NextLink href="https://www.figma.com/community/file/1326593766534421119">
                 <YStack
                   target="_blank"
                   rel="noopener noreferrer"

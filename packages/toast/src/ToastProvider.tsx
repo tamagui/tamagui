@@ -3,7 +3,7 @@ import { NativeValue, TamaguiElement, createStyledContext } from '@tamagui/core'
 import * as React from 'react'
 
 import { TOAST_CONTEXT } from './constants'
-import { ToastImperativeProvider } from './ToastImperative'
+import { ToastImperativeOptions, ToastImperativeProvider } from './ToastImperative'
 import { BurntToastOptions } from './types'
 
 /* -------------------------------------------------------------------------------------------------
@@ -29,6 +29,7 @@ type ToastProviderContextValue = {
   onToastRemove(): void
   isFocusedToastEscapeKeyDownRef: React.MutableRefObject<boolean>
   isClosePausedRef: React.MutableRefObject<boolean>
+  options: ToastImperativeOptions
 }
 
 type ScopedProps<P> = P & { __scopeToast?: string }
@@ -143,8 +144,25 @@ const ToastProvider: React.FC<ToastProviderProps> = (
         }, [])}
         isFocusedToastEscapeKeyDownRef={isFocusedToastEscapeKeyDownRef}
         isClosePausedRef={isClosePausedRef}
+        options={options}
       >
         <ToastImperativeProvider options={options}>{children}</ToastImperativeProvider>
+      </ToastProviderProvider>
+    </Collection.Provider>
+  )
+}
+
+export function ReprogapateToastProvider(props: {
+  children: React.ReactNode
+  context: ToastProviderContextValue
+}) {
+  const { children, context } = props
+  return (
+    <Collection.Provider __scopeCollection={TOAST_CONTEXT}>
+      <ToastProviderProvider {...context}>
+        <ToastImperativeProvider options={context.options}>
+          {children}
+        </ToastImperativeProvider>
       </ToastProviderProvider>
     </Collection.Provider>
   )
