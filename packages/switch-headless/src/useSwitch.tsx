@@ -39,7 +39,6 @@ const BubbleInput = (props: BubbleInputProps) => {
   const { control, checked, bubbles = true, ...inputProps } = props
   const ref = React.useRef<HTMLInputElement>(null)
   const prevChecked = usePrevious(checked)
-  // const controlSize = useSize(control)
 
   // Bubble checked change to parents (e.g form change event)
   React.useEffect(() => {
@@ -68,7 +67,6 @@ const BubbleInput = (props: BubbleInputProps) => {
       ref={ref}
       style={{
         ...props.style,
-        // ...controlSize,
         position: 'absolute',
         pointerEvents: 'none',
         opacity: 0,
@@ -108,9 +106,8 @@ export function useSwitch<R extends View, P extends SwitchProps>(
       ...props,
       'aria-labelledby': ariaLabelledBy,
       onPress: composeEventHandlers(props.onPress, (event: GestureResponderEvent) => {
-        if (disabled) return
         setChecked((prevChecked) => !prevChecked)
-        if (isWeb && isFormControl && 'isPropagationStopped' in event) {
+        if (isWeb && isFormControl) {
           hasConsumerStoppedPropagationRef.current = event.isPropagationStopped()
           // if switch is in a form, stop propagation from the button so that we only propagate
           // one click event (from the input). We propagate changes from an input so that native
@@ -121,7 +118,7 @@ export function useSwitch<R extends View, P extends SwitchProps>(
     } satisfies SwitchBaseProps,
     switchRef: composedRefs,
     /**
-     * insert inside your switch
+     * insert as a sibling of your switch (should not be inside the switch)
      */
     bubbleInput:
       isWeb && isFormControl ? (

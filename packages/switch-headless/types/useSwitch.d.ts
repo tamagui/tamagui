@@ -27,7 +27,7 @@ export declare function useSwitch<R extends View, P extends SwitchProps>(props: 
     };
     switchRef: (node: View) => void;
     /**
-     * insert inside your switch
+     * insert as a sibling of your switch (should not be inside the switch)
      */
     bubbleInput: JSX.Element | null;
 };

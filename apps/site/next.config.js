@@ -46,7 +46,7 @@ const plugins = [
       'Picker',
       'CheckBox',
       'Touchable',
-      'Animated',
+      // 'Animated',
       'FlatList',
       'Modal',
     ],

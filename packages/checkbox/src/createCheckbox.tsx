@@ -148,31 +148,31 @@ export function createCheckbox<
     }
 
     return (
-      // @ts-ignore
-      <Frame
-        {...(!unstyled && {
-          width: size,
-          height: size,
-        })}
-        tag="button"
-        ref={checkboxRef}
-        {...checkboxProps}
+      <CheckboxContext.Provider
+        value={{
+          checked,
+          disabled: checkboxProps.disabled,
+        }}
       >
-        <CheckboxContext.Provider
-          value={{
-            checked,
-            disabled: checkboxProps.disabled,
-          }}
+        <CheckboxStyledContext.Provider
+          size={propsActive.size ?? styledContext?.size ?? '$true'}
+          scaleIcon={scaleIcon ?? styledContext?.scaleIcon ?? 1}
         >
-          <CheckboxStyledContext.Provider
-            size={propsActive.size ?? styledContext?.size ?? '$true'}
-            scaleIcon={scaleIcon ?? styledContext?.scaleIcon ?? 1}
+          {/* @ts-ignore */}
+          <Frame
+            {...(!unstyled && {
+              width: size,
+              height: size,
+            })}
+            tag="button"
+            ref={checkboxRef}
+            {...checkboxProps}
           >
             {propsActive.children}
-            {bubbleInput}
-          </CheckboxStyledContext.Provider>
-        </CheckboxContext.Provider>
-      </Frame>
+          </Frame>
+          {bubbleInput}
+        </CheckboxStyledContext.Provider>
+      </CheckboxContext.Provider>
     )
   })
 
