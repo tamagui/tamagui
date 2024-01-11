@@ -1,4 +1,3 @@
-import { isServer } from '@tamagui/constants'
 import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import { useForceUpdate } from '@tamagui/use-force-update'
 import { useEffect, useId, useState } from 'react'

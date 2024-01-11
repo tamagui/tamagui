@@ -37,13 +37,15 @@
     "@tamagui/use-force-update": "1.84.1"
   },
   "peerDependencies": {
-    "react": "*"
+    "react": "*",
+    "react-dom": "*"
   },
   "devDependencies": {
     "@tamagui/build": "1.84.1",
     "@testing-library/react": "^14.0.0",
     "csstype": "^3.0.10",
     "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "typescript": "^5.2.2",
     "vitest": "^0.34.3"
   },

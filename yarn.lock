@@ -8157,10 +8157,12 @@ __metadata:
     "@testing-library/react": "npm:^14.0.0"
     csstype: "npm:^3.0.10"
     react: "npm:^18.2.0"
+    react-dom: "npm:^18.2.0"
     typescript: "npm:^5.2.2"
     vitest: "npm:^0.34.3"
   peerDependencies:
     react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 
