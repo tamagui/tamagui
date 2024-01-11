@@ -40,9 +40,8 @@ export default function DocComponentsPage({ frontmatter, code }: Doc) {
 
   useEffect(() => {
     const fragment = getPathFragment(router.asPath)
-    let pathWithVersion = `${router.pathname}/${frontmatter.version}${
-      fragment ? `#${fragment}` : ''
-    }`
+    let pathWithVersion = `${router.pathname}/${frontmatter.version}${fragment ? `#${fragment}` : ''
+      }`
     if (Array.isArray(router.query.slug)) {
       pathWithVersion = pathWithVersion.replace('[...slug]', router.query.slug[0])
     }
@@ -52,7 +51,7 @@ export default function DocComponentsPage({ frontmatter, code }: Doc) {
   return (
     <>
       <NextSeo
-        title={`${frontmatter.title} — Tamagui — React Native Universal UI`}
+        title={`${frontmatter.title} — Tamagui — style library, design system, and UI kit for React (Native and web)`}
         description={frontmatter.description}
         openGraph={{
           images: [
