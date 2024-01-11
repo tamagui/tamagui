@@ -126,72 +126,79 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
     )
   })
 
-  const SwitchComponent = Frame.styleable(function SwitchFrame(_props, forwardedRef) {
-    const {
-      native,
-      nativeProps,
-      checked: checkedProp,
-      defaultChecked,
-      onCheckedChange,
-      ...props
-    } = _props
-    const [checked, setChecked] = useControllableState({
-      prop: checkedProp,
-      defaultProp: defaultChecked || false,
-      onChange: onCheckedChange,
-      transition: true,
-    })
+  const SwitchComponent = Frame.styleable(
+    function SwitchFrame(_props, forwardedRef) {
+      const {
+        native,
+        nativeProps,
+        checked: checkedProp,
+        defaultChecked,
+        onCheckedChange,
+        ...props
+      } = _props
+      const [checked, setChecked] = useControllableState({
+        prop: checkedProp,
+        defaultProp: defaultChecked || false,
+        onChange: onCheckedChange,
+        transition: true,
+      })
 
-    const styledContext = React.useContext(SwitchStyledContext)
+      const styledContext = React.useContext(SwitchStyledContext)
 
-    const [frameWidth, setFrameWidth] = React.useState(0)
+      const [frameWidth, setFrameWidth] = React.useState(0)
 
-    const propsActive = useProps(props, {
-      noNormalize: true,
-      noExpand: true,
-      resolveValues: 'none',
-      forComponent: Frame,
-    })
-    propsActive.size = styledContext.size ?? props.size ?? '$true'
-    propsActive.unstyled = styledContext.unstyled ?? props.unstyled ?? false
+      const propsActive = useProps(props, {
+        noNormalize: true,
+        noExpand: true,
+        resolveValues: 'none',
+        forComponent: Frame,
+      })
+      propsActive.size = styledContext.size ?? props.size ?? '$true'
+      propsActive.unstyled = styledContext.unstyled ?? props.unstyled ?? false
 
-    const { switchProps, bubbleInput, switchRef } = useSwitch(
-      // @ts-ignore
-      propsActive,
-      [checked, setChecked],
-      forwardedRef
-    )
+      const { switchProps, bubbleInput, switchRef } = useSwitch(
+        // @ts-ignore
+        propsActive,
+        [checked, setChecked],
+        forwardedRef
+      )
 
-    const renderNative = shouldRenderNativePlatform(native)
-    if (renderNative === 'android' || renderNative === 'ios') {
-      return <NativeSwitch value={checked} onValueChange={setChecked} {...nativeProps} />
+      const renderNative = shouldRenderNativePlatform(native)
+      if (renderNative === 'android' || renderNative === 'ios') {
+        return (
+          <NativeSwitch value={checked} onValueChange={setChecked} {...nativeProps} />
+        )
+      }
+
+      return (
+        <SwitchContext.Provider value={{ checked, disabled: switchProps.disabled }}>
+          <Frame
+            ref={switchRef}
+            tag="button"
+            {...(isWeb && { type: 'button' })}
+            frameWidth={frameWidth}
+            onLayout={composeEventHandlers((switchProps as ViewProps).onLayout, (e) => {
+              setFrameWidth(e.nativeEvent.layout.width)
+            })}
+            {...(switchProps as any)}
+            {...(!disableActiveTheme && {
+              theme: checked ? 'active' : null,
+              themeShallow: true,
+            })}
+            // expected variants
+            checked={checked}
+            disabled={switchProps.disabled}
+          >
+            {switchProps.children}
+          </Frame>
+          {bubbleInput}
+        </SwitchContext.Provider>
+      )
+    },
+    {
+      disableTheme: true,
     }
-
-    return (
-      <SwitchContext.Provider value={{ checked, disabled: switchProps.disabled }}>
-        <Frame
-          ref={switchRef}
-          tag="button"
-          {...(isWeb && { type: 'button' })}
-          {...(!disableActiveTheme && {
-            theme: checked ? 'active' : null,
-            themeShallow: true,
-          })}
-          frameWidth={frameWidth}
-          onLayout={composeEventHandlers((switchProps as ViewProps).onLayout, (e) => {
-            setFrameWidth(e.nativeEvent.layout.width)
-          })}
-          {...(switchProps as any)}
-          // expected variants
-          checked={checked}
-          disabled={switchProps.disabled}
-        >
-          {switchProps.children}
-        </Frame>
-        {bubbleInput}
-      </SwitchContext.Provider>
-    )
-  })
+  )
 
   return withStaticProperties(SwitchComponent, {
     Thumb: SwitchThumbComponent,
