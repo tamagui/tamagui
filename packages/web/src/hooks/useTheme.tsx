@@ -261,16 +261,19 @@ function someParentIsInversed(manager?: ThemeManager) {
   return false
 }
 
-const activeThemeManagers = new WeakMap<Object, ThemeManager>()
+export const activeThemeManagers = new Set()
+
+// this prevents us accidently keeping them around
+const activeThemeManagerMap = new WeakMap<Object, ThemeManager>()
 const activeThemeManagerIds: Record<number, Object> = {}
 const getId = (id: number) => activeThemeManagerIds[id]
 export const getThemeManager = (id: number) => {
-  return activeThemeManagers.get(getId(id)!)
+  return activeThemeManagerMap.get(getId(id)!)
 }
 const registerThemeManager = (t: ThemeManager) => {
   if (!activeThemeManagerIds[t.id]) {
     const id = activeThemeManagerIds[t.id] = {}
-    activeThemeManagers.set(id, t)
+    activeThemeManagerMap.set(id, t)
   }
 }
 
@@ -346,6 +349,7 @@ export const useChangeThemeEffect = (
       }
 
       if (isNewTheme || getShouldUpdateTheme(themeManager)) {
+        activeThemeManagers.add(themeManager)
         setThemeState(createState)
       }
 
@@ -385,7 +389,8 @@ export const useChangeThemeEffect = (
         selfListenerDispose()
         disposeChangeListener?.()
         if (isNewTheme) {
-          activeThemeManagers.delete(themeManager.id)
+          activeThemeManagers.delete(themeManager)
+          activeThemeManagerMap.delete(themeManager.id)
         }
       }
     }, [

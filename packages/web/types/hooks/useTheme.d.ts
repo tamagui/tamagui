@@ -27,6 +27,7 @@ export type UseThemeResult = {
 export declare const useTheme: (props?: ThemeProps) => UseThemeResult;
 export declare const useThemeWithState: (props: UseThemeWithStateProps) => [ChangedThemeResponse, ThemeParsed];
 export declare function getThemeProxied({ theme, name, scheme }: ThemeManagerState, deopt?: boolean, themeManager?: ThemeManager, keys?: string[], debug?: DebugProp): UseThemeResult;
+export declare const activeThemeManagers: Set<unknown>;
 export declare const getThemeManager: (id: number) => ThemeManager | undefined;
 export declare const useChangeThemeEffect: (props: UseThemeWithStateProps, isRoot?: boolean, keys?: string[], shouldUpdate?: () => boolean | undefined) => ChangedThemeResponse;
 //# sourceMappingURL=useTheme.d.ts.map
