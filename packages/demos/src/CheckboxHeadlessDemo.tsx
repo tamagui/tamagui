@@ -9,8 +9,8 @@ import { Label, XStack, YStack } from 'tamagui'
 
 export function CheckboxHeadlessDemo() {
   return (
-    <YStack width={300} alignItems="center" space="$2">
-      <XStack width={300} alignItems="center" space="$4">
+    <YStack width={200} alignItems="center" space="$3">
+      <XStack space="$3" alignItems="center">
         <HeadlessCheckbox defaultChecked="indeterminate" id="headless" />
 
         <Label htmlFor="headless">Headless</Label>

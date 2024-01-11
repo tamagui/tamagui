@@ -5,17 +5,24 @@ import { Label, XStack, YStack } from 'tamagui'
 
 const Frame = styled(Stack, {
   context: CheckboxStyledContext,
-
+  borderWidth: 1,
+  borderColor: '$borderColor',
+  borderRadius: 5,
+  alignItems: 'center',
+  justifyContent: 'center',
   variants: {
     checked: {
       true: {
-        backgroundColor: 'yellow',
+        backgroundColor: 'lightblue',
       },
       false: {
-        backgroundColor: 'green',
+        backgroundColor: 'silver',
       },
     },
   } as const,
+  defaultVariants: {
+    checked: false,
+  },
 })
 
 const Indicator = styled(Stack, {
@@ -34,12 +41,12 @@ export function CheckboxUnstyledDemo() {
   return (
     <YStack width={200} alignItems="center" space="$3">
       <XStack space="$3" alignItems="center">
-        <Label htmlFor="unstyled">Unstyled</Label>
         <Checkbox defaultChecked id="unstyled">
           <Checkbox.Indicator>
             <Check />
           </Checkbox.Indicator>
         </Checkbox>
+        <Label htmlFor="unstyled">Unstyled</Label>
       </XStack>
     </YStack>
   )

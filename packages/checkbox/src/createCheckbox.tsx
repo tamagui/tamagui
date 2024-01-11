@@ -166,6 +166,13 @@ export function createCheckbox<
             })}
             tag="button"
             ref={checkboxRef}
+            {...(unstyled === false && {
+              size,
+              theme: checked ? 'active' : null,
+            })}
+            // expected variants
+            checked={checked}
+            disabled={checkboxProps.disabled}
             {...checkboxProps}
           >
             {propsActive.children}

@@ -55,7 +55,7 @@ export default () => (
 
 Using the `createCheckbox` export, you can create a fully custom checkbox without using any of the default styles. This is similar to `unstyled`, but it doesn't assume the props `size` or `unstyled` exist, and it won't automatically apply the `active` theme.
 
-You must pass `SwitchContext` as the `context` option to your Fraeme and Thumb styled components.
+You must pass `CheckboxContext` as the `context` option to your Fraeme and Thumb styled components.
 
 If you define a `checked` variant, it will apply those styles.
 
@@ -67,15 +67,15 @@ If you define a `checked` variant, it will apply those styles.
 
 ```
 
-## Headless (`useSwitch`)
+## Headless (`useCheckbox`)
 
-Using the `useSwitch` API, you can make your own Switch from scratch. You could even do it without Tamagui's styling system if you wanted to.
+Using the `useCheckbox` API, you can make your own Checkbox from scratch. You could even do it without Tamagui's styling system if you wanted to.
 
 <HeroContainer noPad showAnimationDriverControl>
-  <SwitchHeadlessDemo />
+  <CheckboxHeadlessDemo />
 </HeroContainer>
 
-```tsx hero template=SwitchHeadless
+```tsx hero template=CheckboxHeadless
 
 ```
 
