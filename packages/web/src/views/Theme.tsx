@@ -2,7 +2,7 @@ import { isWeb } from '@tamagui/constants'
 import React, { Children, cloneElement, forwardRef, isValidElement, useRef } from 'react'
 
 import { variableToString } from '../createVariable'
-import { ThemeManagerContext } from '../helpers/ThemeManagerContext'
+import { ThemeManagerIDContext } from '../helpers/ThemeManagerContext'
 import { ChangedThemeResponse, useChangeThemeEffect } from '../hooks/useTheme'
 import type { ThemeProps } from '../types'
 import { ThemeDebug } from './ThemeDebug'
@@ -19,8 +19,8 @@ export const Theme = forwardRef(function Theme({ children, ...props }: ThemeProp
 
   let finalChildren = disableDirectChildTheme
     ? Children.map(children, (child) =>
-        cloneElement(child, { ['data-disable-theme']: true })
-      )
+      cloneElement(child, { ['data-disable-theme']: true })
+    )
     : children
 
   if (ref) {
@@ -78,20 +78,20 @@ export function getThemedChildren(
     next = Children.toArray(children).map((child) => {
       return isValidElement(child)
         ? cloneElement(
-            child,
-            undefined,
-            <Theme name={themeManager.state.parentName}>
-              {(child as any).props.children}
-            </Theme>
-          )
+          child,
+          undefined,
+          <Theme name={themeManager.state.parentName}>
+            {(child as any).props.children}
+          </Theme>
+        )
         : child
     })
   }
 
   const elementsWithContext = (
-    <ThemeManagerContext.Provider value={themeManager}>
+    <ThemeManagerIDContext.Provider value={themeManager.id}>
       {next}
-    </ThemeManagerContext.Provider>
+    </ThemeManagerIDContext.Provider>
   )
 
   if (forceClassName === false) {
@@ -142,8 +142,8 @@ function wrapThemeElements({
     const inverseClassName = name.startsWith('light')
       ? 't_light is_inversed'
       : name.startsWith('dark')
-      ? 't_dark is_inversed'
-      : ''
+        ? 't_dark is_inversed'
+        : ''
     themedChildren = (
       <span className={`${inverse ? inverseClassName : ''} _dsp_contents`}>
         {themedChildren}
@@ -169,8 +169,8 @@ function getThemeClassNameAndStyle(themeState: ChangedThemeResponse, isRoot = fa
 
   const style = themeColor
     ? {
-        color: themeColor,
-      }
+      color: themeColor,
+    }
     : undefined
 
   let className = themeState.state?.className || ''

@@ -247,14 +247,14 @@ const HeroContents = memo(function HeroContents() {
                 pressStyle={{
                   elevation: '$0',
                 }}
-                // TODO this is applying in dark mode...
-                // $theme-light={{
-                //   bc: '$color1',
-                //   hoverStyle: {
-                //     bc: '$color2',
-                //     color: '$color10',
-                //   },
-                // }}
+              // TODO this is applying in dark mode...
+              // $theme-light={{
+              //   bc: '$color1',
+              //   hoverStyle: {
+              //     bc: '$color2',
+              //     color: '$color10',
+              //   },
+              // }}
               >
                 Get started
               </Button>
@@ -378,7 +378,7 @@ const HeroText = styled(Text, {
 
 const RunsFasterTextEffects = () => {
   return (
-    <YStack fullscreen>
+    <YStack fullscreen $sm={{ x: 1 }}>
       <HeroText className="clip-text rainbow" l={-3}>
         runs&nbsp;faster
       </HeroText>

@@ -36,7 +36,7 @@ export function getHasThemeUpdatingProps(props: ThemeProps) {
 let uid = 0
 
 export class ThemeManager {
-  id = uid++
+  id = 0
   themeListeners = new Set<ThemeListener>()
   parentManager: ThemeManager | null = null
   state: ThemeManagerState = emptyState
@@ -45,6 +45,9 @@ export class ThemeManager {
     public props: ThemeProps = {},
     parentManager?: ThemeManager | 'root' | null | undefined
   ) {
+    uid = (uid + 1) % Number.MAX_VALUE
+    this.id = uid
+
     if (parentManager === 'root') {
       this.updateStateFromProps(props, false)
       return
@@ -305,9 +308,8 @@ function getState(
       const pre = THEME_CLASSNAME_PREFIX
       const className = !isWeb
         ? ''
-        : `${pre}sub_theme ${pre}${
-            !scheme || !restNames.length ? firstName : restNames.join('_')
-          }`
+        : `${pre}sub_theme ${pre}${!scheme || !restNames.length ? firstName : restNames.join('_')
+        }`
 
       // because its a new theme the baseManager is now the parent
       const parentState = (baseManager || parentManager)?.state
