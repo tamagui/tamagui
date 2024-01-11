@@ -121,6 +121,16 @@ export const HeaderLinks = (props: HeaderProps) => {
         </NextLink>
       )}
 
+      {forceShowAllLinks && (
+        <NextLink
+          legacyBehavior={false}
+          target="_blank"
+          href="https://github.com/sponsors/natew"
+        >
+          <HeadAnchor>Sponsor</HeadAnchor>
+        </NextLink>
+      )}
+
       {!userSwr.data?.session?.user && !isHeader && (
         <NextLink passHref prefetch={false} href="/login">
           <HeadAnchor

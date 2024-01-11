@@ -4,8 +4,15 @@ import { getTakeoutPriceInfo } from '@lib/getProductInfo'
 import * as sections from '@tamagui/bento'
 import { ButtonDemo, InputsDemo, SelectDemo } from '@tamagui/demos'
 import { getSize } from '@tamagui/get-token'
-import { ThemeTint } from '@tamagui/logo'
-import { Check, CheckCircle, X, XCircle } from '@tamagui/lucide-icons'
+import { ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
+import {
+  Check,
+  CheckCircle,
+  ShoppingBag,
+  ShoppingCart,
+  X,
+  XCircle,
+} from '@tamagui/lucide-icons'
 import { useBentoStore } from 'hooks/useBentoStore'
 import React, { useMemo, useState } from 'react'
 import Stripe from 'stripe'
@@ -79,22 +86,6 @@ const Point = ({
         )}
       </YStack>
     </XStack>
-  )
-}
-
-function Gradient() {
-  const theme = useThemeName()
-  return (
-    <LinearGradient
-      colors={
-        theme === 'light'
-          ? ['#e5fafa', '#edf8fc', '#e8e2f7']
-          : ['#1a202c', '#2d3748', '#4a5568']
-      }
-      start={[0, 1]}
-      end={[0, 0]}
-      fullscreen
-    />
   )
 }
 
@@ -666,66 +657,71 @@ const PurchaseModal = ({ starter, coupon }) => {
 
 const Hero = () => {
   const store = useBentoStore()
+  const { tint } = useTint()
+
   return (
-    <YStack pos="relative">
-      <Gradient />
+    <YStack pos="relative" mt={-55} pt={55} zi={0}>
+      <LinearGradient
+        colors={[`$backgroundStrong`, `$${tint}5`]}
+        start={[0, 1]}
+        end={[0, 0]}
+        fullscreen
+      />
       <ContainerLarge>
         <XStack gap="$6" py="$12" bc="transparent" jc="space-between" w={'100%'}>
-          <YStack zi={100} jc="space-between" f={10} ai="flex-start" gap="$4">
-            <H1 fos="$12">Get Started Quicker</H1>
-            <Text fontSize={'$9'} color={'$blue10'}>
-              Ready for React and React Native
-            </Text>
-            <Paragraph color="$gray11" fontSize={'$6'}>
-              Well designed, beautiful, responsive and accessible cross-platform UI
-              components for React and React Native
-            </Paragraph>
+          <YStack
+            maw="55%"
+            ov="hidden"
+            zi={100}
+            jc="space-between"
+            f={10}
+            ai="flex-start"
+            gap="$4"
+          >
+            <H1 maw="100%" f={1} size="$14" mb="$-2">
+              Well crafted add-ons.
+            </H1>
+
+            <YStack gap="$4">
+              <ThemeTintAlt>
+                <Paragraph size="$9" color="$color10">
+                  Screens, components, and early access to upcoming OSS features.
+                </Paragraph>
+              </ThemeTintAlt>
+
+              <Paragraph color="$gray12" size="$6">
+                For just $200/year get access to ongoing releases of well designed,
+                responsive and accessible cross-platform components for React and React
+                Native, ready to copy-paste into your app.
+              </Paragraph>
+            </YStack>
+
+            <Separator />
 
             <XStack gap="$3">
-              <Theme name={'light'}>
+              <ThemeTintAlt>
                 <Button
-                  bc="#fff"
-                  boc="$gray7"
-                  hoverStyle={{
-                    bc: '$gray2',
-                  }}
-                  pressStyle={{
-                    bc: '$gray1',
-                    boc: '$gray12',
+                  theme="active"
+                  iconAfter={ShoppingCart}
+                  fontFamily="$mono"
+                  onPress={() => {
+                    store.showPurchase = true
                   }}
                 >
-                  <Button.Text>Getting Started</Button.Text>
+                  Purchase — $200
                 </Button>
-              </Theme>
-              <Button
-                color={'#fff'}
-                bc="$blue9Dark"
-                boc="$blue5"
-                hoverStyle={{
-                  bc: '$blue10Dark',
-                  boc: '$blue5',
-                }}
-                pressStyle={{
-                  bc: '$blue9Dark',
-                  boc: '$blue5',
-                }}
-                onPress={() => {
-                  store.showPurchase = true
-                }}
-              >
-                <Button.Text>Purchase</Button.Text>
-              </Button>
+              </ThemeTintAlt>
             </XStack>
           </YStack>
 
-          <XStack zi={100} gap="$4" mr={-200}>
-            <Card elevate bc="#fff">
+          <XStack zi={100} gap="$4" mr={-400} mah={300} als="center">
+            <Card elevate>
               <ButtonDemo />
             </Card>
-            <Card elevate bc="#fff">
+            <Card elevate>
               <InputsDemo />
             </Card>
-            <Card p="$4" elevate bc="#fff">
+            <Card p="$4" elevate>
               <SelectDemo />
             </Card>
           </XStack>
@@ -738,21 +734,23 @@ const Hero = () => {
 const Body = () => {
   const store = useBentoStore()
   return (
-    <ContainerLarge>
+    <ContainerLarge gap="$2">
       <H2>Sections</H2>
-      <Paragraph size={'$5'} color={'$gray11'}>
-        Components are divided into multiple sections and each section has multiple group
-        of related components
+      <Paragraph size="$6" color={'$gray11'}>
+        Components are divided into sections and each section has multiple groups of
+        related components.
       </Paragraph>
-      <Spacer size={'$8'} />
+
+      <Spacer size="$8" />
+
       <YStack gap="$12">
         {sections.listingData.sections.map(({ sectionName, parts }) => {
           return (
             <YStack gap="$4" jc={'space-between'}>
               <H2 fontSize={'$8'} f={2}>
-                {sectionName}
+                {`${sectionName[0].toUpperCase()}${sectionName.slice(1)}`}
               </H2>
-              <Separator />
+              <Separator o={0.5} />
               <XStack gap={'$6'} f={4} fw="wrap" fs={1}>
                 {parts.map(({ name: partsName, numberOfComponents, route }) => (
                   <ComponentGroupsBanner
@@ -766,6 +764,10 @@ const Body = () => {
           )
         })}
       </YStack>
+
+      <Spacer size="$12" />
+      <Separator />
+      <Spacer size="$12" />
     </ContainerLarge>
   )
 }
@@ -813,7 +815,7 @@ export default () => null
 export function ProPage() {
   const store = useBentoStore()
   return (
-    <>
+    <YStack>
       <Hero />
       <Spacer size={'$8'} />
       <Body />
@@ -840,7 +842,7 @@ export function ProPage() {
       />
 
       <Spacer size="$10" />
-    </>
+    </YStack>
   )
 }
 

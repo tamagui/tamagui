@@ -124,6 +124,14 @@ The portal for toasts to be directed to. Should be used inside [ToastProvider](#
 <PropsTable
   data={[
     {
+      name: 'renderToRoot',
+      type: 'string',
+      default: true,
+      required: false,
+      description:
+        'Used to render ToastViewport at the root alongside TamaguiProvider, with the highest z-index set by default.',
+    },
+    {
       name: 'hotkey',
       type: 'string[]',
       default: "['F8']",
