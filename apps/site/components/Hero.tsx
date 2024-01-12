@@ -151,7 +151,7 @@ const HeroContents = memo(function HeroContents() {
             {/* add gradient to other colors: */}
             <br />
             <span style={{ position: 'relative' }}>
-              <span>runs&nbsp;faster</span>
+              <span style={{ opacity: 0 }}>runs&nbsp;faster</span>
               <RunsFasterTextEffects />
             </span>
           </H1>
@@ -247,14 +247,14 @@ const HeroContents = memo(function HeroContents() {
                 pressStyle={{
                   elevation: '$0',
                 }}
-              // TODO this is applying in dark mode...
-              // $theme-light={{
-              //   bc: '$color1',
-              //   hoverStyle: {
-              //     bc: '$color2',
-              //     color: '$color10',
-              //   },
-              // }}
+                // TODO this is applying in dark mode...
+                // $theme-light={{
+                //   bc: '$color1',
+                //   hoverStyle: {
+                //     bc: '$color2',
+                //     color: '$color10',
+                //   },
+                // }}
               >
                 Get started
               </Button>
@@ -360,7 +360,7 @@ const HeroText = styled(Text, {
 
   $sm: {
     t: 0,
-    l: -2,
+    l: -4,
   },
 
   $gtSm: {
@@ -378,27 +378,54 @@ const HeroText = styled(Text, {
 
 const RunsFasterTextEffects = () => {
   return (
-    <YStack fullscreen $sm={{ x: 1 }}>
-      <HeroText className="clip-text rainbow" l={-3}>
+    <YStack fullscreen $sm={{ x: -2.5 }}>
+      <HeroText className="clip-text rainbow" l={-4} $sm={{ l: 0 }}>
         runs&nbsp;faster
       </HeroText>
       <ThemeTintAlt offset={2}>
-        <HeroText className="mask-gradient-left" pe="none" l={-2} o={0.5} col="$color8">
+        <HeroText
+          className="mask-gradient-left"
+          pe="none"
+          l={-2}
+          o={0.5}
+          col="$color8"
+          $sm={{ l: 3 }}
+        >
           runs&nbsp;faster
         </HeroText>
       </ThemeTintAlt>
       <ThemeTintAlt offset={1}>
-        <HeroText l={-3} className="mask-gradient-left" pe="none" col="$color8">
+        <HeroText
+          l={-3}
+          className="mask-gradient-left"
+          pe="none"
+          col="$color8"
+          $sm={{ l: 1.5 }}
+        >
           runs&nbsp;faster
         </HeroText>
       </ThemeTintAlt>
       <ThemeTintAlt offset={-2}>
-        <HeroText l={3} className="mask-gradient-right" pe="none" col="$color8" o={0.1}>
+        <HeroText
+          l={2}
+          className="mask-gradient-right"
+          pe="none"
+          col="$color8"
+          o={0.5}
+          $sm={{ l: 3 }}
+        >
           runs&nbsp;faster
         </HeroText>
       </ThemeTintAlt>
       <ThemeTintAlt offset={-3}>
-        <HeroText l={-3} className="mask-gradient-right" pe="none" col="$color8" o={0.5}>
+        <HeroText
+          l={0}
+          className="mask-gradient-right"
+          pe="none"
+          col="$color8"
+          o={0.5}
+          $sm={{ l: 3 }}
+        >
           runs&nbsp;faster
         </HeroText>
       </ThemeTintAlt>
