@@ -8,11 +8,12 @@ import {
 
 export function withTamagui(
   metroConfig: ComposableIntermediateConfigT,
-  options: TamaguiOptions,
+  options: TamaguiOptions
 ) {
   const extractor = createExtractor()
-  const created = extractor.loadTamaguiSync(options)
-  const platform = options.platform
+
+  // emits outputCSS
+  extractor.loadTamaguiSync(options)
 
   metroConfig = withCssInterop(metroConfig, {
     ignorePropertyWarningRegex: ['^--tw-'],
@@ -24,26 +25,20 @@ export function withTamagui(
   metroConfig.transformer = {
     ...metroConfig.transformer,
 
+    nativewind: options.outputCSS
+      ? {
+          input: options.outputCSS,
+        }
+      : undefined,
+
     getTransformOptions: async (
       entryPoints: ReadonlyArray<string>,
       options: GetTransformOptionsOpts,
-      getDependenciesOf: (filePath: string) => Promise<string[]>,
+      getDependenciesOf: (filePath: string) => Promise<string[]>
     ) => {
       return previousTransformOptions?.(entryPoints, options, getDependenciesOf)
     },
   }
-
-  // const {
-  //   platform,
-  //   // @ts-ignore i guess this isnt here yet?
-  //   transformer,
-  // } = metroConfig
-
-  // const previousTransformOptions = transformer?.getTransformOptions
-
-  // const cssString = ''
-
-  // cssToReactNativeRuntime(cssString, transformer?.cssToReactNativeRuntime)
 
   return metroConfig
 }
