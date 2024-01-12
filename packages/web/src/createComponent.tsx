@@ -361,6 +361,7 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`stateref`
 
+    // TODO can remove and fold into stateRef
     const hostRef = useRef<TamaguiElement>(null)
 
     /**
@@ -371,7 +372,7 @@ export function createComponent<
 
     // after we get states mount we need to turn off isAnimated for server side
     const hasAnimationProp = Boolean(
-      props.animation || (props.style && hasAnimatedStyleValue(props.style))
+      'animation' in props || (props.style && hasAnimatedStyleValue(props.style))
     )
 
     // disable for now still ssr issues
