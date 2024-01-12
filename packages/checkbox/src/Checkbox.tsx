@@ -76,7 +76,7 @@ export const BubbleInput = (props: BubbleInputProps) => {
 
   return (
     <input
-      type="checkbox"
+      type='checkbox'
       defaultChecked={isIndeterminate(checked) ? false : checked}
       {...inputProps}
       tabIndex={-1}
@@ -165,7 +165,7 @@ const CheckboxIndicator = CheckboxIndicatorFrame.extractable(
           <CheckboxIndicatorFrame
             data-state={getState(context.state)}
             data-disabled={context.disabled ? '' : undefined}
-            pointerEvents="none"
+            pointerEvents='none'
             {...indicatorProps}
             ref={forwardedRef}
           >
@@ -367,7 +367,7 @@ const CheckboxComponent = CheckboxFrame.styleable<CheckboxExtraProps>(function C
             width={size}
             height={size}
             tag={isInsideButton ? 'span' : 'button'}
-            role="checkbox"
+            role='checkbox'
             aria-labelledby={labelledBy}
             aria-checked={isIndeterminate(checked) ? 'mixed' : checked}
             aria-required={required}

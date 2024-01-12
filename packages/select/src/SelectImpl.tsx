@@ -108,11 +108,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     placement: 'bottom-start',
     middleware: [
       size({
-        apply({
-          rects: {
-            reference: { width },
-          },
-        }) {
+        apply({ rects: { reference: { width } } }) {
           floatingStyle.current = {
             minWidth: width + 8,
           }

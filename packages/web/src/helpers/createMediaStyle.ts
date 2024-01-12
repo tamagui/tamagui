@@ -99,7 +99,9 @@ export const createMediaStyle = (
       ? ''
       : enableMediaPropOrder
       ? // this new array should be cached
-        new Array(priority).fill(':root').join('')
+        new Array(priority)
+          .fill(':root')
+          .join('')
       : // @ts-ignore
         prefixes[mediaKey]
     const prefix = groupMediaKey ? `@container ${containerName}` : '@media'

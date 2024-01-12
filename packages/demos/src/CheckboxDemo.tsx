@@ -3,10 +3,10 @@ import { Checkbox, CheckboxProps, Label, SizeTokens, XStack, YStack } from 'tama
 
 export function CheckboxDemo() {
   return (
-    <YStack width={300} alignItems="center" space="$2">
-      <CheckboxWithLabel size="$3" />
-      <CheckboxWithLabel size="$4" defaultChecked />
-      <CheckboxWithLabel size="$5" disabled label="Accept terms (disabled)" />
+    <YStack width={300} alignItems='center' space='$2'>
+      <CheckboxWithLabel size='$3' />
+      <CheckboxWithLabel size='$4' defaultChecked />
+      <CheckboxWithLabel size='$5' disabled label='Accept terms (disabled)' />
     </YStack>
   )
 }
@@ -18,7 +18,7 @@ export function CheckboxWithLabel({
 }: CheckboxProps & { size: SizeTokens; label?: string }) {
   const id = `checkbox-${size.toString().slice(1)}`
   return (
-    <XStack width={300} alignItems="center" space="$4">
+    <XStack width={300} alignItems='center' space='$4'>
       <Checkbox id={id} size={size} {...checkboxProps}>
         <Checkbox.Indicator>
           <CheckIcon />

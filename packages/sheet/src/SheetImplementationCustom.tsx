@@ -411,7 +411,7 @@ export const SheetImplementationCustom = themeable(
     const contents = (
       <ParentSheetContext.Provider value={nextParentContext}>
         <SheetProvider {...providerProps}>
-          <AnimatePresence enterExitVariant="open">
+          <AnimatePresence enterExitVariant='open'>
             {shouldHideParentSheet || !open ? null : overlayComponent}
           </AnimatePresence>
 
@@ -426,7 +426,7 @@ export const SheetImplementationCustom = themeable(
                 bottom: 0,
                 pointerEvents: 'none',
               }}
-              pointerEvents="none"
+              pointerEvents='none'
               onLayout={handleMaxContentViewLayout}
             />
           )}

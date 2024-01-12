@@ -62,7 +62,7 @@
     "indentStyle": "space",
     "indentSize": 2,
     "lineWidth": 90,
-    "ignore": []
+    "ignore": ["**/*/generated-new.ts", "**/*/generated-v2.ts"]
   },
   "javascript": {
     "formatter": {

@@ -5,9 +5,9 @@ import { TamaguiIconSvg } from './TamaguiLogoSvg'
 export const LogoIcon = ({ downscale = 2 }: any) => {
   return (
     <YStack
-      tag="span"
-      className="unselectable"
-      alignSelf="center"
+      tag='span'
+      className='unselectable'
+      alignSelf='center'
       marginVertical={-10}
       pressStyle={{
         opacity: 0.7,
@@ -15,7 +15,7 @@ export const LogoIcon = ({ downscale = 2 }: any) => {
       }}
     >
       <TamaguiIconSvg
-        className="tamagui-icon"
+        className='tamagui-icon'
         width={450 / 8 / downscale}
         height={420 / 8 / downscale}
       />

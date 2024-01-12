@@ -160,7 +160,7 @@ export const PopoverTrigger = React.forwardRef<
 
   const trigger = (
     <View
-      aria-haspopup="dialog"
+      aria-haspopup='dialog'
       aria-expanded={context.open}
       // TODO not matching
       // aria-controls={context.contentId}
@@ -448,7 +448,7 @@ const PopoverContentImpl = React.forwardRef<
 
   return (
     <Animate
-      type="presence"
+      type='presence'
       present={Boolean(open)}
       keepChildrenMounted={keepChildrenMounted}
       onExitComplete={() => {
@@ -505,7 +505,7 @@ export const PopoverClose = React.forwardRef<
     <YStack
       {...rest}
       ref={forwardedRef}
-      componentName="PopoverClose"
+      componentName='PopoverClose'
       onPress={composeEventHandlers(props.onPress as any, () =>
         context.onOpenChange(false)
       )}
@@ -534,7 +534,7 @@ export const PopoverArrow = PopperArrow.styleable(function PopoverArrow(
   return (
     <PopperArrow
       __scopePopper={__scopePopover || POPOVER_SCOPE}
-      componentName="PopoverArrow"
+      componentName='PopoverArrow'
       {...rest}
       ref={forwardedRef}
     />

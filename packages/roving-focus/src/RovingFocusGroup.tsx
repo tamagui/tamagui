@@ -317,11 +317,15 @@ RovingFocusGroup.displayName = GROUP_NAME
 
 // prettier-ignore
 const MAP_KEY_TO_FOCUS_INTENT: Record<string, FocusIntent> = {
-  ArrowLeft: 'prev', ArrowUp: 'prev',
-  ArrowRight: 'next', ArrowDown: 'next',
-  PageUp: 'first', Home: 'first',
-  PageDown: 'last', End: 'last',
-};
+  ArrowLeft: 'prev',
+  ArrowUp: 'prev',
+  ArrowRight: 'next',
+  ArrowDown: 'next',
+  PageUp: 'first',
+  Home: 'first',
+  PageDown: 'last',
+  End: 'last',
+}
 
 function getDirectionAwareKey(key: string, dir?: Direction) {
   if (dir !== 'rtl') return key

@@ -6,11 +6,11 @@ export function AddThemeDemo() {
   const [theme, setTheme] = useState<any>()
 
   return (
-    <YStack alignItems="center" space>
+    <YStack alignItems='center' space>
       <H3>Theme: {theme ?? 'none'}</H3>
 
       <Theme name={theme ?? 'red'}>
-        <Square borderRadius="$8" size={100} backgroundColor="$color" />
+        <Square borderRadius='$8' size={100} backgroundColor='$color' />
       </Theme>
 
       <Button

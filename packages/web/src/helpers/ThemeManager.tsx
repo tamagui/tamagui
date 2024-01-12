@@ -308,8 +308,9 @@ function getState(
       const pre = THEME_CLASSNAME_PREFIX
       const className = !isWeb
         ? ''
-        : `${pre}sub_theme ${pre}${!scheme || !restNames.length ? firstName : restNames.join('_')
-        }`
+        : `${pre}sub_theme ${pre}${
+            !scheme || !restNames.length ? firstName : restNames.join('_')
+          }`
 
       // because its a new theme the baseManager is now the parent
       const parentState = (baseManager || parentManager)?.state

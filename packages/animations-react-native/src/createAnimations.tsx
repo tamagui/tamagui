@@ -342,7 +342,17 @@ export function createAnimations<A extends AnimationsConfig>(
           if (process.env.NODE_ENV === 'development') {
             if (props['debug'] === 'verbose') {
               // prettier-ignore
-              console.info(' 💠 animate',key,`from (${value['_value']}) to`, valIn, `(${val})`, 'type',type,'interpolate',interpolateArgs)
+              console.info(
+                ' 💠 animate',
+                key,
+                `from (${value['_value']}) to`,
+                valIn,
+                `(${val})`,
+                'type',
+                type,
+                'interpolate',
+                interpolateArgs
+              )
             }
           }
           return value

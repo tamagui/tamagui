@@ -33,35 +33,35 @@ export function AnimationsPresenceDemo() {
 
   return (
     <XStack
-      overflow="hidden"
-      backgroundColor="#000"
-      position="relative"
+      overflow='hidden'
+      backgroundColor='#000'
+      position='relative'
       height={300}
-      width="100%"
-      alignItems="center"
+      width='100%'
+      alignItems='center'
     >
       <AnimatePresence enterVariant={enterVariant} exitVariant={exitVariant}>
-        <YStackEnterable key={page} animation="bouncy" fullscreen x={0} opacity={1}>
+        <YStackEnterable key={page} animation='bouncy' fullscreen x={0} opacity={1}>
           <Image source={{ uri: images[imageIndex], width: 780, height: 300 }} />
         </YStackEnterable>
       </AnimatePresence>
 
       <Button
-        accessibilityLabel="Carousel left"
+        accessibilityLabel='Carousel left'
         icon={ArrowLeft}
-        size="$5"
-        position="absolute"
-        left="$4"
+        size='$5'
+        position='absolute'
+        left='$4'
         circular
         elevate
         onPress={() => paginate(-1)}
       />
       <Button
-        accessibilityLabel="Carousel right"
+        accessibilityLabel='Carousel right'
         icon={ArrowRight}
-        size="$5"
-        position="absolute"
-        right="$4"
+        size='$5'
+        position='absolute'
+        right='$4'
         circular
         elevate
         onPress={() => paginate(1)}

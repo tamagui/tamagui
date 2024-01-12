@@ -22,7 +22,7 @@ const ToastAnnounceExclude = React.forwardRef<
 
   return (
     <ToastAnnounceExcludeFrame
-      data-toast-announce-exclude=""
+      data-toast-announce-exclude=''
       data-toast-announce-alt={altText || undefined}
       {...announceExcludeProps}
       ref={forwardedRef}

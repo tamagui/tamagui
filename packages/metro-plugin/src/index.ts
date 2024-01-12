@@ -9,8 +9,6 @@ export function withTamagui(
   metroConfig: GetTransformOptionsOpts,
   options: TamaguiOptions
 ) {
-  console.log('metroConfig', metroConfig)
-
   const created = extractor.loadTamaguiSync(options)
 
   // const {

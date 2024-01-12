@@ -179,7 +179,7 @@ const Progress = withStaticProperties(
           aria-valuenow={isNumber(value) ? value : undefined}
           aria-valuetext={valueLabel}
           // @ts-ignore
-          role="progressbar"
+          role='progressbar'
           data-state={getProgressState(value, max)}
           data-value={value ?? undefined}
           data-max={max}

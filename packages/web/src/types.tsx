@@ -1741,7 +1741,9 @@ export type StylableComponent =
   | ComponentType<any>
   | ForwardRefExoticComponent<any>
   | ReactComponentWithRef<any, any>
-  | (new (props: any) => any)
+  | (new (
+      props: any
+    ) => any)
 
 export type GetStyledVariants<A extends TamaguiComponent> = A extends TamaguiComponent<
   any,
@@ -1768,7 +1770,9 @@ export type GetProps<A extends StylableComponent> = A extends TamaguiComponent<
   ? Props
   : A extends ComponentType<infer Props>
   ? GetGenericComponentTamaguiProps<Props>
-  : A extends new (props: infer Props) => any
+  : A extends new (
+      props: infer Props
+    ) => any
   ? GetGenericComponentTamaguiProps<Props>
   : {}
 

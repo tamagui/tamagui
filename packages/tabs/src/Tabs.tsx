@@ -55,7 +55,7 @@ const TabsList = TabsListFrame.extractable(
           loop={loop}
         >
           <TabsListFrame
-            role="tablist"
+            role='tablist'
             aria-orientation={context.orientation}
             ref={forwardedRef}
             orientation={context.orientation}
@@ -229,7 +229,7 @@ const TabsTrigger = TabsTriggerFrame.extractable(
               onHoverOut={composeEventHandlers(props.onHoverOut, () => {
                 onInteraction?.('hover', null)
               })}
-              role="tab"
+              role='tab'
               aria-selected={isSelected}
               aria-controls={contentId}
               data-state={isSelected ? 'active' : 'inactive'}
@@ -332,7 +332,7 @@ const TabsContent = TabsContentFrame.styleable<TabsContentExtraProps>(
         key={value}
         data-state={isSelected ? 'active' : 'inactive'}
         data-orientation={context.orientation}
-        role="tabpanel"
+        role='tabpanel'
         aria-labelledby={triggerId}
         // @ts-ignore
         hidden={!show}

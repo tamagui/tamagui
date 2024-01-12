@@ -103,7 +103,7 @@ const DialogTrigger = DialogTriggerFrame.styleable(
       <ButtonNestingContext.Provider value={true}>
         <DialogTriggerFrame
           tag={isInsideButton ? 'span' : 'button'}
-          aria-haspopup="dialog"
+          aria-haspopup='dialog'
           aria-expanded={context.open}
           aria-controls={context.contentId}
           data-state={getState(context.open)}
@@ -395,7 +395,7 @@ const DialogContent = DialogContentFrame.extractable(
           // causes lots of bugs on touch web on site
           removeScrollBar={false}
         >
-          <div data-remove-scroll-container className="_dsp_contents">
+          <div data-remove-scroll-container className='_dsp_contents'>
             {contents}
           </div>
         </RemoveScroll>
@@ -697,7 +697,7 @@ const DialogClose = DialogCloseFrame.styleable<DialogCloseProps>(
 
     return (
       <DialogCloseFrame
-        accessibilityLabel="Dialog Close"
+        accessibilityLabel='Dialog Close'
         tag={isInsideButton ? 'span' : 'button'}
         {...closeProps}
         ref={forwardedRef}

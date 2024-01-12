@@ -19,17 +19,17 @@ export const Portal = (props: PortalProps) => {
 
   const contents = (
     <YStack
-      pointerEvents="box-none"
+      pointerEvents='box-none'
       fullscreen
-      position="absolute"
-      maxWidth="100%"
+      position='absolute'
+      maxWidth='100%'
       zIndex={100000}
       {...props}
     />
   )
 
   if (Platform.OS === 'android' || !rootTag) {
-    return <PortalItem hostName="root">{contents}</PortalItem>
+    return <PortalItem hostName='root'>{contents}</PortalItem>
   }
 
   return createPortal(contents, rootTag)
