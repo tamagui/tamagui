@@ -25,7 +25,7 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
     Text: Animated.Text,
     isReactNative: true,
     keepStyleSSR: true,
-    supportsCSSVars: true,
+    supportsCSSVars: false,
     animations,
     usePresence,
     ResetPresence,
