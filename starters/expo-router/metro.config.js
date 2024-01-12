@@ -8,16 +8,20 @@ const config = getDefaultConfig(__dirname, {
   isCSSEnabled: true,
 })
 
-// // This is not needed for Tamagui, it is configuration for Metro to understand monorepos
-// const projectRoot = __dirname
-// config.watchFolders = [projectRoot]
-// config.resolver.nodeModulesPaths = [
-//   path.resolve(projectRoot, 'node_modules'),
-// ]
+// This is not needed for Tamagui, it is configuration for Metro to understand monorepos
+const projectRoot = __dirname
+const workspaceRoot = path.join(__dirname, '../..')
+config.watchFolders = [workspaceRoot, projectRoot]
+config.resolver.nodeModulesPaths = [
+  path.resolve(workspaceRoot, 'node_modules'),
+  path.resolve(projectRoot, 'node_modules'),
+]
 
 // 2. Enable Tamagui
 const { withTamagui } = require('@tamagui/metro-plugin')
 module.exports = withTamagui(config, {
   components: ['tamagui'],
-  config: './tamagui.config.ts'
+  config: './tamagui.config.ts',
+  outputCSS: './tamagui.css',
+  disableMinifyCSS: true,
 })

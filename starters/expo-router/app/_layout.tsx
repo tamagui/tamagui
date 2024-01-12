@@ -1,3 +1,5 @@
+import '../tamagui.css'
+
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native'
 import { SplashScreen, Stack } from 'expo-router'
 import { useColorScheme } from 'react-native'

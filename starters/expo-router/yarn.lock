@@ -3127,9 +3127,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/accordion@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/accordion@npm:1.84.2"
+"@tamagui/accordion@portal:/Users/n8/tamagui/packages/accordion::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/accordion@portal:/Users/n8/tamagui/packages/accordion::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/collapsible": "npm:1.84.2"
     "@tamagui/collection": "npm:1.84.2"
@@ -3142,24 +3142,22 @@ __metadata:
     "@tamagui/use-controllable-state": "npm:1.84.2"
   peerDependencies:
     react: "*"
-  checksum: 88c4a648d33b29622065572e7ffefc2ff2ed173cbeb479abc419965799c4c8cd40b0bcca1b4909cb63e80f0ac86be654ee223febcbad2c163ad0ed8efd52a62f
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/adapt@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/adapt@npm:1.84.2"
+"@tamagui/adapt@portal:/Users/n8/tamagui/packages/adapt::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/adapt@portal:/Users/n8/tamagui/packages/adapt::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/constants": "npm:1.84.2"
     "@tamagui/core": "npm:1.84.2"
     "@tamagui/helpers": "npm:1.84.2"
-  checksum: b3a89605a685bb0a8754cdd7a28424e24ef9c7df0af10671b493340b803531f9455531d062c418ea4fa490985bb4ef4d81a88c739688a310de8dd1789e1258c5
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/alert-dialog@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/alert-dialog@npm:1.84.2"
+"@tamagui/alert-dialog@portal:/Users/n8/tamagui/packages/alert-dialog::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/alert-dialog@portal:/Users/n8/tamagui/packages/alert-dialog::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/animate-presence": "npm:1.84.2"
     "@tamagui/aria-hidden": "npm:1.84.2"
@@ -3181,58 +3179,53 @@ __metadata:
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 3cc4f5692b8ef3ab78e3e6c712387a214faa37afee3153039ca0bc7ba10d8741a2123e93d0dc7258db146049d34e0da35b2c84f9d57f792b369a36cdd4d0436e
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/animate-presence@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/animate-presence@npm:1.84.2"
+"@tamagui/animate-presence@portal:/Users/n8/tamagui/packages/animate-presence::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/animate-presence@portal:/Users/n8/tamagui/packages/animate-presence::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/helpers": "npm:1.84.2"
     "@tamagui/use-force-update": "npm:1.84.2"
     "@tamagui/use-presence": "npm:1.84.2"
     "@tamagui/web": "npm:1.84.2"
-  checksum: 069c144bfe40770e80aacc99f77e680d09a5c2e57a57e748e3f89961db56f7c10d7e7bc0e4e788d59d916d13da366b134cb84c20b16135797cbf22e93aaad55a
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/animate@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/animate@npm:1.84.2"
+"@tamagui/animate@portal:/Users/n8/tamagui/packages/animate::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/animate@portal:/Users/n8/tamagui/packages/animate::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/animate-presence": "npm:1.84.2"
-  checksum: dd9950b84036955f0dd46687ebb8e1cbb7519debcf0cbf938cf2f657e579a265d81abaca4c0d7edb461da71b8b7e4d5f99f852161659d3364d55cbfbc3d00b42
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/animations-css@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/animations-css@npm:1.84.2"
+"@tamagui/animations-css@portal:/Users/n8/tamagui/packages/animations-css::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/animations-css@portal:/Users/n8/tamagui/packages/animations-css::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/constants": "npm:1.84.2"
     "@tamagui/cubic-bezier-animator": "npm:1.84.2"
     "@tamagui/use-presence": "npm:1.84.2"
     "@tamagui/web": "npm:1.84.2"
     react: "npm:^18.2.0"
-  checksum: 84dd10194b391ea11b0a94292d9278cab8933c0f2f18620332c1e68250959741c4ba249276ba1136d6612d663cf8825e46ac5f21eb02231637c894ce2a0ab612
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/animations-moti@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/animations-moti@npm:1.84.2"
+"@tamagui/animations-moti@portal:/Users/n8/tamagui/packages/animations-moti::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/animations-moti@portal:/Users/n8/tamagui/packages/animations-moti::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/use-presence": "npm:1.84.2"
     "@tamagui/web": "npm:1.84.2"
     moti: "npm:^0.25.3"
-  checksum: a636306a6a7fb14eeacdf66bc9d164fd579bda884f51ea70f15c21c48b3c81c7d5704a35260c0890433e5e273caf455203fa8211fd4ca3d9e17f881f030a940d
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/animations-react-native@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/animations-react-native@npm:1.84.2"
+"@tamagui/animations-react-native@portal:/Users/n8/tamagui/packages/animations-react-native::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/animations-react-native@portal:/Users/n8/tamagui/packages/animations-react-native::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/constants": "npm:1.84.2"
     "@tamagui/use-presence": "npm:1.84.2"
@@ -3240,24 +3233,22 @@ __metadata:
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 5a7acb808ef454dfffb398c2e74eabd9a1e3628fa23c4959f7784bd34d27dd98afd68713ddf4c3459574a5f6cdc3bcd00e2951a7cbc8a8892a21c9871504b49b
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/aria-hidden@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/aria-hidden@npm:1.84.2"
+"@tamagui/aria-hidden@portal:/Users/n8/tamagui/packages/aria-hidden::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/aria-hidden@portal:/Users/n8/tamagui/packages/aria-hidden::locator=expo-router-example%40workspace%3A."
   dependencies:
     aria-hidden: "npm:^1.1.3"
   peerDependencies:
     react: "*"
-  checksum: 6628e1b80a0051c6e05ae24d2fab4d407fdfc3a20f9889bf15c43077e07488af7c6c4710366fef43e8db8eb68b1747b6c2ffc6b3e6a38cf30534b4b96a3fc298
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/avatar@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/avatar@npm:1.84.2"
+"@tamagui/avatar@portal:/Users/n8/tamagui/packages/avatar::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/avatar@portal:/Users/n8/tamagui/packages/avatar::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/core": "npm:1.84.2"
     "@tamagui/helpers": "npm:1.84.2"
@@ -3267,13 +3258,12 @@ __metadata:
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: cbde95110820462aa4e20ba0e014cb8c3cd3f9a62f49dc197d5536c8bf54bd4579ead7c5f305b9ed071c8054d62511121ceabaa5a8829b56ab0932c4439e8497
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/button@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/button@npm:1.84.2"
+"@tamagui/button@portal:/Users/n8/tamagui/packages/button::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/button@portal:/Users/n8/tamagui/packages/button::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/font-size": "npm:1.84.2"
     "@tamagui/get-button-sized": "npm:1.84.2"
@@ -3284,13 +3274,12 @@ __metadata:
     "@tamagui/web": "npm:1.84.2"
   peerDependencies:
     react: "*"
-  checksum: bef1effc24f6609dd9362309efbaf0cd820c399461ab4bc9bfcedbd99b31397c343d9bce8f520b00989e41892f2ce1007fbf9c4942579be24dae3a05b213ade7
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/card@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/card@npm:1.84.2"
+"@tamagui/card@portal:/Users/n8/tamagui/packages/card::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/card@portal:/Users/n8/tamagui/packages/card::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/create-context": "npm:1.84.2"
     "@tamagui/helpers": "npm:1.84.2"
@@ -3299,13 +3288,12 @@ __metadata:
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 0b8f2234c0fbc21f86a366fd153f94cc72b6e190d62f9ee4942fc160d71dbfc0c75147d5a84f3aa1453409d5dfd68203432652cd66786b23d7dc747a50a49f47
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/checkbox@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/checkbox@npm:1.84.2"
+"@tamagui/checkbox@portal:/Users/n8/tamagui/packages/checkbox::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/checkbox@portal:/Users/n8/tamagui/packages/checkbox::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/compose-refs": "npm:1.84.2"
     "@tamagui/constants": "npm:1.84.2"
@@ -3322,13 +3310,12 @@ __metadata:
     "@tamagui/use-previous": "npm:1.84.2"
   peerDependencies:
     react: "*"
-  checksum: b2f5ebb272ea0f974ccf58fea906aaddd915453d018ac45d1f2cbb92b087b9c5a54576b5323d7ca5866d0858bb88f78fc7393b9928783412600625aab4ecc5f6
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/collapsible@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/collapsible@npm:1.84.2"
+"@tamagui/collapsible@portal:/Users/n8/tamagui/packages/collapsible::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/collapsible@portal:/Users/n8/tamagui/packages/collapsible::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/animate-presence": "npm:1.84.2"
     "@tamagui/compose-refs": "npm:1.84.2"
@@ -3340,13 +3327,12 @@ __metadata:
     "@tamagui/use-controllable-state": "npm:1.84.2"
   peerDependencies:
     react: "*"
-  checksum: 0edca921ad6a99e9c08802703b3882afd5d8edac736b4a226c442b84e1ffbb65f83db573586c7b1db8a0d026d7df9cc2d27cb65d69525c05d20e45998f2671bb
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/collection@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/collection@npm:1.84.2"
+"@tamagui/collection@portal:/Users/n8/tamagui/packages/collection::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/collection@portal:/Users/n8/tamagui/packages/collection::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/compose-refs": "npm:1.84.2"
     "@tamagui/constants": "npm:1.84.2"
@@ -3357,29 +3343,26 @@ __metadata:
     "@tamagui/use-controllable-state": "npm:1.84.2"
   peerDependencies:
     react: "*"
-  checksum: 60767b09c774b9c30478c0139c9f3b987a9f7dce560d124c387a065cea6145d2e5b490408cf277b6f4e1060e1590dcc48916081f982b30f341c3ab0ce76d67cf
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/colors@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/colors@npm:1.84.2"
-  checksum: c300c9ea1375f42794414594cacd33063248467fee791d31eac8d3099ef3f8e2dce8ab6c0475a98db132cb51aa2279386853128825da07137870e8fb2e819f3a
+"@tamagui/colors@portal:/Users/n8/tamagui/packages/colors::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/colors@portal:/Users/n8/tamagui/packages/colors::locator=expo-router-example%40workspace%3A."
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/compose-refs@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/compose-refs@npm:1.84.2"
+"@tamagui/compose-refs@portal:/Users/n8/tamagui/packages/compose-refs::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/compose-refs@portal:/Users/n8/tamagui/packages/compose-refs::locator=expo-router-example%40workspace%3A."
   peerDependencies:
     react: "*"
-  checksum: b76d95afd2dd65117e01a75abc6fe0d07e62ba715b74131c0cfba41378e9c1d4b7cd28823a6c4117e740458e8f5b6c91777783cb3c4185756f0fc9b09e625ac9
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/config@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/config@npm:1.84.2"
+"@tamagui/config@portal:/Users/n8/tamagui/packages/config::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/config@portal:/Users/n8/tamagui/packages/config::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/animations-css": "npm:1.84.2"
     "@tamagui/animations-moti": "npm:1.84.2"
@@ -3391,22 +3374,20 @@ __metadata:
     "@tamagui/shorthands": "npm:1.84.2"
     "@tamagui/themes": "npm:1.84.2"
     "@tamagui/web": "npm:1.84.2"
-  checksum: 4cc177b3356807012b27db5e718ddb6078c05d9794899a218abf6621fb3ba411492a45c151258a85fdfc4aefdf36c052cc9413618b1c8b7b44bc18ea4217d7dd
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/constants@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/constants@npm:1.84.2"
+"@tamagui/constants@portal:/Users/n8/tamagui/packages/constants::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/constants@portal:/Users/n8/tamagui/packages/constants::locator=expo-router-example%40workspace%3A."
   peerDependencies:
     react: "*"
-  checksum: f093b5eae0fffafbd47761636a564d1665ff424ce523b4cd54ea1afae7a1e4060e88fc43fd2a037078bc515cf2316ec6b9e8e974b6dc3a82393be7bb4e6ca9ba
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/core@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/core@npm:1.84.2"
+"@tamagui/core@portal:/Users/n8/tamagui/packages/core::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/core@portal:/Users/n8/tamagui/packages/core::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/react-native-use-pressable": "npm:1.84.2"
     "@tamagui/react-native-use-responder-events": "npm:1.84.2"
@@ -3414,38 +3395,34 @@ __metadata:
     "@tamagui/web": "npm:1.84.2"
   peerDependencies:
     react: "*"
-  checksum: caf0808af817d2418b48b40a2bb2226bbe5fc115864b9b88f4f68b6ad4d1a73b35ebb5bf0c7471e21371a454ee1d12ad891af67f8419f34a440b9cc0deec9b26
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/create-context@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/create-context@npm:1.84.2"
+"@tamagui/create-context@portal:/Users/n8/tamagui/packages/create-context::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/create-context@portal:/Users/n8/tamagui/packages/create-context::locator=expo-router-example%40workspace%3A."
   peerDependencies:
     react: "*"
-  checksum: c9e541f16627c6e58e6aae71832a18ce200fce7c5e22a40b0a52364f6b2eb980958d49a66eeffdfa336f521a91049b59c28dc36d0c07e0b2d6fdd01ed6235d5d
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/create-theme@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/create-theme@npm:1.84.2"
+"@tamagui/create-theme@portal:/Users/n8/tamagui/packages/create-theme::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/create-theme@portal:/Users/n8/tamagui/packages/create-theme::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/web": "npm:1.84.2"
-  checksum: a5ed20ecfc6fe2e821d26eeb8646fa91b67164c6e7b9481e32d04a40a6b127e91a3a23823f7ebdfe01865fe7fd760f5e7f64bd839b9aebb65e547ee5b86594b2
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/cubic-bezier-animator@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/cubic-bezier-animator@npm:1.84.2"
-  checksum: 4eb9691712cdc5aec15a5944307d37d5b35892038c800212e402c3b5d140f02ca81712f8ed3179f0e51c57ada05d36ee3abd2d7b3741d72f5ecb37af1a9253b6
+"@tamagui/cubic-bezier-animator@portal:/Users/n8/tamagui/packages/cubic-bezier-animator::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/cubic-bezier-animator@portal:/Users/n8/tamagui/packages/cubic-bezier-animator::locator=expo-router-example%40workspace%3A."
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/dialog@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/dialog@npm:1.84.2"
+"@tamagui/dialog@portal:/Users/n8/tamagui/packages/dialog::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/dialog@portal:/Users/n8/tamagui/packages/dialog::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/adapt": "npm:1.84.2"
     "@tamagui/animate-presence": "npm:1.84.2"
@@ -3468,13 +3445,12 @@ __metadata:
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: ac9e8a64aaaea7279f2f0409f020e8acf8dcbc468f2a4b9ce8e23a5664c0b851c08312bf36a282249cac9d0485e4d88bc9510e2a319ea4532f65cac0961df264
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/dismissable@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/dismissable@npm:1.84.2"
+"@tamagui/dismissable@portal:/Users/n8/tamagui/packages/dismissable::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/dismissable@portal:/Users/n8/tamagui/packages/dismissable::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/compose-refs": "npm:1.84.2"
     "@tamagui/core": "npm:1.84.2"
@@ -3483,86 +3459,78 @@ __metadata:
     "@tamagui/use-event": "npm:1.84.2"
   peerDependencies:
     react: "*"
-  checksum: fa4e6b3771af4865db743e42caa9d6b0516ed8499eaa32e09f2439cf6662e1c99a68fd87f74c42afdb6e7d2f0214ad5b38433dadcba859bc59f7673b996c880b
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/fake-react-native@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/fake-react-native@npm:1.84.2"
-  checksum: b1a9c506f642798b93f11690a8db88d85e734b15fbad208ca0ccd5adbd5c26e604736901de4a458dba6230ba764dcfa301f7846de1deda1161b080991ed90502
+"@tamagui/fake-react-native@portal:/Users/n8/tamagui/packages/fake-react-native::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/fake-react-native@portal:/Users/n8/tamagui/packages/fake-react-native::locator=expo-router-example%40workspace%3A."
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/floating@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/floating@npm:1.84.2"
+"@tamagui/floating@portal:/Users/n8/tamagui/packages/floating::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/floating@portal:/Users/n8/tamagui/packages/floating::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@floating-ui/react-dom": "npm:^2.0.1"
     "@floating-ui/react-native": "npm:^0.10.1"
     react-dom: "npm:^18.2.0"
   peerDependencies:
     react: "*"
-  checksum: 5a8d8c1f538995223244a604c4f3054839fa81c9d35111ddb65d41faa4f840f4cb3f7a7b2fce8ad38ab02d4186e032e687b90417018a2f140a55e812c89b14d9
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/focus-scope@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/focus-scope@npm:1.84.2"
+"@tamagui/focus-scope@portal:/Users/n8/tamagui/packages/focus-scope::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/focus-scope@portal:/Users/n8/tamagui/packages/focus-scope::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/compose-refs": "npm:1.84.2"
     "@tamagui/use-event": "npm:1.84.2"
   peerDependencies:
     react: "*"
-  checksum: ef546f3748c8b137c81582b0962ebde04dd9797ebb4395c1208b28e3839e426abd704f73fcf7e70c5f9e390298daf3a7e8a0e0421ff4d0c76dde517008328968
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/focusable@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/focusable@npm:1.84.2"
+"@tamagui/focusable@portal:/Users/n8/tamagui/packages/focusable::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/focusable@portal:/Users/n8/tamagui/packages/focusable::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/compose-refs": "npm:1.84.2"
     "@tamagui/web": "npm:1.84.2"
   peerDependencies:
     react: "*"
-  checksum: 3ce75411f98a26f4c6b90b010b20a604ad6680a0d04194c36564b6053113395c430ae9c213aeb4c16445a6833a6f7aea1905d031b90c1824f95bde34ebefa852
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/font-inter@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/font-inter@npm:1.84.2"
+"@tamagui/font-inter@portal:/Users/n8/tamagui/packages/font-inter::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/font-inter@portal:/Users/n8/tamagui/packages/font-inter::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/core": "npm:1.84.2"
-  checksum: 658141a2bdb80ed7f977ba2ba0e76198288895767396eefb19c2e25bc9bc5491f56b88f84741f4b61b36d6a880d0a6e16f3e1b2eac8871bc9978283668d0b499
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/font-silkscreen@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/font-silkscreen@npm:1.84.2"
+"@tamagui/font-silkscreen@portal:/Users/n8/tamagui/packages/font-silkscreen::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/font-silkscreen@portal:/Users/n8/tamagui/packages/font-silkscreen::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/core": "npm:1.84.2"
-  checksum: 3403a67cc4942f52e41bb3fef5f2892eae802fa333add788952774f361326f8fb7b9c82616303d3fe6f276fd83865b31e6de016b4ffa6fb0c7112cf078dbda28
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/font-size@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/font-size@npm:1.84.2"
+"@tamagui/font-size@portal:/Users/n8/tamagui/packages/font-size::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/font-size@portal:/Users/n8/tamagui/packages/font-size::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/core": "npm:1.84.2"
   peerDependencies:
     react: "*"
-  checksum: 71b78ce6fbafe3a08fdaa2808d29327e390f2a69e7f4f444b62268bc75eca9539c760a69cb132a6f563f0e5e7bb8a4944ce9e7633427684b91a94da529e9075e
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/form@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/form@npm:1.84.2"
+"@tamagui/form@portal:/Users/n8/tamagui/packages/form::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/form@portal:/Users/n8/tamagui/packages/form::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/compose-refs": "npm:1.84.2"
     "@tamagui/core": "npm:1.84.2"
@@ -3574,48 +3542,44 @@ __metadata:
     "@tamagui/text": "npm:1.84.2"
   peerDependencies:
     react: "*"
-  checksum: c55c13642e3a76bc6870b772178eec175ebb4e9440b1f95950073ec93fc6a86c61cb1d89289e238b0e36d6b2cba3884bbdaa726d8a79308fea7ab4a13cd2c858
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/get-button-sized@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/get-button-sized@npm:1.84.2"
+"@tamagui/get-button-sized@portal:/Users/n8/tamagui/packages/get-button-sized::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/get-button-sized@portal:/Users/n8/tamagui/packages/get-button-sized::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/get-token": "npm:1.84.2"
     "@tamagui/web": "npm:1.84.2"
   peerDependencies:
     react: "*"
-  checksum: ff54369955d4cb881b7842d392b57d092d2aaa841c17ba8773cd76a08ca8de58a4460243601776e03d90f0612d4d8a7eae3de0c6f10ca9b8a7f8e3c700f08ad3
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/get-font-sized@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/get-font-sized@npm:1.84.2"
+"@tamagui/get-font-sized@portal:/Users/n8/tamagui/packages/get-font-sized::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/get-font-sized@portal:/Users/n8/tamagui/packages/get-font-sized::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/core": "npm:1.84.2"
   peerDependencies:
     react: "*"
-  checksum: 67b8af228c5aa3e5298d1ff0db889ef6b7344be71f4b507520a97c7e3bb3372bf6955ebff8e3aed0d7e3dc010f04d600737c369f4324f6d7b0ccb1b604af702e
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/get-token@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/get-token@npm:1.84.2"
+"@tamagui/get-token@portal:/Users/n8/tamagui/packages/get-token::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/get-token@portal:/Users/n8/tamagui/packages/get-token::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/web": "npm:1.84.2"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 5f2231017c61fbbf55fe8e15766cc930a918b892b0e06fa8eb5f7c5331ed1800196e5c4baeeede55af679a5aad63006ccc5603b8a4b8eb9ff9828a253ace674e
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/group@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/group@npm:1.84.2"
+"@tamagui/group@portal:/Users/n8/tamagui/packages/group::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/group@portal:/Users/n8/tamagui/packages/group::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/core": "npm:1.84.2"
     "@tamagui/create-context": "npm:1.84.2"
@@ -3625,49 +3589,45 @@ __metadata:
     reforest: "npm:^0.13.0"
   peerDependencies:
     react: "*"
-  checksum: cd4cb7931ae3f0043212420bc9946b3eff17e1a3fffcf04565397abe382fe9e828b497fbe488c65b48d2f2be66e05a215273f05fecb66aefec170a047850bea3
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/helpers-tamagui@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/helpers-tamagui@npm:1.84.2"
+"@tamagui/helpers-tamagui@portal:/Users/n8/tamagui/packages/helpers-tamagui::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/helpers-tamagui@portal:/Users/n8/tamagui/packages/helpers-tamagui::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/helpers": "npm:1.84.2"
     "@tamagui/web": "npm:1.84.2"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 12e5f2b74886f4562e35fad447e694063e9f097c3c8194e6c23e281e399b8b0894f2603c75f8dc7ef202517e918b8d34734929a21110cc6016728356f4a7da21
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/helpers@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/helpers@npm:1.84.2"
+"@tamagui/helpers@portal:/Users/n8/tamagui/packages/helpers::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/helpers@portal:/Users/n8/tamagui/packages/helpers::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/constants": "npm:1.84.2"
     "@tamagui/simple-hash": "npm:1.84.2"
-  checksum: e0c752bd2fec0d3a4d91b989f2e35ec1e4eaaa8d4f5456f49fd50cf43f7576b67dd0f5ce39b47bcf279b9657486bf53786c5d72ca6762d8c7d3a9446a4a855b3
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/image@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/image@npm:1.84.2"
+"@tamagui/image@portal:/Users/n8/tamagui/packages/image::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/image@portal:/Users/n8/tamagui/packages/image::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/constants": "npm:1.84.2"
     "@tamagui/core": "npm:1.84.2"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 23723204896cda3d572d39127001041529f1e7ba2486ed54dcc1e6b3c657edeb98ec1f8fadcd5714c00afae2deade8bd713c4bda4b88e3bf4ed995e04893a3df
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/label@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/label@npm:1.84.2"
+"@tamagui/label@portal:/Users/n8/tamagui/packages/label::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/label@portal:/Users/n8/tamagui/packages/label::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/compose-refs": "npm:1.84.2"
     "@tamagui/constants": "npm:1.84.2"
@@ -3680,25 +3640,23 @@ __metadata:
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 5b62b8a63d5a1eaf5aee597b1b219094f5b5355af65917585c63a855791fa9f303e334fe84dcb17a8f254f45c1f1f96b1def402b6045d2257c2b59df1ed180df
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/linear-gradient@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/linear-gradient@npm:1.84.2"
+"@tamagui/linear-gradient@portal:/Users/n8/tamagui/packages/linear-gradient::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/linear-gradient@portal:/Users/n8/tamagui/packages/linear-gradient::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/core": "npm:1.84.2"
     "@tamagui/stacks": "npm:1.84.2"
   peerDependencies:
     react: "*"
-  checksum: b1bcb6eed3f887009f0f34f11568aca7cf307a65f230f3181aee744f28435f1fcf7c14b434ed96fffb73e0fde4d1e16234144eaa8cf7048526beae179362308d
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/list-item@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/list-item@npm:1.84.2"
+"@tamagui/list-item@portal:/Users/n8/tamagui/packages/list-item::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/list-item@portal:/Users/n8/tamagui/packages/list-item::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/font-size": "npm:1.84.2"
     "@tamagui/get-font-sized": "npm:1.84.2"
@@ -3710,29 +3668,26 @@ __metadata:
     "@tamagui/web": "npm:1.84.2"
   peerDependencies:
     react: "*"
-  checksum: cab29129c51b5da8b195735b8af65e324046f243bcfb7e2b9f02a470e99cb950392585ac0ddc6e3e341cd06276f148fbbafa97bdc66b1acb6c42f2de5f93c8e9
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/normalize-css-color@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/normalize-css-color@npm:1.84.2"
+"@tamagui/normalize-css-color@portal:/Users/n8/tamagui/packages/normalize-css-color::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/normalize-css-color@portal:/Users/n8/tamagui/packages/normalize-css-color::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@react-native/normalize-color": "npm:^2.1.0"
-  checksum: 2ead7aa1abdd493d935035de95c79f81af0e02ef7c5547b0a28629eec42327c89ee7bdb4ea1df5ba5fef998850fd2d2a6594d61b82105dacab9bd50e11def98f
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/polyfill-dev@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/polyfill-dev@npm:1.84.2"
-  checksum: f9c1ad1707608deaf67f2356275c106fc13b454f980ffbd14aa646166233d3379f32d0cde49751554a1c20715d9248457238bfca7b59fcb21b012e9d9d352170
+"@tamagui/polyfill-dev@portal:/Users/n8/tamagui/packages/polyfill-dev::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/polyfill-dev@portal:/Users/n8/tamagui/packages/polyfill-dev::locator=expo-router-example%40workspace%3A."
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/popover@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/popover@npm:1.84.2"
+"@tamagui/popover@portal:/Users/n8/tamagui/packages/popover::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/popover@portal:/Users/n8/tamagui/packages/popover::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@floating-ui/react": "npm:^0.24.7"
     "@tamagui/adapt": "npm:1.84.2"
@@ -3757,13 +3712,12 @@ __metadata:
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: d1f9b0964457653b0afe52b29df00e88c3dcf3a92d1db76168e8783a531681e07a0694502ce67327983294fe88b83f08331d446bfca0c246c4307199604ce3a5
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/popper@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/popper@npm:1.84.2"
+"@tamagui/popper@portal:/Users/n8/tamagui/packages/popper::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/popper@portal:/Users/n8/tamagui/packages/popper::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/compose-refs": "npm:1.84.2"
     "@tamagui/constants": "npm:1.84.2"
@@ -3775,13 +3729,12 @@ __metadata:
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: e6600cc3c2fd337a1585ed7b97ea83749e46e5f8eb2b8732a56b070bc229b22ca01031751d3a9f44afb2a1e87fe7225c49e947c47373bef12f5cc91fb2b9fb48
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/portal@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/portal@npm:1.84.2"
+"@tamagui/portal@portal:/Users/n8/tamagui/packages/portal::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/portal@portal:/Users/n8/tamagui/packages/portal::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/constants": "npm:1.84.2"
     "@tamagui/core": "npm:1.84.2"
@@ -3790,13 +3743,12 @@ __metadata:
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 33cd6c2d7773dae62c87ff239ea7a2d5aeab737f182edabd1d8d0240cdbb005cecfa3f5bbc6c328e85233b0e0864af964e71677ed8c458cb0aca6996288bd70a
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/progress@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/progress@npm:1.84.2"
+"@tamagui/progress@portal:/Users/n8/tamagui/packages/progress::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/progress@portal:/Users/n8/tamagui/packages/progress::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/compose-refs": "npm:1.84.2"
     "@tamagui/core": "npm:1.84.2"
@@ -3807,13 +3759,12 @@ __metadata:
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 8e972ef1e0b87297f5c5b2ceece3b8c91ef8f88b4bbd5d18c113e69837a3593653b07bbd1506aa373baea79e92f0283392f4586d16984baa983d636ce73c1ddc
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/radio-group@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/radio-group@npm:1.84.2"
+"@tamagui/radio-group@portal:/Users/n8/tamagui/packages/radio-group::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/radio-group@portal:/Users/n8/tamagui/packages/radio-group::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/compose-refs": "npm:1.84.2"
     "@tamagui/constants": "npm:1.84.2"
@@ -3829,53 +3780,48 @@ __metadata:
     "@tamagui/use-previous": "npm:1.84.2"
   peerDependencies:
     react: "*"
-  checksum: 4bb40d34f4c0c6e151382a25dd77b15f818ff4a92e57781408b480bbad16995b0e72b75ffbc77f82160bde733db2130933acf294aff713458c475be2dc0d9f6b
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/react-native-media-driver@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/react-native-media-driver@npm:1.84.2"
+"@tamagui/react-native-media-driver@portal:/Users/n8/tamagui/packages/react-native-media-driver::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/react-native-media-driver@portal:/Users/n8/tamagui/packages/react-native-media-driver::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/web": "npm:1.84.2"
   peerDependencies:
     react-native: "*"
-  checksum: 5a8abc388fe5200d8987111cd7665424f29e113ba6fb024be5eb9a7a06c2f4e6549c234104df40ed59e3c68ea7aaa7ace93e798745624312d4663586568f43a5
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/react-native-use-pressable@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/react-native-use-pressable@npm:1.84.2"
+"@tamagui/react-native-use-pressable@portal:/Users/n8/tamagui/packages/react-native-use-pressable::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/react-native-use-pressable@portal:/Users/n8/tamagui/packages/react-native-use-pressable::locator=expo-router-example%40workspace%3A."
   peerDependencies:
     react: "*"
-  checksum: 5e1f92d320fcc77653e499f39efa0d700e2dc87ddac65e1e136b3e2a826677e6e4a97e8d3f7ecb001bf6995a4c6b1b733f22b55f67c9736db1fcd36595f8e281
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/react-native-use-responder-events@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/react-native-use-responder-events@npm:1.84.2"
+"@tamagui/react-native-use-responder-events@portal:/Users/n8/tamagui/packages/react-native-use-responder-events::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/react-native-use-responder-events@portal:/Users/n8/tamagui/packages/react-native-use-responder-events::locator=expo-router-example%40workspace%3A."
   peerDependencies:
     react: "*"
-  checksum: 03cd59589e5e925b7977506d7f48808b9d9f9f74e85a87ad8cb045d974aec5f3fee810c739b2ef29cc325490779d808e010cf50c7595373a8c167f480a68cebb
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/remove-scroll@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/remove-scroll@npm:1.84.2"
+"@tamagui/remove-scroll@portal:/Users/n8/tamagui/packages/remove-scroll::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/remove-scroll@portal:/Users/n8/tamagui/packages/remove-scroll::locator=expo-router-example%40workspace%3A."
   dependencies:
     react-remove-scroll: "npm:^2.5.5"
   peerDependencies:
     react: "*"
-  checksum: 32f06ba93a319c796ba8de202ae2f3233168909941b4b81b091d79a07a41c73e65e57299c36767e274a01e11e6f81452b536d655c80417f61221712ad8b22d45
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/roving-focus@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/roving-focus@npm:1.84.2"
+"@tamagui/roving-focus@portal:/Users/n8/tamagui/packages/roving-focus::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/roving-focus@portal:/Users/n8/tamagui/packages/roving-focus::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/collection": "npm:1.84.2"
     "@tamagui/compose-refs": "npm:1.84.2"
@@ -3888,25 +3834,23 @@ __metadata:
     "@tamagui/use-event": "npm:1.84.2"
   peerDependencies:
     react: "*"
-  checksum: 71c186c0d533d8248e87ee7fef1099af2aa750f8cf7ae197a11b05ad59506d044cd214c7d02c2fe6dfc4caf9519308e8ca55ffb4a3926822364f193590c134f4
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/scroll-view@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/scroll-view@npm:1.84.2"
+"@tamagui/scroll-view@portal:/Users/n8/tamagui/packages/scroll-view::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/scroll-view@portal:/Users/n8/tamagui/packages/scroll-view::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/stacks": "npm:1.84.2"
     "@tamagui/web": "npm:1.84.2"
   peerDependencies:
     react: "*"
-  checksum: fba278e7ade3969bb9e426d4aba553e2a4c55fce1892c7f5031719360ab3f25f3461d7e7ea7dceadef1aa3b773ad9cd07e0fc747eb6d57aec460d22d9562f602
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/select@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/select@npm:1.84.2"
+"@tamagui/select@portal:/Users/n8/tamagui/packages/select::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/select@portal:/Users/n8/tamagui/packages/select::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@floating-ui/react": "npm:^0.24.7"
     "@floating-ui/react-dom": "npm:^2.0.1"
@@ -3935,37 +3879,34 @@ __metadata:
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: ca4912cf833a613b1cd2d8ddae5df1fcf2c9ddac64abae37e48cc63daf32ad5b740a2bb085b1320060fc5a0372c278827e7f3077d8a855a7dcdd2d1664ed4e51
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/separator@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/separator@npm:1.84.2"
+"@tamagui/separator@portal:/Users/n8/tamagui/packages/separator::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/separator@portal:/Users/n8/tamagui/packages/separator::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/constants": "npm:1.84.2"
     "@tamagui/core": "npm:1.84.2"
   peerDependencies:
     react: "*"
-  checksum: 70cd3715af0b74783128783b90d4ca79fdc941b9d7249a6d1a8502e5d4a6ddf555ba3d7caa273f9d590d6cc274e11e02d62a64031a41e031aa649aa52d698099
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/shapes@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/shapes@npm:1.84.2"
+"@tamagui/shapes@portal:/Users/n8/tamagui/packages/shapes::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/shapes@portal:/Users/n8/tamagui/packages/shapes::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/stacks": "npm:1.84.2"
     "@tamagui/web": "npm:1.84.2"
   peerDependencies:
     react: "*"
-  checksum: cf70b6ed97349289f9f3d3c110b5fa320cb462e85d78ed3c0000c226849ea67b6f8b399a5ef6b5b0a77b8f984ab607b66fa8b14628a4a004422170c6228ca416
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/sheet@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/sheet@npm:1.84.2"
+"@tamagui/sheet@portal:/Users/n8/tamagui/packages/sheet::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/sheet@portal:/Users/n8/tamagui/packages/sheet::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/animate-presence": "npm:1.84.2"
     "@tamagui/animations-react-native": "npm:1.84.2"
@@ -3984,27 +3925,24 @@ __metadata:
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 1d9671a8252610dd86a963e7898306ba3852cb261bc692812eee382b81e116a7ceb99ad82f4780aa67e13a4b3730b0e77474a630ccbaea13b49918c6626c666c
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/shorthands@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/shorthands@npm:1.84.2"
-  checksum: b875b6b89ab82124f814dc11da62cfdc1298c763929e134da0a9ea42895a30b9f25fed3d8ffd999f736bbba0afe6d94d8cf0265217c973a1d429ef0d10b92973
+"@tamagui/shorthands@portal:/Users/n8/tamagui/packages/shorthands::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/shorthands@portal:/Users/n8/tamagui/packages/shorthands::locator=expo-router-example%40workspace%3A."
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/simple-hash@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/simple-hash@npm:1.84.2"
-  checksum: 44c5facf5fb61e07bfd8af67afc6862dd6eeac3f2fe1005ec5ac233487085b7215186f6e006d5cc18d62285127dfc8fb601a94dec6dabcfdbbd1b169bb68513d
+"@tamagui/simple-hash@portal:/Users/n8/tamagui/packages/simple-hash::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/simple-hash@portal:/Users/n8/tamagui/packages/simple-hash::locator=expo-router-example%40workspace%3A."
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/slider@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/slider@npm:1.84.2"
+"@tamagui/slider@portal:/Users/n8/tamagui/packages/slider::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/slider@portal:/Users/n8/tamagui/packages/slider::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/compose-refs": "npm:1.84.2"
     "@tamagui/constants": "npm:1.84.2"
@@ -4018,24 +3956,22 @@ __metadata:
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: f290a4830e4eb8219a1dd12b15bffd6eb886c3590c6d96781954042427f2f6f9d8180bda18888046afed1a3704eed6c63cee4afac54be4b3a3a1c3efe5f71164
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/stacks@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/stacks@npm:1.84.2"
+"@tamagui/stacks@portal:/Users/n8/tamagui/packages/stacks::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/stacks@portal:/Users/n8/tamagui/packages/stacks::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/core": "npm:1.84.2"
   peerDependencies:
     react: "*"
-  checksum: 5304ad8d856e55189d1776757e3a6531b9764f2159a0568253f3c7595cde71353dcfbf1396fe7fb9fb3035e3e5ab2d818bd02fc8b62e371a4afa47e733e79c9c
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/switch@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/switch@npm:1.84.2"
+"@tamagui/switch@portal:/Users/n8/tamagui/packages/switch::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/switch@portal:/Users/n8/tamagui/packages/switch::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/compose-refs": "npm:1.84.2"
     "@tamagui/constants": "npm:1.84.2"
@@ -4050,13 +3986,12 @@ __metadata:
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 10320eed258ab336643405d1faa6f1eb8d0131b29f73802f6542e9be554a20b37cf2a719729a8dad1389463c7d93fecf06590c1b121364088cca9dd8f2ce2353
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/tabs@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/tabs@npm:1.84.2"
+"@tamagui/tabs@portal:/Users/n8/tamagui/packages/tabs::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/tabs@portal:/Users/n8/tamagui/packages/tabs::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/compose-refs": "npm:1.84.2"
     "@tamagui/constants": "npm:1.84.2"
@@ -4072,67 +4007,61 @@ __metadata:
   peerDependencies:
     react: "*"
     react-dom: "*"
-  checksum: e837e946f41ee0a19df5d4fc2c29465e0e8a185081f27947763404a567d9f7810d552931294dfad8983532712870a6dad6fd5396c6b6ea21c11d373a50ccfdcc
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/text@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/text@npm:1.84.2"
+"@tamagui/text@portal:/Users/n8/tamagui/packages/text::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/text@portal:/Users/n8/tamagui/packages/text::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/get-font-sized": "npm:1.84.2"
     "@tamagui/helpers-tamagui": "npm:1.84.2"
     "@tamagui/web": "npm:1.84.2"
   peerDependencies:
     react: "*"
-  checksum: bdb8c3e9483dab50cc30ef3ea9f9520dd554c3fdcabb00f8666a2dbcfc81a85a9e2916e3168b682350ad73fcd511bfbe817ca749ada60d9bdb21018367ae2ab6
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/theme-builder@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/theme-builder@npm:1.84.2"
+"@tamagui/theme-builder@portal:/Users/n8/tamagui/packages/theme-builder::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/theme-builder@portal:/Users/n8/tamagui/packages/theme-builder::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/create-theme": "npm:1.84.2"
     color2k: "npm:^2.0.2"
-  checksum: 753f7d9d05b1d03e467122484e17d2d9c16d9832a4545aa20bcbdac8440cd5ee75dc9157cb88774ad1bbd788737b996519f5e56ead31b80aff6fb3e26321114a
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/theme@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/theme@npm:1.84.2"
+"@tamagui/theme@portal:/Users/n8/tamagui/packages/theme::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/theme@portal:/Users/n8/tamagui/packages/theme::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/constants": "npm:1.84.2"
     "@tamagui/web": "npm:1.84.2"
   peerDependencies:
     react: "*"
-  checksum: 0f6fad8cc363ff0a617036d84eceb3e30990d5b9a538c356d9d85196983d298d0aec35f767ff2d9aedea395978c8590d846ea58085c3d3a56bda7e20566d0876
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/themes@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/themes@npm:1.84.2"
+"@tamagui/themes@portal:/Users/n8/tamagui/packages/themes::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/themes@portal:/Users/n8/tamagui/packages/themes::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/colors": "npm:1.84.2"
     "@tamagui/create-theme": "npm:1.84.2"
     "@tamagui/theme-builder": "npm:1.84.2"
     "@tamagui/web": "npm:1.84.2"
-  checksum: 0afe2145155f3bcd97f978ff5c027255c2af9acff0330ef4a5cb697a92ed15c1be06060aa1deb5dbff36db75b1fe7ab15cb1b067805b97e61614b71816607254
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/timer@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/timer@npm:1.84.2"
-  checksum: 48eaba2d9127d4f44979e0587dd4f0c86991a293cfe7c43e98b239faf6d3171d683de1b07d125f3cbb90863f9b8a1a15bf921067789df321fa33a8140ab92b54
+"@tamagui/timer@portal:/Users/n8/tamagui/packages/timer::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/timer@portal:/Users/n8/tamagui/packages/timer::locator=expo-router-example%40workspace%3A."
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/toggle-group@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/toggle-group@npm:1.84.2"
+"@tamagui/toggle-group@portal:/Users/n8/tamagui/packages/toggle-group::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/toggle-group@portal:/Users/n8/tamagui/packages/toggle-group::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/constants": "npm:1.84.2"
     "@tamagui/create-context": "npm:1.84.2"
@@ -4149,13 +4078,12 @@ __metadata:
     "@tamagui/web": "npm:1.84.2"
   peerDependencies:
     react: "*"
-  checksum: d2da5a78e831cd08a075d8d41ac9c91485811ee4705468127b1c60839aa72abc16c45fab05588f1c5c522e8f855d1dff9dd450ee5b33ce724e22b685c1787fd7
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/tooltip@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/tooltip@npm:1.84.2"
+"@tamagui/tooltip@portal:/Users/n8/tamagui/packages/tooltip::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/tooltip@portal:/Users/n8/tamagui/packages/tooltip::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@floating-ui/react": "npm:^0.24.7"
     "@tamagui/compose-refs": "npm:1.84.2"
@@ -4173,149 +4101,134 @@ __metadata:
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 313359e15f5cd4b673838a24f1dbff35b17176908a12a2c9c0d0fcc2e296c994d21e80c2f55d7fb8c9796fbbb6580e175b468786ee938a2bec2354fc99c305c3
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/use-callback-ref@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/use-callback-ref@npm:1.84.2"
-  checksum: a635e3c5860d7b15ba4a6a7ad553057f7e8dc835bf2c2ccecbe0bb393c01b96476d27a0c17d178bd58ddcfea6b6253e1c5900993f6c4e30f8c856faa9125642e
+"@tamagui/use-callback-ref@portal:/Users/n8/tamagui/packages/use-callback-ref::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/use-callback-ref@portal:/Users/n8/tamagui/packages/use-callback-ref::locator=expo-router-example%40workspace%3A."
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/use-constant@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/use-constant@npm:1.84.2"
+"@tamagui/use-constant@portal:/Users/n8/tamagui/packages/use-constant::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/use-constant@portal:/Users/n8/tamagui/packages/use-constant::locator=expo-router-example%40workspace%3A."
   peerDependencies:
     react: "*"
-  checksum: 213d67d2be877ec34823f2112a1333fe3481e6f8fb03c196f97c4bc5c3e3fe6977b98e2e6ac8e5352e7b168d5286d40a2c721d5fb8dfa7909f679d25c3364504
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/use-controllable-state@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/use-controllable-state@npm:1.84.2"
+"@tamagui/use-controllable-state@portal:/Users/n8/tamagui/packages/use-controllable-state::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/use-controllable-state@portal:/Users/n8/tamagui/packages/use-controllable-state::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/use-event": "npm:1.84.2"
   peerDependencies:
     react: "*"
-  checksum: 4b794d5ec6e8c64432a6d748005fbf1b1de0df7946bad3b4076ea493273dd166ce32bb84375f68ee31600f50426def2effa83850aefa5ea593dc0687748ca65f
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/use-debounce@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/use-debounce@npm:1.84.2"
+"@tamagui/use-debounce@portal:/Users/n8/tamagui/packages/use-debounce::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/use-debounce@portal:/Users/n8/tamagui/packages/use-debounce::locator=expo-router-example%40workspace%3A."
   peerDependencies:
     react: "*"
-  checksum: e98b9e022dbb1bbe6e38a315b2e7c806f2e4f22d8e6375d058643f22bff83a249a6561862f2314082ae0e622d4d37d465acb56e02ecbe4e7598199d079e68533
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/use-did-finish-ssr@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/use-did-finish-ssr@npm:1.84.2"
+"@tamagui/use-did-finish-ssr@portal:/Users/n8/tamagui/packages/use-did-finish-ssr::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/use-did-finish-ssr@portal:/Users/n8/tamagui/packages/use-did-finish-ssr::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/constants": "npm:1.84.2"
   peerDependencies:
     react: "*"
-  checksum: 10bf876f8c837a6452851bcce72d06d939d1b6f04a723adc3c49375413cb90b7851e9bba9e8f989eb0848865f40a5fbe7bd6b71445a89f2e95d77d72b67dd98a
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/use-direction@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/use-direction@npm:1.84.2"
+"@tamagui/use-direction@portal:/Users/n8/tamagui/packages/use-direction::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/use-direction@portal:/Users/n8/tamagui/packages/use-direction::locator=expo-router-example%40workspace%3A."
   peerDependencies:
     react: "*"
-  checksum: 3799c232c284fbacdb10e11a52bce0f1cc095464c70f109a05edfd4020b959920a6dac2d30cdf1704c44b3066b39688d92c771902bf520ad7d8639847e0dd9e0
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/use-escape-keydown@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/use-escape-keydown@npm:1.84.2"
+"@tamagui/use-escape-keydown@portal:/Users/n8/tamagui/packages/use-escape-keydown::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/use-escape-keydown@portal:/Users/n8/tamagui/packages/use-escape-keydown::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/use-callback-ref": "npm:1.84.2"
-  checksum: 147d05ea1270ce9fe81325704f8a5f2dda138464d348ae1874725e74e42ea3501aaf1114c39c130e1bd761bd3853bb3f3913e2f5b699af508025f563fda637af
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/use-event@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/use-event@npm:1.84.2"
+"@tamagui/use-event@portal:/Users/n8/tamagui/packages/use-event::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/use-event@portal:/Users/n8/tamagui/packages/use-event::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/constants": "npm:1.84.2"
   peerDependencies:
     react: "*"
-  checksum: 207843f7ca4ae571e6497bf52b0eabf97b11680ec829ab0ad0be113cce19945830f38677ca9dcb79980de0e1709afe13e8c273b1752a8cb1fba462f36dec39e7
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/use-force-update@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/use-force-update@npm:1.84.2"
+"@tamagui/use-force-update@portal:/Users/n8/tamagui/packages/use-force-update::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/use-force-update@portal:/Users/n8/tamagui/packages/use-force-update::locator=expo-router-example%40workspace%3A."
   peerDependencies:
     react: "*"
-  checksum: 34e25ad3a2cdb8973194a8c805ea072041bed3fce4f769891df0d890bd6815e98238b4e39767d1787843d714f0b800ae831980561e166416989e3e58d657d9f3
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/use-keyboard-visible@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/use-keyboard-visible@npm:1.84.2"
+"@tamagui/use-keyboard-visible@portal:/Users/n8/tamagui/packages/use-keyboard-visible::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/use-keyboard-visible@portal:/Users/n8/tamagui/packages/use-keyboard-visible::locator=expo-router-example%40workspace%3A."
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 34e520ab54bdc11ee1cc92b9170067538cf74c3a28357cce6e20307a742c0c208b0a63b31f82ad7d65ef047a1ae78c080d2d7000d1877cf36493d9e3c28fc6be
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/use-presence@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/use-presence@npm:1.84.2"
+"@tamagui/use-presence@portal:/Users/n8/tamagui/packages/use-presence::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/use-presence@portal:/Users/n8/tamagui/packages/use-presence::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/web": "npm:1.84.2"
   peerDependencies:
     react: "*"
-  checksum: e5df7353e58160007def88c961cb0224b2b67cbf027968f6a98de2b44690476c0cdd17478a45fb807f5628ea1dccb765cc6f9d7676fef5960aa9023c84b47b3e
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/use-previous@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/use-previous@npm:1.84.2"
-  checksum: 63dce47e42dad1b8cd83251ad5720243dcf41babe4b03f22cd87dc62cb6343c45041f2bd351490ce81d4d4cc84b0ce2ccab5c35da05a810efea2a75854217dac
+"@tamagui/use-previous@portal:/Users/n8/tamagui/packages/use-previous::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/use-previous@portal:/Users/n8/tamagui/packages/use-previous::locator=expo-router-example%40workspace%3A."
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/use-window-dimensions@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/use-window-dimensions@npm:1.84.2"
+"@tamagui/use-window-dimensions@portal:/Users/n8/tamagui/packages/use-window-dimensions::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/use-window-dimensions@portal:/Users/n8/tamagui/packages/use-window-dimensions::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/constants": "npm:1.84.2"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: a3c5e47b4277345e5823930489a3e41deda438215cb59741c1dd76d175166db3627a3ba1b33f55eac487397a02ba7265bc6ad2138a8858c555fab141c9252dc1
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/visually-hidden@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/visually-hidden@npm:1.84.2"
+"@tamagui/visually-hidden@portal:/Users/n8/tamagui/packages/visually-hidden::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/visually-hidden@portal:/Users/n8/tamagui/packages/visually-hidden::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/web": "npm:1.84.2"
   peerDependencies:
     react: "*"
-  checksum: 76021f14dfa634428c812e5a3a588f78400d31e6ccb185dc240f82384d88ce3ceea3b0a67741b08459fd1f0cb239e53652f2420f386768b23802945b7ad60178
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@tamagui/web@npm:1.84.2":
-  version: 1.84.2
-  resolution: "@tamagui/web@npm:1.84.2"
+"@tamagui/web@portal:/Users/n8/tamagui/packages/web::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/web@portal:/Users/n8/tamagui/packages/web::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/compose-refs": "npm:1.84.2"
     "@tamagui/constants": "npm:1.84.2"
@@ -4328,9 +4241,8 @@ __metadata:
   peerDependencies:
     react: "*"
     react-dom: "*"
-  checksum: 9098d874f7af6e259527936020b38238004cb9dd30631a81f9620a67bbdbcbfb489fece35d0a85f79910337d6fe1ba14b005e14c60cd3f1a5f6a9ecd16310e60
   languageName: node
-  linkType: hard
+  linkType: soft
 
 "@types/cookie@npm:^0.4.1":
   version: 0.4.1
@@ -10813,9 +10725,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tamagui@npm:1.84.2":
-  version: 1.84.2
-  resolution: "tamagui@npm:1.84.2"
+"tamagui@portal:/Users/n8/tamagui/packages/tamagui::locator=expo-router-example%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "tamagui@portal:/Users/n8/tamagui/packages/tamagui::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@tamagui/accordion": "npm:1.84.2"
     "@tamagui/adapt": "npm:1.84.2"
@@ -10871,9 +10783,8 @@ __metadata:
     react: "*"
     react-native: "*"
     react-native-web: "*"
-  checksum: 2ccec4ec01fb52fc8e4d249c49fe00ae39bb506506704877c01c9b8b4bb04289a0edb5c9f2c91fa0aed1564041279ceec8f147ef9c8000f6d8ff509439bb0f8b
   languageName: node
-  linkType: hard
+  linkType: soft
 
 "tar@npm:^6.0.2, tar@npm:^6.0.5, tar@npm:^6.1.11, tar@npm:^6.1.2":
   version: 6.2.0

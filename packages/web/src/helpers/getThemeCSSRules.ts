@@ -46,7 +46,7 @@ export function getThemeCSSRules(props: {
     const isDarkBase = themeName === 'dark'
     const isLightBase = themeName === 'light'
     const baseSelectors = names.map((name) => `${CNP}${name}`)
-    const selectorsSet = new Set(baseSelectors)
+    const selectorsSet = new Set(isDarkBase || isLightBase ? baseSelectors : [])
 
     // since we dont specify dark/light in classnames we have to do an awkward specificity war
     // use config.maxDarkLightNesting to determine how deep you can nest until it breaks
@@ -94,9 +94,9 @@ export function getThemeCSSRules(props: {
 
           // for light/dark/light:
           selectorsSet.add(`${parentSelectors.join(' ')} ${nextChildSelector}`.trim())
-          selectorsSet.add(
-            `${parentSelectors.join(' ')} ${nextChildSelector}.is_inversed`.trim()
-          )
+          // selectorsSet.add(
+          //   `${parentSelectors.join(' ')} ${nextChildSelector}.is_inversed`.trim()
+          // )
         }
       }
     }
