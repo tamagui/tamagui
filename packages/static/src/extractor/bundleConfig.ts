@@ -53,7 +53,7 @@ const esbuildExtraOptions = {
 export const esbuildOptions = {
   target: 'es2018',
   format: 'cjs',
-  jsx: 'transform',
+  jsx: 'automatic',
   platform: 'node',
   ...esbuildExtraOptions,
 } satisfies esbuild.BuildOptions
@@ -408,7 +408,7 @@ const esbuildit = (src: string, target?: 'modern') => {
     ...esbuildOptions,
     ...(target === 'modern' && {
       target: 'es2022',
-      jsx: 'transform',
+      jsx: 'automatic',
       loader: 'tsx',
       platform: 'neutral',
       format: 'esm',
