@@ -1,3 +1,4 @@
+import { writeFileSync } from 'fs'
 import { basename, dirname, extname, join, relative, resolve } from 'path'
 
 import { Color, colorLog } from '@tamagui/cli-color'
@@ -9,6 +10,7 @@ import { existsSync, pathExists, readJSON, writeFile } from 'fs-extra'
 
 import { SHOULD_DEBUG } from '../constants'
 import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
+import { minifyCSS } from '../minifyCSS'
 import { getNameToPaths, registerRequire } from '../registerRequire'
 import {
   TamaguiProjectInfo,
@@ -60,7 +62,9 @@ export async function loadTamagui(
 
     if (props.outputCSS) {
       colorLog(Color.FgYellow, `    ➡ [tamagui] output css: ${props.outputCSS}\n`)
-      const css = config.getCSS()
+      const css = props.disableMinifyCSS
+        ? config.getCSS()
+        : minifyCSS(config.getCSS()).code
       await writeFile(props.outputCSS, css)
     }
   }
@@ -179,7 +183,15 @@ export function loadTamaguiSync({
         nameToPaths: getNameToPaths(),
       } satisfies TamaguiProjectInfo
 
-      if (propsIn.config) {
+      if (tamaguiConfig) {
+        if (props.outputCSS) {
+          colorLog(Color.FgYellow, `    ➡ [tamagui] output css: ${props.outputCSS}\n`)
+          const css = props.disableMinifyCSS
+            ? tamaguiConfig.getCSS()
+            : minifyCSS(tamaguiConfig.getCSS()).code
+          writeFileSync(props.outputCSS, css)
+        }
+
         generateTamaguiStudioConfigSync(props, info)
       }
 
