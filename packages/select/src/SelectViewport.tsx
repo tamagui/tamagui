@@ -115,10 +115,10 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportProps>
             {context.open ? (
               <SelectViewportFrame
                 disableClassName
-                key='select-viewport'
+                key="select-viewport"
                 size={itemContext.size}
                 // @ts-ignore
-                role='presentation'
+                role="presentation"
                 {...viewportProps}
                 ref={composedRefs}
                 {...floatingProps}

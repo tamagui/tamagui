@@ -98,7 +98,8 @@ const ToastProvider: React.FC<ToastProviderProps> = (
     swipeThreshold = 50,
     children,
   } = props
-  const id = providedId ?? React.useId()
+  const backupId = React.useId()
+  const id = providedId ?? backupId
   const [viewports, setViewports] = React.useState<
     ToastProviderContextValue['viewports']
   >({})

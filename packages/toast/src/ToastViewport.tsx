@@ -265,7 +265,7 @@ const ToastViewport = React.memo(
       const contents = (
         <ToastViewportWrapperFrame
           ref={wrapperRef}
-          role='region'
+          role="region"
           aria-label={label.replace('{hotkey}', hotkeyLabel)}
           // // Ensure virtual cursor from landmarks menus triggers focus/blur for pause/resume
           tabIndex={-1}

@@ -37,7 +37,7 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = React.forwardRef(
           {...(typeof label === 'string' && {
             'aria-label': label,
           })}
-          asChild='except-style'
+          asChild="except-style"
         >
           {ref && React.isValidElement(child)
             ? React.cloneElement(child, { ref } as any)
@@ -50,7 +50,7 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = React.forwardRef(
           x={0}
           scale={1}
           y={0}
-          elevation='$1'
+          elevation="$1"
           opacity={1}
           paddingVertical={getSpace(tooltipProps.size || '$true', {
             shift: -3,
@@ -67,7 +67,7 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = React.forwardRef(
           {...contentProps}
         >
           <Tooltip.Arrow />
-          <Paragraph size='$2'>{label}</Paragraph>
+          <Paragraph size="$2">{label}</Paragraph>
         </Tooltip.Content>
       </Tooltip>
     )

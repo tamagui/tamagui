@@ -100,7 +100,7 @@ const ToggleGroupItem = ToggleFrame.extractable(
         <ToggleGroupItemProvider scope={props.__scopeToggleGroup}>
           {context.rovingFocus ? (
             <RovingFocusGroup.Item
-              asChild='except-style'
+              asChild="except-style"
               __scopeRovingFocusGroup={props.__scopeToggleGroup || TOGGLE_GROUP_CONTEXT}
               focusable={!disabled}
               active={pressed}
@@ -271,7 +271,7 @@ const ToggleGroupImplSingle = React.forwardRef<
   return (
     <ToggleGroupValueProvider
       scope={props.__scopeToggleGroup}
-      type='single'
+      type="single"
       value={value ? [value] : []}
       defaultValue={value}
       onItemActivate={setValue}
@@ -333,7 +333,7 @@ const ToggleGroupImplMultiple = React.forwardRef<
   return (
     <ToggleGroupValueProvider
       scope={props.__scopeToggleGroup}
-      type='multiple'
+      type="multiple"
       value={value}
       defaultValue={value}
       onItemActivate={handleButtonActivate}
@@ -430,7 +430,7 @@ const ToggleGroupImpl = ToggleGroupImplElementFrame.extractable(
         >
           {rovingFocus ? (
             <RovingFocusGroup
-              asChild='except-style'
+              asChild="except-style"
               __scopeRovingFocusGroup={__scopeToggleGroup || TOGGLE_GROUP_CONTEXT}
               orientation={orientation}
               dir={direction}

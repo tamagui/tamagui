@@ -241,7 +241,7 @@ const SelectGroup = React.forwardRef<TamaguiElement, SelectGroupProps>(
       return (
         <SelectGroupFrame
           // @ts-ignore
-          role='group'
+          role="group"
           aria-labelledby={groupId}
           {...groupProps}
           ref={forwardedRef}
@@ -279,9 +279,9 @@ const SelectLabel = React.forwardRef<TamaguiElement, SelectLabelProps>(
 
     return (
       <ListItem
-        tag='div'
+        tag="div"
         componentName={LABEL_NAME}
-        fontWeight='800'
+        fontWeight="800"
         id={groupContext.id}
         size={context.size}
         {...labelProps}

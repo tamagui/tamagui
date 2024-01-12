@@ -28,14 +28,14 @@ export const TabsAdvancedDemo = () => {
       {demo === 'underline' ? <TabsAdvancedUnderline /> : <TabsAdvancedBackground />}
 
       <XStack
-        alignItems='center'
+        alignItems="center"
         space
-        position='absolute'
-        bottom='$3'
-        left='$4'
+        position="absolute"
+        bottom="$3"
+        left="$4"
         $xxs={{ display: 'none' }}
       >
-        <Button size='$2' onPress={() => setDemoIndex((x) => (x + 1) % demos.length)}>
+        <Button size="$2" onPress={() => setDemoIndex((x) => (x + 1) % demos.length)}>
           {demosTitle[demo]}
         </Button>
       </XStack>
@@ -100,21 +100,21 @@ const TabsAdvancedBackground = () => {
     <Tabs
       value={currentTab}
       onValueChange={setCurrentTab}
-      orientation='horizontal'
-      size='$4'
-      padding='$2'
+      orientation="horizontal"
+      size="$4"
+      padding="$2"
       height={150}
-      flexDirection='column'
-      activationMode='manual'
-      backgroundColor='$background'
-      borderRadius='$4'
-      position='relative'
+      flexDirection="column"
+      activationMode="manual"
+      backgroundColor="$background"
+      borderRadius="$4"
+      position="relative"
     >
       <YStack>
         <AnimatePresence>
           {intentAt && (
             <TabsRovingIndicator
-              borderRadius='$4'
+              borderRadius="$4"
               width={intentAt.width}
               height={intentAt.height}
               x={intentAt.x}
@@ -125,8 +125,8 @@ const TabsAdvancedBackground = () => {
         <AnimatePresence>
           {activeAt && (
             <TabsRovingIndicator
-              borderRadius='$4'
-              theme='active'
+              borderRadius="$4"
+              theme="active"
               width={activeAt.width}
               height={activeAt.height}
               x={activeAt.x}
@@ -138,17 +138,17 @@ const TabsAdvancedBackground = () => {
         <Tabs.List
           disablePassBorderRadius
           loop={false}
-          aria-label='Manage your account'
-          space='$2'
-          backgroundColor='transparent'
+          aria-label="Manage your account"
+          space="$2"
+          backgroundColor="transparent"
         >
-          <Tabs.Tab unstyled value='tab1' onInteraction={handleOnInteraction}>
+          <Tabs.Tab unstyled value="tab1" onInteraction={handleOnInteraction}>
             <SizableText>Profile</SizableText>
           </Tabs.Tab>
-          <Tabs.Tab unstyled value='tab2' onInteraction={handleOnInteraction}>
+          <Tabs.Tab unstyled value="tab2" onInteraction={handleOnInteraction}>
             <SizableText>Connections</SizableText>
           </Tabs.Tab>
-          <Tabs.Tab unstyled value='tab3' onInteraction={handleOnInteraction}>
+          <Tabs.Tab unstyled value="tab3" onInteraction={handleOnInteraction}>
             <SizableText>Notifications</SizableText>
           </Tabs.Tab>
         </Tabs.List>
@@ -159,9 +159,9 @@ const TabsAdvancedBackground = () => {
         enterVariant={enterVariant}
         exitVariant={exitVariant}
       >
-        <AnimatedYStack key={currentTab} animation='100ms' x={0} opacity={1} flex={1}>
-          <Tabs.Content value={currentTab} forceMount flex={1} justifyContent='center'>
-            <H5 textAlign='center'>{currentTab}</H5>
+        <AnimatedYStack key={currentTab} animation="100ms" x={0} opacity={1} flex={1}>
+          <Tabs.Content value={currentTab} forceMount flex={1} justifyContent="center">
+            <H5 textAlign="center">{currentTab}</H5>
           </Tabs.Content>
         </AnimatedYStack>
       </AnimatePresence>
@@ -226,20 +226,20 @@ const TabsAdvancedUnderline = () => {
     <Tabs
       value={currentTab}
       onValueChange={setCurrentTab}
-      orientation='horizontal'
-      size='$4'
+      orientation="horizontal"
+      size="$4"
       height={150}
-      flexDirection='column'
-      activationMode='manual'
-      backgroundColor='$background'
-      borderRadius='$4'
+      flexDirection="column"
+      activationMode="manual"
+      backgroundColor="$background"
+      borderRadius="$4"
     >
       <YStack>
         <AnimatePresence>
           {intentAt && (
             <TabsRovingIndicator
               width={intentAt.width}
-              height='$0.5'
+              height="$0.5"
               x={intentAt.x}
               bottom={0}
             />
@@ -248,10 +248,10 @@ const TabsAdvancedUnderline = () => {
         <AnimatePresence>
           {activeAt && (
             <TabsRovingIndicator
-              theme='active'
+              theme="active"
               active
               width={activeAt.width}
-              height='$0.5'
+              height="$0.5"
               x={activeAt.x}
               bottom={0}
             />
@@ -260,34 +260,34 @@ const TabsAdvancedUnderline = () => {
         <Tabs.List
           disablePassBorderRadius
           loop={false}
-          aria-label='Manage your account'
+          aria-label="Manage your account"
           borderBottomLeftRadius={0}
           borderBottomRightRadius={0}
-          paddingBottom='$1.5'
-          borderColor='$color3'
-          borderBottomWidth='$0.5'
-          backgroundColor='transparent'
+          paddingBottom="$1.5"
+          borderColor="$color3"
+          borderBottomWidth="$0.5"
+          backgroundColor="transparent"
         >
           <Tabs.Tab
             unstyled
-            padding='$5'
-            value='tab1'
+            padding="$5"
+            value="tab1"
             onInteraction={handleOnInteraction}
           >
             <SizableText>Profile</SizableText>
           </Tabs.Tab>
           <Tabs.Tab
             unstyled
-            padding='$5'
-            value='tab2'
+            padding="$5"
+            value="tab2"
             onInteraction={handleOnInteraction}
           >
             <SizableText>Connections</SizableText>
           </Tabs.Tab>
           <Tabs.Tab
             unstyled
-            padding='$5'
-            value='tab3'
+            padding="$5"
+            value="tab3"
             onInteraction={handleOnInteraction}
           >
             <SizableText>Notifications</SizableText>
@@ -300,9 +300,9 @@ const TabsAdvancedUnderline = () => {
         enterVariant={enterVariant}
         exitVariant={exitVariant}
       >
-        <AnimatedYStack key={currentTab} animation='100ms' x={0} opacity={1} flex={1}>
-          <Tabs.Content value={currentTab} forceMount flex={1} justifyContent='center'>
-            <H5 textAlign='center'>{currentTab}</H5>
+        <AnimatedYStack key={currentTab} animation="100ms" x={0} opacity={1} flex={1}>
+          <Tabs.Content value={currentTab} forceMount flex={1} justifyContent="center">
+            <H5 textAlign="center">{currentTab}</H5>
           </Tabs.Content>
         </AnimatedYStack>
       </AnimatePresence>
@@ -313,10 +313,10 @@ const TabsAdvancedUnderline = () => {
 const TabsRovingIndicator = ({ active, ...props }: { active?: boolean } & StackProps) => {
   return (
     <YStack
-      position='absolute'
-      backgroundColor='$color5'
+      position="absolute"
+      backgroundColor="$color5"
       opacity={0.7}
-      animation='100ms'
+      animation="100ms"
       enterStyle={{
         opacity: 0,
       }}

@@ -572,7 +572,7 @@ const AccordionContent = AccordionContentFrame.styleable(function AccordionConte
   const itemContext = useAccordionItemContext(__scopeAccordion)
   return (
     <AccordionContentFrame
-      role='region'
+      role="region"
       aria-labelledby={itemContext.triggerId}
       data-orientation={accordionContext.orientation}
       // @ts-ignore

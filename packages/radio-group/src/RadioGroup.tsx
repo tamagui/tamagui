@@ -291,7 +291,7 @@ const RadioGroupItem = RadioGroupItemFrame.extractable(
             <>
               <RovingFocusGroup.Item
                 __scopeRovingFocusGroup={RADIO_GROUP_NAME}
-                asChild='except-style'
+                asChild="except-style"
                 focusable={!isDisabled}
                 active={checked}
               >
@@ -299,7 +299,7 @@ const RadioGroupItem = RadioGroupItemFrame.extractable(
                   // theme={checked ? 'active' : undefined}
                   data-state={getState(checked)}
                   data-disabled={isDisabled ? '' : undefined}
-                  role='radio'
+                  role="radio"
                   aria-labelledby={labelledBy}
                   aria-checked={checked}
                   aria-required={required}
@@ -402,7 +402,7 @@ const BubbleInput = (props: BubbleInputProps) => {
 
   return (
     <input
-      type='radio'
+      type="radio"
       defaultChecked={checked}
       {...inputProps}
       tabIndex={-1}
@@ -506,7 +506,7 @@ const RadioGroup = withStaticProperties(
               loop={true}
             >
               <RadioGroupFrame
-                role='radiogroup'
+                role="radiogroup"
                 aria-orientation={orientation}
                 ref={forwardedRef}
                 orientation={orientation}

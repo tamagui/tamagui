@@ -53,7 +53,7 @@ const TooltipContent = PopperContentFrame.extractable(
       return (
         <PopoverContent
           __scopePopover={__scopeTooltip || TOOLTIP_SCOPE}
-          componentName='Tooltip'
+          componentName="Tooltip"
           disableRemoveScroll
           disableFocusScope
           {...(!props.unstyled && {
@@ -73,7 +73,7 @@ const TooltipArrow = React.forwardRef(
     return (
       <PopoverArrow
         __scopePopper={__scopeTooltip || TOOLTIP_SCOPE}
-        componentName='Tooltip'
+        componentName="Tooltip"
         ref={ref}
         {...rest}
       />

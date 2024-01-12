@@ -151,7 +151,7 @@ export function createSheet<
               {children}
 
               {adjustPaddingForOffscreenContent && (
-                <Stack data-sheet-offscreen-pad height={offscreenSize} width='100%' />
+                <Stack data-sheet-offscreen-pad height={offscreenSize} width="100%" />
               )}
             </Frame>
           )
@@ -175,10 +175,10 @@ export function createSheet<
               // @ts-ignore
               <Frame
                 {...props}
-                componentName='SheetCover'
+                componentName="SheetCover"
                 children={null}
-                position='absolute'
-                bottom='-50%'
+                position="absolute"
+                bottom="-50%"
                 zIndex={-1}
                 height={context.frameSize}
                 left={0}

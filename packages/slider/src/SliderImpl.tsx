@@ -59,7 +59,7 @@ export const SliderImpl = React.forwardRef<View, SliderImplProps>(
     const context = useSliderContext(SLIDER_NAME, __scopeSlider)
     return (
       <SliderFrame
-        size='$4'
+        size="$4"
         {...sliderProps}
         data-orientation={sliderProps.orientation}
         ref={forwardedRef}

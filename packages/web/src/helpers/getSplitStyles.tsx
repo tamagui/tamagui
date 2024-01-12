@@ -741,21 +741,6 @@ export const getSplitStyles: StyleSplitter = (
         const isEnter = key === 'enterStyle'
         const isExit = key === 'exitStyle'
 
-        // dev-time warning that helps clear confusion around need for animation  when using enter/exit style
-        if (
-          process.env.NODE_ENV === 'development' &&
-          !styleProps.isAnimated &&
-          !componentState.unmounted &&
-          (isEnter || isExit)
-        ) {
-          console.warn(
-            `No animation prop given to component ${staticConfig.componentName || ''} ${
-              props['data-at'] || ''
-            } with enterStyle / exitStyle, these styles will be ignored`,
-            { props }
-          )
-        }
-
         // don't continue here on isEnter && !state.unmounted because we need to merge defaults
         if (!descriptor || (isExit && !styleProps.isExiting)) {
           continue

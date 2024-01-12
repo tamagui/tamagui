@@ -176,7 +176,7 @@ export const SelectItem = ListItemFrame.styleable<SelectItemProps>(
           <option value={value}>{props.children}</option>
         ) : (
           <ListItemFrame
-            tag='div'
+            tag="div"
             componentName={ITEM_NAME}
             ref={composedRefs}
             aria-labelledby={textId}

@@ -254,10 +254,10 @@ export const PopperContent = React.forwardRef<
   const contents = React.useMemo(() => {
     return (
       <PopperContentFrame
-        key='popper-content-frame'
+        key="popper-content-frame"
         data-placement={placement}
         data-strategy={strategy}
-        contain='layout'
+        contain="layout"
         size={size}
         {...rest}
       />
@@ -431,7 +431,7 @@ export const PopperArrow = PopperArrowFrame.styleable<
         height={size}
         {...arrowProps}
         {...innerArrowStyle}
-        rotate='45deg'
+        rotate="45deg"
         {...(primaryPlacement === 'bottom' && {
           borderLeftWidth: borderWidth,
           borderTopWidth: borderWidth,

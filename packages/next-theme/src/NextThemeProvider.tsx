@@ -252,7 +252,7 @@ const ThemeScript = memo(
         {forcedTheme ? (
           <script
             // nonce={nonce}
-            key='next-themes-script'
+            key="next-themes-script"
             dangerouslySetInnerHTML={{
               // These are minified via Terser and then updated by hand, don't recommend
               __html: `!function(){${optimization}${updateDOM(forcedTheme)}}()`,
@@ -261,7 +261,7 @@ const ThemeScript = memo(
         ) : enableSystem ? (
           <script
             // nonce={nonce}
-            key='next-themes-script'
+            key="next-themes-script"
             dangerouslySetInnerHTML={{
               __html: `!function(){try {${optimization}var e=localStorage.getItem('${storageKey}');${
                 !defaultSystem ? updateDOM(defaultTheme) + ';' : ''
@@ -275,7 +275,7 @@ const ThemeScript = memo(
         ) : (
           <script
             // nonce={nonce}
-            key='next-themes-script'
+            key="next-themes-script"
             dangerouslySetInnerHTML={{
               __html: `!function(){try{${optimization}var e=localStorage.getItem("${storageKey}");if(e){${
                 value ? `var x=${JSON.stringify(value)};` : ''

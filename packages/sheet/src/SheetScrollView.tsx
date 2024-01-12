@@ -133,7 +133,7 @@ export const SheetScrollView = forwardRef<GetRef<typeof ScrollView>, ScrollViewP
         //   }
         // }}
         onResponderRelease={release}
-        className='_ovs-contain'
+        className="_ovs-contain"
         {...props}
       >
         {useMemo(() => children, [children])}

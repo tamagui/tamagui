@@ -2,36 +2,36 @@ import { Button, Card, CardProps, H2, Image, Paragraph, XStack } from 'tamagui'
 
 export function CardDemo() {
   return (
-    <XStack $sm={{ flexDirection: 'column' }} paddingHorizontal='$4' space>
+    <XStack $sm={{ flexDirection: 'column' }} paddingHorizontal="$4" space>
       <DemoCard
-        animation='bouncy'
-        size='$4'
+        animation="bouncy"
+        size="$4"
         width={250}
         height={300}
         scale={0.9}
         hoverStyle={{ scale: 0.925 }}
         pressStyle={{ scale: 0.875 }}
       />
-      <DemoCard size='$5' width={250} height={300} />
+      <DemoCard size="$5" width={250} height={300} />
     </XStack>
   )
 }
 
 export function DemoCard(props: CardProps) {
   return (
-    <Card elevate size='$4' bordered {...props}>
+    <Card elevate size="$4" bordered {...props}>
       <Card.Header padded>
         <H2>Sony A7IV</H2>
-        <Paragraph theme='alt2'>Now available</Paragraph>
+        <Paragraph theme="alt2">Now available</Paragraph>
       </Card.Header>
       <Card.Footer padded>
         <XStack flex={1} />
-        <Button borderRadius='$10'>Purchase</Button>
+        <Button borderRadius="$10">Purchase</Button>
       </Card.Footer>
       <Card.Background>
         <Image
-          resizeMode='contain'
-          alignSelf='center'
+          resizeMode="contain"
+          alignSelf="center"
           source={{
             width: 300,
             height: 300,

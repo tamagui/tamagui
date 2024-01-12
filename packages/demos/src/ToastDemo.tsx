@@ -11,7 +11,7 @@ export const ToastDemo = () => {
   const [native, setNative] = React.useState(false)
 
   return (
-    <YStack space alignItems='center'>
+    <YStack space alignItems="center">
       <ToastControl native={native} />
       <CurrentToast />
 
@@ -33,7 +33,7 @@ const CurrentToast = () => {
       y={0}
       opacity={1}
       scale={1}
-      animation='100ms'
+      animation="100ms"
       viewportName={currentToast.viewportName}
     >
       <YStack>
@@ -49,7 +49,7 @@ const CurrentToast = () => {
 const ToastControl = ({ native }: { native: boolean }) => {
   const toast = useToastController()
   return (
-    <XStack space='$2' justifyContent='center'>
+    <XStack space="$2" justifyContent="center">
       <Button
         onPress={() => {
           toast.show('Successfully saved!', {
@@ -79,15 +79,15 @@ const NativeOptions = ({
   setNative: (native: boolean) => void
 }) => {
   return (
-    <XStack space='$3'>
-      <Label size='$1' onPress={() => setNative(false)}>
+    <XStack space="$3">
+      <Label size="$1" onPress={() => setNative(false)}>
         Custom
       </Label>
       <Switch
-        id='native-toggle'
-        nativeID='native-toggle'
-        theme='active'
-        size='$1'
+        id="native-toggle"
+        nativeID="native-toggle"
+        theme="active"
+        size="$1"
         checked={!!native}
         onCheckedChange={(val) => setNative(val)}
       >
@@ -103,7 +103,7 @@ const NativeOptions = ({
         />
       </Switch>
 
-      <Label size='$1' onPress={() => setNative(true)}>
+      <Label size="$1" onPress={() => setNative(true)}>
         Native
       </Label>
     </XStack>

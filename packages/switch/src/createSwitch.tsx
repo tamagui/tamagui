@@ -218,7 +218,7 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
                 theme: checked ? 'active' : null,
                 themeShallow: true,
               })}
-              role='switch'
+              role="switch"
               aria-checked={checked}
               aria-labelledby={labelledBy}
               aria-required={required}
@@ -242,7 +242,7 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
               })}
             >
               <YStack
-                alignSelf='stretch'
+                alignSelf="stretch"
                 flex={1}
                 onLayout={(e) => {
                   setFrameWidth(e.nativeEvent.layout.width)
@@ -311,7 +311,7 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
     return (
       // @ts-ignore
       <input
-        type='checkbox'
+        type="checkbox"
         aria-hidden
         defaultChecked={checked}
         {...inputProps}

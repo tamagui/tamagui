@@ -331,7 +331,7 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
           <ToastAnnounce
             __scopeToast={__scopeToast}
             // Toasts are always role=status to avoid stuttering issues with role=alert in SRs.
-            role='status'
+            role="status"
             aria-live={type === 'foreground' ? 'assertive' : 'polite'}
             aria-atomic
           >
@@ -364,14 +364,14 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
                   <Collection.ItemSlot __scopeCollection={__scopeToast || TOAST_CONTEXT}>
                     <ToastImplFrame
                       // Ensure toasts are announced as status list or status when focused
-                      role='status'
-                      aria-live='off'
+                      role="status"
+                      aria-live="off"
                       aria-atomic
                       data-state={open ? 'open' : 'closed'}
                       data-swipe-direction={context.swipeDirection}
-                      pointerEvents='auto'
-                      touchAction='none'
-                      userSelect='none'
+                      pointerEvents="auto"
+                      touchAction="none"
+                      userSelect="none"
                       {...toastProps}
                       ref={composedRefs}
                       {...(isWeb && {

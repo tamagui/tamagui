@@ -54,7 +54,7 @@ export const SheetDemo = () => {
             {`Snap Points: ${JSON.stringify(snapPoints)}`}
           </Button>
         ) : (
-          <XStack paddingVertical='$2.5' justifyContent='center'>
+          <XStack paddingVertical="$2.5" justifyContent="center">
             <Paragraph>{`Snap Points: ${
               isFit ? '(none)' : JSON.stringify(snapPoints)
             }`}</Paragraph>
@@ -73,22 +73,22 @@ export const SheetDemo = () => {
         position={position}
         onPositionChange={setPosition}
         zIndex={100_000}
-        animation='medium'
+        animation="medium"
       >
         <Sheet.Overlay
-          animation='lazy'
+          animation="lazy"
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
         <Sheet.Handle />
-        <Sheet.Frame padding='$4' justifyContent='center' alignItems='center' space='$5'>
-          <Button size='$6' circular icon={ChevronDown} onPress={() => setOpen(false)} />
+        <Sheet.Frame padding="$4" justifyContent="center" alignItems="center" space="$5">
+          <Button size="$6" circular icon={ChevronDown} onPress={() => setOpen(false)} />
           <Input width={200} />
           {modal && isPercent && (
             <>
               <InnerSheet open={innerOpen} onOpenChange={setInnerOpen} />
               <Button
-                size='$6'
+                size="$6"
                 circular
                 icon={ChevronUp}
                 onPress={() => setInnerOpen(true)}
@@ -103,26 +103,26 @@ export const SheetDemo = () => {
 
 function InnerSheet(props: SheetProps) {
   return (
-    <Sheet animation='medium' modal snapPoints={[90]} dismissOnSnapToBottom {...props}>
+    <Sheet animation="medium" modal snapPoints={[90]} dismissOnSnapToBottom {...props}>
       <Sheet.Overlay
-        animation='medium'
+        animation="medium"
         enterStyle={{ opacity: 0 }}
         exitStyle={{ opacity: 0 }}
       />
       <Sheet.Handle />
-      <Sheet.Frame flex={1} justifyContent='center' alignItems='center' space='$5'>
+      <Sheet.Frame flex={1} justifyContent="center" alignItems="center" space="$5">
         <Sheet.ScrollView>
-          <YStack p='$5' gap='$8'>
+          <YStack p="$5" gap="$8">
             <Button
-              size='$6'
+              size="$6"
               circular
-              alignSelf='center'
+              alignSelf="center"
               icon={ChevronDown}
               onPress={() => props.onOpenChange?.(false)}
             />
             <H2>Hello world</H2>
             {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-              <Paragraph key={i} size='$8'>
+              <Paragraph key={i} size="$8">
                 Eu officia sunt ipsum nisi dolore labore est laborum laborum in esse ad
                 pariatur. Dolor excepteur esse deserunt voluptate labore ea. Exercitation
                 ipsum deserunt occaecat cupidatat consequat est adipisicing velit

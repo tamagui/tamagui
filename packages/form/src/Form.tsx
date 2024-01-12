@@ -46,7 +46,7 @@ export const FormTrigger = FormTriggerFrame.styleable(
 
     return (
       <FormTriggerFrame
-        tag='button'
+        tag="button"
         {...(triggerProps as any)}
         ref={forwardedRef}
         onPress={composeEventHandlers(onPress as any, context.onSubmit)}

@@ -31,10 +31,10 @@ export function UpdateThemeDemo() {
   }, [])
 
   return (
-    <YStack alignItems='center' space>
+    <YStack alignItems="center" space>
       <XStack gap={'$5'}>
         <Theme name={theme ?? null}>
-          <Square borderRadius='$8' size={100} backgroundColor='$color' />
+          <Square borderRadius="$8" size={100} backgroundColor="$color" />
         </Theme>
       </XStack>
 

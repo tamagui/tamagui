@@ -16,14 +16,14 @@ import { LinearGradient } from 'tamagui/linear-gradient'
 export function SelectDemo() {
   return (
     <YStack space>
-      <XStack ai='center' space>
+      <XStack ai="center" space>
         <Label f={1} fb={0}>
           Custom
         </Label>
         <SelectDemoItem />
       </XStack>
 
-      <XStack ai='center' space>
+      <XStack ai="center" space>
         <Label f={1} fb={0}>
           Native
         </Label>
@@ -38,17 +38,17 @@ export function SelectDemoItem(props: SelectProps) {
 
   return (
     <Select
-      id='food'
+      id="food"
       value={val}
       onValueChange={setVal}
       disablePreventBodyScroll
       {...props}
     >
       <Select.Trigger width={220} iconAfter={ChevronDown}>
-        <Select.Value placeholder='Something' />
+        <Select.Value placeholder="Something" />
       </Select.Trigger>
 
-      <Adapt when='sm' platform='touch'>
+      <Adapt when="sm" platform="touch">
         <Sheet
           native={!!props.native}
           modal
@@ -66,7 +66,7 @@ export function SelectDemoItem(props: SelectProps) {
             </Sheet.ScrollView>
           </Sheet.Frame>
           <Sheet.Overlay
-            animation='lazy'
+            animation="lazy"
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}
           />
@@ -75,11 +75,11 @@ export function SelectDemoItem(props: SelectProps) {
 
       <Select.Content zIndex={200000}>
         <Select.ScrollUpButton
-          alignItems='center'
-          justifyContent='center'
-          position='relative'
-          width='100%'
-          height='$3'
+          alignItems="center"
+          justifyContent="center"
+          position="relative"
+          width="100%"
+          height="$3"
         >
           <YStack zIndex={10}>
             <ChevronUp size={20} />
@@ -89,7 +89,7 @@ export function SelectDemoItem(props: SelectProps) {
             end={[0, 1]}
             fullscreen
             colors={['$background', 'transparent']}
-            borderRadius='$4'
+            borderRadius="$4"
           />
         </Select.ScrollUpButton>
 
@@ -114,7 +114,7 @@ export function SelectDemoItem(props: SelectProps) {
                       value={item.name.toLowerCase()}
                     >
                       <Select.ItemText>{item.name}</Select.ItemText>
-                      <Select.ItemIndicator marginLeft='auto'>
+                      <Select.ItemIndicator marginLeft="auto">
                         <Check size={16} />
                       </Select.ItemIndicator>
                     </Select.Item>
@@ -126,14 +126,14 @@ export function SelectDemoItem(props: SelectProps) {
           {/* Native gets an extra icon */}
           {props.native && (
             <YStack
-              position='absolute'
+              position="absolute"
               right={0}
               top={0}
               bottom={0}
-              alignItems='center'
-              justifyContent='center'
+              alignItems="center"
+              justifyContent="center"
               width={'$4'}
-              pointerEvents='none'
+              pointerEvents="none"
             >
               <ChevronDown
                 size={getFontSize((props.size as FontSizeTokens) ?? '$true')}
@@ -143,11 +143,11 @@ export function SelectDemoItem(props: SelectProps) {
         </Select.Viewport>
 
         <Select.ScrollDownButton
-          alignItems='center'
-          justifyContent='center'
-          position='relative'
-          width='100%'
-          height='$3'
+          alignItems="center"
+          justifyContent="center"
+          position="relative"
+          width="100%"
+          height="$3"
         >
           <YStack zIndex={10}>
             <ChevronDown size={20} />
@@ -157,7 +157,7 @@ export function SelectDemoItem(props: SelectProps) {
             end={[0, 1]}
             fullscreen
             colors={['transparent', '$background']}
-            borderRadius='$4'
+            borderRadius="$4"
           />
         </Select.ScrollDownButton>
       </Select.Content>
