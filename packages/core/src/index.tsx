@@ -24,35 +24,29 @@ import { usePlatformMethods } from './hooks/usePlatformMethods'
 import { RNTextProps, RNViewProps } from './reactNativeTypes'
 import { usePressability } from './vendor/Pressability'
 
-// re-exports all of @tamagui/web just adds hooks
-export * from '@tamagui/web'
-// fixes issues with TS saying internal type usage is breaking
-// see https://discord.com/channels/909986013848412191/1146150253490348112/1146150253490348112
-export * from './reactNativeTypes'
-
-// adds extra types to Stack/Text:
+// adds extra types to View/Stack/Text:
 
 type RNExclusiveViewProps = Omit<RNViewProps, keyof StackProps>
-
-type ViewType = TamaguiComponent<
+type RNTamaguiView = TamaguiComponent<
   StackProps & RNExclusiveViewProps,
   TamaguiElement,
   StackPropsBase & RNExclusiveViewProps,
   void
 >
 
-// the same:
-export const View = WebView as any as ViewType
-export const Stack = WebStack as any as ViewType
-
 type RNExclusiveTextProps = Omit<RNTextProps, keyof TextProps>
-
-export const Text = WebText as any as TamaguiComponent<
+type RNTamaguiText = TamaguiComponent<
   TextProps & RNExclusiveTextProps,
   TamaguiTextElement,
   TextPropsBase & RNExclusiveTextProps,
   void
 >
+
+// re-exports all of @tamagui/web just adds hooks
+export * from '@tamagui/web'
+// fixes issues with TS saying internal type usage is breaking
+// see https://discord.com/channels/909986013848412191/1146150253490348112/1146150253490348112
+export * from './reactNativeTypes'
 
 const baseViews = getBaseViews()
 
@@ -222,3 +216,9 @@ setupHooks({
 const dontComposePressabilityKeys = {
   onClick: true,
 }
+
+// overwrite web versions:
+// putting at the end ensures it overwrites in dist/cjs/index.js
+export const View = WebView as any as RNTamaguiView
+export const Stack = WebStack as any as RNTamaguiView
+export const Text = WebText as any as RNTamaguiText
