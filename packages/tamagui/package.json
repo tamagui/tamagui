@@ -40,6 +40,11 @@
       "require": "./dist/cjs/index.js",
       "react-native": "./dist/cjs/index.native.js"
     },
+    "./web": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    },
     "./native": {
       "types": "./types/index.d.ts",
       "import": "./dist/native.js",
