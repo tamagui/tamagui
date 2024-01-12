@@ -285,7 +285,8 @@ export const useChangeThemeEffect = (
   shouldUpdate?: () => boolean | undefined
 ): ChangedThemeResponse => {
   const { disable } = props
-  const parentManager = getThemeManager(useContext(ThemeManagerIDContext))
+  const parentManagerId = useContext(ThemeManagerIDContext)
+  const parentManager = getThemeManager(parentManagerId)
 
   if ((!isRoot && !parentManager) || disable) {
     return {
@@ -391,7 +392,6 @@ export const useChangeThemeEffect = (
         disposeChangeListener?.()
         if (isNewTheme) {
           activeThemeManagers.delete(themeManager)
-          _uidToManager.delete(getId(themeManager.id))
         }
       }
     }, [
