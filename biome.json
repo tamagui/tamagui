@@ -57,11 +57,19 @@
     }
   },
   "formatter": {
-    "enabled": false,
+    "enabled": true,
     "formatWithErrors": false,
     "indentStyle": "space",
     "indentSize": 2,
-    "lineWidth": 100,
+    "lineWidth": 90,
     "ignore": []
+  },
+  "javascript": {
+    "formatter": {
+      "trailingComma": "es5",
+      "jsxQuoteStyle": "single",
+      "semicolons": "asNeeded",
+      "quoteStyle": "single"
+    }
   }
 }

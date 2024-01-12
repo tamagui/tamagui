@@ -21,7 +21,7 @@
     "grats": "0.0.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-native": "^0.72.1",
+    "react-native": "^0.72.6",
     "tamagui": "1.84.2",
     "vertql": "1.84.2"
   },
