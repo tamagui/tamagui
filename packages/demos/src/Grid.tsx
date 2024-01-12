@@ -30,7 +30,7 @@ export function Grid({ children, columns, itemMinWidth = 200, gap }: GridProps) 
   const childrenList = React.Children.toArray(children)
 
   return (
-    <XStack alignItems="center" justifyContent="center" flexWrap="wrap">
+    <XStack alignItems='center' justifyContent='center' flexWrap='wrap'>
       {childrenList.map((child, i) => {
         if (!child) {
           return null

@@ -100,14 +100,14 @@ const SliderHorizontal = React.forwardRef<View, SliderHorizontalProps>(
         startEdge={isDirectionLTR ? 'left' : 'right'}
         endEdge={isDirectionLTR ? 'right' : 'left'}
         direction={isDirectionLTR ? 1 : -1}
-        sizeProp="width"
+        sizeProp='width'
         size={state.size}
       >
         <SliderImpl
           ref={composeRefs(forwardedRef, sliderRef) as any}
           dir={direction}
           {...sliderProps}
-          orientation="horizontal"
+          orientation='horizontal'
           onLayout={measure}
           onSlideStart={(event, target) => {
             const value = getValueFromPointer(event.nativeEvent.locationX)
@@ -194,16 +194,16 @@ const SliderVertical = React.forwardRef<View, SliderVerticalProps>(
     return (
       <SliderOrientationProvider
         scope={props.__scopeSlider}
-        startEdge="bottom"
-        endEdge="top"
-        sizeProp="height"
+        startEdge='bottom'
+        endEdge='top'
+        sizeProp='height'
         size={state.size}
         direction={1}
       >
         <SliderImpl
           ref={composeRefs(forwardedRef, sliderRef) as any}
           {...sliderProps}
-          orientation="vertical"
+          orientation='vertical'
           onLayout={measure}
           onSlideStart={(event, target) => {
             const value = getValueFromPointer(event.nativeEvent.locationY)
@@ -452,7 +452,7 @@ const SliderThumb = React.memo(
     return (
       <SliderThumbFrame
         ref={composedRefs}
-        role="slider"
+        role='slider'
         aria-label={props['aria-label'] || label}
         aria-valuemin={context.min}
         aria-valuenow={value}

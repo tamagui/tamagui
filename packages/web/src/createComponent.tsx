@@ -554,8 +554,11 @@ export function createComponent<
       if (debugProp && debugProp !== 'profile') {
         // prettier-ignore
         const name = `${
-          componentName || Component?.displayName || Component?.name || "[Unnamed Component]"
-        }`;
+          componentName ||
+          Component?.displayName ||
+          Component?.name ||
+          '[Unnamed Component]'
+        }`
         const type = isAnimatedReactNative ? '(animated)' : isReactNative ? '(rnw)' : ''
         const dataIs = propsIn['data-is'] || ''
         const banner = `${name}${dataIs ? ` ${dataIs}` : ''} ${type} id ${internalID}`

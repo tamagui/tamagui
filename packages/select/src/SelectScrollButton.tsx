@@ -26,7 +26,7 @@ export const SelectScrollUpButton = React.forwardRef<
     <SelectScrollButtonImpl
       componentName={SCROLL_UP_BUTTON_NAME}
       {...props}
-      dir="up"
+      dir='up'
       ref={forwardedRef}
     />
   )
@@ -48,7 +48,7 @@ export const SelectScrollDownButton = React.forwardRef<
     <SelectScrollButtonImpl
       componentName={SCROLL_DOWN_BUTTON_NAME}
       {...props}
-      dir="down"
+      dir='down'
       ref={forwardedRef}
     />
   )

@@ -9,8 +9,8 @@ export function AlertDialogDemo() {
 
       <AlertDialog.Portal>
         <AlertDialog.Overlay
-          key="overlay"
-          animation="quick"
+          key='overlay'
+          animation='quick'
           opacity={0.5}
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
@@ -18,7 +18,7 @@ export function AlertDialogDemo() {
         <AlertDialog.Content
           bordered
           elevate
-          key="content"
+          key='content'
           animation={[
             'quick',
             {
@@ -40,12 +40,12 @@ export function AlertDialogDemo() {
               By pressing yes, you accept our terms and conditions.
             </AlertDialog.Description>
 
-            <XStack space="$3" justifyContent="flex-end">
+            <XStack space='$3' justifyContent='flex-end'>
               <AlertDialog.Cancel asChild>
                 <Button>Cancel</Button>
               </AlertDialog.Cancel>
               <AlertDialog.Action asChild>
-                <Button theme="active">Accept</Button>
+                <Button theme='active'>Accept</Button>
               </AlertDialog.Action>
             </XStack>
           </YStack>

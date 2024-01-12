@@ -15,25 +15,25 @@ export function ProgressDemo() {
 
   return (
     <>
-      <YStack height={60} alignItems="center" space>
+      <YStack height={60} alignItems='center' space>
         <Paragraph height={30} opacity={0.5}>
           Size: {size}
         </Paragraph>
         <Progress size={sizeProp} value={progress}>
-          <Progress.Indicator animation="bouncy" />
+          <Progress.Indicator animation='bouncy' />
         </Progress>
       </YStack>
 
       <XStack
-        alignItems="center"
+        alignItems='center'
         space
-        position="absolute"
-        bottom="$3"
-        left="$4"
+        position='absolute'
+        bottom='$3'
+        left='$4'
         $xxs={{ display: 'none' }}
       >
         <Slider
-          size="$2"
+          size='$2'
           width={130}
           defaultValue={[4]}
           min={2}
@@ -43,13 +43,13 @@ export function ProgressDemo() {
             setSize(val)
           }}
         >
-          <Slider.Track borderWidth={1} borderColor="$color5">
+          <Slider.Track borderWidth={1} borderColor='$color5'>
             <Slider.TrackActive />
           </Slider.Track>
           <Slider.Thumb circular index={0} />
         </Slider>
 
-        <Button size="$2" onPress={() => setProgress((prev) => (prev + 20) % 100)}>
+        <Button size='$2' onPress={() => setProgress((prev) => (prev + 20) % 100)}>
           Load
         </Button>
       </XStack>

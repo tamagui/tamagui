@@ -759,7 +759,14 @@ export function createExtractor(
               `${componentName} | ${codePosition} -------------------`
           )
           // prettier-ignore
-          logger.info(['\x1b[1m', '\x1b[32m', `<${originalNodeName} />`, disableDebugAttr ? '' : '🐛'].join(' '))
+          logger.info(
+            [
+              '\x1b[1m',
+              '\x1b[32m',
+              `<${originalNodeName} />`,
+              disableDebugAttr ? '' : '🐛',
+            ].join(' ')
+          )
         }
 
         // add data-* debug attributes
@@ -1734,7 +1741,22 @@ export function createExtractor(
           if (shouldPrintDebug) {
             try {
               // prettier-ignore
-              logger.info([' flatten?', shouldFlatten, objToStr({ hasSpread, shouldDeopt, canFlattenProps, shouldWrapTheme, hasOnlyStringChildren }), 'inlined', inlined.size, [...inlined]].join(' '))
+              logger.info(
+                [
+                  ' flatten?',
+                  shouldFlatten,
+                  objToStr({
+                    hasSpread,
+                    shouldDeopt,
+                    canFlattenProps,
+                    shouldWrapTheme,
+                    hasOnlyStringChildren,
+                  }),
+                  'inlined',
+                  inlined.size,
+                  [...inlined],
+                ].join(' ')
+              )
             } catch {
               // ok
             }
@@ -2018,7 +2040,9 @@ export function createExtractor(
                 // prettier-ignore
                 logger.info(`\n       getProps (props in): ${logLines(objToStr(props))}`)
                 // prettier-ignore
-                logger.info(`\n       getProps (outProps): ${logLines(objToStr(outProps))}`)
+                logger.info(
+                  `\n       getProps (outProps): ${logLines(objToStr(outProps))}`
+                )
               }
 
               if (out.fontFamily) {
@@ -2123,9 +2147,15 @@ export function createExtractor(
                     attr.value = styles
                   }
                   // prettier-ignore
-                  if (shouldPrintDebug) logger.info(['  * styles (in)', logLines(objToStr(attr.value))].join(' '))
+                  if (shouldPrintDebug)
+                    logger.info(
+                      ['  * styles (in)', logLines(objToStr(attr.value))].join(' ')
+                    )
                   // prettier-ignore
-                  if (shouldPrintDebug) logger.info(['  * styles (out)', logLines(objToStr(styles))].join(' '))
+                  if (shouldPrintDebug)
+                    logger.info(
+                      ['  * styles (out)', logLines(objToStr(styles))].join(' ')
+                    )
                   continue
                 }
                 case 'attr': {
@@ -2170,7 +2200,12 @@ export function createExtractor(
 
           if (shouldPrintDebug) {
             // prettier-ignore
-            logger.info(['  - attrs (ternaries/combined):\n', logLines(attrs.map(attrStr).join(', '))].join(' '))
+            logger.info(
+              [
+                '  - attrs (ternaries/combined):\n',
+                logLines(attrs.map(attrStr).join(', ')),
+              ].join(' ')
+            )
           }
 
           tm.mark('jsx-element-styles', !!shouldPrintDebug)
@@ -2295,7 +2330,14 @@ export function createExtractor(
 
           if (shouldPrintDebug) {
             // prettier-ignore
-            logger.info([` - inlined props (${inlined.size}):`, shouldDeopt ? ' deopted' : '', hasSpread ? ' has spread' : '', staticConfig.neverFlatten ? 'neverFlatten' : ''].join(' '))
+            logger.info(
+              [
+                ` - inlined props (${inlined.size}):`,
+                shouldDeopt ? ' deopted' : '',
+                hasSpread ? ' has spread' : '',
+                staticConfig.neverFlatten ? 'neverFlatten' : '',
+              ].join(' ')
+            )
             logger.info(`  - shouldFlatten/isFlattened: ${shouldFlatten}`)
             logger.info(`  - attrs (end):\n ${logLines(attrs.map(attrStr).join(', '))}`)
           }

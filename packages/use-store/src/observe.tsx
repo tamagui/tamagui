@@ -112,7 +112,9 @@ export function useObserve<A>(fn: () => A): A {
   return state.value
 }
 
-function getObserverValueAndStoresAccessed<A>(selector: () => A): {
+function getObserverValueAndStoresAccessed<A>(
+  selector: () => A
+): {
   value: A
   storeInfos: Set<StoreInfo>
 } {

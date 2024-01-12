@@ -13,10 +13,7 @@ export function generateUid(scope: any, name: string): string {
   if (!(typeof name === 'string' && name !== ''))
     throw 'generateUid expects a valid name as its second parameter'
 
-  name = t
-    .toIdentifier(name)
-    .replace(/^_+/, '')
-    .replace(/[0-9]+$/g, '')
+  name = t.toIdentifier(name).replace(/^_+/, '').replace(/[0-9]+$/g, '')
 
   let uid
   let i = 0

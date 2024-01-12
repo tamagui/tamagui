@@ -3,14 +3,14 @@ import { Accordion, Paragraph, Square } from 'tamagui'
 
 export function AccordionDemo() {
   return (
-    <Accordion overflow="hidden" width="$20" type="multiple">
-      <Accordion.Item value="a1">
-        <Accordion.Trigger flexDirection="row" justifyContent="space-between">
+    <Accordion overflow='hidden' width='$20' type='multiple'>
+      <Accordion.Item value='a1'>
+        <Accordion.Trigger flexDirection='row' justifyContent='space-between'>
           {({ open }) => (
             <>
               <Paragraph>1. Take a cold shower</Paragraph>
-              <Square animation="quick" rotate={open ? '180deg' : '0deg'}>
-                <ChevronDown size="$1" />
+              <Square animation='quick' rotate={open ? '180deg' : '0deg'}>
+                <ChevronDown size='$1' />
               </Square>
             </>
           )}
@@ -23,13 +23,13 @@ export function AccordionDemo() {
         </Accordion.Content>
       </Accordion.Item>
 
-      <Accordion.Item value="a2">
-        <Accordion.Trigger flexDirection="row" justifyContent="space-between">
+      <Accordion.Item value='a2'>
+        <Accordion.Trigger flexDirection='row' justifyContent='space-between'>
           {({ open }) => (
             <>
               <Paragraph>2. Eat 4 eggs</Paragraph>
-              <Square animation="quick" rotate={open ? '180deg' : '0deg'}>
-                <ChevronDown size="$1" />
+              <Square animation='quick' rotate={open ? '180deg' : '0deg'}>
+                <ChevronDown size='$1' />
               </Square>
             </>
           )}

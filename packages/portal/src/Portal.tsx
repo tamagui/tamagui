@@ -13,13 +13,13 @@ export const Portal = React.memo(
   ({ host = globalThis.document?.body, ...props }: PortalProps) => {
     const contents = (
       <YStack
-        contain="strict"
+        contain='strict'
         fullscreen
         // @ts-expect-error ok on web
         position={isWeb ? 'fixed' : 'absolute'}
         maxWidth={isWeb ? '100vw' : '100%'}
         maxHeight={isWeb ? '100vh' : '100%'}
-        pointerEvents="none"
+        pointerEvents='none'
         {...props}
       />
     )

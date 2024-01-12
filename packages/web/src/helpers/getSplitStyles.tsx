@@ -776,7 +776,7 @@ export const getSplitStyles: StyleSplitter = (
 
           if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
             // prettier-ignore
-            console.groupCollapsed("pseudo (classes)", key);
+            console.groupCollapsed('pseudo (classes)', key)
 
             log({ pseudoStyleObject, pseudoStyles })
             console.groupEnd()
@@ -815,7 +815,7 @@ export const getSplitStyles: StyleSplitter = (
 
           if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
             // prettier-ignore
-            console.groupCollapsed("pseudo", key, { isDisabled });
+            console.groupCollapsed('pseudo', key, { isDisabled })
 
             log(pseudoStyleObject, {
               isDisabled,
@@ -1338,7 +1338,7 @@ export const getSplitStyles: StyleSplitter = (
           viewPropsOrder: Object.keys(viewProps),
           rulesToInsert,
           parentSplitStyles,
-        };
+        }
         for (const key in logs) {
           log(key, logs[key])
         }

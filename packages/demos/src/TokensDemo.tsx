@@ -28,14 +28,14 @@ export function TokensDemo() {
 
   return (
     <YStack space>
-      <XGroup alignItems="center" alignSelf="center">
+      <XGroup alignItems='center' alignSelf='center'>
         {sections.map(({ name, key }) => {
           return (
             <XGroup.Item key={key}>
               <Button
-                size="$3"
+                size='$3'
                 theme={section === key ? 'active' : null}
-                fontFamily="$silkscreen"
+                fontFamily='$silkscreen'
                 onPress={() => setSection(key)}
               >
                 {name}
@@ -65,20 +65,20 @@ function SizeSection({ section }: { section: Section }) {
   return (
     <YStack flex={1} space>
       <H2>Sizes</H2>
-      <YStack width="100%" space="$2" separator={<Separator />}>
+      <YStack width='100%' space='$2' separator={<Separator />}>
         {(section === 'spaceNegative' ? spaceTokensNegative : spaceTokens).map(
           (token) => {
             return (
-              <XStack width="100%" alignItems="center" key={token}>
-                <YStack width="25%">
-                  <H3 size="$6">${token}</H3>
+              <XStack width='100%' alignItems='center' key={token}>
+                <YStack width='25%'>
+                  <H3 size='$6'>${token}</H3>
                 </YStack>
-                <YStack width="20%">
-                  <H4 size="$5">{tokens[token]?.val}px</H4>
+                <YStack width='20%'>
+                  <H4 size='$5'>{tokens[token]?.val}px</H4>
                 </YStack>
                 <Square
                   size={tokens[token]?.val as any}
-                  backgroundColor="$color5"
+                  backgroundColor='$color5'
                   {...(section === 'spaceNegative' && {
                     backgroundColor: '$red5',
                     size: -tokens[

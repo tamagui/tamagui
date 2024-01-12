@@ -6,9 +6,13 @@ import { TamaguiComponent } from '../types'
 
 export type GetRef<C> = C extends TamaguiComponent<any, infer Ref>
   ? Ref
-  : C extends new (props: any) => Component
+  : C extends new (
+      props: any
+    ) => Component
   ? InstanceType<C>
-  : C extends abstract new (...args: any) => any
+  : C extends abstract new (
+      ...args: any
+    ) => any
   ? InstanceType<C>
   : C extends Component
   ? C

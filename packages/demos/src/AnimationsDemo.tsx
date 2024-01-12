@@ -22,10 +22,10 @@ export function AnimationsDemo(props) {
         animateOnly={['transform']}
         onPress={onPress}
         size={104}
-        borderColor="$borderColor"
+        borderColor='$borderColor'
         borderWidth={1}
-        borderRadius="$9"
-        backgroundColor="$color9"
+        borderRadius='$9'
+        backgroundColor='$color9'
         hoverStyle={{
           scale: 1.5,
         }}
@@ -38,12 +38,12 @@ export function AnimationsDemo(props) {
       </Square>
 
       <Button
-        position="absolute"
+        position='absolute'
         bottom={20}
         left={20}
         icon={Play}
         theme={props.tint}
-        size="$5"
+        size='$5'
         circular
         onPress={onPress}
       />

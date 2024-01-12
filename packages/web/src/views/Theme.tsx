@@ -19,8 +19,8 @@ export const Theme = forwardRef(function Theme({ children, ...props }: ThemeProp
 
   let finalChildren = disableDirectChildTheme
     ? Children.map(children, (child) =>
-      cloneElement(child, { ['data-disable-theme']: true })
-    )
+        cloneElement(child, { ['data-disable-theme']: true })
+      )
     : children
 
   if (ref) {
@@ -57,7 +57,11 @@ export function getThemedChildren(
 
   // its always there.. should fix type
   if (!themeManager) {
-    throw new Error(process.env.NODE_ENV === 'development' ? `❌ No theme found, either incorrect name, potential duplicate tamagui deps, or TamaguiProvider not providing themes.` : `❌`)
+    throw new Error(
+      process.env.NODE_ENV === 'development'
+        ? `❌ No theme found, either incorrect name, potential duplicate tamagui deps, or TamaguiProvider not providing themes.`
+        : `❌`
+    )
   }
 
   const { shallow, forceClassName } = props
@@ -80,12 +84,12 @@ export function getThemedChildren(
     next = Children.toArray(children).map((child) => {
       return isValidElement(child)
         ? cloneElement(
-          child,
-          undefined,
-          <Theme name={themeManager.state.parentName}>
-            {(child as any).props.children}
-          </Theme>
-        )
+            child,
+            undefined,
+            <Theme name={themeManager.state.parentName}>
+              {(child as any).props.children}
+            </Theme>
+          )
         : child
     })
   }
@@ -144,8 +148,8 @@ function wrapThemeElements({
     const inverseClassName = name.startsWith('light')
       ? 't_light is_inversed'
       : name.startsWith('dark')
-        ? 't_dark is_inversed'
-        : ''
+      ? 't_dark is_inversed'
+      : ''
     themedChildren = (
       <span className={`${inverse ? inverseClassName : ''} _dsp_contents`}>
         {themedChildren}
@@ -171,8 +175,8 @@ function getThemeClassNameAndStyle(themeState: ChangedThemeResponse, isRoot = fa
 
   const style = themeColor
     ? {
-      color: themeColor,
-    }
+        color: themeColor,
+      }
     : undefined
 
   let className = themeState.state?.className || ''

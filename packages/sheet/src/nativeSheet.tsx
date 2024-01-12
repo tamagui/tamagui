@@ -52,9 +52,9 @@ export function setupNativeSheet(platform: SheetNativePlatforms, Implementation:
             {/* for some reason select triggers wont show on native if this isn't inside the actual tree not inside implementation... */}
             {/* so just hiding it here for now... not great... */}
             <YStack
-              position="absolute"
+              position='absolute'
               opacity={0}
-              pointerEvents="none"
+              pointerEvents='none'
               width={0}
               height={0}
             >
