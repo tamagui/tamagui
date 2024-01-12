@@ -4,16 +4,14 @@ import {
   Adapt,
   Button,
   Popover,
-  Separator,
   Spacer,
   XStack,
   YStack,
-  isTouchable,
+  isTouchable
 } from 'tamagui'
 
 import { DocsMenuContents } from './DocsMenuContents'
 import { HeaderLinks } from './HeaderLinks'
-import { SponsorButton } from './SponsorButton'
 import { useDocsMenu } from './useDocsMenu'
 
 export const HeaderMenu = React.memo(function HeaderMenu() {
@@ -39,7 +37,7 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
           circular
           noTextWrap
           onPress={() => {
-            if (isTouchable) {
+            if (isTouchable || !open) {
               setOpen(!open)
             }
           }}
