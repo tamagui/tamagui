@@ -1,13 +1,13 @@
 import { TamaguiLogo } from '@tamagui/logo'
 import { NextLink } from 'components/NextLink'
-import React from 'react'
-import { H4, Paragraph, Spacer, Text, XStack, YStack } from 'tamagui'
+import { memo } from 'react'
+import { H4, Paragraph, Text, XStack, YStack } from 'tamagui'
 
 import { ContainerLarge } from './Container'
 import { ExternalIcon } from './ExternalIcon'
 import { ParagraphLink } from './Link'
 
-export const Footer = () => {
+export const Footer = memo(() => {
   return (
     <YStack tag="footer" pos="relative">
       <ContainerLarge>
@@ -124,4 +124,4 @@ export const Footer = () => {
       </ContainerLarge>
     </YStack>
   )
-}
+})
