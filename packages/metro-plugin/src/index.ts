@@ -11,6 +11,8 @@ export function withTamagui(
 ) {
   console.log('metroConfig', metroConfig)
 
+  const created = extractor.loadTamaguiSync(options)
+
   // const {
   //   platform,
   //   // @ts-ignore i guess this isnt here yet?

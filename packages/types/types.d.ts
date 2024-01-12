@@ -89,6 +89,11 @@ export interface TamaguiOptions {
    */
   disableExtractVariables?: boolean | 'theme'
 
+  /**
+   * Disables running lightningcss before emitting outputCSS
+   */
+  disableMinifyCSS?: boolean
+
   evaluateVars?: boolean
   cssPath?: string
   cssData?: any
