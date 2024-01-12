@@ -1301,11 +1301,6 @@ export declare const tokens: {
         19: Variable<number>;
         20: Variable<number>;
     };
-    icon: {
-        sm: Variable<number>;
-        md: Variable<number>;
-        lg: Variable<number>;
-    };
 }, "color" | "space" | "size" | "radius" | "zIndex">;
 export {};
 //# sourceMappingURL=tokens.d.ts.map

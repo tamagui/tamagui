@@ -1,9 +1,4 @@
-export * from './tokens'
-export * from './masks'
-export * from './componentThemeDefinitions'
-export * from './palettes'
-export * from './templates'
-export * from './shadows'
+export * from './v2-themes'
 
 // specific colors since we have cjs here
 export { blue, blueDark } from '@tamagui/colors'

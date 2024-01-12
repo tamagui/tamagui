@@ -1,9 +1,4 @@
-export * from './tokens';
-export * from './masks';
-export * from './componentThemeDefinitions';
-export * from './palettes';
-export * from './templates';
-export * from './shadows';
+export * from './v2-themes';
 export { blue, blueDark } from '@tamagui/colors';
 export { green, greenDark } from '@tamagui/colors';
 export { red, redDark } from '@tamagui/colors';
