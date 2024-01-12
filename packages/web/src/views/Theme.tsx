@@ -56,7 +56,9 @@ export function getThemedChildren(
   const { themeManager, isNewTheme } = themeState
 
   // its always there.. should fix type
-  if (!themeManager) throw `❌`
+  if (!themeManager) {
+    throw new Error(process.env.NODE_ENV === 'development' ? `❌ No theme found, either incorrect name, potential duplicate tamagui deps, or TamaguiProvider not providing themes.` : `❌`)
+  }
 
   const { shallow, forceClassName } = props
   const hasEverThemed = useRef(false)
