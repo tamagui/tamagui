@@ -329,7 +329,9 @@ function getThemesDeduped(themes: ThemesLikeObject): DedupedThemes {
 
     // dont force referential equality but may need something more consistent than JSON.stringify
     // separate between dark/light
-    const key = darkOrLightSpecificPrefix + JSON.stringify(rawTheme)
+    const key =
+      darkOrLightSpecificPrefix +
+      JSON.stringify(Object.entries(rawTheme).sort((a, b) => (a[0] > b[0] ? -1 : 1)))
 
     // if existing, avoid
     if (existing.has(key)) {
