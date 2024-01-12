@@ -143,12 +143,14 @@ export function loadTamaguiSync({
       if (propsIn.config) {
         const configPath = getTamaguiConfigPathFromOptionsConfig(propsIn.config)
         const exp = require(configPath)
-        tamaguiConfig = (exp['default'] || exp) as TamaguiInternalConfig
+
+        tamaguiConfig = (exp['default'] || exp['config'] || exp) as TamaguiInternalConfig
+
         if (!tamaguiConfig || !tamaguiConfig.parsed) {
           const confPath = require.resolve(configPath)
           throw new Error(`Can't find valid config in ${confPath}:
           
-  Be sure you "export default" the config.`)
+  Be sure you "export default" or "export const config" the config.`)
         }
 
         // set up core
