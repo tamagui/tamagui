@@ -1,4 +1,4 @@
 import type { TamaguiOptions } from '@tamagui/static';
-import type { GetTransformOptionsOpts } from 'metro-config';
-export declare function withTamagui(metroConfig: GetTransformOptionsOpts, options: TamaguiOptions): GetTransformOptionsOpts;
+import { ComposableIntermediateConfigT } from 'react-native-css-interop/metro';
+export declare function withTamagui(metroConfig: ComposableIntermediateConfigT, options: TamaguiOptions): ComposableIntermediateConfigT;
 //# sourceMappingURL=index.d.ts.map

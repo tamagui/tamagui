@@ -7064,7 +7064,7 @@ __metadata:
     "@tamagui/build": "npm:1.84.2"
     "@tamagui/static": "npm:1.84.2"
     metro-config: "npm:0.80.4"
-    react-native-css-interop: "npm:~0.0.13"
+    react-native-css-interop: "npm:0.0.21"
   languageName: unknown
   linkType: soft
 
@@ -23990,7 +23990,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-css-interop@npm:~0.0.13":
+"react-native-css-interop@npm:0.0.21":
   version: 0.0.21
   resolution: "react-native-css-interop@npm:0.0.21"
   dependencies:
