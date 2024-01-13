@@ -59,7 +59,7 @@ export class ThemeManager {
           `No parent manager given, this is likely due to duplicated Tamagui dependencies. Check your lockfile for mis-matched versions. It could also be from an error somewhere else in your stack causing Tamagui to recieve undefined context, you can try putting some ErrorBoundary components around other areas of your app, or a Suspense boundary.`
         )
       }
-      throw `❌ 0`
+      throw `❌ 000`
     }
 
     // this is used in updateStateFromProps so must be set

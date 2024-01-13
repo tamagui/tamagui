@@ -60,7 +60,7 @@ export function getThemedChildren(
     throw new Error(
       process.env.NODE_ENV === 'development'
         ? `❌ No theme found, either incorrect name, potential duplicate tamagui deps, or TamaguiProvider not providing themes.`
-        : `❌`
+        : `❌ 005`
     )
   }
 
