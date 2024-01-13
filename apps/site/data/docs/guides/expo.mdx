@@ -14,21 +14,8 @@ There are also [pre-made community Expo starters](/community).
 
 ### Install
 
-This guide assumes Expo is configured with TypeScript support.
-
-```bash
-npx create-expo-app -t expo-template-blank-typescript
-```
-
-For instructions on adding TypeScript to an existing project, visit the
-[expo typescript documentation](https://docs.expo.dev/guides/typescript/).
-
 To support dark mode, update your `app.json` to `app.config.ts` and set
-userInterfaceStyle to automatic.
-
-```ts
-userInterfaceStyle: "automatic",
-```
+`userInterfaceStyle` to `"automatic"`.
 
 #### Expo Router / Web
 
@@ -106,6 +93,12 @@ export default function RootLayout() {
 
 #### Native
 
+This guide assumes Expo is configured with TypeScript support.
+
+```bash
+npx create-expo-app -t expo-template-blank-typescript
+```
+
 The following steps are optional but useful for many apps, they enable the
 optimizing compiler, reanimated, as well as using `process.env.XYZ` for
 environment variables.
@@ -134,6 +127,7 @@ module.exports = function (api) {
           components: ["tamagui"],
           config: "./tamagui.config.ts",
           logTimings: true,
+          disableExtraction: process.env.NODE_ENV === 'development'
         },
       ],
       // NOTE: this is only necessary if you are using reanimated for animations
