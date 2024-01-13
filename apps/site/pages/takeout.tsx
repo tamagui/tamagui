@@ -308,7 +308,7 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
         scale: 0.85,
         y: '20%',
       }}
-    // ref={glow.parentRef as any}
+      // ref={glow.parentRef as any}
     >
       {/* <ThemeTint>
         <glow.Component />
@@ -492,9 +492,9 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
 const useDisableMotion = () => {
   return useClientValue(
     isClient &&
-    (window.matchMedia(`(prefers-reduced-motion: reduce)`)?.matches ||
-      window.location.search?.includes('disable-motion') ||
-      /firefox/i.test(navigator.userAgent))
+      (window.matchMedia(`(prefers-reduced-motion: reduce)`)?.matches ||
+        window.location.search?.includes('disable-motion') ||
+        /firefox/i.test(navigator.userAgent))
   )
 }
 
@@ -1237,14 +1237,8 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
           <ScrollView $gtSm={{ maxHeight: '90vh' }}>
             <YStack p="$6" space>
               <XStack ai="center" jc="center" gap="$6" mx="$8">
-                <Dialog.Title
-                  ff="$silkscreen"
-                  size="$9"
-                  $sm={{ size: '$7' }}
-                  mt="$-4"
-                  als="center"
-                >
-                  Purchase 🥡
+                <Dialog.Title ff="$silkscreen" size="$4" ls={2} als="center" theme="alt2">
+                  Checkout
                 </Dialog.Title>
               </XStack>
 
@@ -1448,7 +1442,15 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                   </YStack>
 
                   <YStack mt="$6" space="$4" ai="center">
-                    <XStack theme="green" bc="$background" p="$4" bw={1} boc="$color5" br="$4" gap="$3">
+                    <XStack
+                      theme="green"
+                      bc="$background"
+                      p="$4"
+                      bw={1}
+                      boc="$color5"
+                      br="$4"
+                      gap="$3"
+                    >
                       <Check size={30} color="$color9" />
                       <MunroP size="$7" color="$color11" ls={0.75}>
                         Every plan includes the same assets
@@ -1492,11 +1494,13 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                               </RadioGroup.Item>
 
                               <YStack gap="$0" f={1}>
-                                <H4 mt="$-1">{price.description === `Unlimited (+9 Seats)` ?
-                                  `Unlimited` :
-                                  price.description === `Hobby (3-8 seats)` ?
-                                    `Team (2-8 seats)` : price.description
-                                }</H4>
+                                <H4 mt="$-1">
+                                  {price.description === `Unlimited (+9 Seats)`
+                                    ? `Unlimited`
+                                    : price.description === `Hobby (3-8 seats)`
+                                    ? `Team (2-8 seats)`
+                                    : price.description}
+                                </H4>
 
                                 <Paragraph theme="alt2">
                                   {formatPrice(price.unit_amount! / 100, 'usd')} base + 1
@@ -1646,7 +1650,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
       return
     }
 
-    let dispose = () => { }
+    let dispose = () => {}
 
     // @ts-ignore
     import('../lib/sticksy').then(({ Sticksy }) => {
@@ -1837,7 +1841,7 @@ function PurchaseButton(props: ButtonProps) {
         {...props}
       >
         <Button.Text ff="$silkscreen" fontWeight="700">
-          {props.children}
+          {props.children} 🥡
         </Button.Text>
       </Button>
     </ThemeTintAlt>
@@ -2235,8 +2239,8 @@ const DiscountText = ({
   const text = coupon.amount_off
     ? `${formatPrice(coupon.amount_off, 'usd')} ${coupon.name}`
     : coupon.percent_off
-      ? `${coupon.percent_off}% ${coupon.name}`
-      : ''
+    ? `${coupon.percent_off}% ${coupon.name}`
+    : ''
   return (
     <ThemeTintAlt offset={6}>
       <YStack m="auto" scale={1} $xs={{ scale: 1.2, rotate: '0deg' }} rotate="7deg">
@@ -2554,8 +2558,9 @@ const PromoVideo = () => {
             width: 840,
             height: 480,
           }}
-          src={`https://www.youtube.com/embed/Guwa1oPBvmU?modestbranding=1&rel=0&showinfo=0&autoplay=${open ? 1 : 0
-            }`}
+          src={`https://www.youtube.com/embed/Guwa1oPBvmU?modestbranding=1&rel=0&showinfo=0&autoplay=${
+            open ? 1 : 0
+          }`}
           title="YouTube video player"
           frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -2666,7 +2671,7 @@ const getTakeoutProducts = async (): Promise<TakeoutPageProps> => {
   const promises = [promoListPromise, ...productPromises]
   const queries = await Promise.all(promises)
 
-  const products = queries.slice(1) as Awaited<(typeof productPromises)[number]>[]
+  const products = queries.slice(1) as Awaited<typeof productPromises[number]>[]
   const couponsList = queries[0] as Awaited<typeof promoListPromise>
 
   let coupon: Stripe.Coupon | null = null

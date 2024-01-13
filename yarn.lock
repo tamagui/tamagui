@@ -6017,7 +6017,7 @@ __metadata:
     "@tamagui/use-presence": "npm:1.84.2"
     "@tamagui/web": "npm:1.84.2"
     moti: "npm:^0.25.3"
-    react-native-reanimated: "npm:^3.3.0"
+    react-native-reanimated: "npm:~3.3.0"
   languageName: unknown
   linkType: soft
 
@@ -6130,7 +6130,7 @@ __metadata:
     expo-linear-gradient: "npm:~12.3.0"
     expo-linking: "npm:^5.0.2"
     expo-splash-screen: "npm:~0.20.5"
-    expo-status-bar: "npm:^1.6.0"
+    expo-status-bar: "npm:~1.6.0"
     expo-updates: "npm:~0.18.19"
     html-webpack-plugin: "npm:^5.5.0"
     metro-runtime: "npm:*"
@@ -6142,7 +6142,7 @@ __metadata:
     react-native: "npm:^0.72.6"
     react-native-gesture-handler: "npm:~2.12.0"
     react-native-ios-modal: "npm:2.0.0-3"
-    react-native-reanimated: "npm:^3.3.0"
+    react-native-reanimated: "npm:~3.3.0"
     react-native-safe-area-context: "npm:4.6.3"
     react-native-screens: "npm:~3.22.0"
     react-native-svg: "npm:^13.9.0"
@@ -6928,7 +6928,7 @@ __metadata:
     expo-linear-gradient: "npm:~12.3.0"
     expo-linking: "npm:^5.0.2"
     expo-splash-screen: "npm:~0.20.5"
-    expo-status-bar: "npm:^1.6.0"
+    expo-status-bar: "npm:~1.6.0"
     expo-updates: "npm:~0.18.19"
     html-webpack-plugin: "npm:^5.5.0"
     metro-runtime: "npm:*"
@@ -6939,7 +6939,7 @@ __metadata:
     react-native: "npm:^0.72.6"
     react-native-gesture-handler: "npm:~2.12.0"
     react-native-ios-modal: "npm:2.0.0-3"
-    react-native-reanimated: "npm:^3.3.0"
+    react-native-reanimated: "npm:~3.3.0"
     react-native-safe-area-context: "npm:4.6.3"
     react-native-screens: "npm:~3.22.0"
     react-native-svg: "npm:^13.9.0"
@@ -7678,19 +7678,13 @@ __metadata:
     "@tamagui/helpers-node": "npm:1.84.2"
     "@tamagui/proxy-worm": "npm:1.84.2"
     "@tamagui/shorthands": "npm:1.84.2"
-    "@tamagui/test-design-system": "npm:1.84.2"
     "@tamagui/types": "npm:1.84.2"
-    "@testing-library/react": "npm:^14.0.0"
-    "@types/babel__generator": "npm:^7.6.4"
-    "@types/babel__traverse": "npm:^7.18.2"
     "@types/find-root": "npm:^1.1.2"
     "@types/node": "npm:^16.11.9"
     "@types/webpack": "npm:^4.41.26"
     babel-literal-to-ast: "npm:^2.1.0"
     babel-loader: "npm:^9.1.2"
     browserslist: "npm:^4.22.2"
-    css-loader: "npm:^6.7.4"
-    dedent: "npm:^0.7.0"
     esbuild: "npm:^0.19.11"
     esbuild-loader: "npm:^3.0.1"
     esbuild-register: "npm:^3.4.2"
@@ -7705,11 +7699,7 @@ __metadata:
     react-native-web: "npm:^0.19.9"
     react-native-web-internals: "npm:1.84.2"
     react-native-web-lite: "npm:1.84.2"
-    react-test-renderer: "npm:^18.2.0"
-    style-loader: "npm:^3.3.3"
     typescript: "npm:^5.2.2"
-    vitest: "npm:^0.34.3"
-    webpack: "npm:^5.88.2"
   languageName: unknown
   linkType: soft
 
@@ -15119,10 +15109,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-status-bar@npm:^1.6.0":
-  version: 1.7.1
-  resolution: "expo-status-bar@npm:1.7.1"
-  checksum: 35b80df925144c6cae0160fc359eb32dac388ad0820a9cf9349112fb2f28ad3e3a973646c10415b99d50dea5dc80ab9125eb638c6934470c256e4f40e3c11e74
+"expo-status-bar@npm:~1.6.0":
+  version: 1.6.0
+  resolution: "expo-status-bar@npm:1.6.0"
+  checksum: ea390e22bba71d2fabfd44de6d9c1c54d8fc08b483a2eb7545ba2ac1d593601dfdecdccae47db9a27379636be9016121fb237d88798ca6ac8b572249b6faa672
   languageName: node
   linkType: hard
 
@@ -24042,9 +24032,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-reanimated@npm:3.4.1":
-  version: 3.4.1
-  resolution: "react-native-reanimated@npm:3.4.1"
+"react-native-reanimated@npm:~3.3.0":
+  version: 3.3.0
+  resolution: "react-native-reanimated@npm:3.3.0"
   dependencies:
     "@babel/plugin-transform-object-assign": "npm:^7.16.7"
     "@babel/preset-typescript": "npm:^7.16.7"
@@ -24059,28 +24049,7 @@ __metadata:
     "@babel/plugin-transform-template-literals": ^7.0.0-0
     react: "*"
     react-native: "*"
-  checksum: 2b7390d8ca18d31d1c324d5cb053148e25ba60f14e54ab1a32f537045ba6d0f16acfc854328b65cb9fd199b1dbc7de2c5fe9ba39e588b01218145716cf30ca6e
-  languageName: node
-  linkType: hard
-
-"react-native-reanimated@patch:react-native-reanimated@npm%3A3.4.1#./.yarn/patches/react-native-reanimated-npm-3.4.1-bf4ac7f6b3.patch::locator=tamagui-monorepo%40workspace%3A.":
-  version: 3.4.1
-  resolution: "react-native-reanimated@patch:react-native-reanimated@npm%3A3.4.1#./.yarn/patches/react-native-reanimated-npm-3.4.1-bf4ac7f6b3.patch::version=3.4.1&hash=617ae2&locator=tamagui-monorepo%40workspace%3A."
-  dependencies:
-    "@babel/plugin-transform-object-assign": "npm:^7.16.7"
-    "@babel/preset-typescript": "npm:^7.16.7"
-    convert-source-map: "npm:^2.0.0"
-    invariant: "npm:^2.2.4"
-  peerDependencies:
-    "@babel/core": ^7.0.0-0
-    "@babel/plugin-proposal-nullish-coalescing-operator": ^7.0.0-0
-    "@babel/plugin-proposal-optional-chaining": ^7.0.0-0
-    "@babel/plugin-transform-arrow-functions": ^7.0.0-0
-    "@babel/plugin-transform-shorthand-properties": ^7.0.0-0
-    "@babel/plugin-transform-template-literals": ^7.0.0-0
-    react: "*"
-    react-native: "*"
-  checksum: 90a890b83144187224691e2ffb39aaf06f7aef7332e77537a263c1012d5512460a367effc884884008d952cf5e73b5fff19342b87f6662e108ee98b1743a813c
+  checksum: 44496b834461dc6968f9add6a318d4ebc40c0989021fd4fab78832cef9507873cb7b9737ad2f7d9c8ac072b84870bfbddd2c27b94de4024d9103017388d7e3ed
   languageName: node
   linkType: hard
 
