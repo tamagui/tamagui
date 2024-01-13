@@ -68,7 +68,7 @@ const AvatarImage = React.forwardRef<TamaguiElement, AvatarImageProps>(
         <Image
           fullscreen
           {...(typeof shapeSize === 'number' &&
-            !isNaN(shapeSize) && {
+            !Number.isNaN(shapeSize) && {
               width: shapeSize,
               height: shapeSize,
             })}

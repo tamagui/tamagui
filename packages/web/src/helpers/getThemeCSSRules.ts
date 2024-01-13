@@ -15,7 +15,8 @@ export function getThemeCSSRules(props: {
 
   if (process.env.TAMAGUI_TARGET === 'native') {
     return cssRuleSets
-  } else if (
+  }
+  if (
     !process.env.TAMAGUI_DOES_SSR_CSS ||
     process.env.TAMAGUI_DOES_SSR_CSS === 'mutates-themes' ||
     process.env.TAMAGUI_DOES_SSR_CSS === 'false'

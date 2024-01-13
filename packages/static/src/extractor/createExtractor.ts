@@ -977,9 +977,9 @@ export function createExtractor(
                 ? // <YStack {...isSmall ? { color: 'red } : { color: 'blue }}
                   ([arg.test, arg.consequent, arg.alternate] as const)
                 : t.isLogicalExpression(arg) && arg.operator === '&&'
-                ? // <YStack {...isSmall && { color: 'red }}
-                  ([arg.left, arg.right, null] as const)
-                : null
+                  ? // <YStack {...isSmall && { color: 'red }}
+                    ([arg.left, arg.right, null] as const)
+                  : null
 
               if (conditional) {
                 const [test, alt, cons] = conditional
@@ -1087,9 +1087,8 @@ export function createExtractor(
             const [value, valuePath] = (() => {
               if (t.isJSXExpressionContainer(attribute?.value)) {
                 return [attribute.value.expression!, path.get('value')!] as const
-              } else {
-                return [attribute.value!, path.get('value')!] as const
               }
+              return [attribute.value!, path.get('value')!] as const
             })()
 
             const remove = () => {
@@ -1236,13 +1235,12 @@ export function createExtractor(
                   name,
                   attr: path.node,
                 }
-              } else {
-                if (variants[name]) {
-                  variantValues.set(name, styleValue)
-                }
-                inlined.set(name, true)
-                return attr
               }
+              if (variants[name]) {
+                variantValues.set(name, styleValue)
+              }
+              inlined.set(name, true)
+              return attr
             }
 
             // ternaries!
@@ -1458,9 +1456,8 @@ export function createExtractor(
                         // ensure media query test stays on left side (see getMediaQueryTernary)
                         test: t.logicalExpression('&&', value.test, test),
                       }))
-                    } else {
-                      logger.info(['⚠️ no ternaries?', property].join(' '))
                     }
+                    logger.info(['⚠️ no ternaries?', property].join(' '))
                   } else {
                     logger.info(['⚠️ not expression', property].join(' '))
                   }

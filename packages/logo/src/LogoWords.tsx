@@ -35,8 +35,8 @@ export const LogoWords = memo(
         return hovered && isActive
           ? `var(--gray12)`
           : hovered
-          ? `var(--gray11)`
-          : `var(--gray10)`
+            ? `var(--gray11)`
+            : `var(--gray10)`
       }
       if (mounted !== 'done' || hovered) {
         return isActive ? 'var(--color)' : tints[index]

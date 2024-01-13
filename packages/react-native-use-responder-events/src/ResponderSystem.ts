@@ -351,7 +351,7 @@ function findWantsResponder(eventPaths, domEvent, responderEvent) {
     const shouldSetCallbackBubbleName = shouldSetCallbacks[1]
     const { bubbles } = shouldSetCallbacks[2]
 
-    const check = function (id, node, callbackName) {
+    const check = (id, node, callbackName) => {
       const config = getResponderConfig(id)
       const shouldSetCallback = config[callbackName]
       if (shouldSetCallback != null) {

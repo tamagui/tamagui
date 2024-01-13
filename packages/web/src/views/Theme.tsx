@@ -148,8 +148,8 @@ function wrapThemeElements({
     const inverseClassName = name.startsWith('light')
       ? 't_light is_inversed'
       : name.startsWith('dark')
-      ? 't_dark is_inversed'
-      : ''
+        ? 't_dark is_inversed'
+        : ''
     themedChildren = (
       <span className={`${inverse ? inverseClassName : ''} _dsp_contents`}>
         {themedChildren}

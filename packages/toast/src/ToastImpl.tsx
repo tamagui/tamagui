@@ -422,9 +422,8 @@ const isDeltaInDirection = (
   const isDeltaX = deltaX > deltaY
   if (direction === 'left' || direction === 'right' || direction === 'horizontal') {
     return isDeltaX && deltaX > threshold
-  } else {
-    return !isDeltaX && deltaY > threshold
   }
+  return !isDeltaX && deltaY > threshold
 }
 
 function getAnnounceTextContent(container: HTMLElement) {
@@ -467,11 +466,14 @@ const shouldGrantGestureMove = (
 ) => {
   if ((dir === 'horizontal' || dir === 'left') && dx < -GESTURE_GRANT_THRESHOLD) {
     return true
-  } else if ((dir === 'horizontal' || dir === 'right') && dx > GESTURE_GRANT_THRESHOLD) {
+  }
+  if ((dir === 'horizontal' || dir === 'right') && dx > GESTURE_GRANT_THRESHOLD) {
     return true
-  } else if ((dir === 'vertical' || dir === 'up') && dy > -GESTURE_GRANT_THRESHOLD) {
+  }
+  if ((dir === 'vertical' || dir === 'up') && dy > -GESTURE_GRANT_THRESHOLD) {
     return true
-  } else if ((dir === 'vertical' || dir === 'down') && dy < GESTURE_GRANT_THRESHOLD) {
+  }
+  if ((dir === 'vertical' || dir === 'down') && dy < GESTURE_GRANT_THRESHOLD) {
     return true
   }
 

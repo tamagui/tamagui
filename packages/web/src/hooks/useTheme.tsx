@@ -61,8 +61,8 @@ export type ThemeGettable<Val> = Val & {
           ? any
           : Exclude<X, Variable>
         : Val extends VariableVal
-        ? string | number
-        : unknown)
+          ? string | number
+          : unknown)
 }
 
 export type UseThemeResult = {

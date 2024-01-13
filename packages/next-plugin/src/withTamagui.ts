@@ -185,8 +185,8 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
                 return !res
                   ? Promise.resolve(undefined)
                   : typeof res === 'string'
-                  ? Promise.resolve(res)
-                  : external(ctx)
+                    ? Promise.resolve(res)
+                    : external(ctx)
               }
             }),
           ]

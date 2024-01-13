@@ -108,7 +108,11 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     placement: 'bottom-start',
     middleware: [
       size({
-        apply({ rects: { reference: { width } } }) {
+        apply({
+          rects: {
+            reference: { width },
+          },
+        }) {
           floatingStyle.current = {
             minWidth: width + 8,
           }
@@ -254,13 +258,12 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
       return () => {
         clearTimeout(selectTimeoutRef.current)
       }
-    } else {
-      allowSelectRef.current = false
-      allowMouseUpRef.current = true
-      setInnerOffset(0)
-      setFallback(false)
-      setBlockSelection(false)
     }
+    allowSelectRef.current = false
+    allowMouseUpRef.current = true
+    setInnerOffset(0)
+    setFallback(false)
+    setBlockSelection(false)
   }, [open])
 
   useIsomorphicLayoutEffect(() => {

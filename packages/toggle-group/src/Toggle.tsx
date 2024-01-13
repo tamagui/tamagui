@@ -88,42 +88,41 @@ type ToggleItemExtraProps = {
 
 export type ToggleProps = ToggleFrameProps & ToggleItemExtraProps
 
-export const Toggle = React.forwardRef<ToggleElement, ToggleProps>(function Toggle(
-  props,
-  forwardedRef
-) {
-  const {
-    pressed: pressedProp,
-    defaultPressed = false,
-    onPressedChange,
-    ...buttonProps
-  } = props
+export const Toggle = React.forwardRef<ToggleElement, ToggleProps>(
+  function Toggle(props, forwardedRef) {
+    const {
+      pressed: pressedProp,
+      defaultPressed = false,
+      onPressedChange,
+      ...buttonProps
+    } = props
 
-  const [pressed = false, setPressed] = useControllableState({
-    prop: pressedProp,
-    onChange: onPressedChange,
-    defaultProp: defaultPressed,
-  })
+    const [pressed = false, setPressed] = useControllableState({
+      prop: pressedProp,
+      onChange: onPressedChange,
+      defaultProp: defaultPressed,
+    })
 
-  return (
-    <ToggleFrame
-      {...(!props.unstyled && {
-        theme: pressed ? 'active' : null,
-        themeShallow: true,
-      })}
-      active={!props.unstyled ? pressed : undefined}
-      aria-pressed={pressed}
-      data-state={pressed ? 'on' : 'off'}
-      data-disabled={props.disabled ? '' : undefined}
-      {...buttonProps}
-      ref={forwardedRef}
-      onPress={composeEventHandlers(props.onPress ?? undefined, () => {
-        if (!props.disabled) {
-          setPressed(!pressed)
-        }
-      })}
-    />
-  )
-})
+    return (
+      <ToggleFrame
+        {...(!props.unstyled && {
+          theme: pressed ? 'active' : null,
+          themeShallow: true,
+        })}
+        active={!props.unstyled ? pressed : undefined}
+        aria-pressed={pressed}
+        data-state={pressed ? 'on' : 'off'}
+        data-disabled={props.disabled ? '' : undefined}
+        {...buttonProps}
+        ref={forwardedRef}
+        onPress={composeEventHandlers(props.onPress ?? undefined, () => {
+          if (!props.disabled) {
+            setPressed(!pressed)
+          }
+        })}
+      />
+    )
+  }
+)
 
 /* ---------------------------------------------------------------------------------------------- */

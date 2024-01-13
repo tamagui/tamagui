@@ -10,7 +10,8 @@ export const SheetDemo = () => {
   const [open, setOpen] = useState(false)
   const [modal, setModal] = useState(true)
   const [innerOpen, setInnerOpen] = useState(false)
-  const [snapPointsMode, setSnapPointsMode] = useState<typeof spModes[number]>('percent')
+  const [snapPointsMode, setSnapPointsMode] =
+    useState<(typeof spModes)[number]>('percent')
   const [mixedFitDemo, setMixedFitDemo] = useState(false)
 
   const isPercent = snapPointsMode === 'percent'
@@ -20,12 +21,12 @@ export const SheetDemo = () => {
   const snapPoints = isPercent
     ? [85, 50, 25]
     : isConstant
-    ? [256, 190]
-    : isFit
-    ? undefined
-    : mixedFitDemo
-    ? ['fit', 110]
-    : ['80%', 256, 190]
+      ? [256, 190]
+      : isFit
+        ? undefined
+        : mixedFitDemo
+          ? ['fit', 110]
+          : ['80%', 256, 190]
 
   return (
     <>

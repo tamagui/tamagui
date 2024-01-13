@@ -134,9 +134,8 @@ async function asyncLock(props: Props) {
     while (tries--) {
       if (await pathExists(props.outfile)) {
         return
-      } else {
-        await new Promise((res) => setTimeout(res, 50))
       }
+      await new Promise((res) => setTimeout(res, 50))
     }
   }
   void writeFile(lockFile, '')

@@ -24,16 +24,15 @@ export const createNativeToast: CreateNativeToastsFn = (
     return {
       nativeToastRef: notification,
     }
-  } else {
-    Notification.requestPermission().then((permission) => {
-      if (permission === 'granted') {
-        const notification = showNotification()
-        return {
-          nativeToastRef: notification,
-        }
-      }
-    })
   }
+  Notification.requestPermission().then((permission) => {
+    if (permission === 'granted') {
+      const notification = showNotification()
+      return {
+        nativeToastRef: notification,
+      }
+    }
+  })
   return true
 }
 

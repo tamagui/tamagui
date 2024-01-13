@@ -201,9 +201,8 @@ export function createAnimations<A extends AnimationsConfig>(
         return Object.keys(style).some((key) => {
           if (animateOnly.length) {
             return !animatedStyleKey[key] && animateOnly.indexOf(key) === -1
-          } else {
-            return !animatedStyleKey[key]
           }
+          return !animatedStyleKey[key]
         })
       }, args)
 

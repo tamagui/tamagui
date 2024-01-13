@@ -145,7 +145,7 @@ let hasSetupBaseViews = false
 export function createComponent<
   ComponentPropTypes extends StackProps | TextProps = {},
   Ref = TamaguiElement,
-  BaseProps = never
+  BaseProps = never,
 >(staticConfig: StaticConfig) {
   let config: TamaguiInternalConfig | null = null
   let defaultProps = staticConfig.defaultProps
@@ -465,8 +465,8 @@ export function createComponent<
     const componentClassName = props.asChild
       ? ''
       : props.componentName
-      ? `is_${props.componentName}`
-      : defaultComponentClassName
+        ? `is_${props.componentName}`
+        : defaultComponentClassName
 
     const hasTextAncestor = !!(isWeb && isText ? componentContext.inText : false)
     const isDisabled = props.disabled ?? props.accessibilityState?.disabled

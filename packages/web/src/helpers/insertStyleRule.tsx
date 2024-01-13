@@ -265,8 +265,8 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
     let scheme = selector.includes('t_dark')
       ? 'dark'
       : selector.includes('t_light')
-      ? 'light'
-      : ''
+        ? 'light'
+        : ''
     let name = selector.slice(selector.lastIndexOf('.t_') + 3)
 
     if (name.startsWith(scheme)) {

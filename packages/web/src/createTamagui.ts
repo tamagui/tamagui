@@ -322,8 +322,8 @@ function getThemesDeduped(themes: ThemesLikeObject): DedupedThemes {
     const darkOrLightSpecificPrefix = themeName.startsWith('dark')
       ? 'dark'
       : themeName.startsWith('light')
-      ? 'light'
-      : ''
+        ? 'light'
+        : ''
 
     const rawTheme = themes[themeName]
 

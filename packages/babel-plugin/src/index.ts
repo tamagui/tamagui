@@ -158,13 +158,10 @@ export default declare(function snackBabelPlugin(
 
                     // make a sub-array
                     return addThemedStyleExpression(themed)
-                  } else {
-                    const ident = addSheetStyle(plain, props.node)
-                    // since we only do flattened disabling this path
-                    return ident
-                    // when we supported extracting non-flattened
-                    // addStyleExpression(ident, isFlattened ? simpleHash(JSON.stringify(plain)) : undefined)
                   }
+                  const ident = addSheetStyle(plain, props.node)
+                  // since we only do flattened disabling this path
+                  return ident
                 }
 
                 function addStyleExpression(expr: any) {

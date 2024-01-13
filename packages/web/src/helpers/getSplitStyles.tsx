@@ -352,7 +352,8 @@ export const getSplitStyles: StyleSplitter = (
           }
           viewProps[nativeA11yProp] = valInit
           continue
-        } else if (nativeAccessibilityValue[keyInit]) {
+        }
+        if (nativeAccessibilityValue[keyInit]) {
           let field = nativeAccessibilityValue[keyInit]
           if (viewProps['accessibilityValue']) {
             viewProps['accessibilityValue'][field] = valInit
@@ -441,61 +442,60 @@ export const getSplitStyles: StyleSplitter = (
           if (keyInit in accessibilityDirectMap) {
             viewProps[accessibilityDirectMap[keyInit]] = valInit
             continue
-          } else {
-            switch (keyInit) {
-              case 'accessibilityRole': {
-                if (valInit === 'none') {
-                  viewProps.role = 'presentation'
-                } else {
-                  viewProps.role = accessibilityRoleToWebRole[valInit] || valInit
-                }
-                continue
+          }
+          switch (keyInit) {
+            case 'accessibilityRole': {
+              if (valInit === 'none') {
+                viewProps.role = 'presentation'
+              } else {
+                viewProps.role = accessibilityRoleToWebRole[valInit] || valInit
               }
-              case 'accessibilityLabelledBy':
-              case 'accessibilityFlowTo':
-              case 'accessibilityControls':
-              case 'accessibilityDescribedBy': {
-                viewProps[`aria-${keyInit.replace('accessibility', '').toLowerCase()}`] =
-                  processIDRefList(valInit)
-                continue
+              continue
+            }
+            case 'accessibilityLabelledBy':
+            case 'accessibilityFlowTo':
+            case 'accessibilityControls':
+            case 'accessibilityDescribedBy': {
+              viewProps[`aria-${keyInit.replace('accessibility', '').toLowerCase()}`] =
+                processIDRefList(valInit)
+              continue
+            }
+            case 'accessibilityKeyShortcuts': {
+              if (Array.isArray(valInit)) {
+                viewProps['aria-keyshortcuts'] = valInit.join(' ')
               }
-              case 'accessibilityKeyShortcuts': {
-                if (Array.isArray(valInit)) {
-                  viewProps['aria-keyshortcuts'] = valInit.join(' ')
-                }
-                continue
+              continue
+            }
+            case 'accessibilityLiveRegion': {
+              viewProps['aria-live'] = valInit === 'none' ? 'off' : valInit
+              continue
+            }
+            case 'accessibilityReadOnly': {
+              viewProps['aria-readonly'] = valInit
+              // Enhance with native semantics
+              if (
+                elementType === 'input' ||
+                elementType === 'select' ||
+                elementType === 'textarea'
+              ) {
+                viewProps.readOnly = true
               }
-              case 'accessibilityLiveRegion': {
-                viewProps['aria-live'] = valInit === 'none' ? 'off' : valInit
-                continue
+              continue
+            }
+            case 'accessibilityRequired': {
+              viewProps['aria-required'] = valInit
+              // Enhance with native semantics
+              if (
+                elementType === 'input' ||
+                elementType === 'select' ||
+                elementType === 'textarea'
+              ) {
+                viewProps.required = valInit
               }
-              case 'accessibilityReadOnly': {
-                viewProps['aria-readonly'] = valInit
-                // Enhance with native semantics
-                if (
-                  elementType === 'input' ||
-                  elementType === 'select' ||
-                  elementType === 'textarea'
-                ) {
-                  viewProps.readOnly = true
-                }
-                continue
-              }
-              case 'accessibilityRequired': {
-                viewProps['aria-required'] = valInit
-                // Enhance with native semantics
-                if (
-                  elementType === 'input' ||
-                  elementType === 'select' ||
-                  elementType === 'textarea'
-                ) {
-                  viewProps.required = valInit
-                }
-                continue
-              }
-              default: {
-                didUseKeyInit = false
-              }
+              continue
+            }
+            default: {
+              didUseKeyInit = false
             }
           }
         }
@@ -859,7 +859,7 @@ export const getSplitStyles: StyleSplitter = (
         continue
       }
       // media
-      else if (isMedia) {
+      if (isMedia) {
         if (!val) continue
 
         if (isMedia === 'platform') {

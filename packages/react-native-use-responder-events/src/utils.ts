@@ -27,13 +27,12 @@ function getEventPath(domEvent: any): Array<any> {
   if (domEvent.type === 'selectionchange') {
     const target = window.getSelection()?.anchorNode
     return composedPathFallback(target)
-  } else {
-    const path =
-      domEvent.composedPath != null
-        ? domEvent.composedPath()
-        : composedPathFallback(domEvent.target)
-    return path
   }
+  const path =
+    domEvent.composedPath != null
+      ? domEvent.composedPath()
+      : composedPathFallback(domEvent.target)
+  return path
 }
 
 function composedPathFallback(target: any): Array<any> {

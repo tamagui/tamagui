@@ -24,8 +24,8 @@ export function useSheetProviderProps(
     (snapPointsMode === 'percent'
       ? [80]
       : snapPointsMode === 'constant'
-      ? [256]
-      : ['fit'])
+        ? [256]
+        : ['fit'])
   const hasFit = snapPointsProp[0] === 'fit'
 
   const snapPoints = useMemo(

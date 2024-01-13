@@ -12,7 +12,7 @@ import {
 } from 'tamagui'
 
 const demos = ['horizontal', 'vertical'] as const
-const demosTitle: Record<typeof demos[number], string> = {
+const demosTitle: Record<(typeof demos)[number], string> = {
   horizontal: 'Horizontal',
   vertical: 'Vertical',
 }

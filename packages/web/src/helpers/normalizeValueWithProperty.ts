@@ -68,7 +68,7 @@ export function reverseMapClassNameToValue(key: string, className: string) {
   rcache[cssRule] = res
   if (process.env.NODE_ENV === 'development') {
     // ensure we are parsing properly
-    if (typeof res === 'number' && isNaN(res)) {
+    if (typeof res === 'number' && Number.isNaN(res)) {
       console.info('Tamagui invalid parsed value, NaN:', {
         res,
         cssVal,

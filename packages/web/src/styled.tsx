@@ -48,13 +48,13 @@ type ValueOf<T> = T[keyof T]
 type AreVariantsUndefined<V> = V extends undefined
   ? true
   : ValueOf<V> extends undefined
-  ? true
-  : false
+    ? true
+    : false
 
 export function styled<
   ParentComponent extends StylableComponent,
   Variants extends VariantDefinitions<ParentComponent> | void,
-  StyledStaticConfig extends Partial<StaticConfig>
+  StyledStaticConfig extends Partial<StaticConfig>,
 >(
   ComponentIn: ParentComponent,
   // this should be Partial<GetProps<ParentComponent>> but causes excessively deep type issues
@@ -81,12 +81,12 @@ export function styled<
   type MergedVariants = AreVariantsUndefined<OurVariantProps> extends true
     ? ParentVariants
     : AreVariantsUndefined<ParentVariants> extends true
-    ? OurVariantProps
-    : {
-        [Key in keyof ParentVariants | keyof OurVariantProps]?:
-          | (Key extends keyof ParentVariants ? ParentVariants[Key] : undefined)
-          | (Key extends keyof OurVariantProps ? OurVariantProps[Key] : undefined)
-      }
+      ? OurVariantProps
+      : {
+          [Key in keyof ParentVariants | keyof OurVariantProps]?:
+            | (Key extends keyof ParentVariants ? ParentVariants[Key] : undefined)
+            | (Key extends keyof OurVariantProps ? OurVariantProps[Key] : undefined)
+        }
 
   type AcceptedTokens = StyledStaticConfig['acceptTokens']
   type CustomTokenProps = AcceptedTokens extends Object
@@ -117,16 +117,15 @@ export function styled<
         MediaProps<Partial<OurPropsBaseBase>>
 
   type ParentStaticProperties = {
-    [Key in
-      Exclude<
-        keyof ParentComponent,
-        | 'defaultProps'
-        | 'propTypes'
-        | '$$typeof'
-        | 'staticConfig'
-        | 'extractable'
-        | 'styleable'
-      >]: ParentComponent[Key]
+    [Key in Exclude<
+      keyof ParentComponent,
+      | 'defaultProps'
+      | 'propTypes'
+      | '$$typeof'
+      | 'staticConfig'
+      | 'extractable'
+      | 'styleable'
+    >]: ParentComponent[Key]
   }
 
   type StyledComponent = TamaguiComponent<

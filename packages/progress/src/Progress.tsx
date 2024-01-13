@@ -86,11 +86,11 @@ function isNumber(value: any): value is number {
 }
 
 function isValidMaxNumber(max: any): max is number {
-  return isNumber(max) && !isNaN(max) && max > 0
+  return isNumber(max) && !Number.isNaN(max) && max > 0
 }
 
 function isValidValueNumber(value: any, max: number): value is number {
-  return isNumber(value) && !isNaN(value) && value <= max && value >= 0
+  return isNumber(value) && !Number.isNaN(value) && value <= max && value >= 0
 }
 
 // Split this out for clearer readability of the error message.

@@ -15,7 +15,7 @@ import {
 } from 'tamagui'
 
 const demos = ['background', 'underline'] as const
-const demosTitle: Record<typeof demos[number], string> = {
+const demosTitle: Record<(typeof demos)[number], string> = {
   background: 'Background Indicator',
   underline: 'Underline Indicator',
 }

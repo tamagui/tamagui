@@ -419,10 +419,9 @@ export type VariableValGeneric = { __generic: 1 }
 
 type GenericTokens = CreateTokens
 type GenericThemes = {
-  [key: string]:
-    | Partial<TamaguiBaseTheme> & {
-        [key: string]: VariableVal
-      }
+  [key: string]: Partial<TamaguiBaseTheme> & {
+    [key: string]: VariableVal
+  }
 }
 
 export type CreateShorthands = {
@@ -478,7 +477,7 @@ export type CreateTamaguiConfig<
   F extends GenericFonts = GenericFonts,
   G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting,
   H extends DefaultFontSetting = DefaultFontSetting,
-  I extends GenericTamaguiSettings = GenericTamaguiSettings
+  I extends GenericTamaguiSettings = GenericTamaguiSettings,
 > = {
   fonts: RemoveLanguagePostfixes<F>
   fontLanguages: GetLanguagePostfixes<F> extends never
@@ -882,7 +881,7 @@ export type TamaguiInternalConfig<
   F extends GenericFonts = GenericFonts,
   G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting,
   H extends DefaultFontSetting = DefaultFontSetting,
-  I extends GenericTamaguiSettings = GenericTamaguiSettings
+  I extends GenericTamaguiSettings = GenericTamaguiSettings,
 > = Omit<CreateTamaguiProps, keyof GenericTamaguiConfig> &
   Omit<CreateTamaguiConfig<A, B, C, D, E, F, G, H, I>, 'tokens'> & {
     // TODO need to make it this but this breaks types, revisit
@@ -1030,7 +1029,7 @@ export type AnimationProp =
               type?: AnimationKeys
               [key: string]: any
             }
-      }
+      },
     ]
 
 /**
@@ -1074,28 +1073,28 @@ type UserAllowedStyleValuesSetting = Exclude<
 >
 
 type GetThemeValueSettingForCategory<
-  Cat extends keyof AllowedStyleValuesSettingPerCategory
+  Cat extends keyof AllowedStyleValuesSettingPerCategory,
 > = UserAllowedStyleValuesSetting extends AllowedValueSettingBase | undefined
   ? UserAllowedStyleValuesSetting
   : UserAllowedStyleValuesSetting extends AllowedStyleValuesSettingPerCategory
-  ? UserAllowedStyleValuesSetting[Cat]
-  : true
+    ? UserAllowedStyleValuesSetting[Cat]
+    : true
 
 type GetThemeValueFallbackFor<
   Setting,
   StrictValue,
   SomewhatStrictValue,
   LooseValue,
-  WebOnlyValue
+  WebOnlyValue,
 > = Setting extends 'strict'
   ? StrictValue
   : Setting extends 'strict-web'
-  ? StrictValue | WebOnlyValue
-  : Setting extends 'somewhat-strict'
-  ? SomewhatStrictValue
-  : Setting extends 'somewhat-strict-web'
-  ? SomewhatStrictValue | WebOnlyValue
-  : LooseValue
+    ? StrictValue | WebOnlyValue
+    : Setting extends 'somewhat-strict'
+      ? SomewhatStrictValue
+      : Setting extends 'somewhat-strict-web'
+        ? SomewhatStrictValue | WebOnlyValue
+        : LooseValue
 
 // the most generic fallback for anything not covered by special values
 export type ThemeValueFallback =
@@ -1164,7 +1163,7 @@ export type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string
 
 export type SpecificTokens<
   Record = Tokens,
-  RK extends keyof Record = keyof Record
+  RK extends keyof Record = keyof Record,
 > = RK extends string
   ? `$${RK}.${keyof Record[RK] extends string | number ? keyof Record[RK] : never}`
   : never
@@ -1236,7 +1235,7 @@ type GetTokenFontKeysFor<
     | 'lineHeight'
     | 'transform'
     | 'style'
-    | 'color'
+    | 'color',
 > = keyof TamaguiConfig['fonts']['body'][A]
 
 export type FontTokens = GetTokenString<keyof TamaguiConfig['fonts']>
@@ -1276,27 +1275,27 @@ type TokenPrefixedIfExists<A> = A extends Object ? TokenPrefixed<A> : {}
 export type ThemeValueByCategory<K extends string | number | symbol> = K extends 'theme'
   ? ThemeTokens
   : K extends 'size'
-  ? SizeTokens
-  : K extends 'font'
-  ? FontTokens
-  : K extends 'fontSize'
-  ? FontSizeTokens
-  : K extends 'space'
-  ? SpaceTokens
-  : K extends 'color'
-  ? ColorTokens
-  : K extends 'zIndex'
-  ? ZIndexTokens
-  : K extends 'lineHeight'
-  ? FontLineHeightTokens
-  : K extends 'fontWeight'
-  ? FontWeightTokens
-  : K extends 'letterSpacing'
-  ? FontLetterSpacingTokens
-  : K extends keyof Tokens
-  ? // fallback to user-defined tokens
-    GetTokenString<keyof Tokens[K]>
-  : never
+    ? SizeTokens
+    : K extends 'font'
+      ? FontTokens
+      : K extends 'fontSize'
+        ? FontSizeTokens
+        : K extends 'space'
+          ? SpaceTokens
+          : K extends 'color'
+            ? ColorTokens
+            : K extends 'zIndex'
+              ? ZIndexTokens
+              : K extends 'lineHeight'
+                ? FontLineHeightTokens
+                : K extends 'fontWeight'
+                  ? FontWeightTokens
+                  : K extends 'letterSpacing'
+                    ? FontLetterSpacingTokens
+                    : K extends keyof Tokens
+                      ? // fallback to user-defined tokens
+                        GetTokenString<keyof Tokens[K]>
+                      : never
 
 type FontKeys = 'fontFamily'
 type FontSizeKeys = 'fontSize'
@@ -1308,28 +1307,28 @@ type ZIndexKeys = 'zIndex'
 export type ThemeValueGet<K extends string | number | symbol> = K extends 'theme'
   ? ThemeTokens
   : K extends SizeKeys
-  ? SizeTokens | ThemeValueFallbackSize
-  : K extends FontKeys
-  ? FontTokens
-  : K extends FontSizeKeys
-  ? FontSizeTokens
-  : K extends `${`border${string | ''}Radius`}`
-  ? RadiusTokens | ThemeValueFallbackRadius
-  : K extends SpaceKeys
-  ? K extends 'shadowOffset'
-    ? { width: SpaceTokens; height: SpaceTokens }
-    : SpaceTokens | ThemeValueFallbackSpace
-  : K extends ColorKeys
-  ? ColorTokens | ThemeValueFallbackColor
-  : K extends ZIndexKeys
-  ? ZIndexTokens | ThemeValueFallbackZIndex
-  : K extends LineHeightKeys
-  ? FontLineHeightTokens
-  : K extends FontWeightKeys
-  ? FontWeightTokens
-  : K extends FontLetterSpacingKeys
-  ? FontLetterSpacingTokens
-  : never
+    ? SizeTokens | ThemeValueFallbackSize
+    : K extends FontKeys
+      ? FontTokens
+      : K extends FontSizeKeys
+        ? FontSizeTokens
+        : K extends `${`border${string | ''}Radius`}`
+          ? RadiusTokens | ThemeValueFallbackRadius
+          : K extends SpaceKeys
+            ? K extends 'shadowOffset'
+              ? { width: SpaceTokens; height: SpaceTokens }
+              : SpaceTokens | ThemeValueFallbackSpace
+            : K extends ColorKeys
+              ? ColorTokens | ThemeValueFallbackColor
+              : K extends ZIndexKeys
+                ? ZIndexTokens | ThemeValueFallbackZIndex
+                : K extends LineHeightKeys
+                  ? FontLineHeightTokens
+                  : K extends FontWeightKeys
+                    ? FontWeightTokens
+                    : K extends FontLetterSpacingKeys
+                      ? FontLetterSpacingTokens
+                      : never
 
 export type GetThemeValueForKey<K extends string | symbol | number> =
   | ThemeValueGet<K>
@@ -1389,8 +1388,8 @@ type WithThemeAndShorthands<A extends object> = WithThemeValues<OmitLonghands<A>
 //
 // combines all of theme, shorthands, pseudos...
 //
-type WithThemeShorthandsAndPseudos<A extends object> =
-  | WithThemeAndShorthands<A> & PseudoProps<WithThemeAndShorthands<A>>
+type WithThemeShorthandsAndPseudos<A extends object> = WithThemeAndShorthands<A> &
+  PseudoProps<WithThemeAndShorthands<A>>
 
 //
 // ... media queries and animations
@@ -1528,7 +1527,7 @@ export type Styleable<Props, Ref, BaseProps, VariantProps, ParentStaticPropertie
   MergedProps = CustomProps extends void
     ? Props
     : Omit<Props, keyof CustomProps> & CustomProps,
-  X extends FunctionComponent<MergedProps> = FunctionComponent<MergedProps>
+  X extends FunctionComponent<MergedProps> = FunctionComponent<MergedProps>,
 >(
   a: X,
   options?: StyleableOptions
@@ -1545,7 +1544,7 @@ export type TamaguiComponent<
   Ref = any,
   BaseProps = {},
   VariantProps = {},
-  ParentStaticProperties = {}
+  ParentStaticProperties = {},
 > = ReactComponentWithRef<Props, Ref> &
   StaticComponentObject<Props, Ref, BaseProps, VariantProps, ParentStaticProperties> &
   ParentStaticProperties & {
@@ -1567,7 +1566,7 @@ type StaticComponentObject<Props, Ref, BaseProps, VariantProps, ParentStaticProp
 
 export type TamaguiComponentExpectingVariants<
   Props = {},
-  Variants = {}
+  Variants = {},
 > = TamaguiComponent<Props, any, any, Variants>
 
 export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>> & {
@@ -1767,14 +1766,14 @@ export type GetProps<A extends StylableComponent> = A extends TamaguiComponent<
 >
   ? Props
   : A extends TamaguiReactElement<infer Props>
-  ? Props
-  : A extends ComponentType<infer Props>
-  ? GetGenericComponentTamaguiProps<Props>
-  : A extends new (
-      props: infer Props
-    ) => any
-  ? GetGenericComponentTamaguiProps<Props>
-  : {}
+    ? Props
+    : A extends ComponentType<infer Props>
+      ? GetGenericComponentTamaguiProps<Props>
+      : A extends new (
+            props: infer Props
+          ) => any
+        ? GetGenericComponentTamaguiProps<Props>
+        : {}
 
 type GetGenericComponentTamaguiProps<P> = P &
   Omit<'textAlign' extends keyof P ? TextProps : StackProps, keyof P>
@@ -1795,7 +1794,7 @@ export type SpreadKeys =
 export type VariantDefinitions<
   Parent extends StylableComponent = TamaguiComponent,
   MyProps extends Object = GetProps<Parent>,
-  Val = any
+  Val = any,
 > = VariantDefinitionFromProps<MyProps, Val>
 
 export type VariantDefinitionFromProps<MyProps, Val> = MyProps extends Object
@@ -1806,26 +1805,26 @@ export type VariantDefinitionFromProps<MyProps, Val> = MyProps extends Object
             [Key in SpreadKeys]?: Key extends '...fontSize'
               ? FontSizeVariantSpreadFunction<MyProps>
               : Key extends '...size'
-              ? SizeVariantSpreadFunction<MyProps>
-              : Key extends '...space'
-              ? SpaceVariantSpreadFunction<MyProps>
-              : Key extends '...color'
-              ? ColorVariantSpreadFunction<MyProps>
-              : Key extends '...lineHeight'
-              ? FontLineHeightVariantSpreadFunction<MyProps>
-              : Key extends '...fontTransform'
-              ? FontTransformVariantSpreadFunction<MyProps>
-              : Key extends '...fontStyle'
-              ? FontStyleVariantSpreadFunction<MyProps>
-              : Key extends '...letterSpacing'
-              ? FontLetterSpacingVariantSpreadFunction<MyProps>
-              : Key extends '...zIndex'
-              ? ZIndexVariantSpreadFunction<MyProps>
-              : Key extends '...radius'
-              ? RadiusVariantSpreadFunction<MyProps>
-              : Key extends '...theme'
-              ? ThemeVariantSpreadFunction<MyProps>
-              : never
+                ? SizeVariantSpreadFunction<MyProps>
+                : Key extends '...space'
+                  ? SpaceVariantSpreadFunction<MyProps>
+                  : Key extends '...color'
+                    ? ColorVariantSpreadFunction<MyProps>
+                    : Key extends '...lineHeight'
+                      ? FontLineHeightVariantSpreadFunction<MyProps>
+                      : Key extends '...fontTransform'
+                        ? FontTransformVariantSpreadFunction<MyProps>
+                        : Key extends '...fontStyle'
+                          ? FontStyleVariantSpreadFunction<MyProps>
+                          : Key extends '...letterSpacing'
+                            ? FontLetterSpacingVariantSpreadFunction<MyProps>
+                            : Key extends '...zIndex'
+                              ? ZIndexVariantSpreadFunction<MyProps>
+                              : Key extends '...radius'
+                                ? RadiusVariantSpreadFunction<MyProps>
+                                : Key extends '...theme'
+                                  ? ThemeVariantSpreadFunction<MyProps>
+                                  : never
           } & {
             [Key in string | number | 'true' | 'false']?:
               | MyProps
@@ -1834,10 +1833,10 @@ export type VariantDefinitionFromProps<MyProps, Val> = MyProps extends Object
             [Key in VariantTypeKeys]?: Key extends ':number'
               ? VariantSpreadFunction<MyProps, number>
               : Key extends ':boolean'
-              ? VariantSpreadFunction<MyProps, boolean>
-              : Key extends ':string'
-              ? VariantSpreadFunction<MyProps, string>
-              : never
+                ? VariantSpreadFunction<MyProps, boolean>
+                : Key extends ':string'
+                  ? VariantSpreadFunction<MyProps, string>
+                  : never
           })
     }
   : never
@@ -1877,14 +1876,14 @@ export type VariantTypeKeys = ':string' | ':boolean' | ':number'
 export type GetVariantValues<Key> = Key extends `...${infer VariantSpread}`
   ? ThemeValueByCategory<VariantSpread>
   : Key extends 'true' | 'false'
-  ? boolean
-  : Key extends ':string'
-  ? string
-  : Key extends ':boolean'
-  ? boolean
-  : Key extends ':number'
-  ? number
-  : Key
+    ? boolean
+    : Key extends ':string'
+      ? string
+      : Key extends ':boolean'
+        ? boolean
+        : Key extends ':number'
+          ? number
+          : Key
 
 export type FontSizeVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<
   A,
@@ -2181,7 +2180,7 @@ export type TamaguiComponentEvents = {
 
 export type ModifyTamaguiComponentStyleProps<
   Comp extends TamaguiComponent,
-  ChangedProps extends Object
+  ChangedProps extends Object,
 > = Comp extends TamaguiComponent<infer A, infer B, infer C, infer D, infer E>
   ? A extends Object
     ? TamaguiComponent<Omit<A, keyof ChangedProps> & ChangedProps, B, C, D, E>
@@ -2237,7 +2236,7 @@ export type FillInFont<A extends GenericFont, DefaultKeys extends string | numbe
 type FillInFontValues<
   A extends GenericFont,
   K extends keyof A,
-  DefaultKeys extends string | number
+  DefaultKeys extends string | number,
 > = keyof A[K] extends GenericFontKey
   ? {
       [Key in DefaultKeys]: A[K][any]

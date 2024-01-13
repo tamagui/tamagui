@@ -187,13 +187,12 @@ const ButtonIcon = (props: { children: React.ReactNode; scaleIcon?: number }) =>
   return getThemedIcon(children)
 }
 
-const ButtonComponent = ButtonFrame.styleable<ButtonExtraProps>(function Button(
-  props,
-  ref
-) {
-  const { props: buttonProps } = useButton(props)
-  return <ButtonFrame {...buttonProps} ref={ref} />
-})
+const ButtonComponent = ButtonFrame.styleable<ButtonExtraProps>(
+  function Button(props, ref) {
+    const { props: buttonProps } = useButton(props)
+    return <ButtonFrame {...buttonProps} ref={ref} />
+  }
+)
 
 /**
  * @deprecated Instead of useButton, see the Button docs for the newer and much improved Advanced customization pattern: https://tamagui.dev/docs/components/button
@@ -319,10 +318,10 @@ function useButton<Props extends ButtonProps>(
       (isNested
         ? 'span'
         : // defaults to <a /> when accessibilityRole = link
-        // see https://github.com/tamagui/tamagui/issues/505
-        propsActive.accessibilityRole === 'link' || propsActive.role === 'link'
-        ? 'a'
-        : 'button'),
+          // see https://github.com/tamagui/tamagui/issues/505
+          propsActive.accessibilityRole === 'link' || propsActive.role === 'link'
+          ? 'a'
+          : 'button'),
     ...restProps,
     children: (
       <ButtonNestingContext.Provider value={true}>{inner}</ButtonNestingContext.Provider>

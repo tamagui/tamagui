@@ -126,8 +126,8 @@ const TooltipComponent = React.forwardRef(function Tooltip(
     restMs = typeof delayProp === 'undefined'
       ? 500
       : typeof delayProp === 'number'
-      ? delayProp
-      : 0,
+        ? delayProp
+        : 0,
     onOpenChange: onOpenChangeProp,
     focus,
     open: openProp,

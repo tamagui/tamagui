@@ -11,7 +11,7 @@ const identityCache = new Map()
 
 export function createThemeWithPalettes<
   Definition extends ThemeMask,
-  Extras extends GenericTheme = {}
+  Extras extends GenericTheme = {},
 >(
   palettes: Record<string, CreateThemePalette>,
   defaultPalette: string,
@@ -48,7 +48,7 @@ export function createThemeWithPalettes<
 
 export function createTheme<
   Definition extends ThemeMask,
-  Extras extends GenericTheme = {}
+  Extras extends GenericTheme = {},
 >(
   palette: CreateThemePalette,
   definition: Definition,
@@ -108,7 +108,7 @@ type ChildGetter<Name extends string | number | symbol, Theme extends GenericThe
 
 export function addChildren<
   Themes extends { [key: string]: GenericTheme },
-  GetChildren extends ChildGetter<keyof Themes, Themes[keyof Themes]>
+  GetChildren extends ChildGetter<keyof Themes, Themes[keyof Themes]>,
 >(
   themes: Themes,
   getChildren: GetChildren

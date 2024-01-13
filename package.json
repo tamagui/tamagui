@@ -93,7 +93,7 @@
     }
   },
   "dependencies": {
-    "@biomejs/biome": "^1.2.2",
+    "@biomejs/biome": "^1.5.1",
     "@faker-js/faker": "^8.3.1",
     "@manypkg/cli": "^0.19.1",
     "@nderscore/tamagui-typescript-plugin": "^0.6.0",

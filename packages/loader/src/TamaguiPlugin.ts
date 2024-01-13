@@ -89,9 +89,8 @@ export class TamaguiPlugin {
         const hasPkg = existsSync(pkg)
         if (hasPkg) {
           return rootPath
-        } else {
-          rootPath = join(rootPath, '..')
         }
+        rootPath = join(rootPath, '..')
       }
       throw new Error(`Couldn't find package.json in any path above: ${fullPath}`)
     })

@@ -610,7 +610,7 @@ export const themes = themesIn as ThemesOut
 
 function postfixObjKeys<
   A extends { [key: string]: Variable<string> | string },
-  B extends string
+  B extends string,
 >(
   obj: A,
   postfix: B

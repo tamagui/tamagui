@@ -99,7 +99,8 @@ export const createShiftMask = (
           const overrideVal = override[key] as number
           out[key] = overrideStrategy === 'shift' ? value + overrideVal : overrideVal
           continue
-        } else if (typeof override?.[key] === 'string') {
+        }
+        if (typeof override?.[key] === 'string') {
           out[key] = override[key]
           continue
         }
