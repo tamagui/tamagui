@@ -88,7 +88,8 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
     const { size: sizeProp, unstyled: unstyledProp, nativeID, ...thumbProps } = props
     const context = React.useContext(SwitchContext)
     const { checked, disabled } = context
-    const styledContext = React.useContext(SwitchStyledContext)
+    // __scope?
+    const styledContext = SwitchStyledContext.useStyledContext()
     const { frameWidth, unstyled: unstyledContext, size: sizeContext } = styledContext
     const unstyled =
       process.env.TAMAGUI_HEADLESS === '1'
@@ -143,7 +144,7 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
         transition: true,
       })
 
-      const styledContext = React.useContext(SwitchStyledContext)
+      const styledContext = React.useContext(SwitchStyledContext.context)
 
       const [frameWidth, setFrameWidth] = React.useState(0)
 
