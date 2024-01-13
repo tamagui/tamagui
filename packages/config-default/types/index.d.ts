@@ -350,5 +350,8 @@ export declare function getDefaultTamaguiConfig(): import("@tamagui/core").Tamag
             1: number;
         };
     };
-}, boolean | undefined, string | undefined, {}>;
+}, boolean | undefined, string | undefined, {
+    allowedStyleValues: false;
+    autocompleteSpecificTokens: "except-special";
+}>;
 //# sourceMappingURL=index.d.ts.map

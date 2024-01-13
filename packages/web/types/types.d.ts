@@ -303,7 +303,10 @@ type EmptyShorthands = {};
 type EmptyMedia = {};
 type EmptyAnimations = {};
 type EmptyFonts = {};
-type EmptyTamaguiSettings = {};
+type EmptyTamaguiSettings = {
+    allowedStyleValues: false;
+    autocompleteSpecificTokens: 'except-special';
+};
 export type InferTamaguiConfig<Conf> = Conf extends ConfProps<infer A, infer B, infer C, infer D, infer E, infer F, infer G, infer H, infer I> ? TamaguiInternalConfig<A extends GenericTokens ? A : EmptyTokens, B extends GenericThemes ? B : EmptyThemes, C extends GenericShorthands ? C : EmptyShorthands, D extends GenericMedia ? D : EmptyMedia, E extends GenericAnimations ? E : EmptyAnimations, F extends GenericFonts ? F : EmptyFonts, G extends OnlyAllowShorthandsSetting ? G : OnlyAllowShorthandsSetting, H extends DefaultFontSetting ? H : DefaultFontSetting, I extends GenericTamaguiSettings ? I : EmptyTamaguiSettings> : unknown;
 export type GenericTamaguiConfig = CreateTamaguiConfig<GenericTokens, GenericThemes, GenericShorthands, GenericMedia, GenericAnimations, GenericFonts>;
 type NonSubThemeNames<A extends string | number> = A extends `${string}_${string}` ? never : A;
@@ -515,7 +518,7 @@ export type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B ext
     defaultFont?: H;
     fontSizeTokens: Set<string>;
     specificTokens: Record<string, Variable>;
-    settings: I;
+    settings: Omit<GenericTamaguiSettings, keyof I> & I;
 };
 export type GetAnimationKeys<A extends GenericTamaguiConfig> = keyof A['animations'];
 export type UnionableString = string & {};

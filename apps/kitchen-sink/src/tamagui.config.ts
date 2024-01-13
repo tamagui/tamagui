@@ -121,8 +121,8 @@ const tamaConf = createTamagui({
   animations: search.includes('animationDriver=css')
     ? animationsCSS
     : search.includes('animationDriver=native')
-    ? animationsNative
-    : animationsMoti, // default moti
+      ? animationsNative
+      : animationsMoti, // default moti
   themeClassNameOnRoot: false,
 
   defaultProps: {

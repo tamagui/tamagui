@@ -546,7 +546,11 @@ type EmptyShorthands = {}
 type EmptyMedia = {}
 type EmptyAnimations = {}
 type EmptyFonts = {}
-type EmptyTamaguiSettings = {}
+
+type EmptyTamaguiSettings = {
+  allowedStyleValues: false
+  autocompleteSpecificTokens: 'except-special'
+}
 
 export type InferTamaguiConfig<Conf> = Conf extends ConfProps<
   infer A,
@@ -773,8 +777,6 @@ type GenericTamaguiSettings = {
 
 export type TamaguiSettings = TamaguiConfig['settings']
 
-type AllStyleProps = keyof StackStyleProps
-
 export type BaseStyleProps = {
   [Key in keyof TextStylePropsBase]?: TextStyleProps[Key] | GetThemeValueForKey<Key>
 } & {
@@ -899,7 +901,7 @@ export type TamaguiInternalConfig<
     defaultFont?: H
     fontSizeTokens: Set<string>
     specificTokens: Record<string, Variable>
-    settings: I
+    settings: Omit<GenericTamaguiSettings, keyof I> & I
   }
 
 export type GetAnimationKeys<A extends GenericTamaguiConfig> = keyof A['animations']

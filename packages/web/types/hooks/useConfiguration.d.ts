@@ -69,7 +69,31 @@ export declare const useConfiguration: () => {
         mediaPropOrder?: boolean | undefined;
         fastSchemeChange?: boolean | undefined;
         webContainerType?: "unset" | "size" | "inherit" | "initial" | "revert" | "revert-layer" | "normal" | "inline-size" | undefined;
-    };
+    } & Omit<{
+        allowedStyleValues?: ((boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | {
+            space?: ("number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "percent") | undefined;
+            size?: ("number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "percent") | undefined;
+            radius?: ("number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web")) | undefined;
+            zIndex?: ("number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web")) | undefined;
+            color?: ((boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "named") | undefined;
+        }) | undefined;
+        autocompleteSpecificTokens?: (boolean | "except-special") | undefined;
+        mediaPropOrder?: boolean | undefined;
+        fastSchemeChange?: boolean | undefined;
+        webContainerType?: "unset" | "size" | "inherit" | "initial" | "revert" | "revert-layer" | "normal" | "inline-size" | undefined;
+    }, keyof {
+        allowedStyleValues?: ((boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | {
+            space?: ("number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "percent") | undefined;
+            size?: ("number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "percent") | undefined;
+            radius?: ("number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web")) | undefined;
+            zIndex?: ("number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web")) | undefined;
+            color?: ((boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "named") | undefined;
+        }) | undefined;
+        autocompleteSpecificTokens?: (boolean | "except-special") | undefined;
+        mediaPropOrder?: boolean | undefined;
+        fastSchemeChange?: boolean | undefined;
+        webContainerType?: "unset" | "size" | "inherit" | "initial" | "revert" | "revert-layer" | "normal" | "inline-size" | undefined;
+    }>;
     tokens: Omit<{
         [x: string]: {
             [x: string]: import("..").Variable<any> | import("..").Variable<string> | import("..").Variable<number> | import("..").Variable<import("..").VariableValGeneric>;
