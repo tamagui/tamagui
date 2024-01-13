@@ -7063,8 +7063,9 @@ __metadata:
   dependencies:
     "@tamagui/build": "npm:1.84.2"
     "@tamagui/static": "npm:1.84.2"
-    metro-config: "npm:0.80.4"
-    react-native-css-interop: "npm:0.0.21"
+    metro-config: "npm:^0.80.4"
+    metro-transform-worker: "npm:^0.80.4"
+    react-native-css-interop: "npm:~0.0.21"
   languageName: unknown
   linkType: soft
 
@@ -20364,7 +20365,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"metro-config@npm:0.80.4":
+"metro-config@npm:0.80.4, metro-config@npm:^0.80.4":
   version: 0.80.4
   resolution: "metro-config@npm:0.80.4"
   dependencies:
@@ -20718,7 +20719,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"metro-transform-worker@npm:0.80.4":
+"metro-transform-worker@npm:0.80.4, metro-transform-worker@npm:^0.80.4":
   version: 0.80.4
   resolution: "metro-transform-worker@npm:0.80.4"
   dependencies:
@@ -23990,7 +23991,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-css-interop@npm:0.0.21":
+"react-native-css-interop@npm:~0.0.21":
   version: 0.0.21
   resolution: "react-native-css-interop@npm:0.0.21"
   dependencies:

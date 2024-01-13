@@ -1,6 +1,4 @@
 import type { TamaguiOptions } from '@tamagui/static'
-import { createExtractor } from '@tamagui/static'
-import type { GetTransformOptionsOpts } from 'metro-config'
 import {
   ComposableIntermediateConfigT,
   withCssInterop,
@@ -10,34 +8,38 @@ export function withTamagui(
   metroConfig: ComposableIntermediateConfigT,
   options: TamaguiOptions
 ) {
-  const extractor = createExtractor()
+  // metroConfig = withCssInterop(metroConfig, {
+  //   // TODO figure out why/what for
+  //   ignorePropertyWarningRegex: ['^--tw-'],
+  //   grouping: ['^group(/.*)?'],
+  // })
 
-  // emits outputCSS
-  extractor.loadTamaguiSync(options)
+  // github.com/marklawlor/nativewind/blob/main/packages/nativewind/src/metro/tailwind-cli.ts
+  // https://github.com/marklawlor/nativewind/blob/main/packages/nativewind/src/metro/index.ts
+  // https://github.com/marklawlor/nativewind/blob/main/packages/nativewind/src/metro/transformer.ts
 
-  metroConfig = withCssInterop(metroConfig, {
-    ignorePropertyWarningRegex: ['^--tw-'],
-    grouping: ['^group(/.*)?'],
-  })
+  metroConfig.transformerPath = require.resolve('./transformer')
 
-  const previousTransformOptions = metroConfig.transformer?.getTransformOptions
+  // const previousTransformOptions = metroConfig.transformer?.getTransformOptions
 
   metroConfig.transformer = {
     ...metroConfig.transformer,
 
-    nativewind: options.outputCSS
-      ? {
-          input: options.outputCSS,
-        }
-      : undefined,
+    tamagui: options,
 
-    getTransformOptions: async (
-      entryPoints: ReadonlyArray<string>,
-      options: GetTransformOptionsOpts,
-      getDependenciesOf: (filePath: string) => Promise<string[]>
-    ) => {
-      return previousTransformOptions?.(entryPoints, options, getDependenciesOf)
-    },
+    // getTransformOptions: async (
+    //   entryPoints: ReadonlyArray<string>,
+    //   options: GetTransformOptionsOpts,
+    //   getDependenciesOf: (filePath: string) => Promise<string[]>
+    // ) => {
+    //   const tamaguiOptions = ((metroConfig as any).transformer.tamagui) as TamaguiOptions
+
+    //   Object.assign(tamaguiOptions, {
+
+    //   })
+
+    //   return previousTransformOptions?.(entryPoints, options, getDependenciesOf)
+    // },
   }
 
   return metroConfig

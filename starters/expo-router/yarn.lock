@@ -2978,7 +2978,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@remix-run/node@npm:^1.19.3":
+"@remix-run/node@npm:1.19.3, @remix-run/node@npm:^1.19.3":
   version: 1.19.3
   resolution: "@remix-run/node@npm:1.19.3"
   dependencies:
@@ -3016,13 +3016,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@remix-run/web-blob@npm:^3.1.0":
+"@remix-run/web-blob@npm:^3.0.3, @remix-run/web-blob@npm:^3.1.0":
   version: 3.1.0
   resolution: "@remix-run/web-blob@npm:3.1.0"
   dependencies:
     "@remix-run/web-stream": "npm:^1.1.0"
     web-encoding: "npm:1.1.5"
   checksum: 24b95b90e2a5bfb17478c9e88a03c8de8db2cc6cbe744ee845cd8bfc278744f3d0a6f782f63b3361eef59488f544b60172fb98c628f113c936f597b303bc58f3
+  languageName: node
+  linkType: hard
+
+"@remix-run/web-fetch@npm:4.1.0":
+  version: 4.1.0
+  resolution: "@remix-run/web-fetch@npm:4.1.0"
+  dependencies:
+    "@remix-run/web-blob": "npm:^3.0.3"
+    "@remix-run/web-form-data": "npm:^3.0.2"
+    "@remix-run/web-stream": "npm:^1.0.1"
+    "@web3-storage/multipart-parser": "npm:^1.0.0"
+    data-uri-to-buffer: "npm:^3.0.1"
+    mrmime: "npm:^1.0.0"
+  checksum: 451ad5b4975a98834208bf9487093db1884682fb8ac34827ac2550d36011a4afcf9cc38fea669104b3109070b6379c64374a770fd5282dfd69263bc717955ee9
   languageName: node
   linkType: hard
 
@@ -3051,7 +3065,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@remix-run/web-form-data@npm:^3.1.0":
+"@remix-run/web-form-data@npm:^3.0.2, @remix-run/web-form-data@npm:^3.1.0":
   version: 3.1.0
   resolution: "@remix-run/web-form-data@npm:3.1.0"
   dependencies:
@@ -3060,7 +3074,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@remix-run/web-stream@npm:^1.0.4, @remix-run/web-stream@npm:^1.1.0":
+"@remix-run/web-stream@npm:^1.0.1, @remix-run/web-stream@npm:^1.0.4, @remix-run/web-stream@npm:^1.1.0":
   version: 1.1.0
   resolution: "@remix-run/web-stream@npm:1.1.0"
   dependencies:
@@ -6119,6 +6133,8 @@ __metadata:
     "@babel/core": "npm:^7.23.3"
     "@expo/metro-runtime": "npm:3.1.0"
     "@react-navigation/native": "npm:^6.0.2"
+    "@remix-run/node": "npm:1.19.3"
+    "@remix-run/web-fetch": "npm:4.1.0"
     "@tamagui/config": "npm:1.84.2"
     "@types/react": "npm:~18.2.14"
     babel-preset-expo: "npm:10.0.1"
