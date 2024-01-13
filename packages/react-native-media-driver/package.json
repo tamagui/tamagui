@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/react-native-media-driver",
-  "version": "1.85.0",
+  "version": "1.85.1",
   "source": "src/index.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -13,10 +13,10 @@
   ],
   "sideEffects": true,
   "dependencies": {
-    "@tamagui/web": "1.85.0"
+    "@tamagui/web": "1.85.1"
   },
   "devDependencies": {
-    "@tamagui/build": "1.85.0",
+    "@tamagui/build": "1.85.1",
     "react-native": "^0.72.6"
   },
   "peerDependencies": {
