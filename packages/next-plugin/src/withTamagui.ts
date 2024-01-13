@@ -8,11 +8,6 @@ import webpack from 'webpack'
 
 export type WithTamaguiProps = LoaderPluginOptions & {
   appDir?: boolean
-
-  /**
-   * @deprecated Deprecated
-   */
-  useReactNativeWebLite: boolean
   enableLegacyFontSupport?: boolean
   aliasReactPackages?: boolean
   includeCSSTest?: RegExp | ((path: string) => boolean)
