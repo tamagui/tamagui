@@ -48525,11 +48525,6 @@ export declare const config: {
             19: import("@tamagui/web").Variable<number>;
             20: import("@tamagui/web").Variable<number>;
         };
-        icon: {
-            sm: import("@tamagui/web").Variable<number>;
-            md: import("@tamagui/web").Variable<number>;
-            lg: import("@tamagui/web").Variable<number>;
-        };
     }, "zIndex" | "color" | "size" | "space" | "radius">;
     fonts: {
         heading: import("@tamagui/web").FillInFont<{

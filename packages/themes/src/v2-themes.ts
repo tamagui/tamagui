@@ -596,21 +596,15 @@ const themeBuilder = createThemeBuilder()
 
 // --- main export ---
 
-export const themes = themeBuilder.build()
-
-/**
- *  if typescript too deep types :/
- * 
-  
 const themesIn = themeBuilder.build()
+
 type ThemesIn = typeof themesIn
+// add non-inherited back to typs
 type ThemesOut = Omit<ThemesIn, 'light' | 'dark'> & {
   light: ThemesIn['light'] & typeof nonInherited.light
   dark: ThemesIn['dark'] & typeof nonInherited.dark
 }
 export const themes = themesIn as ThemesOut
-
- **/
 
 // --- utils ---
 

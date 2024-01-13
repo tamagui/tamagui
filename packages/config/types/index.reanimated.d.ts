@@ -4,17 +4,17 @@ export * from './animations.reanimated';
 export declare const config: {
     animations: import("@tamagui/web").AnimationDriver<{
         '100ms': {
-            type: string;
+            type: "timing";
             duration: number;
         };
         bouncy: {
-            type: string;
+            type: "spring";
             damping: number;
             mass: number;
             stiffness: number;
         };
         lazy: {
-            type: string;
+            type: "spring";
             damping: number;
             stiffness: number;
         };
@@ -24,18 +24,18 @@ export declare const config: {
             mass: number;
         };
         slow: {
-            type: string;
+            type: "spring";
             damping: number;
             stiffness: number;
         };
         quick: {
-            type: string;
+            type: "spring";
             damping: number;
             mass: number;
             stiffness: number;
         };
         tooltip: {
-            type: string;
+            type: "spring";
             damping: number;
             mass: number;
             stiffness: number;
@@ -773,11 +773,6 @@ export declare const config: {
             18: import("@tamagui/web").Variable<number>;
             19: import("@tamagui/web").Variable<number>;
             20: import("@tamagui/web").Variable<number>;
-        };
-        icon: {
-            sm: import("@tamagui/web").Variable<number>;
-            md: import("@tamagui/web").Variable<number>;
-            lg: import("@tamagui/web").Variable<number>;
         };
     }, "zIndex" | "color" | "size" | "space" | "radius">;
     fonts: {

@@ -7,15 +7,15 @@ export declare const config: {
     themeClassNameOnRoot: true;
     animations: import("@tamagui/web").AnimationDriver<{
         '75ms': {
-            type: string;
+            type: "timing";
             duration: number;
         };
         '100ms': {
-            type: string;
+            type: "timing";
             duration: number;
         };
         '200ms': {
-            type: string;
+            type: "timing";
             duration: number;
         };
         superBouncy: {
@@ -48578,11 +48578,6 @@ export declare const config: {
             18: import("@tamagui/web").Variable<number>;
             19: import("@tamagui/web").Variable<number>;
             20: import("@tamagui/web").Variable<number>;
-        };
-        icon: {
-            sm: import("@tamagui/web").Variable<number>;
-            md: import("@tamagui/web").Variable<number>;
-            lg: import("@tamagui/web").Variable<number>;
         };
     }, "zIndex" | "color" | "size" | "space" | "radius">;
     settings: {
