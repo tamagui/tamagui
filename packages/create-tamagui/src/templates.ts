@@ -6,6 +6,7 @@ import chalk from 'chalk'
 import { IS_TEST } from './create-tamagui-constants'
 import { makeRainbowChalk } from './helpers/rainbowChalk'
 import simpleWeb from './steps/simple-web'
+import expoRouter from './steps/expo-router'
 import starterFree from './steps/starter-free'
 import takeoutSteps from './steps/takeout'
 
@@ -17,7 +18,7 @@ const starterExists = existsSync(starterFreeRoot)
 
 export const templates = [
   {
-    title: `Free - Production ready base universal app monorepo`,
+    title: `Free - Expo + Next in a production ready monorepo`,
     value: 'starter-free',
     type: 'free',
     hidden: false,
@@ -35,7 +36,7 @@ export const templates = [
   },
 
   {
-    title: `Learning - A full but simple Tamagui setup from scratch`,
+    title: `Learning - Vite + Webpack, Tamagui config from scratch`,
     value: 'simple-web',
     type: 'included-in-monorepo',
     hidden: false,
@@ -46,6 +47,20 @@ export const templates = [
       branch: 'master',
     },
     extraSteps: simpleWeb,
+  },
+
+  {
+    title: `Expo Router (beta) - The base Expo router starter + Tamagui`,
+    value: 'expo-router',
+    type: 'included-in-monorepo',
+    hidden: false,
+    repo: {
+      url: IS_TEST ? `file://${repoRoot}` : `https://github.com/tamagui/tamagui.git`,
+      sshFallback: `git@github.com:tamagui/tamagui.git`,
+      dir: [`starters`, `expo-router`],
+      branch: 'master',
+    },
+    extraSteps: expoRouter,
   },
 
   {
