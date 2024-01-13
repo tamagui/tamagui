@@ -3145,15 +3145,15 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/accordion@portal:/Users/n8/tamagui/packages/accordion::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/collapsible": "npm:1.84.2"
-    "@tamagui/collection": "npm:1.84.2"
-    "@tamagui/compose-refs": "npm:1.84.2"
-    "@tamagui/constants": "npm:1.84.2"
-    "@tamagui/core": "npm:1.84.2"
-    "@tamagui/create-context": "npm:1.84.2"
-    "@tamagui/polyfill-dev": "npm:1.84.2"
-    "@tamagui/stacks": "npm:1.84.2"
-    "@tamagui/use-controllable-state": "npm:1.84.2"
+    "@tamagui/collapsible": "npm:1.85.0"
+    "@tamagui/collection": "npm:1.85.0"
+    "@tamagui/compose-refs": "npm:1.85.0"
+    "@tamagui/constants": "npm:1.85.0"
+    "@tamagui/core": "npm:1.85.0"
+    "@tamagui/create-context": "npm:1.85.0"
+    "@tamagui/polyfill-dev": "npm:1.85.0"
+    "@tamagui/stacks": "npm:1.85.0"
+    "@tamagui/use-controllable-state": "npm:1.85.0"
   peerDependencies:
     react: "*"
   languageName: node
@@ -3163,9 +3163,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/adapt@portal:/Users/n8/tamagui/packages/adapt::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/constants": "npm:1.84.2"
-    "@tamagui/core": "npm:1.84.2"
-    "@tamagui/helpers": "npm:1.84.2"
+    "@tamagui/constants": "npm:1.85.0"
+    "@tamagui/core": "npm:1.85.0"
+    "@tamagui/helpers": "npm:1.85.0"
   languageName: node
   linkType: soft
 
@@ -3173,23 +3173,23 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/alert-dialog@portal:/Users/n8/tamagui/packages/alert-dialog::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/animate-presence": "npm:1.84.2"
-    "@tamagui/aria-hidden": "npm:1.84.2"
-    "@tamagui/compose-refs": "npm:1.84.2"
-    "@tamagui/constants": "npm:1.84.2"
-    "@tamagui/core": "npm:1.84.2"
-    "@tamagui/create-context": "npm:1.84.2"
-    "@tamagui/dialog": "npm:1.84.2"
-    "@tamagui/dismissable": "npm:1.84.2"
-    "@tamagui/focus-scope": "npm:1.84.2"
-    "@tamagui/helpers": "npm:1.84.2"
-    "@tamagui/polyfill-dev": "npm:1.84.2"
-    "@tamagui/popper": "npm:1.84.2"
-    "@tamagui/portal": "npm:1.84.2"
-    "@tamagui/remove-scroll": "npm:1.84.2"
-    "@tamagui/stacks": "npm:1.84.2"
-    "@tamagui/text": "npm:1.84.2"
-    "@tamagui/use-controllable-state": "npm:1.84.2"
+    "@tamagui/animate-presence": "npm:1.85.0"
+    "@tamagui/aria-hidden": "npm:1.85.0"
+    "@tamagui/compose-refs": "npm:1.85.0"
+    "@tamagui/constants": "npm:1.85.0"
+    "@tamagui/core": "npm:1.85.0"
+    "@tamagui/create-context": "npm:1.85.0"
+    "@tamagui/dialog": "npm:1.85.0"
+    "@tamagui/dismissable": "npm:1.85.0"
+    "@tamagui/focus-scope": "npm:1.85.0"
+    "@tamagui/helpers": "npm:1.85.0"
+    "@tamagui/polyfill-dev": "npm:1.85.0"
+    "@tamagui/popper": "npm:1.85.0"
+    "@tamagui/portal": "npm:1.85.0"
+    "@tamagui/remove-scroll": "npm:1.85.0"
+    "@tamagui/stacks": "npm:1.85.0"
+    "@tamagui/text": "npm:1.85.0"
+    "@tamagui/use-controllable-state": "npm:1.85.0"
   peerDependencies:
     react: "*"
     react-native: "*"
@@ -3200,10 +3200,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/animate-presence@portal:/Users/n8/tamagui/packages/animate-presence::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/helpers": "npm:1.84.2"
-    "@tamagui/use-force-update": "npm:1.84.2"
-    "@tamagui/use-presence": "npm:1.84.2"
-    "@tamagui/web": "npm:1.84.2"
+    "@tamagui/helpers": "npm:1.85.0"
+    "@tamagui/use-force-update": "npm:1.85.0"
+    "@tamagui/use-presence": "npm:1.85.0"
+    "@tamagui/web": "npm:1.85.0"
   languageName: node
   linkType: soft
 
@@ -3211,7 +3211,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/animate@portal:/Users/n8/tamagui/packages/animate::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/animate-presence": "npm:1.84.2"
+    "@tamagui/animate-presence": "npm:1.85.0"
   languageName: node
   linkType: soft
 
@@ -3219,10 +3219,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/animations-css@portal:/Users/n8/tamagui/packages/animations-css::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/constants": "npm:1.84.2"
-    "@tamagui/cubic-bezier-animator": "npm:1.84.2"
-    "@tamagui/use-presence": "npm:1.84.2"
-    "@tamagui/web": "npm:1.84.2"
+    "@tamagui/constants": "npm:1.85.0"
+    "@tamagui/cubic-bezier-animator": "npm:1.85.0"
+    "@tamagui/use-presence": "npm:1.85.0"
+    "@tamagui/web": "npm:1.85.0"
     react: "npm:^18.2.0"
   languageName: node
   linkType: soft
@@ -3231,8 +3231,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/animations-moti@portal:/Users/n8/tamagui/packages/animations-moti::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/use-presence": "npm:1.84.2"
-    "@tamagui/web": "npm:1.84.2"
+    "@tamagui/use-presence": "npm:1.85.0"
+    "@tamagui/web": "npm:1.85.0"
     moti: "npm:^0.25.3"
   languageName: node
   linkType: soft
@@ -3241,9 +3241,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/animations-react-native@portal:/Users/n8/tamagui/packages/animations-react-native::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/constants": "npm:1.84.2"
-    "@tamagui/use-presence": "npm:1.84.2"
-    "@tamagui/web": "npm:1.84.2"
+    "@tamagui/constants": "npm:1.85.0"
+    "@tamagui/use-presence": "npm:1.85.0"
+    "@tamagui/web": "npm:1.85.0"
   peerDependencies:
     react: "*"
     react-native: "*"
@@ -3264,11 +3264,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/avatar@portal:/Users/n8/tamagui/packages/avatar::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/core": "npm:1.84.2"
-    "@tamagui/helpers": "npm:1.84.2"
-    "@tamagui/image": "npm:1.84.2"
-    "@tamagui/shapes": "npm:1.84.2"
-    "@tamagui/text": "npm:1.84.2"
+    "@tamagui/core": "npm:1.85.0"
+    "@tamagui/helpers": "npm:1.85.0"
+    "@tamagui/image": "npm:1.85.0"
+    "@tamagui/shapes": "npm:1.85.0"
+    "@tamagui/text": "npm:1.85.0"
   peerDependencies:
     react: "*"
     react-native: "*"
@@ -3279,13 +3279,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/button@portal:/Users/n8/tamagui/packages/button::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/font-size": "npm:1.84.2"
-    "@tamagui/get-button-sized": "npm:1.84.2"
-    "@tamagui/helpers": "npm:1.84.2"
-    "@tamagui/helpers-tamagui": "npm:1.84.2"
-    "@tamagui/stacks": "npm:1.84.2"
-    "@tamagui/text": "npm:1.84.2"
-    "@tamagui/web": "npm:1.84.2"
+    "@tamagui/font-size": "npm:1.85.0"
+    "@tamagui/get-button-sized": "npm:1.85.0"
+    "@tamagui/helpers": "npm:1.85.0"
+    "@tamagui/helpers-tamagui": "npm:1.85.0"
+    "@tamagui/stacks": "npm:1.85.0"
+    "@tamagui/text": "npm:1.85.0"
+    "@tamagui/web": "npm:1.85.0"
   peerDependencies:
     react: "*"
   languageName: node
@@ -3295,10 +3295,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/card@portal:/Users/n8/tamagui/packages/card::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/create-context": "npm:1.84.2"
-    "@tamagui/helpers": "npm:1.84.2"
-    "@tamagui/stacks": "npm:1.84.2"
-    "@tamagui/web": "npm:1.84.2"
+    "@tamagui/create-context": "npm:1.85.0"
+    "@tamagui/helpers": "npm:1.85.0"
+    "@tamagui/stacks": "npm:1.85.0"
+    "@tamagui/web": "npm:1.85.0"
   peerDependencies:
     react: "*"
     react-native: "*"
@@ -3309,19 +3309,19 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/checkbox@portal:/Users/n8/tamagui/packages/checkbox::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/compose-refs": "npm:1.84.2"
-    "@tamagui/constants": "npm:1.84.2"
-    "@tamagui/core": "npm:1.84.2"
-    "@tamagui/create-context": "npm:1.84.2"
-    "@tamagui/focusable": "npm:1.84.2"
-    "@tamagui/font-size": "npm:1.84.2"
-    "@tamagui/get-token": "npm:1.84.2"
-    "@tamagui/helpers": "npm:1.84.2"
-    "@tamagui/helpers-tamagui": "npm:1.84.2"
-    "@tamagui/label": "npm:1.84.2"
-    "@tamagui/stacks": "npm:1.84.2"
-    "@tamagui/use-controllable-state": "npm:1.84.2"
-    "@tamagui/use-previous": "npm:1.84.2"
+    "@tamagui/compose-refs": "npm:1.85.0"
+    "@tamagui/constants": "npm:1.85.0"
+    "@tamagui/core": "npm:1.85.0"
+    "@tamagui/create-context": "npm:1.85.0"
+    "@tamagui/focusable": "npm:1.85.0"
+    "@tamagui/font-size": "npm:1.85.0"
+    "@tamagui/get-token": "npm:1.85.0"
+    "@tamagui/helpers": "npm:1.85.0"
+    "@tamagui/helpers-tamagui": "npm:1.85.0"
+    "@tamagui/label": "npm:1.85.0"
+    "@tamagui/stacks": "npm:1.85.0"
+    "@tamagui/use-controllable-state": "npm:1.85.0"
+    "@tamagui/use-previous": "npm:1.85.0"
   peerDependencies:
     react: "*"
   languageName: node
@@ -3331,14 +3331,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/collapsible@portal:/Users/n8/tamagui/packages/collapsible::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/animate-presence": "npm:1.84.2"
-    "@tamagui/compose-refs": "npm:1.84.2"
-    "@tamagui/core": "npm:1.84.2"
-    "@tamagui/create-context": "npm:1.84.2"
-    "@tamagui/helpers": "npm:1.84.2"
-    "@tamagui/polyfill-dev": "npm:1.84.2"
-    "@tamagui/stacks": "npm:1.84.2"
-    "@tamagui/use-controllable-state": "npm:1.84.2"
+    "@tamagui/animate-presence": "npm:1.85.0"
+    "@tamagui/compose-refs": "npm:1.85.0"
+    "@tamagui/core": "npm:1.85.0"
+    "@tamagui/create-context": "npm:1.85.0"
+    "@tamagui/helpers": "npm:1.85.0"
+    "@tamagui/polyfill-dev": "npm:1.85.0"
+    "@tamagui/stacks": "npm:1.85.0"
+    "@tamagui/use-controllable-state": "npm:1.85.0"
   peerDependencies:
     react: "*"
   languageName: node
@@ -3348,13 +3348,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/collection@portal:/Users/n8/tamagui/packages/collection::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/compose-refs": "npm:1.84.2"
-    "@tamagui/constants": "npm:1.84.2"
-    "@tamagui/core": "npm:1.84.2"
-    "@tamagui/create-context": "npm:1.84.2"
-    "@tamagui/polyfill-dev": "npm:1.84.2"
-    "@tamagui/stacks": "npm:1.84.2"
-    "@tamagui/use-controllable-state": "npm:1.84.2"
+    "@tamagui/compose-refs": "npm:1.85.0"
+    "@tamagui/constants": "npm:1.85.0"
+    "@tamagui/core": "npm:1.85.0"
+    "@tamagui/create-context": "npm:1.85.0"
+    "@tamagui/polyfill-dev": "npm:1.85.0"
+    "@tamagui/stacks": "npm:1.85.0"
+    "@tamagui/use-controllable-state": "npm:1.85.0"
   peerDependencies:
     react: "*"
   languageName: node
@@ -3378,16 +3378,16 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/config@portal:/Users/n8/tamagui/packages/config::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/animations-css": "npm:1.84.2"
-    "@tamagui/animations-moti": "npm:1.84.2"
-    "@tamagui/animations-react-native": "npm:1.84.2"
-    "@tamagui/colors": "npm:1.84.2"
-    "@tamagui/font-inter": "npm:1.84.2"
-    "@tamagui/font-silkscreen": "npm:1.84.2"
-    "@tamagui/react-native-media-driver": "npm:1.84.2"
-    "@tamagui/shorthands": "npm:1.84.2"
-    "@tamagui/themes": "npm:1.84.2"
-    "@tamagui/web": "npm:1.84.2"
+    "@tamagui/animations-css": "npm:1.85.0"
+    "@tamagui/animations-moti": "npm:1.85.0"
+    "@tamagui/animations-react-native": "npm:1.85.0"
+    "@tamagui/colors": "npm:1.85.0"
+    "@tamagui/font-inter": "npm:1.85.0"
+    "@tamagui/font-silkscreen": "npm:1.85.0"
+    "@tamagui/react-native-media-driver": "npm:1.85.0"
+    "@tamagui/shorthands": "npm:1.85.0"
+    "@tamagui/themes": "npm:1.85.0"
+    "@tamagui/web": "npm:1.85.0"
   languageName: node
   linkType: soft
 
@@ -3403,10 +3403,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/core@portal:/Users/n8/tamagui/packages/core::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/react-native-use-pressable": "npm:1.84.2"
-    "@tamagui/react-native-use-responder-events": "npm:1.84.2"
-    "@tamagui/use-event": "npm:1.84.2"
-    "@tamagui/web": "npm:1.84.2"
+    "@tamagui/react-native-use-pressable": "npm:1.85.0"
+    "@tamagui/react-native-use-responder-events": "npm:1.85.0"
+    "@tamagui/use-event": "npm:1.85.0"
+    "@tamagui/web": "npm:1.85.0"
   peerDependencies:
     react: "*"
   languageName: node
@@ -3424,7 +3424,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/create-theme@portal:/Users/n8/tamagui/packages/create-theme::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/web": "npm:1.84.2"
+    "@tamagui/web": "npm:1.85.0"
   languageName: node
   linkType: soft
 
@@ -3438,24 +3438,24 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/dialog@portal:/Users/n8/tamagui/packages/dialog::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/adapt": "npm:1.84.2"
-    "@tamagui/animate-presence": "npm:1.84.2"
-    "@tamagui/aria-hidden": "npm:1.84.2"
-    "@tamagui/compose-refs": "npm:1.84.2"
-    "@tamagui/constants": "npm:1.84.2"
-    "@tamagui/core": "npm:1.84.2"
-    "@tamagui/create-context": "npm:1.84.2"
-    "@tamagui/dismissable": "npm:1.84.2"
-    "@tamagui/focus-scope": "npm:1.84.2"
-    "@tamagui/helpers": "npm:1.84.2"
-    "@tamagui/polyfill-dev": "npm:1.84.2"
-    "@tamagui/popper": "npm:1.84.2"
-    "@tamagui/portal": "npm:1.84.2"
-    "@tamagui/remove-scroll": "npm:1.84.2"
-    "@tamagui/sheet": "npm:1.84.2"
-    "@tamagui/stacks": "npm:1.84.2"
-    "@tamagui/text": "npm:1.84.2"
-    "@tamagui/use-controllable-state": "npm:1.84.2"
+    "@tamagui/adapt": "npm:1.85.0"
+    "@tamagui/animate-presence": "npm:1.85.0"
+    "@tamagui/aria-hidden": "npm:1.85.0"
+    "@tamagui/compose-refs": "npm:1.85.0"
+    "@tamagui/constants": "npm:1.85.0"
+    "@tamagui/core": "npm:1.85.0"
+    "@tamagui/create-context": "npm:1.85.0"
+    "@tamagui/dismissable": "npm:1.85.0"
+    "@tamagui/focus-scope": "npm:1.85.0"
+    "@tamagui/helpers": "npm:1.85.0"
+    "@tamagui/polyfill-dev": "npm:1.85.0"
+    "@tamagui/popper": "npm:1.85.0"
+    "@tamagui/portal": "npm:1.85.0"
+    "@tamagui/remove-scroll": "npm:1.85.0"
+    "@tamagui/sheet": "npm:1.85.0"
+    "@tamagui/stacks": "npm:1.85.0"
+    "@tamagui/text": "npm:1.85.0"
+    "@tamagui/use-controllable-state": "npm:1.85.0"
   peerDependencies:
     react: "*"
     react-native: "*"
@@ -3466,11 +3466,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/dismissable@portal:/Users/n8/tamagui/packages/dismissable::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/compose-refs": "npm:1.84.2"
-    "@tamagui/core": "npm:1.84.2"
-    "@tamagui/helpers": "npm:1.84.2"
-    "@tamagui/use-escape-keydown": "npm:1.84.2"
-    "@tamagui/use-event": "npm:1.84.2"
+    "@tamagui/compose-refs": "npm:1.85.0"
+    "@tamagui/core": "npm:1.85.0"
+    "@tamagui/helpers": "npm:1.85.0"
+    "@tamagui/use-escape-keydown": "npm:1.85.0"
+    "@tamagui/use-event": "npm:1.85.0"
   peerDependencies:
     react: "*"
   languageName: node
@@ -3498,8 +3498,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/focus-scope@portal:/Users/n8/tamagui/packages/focus-scope::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/compose-refs": "npm:1.84.2"
-    "@tamagui/use-event": "npm:1.84.2"
+    "@tamagui/compose-refs": "npm:1.85.0"
+    "@tamagui/use-event": "npm:1.85.0"
   peerDependencies:
     react: "*"
   languageName: node
@@ -3509,8 +3509,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/focusable@portal:/Users/n8/tamagui/packages/focusable::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/compose-refs": "npm:1.84.2"
-    "@tamagui/web": "npm:1.84.2"
+    "@tamagui/compose-refs": "npm:1.85.0"
+    "@tamagui/web": "npm:1.85.0"
   peerDependencies:
     react: "*"
   languageName: node
@@ -3520,7 +3520,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/font-inter@portal:/Users/n8/tamagui/packages/font-inter::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/core": "npm:1.84.2"
+    "@tamagui/core": "npm:1.85.0"
   languageName: node
   linkType: soft
 
@@ -3528,7 +3528,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/font-silkscreen@portal:/Users/n8/tamagui/packages/font-silkscreen::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/core": "npm:1.84.2"
+    "@tamagui/core": "npm:1.85.0"
   languageName: node
   linkType: soft
 
@@ -3536,7 +3536,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/font-size@portal:/Users/n8/tamagui/packages/font-size::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/core": "npm:1.84.2"
+    "@tamagui/core": "npm:1.85.0"
   peerDependencies:
     react: "*"
   languageName: node
@@ -3546,14 +3546,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/form@portal:/Users/n8/tamagui/packages/form::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/compose-refs": "npm:1.84.2"
-    "@tamagui/core": "npm:1.84.2"
-    "@tamagui/create-context": "npm:1.84.2"
-    "@tamagui/focusable": "npm:1.84.2"
-    "@tamagui/get-button-sized": "npm:1.84.2"
-    "@tamagui/get-font-sized": "npm:1.84.2"
-    "@tamagui/helpers": "npm:1.84.2"
-    "@tamagui/text": "npm:1.84.2"
+    "@tamagui/compose-refs": "npm:1.85.0"
+    "@tamagui/core": "npm:1.85.0"
+    "@tamagui/create-context": "npm:1.85.0"
+    "@tamagui/focusable": "npm:1.85.0"
+    "@tamagui/get-button-sized": "npm:1.85.0"
+    "@tamagui/get-font-sized": "npm:1.85.0"
+    "@tamagui/helpers": "npm:1.85.0"
+    "@tamagui/text": "npm:1.85.0"
   peerDependencies:
     react: "*"
   languageName: node
@@ -3563,8 +3563,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/get-button-sized@portal:/Users/n8/tamagui/packages/get-button-sized::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/get-token": "npm:1.84.2"
-    "@tamagui/web": "npm:1.84.2"
+    "@tamagui/get-token": "npm:1.85.0"
+    "@tamagui/web": "npm:1.85.0"
   peerDependencies:
     react: "*"
   languageName: node
@@ -3574,7 +3574,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/get-font-sized@portal:/Users/n8/tamagui/packages/get-font-sized::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/core": "npm:1.84.2"
+    "@tamagui/core": "npm:1.85.0"
   peerDependencies:
     react: "*"
   languageName: node
@@ -3584,7 +3584,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/get-token@portal:/Users/n8/tamagui/packages/get-token::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/web": "npm:1.84.2"
+    "@tamagui/web": "npm:1.85.0"
   peerDependencies:
     react: "*"
     react-native: "*"
@@ -3595,11 +3595,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/group@portal:/Users/n8/tamagui/packages/group::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/core": "npm:1.84.2"
-    "@tamagui/create-context": "npm:1.84.2"
-    "@tamagui/helpers": "npm:1.84.2"
-    "@tamagui/stacks": "npm:1.84.2"
-    "@tamagui/use-controllable-state": "npm:1.84.2"
+    "@tamagui/core": "npm:1.85.0"
+    "@tamagui/create-context": "npm:1.85.0"
+    "@tamagui/helpers": "npm:1.85.0"
+    "@tamagui/stacks": "npm:1.85.0"
+    "@tamagui/use-controllable-state": "npm:1.85.0"
     reforest: "npm:^0.13.0"
   peerDependencies:
     react: "*"
@@ -3610,8 +3610,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/helpers-tamagui@portal:/Users/n8/tamagui/packages/helpers-tamagui::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/helpers": "npm:1.84.2"
-    "@tamagui/web": "npm:1.84.2"
+    "@tamagui/helpers": "npm:1.85.0"
+    "@tamagui/web": "npm:1.85.0"
   peerDependencies:
     react: "*"
     react-native: "*"
@@ -3622,8 +3622,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/helpers@portal:/Users/n8/tamagui/packages/helpers::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/constants": "npm:1.84.2"
-    "@tamagui/simple-hash": "npm:1.84.2"
+    "@tamagui/constants": "npm:1.85.0"
+    "@tamagui/simple-hash": "npm:1.85.0"
   languageName: node
   linkType: soft
 
@@ -3631,8 +3631,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/image@portal:/Users/n8/tamagui/packages/image::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/constants": "npm:1.84.2"
-    "@tamagui/core": "npm:1.84.2"
+    "@tamagui/constants": "npm:1.85.0"
+    "@tamagui/core": "npm:1.85.0"
   peerDependencies:
     react: "*"
     react-native: "*"
@@ -3643,14 +3643,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/label@portal:/Users/n8/tamagui/packages/label::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/compose-refs": "npm:1.84.2"
-    "@tamagui/constants": "npm:1.84.2"
-    "@tamagui/create-context": "npm:1.84.2"
-    "@tamagui/focusable": "npm:1.84.2"
-    "@tamagui/get-button-sized": "npm:1.84.2"
-    "@tamagui/get-font-sized": "npm:1.84.2"
-    "@tamagui/text": "npm:1.84.2"
-    "@tamagui/web": "npm:1.84.2"
+    "@tamagui/compose-refs": "npm:1.85.0"
+    "@tamagui/constants": "npm:1.85.0"
+    "@tamagui/create-context": "npm:1.85.0"
+    "@tamagui/focusable": "npm:1.85.0"
+    "@tamagui/get-button-sized": "npm:1.85.0"
+    "@tamagui/get-font-sized": "npm:1.85.0"
+    "@tamagui/text": "npm:1.85.0"
+    "@tamagui/web": "npm:1.85.0"
   peerDependencies:
     react: "*"
     react-native: "*"
@@ -3661,8 +3661,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/linear-gradient@portal:/Users/n8/tamagui/packages/linear-gradient::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/core": "npm:1.84.2"
-    "@tamagui/stacks": "npm:1.84.2"
+    "@tamagui/core": "npm:1.85.0"
+    "@tamagui/stacks": "npm:1.85.0"
   peerDependencies:
     react: "*"
   languageName: node
@@ -3672,14 +3672,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/list-item@portal:/Users/n8/tamagui/packages/list-item::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/font-size": "npm:1.84.2"
-    "@tamagui/get-font-sized": "npm:1.84.2"
-    "@tamagui/get-token": "npm:1.84.2"
-    "@tamagui/helpers": "npm:1.84.2"
-    "@tamagui/helpers-tamagui": "npm:1.84.2"
-    "@tamagui/stacks": "npm:1.84.2"
-    "@tamagui/text": "npm:1.84.2"
-    "@tamagui/web": "npm:1.84.2"
+    "@tamagui/font-size": "npm:1.85.0"
+    "@tamagui/get-font-sized": "npm:1.85.0"
+    "@tamagui/get-token": "npm:1.85.0"
+    "@tamagui/helpers": "npm:1.85.0"
+    "@tamagui/helpers-tamagui": "npm:1.85.0"
+    "@tamagui/stacks": "npm:1.85.0"
+    "@tamagui/text": "npm:1.85.0"
+    "@tamagui/web": "npm:1.85.0"
   peerDependencies:
     react: "*"
   languageName: node
@@ -3704,24 +3704,24 @@ __metadata:
   resolution: "@tamagui/popover@portal:/Users/n8/tamagui/packages/popover::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@floating-ui/react": "npm:^0.24.7"
-    "@tamagui/adapt": "npm:1.84.2"
-    "@tamagui/animate": "npm:1.84.2"
-    "@tamagui/aria-hidden": "npm:1.84.2"
-    "@tamagui/compose-refs": "npm:1.84.2"
-    "@tamagui/constants": "npm:1.84.2"
-    "@tamagui/core": "npm:1.84.2"
-    "@tamagui/dismissable": "npm:1.84.2"
-    "@tamagui/floating": "npm:1.84.2"
-    "@tamagui/focus-scope": "npm:1.84.2"
-    "@tamagui/helpers": "npm:1.84.2"
-    "@tamagui/polyfill-dev": "npm:1.84.2"
-    "@tamagui/popper": "npm:1.84.2"
-    "@tamagui/portal": "npm:1.84.2"
-    "@tamagui/remove-scroll": "npm:1.84.2"
-    "@tamagui/scroll-view": "npm:1.84.2"
-    "@tamagui/sheet": "npm:1.84.2"
-    "@tamagui/stacks": "npm:1.84.2"
-    "@tamagui/use-controllable-state": "npm:1.84.2"
+    "@tamagui/adapt": "npm:1.85.0"
+    "@tamagui/animate": "npm:1.85.0"
+    "@tamagui/aria-hidden": "npm:1.85.0"
+    "@tamagui/compose-refs": "npm:1.85.0"
+    "@tamagui/constants": "npm:1.85.0"
+    "@tamagui/core": "npm:1.85.0"
+    "@tamagui/dismissable": "npm:1.85.0"
+    "@tamagui/floating": "npm:1.85.0"
+    "@tamagui/focus-scope": "npm:1.85.0"
+    "@tamagui/helpers": "npm:1.85.0"
+    "@tamagui/polyfill-dev": "npm:1.85.0"
+    "@tamagui/popper": "npm:1.85.0"
+    "@tamagui/portal": "npm:1.85.0"
+    "@tamagui/remove-scroll": "npm:1.85.0"
+    "@tamagui/scroll-view": "npm:1.85.0"
+    "@tamagui/sheet": "npm:1.85.0"
+    "@tamagui/stacks": "npm:1.85.0"
+    "@tamagui/use-controllable-state": "npm:1.85.0"
     react-freeze: "npm:^1.0.3"
   peerDependencies:
     react: "*"
@@ -3733,13 +3733,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/popper@portal:/Users/n8/tamagui/packages/popper::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/compose-refs": "npm:1.84.2"
-    "@tamagui/constants": "npm:1.84.2"
-    "@tamagui/core": "npm:1.84.2"
-    "@tamagui/floating": "npm:1.84.2"
-    "@tamagui/get-token": "npm:1.84.2"
-    "@tamagui/stacks": "npm:1.84.2"
-    "@tamagui/use-controllable-state": "npm:1.84.2"
+    "@tamagui/compose-refs": "npm:1.85.0"
+    "@tamagui/constants": "npm:1.85.0"
+    "@tamagui/core": "npm:1.85.0"
+    "@tamagui/floating": "npm:1.85.0"
+    "@tamagui/get-token": "npm:1.85.0"
+    "@tamagui/stacks": "npm:1.85.0"
+    "@tamagui/use-controllable-state": "npm:1.85.0"
   peerDependencies:
     react: "*"
     react-native: "*"
@@ -3750,10 +3750,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/portal@portal:/Users/n8/tamagui/packages/portal::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/constants": "npm:1.84.2"
-    "@tamagui/core": "npm:1.84.2"
-    "@tamagui/stacks": "npm:1.84.2"
-    "@tamagui/use-event": "npm:1.84.2"
+    "@tamagui/constants": "npm:1.85.0"
+    "@tamagui/core": "npm:1.85.0"
+    "@tamagui/stacks": "npm:1.85.0"
+    "@tamagui/use-event": "npm:1.85.0"
   peerDependencies:
     react: "*"
     react-native: "*"
@@ -3764,12 +3764,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/progress@portal:/Users/n8/tamagui/packages/progress::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/compose-refs": "npm:1.84.2"
-    "@tamagui/core": "npm:1.84.2"
-    "@tamagui/create-context": "npm:1.84.2"
-    "@tamagui/get-token": "npm:1.84.2"
-    "@tamagui/helpers": "npm:1.84.2"
-    "@tamagui/stacks": "npm:1.84.2"
+    "@tamagui/compose-refs": "npm:1.85.0"
+    "@tamagui/core": "npm:1.85.0"
+    "@tamagui/create-context": "npm:1.85.0"
+    "@tamagui/get-token": "npm:1.85.0"
+    "@tamagui/helpers": "npm:1.85.0"
+    "@tamagui/stacks": "npm:1.85.0"
   peerDependencies:
     react: "*"
     react-native: "*"
@@ -3780,18 +3780,18 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/radio-group@portal:/Users/n8/tamagui/packages/radio-group::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/compose-refs": "npm:1.84.2"
-    "@tamagui/constants": "npm:1.84.2"
-    "@tamagui/core": "npm:1.84.2"
-    "@tamagui/create-context": "npm:1.84.2"
-    "@tamagui/focusable": "npm:1.84.2"
-    "@tamagui/get-token": "npm:1.84.2"
-    "@tamagui/helpers": "npm:1.84.2"
-    "@tamagui/label": "npm:1.84.2"
-    "@tamagui/roving-focus": "npm:1.84.2"
-    "@tamagui/stacks": "npm:1.84.2"
-    "@tamagui/use-controllable-state": "npm:1.84.2"
-    "@tamagui/use-previous": "npm:1.84.2"
+    "@tamagui/compose-refs": "npm:1.85.0"
+    "@tamagui/constants": "npm:1.85.0"
+    "@tamagui/core": "npm:1.85.0"
+    "@tamagui/create-context": "npm:1.85.0"
+    "@tamagui/focusable": "npm:1.85.0"
+    "@tamagui/get-token": "npm:1.85.0"
+    "@tamagui/helpers": "npm:1.85.0"
+    "@tamagui/label": "npm:1.85.0"
+    "@tamagui/roving-focus": "npm:1.85.0"
+    "@tamagui/stacks": "npm:1.85.0"
+    "@tamagui/use-controllable-state": "npm:1.85.0"
+    "@tamagui/use-previous": "npm:1.85.0"
   peerDependencies:
     react: "*"
   languageName: node
@@ -3801,7 +3801,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/react-native-media-driver@portal:/Users/n8/tamagui/packages/react-native-media-driver::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/web": "npm:1.84.2"
+    "@tamagui/web": "npm:1.85.0"
   peerDependencies:
     react-native: "*"
   languageName: node
@@ -3837,15 +3837,15 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/roving-focus@portal:/Users/n8/tamagui/packages/roving-focus::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/collection": "npm:1.84.2"
-    "@tamagui/compose-refs": "npm:1.84.2"
-    "@tamagui/constants": "npm:1.84.2"
-    "@tamagui/core": "npm:1.84.2"
-    "@tamagui/create-context": "npm:1.84.2"
-    "@tamagui/helpers": "npm:1.84.2"
-    "@tamagui/use-controllable-state": "npm:1.84.2"
-    "@tamagui/use-direction": "npm:1.84.2"
-    "@tamagui/use-event": "npm:1.84.2"
+    "@tamagui/collection": "npm:1.85.0"
+    "@tamagui/compose-refs": "npm:1.85.0"
+    "@tamagui/constants": "npm:1.85.0"
+    "@tamagui/core": "npm:1.85.0"
+    "@tamagui/create-context": "npm:1.85.0"
+    "@tamagui/helpers": "npm:1.85.0"
+    "@tamagui/use-controllable-state": "npm:1.85.0"
+    "@tamagui/use-direction": "npm:1.85.0"
+    "@tamagui/use-event": "npm:1.85.0"
   peerDependencies:
     react: "*"
   languageName: node
@@ -3855,8 +3855,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/scroll-view@portal:/Users/n8/tamagui/packages/scroll-view::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/stacks": "npm:1.84.2"
-    "@tamagui/web": "npm:1.84.2"
+    "@tamagui/stacks": "npm:1.85.0"
+    "@tamagui/web": "npm:1.85.0"
   peerDependencies:
     react: "*"
   languageName: node
@@ -3869,26 +3869,26 @@ __metadata:
     "@floating-ui/react": "npm:^0.24.7"
     "@floating-ui/react-dom": "npm:^2.0.1"
     "@floating-ui/react-native": "npm:^0.10.1"
-    "@tamagui/adapt": "npm:1.84.2"
-    "@tamagui/animate-presence": "npm:1.84.2"
-    "@tamagui/compose-refs": "npm:1.84.2"
-    "@tamagui/constants": "npm:1.84.2"
-    "@tamagui/core": "npm:1.84.2"
-    "@tamagui/create-context": "npm:1.84.2"
-    "@tamagui/dismissable": "npm:1.84.2"
-    "@tamagui/focus-scope": "npm:1.84.2"
-    "@tamagui/get-token": "npm:1.84.2"
-    "@tamagui/helpers": "npm:1.84.2"
-    "@tamagui/list-item": "npm:1.84.2"
-    "@tamagui/portal": "npm:1.84.2"
-    "@tamagui/remove-scroll": "npm:1.84.2"
-    "@tamagui/separator": "npm:1.84.2"
-    "@tamagui/sheet": "npm:1.84.2"
-    "@tamagui/stacks": "npm:1.84.2"
-    "@tamagui/text": "npm:1.84.2"
-    "@tamagui/use-controllable-state": "npm:1.84.2"
-    "@tamagui/use-event": "npm:1.84.2"
-    "@tamagui/use-previous": "npm:1.84.2"
+    "@tamagui/adapt": "npm:1.85.0"
+    "@tamagui/animate-presence": "npm:1.85.0"
+    "@tamagui/compose-refs": "npm:1.85.0"
+    "@tamagui/constants": "npm:1.85.0"
+    "@tamagui/core": "npm:1.85.0"
+    "@tamagui/create-context": "npm:1.85.0"
+    "@tamagui/dismissable": "npm:1.85.0"
+    "@tamagui/focus-scope": "npm:1.85.0"
+    "@tamagui/get-token": "npm:1.85.0"
+    "@tamagui/helpers": "npm:1.85.0"
+    "@tamagui/list-item": "npm:1.85.0"
+    "@tamagui/portal": "npm:1.85.0"
+    "@tamagui/remove-scroll": "npm:1.85.0"
+    "@tamagui/separator": "npm:1.85.0"
+    "@tamagui/sheet": "npm:1.85.0"
+    "@tamagui/stacks": "npm:1.85.0"
+    "@tamagui/text": "npm:1.85.0"
+    "@tamagui/use-controllable-state": "npm:1.85.0"
+    "@tamagui/use-event": "npm:1.85.0"
+    "@tamagui/use-previous": "npm:1.85.0"
     react-dom: "npm:^18.2.0"
   peerDependencies:
     react: "*"
@@ -3900,8 +3900,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/separator@portal:/Users/n8/tamagui/packages/separator::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/constants": "npm:1.84.2"
-    "@tamagui/core": "npm:1.84.2"
+    "@tamagui/constants": "npm:1.85.0"
+    "@tamagui/core": "npm:1.85.0"
   peerDependencies:
     react: "*"
   languageName: node
@@ -3911,8 +3911,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/shapes@portal:/Users/n8/tamagui/packages/shapes::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/stacks": "npm:1.84.2"
-    "@tamagui/web": "npm:1.84.2"
+    "@tamagui/stacks": "npm:1.85.0"
+    "@tamagui/web": "npm:1.85.0"
   peerDependencies:
     react: "*"
   languageName: node
@@ -3922,20 +3922,20 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/sheet@portal:/Users/n8/tamagui/packages/sheet::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/animate-presence": "npm:1.84.2"
-    "@tamagui/animations-react-native": "npm:1.84.2"
-    "@tamagui/compose-refs": "npm:1.84.2"
-    "@tamagui/constants": "npm:1.84.2"
-    "@tamagui/core": "npm:1.84.2"
-    "@tamagui/create-context": "npm:1.84.2"
-    "@tamagui/helpers": "npm:1.84.2"
-    "@tamagui/portal": "npm:1.84.2"
-    "@tamagui/remove-scroll": "npm:1.84.2"
-    "@tamagui/scroll-view": "npm:1.84.2"
-    "@tamagui/stacks": "npm:1.84.2"
-    "@tamagui/use-constant": "npm:1.84.2"
-    "@tamagui/use-controllable-state": "npm:1.84.2"
-    "@tamagui/use-keyboard-visible": "npm:1.84.2"
+    "@tamagui/animate-presence": "npm:1.85.0"
+    "@tamagui/animations-react-native": "npm:1.85.0"
+    "@tamagui/compose-refs": "npm:1.85.0"
+    "@tamagui/constants": "npm:1.85.0"
+    "@tamagui/core": "npm:1.85.0"
+    "@tamagui/create-context": "npm:1.85.0"
+    "@tamagui/helpers": "npm:1.85.0"
+    "@tamagui/portal": "npm:1.85.0"
+    "@tamagui/remove-scroll": "npm:1.85.0"
+    "@tamagui/scroll-view": "npm:1.85.0"
+    "@tamagui/stacks": "npm:1.85.0"
+    "@tamagui/use-constant": "npm:1.85.0"
+    "@tamagui/use-controllable-state": "npm:1.85.0"
+    "@tamagui/use-keyboard-visible": "npm:1.85.0"
   peerDependencies:
     react: "*"
     react-native: "*"
@@ -3958,15 +3958,15 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/slider@portal:/Users/n8/tamagui/packages/slider::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/compose-refs": "npm:1.84.2"
-    "@tamagui/constants": "npm:1.84.2"
-    "@tamagui/core": "npm:1.84.2"
-    "@tamagui/create-context": "npm:1.84.2"
-    "@tamagui/get-token": "npm:1.84.2"
-    "@tamagui/helpers": "npm:1.84.2"
-    "@tamagui/stacks": "npm:1.84.2"
-    "@tamagui/use-controllable-state": "npm:1.84.2"
-    "@tamagui/use-direction": "npm:1.84.2"
+    "@tamagui/compose-refs": "npm:1.85.0"
+    "@tamagui/constants": "npm:1.85.0"
+    "@tamagui/core": "npm:1.85.0"
+    "@tamagui/create-context": "npm:1.85.0"
+    "@tamagui/get-token": "npm:1.85.0"
+    "@tamagui/helpers": "npm:1.85.0"
+    "@tamagui/stacks": "npm:1.85.0"
+    "@tamagui/use-controllable-state": "npm:1.85.0"
+    "@tamagui/use-direction": "npm:1.85.0"
   peerDependencies:
     react: "*"
     react-native: "*"
@@ -3977,7 +3977,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/stacks@portal:/Users/n8/tamagui/packages/stacks::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/core": "npm:1.84.2"
+    "@tamagui/core": "npm:1.85.0"
   peerDependencies:
     react: "*"
   languageName: node
@@ -3987,16 +3987,16 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/switch@portal:/Users/n8/tamagui/packages/switch::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/compose-refs": "npm:1.84.2"
-    "@tamagui/constants": "npm:1.84.2"
-    "@tamagui/core": "npm:1.84.2"
-    "@tamagui/focusable": "npm:1.84.2"
-    "@tamagui/get-token": "npm:1.84.2"
-    "@tamagui/helpers": "npm:1.84.2"
-    "@tamagui/label": "npm:1.84.2"
-    "@tamagui/stacks": "npm:1.84.2"
-    "@tamagui/use-controllable-state": "npm:1.84.2"
-    "@tamagui/use-previous": "npm:1.84.2"
+    "@tamagui/compose-refs": "npm:1.85.0"
+    "@tamagui/constants": "npm:1.85.0"
+    "@tamagui/core": "npm:1.85.0"
+    "@tamagui/focusable": "npm:1.85.0"
+    "@tamagui/get-token": "npm:1.85.0"
+    "@tamagui/helpers": "npm:1.85.0"
+    "@tamagui/label": "npm:1.85.0"
+    "@tamagui/stacks": "npm:1.85.0"
+    "@tamagui/use-controllable-state": "npm:1.85.0"
+    "@tamagui/use-previous": "npm:1.85.0"
   peerDependencies:
     react: "*"
     react-native: "*"
@@ -4007,17 +4007,17 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/tabs@portal:/Users/n8/tamagui/packages/tabs::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/compose-refs": "npm:1.84.2"
-    "@tamagui/constants": "npm:1.84.2"
-    "@tamagui/create-context": "npm:1.84.2"
-    "@tamagui/get-button-sized": "npm:1.84.2"
-    "@tamagui/group": "npm:1.84.2"
-    "@tamagui/helpers": "npm:1.84.2"
-    "@tamagui/roving-focus": "npm:1.84.2"
-    "@tamagui/stacks": "npm:1.84.2"
-    "@tamagui/use-controllable-state": "npm:1.84.2"
-    "@tamagui/use-direction": "npm:1.84.2"
-    "@tamagui/web": "npm:1.84.2"
+    "@tamagui/compose-refs": "npm:1.85.0"
+    "@tamagui/constants": "npm:1.85.0"
+    "@tamagui/create-context": "npm:1.85.0"
+    "@tamagui/get-button-sized": "npm:1.85.0"
+    "@tamagui/group": "npm:1.85.0"
+    "@tamagui/helpers": "npm:1.85.0"
+    "@tamagui/roving-focus": "npm:1.85.0"
+    "@tamagui/stacks": "npm:1.85.0"
+    "@tamagui/use-controllable-state": "npm:1.85.0"
+    "@tamagui/use-direction": "npm:1.85.0"
+    "@tamagui/web": "npm:1.85.0"
   peerDependencies:
     react: "*"
     react-dom: "*"
@@ -4028,9 +4028,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/text@portal:/Users/n8/tamagui/packages/text::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/get-font-sized": "npm:1.84.2"
-    "@tamagui/helpers-tamagui": "npm:1.84.2"
-    "@tamagui/web": "npm:1.84.2"
+    "@tamagui/get-font-sized": "npm:1.85.0"
+    "@tamagui/helpers-tamagui": "npm:1.85.0"
+    "@tamagui/web": "npm:1.85.0"
   peerDependencies:
     react: "*"
   languageName: node
@@ -4040,7 +4040,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/theme-builder@portal:/Users/n8/tamagui/packages/theme-builder::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/create-theme": "npm:1.84.2"
+    "@tamagui/create-theme": "npm:1.85.0"
     color2k: "npm:^2.0.2"
   languageName: node
   linkType: soft
@@ -4049,8 +4049,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/theme@portal:/Users/n8/tamagui/packages/theme::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/constants": "npm:1.84.2"
-    "@tamagui/web": "npm:1.84.2"
+    "@tamagui/constants": "npm:1.85.0"
+    "@tamagui/web": "npm:1.85.0"
   peerDependencies:
     react: "*"
   languageName: node
@@ -4060,10 +4060,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/themes@portal:/Users/n8/tamagui/packages/themes::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/colors": "npm:1.84.2"
-    "@tamagui/create-theme": "npm:1.84.2"
-    "@tamagui/theme-builder": "npm:1.84.2"
-    "@tamagui/web": "npm:1.84.2"
+    "@tamagui/colors": "npm:1.85.0"
+    "@tamagui/create-theme": "npm:1.85.0"
+    "@tamagui/theme-builder": "npm:1.85.0"
+    "@tamagui/web": "npm:1.85.0"
   languageName: node
   linkType: soft
 
@@ -4077,19 +4077,19 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/toggle-group@portal:/Users/n8/tamagui/packages/toggle-group::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/constants": "npm:1.84.2"
-    "@tamagui/create-context": "npm:1.84.2"
-    "@tamagui/focusable": "npm:1.84.2"
-    "@tamagui/font-size": "npm:1.84.2"
-    "@tamagui/get-token": "npm:1.84.2"
-    "@tamagui/group": "npm:1.84.2"
-    "@tamagui/helpers": "npm:1.84.2"
-    "@tamagui/helpers-tamagui": "npm:1.84.2"
-    "@tamagui/roving-focus": "npm:1.84.2"
-    "@tamagui/stacks": "npm:1.84.2"
-    "@tamagui/use-controllable-state": "npm:1.84.2"
-    "@tamagui/use-direction": "npm:1.84.2"
-    "@tamagui/web": "npm:1.84.2"
+    "@tamagui/constants": "npm:1.85.0"
+    "@tamagui/create-context": "npm:1.85.0"
+    "@tamagui/focusable": "npm:1.85.0"
+    "@tamagui/font-size": "npm:1.85.0"
+    "@tamagui/get-token": "npm:1.85.0"
+    "@tamagui/group": "npm:1.85.0"
+    "@tamagui/helpers": "npm:1.85.0"
+    "@tamagui/helpers-tamagui": "npm:1.85.0"
+    "@tamagui/roving-focus": "npm:1.85.0"
+    "@tamagui/stacks": "npm:1.85.0"
+    "@tamagui/use-controllable-state": "npm:1.85.0"
+    "@tamagui/use-direction": "npm:1.85.0"
+    "@tamagui/web": "npm:1.85.0"
   peerDependencies:
     react: "*"
   languageName: node
@@ -4100,18 +4100,18 @@ __metadata:
   resolution: "@tamagui/tooltip@portal:/Users/n8/tamagui/packages/tooltip::locator=expo-router-example%40workspace%3A."
   dependencies:
     "@floating-ui/react": "npm:^0.24.7"
-    "@tamagui/compose-refs": "npm:1.84.2"
-    "@tamagui/core": "npm:1.84.2"
-    "@tamagui/create-context": "npm:1.84.2"
-    "@tamagui/floating": "npm:1.84.2"
-    "@tamagui/get-token": "npm:1.84.2"
-    "@tamagui/helpers": "npm:1.84.2"
-    "@tamagui/polyfill-dev": "npm:1.84.2"
-    "@tamagui/popover": "npm:1.84.2"
-    "@tamagui/popper": "npm:1.84.2"
-    "@tamagui/stacks": "npm:1.84.2"
-    "@tamagui/text": "npm:1.84.2"
-    "@tamagui/use-controllable-state": "npm:1.84.2"
+    "@tamagui/compose-refs": "npm:1.85.0"
+    "@tamagui/core": "npm:1.85.0"
+    "@tamagui/create-context": "npm:1.85.0"
+    "@tamagui/floating": "npm:1.85.0"
+    "@tamagui/get-token": "npm:1.85.0"
+    "@tamagui/helpers": "npm:1.85.0"
+    "@tamagui/polyfill-dev": "npm:1.85.0"
+    "@tamagui/popover": "npm:1.85.0"
+    "@tamagui/popper": "npm:1.85.0"
+    "@tamagui/stacks": "npm:1.85.0"
+    "@tamagui/text": "npm:1.85.0"
+    "@tamagui/use-controllable-state": "npm:1.85.0"
   peerDependencies:
     react: "*"
     react-native: "*"
@@ -4136,7 +4136,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/use-controllable-state@portal:/Users/n8/tamagui/packages/use-controllable-state::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/use-event": "npm:1.84.2"
+    "@tamagui/use-event": "npm:1.85.0"
   peerDependencies:
     react: "*"
   languageName: node
@@ -4154,7 +4154,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/use-did-finish-ssr@portal:/Users/n8/tamagui/packages/use-did-finish-ssr::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/constants": "npm:1.84.2"
+    "@tamagui/constants": "npm:1.85.0"
   peerDependencies:
     react: "*"
   languageName: node
@@ -4172,7 +4172,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/use-escape-keydown@portal:/Users/n8/tamagui/packages/use-escape-keydown::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/use-callback-ref": "npm:1.84.2"
+    "@tamagui/use-callback-ref": "npm:1.85.0"
   languageName: node
   linkType: soft
 
@@ -4180,7 +4180,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/use-event@portal:/Users/n8/tamagui/packages/use-event::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/constants": "npm:1.84.2"
+    "@tamagui/constants": "npm:1.85.0"
   peerDependencies:
     react: "*"
   languageName: node
@@ -4207,7 +4207,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/use-presence@portal:/Users/n8/tamagui/packages/use-presence::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/web": "npm:1.84.2"
+    "@tamagui/web": "npm:1.85.0"
   peerDependencies:
     react: "*"
   languageName: node
@@ -4223,7 +4223,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/use-window-dimensions@portal:/Users/n8/tamagui/packages/use-window-dimensions::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/constants": "npm:1.84.2"
+    "@tamagui/constants": "npm:1.85.0"
   peerDependencies:
     react: "*"
     react-native: "*"
@@ -4234,7 +4234,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/visually-hidden@portal:/Users/n8/tamagui/packages/visually-hidden::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/web": "npm:1.84.2"
+    "@tamagui/web": "npm:1.85.0"
   peerDependencies:
     react: "*"
   languageName: node
@@ -4244,14 +4244,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/web@portal:/Users/n8/tamagui/packages/web::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/compose-refs": "npm:1.84.2"
-    "@tamagui/constants": "npm:1.84.2"
-    "@tamagui/helpers": "npm:1.84.2"
-    "@tamagui/normalize-css-color": "npm:1.84.2"
-    "@tamagui/timer": "npm:1.84.2"
-    "@tamagui/use-did-finish-ssr": "npm:1.84.2"
-    "@tamagui/use-event": "npm:1.84.2"
-    "@tamagui/use-force-update": "npm:1.84.2"
+    "@tamagui/compose-refs": "npm:1.85.0"
+    "@tamagui/constants": "npm:1.85.0"
+    "@tamagui/helpers": "npm:1.85.0"
+    "@tamagui/normalize-css-color": "npm:1.85.0"
+    "@tamagui/timer": "npm:1.85.0"
+    "@tamagui/use-did-finish-ssr": "npm:1.85.0"
+    "@tamagui/use-event": "npm:1.85.0"
+    "@tamagui/use-force-update": "npm:1.85.0"
   peerDependencies:
     react: "*"
     react-dom: "*"
@@ -6135,7 +6135,7 @@ __metadata:
     "@react-navigation/native": "npm:^6.0.2"
     "@remix-run/node": "npm:1.19.3"
     "@remix-run/web-fetch": "npm:4.1.0"
-    "@tamagui/config": "npm:1.84.2"
+    "@tamagui/config": "npm:^1.85.0"
     "@types/react": "npm:~18.2.14"
     babel-preset-expo: "npm:10.0.1"
     expo: "npm:~50.0.0-preview.9"
@@ -6153,7 +6153,7 @@ __metadata:
     react-native-safe-area-context: "npm:4.6.3"
     react-native-screens: "npm:~3.29.0"
     react-native-web: "npm:^0.19.9"
-    tamagui: "npm:1.84.2"
+    tamagui: "npm:^1.85.0"
   languageName: unknown
   linkType: soft
 
@@ -10745,56 +10745,56 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tamagui@portal:/Users/n8/tamagui/packages/tamagui::locator=expo-router-example%40workspace%3A."
   dependencies:
-    "@tamagui/accordion": "npm:1.84.2"
-    "@tamagui/adapt": "npm:1.84.2"
-    "@tamagui/alert-dialog": "npm:1.84.2"
-    "@tamagui/animate-presence": "npm:1.84.2"
-    "@tamagui/avatar": "npm:1.84.2"
-    "@tamagui/button": "npm:1.84.2"
-    "@tamagui/card": "npm:1.84.2"
-    "@tamagui/checkbox": "npm:1.84.2"
-    "@tamagui/compose-refs": "npm:1.84.2"
-    "@tamagui/constants": "npm:1.84.2"
-    "@tamagui/core": "npm:1.84.2"
-    "@tamagui/create-context": "npm:1.84.2"
-    "@tamagui/dialog": "npm:1.84.2"
-    "@tamagui/fake-react-native": "npm:1.84.2"
-    "@tamagui/focusable": "npm:1.84.2"
-    "@tamagui/font-size": "npm:1.84.2"
-    "@tamagui/form": "npm:1.84.2"
-    "@tamagui/get-button-sized": "npm:1.84.2"
-    "@tamagui/get-font-sized": "npm:1.84.2"
-    "@tamagui/get-token": "npm:1.84.2"
-    "@tamagui/group": "npm:1.84.2"
-    "@tamagui/helpers-tamagui": "npm:1.84.2"
-    "@tamagui/image": "npm:1.84.2"
-    "@tamagui/label": "npm:1.84.2"
-    "@tamagui/linear-gradient": "npm:1.84.2"
-    "@tamagui/list-item": "npm:1.84.2"
-    "@tamagui/polyfill-dev": "npm:1.84.2"
-    "@tamagui/popover": "npm:1.84.2"
-    "@tamagui/popper": "npm:1.84.2"
-    "@tamagui/portal": "npm:1.84.2"
-    "@tamagui/progress": "npm:1.84.2"
-    "@tamagui/radio-group": "npm:1.84.2"
-    "@tamagui/scroll-view": "npm:1.84.2"
-    "@tamagui/select": "npm:1.84.2"
-    "@tamagui/separator": "npm:1.84.2"
-    "@tamagui/shapes": "npm:1.84.2"
-    "@tamagui/sheet": "npm:1.84.2"
-    "@tamagui/slider": "npm:1.84.2"
-    "@tamagui/stacks": "npm:1.84.2"
-    "@tamagui/switch": "npm:1.84.2"
-    "@tamagui/tabs": "npm:1.84.2"
-    "@tamagui/text": "npm:1.84.2"
-    "@tamagui/theme": "npm:1.84.2"
-    "@tamagui/toggle-group": "npm:1.84.2"
-    "@tamagui/tooltip": "npm:1.84.2"
-    "@tamagui/use-controllable-state": "npm:1.84.2"
-    "@tamagui/use-debounce": "npm:1.84.2"
-    "@tamagui/use-force-update": "npm:1.84.2"
-    "@tamagui/use-window-dimensions": "npm:1.84.2"
-    "@tamagui/visually-hidden": "npm:1.84.2"
+    "@tamagui/accordion": "npm:1.85.0"
+    "@tamagui/adapt": "npm:1.85.0"
+    "@tamagui/alert-dialog": "npm:1.85.0"
+    "@tamagui/animate-presence": "npm:1.85.0"
+    "@tamagui/avatar": "npm:1.85.0"
+    "@tamagui/button": "npm:1.85.0"
+    "@tamagui/card": "npm:1.85.0"
+    "@tamagui/checkbox": "npm:1.85.0"
+    "@tamagui/compose-refs": "npm:1.85.0"
+    "@tamagui/constants": "npm:1.85.0"
+    "@tamagui/core": "npm:1.85.0"
+    "@tamagui/create-context": "npm:1.85.0"
+    "@tamagui/dialog": "npm:1.85.0"
+    "@tamagui/fake-react-native": "npm:1.85.0"
+    "@tamagui/focusable": "npm:1.85.0"
+    "@tamagui/font-size": "npm:1.85.0"
+    "@tamagui/form": "npm:1.85.0"
+    "@tamagui/get-button-sized": "npm:1.85.0"
+    "@tamagui/get-font-sized": "npm:1.85.0"
+    "@tamagui/get-token": "npm:1.85.0"
+    "@tamagui/group": "npm:1.85.0"
+    "@tamagui/helpers-tamagui": "npm:1.85.0"
+    "@tamagui/image": "npm:1.85.0"
+    "@tamagui/label": "npm:1.85.0"
+    "@tamagui/linear-gradient": "npm:1.85.0"
+    "@tamagui/list-item": "npm:1.85.0"
+    "@tamagui/polyfill-dev": "npm:1.85.0"
+    "@tamagui/popover": "npm:1.85.0"
+    "@tamagui/popper": "npm:1.85.0"
+    "@tamagui/portal": "npm:1.85.0"
+    "@tamagui/progress": "npm:1.85.0"
+    "@tamagui/radio-group": "npm:1.85.0"
+    "@tamagui/scroll-view": "npm:1.85.0"
+    "@tamagui/select": "npm:1.85.0"
+    "@tamagui/separator": "npm:1.85.0"
+    "@tamagui/shapes": "npm:1.85.0"
+    "@tamagui/sheet": "npm:1.85.0"
+    "@tamagui/slider": "npm:1.85.0"
+    "@tamagui/stacks": "npm:1.85.0"
+    "@tamagui/switch": "npm:1.85.0"
+    "@tamagui/tabs": "npm:1.85.0"
+    "@tamagui/text": "npm:1.85.0"
+    "@tamagui/theme": "npm:1.85.0"
+    "@tamagui/toggle-group": "npm:1.85.0"
+    "@tamagui/tooltip": "npm:1.85.0"
+    "@tamagui/use-controllable-state": "npm:1.85.0"
+    "@tamagui/use-debounce": "npm:1.85.0"
+    "@tamagui/use-force-update": "npm:1.85.0"
+    "@tamagui/use-window-dimensions": "npm:1.85.0"
+    "@tamagui/visually-hidden": "npm:1.85.0"
   peerDependencies:
     react: "*"
     react-native: "*"

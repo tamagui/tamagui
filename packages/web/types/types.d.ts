@@ -233,9 +233,9 @@ export type VariableValGeneric = {
 };
 type GenericTokens = CreateTokens;
 type GenericThemes = {
-    [key: string]: (Partial<TamaguiBaseTheme> & {
+    [key: string]: Partial<TamaguiBaseTheme> & {
         [key: string]: VariableVal;
-    });
+    };
 };
 export type CreateShorthands = {
     [key: string]: string;
