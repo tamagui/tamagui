@@ -1,5 +1,5 @@
 import { isClient, isIos, isServer } from '@tamagui/constants'
-import { useContext, useMemo, useRef, useSyncExternalStore } from 'react'
+import { useContext, useId, useMemo, useRef, useSyncExternalStore } from 'react'
 
 import { getConfig } from '../config'
 import { Variable, getVariable } from '../createVariable'
@@ -315,6 +315,8 @@ export const useChangeThemeEffect = (
 
   const prevRef = useRef<ChangedThemeResponse | undefined>()
 
+  const id = useId()
+
   function getSnapshot() {
     const force =
       // forced ||
@@ -324,7 +326,7 @@ export const useChangeThemeEffect = (
       (process.env.TAMAGUI_TARGET === 'native' ? props['disable-child-theme'] : undefined)
 
     const prev = prevRef.current
-    const next = createState(
+    const updatedState = createStateIfChanged(
       props,
       parentManager,
       prev,
@@ -334,16 +336,21 @@ export const useChangeThemeEffect = (
       force
     )
 
-    if (next) {
-      prevRef.current = next
+    if (props.name) {
+      if (props.debug) console.log('snap', id, props, updatedState)
+    }
+
+    if (updatedState) {
+      prevRef.current = updatedState
 
       if (prev?.isNewTheme) {
+        console.warn('we are changing value but staying a new theme, notify children')
         // if it was a new theme already and is updating, notify children
-        next.themeManager?.notify()
+        updatedState.themeManager?.notify()
       }
     }
 
-    return next
+    return updatedState
   }
 
   const themeState = useSyncExternalStore<ChangedThemeResponse>(
@@ -365,7 +372,7 @@ export const useChangeThemeEffect = (
   //     // but may be a bit of explosion of selectors
   //     if (props.inverse && !mounted) {
   //       setThemeState((prev) => {
-  //         return createState({
+  //         return createStateIfChanged({
   //           ...prev,
   //           mounted: true,
   //         })
@@ -375,13 +382,13 @@ export const useChangeThemeEffect = (
 
   //     if (isNewTheme || getShouldUpdateTheme(themeManager)) {
   //       activeThemeManagers.add(themeManager)
-  //       setThemeState(createState)
+  //       setThemeState(createStateIfChanged)
   //     }
 
   //     // for updateTheme/replaceTheme
   //     const selfListenerDispose = themeManager.onChangeTheme((_a, _b, forced) => {
   //       if (forced) {
-  //         setThemeState((prev) => createState(prev, true))
+  //         setThemeState((prev) => createStateIfChanged(prev, true))
   //       }
   //     })
 
@@ -403,7 +410,7 @@ export const useChangeThemeEffect = (
   //         }
 
   //         if (shouldTryUpdate) {
-  //           setThemeState((prev) => createState(prev, force))
+  //           setThemeState((prev) => createStateIfChanged(prev, force))
   //         }
   //       },
   //       themeManager.id
@@ -469,6 +476,7 @@ function getNextStateIfChanged(
   const forceUpdate = force ?? shouldUpdate?.()
   if (!parentManager || forceUpdate === false) return
   const next = parentManager.getState(props, parentManager)
+  if (props.debug) console.log('next', { next, props, parentManager })
   if (!next) return
   if (prev && forceUpdate !== true) {
     const shouldChange = parentManager.getStateShouldChange(next, prev)
@@ -479,7 +487,7 @@ function getNextStateIfChanged(
   return next
 }
 
-function createState(
+function createStateIfChanged(
   props: UseThemeWithStateProps,
   parentManager?: ThemeManager,
   prev?: ChangedThemeResponse,
@@ -488,6 +496,7 @@ function createState(
   isRoot = false,
   force = false
 ): ChangedThemeResponse {
+  if (props.debug) console.log('createStateIfChanged', shouldUpdate?.(), { force }, props)
   if (prev && shouldUpdate?.() === false && !force) {
     return prev
   }
@@ -502,34 +511,36 @@ function createState(
       return new ThemeManager(props, isRoot ? 'root' : parentManager)
     }
 
-    if (prev?.themeManager) {
-      themeManager = prev.themeManager
+    if (prev) {
+      if (prev.themeManager) {
+        themeManager = prev.themeManager
 
-      // this could be a bit better, problem is on toggling light/dark the state is actually
-      // showing light even when the last was dark. but technically allso onChangeTheme should
-      // basically always call on a change, so i'm wondering if we even need the shouldUpdate
-      // at all anymore. this forces updates onChangeTheme for all dynamic style accessed components
-      // which is correct, potentially in the future we can avoid forceChange and just know to
-      // update if keys.length is set + onChangeTheme called
-      const forceChange = force || Boolean(keys?.length)
-      const nextState = getNextStateIfChanged(
-        props,
-        prev?.state,
-        themeManager,
-        shouldUpdate,
-        forceChange
-      )
+        // this could be a bit better, problem is on toggling light/dark the state is actually
+        // showing light even when the last was dark. but technically allso onChangeTheme should
+        // basically always call on a change, so i'm wondering if we even need the shouldUpdate
+        // at all anymore. this forces updates onChangeTheme for all dynamic style accessed components
+        // which is correct, potentially in the future we can avoid forceChange and just know to
+        // update if keys.length is set + onChangeTheme called
+        const forceChange = force || (keys?.length ? true : undefined)
+        const nextState = getNextStateIfChanged(
+          props,
+          prev?.state,
+          parentManager,
+          shouldUpdate,
+          forceChange
+        )
 
-      if (nextState) {
-        state = nextState
+        if (nextState) {
+          state = nextState
 
-        if (!prev.isNewTheme) {
-          themeManager = getNewThemeManager()
+          if (!prev.isNewTheme) {
+            themeManager = getNewThemeManager()
+          } else {
+            themeManager.updateState(nextState, false)
+          }
         } else {
-          themeManager.updateState(nextState, false)
+          return prev
         }
-      } else {
-        return prev
       }
     } else {
       themeManager = getNewThemeManager()
@@ -573,6 +584,8 @@ function createState(
     isEqualShallow(prev, response) &&
     // ... and then compare just the state, because we make a new state obj but is likely the same
     isEqualShallow(prev.state, state)
+
+  if (props.debug) console.log('shouldReturnPrev', shouldReturnPrev, { state, prev })
 
   if (prev && shouldReturnPrev) {
     return prev

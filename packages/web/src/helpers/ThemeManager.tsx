@@ -155,6 +155,7 @@ export class ThemeManager {
   }
 
   notify(forced = false) {
+    console.trace('notify', this.id, forced)
     this.themeListeners.forEach((cb) => cb(this.state.name, this, forced))
   }
 

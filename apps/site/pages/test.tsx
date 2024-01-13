@@ -1,4 +1,4 @@
-import '../lib/wdyr'
+// import '../lib/wdyr'
 
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { Header } from '@tamagui/site/components/Header'
