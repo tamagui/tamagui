@@ -112,57 +112,59 @@ export async function bundleConfig(props: TamaguiOptions) {
       console.info(`Building config entry`, configEntry)
     }
 
-    // build them to node-compat versions
-    try {
-      await ensureDir(tmpDir)
-    } catch {
-      //
-    }
+    if (!props.disableInitialBuild) {
+      // build them to node-compat versions
+      try {
+        await ensureDir(tmpDir)
+      } catch {
+        //
+      }
 
-    const start = Date.now()
+      const start = Date.now()
 
-    await Promise.all([
-      props.config
-        ? bundle(
+      await Promise.all([
+        props.config
+          ? bundle(
+              {
+                entryPoints: [configEntry],
+                external,
+                outfile: configOutPath,
+                target: 'node16',
+                ...esbuildExtraOptions,
+              },
+              props.platform
+            )
+          : null,
+        ...baseComponents.map((componentModule, i) => {
+          return bundle(
             {
-              entryPoints: [configEntry],
+              entryPoints: [componentModule],
+              resolvePlatformSpecificEntries: true,
               external,
-              outfile: configOutPath,
+              outfile: componentOutPaths[i],
               target: 'node16',
               ...esbuildExtraOptions,
             },
             props.platform
           )
-        : null,
-      ...baseComponents.map((componentModule, i) => {
-        return bundle(
-          {
-            entryPoints: [componentModule],
-            resolvePlatformSpecificEntries: true,
-            external,
-            outfile: componentOutPaths[i],
-            target: 'node16',
-            ...esbuildExtraOptions,
-          },
-          props.platform
-        )
-      }),
-    ])
+        }),
+      ])
 
-    colorLog(
-      Color.FgYellow,
-      `
+      colorLog(
+        Color.FgYellow,
+        `
     ➡ [tamagui] built config and components (${Date.now() - start}ms):`
-    )
-    colorLog(
-      Color.Dim,
-      `
+      )
+      colorLog(
+        Color.Dim,
+        `
         Config     .${sep}${relative(process.cwd(), configOutPath)}
         Components ${[
           ...componentOutPaths.map((p) => `.${sep}${relative(process.cwd(), p)}`),
         ].join('\n             ')}
         `
-    )
+      )
+    }
 
     let out
     const { unregister } = registerRequire(props.platform)

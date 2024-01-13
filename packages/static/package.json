@@ -63,24 +63,14 @@
   "devDependencies": {
     "@babel/plugin-syntax-typescript": "^7.23.3",
     "@expo/match-media": "^0.4.0",
-    "@tamagui/test-design-system": "1.84.2",
-    "@testing-library/react": "^14.0.0",
-    "@types/babel__generator": "^7.6.4",
-    "@types/babel__traverse": "^7.18.2",
     "@types/find-root": "^1.1.2",
     "@types/node": "^16.11.9",
     "@types/webpack": "^4.41.26",
     "babel-loader": "^9.1.2",
-    "css-loader": "^6.7.4",
-    "dedent": "^0.7.0",
     "esbuild-loader": "^3.0.1",
     "null-loader": "^4.0.1",
     "react": "^18.2.0",
-    "react-test-renderer": "^18.2.0",
-    "style-loader": "^3.3.3",
-    "typescript": "^5.2.2",
-    "vitest": "^0.34.3",
-    "webpack": "^5.88.2"
+    "typescript": "^5.2.2"
   },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
 }
