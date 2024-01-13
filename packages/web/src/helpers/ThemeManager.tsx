@@ -155,7 +155,6 @@ export class ThemeManager {
   }
 
   notify(forced = false) {
-    debugger
     this.themeListeners.forEach((cb) => cb(this.state.name, this, forced))
   }
 

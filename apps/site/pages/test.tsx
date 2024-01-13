@@ -18,7 +18,8 @@ function TestPage() {
         flex: 1,
       }}
     >
-      <Square animation="quick" size={200} bc="$color" />
+      {/* <Square animation="quick" size={200} bc="$color" /> */}
+      <DebugNestedThemeChange />
     </div>
   )
 }

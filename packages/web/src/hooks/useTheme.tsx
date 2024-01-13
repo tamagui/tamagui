@@ -313,7 +313,7 @@ export const useChangeThemeEffect = (
 
   const subscribe = parentManager?.onChangeTheme || emptyCb
 
-  const prev = useRef<ChangedThemeResponse | undefined>()
+  const prevRef = useRef<ChangedThemeResponse | undefined>()
 
   function getSnapshot() {
     const force =
@@ -323,17 +323,25 @@ export const useChangeThemeEffect = (
       // this fixes themeable() not updating with the new fastSchemeChange setting
       (process.env.TAMAGUI_TARGET === 'native' ? props['disable-child-theme'] : undefined)
 
+    const prev = prevRef.current
     const next = createState(
       props,
       parentManager,
-      prev.current,
+      prev,
       keys,
       shouldUpdate,
       isRoot,
       force
     )
 
-    prev.current = next
+    if (next) {
+      prevRef.current = next
+
+      if (prev?.isNewTheme) {
+        // if it was a new theme already and is updating, notify children
+        next.themeManager?.notify()
+      }
+    }
 
     return next
   }
@@ -518,7 +526,7 @@ function createState(
         if (!prev.isNewTheme) {
           themeManager = getNewThemeManager()
         } else {
-          themeManager.updateState(nextState)
+          themeManager.updateState(nextState, false)
         }
       } else {
         return prev
