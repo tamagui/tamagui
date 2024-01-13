@@ -12,7 +12,7 @@
   "packageManager": "yarn@4.0.2",
   "scripts": {
     "build:force": "yarn clean:build && yarn build --force",
-    "build:js": "./scripts/build-js.sh",
+    "build:js": "turbo run build -- --skip-types",
     "build:types": "SKIP_JS=1 yarn build",
     "build": "turbo run build --filter=!next-app",
     "build:verbose": "yarn build -vvv",
@@ -38,7 +38,7 @@
     "lighthouse": "npx lighthouse http://localhost:3000 --view --chrome-flags='--headless' --throttling.cpuSlowdownMultiplier=16 --output-path=/tmp/report.html",
     "lint:fix": "ultra -r --no-pretty lint:fix",
     "lint": "ultra -r --no-pretty lint",
-    "postinstall": "manypkg check && yarn git-crypt-unlock",
+    "postinstall": "npm-run-all --parallel check git-crypt-unlock build:js",
     "pretty": "pretty-quick",
     "release:canary": "yarn release --canary --ci",
     "release": "node -r esbuild-register ./scripts/release.ts",
@@ -71,10 +71,10 @@
     "upgrade:starters": "yarn upgrade:starters:free && yarn upgrade:starters:simple-web && yarn upgrade:starters:expo-router",
     "vercel:build": "yarn build:js && cd apps/site && yarn ci:build",
     "vercel:build-studio": "yarn build:js && cd apps/studio && yarn ci:build",
-    "watch:build": "SKIP_TYPES_INITIAL=1 ultra -r --no-pretty --concurrency 400 watch",
-    "watch:js": "SKIP_TYPES=1 yarn watch:build",
+    "watch:packages": "SKIP_TYPES_INITIAL=1 ultra -r --no-pretty --concurrency 400 watch",
+    "watch:js": "SKIP_TYPES=1 yarn watch:packages",
     "watch:ts": "tsc -b -w --preserveWatchOutput tsconfig.build.json",
-    "watch": "npm-run-all --parallel watch:ts watch:build"
+    "watch": "npm-run-all --parallel watch:ts watch:packages"
   },
   "resolutions": {
     "react-native-svg": "13.9.0",
