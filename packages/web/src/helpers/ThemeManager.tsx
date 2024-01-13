@@ -155,10 +155,11 @@ export class ThemeManager {
   }
 
   notify(forced = false) {
+    debugger
     this.themeListeners.forEach((cb) => cb(this.state.name, this, forced))
   }
 
-  onChangeTheme(cb: ThemeListener, debugId?: number) {
+  onChangeTheme = (cb: ThemeListener, debugId?: number) => {
     if (process.env.NODE_ENV !== 'production' && debugId) {
       // @ts-ignore
       this._listeningIds ??= new Set()
