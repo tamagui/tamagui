@@ -1,8 +1,7 @@
 import { isClient, isServer } from '@tamagui/constants'
-import { useContext, useId, useMemo, useRef, useSyncExternalStore } from 'react'
+import { useContext, useMemo, useRef, useSyncExternalStore } from 'react'
 
 import { getConfig } from '../config'
-import { Variable } from '../createVariable'
 import {
   ThemeManager,
   ThemeManagerState,
@@ -15,8 +14,6 @@ import type {
   ThemeProps,
   UseThemeResult,
   UseThemeWithStateProps,
-  VariableVal,
-  VariableValGeneric,
 } from '../types'
 import { getThemeProxied } from './getThemeProxied'
 
@@ -133,6 +130,7 @@ export const useChangeThemeEffect = (
     const prev = prevRef.current
 
     const shouldPersist =
+      // isRoot ||
       shouldUpdate?.() ||
       props.deopt ||
       // this fixes themeable() not updating with the new fastSchemeChange setting
@@ -147,7 +145,7 @@ export const useChangeThemeEffect = (
       return prev
     }
 
-    const updatedState = updateStateIfChanged(
+    const updatedState = getUpdatedStateIfChanged(
       props,
       parentManager,
       prev,
@@ -155,10 +153,11 @@ export const useChangeThemeEffect = (
       shouldPersist
     )
 
-    // console.log('GO?', { props, shouldPersist, updatedState, prev })
-
     if (updatedState) {
       prevRef.current = updatedState
+      if (updatedState.shouldUpdate) {
+        updatedState.themeManager?.updateState(updatedState.state!, false)
+      }
       if (prev?.isNewTheme) {
         // // if it was a new theme already and is updating, notify children
         updatedState.themeManager?.notify()
@@ -201,13 +200,15 @@ export const useChangeThemeEffect = (
   }
 }
 
-function updateStateIfChanged(
+type ChangedThemeResponseUpdate = ChangedThemeResponse & { shouldUpdate?: boolean }
+
+function getUpdatedStateIfChanged(
   props: UseThemeWithStateProps,
   parentManager: ThemeManager | undefined,
   prev: ChangedThemeResponse | undefined,
   isRoot = false,
   force?: boolean
-): ChangedThemeResponse | undefined {
+): ChangedThemeResponseUpdate | undefined {
   if (prev && force === false) {
     return
   }
@@ -215,6 +216,7 @@ function updateStateIfChanged(
   //  returns previous theme manager if no change
   let themeManager: ThemeManager = prev?.themeManager ?? parentManager!
   let state: ThemeManagerState | undefined
+  let shouldUpdate
 
   const parent = isRoot ? 'root' : parentManager
   if (prev) {
@@ -234,7 +236,7 @@ function updateStateIfChanged(
           state = themeManager.state
         } else {
           state = nextState
-          themeManager.updateState(nextState, false)
+          shouldUpdate = true
         }
       } else {
         return
@@ -267,11 +269,12 @@ function updateStateIfChanged(
   const nextInversed = isNewTheme && state.scheme !== parentManager?.state.scheme
   const inversed = nextInversed ? true : wasInversed != null ? false : null
 
-  const response: ChangedThemeResponse = {
+  const response: ChangedThemeResponseUpdate = {
     themeManager,
     isNewTheme,
     mounted,
     inversed,
+    shouldUpdate,
   }
 
   if (prev) {

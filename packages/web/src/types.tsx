@@ -679,7 +679,6 @@ export interface ThemeProps {
 
 // more low level
 export type UseThemeWithStateProps = ThemeProps & {
-  deopt?: boolean
   disable?: boolean
 }
 

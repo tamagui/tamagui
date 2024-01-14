@@ -370,15 +370,13 @@ export function createComponent<
     const supportsCSSVars = animationsConfig?.supportsCSSVars
 
     const willBeAnimated = (() => {
-      if (isServer && !supportsCSSVars) return false
       const curState = stateRef.current
       const next = !!(hasAnimationProp && !isHOC && useAnimations)
       return Boolean(next || curState.hasAnimated)
     })()
 
-    const usePresence = animationsConfig?.usePresence
-
     // HOOK 8 (-1 if disableSSR, -1 if no context, -1 if production)
+    const usePresence = animationsConfig?.usePresence
     const presence = (willBeAnimated && usePresence?.()) || null
 
     const hasEnterStyle = !!props.enterStyle
@@ -398,7 +396,19 @@ export function createComponent<
     const state = propsIn.forceStyle
       ? { ...states[0], [propsIn.forceStyle]: true }
       : states[0]
+
     const setState = states[1]
+    const shouldSetMounted = needsMount && state.unmounted
+
+    let isAnimated = willBeAnimated
+    if (willBeAnimated && !isAnimated && !supportsCSSVars && state.unmounted === true) {
+      isAnimated = false
+      // if (!presence && isHydrated) {
+      //   if (isServer || ) {
+      //     isAnimated = false
+      //   }
+      // }
+    }
 
     let setStateShallow = createShallowSetState(setState)
 
@@ -440,16 +450,6 @@ export function createComponent<
     }
 
     if (process.env.NODE_ENV === 'development' && time) time`use-state`
-
-    let isAnimated = willBeAnimated
-
-    if (willBeAnimated && !supportsCSSVars) {
-      if (!presence && isHydrated) {
-        if (isServer || state.unmounted === true) {
-          isAnimated = false
-        }
-      }
-    }
 
     // once animated, always animated to preserve hooks
     if (willBeAnimated && !stateRef.current.hasAnimated) {
@@ -534,15 +534,14 @@ export function createComponent<
 
     if (typeof stateRef.current.isListeningToTheme === 'boolean') {
       themeStateProps.shouldUpdate = () => {
-        debugger
         return stateRef.current.isListeningToTheme
       }
     }
 
-    // on native we optimize theme changes if fastSchemeChange is enabled, otherwise deopt
-    if (process.env.TAMAGUI_TARGET === 'native') {
-      themeStateProps.deopt = willBeAnimated
-    }
+    // // on native we optimize theme changes if fastSchemeChange is enabled, otherwise deopt
+    // if (process.env.TAMAGUI_TARGET === 'native') {
+    //   themeStateProps.deopt = willBeAnimated
+    // }
 
     const isExiting = Boolean(!state.unmounted && presence?.[0] === false)
 
@@ -818,7 +817,7 @@ export function createComponent<
     // should not be a layout effect because otherwise it wont render the initial state
     // for example css driver needs to render once with the first styles, then again with the next
     // if its a layout effect it will just skip that first <render >output
-    const shouldSetMounted = needsMount && state.unmounted
+
     const { pseudoGroups, mediaGroups } = splitStyles
 
     // TODO if you add a group prop setStateShallow changes identity...

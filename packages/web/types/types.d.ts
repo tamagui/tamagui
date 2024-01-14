@@ -364,7 +364,6 @@ export interface ThemeProps {
     shallow?: boolean;
 }
 export type UseThemeWithStateProps = ThemeProps & {
-    deopt?: boolean;
     disable?: boolean;
 };
 type ArrayIntersection<A extends any[]> = A[keyof A];
