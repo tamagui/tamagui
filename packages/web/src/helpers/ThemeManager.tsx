@@ -155,9 +155,7 @@ export class ThemeManager {
   }
 
   notify(forced = false) {
-    console.groupCollapsed('😭 notify', this.id, forced)
-    console.trace()
-    console.groupEnd()
+    console.log('.')
     this.themeListeners.forEach((cb) => cb(this.state.name, this, forced))
   }
 

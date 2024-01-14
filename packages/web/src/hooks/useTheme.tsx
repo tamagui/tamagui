@@ -148,49 +148,32 @@ export const useChangeThemeEffect = (
 
   const prevRef = useRef<ChangedThemeResponse | undefined>()
 
-  const id = useId()
-
   function getSnapshot() {
     const force =
-      // forced ||
       shouldUpdate?.() ||
       props.deopt ||
       // this fixes themeable() not updating with the new fastSchemeChange setting
-      (process.env.TAMAGUI_TARGET === 'native' ? props['disable-child-theme'] : undefined)
+      (process.env.TAMAGUI_TARGET === 'native'
+        ? props['disable-child-theme']
+          ? true
+          : undefined
+        : undefined)
 
     const prev = prevRef.current
-    const updatedState = createStateIfChanged(
-      props,
-      parentManager,
-      prev,
-      keys,
-      shouldUpdate,
-      isRoot,
-      force
-    )
-
-    if (props.name) {
-      if (props.debug) console.log('🎨 snap', id, props, updatedState)
-    }
+    const updatedState = createStateIfChanged(props, parentManager, prev, isRoot, force)
 
     if (updatedState) {
       prevRef.current = updatedState
 
       if (prev?.isNewTheme) {
-        console.warn(
-          'we are changing value but staying a new theme, notify children',
-          updatedState.themeManager.id,
-          updatedState.state?.name,
-          prev?.state?.name
-        )
-        // if it was a new theme already and is updating, notify children
+        // // if it was a new theme already and is updating, notify children
         updatedState.themeManager?.notify()
       }
 
       return updatedState
     }
 
-    return prev
+    return prev!
   }
 
   const themeState = useSyncExternalStore<ChangedThemeResponse>(
@@ -223,87 +206,49 @@ export const useChangeThemeEffect = (
   }
 }
 
-function getNextStateIfChanged(
-  props: UseThemeWithStateProps,
-  prev?: ThemeManagerState,
-  themeManager?: ThemeManager,
-  shouldUpdate?: () => boolean | undefined,
-  force?: boolean | undefined
-) {
-  const forceUpdate = force ?? shouldUpdate?.()
-  if (!themeManager || forceUpdate === false) return
-  const next = themeManager.getState(props)
-  if (props.debug) console.log('🎨 next', { next, props, themeManager })
-  if (!next) return
-  if (prev && forceUpdate !== true) {
-    const shouldChange = themeManager.getStateShouldChange(next, prev)
-    if (props.debug) console.log('🎨 shouldChange', shouldChange, { next, prev })
-    if (!shouldChange) {
-      return
-    }
-  }
-  return next
-}
-
 function createStateIfChanged(
   props: UseThemeWithStateProps,
-  parentManager?: ThemeManager,
-  prev?: ChangedThemeResponse,
-  keys?: string[],
-  shouldUpdate?: () => boolean | undefined,
+  parentManager: ThemeManager | undefined,
+  prev: ChangedThemeResponse | undefined,
   isRoot = false,
-  force = false
-): ChangedThemeResponse {
-  if (props.debug)
-    console.log('🎨 createStateIfChanged', shouldUpdate?.(), { force }, props)
-  if (prev && shouldUpdate?.() === false && !force) {
-    return prev
+  force?: boolean
+): ChangedThemeResponse | undefined {
+  if (prev && force === false) {
+    return
   }
 
   //  returns previous theme manager if no change
-  let themeManager: ThemeManager = parentManager!
+  let themeManager: ThemeManager = prev?.themeManager ?? parentManager!
   let state: ThemeManagerState | undefined
   const hasThemeUpdatingProps = getHasThemeUpdatingProps(props)
 
   if (hasThemeUpdatingProps) {
-    const getNewThemeManager = () => {
-      return new ThemeManager(props, isRoot ? 'root' : parentManager)
-    }
-
+    const parent = isRoot ? 'root' : parentManager
     if (prev) {
       if (prev.themeManager) {
-        themeManager = prev.themeManager
-
         // this could be a bit better, problem is on toggling light/dark the state is actually
         // showing light even when the last was dark. but technically allso onChangeTheme should
         // basically always call on a change, so i'm wondering if we even need the shouldUpdate
         // at all anymore. this forces updates onChangeTheme for all dynamic style accessed components
         // which is correct, potentially in the future we can avoid forceChange and just know to
         // update if keys.length is set + onChangeTheme called
-        const forceChange = force || (keys?.length ? true : undefined)
-        const nextState = getNextStateIfChanged(
-          props,
-          prev?.state,
-          themeManager,
-          shouldUpdate,
-          forceChange
-        )
+        const nextState = themeManager.getState(props)
+        const shouldChange = themeManager.getStateShouldChange(nextState, prev.state)
 
-        if (nextState) {
-          state = nextState
-
+        if (nextState && (shouldChange || force)) {
           if (!prev.isNewTheme) {
-            themeManager = getNewThemeManager()
+            themeManager = new ThemeManager(props, parent)
+            state = themeManager.state
           } else {
+            state = nextState
             themeManager.updateState(nextState, false)
           }
         } else {
-          if (props.debug) console.log('returning previous')
-          return prev
+          return
         }
       }
     } else {
-      themeManager = getNewThemeManager()
+      themeManager = new ThemeManager(props, parent)
       state = themeManager.state
     }
   }
@@ -346,10 +291,8 @@ function createStateIfChanged(
         isEqualShallow(prev.state, state)
     )
 
-    if (props.debug) console.log('🎨 shouldReturnPrev', shouldReturnPrev, { state, prev })
-
     if (shouldReturnPrev) {
-      return prev
+      return
     }
   }
 
