@@ -30,7 +30,7 @@ export const pseudoDescriptors: Record<
   ...pseudoDescriptorsBase,
   enterStyle: {
     name: 'enter',
-    stateKey: 'unmounted',
+    selector: '.t_unmounted',
     priority: 4,
   },
   exitStyle: {
@@ -43,6 +43,7 @@ export type PseudoDescriptor = {
   name: string
   priority: number
   stateKey?: string
+  selector?: string
 }
 
 export type PseudoDescriptors = {

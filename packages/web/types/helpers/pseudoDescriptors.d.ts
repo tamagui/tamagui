@@ -23,6 +23,7 @@ export type PseudoDescriptor = {
     name: string;
     priority: number;
     stateKey?: string;
+    selector?: string;
 };
 export type PseudoDescriptors = {
     [Key in keyof typeof pseudoDescriptors]: PseudoDescriptor;

@@ -91,7 +91,7 @@ export const useThemeWithState = (
 
           if (
             process.env.NODE_ENV === 'development' &&
-            props.debug &&
+            typeof props.debug === 'string' &&
             props.debug !== 'profile'
           ) {
             console.info(`  🎨 useTheme() shouldUpdate?`, next, {

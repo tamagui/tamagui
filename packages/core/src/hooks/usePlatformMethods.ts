@@ -8,7 +8,7 @@ import { measureLayout } from './useElementLayout'
 export function usePlatformMethods(hostRef: RefObject<Element>) {
   useIsomorphicLayoutEffect(() => {
     const node = hostRef.current
-    if (!node) return
+    if (!node || node['measure']) return
     // @ts-ignore
     node.measure = (callback) => measureLayout(node, null, callback)
     // @ts-ignore
