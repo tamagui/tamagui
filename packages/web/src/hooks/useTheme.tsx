@@ -155,7 +155,7 @@ export const useChangeThemeEffect = (
       shouldPersist
     )
 
-    console.log('GO?', { props, shouldPersist, updatedState, prev })
+    // console.log('GO?', { props, shouldPersist, updatedState, prev })
 
     if (updatedState) {
       prevRef.current = updatedState
