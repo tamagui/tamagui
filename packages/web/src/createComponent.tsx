@@ -538,10 +538,10 @@ export function createComponent<
       }
     }
 
-    // // on native we optimize theme changes if fastSchemeChange is enabled, otherwise deopt
-    // if (process.env.TAMAGUI_TARGET === 'native') {
-    //   themeStateProps.deopt = willBeAnimated
-    // }
+    // on native we optimize theme changes if fastSchemeChange is enabled, otherwise deopt
+    if (process.env.TAMAGUI_TARGET === 'native') {
+      themeStateProps.deopt = willBeAnimated
+    }
 
     const isExiting = Boolean(!state.unmounted && presence?.[0] === false)
 
