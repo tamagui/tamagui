@@ -24,7 +24,7 @@ const plugins = [
   withTamagui({
     emitSingleCSSFile:
       false,
-    useReactNativeWebLite: true,
+    // useReactNativeWebLite: true,
     config: './tamagui.config.ts',
     themeBuilder: {
       input: '@tamagui/themes/src/themes-new.ts',
@@ -46,7 +46,6 @@ const plugins = [
       'Picker',
       'CheckBox',
       'Touchable',
-      'Animated',
       'FlatList',
       'Modal',
     ],

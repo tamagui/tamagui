@@ -29,7 +29,7 @@ export default function Home({ animationCode, compilationExamples }) {
         <Hero />
       </TintSection>
       <HeroBelow />
-      <TintSection index={2} contain="paint layout" zi={1000}>
+      {/* <TintSection index={2} contain="paint layout" zi={1000}>
         <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-down" />
         <HeroExampleCode examples={compilationExamples} />
       </TintSection>
@@ -64,7 +64,7 @@ export default function Home({ animationCode, compilationExamples }) {
       </HomeSection>
       <HomeSection zi={0}>
         <Community />
-      </HomeSection>
+      </HomeSection> */}
     </>
   )
 }
