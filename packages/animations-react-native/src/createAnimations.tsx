@@ -423,6 +423,9 @@ function getAnimationConfig(
   animations: AnimationsConfig,
   animation?: AnimationProp
 ): AnimationConfig {
+  if (!animation) {
+    return {}
+  }
   if (typeof animation === 'string') {
     return animations[animation]
   }
@@ -447,6 +450,7 @@ function getAnimationConfig(
   }
   const found = animations[type]
   if (!found) {
+    debugger
     throw new Error(`No animation of type "${type}" for key "${key}"`)
   }
   return {
