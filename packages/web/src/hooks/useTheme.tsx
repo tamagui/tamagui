@@ -53,29 +53,7 @@ export const useThemeWithState = (
 ): [ChangedThemeResponse, ThemeParsed] => {
   const keys = useRef<string[]>([])
 
-  const changedThemeState = useChangeThemeEffect(
-    props,
-    false,
-    keys.current,
-    !isServer
-      ? () => {
-          const next =
-            props.shouldUpdate?.() ?? (keys.current.length > 0 ? true : undefined)
-
-          if (
-            process.env.NODE_ENV === 'development' &&
-            props.debug &&
-            props.debug !== 'profile'
-          ) {
-            console.info(`  🎨 useTheme() shouldUpdate?`, next, {
-              shouldUpdateProp: props.shouldUpdate?.(),
-              keys: [...keys.current],
-            })
-          }
-          return next
-        }
-      : undefined
-  )
+  const changedThemeState = useChangeThemeEffect(props, false, keys)
 
   const { themeManager, state } = changedThemeState
 
@@ -129,8 +107,7 @@ const emptyCb = (cb: Function) => cb()
 export const useChangeThemeEffect = (
   props: UseThemeWithStateProps,
   isRoot = false,
-  keys?: string[],
-  shouldUpdate?: () => boolean | undefined
+  keys?: { current: string[] }
 ): ChangedThemeResponse => {
   const { disable } = props
   const parentManagerId = useContext(ThemeManagerIDContext)
@@ -145,11 +122,17 @@ export const useChangeThemeEffect = (
   }
 
   const subscribe = parentManager?.onChangeTheme || emptyCb
-
   const prevRef = useRef<ChangedThemeResponse | undefined>()
 
+  function shouldUpdate() {
+    if (isServer) return false
+    return props.shouldUpdate?.() ?? ((keys?.current.length ?? 0) > 0 ? true : undefined)
+  }
+
   function getSnapshot() {
-    const force =
+    const prev = prevRef.current
+
+    const shouldPersist =
       shouldUpdate?.() ||
       props.deopt ||
       // this fixes themeable() not updating with the new fastSchemeChange setting
@@ -159,26 +142,28 @@ export const useChangeThemeEffect = (
           : undefined
         : undefined)
 
-    const prev = prevRef.current
     const hasThemeUpdatingProps = getHasThemeUpdatingProps(props)
-    const updatedState = createStateIfChanged(
-      hasThemeUpdatingProps,
+    if (!hasThemeUpdatingProps && prev?.isNewTheme === false) {
+      return prev
+    }
+
+    const updatedState = updateStateIfChanged(
       props,
-      parentManager,
+      prev?.themeManager ?? parentManager,
       prev,
       isRoot,
-      force
+      shouldPersist
     )
+
+    console.log('GO?', { props, shouldPersist, updatedState, prev })
 
     if (updatedState) {
       prevRef.current = updatedState
-
       if (prev?.isNewTheme) {
         // // if it was a new theme already and is updating, notify children
         updatedState.themeManager?.notify()
       }
-
-      if (force || (hasThemeUpdatingProps && updatedState) || !prev) {
+      if (shouldPersist || !prev) {
         return updatedState
       }
     }
@@ -216,8 +201,7 @@ export const useChangeThemeEffect = (
   }
 }
 
-function createStateIfChanged(
-  hasThemeUpdatingProps: boolean,
+function updateStateIfChanged(
   props: UseThemeWithStateProps,
   parentManager: ThemeManager | undefined,
   prev: ChangedThemeResponse | undefined,
@@ -232,35 +216,33 @@ function createStateIfChanged(
   let themeManager: ThemeManager = prev?.themeManager ?? parentManager!
   let state: ThemeManagerState | undefined
 
-  if (hasThemeUpdatingProps) {
-    const parent = isRoot ? 'root' : parentManager
-    if (prev) {
-      if (prev.themeManager) {
-        // this could be a bit better, problem is on toggling light/dark the state is actually
-        // showing light even when the last was dark. but technically allso onChangeTheme should
-        // basically always call on a change, so i'm wondering if we even need the shouldUpdate
-        // at all anymore. this forces updates onChangeTheme for all dynamic style accessed components
-        // which is correct, potentially in the future we can avoid forceChange and just know to
-        // update if keys.length is set + onChangeTheme called
-        const nextState = themeManager.getState(props)
-        const shouldChange = themeManager.getStateShouldChange(nextState, prev.state)
+  const parent = isRoot ? 'root' : parentManager
+  if (prev) {
+    if (prev.themeManager) {
+      // this could be a bit better, problem is on toggling light/dark the state is actually
+      // showing light even when the last was dark. but technically allso onChangeTheme should
+      // basically always call on a change, so i'm wondering if we even need the shouldUpdate
+      // at all anymore. this forces updates onChangeTheme for all dynamic style accessed components
+      // which is correct, potentially in the future we can avoid forceChange and just know to
+      // update if keys.length is set + onChangeTheme called
+      const nextState = themeManager.getState(props)
+      const shouldChange = themeManager.getStateShouldChange(nextState, prev.state)
 
-        if (nextState && (shouldChange || force)) {
-          if (!prev.isNewTheme) {
-            themeManager = new ThemeManager(props, parent)
-            state = themeManager.state
-          } else {
-            state = nextState
-            themeManager.updateState(nextState, false)
-          }
+      if (nextState && (shouldChange || force)) {
+        if (!prev.isNewTheme) {
+          themeManager = new ThemeManager(props, parent)
+          state = themeManager.state
         } else {
-          return
+          state = nextState
+          themeManager.updateState(nextState, false)
         }
+      } else {
+        return
       }
-    } else {
-      themeManager = new ThemeManager(props, parent)
-      state = themeManager.state
     }
+  } else {
+    themeManager = new ThemeManager(props, parent)
+    state = themeManager.state
   }
 
   const isNewTheme = Boolean(themeManager !== parentManager || props.inverse)

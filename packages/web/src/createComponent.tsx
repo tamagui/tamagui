@@ -533,7 +533,10 @@ export function createComponent<
     }
 
     if (typeof stateRef.current.isListeningToTheme === 'boolean') {
-      themeStateProps.shouldUpdate = () => stateRef.current.isListeningToTheme
+      themeStateProps.shouldUpdate = () => {
+        console.log('ok', stateRef.current.isListeningToTheme)
+        return stateRef.current.isListeningToTheme
+      }
     }
 
     // on native we optimize theme changes if fastSchemeChange is enabled, otherwise deopt
