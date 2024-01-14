@@ -160,7 +160,15 @@ export const useChangeThemeEffect = (
         : undefined)
 
     const prev = prevRef.current
-    const updatedState = createStateIfChanged(props, parentManager, prev, isRoot, force)
+    const hasThemeUpdatingProps = getHasThemeUpdatingProps(props)
+    const updatedState = createStateIfChanged(
+      hasThemeUpdatingProps,
+      props,
+      parentManager,
+      prev,
+      isRoot,
+      force
+    )
 
     if (updatedState) {
       prevRef.current = updatedState
@@ -170,7 +178,9 @@ export const useChangeThemeEffect = (
         updatedState.themeManager?.notify()
       }
 
-      return updatedState
+      if (force || (hasThemeUpdatingProps && updatedState) || !prev) {
+        return updatedState
+      }
     }
 
     return prev!
@@ -207,6 +217,7 @@ export const useChangeThemeEffect = (
 }
 
 function createStateIfChanged(
+  hasThemeUpdatingProps: boolean,
   props: UseThemeWithStateProps,
   parentManager: ThemeManager | undefined,
   prev: ChangedThemeResponse | undefined,
@@ -220,7 +231,6 @@ function createStateIfChanged(
   //  returns previous theme manager if no change
   let themeManager: ThemeManager = prev?.themeManager ?? parentManager!
   let state: ThemeManagerState | undefined
-  const hasThemeUpdatingProps = getHasThemeUpdatingProps(props)
 
   if (hasThemeUpdatingProps) {
     const parent = isRoot ? 'root' : parentManager
