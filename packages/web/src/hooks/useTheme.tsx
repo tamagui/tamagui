@@ -1,8 +1,8 @@
-import { isClient, isIos, isServer } from '@tamagui/constants'
+import { isClient, isServer } from '@tamagui/constants'
 import { useContext, useId, useMemo, useRef, useSyncExternalStore } from 'react'
 
 import { getConfig } from '../config'
-import { Variable, getVariable } from '../createVariable'
+import { Variable } from '../createVariable'
 import {
   ThemeManager,
   ThemeManagerState,
@@ -11,13 +11,14 @@ import {
 import { ThemeManagerIDContext } from '../helpers/ThemeManagerContext'
 import { isEqualShallow } from '../helpers/createShallowSetState'
 import type {
-  DebugProp,
   ThemeParsed,
   ThemeProps,
+  UseThemeResult,
   UseThemeWithStateProps,
   VariableVal,
   VariableValGeneric,
 } from '../types'
+import { getThemeProxied } from './getThemeProxied'
 
 export type ChangedThemeResponse = {
   state?: ThemeManagerState
@@ -31,42 +32,14 @@ export type ChangedThemeResponse = {
 
 const emptyProps = { name: null }
 
-let cached: any
+let cache: any
 function getDefaultThemeProxied() {
-  if (cached) return cached
+  if (cache) return cache
   const config = getConfig()
   const name = config.themes.light ? 'light' : Object.keys(config.themes)[0]
   const defaultTheme = config.themes[name]
-  cached = getThemeProxied({ theme: defaultTheme, name })
-  return cached
-}
-
-export type ThemeGettable<Val> = Val & {
-  /**
-   * Tries to return an optimized value that avoids the need for re-rendering:
-   * On web a CSS variable, on iOS a dynamic color, on Android it doesn't
-   * optimize and returns the underyling value.
-   *
-   * See: https://reactnative.dev/docs/dynamiccolorios
-   *
-   * @param platform when "web" it will only return the dynamic value for web, avoiding the iOS dynamic value.
-   * For things like SVG, gradients, or other external components that don't support it, use this option.
-   */
-  get: (
-    platform?: 'web'
-  ) =>
-    | string
-    | (Val extends Variable<infer X>
-        ? X extends VariableValGeneric
-          ? any
-          : Exclude<X, Variable>
-        : Val extends VariableVal
-          ? string | number
-          : unknown)
-}
-
-export type UseThemeResult = {
-  [Key in keyof ThemeParsed]: ThemeGettable<ThemeParsed[Key]>
+  cache = getThemeProxied({ theme: defaultTheme, name })
+  return cache
 }
 
 export const useTheme = (props: ThemeProps = emptyProps) => {
@@ -134,133 +107,6 @@ export const useThemeWithState = (
   return [changedThemeState, themeProxied]
 }
 
-export function getThemeProxied(
-  { theme, name, scheme }: ThemeManagerState,
-  deopt = false,
-  themeManager?: ThemeManager,
-  keys?: string[],
-  debug?: DebugProp
-): UseThemeResult {
-  if (!theme) return {}
-
-  const config = getConfig()
-
-  function track(key: string) {
-    if (keys && !keys.includes(key)) {
-      keys.push(key)
-      if (process.env.NODE_ENV === 'development' && debug) {
-        console.info(` 🎨 useTheme() tracking new key: ${key}`)
-      }
-    }
-  }
-
-  return new Proxy(theme, {
-    has(_, key) {
-      if (Reflect.has(theme, key)) {
-        return true
-      }
-      if (typeof key === 'string') {
-        if (key[0] === '$') key = key.slice(1)
-        return themeManager?.allKeys.has(key)
-      }
-    },
-    get(_, key) {
-      if (
-        // dont ask me, idk why but on hermes you can see that useTheme()[undefined] passes in STRING undefined to proxy
-        // if someone is crazy enough to use "undefined" as a theme key then this not working is on them
-        key !== 'undefined' &&
-        typeof key === 'string'
-      ) {
-        // auto convert variables to plain
-        const keyString = key[0] === '$' ? key.slice(1) : key
-        const val = theme[keyString]
-
-        if (val && typeof val === 'object') {
-          // TODO this could definitely be done better by at the very minimum
-          // proxying it up front and just having a listener here
-          return new Proxy(val as any, {
-            // when they touch the actual value we only track it
-            // if its a variable (web), its ignored!
-            get(_, subkey) {
-              if (subkey === 'val') {
-                // always track .val
-                track(keyString)
-              } else if (subkey === 'get') {
-                return (platform?: 'web') => {
-                  const outVal = getVariable(val)
-
-                  if (process.env.TAMAGUI_TARGET === 'native') {
-                    // ios can avoid re-rendering in some cases when we are using a root light/dark
-                    // disabled in cases where we have animations
-                    if (
-                      platform !== 'web' &&
-                      isIos &&
-                      !deopt &&
-                      config.settings.fastSchemeChange &&
-                      !someParentIsInversed(themeManager)
-                    ) {
-                      if (scheme) {
-                        const oppositeThemeName = name.replace(
-                          scheme === 'dark' ? 'dark' : 'light',
-                          scheme === 'dark' ? 'light' : 'dark'
-                        )
-                        const oppositeTheme = config.themes[oppositeThemeName]
-                        const oppositeVal = getVariable(oppositeTheme?.[keyString])
-                        if (oppositeVal) {
-                          const dynamicVal = {
-                            dynamic: {
-                              dark: scheme === 'dark' ? outVal : oppositeVal,
-                              light: scheme === 'light' ? outVal : oppositeVal,
-                            },
-                          }
-                          return dynamicVal
-                        }
-                      }
-                    }
-
-                    // if we dont return early with a dynamic val on native, always track
-                    track(keyString)
-                  }
-
-                  return outVal
-                }
-              }
-
-              return Reflect.get(val as any, subkey)
-            },
-          })
-        }
-
-        if (
-          process.env.NODE_ENV === 'development' &&
-          process.env.TAMAGUI_FEAT_THROW_ON_MISSING_THEME_VALUE === '1'
-        ) {
-          throw new Error(
-            `[tamagui] No theme key "${key}" found in theme ${name}. \n  Keys in theme: ${Object.keys(
-              theme
-            ).join(', ')}`
-          )
-        }
-      }
-
-      return Reflect.get(_, key)
-    },
-  }) as UseThemeResult
-}
-
-// to tell if we are inversing the scheme anywhere in the tree, if so we need to de-opt
-function someParentIsInversed(manager?: ThemeManager) {
-  if (process.env.TAMAGUI_TARGET === 'native') {
-    let cur: ThemeManager | null | undefined = manager
-    while (cur) {
-      if (!cur.parentManager) return false
-      if (cur.parentManager.state.scheme !== cur.state.scheme) return true
-      cur = cur.parentManager
-    }
-  }
-  return false
-}
-
 export const activeThemeManagers = new Set<ThemeManager>()
 
 const _uidToManager = new WeakMap<Object, ThemeManager>()
@@ -298,19 +144,6 @@ export const useChangeThemeEffect = (
     }
   }
 
-  // for testing performance can bail it out early with this fake response:
-  // i found most of the cost was just having a useState at all, at least 30%
-  // if (!disable && parentManager) {
-  //   return {
-  //     isNewTheme: false,
-  //     state: {
-  //       name: 'light',
-  //       theme: getConfig().themes.light,
-  //     },
-  //     themeManager: parentManager!,
-  //   }
-  // }
-
   const subscribe = parentManager?.onChangeTheme || emptyCb
 
   const prevRef = useRef<ChangedThemeResponse | undefined>()
@@ -337,20 +170,27 @@ export const useChangeThemeEffect = (
     )
 
     if (props.name) {
-      if (props.debug) console.log('snap', id, props, updatedState)
+      if (props.debug) console.log('🎨 snap', id, props, updatedState)
     }
 
     if (updatedState) {
       prevRef.current = updatedState
 
       if (prev?.isNewTheme) {
-        console.warn('we are changing value but staying a new theme, notify children')
+        console.warn(
+          'we are changing value but staying a new theme, notify children',
+          updatedState.themeManager.id,
+          updatedState.state?.name,
+          prev?.state?.name
+        )
         // if it was a new theme already and is updating, notify children
         updatedState.themeManager?.notify()
       }
+
+      return updatedState
     }
 
-    return updatedState
+    return prev
   }
 
   const themeState = useSyncExternalStore<ChangedThemeResponse>(
@@ -361,89 +201,6 @@ export const useChangeThemeEffect = (
 
   const { state, mounted, isNewTheme, themeManager, inversed } = themeState
   const isInversingOnMount = Boolean(!themeState.mounted && props.inverse)
-
-  // if (!isServer) {
-  //   // listen for parent change + notify children change
-  //   useEffect(() => {
-  //     if (!themeManager) return
-
-  //     // SSR safe inverse (because server can't know prefers scheme)
-  //     // could be done through fancy selectors like how we do prefers-media
-  //     // but may be a bit of explosion of selectors
-  //     if (props.inverse && !mounted) {
-  //       setThemeState((prev) => {
-  //         return createStateIfChanged({
-  //           ...prev,
-  //           mounted: true,
-  //         })
-  //       })
-  //       return
-  //     }
-
-  //     if (isNewTheme || getShouldUpdateTheme(themeManager)) {
-  //       activeThemeManagers.add(themeManager)
-  //       setThemeState(createStateIfChanged)
-  //     }
-
-  //     // for updateTheme/replaceTheme
-  //     const selfListenerDispose = themeManager.onChangeTheme((_a, _b, forced) => {
-  //       if (forced) {
-  //         setThemeState((prev) => createStateIfChanged(prev, true))
-  //       }
-  //     })
-
-  //     const disposeChangeListener = parentManager?.onChangeTheme(
-  //       (name, manager, forced) => {
-
-  //         const shouldTryUpdate = force ?? Boolean(keys?.length || isNewTheme)
-
-  //         if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
-  //           // prettier-ignore
-  //           console.info(` 🔸 onChange`, themeManager.id, {
-  //             force,
-  //             shouldTryUpdate,
-  //             props,
-  //             name,
-  //             manager,
-  //             keys,
-  //           })
-  //         }
-
-  //         if (shouldTryUpdate) {
-  //           setThemeState((prev) => createStateIfChanged(prev, force))
-  //         }
-  //       },
-  //       themeManager.id
-  //     )
-
-  //     return () => {
-  //       selfListenerDispose()
-  //       disposeChangeListener?.()
-  //       if (isNewTheme) {
-  //         activeThemeManagers.delete(themeManager)
-  //       }
-  //     }
-  //   }, [
-  //     themeManager,
-  //     parentManager,
-  //     isNewTheme,
-  //     props.componentName,
-  //     props.inverse,
-  //     props.name,
-  //     props.reset,
-  //     mounted,
-  //   ])
-
-  //   if (process.env.NODE_ENV === 'development' && props.debug !== 'profile') {
-  //     useEffect(() => {
-  //       globalThis['TamaguiThemeManagers'] ??= new Set()
-  //       globalThis['TamaguiThemeManagers'].add(themeManager)
-  //       return () => {
-  //         globalThis['TamaguiThemeManagers'].delete(themeManager)
-  //       }
-  //     }, [themeManager])
-  //   }
-  // }
 
   if (isInversingOnMount) {
     return {
@@ -469,17 +226,18 @@ export const useChangeThemeEffect = (
 function getNextStateIfChanged(
   props: UseThemeWithStateProps,
   prev?: ThemeManagerState,
-  parentManager?: ThemeManager,
+  themeManager?: ThemeManager,
   shouldUpdate?: () => boolean | undefined,
   force?: boolean | undefined
 ) {
   const forceUpdate = force ?? shouldUpdate?.()
-  if (!parentManager || forceUpdate === false) return
-  const next = parentManager.getState(props, parentManager)
-  if (props.debug) console.log('next', { next, props, parentManager })
+  if (!themeManager || forceUpdate === false) return
+  const next = themeManager.getState(props)
+  if (props.debug) console.log('🎨 next', { next, props, themeManager })
   if (!next) return
   if (prev && forceUpdate !== true) {
-    const shouldChange = parentManager.getStateShouldChange(next, prev)
+    const shouldChange = themeManager.getStateShouldChange(next, prev)
+    if (props.debug) console.log('🎨 shouldChange', shouldChange, { next, prev })
     if (!shouldChange) {
       return
     }
@@ -496,7 +254,8 @@ function createStateIfChanged(
   isRoot = false,
   force = false
 ): ChangedThemeResponse {
-  if (props.debug) console.log('createStateIfChanged', shouldUpdate?.(), { force }, props)
+  if (props.debug)
+    console.log('🎨 createStateIfChanged', shouldUpdate?.(), { force }, props)
   if (prev && shouldUpdate?.() === false && !force) {
     return prev
   }
@@ -525,7 +284,7 @@ function createStateIfChanged(
         const nextState = getNextStateIfChanged(
           props,
           prev?.state,
-          parentManager,
+          themeManager,
           shouldUpdate,
           forceChange
         )
@@ -539,12 +298,13 @@ function createStateIfChanged(
             themeManager.updateState(nextState, false)
           }
         } else {
+          if (props.debug) console.log('returning previous')
           return prev
         }
       }
     } else {
       themeManager = getNewThemeManager()
-      state = { ...themeManager.state }
+      state = themeManager.state
     }
   }
 
@@ -577,18 +337,20 @@ function createStateIfChanged(
     inversed,
   }
 
-  const shouldReturnPrev =
-    prev &&
-    !force &&
-    // isEqualShallow uses the second arg as the keys so this should compare without state first...
-    isEqualShallow(prev, response) &&
-    // ... and then compare just the state, because we make a new state obj but is likely the same
-    isEqualShallow(prev.state, state)
+  if (prev) {
+    const shouldReturnPrev = Boolean(
+      !force &&
+        // isEqualShallow uses the second arg as the keys so this should compare without state first...
+        isEqualShallow(prev, response) &&
+        // ... and then compare just the state, because we make a new state obj but is likely the same
+        isEqualShallow(prev.state, state)
+    )
 
-  if (props.debug) console.log('shouldReturnPrev', shouldReturnPrev, { state, prev })
+    if (props.debug) console.log('🎨 shouldReturnPrev', shouldReturnPrev, { state, prev })
 
-  if (prev && shouldReturnPrev) {
-    return prev
+    if (shouldReturnPrev) {
+      return prev
+    }
   }
 
   // after we compare equal we set the state

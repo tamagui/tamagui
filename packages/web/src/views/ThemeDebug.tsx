@@ -42,14 +42,17 @@ export function ThemeDebug({
     }
 
     useEffect(() => {
-      themeState.themeManager?.parentManager?.onChangeTheme((name, manager) => {
+      return themeState.themeManager?.parentManager?.onChangeTheme((name, manager) => {
         setOnChangeCount((p) => ++p)
         console.warn(
+          id,
           `theme changed for ${themeState.themeManager?.id} from parent ${themeState.themeManager?.parentManager?.id} to new name`,
-          name
+          name,
+          `current is`,
+          themeState?.state?.name
         )
       })
-    }, [themeState.themeManager])
+    }, [themeState])
 
     useEffect(() => {
       // to refresh _listeningIds every so often
