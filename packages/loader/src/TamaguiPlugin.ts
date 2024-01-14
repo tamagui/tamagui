@@ -23,6 +23,10 @@ export type PluginOptions = TamaguiOptions & {
   disableModuleJSXEntry?: boolean
   disableWatchConfig?: boolean
   disableAliases?: boolean
+  /**
+   * @deprecated Deprecated
+   */
+  useReactNativeWebLite?: boolean
 }
 
 const dir = __dirname
@@ -116,12 +120,21 @@ export class TamaguiPlugin {
         ['react/jsx-dev-runtime.js', 'react/jsx-dev-runtime'],
         ['react/jsx-dev-runtime', 'react/jsx-dev-runtime'],
         ['react-native-reanimated', 'react-native-reanimated'],
-        ['react-native$', 'react-native-web'],
-        ['react-native-web$', 'react-native-web'],
+
         ['@testing-library/react-native', '@tamagui/proxy-worm'],
         ['@gorhom/bottom-sheet$', '@gorhom/bottom-sheet'],
         // fix reanimated 3
         ['react-native/Libraries/Renderer/shims/ReactFabric', '@tamagui/proxy-worm'],
+        // @ts-expect-error deprecated
+        ...(this.options.useReactNativeWebLite
+          ? [
+              ['react-native$', 'react-native-web-lite'],
+              ['react-native-web$', 'react-native-web-lite'],
+            ]
+          : [
+              ['react-native$', 'react-native-web'],
+              ['react-native-web$', 'react-native-web'],
+            ]),
       ])
     )
   }
