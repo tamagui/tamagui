@@ -2,7 +2,7 @@ import { PresenceContext, ResetPresence, usePresence } from '@tamagui/use-presen
 import { AnimationDriver, UniversalAnimatedNumber } from '@tamagui/web'
 import type { MotiTransition } from 'moti'
 import { useMotify } from 'moti/author'
-import { useCallback, useContext, useMemo } from 'react'
+import { useCallback, useContext, useMemo, useRef } from 'react'
 import Animated, {
   SharedValue,
   cancelAnimation,
@@ -99,7 +99,8 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
       }, [val, getStyle, derivedValue, instance])
     },
 
-    useAnimations: ({ props, presence, style, onDidAnimate }) => {
+    useAnimations: (animationProps) => {
+      const { props, presence, style, onDidAnimate, componentState } = animationProps
       const animationKey = Array.isArray(props.animation)
         ? props.animation[0]
         : props.animation
@@ -125,35 +126,44 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
       // stringifying -> parsing fixes that
       const animateStr = JSON.stringify(animate)
       const styles = useMemo(() => JSON.parse(animateStr), [animateStr])
+
       const isExiting = Boolean(presence?.[1])
       const sendExitComplete = presence?.[1]
-      const transition = animations[animationKey as keyof typeof animations]
+      const transition = componentState.unmounted
+        ? ({ type: 'no-animation' } as const)
+        : animations[animationKey as keyof typeof animations]
 
       const onDidAnimateCombined = useCallback(() => {
         onDidAnimate?.()
         sendExitComplete?.()
       }, [])
 
+      const fromRef = useRef()
+      if (!componentState.unmounted && !fromRef.current) {
+        fromRef.current = styles
+      }
+
+      type UseMotiProps = Parameters<typeof useMotify>[0]
+
       const motiProps = {
+        animateInitialState: false,
+        from: fromRef.current,
         animate: isExiting ? undefined : styles,
         transition,
         onDidAnimate: onDidAnimateCombined,
         usePresenceValue: presence as any,
         presenceContext: useContext(PresenceContext),
         exit: isExiting ? styles : undefined,
-      }
+      } satisfies UseMotiProps
 
       const moti = useMotify(motiProps)
 
-      if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
+      if (process.env.NODE_ENV === 'development' && typeof props['debug'] === 'string') {
         console.info(`Moti animation:`, {
-          animate,
-          transition,
-          styles,
+          animationProps,
+          motiProps,
           moti,
-          dontAnimate,
-          isExiting,
-          animateStr,
+          style: [dontAnimate, moti.style],
         })
       }
 
