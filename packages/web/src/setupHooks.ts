@@ -19,7 +19,8 @@ type InternalHooks = {
   usePropsTransform?: (
     elementType: any,
     props: Record<string, any>,
-    hostRef: RefObject<TamaguiElement>
+    hostRef: RefObject<TamaguiElement>,
+    willHydrate?: boolean
   ) => any
 
   useEvents?: (

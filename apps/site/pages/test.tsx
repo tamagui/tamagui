@@ -3,11 +3,11 @@
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { Header } from '@tamagui/site/components/Header'
 import { SearchProvider } from '@tamagui/site/components/Search'
-import { Button, Square } from 'tamagui'
-
-import { getDefaultLayout } from '../lib/getDefaultLayout'
+import { useState } from 'react'
+import { Square } from 'tamagui'
 
 function TestPage() {
+  const [color, setColor] = useState('red')
   return (
     <div
       style={{
@@ -18,7 +18,16 @@ function TestPage() {
         flex: 1,
       }}
     >
-      {/* <Square animation="quick" o={1} enterStyle={{ o: 0 }} size={200} bc="$color" /> */}
+      <Square
+        animation="lazy"
+        animateOnly={['backgroundColor']}
+        o={1}
+        bg={color as any}
+        onPress={() => setColor(color === 'red' ? 'green' : 'red')}
+        enterStyle={{ bg: 'blue' }}
+        size={200}
+        // debug="break"
+      />
     </div>
   )
 }

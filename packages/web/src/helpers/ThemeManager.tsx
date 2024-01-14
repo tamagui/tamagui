@@ -229,15 +229,6 @@ function getState(
       ? max // component name only don't search upwards
       : 0
 
-  if (
-    process.env.NODE_ENV !== 'production' &&
-    props.debug &&
-    typeof window !== 'undefined'
-  ) {
-    console.groupCollapsed('ThemeManager.getState()')
-    console.info({ props, baseName, base, min, max })
-  }
-
   for (let i = max; i >= min; i--) {
     let prefix = base.slice(0, i).join(THEME_NAME_SEPARATOR)
 
@@ -331,10 +322,12 @@ function getState(
 
   if (
     process.env.NODE_ENV !== 'production' &&
-    typeof props.debug === 'string' &&
+    props.debug === 'verbose' &&
     typeof window !== 'undefined'
   ) {
-    console.warn('ThemeManager.getState():', { result })
+    console.groupCollapsed('ThemeManager.getState()')
+    console.info({ props, baseName, base, min, max })
+    console.warn('result', { result })
     console.trace()
     console.groupEnd()
   }

@@ -181,7 +181,7 @@ export function createComponent<
   }
 
   const component = forwardRef<Ref, ComponentPropTypes>((propsIn, forwardedRef) => {
-    // HOOK 1
+    // HOOK
     const internalID = process.env.NODE_ENV === 'development' ? useId() : ''
 
     if (process.env.NODE_ENV === 'development') {
@@ -211,7 +211,7 @@ export function createComponent<
       }
     }
 
-    // HOOK 2 (-1 if production)
+    // HOOK
     const componentContext = useContext(ComponentContext)
 
     // set variants through context
@@ -266,7 +266,7 @@ export function createComponent<
     const componentName = props.componentName || staticConfig.componentName
 
     if (process.env.NODE_ENV === 'development' && isClient) {
-      // HOOK 4 (-1 if no context, -1 if production)
+      // HOOK
       useEffect(() => {
         let overlay: HTMLSpanElement | null = null
 
@@ -330,9 +330,10 @@ export function createComponent<
 
     // conditional but if ever true stays true
     // [animated, inversed]
-    // HOOK 6 (-1 if no context, -1 if production, -1 if disableSSR)
+    // HOOK
     const stateRef = useRef(
       {} as any as {
+        willHydrate?: boolean
         hasMeasured?: boolean
         hasAnimated?: boolean
         themeShallow?: boolean
@@ -349,7 +350,7 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development' && time) time`stateref`
 
     // TODO can remove and fold into stateRef
-    // HOOK 7 (-1 if no context, -1 if production, -1 if disableSSR)
+    // HOOK
     const hostRef = useRef<TamaguiElement>(null)
 
     /**
@@ -379,31 +380,29 @@ export function createComponent<
       stateRef.current.hasAnimated = true
     }
 
-    // HOOK 5 (-1 if no context, -1 if production)
+    // HOOK
     const isHydrated = config?.disableSSR ? true : useDidFinishSSR()
 
-    const usePresence = animationsConfig?.usePresence
-
-    // HOOK 8 (-1 if disableSSR, -1 if no context, -1 if production)
-    const presence = (willBeAnimated && usePresence?.()) || null
+    // HOOK
+    const presence = (willBeAnimated && animationsConfig?.usePresence?.()) || null
 
     const hasEnterStyle = !!props.enterStyle
-    const needsMount = Boolean((isWeb ? isClient : true) && willBeAnimated)
 
     if (process.env.NODE_ENV === 'development' && time) time`pre-use-state`
 
-    const initialState = willBeAnimated
-      ? supportsCSSVars
-        ? defaultComponentStateShouldEnter!
-        : defaultComponentState!
-      : defaultComponentStateMounted!
+    const initialState = hasEnterStyle
+      ? !isHydrated
+        ? defaultComponentStateShouldEnter
+        : defaultComponentState
+      : defaultComponentStateMounted
 
-    // HOOK 9 (-1 if no animation, -1 if disableSSR, -1 if no context, -1 if production)
+    // HOOK
     const states = useState<TamaguiComponentState>(initialState)
 
-    const state = propsIn.forceStyle
-      ? { ...states[0], [propsIn.forceStyle]: true }
+    const state = props.forceStyle
+      ? { ...states[0], [props.forceStyle]: true }
       : states[0]
+
     const setState = states[1]
 
     let setStateShallow = createShallowSetState(setState, debugProp)
@@ -411,8 +410,9 @@ export function createComponent<
     // finish animated logic, avoid isAnimated when unmounted
     let isAnimated = willBeAnimated
     if (willBeAnimated && !supportsCSSVars) {
-      if (!isHydrated || state.unmounted === true) {
+      if (!isHydrated) {
         isAnimated = false
+        stateRef.current.willHydrate = true
       }
     }
 
@@ -559,9 +559,7 @@ export function createComponent<
         const dataIs = propsIn['data-is'] || ''
         const banner = `${name}${dataIs ? ` ${dataIs}` : ''} ${type} id ${internalID}`
         console.group(
-          `%c ${banner} (unmounted: ${state.unmounted})${
-            presence ? ` (presence: ${presence[0]})` : ''
-          } ${isHydrated ? '💦' : '🏜️'}`,
+          `%c ${banner} (hydrated: ${isHydrated}) (unmounted: ${state.unmounted})`,
           'background: green; color: white;'
         )
         if (!isServer) {
@@ -650,20 +648,6 @@ export function createComponent<
       enabled: shouldListenForMedia,
       keys: mediaListeningKeys,
     })
-
-    if (process.env.NODE_ENV === 'development') {
-      if (debugProp && debugProp !== 'profile') {
-        console.groupCollapsed('>>>')
-        log('props in', propsIn, 'mapped to', props, 'in order', Object.keys(props))
-        log('splitStyles', splitStyles)
-        log('media', { shouldListenForMedia, isMediaArray, mediaListeningKeys })
-        log('className', Object.values(splitStyles.classNames))
-        if (isClient) {
-          log('ref', hostRef, '(click to view)')
-        }
-        console.groupEnd()
-      }
-    }
 
     const {
       viewProps: viewPropsIn,
@@ -773,13 +757,14 @@ export function createComponent<
       )
     }
 
-    // if react-native-web view just pass all props down
-    if (process.env.TAMAGUI_TARGET === 'web' && !willBeReactNative && !asChild) {
-      // HOOKS (3-4 more):
-      viewProps = hooks.usePropsTransform?.(elementType, nonTamaguiProps, hostRef)
-    } else {
-      viewProps = nonTamaguiProps
-    }
+    // HOOKS (0-4 more):
+    viewProps =
+      hooks.usePropsTransform?.(
+        elementType,
+        nonTamaguiProps,
+        hostRef,
+        stateRef.current.willHydrate
+      ) ?? nonTamaguiProps
 
     // HOOK (1 more):
     const composedRef = useComposedRefs(hostRef as any, forwardedRef)
@@ -810,17 +795,14 @@ export function createComponent<
     if (!stateRef.current.unPress) {
       stateRef.current.unPress = () => setStateShallow({ press: false, pressIn: false })
     }
+
     const unPress = stateRef.current.unPress!
+    const shouldEnter = state.unmounted === 'should-enter'
 
     useEffect(() => {
-      if (needsMount && state.unmounted) {
-        const unmounted =
-          state.unmounted === true && hasEnterStyle ? 'should-enter' : false
-        setStateShallow({
-          unmounted,
-        })
+      if (shouldEnter) {
+        setStateShallow({ unmounted: false })
         return
-        // no need for mouseUp removal effect if its not even mounted yet
       }
 
       // parent group pseudo listening
@@ -862,8 +844,7 @@ export function createComponent<
         mouseUps.delete(unPress)
       }
     }, [
-      needsMount,
-      state.unmounted,
+      shouldEnter,
       pseudoGroups ? Object.keys([...pseudoGroups]).join('') : 0,
       mediaGroups ? Object.keys([...mediaGroups]).join('') : 0,
     ])
@@ -1134,7 +1115,13 @@ export function createComponent<
 
     // needs to reset the presence state for nested children
     const ResetPresence = config?.animations?.ResetPresence
-    if (willBeAnimated && hasEnterStyle && ResetPresence && typeof content !== 'string') {
+    if (
+      willBeAnimated &&
+      hasEnterStyle &&
+      ResetPresence &&
+      content &&
+      typeof content !== 'string'
+    ) {
       content = <ResetPresence>{content}</ResetPresence>
     }
 
@@ -1152,7 +1139,7 @@ export function createComponent<
         state: {
           ...componentContext.groups.state,
           [groupName]: {
-            pseudo: initialState,
+            pseudo: defaultComponentStateMounted,
             // capture just initial width and height if they exist
             // will have top, left, width, height (not x, y)
             layout: {
@@ -1241,8 +1228,13 @@ export function createComponent<
           }
           log('children', content)
           if (typeof window !== 'undefined') {
+            log('props in', propsIn, 'mapped to', props, 'in order', Object.keys(props))
             log({
+              shouldListenForMedia,
+              mediaListeningKeys,
+              isMediaArray,
               viewProps,
+              hostRef,
               state,
               styleProps,
               themeState,

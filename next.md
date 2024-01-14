@@ -1,3 +1,11 @@
+- tests:
+  - SSR e2e with animations
+  - onLayout + RN or not
+  - active/focus/press styles (+ animations) (+ media queries)
+    - we have some of these but more better
+
+- TODO this is duplicated
+
 studio: add outlineColor and the pseudos
 studio: export for takeout option
 
