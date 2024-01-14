@@ -149,7 +149,7 @@ export const useChangeThemeEffect = (
 
     const updatedState = updateStateIfChanged(
       props,
-      prev?.themeManager ?? parentManager,
+      parentManager,
       prev,
       isRoot,
       shouldPersist

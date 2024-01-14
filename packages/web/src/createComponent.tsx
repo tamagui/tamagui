@@ -534,7 +534,7 @@ export function createComponent<
 
     if (typeof stateRef.current.isListeningToTheme === 'boolean') {
       themeStateProps.shouldUpdate = () => {
-        console.log('ok', stateRef.current.isListeningToTheme)
+        debugger
         return stateRef.current.isListeningToTheme
       }
     }
