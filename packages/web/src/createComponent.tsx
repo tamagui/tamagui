@@ -326,9 +326,6 @@ export function createComponent<
     }
     if (process.env.NODE_ENV === 'development' && time) time`start (ignore)`
 
-    // HOOK 5 (-1 if no context, -1 if production)
-    const isHydrated = config?.disableSSR ? true : useDidFinishSSR()
-
     if (process.env.NODE_ENV === 'development' && time) time`did-finish-ssr`
 
     // conditional but if ever true stays true
@@ -369,12 +366,21 @@ export function createComponent<
     // disable for now still ssr issues
     const supportsCSSVars = animationsConfig?.supportsCSSVars
 
-    const willBeAnimated = (() => {
-      if (isServer && !supportsCSSVars) return false
+    const willBeAnimatedClient = (() => {
       const curState = stateRef.current
       const next = !!(hasAnimationProp && !isHOC && useAnimations)
       return Boolean(next || curState.hasAnimated)
     })()
+
+    const willBeAnimated = !isServer && willBeAnimatedClient
+
+    // once animated, always animated to preserve hooks / vdom structure
+    if (willBeAnimated && !stateRef.current.hasAnimated) {
+      stateRef.current.hasAnimated = true
+    }
+
+    // HOOK 5 (-1 if no context, -1 if production)
+    const isHydrated = config?.disableSSR ? true : useDidFinishSSR()
 
     const usePresence = animationsConfig?.usePresence
 
@@ -400,7 +406,15 @@ export function createComponent<
       : states[0]
     const setState = states[1]
 
-    let setStateShallow = createShallowSetState(setState)
+    let setStateShallow = createShallowSetState(setState, debugProp)
+
+    // finish animated logic, avoid isAnimated when unmounted
+    let isAnimated = willBeAnimated
+    if (willBeAnimated && !supportsCSSVars) {
+      if (!isHydrated || state.unmounted === true) {
+        isAnimated = false
+      }
+    }
 
     const groupName = props.group as any as string
     const groupClassName = groupName ? `t_group_${props.group}` : ''
@@ -441,24 +455,9 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`use-state`
 
-    let isAnimated = willBeAnimated
-
-    if (willBeAnimated && !supportsCSSVars) {
-      if (!presence && isHydrated) {
-        if (isServer || state.unmounted === true) {
-          isAnimated = false
-        }
-      }
-    }
-
-    // once animated, always animated to preserve hooks
-    if (willBeAnimated && !stateRef.current.hasAnimated) {
-      stateRef.current.hasAnimated = true
-    }
-
-    const componentClassName = props.asChild
-      ? ''
-      : `is_${props.componentName || componentName}`
+    const componentNameFinal = props.componentName || componentName
+    const componentClassName =
+      props.asChild || !componentNameFinal ? '' : `is_${componentNameFinal}`
 
     const hasTextAncestor = !!(isWeb && isText ? componentContext.inText : false)
     const isDisabled = props.disabled ?? props.accessibilityState?.disabled
@@ -473,12 +472,13 @@ export function createComponent<
     const BaseViewComponent = BaseView || element || (hasTextAncestor ? 'span' : 'div')
 
     let elementType = isText ? BaseTextComponent : BaseViewComponent
-    if (animationsConfig && willBeAnimated) {
+
+    if (animationsConfig && isAnimated) {
       elementType = animationsConfig[isText ? 'Text' : 'View'] || elementType
     }
 
     // set enter/exit variants onto our new props object
-    if (isAnimated && presence) {
+    if (isAnimated && presence && isHydrated) {
       const presenceState = presence[2]
       if (presenceState) {
         const isEntering = state.unmounted
@@ -503,8 +503,12 @@ export function createComponent<
       }
     }
 
-    const isAnimatedReactNative = hasAnimationProp && animationsConfig?.isReactNative
-    const isReactNative = Boolean(staticConfig.isReactNative || isAnimatedReactNative)
+    const hasReactNativeAnimation = hasAnimationProp && animationsConfig?.isReactNative
+    const willBeReactNative = Boolean(
+      staticConfig.isReactNative || hasReactNativeAnimation
+    )
+    const isReactNative = willBeReactNative && !(!isHydrated && !supportsCSSVars)
+
     const shouldAvoidClasses = Boolean(
       !isWeb || isAnimated || !staticConfig.acceptsClassName || propsIn.disableClassName
     )
@@ -551,7 +555,7 @@ export function createComponent<
           Component?.name ||
           '[Unnamed Component]'
         }`
-        const type = isAnimatedReactNative ? '(animated)' : isReactNative ? '(rnw)' : ''
+        const type = hasAnimationProp ? '(animated)' : isReactNative ? '(rnw)' : ''
         const dataIs = propsIn['data-is'] || ''
         const banner = `${name}${dataIs ? ` ${dataIs}` : ''} ${type} id ${internalID}`
         console.group(
@@ -647,19 +651,9 @@ export function createComponent<
       keys: mediaListeningKeys,
     })
 
-    // animation setup
-    const isAnimatedReactNativeWeb = hasAnimationProp && isReactNative
-
     if (process.env.NODE_ENV === 'development') {
-      if (!process.env.TAMAGUI_TARGET) {
-        console.error(
-          `No process.env.TAMAGUI_TARGET set, please set it to "native" or "web".`
-        )
-      }
-
       if (debugProp && debugProp !== 'profile') {
         console.groupCollapsed('>>>')
-
         log('props in', propsIn, 'mapped to', props, 'in order', Object.keys(props))
         log('splitStyles', splitStyles)
         log('media', { shouldListenForMedia, isMediaArray, mediaListeningKeys })
@@ -668,10 +662,6 @@ export function createComponent<
           log('ref', hostRef, '(click to view)')
         }
         console.groupEnd()
-        if (debugProp === 'break') {
-          // biome-ignore lint/suspicious/noDebugger: ok
-          debugger
-        }
       }
     }
 
@@ -694,7 +684,6 @@ export function createComponent<
         props: propsWithAnimation,
         // if hydrating, send empty style
         style: splitStylesStyle,
-        // style: splitStylesStyle,
         presence,
         componentState: state,
         styleProps,
@@ -785,7 +774,7 @@ export function createComponent<
     }
 
     // if react-native-web view just pass all props down
-    if (process.env.TAMAGUI_TARGET === 'web' && !isReactNative && !asChild) {
+    if (process.env.TAMAGUI_TARGET === 'web' && !willBeReactNative && !asChild) {
       // HOOKS (3-4 more):
       viewProps = hooks.usePropsTransform?.(elementType, nonTamaguiProps, hostRef)
     } else {
@@ -815,7 +804,6 @@ export function createComponent<
     // should not be a layout effect because otherwise it wont render the initial state
     // for example css driver needs to render once with the first styles, then again with the next
     // if its a layout effect it will just skip that first <render >output
-    const shouldSetMounted = needsMount && state.unmounted
     const { pseudoGroups, mediaGroups } = splitStyles
 
     // TODO if you add a group prop setStateShallow changes identity...
@@ -825,7 +813,7 @@ export function createComponent<
     const unPress = stateRef.current.unPress!
 
     useEffect(() => {
-      if (shouldSetMounted) {
+      if (needsMount && state.unmounted) {
         const unmounted =
           state.unmounted === true && hasEnterStyle ? 'should-enter' : false
         setStateShallow({
@@ -874,7 +862,7 @@ export function createComponent<
         mouseUps.delete(unPress)
       }
     }, [
-      shouldSetMounted,
+      needsMount,
       state.unmounted,
       pseudoGroups ? Object.keys([...pseudoGroups]).join('') : 0,
       mediaGroups ? Object.keys([...mediaGroups]).join('') : 0,
@@ -909,7 +897,7 @@ export function createComponent<
 
         className = classList.join(' ')
 
-        if (isAnimatedReactNativeWeb && !avoidAnimationStyle) {
+        if (isReactNative && !avoidAnimationStyle) {
           viewProps.style = style
         } else if (isReactNative) {
           // TODO these shouldn't really return from getSplitStyles when in Native mode
@@ -1146,7 +1134,7 @@ export function createComponent<
 
     // needs to reset the presence state for nested children
     const ResetPresence = config?.animations?.ResetPresence
-    if (willBeAnimated && presence && ResetPresence && typeof content !== 'string') {
+    if (willBeAnimated && hasEnterStyle && ResetPresence && typeof content !== 'string') {
       content = <ResetPresence>{content}</ResetPresence>
     }
 
@@ -1203,11 +1191,16 @@ export function createComponent<
       )
     }
 
+    // animation setup
+    const shouldWrapParentEventsAndClassName = willBeAnimatedClient && willBeReactNative
+
     if (process.env.TAMAGUI_TARGET === 'web') {
-      if (isReactNative) {
+      if (isReactNative || shouldWrapParentEventsAndClassName) {
         content = (
           <span
-            className={`${isAnimatedReactNativeWeb ? className : ''} _dsp_contents`}
+            className={`${
+              shouldWrapParentEventsAndClassName ? className : ''
+            } _dsp_contents`}
             {...(events && getWebEvents(events))}
           >
             {content}
@@ -1254,7 +1247,7 @@ export function createComponent<
               styleProps,
               themeState,
               isAnimated,
-              isAnimatedReactNativeWeb,
+              shouldWrapParentEventsAndClassName,
               defaultProps,
               splitStyles,
               animationStyles,
@@ -1281,7 +1274,10 @@ export function createComponent<
           // RN can run into PayloadTooLargeError: request entity too large
         }
         console.groupEnd()
-        console.groupEnd()
+        if (debugProp === 'break') {
+          // biome-ignore lint/suspicious/noDebugger: ok
+          debugger
+        }
       }
     }
 
