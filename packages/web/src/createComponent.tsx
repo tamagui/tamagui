@@ -445,7 +445,7 @@ export function createComponent<
 
     const shouldAvoidClasses = Boolean(
       !isWeb ||
-        (isAnimated && isReactNative) ||
+        (isAnimated && !supportsCSSVars) ||
         !staticConfig.acceptsClassName ||
         propsIn.disableClassName
     )
