@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/visually-hidden",
-  "version": "1.85.8",
+  "version": "1.85.9-1705340264375",
   "sideEffects": [
     "*.css"
   ],
@@ -32,13 +32,13 @@
     }
   },
   "dependencies": {
-    "@tamagui/web": "1.85.8"
+    "@tamagui/web": "1.85.9-1705340264375"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.85.8",
+    "@tamagui/build": "1.85.9-1705340264375",
     "react": "^18.2.0"
   },
   "publishConfig": {
