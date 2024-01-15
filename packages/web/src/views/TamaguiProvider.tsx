@@ -19,12 +19,10 @@ export function TamaguiProvider({
     // eslint-disable-next-line react-hooks/rules-of-hooks
     React.useLayoutEffect(() => {
       if (!config.disableSSR) {
-        if (!config.animations.isReactNative) {
-          // for easier support of hidden-until-js mount animations
-          // user must set t_unmounted on documentElement from SSR
-          if (document.documentElement.classList.contains('t_unmounted')) {
-            document.documentElement.classList.remove('t_unmounted')
-          }
+        // for easier support of hidden-until-js mount animations
+        // user must set t_unmounted on documentElement from SSR
+        if (document.documentElement.classList.contains('t_unmounted')) {
+          document.documentElement.classList.remove('t_unmounted')
         }
       }
 

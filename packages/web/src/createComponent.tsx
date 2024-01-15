@@ -73,7 +73,6 @@ process.env.TAMAGUI_TARGET
  * All things that need one-time setup after createTamagui is called
  */
 let tamaguiConfig: TamaguiInternalConfig
-let initialTheme: any
 let time: any
 
 let debugKeyListeners: Set<Function> | undefined
@@ -385,16 +384,30 @@ export function createComponent<
 
     // HOOK
     const presence = (willBeAnimated && animationsConfig?.usePresence?.()) || null
+    const presenceState = presence?.[2]
+    const enterExitVariant = presenceState?.enterExitVariant
+    const enterVariant = enterExitVariant ?? presenceState?.enterVariant
 
     const hasEnterStyle = !!props.enterStyle
+    // finish animated logic, avoid isAnimated when unmounted
+    const hasRNAnimation = hasAnimationProp && animationsConfig?.isReactNative
+    const isReactNative = staticConfig.isReactNative
+
+    // only web server + initial client render run this when not hydrated:
+    let isAnimated = willBeAnimated
+    if (!isReactNative && hasRNAnimation && !isHOC && !isHydrated) {
+      isAnimated = false
+      curState.willHydrate = true
+    }
 
     if (process.env.NODE_ENV === 'development' && time) time`pre-use-state`
 
-    const initialState = hasEnterStyle
-      ? !isHydrated
-        ? defaultComponentStateShouldEnter
-        : defaultComponentState
-      : defaultComponentStateMounted
+    const initialState =
+      hasEnterStyle || enterVariant
+        ? !isHydrated
+          ? defaultComponentStateShouldEnter
+          : defaultComponentState
+        : defaultComponentStateMounted
 
     // HOOK
     const states = useState<TamaguiComponentState>(initialState)
@@ -410,16 +423,24 @@ export function createComponent<
       state.unmounted = true
     }
 
-    // finish animated logic, avoid isAnimated when unmounted
-    const hasRNAnimation = hasAnimationProp && animationsConfig?.isReactNative
-    const isReactNative = staticConfig.isReactNative
+    // set enter/exit variants onto our new props object
+    if (presenceState && isAnimated && isHydrated) {
+      const isExiting = !presenceState.isPresent
+      const exitVariant = enterExitVariant ?? presenceState.exitVariant
 
-    let isAnimated = willBeAnimated
+      if (state.unmounted && enterVariant) {
+        if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
+          console.warn(`Animating presence ENTER "${enterVariant}"`)
+        }
 
-    // only web server + initial client render run this when not hydrated:
-    if (!isReactNative && hasRNAnimation && !isHOC && !isHydrated) {
-      isAnimated = false
-      curState.willHydrate = true
+        props[enterVariant] = true
+      } else if (isExiting && exitVariant) {
+        if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
+          console.warn(`Animating presence EXIT "${enterVariant}"`)
+        }
+
+        props[exitVariant] = enterExitVariant ? false : true
+      }
     }
 
     const shouldAvoidClasses = Boolean(
@@ -489,32 +510,6 @@ export function createComponent<
       elementType = animationsConfig[isText ? 'Text' : 'View'] || elementType
     }
 
-    // set enter/exit variants onto our new props object
-    if (isAnimated && presence && isHydrated) {
-      const presenceState = presence[2]
-      if (presenceState) {
-        const isEntering = state.unmounted
-        const isExiting = !presenceState.isPresent
-        const enterExitVariant = presenceState.enterExitVariant
-        const enterVariant = enterExitVariant ?? presenceState.enterVariant
-        const exitVariant = enterExitVariant ?? presenceState.exitVariant
-
-        if (isEntering && enterVariant) {
-          if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
-            console.warn(`Animating presence ENTER "${enterVariant}"`)
-          }
-
-          props[enterVariant] = true
-        } else if (isExiting && exitVariant) {
-          if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
-            console.warn(`Animating presence EXIT "${enterVariant}"`)
-          }
-
-          props[exitVariant] = enterExitVariant ? false : true
-        }
-      }
-    }
-
     // internal use only
     const disableThemeProp =
       process.env.TAMAGUI_TARGET === 'native' ? false : props['data-disable-theme']
@@ -554,14 +549,21 @@ export function createComponent<
           Component?.name ||
           '[Unnamed Component]'
         }`
-        const type = isAnimated ? '(animated)' : isReactNative ? '(rnw)' : ''
+        const type =
+          (hasEnterStyle ? '(hasEnter)' : '') +
+          (isAnimated ? '(animated)' : '') +
+          (isReactNative ? '(rnw)' : '')
         const dataIs = propsIn['data-is'] || ''
-        const banner = `${name}${dataIs ? ` ${dataIs}` : ''} ${type} id ${internalID}`
+        const banner = `${internalID} ${name}${dataIs ? ` ${dataIs}` : ''} ${type}`
         console.group(
           `%c ${banner} (hydrated: ${isHydrated}) (unmounted: ${state.unmounted})`,
           'background: green; color: white;'
         )
         if (!isServer) {
+          // if strict mode or something messes with our nesting this fixes:
+          console.groupEnd()
+          console.groupEnd()
+
           console.groupCollapsed(
             `Info (collapsed): ${state.press || state.pressIn ? 'PRESSED ' : ''}${
               state.hover ? 'HOVERED ' : ''
@@ -796,7 +798,7 @@ export function createComponent<
     }
 
     const unPress = curState.unPress!
-    const shouldEnter = state.unmounted === 'should-enter'
+    const shouldEnter = state.unmounted
 
     useEffect(() => {
       if (shouldEnter) {
