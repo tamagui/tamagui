@@ -16,10 +16,10 @@ export function mergeIfNotShallowEqual(prev: any, next: any, debug?: DebugProp) 
   if (process.env.NODE_ENV === 'development') {
     if (debug) {
       console.warn(`setStateShallow CHANGE`, { prev, next })
-      if (debug === 'break') {
-        // biome-ignore lint/suspicious/noDebugger: <explanation>
-        debugger
-      }
+      // if (debug === 'break') {
+      //   // biome-ignore lint/suspicious/noDebugger: <explanation>
+      //   debugger
+      // }
     }
   }
   return { ...prev, ...next }
