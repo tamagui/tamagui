@@ -269,7 +269,7 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
     const [_0, _1, scheme, _2, name] = matches
     const themeName =
       name && scheme && scheme !== name ? `${scheme}_${name}` : name || scheme
-    if (dedupedEntry.names.includes(themeName)) {
+    if (dedupedEntry.names.includes(themeName) || themeName === 'light_dark') {
       continue
     }
     dedupedEntry.names.push(themeName)
