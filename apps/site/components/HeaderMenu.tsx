@@ -1,14 +1,6 @@
 import { Menu } from '@tamagui/lucide-icons'
 import * as React from 'react'
-import {
-  Adapt,
-  Button,
-  Popover,
-  Spacer,
-  XStack,
-  YStack,
-  isTouchable
-} from 'tamagui'
+import { Adapt, Button, Popover, Spacer, XStack, YStack, isTouchable } from 'tamagui'
 
 import { DocsMenuContents } from './DocsMenuContents'
 import { HeaderLinks } from './HeaderLinks'

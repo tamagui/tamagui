@@ -1,5 +1,5 @@
-import { SizeTokens, StackProps } from '@tamagui/core';
 import type { ScopedProps } from '@tamagui/core';
+import { SizeTokens, StackProps } from '@tamagui/core';
 import { Coords, OffsetOptions, Placement, Strategy, UseFloatingReturn, flip, shift } from '@tamagui/floating';
 import { SizableStackProps, YStackProps } from '@tamagui/stacks';
 import * as React from 'react';
