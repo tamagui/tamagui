@@ -203,7 +203,6 @@ function updateSheetStyles(
 
 let colorVarToVal: Record<string, string>
 let rootComputedStyle: CSSStyleDeclaration | null = null
-const schemes = { dark: true, light: true }
 
 function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
   const selectors = cssStyleRule.selectorText.split(',')
@@ -256,42 +255,36 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
     ) as any
   }
 
-  const names = [
-    ...new Set(
-      selectors.map((selector) => {
-        const parts = selector
-          .replace(/(.t_|:root)/g, '')
-          .trim()
-          .split(' ')
-        const secondToLast = parts[parts.length - 2] || ''
-        const scheme = secondToLast.includes('dark')
-          ? 'dark'
-          : secondToLast.includes('light')
-            ? 'light'
-            : ''
-        const name = (() => {
-          let _ = parts[parts.length - 1]
-          if (scheme && _.startsWith(scheme)) {
-            // we have some hardcoded for component themes t_light_name
-            _ = _.slice(scheme.length + 1)
-          }
-          return _
-        })()
-        const res =
-          scheme === name || schemes[name]
-            ? scheme
-            : `${scheme}${scheme && name ? '_' : ''}${name}`
-        return res
-      })
-    ),
-  ]
-
   const dedupedEntry: DedupedTheme = {
-    names,
+    names: [],
     theme: values,
   }
 
   // loop selectors and build deduped
+  for (const selector of selectors) {
+    let scheme = selector.includes('t_dark')
+      ? 'dark'
+      : selector.includes('t_light')
+      ? 'light'
+      : ''
+    let name = selector.slice(selector.lastIndexOf('.t_') + 3)
+
+    if (name.startsWith(scheme)) {
+      // we have some hardcoded for component themes t_light_name
+      name = name.slice(scheme.length + 1)
+    }
+    // for base dark and light
+    if (scheme === name) {
+      scheme = ''
+    }
+    const themeName = `${scheme}${scheme && name ? '_' : ''}${name}`
+
+    if (dedupedEntry.names.includes(themeName)) {
+      continue
+    }
+
+    dedupedEntry.names.push(themeName)
+  }
 
   return dedupedEntry
 }
