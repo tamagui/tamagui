@@ -32,13 +32,20 @@ export const LinearGradient = YStack.styleable<LinearGradientExtraProps>(
         return (theme[c]?.get('web') as string) ?? c
       }) || []
 
-    if (colors.some((c) => typeof c === 'string' && c.startsWith('$'))) {
-      if (process.env.NODE_ENV !== 'production') {
-        console.warn(
-          `LinearGradient: "colors" prop contains invalid color tokens: ${colors} fallback to default colors`
+    if (process.env.NODE_ENV !== 'production') {
+      if (
+        colors.some((c) => {
+          const normalized = normalizeColor(c)
+          if (!normalized || normalized.startsWith('$')) {
+            return true
+          }
+        })
+      ) {
+        console.error(
+          `LinearGradient: "colors" prop contains invalid color tokens: ${colors} fallback to default colors: ["#000", "#fff"]`
         )
+        colors = ['#000', '#fff']
       }
-      colors = ['#000', '#fff']
     }
 
     return (
