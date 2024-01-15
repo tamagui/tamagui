@@ -769,8 +769,6 @@ export const getSplitStyles: StyleSplitter = (
                 : !componentState.unmounted
           }
 
-          if (isEnter) console.warn('ENTER', isDisabled)
-
           if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
             console.groupCollapsed('pseudo', key, { isDisabled })
             log({ pseudoStyleObject, isDisabled, descriptor, componentState })
