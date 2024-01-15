@@ -6036,7 +6036,8 @@ __metadata:
     "@tamagui/build": "npm:1.85.2"
     "@tamagui/use-presence": "npm:1.85.2"
     "@tamagui/web": "npm:1.85.2"
-    moti: "npm:^0.25.3"
+    moti: "npm:^0.27.2"
+    react: "npm:^18.2.0"
     react-native-reanimated: "npm:~3.3.0"
   languageName: unknown
   linkType: soft
@@ -6166,7 +6167,7 @@ __metadata:
     react-native-safe-area-context: "npm:4.6.3"
     react-native-screens: "npm:~3.22.0"
     react-native-svg: "npm:^13.9.0"
-    react-native-web: "npm:^0.19.9"
+    react-native-web: "npm:^0.19.10"
     solito: "npm:^4.0.0-alpha.4"
     tamagui: "npm:1.85.2"
     tilg: "npm:0.1.1"
@@ -6963,7 +6964,7 @@ __metadata:
     react-native-safe-area-context: "npm:4.6.3"
     react-native-screens: "npm:~3.22.0"
     react-native-svg: "npm:^13.9.0"
-    react-native-web: "npm:^0.19.9"
+    react-native-web: "npm:^0.19.10"
     solito: "npm:^4.0.0-alpha.4"
     tamagui: "npm:1.85.2"
     tilg: "npm:0.1.1"
@@ -7567,6 +7568,7 @@ __metadata:
     lodash-es: "npm:^4.17.21"
     mdx-bundler: "npm:^9.0.1"
     micro: "npm:^10.0.1"
+    moti: "npm:^0.27.2"
     next: "npm:^14.0.4"
     next-remote-watch: "npm:^2.0.0"
     next-seo: "npm:^6.0.0"
@@ -7581,6 +7583,7 @@ __metadata:
     react-freeze: "npm:^1.0.3"
     react-hotkeys-hook: "npm:^4.4.1"
     react-native: "npm:^0.72.6"
+    react-native-reanimated: "npm:react-native-reanimated@3.6.1"
     react-native-web-lite: "npm:1.85.2"
     react-refresh: "npm:^0.14.0"
     reading-time: "npm:1.3.0"
@@ -7663,7 +7666,7 @@ __metadata:
     null-loader: "npm:^4.0.1"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
-    react-native-web: "npm:^0.19.9"
+    react-native-web: "npm:^0.19.10"
     react-test-renderer: "npm:^18.2.0"
     style-loader: "npm:^3.3.3"
     typescript: "npm:^5.2.2"
@@ -7716,7 +7719,7 @@ __metadata:
     lodash: "npm:^4.17.21"
     null-loader: "npm:^4.0.1"
     react: "npm:^18.2.0"
-    react-native-web: "npm:^0.19.9"
+    react-native-web: "npm:^0.19.10"
     react-native-web-internals: "npm:1.85.2"
     react-native-web-lite: "npm:1.85.2"
     typescript: "npm:^5.2.2"
@@ -7745,7 +7748,7 @@ __metadata:
     react-dom: "npm:^18.2.0"
     react-freeze: "npm:^1.0.3"
     react-hotkeys-hook: "npm:^4.4.1"
-    react-native-web: "npm:^0.19.9"
+    react-native-web: "npm:^0.19.10"
     react-router-dom: "npm:^6.14.1"
     tamagui: "npm:1.85.2"
     ts-deepmerge: "npm:^6.2.0"
@@ -21585,14 +21588,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"moti@npm:^0.25.3":
-  version: 0.25.3
-  resolution: "moti@npm:0.25.3"
+"moti@npm:^0.27.2":
+  version: 0.27.2
+  resolution: "moti@npm:0.27.2"
   dependencies:
     framer-motion: "npm:^6.5.1"
   peerDependencies:
     react-native-reanimated: "*"
-  checksum: 2032e23a734c61192b1d2ad9e576eea8d67c1da476a5b6e9e3f23f38a0e3b360dff5ba7a880b3c624d9033b2eb27ccb2b1b146cb7cdd63440c73ab3d7a838263
+  checksum: c185cf44744b1a9df0a8d85ebadecc88edcce96f7870a3a95f2638759a524868c19f415fb3cd5b136f34efcd838cf852d124efbb4ba6e89c0f8f970a0e39efe8
   languageName: node
   linkType: hard
 
@@ -24052,6 +24055,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-reanimated@npm:react-native-reanimated@3.6.1":
+  version: 3.6.1
+  resolution: "react-native-reanimated@npm:3.6.1"
+  dependencies:
+    "@babel/plugin-transform-object-assign": "npm:^7.16.7"
+    "@babel/preset-typescript": "npm:^7.16.7"
+    convert-source-map: "npm:^2.0.0"
+    invariant: "npm:^2.2.4"
+  peerDependencies:
+    "@babel/core": ^7.0.0-0
+    "@babel/plugin-proposal-nullish-coalescing-operator": ^7.0.0-0
+    "@babel/plugin-proposal-optional-chaining": ^7.0.0-0
+    "@babel/plugin-transform-arrow-functions": ^7.0.0-0
+    "@babel/plugin-transform-shorthand-properties": ^7.0.0-0
+    "@babel/plugin-transform-template-literals": ^7.0.0-0
+    react: "*"
+    react-native: "*"
+  checksum: 594a4ace054fdafa02ea2f126aeeda474f32306698b1d7c15ec8495b606b80e9e10a69eef2653d4b7f9cb743d0007ada1ab27e5f3064af1bfcc95291d70bb824
+  languageName: node
+  linkType: hard
+
 "react-native-reanimated@npm:~3.3.0":
   version: 3.3.0
   resolution: "react-native-reanimated@npm:3.3.0"
@@ -24155,9 +24179,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"react-native-web@npm:^0.19.9":
-  version: 0.19.9
-  resolution: "react-native-web@npm:0.19.9"
+"react-native-web@npm:^0.19.10":
+  version: 0.19.10
+  resolution: "react-native-web@npm:0.19.10"
   dependencies:
     "@babel/runtime": "npm:^7.18.6"
     "@react-native/normalize-color": "npm:^2.1.0"
@@ -24170,7 +24194,7 @@ __metadata:
   peerDependencies:
     react: ^18.0.0
     react-dom: ^18.0.0
-  checksum: 1cf7ec649815f8c27d49bc221871a0e23c17e1247ffa61f677894a1f570da3ac4d015ce849ed07dce44ea011a63cb4511982a5d3bedc9e42bbf404ad38dd580e
+  checksum: 923a13b6d6c23039a0bb36d9c1490bc184c308649198e95ea0fdb62ab35983150126c4b07d716a09d42f37be57d14f2669ca9661e9a3faaf856ed7f7f222120e
   languageName: node
   linkType: hard
 
@@ -26958,7 +26982,7 @@ __metadata:
     "@tamagui/visually-hidden": "npm:1.85.2"
     react: "npm:^18.2.0"
     react-native: "npm:^0.72.6"
-    react-native-web: "npm:^0.19.9"
+    react-native-web: "npm:^0.19.10"
   peerDependencies:
     react: "*"
     react-native: "*"

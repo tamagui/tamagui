@@ -55,78 +55,93 @@ const baseViews = getBaseViews()
 setupHooks({
   getBaseViews,
 
-  usePropsTransform(elementType, propsIn, hostRef) {
-    // otherwise replicate react-native-web functionality
-    const {
-      // event props
-      onMoveShouldSetResponder,
-      onMoveShouldSetResponderCapture,
-      onResponderEnd,
-      onResponderGrant,
-      onResponderMove,
-      onResponderReject,
-      onResponderRelease,
-      onResponderStart,
-      onResponderTerminate,
-      onResponderTerminationRequest,
-      onScrollShouldSetResponder,
-      onScrollShouldSetResponderCapture,
-      onSelectionChangeShouldSetResponder,
-      onSelectionChangeShouldSetResponderCapture,
-      onStartShouldSetResponder,
-      onStartShouldSetResponderCapture,
+  usePropsTransform(elementType, propsIn, hostRef, willHydrate) {
+    if (process.env.TAMAGUI_TARGET === 'web') {
+      const isDOM = typeof elementType === 'string'
 
-      // android
-      collapsable,
-      focusable,
+      // replicate react-native-web functionality
+      const {
+        // event props
+        onMoveShouldSetResponder,
+        onMoveShouldSetResponderCapture,
+        onResponderEnd,
+        onResponderGrant,
+        onResponderMove,
+        onResponderReject,
+        onResponderRelease,
+        onResponderStart,
+        onResponderTerminate,
+        onResponderTerminationRequest,
+        onScrollShouldSetResponder,
+        onScrollShouldSetResponderCapture,
+        onSelectionChangeShouldSetResponder,
+        onSelectionChangeShouldSetResponderCapture,
+        onStartShouldSetResponder,
+        onStartShouldSetResponderCapture,
 
-      // deprecated,
-      accessible,
-      accessibilityDisabled,
+        // android
+        collapsable,
+        focusable,
 
-      onLayout,
-      hrefAttrs,
+        // deprecated,
+        accessible,
+        accessibilityDisabled,
 
-      ...viewProps
-    } = propsIn
+        onLayout,
+        hrefAttrs,
 
-    usePlatformMethods(hostRef as RefObject<Element>)
-    useElementLayout(hostRef as RefObject<Element>, onLayout as any)
-    useResponderEvents(hostRef, {
-      onMoveShouldSetResponder,
-      onMoveShouldSetResponderCapture,
-      onResponderEnd,
-      onResponderGrant,
-      onResponderMove,
-      onResponderReject,
-      onResponderRelease,
-      onResponderStart,
-      onResponderTerminate,
-      onResponderTerminationRequest,
-      onScrollShouldSetResponder,
-      onScrollShouldSetResponderCapture,
-      onSelectionChangeShouldSetResponder,
-      onSelectionChangeShouldSetResponderCapture,
-      onStartShouldSetResponder,
-      onStartShouldSetResponderCapture,
-    } as any)
+        ...plainDOMProps
+      } = propsIn
 
-    // TODO move into getSplitStyles inital `if (process.env.TAMAGUI_TARGET === 'web')` block
-
-    if (viewProps.href && hrefAttrs) {
-      const { download, rel, target } = hrefAttrs
-      if (download != null) {
-        viewProps.download = download
+      if (willHydrate || isDOM) {
+        // only necessary for DOM elements, but we need the hooks to stay around
+        usePlatformMethods(hostRef as RefObject<Element>)
+        useElementLayout(
+          hostRef as RefObject<Element>,
+          !isDOM ? undefined : (onLayout as any)
+        )
+        useResponderEvents(
+          hostRef,
+          !isDOM
+            ? undefined
+            : ({
+                onMoveShouldSetResponder,
+                onMoveShouldSetResponderCapture,
+                onResponderEnd,
+                onResponderGrant,
+                onResponderMove,
+                onResponderReject,
+                onResponderRelease,
+                onResponderStart,
+                onResponderTerminate,
+                onResponderTerminationRequest,
+                onScrollShouldSetResponder,
+                onScrollShouldSetResponderCapture,
+                onSelectionChangeShouldSetResponder,
+                onSelectionChangeShouldSetResponderCapture,
+                onStartShouldSetResponder,
+                onStartShouldSetResponderCapture,
+              } as any)
+        )
       }
-      if (rel) {
-        viewProps.rel = rel
-      }
-      if (typeof target === 'string') {
-        viewProps.target = target.charAt(0) !== '_' ? `_${target}` : target
+
+      if (isDOM) {
+        // TODO move into getSplitStyles
+        if (plainDOMProps.href && hrefAttrs) {
+          const { download, rel, target } = hrefAttrs
+          if (download != null) {
+            plainDOMProps.download = download
+          }
+          if (rel) {
+            plainDOMProps.rel = rel
+          }
+          if (typeof target === 'string') {
+            plainDOMProps.target = target.charAt(0) !== '_' ? `_${target}` : target
+          }
+        }
+        return plainDOMProps
       }
     }
-
-    return viewProps
   },
 
   useEvents(viewProps, events, { pseudos }, setStateShallow, staticConfig) {

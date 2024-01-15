@@ -231,6 +231,10 @@ export function createAnimations<A extends AnimationsConfig>(
           // key: 'transform'
           // for now just support one transform key
           if (!val) continue
+          if (typeof val === 'string') {
+            console.warn(`Warning: Tamagui can't animate string transforms yet!`)
+            continue
+          }
 
           for (const [index, transform] of val.entries()) {
             if (!transform) continue
@@ -449,10 +453,6 @@ function getAnimationConfig(
     extraConf = val
   }
   const found = animations[type]
-  if (!found) {
-    debugger
-    throw new Error(`No animation of type "${type}" for key "${key}"`)
-  }
   return {
     ...found,
     ...extraConf,

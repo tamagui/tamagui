@@ -2,9 +2,10 @@ import {
   ColorTokens,
   GetProps,
   ThemeTokens,
+  normalizeColor,
   styled,
   useProps,
-  useTheme,
+  useTheme
 } from '@tamagui/core'
 import { YStack } from '@tamagui/stacks'
 import type { ViewStyle } from 'react-native'
@@ -26,10 +27,21 @@ export const LinearGradient = YStack.styleable<LinearGradientExtraProps>(
     const { start, end, colors: colorsProp, locations, children, ...stackProps } = props
     const theme = useTheme()
 
-    const colors =
+    let colors =
       props.colors?.map((c) => {
         return (theme[c]?.get('web') as string) ?? c
       }) || []
+
+    if (process.env.TAMAGUI_TARGET === 'native') {
+      // normalize colors: fix android
+      colors = colors.map(color => {
+        try {
+          return normalizeColor(color) || color
+        } catch {
+          return color
+        }
+      })
+    }
 
     return (
       <LinearGradientFrame ref={ref as any} {...stackProps}>

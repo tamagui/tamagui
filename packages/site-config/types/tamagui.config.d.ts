@@ -1,4 +1,4 @@
-export { animations } from './animations';
+export { animations } from './animations.reanimated';
 export declare const cherryBombFont: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 5 | 9 | 15 | 1 | 10 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
 export declare const munroFont: import("@tamagui/font-inter").GenericFont;
 export declare const config: {
@@ -19,20 +19,13 @@ export declare const config: {
             duration: number;
         };
         superBouncy: {
-            type: "spring";
             damping: number;
             mass: number;
             stiffness: number;
         };
         bouncy: {
-            type: "spring";
             damping: number;
             mass: number;
-            stiffness: number;
-        };
-        lazy: {
-            type: "spring";
-            damping: number;
             stiffness: number;
         };
         medium: {
@@ -40,25 +33,25 @@ export declare const config: {
             stiffness: number;
             mass: number;
         };
+        lazy: {
+            damping: number;
+            stiffness: number;
+        };
         slow: {
-            type: "spring";
             damping: number;
             stiffness: number;
         };
         quick: {
-            type: "spring";
             damping: number;
             mass: number;
             stiffness: number;
         };
         tooltip: {
-            type: "spring";
             damping: number;
             mass: number;
             stiffness: number;
         };
         quicker: {
-            type: "spring";
             damping: number;
             mass: number;
             stiffness: number;
@@ -48587,6 +48580,18 @@ export declare const config: {
             20: import("@tamagui/web").Variable<number>;
         };
     }, "zIndex" | "color" | "size" | "space" | "radius">;
+    mediaQueryDefaultActive: {
+        xl: boolean;
+        lg: boolean;
+        md: boolean;
+        sm: boolean;
+        xs: boolean;
+        xxs: boolean;
+    };
+    selectionStyles: (theme: Record<string, string>) => {
+        backgroundColor: string;
+        color: string;
+    };
     settings: {
         allowedStyleValues: "somewhat-strict-web";
         autocompleteSpecificTokens: "except-special";

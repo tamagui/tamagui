@@ -226,6 +226,11 @@ export const config = {
   media,
   shorthands,
   tokens,
+  mediaQueryDefaultActive,
+  selectionStyles: (theme) => ({
+    backgroundColor: theme.color5,
+    color: theme.color11,
+  }),
   settings: {
     allowedStyleValues: 'somewhat-strict-web',
     autocompleteSpecificTokens: 'except-special',
@@ -243,12 +248,3 @@ export const config = {
     cherryBomb: cherryBombFont,
   },
 } satisfies CreateTamaguiProps
-
-// @ts-ignore
-config.selectionStyles = (theme) => ({
-  backgroundColor: theme.color5,
-  color: theme.color11,
-})
-
-// @ts-ignore bad types
-config.mediaQueryDefaultActive = mediaQueryDefaultActive

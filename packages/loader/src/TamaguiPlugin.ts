@@ -29,7 +29,7 @@ export type PluginOptions = TamaguiOptions & {
   useReactNativeWebLite?: boolean
 }
 
-const dir = __dirname
+const dir = process.cwd()
 const resolver = buildResolver(join(dir, 'index.js'), {
   constraints: 'node',
 })

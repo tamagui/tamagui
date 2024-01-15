@@ -188,7 +188,7 @@ export const getSplitStyles: StyleSplitter = (
   let pseudoGroups: Set<string> | undefined
   let mediaGroups: Set<string> | undefined
   let style: ViewStyleWithPseudos = {}
-  let className = '' // existing classNames
+  let className = (props.className as string) ?? '' // existing classNames
   let mediaStylesSeen = 0
 
   /**
@@ -227,39 +227,6 @@ export const getSplitStyles: StyleSplitter = (
       theme: { ...theme },
     })
     console.groupEnd()
-  }
-
-  // className first:
-
-  // handle before the loop so we can mark usedKeys in className
-  // since the compiler will optimize to className we just treat className as the more powerful
-  //   TODO the compiler should probably just leave things inline if its not flattening
-  //   that way it keeps merging order
-  if (process.env.TAMAGUI_TARGET === 'web' && typeof props.className === 'string') {
-    for (const cn of props.className.split(' ')) {
-      if (cn[0] === '_') {
-        // tamagui, merge it expanded on key, eventually this will go away with better compiler
-        const [shorthand, mediaOrPseudo] = cn.slice(1).split('-')
-        const isMedia = mediaOrPseudo[0] === '_'
-        const isPseudo = mediaOrPseudo[0] === '0'
-        const isMediaOrPseudo = isMedia || isPseudo
-        let fullKey = shorthands[shorthand]
-        if (isMedia) {
-          // is media
-          let mediaShortKey = mediaOrPseudo.slice(1)
-          mediaShortKey = mediaShortKey.slice(0, mediaShortKey.indexOf('_'))
-          fullKey += `${PROP_SPLIT}${mediaShortKey}`
-        } else if (isPseudo) {
-          // is pseudo
-          const pseudoShortKey = mediaOrPseudo.slice(1)
-          fullKey += `${PROP_SPLIT}${pseudoShortKey}`
-        }
-        usedKeys[fullKey] = 1
-        mergeClassName(transforms, classNames, fullKey, cn, isMediaOrPseudo)
-      } else if (cn) {
-        className += ` ${cn}`
-      }
-    }
   }
 
   for (const keyOg in props) {
@@ -319,7 +286,7 @@ export const getSplitStyles: StyleSplitter = (
             delete style[keyInit]
           } else {
             style[keyInit] = reverseMapClassNameToValue(keyInit, valInit)
-            delete className[keyInit]
+            delete classNames[keyInit]
           }
           continue
         }
@@ -523,7 +490,7 @@ export const getSplitStyles: StyleSplitter = (
               delete style[keyInit]
             } else {
               style[keyInit] = reverseMapClassNameToValue(keyInit, valInit)
-              delete className[keyInit]
+              delete classNames[keyInit]
             }
             continue
           }
@@ -749,14 +716,14 @@ export const getSplitStyles: StyleSplitter = (
         if (!shouldDoClasses || IS_STATIC) {
           pseudos ||= {}
           pseudos[key] ||= {}
-
           if (IS_STATIC) {
             Object.assign(pseudos[key], pseudoStyleObject)
             continue
           }
         }
 
-        if (shouldDoClasses && !isEnter && !isExit) {
+        // on server only generate classes for enterStyle
+        if (shouldDoClasses && !isExit) {
           const pseudoStyles = generateAtomicStyles(pseudoStyleObject, descriptor)
 
           if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
@@ -781,34 +748,30 @@ export const getSplitStyles: StyleSplitter = (
               true
             )
           }
-        } else {
+        }
+
+        if (!shouldDoClasses || isExit || isEnter) {
           // we don't skip this if disabled because we need to animate to default states that aren't even set:
           // so if we have <Stack enterStyle={{ opacity: 0 }} />
           // we need to animate from 0 => 1 once enter is finished
           // see the if (isDisabled) block below which loops through animatableDefaults
 
           const descriptorKey = descriptor.stateKey || descriptor.name
-          const pseudoState = componentState[descriptorKey]
-          let isDisabled = isExit ? !styleProps.isExiting : !pseudoState
 
-          // we never animate in on server side just show the full thing
-          // on client side we use CSS to hide the fully in SSR items, then
-          // un-hide and replay with original animation.
-          if (isWeb && !isClient && isEnter) {
-            isDisabled = false
+          let isDisabled = componentState[descriptorKey] === false
+          if (isExit) {
+            isDisabled = !styleProps.isExiting
+          }
+          if (isEnter) {
+            isDisabled =
+              componentState.unmounted === 'should-enter'
+                ? true
+                : !componentState.unmounted
           }
 
           if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-            // prettier-ignore
             console.groupCollapsed('pseudo', key, { isDisabled })
-
-            log(pseudoStyleObject, {
-              isDisabled,
-              descriptorKey,
-              descriptor,
-              pseudoState,
-              state: { ...componentState },
-            })
+            log({ pseudoStyleObject, isDisabled, descriptor, componentState })
             console.groupEnd()
           }
 
@@ -858,6 +821,7 @@ export const getSplitStyles: StyleSplitter = (
 
         continue
       }
+
       // media
       if (isMedia) {
         if (!val) continue

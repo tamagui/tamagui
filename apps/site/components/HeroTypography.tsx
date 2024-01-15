@@ -204,7 +204,7 @@ const AnimatedHeading = memo(
     index: number
   } & TextProps) => {
     return (
-      <Delay passThrough={disableAnimation} by={index * 180}>
+      <Delay passThrough={disableAnimation} by={index * 180 + 20}>
         <Component
           animation={disableAnimation ? null : 'lazy'}
           enterStyle={{ o: 0, y: -10 }}
