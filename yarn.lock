@@ -6960,7 +6960,7 @@ __metadata:
     react-native: "npm:^0.72.6"
     react-native-gesture-handler: "npm:~2.12.0"
     react-native-ios-modal: "npm:2.0.0-3"
-    react-native-reanimated: "npm:~3.4.1"
+    react-native-reanimated: "npm:react-native-reanimated@3.6.1"
     react-native-safe-area-context: "npm:4.6.3"
     react-native-screens: "npm:~3.22.0"
     react-native-svg: "npm:^13.9.0"

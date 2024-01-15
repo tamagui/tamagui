@@ -168,7 +168,10 @@ export class TamaguiPlugin {
       nmf.hooks.createModule.tap(
         this.pluginName,
         // @ts-expect-error CreateData is typed as 'object'...
-        (createData: { matchResource?: string; settings: { sideEffects?: boolean } }) => {
+        (createData: {
+          matchResource?: string
+          settings: { sideEffects?: boolean }
+        }) => {
           if (createData.matchResource?.endsWith('.tamagui.css')) {
             createData.settings.sideEffects = true
           }

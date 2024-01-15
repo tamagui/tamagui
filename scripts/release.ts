@@ -49,8 +49,9 @@ const nextVersion = (() => {
   }
 
   const plusVersion = skipVersion ? 0 : 1
-  const curPatch = +curVersion.split('.')[2] || 0
-  const patchVersion = patch ? curPatch + plusVersion : 0
+  const patchAndCanary = curVersion.split('.')[2]
+  const [patch, lastCanary] = patchAndCanary.split('-')
+  const patchVersion = patch ? +patch + plusVersion : 0
   const curMinor = +curVersion.split('.')[1] || 0
   const minorVersion = curMinor + (patch || canary ? 0 : plusVersion)
   const next = `1.${minorVersion}.${patchVersion}`
@@ -167,6 +168,8 @@ async function run() {
           })
 
     version = answer.version
+
+    console.info('Next:', version, '\n')
 
     console.info('install and build')
 
