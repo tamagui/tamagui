@@ -23,12 +23,8 @@ function TestPage() {
         flex: 1,
       }}
     >
-<<<<<<< HEAD
       {/* <Square animation="quick" size={200} bc="$color" /> */}
       <DebugNestedThemeChange />
-=======
-      <AnimationsPresenceDemo />
->>>>>>> master
     </div>
   )
 }

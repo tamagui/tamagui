@@ -2067,7 +2067,6 @@ export type SplitStyleProps = {
   isExiting?: boolean
   exitVariant?: string
   enterVariant?: string
-  keepStyleSSR?: boolean
 }
 
 // Presence
@@ -2124,7 +2123,6 @@ export type UniversalAnimatedNumber<A> = {
 
 export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
   isReactNative?: boolean
-  keepStyleSSR?: boolean
   supportsCSSVars?: boolean
   useAnimations: UseAnimationHook
   usePresence: () => UsePresenceResult

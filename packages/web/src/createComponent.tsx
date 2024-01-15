@@ -444,7 +444,10 @@ export function createComponent<
     }
 
     const shouldAvoidClasses = Boolean(
-      !isWeb || isAnimated || !staticConfig.acceptsClassName || propsIn.disableClassName
+      !isWeb ||
+        (isAnimated && isReactNative) ||
+        !staticConfig.acceptsClassName ||
+        propsIn.disableClassName
     )
     const shouldForcePseudo = !!propsIn.forceStyle
     const noClassNames = shouldAvoidClasses || shouldForcePseudo
@@ -601,16 +604,12 @@ export function createComponent<
         ? 'value'
         : 'auto'
 
-    // temp: once we fix above we can disable this
-    const keepStyleSSR = willBeAnimated && animationsConfig?.keepStyleSSR
-
     const styleProps = {
       mediaState,
       noClassNames,
       resolveValues,
       isExiting,
       isAnimated,
-      keepStyleSSR,
     } as const
 
     // HOOK 15 (-1 if no animation, -1 if disableSSR, -1 if no context, -1 if production)
@@ -663,7 +662,12 @@ export function createComponent<
     // once you set animation prop don't remove it, you can set to undefined/false
     // reason is animations are heavy - no way around it, and must be run inline here (🙅 loading as a sub-component)
     let animationStyles: any
-    if (willBeAnimated && useAnimations && !isHOC) {
+    if (
+      // if it supports css vars we run it on server too to get matching initial style
+      (supportsCSSVars ? willBeAnimatedClient : willBeAnimated) &&
+      useAnimations &&
+      !isHOC
+    ) {
       // HOOK 16... (depends on driver) (-1 if no animation, -1 if disableSSR, -1 if no context, -1 if production)
       const animations = useAnimations({
         props: propsWithAnimation,
@@ -678,7 +682,7 @@ export function createComponent<
         staticConfig,
       })
 
-      if (isAnimated && animations) {
+      if ((isAnimated || supportsCSSVars) && animations) {
         animationStyles = animations.style
       }
 
@@ -850,8 +854,6 @@ export function createComponent<
       mediaGroups ? Object.keys([...mediaGroups]).join('') : 0,
     ])
 
-    const avoidAnimationStyle = keepStyleSSR && state.unmounted === true
-
     let fontFamily = isText
       ? splitStyles.fontFamily || staticConfig.defaultProps?.fontFamily
       : null
@@ -860,9 +862,7 @@ export function createComponent<
     }
     const fontFamilyClassName = fontFamily ? `font_${fontFamily}` : ''
 
-    const style = avoidAnimationStyle
-      ? splitStyles.style
-      : animationStyles || splitStyles.style
+    const style = animationStyles || splitStyles.style
 
     let className: string | undefined
 
@@ -879,10 +879,9 @@ export function createComponent<
 
         className = classList.join(' ')
 
-        if (isReactNative && !avoidAnimationStyle) {
+        if (isAnimated && !supportsCSSVars && isReactNative) {
           viewProps.style = style
         } else if (isReactNative) {
-          // TODO these shouldn't really return from getSplitStyles when in Native mode
           const cnStyles = { $$css: true }
           for (const name of className.split(' ')) {
             cnStyles[name] = name
@@ -1180,7 +1179,7 @@ export function createComponent<
     }
 
     if (process.env.TAMAGUI_TARGET === 'web') {
-      if (isReactNative) {
+      if (isReactNative && !asChild && !isHOC) {
         content = (
           <span
             {...(!isHydrated
@@ -1188,7 +1187,7 @@ export function createComponent<
                   className: `_dsp_contents`,
                 }
               : {
-                  className: `${className} _dsp_contents`,
+                  className: `_dsp_contents`,
                   ...(events && getWebEvents(events)),
                 })}
           >
