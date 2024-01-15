@@ -10,6 +10,16 @@
 
 - TODO this is duplicated
 
+- this could work automatically? or with a simple config:
+const ScrollViewTamagui = styled(ScrollView, {
+  bg: '$background',
+  contentContainerStyle: {
+    flex: 1,
+    padding: "$md',
+  }
+})
+
+
 studio: add outlineColor and the pseudos
 studio: export for takeout option
 

@@ -95,6 +95,13 @@ function getESBuildConfig(
               external: true,
             }
           })
+
+          build.onResolve({ filter: /react-native-reanimated/ }, (args) => {
+            return {
+              path: 'react-native-reanimated',
+              external: true,
+            }
+          })
         },
       },
       esbuildAliasPlugin({

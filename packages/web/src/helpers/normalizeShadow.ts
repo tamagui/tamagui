@@ -5,7 +5,7 @@ import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 export function normalizeShadow({
   shadowColor,
   shadowOffset,
-  shadowOpacity = 1,
+  shadowOpacity,
   shadowRadius,
 }: Record<string, any>) {
   const { height, width } = shadowOffset || defaultOffset

@@ -505,7 +505,6 @@ export default function TakeoutPage({
   coupon,
 }: TakeoutPageProps) {
   const store = useTakeoutStore()
-  const disableMotion = useDisableMotion()
 
   return (
     <>
@@ -1498,8 +1497,8 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                                   {price.description === `Unlimited (+9 Seats)`
                                     ? `Unlimited`
                                     : price.description === `Hobby (3-8 seats)`
-                                    ? `Team (2-8 seats)`
-                                    : price.description}
+                                      ? `Team (2-8 seats)`
+                                      : price.description}
                                 </H4>
 
                                 <Paragraph theme="alt2">
@@ -2239,8 +2238,8 @@ const DiscountText = ({
   const text = coupon.amount_off
     ? `${formatPrice(coupon.amount_off, 'usd')} ${coupon.name}`
     : coupon.percent_off
-    ? `${coupon.percent_off}% ${coupon.name}`
-    : ''
+      ? `${coupon.percent_off}% ${coupon.name}`
+      : ''
   return (
     <ThemeTintAlt offset={6}>
       <YStack m="auto" scale={1} $xs={{ scale: 1.2, rotate: '0deg' }} rotate="7deg">
@@ -2671,7 +2670,7 @@ const getTakeoutProducts = async (): Promise<TakeoutPageProps> => {
   const promises = [promoListPromise, ...productPromises]
   const queries = await Promise.all(promises)
 
-  const products = queries.slice(1) as Awaited<typeof productPromises[number]>[]
+  const products = queries.slice(1) as Awaited<(typeof productPromises)[number]>[]
   const couponsList = queries[0] as Awaited<typeof promoListPromise>
 
   let coupon: Stripe.Coupon | null = null

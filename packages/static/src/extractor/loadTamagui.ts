@@ -62,9 +62,11 @@ export async function loadTamagui(
 
     if (props.outputCSS) {
       colorLog(Color.FgYellow, `    ➡ [tamagui] output css: ${props.outputCSS}\n`)
-      const css = props.disableMinifyCSS
-        ? config.getCSS()
-        : minifyCSS(config.getCSS()).code
+      // default to not minifying it messes up ssr parsing
+      const css =
+        props.disableMinifyCSS === false
+          ? minifyCSS(config.getCSS()).code
+          : config.getCSS()
       await writeFile(props.outputCSS, css)
     }
   }
@@ -186,9 +188,10 @@ export function loadTamaguiSync({
       if (tamaguiConfig) {
         if (props.outputCSS) {
           colorLog(Color.FgYellow, `    ➡ [tamagui] output css: ${props.outputCSS}\n`)
-          const css = props.disableMinifyCSS
-            ? tamaguiConfig.getCSS()
-            : minifyCSS(tamaguiConfig.getCSS()).code
+          const css =
+            props.disableMinifyCSS === false
+              ? minifyCSS(tamaguiConfig.getCSS()).code
+              : tamaguiConfig.getCSS()
           writeFileSync(props.outputCSS, css)
         }
 

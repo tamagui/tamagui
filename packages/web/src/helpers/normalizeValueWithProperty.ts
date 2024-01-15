@@ -4,7 +4,7 @@
  */
 
 import { isWeb } from '@tamagui/constants'
-import { stylePropsAll, stylePropsUnitless, validStyles } from '@tamagui/helpers'
+import { stylePropsAll, stylePropsUnitless } from '@tamagui/helpers'
 
 import { getAllSelectors } from './insertStyleRule'
 

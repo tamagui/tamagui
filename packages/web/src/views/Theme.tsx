@@ -65,6 +65,8 @@ export function getThemedChildren(
   }
 
   const { shallow, forceClassName } = props
+
+  // TODO remove hook and join with the parent stateRef in createComponent
   const hasEverThemed = useRef(false)
 
   const shouldRenderChildrenWithTheme =

@@ -84,6 +84,7 @@ export const useThemeWithState = (
 
 export const activeThemeManagers = new Set<ThemeManager>()
 
+// until WeakRef support:
 const _uidToManager = new WeakMap<Object, ThemeManager>()
 const _idToUID: Record<number, Object> = {}
 const getId = (id: number) => _idToUID[id]

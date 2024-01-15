@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/radio-group",
-  "version": "1.85.2",
+  "version": "1.85.11",
   "removeSideEffects": true,
   "sideEffects": [
     "*.css"
@@ -33,24 +33,24 @@
     }
   },
   "dependencies": {
-    "@tamagui/compose-refs": "1.85.2",
-    "@tamagui/constants": "1.85.2",
-    "@tamagui/core": "1.85.2",
-    "@tamagui/create-context": "1.85.2",
-    "@tamagui/focusable": "1.85.2",
-    "@tamagui/get-token": "1.85.2",
-    "@tamagui/helpers": "1.85.2",
-    "@tamagui/label": "1.85.2",
-    "@tamagui/roving-focus": "1.85.2",
-    "@tamagui/stacks": "1.85.2",
-    "@tamagui/use-controllable-state": "1.85.2",
-    "@tamagui/use-previous": "1.85.2"
+    "@tamagui/compose-refs": "1.85.11",
+    "@tamagui/constants": "1.85.11",
+    "@tamagui/core": "1.85.11",
+    "@tamagui/create-context": "1.85.11",
+    "@tamagui/focusable": "1.85.11",
+    "@tamagui/get-token": "1.85.11",
+    "@tamagui/helpers": "1.85.11",
+    "@tamagui/label": "1.85.11",
+    "@tamagui/roving-focus": "1.85.11",
+    "@tamagui/stacks": "1.85.11",
+    "@tamagui/use-controllable-state": "1.85.11",
+    "@tamagui/use-previous": "1.85.11"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.85.2",
+    "@tamagui/build": "1.85.11",
     "react": "^18.2.0"
   },
   "publishConfig": {
