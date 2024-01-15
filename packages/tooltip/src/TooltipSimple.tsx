@@ -56,7 +56,6 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = React.forwardRef(
             shift: -3,
           })}
           animateOnly={['transform', 'opacity']}
-          debug="verbose"
           animation={[
             '75ms',
             {

@@ -4,7 +4,7 @@ import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { Header } from '@tamagui/site/components/Header'
 import { SearchProvider } from '@tamagui/site/components/Search'
 import { useState } from 'react'
-import { Square, useDidFinishSSR } from 'tamagui'
+import { Square, useDidFinishSSR, useThemeName } from 'tamagui'
 import { useMotify } from 'moti/author'
 import { AnimationsPresenceDemo } from '@tamagui/demos'
 
@@ -23,7 +23,7 @@ function TestPage() {
         flex: 1,
       }}
     >
-      <SSRAnimationTest />
+      {/* <SSRAnimationTest /> */}
     </div>
   )
 }
@@ -91,7 +91,7 @@ TestPage.getLayout = (page) => {
   return (
     <>
       <SearchProvider>
-        {/* <Header minimal /> */}
+        <Header minimal />
         {page}
       </SearchProvider>
     </>

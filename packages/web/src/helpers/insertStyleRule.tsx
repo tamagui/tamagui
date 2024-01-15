@@ -203,6 +203,7 @@ function updateSheetStyles(
 
 let colorVarToVal: Record<string, string>
 let rootComputedStyle: CSSStyleDeclaration | null = null
+const schemes = { dark: true, light: true }
 
 function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
   const selectors = cssStyleRule.selectorText.split(',')
@@ -276,7 +277,11 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
           }
           return _
         })()
-        return `${scheme}${scheme && name ? '_' : ''}${name}`
+        const res =
+          scheme === name || schemes[name]
+            ? scheme
+            : `${scheme}${scheme && name ? '_' : ''}${name}`
+        return res
       })
     ),
   ]
