@@ -1,3 +1,7 @@
+- docs:
+  - for ssr need for t_unmounted
+  - explain how ssr works
+
 - tests:
   - SSR e2e with animations
   - onLayout + RN or not

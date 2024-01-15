@@ -6,18 +6,12 @@ import { SearchProvider } from '@tamagui/site/components/Search'
 import { useState } from 'react'
 import { Square, useDidFinishSSR } from 'tamagui'
 import { useMotify } from 'moti/author'
+import { AnimationsPresenceDemo } from '@tamagui/demos'
 
 // debugger
 global.shouldDebugMoti = true
 
 function TestPage() {
-  // const hydrated = useDidFinishSSR()
-  // console.log('hydrated', hydrated)
-  // const out = useMotify({
-  //   animate: hydrated ? { transform: [{ translateY: 100 }] } : {},
-  // })
-
-  // const [color, setColor] = useState('red')
   return (
     <div
       style={{
@@ -29,6 +23,21 @@ function TestPage() {
         flex: 1,
       }}
     >
+      <AnimationsPresenceDemo />
+    </div>
+  )
+}
+
+const SSRAnimationTest = () => {
+  // const hydrated = useDidFinishSSR()
+  // console.log('hydrated', hydrated)
+  // const out = useMotify({
+  //   animate: hydrated ? { transform: [{ translateY: 100 }] } : {},
+  // })
+
+  // const [color, setColor] = useState('red')
+  return (
+    <>
       {/* <Square
         animation="lazy"
         animateOnly={['backgroundColor']}
@@ -40,7 +49,10 @@ function TestPage() {
         // debug="break"
       /> */}
 
+      {/* <TestCircle /> */}
+
       <XStack w={500} h={500} backgroundColor="palegoldenrod" pos="relative">
+        {/* <AnimationsEnterDemo /> */}
         {/* <TestCircle /> */}
 
         <Circle
@@ -59,7 +71,7 @@ function TestPage() {
           backgroundColor="green"
         />
       </XStack>
-    </div>
+    </>
   )
 }
 
@@ -95,6 +107,7 @@ TestPage.getLayout = (page) => {
 
 import { memo, useEffect } from 'react'
 import { Circle, XStack } from 'tamagui'
+import { AnimationsEnterDemo } from '@tamagui/demos'
 
 const TestCircle = memo(() => {
   const [mounted, setMounted] = useState<'start' | 'animate' | 'done'>('start')
