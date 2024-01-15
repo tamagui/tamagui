@@ -7,35 +7,38 @@ import { mediaState } from './hooks/useMedia'
 // easy introspection
 // only included in dev mode
 
-class TamaguiManager {
-  Helpers = Helpers
+export const Tamagui = (() => {
+  if (process.env.NODE_ENV === 'development') {
+    class TamaguiManager {
+      Helpers = Helpers
 
-  get mediaState() {
-    return { ...mediaState }
+      get mediaState() {
+        return { ...mediaState }
+      }
+
+      get config() {
+        return getConfig()
+      }
+
+      get insertedRules() {
+        return getAllRules()
+      }
+
+      get allSelectors() {
+        return getAllSelectors()
+      }
+
+      get allTransforms() {
+        return getAllTransforms()
+      }
+
+      get identifierToValue() {
+        return identifierToValue
+      }
+    }
+    return new TamaguiManager()
   }
-
-  get config() {
-    return getConfig()
-  }
-
-  get insertedRules() {
-    return getAllRules()
-  }
-
-  get allSelectors() {
-    return getAllSelectors()
-  }
-
-  get allTransforms() {
-    return getAllTransforms()
-  }
-
-  get identifierToValue() {
-    return identifierToValue
-  }
-}
-
-export const Tamagui = new TamaguiManager()
+})()
 
 const identifierToValue = new Map<string, any>()
 

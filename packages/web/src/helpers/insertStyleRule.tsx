@@ -262,10 +262,10 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
           .replace(/(.t_|:root)/g, '')
           .trim()
           .split(' ')
-        const [first] = parts
-        const scheme = first.includes('dark')
+        const secondToLast = parts[parts.length - 2] || ''
+        const scheme = secondToLast.includes('dark')
           ? 'dark'
-          : first.includes('light')
+          : secondToLast.includes('light')
             ? 'light'
             : ''
         const name = (() => {
