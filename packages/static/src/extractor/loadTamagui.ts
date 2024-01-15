@@ -65,8 +65,8 @@ export async function loadTamagui(
       // default to not minifying it messes up ssr parsing
       const css =
         props.disableMinifyCSS === false
-          ? config.getCSS()
-          : minifyCSS(config.getCSS()).code
+          ? minifyCSS(config.getCSS()).code
+          : config.getCSS()
       await writeFile(props.outputCSS, css)
     }
   }

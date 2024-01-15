@@ -255,34 +255,38 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
     ) as any
   }
 
+  const names = [
+    ...new Set(
+      selectors.map((selector) => {
+        const parts = selector
+          .replace(/(.t_|:root)/g, '')
+          .trim()
+          .split(' ')
+        const [first] = parts
+        const scheme = first.includes('dark')
+          ? 'dark'
+          : first.includes('light')
+            ? 'light'
+            : ''
+        const name = (() => {
+          let _ = parts[parts.length - 1]
+          if (scheme && _.startsWith(scheme)) {
+            // we have some hardcoded for component themes t_light_name
+            _ = _.slice(scheme.length + 1)
+          }
+          return _
+        })()
+        return `${scheme}${scheme && name ? '_' : ''}${name}`
+      })
+    ),
+  ]
+
   const dedupedEntry: DedupedTheme = {
-    names: [],
+    names,
     theme: values,
   }
 
   // loop selectors and build deduped
-  for (const selector of selectors) {
-    const di = selector.indexOf('t_dark')
-    const li = selector.indexOf('t_light')
-    let scheme = di && li ? (di < li ? 'dark' : 'light') : ''
-    let name = selector.slice(selector.lastIndexOf('.t_') + 3)
-
-    if (name.startsWith(scheme)) {
-      // we have some hardcoded for component themes t_light_name
-      name = name.slice(scheme.length + 1)
-    }
-    // for base dark and light
-    if (scheme === name) {
-      scheme = ''
-    }
-    const themeName = `${scheme}${scheme && name ? '_' : ''}${name}`
-
-    if (dedupedEntry.names.includes(themeName)) {
-      continue
-    }
-
-    dedupedEntry.names.push(themeName)
-  }
 
   return dedupedEntry
 }
