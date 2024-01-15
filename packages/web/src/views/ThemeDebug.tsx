@@ -67,11 +67,15 @@ export function ThemeDebug({
           <code
             style={{
               whiteSpace: 'pre',
+              maxWidth: 250,
+              overflow: 'auto',
+              padding: 5,
             }}
           >
             &lt;Theme {id} /&gt;&nbsp;
             {JSON.stringify(
               {
+                propsName: themeProps.name,
                 name: themeState?.state?.name,
                 className: themeState?.state?.className,
                 inverse: themeProps.inverse,

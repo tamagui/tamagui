@@ -95,10 +95,6 @@ export class ThemeManager {
   updateState(nextState: ThemeManagerState, shouldNotify = true) {
     this.state = nextState
     this._allKeys = null
-    if (process.env.NODE_ENV !== 'production') {
-      this['_numChangeEventsSent'] ??= 0
-      this['_numChangeEventsSent']++
-    }
     if (shouldNotify) {
       if (process.env.TAMAGUI_TARGET === 'native') {
         // native is way slower with queueMicrotask
@@ -156,6 +152,10 @@ export class ThemeManager {
 
   notify(forced = false) {
     this.themeListeners.forEach((cb) => cb(this.state.name, this, forced))
+    if (process.env.NODE_ENV !== 'production') {
+      this['_numChangeEventsSent'] ??= 0
+      this['_numChangeEventsSent']++
+    }
   }
 
   onChangeTheme(cb: ThemeListener, debugId?: number) {
