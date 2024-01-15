@@ -262,11 +262,9 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
 
   // loop selectors and build deduped
   for (const selector of selectors) {
-    let scheme = selector.includes('t_dark')
-      ? 'dark'
-      : selector.includes('t_light')
-        ? 'light'
-        : ''
+    const di = selector.indexOf('t_dark')
+    const li = selector.indexOf('t_light')
+    let scheme = di && li ? (di < li ? 'dark' : 'light') : ''
     let name = selector.slice(selector.lastIndexOf('.t_') + 3)
 
     if (name.startsWith(scheme)) {

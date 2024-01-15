@@ -227,12 +227,10 @@ export class TamaguiPlugin {
               return
             }
 
-            const combinedCSS = minifyCSS(
-              cssFiles.reduce((acc, file) => {
-                const cssContent = compilation.assets[file].source()
-                return `${acc}\n${cssContent}`
-              }, '')
-            )
+            const combinedCSS = cssFiles.reduce((acc, file) => {
+              const cssContent = compilation.assets[file].source()
+              return `${acc}\n${cssContent}`
+            }, '')
 
             for (const [index, cssFile] of cssFiles.entries()) {
               if (index > 0) {
@@ -245,7 +243,7 @@ export class TamaguiPlugin {
                 // just replace the first one? hacky
                 compilation.updateAsset(
                   cssFile,
-                  new compiler.webpack.sources.RawSource(Buffer.from(combinedCSS.code))
+                  new compiler.webpack.sources.RawSource(Buffer.from(combinedCSS))
                 )
               }
             }
