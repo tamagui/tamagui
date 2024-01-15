@@ -765,7 +765,7 @@ export const getSplitStyles: StyleSplitter = (
           if (isEnter) {
             isDisabled =
               componentState.unmounted === 'should-enter'
-                ? false
+                ? true
                 : !componentState.unmounted
           }
 

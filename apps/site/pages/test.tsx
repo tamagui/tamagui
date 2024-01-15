@@ -4,21 +4,32 @@ import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { Header } from '@tamagui/site/components/Header'
 import { SearchProvider } from '@tamagui/site/components/Search'
 import { useState } from 'react'
-import { Square } from 'tamagui'
+import { Square, useDidFinishSSR } from 'tamagui'
+import { useMotify } from 'moti/author'
+
+// debugger
+global.shouldDebugMoti = true
 
 function TestPage() {
-  const [color, setColor] = useState('red')
+  // const hydrated = useDidFinishSSR()
+  // console.log('hydrated', hydrated)
+  // const out = useMotify({
+  //   animate: hydrated ? { transform: [{ translateY: 100 }] } : {},
+  // })
+
+  // const [color, setColor] = useState('red')
   return (
     <div
       style={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        background: 'var(--background)',
         height: '100%',
         flex: 1,
       }}
     >
-      <Square
+      {/* <Square
         animation="lazy"
         animateOnly={['backgroundColor']}
         o={1}
@@ -27,7 +38,27 @@ function TestPage() {
         enterStyle={{ bg: 'blue' }}
         size={200}
         // debug="break"
-      />
+      /> */}
+
+      <XStack w={500} h={500} backgroundColor="palegoldenrod" pos="relative">
+        {/* <TestCircle /> */}
+
+        <Circle
+          animation="lazy"
+          position="absolute"
+          debug
+          top={0}
+          left={0}
+          enterStyle={{
+            bg: 'pink',
+            y: -20,
+          }}
+          // the last i is less wide
+          x={0}
+          size={20}
+          backgroundColor="green"
+        />
+      </XStack>
     </div>
   )
 }
@@ -48,7 +79,7 @@ TestPage.getLayout = (page) => {
   return (
     <>
       <SearchProvider>
-        <Header minimal />
+        {/* <Header minimal /> */}
         {page}
       </SearchProvider>
     </>
@@ -61,3 +92,40 @@ TestPage.getLayout = (page) => {
 //     props: {},
 //   }
 // }
+
+import { memo, useEffect } from 'react'
+import { Circle, XStack } from 'tamagui'
+
+const TestCircle = memo(() => {
+  const [mounted, setMounted] = useState<'start' | 'animate' | 'done'>('start')
+
+  useEffect(() => {
+    const idle = window.requestIdleCallback || setTimeout
+    idle(() => {
+      setTimeout(() => {
+        setMounted('animate')
+      }, 50)
+
+      setTimeout(() => {
+        setMounted('done')
+      }, 1500)
+    })
+  }, [])
+
+  return (
+    <XStack width={200} height={50} position="relative">
+      <Circle
+        animation="quick"
+        position="absolute"
+        // debug
+        top={0}
+        left={0}
+        y={mounted === 'start' ? -30 : -3}
+        // the last i is less wide
+        x={50}
+        size={10}
+        backgroundColor="$color9"
+      />
+    </XStack>
+  )
+})

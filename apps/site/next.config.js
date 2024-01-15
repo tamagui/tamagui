@@ -106,7 +106,7 @@ module.exports = function (name, { defaultConfig }) {
     // runtime: 'experimental-edge',
     productionBrowserSourceMaps: process.env.ANALYZE === 'true',
     swcMinify: true,
-    reactStrictMode: true,
+    // must set to false if using reanimated
     // reactStrictMode: false,
     optimizeFonts: true,
     modularizeImports: {
