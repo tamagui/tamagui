@@ -1,10 +1,11 @@
 // adapted from radix-ui popper
 
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { isWeb } from '@tamagui/constants'
-import { useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import type { ScopedProps } from '@tamagui/core'
 import {
   SizeTokens,
+  Stack,
   StackProps,
   View as TamaguiView,
   createStyledContext,
@@ -12,7 +13,6 @@ import {
   styled,
   useProps,
 } from '@tamagui/core'
-import type { ScopedProps } from '@tamagui/core'
 import {
   Coords,
   OffsetOptions,
@@ -302,9 +302,9 @@ export const PopperContent = React.forwardRef<
 
   // outer frame because we explicitly don't want animation to apply to this
   return (
-    <YStack {...(getFloatingProps ? getFloatingProps(frameProps) : frameProps)}>
+    <Stack {...(getFloatingProps ? getFloatingProps(frameProps) : frameProps)}>
       {contents}
-    </YStack>
+    </Stack>
   )
 })
 
