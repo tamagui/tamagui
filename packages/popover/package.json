@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/popover",
-  "version": "1.85.3-1705307938032",
+  "version": "1.85.4",
   "sideEffects": [
     "*.css"
   ],
@@ -33,24 +33,24 @@
   },
   "dependencies": {
     "@floating-ui/react": "^0.24.7",
-    "@tamagui/adapt": "1.85.3-1705307938032",
-    "@tamagui/animate": "1.85.3-1705307938032",
-    "@tamagui/aria-hidden": "1.85.3-1705307938032",
-    "@tamagui/compose-refs": "1.85.3-1705307938032",
-    "@tamagui/constants": "1.85.3-1705307938032",
-    "@tamagui/core": "1.85.3-1705307938032",
-    "@tamagui/dismissable": "1.85.3-1705307938032",
-    "@tamagui/floating": "1.85.3-1705307938032",
-    "@tamagui/focus-scope": "1.85.3-1705307938032",
-    "@tamagui/helpers": "1.85.3-1705307938032",
-    "@tamagui/polyfill-dev": "1.85.3-1705307938032",
-    "@tamagui/popper": "1.85.3-1705307938032",
-    "@tamagui/portal": "1.85.3-1705307938032",
-    "@tamagui/remove-scroll": "1.85.3-1705307938032",
-    "@tamagui/scroll-view": "1.85.3-1705307938032",
-    "@tamagui/sheet": "1.85.3-1705307938032",
-    "@tamagui/stacks": "1.85.3-1705307938032",
-    "@tamagui/use-controllable-state": "1.85.3-1705307938032",
+    "@tamagui/adapt": "1.85.4",
+    "@tamagui/animate": "1.85.4",
+    "@tamagui/aria-hidden": "1.85.4",
+    "@tamagui/compose-refs": "1.85.4",
+    "@tamagui/constants": "1.85.4",
+    "@tamagui/core": "1.85.4",
+    "@tamagui/dismissable": "1.85.4",
+    "@tamagui/floating": "1.85.4",
+    "@tamagui/focus-scope": "1.85.4",
+    "@tamagui/helpers": "1.85.4",
+    "@tamagui/polyfill-dev": "1.85.4",
+    "@tamagui/popper": "1.85.4",
+    "@tamagui/portal": "1.85.4",
+    "@tamagui/remove-scroll": "1.85.4",
+    "@tamagui/scroll-view": "1.85.4",
+    "@tamagui/sheet": "1.85.4",
+    "@tamagui/stacks": "1.85.4",
+    "@tamagui/use-controllable-state": "1.85.4",
     "react-freeze": "^1.0.3"
   },
   "peerDependencies": {
@@ -58,7 +58,7 @@
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.85.3-1705307938032",
+    "@tamagui/build": "1.85.4",
     "react": "^18.2.0",
     "react-native": "^0.72.6"
   },
