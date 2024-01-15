@@ -190,6 +190,9 @@ const resolveVariants: StyleResolver = (
       variantValue,
       !!styleProps.noNormalize
     )
+    if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+      console.info(`   expanding styles from `, variantValue, `to`, expanded)
+    }
     const next = Object.entries(expanded)
 
     // store any changed font family (only support variables for now)
@@ -287,6 +290,9 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
 
     if (isVariable(val)) {
       res[subKey] = resolveVariableValue(subKey, val, styleProps.resolveValues)
+      if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+        console.info(`variable`, subKey, res[subKey])
+      }
       continue
     }
 
