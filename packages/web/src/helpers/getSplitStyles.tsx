@@ -1159,7 +1159,7 @@ export const getSplitStyles: StyleSplitter = (
           }
         }
 
-        if (shouldRetain || (!IS_STATIC && !styleProps.keepStyleSSR)) {
+        if (shouldRetain || !IS_STATIC) {
           style = retainedStyles || {}
         }
       }

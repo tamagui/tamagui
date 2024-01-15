@@ -23,7 +23,7 @@ function TestPage() {
         flex: 1,
       }}
     >
-      <AnimationsPresenceDemo />
+      <SSRAnimationTest />
     </div>
   )
 }
