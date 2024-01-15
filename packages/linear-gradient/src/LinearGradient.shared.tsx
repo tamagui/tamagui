@@ -33,9 +33,11 @@ export const LinearGradient = YStack.styleable<LinearGradientExtraProps>(
       }) || []
 
     if (colors.some((c) => typeof c === 'string' && c.startsWith('$'))) {
-      console.warn(
-        `LinearGradient: "colors" prop contains invalid color tokens: ${colors} fallback to default colors`
-      )
+      if (process.env.NODE_ENV !== 'production') {
+        console.warn(
+          `LinearGradient: "colors" prop contains invalid color tokens: ${colors} fallback to default colors`
+        )
+      }
       colors = ['#000', '#fff']
     }
 
