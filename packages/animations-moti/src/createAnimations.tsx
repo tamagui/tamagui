@@ -105,21 +105,25 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
         ? props.animation[0]
         : props.animation
 
-      let animate: Object | undefined
-      let dontAnimate: Object | undefined
+      const isHydrating = componentState.unmounted === 'should-enter'
+      let animate = {}
+      let dontAnimate = {}
 
-      const animateOnly = props.animateOnly || ['transform', 'opacity']
-      if (animateOnly) {
-        animate = {}
-        dontAnimate = { ...style }
-        for (const key of animateOnly) {
-          if (!(key in style)) continue
-          animate[key] = style[key]
-          delete dontAnimate[key]
-        }
+      if (isHydrating) {
+        dontAnimate = style
       } else {
-        animate = { ...style }
-        dontAnimate = {}
+        const animateOnly = props.animateOnly || ['transform', 'opacity']
+        if (animateOnly) {
+          dontAnimate = { ...style }
+          for (const key of animateOnly) {
+            if (key in style) {
+              animate[key] = style[key]
+              delete dontAnimate[key]
+            }
+          }
+        } else {
+          animate = style
+        }
       }
 
       // without this, the driver breaks on native
@@ -129,27 +133,22 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
 
       const isExiting = Boolean(presence?.[1])
       const sendExitComplete = presence?.[1]
-      const transition = componentState.unmounted
-        ? ({ type: 'no-animation' } as const)
-        : animations[animationKey as keyof typeof animations]
 
       const onDidAnimateCombined = useCallback(() => {
         onDidAnimate?.()
         sendExitComplete?.()
       }, [])
 
-      const fromRef = useRef()
-      if (!componentState.unmounted && !fromRef.current) {
-        fromRef.current = styles
-      }
-
       type UseMotiProps = Parameters<typeof useMotify>[0]
 
       const motiProps = {
-        animateInitialState: false,
-        from: fromRef.current,
-        animate: isExiting ? undefined : styles,
-        transition,
+        animate: isExiting || isHydrating ? {} : styles,
+        transition: animations[animationKey as keyof typeof animations],
+        // isHydrating
+        //   ? ({ type: 'timing', duration: 0 } as const)
+        //   : componentState.unmounted
+        //     ? { type: 'timing', duration: 0 }
+        //     : animations[animationKey as keyof typeof animations]
         onDidAnimate: onDidAnimateCombined,
         usePresenceValue: presence as any,
         presenceContext: useContext(PresenceContext),
@@ -158,8 +157,8 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
 
       const moti = useMotify(motiProps)
 
-      if (process.env.NODE_ENV === 'development' && typeof props['debug'] === 'string') {
-        console.info(`Moti animation:`, {
+      if (process.env.NODE_ENV === 'development' && props['debug']) {
+        console.info(`useMotify(`, JSON.stringify(motiProps, null, 2) + ')', {
           animationProps,
           motiProps,
           moti,
