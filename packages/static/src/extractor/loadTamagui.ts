@@ -188,9 +188,10 @@ export function loadTamaguiSync({
       if (tamaguiConfig) {
         if (props.outputCSS) {
           colorLog(Color.FgYellow, `    ➡ [tamagui] output css: ${props.outputCSS}\n`)
-          const css = props.disableMinifyCSS
-            ? tamaguiConfig.getCSS()
-            : minifyCSS(tamaguiConfig.getCSS()).code
+          const css =
+            props.disableMinifyCSS === false
+              ? minifyCSS(tamaguiConfig.getCSS()).code
+              : tamaguiConfig.getCSS()
           writeFileSync(props.outputCSS, css)
         }
 
