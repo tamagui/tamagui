@@ -879,10 +879,9 @@ export function createComponent<
 
         className = classList.join(' ')
 
-        if (isReactNative && !avoidAnimationStyle) {
+        if (isAnimated && !supportsCSSVars && isReactNative) {
           viewProps.style = style
         } else if (isReactNative) {
-          // TODO these shouldn't really return from getSplitStyles when in Native mode
           const cnStyles = { $$css: true }
           for (const name of className.split(' ')) {
             cnStyles[name] = name
@@ -1180,7 +1179,7 @@ export function createComponent<
     }
 
     if (process.env.TAMAGUI_TARGET === 'web') {
-      if (isReactNative) {
+      if (isReactNative && !asChild && !isHOC) {
         content = (
           <span
             {...(!isHydrated
@@ -1188,7 +1187,7 @@ export function createComponent<
                   className: `_dsp_contents`,
                 }
               : {
-                  className: `${className} _dsp_contents`,
+                  className: `_dsp_contents`,
                   ...(events && getWebEvents(events)),
                 })}
           >

@@ -26,7 +26,7 @@ export function TamaguiProvider({
         }
       }
 
-      if (config.disableSSR && !disableInjectCSS) {
+      if (!disableInjectCSS) {
         const style = document.createElement('style')
         style.appendChild(document.createTextNode(config.getCSS()))
         document.head.appendChild(style)
