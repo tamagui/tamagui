@@ -263,21 +263,12 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
 
   // loop selectors and build deduped
   for (const selector of selectors) {
-    let scheme = selector.includes('t_dark')
-      ? 'dark'
-      : selector.includes('t_light')
-        ? 'light'
-        : ''
-    let name = selector.slice(selector.lastIndexOf('.t_') + 3)
-    if (name.startsWith(scheme)) {
-      // we have some hardcoded for component themes t_light_name
-      name = name.slice(scheme.length + 1)
-    }
-    // for base dark and light
-    if (scheme === name) {
-      scheme = ''
-    }
-    const themeName = `${scheme}${scheme && name ? '_' : ''}${name}`
+    const matches =
+      selector.match(/(.t_(light|dark))?[\s]?(.t_([a-z0-9_]+))[\s]*$/i) ||
+      ([] as string[])
+    const [_0, _1, scheme, _2, name] = matches
+    const themeName =
+      name && scheme && scheme !== name ? `${scheme}_${name}` : name || scheme
     if (dedupedEntry.names.includes(themeName)) {
       continue
     }
