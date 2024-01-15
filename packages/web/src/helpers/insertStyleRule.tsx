@@ -230,8 +230,9 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
     if (sepI === -1) continue
     const key = rule.slice(rule.indexOf('--') + 2, sepI)
     const val = rule.slice(sepI + 2)
+
     let value: string
-    if (val[3] === '(') {
+    if (val.startsWith('var(')) {
       // var()
       const varName = val.slice(6, -1)
       const tokenVal = colorVarToVal[varName]
@@ -265,10 +266,9 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
     let scheme = selector.includes('t_dark')
       ? 'dark'
       : selector.includes('t_light')
-      ? 'light'
-      : ''
+        ? 'light'
+        : ''
     let name = selector.slice(selector.lastIndexOf('.t_') + 3)
-
     if (name.startsWith(scheme)) {
       // we have some hardcoded for component themes t_light_name
       name = name.slice(scheme.length + 1)
@@ -278,11 +278,9 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
       scheme = ''
     }
     const themeName = `${scheme}${scheme && name ? '_' : ''}${name}`
-
     if (dedupedEntry.names.includes(themeName)) {
       continue
     }
-
     dedupedEntry.names.push(themeName)
   }
 
