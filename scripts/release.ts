@@ -377,7 +377,7 @@ async function run() {
     const tagPrefix = canary ? 'canary' : 'v'
     const gitTag = `${tagPrefix}${version}`
 
-    if (!skipStarters) {
+    if (!canary && !skipStarters) {
       await finishAndCommit(starterFreeDir)
     }
 
@@ -387,7 +387,9 @@ async function run() {
       if (!rePublish || reRun || finish) {
         await spawnify(`git add -A`, { cwd })
         await spawnify(`git commit -m ${gitTag}`, { cwd })
-        await spawnify(`git tag ${gitTag}`, { cwd })
+        if (!canary) {
+          await spawnify(`git tag ${gitTag}`, { cwd })
+        }
 
         if (!dirty) {
           // pull once more before pushing so if there was a push in interim we get it
@@ -395,7 +397,9 @@ async function run() {
         }
 
         await spawnify(`git push origin head`, { cwd })
-        await spawnify(`git push origin ${gitTag}`, { cwd })
+        if (!canary) {
+          await spawnify(`git push origin ${gitTag}`, { cwd })
+        }
 
         console.info(`✅ Pushed and versioned\n`)
       }

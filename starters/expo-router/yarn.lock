@@ -3946,7 +3946,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/metro-plugin@npm:1.85.2":
+"@tamagui/metro-plugin@npm:^1.85.2":
   version: 1.85.2
   resolution: "@tamagui/metro-plugin@npm:1.85.2"
   dependencies:
@@ -6669,7 +6669,7 @@ __metadata:
     "@remix-run/node": "npm:1.19.3"
     "@remix-run/web-fetch": "npm:4.1.0"
     "@tamagui/config": "npm:^1.85.2"
-    "@tamagui/metro-plugin": "npm:1.85.2"
+    "@tamagui/metro-plugin": "npm:^1.85.2"
     "@types/react": "npm:~18.2.14"
     babel-preset-expo: "npm:10.0.1"
     expo: "npm:~50.0.0-preview.9"

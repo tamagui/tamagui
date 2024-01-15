@@ -19,7 +19,7 @@
     "@remix-run/node": "1.19.3",
     "@remix-run/web-fetch": "4.1.0",
     "@tamagui/config": "^1.85.2",
-    "@tamagui/metro-plugin": "1.85.2",
+    "@tamagui/metro-plugin": "^1.85.2",
     "babel-preset-expo": "10.0.1",
     "expo": "~50.0.0-preview.9",
     "expo-font": "11.10.1",
