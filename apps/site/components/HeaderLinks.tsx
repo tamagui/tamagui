@@ -127,7 +127,7 @@ export const HeaderLinks = (props: HeaderProps) => {
           target="_blank"
           href="https://github.com/sponsors/natew"
         >
-          <HeadAnchor>Sponsor</HeadAnchor>
+          <HeadAnchor tag="span">Sponsor</HeadAnchor>
         </NextLink>
       )}
 
