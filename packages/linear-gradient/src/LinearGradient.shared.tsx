@@ -5,7 +5,7 @@ import {
   normalizeColor,
   styled,
   useProps,
-  useTheme
+  useTheme,
 } from '@tamagui/core'
 import { YStack } from '@tamagui/stacks'
 import type { ViewStyle } from 'react-native'
@@ -34,7 +34,7 @@ export const LinearGradient = YStack.styleable<LinearGradientExtraProps>(
 
     if (process.env.TAMAGUI_TARGET === 'native') {
       // normalize colors: fix android
-      colors = colors.map(color => {
+      colors = colors.map((color) => {
         try {
           return normalizeColor(color) || color
         } catch {
