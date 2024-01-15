@@ -366,9 +366,9 @@ export function createComponent<
 
     // disable for now still ssr issues
     const supportsCSSVars = animationsConfig?.supportsCSSVars
+    const curState = stateRef.current
 
     const willBeAnimatedClient = (() => {
-      const curState = stateRef.current
       const next = !!(hasAnimationProp && !isHOC && useAnimations)
       return Boolean(next || curState.hasAnimated)
     })()
@@ -376,8 +376,8 @@ export function createComponent<
     const willBeAnimated = !isServer && willBeAnimatedClient
 
     // once animated, always animated to preserve hooks / vdom structure
-    if (willBeAnimated && !stateRef.current.hasAnimated) {
-      stateRef.current.hasAnimated = true
+    if (willBeAnimated && !curState.hasAnimated) {
+      curState.hasAnimated = true
     }
 
     // HOOK
@@ -404,24 +404,36 @@ export function createComponent<
       : states[0]
 
     const setState = states[1]
-
     let setStateShallow = createShallowSetState(setState, debugProp)
 
-    // finish animated logic, avoid isAnimated when unmounted
-    let isAnimated = willBeAnimated
-    if (willBeAnimated && !supportsCSSVars) {
-      if (!isHydrated) {
-        isAnimated = false
-        stateRef.current.willHydrate = true
-      }
+    if (isHydrated && state.unmounted === 'should-enter') {
+      state.unmounted = true
     }
+
+    // finish animated logic, avoid isAnimated when unmounted
+    const hasRNAnimation = hasAnimationProp && animationsConfig?.isReactNative
+    const isReactNative = staticConfig.isReactNative
+
+    let isAnimated = willBeAnimated
+
+    // only web server + initial client render run this when not hydrated:
+    if (!isReactNative && hasRNAnimation && !isHOC && !isHydrated) {
+      isAnimated = false
+      curState.willHydrate = true
+    }
+
+    const shouldAvoidClasses = Boolean(
+      !isWeb || isAnimated || !staticConfig.acceptsClassName || propsIn.disableClassName
+    )
+    const shouldForcePseudo = !!propsIn.forceStyle
+    const noClassNames = shouldAvoidClasses || shouldForcePseudo
 
     const groupName = props.group as any as string
     const groupClassName = groupName ? `t_group_${props.group}` : ''
 
-    if (groupName && !stateRef.current.group) {
+    if (groupName && !curState.group) {
       const listeners = new Set<GroupStateListener>()
-      stateRef.current.group = {
+      curState.group = {
         listeners,
         emit(name, state) {
           listeners.forEach((l) => l(name, state))
@@ -441,7 +453,7 @@ export function createComponent<
       const og = setStateShallow
       setStateShallow = (state) => {
         og(state)
-        stateRef.current.group!.emit(groupName, {
+        curState.group!.emit(groupName, {
           pseudo: state,
         })
         // and mutate the current since its concurrent safe (children throw it in useState on mount)
@@ -503,19 +515,6 @@ export function createComponent<
       }
     }
 
-    const hasReactNativeAnimation = hasAnimationProp && animationsConfig?.isReactNative
-    const willBeReactNative = Boolean(
-      staticConfig.isReactNative || hasReactNativeAnimation
-    )
-    const isReactNative = willBeReactNative && !(!isHydrated && !supportsCSSVars)
-
-    const shouldAvoidClasses = Boolean(
-      !isWeb || isAnimated || !staticConfig.acceptsClassName || propsIn.disableClassName
-    )
-
-    const shouldForcePseudo = !!propsIn.forceStyle
-    const noClassNames = shouldAvoidClasses || shouldForcePseudo
-
     // internal use only
     const disableThemeProp =
       process.env.TAMAGUI_TARGET === 'native' ? false : props['data-disable-theme']
@@ -524,19 +523,19 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development' && time) time`theme-props`
 
     if (props.themeShallow) {
-      stateRef.current.themeShallow = true
+      curState.themeShallow = true
     }
 
     const themeStateProps: UseThemeWithStateProps = {
       name: props.theme,
       componentName,
       disable: disableTheme,
-      shallow: stateRef.current.themeShallow,
+      shallow: curState.themeShallow,
       inverse: props.themeInverse,
       debug: debugProp,
     }
 
-    if (typeof stateRef.current.isListeningToTheme === 'boolean') {
+    if (typeof curState.isListeningToTheme === 'boolean') {
       themeStateProps.shouldUpdate = () => stateRef.current.isListeningToTheme
     }
 
@@ -555,7 +554,7 @@ export function createComponent<
           Component?.name ||
           '[Unnamed Component]'
         }`
-        const type = hasAnimationProp ? '(animated)' : isReactNative ? '(rnw)' : ''
+        const type = isAnimated ? '(animated)' : isReactNative ? '(rnw)' : ''
         const dataIs = propsIn['data-is'] || ''
         const banner = `${name}${dataIs ? ` ${dataIs}` : ''} ${type} id ${internalID}`
         console.group(
@@ -627,13 +626,13 @@ export function createComponent<
     )
 
     // hide strategy will set this opacity = 0 until measured
-    if (props.group && props.untilMeasured === 'hide' && !stateRef.current.hasMeasured) {
+    if (props.group && props.untilMeasured === 'hide' && !curState.hasMeasured) {
       splitStyles.style.opacity = 0
     }
 
     if (process.env.NODE_ENV === 'development' && time) time`split-styles`
 
-    stateRef.current.isListeningToTheme = splitStyles.dynamicThemeAccess
+    curState.isListeningToTheme = splitStyles.dynamicThemeAccess
 
     // only listen for changes if we are using raw theme values or media space, or dynamic media (native)
     // array = space media breakpoints
@@ -763,7 +762,7 @@ export function createComponent<
         elementType,
         nonTamaguiProps,
         hostRef,
-        stateRef.current.willHydrate
+        curState.willHydrate
       ) ?? nonTamaguiProps
 
     // HOOK (1 more):
@@ -792,11 +791,11 @@ export function createComponent<
     const { pseudoGroups, mediaGroups } = splitStyles
 
     // TODO if you add a group prop setStateShallow changes identity...
-    if (!stateRef.current.unPress) {
-      stateRef.current.unPress = () => setStateShallow({ press: false, pressIn: false })
+    if (!curState.unPress) {
+      curState.unPress = () => setStateShallow({ press: false, pressIn: false })
     }
 
-    const unPress = stateRef.current.unPress!
+    const unPress = curState.unPress!
     const shouldEnter = state.unmounted === 'should-enter'
 
     useEffect(() => {
@@ -1128,7 +1127,7 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development' && time) time`create-element`
 
     // must override context so siblings don't clobber initial state
-    const groupState = stateRef.current.group
+    const groupState = curState.group
     const subGroupContext = useMemo(() => {
       if (!groupState || !groupName) return
       groupState.listeners.clear()
@@ -1178,17 +1177,18 @@ export function createComponent<
       )
     }
 
-    // animation setup
-    const shouldWrapParentEventsAndClassName = willBeAnimatedClient && willBeReactNative
-
     if (process.env.TAMAGUI_TARGET === 'web') {
-      if (isReactNative || shouldWrapParentEventsAndClassName) {
+      if (isReactNative) {
         content = (
           <span
-            className={`${
-              shouldWrapParentEventsAndClassName ? className : ''
-            } _dsp_contents`}
-            {...(events && getWebEvents(events))}
+            {...(!isHydrated
+              ? {
+                  className: `_dsp_contents`,
+                }
+              : {
+                  className: `${className} _dsp_contents`,
+                  ...(events && getWebEvents(events)),
+                })}
           >
             {content}
           </span>
@@ -1222,10 +1222,6 @@ export function createComponent<
         console.groupCollapsed(`render <${element} /> (${internalID}) with props`)
         try {
           log('viewProps', viewProps)
-          log('viewPropsOrder', Object.keys(viewProps))
-          for (const key in viewProps) {
-            log(' - ', key, viewProps[key])
-          }
           log('children', content)
           if (typeof window !== 'undefined') {
             log('props in', propsIn, 'mapped to', props, 'in order', Object.keys(props))
@@ -1239,7 +1235,6 @@ export function createComponent<
               styleProps,
               themeState,
               isAnimated,
-              shouldWrapParentEventsAndClassName,
               defaultProps,
               splitStyles,
               animationStyles,
