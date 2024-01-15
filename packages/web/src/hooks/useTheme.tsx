@@ -263,19 +263,13 @@ function someParentIsInversed(manager?: ThemeManager) {
 
 export const activeThemeManagers = new Set<ThemeManager>()
 
-const _uidToManager = new WeakMap<Object, ThemeManager>()
-const _idToUID: Record<number, Object> = {}
-const getId = (id: number) => _idToUID[id]
-
+// so we can store just a number in context for future RSC support
+const _idToManager = new Map<Object, WeakRef<ThemeManager>>()
 export const getThemeManager = (id: number) => {
-  return _uidToManager.get(getId(id)!)
+  return _idToManager.get(id)?.deref()
 }
-
 const registerThemeManager = (t: ThemeManager) => {
-  if (!_idToUID[t.id]) {
-    const id = (_idToUID[t.id] = {})
-    _uidToManager.set(id, t)
-  }
+  _idToManager.set(t.id, new WeakRef(t))
 }
 
 export const useChangeThemeEffect = (
