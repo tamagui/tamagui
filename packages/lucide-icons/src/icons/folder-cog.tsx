@@ -37,7 +37,7 @@ const Icon = (props) => {
     >
       <_Circle cx="18" cy="18" r="3" stroke={color} />
       <Path
-        d="M10.5 20H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H20a2 2 0 0 1 2 2v3.5"
+        d="M10.3 20H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H20a2 2 0 0 1 2 2v3.3"
         stroke={color}
       />
       <Path d="m21.7 19.4-.9-.3" stroke={color} />
