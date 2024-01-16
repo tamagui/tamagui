@@ -1072,16 +1072,33 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
     Text?: any;
 };
 export type UseAnimationProps = TamaguiComponentPropsBase & Record<string, any>;
+export type TamaguiComponentStateRef = {
+    host?: TamaguiElement;
+    composedRef?: (x: TamaguiElement) => void;
+    willHydrate?: boolean;
+    hasMeasured?: boolean;
+    hasAnimated?: boolean;
+    themeShallow?: boolean;
+    isListeningToTheme?: boolean;
+    unPress?: Function;
+    group?: {
+        listeners: Set<GroupStateListener>;
+        emit: GroupStateListener;
+        subscribe: (cb: GroupStateListener) => () => void;
+    };
+};
 export type UseAnimationHook = (props: {
     style: Record<string, any>;
     props: Record<string, any>;
     presence?: UsePresenceResult | null;
-    hostRef: RefObject<HTMLElement | View>;
     staticConfig: StaticConfig;
     styleProps: SplitStyleProps;
     componentState: TamaguiComponentState;
     theme: ThemeParsed;
     pseudos: PseudoProps<ViewStyle> | null;
+    stateRef: {
+        current: TamaguiComponentStateRef;
+    };
     onDidAnimate?: any;
     delay?: number;
 }) => null | {

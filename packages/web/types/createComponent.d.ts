@@ -1,7 +1,7 @@
 import React from 'react';
 import { DebugProp, SpaceDirection, SpaceValue, SpacerProps, StackProps, StackPropsBase, StaticConfig, TamaguiComponent, TamaguiElement, TextProps } from './types';
 export declare const mouseUps: Set<Function>;
-export declare function createComponent<ComponentPropTypes extends StackProps | TextProps = {}, Ref = TamaguiElement, BaseProps = never>(staticConfig: StaticConfig): TamaguiComponent<ComponentPropTypes, Ref, BaseProps, void>;
+export declare function createComponent<ComponentPropTypes extends StackProps | TextProps = {}, Ref extends TamaguiElement = TamaguiElement, BaseProps = never>(staticConfig: StaticConfig): TamaguiComponent<ComponentPropTypes, Ref, BaseProps, void>;
 export declare function Unspaced(props: {
     children?: any;
 }): any;
