@@ -152,14 +152,14 @@ export default function Community({ frontmatters }) {
 
         <FlatBubbleCard bw={0.5} space>
           <H3 id="starter-repos" ta="center">
-            Starter repos
+            Starter repos & Guides
           </H3>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <XStack py="$2" space="$4">
               <StarterRepoCard
-                url="https://github.com/timothymiller/t4-app"
-                name="create-t4-app"
-                author="timothymiller"
+                url="https://galaxies.dev/course/react-native-tamagui  "
+                name="Universal Apps with Tamagui (Guide)"
+                author="Simon Grimm"
               />
 
               <StarterRepoCard
