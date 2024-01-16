@@ -1,6 +1,11 @@
 import * as React from 'react';
 type PossibleRef<T> = React.Ref<T> | React.ForwardedRef<T> | React.RefObject<T> | undefined;
 /**
+ * Set a given ref to a given value
+ * This utility takes care of different types of refs: callback refs and RefObject(s)
+ */
+export declare function setRef<T>(ref: PossibleRef<T>, value: T): void;
+/**
  * A utility to compose multiple refs together
  * Accepts callback refs and RefObject(s)
  */

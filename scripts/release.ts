@@ -28,7 +28,7 @@ const skipStarters = process.argv.includes('--skip-starters')
 const canary = process.argv.includes('--canary')
 const skipVersion =
   finish || rePublish || process.argv.includes('--skip-version')
-const patch = process.argv.includes('--patch')
+const shouldPatch = process.argv.includes('--patch')
 const dirty = process.argv.includes('--dirty')
 const skipPublish = process.argv.includes('--skip-publish')
 const skipTest =
@@ -51,9 +51,9 @@ const nextVersion = (() => {
   const plusVersion = skipVersion ? 0 : 1
   const patchAndCanary = curVersion.split('.')[2]
   const [patch, lastCanary] = patchAndCanary.split('-')
-  const patchVersion = patch ? +patch + plusVersion : 0
+  const patchVersion = shouldPatch ? +patch + plusVersion : 0
   const curMinor = +curVersion.split('.')[1] || 0
-  const minorVersion = curMinor + (patch || canary ? 0 : plusVersion)
+  const minorVersion = curMinor + (shouldPatch || canary ? 0 : plusVersion)
   const next = `1.${minorVersion}.${patchVersion}`
 
   if (canary) {
