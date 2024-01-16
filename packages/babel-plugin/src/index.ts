@@ -26,7 +26,7 @@ const importWithTheme = template(`
 const __internalWithTheme = require('@tamagui/core').internalWithTheme;
 `)
 
-const extractor = createExtractor()
+const extractor = createExtractor({ platform: 'native' })
 
 export default declare(function snackBabelPlugin(
   api,

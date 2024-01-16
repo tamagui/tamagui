@@ -24,6 +24,7 @@ export interface Logger {
 }
 export type ExtractorOptions = {
     logger?: Logger;
+    platform?: TamaguiPlatform;
 };
 export type ExtractedAttrAttr = {
     type: 'attr';

@@ -55,18 +55,6 @@ const UNTOUCHED_PROPS = {
   className: true,
 }
 
-const INLINE_EXTRACTABLE = {
-  ref: 'ref',
-  key: 'key',
-  ...(process.env.TAMAGUI_TARGET === 'web' && {
-    onPress: 'onClick',
-    onHoverIn: 'onMouseEnter',
-    onHoverOut: 'onMouseLeave',
-    onPressIn: 'onMouseDown',
-    onPressOut: 'onMouseUp',
-  }),
-}
-
 const validHooks = {
   useMedia: true,
   useTheme: true,
@@ -85,11 +73,23 @@ function isFullyDisabled(props: TamaguiOptions) {
 }
 
 export function createExtractor(
-  { logger = console }: ExtractorOptions = { logger: console }
+  { logger = console, platform = 'web' }: ExtractorOptions = { logger: console }
 ) {
   if (!process.env.TAMAGUI_TARGET) {
     console.warn('⚠️ Please set process.env.TAMAGUI_TARGET to either "web" or "native"')
     process.exit(1)
+  }
+
+  const INLINE_EXTRACTABLE = {
+    ref: 'ref',
+    key: 'key',
+    ...(platform === 'web' && {
+      onPress: 'onClick',
+      onHoverIn: 'onMouseEnter',
+      onHoverOut: 'onMouseLeave',
+      onPressIn: 'onMouseDown',
+      onPressOut: 'onMouseUp',
+    }),
   }
 
   const componentState: TamaguiComponentState = {
