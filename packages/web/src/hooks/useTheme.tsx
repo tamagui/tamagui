@@ -108,6 +108,8 @@ export const useChangeThemeEffect = (
   keys?: { current: string[] }
 ): ChangedThemeResponse => {
   const { disable } = props
+
+  // TODO perf: put into ComponentContext to remove one more hook
   const parentManagerId = useContext(ThemeManagerIDContext)
   const parentManager = getThemeManager(parentManagerId)
 
@@ -120,6 +122,8 @@ export const useChangeThemeEffect = (
   }
 
   const subscribe = parentManager?.onChangeTheme || emptyCb
+
+  // TODO perf: can remove if put into createComponent above
   const prevRef = useRef<ChangedThemeResponse | undefined>()
 
   function shouldUpdate() {
@@ -179,7 +183,7 @@ export const useChangeThemeEffect = (
   )
 
   const { state, mounted, isNewTheme, themeManager, inversed } = themeState
-  const isInversingOnMount = Boolean(!themeState.mounted && props.inverse)
+  const isInversingOnMount = Boolean(!mounted && props.inverse)
 
   if (isInversingOnMount) {
     return {
@@ -256,7 +260,7 @@ function getUpdatedStateIfChanged(
   }
 
   // only inverse relies on this for ssr
-  const mounted = !props.inverse ? true : isRoot || prev?.mounted
+  const mounted = !props.inverse ? true : !!(isRoot || prev?.mounted)
 
   if (!state) {
     if (isNewTheme) {
@@ -269,7 +273,7 @@ function getUpdatedStateIfChanged(
 
   const wasInversed = prev?.inversed
   const nextInversed = isNewTheme && state.scheme !== parentManager?.state.scheme
-  const inversed = nextInversed ? true : wasInversed != null ? false : null
+  const inversed = mounted && nextInversed ? true : wasInversed != null ? false : null
 
   const response: ChangedThemeResponseUpdate = {
     themeManager,

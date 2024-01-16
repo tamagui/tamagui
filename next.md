@@ -1,3 +1,6 @@
+- themeInverse SSR safe
+  - no more mounting to inverse, we'd have to figure out CSS safe way
+
 - docs:
   - for ssr need for t_unmounted
   - explain how ssr works
