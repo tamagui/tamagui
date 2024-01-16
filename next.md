@@ -1,3 +1,5 @@
+- playground https://play.tailwindcss.com/
+
 - themeInverse SSR safe
   - no more mounting to inverse, we'd have to figure out CSS safe way
 
