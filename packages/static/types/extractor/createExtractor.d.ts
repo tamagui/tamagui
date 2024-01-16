@@ -5,7 +5,7 @@ import { TamaguiProjectInfo } from './bundleConfig';
 import { cleanupBeforeExit } from './getStaticBindingsForScope';
 export type Extractor = ReturnType<typeof createExtractor>;
 type FileOrPath = NodePath<t.Program> | t.File;
-export declare function createExtractor({ logger }?: ExtractorOptions): {
+export declare function createExtractor({ logger, platform }?: ExtractorOptions): {
     options: {
         logger: import("../types").Logger;
     };
