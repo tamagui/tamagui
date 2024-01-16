@@ -200,9 +200,7 @@ export function createSheet<
 
     let SheetImplementation = SheetImplementationCustom
 
-    let modal = props.modal
     if (props.native && Platform.OS === 'ios') {
-      modal = false
       if (process.env.TAMAGUI_TARGET === 'native') {
         const impl = getNativeSheet('ios')
         if (impl) {
@@ -218,7 +216,7 @@ export function createSheet<
       return null
     }
 
-    return <SheetImplementation ref={ref} {...props} modal={modal} />
+    return <SheetImplementation ref={ref} {...props} />
   })
 
   const components = {
