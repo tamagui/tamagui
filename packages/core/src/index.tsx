@@ -55,7 +55,7 @@ const baseViews = getBaseViews()
 setupHooks({
   getBaseViews,
 
-  usePropsTransform(elementType, propsIn, hostRef, willHydrate) {
+  usePropsTransform(elementType, propsIn, stateRef, willHydrate) {
     if (process.env.TAMAGUI_TARGET === 'web') {
       const isDOM = typeof elementType === 'string'
 
@@ -95,11 +95,9 @@ setupHooks({
 
       if (willHydrate || isDOM) {
         // only necessary for DOM elements, but we need the hooks to stay around
-        usePlatformMethods(hostRef as RefObject<Element>)
-        useElementLayout(
-          hostRef as RefObject<Element>,
-          !isDOM ? undefined : (onLayout as any)
-        )
+        const hostRef = { current: stateRef.current.host as Element }
+        usePlatformMethods(hostRef)
+        useElementLayout(hostRef, !isDOM ? undefined : (onLayout as any))
         useResponderEvents(
           hostRef,
           !isDOM

@@ -1,4 +1,4 @@
-import { useComposedRefs } from '@tamagui/compose-refs'
+import { composeRefs, useComposedRefs } from '@tamagui/compose-refs'
 import { isClient, isServer, isWeb } from '@tamagui/constants'
 import { composeEventHandlers, validStyles } from '@tamagui/helpers'
 import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
@@ -54,6 +54,7 @@ import {
   TamaguiComponent,
   TamaguiComponentEvents,
   TamaguiComponentState,
+  TamaguiComponentStateRef,
   TamaguiElement,
   TamaguiInternalConfig,
   TextProps,
@@ -141,7 +142,7 @@ let hasSetupBaseViews = false
 
 export function createComponent<
   ComponentPropTypes extends StackProps | TextProps = {},
-  Ref = TamaguiElement,
+  Ref extends TamaguiElement = TamaguiElement,
   BaseProps = never,
 >(staticConfig: StaticConfig) {
   const { componentName } = staticConfig
@@ -270,7 +271,7 @@ export function createComponent<
         let overlay: HTMLSpanElement | null = null
 
         const debugVisualizerHandler = (show = false) => {
-          const node = hostRef.current as HTMLElement
+          const node = curState.host as HTMLElement
           if (!node) return
 
           if (show) {
@@ -330,27 +331,8 @@ export function createComponent<
     // conditional but if ever true stays true
     // [animated, inversed]
     // HOOK
-    const stateRef = useRef(
-      {} as any as {
-        willHydrate?: boolean
-        hasMeasured?: boolean
-        hasAnimated?: boolean
-        themeShallow?: boolean
-        isListeningToTheme?: boolean
-        unPress?: Function
-        group?: {
-          listeners: Set<GroupStateListener>
-          emit: GroupStateListener
-          subscribe: (cb: GroupStateListener) => () => void
-        }
-      }
-    )
-
+    const stateRef = useRef<TamaguiComponentStateRef>({})
     if (process.env.NODE_ENV === 'development' && time) time`stateref`
-
-    // TODO can remove and fold into stateRef
-    // HOOK
-    const hostRef = useRef<TamaguiElement>(null)
 
     /**
      * Component state for tracking animations, pseudos
@@ -678,8 +660,8 @@ export function createComponent<
         styleProps,
         theme: themeState.state?.theme!,
         pseudos: pseudos || null,
-        hostRef,
         staticConfig,
+        stateRef,
       })
 
       if ((isAnimated || supportsCSSVars) && animations) {
@@ -767,13 +749,19 @@ export function createComponent<
       hooks.usePropsTransform?.(
         elementType,
         nonTamaguiProps,
-        hostRef,
+        stateRef,
         curState.willHydrate
       ) ?? nonTamaguiProps
 
     // HOOK (1 more):
-    const composedRef = useComposedRefs(hostRef as any, forwardedRef)
-    viewProps.ref = composedRef
+    if (!curState.composedRef) {
+      curState.composedRef = composeRefs<TamaguiElement>(
+        (x) => (stateRef.current.host = x as TamaguiElement),
+        forwardedRef
+      )
+    }
+
+    viewProps.ref = curState.composedRef
 
     if (process.env.NODE_ENV === 'development') {
       if (!isReactNative && !isText && isWeb && !isHOC) {
@@ -1227,35 +1215,32 @@ export function createComponent<
           if (typeof window !== 'undefined') {
             log('props in', propsIn, 'mapped to', props, 'in order', Object.keys(props))
             log({
-              shouldListenForMedia,
-              mediaListeningKeys,
-              isMediaArray,
-              viewProps,
-              hostRef,
-              state,
-              styleProps,
-              themeState,
-              isAnimated,
-              defaultProps,
-              splitStyles,
               animationStyles,
-              willBeAnimated,
-              isStringElement,
-              classNamesIn: props.className?.split(' '),
-              classNamesOut: viewProps.className?.split(' '),
-              events,
-              shouldAttach,
-              pseudos,
-              content,
-              shouldAvoidClasses,
-              animation: props.animation,
-              splitStylesStyle,
-              staticConfig,
-              tamaguiConfig,
-              shouldForcePseudo,
-              elementType,
-              initialState,
               classNames,
+              content,
+              defaultProps,
+              elementType,
+              events,
+              initialState,
+              isAnimated,
+              isMediaArray,
+              isStringElement,
+              mediaListeningKeys,
+              pseudos,
+              shouldAttach,
+              shouldAvoidClasses,
+              shouldForcePseudo,
+              shouldListenForMedia,
+              splitStyles,
+              splitStylesStyle,
+              state,
+              stateRef,
+              staticConfig,
+              styleProps,
+              tamaguiConfig,
+              themeState,
+              viewProps,
+              willBeAnimated,
             })
           }
         } catch {
