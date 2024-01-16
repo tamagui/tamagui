@@ -7,7 +7,7 @@ const cheerio = require('cheerio')
 const prettier = require('prettier')
 const lucideDir = require.resolve('lucide-static')
 
-const lucideIconsDir = path.join(lucideDir, '..', '..', 'icons')
+const lucideIconsDir = path.join(lucideDir, '..', '..', '..', 'icons')
 const rootDir = path.join(__dirname, '..')
 
 glob(`${lucideIconsDir}/**.svg`, (err, icons) => {
@@ -29,7 +29,17 @@ glob(`${lucideIconsDir}/**.svg`, (err, icons) => {
     delete svgAttribs['xmlns']
     const attribsOfInterest = {}
     Object.keys(svgAttribs).forEach((key) => {
-      if (!['height', 'width', 'viewBox', 'fill', 'stroke-width', 'stroke-linecap', 'stroke-linejoin'].includes(key)) {
+      if (
+        ![
+          'height',
+          'width',
+          'viewBox',
+          'fill',
+          'stroke-width',
+          'stroke-linecap',
+          'stroke-linejoin',
+        ].includes(key)
+      ) {
         attribsOfInterest[key] = svgAttribs[key]
       }
     })
