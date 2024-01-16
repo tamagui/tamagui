@@ -161,6 +161,7 @@ export const useChangeThemeEffect = (
       }
       if (prev?.isNewTheme) {
         // // if it was a new theme already and is updating, notify children
+        console.warn('NOTIFY', updatedState, prev)
         updatedState.themeManager?.notify()
       }
       if (shouldPersist || !prev) {
