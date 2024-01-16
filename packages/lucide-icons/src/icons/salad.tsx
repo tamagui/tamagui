@@ -42,10 +42,7 @@ const Icon = (props) => {
         stroke={color}
       />
       <Path d="m13 12 4-4" stroke={color} />
-      <Path
-        d="M10.9 7.25A3.99 3.99 0 0 0 4 10c0 .73.2 1.41.54 2"
-        stroke={color}
-      />
+      <Path d="M10.9 7.25A3.99 3.99 0 0 0 4 10c0 .73.2 1.41.54 2" stroke={color} />
     </Svg>
   )
 }

@@ -41,10 +41,7 @@ const Icon = (props) => {
         stroke={color}
       />
       <Path d="m8 6 2-2" stroke={color} />
-      <Path
-        d="m2 22 5.5-1.5L21.17 6.83a2.82 2.82 0 0 0-4-4L3.5 16.5Z"
-        stroke={color}
-      />
+      <Path d="m2 22 5.5-1.5L21.17 6.83a2.82 2.82 0 0 0-4-4L3.5 16.5Z" stroke={color} />
       <Path d="m18 16 2-2" stroke={color} />
       <Path
         d="m17 11 4.3 4.3c.94.94.94 2.46 0 3.4l-2.6 2.6c-.94.94-2.46.94-3.4 0L11 17"

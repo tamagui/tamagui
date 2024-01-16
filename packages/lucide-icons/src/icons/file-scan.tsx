@@ -35,10 +35,7 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
-      <Path
-        d="M20 10V7.5L14.5 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h4.5"
-        stroke={color}
-      />
+      <Path d="M20 10V7.5L14.5 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h4.5" stroke={color} />
       <Polyline points="14 2 14 8 20 8" stroke={color} />
       <Path d="M16 22a2 2 0 0 1-2-2" stroke={color} />
       <Path d="M20 22a2 2 0 0 0 2-2" stroke={color} />

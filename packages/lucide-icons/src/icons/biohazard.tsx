@@ -36,15 +36,9 @@ const Icon = (props) => {
       {...otherProps}
     >
       <_Circle cx="12" cy="11.9" r="2" stroke={color} />
-      <Path
-        d="M6.7 3.4c-.9 2.5 0 5.2 2.2 6.7C6.5 9 3.7 9.6 2 11.6"
-        stroke={color}
-      />
+      <Path d="M6.7 3.4c-.9 2.5 0 5.2 2.2 6.7C6.5 9 3.7 9.6 2 11.6" stroke={color} />
       <Path d="m8.9 10.1 1.4.8" stroke={color} />
-      <Path
-        d="M17.3 3.4c.9 2.5 0 5.2-2.2 6.7 2.4-1.2 5.2-.6 6.9 1.5"
-        stroke={color}
-      />
+      <Path d="M17.3 3.4c.9 2.5 0 5.2-2.2 6.7 2.4-1.2 5.2-.6 6.9 1.5" stroke={color} />
       <Path d="m15.1 10.1-1.4.8" stroke={color} />
       <Path
         d="M16.7 20.8c-2.6-.4-4.6-2.6-4.7-5.3-.2 2.6-2.1 4.8-4.7 5.2"
