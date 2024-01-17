@@ -37,7 +37,7 @@ export const HeaderLinks = (props: HeaderProps) => {
   // there is user context and supabase setup in the current page
   return (
     <>
-      <NextLink passHref prefetch={false} href="/docs/intro/installation">
+      <NextLink passHref prefetch={false} href="/docs/intro/introduction">
         <HeadAnchor
           $sm={{
             display: forceShowAllLinks ? 'flex' : 'none',
