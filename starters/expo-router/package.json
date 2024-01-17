@@ -42,5 +42,6 @@
     "@babel/core": "^7.23.3",
     "@types/react": "~18.2.14"
   },
-  "private": true
+  "private": true,
+  "packageManager": "yarn@4.0.2"
 }
