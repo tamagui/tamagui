@@ -1104,9 +1104,9 @@ export function createComponent<
     // needs to reset the presence state for nested children
     const ResetPresence = config?.animations?.ResetPresence
     if (
-      willBeAnimated &&
-      hasEnterStyle &&
       ResetPresence &&
+      willBeAnimated &&
+      (hasEnterStyle || presenceState) &&
       content &&
       typeof content !== 'string'
     ) {
