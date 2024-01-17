@@ -1,3 +1,5 @@
+- useStyle and others can have forComponent types
+
 - docs:
   - for ssr need for t_unmounted
   - explain how ssr works

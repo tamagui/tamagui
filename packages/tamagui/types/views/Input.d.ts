@@ -238,7 +238,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     contain?: import("csstype").Property.Contain | undefined;
     touchAction?: import("csstype").Property.TouchAction | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
-    outlineColor?: import("csstype").Property.OutlineColor | undefined;
+    outlineColor?: "unset" | import("@tamagui/core").GetThemeValueForKey<"outlineColor"> | undefined;
     outlineOffset?: "unset" | import("@tamagui/core").SpaceValue | undefined;
     outlineStyle?: import("csstype").Property.OutlineStyle | undefined;
     outlineWidth?: "unset" | import("@tamagui/core").SpaceValue | undefined;
