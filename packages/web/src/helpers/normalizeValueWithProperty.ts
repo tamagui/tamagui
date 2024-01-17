@@ -21,7 +21,7 @@ export function normalizeValueWithProperty(value: any, property = ''): any {
   if (!isWeb) return value
   if (
     stylePropsUnitless[property] ||
-    !stylePropsAllPlusTransforms[property] ||
+    (property && !stylePropsAllPlusTransforms[property]) ||
     typeof value === 'boolean'
   ) {
     return value
