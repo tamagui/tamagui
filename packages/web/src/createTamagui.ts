@@ -179,21 +179,27 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     const themesIn = { ...configIn.themes } as ThemesLikeObject
     const dedupedThemes = foundThemes ?? getThemesDeduped(themesIn)
     const themes = proxyThemesToParents(dedupedThemes)
+    const themesAliases = dedupedThemes
+      .flatMap((theme) => theme.names.map((name) => ({ [name]: theme.alias })))
+      .reduce((a, b) => ({ ...a, ...b }), {})
 
     return {
       themes,
       cssRuleSets,
+      themesAliases,
       getThemeRulesSets() {
         // then, generate CSS from de-duped
         let themeRuleSets: string[] = []
 
         if (isWeb) {
-          for (const { names, theme } of dedupedThemes) {
+          for (const { names, alias, theme } of dedupedThemes) {
+            // TODO: make sure to not break getThemeCSSRules in other places
             const nextRules = getThemeCSSRules({
               config: configIn,
               themeName: names[0],
               names,
               theme,
+              alias,
             })
             themeRuleSets = [...themeRuleSets, ...nextRules]
           }
@@ -276,6 +282,7 @@ ${runtimeStyles}`
       ? Object.fromEntries(Object.entries(shorthands).map(([k, v]) => [v, k]))
       : {},
     themes: themeConfig.themes as any,
+    themesAliases: themeConfig.themesAliases,
     fontsParsed: fontsParsed || {},
     themeConfig,
     tokensParsed: tokensParsed as any,
@@ -317,6 +324,7 @@ function getThemesDeduped(themes: ThemesLikeObject): DedupedThemes {
   const existing = new Map<string, DedupedTheme>()
 
   // first, de-dupe and parse them
+  let i = 0
   for (const themeName in themes) {
     // forces us to separate the dark/light themes (otherwise we generate bad t_light prefix selectors)
     const darkOrLightSpecificPrefix = themeName.startsWith('dark')
@@ -353,7 +361,9 @@ function getThemesDeduped(themes: ThemesLikeObject): DedupedThemes {
     const deduped: DedupedTheme = {
       names: [themeName],
       theme,
+      alias: `t${i}`,
     }
+    i++
     dedupedThemes.push(deduped)
     existing.set(key, deduped)
   }

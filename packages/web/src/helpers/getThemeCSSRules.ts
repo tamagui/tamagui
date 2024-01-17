@@ -10,6 +10,7 @@ export function getThemeCSSRules(props: {
   themeName: string
   theme: ThemeParsed
   names: string[]
+  alias?: string
 }) {
   const cssRuleSets: string[] = []
 
@@ -21,7 +22,7 @@ export function getThemeCSSRules(props: {
     process.env.TAMAGUI_DOES_SSR_CSS === 'mutates-themes' ||
     process.env.TAMAGUI_DOES_SSR_CSS === 'false'
   ) {
-    const { config, themeName, theme, names } = props
+    const { config, themeName, theme, names, alias } = props
 
     // special case for SSR
     const hasDarkLight =
@@ -61,11 +62,10 @@ export function getThemeCSSRules(props: {
         if (!(isDark || isLight)) {
           // neither light nor dark subtheme, just generate one selector with :root:root which
           // will override all :root light/dark selectors generated below
-          selectorsSet.add(`:root:root ${CNP}${subName}`)
+          selectorsSet.add(`:root:root ${CNP}.${alias}`)
           continue
         }
 
-        const childSelector = `${CNP}${subName.replace(/^(dark|light)_/, '')}`
         const order = isDark ? ['dark', 'light'] : ['light', 'dark']
         const [stronger, weaker] = order
         const numSelectors = Math.round(maxDepth * 1.5)
@@ -89,19 +89,14 @@ export function getThemeCSSRules(props: {
             parentSelectors = [second, ...rest, second]
           }
 
-          const lastParentSelector = parentSelectors[parentSelectors.length - 1]
-          const nextChildSelector =
-            childSelector === lastParentSelector ? '' : childSelector
-
           // for light/dark/light:
-          selectorsSet.add(`${parentSelectors.join(' ')} ${nextChildSelector}`.trim())
+          selectorsSet.add(`${parentSelectors.join(' ')} .${alias}`.trim())
           // selectorsSet.add(
           //   `${parentSelectors.join(' ')} ${nextChildSelector}.is_inversed`.trim()
           // )
         }
       }
     }
-
     const selectors = [...selectorsSet].sort((a, b) => a.localeCompare(b))
 
     // let specificity = 1 //themeName.split('_').length

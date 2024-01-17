@@ -796,6 +796,12 @@ export type CreateTamaguiProps = {
       [key: string]: string | number | Variable
     }
   }
+  /** theme names will be replaced with its alias.
+   *  this is specially useful when some theme names have same alias, and this will help to generate less css and shorter classNames
+   * */
+  themesAliases?: {
+    [key: string]: string
+  }
 
   settings?: Partial<GenericTamaguiSettings>
 
@@ -892,6 +898,7 @@ export type TamaguiInternalConfig<
     tokens: Tokenify<A>
     tokensParsed: Tokenify<A>
     themeConfig: any
+    themesAliases: any
     fontsParsed: GenericFonts
     getCSS: GetCSS
     getNewCSS: GetCSS
@@ -2270,6 +2277,7 @@ export type ThemesLikeObject = Record<string, Record<string, string>>
 export type DedupedTheme = {
   names: string[]
   theme: ThemeParsed
+  alias: string
 }
 
 export type DedupedThemes = DedupedTheme[]

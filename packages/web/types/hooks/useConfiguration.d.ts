@@ -9,6 +9,7 @@ export declare const useConfiguration: () => {
     }> | null;
     unset?: import("..").BaseStyleProps | undefined;
     reactNative?: any;
+    themesAliases: any;
     selectionStyles?: ((theme: Record<string, string>) => {
         backgroundColor?: any;
         color?: any;
