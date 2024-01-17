@@ -27,6 +27,8 @@
     "reset.css"
   ],
   "dependencies": {
+    "react": "*",
+    "react-dom": "*",
     "@tamagui/compose-refs": "1.86.2",
     "@tamagui/constants": "1.86.2",
     "@tamagui/helpers": "1.86.2",
