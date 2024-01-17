@@ -1950,6 +1950,7 @@ type ColorKeys =
   | 'borderLeftColor'
   | 'borderRightColor'
   | 'shadowColor'
+  | 'outlineColor'
   | 'textShadowColor'
   | 'borderBlockColor'
   | 'borderBlockEndColor'
