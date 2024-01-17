@@ -1,1 +1,1 @@
-Object.assign(module.exports, require('./dist/cjs/v2-themes'))
+Object.assign(module.exports, require('./dist/cjs/generated-v2'))
