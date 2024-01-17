@@ -186,7 +186,7 @@ export function createExtractor(
     }
 
     const {
-      expandStylesAndRemoveNullishValues,
+      normalizeStyle,
       getSplitStyles,
       mediaQueryConfig,
       propMapper,
@@ -1783,16 +1783,13 @@ export function createExtractor(
           }
 
           // preserves order
-          function expandStylesAndRemoveNullishValuesWithoutVariants(style: any) {
+          function normalizeStyleWithoutVariants(style: any) {
             let res = {}
             for (const key in style) {
               if (staticConfig.variants && key in staticConfig.variants) {
                 mergeToEnd(res, key, style[key])
               } else {
-                const expanded = expandStylesAndRemoveNullishValues(
-                  { [key]: style[key] },
-                  true
-                )
+                const expanded = normalizeStyle({ [key]: style[key] }, true)
                 for (const key in expanded) {
                   mergeToEnd(res, key, expanded[key])
                 }
@@ -1809,9 +1806,7 @@ export function createExtractor(
             if (cur.type === 'style') {
               // remove variants because they are processed later, and can lead to invalid values here
               // see <Spacer flex /> where flex looks like a valid style, but is a variant
-              const expanded = expandStylesAndRemoveNullishValuesWithoutVariants(
-                cur.value
-              )
+              const expanded = normalizeStyleWithoutVariants(cur.value)
               // preserve order
               for (const key in expanded) {
                 mergeToEnd(foundStaticProps, key, expanded[key])

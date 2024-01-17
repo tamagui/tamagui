@@ -13,7 +13,7 @@ import type {
   VariantSpreadFunction,
 } from '../types'
 import { expandStyle } from './expandStyle'
-import { expandStylesAndRemoveNullishValues } from './expandStylesAndRemoveNullishValues'
+import { normalizeStyle } from './normalizeStyle'
 import { getFontsForLanguage, getVariantExtras } from './getVariantExtras'
 import { isObj } from './isObj'
 import { pseudoDescriptors } from './pseudoDescriptors'
@@ -186,10 +186,7 @@ const resolveVariants: StyleResolver = (
   }
 
   if (variantValue) {
-    const expanded = expandStylesAndRemoveNullishValues(
-      variantValue,
-      !!styleProps.noNormalize
-    )
+    const expanded = normalizeStyle(variantValue, !!styleProps.noNormalize)
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
       console.info(`   expanding styles from `, variantValue, `to`, expanded)
     }
