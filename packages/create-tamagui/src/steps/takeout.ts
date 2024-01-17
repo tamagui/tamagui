@@ -114,7 +114,7 @@ cd into the project using:
   To start the Next.js development server, run:
     ${chalk.green(runCommand('web'))}
 
-  To start developing with Expo Go, run:
+  To start developing with Expo for native, run:
     ${chalk.green(runCommand('native'))}
 
   To start developing for Expo dev build, run:
