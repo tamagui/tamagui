@@ -24155,8 +24155,6 @@ __metadata:
     "@tamagui/simple-hash": "npm:1.86.4"
     react: "npm:^18.2.0"
     styleq: "npm:^0.1.3"
-  peerDependencies:
-    react: "*"
   languageName: unknown
   linkType: soft
 
