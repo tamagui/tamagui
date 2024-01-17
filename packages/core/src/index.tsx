@@ -95,7 +95,11 @@ setupHooks({
 
       if (willHydrate || isDOM) {
         // only necessary for DOM elements, but we need the hooks to stay around
-        const hostRef = { current: stateRef.current.host as Element }
+        const hostRef = {
+          get current() {
+            return stateRef.current.host as Element
+          },
+        }
         usePlatformMethods(hostRef)
         useElementLayout(hostRef, !isDOM ? undefined : (onLayout as any))
         useResponderEvents(
