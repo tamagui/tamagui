@@ -548,9 +548,9 @@ export const getSplitStyles: StyleSplitter = (
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
       console.groupCollapsed(
-        `🔹🔹🔹🔹 ${keyOg}${keyInit !== keyOg ? ` (shorthand for ${keyInit})` : ''} ${
+        `  🔑 ${keyOg}${keyInit !== keyOg ? ` (shorthand for ${keyInit})` : ''} ${
           shouldPassThrough ? '(pass)' : ''
-        } 🔹🔹🔹🔹`
+        }`
       )
       log({ isVariant, valInit, shouldPassProp })
       if (isClient) {
@@ -1159,6 +1159,12 @@ export const getSplitStyles: StyleSplitter = (
           }
         }
 
+        if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
+          console.groupCollapsed(`🔹 getSplitStyles final style object`)
+          console.info(style)
+          console.groupEnd()
+        }
+
         if (shouldRetain || !IS_STATIC) {
           style = retainedStyles || {}
         }
@@ -1275,7 +1281,7 @@ export const getSplitStyles: StyleSplitter = (
 
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
     if (isDevTools) {
-      console.groupCollapsed('  🔹 ===>')
+      console.groupCollapsed('🔹 getSplitStyles ===>')
       try {
         // prettier-ignore
         const logs = {
