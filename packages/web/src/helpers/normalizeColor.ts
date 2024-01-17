@@ -9,7 +9,8 @@ export const normalizeColor = (color?: string | null, opacity?: number) => {
   }
   const rgba = getRgba(color)
   if (rgba) {
-    return `rgba(${rgba.r},${rgba.g},${rgba.b},${opacity ?? rgba.a ?? 1})`
+    const colors = `${rgba.r},${rgba.g},${rgba.b}`
+    return opacity === 1 ? `rgb(${colors})` : `rgba(${colors},${opacity ?? rgba.a ?? 1})`
   }
   return color
 }
