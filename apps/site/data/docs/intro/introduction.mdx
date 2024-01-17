@@ -4,93 +4,49 @@ description: Universal styles for React Native and Web
 ---
 
 <IntroParagraph>
-  Tamagui is a modular style solution for React - web or native. It aims to compete with
-  the best web-only style libraries, while bringing many much-needed styling capabilities
-  to React Native.
+  Tamagui is a modular style solution for React - web or native. It aims to
+  compete with the best web-only style libraries, while bringing many
+  much-needed styling capabilities to React Native.
 </IntroParagraph>
 
 <GetStarted />
 
 You can pick and choose which parts of Tamagui you use:
 
-- [`@tamagui/core`](/docs/core/configuration) is a 0-dependency, fully typed style library with some design system features, much like [Stitches](https://stitches.dev)
-- [`@tamagui/static`](/docs/intro/why-a-compiler) is a smart optimizing compiler that emits 0-runtime code, even when faced with logic-filled inline styles, forked from [JSXStyle](https://github.com/jsxstyle/jsxstyle)
-- [`tamagui`](/docs/components/stacks) is a large suite UI kit with helpful hooks, made to work well and adapt to native platforms and web.
+#### Core
 
-### `@tamagui/core`
+[`@tamagui/core` is a fully-typed style library in TypeScript with design system support](/docs/core/configuration),
+a bit like [styled-components](https://styled-components.com) or
+[Stitches](https://stitches.dev), but supporting a superset of the the React
+Native style API. It brings many nice web style APIs to React Native but with no
+dependencies outside of `react` itself, it can also be a great great choice for
+websites and apps. It weighs 24-28Kb depending on your configuration, but it can
+emit near optimal 0-runtime React code with all CSS extracted at build time, and
+with 100% [SSR](https://vuejs.org/guide/scaling-up/ssr.html) safe code even for
+things features like enterStyle animations.
 
-Core combines a typed styled CSS-in-JS solution with [createTamagui](/docs/core/configuration) which takes a variety of configuration alongside a complete typed design system consisting of colors, tokens, spacing, sizing, fonts, themes, shorthands, animations, media queries, and more, alongside hooks like [useMedia](/docs/core/use-media) and [useTheme](/docs/core/use-theme) that are all designed to be removable by the compiler.
+#### Static
 
-After [configuring](/docs/core/configuration), use `@tamagui/core` inline:
+[`@tamagui/static` is an optimizing compiler for React](/docs/intro/why-a-compiler)
+that emits 0-runtime, near optimal code for both web and native, even when faced
+with logic-filled styles or styles that import values from other files. It was
+forked from the great [JSXStyle](https://github.com/jsxstyle/jsxstyle) library.
 
-```tsx
-import { View, Text } from 'tamagui' // or '@tamagui/core'
+#### Tamagui
 
-export const App = () => (
-  <View backgroundColor="red" borderRadius={10}>
-    <Text color="white">Hello</Text>
-  </View>
-)
-```
-
-or with the `styled` utility:
-
-```tsx
-import { View, Theme, styled } from 'tamagui' // or '@tamagui/core'
-
-export const AvatarCircle = styled(View, {
-  // use direct values
-  backgroundColor: '#000',
-
-  // or use values typed in createTamagui() themes and tokens
-  shadowColor: '$color2',
-
-  pressStyle: {
-    scale: 1.05,
-  },
-
-  variants: {
-    pin: {
-      floating: {
-        position: 'absolute',
-        top: '$xs',
-        left: '$xs',
-      },
-    },
-
-    featured: {
-      true: {
-        scale: 1.1,
-        borderRadius: 12,
-      },
-    },
-  } as const,
-})
-
-export const App = () => (
-  <Theme name="light">
-    <AvatarCircle pin="floating" featured />
-  </Theme>
-)
-```
-
-Core also has a complete design system you can set up easily with `createTamagui`.
-
-### `@tamagui/static`
-
-The `@tamagui/static` package is an optimizing compiler that works with `@tamagui/core` taking your styled components and emitting highly optimized code. On the web that looks like CSS and `div` elements, while on native it means hoisted and memoized styles passed to a plain React Native `View`. It can handle even somewhat complex logic-filled styles, and you can easily introspect its output with debug props and pragmas.
-
-[Read more about Static](/docs/intro/why-a-compiler).
-
-### `tamagui`
-
-Above that, [the Tamagui UI Kit](/docs/components/views) for building full-featured app interfaces right out of the box. Featuring powerful, themeable components that scale across every size in your design system. Enjoy Radix-like composable component APIs that always visually adapt properly to each platform.
+[`tamagui`](/docs/components/stacks) is a suite of components that can come in
+styled or unstyled forms, with a few novel components like Adapt, a primitive
+that lets a component shapeshift their content into other forms depending on the
+media query or platform. It aims to provide a `native` prop for most components,
+with limited but growing support.
 
 ---
 
 ## Community
 
-We're excited to see the community adopt Tamagui, raise issues, and provide feedback. Whether it's a feature request, bug report, or a project to showcase, please get involved!
+We're excited to see the community adopt Tamagui, raise issues, and provide
+feedback. Whether it's a feature request, bug report, or a project to showcase,
+please get involved!
 
 - [Discord](https://discord.gg/4qh6tdcVDa)
 - [Twitter](https://twitter.com/tamagui_js)
@@ -104,7 +60,10 @@ We're excited to see the community adopt Tamagui, raise issues, and provide feed
 A big thanks to:
 
 - [Stitches](https://stitches.dev) for the variants pattern.
-- [JSXStyle](https://github.com/jsxstyle/jsxstyle) for providing the original version of the compiler.
-- [Modulz](https://github.com/modulz) for the bones of the website and inspiration on some Radix-like component APIs.
+- [JSXStyle](https://github.com/jsxstyle/jsxstyle) for providing the original
+  version of the compiler.
+- [Modulz](https://github.com/modulz) for the bones of the website and
+  inspiration on some Radix-like component APIs.
 - [Moti](https://moti.fyi) for the foundation of the reanimated driver.
-- [Framer Motion](https://github.com/framer/motion) for the AnimatePresence functionality.
+- [Framer Motion](https://github.com/framer/motion) for the AnimatePresence
+  functionality.
