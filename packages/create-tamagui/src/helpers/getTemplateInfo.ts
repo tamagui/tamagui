@@ -17,7 +17,7 @@ export const getTemplateInfo = async (
   }
   if (typeof template !== 'string' || !isTemplateValid(template)) {
     console.warn(`template ${template} is not valid.`)
-    return await getTemplateInfo(template)
+    process.exit(1)
   }
 
   return templates.find((t) => t.value === template)!
