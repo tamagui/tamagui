@@ -1,5 +1,5 @@
 import { defaultOffset } from './defaultOffset'
-import { normalizeColor, rgba } from './normalizeColor'
+import { getRgba, normalizeColor, rgba } from './normalizeColor'
 
 export function normalizeShadow({
   shadowColor,
@@ -15,6 +15,6 @@ export function normalizeShadow({
     },
     shadowRadius: shadowRadius || 0,
     shadowColor: normalizeColor(shadowColor, 1),
-    shadowOpacity: shadowOpacity ?? rgba(shadowColor).a,
+    shadowOpacity: shadowOpacity ?? (shadowColor ? getRgba(shadowColor)?.a : 1),
   }
 }
