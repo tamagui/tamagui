@@ -1,21 +1,25 @@
-import { NextLink } from '@components/NextLink'
-import { PoweredByStripeIcon } from '@components/PoweredByStripeIcon'
-import { getTakeoutPriceInfo } from '@lib/getProductInfo'
-import * as sections from '@tamagui/bento'
-import { ButtonDemo, InputsDemo, SelectDemo } from '@tamagui/demos'
-import { getSize } from '@tamagui/get-token'
-import { ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
+import { NextLink } from "@components/NextLink";
+import { PoweredByStripeIcon } from "@components/PoweredByStripeIcon";
+import { getTakeoutPriceInfo } from "@lib/getProductInfo";
+import { stripe } from "@lib/stripe";
+import { Database } from "@lib/supabase-types";
+import { getArray } from "@lib/supabase-utils";
+import { supabaseAdmin } from "@lib/supabaseAdmin";
+import * as sections from "@tamagui/bento";
+import { ButtonDemo, InputsDemo, SelectDemo } from "@tamagui/demos";
+import { getSize } from "@tamagui/get-token";
+import { ThemeTint, ThemeTintAlt, useTint } from "@tamagui/logo";
 import {
   Check,
   CheckCircle,
-  ShoppingBag,
   ShoppingCart,
   X,
   XCircle,
-} from '@tamagui/lucide-icons'
-import { useBentoStore } from 'hooks/useBentoStore'
-import React, { useMemo, useState } from 'react'
-import Stripe from 'stripe'
+} from "@tamagui/lucide-icons";
+import { useBentoStore } from "hooks/useBentoStore";
+import { GetStaticProps } from "next";
+import React, { useMemo, useState } from "react";
+import Stripe from "stripe";
 import {
   Anchor,
   AnimatePresence,
@@ -39,28 +43,26 @@ import {
   Sheet,
   SizableText,
   Spacer,
-  Text,
   Theme,
   Unspaced,
   XStack,
   XStackProps,
   YStack,
-  useThemeName,
-} from 'tamagui'
-import { LinearGradient } from 'tamagui/linear-gradient'
+} from "tamagui";
+import { LinearGradient } from "tamagui/linear-gradient";
 
-import { ContainerLarge } from '../../components/Container'
-import { getDefaultLayout } from '../../lib/getDefaultLayout'
+import { ContainerLarge } from "../../components/Container";
+import { getDefaultLayout } from "../../lib/getDefaultLayout";
 
 const Point = ({
-  size = '$4',
+  size = "$4",
   children,
   subtitle,
   ...props
 }: XStackProps & {
-  children: any
-  subtitle?: any
-  size?: FontSizeTokens
+  children: any;
+  subtitle?: any;
+  size?: FontSizeTokens;
 }) => {
   return (
     <XStack tag="li" ai="flex-start" space f={1} ov="hidden" {...props}>
@@ -86,44 +88,44 @@ const Point = ({
         )}
       </YStack>
     </XStack>
-  )
-}
+  );
+};
 
-const checkCircle = <CheckCircle color="$green9" />
-const xCircle = <XCircle size={28} color="$red9" />
+const checkCircle = <CheckCircle color="$green9" />;
+const xCircle = <XCircle size={28} color="$red9" />;
 
 const points = {
   // this one's only shown on modal
   monorepo: [
-    'Well-isolated configuration.',
-    'Nearly all code shared between web and native.',
-    'Guided setup script, easily generate common patterns.',
+    "Well-isolated configuration.",
+    "Nearly all code shared between web and native.",
+    "Guided setup script, easily generate common patterns.",
   ],
   design: [
-    'Complete design system with the new ThemeBuilder for easy customization.',
-    'Two brand new theme packs - Neon and Pastel.',
+    "Complete design system with the new ThemeBuilder for easy customization.",
+    "Two brand new theme packs - Neon and Pastel.",
   ],
   deploy: [
-    'Vercel + Preview Deploys.',
-    'Expo EAS + Expo Router.',
-    'Script that sets up both local and remote dev environments.',
+    "Vercel + Preview Deploys.",
+    "Expo EAS + Expo Router.",
+    "Script that sets up both local and remote dev environments.",
   ],
   screens: [
-    'Variety of screen types adapted to each platform.',
-    'Onboarding, auth, account, settings, profile, feed, edit profile.',
-    'Universal forms + zod validation.',
+    "Variety of screen types adapted to each platform.",
+    "Onboarding, auth, account, settings, profile, feed, edit profile.",
+    "Universal forms + zod validation.",
   ],
   assets: [
-    '+150 icon packs, adapted to use themes, sizing, and tree shaking.',
-    'All of Google fonts, over +1500 packs.',
+    "+150 icon packs, adapted to use themes, sizing, and tree shaking.",
+    "All of Google fonts, over +1500 packs.",
   ],
   more: [
-    'Image upload and Supabase utils.',
-    'Reanimated, Solito, React Query, Zod & more',
-    'TakeoutBot ongoing updates.',
-    'Private Discord.',
+    "Image upload and Supabase utils.",
+    "Reanimated, Solito, React Query, Zod & more",
+    "TakeoutBot ongoing updates.",
+    "Private Discord.",
   ],
-}
+};
 
 const Points = () => (
   <YStack tag="ul" gap="$1.5" zi={2} ov="hidden">
@@ -148,56 +150,56 @@ const Points = () => (
       </React.Fragment>
     ))}
   </YStack>
-)
+);
 
 function formatPrice(amount: number, currency: string) {
-  return new Intl.NumberFormat('en', {
-    style: 'currency',
+  return new Intl.NumberFormat("en", {
+    style: "currency",
     currency: currency.toUpperCase(),
-  }).format(amount)
+  }).format(amount);
 }
 
 const PromotionInput = () => {
-  const store = useBentoStore()
+  const store = useBentoStore();
 
-  const [localCode, setLocalCode] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
+  const [localCode, setLocalCode] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const applyCoupon = (promoCode: string, coupon: Stripe.Coupon) => {
-    store.appliedCoupon = coupon
-    store.appliedPromoCode = promoCode
-  }
+    store.appliedCoupon = coupon;
+    store.appliedPromoCode = promoCode;
+  };
 
   const removeCoupon = () => {
-    setLocalCode('')
-    store.appliedCoupon = null
-    store.appliedPromoCode = null
-  }
+    setLocalCode("");
+    store.appliedCoupon = null;
+    store.appliedPromoCode = null;
+  };
 
   const closeField = () => {
-    setLocalCode('')
-    store.promoInputIsOpen = false
-  }
+    setLocalCode("");
+    store.promoInputIsOpen = false;
+  };
 
   const checkPromotion = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
       const res = await fetch(
         `/api/check-promo-code?${new URLSearchParams({ code: localCode })}`
-      )
+      );
       if (res.status === 200) {
-        const json = (await res.json()) as Stripe.Coupon
-        applyCoupon(localCode, json)
+        const json = (await res.json()) as Stripe.Coupon;
+        applyCoupon(localCode, json);
       } else {
-        const json = await res.json()
+        const json = await res.json();
         if (json.message) {
-          alert(json.message)
+          alert(json.message);
         }
       }
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <AnimatePresence exitBeforeEnter>
@@ -224,7 +226,12 @@ const PromotionInput = () => {
           ) : (
             <>
               {!store.appliedPromoCode && (
-                <Button disabled={isLoading} size="$2" chromeless onPress={closeField}>
+                <Button
+                  disabled={isLoading}
+                  size="$2"
+                  chromeless
+                  onPress={closeField}
+                >
                   Cancel
                 </Button>
               )}
@@ -232,7 +239,7 @@ const PromotionInput = () => {
                 disabled={!!store.appliedPromoCode}
                 value={store.appliedPromoCode ?? localCode}
                 onChangeText={(text) => {
-                  setLocalCode(text)
+                  setLocalCode(text);
                 }}
                 placeholder="Enter the code"
                 size="$2"
@@ -261,15 +268,15 @@ const PromotionInput = () => {
           theme="alt2"
           size="$2"
           onPress={() => {
-            store.promoInputIsOpen = true
+            store.promoInputIsOpen = true;
           }}
         >
           Have a coupon code?
         </Paragraph>
       )}
     </AnimatePresence>
-  )
-}
+  );
+};
 
 function PurchaseButton(props: ButtonProps) {
   return (
@@ -280,10 +287,10 @@ function PurchaseButton(props: ButtonProps) {
         borderWidth={2}
         borderColor="$color10"
         hoverStyle={{
-          backgroundColor: '$color9',
+          backgroundColor: "$color9",
         }}
         pressStyle={{
-          backgroundColor: '$color8',
+          backgroundColor: "$color8",
         }}
         {...props}
       >
@@ -292,62 +299,71 @@ function PurchaseButton(props: ButtonProps) {
         </Button.Text>
       </Button>
     </ThemeTint>
-  )
+  );
 }
 
-const PurchaseModal = ({ starter, coupon }) => {
-  const products = [starter]
-  const store = useBentoStore()
+const PurchaseModal = ({
+  proComponents,
+  coupon,
+}: Pick<ProComponentsProps, "coupon" | "proComponents">) => {
+  const products = [proComponents];
+  const store = useBentoStore();
   const [selectedProductsIds, setSelectedProductsIds] = useState<string[]>(
     products.filter(Boolean).map((p) => p!.id)
-  )
-  const sortedStarterPrices = (starter?.prices ?? []).sort(
+  );
+  const sortedStarterPrices = (proComponents?.prices ?? []).sort(
     (a, b) => a.unit_amount! - b.unit_amount!
-  )
+  );
 
-  const [starterPriceId, setStarterPriceId] = useState(sortedStarterPrices[0]?.id)
+  const [proComponentsProductPriceId, setStarterPriceId] = useState(
+    sortedStarterPrices[0]?.id
+  );
 
   const sum = useMemo(() => {
-    if (!starter) {
-      return 0
+    if (!proComponents) {
+      return 0;
     }
-    let final = 0
-    return starter.prices[0].unit_amount
+    let final = 0;
+    return proComponents.prices[0].unit_amount;
     // TODO: fix this part
-    // if (selectedProductsIds.includes(starter.id)) {
-    //   final += starterPriceId
-    //     ? starter.prices.find((p) => p.id === starterPriceId)?.unit_amount ?? 0
-    //     : 0
-    // }
-    // return final
-  }, [selectedProductsIds, starterPriceId, starter])
+    if (selectedProductsIds.includes(proComponentsProduct.id)) {
+      final += proComponentsProductPriceId
+        ? proComponentsProduct.prices.find(
+            (p) => p.id === proComponentsProductPriceId
+          )?.unit_amount ?? 0
+        : 0;
+    }
+    return final;
+  }, [selectedProductsIds, proComponentsProductPriceId, proComponents]);
 
   // with discount applied
   const finalPrice = useMemo(() => {
-    const appliedCoupon = store.appliedCoupon ?? coupon
+    const appliedCoupon = store.appliedCoupon ?? coupon;
     if (appliedCoupon) {
-      if (appliedCoupon.amount_off) return sum - appliedCoupon.amount_off
+      if (appliedCoupon.amount_off) return sum - appliedCoupon.amount_off;
       if (appliedCoupon.percent_off)
-        return (sum * (100 - appliedCoupon.percent_off)) / 100
+        return (sum * (100 - appliedCoupon.percent_off)) / 100;
     }
 
-    return sum
-  }, [sum, store.appliedCoupon, coupon])
-  const hasDiscountApplied = finalPrice !== sum
+    return sum;
+  }, [sum, store.appliedCoupon, coupon]);
+  const hasDiscountApplied = finalPrice !== sum;
 
-  const noProductSelected = selectedProductsIds.length === 0
-  const showTeamSelect = selectedProductsIds.includes(starter?.id || '')
+  const noProductSelected = selectedProductsIds.length === 0;
+  const showTeamSelect = selectedProductsIds.includes(proComponents?.id || "");
 
   // TODO: get bento price info
   const takeoutPriceInfo = getTakeoutPriceInfo(
-    starter?.prices.find((price) => price.id === starterPriceId)?.description ?? ''
-  )
+    proComponents?.prices.find(
+      (price) => price.id === proComponentsProductPriceId
+    )?.description ?? ""
+  );
   return (
     <Dialog
       modal
       open={store.showPurchase}
       onOpenChange={(val) => {
-        store.showPurchase = val
+        store.showPurchase = val;
       }}
     >
       <Dialog.Adapt when="sm">
@@ -379,7 +395,7 @@ const PurchaseModal = ({ starter, coupon }) => {
           elevate
           key="content"
           animation={[
-            'quick',
+            "quick",
             {
               opacity: {
                 overshootClamping: true,
@@ -393,10 +409,15 @@ const PurchaseModal = ({ starter, coupon }) => {
           maw={900}
           p={0}
         >
-          <ScrollView p="$6" $gtSm={{ maxHeight: '90vh' }}>
+          <ScrollView p="$6" $gtSm={{ maxHeight: "90vh" }}>
             <YStack space>
               <XStack ai="center" jc="center" gap="$6" mx="$8">
-                <Dialog.Title size="$9" $sm={{ size: '$7' }} my="$1" als="center">
+                <Dialog.Title
+                  size="$9"
+                  $sm={{ size: "$7" }}
+                  my="$1"
+                  als="center"
+                >
                   Purchase
                 </Dialog.Title>
               </XStack>
@@ -405,7 +426,7 @@ const PurchaseModal = ({ starter, coupon }) => {
                 f={1}
                 space
                 separator={<Separator vertical />}
-                $sm={{ fd: 'column-reverse' }}
+                $sm={{ fd: "column-reverse" }}
               >
                 <YStack maxWidth={450}>
                   <YStack
@@ -417,10 +438,10 @@ const PurchaseModal = ({ starter, coupon }) => {
                     <XStack px="$4" py="$4" gap="$3">
                       <YStack width="80%">
                         <Paragraph size="$6" fow="bold">
-                          Lifetime access + 1 year of updates
+                          Text
                         </Paragraph>
                         <Paragraph size="$3" theme="alt1">
-                          You own the code for life, with updates for a year
+                          Text Text
                         </Paragraph>
                       </YStack>
                       <XStack f={1} ai="center" gap="$2" jc="center">
@@ -435,7 +456,9 @@ const PurchaseModal = ({ starter, coupon }) => {
                         </Paragraph>
                       </YStack>
                       <XStack f={1} ai="center" gap="$2" jc="center">
-                        <Paragraph size="$8">{takeoutPriceInfo.licenseSeats}</Paragraph>
+                        <Paragraph size="$8">
+                          {takeoutPriceInfo.licenseSeats}
+                        </Paragraph>
                       </XStack>
                     </XStack>
 
@@ -447,12 +470,16 @@ const PurchaseModal = ({ starter, coupon }) => {
                         </Paragraph>
                       </YStack>
                       <XStack f={1} ai="center" gap="$2" jc="center">
-                        <Paragraph size="$8">{takeoutPriceInfo.discordSeats}</Paragraph>
+                        <Paragraph size="$8">
+                          {takeoutPriceInfo.discordSeats}
+                        </Paragraph>
                       </XStack>
                     </XStack>
                     <XStack px="$4" py="$4" gap="$3">
                       <YStack width="80%">
-                        <Paragraph size="$6">Discord #bento-general channel</Paragraph>
+                        <Paragraph size="$6">
+                          Discord #bento-general channel
+                        </Paragraph>
                         <Paragraph size="$3" theme="alt1">
                           Private group chat for all Bento purchasers
                         </Paragraph>
@@ -488,16 +515,16 @@ const PurchaseModal = ({ starter, coupon }) => {
                 <YStack f={2} space="$4">
                   <YStack
                     opacity={showTeamSelect ? 1 : 0.25}
-                    pointerEvents={showTeamSelect ? 'auto' : 'none'}
+                    pointerEvents={showTeamSelect ? "auto" : "none"}
                   >
                     <RadioGroup
                       gap="$2"
-                      value={starterPriceId}
+                      value={proComponentsProductPriceId}
                       onValueChange={(val) => setStarterPriceId(val)}
                     >
                       {sortedStarterPrices.map((price) => {
-                        const active = starterPriceId === price.id
-                        const htmlId = `price-${price.id}`
+                        const active = proComponentsProductPriceId === price.id;
+                        const htmlId = `price-${price.id}`;
                         return (
                           <ThemeTint key={price.id} disable={!active}>
                             <Label
@@ -507,24 +534,33 @@ const PurchaseModal = ({ starter, coupon }) => {
                               height="unset"
                               display="flex"
                               borderWidth="$0.25"
-                              borderColor={active ? '$color8' : '$color5'}
+                              borderColor={active ? "$color8" : "$color5"}
                               borderRadius="$4"
                               space="$4"
                               ai="center"
                               hoverStyle={{
-                                borderColor: active ? '$color10' : '$color7',
+                                borderColor: active ? "$color10" : "$color7",
                               }}
                             >
-                              <RadioGroup.Item id={htmlId} size="$6" value={price.id}>
+                              <RadioGroup.Item
+                                id={htmlId}
+                                size="$6"
+                                value={price.id}
+                              >
                                 <RadioGroup.Indicator />
                               </RadioGroup.Item>
 
                               <YStack gap="$0" f={1}>
                                 <H4 mt="$-1">{price.description}</H4>
 
-                                <Paragraph theme="alt1">
-                                  {formatPrice(price.unit_amount! / 100, 'usd')} base + 1
-                                  year of updates
+                                <Paragraph
+                                  theme="alt1"
+                                  textTransform="capitalize"
+                                >
+                                  {formatPrice(price.unit_amount! / 100, "usd")}{" "}
+                                  {price.type === "one_time"
+                                    ? "lifetime access"
+                                    : `per ${price.interval}`}
                                 </Paragraph>
                                 {/* <Paragraph theme="alt1" size="$2">
                                   {formatPrice(price.unit_amount! / (100 * 2), 'usd')}{' '}
@@ -533,7 +569,7 @@ const PurchaseModal = ({ starter, coupon }) => {
                               </YStack>
                             </Label>
                           </ThemeTint>
-                        )
+                        );
                       })}
                     </RadioGroup>
                   </YStack>
@@ -544,13 +580,21 @@ const PurchaseModal = ({ starter, coupon }) => {
                     <XStack ai="flex-end" jc="flex-end" gap="$2">
                       {hasDiscountApplied ? (
                         <>
-                          <H3 textDecorationLine="line-through" size="$8" theme="alt2">
-                            {formatPrice(sum! / 100, 'usd')}
+                          <H3
+                            textDecorationLine="line-through"
+                            size="$8"
+                            theme="alt2"
+                          >
+                            {formatPrice(sum! / 100, "usd")}
                           </H3>
-                          <H3 size="$10">{formatPrice(finalPrice! / 100, 'usd')}</H3>
+                          <H3 size="$10">
+                            {formatPrice(finalPrice! / 100, "usd")}
+                          </H3>
                         </>
                       ) : (
-                        <H3 size="$10">{formatPrice(finalPrice! / 100, 'usd')}</H3>
+                        <H3 size="$10">
+                          {formatPrice(finalPrice! / 100, "usd")}
+                        </H3>
                       )}
                     </XStack>
                     <Unspaced>
@@ -568,20 +612,26 @@ const PurchaseModal = ({ starter, coupon }) => {
                             // product_id: products.id,
                             // price_id: selectedPriceId,
                             // quantity: seats.toString(),
-                          })
+                          });
                           for (const productId of selectedProductsIds) {
-                            params.append('product_id', productId)
+                            params.append("product_id", productId);
                           }
-                          params.append(`price-${starter?.id}`, starterPriceId)
+                          params.append(
+                            `price-${proComponents?.id}`,
+                            proComponentsProductPriceId
+                          );
                           if (store.appliedPromoCode) {
                             // the coupon user applied
-                            params.append(`promotion_code`, store.appliedPromoCode)
+                            params.append(
+                              `promotion_code`,
+                              store.appliedPromoCode
+                            );
                           } else if (coupon) {
                             // the coupon that's applied by default (special event, etc.)
-                            params.append(`coupon_id`, coupon.id)
+                            params.append(`coupon_id`, coupon.id);
                           }
 
-                          return params.toString()
+                          return params.toString();
                         })()}`}
                       >
                         <PurchaseButton
@@ -594,18 +644,20 @@ const PurchaseModal = ({ starter, coupon }) => {
                       <XStack jc="space-between" space="$2" ai="center">
                         <XStack
                           ai="center"
-                          separator={<Separator vertical bc="$color8" my="$2" />}
+                          separator={
+                            <Separator vertical bc="$color8" my="$2" />
+                          }
                           space="$2"
                         >
                           <SizableText
                             theme="alt1"
                             cursor="pointer"
                             onPress={() => {
-                              store.showFaq = true
+                              store.showFaq = true;
                             }}
-                            style={{ textDecorationLine: 'underline' }}
+                            style={{ textDecorationLine: "underline" }}
                             hoverStyle={{
-                              color: '$color11',
+                              color: "$color11",
                             }}
                             size="$2"
                           >
@@ -616,11 +668,11 @@ const PurchaseModal = ({ starter, coupon }) => {
                             theme="alt1"
                             cursor="pointer"
                             onPress={() => {
-                              store.showAgreement = true
+                              store.showAgreement = true;
                             }}
-                            style={{ textDecorationLine: 'underline' }}
+                            style={{ textDecorationLine: "underline" }}
                             hoverStyle={{
-                              color: '$color11',
+                              color: "$color11",
                             }}
                             size="$2"
                           >
@@ -652,12 +704,12 @@ const PurchaseModal = ({ starter, coupon }) => {
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog>
-  )
-}
+  );
+};
 
 const Hero = () => {
-  const store = useBentoStore()
-  const { tint } = useTint()
+  const store = useBentoStore();
+  const { tint } = useTint();
 
   return (
     <YStack pos="relative" mt={-55} pt={55} zi={0}>
@@ -668,7 +720,13 @@ const Hero = () => {
         fullscreen
       />
       <ContainerLarge>
-        <XStack gap="$6" py="$12" bc="transparent" jc="space-between" w={'100%'}>
+        <XStack
+          gap="$6"
+          py="$12"
+          bc="transparent"
+          jc="space-between"
+          w={"100%"}
+        >
           <YStack
             maw="55%"
             ov="hidden"
@@ -685,14 +743,15 @@ const Hero = () => {
             <YStack gap="$4">
               <ThemeTintAlt>
                 <Paragraph size="$9" color="$color10">
-                  Screens, components, and early access to upcoming OSS features.
+                  Screens, components, and early access to upcoming OSS
+                  features.
                 </Paragraph>
               </ThemeTintAlt>
 
               <Paragraph color="$gray12" size="$6">
-                For just $200/year get access to ongoing releases of well designed,
-                responsive and accessible cross-platform components for React and React
-                Native, ready to copy-paste into your app.
+                For just $200/year get access to ongoing releases of well
+                designed, responsive and accessible cross-platform components
+                for React and React Native, ready to copy-paste into your app.
               </Paragraph>
             </YStack>
 
@@ -705,7 +764,7 @@ const Hero = () => {
                   iconAfter={ShoppingCart}
                   fontFamily="$mono"
                   onPress={() => {
-                    store.showPurchase = true
+                    store.showPurchase = true;
                   }}
                 >
                   Purchase — $200
@@ -728,17 +787,17 @@ const Hero = () => {
         </XStack>
       </ContainerLarge>
     </YStack>
-  )
-}
+  );
+};
 
 const Body = () => {
-  const store = useBentoStore()
+  const store = useBentoStore();
   return (
     <ContainerLarge gap="$2">
       <H2>Sections</H2>
-      <Paragraph size="$6" color={'$gray11'}>
-        Components are divided into sections and each section has multiple groups of
-        related components.
+      <Paragraph size="$6" color={"$gray11"}>
+        Components are divided into sections and each section has multiple
+        groups of related components.
       </Paragraph>
 
       <Spacer size="$8" />
@@ -746,12 +805,12 @@ const Body = () => {
       <YStack gap="$12">
         {sections.listingData.sections.map(({ sectionName, parts }) => {
           return (
-            <YStack gap="$4" jc={'space-between'}>
-              <H2 fontSize={'$8'} f={2}>
+            <YStack gap="$4" jc={"space-between"}>
+              <H2 fontSize={"$8"} f={2}>
                 {`${sectionName[0].toUpperCase()}${sectionName.slice(1)}`}
               </H2>
               <Separator o={0.5} />
-              <XStack gap={'$6'} f={4} fw="wrap" fs={1}>
+              <XStack gap={"$6"} f={4} fw="wrap" fs={1}>
                 {parts.map(({ name: partsName, numberOfComponents, route }) => (
                   <ComponentGroupsBanner
                     path={route}
@@ -761,7 +820,7 @@ const Body = () => {
                 ))}
               </XStack>
             </YStack>
-          )
+          );
         })}
       </YStack>
 
@@ -769,22 +828,22 @@ const Body = () => {
       <Separator />
       <Spacer size="$12" />
     </ContainerLarge>
-  )
-}
+  );
+};
 
 function ComponentGroupsBanner({
   name,
   numberOfComponents,
   path,
 }: {
-  name: string
-  numberOfComponents: number
-  path: string
+  name: string;
+  numberOfComponents: number;
+  path: string;
 }) {
   return (
     <Anchor
       hoverStyle={{
-        borderColor: '$blue5',
+        borderColor: "$blue5",
       }}
       bw={1}
       boc="$gray2"
@@ -794,30 +853,36 @@ function ComponentGroupsBanner({
       cursor="pointer"
       href={BASE_PATH + path}
     >
-      <Image bc="$background" w={200} h={200} source={{ uri: '' }} />
+      <Image bc="$background" w={200} h={200} source={{ uri: "" }} />
       <YStack px="$4" py="$2">
-        <H4 fontWeight={'normal'} fontSize="$4">
+        <H4 fontWeight={"normal"} fontSize="$4">
           {name}
         </H4>
-        <H5 fontWeight={'normal'} fontSize={'$2'}>
+        <H5 fontWeight={"normal"} fontSize={"$2"}>
           {numberOfComponents} components
         </H5>
       </YStack>
     </Anchor>
-  )
+  );
 }
 
-const BASE_PATH = ' /bento'
+const BASE_PATH = "/bento";
 
-export default () => null
+export default () => null;
 
+type ProComponentsProps = {
+  proComponents?: Database["public"]["Tables"]["products"]["Row"] & {
+    prices: Database["public"]["Tables"]["prices"]["Row"][];
+  };
+  coupon?: Stripe.Coupon | null;
+};
 // export default this component
-export function ProPage() {
-  const store = useBentoStore()
+export function ProPage(props: ProComponentsProps) {
+  const store = useBentoStore();
   return (
     <YStack>
       <Hero />
-      <Spacer size={'$8'} />
+      <Spacer size={"$8"} />
       <Body />
       <PurchaseModal
         coupon={
@@ -825,25 +890,81 @@ export function ProPage() {
             // stripe coupon
           } as Stripe.Coupon
         }
-        starter={{
-          active: true,
-          description: 'a collection of components',
-          id: 'bento',
-          image: '/img',
-          name: 'Bento',
-          prices: [
-            {
-              active: true,
-              currency: 'usd',
-              unit_amount: 20000,
-            },
-          ],
-        }}
+        proComponents={props.proComponents}
       />
 
       <Spacer size="$10" />
     </YStack>
-  )
+  );
 }
 
-ProPage.getLayout = getDefaultLayout
+ProPage.getLayout = getDefaultLayout;
+
+export const getStaticProps: GetStaticProps<
+  ProComponentsProps | any
+> = async () => {
+  try {
+    const props = await getTakeoutProducts();
+    return {
+      props,
+    };
+  } catch (err) {
+    console.error(`Error getting props`, err);
+    return {
+      props: {},
+    };
+  }
+};
+
+const getTakeoutProducts = async (): Promise<ProComponentsProps> => {
+  const promoListPromise = stripe.promotionCodes.list({
+    code: "SITE-PRO-COMPONENTS", // ones with code SITE-PRO-COMPONENTS are considered public and will be shown here
+    active: true,
+    expand: ["data.coupon"],
+  });
+  const productPromises = [
+    supabaseAdmin
+      .from("products")
+      .select("*, prices(*)")
+      .eq("metadata->>slug", "pro-components")
+      .single(),
+  ];
+  const promises = [promoListPromise, ...productPromises];
+  const queries = await Promise.all(promises);
+
+  const products = queries.slice(1) as Awaited<
+    (typeof productPromises)[number]
+  >[];
+  const couponsList = queries[0] as Awaited<typeof promoListPromise>;
+
+  let coupon: Stripe.Coupon | null = null;
+
+  if (couponsList.data.length > 0) {
+    coupon = couponsList.data[0].coupon;
+  }
+
+  if (!products.length) {
+    throw new Error(`No products found`);
+  }
+
+  for (const product of products) {
+    if (product.error) throw product.error;
+    if (
+      !product.data.prices ||
+      !Array.isArray(product.data.prices) ||
+      product.data.prices.length === 0
+    ) {
+      throw new Error("No prices are attached to the product.");
+    }
+  }
+
+  return {
+    proComponents: {
+      ...products[0].data!,
+      prices: getArray(products[0].data!.prices!).filter(
+        (p) => p.active && !(p.metadata as Record<string, any>).hide_from_lists
+      ),
+    },
+    coupon,
+  };
+};
