@@ -1,25 +1,25 @@
-import type { IconProps } from '@tamagui/helpers-icon'
-import { themed } from '@tamagui/helpers-icon'
-import PropTypes from 'prop-types'
 import React, { memo } from 'react'
+import PropTypes from 'prop-types'
+import type { IconProps } from '@tamagui/helpers-icon'
 import {
-  Defs,
+  Svg,
+  Circle as _Circle,
   Ellipse,
   G,
-  Line,
   LinearGradient,
+  RadialGradient,
+  Line,
   Path,
   Polygon,
   Polyline,
-  RadialGradient,
   Rect,
-  Stop,
-  Svg,
   Symbol,
-  Use,
-  Circle as _Circle,
   Text as _Text,
+  Use,
+  Defs,
+  Stop,
 } from 'react-native-svg'
+import { themed } from '@tamagui/helpers-icon'
 
 const Icon = (props) => {
   const { color = 'black', size = 24, ...otherProps } = props
@@ -35,13 +35,12 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
-      <Path d="M14 19a6 6 0 0 0-12 0" stroke={color} />
-      <_Circle cx="8" cy="9" r="4" stroke={color} />
-      <Path d="M22 19a6 6 0 0 0-6-6 4 4 0 1 0 0-8" stroke={color} />
+      <_Circle cx="12" cy="12" r="10" stroke={color} />
+      <Path d="M12 2a7 7 0 1 0 10 10" stroke={color} />
     </Svg>
   )
 }
 
-Icon.displayName = 'Users2'
+Icon.displayName = 'Eclipse'
 
-export const Users2 = memo<IconProps>(themed(Icon))
+export const Eclipse = memo<IconProps>(themed(Icon))
