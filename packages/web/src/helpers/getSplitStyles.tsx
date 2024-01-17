@@ -128,10 +128,9 @@ export const PROP_SPLIT = '-'
 
 function isValidStyleKey(key: string, staticConfig: StaticConfig) {
   const validStyleProps =
-    staticConfig.validStyles ?? (staticConfig.isText ? stylePropsText : validStyles)
+    staticConfig.validStyles || (staticConfig.isText ? stylePropsText : validStyles)
   return (
-    key in validStyleProps ||
-    (staticConfig.acceptTokens && key in staticConfig.acceptTokens)
+    validStyleProps[key] || (staticConfig.acceptTokens && staticConfig.acceptTokens[key])
   )
 }
 
@@ -273,22 +272,27 @@ export const getSplitStyles: StyleSplitter = (
     const valInitType = typeof valInit
     const isValidStyleKeyInit = isValidStyleKey(keyInit, staticConfig)
 
-    // TODO this is duplicated! but seems to be fixing some bugs so leaving got now
     if (process.env.TAMAGUI_TARGET === 'web') {
-      if (valInitType === 'string' && valInit[0] === '_') {
-        if (isValidStyleKeyInit || keyInit.includes('-')) {
-          if (process.env.NODE_ENV === 'development' && debug) {
-            log(`Adding compiled style ${keyInit}: ${valInit}`)
-          }
+      if (isValidStyleKeyInit && valInitType === 'string') {
+        if (valInit[0] === '_') {
+          const isValidClassName = keyInit in validStyles
+          const isMediaOrPseudo =
+            !isValidClassName &&
+            // media are flattened for some reason to color-hover keys,
+            // we should probably just leave them in place to avoid extra complexity
+            keyInit.includes(PROP_SPLIT) &&
+            validStyles[keyInit.split(PROP_SPLIT)[0]]
 
-          if (shouldDoClasses) {
-            classNames[keyInit] = valInit
-            delete style[keyInit]
-          } else {
-            style[keyInit] = reverseMapClassNameToValue(keyInit, valInit)
-            delete classNames[keyInit]
+          if (isValidClassName || isMediaOrPseudo) {
+            if (shouldDoClasses) {
+              mergeClassName(transforms, classNames, keyInit, valInit, isMediaOrPseudo)
+              delete style[keyInit]
+            } else {
+              style[keyInit] = reverseMapClassNameToValue(keyInit, valInit)
+              delete classNames[keyInit]
+            }
+            continue
           }
-          continue
         }
       }
     }
@@ -469,31 +473,6 @@ export const getSplitStyles: StyleSplitter = (
 
         if (didUseKeyInit) {
           continue
-        }
-
-        if (valInit && valInit[0] === '_') {
-          // if valid style key (or pseudo like color-hover):
-          // this conditional and esp the pseudo check rarely runs so not a perf issue
-          const isValidClassName = keyInit in validStyles
-          const isMediaOrPseudo =
-            !isValidClassName &&
-            keyInit.includes(PROP_SPLIT) &&
-            validStyles[keyInit.split(PROP_SPLIT)[0]]
-
-          if (isValidClassName || isMediaOrPseudo) {
-            if (process.env.NODE_ENV === 'development' && debug) {
-              log('tamagui classname prop', keyInit, valInit)
-            }
-
-            if (shouldDoClasses) {
-              mergeClassName(transforms, classNames, keyInit, valInit, isMediaOrPseudo)
-              delete style[keyInit]
-            } else {
-              style[keyInit] = reverseMapClassNameToValue(keyInit, valInit)
-              delete classNames[keyInit]
-            }
-            continue
-          }
         }
       }
     }
