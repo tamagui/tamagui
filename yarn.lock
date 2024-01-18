@@ -26958,6 +26958,7 @@ __metadata:
     "@tamagui/portal": "npm:1.86.6"
     "@tamagui/progress": "npm:1.86.6"
     "@tamagui/radio-group": "npm:1.86.6"
+    "@tamagui/react-native-media-driver": "npm:1.86.6"
     "@tamagui/scroll-view": "npm:1.86.6"
     "@tamagui/select": "npm:1.86.6"
     "@tamagui/separator": "npm:1.86.6"

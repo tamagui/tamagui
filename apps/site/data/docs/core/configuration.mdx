@@ -87,7 +87,9 @@ your [shorthands](#shorthands) to give you a syntax like this:
 ```
 
 ```tsx
-// @tamagui/core doesn't include :
+// @tamagui/core doesn't include `createMedia` so that it can avoid
+// a dependency on react-native. If you are using tamagui, you can
+// import createMedia from there directly and avoid this line:
 import { createMedia } from '@tamagui/react-native-media-driver'
 import { createFont, createTamagui, createTokens } from 'tamagui'
 
@@ -120,7 +122,7 @@ const interFont = createFont({
     2: -1,
     // 3 will be -1
   },
-  // (native) swap out fonts by face/style
+  // (native only) swaps out fonts by face/style
   face: {
     300: { normal: 'InterLight', italic: 'InterItalic' },
     600: { normal: 'InterBold' },
@@ -158,6 +160,8 @@ const config = createTamagui({
     body: interFont,
   },
   tokens,
+
+  // For more on themes, see the Themes page
   themes: {
     light: {
       bg: '#f2f2f2',
@@ -169,14 +173,10 @@ const config = createTamagui({
     },
   },
 
-  // `@tamagui/core` doesn't provide media query capabilities out of the box
-  // for native as it is de-coupled from react-native.
-
   // For web-only, media queries work out of the box and you can avoid the
   // `createMedia` call here by passing the media object directly.
-
-  // If targeting React Native, add this driver and use this `createMedia` helper.
-  // If web-only you can leave out `createMedia` and just use an object.
+  // If you are going to target React Native, use `createMedia` (it's an identity
+  // function on web so you can import it there without concern).
   media: createMedia({
     sm: { maxWidth: 860 },
     gtSm: { minWidth: 860 + 1 },
@@ -185,21 +185,22 @@ const config = createTamagui({
     pointerCoarse: { pointer: 'coarse' },
   }),
 
-  // optional:
-
-  // add custom shorthand props
-  // note: as const is important, without it you may see breaking types
+  // Shorthands
+  // Adds <View m={10} /> to <View margin={10} />
+  // See Settings section on this page to only allow shorthands
   shorthands: {
     px: 'paddingHorizontal',
     f: 'flex',
+    m: 'margin',
     w: 'width',
   } as const,
 
-  // Experimental / advanced, only for overriding the core component styles
-  // Prefer to use styled() for building your own, only useful for edge cases.
+  // Change the default props for any styled() component with a name.
+  // We are discouraging the use of this and have deprecated it, prefer to use
+  // styled() on any component to change it's styles.
   defaultProps: {
     Text: {
-      // override any default props here
+      color: 'green'
     },
   },
 })
