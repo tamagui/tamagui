@@ -189,10 +189,17 @@ export const SelectItem = ListItemFrame.styleable<SelectItemProps>(
               backgrounded: true,
               pressTheme: true,
               hoverTheme: true,
-              focusTheme: true,
               cursor: 'default',
               outlineWidth: 0,
               size,
+              focusStyle: {
+                outlineOffset: -2,
+                outlineWidth: 2,
+                outlineStyle: 'solid',
+                outlineColor: '$color7',
+                backgroundColor: '$backgroundFocus',
+                borderColor: '$borderColorFocus',
+              },
             })}
             {...listItemProps}
             {...selectItemProps}
