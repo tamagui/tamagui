@@ -95,6 +95,7 @@
     "@tamagui/portal": "1.86.6",
     "@tamagui/progress": "1.86.6",
     "@tamagui/radio-group": "1.86.6",
+    "@tamagui/react-native-media-driver": "1.86.6",
     "@tamagui/scroll-view": "1.86.6",
     "@tamagui/select": "1.86.6",
     "@tamagui/separator": "1.86.6",
