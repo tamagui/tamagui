@@ -287,6 +287,8 @@ export const PopperContent = React.forwardRef<
     ref: contentRefs,
     x: x || 0,
     y: y || 0,
+    top: 0,
+    left: 0,
     position: strategy,
     ...(enableAnimationForPositionChange && {
       // apply animation but disable it on initial render to avoid animating from 0 to the first position
