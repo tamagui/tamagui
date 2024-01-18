@@ -4250,6 +4250,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@leeoniya/ufuzzy@npm:^1.0.14":
+  version: 1.0.14
+  resolution: "@leeoniya/ufuzzy@npm:1.0.14"
+  checksum: 852b580a8eaaf92e2d448f5b720e3c53e4bea22187bf5e8459256677c47183321b47b8384982e15751f42da7e77a216fd86c80e6185677d8270adeab4a4fb771
+  languageName: node
+  linkType: hard
+
 "@leichtgewicht/ip-codec@npm:^2.0.1":
   version: 2.0.4
   resolution: "@leichtgewicht/ip-codec@npm:2.0.4"
@@ -7507,6 +7514,7 @@ __metadata:
     "@discordjs/core": "npm:^0.6.0"
     "@docsearch/react": "npm:^3.0.0"
     "@github/mini-throttle": "npm:^2.1.0"
+    "@leeoniya/ufuzzy": "npm:^1.0.14"
     "@monaco-editor/react": "npm:^4.2.2"
     "@next/bundle-analyzer": "npm:^12.2.0"
     "@playwright/test": "npm:^1.40.1"
@@ -7605,6 +7613,7 @@ __metadata:
     typescript: "npm:^5.2.2"
     unified: "npm:^10.1.2"
     unist-util-visit: "npm:^2.0.3"
+    use-item-list: "npm:^0.1.2"
     wait-port: "npm:^0.3.0"
     webpack-stats-plugin: "npm:^1.1.3"
     zx: "npm:^7.2.3"
@@ -21521,6 +21530,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"mitt@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "mitt@npm:2.1.0"
+  checksum: d4087f8678ef9de18af10171ed39c14fc9282532f9104b522265e4a206f81630767bce5e3ae2405e9d863d7f6a7f3095f738c33c55c06872ed25978f1c8ea9f3
+  languageName: node
+  linkType: hard
+
 "mixin-deep@npm:^1.2.0":
   version: 1.3.2
   resolution: "mixin-deep@npm:1.3.2"
@@ -28392,6 +28408,27 @@ __metadata:
     "@types/react":
       optional: true
   checksum: f9f1b217db60419b033228ba17cee5c521123e7c7f35577258a1abdce6d9623e5880f0bed3a0504eff35fdf6c761a2b2e020337a34218fb86229b8641772654a
+  languageName: node
+  linkType: hard
+
+"use-constant@npm:^1.1.0":
+  version: 1.1.1
+  resolution: "use-constant@npm:1.1.1"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: cbff28ec85e10a17adc889482752006cf49e7d2f8c38cce7bcab82b42b5c31b0e42a07310995d140265956aa5f7c641edc1111a8647d01980a822760df2648dc
+  languageName: node
+  linkType: hard
+
+"use-item-list@npm:^0.1.2":
+  version: 0.1.2
+  resolution: "use-item-list@npm:0.1.2"
+  dependencies:
+    mitt: "npm:^2.1.0"
+    use-constant: "npm:^1.1.0"
+  peerDependencies:
+    react: ">=16.8"
+  checksum: c89d8c885ae6ec5827aac7dd98e5c03ba0121c000eb3253216e16d595e76398c4dcbc07bcb87b4b99a4a4940a439588334cdcfa03b221572c7dfc64696d1f988
   languageName: node
   linkType: hard
 

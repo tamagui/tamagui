@@ -31,6 +31,7 @@
     "@discordjs/core": "^0.6.0",
     "@docsearch/react": "^3.0.0",
     "@github/mini-throttle": "^2.1.0",
+    "@leeoniya/ufuzzy": "^1.0.14",
     "@monaco-editor/react": "^4.2.2",
     "@react-three/drei": "^9.68.3",
     "@react-three/fiber": "^8.13.0",
@@ -115,7 +116,8 @@
     "ts-morph": "^15.1.0",
     "typescript": "^5.2.2",
     "unified": "^10.1.2",
-    "unist-util-visit": "^2.0.3"
+    "unist-util-visit": "^2.0.3",
+    "use-item-list": "^0.1.2"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.23.3",

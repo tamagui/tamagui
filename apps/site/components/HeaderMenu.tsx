@@ -71,13 +71,13 @@ const HeaderMenuContent = React.memo(function HeaderMenuContent() {
     <Popover.Content
       bw={1}
       boc="$borderColor"
-      enterStyle={{ x: 0, y: -10, o: 0 }}
-      exitStyle={{ x: 0, y: -10, o: 0 }}
+      enterStyle={{ x: -10, o: 0 }}
+      exitStyle={{ x: -10, o: 0 }}
       x={0}
       y={0}
       o={1}
       animation={[
-        'quick',
+        'quickest',
         {
           opacity: {
             overshootClamping: true,
@@ -87,6 +87,7 @@ const HeaderMenuContent = React.memo(function HeaderMenuContent() {
       animateOnly={['transform', 'opacity']}
       p={0}
       maxHeight="80vh"
+      maxWidth={360}
       elevate
       zIndex={100000000}
     >
@@ -94,10 +95,10 @@ const HeaderMenuContent = React.memo(function HeaderMenuContent() {
 
       <Popover.ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
         <YStack aria-label="Home menu contents" miw={230} p="$3" ai="flex-end">
-          <HeaderLinks forceShowAllLinks />
+          <XStack fw="wrap" f={1}>
+            <HeaderLinks forceShowAllLinks />
+          </XStack>
 
-          <Spacer />
-          <XStack w="100%" h={1} bc="$color5" />
           <Spacer />
 
           <DocsMenuContents />
