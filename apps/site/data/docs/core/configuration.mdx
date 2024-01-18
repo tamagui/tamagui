@@ -58,7 +58,7 @@ const appConfig = createTamagui({
 
 export type AppConfig = typeof appConfig
 
-declare module '@tamagui/core' {
+declare module 'tamagui' {
   interface TamaguiCustomConfig extends AppConfig {}
 }
 
@@ -76,27 +76,31 @@ Tamagui website) by
 [copy and pasting this gist](https://gist.github.com/natew/3be503cc5990a1142d17ffadf86a134f)
 into a `themes.ts` file next to your `tamagui.config.ts`.
 
-## Overview
+## From scratch
 
-Let's start with an example of a complete `tamagui.config.ts` which is in the
-code block below. Note that keys used here can be customized to your liking, but
-using them in combination with [shorthands](#shorthands) give you a nice syntax
-like this:
+Let's start with an example of a complete `tamagui.config.ts`. Note that keys
+used here can be customized to your liking, and remember that they combine with
+your [shorthands](#shorthands) to give you a syntax like this:
 
 ```tsx
 <XStack bg="$red" w="$2" h="$1" />
 ```
 
 ```tsx
+// @tamagui/core doesn't include :
 import { createMedia } from '@tamagui/react-native-media-driver'
-import { createFont, createTamagui, createTokens } from 'tamagui' // or '@tamagui/core'
+import { createFont, createTamagui, createTokens } from 'tamagui'
+
+// Create a font:
+
+// To work with the tamagui UI kit styled components (which is optional)
+// you'd want the keys used for `size`, `lineHeight`, `weight` and
+// `letterSpacing` to be consistent. The `createFont` function
+// will fill-in any missing values if `lineHeight`, `weight` or
+// `letterSpacing` are subsets of `size`.
 
 const interFont = createFont({
   family: 'Inter, Helvetica, Arial, sans-serif',
-  // keys used for the objects you pass to `size`, `lineHeight`, `weight`
-  // and `letterSpacing` should be consistent. The `createFont` function
-  // will fill-in any missing values if `lineHeight`, `weight` or `letterSpacing`
-  // are subsets of `size`
   size: {
     1: 12,
     2: 14,
@@ -123,7 +127,12 @@ const interFont = createFont({
   },
 })
 
-// these keys can be different, but again we highly recommend consistency
+// Set up our tokens
+
+// The keys can be whatever you want, but we do recommend keeping them
+// consistent across the different token categories and intended for
+// usage together to make nice designs - eg for a Button to use.
+
 const size = {
   0: 0,
   1: 5,
