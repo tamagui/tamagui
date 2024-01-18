@@ -609,11 +609,13 @@ For more full docs on media queries, see the
 
 ### Animations
 
-Choose one of `@tamagui/animations-css`, `@tamagui/animations-react-native` or
-`@tamagui/animations-reanimated`. Note that `reanimated` support is not as well
-supported.
+Choose one of `@tamagui/animations-css` for CSS transition based animations,
+`@tamagui/animations-react-native` for React Native Animated based animations,
+or `@tamagui/animations-moti` for Reaniamted animations. You can swap them out
+per-platform as well, so long as you match the keys of the animations you pass
+in for each driver.
 
-Append a new key `animations` to your `createTamagui` call:
+Add `animations` to `createTamagui`:
 
 ```tsx
 import { createAnimations } from '@tamagui/animations-react-native'
@@ -633,20 +635,10 @@ export const animations = createAnimations({
 })
 ```
 
-If you want to have different drivers for each platform, like a CSS driver for
-the web and react-native for native, simply use the React Native convention of
-having platform-specific files: add a `animations.ts` and
-`animations.native.ts`. Set them up just like above, with matching keys, but
-importing from their respective driver.
-
 ### Shorthands
 
-Shorthands are defined directly on your `createTamagui` call, rather than being
-attached to each component, to de-couple shorthands from components. This forces
-component kits to standardize on the basic react-native style syntax and ensures
-there's only one set of abbreviations defined ever.
-
-Here's an example of a partial shorthands configuration:
+Shorthands are defined on `createTamagui`. Here's an example of a partial
+shorthands configuration:
 
 ```tsx
 // the as const ensures types work with the optional `onlyAllowShorthands` option
@@ -669,8 +661,14 @@ export default createTamagui({
 })
 ```
 
-For a full configuration, see
-[@tamagui/shorthands](https://github.com/tamagui/tamagui/blob/master/packages/shorthands/src/index.tsx)
+Which will enable usage like:
+
+```tsx
+<View br="$myToken" />
+```
+
+Where `br` expands into `borderRadius`. For a full shorthands setup, see
+[the @tamagui/shorthands source](https://github.com/tamagui/tamagui/blob/master/packages/shorthands/src/index.tsx).
 
 ### Others
 
