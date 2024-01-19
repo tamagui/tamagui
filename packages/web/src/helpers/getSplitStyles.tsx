@@ -229,6 +229,11 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   for (const keyOg in props) {
+    if (process.env.NODE_ENV === 'development') {
+      //  we leave open some verbose logs to log each prop details
+      console.groupEnd()
+    }
+
     let keyInit = keyOg
     let valInit = props[keyOg]
 
@@ -542,7 +547,6 @@ export const getSplitStyles: StyleSplitter = (
           parentStaticConfig,
         })
       }
-      console.groupEnd()
     }
 
     if (shouldPassThrough) {
@@ -1020,6 +1024,11 @@ export const getSplitStyles: StyleSplitter = (
       console.groupEnd()
     }
   } // end prop loop
+
+  if (process.env.NODE_ENV === 'development') {
+    //  we leave open some verbose logs to log each prop details
+    console.groupEnd()
+  }
 
   // style prop after:
 

@@ -13,9 +13,24 @@ import photo3 from '../../public/photo3.jpg'
 export const images = [photo1, photo2, photo3].map((x) => x.src || x)
 
 const YStackEnterable = styled(YStack, {
+  zIndex: 1,
+  x: 0,
+  opacity: 1,
+
   variants: {
-    isLeft: { true: { x: -300, opacity: 0 } },
-    isRight: { true: { x: 300, opacity: 0 } },
+    direction: {
+      ':number': (direction) => ({
+        enterStyle: {
+          x: direction > 0 ? 1000 : -1000,
+          opacity: 0,
+        },
+        exitStyle: {
+          zIndex: 0,
+          x: direction < 0 ? 1000 : -1000,
+          opacity: 0,
+        },
+      }),
+    },
   } as const,
 })
 
@@ -28,9 +43,6 @@ export function AnimationsPresenceDemo() {
     setPage([page + newDirection, newDirection])
   }
 
-  const enterVariant = direction === 1 || direction === 0 ? 'isRight' : 'isLeft'
-  const exitVariant = direction === 1 ? 'isLeft' : 'isRight'
-
   return (
     <XStack
       overflow="hidden"
@@ -40,8 +52,16 @@ export function AnimationsPresenceDemo() {
       width="100%"
       alignItems="center"
     >
-      <AnimatePresence enterVariant={enterVariant} exitVariant={exitVariant}>
-        <YStackEnterable key={page} animation="bouncy" fullscreen x={0} opacity={1}>
+      <AnimatePresence>
+        <YStackEnterable
+          key={page}
+          animation="bouncy"
+          fullscreen
+          x={0}
+          // @ts-ignore bad type todo
+          direction={direction}
+          debug="verbose"
+        >
           <Image source={{ uri: images[imageIndex], width: 780, height: 300 }} />
         </YStackEnterable>
       </AnimatePresence>
@@ -55,6 +75,7 @@ export function AnimationsPresenceDemo() {
         circular
         elevate
         onPress={() => paginate(-1)}
+        zi={100}
       />
       <Button
         accessibilityLabel="Carousel right"
@@ -65,6 +86,7 @@ export function AnimationsPresenceDemo() {
         circular
         elevate
         onPress={() => paginate(1)}
+        zi={100}
       />
     </XStack>
   )
