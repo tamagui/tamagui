@@ -16,6 +16,7 @@
     "@tamagui/helpers": "1.86.6",
     "@tamagui/use-force-update": "1.86.6",
     "@tamagui/use-presence": "1.86.6",
+    "@tamagui/use-constant": "1.86.6",
     "@tamagui/web": "1.86.6"
   },
   "devDependencies": {

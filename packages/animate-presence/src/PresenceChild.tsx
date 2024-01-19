@@ -1,3 +1,4 @@
+import { useConstant } from '@tamagui/use-constant'
 import { PresenceContext } from '@tamagui/use-presence'
 import { PresenceContextProps } from '@tamagui/web'
 import * as React from 'react'
@@ -27,7 +28,7 @@ export const PresenceChild = ({
   enterExitVariant,
   presenceAffectsLayout,
 }: PresenceChildProps) => {
-  const presenceChildren = React.useMemo(newChildrenMap, [])
+  const presenceChildren = useConstant(newChildrenMap)
   const id = useId() || ''
 
   const context = React.useMemo(
@@ -73,7 +74,7 @@ export const PresenceChild = ({
    */
   React.useEffect(() => {
     !isPresent && !presenceChildren.size && onExitComplete?.()
-  }, [isPresent, presenceChildren.size])
+  }, [isPresent])
 
   return <PresenceContext.Provider value={context}>{children}</PresenceContext.Provider>
 }
