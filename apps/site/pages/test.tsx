@@ -4,9 +4,7 @@ import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { Header } from '@tamagui/site/components/Header'
 import { SearchProvider } from '@tamagui/site/components/Search'
 import { useState } from 'react'
-import { Square, useDidFinishSSR, useThemeName } from 'tamagui'
-import { useMotify } from 'moti/author'
-import { AnimationsPresenceDemo } from '@tamagui/demos'
+import { AnimatePresence, Button, styled, Text, YStack } from 'tamagui'
 
 // debugger
 global.shouldDebugMoti = true
@@ -24,9 +22,102 @@ function TestPage() {
       }}
     >
       {/* <SSRAnimationTest /> */}
+      <AnimatedNumbers />
     </div>
   )
 }
+// debug-verbose
+// import './wdyr'
+
+const AnimatedNumbers = () => {
+  const [numbers, setNumbers] = useState(100_000)
+  const len = `${numbers}`.length
+
+  return (
+    <YStack gap="$5">
+      <XStack gap="$2">
+        <Button
+          onPress={() => {
+            setNumbers(Math.ceil(Math.random() * 1_000_000))
+          }}
+        >
+          Next
+        </Button>
+
+        <Button
+          onPress={() => {
+            setNumbers(+`${numbers}1`)
+          }}
+        >
+          Add
+        </Button>
+
+        <Button
+          onPress={() => {
+            setNumbers(+`${numbers}`.slice(0, -1))
+          }}
+        >
+          Remove
+        </Button>
+      </XStack>
+
+      <XStack x={-50}>
+        <AnimatePresence
+          initial={false}
+          debug
+          enterVariant="fromTop"
+          exitVariant="toBottom"
+        >
+          {`${numbers}`
+            // .slice(0, 1)
+            .split('')
+            .map((num, i) => {
+              // we do every other iteration so we can avoid enter/exit of same thing
+              // ${iteration % 3 == 0}
+              const key = `${i}${num}`
+              return (
+                <AnimatedNumber
+                  animation="medium"
+                  animateOnly={['transform', 'opacity']}
+                  x={-len * 10 + 60 * i}
+                  key={key}
+                >
+                  {num}
+                </AnimatedNumber>
+              )
+            })}
+        </AnimatePresence>
+      </XStack>
+    </YStack>
+  )
+}
+
+const AnimatedNumber = styled(Text, {
+  fontSize: '$12',
+  fontFamily: '$silkscreen',
+  color: '$color',
+  pos: 'absolute',
+  t: 0,
+  l: 0,
+  y: 0,
+  o: 1,
+
+  variants: {
+    fromTop: {
+      true: {
+        y: -50,
+        o: 0,
+      },
+    },
+
+    toBottom: {
+      true: {
+        y: 50,
+        o: 0,
+      },
+    },
+  } as const,
+})
 
 const SSRAnimationTest = () => {
   // const hydrated = useDidFinishSSR()
@@ -107,7 +198,6 @@ TestPage.getLayout = (page) => {
 
 import { memo, useEffect } from 'react'
 import { Circle, XStack } from 'tamagui'
-import { AnimationsEnterDemo } from '@tamagui/demos'
 
 const TestCircle = memo(() => {
   const [mounted, setMounted] = useState<'start' | 'animate' | 'done'>('start')
