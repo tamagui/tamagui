@@ -1,3 +1,12 @@
+- causes leftover props in DOM:
+
+<Stack
+  hitSlop={5}
+  onAccessibilityAction={[]}
+  importantForAccessibility="no"
+  needsOffscreenAlphaCompositing
+/>
+
 - useStyle and others can have forComponent types
 
 - docs:
