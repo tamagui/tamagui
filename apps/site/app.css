@@ -15,7 +15,7 @@ body {
   margin: 0;
   position: relative;
   max-width: 100vw;
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
 }
 
 * {
@@ -27,7 +27,7 @@ body {
   display: flex;
   flex: 1;
   max-width: 100vw;
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
 }
 
 body .preview {
@@ -364,7 +364,6 @@ iframe {
 .t_dark .mask-gradient-left {
   mix-blend-mode: hard-light;
 }
-
 
 /* code highlighting */
 

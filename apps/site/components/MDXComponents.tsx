@@ -1,6 +1,7 @@
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
-import { Link, Subtitles } from '@tamagui/lucide-icons'
+import { Link } from '@tamagui/lucide-icons'
 import { NextLink } from 'components/NextLink'
+import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { ScrollView } from 'react-native'
 import {
@@ -16,6 +17,8 @@ import {
   Paragraph,
   Separator,
   Spacer,
+  Tabs,
+  TabsProps,
   Text,
   Theme,
   ThemeableStack,
@@ -25,6 +28,7 @@ import {
   XStackProps,
   YStack,
   styled,
+  withStaticProperties,
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 
@@ -149,7 +153,59 @@ const TableHighlight = styled(YStack, {
   bc: '$yellow1',
 })
 
+function TabsComponent(props: TabsProps) {
+  const router = useRouter()
+
+  const id = props.id || 'value'
+  const updateUrl = function (newValue: string) {
+    const url = new URL(location.href)
+    url.searchParams.set(id, newValue)
+    url.hash = '' // having this set messes with the scroll
+    router.replace(url, undefined, {
+      scroll: false,
+      shallow: true,
+    })
+  }
+  const value =
+    typeof router.query[id] === 'string'
+      ? (router.query[id] as string)
+      : props.defaultValue
+
+  return (
+    <Tabs
+      onValueChange={updateUrl}
+      unstyled
+      orientation={'horizontal'}
+      flexDirection={'column'}
+      borderWidth={0}
+      position={'unset'}
+      {...props}
+      value={value}
+    />
+  )
+}
+const CustomTabs = withStaticProperties(TabsComponent, {
+  List: styled(Tabs.List, {
+    alignSelf: 'flex-end',
+    size: '$1',
+    top: 70,
+    marginRight: 10,
+    $sm: { paddingRight: 20 },
+    marginBottom: -60,
+    marginTop: 30,
+    zIndex: 10000,
+    position: 'sticky' as any,
+  }),
+  Tab: styled(Tabs.Tab, {
+    value: '',
+    size: '$2',
+  }),
+  Content: Tabs.Content,
+})
+
 export const components = {
+  Tabs: CustomTabs as any,
+
   SocialLinksRow: () => (
     <YStack mt="$6" mx="$-4">
       <SocialLinksRow />
