@@ -1,3 +1,5 @@
+- make styled() only not accept most non-style props
+
 - causes leftover props in DOM:
 
 <Stack

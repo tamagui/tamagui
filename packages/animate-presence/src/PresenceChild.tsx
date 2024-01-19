@@ -27,6 +27,7 @@ export const PresenceChild = ({
   enterVariant,
   enterExitVariant,
   presenceAffectsLayout,
+  custom,
 }: PresenceChildProps) => {
   const presenceChildren = useConstant(newChildrenMap)
   const id = useId() || ''
@@ -37,6 +38,7 @@ export const PresenceChild = ({
         id,
         initial,
         isPresent,
+        custom,
         exitVariant,
         enterVariant,
         enterExitVariant,
@@ -61,7 +63,9 @@ export const PresenceChild = ({
      * so they can detect that layout change.
      */
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    presenceAffectsLayout ? undefined : [isPresent, exitVariant, enterVariant]
+    presenceAffectsLayout
+      ? undefined
+      : [isPresent, exitVariant, enterVariant, custom ? JSON.stringify(custom) : 0]
   )
 
   React.useMemo(() => {
