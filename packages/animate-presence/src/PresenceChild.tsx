@@ -1,4 +1,3 @@
-import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { PresenceContext } from '@tamagui/use-presence'
 import { PresenceContextProps } from '@tamagui/web'
 import * as React from 'react'
@@ -66,17 +65,15 @@ export const PresenceChild = ({
 
   React.useMemo(() => {
     presenceChildren.forEach((_, key) => presenceChildren.set(key, false))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPresent])
 
   /**
    * If there's no animated components to fire exit animations, we want to remove this
    * component immediately.
    */
-  useIsomorphicLayoutEffect(() => {
-    !(isPresent || presenceChildren.size) && onExitComplete?.()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isPresent])
+  React.useEffect(() => {
+    !isPresent && !presenceChildren.size && onExitComplete?.()
+  }, [isPresent, presenceChildren.size])
 
   return <PresenceContext.Provider value={context}>{children}</PresenceContext.Provider>
 }
