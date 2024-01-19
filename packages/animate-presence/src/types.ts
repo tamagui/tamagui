@@ -83,4 +83,6 @@ export interface AnimatePresenceProps {
    * Will use a variant on the child component and apply the true styles for when its entering, false styles for when its exiting
    */
   enterExitVariant?: string | null
+
+  debug?: boolean
 }
