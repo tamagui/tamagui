@@ -1,4 +1,6 @@
 - Select `ListItemFrame` area is messy/slow due to inline styles and complex components
+- make styled() only not accept most non-style props
+
 - causes leftover props in DOM:
 
 <Stack

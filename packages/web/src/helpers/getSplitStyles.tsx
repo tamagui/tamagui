@@ -765,9 +765,9 @@ export const getSplitStyles: StyleSplitter = (
             // when disabled ensure the default value is set for future animations to align
 
             if (isDisabled) {
-              if (pkey in animatableDefaults && !(pkey in usedKeys)) {
-                const defaultVal = animatableDefaults[pkey]
-                mergeStyle(styleState, pkey, defaultVal)
+              const defaultValues = animatableDefaults[pkey]
+              if (defaultValues && !(pkey in usedKeys)) {
+                mergeStyle(styleState, pkey, defaultValues)
               }
             } else {
               const curImportance = usedKeys[pkey] || 0
