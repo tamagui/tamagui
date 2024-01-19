@@ -367,8 +367,10 @@ export function createComponent<
     // HOOK
     const presence = (willBeAnimated && animationsConfig?.usePresence?.()) || null
     const presenceState = presence?.[2]
+    const isExiting = presenceState?.isPresent === false
     const enterExitVariant = presenceState?.enterExitVariant
-    const enterVariant = enterExitVariant ?? presenceState?.enterVariant
+    const enterVariant = presenceState?.enterVariant ?? enterExitVariant
+    const hasEnterVariant = Boolean(enterVariant && staticConfig.variants?.[enterVariant])
 
     const hasEnterStyle = !!props.enterStyle
     // finish animated logic, avoid isAnimated when unmounted
@@ -384,12 +386,14 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`pre-use-state`
 
-    const initialState =
-      hasEnterStyle || enterVariant
-        ? !isHydrated
-          ? defaultComponentStateShouldEnter
-          : defaultComponentState
-        : defaultComponentStateMounted
+    const hasEnterState = hasEnterStyle || hasEnterVariant
+    const needsToMount = !isHydrated || !curState.host
+
+    const initialState = hasEnterState
+      ? needsToMount
+        ? defaultComponentStateShouldEnter
+        : defaultComponentState
+      : defaultComponentStateMounted
 
     // HOOK
     const states = useState<TamaguiComponentState>(initialState)
@@ -407,21 +411,22 @@ export function createComponent<
 
     // set enter/exit variants onto our new props object
     if (presenceState && isAnimated && isHydrated) {
-      const isExiting = !presenceState.isPresent
-      const exitVariant = enterExitVariant ?? presenceState.exitVariant
+      const exitVariant = presenceState.exitVariant ?? enterExitVariant
 
-      if (state.unmounted && enterVariant) {
+      if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
+        console.warn(`has presenceState ${JSON.stringify(presenceState)}`)
+      }
+
+      if (state.unmounted && enterVariant && hasEnterVariant) {
         if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
           console.warn(`Animating presence ENTER "${enterVariant}"`)
         }
-
         props[enterVariant] = true
       } else if (isExiting && exitVariant) {
         if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
-          console.warn(`Animating presence EXIT "${enterVariant}"`)
+          console.warn(`Animating presence EXIT "${exitVariant}"`)
         }
-
-        props[exitVariant] = enterExitVariant ? false : true
+        props[exitVariant] = exitVariant === enterExitVariant ? false : true
       }
     }
 
@@ -524,8 +529,6 @@ export function createComponent<
       themeStateProps.deopt = willBeAnimated
     }
 
-    const isExiting = Boolean(!state.unmounted && presence?.[0] === false)
-
     if (process.env.NODE_ENV === 'development') {
       if (debugProp && debugProp !== 'profile') {
         const name = `${
@@ -549,11 +552,13 @@ export function createComponent<
           console.groupEnd()
           console.groupEnd()
 
-          console.groupCollapsed(
-            `Info (collapsed): ${state.press || state.pressIn ? 'PRESSED ' : ''}${
-              state.hover ? 'HOVERED ' : ''
-            }${state.focus ? 'FOCUSED' : ' '}`
-          )
+          const pressLog = `${state.press || state.pressIn ? 'PRESS ' : ''}`
+          const stateLog = `${pressLog}${state.hover ? 'HOVER ' : ''}${
+            state.focus ? 'FOCUS' : ' '
+          }`
+          const ch = propsIn.children
+          const childLog = typeof ch === 'string' && ch.length > 4 ? ch.slice(0, 4) : ch
+          console.groupCollapsed(`Info: (children: ${childLog}) ${stateLog}`)
           log({ propsIn, props, state, staticConfig, elementType, themeStateProps })
           log({ contextProps: styledContextProps, overriddenContextProps })
           log({ presence, isAnimated, isHOC, hasAnimationProp, useAnimations })
