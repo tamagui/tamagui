@@ -175,6 +175,7 @@ export function createAnimations<A extends AnimationsConfig>(
     useAnimations: ({ props, onDidAnimate, style, componentState, presence }) => {
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
+
       /** store Animated value of each key e.g: color: AnimatedValue */
       const animateStyles = useRef<Record<string, Animated.Value>>({})
       const animatedTranforms = useRef<{ [key: string]: Animated.Value }[]>([])
@@ -380,7 +381,7 @@ export function createAnimations<A extends AnimationsConfig>(
 
       if (process.env.NODE_ENV === 'development') {
         if (props['debug'] === 'verbose') {
-          console.info(`Returning animated`, res, 'given style', style)
+          console.info(`Animated`, { response: res, inputStyle: style, isExiting })
         }
       }
 
