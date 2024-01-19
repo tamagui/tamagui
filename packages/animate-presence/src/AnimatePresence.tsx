@@ -84,6 +84,7 @@ export const AnimatePresence: React.FunctionComponent<
   onExitComplete,
   exitBeforeEnter,
   presenceAffectsLayout = true,
+  custom,
 }) => {
   // We want to force a re-render once all exiting animations have finished. We
   // either use a local forceRender function, or one from a parent context if it exists.
@@ -139,6 +140,7 @@ export const AnimatePresence: React.FunctionComponent<
             enterVariant={enterVariant}
             initial={initial ? undefined : false}
             presenceAffectsLayout={presenceAffectsLayout}
+            custom={custom}
           >
             {child}
           </PresenceChild>
@@ -227,6 +229,7 @@ export const AnimatePresence: React.FunctionComponent<
           enterExitVariant={enterExitVariant}
           enterVariant={enterVariant}
           exitVariant={exitVariant}
+          custom={custom}
         >
           {child}
         </PresenceChild>
@@ -252,6 +255,7 @@ export const AnimatePresence: React.FunctionComponent<
         enterVariant={enterVariant}
         enterExitVariant={enterExitVariant}
         presenceAffectsLayout={presenceAffectsLayout}
+        custom={custom}
       >
         {child}
       </PresenceChild>
