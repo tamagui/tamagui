@@ -1,4 +1,4 @@
-import { CheckCircle, Clipboard, Paintbrush } from '@tamagui/lucide-icons'
+import { CheckCircle, Copy, Paintbrush } from '@tamagui/lucide-icons'
 import { useStore } from '@tamagui/use-store'
 import { forwardRef, useEffect, useRef, useState } from 'react'
 import { ScrollView } from 'react-native'
@@ -173,7 +173,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                   top="$3"
                   right="$3"
                   display="inline-flex"
-                  icon={hasCopied ? CheckCircle : Clipboard}
+                  icon={hasCopied ? CheckCircle : Copy}
                   onPress={onCopy}
                   $xs={{
                     display: 'none',
