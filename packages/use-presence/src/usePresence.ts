@@ -11,8 +11,10 @@ export function usePresence(): UsePresenceResult {
   }
 
   const { isPresent, onExitComplete, register } = context
+
   const id = useId() || ''
-  useEffect(() => register(id), [id, register])
+
+  useEffect(() => register(id), [])
 
   const safeToRemove = () => onExitComplete?.(id)
 
