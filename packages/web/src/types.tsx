@@ -1424,8 +1424,24 @@ type SharedBaseExtraStyleProps = {
   animation?: AnimationProp | null
   animateOnly?: string[]
   userSelect?: Properties['userSelect']
-  transformOrigin?: Properties['transformOrigin']
+  transformOrigin?:
+    | PxOrPct
+    | 'left'
+    | 'center'
+    | 'right'
+    | 'top'
+    | 'bottom'
+    | TwoValueTransformOrigin
+    | `${TwoValueTransformOrigin} ${Px}`
 }
+
+type Px = `${string | number}px`
+type PxOrPct = Px | `${string | number}%`
+type TwoValueTransformOrigin = `${PxOrPct | 'left' | 'center' | 'right'} ${
+  | PxOrPct
+  | 'top'
+  | 'center'
+  | 'bottom'}`
 
 type OverrideRNStyleProps =
   | 'display'
