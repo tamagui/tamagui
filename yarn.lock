@@ -4250,6 +4250,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@leeoniya/ufuzzy@npm:^1.0.14":
+  version: 1.0.14
+  resolution: "@leeoniya/ufuzzy@npm:1.0.14"
+  checksum: 852b580a8eaaf92e2d448f5b720e3c53e4bea22187bf5e8459256677c47183321b47b8384982e15751f42da7e77a216fd86c80e6185677d8270adeab4a4fb771
+  languageName: node
+  linkType: hard
+
 "@leichtgewicht/ip-codec@npm:^2.0.1":
   version: 2.0.4
   resolution: "@leichtgewicht/ip-codec@npm:2.0.4"
@@ -6951,6 +6958,7 @@ __metadata:
     expo-splash-screen: "npm:~0.20.5"
     expo-status-bar: "npm:~1.6.0"
     expo-updates: "npm:~0.18.19"
+    framer-motion: "npm:^10.18.0"
     html-webpack-plugin: "npm:^5.5.0"
     metro-runtime: "npm:*"
     mini-css-extract-plugin: "npm:^2.7.6"
@@ -7507,6 +7515,7 @@ __metadata:
     "@discordjs/core": "npm:^0.6.0"
     "@docsearch/react": "npm:^3.0.0"
     "@github/mini-throttle": "npm:^2.1.0"
+    "@leeoniya/ufuzzy": "npm:^1.0.14"
     "@monaco-editor/react": "npm:^4.2.2"
     "@next/bundle-analyzer": "npm:^12.2.0"
     "@playwright/test": "npm:^1.40.1"
@@ -7558,6 +7567,7 @@ __metadata:
     eslint: "npm:8.37.0"
     eslint-config-next: "npm:13.2.4"
     file-system-access: "npm:^1.0.4"
+    framer-motion: "npm:^10.18.0"
     fs-extra: "npm:^11.1.0"
     glob: "npm:^7.1.6"
     graphql-tag: "npm:^2.12.6"
@@ -15992,6 +16002,27 @@ __metadata:
   dependencies:
     map-cache: "npm:^0.2.2"
   checksum: 1cbbd0b0116b67d5790175de0038a11df23c1cd2e8dcdbade58ebba5594c2d641dade6b4f126d82a7b4a6ffc2ea12e3d387dbb64ea2ae97cf02847d436f60fdc
+  languageName: node
+  linkType: hard
+
+"framer-motion@npm:^10.18.0":
+  version: 10.18.0
+  resolution: "framer-motion@npm:10.18.0"
+  dependencies:
+    "@emotion/is-prop-valid": "npm:^0.8.2"
+    tslib: "npm:^2.4.0"
+  peerDependencies:
+    react: ^18.0.0
+    react-dom: ^18.0.0
+  dependenciesMeta:
+    "@emotion/is-prop-valid":
+      optional: true
+  peerDependenciesMeta:
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: 8dc61e16af34ea7c7e830e03f588c54b7a186a767787eb6373ac692bbffa219959d50b7cf983f54305951e121ea7d50ebd4819920290fc6ad58b03fc5eb2bdde
   languageName: node
   linkType: hard
 

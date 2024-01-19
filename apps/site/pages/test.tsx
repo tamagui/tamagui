@@ -5,6 +5,8 @@ import { Header } from '@tamagui/site/components/Header'
 import { SearchProvider } from '@tamagui/site/components/Search'
 import { useState } from 'react'
 import { AnimatePresence, Button, styled, Text, YStack } from 'tamagui'
+import { AnimationsPresenceDemo } from '@tamagui/demos'
+import * as Framer from 'framer-motion'
 
 // debugger
 global.shouldDebugMoti = true
@@ -21,8 +23,10 @@ function TestPage() {
         flex: 1,
       }}
     >
+      <AnimationsPresenceDemo />
       {/* <SSRAnimationTest /> */}
-      <AnimatedNumbers />
+      {/* <AnimatedNumbers /> */}
+      {/* <AnimatePresenceDemo /> */}
     </div>
   )
 }
@@ -62,6 +66,27 @@ const AnimatedNumbers = () => {
       </XStack>
 
       <XStack x={-50}>
+        {/* <Framer.AnimatePresence initial={false}>
+          {`${numbers}`
+            .slice(0, 1)
+            .split('')
+            .map((num, i) => {
+              // we do every other iteration so we can avoid enter/exit of same thing
+              // ${iteration % 3 == 0}
+              const key = `${i}${num}`
+              return (
+                <Framer.motion.div
+                // animation="medium"
+                // animateOnly={['transform', 'opacity']}
+                // x={-len * 10 + 60 * i}
+                // key={key}
+                >
+                  {num}
+                </Framer.motion.div>
+              )
+            })}
+        </Framer.AnimatePresence> */}
+
         <AnimatePresence
           initial={false}
           debug
@@ -69,7 +94,7 @@ const AnimatedNumbers = () => {
           exitVariant="toBottom"
         >
           {`${numbers}`
-            // .slice(0, 1)
+            .slice(0, 1)
             .split('')
             .map((num, i) => {
               // we do every other iteration so we can avoid enter/exit of same thing

@@ -41,19 +41,19 @@ if (process.env.IS_TAMAGUI_DEV) {
   config.watchFolders = [workspaceRoot, projectRoot]
   config.resolver.nodeModulesPaths = [projectNM, workspaceNM]
   // delete some duplicates that metro gets tripped up by
-  const dirs = ['react', 'react-dom']
-  for (const name of dirs) {
-    const remote = path.join(workspaceNM, name)
-    const local = path.join(projectNM, name)
-    if (fs.existsSync(local)) {
-      console.info('Manual de-dupe, symlink to root: ' + local)
-      try {
-        fs.rmdirSync(local, {
-          recursive: true,
-          force: true,
-        })
-        fs.symlinkSync(remote, local)
-      } catch {}
-    }
-  }
+  // const dirs = ['react', 'react-dom']
+  // for (const name of dirs) {
+  //   const remote = path.join(workspaceNM, name)
+  //   const local = path.join(projectNM, name)
+  //   if (fs.existsSync(local)) {
+  //     console.info('Manual de-dupe, symlink to root: ' + local)
+  //     try {
+  //       fs.rmdirSync(local, {
+  //         recursive: true,
+  //         force: true,
+  //       })
+  //       fs.symlinkSync(remote, local)
+  //     } catch {}
+  //   }
+  // }
 }
