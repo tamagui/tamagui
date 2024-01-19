@@ -19,6 +19,7 @@ import {
   Spacer,
   Tabs,
   TabsProps,
+  TabsTabProps,
   Text,
   Theme,
   ThemeableStack,
@@ -190,16 +191,31 @@ const CustomTabs = withStaticProperties(TabsComponent, {
     size: '$1',
     top: 70,
     marginRight: 10,
-    $sm: { paddingRight: 20 },
     marginBottom: -60,
     marginTop: 30,
     zIndex: 10000,
     position: 'sticky' as any,
   }),
-  Tab: styled(Tabs.Tab, {
-    value: '',
-    size: '$2',
-  }),
+  Tab: function Tab(props: TabsTabProps) {
+    return (
+      <Tabs.Tab
+        size="$2"
+        $sm={{
+          size: '$3',
+        }}
+        {...props}
+      >
+        <Paragraph
+          size="$1"
+          $sm={{
+            size: '$2',
+          }}
+        >
+          {props.children}
+        </Paragraph>
+      </Tabs.Tab>
+    )
+  },
   Content: Tabs.Content,
 })
 
