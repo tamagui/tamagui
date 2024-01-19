@@ -18,16 +18,38 @@ import { HeaderProps } from './HeaderProps'
 import { NextLink } from './NextLink'
 
 const HeadAnchor = styled(Paragraph, {
+  tag: 'a',
   fontFamily: '$silkscreen',
   px: '$3',
-  py: '$2',
+  py: '$3',
   cursor: 'pointer',
   size: '$3',
   color: '$color10',
-  hoverStyle: { opacity: 1, color: '$color' },
-  pressStyle: { opacity: 0.25 },
   tabIndex: -1,
-  tag: 'a',
+
+  hoverStyle: {
+    color: '$color',
+    br: '$3',
+  },
+
+  pressStyle: {
+    opacity: 0.25,
+  },
+
+  variants: {
+    grid: {
+      true: {
+        size: '$4',
+        miw: '48.9%',
+        f: 1,
+        p: '$2.5',
+
+        hoverStyle: {
+          backgroundColor: '$color3',
+        },
+      },
+    },
+  } as const,
 })
 
 export const HeaderLinks = (props: HeaderProps) => {
@@ -39,6 +61,7 @@ export const HeaderLinks = (props: HeaderProps) => {
     <>
       <NextLink passHref prefetch={false} href="/docs/intro/introduction">
         <HeadAnchor
+          grid={forceShowAllLinks}
           $sm={{
             display: forceShowAllLinks ? 'flex' : 'none',
           }}
@@ -49,6 +72,13 @@ export const HeaderLinks = (props: HeaderProps) => {
 
       {/* <NextLink passHref prefetch={false} href="/themes">
         <HeadAnchor
+
+        {...forceShowAllLinks && {
+          miw: '50%',
+          f: 1,
+        }}
+        
+        
           $sm={{
             display: forceShowAllLinks ? 'flex' : 'none',
           }}
@@ -59,6 +89,7 @@ export const HeaderLinks = (props: HeaderProps) => {
 
       <NextLink passHref prefetch={false} href="/studio">
         <HeadAnchor
+          grid={forceShowAllLinks}
           $md={{
             display: forceShowAllLinks ? 'flex' : 'none',
           }}
@@ -72,6 +103,7 @@ export const HeaderLinks = (props: HeaderProps) => {
           {forceShowAllLinks && (
             <NextLink legacyBehavior={false} prefetch={false} href="/takeout">
               <HeadAnchor
+                grid={forceShowAllLinks}
                 tag="span"
                 size={forceShowAllLinks ? '$4' : '$8'}
                 $sm={{
@@ -94,7 +126,7 @@ export const HeaderLinks = (props: HeaderProps) => {
           target="_blank"
           href="https://github.com/tamagui/tamagui"
         >
-          <HeadAnchor tag="span">
+          <HeadAnchor grid={forceShowAllLinks} tag="span">
             Github{' '}
             <YStack dsp={'inline-block' as any} y={10} my={-20} o={0.8}>
               <GithubIcon width={16} />
@@ -105,19 +137,19 @@ export const HeaderLinks = (props: HeaderProps) => {
 
       {forceShowAllLinks && (
         <NextLink passHref prefetch={false} href="/community">
-          <HeadAnchor>Community</HeadAnchor>
+          <HeadAnchor grid={forceShowAllLinks}>Community</HeadAnchor>
         </NextLink>
       )}
 
       {showExtra && (
         <NextLink passHref prefetch={false} href="/studio">
-          <HeadAnchor>Studio</HeadAnchor>
+          <HeadAnchor grid={forceShowAllLinks}>Studio</HeadAnchor>
         </NextLink>
       )}
 
       {forceShowAllLinks && (
         <NextLink passHref prefetch={false} href="/blog">
-          <HeadAnchor>Blog</HeadAnchor>
+          <HeadAnchor grid={forceShowAllLinks}>Blog</HeadAnchor>
         </NextLink>
       )}
 
@@ -127,13 +159,17 @@ export const HeaderLinks = (props: HeaderProps) => {
           target="_blank"
           href="https://github.com/sponsors/natew"
         >
-          <HeadAnchor tag="span">Sponsor</HeadAnchor>
+          <HeadAnchor grid={forceShowAllLinks} tag="span">
+            Sponsor
+          </HeadAnchor>
         </NextLink>
       )}
 
       {!userSwr.data?.session?.user && !isHeader && (
         <NextLink passHref prefetch={false} href="/login">
           <HeadAnchor
+            color="$gray10"
+            grid={forceShowAllLinks}
             $md={{
               display: forceShowAllLinks ? 'flex' : 'none',
             }}
@@ -198,6 +234,7 @@ const TakeoutHeaderLink = ({ forceShowAllLinks }: HeaderProps) => {
       >
         <Popover.Trigger asChild>
           <HeadAnchor
+            grid={forceShowAllLinks}
             tag="span"
             fontSize={24}
             $sm={{
