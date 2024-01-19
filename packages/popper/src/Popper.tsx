@@ -285,8 +285,9 @@ export const PopperContent = React.forwardRef<
 
   const frameProps = {
     ref: contentRefs,
-    x: x || 0,
-    y: y || 0,
+    // x: x || 0,
+    // y: y || 0,
+    transform: [{ translateX: x || 0 }, { translateY: y || 0 }],
     position: strategy,
     ...(enableAnimationForPositionChange && {
       // apply animation but disable it on initial render to avoid animating from 0 to the first position
@@ -307,6 +308,8 @@ export const PopperContent = React.forwardRef<
     </Stack>
   )
 })
+
+PopperContent.displayName = 'PopperContent'
 
 /* -------------------------------------------------------------------------------------------------
  * PopperArrow
