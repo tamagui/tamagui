@@ -211,7 +211,7 @@ export const CheckboxFrame = styled(ThemeableStack, {
           borderColor: '$borderColorFocus',
           outlineStyle: 'solid',
           outlineWidth: 2,
-          outlineColor: '$borderColorFocus',
+          outlineColor: '$outlineColor',
         },
       },
     },
