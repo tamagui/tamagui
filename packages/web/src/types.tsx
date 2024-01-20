@@ -292,8 +292,6 @@ export type TamaguiProjectInfo = {
 
 type DivAttributes = HTMLAttributes<HTMLDivElement>
 
-export { RefAttributes } from 'react'
-
 export type ReactComponentWithRef<Props, Ref> = ForwardRefExoticComponent<
   Props & RefAttributes<Ref>
 >
