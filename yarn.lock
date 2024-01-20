@@ -7799,7 +7799,7 @@ __metadata:
     "@tamagui/label": "npm:1.86.6"
     "@tamagui/use-previous": "npm:1.86.6"
     react: "npm:^18.2.0"
-    react-native: "npm:^0.72.1"
+    react-native: "npm:^0.72.6"
   peerDependencies:
     react: "*"
     react-native: "*"
