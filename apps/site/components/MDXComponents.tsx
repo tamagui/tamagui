@@ -2,7 +2,7 @@ import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { Link } from '@tamagui/lucide-icons'
 import { NextLink } from 'components/NextLink'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React, { forwardRef, useState } from 'react'
 import { ScrollView } from 'react-native'
 import {
   Button,
@@ -185,6 +185,29 @@ function TabsComponent(props: TabsProps) {
     />
   )
 }
+
+const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
+  return (
+    <Tabs.Tab
+      size="$2"
+      ref={ref as any}
+      $sm={{
+        size: '$3',
+      }}
+      {...props}
+    >
+      <Paragraph
+        size="$1"
+        $sm={{
+          size: '$2',
+        }}
+      >
+        {props.children}
+      </Paragraph>
+    </Tabs.Tab>
+  )
+})
+
 const CustomTabs = withStaticProperties(TabsComponent, {
   List: styled(Tabs.List, {
     alignSelf: 'flex-end',
@@ -196,26 +219,7 @@ const CustomTabs = withStaticProperties(TabsComponent, {
     zIndex: 10000,
     position: 'sticky' as any,
   }),
-  Tab: function Tab(props: TabsTabProps) {
-    return (
-      <Tabs.Tab
-        size="$2"
-        $sm={{
-          size: '$3',
-        }}
-        {...props}
-      >
-        <Paragraph
-          size="$1"
-          $sm={{
-            size: '$2',
-          }}
-        >
-          {props.children}
-        </Paragraph>
-      </Tabs.Tab>
-    )
-  },
+  Tab,
   Content: Tabs.Content,
 })
 

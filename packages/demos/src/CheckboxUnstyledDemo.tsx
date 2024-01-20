@@ -4,7 +4,6 @@ import { Check } from '@tamagui/lucide-icons'
 import { Label, XStack, YStack } from 'tamagui'
 
 const Frame = styled(Stack, {
-  context: CheckboxStyledContext,
   borderWidth: 1,
   borderColor: '$borderColor',
   borderRadius: 5,
@@ -12,35 +11,32 @@ const Frame = styled(Stack, {
   justifyContent: 'center',
   variants: {
     checked: {
+      indeterminate: {},
       true: {
-        backgroundColor: 'lightblue',
+        backgroundColor: '$color5',
       },
       false: {
-        backgroundColor: 'silver',
+        backgroundColor: '$color3',
       },
     },
   } as const,
+
   defaultVariants: {
     checked: false,
   },
 })
 
-const Indicator = styled(Stack, {
-  context: CheckboxStyledContext,
-})
+const Indicator = styled(Stack, {})
 
-// TODO: remove ts-ignores
 export const Checkbox = createCheckbox({
-  // @ts-ignore
   Frame,
-  // @ts-ignore
   Indicator,
 })
 
 export function CheckboxUnstyledDemo() {
   return (
-    <YStack width={200} alignItems="center" space="$3">
-      <XStack space="$3" alignItems="center">
+    <YStack width={200} alignItems="center" gap="$3">
+      <XStack gap="$3" alignItems="center">
         <Checkbox defaultChecked id="unstyled">
           <Checkbox.Indicator>
             <Check />

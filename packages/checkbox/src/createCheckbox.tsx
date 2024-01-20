@@ -23,10 +23,6 @@ import React, { useContext } from 'react'
 import { CheckboxFrame, CheckboxIndicatorFrame } from './Checkbox'
 import { CheckboxStyledContext } from './CheckboxStyledContext'
 
-// type ScopedProps<P> = P & { __scopeCheckbox?: Scope }
-// TODO: add nested button provider
-// TODO: remove all ts-ignore's
-
 type CheckboxExpectingVariantProps = {
   size?: SizeTokens
   unstyled?: boolean
@@ -45,10 +41,7 @@ type CheckboxComponent = (
   props: CheckboxExtraProps & CheckboxExpectingVariantProps
 ) => any
 
-type CheckboxIndicatorExpectingVariantProps = {
-  unstyled?: boolean
-}
-
+type CheckboxIndicatorExpectingVariantProps = {}
 type CheckboxIndicatorComponent = (props: CheckboxIndicatorExpectingVariantProps) => any
 
 type CheckboxIndicatorBaseProps = StackProps
@@ -75,6 +68,12 @@ export const CheckboxContext = React.createContext<{
   disabled: false,
 })
 
+const ensureContext = (x: any) => {
+  if (!x.context) {
+    x.context = CheckboxContext
+  }
+}
+
 export function createCheckbox<
   F extends CheckboxComponent,
   T extends CheckboxIndicatorComponent,
@@ -85,6 +84,9 @@ export function createCheckbox<
   Frame?: F
   Indicator?: T
 }) {
+  ensureContext(Frame)
+  ensureContext(Indicator)
+
   // @ts-expect-error
   const FrameComponent = Frame.styleable(function Checkbox(_props, forwardedRef) {
     const {

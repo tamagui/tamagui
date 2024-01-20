@@ -14,9 +14,7 @@ type CheckboxExtraProps = HeadlessCheckboxExtraProps & {
 type CheckboxBaseProps = StackProps;
 export type CheckboxProps = CheckboxBaseProps & CheckboxExtraProps;
 type CheckboxComponent = (props: CheckboxExtraProps & CheckboxExpectingVariantProps) => any;
-type CheckboxIndicatorExpectingVariantProps = {
-    unstyled?: boolean;
-};
+type CheckboxIndicatorExpectingVariantProps = {};
 type CheckboxIndicatorComponent = (props: CheckboxIndicatorExpectingVariantProps) => any;
 type CheckboxIndicatorBaseProps = StackProps;
 type CheckboxIndicatorExtraProps = {
