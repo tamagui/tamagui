@@ -1,3 +1,6 @@
+- TODO
+  - process.env.TAMAGUI_TARGET === 'native' ? false : props['data-disable-theme']
+  - this looks wrong? shouldnt it be the same as on native? we may be doubling them on accident
 - Select `ListItemFrame` area is messy/slow due to inline styles and complex components
 - propMode
 
