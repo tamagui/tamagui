@@ -19,7 +19,7 @@ export function CheckboxHeadlessDemo() {
   )
 }
 
-const HeadlessCheckbox = forwardRef<View, CheckboxHeadlessProps>(function (props, ref) {
+const HeadlessCheckbox = forwardRef<View, CheckboxHeadlessProps>((props, ref) => {
   const [checked, setChecked] = useState(props.defaultChecked || false)
   const { checkboxProps, bubbleInput } = useCheckbox(props, [checked, setChecked], ref)
 

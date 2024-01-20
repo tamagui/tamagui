@@ -54,10 +54,10 @@ function resolvePlatformNames(nativeProp: NativeValue) {
     nativeProp === true // all native platforms
       ? ALL_PLATFORMS
       : nativeProp === false // no native platform
-      ? []
-      : Array.isArray(nativeProp)
-      ? nativeProp
-      : [nativeProp]
+        ? []
+        : Array.isArray(nativeProp)
+          ? nativeProp
+          : [nativeProp]
   const set = new Set(platforms)
 
   if (set.has('mobile')) {

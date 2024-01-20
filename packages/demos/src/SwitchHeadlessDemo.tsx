@@ -14,7 +14,7 @@ export function SwitchHeadlessDemo() {
   )
 }
 
-const HeadlessSwitch = forwardRef<View, SwitchHeadlessProps>(function (props, ref) {
+const HeadlessSwitch = forwardRef<View, SwitchHeadlessProps>((props, ref) => {
   const [checked, setChecked] = useState(props.defaultChecked || false)
   const { switchProps, switchRef, bubbleInput } = useSwitch(
     props,

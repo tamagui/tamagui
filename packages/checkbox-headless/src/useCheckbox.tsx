@@ -36,7 +36,7 @@ export function useCheckbox<R extends View, P extends CheckboxProps>(
   props: P,
   [checked, setChecked]: [
     CheckedState,
-    React.Dispatch<React.SetStateAction<CheckedState>>
+    React.Dispatch<React.SetStateAction<CheckedState>>,
   ],
   ref: React.Ref<R>
 ) {
