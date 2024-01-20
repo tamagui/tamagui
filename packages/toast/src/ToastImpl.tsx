@@ -44,7 +44,7 @@ const ToastImplFrame = styled(ThemeableStack, {
         focusStyle: {
           outlineStyle: 'solid',
           outlineWidth: 2,
-          outlineColor: '$borderColorHover',
+          outlineColor: '$outlineColor',
         },
         backgroundColor: '$color6',
         borderRadius: '$10',
