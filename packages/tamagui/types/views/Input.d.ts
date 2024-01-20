@@ -40,9 +40,7 @@ export declare const defaultStyles: {
     readonly outlineWidth: 0;
     readonly color: "$color";
 };
-export declare const InputFrame: import("@tamagui/core").TamaguiComponent<{
-    __tamaDefer: true;
-}, TextInput, import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").TextInputProps, import("@tamagui/core").TextStylePropsBase & {
+export declare const InputFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TextInput, import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").TextInputProps, import("@tamagui/core").TextStylePropsBase & {
     placeholderTextColor?: `$${string}` | `$${number}` | undefined;
 }, {
     size?: import("@tamagui/core").SizeTokens | undefined;
@@ -319,7 +317,6 @@ export declare function useInputProps(props: InputProps, ref: any): {
     borderTopStartRadius?: number | "unset" | import("react-native").Animated.AnimatedNode | `$${string}` | `$${number}` | import("@tamagui/core").UnionableString | import("@tamagui/core").Variable<any> | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/core").UnionableNumber | undefined;
     opacity?: "unset" | import("react-native").AnimatableNumericValue | undefined;
     elevation?: number | "unset" | undefined;
-    pointerEvents?: "unset" | "auto" | "box-none" | "none" | "box-only" | undefined;
     aspectRatio?: string | number | undefined;
     borderBottomWidth?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"borderBottomWidth"> | undefined;
     borderEndWidth?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"borderEndWidth"> | undefined;
@@ -355,8 +352,6 @@ export declare function useInputProps(props: InputProps, ref: any): {
     transform?: string | (import("react-native").PerpectiveTransform | import("react-native").RotateTransform | import("react-native").RotateXTransform | import("react-native").RotateYTransform | import("react-native").RotateZTransform | import("react-native").ScaleTransform | import("react-native").ScaleXTransform | import("react-native").ScaleYTransform | import("react-native").TranslateXTransform | import("react-native").TranslateYTransform | import("react-native").SkewXTransform | import("react-native").SkewYTransform | import("react-native").MatrixTransform)[] | undefined;
     transformMatrix?: "unset" | number[] | undefined;
     rotation?: "unset" | import("react-native").AnimatableNumericValue | undefined;
-    scaleX?: "unset" | import("react-native").AnimatableNumericValue | import("@tamagui/core").GetThemeValueForKey<"scaleX"> | undefined;
-    scaleY?: "unset" | import("react-native").AnimatableNumericValue | import("@tamagui/core").GetThemeValueForKey<"scaleY"> | undefined;
     translateX?: "unset" | import("react-native").AnimatableNumericValue | undefined;
     translateY?: "unset" | import("react-native").AnimatableNumericValue | undefined;
     textAlignVertical?: "unset" | "auto" | "center" | "bottom" | "top" | undefined;
@@ -366,6 +361,8 @@ export declare function useInputProps(props: InputProps, ref: any): {
     y?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"y"> | undefined;
     perspective?: number | "unset" | undefined;
     scale?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"scale"> | undefined;
+    scaleX?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"scaleX"> | undefined;
+    scaleY?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"scaleY"> | undefined;
     skewX?: string | undefined;
     skewY?: string | undefined;
     matrix?: "unset" | number[] | undefined;
@@ -380,12 +377,13 @@ export declare function useInputProps(props: InputProps, ref: any): {
     outlineOffset?: "unset" | import("@tamagui/core").SpaceValue | undefined;
     outlineStyle?: import("csstype").Property.OutlineStyle | undefined;
     outlineWidth?: "unset" | import("@tamagui/core").SpaceValue | undefined;
+    pointerEvents?: "unset" | "auto" | "box-none" | "none" | "box-only" | undefined;
+    userSelect?: import("csstype").Property.UserSelect | undefined;
     space?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"space"> | undefined;
     spaceDirection?: "unset" | import("@tamagui/core").SpaceDirection | undefined;
     separator?: import("react").ReactNode;
     animation?: import("@tamagui/core").AnimationProp | null | undefined;
     animateOnly?: "unset" | string[] | undefined;
-    userSelect?: import("csstype").Property.UserSelect | undefined;
     transformOrigin?: "unset" | "center" | "left" | "right" | "bottom" | "top" | (`${number}%` | `${string}%` | `${string}px` | `${number}px`) | "center center" | "center bottom" | "center top" | `center ${number}%` | `center ${string}%` | `center ${string}px` | `center ${number}px` | "left center" | "left bottom" | "left top" | `left ${number}%` | `left ${string}%` | `left ${string}px` | `left ${number}px` | "right center" | "right bottom" | "right top" | `right ${number}%` | `right ${string}%` | `right ${string}px` | `right ${number}px` | `${number}% center` | `${number}% bottom` | `${number}% top` | `${number}% ${number}%` | `${number}% ${string}%` | `${number}% ${string}px` | `${number}% ${number}px` | `${string}% center` | `${string}% bottom` | `${string}% top` | `${string}% ${number}%` | `${string}% ${string}%` | `${string}% ${string}px` | `${string}% ${number}px` | `${string}px center` | `${string}px bottom` | `${string}px top` | `${string}px ${number}%` | `${string}px ${string}%` | `${string}px ${string}px` | `${string}px ${number}px` | `${number}px center` | `${number}px bottom` | `${number}px top` | `${number}px ${number}%` | `${number}px ${string}%` | `${number}px ${string}px` | `${number}px ${number}px` | `center center ${string}px` | `center center ${number}px` | `center bottom ${string}px` | `center bottom ${number}px` | `center top ${string}px` | `center top ${number}px` | `center ${number}% ${string}px` | `center ${number}% ${number}px` | `center ${string}% ${string}px` | `center ${string}% ${number}px` | `center ${string}px ${string}px` | `center ${string}px ${number}px` | `center ${number}px ${string}px` | `center ${number}px ${number}px` | `left center ${string}px` | `left center ${number}px` | `left bottom ${string}px` | `left bottom ${number}px` | `left top ${string}px` | `left top ${number}px` | `left ${number}% ${string}px` | `left ${number}% ${number}px` | `left ${string}% ${string}px` | `left ${string}% ${number}px` | `left ${string}px ${string}px` | `left ${string}px ${number}px` | `left ${number}px ${string}px` | `left ${number}px ${number}px` | `right center ${string}px` | `right center ${number}px` | `right bottom ${string}px` | `right bottom ${number}px` | `right top ${string}px` | `right top ${number}px` | `right ${number}% ${string}px` | `right ${number}% ${number}px` | `right ${string}% ${string}px` | `right ${string}% ${number}px` | `right ${string}px ${string}px` | `right ${string}px ${number}px` | `right ${number}px ${string}px` | `right ${number}px ${number}px` | `${number}% center ${string}px` | `${number}% center ${number}px` | `${number}% bottom ${string}px` | `${number}% bottom ${number}px` | `${number}% top ${string}px` | `${number}% top ${number}px` | `${number}% ${number}% ${string}px` | `${number}% ${number}% ${number}px` | `${number}% ${string}% ${string}px` | `${number}% ${string}% ${number}px` | `${number}% ${string}px ${string}px` | `${number}% ${string}px ${number}px` | `${number}% ${number}px ${string}px` | `${number}% ${number}px ${number}px` | `${string}% center ${string}px` | `${string}% center ${number}px` | `${string}% bottom ${string}px` | `${string}% bottom ${number}px` | `${string}% top ${string}px` | `${string}% top ${number}px` | `${string}% ${number}% ${string}px` | `${string}% ${number}% ${number}px` | `${string}% ${string}% ${string}px` | `${string}% ${string}% ${number}px` | `${string}% ${string}px ${string}px` | `${string}% ${string}px ${number}px` | `${string}% ${number}px ${string}px` | `${string}% ${number}px ${number}px` | `${string}px center ${string}px` | `${string}px center ${number}px` | `${string}px bottom ${string}px` | `${string}px bottom ${number}px` | `${string}px top ${string}px` | `${string}px top ${number}px` | `${string}px ${number}% ${string}px` | `${string}px ${number}% ${number}px` | `${string}px ${string}% ${string}px` | `${string}px ${string}% ${number}px` | `${string}px ${string}px ${string}px` | `${string}px ${string}px ${number}px` | `${string}px ${number}px ${string}px` | `${string}px ${number}px ${number}px` | `${number}px center ${string}px` | `${number}px center ${number}px` | `${number}px bottom ${string}px` | `${number}px bottom ${number}px` | `${number}px top ${string}px` | `${number}px top ${number}px` | `${number}px ${number}% ${string}px` | `${number}px ${number}% ${number}px` | `${number}px ${string}% ${string}px` | `${number}px ${string}% ${number}px` | `${number}px ${string}px ${string}px` | `${number}px ${string}px ${number}px` | `${number}px ${number}px ${string}px` | `${number}px ${number}px ${number}px` | undefined;
     display?: "unset" | "inherit" | "flex" | "none" | "inline" | "block" | "contents" | "inline-flex" | undefined;
     size?: "unset" | import("@tamagui/core").SizeTokens | undefined;

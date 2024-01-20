@@ -5,9 +5,7 @@ type DisablePassBorderRadius = boolean | 'bottom' | 'top' | 'start' | 'end';
 type ScopedProps<P> = P & {
     __scopeGroup?: Scope;
 };
-export declare const GroupFrame: import("@tamagui/core").TamaguiComponent<{
-    __tamaDefer: true;
-}, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
+export declare const GroupFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
     unstyled?: boolean | undefined;
     size?: any;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;

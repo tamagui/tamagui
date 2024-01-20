@@ -43,9 +43,7 @@ export type ListItemProps = Omit<TextParentStyles, 'TextComponent' | 'noTextWrap
      */
     noTextWrap?: boolean | 'all';
 };
-export declare const ListItemFrame: import("@tamagui/web").TamaguiComponent<{
-    __tamaDefer: true;
-}, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStylePropsBase, {
+export declare const ListItemFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStylePropsBase, {
     unstyled?: boolean | undefined;
     size?: SizeTokens | undefined;
     disabled?: boolean | undefined;
@@ -64,21 +62,15 @@ export declare const ListItemFrame: import("@tamagui/web").TamaguiComponent<{
     chromeless?: boolean | "all" | undefined;
     active?: boolean | undefined;
 }, {}>;
-export declare const ListItemText: import("@tamagui/web").TamaguiComponent<{
-    __tamaDefer: true;
-}, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
+export declare const ListItemText: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
     unstyled?: boolean | undefined;
     size?: FontSizeTokens | undefined;
 }, {}>;
-export declare const ListItemSubtitle: import("@tamagui/web").TamaguiComponent<{
-    __tamaDefer: true;
-}, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
+export declare const ListItemSubtitle: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
     unstyled?: boolean | undefined;
     size?: number | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | undefined;
 }, {}>;
-export declare const ListItemTitle: import("@tamagui/web").TamaguiComponent<{
-    __tamaDefer: true;
-}, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
+export declare const ListItemTitle: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
     unstyled?: boolean | undefined;
     size?: FontSizeTokens | undefined;
 }, {}>;
@@ -920,15 +912,11 @@ export declare const ListItem: React.ForwardRefExoticComponent<Omit<import("@tam
         active?: boolean | undefined;
     }, {}];
 } & {
-    Text: import("@tamagui/web").TamaguiComponent<{
-        __tamaDefer: true;
-    }, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
+    Text: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
         unstyled?: boolean | undefined;
         size?: FontSizeTokens | undefined;
     }, {}>;
-    Subtitle: import("@tamagui/web").TamaguiComponent<{
-        __tamaDefer: true;
-    }, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
+    Subtitle: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
         unstyled?: boolean | undefined;
         size?: number | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | undefined;
     }, {}>;

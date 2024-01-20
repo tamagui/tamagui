@@ -39,9 +39,7 @@ type ButtonExtraProps = TextParentStyles & ThemeableProps & {
     unstyled?: boolean;
 };
 type ButtonProps = ButtonExtraProps & GetProps<typeof ButtonFrame>;
-declare const ButtonFrame: import("@tamagui/web").TamaguiComponent<{
-    __tamaDefer: true;
-}, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStylePropsBase, {
+declare const ButtonFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStylePropsBase, {
     size?: SizeTokens | undefined;
     elevation?: number | SizeTokens | undefined;
     variant?: "outlined" | undefined;
@@ -60,9 +58,7 @@ declare const ButtonFrame: import("@tamagui/web").TamaguiComponent<{
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }, {}>;
-declare const ButtonText: import("@tamagui/web").TamaguiComponent<{
-    __tamaDefer: true;
-}, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
+declare const ButtonText: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
     size?: FontSizeTokens | undefined;
     unstyled?: boolean | undefined;
 }, {}>;
@@ -334,9 +330,7 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
         chromeless?: boolean | "all" | undefined;
     }, {}];
 } & {
-    Text: import("@tamagui/web").TamaguiComponent<{
-        __tamaDefer: true;
-    }, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
+    Text: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
         size?: FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
     }, {}>;

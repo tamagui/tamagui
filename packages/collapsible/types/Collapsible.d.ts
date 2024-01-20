@@ -9,9 +9,7 @@ interface CollapsibleProps extends StackProps {
     onOpenChange?(open: boolean): void;
 }
 type CollapsibleTriggerProps = GetProps<typeof Stack>;
-declare const CollapsibleTriggerFrame: import("@tamagui/web").TamaguiComponent<{
-    __tamaDefer: true;
-}, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStylePropsBase, void, {}>;
+declare const CollapsibleTriggerFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStylePropsBase, void, {}>;
 declare const CollapsibleTrigger: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStylePropsBase & void>, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps & void, import("@tamagui/web").StackStylePropsBase, void, {}>;
 interface CollapsibleContentProps extends AnimatePresenceProps, ThemeableStackProps {
     /**
@@ -20,9 +18,7 @@ interface CollapsibleContentProps extends AnimatePresenceProps, ThemeableStackPr
      */
     forceMount?: true;
 }
-declare const CollapsibleContentFrame: import("@tamagui/web").TamaguiComponent<{
-    __tamaDefer: true;
-}, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStylePropsBase, void, {}>;
+declare const CollapsibleContentFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStylePropsBase, void, {}>;
 declare const CollapsibleContent: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStylePropsBase & void>, "__scopeCollapsible" | keyof CollapsibleContentProps> & CollapsibleContentProps & {
     __scopeCollapsible?: string | undefined;
 }, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps & CollapsibleContentProps & {

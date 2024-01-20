@@ -2,9 +2,7 @@ import { InputProps } from './Input';
 /**
  * Is basically Input but with rows = 4 to start
  */
-export declare const TextAreaFrame: import("@tamagui/core").TamaguiComponent<{
-    __tamaDefer: true;
-}, import("react-native").TextInput, import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").TextInputProps, import("@tamagui/core").TextStylePropsBase & {
+export declare const TextAreaFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("react-native").TextInput, import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").TextInputProps, import("@tamagui/core").TextStylePropsBase & {
     placeholderTextColor?: `$${string}` | `$${number}` | undefined;
 }, {
     size?: import("@tamagui/core").SizeTokens | undefined;

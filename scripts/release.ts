@@ -47,9 +47,13 @@ const nextVersion = (() => {
     return curVersion
   }
 
-  const plusVersion = skipVersion ? 0 : 1
+  let plusVersion = skipVersion ? 0 : 1
   const patchAndCanary = curVersion.split('.')[2]
   const [patch, lastCanary] = patchAndCanary.split('-')
+  // if were publishing another canary no bump version
+  if (lastCanary && canary) {
+    plusVersion = 0
+  }
   const patchVersion = shouldPatch ? +patch + plusVersion : 0
   const curMinor = +curVersion.split('.')[1] || 0
   const minorVersion = curMinor + (shouldPatch ? 0 : plusVersion)

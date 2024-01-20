@@ -2,9 +2,7 @@ import { GetProps, TamaguiElement } from '@tamagui/core';
 import { DismissableProps } from '@tamagui/dismissable';
 import * as React from 'react';
 import { GestureResponderEvent } from 'react-native';
-declare const ToastImplFrame: import("@tamagui/core").TamaguiComponent<{
-    __tamaDefer: true;
-}, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
+declare const ToastImplFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     transparent?: boolean | undefined;
     circular?: boolean | undefined;

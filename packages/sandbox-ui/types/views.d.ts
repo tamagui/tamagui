@@ -1,6 +1,4 @@
-export declare const Tag: import("tamagui").TamaguiComponent<{
-    __tamaDefer: true;
-}, import("tamagui").TamaguiTextElement, import("@tamagui/core").RNTamaguiTextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
+export declare const Tag: import("tamagui").TamaguiComponent<import("@tamagui/web").TamaDefer, import("tamagui").TamaguiTextElement, import("@tamagui/core").RNTamaguiTextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
     unstyled?: boolean | undefined;
     active?: boolean | undefined;
 }, {}>;

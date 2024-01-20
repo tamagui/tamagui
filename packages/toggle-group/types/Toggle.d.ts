@@ -2,9 +2,7 @@ import { GetProps } from '@tamagui/web';
 import * as React from 'react';
 type TamaguiButtonElement = HTMLButtonElement;
 export type ToggleElement = TamaguiButtonElement;
-export declare const ToggleFrame: import("@tamagui/web").TamaguiComponent<{
-    __tamaDefer: true;
-}, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStylePropsBase, {
+export declare const ToggleFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStylePropsBase, {
     unstyled?: boolean | undefined;
     pressTheme?: boolean | undefined;
     active?: boolean | undefined;

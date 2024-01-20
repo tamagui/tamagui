@@ -15,9 +15,7 @@ interface BubbleInputProps extends Omit<InputProps, 'checked'> {
     isHidden?: boolean;
 }
 export declare const BubbleInput: (props: BubbleInputProps) => JSX.Element;
-declare const CheckboxIndicatorFrame: import("@tamagui/core").TamaguiComponent<{
-    __tamaDefer: true;
-}, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
+declare const CheckboxIndicatorFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
     elevation?: number | SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
@@ -44,9 +42,7 @@ export type CheckboxIndicatorProps = CheckboxIndicatorFrameProps & {
      */
     disablePassStyles?: boolean;
 };
-export declare const CheckboxFrame: import("@tamagui/core").TamaguiComponent<{
-    __tamaDefer: true;
-}, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
+export declare const CheckboxFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
     size?: SizeTokens | undefined;
     disabled?: boolean | undefined;
     elevation?: number | SizeTokens | undefined;

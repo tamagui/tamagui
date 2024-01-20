@@ -11,9 +11,7 @@ type TabsListProps = TabsListFrameProps & {
      */
     loop?: boolean;
 };
-declare const TabsTriggerFrame: import("@tamagui/web").TamaguiComponent<{
-    __tamaDefer: true;
-}, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStylePropsBase, {
+declare const TabsTriggerFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStylePropsBase, {
     unstyled?: boolean | undefined;
     size?: SizeTokens | undefined;
     elevation?: number | SizeTokens | undefined;
@@ -49,15 +47,11 @@ type TabsTriggerProps = TabsTriggerFrameProps & {
     onInteraction?: (type: InteractionType, layout: TabLayout | null) => void;
 };
 type TabsTabProps = TabsTriggerProps;
-declare const TabsContentFrame: import("@tamagui/web").TamaguiComponent<{
-    __tamaDefer: true;
-}, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStylePropsBase, {
+declare const TabsContentFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStylePropsBase, {
     elevation?: number | SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
-    circular?: boolean | undefined; /**
-     * @deprecated Use `TabLayout` instead
-     */
+    circular?: boolean | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
@@ -79,9 +73,7 @@ type TabsContentExtraProps = {
     forceMount?: true;
 };
 type TabsContentProps = TabsContentFrameProps & TabsContentExtraProps;
-declare const TabsFrame: import("@tamagui/web").TamaguiComponent<{
-    __tamaDefer: true;
-}, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStylePropsBase, {
+declare const TabsFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStylePropsBase, {
     size?: SizeTokens | undefined;
     elevation?: number | SizeTokens | undefined;
     fullscreen?: boolean | undefined;
@@ -475,9 +467,7 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         elevation?: number | SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
-        circular?: boolean | undefined; /**
-         * @deprecated Use `TabLayout` instead
-         */
+        circular?: boolean | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
         focusTheme?: boolean | undefined;
@@ -491,9 +481,7 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         elevation?: number | SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
-        circular?: boolean | undefined; /**
-         * @deprecated Use `TabLayout` instead
-         */
+        circular?: boolean | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
         focusTheme?: boolean | undefined;

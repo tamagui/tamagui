@@ -1,9 +1,7 @@
 import { GetProps } from '@tamagui/core';
 import * as React from 'react';
 declare const createProgressScope: import("@tamagui/create-context").CreateScope;
-export declare const ProgressIndicatorFrame: import("@tamagui/core").TamaguiComponent<{
-    __tamaDefer: true;
-}, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
+export declare const ProgressIndicatorFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
     unstyled?: boolean | undefined;
     backgrounded?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
@@ -51,9 +49,7 @@ declare const ProgressIndicator: import("@tamagui/core").TamaguiComponent<import
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }, {}>;
-export declare const ProgressFrame: import("@tamagui/core").TamaguiComponent<{
-    __tamaDefer: true;
-}, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
+export declare const ProgressFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
     unstyled?: boolean | undefined;
     backgrounded?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;

@@ -2,9 +2,7 @@ import { TamaguiElement } from '@tamagui/core';
 import * as React from 'react';
 import { View } from 'react-native';
 import { SliderImplProps } from './types';
-export declare const SliderFrame: import("@tamagui/core").TamaguiComponent<{
-    __tamaDefer: true;
-}, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
+export declare const SliderFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     size?: any;
     fullscreen?: boolean | undefined;

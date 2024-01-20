@@ -89,15 +89,11 @@ interface AccordionItemProps extends Omit<CollapsibleProps, 'open' | 'defaultOpe
 }
 type PrimitiveHeading3Props = React.ComponentPropsWithoutRef<typeof H3>;
 type AccordionHeaderProps = PrimitiveHeading3Props;
-declare const AccordionTriggerFrame: import("@tamagui/web").TamaguiComponent<{
-    __tamaDefer: true;
-}, TamaguiElement, import("@tamagui/web").StackNonStyleProps & void, import("@tamagui/web").StackStylePropsBase, {
+declare const AccordionTriggerFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, TamaguiElement, import("@tamagui/web").StackNonStyleProps & void, import("@tamagui/web").StackStylePropsBase, {
     unstyled?: boolean | undefined;
 }, {}>;
 type AccordionTriggerProps = GetProps<typeof AccordionTriggerFrame>;
-declare const AccordionContentFrame: import("@tamagui/web").TamaguiComponent<{
-    __tamaDefer: true;
-}, TamaguiElement, import("@tamagui/web").StackNonStyleProps & import("@tamagui/collapsible/types/Collapsible").CollapsibleContentProps & {
+declare const AccordionContentFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, TamaguiElement, import("@tamagui/web").StackNonStyleProps & import("@tamagui/collapsible/types/Collapsible").CollapsibleContentProps & {
     __scopeCollapsible?: string | undefined;
 }, import("@tamagui/web").StackStylePropsBase, {
     unstyled?: boolean | undefined;

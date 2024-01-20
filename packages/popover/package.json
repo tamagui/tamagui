@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/popover",
-  "version": "1.87.0-1705782099858",
+  "version": "1.87.0-1705788268756",
   "sideEffects": [
     "*.css"
   ],
@@ -33,24 +33,24 @@
   },
   "dependencies": {
     "@floating-ui/react": "^0.24.7",
-    "@tamagui/adapt": "1.87.0-1705782099858",
-    "@tamagui/animate": "1.87.0-1705782099858",
-    "@tamagui/aria-hidden": "1.87.0-1705782099858",
-    "@tamagui/compose-refs": "1.87.0-1705782099858",
-    "@tamagui/constants": "1.87.0-1705782099858",
-    "@tamagui/core": "1.87.0-1705782099858",
-    "@tamagui/dismissable": "1.87.0-1705782099858",
-    "@tamagui/floating": "1.87.0-1705782099858",
-    "@tamagui/focus-scope": "1.87.0-1705782099858",
-    "@tamagui/helpers": "1.87.0-1705782099858",
-    "@tamagui/polyfill-dev": "1.87.0-1705782099858",
-    "@tamagui/popper": "1.87.0-1705782099858",
-    "@tamagui/portal": "1.87.0-1705782099858",
-    "@tamagui/remove-scroll": "1.87.0-1705782099858",
-    "@tamagui/scroll-view": "1.87.0-1705782099858",
-    "@tamagui/sheet": "1.87.0-1705782099858",
-    "@tamagui/stacks": "1.87.0-1705782099858",
-    "@tamagui/use-controllable-state": "1.87.0-1705782099858",
+    "@tamagui/adapt": "1.87.0-1705788268756",
+    "@tamagui/animate": "1.87.0-1705788268756",
+    "@tamagui/aria-hidden": "1.87.0-1705788268756",
+    "@tamagui/compose-refs": "1.87.0-1705788268756",
+    "@tamagui/constants": "1.87.0-1705788268756",
+    "@tamagui/core": "1.87.0-1705788268756",
+    "@tamagui/dismissable": "1.87.0-1705788268756",
+    "@tamagui/floating": "1.87.0-1705788268756",
+    "@tamagui/focus-scope": "1.87.0-1705788268756",
+    "@tamagui/helpers": "1.87.0-1705788268756",
+    "@tamagui/polyfill-dev": "1.87.0-1705788268756",
+    "@tamagui/popper": "1.87.0-1705788268756",
+    "@tamagui/portal": "1.87.0-1705788268756",
+    "@tamagui/remove-scroll": "1.87.0-1705788268756",
+    "@tamagui/scroll-view": "1.87.0-1705788268756",
+    "@tamagui/sheet": "1.87.0-1705788268756",
+    "@tamagui/stacks": "1.87.0-1705788268756",
+    "@tamagui/use-controllable-state": "1.87.0-1705788268756",
     "react-freeze": "^1.0.3"
   },
   "peerDependencies": {
@@ -58,7 +58,7 @@
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.87.0-1705782099858",
+    "@tamagui/build": "1.87.0-1705788268756",
     "react": "^18.2.0",
     "react-native": "^0.72.6"
   },

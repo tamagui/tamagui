@@ -4,9 +4,7 @@ import * as React from 'react';
 import { View } from 'react-native';
 import { SliderProps, SliderTrackProps } from './types';
 type SliderTrackElement = HTMLElement | View;
-export declare const SliderTrackFrame: import("@tamagui/core").TamaguiComponent<{
-    __tamaDefer: true;
-}, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
+export declare const SliderTrackFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
     elevation?: number | SizeTokens | undefined;
     size?: any;
     fullscreen?: boolean | undefined;
@@ -14,9 +12,7 @@ export declare const SliderTrackFrame: import("@tamagui/core").TamaguiComponent<
     orientation?: "vertical" | "horizontal" | undefined;
 }, {}>;
 declare const SliderTrack: React.ForwardRefExoticComponent<SliderTrackProps & React.RefAttributes<SliderTrackElement>>;
-export declare const SliderTrackActiveFrame: import("@tamagui/core").TamaguiComponent<{
-    __tamaDefer: true;
-}, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
+export declare const SliderTrackActiveFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
     elevation?: number | SizeTokens | undefined;
     size?: any;
     fullscreen?: boolean | undefined;
@@ -49,9 +45,7 @@ declare const SliderTrackActive: React.ForwardRefExoticComponent<Omit<import("@t
     fullscreen?: boolean | undefined;
     orientation?: "vertical" | "horizontal" | undefined;
 }>> & React.RefAttributes<View>>;
-export declare const SliderThumbFrame: import("@tamagui/core").TamaguiComponent<{
-    __tamaDefer: true;
-}, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
+export declare const SliderThumbFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
     elevation?: number | SizeTokens | undefined;
     size?: SizeTokens | undefined;
     fullscreen?: boolean | undefined;
