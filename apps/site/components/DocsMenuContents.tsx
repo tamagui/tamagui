@@ -57,7 +57,13 @@ export const DocsMenuContents = React.memo(function DocsMenuContents() {
           }
           if (event.key === ' ' || event.key === 'Enter') {
             e.preventDefault()
-            router.push(items[store.index].page?.route)
+            const found = items[store.index]
+            if (found) {
+              setItems(allItems)
+              setTimeout(() => {
+                router.push(found.page?.route)
+              })
+            }
           }
         }}
         onChangeText={(next) => {
@@ -70,8 +76,8 @@ export const DocsMenuContents = React.memo(function DocsMenuContents() {
             setItems(allItems)
             return
           }
-          const found = indexes?.map((i) => allItems[i])
-          setItems(found || allItems)
+          const found = indexes?.map((i) => allItems[i]) || []
+          setItems(found)
           store.index = 0
         }}
       />
