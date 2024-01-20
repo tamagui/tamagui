@@ -75,7 +75,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     group?: undefined;
     onPressIn?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").NativeTouchEvent>) => void) | undefined;
     onPressOut?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").NativeTouchEvent>) => void) | undefined;
-    onFocus?: (((event: import("react").FocusEvent<HTMLDivElement, Element>) => void) & ((e: import("react-native").NativeSyntheticEvent<import("react-native").TextInputFocusEventData>) => void)) | undefined;
+    onFocus?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").TextInputFocusEventData>) => void) | undefined;
     onBlur?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").TextInputFocusEventData>) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
@@ -151,7 +151,6 @@ export declare function useInputProps(props: InputProps, ref: any): {
     disableOptimization?: boolean | undefined;
     forceStyle?: "hover" | "press" | "focus" | undefined;
     disableClassName?: boolean | undefined;
-    onScroll?: (((event: import("react").UIEvent<HTMLDivElement, UIEvent>) => void) & ((e: import("react-native").NativeSyntheticEvent<import("react-native").TextInputScrollEventData>) => void)) | undefined;
     hitSlop?: import("react-native").Insets | undefined;
     removeClippedSubviews?: boolean | undefined;
     collapsable?: boolean | undefined;
@@ -201,6 +200,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     onSelectionChange?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").TextInputSelectionChangeEventData>) => void) | undefined;
     onSubmitEditing?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").TextInputSubmitEditingEventData>) => void) | undefined;
     onTextInput?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").TextInputTextInputEventData>) => void) | undefined;
+    onScroll?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").TextInputScrollEventData>) => void) | undefined;
     onKeyPress?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").TextInputKeyPressEventData>) => void) | undefined;
     placeholder?: string | undefined;
     returnKeyType?: import("react-native").ReturnKeyTypeOptions | undefined;

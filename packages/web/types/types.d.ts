@@ -93,8 +93,6 @@ export type TamaguiComponentPropsBaseBase = {
      * Disables className output of styles, instead using only inline styles
      */
     disableClassName?: boolean;
-    onFocus?: (event: React.FocusEvent<HTMLDivElement>) => void;
-    onScroll?: (event: React.UIEvent<HTMLDivElement, UIEvent>) => void;
 };
 export interface WebOnlyPressEvents {
     onPress?: PressableProps['onPress'];
