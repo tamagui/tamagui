@@ -22,10 +22,10 @@ export interface SelectItemProps extends ListItemProps {
     textValue?: string;
 }
 export declare const SelectItem: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStylePropsBase & {
-    disabled?: boolean | undefined;
-    elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     unstyled?: boolean | undefined;
     size?: import("@tamagui/web").SizeTokens | undefined;
+    disabled?: boolean | undefined;
+    elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -40,10 +40,10 @@ export declare const SelectItem: import("@tamagui/web").TamaguiComponent<Omit<im
     chromeless?: boolean | "all" | undefined;
     active?: boolean | undefined;
 }>, keyof SelectItemProps> & SelectItemProps, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & SelectItemProps, import("@tamagui/web").StackStylePropsBase, {
-    disabled?: boolean | undefined;
-    elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     unstyled?: boolean | undefined;
     size?: import("@tamagui/web").SizeTokens | undefined;
+    disabled?: boolean | undefined;
+    elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;

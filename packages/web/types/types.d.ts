@@ -130,7 +130,6 @@ export type TamaguiProjectInfo = {
     nameToPaths: NameToPaths;
 };
 type DivAttributes = HTMLAttributes<HTMLDivElement>;
-export { RefAttributes } from 'react';
 export type ReactComponentWithRef<Props, Ref> = ForwardRefExoticComponent<Props & RefAttributes<Ref>>;
 export type ComponentContextI = {
     disableSSR?: boolean;
@@ -827,7 +826,7 @@ export type GetProps<A extends StylableComponent> = A extends {
 } ? GetFinalProps<NonStyledProps, BaseStyles & VariantProps> : Props : InferGenericComponentProps<A>;
 export type GetNonStyledProps<A extends StylableComponent> = A extends {
     __tama: [any, any, infer B, any, any, any];
-} ? B : GetProps<A>;
+} ? B : TamaguiComponentPropsBaseBase & GetProps<A>;
 export type GetBaseStyles<A, B> = A extends {
     __tama: [any, any, any, infer C, any, any];
 } ? C : B extends {

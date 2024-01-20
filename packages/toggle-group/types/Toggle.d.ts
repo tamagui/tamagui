@@ -5,11 +5,11 @@ export type ToggleElement = TamaguiButtonElement;
 export declare const ToggleFrame: import("@tamagui/web").TamaguiComponent<{
     __tamaDefer: true;
 }, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStylePropsBase, {
-    elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     unstyled?: boolean | undefined;
     pressTheme?: boolean | undefined;
     active?: boolean | undefined;
     orientation?: "horizontal" | "vertical" | undefined;
+    elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -31,12 +31,12 @@ type ToggleItemExtraProps = {
     onPressedChange?(pressed: boolean): void;
 };
 export type ToggleProps = ToggleFrameProps & ToggleItemExtraProps;
-export declare const Toggle: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | "unstyled" | "pressTheme" | "active" | "orientation" | keyof import("@tamagui/web").StackStylePropsBase | "transparent" | "fullscreen" | "circular" | "hoverTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase & {
-    elevation?: number | import("@tamagui/web").SizeTokens | undefined;
+export declare const Toggle: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "unstyled" | "pressTheme" | "active" | "orientation" | "elevation" | keyof import("@tamagui/web").StackStylePropsBase | "transparent" | "fullscreen" | "circular" | "hoverTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase & {
     unstyled?: boolean | undefined;
     pressTheme?: boolean | undefined;
     active?: boolean | undefined;
     orientation?: "horizontal" | "vertical" | undefined;
+    elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -49,11 +49,11 @@ export declare const Toggle: React.ForwardRefExoticComponent<Omit<import("@tamag
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase & {
-    elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     unstyled?: boolean | undefined;
     pressTheme?: boolean | undefined;
     active?: boolean | undefined;
     orientation?: "horizontal" | "vertical" | undefined;
+    elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -66,11 +66,11 @@ export declare const Toggle: React.ForwardRefExoticComponent<Omit<import("@tamag
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase & {
-    elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     unstyled?: boolean | undefined;
     pressTheme?: boolean | undefined;
     active?: boolean | undefined;
     orientation?: "horizontal" | "vertical" | undefined;
+    elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -83,11 +83,11 @@ export declare const Toggle: React.ForwardRefExoticComponent<Omit<import("@tamag
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase & {
-    elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     unstyled?: boolean | undefined;
     pressTheme?: boolean | undefined;
     active?: boolean | undefined;
     orientation?: "horizontal" | "vertical" | undefined;
+    elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -100,11 +100,11 @@ export declare const Toggle: React.ForwardRefExoticComponent<Omit<import("@tamag
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStylePropsBase & {
-    elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     unstyled?: boolean | undefined;
     pressTheme?: boolean | undefined;
     active?: boolean | undefined;
     orientation?: "horizontal" | "vertical" | undefined;
+    elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;

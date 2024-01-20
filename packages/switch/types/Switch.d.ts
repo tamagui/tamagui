@@ -4,8 +4,8 @@ export declare const SwitchThumb: import("@tamagui/core").TamaguiComponent<{
 }, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
     size?: SizeTokens | undefined;
     checked?: boolean | undefined;
-    elevation?: number | SizeTokens | undefined;
     unstyled?: boolean | undefined;
+    elevation?: number | SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -25,8 +25,8 @@ export declare const SwitchFrame: import("@tamagui/core").TamaguiComponent<{
     size?: SizeTokens | undefined;
     checked?: boolean | undefined;
     frameWidth?: number | undefined;
-    elevation?: number | SizeTokens | undefined;
     unstyled?: boolean | undefined;
+    elevation?: number | SizeTokens | undefined;
     fullscreen?: boolean | undefined;
 }, {}>;
 //# sourceMappingURL=Switch.d.ts.map

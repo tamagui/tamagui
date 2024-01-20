@@ -1648,7 +1648,7 @@ export type GetNonStyledProps<A extends StylableComponent> = A extends {
   __tama: [any, any, infer B, any, any, any]
 }
   ? B
-  : GetProps<A>
+  : TamaguiComponentPropsBaseBase & GetProps<A>
 
 export type GetBaseStyles<A, B> = A extends {
   __tama: [any, any, any, infer C, any, any]

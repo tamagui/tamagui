@@ -4,7 +4,7 @@ import { InputProps } from './Input';
  */
 export declare const TextAreaFrame: import("@tamagui/core").TamaguiComponent<{
     __tamaDefer: true;
-}, import("react-native").TextInput, import("react-native").TextInputProps, import("@tamagui/core").TextStylePropsBase & {
+}, import("react-native").TextInput, import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").TextInputProps, import("@tamagui/core").TextStylePropsBase & {
     placeholderTextColor?: `$${string}` | `$${number}` | undefined;
 }, {
     size?: import("@tamagui/core").SizeTokens | undefined;
@@ -12,7 +12,7 @@ export declare const TextAreaFrame: import("@tamagui/core").TamaguiComponent<{
     unstyled?: boolean | undefined;
 }, typeof import("react-native").TextInput>;
 export type TextAreaProps = InputProps;
-export declare const TextArea: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("react-native").TextInputProps, import("@tamagui/core").TextStylePropsBase & {
+export declare const TextArea: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").TextInputProps, import("@tamagui/core").TextStylePropsBase & {
     placeholderTextColor?: `$${string}` | `$${number}` | undefined;
 } & {
     size?: import("@tamagui/core").SizeTokens | undefined;
@@ -20,7 +20,7 @@ export declare const TextArea: import("@tamagui/core").TamaguiComponent<Omit<imp
     unstyled?: boolean | undefined;
 }>, "rows"> & {
     rows?: number | undefined;
-}, import("react-native").TextInput, import("react-native").TextInputProps & {
+}, import("react-native").TextInput, import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").TextInputProps & {
     rows?: number | undefined;
 }, import("@tamagui/core").TextStylePropsBase & {
     placeholderTextColor?: `$${string}` | `$${number}` | undefined;

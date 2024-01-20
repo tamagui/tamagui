@@ -3,7 +3,7 @@ import React from 'react';
 import { Image as RNImage } from 'react-native';
 declare const StyledImage: import("@tamagui/core").TamaguiComponent<{
     __tamaDefer: true;
-}, RNImage, import("react-native").ImageProps, import("@tamagui/core").StackStylePropsBase, {}, typeof RNImage>;
+}, RNImage, import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ImageProps, import("@tamagui/core").StackStylePropsBase, {}, typeof RNImage>;
 type StyledImageProps = Omit<GetProps<typeof StyledImage>, 'borderRadius'> & {
     borderRadius?: RadiusTokens;
 };

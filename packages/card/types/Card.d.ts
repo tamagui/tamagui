@@ -4,8 +4,8 @@ export declare const CardFrame: import("@tamagui/web").TamaguiComponent<{
     __tamaDefer: true;
 }, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStylePropsBase, {
     size?: SizeTokens | undefined;
-    elevation?: number | SizeTokens | undefined;
     unstyled?: boolean | undefined;
+    elevation?: number | SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -23,8 +23,8 @@ export declare const CardHeader: import("@tamagui/web").TamaguiComponent<{
     __tamaDefer: true;
 }, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStylePropsBase, {
     size?: SizeTokens | undefined;
-    elevation?: number | SizeTokens | undefined;
     unstyled?: boolean | undefined;
+    elevation?: number | SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -42,8 +42,8 @@ export declare const CardFooter: import("@tamagui/web").TamaguiComponent<{
     __tamaDefer: true;
 }, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStylePropsBase, {
     size?: SizeTokens | undefined;
-    elevation?: number | SizeTokens | undefined;
     unstyled?: boolean | undefined;
+    elevation?: number | SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -60,8 +60,8 @@ export declare const CardFooter: import("@tamagui/web").TamaguiComponent<{
 export declare const CardBackground: import("@tamagui/web").TamaguiComponent<{
     __tamaDefer: true;
 }, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStylePropsBase, {
-    elevation?: number | SizeTokens | undefined;
     unstyled?: boolean | undefined;
+    elevation?: number | SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -78,10 +78,10 @@ export declare const CardBackground: import("@tamagui/web").TamaguiComponent<{
 export type CardHeaderProps = GetProps<typeof CardHeader>;
 export type CardFooterProps = GetProps<typeof CardFooter>;
 export type CardProps = GetProps<typeof CardFrame>;
-export declare const Card: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | "elevation" | "unstyled" | keyof import("@tamagui/web").StackStylePropsBase | "transparent" | "fullscreen" | "circular" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase & {
+export declare const Card: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | "unstyled" | "elevation" | keyof import("@tamagui/web").StackStylePropsBase | "transparent" | "fullscreen" | "circular" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase & {
     size?: SizeTokens | undefined;
-    elevation?: number | SizeTokens | undefined;
     unstyled?: boolean | undefined;
+    elevation?: number | SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -96,8 +96,8 @@ export declare const Card: import("react").ForwardRefExoticComponent<Omit<import
     chromeless?: boolean | "all" | undefined;
 }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase & {
     size?: SizeTokens | undefined;
-    elevation?: number | SizeTokens | undefined;
     unstyled?: boolean | undefined;
+    elevation?: number | SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -112,8 +112,8 @@ export declare const Card: import("react").ForwardRefExoticComponent<Omit<import
     chromeless?: boolean | "all" | undefined;
 }>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase & {
     size?: SizeTokens | undefined;
-    elevation?: number | SizeTokens | undefined;
     unstyled?: boolean | undefined;
+    elevation?: number | SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -128,8 +128,8 @@ export declare const Card: import("react").ForwardRefExoticComponent<Omit<import
     chromeless?: boolean | "all" | undefined;
 }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase & {
     size?: SizeTokens | undefined;
-    elevation?: number | SizeTokens | undefined;
     unstyled?: boolean | undefined;
+    elevation?: number | SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -144,8 +144,8 @@ export declare const Card: import("react").ForwardRefExoticComponent<Omit<import
     chromeless?: boolean | "all" | undefined;
 }>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStylePropsBase & {
     size?: SizeTokens | undefined;
-    elevation?: number | SizeTokens | undefined;
     unstyled?: boolean | undefined;
+    elevation?: number | SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -162,8 +162,8 @@ export declare const Card: import("react").ForwardRefExoticComponent<Omit<import
     __tamaDefer: true;
 }, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStylePropsBase, {
     size?: SizeTokens | undefined;
-    elevation?: number | SizeTokens | undefined;
     unstyled?: boolean | undefined;
+    elevation?: number | SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -181,8 +181,8 @@ export declare const Card: import("react").ForwardRefExoticComponent<Omit<import
         __tamaDefer: true;
     }, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStylePropsBase, {
         size?: SizeTokens | undefined;
-        elevation?: number | SizeTokens | undefined;
         unstyled?: boolean | undefined;
+        elevation?: number | SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
@@ -201,8 +201,8 @@ export declare const Card: import("react").ForwardRefExoticComponent<Omit<import
         __tamaDefer: true;
     }, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStylePropsBase, {
         size?: SizeTokens | undefined;
-        elevation?: number | SizeTokens | undefined;
         unstyled?: boolean | undefined;
+        elevation?: number | SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
@@ -220,8 +220,8 @@ export declare const Card: import("react").ForwardRefExoticComponent<Omit<import
         __tamaDefer: true;
     }, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStylePropsBase, {
         size?: SizeTokens | undefined;
-        elevation?: number | SizeTokens | undefined;
         unstyled?: boolean | undefined;
+        elevation?: number | SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
@@ -238,8 +238,8 @@ export declare const Card: import("react").ForwardRefExoticComponent<Omit<import
     Background: import("@tamagui/web").TamaguiComponent<{
         __tamaDefer: true;
     }, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStylePropsBase, {
-        elevation?: number | SizeTokens | undefined;
         unstyled?: boolean | undefined;
+        elevation?: number | SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;

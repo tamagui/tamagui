@@ -42,7 +42,7 @@ export declare const defaultStyles: {
 };
 export declare const InputFrame: import("@tamagui/core").TamaguiComponent<{
     __tamaDefer: true;
-}, TextInput, import("react-native").TextInputProps, import("@tamagui/core").TextStylePropsBase & {
+}, TextInput, import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").TextInputProps, import("@tamagui/core").TextStylePropsBase & {
     placeholderTextColor?: `$${string}` | `$${number}` | undefined;
 }, {
     size?: import("@tamagui/core").SizeTokens | undefined;
@@ -55,13 +55,13 @@ type InputExtraProps = {
     rows?: number;
 };
 export type InputProps = InputFrameProps & InputExtraProps;
-export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("react-native").TextInputProps, import("@tamagui/core").TextStylePropsBase & {
+export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").TextInputProps, import("@tamagui/core").TextStylePropsBase & {
     placeholderTextColor?: `$${string}` | `$${number}` | undefined;
 } & {
     size?: import("@tamagui/core").SizeTokens | undefined;
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
-}>, "rows"> & InputExtraProps, TextInput, import("react-native").TextInputProps & InputExtraProps, import("@tamagui/core").TextStylePropsBase & {
+}>, "rows"> & InputExtraProps, TextInput, import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").TextInputProps & InputExtraProps, import("@tamagui/core").TextStylePropsBase & {
     placeholderTextColor?: `$${string}` | `$${number}` | undefined;
 }, {
     size?: import("@tamagui/core").SizeTokens | undefined;
@@ -71,11 +71,13 @@ export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import
 export declare function useInputProps(props: InputProps, ref: any): {
     placeholderTextColor: any;
     onChangeText: (value: any) => void;
-    children?: import("react").ReactNode;
+    children?: any;
+    className?: string | undefined;
     style?: import("react-native").StyleProp<import("react-native").TextStyle>;
+    group?: undefined;
     onPressIn?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").NativeTouchEvent>) => void) | undefined;
     onPressOut?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").NativeTouchEvent>) => void) | undefined;
-    onFocus?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").TextInputFocusEventData>) => void) | undefined;
+    onFocus?: (((event: import("react").FocusEvent<HTMLDivElement, Element>) => void) & ((e: import("react-native").NativeSyntheticEvent<import("react-native").TextInputFocusEventData>) => void)) | undefined;
     onBlur?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").TextInputFocusEventData>) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
@@ -125,7 +127,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     'aria-hidden'?: boolean | undefined;
     'aria-live'?: "off" | "polite" | "assertive" | undefined;
     'aria-modal'?: boolean | undefined;
-    role?: import("react-native").Role | undefined;
+    role?: "row" | "none" | "link" | "article" | "button" | "dialog" | "figure" | "form" | "img" | "main" | "menu" | "menuitem" | "meter" | "option" | "summary" | "table" | "switch" | "checkbox" | "radio" | "alert" | "alertdialog" | "application" | "banner" | "cell" | "columnheader" | "combobox" | "complementary" | "contentinfo" | "definition" | "directory" | "document" | "feed" | "grid" | "group" | "heading" | "list" | "listitem" | "log" | "marquee" | "math" | "menubar" | "navigation" | "note" | "presentation" | "progressbar" | "radiogroup" | "region" | "rowgroup" | "rowheader" | "scrollbar" | "searchbox" | "separator" | "slider" | "spinbutton" | "status" | "tab" | "tablist" | "tabpanel" | "term" | "timer" | "toolbar" | "tooltip" | "tree" | "treegrid" | "treeitem" | undefined;
     accessibilityLiveRegion?: "none" | "polite" | "assertive" | undefined;
     accessibilityLabelledBy?: string | string[] | undefined;
     accessibilityElementsHidden?: boolean | undefined;
@@ -135,7 +137,23 @@ export declare function useInputProps(props: InputProps, ref: any): {
     onMagicTap?: (() => void) | undefined;
     accessibilityIgnoresInvertColors?: boolean | undefined;
     accessibilityLanguage?: string | undefined;
-    onScroll?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").TextInputScrollEventData>) => void) | undefined;
+    target?: string | undefined;
+    asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
+    dangerouslySetInnerHTML?: {
+        __html: string;
+    } | undefined;
+    debug?: import("@tamagui/core").DebugProp | undefined;
+    themeShallow?: boolean | undefined;
+    themeInverse?: boolean | undefined;
+    tag?: "object" | "search" | "small" | "sub" | "sup" | "a" | "abbr" | "address" | "area" | "article" | "aside" | "audio" | "b" | "bdi" | "bdo" | "blockquote" | "br" | "button" | "canvas" | "caption" | "cite" | "code" | "col" | "colgroup" | "data" | "datalist" | "dd" | "del" | "details" | "dfn" | "dialog" | "div" | "dl" | "dt" | "em" | "embed" | "fieldset" | "figcaption" | "figure" | "footer" | "form" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "header" | "hr" | "i" | "img" | "input" | "ins" | "kbd" | "label" | "legend" | "li" | "main" | "map" | "mark" | "menu" | "meter" | "nav" | "noscript" | "ol" | "optgroup" | "option" | "output" | "p" | "param" | "picture" | "pre" | "progress" | "q" | "rp" | "rt" | "ruby" | "s" | "samp" | "script" | "section" | "select" | "source" | "span" | "strong" | "summary" | "table" | "template" | "tbody" | "td" | "textarea" | "th" | "thead" | "time" | "tr" | "track" | "u" | "ul" | "var" | "video" | "wbr" | (string & {}) | "rtc" | undefined;
+    theme?: string | null | undefined;
+    untilMeasured?: "hide" | "show" | undefined;
+    componentName?: string | undefined;
+    tabIndex?: string | number | undefined;
+    disableOptimization?: boolean | undefined;
+    forceStyle?: "hover" | "press" | "focus" | undefined;
+    disableClassName?: boolean | undefined;
+    onScroll?: (((event: import("react").UIEvent<HTMLDivElement, UIEvent>) => void) & ((e: import("react-native").NativeSyntheticEvent<import("react-native").TextInputScrollEventData>) => void)) | undefined;
     hitSlop?: import("react-native").Insets | undefined;
     removeClippedSubviews?: boolean | undefined;
     collapsable?: boolean | undefined;
