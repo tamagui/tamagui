@@ -53,6 +53,7 @@ const TabsList = TabsListFrame.extractable(
           orientation={context.orientation}
           dir={context.dir}
           loop={loop}
+          asChild
         >
           <TabsListFrame
             role="tablist"

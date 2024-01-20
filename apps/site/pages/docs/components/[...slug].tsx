@@ -39,13 +39,13 @@ export default function DocComponentsPage({ frontmatter, code }: Doc) {
   }, [])
 
   useEffect(() => {
-    const fragment = getPathFragment(router.asPath)
-    let pathWithVersion = `${router.pathname}/${frontmatter.version}${fragment ? `#${fragment}` : ''
-      }`
+    const url = new URL(location.href)
+    url.pathname = `${router.pathname}/${frontmatter.version}`
+
     if (Array.isArray(router.query.slug)) {
-      pathWithVersion = pathWithVersion.replace('[...slug]', router.query.slug[0])
+      url.pathname = url.pathname.replace('[...slug]', router.query.slug[0])
     }
-    router.replace(pathWithVersion, undefined, { shallow: true })
+    router.replace(url, undefined, { shallow: true })
   }, [])
 
   return (

@@ -11,13 +11,47 @@ demoName: Checkbox
 
 <Description>Use in forms to toggle between two states.</Description>
 
-<HeroContainer>
-  <CheckboxDemo />
+
+<Tabs id="type" defaultValue="styled">
+<Tabs.List>
+  <TooltipSimple label="With Tamagui's default styles">
+    <Tabs.Tab value="styled">Styled</Tabs.Tab>
+  </TooltipSimple>
+  <TooltipSimple label="No default styles, easy to customize">
+    <Tabs.Tab value="unstyled">Unstyled</Tabs.Tab>
+  </TooltipSimple>
+  <TooltipSimple label="No dependency on Tamagui's core">
+    <Tabs.Tab value="headless" label="No styles and no dependency on Tamagui's styling">Headless</Tabs.Tab>
+  </TooltipSimple>
+</Tabs.List>
+
+<HeroContainer showAnimationDriverControl>
+  <Tabs.Content value="styled" justifyContent="center" alignItems="center" width="100%">
+    <CheckboxDemo />
+  </Tabs.Content>
+  <Tabs.Content value="unstyled" justifyContent="center" alignItems="center" width="100%">
+    <CheckboxUnstyledDemo />
+  </Tabs.Content>
+    <Tabs.Content value="headless" justifyContent="center" alignItems="center" width="100%">
+    <CheckboxHeadlessDemo />
+  </Tabs.Content>
 </HeroContainer>
 
-```tsx hero template=Checkbox
+<Tabs.Content value="styled">
+  ```tsx hero template=Checkbox
 
-```
+  ```
+</Tabs.Content>
+<Tabs.Content value="unstyled">
+  ```tsx hero template=CheckboxUnstyled
+
+  ```
+</Tabs.Content>
+  <Tabs.Content value="headless">
+  ```tsx hero template=CheckboxHeadless
+
+  ```
+</Tabs.Content>
 
 <Highlights
   features={[
@@ -30,13 +64,35 @@ demoName: Checkbox
 
 ## Installation
 
+<Tabs.Content value="styled">
 Checkbox is already installed in `tamagui`, or you can install it independently:
 
 ```bash
 npm install @tamagui/checkbox
 ```
+</Tabs.Content>
+
+<Tabs.Content value="unstyled">
+Checkbox is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/checkbox
+```
+</Tabs.Content>
+
+<Tabs.Content value="headless">
+
+To use the headless switch, you want to import it from the `@tamagui/switch-headless` package. This package has no dependency on `@tamagui/core`.
+
+```bash
+npm install @tamagui/switch-headless
+```
+
+</Tabs.Content>
 
 ## Usage
+
+<Tabs.Content value="styled">
 
 ```tsx
 import { Check } from '@tamagui/lucide-icons'
@@ -50,8 +106,9 @@ export default () => (
   </Checkbox>
 )
 ```
+</Tabs.Content>
 
-## Unstyled (`createCheckbox`)
+<Tabs.Content value="unstyled">
 
 Using the `createCheckbox` export, you can create a fully custom checkbox without using any of the default styles. This is similar to `unstyled`, but it doesn't assume the props `size` or `unstyled` exist, and it won't automatically apply the `active` theme.
 
@@ -59,25 +116,23 @@ You must pass `CheckboxContext` as the `context` option to your Fraeme and Thumb
 
 If you define a `checked` variant, it will apply those styles.
 
-<HeroContainer noPad showAnimationDriverControl>
-  <CheckboxUnstyledDemo />
-</HeroContainer>
 
-```tsx hero template=CheckboxUnstyled
+```tsx template=CheckboxUnstyled
 
 ```
 
-## Headless (`useCheckbox`)
+</Tabs.Content>
+
+<Tabs.Content value="headless">
 
 Using the `useCheckbox` API, you can make your own Checkbox from scratch. You could even do it without Tamagui's styling system if you wanted to.
 
-<HeroContainer noPad showAnimationDriverControl>
-  <CheckboxHeadlessDemo />
-</HeroContainer>
 
-```tsx hero template=CheckboxHeadless
+```tsx template=CheckboxHeadless
 
 ```
+
+</Tabs.Content>
 
 ## API Reference
 
@@ -173,3 +228,5 @@ Using the `useCheckbox` API, you can make your own Checkbox from scratch. You co
     },
   ]}
 />
+
+</Tabs>

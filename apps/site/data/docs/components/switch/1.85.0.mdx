@@ -9,13 +9,52 @@ demoName: Switch
 
 # Switch
 
+
+<Description>Use to toggle between two states.</Description>
+
+
+<Tabs id="type" defaultValue="styled">
+<Tabs.List>
+  <TooltipSimple label="With Tamagui's default styles">
+    <Tabs.Tab value="styled">Styled</Tabs.Tab>
+  </TooltipSimple>
+  <TooltipSimple label="No default styles, easy to customize">
+    <Tabs.Tab value="unstyled">Unstyled</Tabs.Tab>
+  </TooltipSimple>
+  <TooltipSimple label="No dependency on Tamagui's core">
+    <Tabs.Tab value="headless" label="No styles and no dependency on Tamagui's styling">Headless</Tabs.Tab>
+  </TooltipSimple>
+</Tabs.List>
+
 <HeroContainer showAnimationDriverControl>
-  <SwitchDemo />
+  <Tabs.Content value="styled" justifyContent="center" alignItems="center" width="100%">
+    <SwitchDemo />
+  </Tabs.Content>
+  <Tabs.Content value="unstyled" justifyContent="center" alignItems="center" width="100%">
+    <SwitchUnstyledDemo />
+  </Tabs.Content>
+    <Tabs.Content value="headless" justifyContent="center" alignItems="center" width="100%">
+    <SwitchHeadlessDemo />
+  </Tabs.Content>
 </HeroContainer>
 
-```tsx hero template=Switch
+<Tabs.Content value="styled">
+  ```tsx hero template=Switch
 
-```
+  ```
+</Tabs.Content>
+<Tabs.Content value="unstyled">
+  ```tsx hero template=SwitchUnstyled
+
+  ```
+</Tabs.Content>
+  <Tabs.Content value="headless">
+  ```tsx hero template=SwitchHeadless
+
+  ```
+</Tabs.Content>
+
+
 
 <Highlights
   features={[
@@ -26,7 +65,10 @@ demoName: Switch
   ]}
 />
 
+
 ## Installation
+
+<Tabs.Content value="styled">
 
 Switch is already installed in `tamagui`, or you can install it independently:
 
@@ -34,7 +76,31 @@ Switch is already installed in `tamagui`, or you can install it independently:
 npm install @tamagui/switch
 ```
 
+</Tabs.Content>
+
+<Tabs.Content value="unstyled">
+
+Switch is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/switch
+```
+
+</Tabs.Content>
+
+<Tabs.Content value="headless">
+
+To use the headless switch, you want to import it from the `@tamagui/switch-headless` package. This package has no dependency on `@tamagui/core`.
+
+```bash
+npm install @tamagui/switch-headless
+```
+
+</Tabs.Content>
+
 ## Usage
+
+<Tabs.Content value="styled">
 
 ```tsx
 import { Switch } from 'tamagui' // or '@tamagui/switch'
@@ -46,33 +112,31 @@ export default () => (
 )
 ```
 
-## Unstyled (`createSwitch`)
+</Tabs.Content>
 
-Using the `createSwitch` export, you can create a fully custom switch without using any of the default styles. This is similar to `unstyled`, but it doesn't assume the props `size` or `unstyled` exist, and it won't automatically apply the `active` theme.
+<Tabs.Content value="unstyled">
+
+Using the `createSwitch` export, you can create an unstyled switch without using any of the default styles. This is similar to the `unstyled` prop, but it doesn't assume the props `size` or `unstyled` exist, and it won't automatically apply the `active` theme.
 
 You must pass `SwitchContext` as the `context` option to your Frame and Thumb styled components.
 
 If you define a `checked` variant, it will apply those styles.
 
-<HeroContainer noPad showAnimationDriverControl>
-  <SwitchUnstyledDemo />
-</HeroContainer>
+```tsx template=SwitchUnstyled
 
-```tsx hero template=SwitchUnstyled
+  ```
+</Tabs.Content>
 
-```
-
-## Headless (`useSwitch`)
+<Tabs.Content value="headless">
 
 Using the `useSwitch` API, you can make your own Switch from scratch. You could even do it without Tamagui's styling system if you wanted to.
 
-<HeroContainer noPad showAnimationDriverControl>
-  <SwitchHeadlessDemo />
-</HeroContainer>
-
-```tsx hero template=SwitchHeadless
+```tsx template=SwitchHeadless
 
 ```
+
+</Tabs.Content>
+
 
 ## API Reference
 
@@ -149,5 +213,7 @@ Using the `useSwitch` API, you can make your own Switch from scratch. You could 
     },
   ]}
 />
+
+</Tabs>
 
 {/* TODO: document createSwitch and useSwitch's API */}
