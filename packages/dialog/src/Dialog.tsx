@@ -91,7 +91,7 @@ const DialogTriggerFrame = styled(View, {
   name: TRIGGER_NAME,
 })
 
-interface DialogTriggerProps extends StackProps {}
+interface DialogTriggerProps extends StackProps { }
 
 const DialogTrigger = DialogTriggerFrame.styleable(
   (props: ScopedProps<DialogTriggerProps>, forwardedRef) => {
@@ -361,7 +361,7 @@ type DialogContentFrameProps = GetProps<typeof DialogContentFrame>
 
 interface DialogContentProps
   extends DialogContentFrameProps,
-    Omit<DialogContentTypeProps, 'context' | 'onPointerDownCapture'> {
+  Omit<DialogContentTypeProps, 'context' | 'onPointerDownCapture'> {
   /**
    * Used to force mounting when more control is needed. Useful when
    * controlling animation with React animation libraries.
@@ -460,6 +460,7 @@ const DialogContentModal = React.forwardRef<TamaguiElement, DialogContentTypePro
         onFocusOutside={composeEventHandlers(props.onFocusOutside, (event) =>
           event.preventDefault()
         )}
+        outlineStyle='none'
       >
         {children}
       </DialogContentImpl>
@@ -584,28 +585,29 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
 
     return (
       <>
-        <FocusScope
-          loop
-          enabled={context.open}
-          trapped={trapFocus}
-          onMountAutoFocus={onOpenAutoFocus}
+        <Dismissable
+          disableOutsidePointerEvents={context.open && disableOutsidePointerEvents}
           forceUnmount={!context.open}
-          onUnmountAutoFocus={onCloseAutoFocus}
+          onEscapeKeyDown={onEscapeKeyDown}
+          onPointerDownOutside={onPointerDownOutside}
+          onFocusOutside={onFocusOutside}
+          onInteractOutside={onInteractOutside}
+          // @ts-ignore
+          ref={composedRefs}
+          onDismiss={() => context.onOpenChange(false)}
         >
-          <Dismissable
-            disableOutsidePointerEvents={context.open && disableOutsidePointerEvents}
+          <FocusScope
+            loop
+            enabled={context.open}
+            trapped={trapFocus}
+            onMountAutoFocus={onOpenAutoFocus}
             forceUnmount={!context.open}
-            onEscapeKeyDown={onEscapeKeyDown}
-            onPointerDownOutside={onPointerDownOutside}
-            onFocusOutside={onFocusOutside}
-            onInteractOutside={onInteractOutside}
-            // @ts-ignore
-            ref={composedRefs}
-            onDismiss={() => context.onOpenChange(false)}
+            onUnmountAutoFocus={onCloseAutoFocus}
           >
+
             {contents}
-          </Dismissable>
-        </FocusScope>
+          </FocusScope>
+        </Dismissable>
         {process.env.NODE_ENV === 'development' && (
           <>
             <TitleWarning titleId={context.titleId} />
