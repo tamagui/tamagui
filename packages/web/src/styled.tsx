@@ -3,34 +3,29 @@ import { StyledContext } from './helpers/createStyledContext'
 import { mergeVariants } from './helpers/mergeVariants'
 import type { GetRef } from './interfaces/GetRef'
 import { getReactNativeConfig } from './setupReactNative'
-import { MergePreservingOptional } from './type-utils'
 import type {
   GetBaseStyles,
-  GetFinalProps,
   GetNonStyledProps,
   GetProps,
   GetStaticConfig,
   GetStyledVariants,
   GetVariantValues,
-  StackStylePropsBase,
+  InferProps,
   StaticConfig,
   StaticConfigPublic,
   StylableComponent,
   TamaguiComponent,
-  TextStylePropsBase,
   ThemeValueByCategory,
   VariantDefinitions,
   VariantSpreadFunction,
-  WithThemeShorthandsPseudosMedia,
 } from './types'
-import { View } from './views/View'
 
-import { TextInput } from 'react-native'
-
+// import { TextInput } from 'react-native'
 // export const InputFrame = styled(
 //   TextInput,
 //   {
 //     name: 'Input',
+//     backgroundColor: 'green',
 
 //     variants: {
 //       // unstyled: {
@@ -61,7 +56,7 @@ import { TextInput } from 'react-native'
 // type YP = GetProps<typeof InputFrame>
 // type x = YP['onChangeText']
 // type x2 = YP['size']
-// const X = <InputFrame placeholder='red' hoverStyle={{}} />
+// const X = <InputFrame placeholder="red" hoverStyle={{}} />
 
 type AreVariantsUndefined<Variants> =
   // because we pass in the Generic variants which for some reason has this :)
@@ -82,7 +77,7 @@ export function styled<
 >(
   ComponentIn: ParentComponent,
   // this should be Partial<GetProps<ParentComponent>> but causes excessively deep type issues
-  options?: Partial<GetProps<ParentComponent>> & {
+  options?: Partial<InferProps<ParentComponent, StaticConfigPublic>> & {
     name?: string
     variants?: Variants | undefined
     defaultVariants?: GetVariantAcceptedValues<Variants>

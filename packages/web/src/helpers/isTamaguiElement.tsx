@@ -1,11 +1,10 @@
 import { isValidElement } from 'react'
 
-import { TamaguiReactElement } from '../types'
 import { isTamaguiComponent } from './isTamaguiComponent'
 
 export const isTamaguiElement = (
   child: any,
   name?: string
-): child is TamaguiReactElement => {
+): child is React.ReactElement<any> => {
   return isValidElement(child) && isTamaguiComponent(child.type, name)
 }

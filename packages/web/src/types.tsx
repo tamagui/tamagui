@@ -292,10 +292,6 @@ export type TamaguiProjectInfo = {
 
 type DivAttributes = HTMLAttributes<HTMLDivElement>
 
-export type TamaguiReactElement<P = {}> = React.ReactElement<P> & {
-  type: TamaguiComponent
-}
-
 export { RefAttributes } from 'react'
 
 export type ReactComponentWithRef<Props, Ref> = ForwardRefExoticComponent<
@@ -1611,6 +1607,23 @@ export type GetStyledProps<A extends StylableComponent> = A extends {
   ? BaseStyles & VariantProps
   : GetProps<A>
 
+export type InferGenericComponentProps<A> = A extends ComponentType<infer Props>
+  ? Props
+  : A extends new (
+        props: infer Props
+      ) => any
+    ? Props
+    : {}
+
+export type InferProps<
+  A extends StylableComponent,
+  B extends StaticConfigPublic,
+> = A extends {
+  __tama: any
+}
+  ? GetProps<A>
+  : GetFinalProps<InferGenericComponentProps<A>, GetBaseStyles<{}, B>>
+
 export type GetProps<A extends StylableComponent> = A extends {
   __tama: [
     infer Props,
@@ -1624,15 +1637,7 @@ export type GetProps<A extends StylableComponent> = A extends {
   ? Props extends { __tamaDefer: true }
     ? GetFinalProps<NonStyledProps, BaseStyles & VariantProps>
     : Props
-  : A extends TamaguiReactElement<infer Props>
-    ? Props
-    : A extends ComponentType<infer Props>
-      ? GetGenericComponentTamaguiProps<Props>
-      : A extends new (
-            props: infer Props
-          ) => any
-        ? GetGenericComponentTamaguiProps<Props>
-        : {}
+  : InferGenericComponentProps<A>
 
 export type GetNonStyledProps<A extends StylableComponent> = A extends {
   __tama: [any, any, infer B, any, any, any]
@@ -1659,9 +1664,6 @@ export type GetStaticConfig<A> = A extends {
 }
   ? B
   : A
-
-type GetGenericComponentTamaguiProps<P> = P &
-  Omit<'textAlign' extends keyof P ? TextProps : StackProps, keyof P>
 
 export type StaticComponentObject<
   Props,
@@ -1861,8 +1863,6 @@ export type ViewStyleWithPseudos =
 
 export type StylableComponent =
   | TamaguiComponent
-  // * excessively deep type instantiation
-  // | TamaguiReactElement
   | ComponentType<any>
   | ForwardRefExoticComponent<any>
   | ReactComponentWithRef<any, any>

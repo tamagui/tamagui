@@ -130,9 +130,6 @@ export type TamaguiProjectInfo = {
     nameToPaths: NameToPaths;
 };
 type DivAttributes = HTMLAttributes<HTMLDivElement>;
-export type TamaguiReactElement<P = {}> = React.ReactElement<P> & {
-    type: TamaguiComponent;
-};
 export { RefAttributes } from 'react';
 export type ReactComponentWithRef<Props, Ref> = ForwardRefExoticComponent<Props & RefAttributes<Ref>>;
 export type ComponentContextI = {
@@ -820,7 +817,7 @@ export type GetProps<A extends StylableComponent> = A extends {
     ];
 } ? Props extends {
     __tamaDefer: true;
-} ? GetFinalProps<NonStyledProps, BaseStyles & VariantProps> : Props : A extends TamaguiReactElement<infer Props> ? Props : A extends ComponentType<infer Props> ? GetGenericComponentTamaguiProps<Props> : A extends new (props: infer Props) => any ? GetGenericComponentTamaguiProps<Props> : {};
+} ? GetFinalProps<NonStyledProps, BaseStyles & VariantProps> : Props : A extends ComponentType<infer Props> ? Props : A extends new (props: infer Props) => any ? Props : {};
 export type GetNonStyledProps<A extends StylableComponent> = A extends {
     __tama: [any, any, infer B, any, any, any];
 } ? B : GetProps<A>;
@@ -835,7 +832,6 @@ export type GetStyledVariants<A> = A extends {
 export type GetStaticConfig<A> = A extends {
     __tama: [any, any, any, any, any, infer B];
 } ? B : A;
-type GetGenericComponentTamaguiProps<P> = P & Omit<'textAlign' extends keyof P ? TextProps : StackProps, keyof P>;
 export type StaticComponentObject<Props, Ref, NonStyledProps, BaseStyles extends Object, VariantProps, ParentStaticProperties> = {
     staticConfig: StaticConfig;
     /** @deprecated use `styleable` instead (same functionality, better name) */
