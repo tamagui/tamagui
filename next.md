@@ -1,3 +1,4 @@
+- Select `ListItemFrame` area is messy/slow due to inline styles and complex components
 - useStyle and others can have forComponent types
 
 - docs:
