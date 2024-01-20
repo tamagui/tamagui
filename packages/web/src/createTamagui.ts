@@ -361,7 +361,7 @@ function getThemesDeduped(themes: ThemesLikeObject): DedupedThemes {
     const deduped: DedupedTheme = {
       names: [themeName],
       theme,
-      alias: `t${i}`,
+      alias: `t_${i}`,
     }
     i++
     dedupedThemes.push(deduped)
