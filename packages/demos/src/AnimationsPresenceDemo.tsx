@@ -1,7 +1,7 @@
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { ArrowLeft, ArrowRight } from '@tamagui/lucide-icons'
 import { useState } from 'react'
-import { Button, GetProps, Image, XStack, YStack, styled } from 'tamagui'
+import { Button, Image, XStack, YStack, styled } from 'tamagui'
 
 // @ts-ignore
 import photo1 from '../../public/photo1.jpg'
@@ -15,19 +15,20 @@ export const images = [photo1, photo2, photo3].map((x) => x.src || x)
 const GalleryItem = styled(YStack, {
   zIndex: 1,
   x: 0,
-  fullscreen: true,
   opacity: 1,
+  fullscreen: true,
 
   variants: {
-    direction: {
-      ':number': (direction) => ({
+    // 1 = right, 0 = nowhere, -1 = left
+    going: {
+      ':number': (going) => ({
         enterStyle: {
-          x: direction > 0 ? 1000 : -1000,
+          x: going > 0 ? 1000 : -1000,
           opacity: 0,
         },
         exitStyle: {
           zIndex: 0,
-          x: direction < 0 ? 1000 : -1000,
+          x: going < 0 ? 1000 : -1000,
           opacity: 0,
         },
       }),
@@ -35,15 +36,17 @@ const GalleryItem = styled(YStack, {
   } as const,
 })
 
-type Props = GetProps<typeof GalleryItem>
-type x = Props['direction']
+const wrap = (min: number, max: number, v: number) => {
+  const rangeSize = max - min
+  return ((((v - min) % rangeSize) + rangeSize) % rangeSize) + min
+}
 
 export function AnimationsPresenceDemo() {
-  const [[page, direction], setPage] = useState([0, 0])
+  const [[page, going], setPage] = useState([0, 0])
 
   const imageIndex = wrap(0, images.length, page)
-  const paginate = (newDirection: number) => {
-    setPage([page + newDirection, newDirection])
+  const paginate = (going: number) => {
+    setPage([page + going, going])
   }
 
   return (
@@ -55,8 +58,8 @@ export function AnimationsPresenceDemo() {
       width="100%"
       alignItems="center"
     >
-      <AnimatePresence initial={false} custom={{ direction }}>
-        <GalleryItem key={page} animation="slowest" direction={direction} debug>
+      <AnimatePresence initial={false} custom={{ going }}>
+        <GalleryItem key={page} animation="slowest" going={going}>
           <Image source={{ uri: images[imageIndex], width: 780, height: 300 }} />
         </GalleryItem>
       </AnimatePresence>
@@ -85,9 +88,4 @@ export function AnimationsPresenceDemo() {
       />
     </XStack>
   )
-}
-
-const wrap = (min: number, max: number, v: number) => {
-  const rangeSize = max - min
-  return ((((v - min) % rangeSize) + rangeSize) % rangeSize) + min
 }

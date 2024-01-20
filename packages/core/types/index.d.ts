@@ -1,9 +1,17 @@
-import type { StackProps, StackPropsBase, TamaguiComponent, TamaguiElement, TamaguiTextElement, TextProps, TextPropsBase } from '@tamagui/web';
+import type { StackNonStyleProps, StackStylePropsBase, TamaguiComponent, TamaguiElement, TamaguiTextElement, TextNonStyleProps, TextProps, TextStylePropsBase } from '@tamagui/web';
 import { RNTextProps, RNViewProps } from './reactNativeTypes';
-type RNExclusiveViewProps = Omit<RNViewProps, keyof StackProps>;
-type RNTamaguiView = TamaguiComponent<StackProps & RNExclusiveViewProps, TamaguiElement, StackPropsBase & RNExclusiveViewProps, void>;
+type RNExclusiveViewProps = Omit<RNViewProps, keyof StackNonStyleProps>;
+export interface RNTamaguiViewNonStyleProps extends StackNonStyleProps, RNExclusiveViewProps {
+}
+type RNTamaguiView = TamaguiComponent<{
+    __tamaDefer: true;
+}, TamaguiElement, RNTamaguiViewNonStyleProps, StackStylePropsBase, void>;
 type RNExclusiveTextProps = Omit<RNTextProps, keyof TextProps>;
-type RNTamaguiText = TamaguiComponent<TextProps & RNExclusiveTextProps, TamaguiTextElement, TextPropsBase & RNExclusiveTextProps, void>;
+export interface RNTamaguiTextNonStyleProps extends TextNonStyleProps, RNExclusiveTextProps {
+}
+type RNTamaguiText = TamaguiComponent<{
+    __tamaDefer: true;
+}, TamaguiTextElement, RNTamaguiTextNonStyleProps, TextStylePropsBase, void>;
 export * from '@tamagui/web';
 export * from './reactNativeTypes';
 export declare const View: RNTamaguiView;

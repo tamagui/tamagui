@@ -87,8 +87,8 @@ const ButtonFrame = styled(ThemeableStack, {
   name: BUTTON_NAME,
   tag: 'button',
   context: ButtonContext,
-  focusable: true,
   role: 'button',
+  focusable: true,
 
   variants: {
     unstyled: {
@@ -189,6 +189,7 @@ const ButtonIcon = (props: { children: React.ReactNode; scaleIcon?: number }) =>
 
 const ButtonComponent = ButtonFrame.styleable<ButtonExtraProps>(
   function Button(props, ref) {
+    // @ts-ignore
     const { props: buttonProps } = useButton(props)
     return <ButtonFrame {...buttonProps} ref={ref} />
   }

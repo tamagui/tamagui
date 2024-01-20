@@ -39,14 +39,21 @@ const HeadAnchor = styled(Paragraph, {
   variants: {
     grid: {
       true: {
-        size: '$4',
+        size: '$3',
         miw: '48.9%',
         f: 1,
         p: '$2.5',
+        px: '$4',
 
         hoverStyle: {
           backgroundColor: '$color3',
         },
+      },
+    },
+
+    dim: {
+      true: {
+        o: 0.6,
       },
     },
   } as const,
@@ -105,7 +112,6 @@ export const HeaderLinks = (props: HeaderProps) => {
               <HeadAnchor
                 grid={forceShowAllLinks}
                 tag="span"
-                size={forceShowAllLinks ? '$4' : '$8'}
                 $sm={{
                   display: forceShowAllLinks ? 'flex' : 'none',
                 }}
@@ -149,7 +155,9 @@ export const HeaderLinks = (props: HeaderProps) => {
 
       {forceShowAllLinks && (
         <NextLink passHref prefetch={false} href="/blog">
-          <HeadAnchor grid={forceShowAllLinks}>Blog</HeadAnchor>
+          <HeadAnchor dim={forceShowAllLinks} grid={forceShowAllLinks}>
+            Blog
+          </HeadAnchor>
         </NextLink>
       )}
 
@@ -159,7 +167,7 @@ export const HeaderLinks = (props: HeaderProps) => {
           target="_blank"
           href="https://github.com/sponsors/natew"
         >
-          <HeadAnchor grid={forceShowAllLinks} tag="span">
+          <HeadAnchor dim={forceShowAllLinks} grid={forceShowAllLinks} tag="span">
             Sponsor
           </HeadAnchor>
         </NextLink>
@@ -168,7 +176,7 @@ export const HeaderLinks = (props: HeaderProps) => {
       {!userSwr.data?.session?.user && !isHeader && (
         <NextLink passHref prefetch={false} href="/login">
           <HeadAnchor
-            color="$gray10"
+            dim={forceShowAllLinks}
             grid={forceShowAllLinks}
             $md={{
               display: forceShowAllLinks ? 'flex' : 'none',

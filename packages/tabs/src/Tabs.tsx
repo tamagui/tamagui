@@ -171,7 +171,7 @@ const TabsTrigger = TabsTriggerFrame.extractable(
       const isSelected = value === context.value
       const [layout, setLayout] = React.useState<TabLayout | null>(null)
       const triggerRef = React.useRef<HTMLButtonElement>(null)
-      const groupItemProps = useGroupItem({ disabled })
+      const groupItemProps = useGroupItem({ disabled: !!disabled })
 
       React.useEffect(() => {
         context.registerTrigger()
