@@ -55,9 +55,7 @@ declare const TabsContentFrame: import("@tamagui/web").TamaguiComponent<{
     elevation?: number | SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
-    circular?: boolean | undefined; /**
-     * @deprecated Use `TabLayout` instead
-     */
+    circular?: boolean | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
@@ -475,9 +473,7 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         elevation?: number | SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
-        circular?: boolean | undefined; /**
-         * @deprecated Use `TabLayout` instead
-         */
+        circular?: boolean | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
         focusTheme?: boolean | undefined;
@@ -491,9 +487,7 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         elevation?: number | SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
-        circular?: boolean | undefined; /**
-         * @deprecated Use `TabLayout` instead
-         */
+        circular?: boolean | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
         focusTheme?: boolean | undefined;
