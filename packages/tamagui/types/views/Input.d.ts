@@ -9,7 +9,7 @@ export declare const defaultStyles: {
         readonly borderColor: "$borderColorHover";
     };
     readonly focusStyle: {
-        readonly outlineColor: "$borderColorFocus";
+        readonly outlineColor: "$outlineColor";
         readonly outlineWidth: 2;
         readonly outlineStyle: "solid";
         readonly borderColor: "$borderColorFocus";
@@ -28,7 +28,7 @@ export declare const defaultStyles: {
         readonly borderColor: "$borderColorHover";
     };
     readonly focusStyle: {
-        readonly outlineColor: "$borderColorFocus";
+        readonly outlineColor: "$outlineColor";
         readonly outlineWidth: 2;
         readonly outlineStyle: "solid";
         readonly borderColor: "$borderColorFocus";
