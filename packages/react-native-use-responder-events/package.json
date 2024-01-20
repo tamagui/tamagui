@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/react-native-use-responder-events",
-  "version": "1.86.6",
+  "version": "1.87.0-1705782099858",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -30,7 +30,7 @@
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.86.6",
+    "@tamagui/build": "1.87.0-1705782099858",
     "react": "^18.2.0"
   },
   "publishConfig": {

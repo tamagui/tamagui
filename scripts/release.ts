@@ -366,23 +366,19 @@ async function run() {
       await sleep(4 * 1000)
     }
 
-    if (!skipStarters) {
-      await spawnify(`yarn upgrade:starters`)
-    }
-
     await spawnify(`yarn fix`)
 
-    const starterFreeDir = join(process.cwd(), '../starter-free')
-    await spawnify(`yarn fix`, {
-      cwd: starterFreeDir,
-    })
+    if (!canary && !skipStarters) {
+      await spawnify(`yarn upgrade:starters`)
+      const starterFreeDir = join(process.cwd(), '../starter-free')
+      await spawnify(`yarn fix`, {
+        cwd: starterFreeDir,
+      })
+      await finishAndCommit(starterFreeDir)
+    }
 
     const tagPrefix = canary ? 'canary' : 'v'
     const gitTag = `${tagPrefix}${version}`
-
-    if (!canary && !skipStarters) {
-      await finishAndCommit(starterFreeDir)
-    }
 
     await finishAndCommit()
 
