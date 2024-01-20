@@ -55,18 +55,6 @@ const UNTOUCHED_PROPS = {
   className: true,
 }
 
-const INLINE_EXTRACTABLE = {
-  ref: 'ref',
-  key: 'key',
-  ...(process.env.TAMAGUI_TARGET === 'web' && {
-    onPress: 'onClick',
-    onHoverIn: 'onMouseEnter',
-    onHoverOut: 'onMouseLeave',
-    onPressIn: 'onMouseDown',
-    onPressOut: 'onMouseUp',
-  }),
-}
-
 const validHooks = {
   useMedia: true,
   useTheme: true,
@@ -85,11 +73,23 @@ function isFullyDisabled(props: TamaguiOptions) {
 }
 
 export function createExtractor(
-  { logger = console }: ExtractorOptions = { logger: console }
+  { logger = console, platform = 'web' }: ExtractorOptions = { logger: console }
 ) {
   if (!process.env.TAMAGUI_TARGET) {
     console.warn('⚠️ Please set process.env.TAMAGUI_TARGET to either "web" or "native"')
     process.exit(1)
+  }
+
+  const INLINE_EXTRACTABLE = {
+    ref: 'ref',
+    key: 'key',
+    ...(platform === 'web' && {
+      onPress: 'onClick',
+      onHoverIn: 'onMouseEnter',
+      onHoverOut: 'onMouseLeave',
+      onPressIn: 'onMouseDown',
+      onPressOut: 'onMouseUp',
+    }),
   }
 
   const componentState: TamaguiComponentState = {
@@ -186,7 +186,7 @@ export function createExtractor(
     }
 
     const {
-      expandStylesAndRemoveNullishValues,
+      normalizeStyle,
       getSplitStyles,
       mediaQueryConfig,
       propMapper,
@@ -759,7 +759,14 @@ export function createExtractor(
               `${componentName} | ${codePosition} -------------------`
           )
           // prettier-ignore
-          logger.info(['\x1b[1m', '\x1b[32m', `<${originalNodeName} />`, disableDebugAttr ? '' : '🐛'].join(' '))
+          logger.info(
+            [
+              '\x1b[1m',
+              '\x1b[32m',
+              `<${originalNodeName} />`,
+              disableDebugAttr ? '' : '🐛',
+            ].join(' ')
+          )
         }
 
         // add data-* debug attributes
@@ -970,9 +977,9 @@ export function createExtractor(
                 ? // <YStack {...isSmall ? { color: 'red } : { color: 'blue }}
                   ([arg.test, arg.consequent, arg.alternate] as const)
                 : t.isLogicalExpression(arg) && arg.operator === '&&'
-                ? // <YStack {...isSmall && { color: 'red }}
-                  ([arg.left, arg.right, null] as const)
-                : null
+                  ? // <YStack {...isSmall && { color: 'red }}
+                    ([arg.left, arg.right, null] as const)
+                  : null
 
               if (conditional) {
                 const [test, alt, cons] = conditional
@@ -1080,9 +1087,8 @@ export function createExtractor(
             const [value, valuePath] = (() => {
               if (t.isJSXExpressionContainer(attribute?.value)) {
                 return [attribute.value.expression!, path.get('value')!] as const
-              } else {
-                return [attribute.value!, path.get('value')!] as const
               }
+              return [attribute.value!, path.get('value')!] as const
             })()
 
             const remove = () => {
@@ -1229,13 +1235,12 @@ export function createExtractor(
                   name,
                   attr: path.node,
                 }
-              } else {
-                if (variants[name]) {
-                  variantValues.set(name, styleValue)
-                }
-                inlined.set(name, true)
-                return attr
               }
+              if (variants[name]) {
+                variantValues.set(name, styleValue)
+              }
+              inlined.set(name, true)
+              return attr
             }
 
             // ternaries!
@@ -1451,9 +1456,8 @@ export function createExtractor(
                         // ensure media query test stays on left side (see getMediaQueryTernary)
                         test: t.logicalExpression('&&', value.test, test),
                       }))
-                    } else {
-                      logger.info(['⚠️ no ternaries?', property].join(' '))
                     }
+                    logger.info(['⚠️ no ternaries?', property].join(' '))
                   } else {
                     logger.info(['⚠️ not expression', property].join(' '))
                   }
@@ -1734,7 +1738,22 @@ export function createExtractor(
           if (shouldPrintDebug) {
             try {
               // prettier-ignore
-              logger.info([' flatten?', shouldFlatten, objToStr({ hasSpread, shouldDeopt, canFlattenProps, shouldWrapTheme, hasOnlyStringChildren }), 'inlined', inlined.size, [...inlined]].join(' '))
+              logger.info(
+                [
+                  ' flatten?',
+                  shouldFlatten,
+                  objToStr({
+                    hasSpread,
+                    shouldDeopt,
+                    canFlattenProps,
+                    shouldWrapTheme,
+                    hasOnlyStringChildren,
+                  }),
+                  'inlined',
+                  inlined.size,
+                  [...inlined],
+                ].join(' ')
+              )
             } catch {
               // ok
             }
@@ -1764,16 +1783,13 @@ export function createExtractor(
           }
 
           // preserves order
-          function expandStylesAndRemoveNullishValuesWithoutVariants(style: any) {
+          function normalizeStyleWithoutVariants(style: any) {
             let res = {}
             for (const key in style) {
               if (staticConfig.variants && key in staticConfig.variants) {
                 mergeToEnd(res, key, style[key])
               } else {
-                const expanded = expandStylesAndRemoveNullishValues(
-                  { [key]: style[key] },
-                  true
-                )
+                const expanded = normalizeStyle({ [key]: style[key] }, true)
                 for (const key in expanded) {
                   mergeToEnd(res, key, expanded[key])
                 }
@@ -1790,9 +1806,7 @@ export function createExtractor(
             if (cur.type === 'style') {
               // remove variants because they are processed later, and can lead to invalid values here
               // see <Spacer flex /> where flex looks like a valid style, but is a variant
-              const expanded = expandStylesAndRemoveNullishValuesWithoutVariants(
-                cur.value
-              )
+              const expanded = normalizeStyleWithoutVariants(cur.value)
               // preserve order
               for (const key in expanded) {
                 mergeToEnd(foundStaticProps, key, expanded[key])
@@ -2018,7 +2032,9 @@ export function createExtractor(
                 // prettier-ignore
                 logger.info(`\n       getProps (props in): ${logLines(objToStr(props))}`)
                 // prettier-ignore
-                logger.info(`\n       getProps (outProps): ${logLines(objToStr(outProps))}`)
+                logger.info(
+                  `\n       getProps (outProps): ${logLines(objToStr(outProps))}`
+                )
               }
 
               if (out.fontFamily) {
@@ -2123,9 +2139,15 @@ export function createExtractor(
                     attr.value = styles
                   }
                   // prettier-ignore
-                  if (shouldPrintDebug) logger.info(['  * styles (in)', logLines(objToStr(attr.value))].join(' '))
+                  if (shouldPrintDebug)
+                    logger.info(
+                      ['  * styles (in)', logLines(objToStr(attr.value))].join(' ')
+                    )
                   // prettier-ignore
-                  if (shouldPrintDebug) logger.info(['  * styles (out)', logLines(objToStr(styles))].join(' '))
+                  if (shouldPrintDebug)
+                    logger.info(
+                      ['  * styles (out)', logLines(objToStr(styles))].join(' ')
+                    )
                   continue
                 }
                 case 'attr': {
@@ -2170,7 +2192,12 @@ export function createExtractor(
 
           if (shouldPrintDebug) {
             // prettier-ignore
-            logger.info(['  - attrs (ternaries/combined):\n', logLines(attrs.map(attrStr).join(', '))].join(' '))
+            logger.info(
+              [
+                '  - attrs (ternaries/combined):\n',
+                logLines(attrs.map(attrStr).join(', ')),
+              ].join(' ')
+            )
           }
 
           tm.mark('jsx-element-styles', !!shouldPrintDebug)
@@ -2295,7 +2322,14 @@ export function createExtractor(
 
           if (shouldPrintDebug) {
             // prettier-ignore
-            logger.info([` - inlined props (${inlined.size}):`, shouldDeopt ? ' deopted' : '', hasSpread ? ' has spread' : '', staticConfig.neverFlatten ? 'neverFlatten' : ''].join(' '))
+            logger.info(
+              [
+                ` - inlined props (${inlined.size}):`,
+                shouldDeopt ? ' deopted' : '',
+                hasSpread ? ' has spread' : '',
+                staticConfig.neverFlatten ? 'neverFlatten' : '',
+              ].join(' ')
+            )
             logger.info(`  - shouldFlatten/isFlattened: ${shouldFlatten}`)
             logger.info(`  - attrs (end):\n ${logLines(attrs.map(attrStr).join(', '))}`)
           }

@@ -104,4 +104,4 @@ function Example() {
 ## Contributing
 
 To contribute to Tamagui reference the [contributing guide](https://github.com/tamagui/tamagui/blob/master/CONTRIBUTING.md).
-To contribute to documentation reference the [writing guide](https://github.com/tamagui/tamagui/apps/site/WRITING-GUIDE.md).
+To contribute to documentation reference the [writing guide](https://github.com/tamagui/tamagui/blob/master/apps/site/WRITING-GUIDE.md).

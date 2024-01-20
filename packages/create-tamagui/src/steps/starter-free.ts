@@ -16,7 +16,7 @@ const main: ExtraSteps = async ({ isFullClone, projectName }) => {
       'Done!'
     )} created a new project under ./${projectName}
 
-cd into the project using:
+visit your project:
   ${chalk.green('cd')} ${projectName}
 `)
   }

@@ -20,11 +20,11 @@ export function convertValueToPercentage(value: number, min: number, max: number
 export function getLabel(index: number, totalValues: number) {
   if (totalValues > 2) {
     return `Value ${index + 1} of ${totalValues}`
-  } else if (totalValues === 2) {
-    return ['Minimum', 'Maximum'][index]
-  } else {
-    return undefined
   }
+  if (totalValues === 2) {
+    return ['Minimum', 'Maximum'][index]
+  }
+  return undefined
 }
 
 /**

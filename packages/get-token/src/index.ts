@@ -68,8 +68,8 @@ export const stepTokenUpOrDown = (
       ? cacheWholeKeys
       : cacheWholeVariables
     : isString
-    ? cacheKeys
-    : cacheVariables
+      ? cacheKeys
+      : cacheVariables
 
   const tokensOrdered = cache[type]
 

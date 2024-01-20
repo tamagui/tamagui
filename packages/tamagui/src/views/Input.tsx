@@ -31,34 +31,49 @@ export const defaultStyles = {
   },
 
   focusStyle: {
-    outlineColor: '$borderColorFocus',
+    outlineColor: '$outlineColor',
     outlineWidth: 2,
     outlineStyle: 'solid',
     borderColor: '$borderColorFocus',
   },
 } as const
 
-export const InputFrame = styled(TextInput, {
-  name: 'Input',
+export const InputFrame = styled(
+  TextInput,
+  {
+    name: 'Input',
 
-  variants: {
-    unstyled: {
-      false: defaultStyles,
+    variants: {
+      unstyled: {
+        false: defaultStyles,
+      },
+
+      size: {
+        '...size': inputSizeVariant,
+      },
+
+      disabled: {
+        true: {},
+      },
+    } as const,
+
+    defaultVariants: {
+      unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
     },
-
-    size: {
-      '...size': inputSizeVariant,
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
   },
-})
+  {
+    isText: true,
+    acceptTokens: {
+      placeholderTextColor: 'color',
+    },
+  }
+)
 
 export type Input = TextInput
 
-export type InputProps = Omit<GetProps<typeof InputFrame>, 'placeholderTextColor'> & {
+export type InputFrameProps = GetProps<typeof InputFrame>
+
+export type InputProps = Omit<InputFrameProps, 'placeholderTextColor'> & {
   placeholderTextColor?: ColorStyleProp
   rows?: number
 }
@@ -71,6 +86,7 @@ export const Input = InputFrame.styleable<InputProps>((propsIn, ref) => {
 export function useInputProps(props: InputProps, ref: any) {
   const theme = useTheme()
   const { onChangeText, ref: combinedRef } = useFocusable({
+    // @ts-ignore
     props,
     ref,
     isInput: true,

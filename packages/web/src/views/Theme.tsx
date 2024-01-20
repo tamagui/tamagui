@@ -19,8 +19,8 @@ export const Theme = forwardRef(function Theme({ children, ...props }: ThemeProp
 
   let finalChildren = disableDirectChildTheme
     ? Children.map(children, (child) =>
-      cloneElement(child, { ['data-disable-theme']: true })
-    )
+        cloneElement(child, { ['data-disable-theme']: true })
+      )
     : children
 
   if (ref) {
@@ -56,9 +56,17 @@ export function getThemedChildren(
   const { themeManager, isNewTheme } = themeState
 
   // its always there.. should fix type
-  if (!themeManager) throw `❌`
+  if (!themeManager) {
+    throw new Error(
+      process.env.NODE_ENV === 'development'
+        ? `❌ No theme found, either incorrect name, potential duplicate tamagui deps, or TamaguiProvider not providing themes.`
+        : `❌ 005`
+    )
+  }
 
   const { shallow, forceClassName } = props
+
+  // TODO remove hook and join with the parent stateRef in createComponent
   const hasEverThemed = useRef(false)
 
   const shouldRenderChildrenWithTheme =
@@ -78,12 +86,12 @@ export function getThemedChildren(
     next = Children.toArray(children).map((child) => {
       return isValidElement(child)
         ? cloneElement(
-          child,
-          undefined,
-          <Theme name={themeManager.state.parentName}>
-            {(child as any).props.children}
-          </Theme>
-        )
+            child,
+            undefined,
+            <Theme name={themeManager.state.parentName}>
+              {(child as any).props.children}
+            </Theme>
+          )
         : child
     })
   }
@@ -169,8 +177,8 @@ function getThemeClassNameAndStyle(themeState: ChangedThemeResponse, isRoot = fa
 
   const style = themeColor
     ? {
-      color: themeColor,
-    }
+        color: themeColor,
+      }
     : undefined
 
   let className = themeState.state?.className || ''

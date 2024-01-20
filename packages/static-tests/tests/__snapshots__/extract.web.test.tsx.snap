@@ -4,7 +4,7 @@ exports[`extract-tests > converts a style object to class names 1`] = `":root ._
 
 exports[`extract-tests > converts a style object to class names 2`] = `":root ._transform-827061876{transform:rotateY(10deg);}"`;
 
-exports[`extract-tests > converts a style object to class names 3`] = `":root ._bxsh-2132166440{box-shadow:0px 0px 10px red;}"`;
+exports[`extract-tests > converts a style object to class names 3`] = `":root ._bxsh-1807967691{box-shadow:0px 0px 10px rgba(255,0,0,1);}"`;
 
 exports[`extract-tests > supports RTL properties 1`] = `
 [

@@ -1,4 +1,8 @@
 export declare const animations: import("@tamagui/web").AnimationDriver<{
+    '75ms': {
+        type: "timing";
+        duration: number;
+    };
     '100ms': {
         type: "timing";
         duration: number;
@@ -29,6 +33,11 @@ export declare const animations: import("@tamagui/web").AnimationDriver<{
         stiffness: number;
         mass: number;
     };
+    slowest: {
+        type: "spring";
+        damping: number;
+        stiffness: number;
+    };
     slow: {
         type: "spring";
         damping: number;
@@ -48,6 +57,11 @@ export declare const animations: import("@tamagui/web").AnimationDriver<{
     };
     quicker: {
         type: "spring";
+        damping: number;
+        mass: number;
+        stiffness: number;
+    };
+    quickest: {
         damping: number;
         mass: number;
         stiffness: number;

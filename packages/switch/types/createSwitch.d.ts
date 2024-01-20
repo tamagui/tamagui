@@ -25,6 +25,7 @@ export declare function createSwitch<F extends SwitchComponent, T extends Switch
     disableActiveTheme?: boolean;
     Frame?: F;
     Thumb?: T;
+<<<<<<< HEAD
 }): import("@tamagui/core").ReactComponentWithRef<Omit<ViewProps, "pointerEvents" | "display" | "children" | "style" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & ExpectingVariantProps & HeadlessSwitchExtraProps & {
@@ -46,6 +47,12 @@ export declare function createSwitch<F extends SwitchComponent, T extends Switch
     Thumb: import("@tamagui/core").TamaguiComponent<Omit<ViewProps, "pointerEvents" | "display" | "children" | "style" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
         style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & ExpectingVariantProps, any, any, ExpectingVariantProps, {}>;
+=======
+}): React.ForwardRefExoticComponent<Omit<SwitchProps, keyof SwitchExtraProps> & SwitchExtraProps & React.RefAttributes<any>> & import("@tamagui/core").StaticComponentObject<Omit<SwitchProps, keyof SwitchExtraProps> & SwitchExtraProps, any, any, SwitchSharedProps & SwitchExtraProps, {}, {}> & Omit<{}, "staticConfig" | "extractable" | "styleable"> & {
+    __tama: [Omit<SwitchProps, keyof SwitchExtraProps> & SwitchExtraProps, any, any, SwitchSharedProps & SwitchExtraProps, {}, {}];
+} & {
+    Thumb: import("@tamagui/core").TamaguiComponent<SwitchBaseProps, any, any, SwitchSharedProps, {}, {}>;
+>>>>>>> master
 };
 export {};
 //# sourceMappingURL=createSwitch.d.ts.map

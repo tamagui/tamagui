@@ -57,12 +57,12 @@ export type ThemeGettable<Val> = Val & {
   ) =>
     | string
     | (Val extends Variable<infer X>
-      ? X extends VariableValGeneric
-      ? any
-      : Exclude<X, Variable>
-      : Val extends VariableVal
-      ? string | number
-      : unknown)
+        ? X extends VariableValGeneric
+          ? any
+          : Exclude<X, Variable>
+        : Val extends VariableVal
+          ? string | number
+          : unknown)
 }
 
 export type UseThemeResult = {
@@ -86,21 +86,21 @@ export const useThemeWithState = (
     keys.current,
     !isServer
       ? () => {
-        const next =
-          props.shouldUpdate?.() ?? (keys.current.length > 0 ? true : undefined)
+          const next =
+            props.shouldUpdate?.() ?? (keys.current.length > 0 ? true : undefined)
 
-        if (
-          process.env.NODE_ENV === 'development' &&
-          props.debug &&
-          props.debug !== 'profile'
-        ) {
-          console.info(`  🎨 useTheme() shouldUpdate?`, next, {
-            shouldUpdateProp: props.shouldUpdate?.(),
-            keys: [...keys.current],
-          })
+          if (
+            process.env.NODE_ENV === 'development' &&
+            typeof props.debug === 'string' &&
+            props.debug !== 'profile'
+          ) {
+            console.info(`  🎨 useTheme() shouldUpdate?`, next, {
+              shouldUpdateProp: props.shouldUpdate?.(),
+              keys: [...keys.current],
+            })
+          }
+          return next
         }
-        return next
-      }
       : undefined
   )
 
@@ -261,16 +261,21 @@ function someParentIsInversed(manager?: ThemeManager) {
   return false
 }
 
-const activeThemeManagers = new WeakMap<Object, ThemeManager>()
-const activeThemeManagerIds: Record<number, Object> = {}
-const getId = (id: number) => activeThemeManagerIds[id]
+export const activeThemeManagers = new Set<ThemeManager>()
+
+// until WeakRef support:
+const _uidToManager = new WeakMap<Object, ThemeManager>()
+const _idToUID: Record<number, Object> = {}
+const getId = (id: number) => _idToUID[id]
+
 export const getThemeManager = (id: number) => {
-  return activeThemeManagers.get(getId(id)!)
+  return _uidToManager.get(getId(id)!)
 }
+
 const registerThemeManager = (t: ThemeManager) => {
-  if (!activeThemeManagerIds[t.id]) {
-    const id = activeThemeManagerIds[t.id] = {}
-    activeThemeManagers.set(id, t)
+  if (!_idToUID[t.id]) {
+    const id = (_idToUID[t.id] = {})
+    _uidToManager.set(id, t)
   }
 }
 
@@ -281,7 +286,8 @@ export const useChangeThemeEffect = (
   shouldUpdate?: () => boolean | undefined
 ): ChangedThemeResponse => {
   const { disable } = props
-  const parentManager = getThemeManager(useContext(ThemeManagerIDContext))
+  const parentManagerId = useContext(ThemeManagerIDContext)
+  const parentManager = getThemeManager(parentManagerId)
 
   if ((!isRoot && !parentManager) || disable) {
     return {
@@ -346,6 +352,7 @@ export const useChangeThemeEffect = (
       }
 
       if (isNewTheme || getShouldUpdateTheme(themeManager)) {
+        activeThemeManagers.add(themeManager)
         setThemeState(createState)
       }
 
@@ -371,7 +378,14 @@ export const useChangeThemeEffect = (
 
           if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
             // prettier-ignore
-            console.info(` 🔸 onChange`, themeManager.id, { force, shouldTryUpdate, props, name, manager, keys, })
+            console.info(` 🔸 onChange`, themeManager.id, {
+              force,
+              shouldTryUpdate,
+              props,
+              name,
+              manager,
+              keys,
+            })
           }
 
           if (shouldTryUpdate) {
@@ -385,7 +399,7 @@ export const useChangeThemeEffect = (
         selfListenerDispose()
         disposeChangeListener?.()
         if (isNewTheme) {
-          activeThemeManagers.delete(themeManager.id)
+          activeThemeManagers.delete(themeManager)
         }
       }
     }, [

@@ -59,7 +59,7 @@ export class ThemeManager {
           `No parent manager given, this is likely due to duplicated Tamagui dependencies. Check your lockfile for mis-matched versions. It could also be from an error somewhere else in your stack causing Tamagui to recieve undefined context, you can try putting some ErrorBoundary components around other areas of your app, or a Suspense boundary.`
         )
       }
-      throw `❌ 0`
+      throw `❌ 000`
     }
 
     // this is used in updateStateFromProps so must be set
@@ -95,10 +95,6 @@ export class ThemeManager {
   updateState(nextState: ThemeManagerState, shouldNotify = true) {
     this.state = nextState
     this._allKeys = null
-    if (process.env.NODE_ENV !== 'production') {
-      this['_numChangeEventsSent'] ??= 0
-      this['_numChangeEventsSent']++
-    }
     if (shouldNotify) {
       if (process.env.TAMAGUI_TARGET === 'native') {
         // native is way slower with queueMicrotask
@@ -156,6 +152,10 @@ export class ThemeManager {
 
   notify(forced = false) {
     this.themeListeners.forEach((cb) => cb(this.state.name, this, forced))
+    if (process.env.NODE_ENV !== 'production') {
+      this['_numChangeEventsSent'] ??= 0
+      this['_numChangeEventsSent']++
+    }
   }
 
   onChangeTheme(cb: ThemeListener, debugId?: number) {
@@ -229,15 +229,6 @@ function getState(
       ? max // component name only don't search upwards
       : 0
 
-  if (
-    process.env.NODE_ENV !== 'production' &&
-    props.debug &&
-    typeof window !== 'undefined'
-  ) {
-    console.groupCollapsed('ThemeManager.getState()')
-    console.info({ props, baseName, base, min, max })
-  }
-
   for (let i = max; i >= min; i--) {
     let prefix = base.slice(0, i).join(THEME_NAME_SEPARATOR)
 
@@ -308,8 +299,9 @@ function getState(
       const pre = THEME_CLASSNAME_PREFIX
       const className = !isWeb
         ? ''
-        : `${pre}sub_theme ${pre}${!scheme || !restNames.length ? firstName : restNames.join('_')
-        }`
+        : `${pre}sub_theme ${pre}${
+            !scheme || !restNames.length ? firstName : restNames.join('_')
+          }`
 
       // because its a new theme the baseManager is now the parent
       const parentState = (baseManager || parentManager)?.state
@@ -330,10 +322,12 @@ function getState(
 
   if (
     process.env.NODE_ENV !== 'production' &&
-    typeof props.debug === 'string' &&
+    props.debug === 'verbose' &&
     typeof window !== 'undefined'
   ) {
-    console.warn('ThemeManager.getState():', { result })
+    console.groupCollapsed('ThemeManager.getState()')
+    console.info({ props, baseName, base, min, max })
+    console.warn('result', { result })
     console.trace()
     console.groupEnd()
   }

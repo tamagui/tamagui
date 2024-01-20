@@ -12,12 +12,14 @@
   "packageManager": "yarn@4.0.2",
   "scripts": {
     "build:force": "yarn clean:build && yarn build --force",
-    "build:js": "./scripts/build-js.sh",
+    "build:js": "ultra -r --no-pretty build -- --skip-types",
+    "build:js:turbo": "turbo run build -- --skip-types",
     "build:types": "SKIP_JS=1 yarn build",
     "build": "turbo run build --filter=!next-app",
     "build:verbose": "yarn build -vvv",
     "check-deps": "check-dependency-version-consistency .",
     "check": "manypkg check",
+    "ci": "yarn && yarn check && yarn lint && yarn build && yarn test",
     "clean:build": "turbo run clean:build",
     "clean:ts": "tsc -b --clean tsconfig.build.json",
     "clean": "turbo run clean:build",
@@ -38,7 +40,7 @@
     "lighthouse": "npx lighthouse http://localhost:3000 --view --chrome-flags='--headless' --throttling.cpuSlowdownMultiplier=16 --output-path=/tmp/report.html",
     "lint:fix": "ultra -r --no-pretty lint:fix",
     "lint": "ultra -r --no-pretty lint",
-    "postinstall": "manypkg check && yarn git-crypt-unlock",
+    "postinstall": "npm-run-all --parallel check git-crypt-unlock build:js",
     "pretty": "pretty-quick",
     "release:canary": "yarn release --canary --ci",
     "release": "node -r esbuild-register ./scripts/release.ts",
@@ -66,23 +68,23 @@
     "test:demos": "yarn workspace @tamagui/demos test",
     "test": "CLEANUP=1 turbo run --concurrency=1 test",
     "upgrade:starters:free": "cd ../starter-free && yarn && yarn upgrade:tamagui",
+    "upgrade:starters:expo-router": "cd starters/expo-router && yarn && yarn upgrade:tamagui",
     "upgrade:starters:simple-web": "cd starters/simple-web && yarn && yarn upgrade:tamagui",
-    "upgrade:starters": "yarn upgrade:starters:free && yarn upgrade:starters:simple-web",
+    "upgrade:starters": "yarn upgrade:starters:free && yarn upgrade:starters:simple-web && yarn upgrade:starters:expo-router",
     "vercel:build": "yarn build:js && cd apps/site && yarn ci:build",
     "vercel:build-studio": "yarn build:js && cd apps/studio && yarn ci:build",
-    "watch:build": "SKIP_TYPES_INITIAL=1 ultra -r --no-pretty --concurrency 400 watch",
-    "watch:js": "SKIP_TYPES=1 yarn watch:build",
+    "watch:packages": "SKIP_TYPES_INITIAL=1 ultra -r --no-pretty --concurrency 400 watch",
+    "watch:js": "SKIP_TYPES=1 yarn watch:packages",
     "watch:ts": "tsc -b -w --preserveWatchOutput tsconfig.build.json",
-    "watch": "npm-run-all --parallel watch:ts watch:build"
+    "watch": "npm-run-all --parallel watch:ts watch:packages"
   },
   "resolutions": {
     "react-native-svg": "13.9.0",
     "expo-modules-core": "1.7.0",
     "@types/node": "16.11.9",
-    "react-native": "0.72.0",
+    "react-native": "0.72.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-native-reanimated@^3.3.0": "patch:react-native-reanimated@npm%3A3.4.1#./.yarn/patches/react-native-reanimated-npm-3.4.1-bf4ac7f6b3.patch",
     "react-native-screens@~3.22.0": "patch:react-native-screens@npm%3A3.22.1#./.yarn/patches/react-native-screens-npm-3.22.1-b3da351834.patch"
   },
   "importSort": {
@@ -92,7 +94,7 @@
     }
   },
   "dependencies": {
-    "@biomejs/biome": "^1.2.2",
+    "@biomejs/biome": "^1.5.1",
     "@faker-js/faker": "^8.3.1",
     "@manypkg/cli": "^0.19.1",
     "@nderscore/tamagui-typescript-plugin": "^0.6.0",
@@ -102,11 +104,10 @@
     "import-sort-style-module": "^6.0.0",
     "npm-run-all": "^4.1.5",
     "p-map": "^5.5.0",
-    "prettier": "^2.8.1",
     "pretty-quick": "^3.1.2",
     "prompts": "2.1.0",
     "turbo": "^1.11.3",
-    "typescript": "^5.2.2",
+    "typescript": "^5.3.3",
     "ultra-runner": "^3.10.5"
   },
   "stableVersion": "0.0.0"

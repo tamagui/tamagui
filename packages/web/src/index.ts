@@ -12,6 +12,7 @@ export * from './styled'
 export * from './setupReactNative'
 
 export * from './types'
+export * from './interfaces/RNExclusiveTypes'
 export * from './interfaces/GetRef'
 
 export {
@@ -31,7 +32,7 @@ export * from './contexts/ComponentContext'
 export * from './helpers/createStyledContext'
 export * from './helpers/expandStyles'
 export * from './helpers/createMediaStyle'
-export * from './helpers/expandStylesAndRemoveNullishValues'
+export * from './helpers/normalizeStyle'
 export * from './helpers/propMapper'
 export * from './helpers/getExpandedShorthands'
 export * from './helpers/getSplitStyles'

@@ -86,8 +86,8 @@ export const SheetImplementationCustom = themeable(
       const [animationProp, animationPropConfig] = !animation
         ? []
         : Array.isArray(animation)
-        ? animation
-        : ([animation] as const)
+          ? animation
+          : ([animation] as const)
       return (
         animationConfigProp ??
         (animationProp
@@ -405,8 +405,8 @@ export const SheetImplementationCustom = themeable(
     const forcedContentHeight = hasFit
       ? undefined
       : snapPointsMode === 'percent'
-      ? `${maxSnapPoint}%`
-      : maxSnapPoint
+        ? `${maxSnapPoint}%`
+        : maxSnapPoint
 
     const contents = (
       <ParentSheetContext.Provider value={nextParentContext}>

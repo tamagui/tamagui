@@ -41,7 +41,8 @@ const bundleNative = pkg.tamagui?.['bundle.native']
 const bundleNativeTest = pkg.tamagui?.['bundle.native.test']
 const pkgModule = pkg.module
 const pkgModuleJSX = pkg['module:jsx']
-const pkgTypes = Boolean(pkg['types'] || pkg['typings'])
+const pkgTypes = Boolean(pkg.types || pkg.typings)
+const pkgRemoveSideEffects = pkg.removeSideEffects || false
 
 const flatOut = [pkgMain, pkgModule, pkgModuleJSX].filter(Boolean).length === 1
 
@@ -86,33 +87,31 @@ if (shouldClean || shouldCleanBuildOnly) {
   clean().then(() => {
     process.exit(0)
   })
-  return
-}
-
-if (shouldWatch) {
-  process.env.IS_WATCHING = true
-  process.env.DISABLE_AUTORUN = true
-  const rebuild = debounce(build, 100)
-  const chokidar = require('chokidar')
-
-  // do one js build but not types
-  build({
-    skipTypes: true,
-  })
-
-  chokidar
-    // prevent infinite loop but cause race condition if you just build directly
-    .watch('src', {
-      persistent: true,
-      alwaysStat: true,
-      ignoreInitial: true,
+} else {
+  if (shouldWatch) {
+    process.env.IS_WATCHING = true
+    process.env.DISABLE_AUTORUN = true
+    const rebuild = debounce(build, 100)
+    const chokidar = require('chokidar')
+  
+    // do one js build but not types
+    build({
+      skipTypes: true,
     })
-    .on('change', rebuild)
-    .on('add', rebuild)
-  return
+  
+    chokidar
+      // prevent infinite loop but cause race condition if you just build directly
+      .watch('src', {
+        persistent: true,
+        alwaysStat: true,
+        ignoreInitial: true,
+      })
+      .on('change', rebuild)
+      .on('add', rebuild)
+  } else {
+    build()
+  }  
 }
-
-build()
 
 async function build({ skipTypes } = {}) {
   if (process.env.DEBUG) console.info('🔹', pkg.name)
@@ -178,7 +177,7 @@ async function buildJs() {
     return
   }
 
-  let files = shouldBundle
+  const files = shouldBundle
     ? [pkgSource || './src/index.ts']
     : (await fg(['src/**/*.(m)?[jt]s(x)?', 'src/**/*.css'])).filter(
         (x) => !x.includes('.d.ts')
@@ -507,6 +506,10 @@ async function esbuildWriteIfChanged(
         if (rnWebReplacer) {
           outString = outString.replaceAll(rnWebReplacer.from, rnWebReplacer.to)
         }
+      }
+
+      if (pkgRemoveSideEffects && opts.format === 'esm') {
+        outString = outString.replace(/\nimport "[^"]+";\n/g, '\n')
       }
 
       if (shouldWatch) {

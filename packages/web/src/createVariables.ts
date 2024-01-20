@@ -10,8 +10,8 @@ export type DeepVariableObject<A extends DeepTokenObject> = {
   [Key in keyof A]: A[Key] extends string | number
     ? Variable<A[Key]>
     : A[Key] extends DeepTokenObject
-    ? DeepVariableObject<A[Key]>
-    : never
+      ? DeepVariableObject<A[Key]>
+      : never
 }
 
 const cache = new WeakMap()

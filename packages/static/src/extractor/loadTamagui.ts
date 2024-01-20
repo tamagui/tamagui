@@ -1,3 +1,4 @@
+import { writeFileSync } from 'fs'
 import { basename, dirname, extname, join, relative, resolve } from 'path'
 
 import { Color, colorLog } from '@tamagui/cli-color'
@@ -9,6 +10,7 @@ import { existsSync, pathExists, readJSON, writeFile } from 'fs-extra'
 
 import { SHOULD_DEBUG } from '../constants'
 import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
+import { minifyCSS } from '../minifyCSS'
 import { getNameToPaths, registerRequire } from '../registerRequire'
 import {
   TamaguiProjectInfo,
@@ -60,7 +62,11 @@ export async function loadTamagui(
 
     if (props.outputCSS) {
       colorLog(Color.FgYellow, `    ➡ [tamagui] output css: ${props.outputCSS}\n`)
-      const css = config.getCSS()
+      // default to not minifying it messes up ssr parsing
+      const css =
+        props.disableMinifyCSS === false
+          ? minifyCSS(config.getCSS()).code
+          : config.getCSS()
       await writeFile(props.outputCSS, css)
     }
   }
@@ -143,12 +149,14 @@ export function loadTamaguiSync({
       if (propsIn.config) {
         const configPath = getTamaguiConfigPathFromOptionsConfig(propsIn.config)
         const exp = require(configPath)
-        tamaguiConfig = (exp['default'] || exp) as TamaguiInternalConfig
+
+        tamaguiConfig = (exp['default'] || exp['config'] || exp) as TamaguiInternalConfig
+
         if (!tamaguiConfig || !tamaguiConfig.parsed) {
           const confPath = require.resolve(configPath)
           throw new Error(`Can't find valid config in ${confPath}:
           
-  Be sure you "export default" the config.`)
+  Be sure you "export default" or "export const config" the config.`)
         }
 
         // set up core
@@ -177,7 +185,16 @@ export function loadTamaguiSync({
         nameToPaths: getNameToPaths(),
       } satisfies TamaguiProjectInfo
 
-      if (propsIn.config) {
+      if (tamaguiConfig) {
+        if (props.outputCSS) {
+          colorLog(Color.FgYellow, `    ➡ [tamagui] output css: ${props.outputCSS}\n`)
+          const css =
+            props.disableMinifyCSS === false
+              ? minifyCSS(tamaguiConfig.getCSS()).code
+              : tamaguiConfig.getCSS()
+          writeFileSync(props.outputCSS, css)
+        }
+
         generateTamaguiStudioConfigSync(props, info)
       }
 

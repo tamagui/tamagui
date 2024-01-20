@@ -572,9 +572,8 @@ const SliderComponent = React.forwardRef<TamaguiElement, SliderProps>(
         if (hasMinStepsBetweenValues(nextValues, minStepsBetweenThumbs * step)) {
           valueIndexToChangeRef.current = nextValues.indexOf(nextValue)
           return String(nextValues) === String(prevValues) ? prevValues : nextValues
-        } else {
-          return prevValues
         }
+        return prevValues
       })
     }
 

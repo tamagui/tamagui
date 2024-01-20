@@ -279,13 +279,12 @@ export const useListItem = (
   }
 }
 
-const ListItemComponent = ListItemFrame.styleable<ListItemProps>(function ListItem(
-  props,
-  ref
-) {
-  const { props: listItemProps } = useListItem(props)
-  return <ListItemFrame ref={ref} {...listItemProps} />
-})
+const ListItemComponent = ListItemFrame.styleable<ListItemProps>(
+  function ListItem(props, ref) {
+    const { props: listItemProps } = useListItem(props)
+    return <ListItemFrame ref={ref} {...listItemProps} />
+  }
+)
 
 export const ListItem = withStaticProperties(ListItemComponent, {
   Text: ListItemText,

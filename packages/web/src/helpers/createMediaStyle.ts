@@ -98,10 +98,12 @@ export const createMediaStyle = (
     const precedenceImportancePrefix = groupMediaKey
       ? ''
       : enableMediaPropOrder
-      ? // this new array should be cached
-        new Array(priority).fill(':root').join('')
-      : // @ts-ignore
-        prefixes[mediaKey]
+        ? // this new array should be cached
+          new Array(priority)
+            .fill(':root')
+            .join('')
+        : // @ts-ignore
+          prefixes[mediaKey]
     const prefix = groupMediaKey ? `@container ${containerName}` : '@media'
 
     if (groupMediaKey) {

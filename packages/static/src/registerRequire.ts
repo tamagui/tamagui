@@ -51,7 +51,7 @@ export function registerRequire(
   Module.prototype.require = tamaguiRequire
 
   function tamaguiRequire(this: any, path: string) {
-    if (path === 'tamagui') {
+    if (path === 'tamagui' && platform === 'native') {
       return og.apply(this, ['tamagui/native'])
     }
 

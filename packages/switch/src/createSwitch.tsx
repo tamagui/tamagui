@@ -72,7 +72,9 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
 }) {
   if (process.env.NODE_ENV === 'development') {
     if (
+      // @ts-ignore
       (Frame !== DefaultSwitchFrame && Frame.staticConfig.context) ||
+      // @ts-ignore
       (Thumb !== SwitchThumb && Thumb.staticConfig.context)
     ) {
       console.warn(

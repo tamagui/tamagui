@@ -1,3 +1,41 @@
+- Select `ListItemFrame` area is messy/slow due to inline styles and complex components
+- propMode
+
+- make styled() only not accept most non-style props
+
+- causes leftover props in DOM:
+
+<Stack
+  hitSlop={5}
+  onAccessibilityAction={[]}
+  importantForAccessibility="no"
+  needsOffscreenAlphaCompositing
+/>
+
+- useStyle and others can have forComponent types
+
+- docs:
+  - for ssr need for t_unmounted
+  - explain how ssr works
+
+- tests:
+  - SSR e2e with animations
+  - onLayout + RN or not
+  - active/focus/press styles (+ animations) (+ media queries)
+    - we have some of these but more better
+
+- TODO this is duplicated
+
+- this could work automatically? or with a simple config:
+const ScrollViewTamagui = styled(ScrollView, {
+  bg: '$background',
+  contentContainerStyle: {
+    flex: 1,
+    padding: "$md',
+  }
+})
+
+
 studio: add outlineColor and the pseudos
 studio: export for takeout option
 

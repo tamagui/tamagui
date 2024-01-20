@@ -44,6 +44,30 @@ export const SliderFrame = styled(YStack, {
   } as const,
 })
 
+// export const SliderTrackFrame = styled(SliderFrame, {
+//   // name: 'SliderTrack',
+
+//   variants: {
+//     unstyled: {
+//       false: {
+//         height: '100%',
+//         width: '100%',
+//         backgroundColor: '$background',
+//         position: 'relative',
+//         borderRadius: 100_000,
+//         overflow: 'hidden',
+//       },
+//     },
+//   } as const,
+
+//   // defaultVariants: {
+//   //   unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+//   // },
+// })
+
+// const XXXX = <SliderFrame margin={10} />
+// const XX = <SliderTrackFrame  />
+
 export const SliderImpl = React.forwardRef<View, SliderImplProps>(
   (props: ScopedProps<SliderImplProps>, forwardedRef) => {
     const {

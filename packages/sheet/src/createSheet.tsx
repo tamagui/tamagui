@@ -33,7 +33,7 @@ type SheetStyledComponent = TamaguiComponentExpectingVariants<BaseProps, SharedS
 export function createSheet<
   H extends SheetStyledComponent | TamaguiComponent,
   F extends SheetStyledComponent | TamaguiComponent,
-  O extends SheetStyledComponent | TamaguiComponent
+  O extends SheetStyledComponent | TamaguiComponent,
 >({ Handle, Frame, Overlay }: { Handle: H; Frame: F; Overlay: O }) {
   const SheetHandle = Handle.extractable(
     ({ __scopeSheet, ...props }: SheetScopedProps<GetProps<typeof Handle>>) => {

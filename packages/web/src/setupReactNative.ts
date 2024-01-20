@@ -20,22 +20,21 @@ export function getReactNativeConfig(Component: any) {
 
     // can assume everything else is react native on native
     return RNConfigs.default
-  } else {
-    if (Component.getSize && Component.prefetch) {
-      return RNConfigs.Image
-    }
-    if (Component.displayName === 'Text' && Component.render) {
-      return RNConfigs.Text
-    }
-    if (
-      Component.render &&
-      (Component.displayName === 'ScrollView' || Component.displayName === 'View')
-    ) {
-      return RNConfigs.default
-    }
-    if (Component.State?.blurTextInput) {
-      return RNConfigs.TextInput
-    }
+  }
+  if (Component.getSize && Component.prefetch) {
+    return RNConfigs.Image
+  }
+  if (Component.displayName === 'Text' && Component.render) {
+    return RNConfigs.Text
+  }
+  if (
+    Component.render &&
+    (Component.displayName === 'ScrollView' || Component.displayName === 'View')
+  ) {
+    return RNConfigs.default
+  }
+  if (Component.State?.blurTextInput) {
+    return RNConfigs.TextInput
   }
 
   return ReactNativeStaticConfigs.get(Component)

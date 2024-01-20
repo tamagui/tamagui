@@ -99,9 +99,8 @@ export function createContextScope(
           console.warn(missingContextMessage)
         }
         return options.fallback as ContextValueType
-      } else {
-        throw new Error(missingContextMessage)
       }
+      throw new Error(missingContextMessage)
     }
 
     Provider.displayName = `${rootComponentName}Provider`

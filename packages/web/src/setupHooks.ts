@@ -5,6 +5,7 @@ import {
   StaticConfig,
   TamaguiComponentEvents,
   TamaguiComponentState,
+  TamaguiComponentStateRef,
   TamaguiElement,
 } from './types'
 
@@ -19,7 +20,8 @@ type InternalHooks = {
   usePropsTransform?: (
     elementType: any,
     props: Record<string, any>,
-    hostRef: RefObject<TamaguiElement>
+    stateRef: { current: TamaguiComponentStateRef },
+    willHydrate?: boolean
   ) => any
 
   useEvents?: (

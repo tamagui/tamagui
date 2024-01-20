@@ -36,14 +36,14 @@ export function simpleStr(arg: any) {
     return typeof arg === 'function'
       ? 'fn'
       : typeof arg === 'string'
-      ? `"${arg}"`
-      : !arg
-      ? arg
-      : typeof arg !== 'object'
-      ? arg
-      : Array.isArray(arg)
-      ? '[...]'
-      : `{...}`
+        ? `"${arg}"`
+        : !arg
+          ? arg
+          : typeof arg !== 'object'
+            ? arg
+            : Array.isArray(arg)
+              ? '[...]'
+              : `{...}`
   }
   return arg
 }

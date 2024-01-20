@@ -4,7 +4,7 @@ import {
   Adapt,
   Button,
   Popover,
-  Separator,
+  Sheet,
   Spacer,
   XStack,
   YStack,
@@ -13,7 +13,6 @@ import {
 
 import { DocsMenuContents } from './DocsMenuContents'
 import { HeaderLinks } from './HeaderLinks'
-import { SponsorButton } from './SponsorButton'
 import { useDocsMenu } from './useDocsMenu'
 
 export const HeaderMenu = React.memo(function HeaderMenu() {
@@ -39,22 +38,23 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
           circular
           noTextWrap
           onPress={() => {
-            if (isTouchable) {
+            if (isTouchable || !open) {
               setOpen(!open)
             }
           }}
           theme={open ? 'alt1' : undefined}
           aria-label="Open the main menu"
         >
-          <Menu size={18} color="var(--color)" />
+          <Menu size={22} color="var(--color)" />
         </Button>
       </Popover.Anchor>
 
       <Adapt platform="touch" when="sm">
-        <Popover.Sheet
+        <Sheet
           zIndex={100000000}
           modal
           dismissOnSnapToBottom
+          animation="bouncy"
           animationConfig={{
             type: 'spring',
             damping: 25,
@@ -62,13 +62,13 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
             stiffness: 200,
           }}
         >
-          <Popover.Sheet.Frame>
-            <Popover.Sheet.ScrollView>
+          <Sheet.Frame>
+            <Sheet.ScrollView>
               <Adapt.Contents />
-            </Popover.Sheet.ScrollView>
-          </Popover.Sheet.Frame>
-          <Popover.Sheet.Overlay zIndex={100} />
-        </Popover.Sheet>
+            </Sheet.ScrollView>
+          </Sheet.Frame>
+          <Sheet.Overlay zIndex={100} />
+        </Sheet>
       </Adapt>
 
       <HeaderMenuContent />
@@ -81,13 +81,13 @@ const HeaderMenuContent = React.memo(function HeaderMenuContent() {
     <Popover.Content
       bw={1}
       boc="$borderColor"
-      enterStyle={{ x: 0, y: -10, o: 0 }}
-      exitStyle={{ x: 0, y: -10, o: 0 }}
+      enterStyle={{ x: -10, o: 0 }}
+      exitStyle={{ x: -10, o: 0 }}
       x={0}
       y={0}
       o={1}
       animation={[
-        'quick',
+        '75ms',
         {
           opacity: {
             overshootClamping: true,
@@ -97,18 +97,21 @@ const HeaderMenuContent = React.memo(function HeaderMenuContent() {
       animateOnly={['transform', 'opacity']}
       p={0}
       maxHeight="80vh"
+      maxWidth={360}
       elevate
       zIndex={100000000}
+      trapFocus
+      br="$6"
     >
       <Popover.Arrow size="$4" borderWidth={1} boc="$borderColor" />
 
       <Popover.ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
         <YStack aria-label="Home menu contents" miw={230} p="$3" ai="flex-end">
-          <HeaderLinks forceShowAllLinks />
+          <XStack fw="wrap" f={1} gap="$2">
+            <HeaderLinks forceShowAllLinks />
+          </XStack>
 
-          <Spacer />
-          <XStack w="100%" h={1} bc="$color5" />
-          <Spacer />
+          <Spacer size="$3" />
 
           <DocsMenuContents />
         </YStack>

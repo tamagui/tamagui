@@ -14,21 +14,19 @@ import {
   pseudoDescriptors,
   pseudoDescriptorsBase,
 } from './pseudoDescriptors'
+import { normalizeColor } from './normalizeColor'
 
 // refactor this file away next...
 
 export function getStylesAtomic(stylesIn: ViewStyleWithPseudos, debug?: DebugProp) {
-  let res: StyleObject[] = []
+  const res: StyleObject[] = []
   for (const pseudoName in pseudoDescriptorsBase) {
     const pseudoStyle = stylesIn[pseudoName]
     if (pseudoStyle) {
-      res = [
-        ...res,
-        ...generateAtomicStyles(pseudoStyle, pseudoDescriptorsBase[pseudoName]),
-      ]
+      res.push(...generateAtomicStyles(pseudoStyle, pseudoDescriptorsBase[pseudoName]))
     }
   }
-  res = [...res, ...generateAtomicStyles(stylesIn)]
+  res.push(...generateAtomicStyles(stylesIn))
 
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
     console.info(` 🪮 getStylesAtomic`, { stylesIn, res })
@@ -100,13 +98,14 @@ export const generateAtomicStyles = (
 
 export function styleToCSS(style: Record<string, any>) {
   // box-shadow
-  const { shadowOffset, shadowRadius, shadowColor } = style
-  if (style.shadowRadius) {
+  const { shadowOffset, shadowRadius, shadowColor, shadowOpacity } = style
+  if (shadowRadius || shadowColor) {
     const offset = shadowOffset || defaultOffset
     const width = normalizeValueWithProperty(offset.width)
     const height = normalizeValueWithProperty(offset.height)
     const radius = normalizeValueWithProperty(shadowRadius)
-    const shadow = `${width} ${height} ${radius} ${shadowColor}`
+    const color = normalizeColor(shadowColor, shadowOpacity)
+    const shadow = `${width} ${height} ${radius} ${color}`
     style.boxShadow = style.boxShadow ? `${style.boxShadow}, ${shadow}` : shadow
     delete style.shadowOffset
     delete style.shadowRadius
@@ -149,7 +148,8 @@ const hyphenateStyleName = (key: string) => {
   return val
 }
 
-const pseudoSelectorPrefixes = (() => {
+// adding one more :root so we always override react native web styles :/
+const selectorPriority = (() => {
   const res: Record<string, string> = {}
   for (const key in pseudoDescriptors) {
     const pseudo = pseudoDescriptors[key]
@@ -165,8 +165,9 @@ function createAtomicRules(
   pseudo?: PseudoDescriptor
 ): string[] {
   const selector = pseudo
-    ? // adding one more :root so we always override react native web styles :/
-      `${pseudoSelectorPrefixes[pseudo.name]} .${identifier}:${pseudo.name}`
+    ? pseudo?.selector
+      ? `${pseudo?.selector} .${identifier}`
+      : `${selectorPriority[pseudo.name]} .${identifier}:${pseudo.name}`
     : `:root .${identifier}`
   const important = !!pseudo
 

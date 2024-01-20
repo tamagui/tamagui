@@ -2,6 +2,7 @@ import {
   ColorTokens,
   GetProps,
   ThemeTokens,
+  normalizeColor,
   styled,
   useProps,
   useTheme,
@@ -26,10 +27,26 @@ export const LinearGradient = YStack.styleable<LinearGradientExtraProps>(
     const { start, end, colors: colorsProp, locations, children, ...stackProps } = props
     const theme = useTheme()
 
-    const colors =
+    let colors =
       props.colors?.map((c) => {
         return (theme[c]?.get('web') as string) ?? c
       }) || []
+
+    if (process.env.NODE_ENV !== 'production') {
+      if (
+        colors.some((c) => {
+          const normalized = normalizeColor(c)
+          if (!normalized || normalized.startsWith('$')) {
+            return true
+          }
+        })
+      ) {
+        console.error(
+          `LinearGradient: "colors" prop contains invalid color tokens: ${colors} fallback to default colors: ["#000", "#fff"]`
+        )
+        colors = ['#000', '#fff']
+      }
+    }
 
     return (
       <LinearGradientFrame ref={ref as any} {...stackProps}>

@@ -21,7 +21,7 @@ export declare const esbuildOptions: {
     };
     target: string;
     format: "cjs";
-    jsx: "transform";
+    jsx: "automatic";
     platform: "node";
 };
 export type BundledConfig = Exclude<Awaited<ReturnType<typeof bundleConfig>>, undefined>;

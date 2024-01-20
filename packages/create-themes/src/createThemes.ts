@@ -136,7 +136,7 @@ export const createThemes = <ColorsList extends string, BaseColorList extends st
 
   function createThemesFrom<
     Name extends string,
-    GetTheme extends ThemeCreator = ThemeCreator
+    GetTheme extends ThemeCreator = ThemeCreator,
   >(
     name: Name,
     getTheme: GetTheme,

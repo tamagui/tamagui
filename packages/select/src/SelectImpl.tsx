@@ -258,13 +258,12 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
       return () => {
         clearTimeout(selectTimeoutRef.current)
       }
-    } else {
-      allowSelectRef.current = false
-      allowMouseUpRef.current = true
-      setInnerOffset(0)
-      setFallback(false)
-      setBlockSelection(false)
     }
+    allowSelectRef.current = false
+    allowMouseUpRef.current = true
+    setInnerOffset(0)
+    setFallback(false)
+    setBlockSelection(false)
   }, [open])
 
   useIsomorphicLayoutEffect(() => {

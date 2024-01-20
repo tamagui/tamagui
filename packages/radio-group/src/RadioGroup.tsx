@@ -138,7 +138,7 @@ const RadioGroupItemFrame = styled(ThemeableStack, {
           backgroundColor: '$backgroundHover',
           outlineStyle: 'solid',
           outlineWidth: 2,
-          outlineColor: '$borderColorFocus',
+          outlineColor: '$outlineColor',
         },
 
         pressStyle: {
@@ -502,7 +502,7 @@ const RadioGroup = withStaticProperties(
           >
             <RovingFocusGroup
               __scopeRovingFocusGroup={RADIO_GROUP_NAME}
-              orientation={orientation}
+              orientation={orientation as any}
               loop={true}
             >
               <RadioGroupFrame

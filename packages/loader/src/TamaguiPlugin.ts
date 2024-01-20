@@ -23,9 +23,13 @@ export type PluginOptions = TamaguiOptions & {
   disableModuleJSXEntry?: boolean
   disableWatchConfig?: boolean
   disableAliases?: boolean
+  /**
+   * @deprecated Deprecated
+   */
+  useReactNativeWebLite?: boolean
 }
 
-const dir = __dirname
+const dir = process.cwd()
 const resolver = buildResolver(join(dir, 'index.js'), {
   constraints: 'node',
 })
@@ -89,9 +93,8 @@ export class TamaguiPlugin {
         const hasPkg = existsSync(pkg)
         if (hasPkg) {
           return rootPath
-        } else {
-          rootPath = join(rootPath, '..')
         }
+        rootPath = join(rootPath, '..')
       }
       throw new Error(`Couldn't find package.json in any path above: ${fullPath}`)
     })
@@ -117,12 +120,21 @@ export class TamaguiPlugin {
         ['react/jsx-dev-runtime.js', 'react/jsx-dev-runtime'],
         ['react/jsx-dev-runtime', 'react/jsx-dev-runtime'],
         ['react-native-reanimated', 'react-native-reanimated'],
-        ['react-native$', 'react-native-web'],
-        ['react-native-web$', 'react-native-web'],
+
         ['@testing-library/react-native', '@tamagui/proxy-worm'],
         ['@gorhom/bottom-sheet$', '@gorhom/bottom-sheet'],
         // fix reanimated 3
         ['react-native/Libraries/Renderer/shims/ReactFabric', '@tamagui/proxy-worm'],
+        // @ts-expect-error deprecated
+        ...(this.options.useReactNativeWebLite
+          ? [
+              ['react-native$', 'react-native-web-lite'],
+              ['react-native-web$', 'react-native-web-lite'],
+            ]
+          : [
+              ['react-native$', 'react-native-web'],
+              ['react-native-web$', 'react-native-web'],
+            ]),
       ])
     )
   }
@@ -156,7 +168,10 @@ export class TamaguiPlugin {
       nmf.hooks.createModule.tap(
         this.pluginName,
         // @ts-expect-error CreateData is typed as 'object'...
-        (createData: { matchResource?: string; settings: { sideEffects?: boolean } }) => {
+        (createData: {
+          matchResource?: string
+          settings: { sideEffects?: boolean }
+        }) => {
           if (createData.matchResource?.endsWith('.tamagui.css')) {
             createData.settings.sideEffects = true
           }
@@ -212,12 +227,10 @@ export class TamaguiPlugin {
               return
             }
 
-            const combinedCSS = minifyCSS(
-              cssFiles.reduce((acc, file) => {
-                const cssContent = compilation.assets[file].source()
-                return `${acc}\n${cssContent}`
-              }, '')
-            )
+            const combinedCSS = cssFiles.reduce((acc, file) => {
+              const cssContent = compilation.assets[file].source()
+              return `${acc}\n${cssContent}`
+            }, '')
 
             for (const [index, cssFile] of cssFiles.entries()) {
               if (index > 0) {
@@ -230,7 +243,7 @@ export class TamaguiPlugin {
                 // just replace the first one? hacky
                 compilation.updateAsset(
                   cssFile,
-                  new compiler.webpack.sources.RawSource(Buffer.from(combinedCSS.code))
+                  new compiler.webpack.sources.RawSource(Buffer.from(combinedCSS))
                 )
               }
             }

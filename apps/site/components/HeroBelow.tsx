@@ -84,9 +84,8 @@ export const HeroBelowContent = memo(() => {
           </IconStack>
           <TitleLink href="/docs/core/configuration">Core</TitleLink>
           <Paragraph o={0.7} size="$5">
-            0-dependency style library for React. Use it web-only, or target React Native
-            with the same code. It adds many missing features to the RN style API in
-            ~24Kb.
+            Style React with no outside deps and 100% feature support across web and React
+            Native. Adds many missing features to the RN Style API in ~24Kb.
           </Paragraph>
         </Section>
 

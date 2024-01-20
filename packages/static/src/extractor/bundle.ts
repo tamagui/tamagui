@@ -95,6 +95,13 @@ function getESBuildConfig(
               external: true,
             }
           })
+
+          build.onResolve({ filter: /react-native-reanimated/ }, (args) => {
+            return {
+              path: 'react-native-reanimated',
+              external: true,
+            }
+          })
         },
       },
       esbuildAliasPlugin({
@@ -134,9 +141,8 @@ async function asyncLock(props: Props) {
     while (tries--) {
       if (await pathExists(props.outfile)) {
         return
-      } else {
-        await new Promise((res) => setTimeout(res, 50))
       }
+      await new Promise((res) => setTimeout(res, 50))
     }
   }
   void writeFile(lockFile, '')

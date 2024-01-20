@@ -4,9 +4,10 @@
  */
 
 import { isWeb } from '@tamagui/constants'
-import { stylePropsAll, stylePropsUnitless, validStyles } from '@tamagui/helpers'
+import { stylePropsAll, stylePropsUnitless } from '@tamagui/helpers'
 
 import { getAllSelectors } from './insertStyleRule'
+import { isObj } from './isObj'
 
 // only doing this on web on native it accepts pixel values
 
@@ -16,17 +17,16 @@ const stylePropsAllPlusTransforms = {
   translateY: true,
 }
 
-export function normalizeValueWithProperty(value: any, property?: string): any {
+export function normalizeValueWithProperty(value: any, property = ''): any {
   if (!isWeb) return value
-  if (typeof value === 'boolean' || (property && property in stylePropsUnitless)) {
-    return value
-  }
-  // if not a style prop
-  if (property && !(property in stylePropsAllPlusTransforms)) {
+  if (
+    stylePropsUnitless[property] ||
+    (property && !stylePropsAllPlusTransforms[property]) ||
+    typeof value === 'boolean'
+  ) {
     return value
   }
   let res = value
-  // shadowOffset etc
   if (value && typeof value === 'object') return value
   if (typeof value === 'number') {
     res = `${value}px`
@@ -68,7 +68,7 @@ export function reverseMapClassNameToValue(key: string, className: string) {
   rcache[cssRule] = res
   if (process.env.NODE_ENV === 'development') {
     // ensure we are parsing properly
-    if (typeof res === 'number' && isNaN(res)) {
+    if (typeof res === 'number' && Number.isNaN(res)) {
       console.info('Tamagui invalid parsed value, NaN:', {
         res,
         cssVal,

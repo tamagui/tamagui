@@ -35,8 +35,8 @@ export const LogoWords = memo(
         return hovered && isActive
           ? `var(--gray12)`
           : hovered
-          ? `var(--gray11)`
-          : `var(--gray10)`
+            ? `var(--gray11)`
+            : `var(--gray10)`
       }
       if (mounted !== 'done' || hovered) {
         return isActive ? 'var(--color)' : tints[index]
@@ -65,11 +65,9 @@ export const LogoWords = memo(
           <Circle
             animation="quick"
             position="absolute"
+            // debug
             top={0}
             left={0}
-            // enterStyle={{
-            //   y: -30
-            // }}
             y={mounted === 'start' ? -30 : -3}
             // the last i is less wide
             x={x}
@@ -77,6 +75,7 @@ export const LogoWords = memo(
             backgroundColor="$color9"
           />
         )}
+
         <svg
           data-tauri-drag-region
           width={373 * (1 / downscale) * 0.333333334}
