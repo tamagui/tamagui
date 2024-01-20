@@ -56,7 +56,7 @@ export function AnimationsPresenceDemo() {
       alignItems="center"
     >
       <AnimatePresence initial={false} custom={{ direction }}>
-        <GalleryItem key={page} animation="slow" direction={direction} debug="verbose">
+        <GalleryItem key={page} animation="slowest" direction={direction} debug>
           <Image source={{ uri: images[imageIndex], width: 780, height: 300 }} />
         </GalleryItem>
       </AnimatePresence>
