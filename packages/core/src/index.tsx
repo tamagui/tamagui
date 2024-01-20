@@ -8,6 +8,7 @@ import type {
   TextNonStyleProps,
   TextProps,
   TextStylePropsBase,
+  TamaDefer,
 } from '@tamagui/web'
 import {
   Stack as WebStack,
@@ -33,7 +34,7 @@ export interface RNTamaguiViewNonStyleProps
     RNExclusiveViewProps {}
 
 type RNTamaguiView = TamaguiComponent<
-  { __tamaDefer: true },
+  TamaDefer,
   TamaguiElement,
   RNTamaguiViewNonStyleProps,
   StackStylePropsBase,
@@ -46,7 +47,7 @@ export interface RNTamaguiTextNonStyleProps
     RNExclusiveTextProps {}
 
 type RNTamaguiText = TamaguiComponent<
-  { __tamaDefer: true },
+  TamaDefer,
   TamaguiTextElement,
   RNTamaguiTextNonStyleProps,
   TextStylePropsBase,

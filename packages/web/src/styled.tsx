@@ -10,20 +10,15 @@ import type {
   GetStyledVariants,
   GetTokenPropsFromAcceptedTokens,
   GetVariantValues,
-  InferProps,
+  InferStyledProps,
   StaticConfig,
   StaticConfigPublic,
   StylableComponent,
+  TamaDefer,
   TamaguiComponent,
-  ThemeValueByCategory,
   VariantDefinitions,
   VariantSpreadFunction,
 } from './types'
-
-// type YP = GetProps<typeof InputFrame>
-// type x = YP['onChangeText']
-// type x2 = YP['size']
-// const X = <InputFrame placeholder="red" hoverStyle={{}} />
 
 type AreVariantsUndefined<Variants> =
   // because we pass in the Generic variants which for some reason has this :)
@@ -44,7 +39,7 @@ export function styled<
 >(
   ComponentIn: ParentComponent,
   // this should be Partial<GetProps<ParentComponent>> but causes excessively deep type issues
-  options?: Partial<InferProps<ParentComponent, StyledStaticConfig>> & {
+  options?: Partial<InferStyledProps<ParentComponent, StyledStaticConfig>> & {
     name?: string
     variants?: Variants | undefined
     defaultVariants?: GetVariantAcceptedValues<Variants>
@@ -89,7 +84,7 @@ export function styled<
    */
 
   type StyledComponent = TamaguiComponent<
-    { __tamaDefer: true },
+    TamaDefer,
     GetRef<ParentComponent>,
     ParentNonStyledProps,
     AcceptedTokens extends Record<string, any>
@@ -220,6 +215,11 @@ export function styled<
 }
 
 // sanity check types:
+
+// type YP = GetProps<typeof InputFrame>
+// type x = YP['onChangeText']
+// type x2 = YP['size']
+// const X = <InputFrame placeholder="red" hoverStyle={{}} />
 
 // import { Stack } from './views/Stack'
 // const X = styled(Stack, {

@@ -1340,9 +1340,6 @@ export type Longhands = NarrowShorthands[keyof NarrowShorthands]
 
 type OnlyAllowShorthands = TamaguiConfig['onlyAllowShorthands']
 
-export type OmitLonghands<R extends Record<string, any>> =
-  OnlyAllowShorthands extends true ? Omit<R, Longhands> : R
-
 // adds shorthand props
 export type WithShorthands<StyleProps> = {
   [Key in keyof Shorthands]?: Shorthands[Key] extends keyof StyleProps
@@ -1377,7 +1374,7 @@ export type AllPlatforms = 'web' | 'native' | 'android' | 'ios'
 // add both theme and shorthands
 //
 export type WithThemeAndShorthands<A extends Object> = OnlyAllowShorthands extends true
-  ? WithThemeValues<OmitLonghands<A>>
+  ? WithThemeValues<Omit<A, Longhands>> & WithShorthands<WithThemeValues<A>>
   : WithThemeValues<A> & WithShorthands<WithThemeValues<A>>
 
 //
@@ -1406,21 +1403,13 @@ type TwoValueTransformOrigin = `${PxOrPct | 'left' | 'center' | 'right'} ${
   | 'center'
   | 'bottom'}`
 
-type OverrideRNStyleProps =
-  | 'display'
-  | 'backfaceVisibility'
-  | 'elevation'
-  | 'gap'
-  | 'columnGap'
-  | 'rowGap'
-
 export interface TransformStyleProps {
   x?: number
   y?: number
   perspective?: number
   scale?: number
-  // scaleX?: number
-  // scaleY?: number
+  scaleX?: number
+  scaleY?: number
   skewX?: string
   skewY?: string
   matrix?: number[]
@@ -1439,6 +1428,7 @@ interface ExtraStyleProps {
   outlineStyle?: Properties['outlineStyle']
   outlineWidth?: SpaceValue
   pointerEvents?: ViewProps['pointerEvents']
+  userSelect?: Properties['userSelect']
   /**
    * @deprecated Use `gap`
    */
@@ -1447,10 +1437,12 @@ interface ExtraStyleProps {
    * @deprecated Use `gap`
    */
   spaceDirection?: SpaceDirection
+  /**
+   * @deprecated can implement your own hook or component
+   */
   separator?: ReactNode
   animation?: AnimationProp | null
   animateOnly?: string[]
-  userSelect?: Properties['userSelect']
   transformOrigin?:
     | PxOrPct
     | 'left'
@@ -1462,11 +1454,16 @@ interface ExtraStyleProps {
     | `${TwoValueTransformOrigin} ${Px}`
 }
 
-interface OverrideNonStyledProps {
-  display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex'
-}
 export interface ExtendBaseStackProps {}
 export interface ExtendBaseTextProps {}
+
+interface OverrideNonStyledProps
+  extends TransformStyleProps,
+    ExtendBaseTextProps,
+    ExtendBaseStackProps,
+    ExtraStyleProps {
+  display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex'
+}
 
 export interface StackStylePropsBase
   extends Omit<ViewStyle, keyof OverrideNonStyledProps | 'elevation'>,
@@ -1589,7 +1586,7 @@ export type TamaguiComponent<
   VariantProps = {},
   ParentStaticProperties = {},
 > = ForwardRefExoticComponent<
-  (Props extends { __tamaDefer: true }
+  (Props extends TamaDefer
     ? GetFinalProps<NonStyledProps, BaseStyles & VariantProps>
     : Props) &
     RefAttributes<Ref>
@@ -1620,7 +1617,7 @@ export type InferGenericComponentProps<A> = A extends ComponentType<infer Props>
     ? Props
     : {}
 
-export type InferProps<
+export type InferStyledProps<
   A extends StylableComponent,
   B extends StaticConfigPublic,
 > = A extends {
@@ -1639,7 +1636,7 @@ export type GetProps<A extends StylableComponent> = A extends {
     any,
   ]
 }
-  ? Props extends { __tamaDefer: true }
+  ? Props extends TamaDefer
     ? GetFinalProps<NonStyledProps, BaseStyles & VariantProps>
     : Props
   : InferGenericComponentProps<A>
@@ -1686,7 +1683,7 @@ export type StaticComponentObject<
    * If you want your HOC of a styled() component to also be able to be styled(), you need this to wrap it.
    */
   styleable: Styleable<
-    Props extends { __tamaDefer: true }
+    Props extends TamaDefer
       ? GetFinalProps<NonStyledProps, BaseStyles & VariantProps>
       : Props,
     Ref,
@@ -1903,7 +1900,7 @@ export type GetStyleableProps<
 > = A extends {
   __tama: [infer Props, any, any, infer BaseStyles, infer VariantProps, any]
 }
-  ? Props extends { __tamaDefer: true }
+  ? Props extends TamaDefer
     ? GetFinalProps<{}, BaseStyles & VariantProps>
     : Props
   : WithThemeShorthandsPseudosMedia<
@@ -2385,3 +2382,5 @@ export type DedupedThemes = DedupedTheme[]
 export type UseMediaState = {
   [key in MediaQueryKey]: boolean
 }
+
+export type TamaDefer = { __tamaDefer: true }
