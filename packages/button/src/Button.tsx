@@ -106,7 +106,7 @@ const ButtonFrame = styled(ThemeableStack, {
         borderColor: 'transparent',
 
         focusStyle: {
-          outlineColor: '$borderColorFocus',
+          outlineColor: '$outlineColor',
           outlineStyle: 'solid',
           outlineWidth: 2,
         },
