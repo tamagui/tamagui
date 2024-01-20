@@ -11,7 +11,6 @@ demoName: Checkbox
 
 <Description>Use in forms to toggle between two states.</Description>
 
-
 <Tabs id="type" defaultValue="styled">
 <Tabs.List>
   <TooltipSimple label="With Tamagui's default styles">
@@ -26,13 +25,28 @@ demoName: Checkbox
 </Tabs.List>
 
 <HeroContainer showAnimationDriverControl>
-  <Tabs.Content value="styled" justifyContent="center" alignItems="center" width="100%">
+  <Tabs.Content
+    value="styled"
+    justifyContent="center"
+    alignItems="center"
+    width="100%"
+  >
     <CheckboxDemo />
   </Tabs.Content>
-  <Tabs.Content value="unstyled" justifyContent="center" alignItems="center" width="100%">
+  <Tabs.Content
+    value="unstyled"
+    justifyContent="center"
+    alignItems="center"
+    width="100%"
+  >
     <CheckboxUnstyledDemo />
   </Tabs.Content>
-    <Tabs.Content value="headless" justifyContent="center" alignItems="center" width="100%">
+  <Tabs.Content
+    value="headless"
+    justifyContent="center"
+    alignItems="center"
+    width="100%"
+  >
     <CheckboxHeadlessDemo />
   </Tabs.Content>
 </HeroContainer>
@@ -40,26 +54,27 @@ demoName: Checkbox
 <Tabs.Content value="styled">
   ```tsx hero template=Checkbox
 
-  ```
+````
 </Tabs.Content>
 <Tabs.Content value="unstyled">
-  ```tsx hero template=CheckboxUnstyled
+```tsx hero template=CheckboxUnstyled
 
-  ```
+````
+
 </Tabs.Content>
   <Tabs.Content value="headless">
   ```tsx hero template=CheckboxHeadless
 
-  ```
+````
 </Tabs.Content>
 
 <Highlights
-  features={[
-    `Supports indeterminate state.`,
-    `Accessible, easy to compose and customize.`,
-    `Sizable & works controlled or uncontrolled.`,
-    `Ability to opt-out to native checkbox on web.`,
-  ]}
+features={[
+  `Supports indeterminate state.`,
+  `Accessible, easy to compose and customize.`,
+  `Sizable & works controlled or uncontrolled.`,
+  `Ability to opt-out to native checkbox on web.`,
+]}
 />
 
 ## Installation
@@ -69,7 +84,8 @@ Checkbox is already installed in `tamagui`, or you can install it independently:
 
 ```bash
 npm install @tamagui/checkbox
-```
+````
+
 </Tabs.Content>
 
 <Tabs.Content value="unstyled">
@@ -78,11 +94,14 @@ Checkbox is already installed in `tamagui`, or you can install it independently:
 ```bash
 npm install @tamagui/checkbox
 ```
+
 </Tabs.Content>
 
 <Tabs.Content value="headless">
 
-To use the headless switch, you want to import it from the `@tamagui/switch-headless` package. This package has no dependency on `@tamagui/core`.
+To use the headless switch, you want to import it from the
+`@tamagui/switch-headless` package. This package has no dependency on
+`@tamagui/core`.
 
 ```bash
 npm install @tamagui/switch-headless
@@ -106,16 +125,16 @@ export default () => (
   </Checkbox>
 )
 ```
+
 </Tabs.Content>
 
 <Tabs.Content value="unstyled">
 
-Using the `createCheckbox` export, you can create a fully custom checkbox without using any of the default styles. This is similar to `unstyled`, but it doesn't assume the props `size` or `unstyled` exist, and it won't automatically apply the `active` theme.
-
-You must pass `CheckboxContext` as the `context` option to your Fraeme and Thumb styled components.
-
-If you define a `checked` variant, it will apply those styles.
-
+Use the `createCheckbox` export to create a fully custom checkbox that still
+uses the Tamagui styling system. This is similar to setting `unstyled`, but goes
+a bit further. It doesn't add any types for `size` or `unstyled`, and it won't
+automatically apply the `active` theme. If does pass the `checked` prop down as
+indicated in the types of `createCheckbox`.
 
 ```tsx template=CheckboxUnstyled
 
@@ -125,8 +144,8 @@ If you define a `checked` variant, it will apply those styles.
 
 <Tabs.Content value="headless">
 
-Using the `useCheckbox` API, you can make your own Checkbox from scratch. You could even do it without Tamagui's styling system if you wanted to.
-
+Using the `useCheckbox` API, you can make your own Checkbox from scratch. You
+could even do it without Tamagui's styling system if you wanted to.
 
 ```tsx template=CheckboxHeadless
 
@@ -138,7 +157,8 @@ Using the `useCheckbox` API, you can make your own Checkbox from scratch. You co
 
 ### Checkbox
 
-`Checkbox` extend ThemeableStack inheriting all the [props](/docs/components/stacks#themeablestack), plus:
+`Checkbox` extend ThemeableStack inheriting all the
+[props](/docs/components/stacks#themeablestack), plus:
 
 <PropsTable
   data={[
@@ -210,7 +230,8 @@ Using the `useCheckbox` API, you can make your own Checkbox from scratch. You co
 
 ### Checkbox.Indicator
 
-`Checkbox.Indicator` extend ThemeableStack inheriting all the [props](/docs/components/stacks#themeablestack), plus:
+`Checkbox.Indicator` extend ThemeableStack inheriting all the
+[props](/docs/components/stacks#themeablestack), plus:
 
 <PropsTable
   data={[
