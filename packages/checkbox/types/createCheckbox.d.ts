@@ -1,5 +1,5 @@
 import { CheckedState, CheckboxExtraProps as HeadlessCheckboxExtraProps } from '@tamagui/checkbox-headless';
-import { NativeValue, SizeTokens, StackProps, TamaguiComponentExpectingVariants } from '@tamagui/core';
+import { NativeValue, SizeTokens, StackProps } from '@tamagui/core';
 import React from 'react';
 type CheckboxExpectingVariantProps = {
     size?: SizeTokens;
@@ -13,11 +13,11 @@ type CheckboxExtraProps = HeadlessCheckboxExtraProps & {
 };
 type CheckboxBaseProps = StackProps;
 export type CheckboxProps = CheckboxBaseProps & CheckboxExtraProps;
-type CheckboxComponent = TamaguiComponentExpectingVariants<CheckboxProps & CheckboxExpectingVariantProps, CheckboxExpectingVariantProps>;
+type CheckboxComponent = (props: CheckboxExtraProps & CheckboxExpectingVariantProps) => any;
 type CheckboxIndicatorExpectingVariantProps = {
     unstyled?: boolean;
 };
-type CheckboxIndicatorComponent = TamaguiComponentExpectingVariants<CheckboxIndicatorProps & CheckboxIndicatorExpectingVariantProps, CheckboxIndicatorExpectingVariantProps>;
+type CheckboxIndicatorComponent = (props: CheckboxIndicatorExpectingVariantProps) => any;
 type CheckboxIndicatorBaseProps = StackProps;
 type CheckboxIndicatorExtraProps = {
     /**
@@ -38,31 +38,6 @@ export declare const CheckboxContext: React.Context<{
 export declare function createCheckbox<F extends CheckboxComponent, T extends CheckboxIndicatorComponent>({ Frame, Indicator, }: {
     Frame?: F;
     Indicator?: T;
-}): import("@tamagui/core").ReactComponentWithRef<Omit<import("react-native").ViewProps, "pointerEvents" | "display" | "children" | "style" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
-    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
-} & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & HeadlessCheckboxExtraProps & {
-    scaleIcon?: number | undefined;
-    scaleSize?: number | undefined;
-    sizeAdjust?: number | undefined;
-    native?: NativeValue<"web"> | undefined;
-} & CheckboxExpectingVariantProps, any> & {
-    staticConfig: import("@tamagui/core").StaticConfig;
-    extractable: <X>(a: X, staticConfig?: Partial<import("@tamagui/core").StaticConfig> | undefined) => X;
-    styleable: import("@tamagui/core").Styleable<Omit<import("react-native").ViewProps, "pointerEvents" | "display" | "children" | "style" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
-        style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
-    } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & HeadlessCheckboxExtraProps & {
-        scaleIcon?: number | undefined;
-        scaleSize?: number | undefined;
-        sizeAdjust?: number | undefined;
-        native?: NativeValue<"web"> | undefined;
-    } & CheckboxExpectingVariantProps, any, any, CheckboxExpectingVariantProps, {}>;
-} & {
-    __baseProps: any;
-    __variantProps: CheckboxExpectingVariantProps;
-} & {
-    Indicator: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "pointerEvents" | "display" | "children" | "style" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").WebOnlyPressEvents & import("@tamagui/core").TamaguiComponentPropsBaseBase & {
-        style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
-    } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & CheckboxIndicatorExtraProps & CheckboxIndicatorExpectingVariantProps, any, any, CheckboxIndicatorExpectingVariantProps, {}>;
-};
+}): any;
 export {};
 //# sourceMappingURL=createCheckbox.d.ts.map

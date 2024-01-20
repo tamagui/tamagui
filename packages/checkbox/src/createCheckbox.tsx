@@ -8,7 +8,6 @@ import {
   NativeValue,
   SizeTokens,
   StackProps,
-  TamaguiComponentExpectingVariants,
   getVariableValue,
   shouldRenderNativePlatform,
   useProps,
@@ -42,18 +41,15 @@ type CheckboxExtraProps = HeadlessCheckboxExtraProps & {
 type CheckboxBaseProps = StackProps
 export type CheckboxProps = CheckboxBaseProps & CheckboxExtraProps
 
-type CheckboxComponent = TamaguiComponentExpectingVariants<
-  CheckboxProps & CheckboxExpectingVariantProps,
-  CheckboxExpectingVariantProps
->
+type CheckboxComponent = (
+  props: CheckboxExtraProps & CheckboxExpectingVariantProps
+) => any
 
 type CheckboxIndicatorExpectingVariantProps = {
   unstyled?: boolean
 }
-type CheckboxIndicatorComponent = TamaguiComponentExpectingVariants<
-  CheckboxIndicatorProps & CheckboxIndicatorExpectingVariantProps,
-  CheckboxIndicatorExpectingVariantProps
->
+
+type CheckboxIndicatorComponent = (props: CheckboxIndicatorExpectingVariantProps) => any
 
 type CheckboxIndicatorBaseProps = StackProps
 type CheckboxIndicatorExtraProps = {
@@ -81,7 +77,7 @@ export const CheckboxContext = React.createContext<{
 
 export function createCheckbox<
   F extends CheckboxComponent,
-  T extends CheckboxIndicatorComponent
+  T extends CheckboxIndicatorComponent,
 >({
   Frame = CheckboxFrame as any,
   Indicator = CheckboxIndicatorFrame as any,
@@ -89,6 +85,7 @@ export function createCheckbox<
   Frame?: F
   Indicator?: T
 }) {
+  // @ts-expect-error
   const FrameComponent = Frame.styleable(function Checkbox(_props, forwardedRef) {
     const {
       scaleSize = 0.45,
@@ -183,6 +180,7 @@ export function createCheckbox<
     )
   })
 
+  // @ts-expect-error
   const IndicatorComponent = Indicator.styleable((props, forwardedRef) => {
     const {
       // __scopeCheckbox,
