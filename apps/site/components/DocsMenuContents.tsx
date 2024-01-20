@@ -31,6 +31,15 @@ export const DocsMenuContents = React.memo(function DocsMenuContents() {
         size="$3"
         w="100%"
         borderWidth={0.5}
+        borderColor="$color4"
+        backgroundColor="transparent"
+        focusStyle={{
+          outlineWidth: 0,
+          borderColor: '$color6',
+        }}
+        hoverStyle={{
+          borderColor: '$color6',
+        }}
         placeholder="Filter..."
         placeholderTextColor="$gray9"
         onKeyPress={(e) => {

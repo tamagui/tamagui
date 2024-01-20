@@ -66,11 +66,13 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
   Thumb?: T
 }) {
   if (process.env.NODE_ENV === 'development') {
+    // @ts-ignore
     if (Frame !== DefaultSwitchFrame && Frame.staticConfig.context) {
       console.warn(
         `Warning: createSwitch() needs to control context to pass checked state from Frame to Thumb, any custom context passed will be overridden.`
       )
     }
+    // @ts-ignore
     if (Thumb !== SwitchThumb && Thumb.staticConfig.context) {
       console.warn(
         `Warning: createSwitch() needs to control context to pass checked state from Frame to Thumb, any custom context passed will be overridden.`

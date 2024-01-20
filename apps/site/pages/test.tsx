@@ -87,12 +87,7 @@ const AnimatedNumbers = () => {
             })}
         </Framer.AnimatePresence> */}
 
-        <AnimatePresence
-          initial={false}
-          debug
-          enterVariant="fromTop"
-          exitVariant="toBottom"
-        >
+        <AnimatePresence initial={false} enterVariant="fromTop" exitVariant="toBottom">
           {`${numbers}`
             .slice(0, 1)
             .split('')

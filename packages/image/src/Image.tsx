@@ -17,6 +17,8 @@ const StyledImage = styled(RNImage, {
   source: { uri: '' },
 })
 
+type SIProps = GetProps<typeof StyledImage>
+
 type StyledImageProps = Omit<GetProps<typeof StyledImage>, 'borderRadius'> & {
   borderRadius?: RadiusTokens
 }

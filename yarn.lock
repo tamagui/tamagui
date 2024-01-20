@@ -6008,6 +6008,7 @@ __metadata:
   dependencies:
     "@tamagui/build": "npm:1.86.6"
     "@tamagui/helpers": "npm:1.86.6"
+    "@tamagui/use-constant": "npm:1.86.6"
     "@tamagui/use-force-update": "npm:1.86.6"
     "@tamagui/use-presence": "npm:1.86.6"
     "@tamagui/web": "npm:1.86.6"
@@ -6197,7 +6198,7 @@ __metadata:
     fs-extra: "npm:^11.1.0"
     get-tsconfig: "npm:^4.5.0"
     lodash.debounce: "npm:^4.0.8"
-    typescript: "npm:^5.2.2"
+    typescript: "npm:^5.3.3"
   bin:
     tamagui-build: tamagui-build.js
   languageName: unknown
@@ -6309,7 +6310,7 @@ __metadata:
     opener: "npm:^1.5.2"
     prompts: "npm:2.1.0"
     ts-morph: "npm:^15.1.0"
-    typescript: "npm:^5.2.2"
+    typescript: "npm:^5.3.3"
     url: "npm:^0.11.0"
     vite: "npm:^5.0.2"
     vite-plugin-entry-shaking: "npm:^0.3.2"
@@ -6392,7 +6393,7 @@ __metadata:
     jsdom: "npm:^22.1.0"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
-    typescript: "npm:^5.2.2"
+    typescript: "npm:^5.3.3"
     vitest: "npm:^0.34.3"
     vitest-axe: "npm:^0.1.0"
   languageName: unknown
@@ -6464,7 +6465,7 @@ __metadata:
     csstype: "npm:^3.0.10"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
-    typescript: "npm:^5.2.2"
+    typescript: "npm:^5.3.3"
     vitest: "npm:^0.34.3"
   languageName: unknown
   linkType: soft
@@ -6481,7 +6482,7 @@ __metadata:
     "@testing-library/react": "npm:^14.0.0"
     csstype: "npm:^3.0.10"
     react: "npm:^18.2.0"
-    typescript: "npm:^5.2.2"
+    typescript: "npm:^5.3.3"
     vitest: "npm:^0.34.3"
   peerDependencies:
     react: "*"
@@ -6958,7 +6959,6 @@ __metadata:
     expo-splash-screen: "npm:~0.20.5"
     expo-status-bar: "npm:~1.6.0"
     expo-updates: "npm:~0.18.19"
-    framer-motion: "npm:^10.18.0"
     html-webpack-plugin: "npm:^5.5.0"
     metro-runtime: "npm:*"
     mini-css-extract-plugin: "npm:^2.7.6"
@@ -7612,7 +7612,7 @@ __metadata:
     tamagui-loader: "npm:1.86.6"
     three: "npm:^0.152.2"
     ts-morph: "npm:^15.1.0"
-    typescript: "npm:^5.2.2"
+    typescript: "npm:^5.3.3"
     unified: "npm:^10.1.2"
     unist-util-visit: "npm:^2.0.3"
     wait-port: "npm:^0.3.0"
@@ -7680,7 +7680,7 @@ __metadata:
     react-native-web: "npm:^0.19.10"
     react-test-renderer: "npm:^18.2.0"
     style-loader: "npm:^3.3.3"
-    typescript: "npm:^5.2.2"
+    typescript: "npm:^5.3.3"
     vitest: "npm:^0.34.3"
     webpack: "npm:^5.88.2"
   peerDependencies:
@@ -7733,7 +7733,7 @@ __metadata:
     react-native-web: "npm:^0.19.10"
     react-native-web-internals: "npm:1.86.6"
     react-native-web-lite: "npm:1.86.6"
-    typescript: "npm:^5.2.2"
+    typescript: "npm:^5.3.3"
   languageName: unknown
   linkType: soft
 
@@ -8226,7 +8226,7 @@ __metadata:
     csstype: "npm:^3.0.10"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
-    typescript: "npm:^5.2.2"
+    typescript: "npm:^5.3.3"
     vitest: "npm:^0.34.3"
   languageName: unknown
   linkType: soft
@@ -26947,7 +26947,7 @@ __metadata:
     pretty-quick: "npm:^3.1.2"
     prompts: "npm:2.1.0"
     turbo: "npm:^1.11.3"
-    typescript: "npm:^5.2.2"
+    typescript: "npm:^5.3.3"
     ultra-runner: "npm:^3.10.5"
   languageName: unknown
   linkType: soft
@@ -27872,13 +27872,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.0.4, typescript@npm:^5.2.2":
-  version: 5.2.2
-  resolution: "typescript@npm:5.2.2"
+"typescript@npm:^5.0.4, typescript@npm:^5.3.3":
+  version: 5.3.3
+  resolution: "typescript@npm:5.3.3"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: d65e50eb849bd21ff8677e5b9447f9c6e74777e346afd67754934264dcbf4bd59e7d2473f6062d9a015d66bd573311166357e3eb07fea0b52859cf9bb2b58555
+  checksum: 6e4e6a14a50c222b3d14d4ea2f729e79f972fa536ac1522b91202a9a65af3605c2928c4a790a4a50aa13694d461c479ba92cedaeb1e7b190aadaa4e4b96b8e18
   languageName: node
   linkType: hard
 
@@ -27902,13 +27902,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A^5.0.4#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.2.2#optional!builtin<compat/typescript>":
-  version: 5.2.2
-  resolution: "typescript@patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>::version=5.2.2&hash=f3b441"
+"typescript@patch:typescript@npm%3A^5.0.4#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.3.3#optional!builtin<compat/typescript>":
+  version: 5.3.3
+  resolution: "typescript@patch:typescript@npm%3A5.3.3#optional!builtin<compat/typescript>::version=5.3.3&hash=e012d7"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: f79cc2ba802c94c2b78dbb00d767a10adb67368ae764709737dc277273ec148aa4558033a03ce901406b35fddf4eac46dabc94a1e1d12d2587e2b9cfe5707b4a
+  checksum: c93786fcc9a70718ba1e3819bab56064ead5817004d1b8186f8ca66165f3a2d0100fee91fa64c840dcd45f994ca5d615d8e1f566d39a7470fc1e014dbb4cf15d
   languageName: node
   linkType: hard
 

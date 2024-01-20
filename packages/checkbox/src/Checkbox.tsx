@@ -349,7 +349,7 @@ const CheckboxComponent = CheckboxFrame.styleable<CheckboxExtraProps>(function C
   }
 
   return (
-    <CheckboxProvider scope={__scopeCheckbox} state={checked} disabled={disabled}>
+    <CheckboxProvider scope={__scopeCheckbox} state={checked} disabled={!!disabled}>
       {isWeb && native ? (
         <BubbleInput
           control={button}

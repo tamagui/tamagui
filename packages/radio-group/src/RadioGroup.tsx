@@ -502,7 +502,7 @@ const RadioGroup = withStaticProperties(
           >
             <RovingFocusGroup
               __scopeRovingFocusGroup={RADIO_GROUP_NAME}
-              orientation={orientation}
+              orientation={orientation as any}
               loop={true}
             >
               <RadioGroupFrame
