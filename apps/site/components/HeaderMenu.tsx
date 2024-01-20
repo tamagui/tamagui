@@ -45,7 +45,7 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
           theme={open ? 'alt1' : undefined}
           aria-label="Open the main menu"
         >
-          <Menu size={18} color="var(--color)" />
+          <Menu size={22} color="var(--color)" />
         </Button>
       </Popover.Anchor>
 
@@ -101,6 +101,7 @@ const HeaderMenuContent = React.memo(function HeaderMenuContent() {
       elevate
       zIndex={100000000}
       trapFocus
+      br="$6"
     >
       <Popover.Arrow size="$4" borderWidth={1} boc="$borderColor" />
 
@@ -110,7 +111,7 @@ const HeaderMenuContent = React.memo(function HeaderMenuContent() {
             <HeaderLinks forceShowAllLinks />
           </XStack>
 
-          <Spacer />
+          <Spacer size="$3" />
 
           <DocsMenuContents />
         </YStack>

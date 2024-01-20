@@ -1,4 +1,4 @@
-import { composeRefs, useComposedRefs } from '@tamagui/compose-refs'
+import { composeRefs } from '@tamagui/compose-refs'
 import { isClient, isServer, isWeb } from '@tamagui/constants'
 import { composeEventHandlers, validStyles } from '@tamagui/helpers'
 import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
@@ -30,6 +30,7 @@ import {
   mergeIfNotShallowEqual,
 } from './helpers/createShallowSetState'
 import { useSplitStyles } from './helpers/getSplitStyles'
+import { isObj } from './helpers/isObj'
 import { log } from './helpers/log'
 import { mergeProps } from './helpers/mergeProps'
 import { themeable } from './helpers/themeable'
@@ -47,8 +48,10 @@ import {
   SpaceDirection,
   SpaceValue,
   SpacerProps,
+  SpacerPropsBase,
+  StackNonStyleProps,
   StackProps,
-  StackPropsBase,
+  StackStylePropsBase,
   StaticConfig,
   StyleableOptions,
   TamaguiComponent,
@@ -66,7 +69,6 @@ import {
 import { Slot } from './views/Slot'
 import { getThemedChildren } from './views/Theme'
 import { ThemeDebug } from './views/ThemeDebug'
-import { isObj } from './helpers/isObj'
 
 // this appears to fix expo / babel not picking this up sometimes? really odd
 process.env.TAMAGUI_TARGET
@@ -145,6 +147,7 @@ export function createComponent<
   ComponentPropTypes extends StackProps | TextProps = {},
   Ref extends TamaguiElement = TamaguiElement,
   BaseProps = never,
+  BaseStyles extends Object = never,
 >(staticConfig: StaticConfig) {
   const { componentName } = staticConfig
 
@@ -1291,7 +1294,13 @@ export function createComponent<
     component.displayName = staticConfig.componentName
   }
 
-  type ComponentType = TamaguiComponent<ComponentPropTypes, Ref, BaseProps, void>
+  type ComponentType = TamaguiComponent<
+    ComponentPropTypes,
+    Ref,
+    BaseProps,
+    BaseStyles,
+    void
+  >
 
   let res: ComponentType = component as any
 
@@ -1379,8 +1388,13 @@ const getSpacerSize = (size: SizeTokens | number | boolean, { tokens }) => {
 
 // dont used styled() here to avoid circular deps
 // keep inline to avoid circular deps
-// @ts-expect-error we override
-export const Spacer = createComponent<SpacerProps, TamaguiElement, StackPropsBase>({
+export const Spacer = createComponent<
+  // @ts-expect-error its fine
+  SpacerProps,
+  TamaguiElement,
+  StackNonStyleProps,
+  StackStylePropsBase & SpacerPropsBase
+>({
   acceptsClassName: true,
   memo: true,
   componentName: 'Spacer',

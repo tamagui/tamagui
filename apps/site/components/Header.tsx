@@ -201,14 +201,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
 
       {/*  prevent layout shift */}
       {!props.minimal && (
-        <XStack
-          h={40}
-          jc="flex-end"
-          miw={160}
-          $xs={{ miw: 80 }}
-          pointerEvents="auto"
-          tag="nav"
-        >
+        <XStack h={40} jc="flex-end" pointerEvents="auto" tag="nav">
           <XStack ai="center" gap="$2">
             <HeaderLinks isHeader {...props} />
 

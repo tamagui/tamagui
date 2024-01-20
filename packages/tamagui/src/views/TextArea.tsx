@@ -1,8 +1,8 @@
 import { isWeb } from '@tamagui/constants'
-import { styled } from '@tamagui/core'
+import { GetProps, styled } from '@tamagui/core'
 
 import { textAreaSizeVariant } from '../helpers/inputHelpers'
-import { InputFrame, InputProps, defaultStyles, useInputProps } from './Input'
+import { Input, InputFrame, InputProps, defaultStyles, useInputProps } from './Input'
 
 /**
  * Is basically Input but with rows = 4 to start
@@ -42,4 +42,4 @@ export const TextArea = TextAreaFrame.styleable<InputProps>((propsIn, ref) => {
     [isWeb ? 'rows' : 'numberOfLines']: propsIn.unstyled ? undefined : 4,
   }
   return <TextAreaFrame {...linesProp} {...props} />
-})
+}) as typeof Input

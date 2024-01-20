@@ -26,15 +26,10 @@ export declare function createSwitch<F extends SwitchComponent, T extends Switch
     disableActiveTheme?: boolean;
     Frame?: F;
     Thumb?: T;
-}): import("@tamagui/core").ReactComponentWithRef<Omit<SwitchProps, keyof SwitchExtraProps> & SwitchExtraProps, any> & {
-    staticConfig: import("@tamagui/core").StaticConfig;
-    extractable: <X>(a: X, staticConfig?: Partial<import("@tamagui/core").StaticConfig> | undefined) => X;
-    styleable: import("@tamagui/core").Styleable<Omit<SwitchProps, keyof SwitchExtraProps> & SwitchExtraProps, any, any, SwitchSharedProps & SwitchExtraProps, {}>;
+}): React.ForwardRefExoticComponent<Omit<SwitchProps, keyof SwitchExtraProps> & SwitchExtraProps & React.RefAttributes<any>> & import("@tamagui/core").StaticComponentObject<Omit<SwitchProps, keyof SwitchExtraProps> & SwitchExtraProps, any, any, SwitchSharedProps & SwitchExtraProps, {}, {}> & Omit<{}, "staticConfig" | "extractable" | "styleable"> & {
+    __tama: [Omit<SwitchProps, keyof SwitchExtraProps> & SwitchExtraProps, any, any, SwitchSharedProps & SwitchExtraProps, {}, {}];
 } & {
-    __baseProps: any;
-    __variantProps: SwitchSharedProps & SwitchExtraProps;
-} & {
-    Thumb: import("@tamagui/core").TamaguiComponent<SwitchBaseProps, any, any, SwitchSharedProps, {}>;
+    Thumb: import("@tamagui/core").TamaguiComponent<SwitchBaseProps, any, any, SwitchSharedProps, {}, {}>;
 };
 export {};
 //# sourceMappingURL=createSwitch.d.ts.map

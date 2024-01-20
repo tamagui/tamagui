@@ -12,6 +12,7 @@ export * from './styled'
 export * from './setupReactNative'
 
 export * from './types'
+export * from './interfaces/RNExclusiveTypes'
 export * from './interfaces/GetRef'
 
 export {

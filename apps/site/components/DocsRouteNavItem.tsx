@@ -30,7 +30,7 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
     <NextLink legacyBehavior={false} prefetch={false} href={href}>
       <XStack
         ref={ref}
-        className="docs-nav-item all ease-in ms150"
+        className="docs-nav-item"
         {...props}
         {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
         ai="center"
