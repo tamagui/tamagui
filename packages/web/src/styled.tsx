@@ -6,9 +6,9 @@ import { getReactNativeConfig } from './setupReactNative'
 import type {
   GetBaseStyles,
   GetNonStyledProps,
-  GetProps,
   GetStaticConfig,
   GetStyledVariants,
+  GetTokenPropsFromAcceptedTokens,
   GetVariantValues,
   InferProps,
   StaticConfig,
@@ -19,39 +19,6 @@ import type {
   VariantDefinitions,
   VariantSpreadFunction,
 } from './types'
-
-// import { TextInput } from 'react-native'
-// export const InputFrame = styled(
-//   TextInput,
-//   {
-//     name: 'Input',
-//     backgroundColor: 'green',
-
-//     variants: {
-//       // unstyled: {
-//       //   false: {},
-//       // },
-
-//       size: {
-//         '...size': () => ({}),
-//       },
-
-//       // disabled: {
-//       //   ':boolean': () => ({})
-//       // },
-//     } as const,
-
-//     // defaultVariants: {
-//     //   unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
-//     // },
-//   },
-//   {
-//     isText: true,
-//     acceptTokens: {
-//       placeholderTextColor: 'color',
-//     },
-//   }
-// )
 
 // type YP = GetProps<typeof InputFrame>
 // type x = YP['onChangeText']
@@ -77,7 +44,7 @@ export function styled<
 >(
   ComponentIn: ParentComponent,
   // this should be Partial<GetProps<ParentComponent>> but causes excessively deep type issues
-  options?: Partial<InferProps<ParentComponent, StaticConfigPublic>> & {
+  options?: Partial<InferProps<ParentComponent, StyledStaticConfig>> & {
     name?: string
     variants?: Variants | undefined
     defaultVariants?: GetVariantAcceptedValues<Variants>
@@ -109,11 +76,7 @@ export function styled<
         }
 
   type AcceptedTokens = StyledStaticConfig['acceptTokens']
-  type CustomTokenProps = AcceptedTokens extends Object
-    ? {
-        [Key in keyof AcceptedTokens]?: ThemeValueByCategory<AcceptedTokens[Key]>
-      }
-    : {}
+  type CustomTokenProps = GetTokenPropsFromAcceptedTokens<AcceptedTokens>
 
   /**
    * de-opting a bit of type niceness because were hitting depth issues too soon
@@ -129,7 +92,9 @@ export function styled<
     { __tamaDefer: true },
     GetRef<ParentComponent>,
     ParentNonStyledProps,
-    ParentStylesBase & CustomTokenProps,
+    AcceptedTokens extends Record<string, any>
+      ? ParentStylesBase & CustomTokenProps
+      : ParentStylesBase,
     MergedVariants,
     GetStaticConfig<ParentComponent>
   >

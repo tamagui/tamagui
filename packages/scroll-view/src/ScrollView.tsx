@@ -1,5 +1,5 @@
 import { fullscreenStyle } from '@tamagui/stacks'
-import { GetProps, setupReactNative, styled } from '@tamagui/web'
+import { GetProps, styled } from '@tamagui/web'
 import { ScrollView as ScrollViewNative } from 'react-native'
 
 export const ScrollView = styled(ScrollViewNative, {

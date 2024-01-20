@@ -1146,6 +1146,13 @@ export type ThemeValueFallbackZIndex =
 
 export type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`
 
+export type GetTokenPropsFromAcceptedTokens<AcceptedTokens> =
+  AcceptedTokens extends Record<string, any>
+    ? {
+        [Key in keyof AcceptedTokens]?: ThemeValueByCategory<AcceptedTokens[Key]>
+      }
+    : {}
+
 export type SpecificTokens<
   Record = Tokens,
   RK extends keyof Record = keyof Record,
@@ -1646,9 +1653,9 @@ export type GetNonStyledProps<A extends StylableComponent> = A extends {
   : GetProps<A>
 
 export type GetBaseStyles<A, B> = A extends {
-  __tama: [any, any, any, infer B, any, any]
+  __tama: [any, any, any, infer C, any, any]
 }
-  ? B
+  ? C
   : B extends { isText: true }
     ? TextStylePropsBase
     : StackStylePropsBase

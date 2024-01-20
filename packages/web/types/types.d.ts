@@ -633,6 +633,9 @@ export type ThemeValueFallbackColor = ThemeValueFallback | GetThemeValueFallback
 export type ThemeValueFallbackRadius = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingRadius, never, UnionableNumber, UnionableNumber, WebStyleValueUniversal>;
 export type ThemeValueFallbackZIndex = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingZIndex, never, UnionableNumber, UnionableNumber, WebStyleValueUniversal>;
 export type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`;
+export type GetTokenPropsFromAcceptedTokens<AcceptedTokens> = AcceptedTokens extends Record<string, any> ? {
+    [Key in keyof AcceptedTokens]?: ThemeValueByCategory<AcceptedTokens[Key]>;
+} : {};
 export type SpecificTokens<Record = Tokens, RK extends keyof Record = keyof Record> = RK extends string ? `$${RK}.${keyof Record[RK] extends string | number ? keyof Record[RK] : never}` : never;
 export type SpecificTokensSpecial = TamaguiSettings extends {
     autocompleteSpecificTokens: infer Val;
@@ -806,6 +809,10 @@ export type TamaguiComponent<Props = any, Ref = any, NonStyledProps = {}, BaseSt
 export type GetStyledProps<A extends StylableComponent> = A extends {
     __tama: [any, any, any, infer BaseStyles, infer VariantProps, any];
 } ? BaseStyles & VariantProps : GetProps<A>;
+export type InferGenericComponentProps<A> = A extends ComponentType<infer Props> ? Props : A extends new (props: infer Props) => any ? Props : {};
+export type InferProps<A extends StylableComponent, B extends StaticConfigPublic> = A extends {
+    __tama: any;
+} ? GetProps<A> : GetFinalProps<InferGenericComponentProps<A>, GetBaseStyles<{}, B>>;
 export type GetProps<A extends StylableComponent> = A extends {
     __tama: [
         infer Props,
@@ -817,13 +824,13 @@ export type GetProps<A extends StylableComponent> = A extends {
     ];
 } ? Props extends {
     __tamaDefer: true;
-} ? GetFinalProps<NonStyledProps, BaseStyles & VariantProps> : Props : A extends ComponentType<infer Props> ? Props : A extends new (props: infer Props) => any ? Props : {};
+} ? GetFinalProps<NonStyledProps, BaseStyles & VariantProps> : Props : InferGenericComponentProps<A>;
 export type GetNonStyledProps<A extends StylableComponent> = A extends {
     __tama: [any, any, infer B, any, any, any];
 } ? B : GetProps<A>;
 export type GetBaseStyles<A, B> = A extends {
-    __tama: [any, any, any, infer B, any, any];
-} ? B : B extends {
+    __tama: [any, any, any, infer C, any, any];
+} ? C : B extends {
     isText: true;
 } ? TextStylePropsBase : StackStylePropsBase;
 export type GetStyledVariants<A> = A extends {
