@@ -543,26 +543,34 @@ export function createComponent<
         const type =
           (hasEnterStyle ? '(hasEnter)' : '') +
           (isAnimated ? '(animated)' : '') +
-          (isReactNative ? '(rnw)' : '')
+          (isReactNative ? '(rnw)' : '') +
+          (presenceState?.isPresent === false ? '(EXIT)' : '')
         const dataIs = propsIn['data-is'] || ''
         const banner = `${internalID} ${name}${dataIs ? ` ${dataIs}` : ''} ${type}`
-        console.group(
+        console.info(
           `%c ${banner} (hydrated: ${isHydrated}) (unmounted: ${state.unmounted})`,
           'background: green; color: white;'
         )
         if (!isServer) {
           // if strict mode or something messes with our nesting this fixes:
           console.groupEnd()
-          console.groupEnd()
 
-          const pressLog = `${state.press || state.pressIn ? 'PRESS ' : ''}`
-          const stateLog = `${pressLog}${state.hover ? 'HOVER ' : ''}${
-            state.focus ? 'FOCUS' : ' '
+          const pressLog = `${state.press || state.pressIn ? ' PRESS ' : ''}`
+          const stateLog = `${pressLog}${state.hover ? ' HOVER ' : ''}${
+            state.focus ? ' FOCUS' : ' '
           }`
+
           const ch = propsIn.children
-          const childLog = typeof ch === 'string' && ch.length > 4 ? ch.slice(0, 4) : ch
-          console.groupCollapsed(`Info: (children: ${childLog}) ${stateLog}`)
-          log({ propsIn, props, state, staticConfig, elementType, themeStateProps })
+          let childLog =
+            typeof ch === 'string' ? (ch.length > 4 ? ch.slice(0, 4) + '...' : ch) : ''
+          if (childLog.length) {
+            childLog = `(children: ${childLog})`
+          }
+
+          console.groupCollapsed(`${childLog}${stateLog}Props:`)
+          log('props in:', propsIn)
+          log('final props:', props)
+          log({ state, staticConfig, elementType, themeStateProps })
           log({ contextProps: styledContextProps, overriddenContextProps })
           log({ presence, isAnimated, isHOC, hasAnimationProp, useAnimations })
           console.groupEnd()
