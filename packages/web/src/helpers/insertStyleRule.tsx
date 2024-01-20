@@ -93,7 +93,7 @@ export function scanAllSheets(
     }
     lastScannedSheets = current
   }
-
+  // TODO: does this work with new themes shorthands?
   if (prev) {
     for (const sheet of prev) {
       if (sheet && !current.has(sheet)) {
@@ -132,6 +132,7 @@ function updateSheetStyles(
     return
   }
 
+  // TODO: firstSelector and lastSelector are undefined sometimes ?
   const firstSelector = getTamaguiSelector(rules[0], collectThemes)?.[0]
   const lastSelector = getTamaguiSelector(rules[rules.length - 1], collectThemes)?.[0]
   const cacheKey = `${rules.length}${firstSelector}${lastSelector}`
@@ -259,6 +260,7 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
   const dedupedEntry: DedupedTheme = {
     names: [],
     theme: values,
+    alias: '',
   }
 
   // loop selectors and build deduped
@@ -271,6 +273,9 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
       name && scheme && scheme !== name ? `${scheme}_${name}` : name || scheme
     if (dedupedEntry.names.includes(themeName) || themeName === 'light_dark') {
       continue
+    }
+    if (name !== undefined && name !== 'light' && name !== 'dark') {
+      dedupedEntry.alias = `t_${name}`
     }
     dedupedEntry.names.push(themeName)
   }
