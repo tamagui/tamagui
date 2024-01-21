@@ -96,7 +96,7 @@ function DialogInstance() {
             <DialogInstance />
 
             <Dialog.Close displayWhenAdapted asChild>
-              <Button theme="alt1" aria-label="Close">
+              <Button theme="active" aria-label="Close">
                 Save changes
               </Button>
             </Dialog.Close>
