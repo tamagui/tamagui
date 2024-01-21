@@ -91,7 +91,7 @@ const DialogTriggerFrame = styled(View, {
   name: TRIGGER_NAME,
 })
 
-interface DialogTriggerProps extends StackProps { }
+interface DialogTriggerProps extends StackProps {}
 
 const DialogTrigger = DialogTriggerFrame.styleable(
   (props: ScopedProps<DialogTriggerProps>, forwardedRef) => {
@@ -361,7 +361,7 @@ type DialogContentFrameProps = GetProps<typeof DialogContentFrame>
 
 interface DialogContentProps
   extends DialogContentFrameProps,
-  Omit<DialogContentTypeProps, 'context' | 'onPointerDownCapture'> {
+    Omit<DialogContentTypeProps, 'context' | 'onPointerDownCapture'> {
   /**
    * Used to force mounting when more control is needed. Useful when
    * controlling animation with React animation libraries.
@@ -460,7 +460,9 @@ const DialogContentModal = React.forwardRef<TamaguiElement, DialogContentTypePro
         onFocusOutside={composeEventHandlers(props.onFocusOutside, (event) =>
           event.preventDefault()
         )}
-        outlineStyle='none'
+        {...(!props.unstyled && {
+          outlineStyle: 'none',
+        })}
       >
         {children}
       </DialogContentImpl>
@@ -604,7 +606,6 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
             forceUnmount={!context.open}
             onUnmountAutoFocus={onCloseAutoFocus}
           >
-
             {contents}
           </FocusScope>
         </Dismissable>
