@@ -72,6 +72,8 @@ function DialogInstance() {
           enterStyle={{ x: 0, y: -20, opacity: 0, scale: 0.9 }}
           exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
           gap="$4"
+          x={0}
+          y={0}
         >
           <Dialog.Title>Edit profile</Dialog.Title>
           <Dialog.Description>
