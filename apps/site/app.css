@@ -118,7 +118,8 @@ span._display-1adg3ll > span._display-xoduu5 {
 }
 
 .hero-blur {
-  background: radial-gradient(var(--color2) 0%, transparent 72%);
+  background: radial-gradient(var(--color10) 0%, transparent 72%);
+  transition: all cubic-bezier(0.175, 0.885, 0.32, 1.275) 1s;
 }
 
 .t_dark .hero-blur {

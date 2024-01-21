@@ -45,7 +45,7 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
           theme={open ? 'alt1' : undefined}
           aria-label="Open the main menu"
         >
-          <Menu size={22} color="var(--color)" />
+          <Menu size={18} color="var(--color)" />
         </Button>
       </Popover.Anchor>
 
@@ -82,12 +82,12 @@ const HeaderMenuContent = React.memo(function HeaderMenuContent() {
       bw={1}
       boc="$borderColor"
       enterStyle={{ x: -10, o: 0 }}
-      exitStyle={{ x: -10, o: 0 }}
+      exitStyle={{ x: 10, o: 0 }}
       x={0}
       y={0}
       o={1}
       animation={[
-        '75ms',
+        'quicker',
         {
           opacity: {
             overshootClamping: true,
@@ -98,7 +98,7 @@ const HeaderMenuContent = React.memo(function HeaderMenuContent() {
       p={0}
       maxHeight="80vh"
       maxWidth={360}
-      elevate
+      elevation="$12"
       zIndex={100000000}
       trapFocus
       br="$6"
