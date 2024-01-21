@@ -435,6 +435,9 @@ const DialogContentModal = React.forwardRef<TamaguiElement, DialogContentTypePro
         {...props}
         context={context}
         ref={composedRefs}
+        // we make sure focus isn't trapped once `DialogContent` has been closed
+        // (closed !== unmounted when animating out)
+        trapFocus={context.open}
         disableOutsidePointerEvents
         onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
           event.preventDefault()
