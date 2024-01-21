@@ -133,7 +133,7 @@ export const DocsMenuContents = React.memo(function DocsMenuContents() {
               })}
             </>
           )
-        }, [items])}
+        }, [items, currentPath])}
       </div>
     </>
   )
