@@ -366,6 +366,9 @@ async function run() {
       await spawnify(`yarn install`)
     }
 
+    const tagPrefix = canary ? 'canary' : 'v'
+    const gitTag = `${tagPrefix}${version}`
+
     if (!finish) {
       await sleep(4 * 1000)
     }
@@ -380,9 +383,6 @@ async function run() {
       })
       await finishAndCommit(starterFreeDir)
     }
-
-    const tagPrefix = canary ? 'canary' : 'v'
-    const gitTag = `${tagPrefix}${version}`
 
     await finishAndCommit()
 
