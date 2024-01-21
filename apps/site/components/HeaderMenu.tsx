@@ -5,6 +5,7 @@ import {
   Button,
   Popover,
   Sheet,
+  SizableText,
   Spacer,
   XStack,
   YStack,
@@ -14,71 +15,76 @@ import {
 import { DocsMenuContents } from './DocsMenuContents'
 import { HeaderLinks } from './HeaderLinks'
 import { useDocsMenu } from './useDocsMenu'
+import { ThemeTintAlt } from '@tamagui/logo'
 
 export const HeaderMenu = React.memo(function HeaderMenu() {
   const { open, setOpen } = useDocsMenu()
 
   return (
-    <Popover
-      keepChildrenMounted
-      hoverable={{
-        delay: 50,
-        restMs: 40,
-      }}
-      open={open}
-      onOpenChange={setOpen}
-      size="$5"
-      stayInFrame={{ padding: 20 }}
-    >
-      <Popover.Anchor asChild>
-        <Button
-          size="$3"
-          ml="$2"
-          bc="transparent"
-          circular
-          noTextWrap
-          onPress={() => {
-            if (isTouchable || !open) {
-              setOpen(!open)
-            }
-          }}
-          theme={open ? 'alt1' : undefined}
-          aria-label="Open the main menu"
-        >
-          <Menu size={18} color="var(--color)" />
-        </Button>
-      </Popover.Anchor>
+    <ThemeTintAlt>
+      <Popover
+        keepChildrenMounted
+        hoverable={{
+          delay: 50,
+          restMs: 40,
+        }}
+        open={open}
+        onOpenChange={setOpen}
+        size="$5"
+        stayInFrame={{ padding: 20 }}
+      >
+        <Popover.Anchor asChild>
+          <Button
+            size="$3"
+            ml="$2"
+            bc="transparent"
+            noTextWrap
+            br="$10"
+            onPress={() => {
+              if (isTouchable || !open) {
+                setOpen(!open)
+              }
+            }}
+            theme={open ? 'alt1' : undefined}
+            aria-label="Open the main menu"
+          >
+            {/* <Menu size={18} color="var(--color)" /> */}
+            <SizableText ff="$silkscreen">Menu</SizableText>
+          </Button>
+        </Popover.Anchor>
 
-      <Adapt platform="touch" when="sm">
-        <Sheet
-          zIndex={100000000}
-          modal
-          dismissOnSnapToBottom
-          animation="bouncy"
-          animationConfig={{
-            type: 'spring',
-            damping: 25,
-            mass: 1.2,
-            stiffness: 200,
-          }}
-        >
-          <Sheet.Frame>
-            <Sheet.ScrollView>
-              <Adapt.Contents />
-            </Sheet.ScrollView>
-          </Sheet.Frame>
-          <Sheet.Overlay zIndex={100} />
-        </Sheet>
-      </Adapt>
+        <Adapt platform="touch" when="sm">
+          <Sheet
+            zIndex={100000000}
+            modal
+            dismissOnSnapToBottom
+            animation="bouncy"
+            animationConfig={{
+              type: 'spring',
+              damping: 25,
+              mass: 1.2,
+              stiffness: 200,
+            }}
+          >
+            <Sheet.Frame>
+              <Sheet.ScrollView>
+                <Adapt.Contents />
+              </Sheet.ScrollView>
+            </Sheet.Frame>
+            <Sheet.Overlay zIndex={100} />
+          </Sheet>
+        </Adapt>
 
-      <HeaderMenuContent />
-    </Popover>
+        <HeaderMenuContent />
+      </Popover>
+    </ThemeTintAlt>
   )
 })
 
 const HeaderMenuContent = React.memo(function HeaderMenuContent() {
   return (
     <Popover.Content
+      mt={-5}
       bw={1}
       boc="$borderColor"
       enterStyle={{ x: -10, o: 0 }}

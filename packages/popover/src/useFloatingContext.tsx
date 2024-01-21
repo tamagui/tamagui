@@ -32,6 +32,7 @@ export const useFloatingContext = ({
               handleClose: safePolygon({
                 requireIntent: true,
                 blockPointerEvents: true,
+                buffer: 1,
               }),
               ...(hoverable && typeof hoverable === 'object' && hoverable),
             })
