@@ -37,12 +37,15 @@ export const HomeGlow = memo(() => {
               h="100vh"
               w={1000}
               theme={cur as ThemeName}
-              o={active ? 0.5 : 0}
+              o={active ? 0.6 : 0}
               fullscreen
               left={`calc(50vw - 500px)`}
               x={isOnHeroBelow ? 0 : isDouble ? (isOpposite ? -500 : 500) : 0}
               scale={scale}
               className="hero-blur"
+              $theme-light={{
+                o: active ? 0.08 : 0,
+              }}
             />
           )
         })}
