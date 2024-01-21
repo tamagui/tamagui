@@ -1,3 +1,4 @@
+- $theme-light in prod mode SSR issue
 - popovers work with no js
 
 - remove proxy worm swap behavior except for whitelisted ones
