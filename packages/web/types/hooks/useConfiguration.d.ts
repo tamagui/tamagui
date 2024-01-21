@@ -174,5 +174,8 @@ export declare const useConfiguration: () => {
     inverseShorthands: Record<string, string>;
     fontSizeTokens: Set<string>;
     specificTokens: Record<string, import("..").Variable<any>>;
+    themesNames: {
+        [key: string]: number;
+    };
 };
 //# sourceMappingURL=useConfiguration.d.ts.map

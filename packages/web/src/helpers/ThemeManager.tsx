@@ -1,6 +1,6 @@
 import { isWeb } from '@tamagui/constants'
 
-import { getThemes } from '../config'
+import { getThemes, getThemesNames } from '../config'
 import { THEME_CLASSNAME_PREFIX, THEME_NAME_SEPARATOR } from '../constants/constants'
 import { ColorScheme, ThemeParsed, ThemeProps } from '../types'
 
@@ -290,6 +290,7 @@ function getState(
     }
 
     if (found) {
+      const themesNames = getThemesNames()
       const names = found.split('_')
       const [firstName, ...restNames] = names
       const lastName = names[names.length - 1]
@@ -297,11 +298,11 @@ function getState(
       const scheme =
         firstName === 'light' ? 'light' : firstName === 'dark' ? 'dark' : undefined
       const pre = THEME_CLASSNAME_PREFIX
+      const afterPre =
+        themesNames[!scheme || !restNames.length ? firstName : restNames.join('_')]
       const className = !isWeb
         ? ''
-        : `${pre}sub_theme ${pre}${
-            !scheme || !restNames.length ? firstName : restNames.join('_')
-          }`
+        : `${pre}sub_theme ${pre}${themesNames[afterPre] || afterPre}`
 
       // because its a new theme the baseManager is now the parent
       const parentState = (baseManager || parentManager)?.state

@@ -11,6 +11,7 @@ export function getThemeCSSRules(props: {
   theme: ThemeParsed
   names: string[]
   hasDarkLight?: boolean
+  themesNames: { [key: string]: number }
 }) {
   const cssRuleSets: string[] = []
 
@@ -34,6 +35,7 @@ export function getThemeCSSRules(props: {
 
     // themeToVariableToValueMap.set(theme, {})
     // const varToValMap = themeToVariableToValueMap.get(theme)
+    debugger
     for (const themeKey in theme) {
       const variable = theme[themeKey] as Variable
       let value: any = null
@@ -49,7 +51,9 @@ export function getThemeCSSRules(props: {
 
     const isDarkBase = themeName === 'dark'
     const isLightBase = themeName === 'light'
-    const baseSelectors = names.map((name) => `${CNP}${name}`)
+    const baseSelectors = names.map((name) => {
+      return `${CNP}${props.themesNames[name] || name}`
+    })
     const selectorsSet = new Set(isDarkBase || isLightBase ? baseSelectors : [])
 
     // since we dont specify dark/light in classnames we have to do an awkward specificity war
@@ -64,11 +68,13 @@ export function getThemeCSSRules(props: {
         if (!(isDark || isLight)) {
           // neither light nor dark subtheme, just generate one selector with :root:root which
           // will override all :root light/dark selectors generated below
-          selectorsSet.add(`${CNP}${subName}`)
+          selectorsSet.add(`${CNP}${props.themesNames[subName] || subName}`)
           continue
         }
 
-        const childSelector = `${CNP}${subName.replace(/^(dark|light)_/, '')}`
+        const childSelector = `${CNP}${
+          props.themesNames[subName.replace(/^(dark|light)_/, '')] || subName
+        }`
         const order = isDark ? ['dark', 'light'] : ['light', 'dark']
         const [stronger, weaker] = order
         const numSelectors = Math.round(maxDepth * 1.5)

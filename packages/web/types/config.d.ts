@@ -42,6 +42,9 @@ export declare const getThemes: () => {
         shadowColorFocus?: import("./createVariable").Variable<string> | import("./createVariable").Variable<any> | import("./createVariable").Variable<undefined> | undefined;
     };
 };
+export declare const getThemesNames: () => {
+    [key: string]: number;
+};
 export declare const configListeners: Set<ConfigListener>;
 export declare const onConfiguredOnce: (cb: ConfigListener) => void;
 export declare const updateConfig: (key: string, value: any) => void;

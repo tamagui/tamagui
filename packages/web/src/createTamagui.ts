@@ -43,6 +43,18 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   const tokensParsed: TokensParsed = {} as any
   const tokens = createVariables(configIn.tokens || {})
 
+  let themesNames = (
+    typeof configIn.themes?.[0] === 'number'
+      ? configIn.themes
+      : Object.fromEntries(
+          Object.entries(configIn.themes || {}).map(([key], index) => [key, index])
+        )
+  ) as {
+    [key: string]: number
+  }
+  delete themesNames['light']
+  delete themesNames['dark']
+
   if (configIn.tokens) {
     // faster lookups
     const tokensMerged: TokensMerged = {} as any
@@ -194,6 +206,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
               themeName: names[0],
               names,
               theme,
+              themesNames,
             })
             themeRuleSets = [...themeRuleSets, ...nextRules]
           }
@@ -203,6 +216,8 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       },
     }
   })()
+
+  // we checked till here
 
   const shorthands = configIn.shorthands || {}
 
@@ -278,6 +293,7 @@ ${runtimeStyles}`
     themes: themeConfig.themes as any,
     fontsParsed: fontsParsed || {},
     themeConfig,
+    themesNames,
     tokensParsed: tokensParsed as any,
     parsed: true,
     getNewCSS,

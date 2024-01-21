@@ -453,6 +453,8 @@ export type CreateTamaguiProps = {
         [key: string]: {
             [key: string]: string | number | Variable;
         };
+    } | {
+        [key: string]: number;
     };
     settings?: Partial<GenericTamaguiSettings>;
     /**
@@ -519,6 +521,9 @@ export type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B ext
     fontSizeTokens: Set<string>;
     specificTokens: Record<string, Variable>;
     settings: Omit<GenericTamaguiSettings, keyof I> & I;
+    themesNames: {
+        [key: string]: number;
+    };
 };
 export type GetAnimationKeys<A extends GenericTamaguiConfig> = keyof A['animations'];
 export type UnionableString = string & {};

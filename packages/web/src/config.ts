@@ -81,6 +81,7 @@ export const getTokenValue = (value: Token, group?: keyof Tokens) => {
 export const useTokens = getTokens
 
 export const getThemes = () => conf!.themes
+export const getThemesNames = () => conf!.themesNames
 
 export const configListeners = new Set<ConfigListener>()
 

@@ -211,11 +211,18 @@ const monoFont = createGenericFont(
   }
 )
 
+let themeKeysOnly = Object.fromEntries(
+  Object.entries(themesIn).map(([key], index) => [key, index])
+) as {
+  [key: string]: number
+}
+
 // avoid themes only on client bundle
-const themes =
+const themes = (
   process.env.TAMAGUI_IS_SERVER || process.env.TAMAGUI_KEEP_THEMES
     ? themesIn
-    : ({} as typeof themesIn)
+    : themeKeysOnly
+) as CreateTamaguiProps['themes']
 
 export const config = {
   defaultFont: 'body',

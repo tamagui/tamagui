@@ -5,6 +5,9 @@ export declare function createComponent<ComponentPropTypes extends StackProps | 
 export declare function Unspaced(props: {
     children?: any;
 }): any;
+export declare namespace Unspaced {
+    var isUnspaced: boolean;
+}
 export declare const Spacer: TamaguiComponent<SpacerProps, TamaguiElement, StackPropsBase, void>;
 export type SpacedChildrenProps = {
     isZStack?: boolean;
