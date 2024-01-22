@@ -1494,11 +1494,34 @@ if (process.env.TAMAGUI_TARGET === 'native') {
     outlineColor: 1,
   })
 } else {
-  Object.assign(skipProps, {
-    elevationAndroid: 1,
-    allowFontScaling: true,
-    adjustsFontSizeToFit: true,
-  })
+  if (process.env.NODE_ENV !== 'production') {
+    // native only, not web props
+    // we only skip them in dev to avoid warnings, in prod they silently drop
+    Object.assign(skipProps, {
+      accessibilityElementsHidden: 1,
+      accessibilityIgnoresInvertColors: 1,
+      accessibilityLanguage: 1,
+      adjustsFontSizeToFit: 1,
+      allowFontScaling: 1,
+      dataDetectorType: 1,
+      dynamicTypeRamp: 1,
+      elevationAndroid: 1,
+      importantForAccessibility: 1,
+      lineBreakStrategyIOS: 1,
+      minimumFontScale: 1,
+      needsOffscreenAlphaCompositing: 1,
+      nextFocusDown: 1,
+      nextFocusForward: 1,
+      nextFocusLeft: 1,
+      nextFocusRight: 1,
+      nextFocusUp: 1,
+      onMagicTap: 1,
+      selectionColor: 1,
+      shouldRasterizeIOS: 1,
+      suppressHighlighting: 1,
+      textBreakStrategy: 1,
+    })
+  }
 }
 
 const accessibilityRoleToWebRole = {
