@@ -1,14 +1,14 @@
-import { NativeValue, SizeTokens, StackProps } from "@tamagui/core";
-import { SwitchExtraProps as HeadlessSwitchExtraProps, SwitchState } from "@tamagui/switch-headless";
-import * as React from "react";
-import { SwitchProps as NativeSwitchProps } from "react-native";
+import { NativeValue, SizeTokens, StackProps } from '@tamagui/core';
+import { SwitchExtraProps as HeadlessSwitchExtraProps, SwitchState } from '@tamagui/switch-headless';
+import * as React from 'react';
+import { SwitchProps as NativeSwitchProps } from 'react-native';
 type SwitchSharedProps = {
     size?: SizeTokens | number;
     unstyled?: boolean;
 };
 type SwitchBaseProps = StackProps & SwitchSharedProps;
 export type SwitchExtraProps = HeadlessSwitchExtraProps & {
-    native?: NativeValue<"mobile" | "ios" | "android">;
+    native?: NativeValue<'mobile' | 'ios' | 'android'>;
     nativeProps?: NativeSwitchProps;
 };
 export type SwitchProps = SwitchBaseProps & SwitchExtraProps;
