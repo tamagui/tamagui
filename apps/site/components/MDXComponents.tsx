@@ -205,19 +205,18 @@ const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
 })
 
 const TabsList = styled(Tabs.List, {
-  alignSelf: 'flex-end',
-  size: '$4',
+  marginTop: -50,
+  width: "100%",
+  justifyContent: "flex-end",
+  size: "$4",
   top: 70,
   marginRight: 0,
-  marginTop: -50,
   marginBottom: 0,
   zIndex: 10000,
-  position: 'sticky' as any,
-
+  position: "sticky" as any,
+  right: 0,
   $sm: {
     marginTop: 20,
-    marginRight: 0,
-    width: '100%',
   },
 })
 
