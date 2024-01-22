@@ -160,9 +160,8 @@ type TabsTriggerProps = TabsTriggerFrameProps & {
 
 type TabsTabProps = TabsTriggerProps
 
-const TabsTrigger = TabsTriggerFrame.styleable(
-  // @ts-expect-error
-  (props: ScopedProps<TabsTriggerProps>, forwardedRef) => {
+const TabsTrigger = TabsTriggerFrame.styleable<ScopedProps<TabsTabProps>>(
+  (props, forwardedRef) => {
     const {
       __scopeTabs,
       value,
