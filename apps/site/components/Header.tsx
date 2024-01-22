@@ -171,7 +171,20 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
           />
 
           <YStack $md={{ display: 'none' }}>
-            <SponsorButton tiny />
+            <NextLink
+              legacyBehavior={false}
+              target="_blank"
+              href="https://github.com/tamagui/tamagui"
+            >
+              <TooltipSimple delay={0} restMs={25} label="Github">
+                <YStack p="$2" opacity={0.9} hoverStyle={{ opacity: 1 }}>
+                  <VisuallyHidden>
+                    <Text>Github</Text>
+                  </VisuallyHidden>
+                  <GithubIcon width={26} />
+                </YStack>
+              </TooltipSimple>
+            </NextLink>
           </YStack>
         </XStack>
       )}
@@ -226,21 +239,6 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
                 </NextLink>
               </XStack>
             )}
-
-            <NextLink
-              legacyBehavior={false}
-              target="_blank"
-              href="https://github.com/tamagui/tamagui"
-            >
-              <TooltipSimple delay={0} restMs={25} label="Github">
-                <YStack p="$2" opacity={0.9} hoverStyle={{ opacity: 1 }}>
-                  <VisuallyHidden>
-                    <Text>Github</Text>
-                  </VisuallyHidden>
-                  <GithubIcon width={26} />
-                </YStack>
-              </TooltipSimple>
-            </NextLink>
 
             <HeaderMenu />
           </XStack>

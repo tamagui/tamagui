@@ -50,7 +50,7 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
           py: '$1.5',
         }}
         {...(isActive && {
-          bc: '$color3',
+          bc: '$color1',
         })}
         {...(inMenu && {
           jc: 'flex-start',

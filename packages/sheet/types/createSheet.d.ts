@@ -54,7 +54,7 @@ export declare function createSheet<H extends SheetStyledComponent | TamaguiComp
         }>> & RefAttributes<unknown>>;
         Overlay: import("react").MemoExoticComponent<(propsIn: SheetScopedProps<GetProps<typeof Overlay>>) => null>;
         Handle: ({ __scopeSheet, ...props }: SheetScopedProps<GetProps<typeof Handle>>) => JSX.Element | null;
-        ScrollView: import("react").ForwardRefExoticComponent<Omit<import("react-native").ScrollViewProps & Omit<StackProps, keyof import("react-native").ScrollViewProps>, keyof import("@tamagui/core").StackStylePropsBase | "fullscreen"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase & {
+        ScrollView: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, keyof import("@tamagui/core").StackStylePropsBase | "fullscreen"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase & {
             fullscreen?: boolean | undefined;
         }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase & {
             fullscreen?: boolean | undefined;
@@ -82,7 +82,7 @@ export declare function createSheet<H extends SheetStyledComponent | TamaguiComp
     }>> & RefAttributes<unknown>>;
     Overlay: import("react").MemoExoticComponent<(propsIn: SheetScopedProps<GetProps<typeof Overlay>>) => null>;
     Handle: ({ __scopeSheet, ...props }: SheetScopedProps<GetProps<typeof Handle>>) => JSX.Element | null;
-    ScrollView: import("react").ForwardRefExoticComponent<Omit<import("react-native").ScrollViewProps & Omit<StackProps, keyof import("react-native").ScrollViewProps>, keyof import("@tamagui/core").StackStylePropsBase | "fullscreen"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase & {
+    ScrollView: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, keyof import("@tamagui/core").StackStylePropsBase | "fullscreen"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase & {
         fullscreen?: boolean | undefined;
     }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase & {
         fullscreen?: boolean | undefined;

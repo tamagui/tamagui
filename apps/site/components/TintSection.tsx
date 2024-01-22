@@ -43,7 +43,7 @@ export const TintSection = ({ children, index, themed, zIndex, ...props }: Props
       }
     },
     {
-      threshold: 0.1,
+      threshold: 0.2,
     }
   )
 

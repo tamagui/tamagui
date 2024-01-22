@@ -509,7 +509,8 @@ export function createComponent<
     // internal use only
     const disableThemeProp =
       process.env.TAMAGUI_TARGET === 'native' ? false : props['data-disable-theme']
-    const disableTheme = (disableThemeProp && !willBeAnimated) || isHOC
+
+    const disableTheme = disableThemeProp || isHOC
 
     if (process.env.NODE_ENV === 'development' && time) time`theme-props`
 

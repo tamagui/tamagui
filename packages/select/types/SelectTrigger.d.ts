@@ -3,10 +3,10 @@ import { ListItemProps } from '@tamagui/list-item';
 import * as React from 'react';
 export type SelectTriggerProps = ListItemProps;
 export declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<import("@tamagui/text").TextParentStyles, "TextComponent" | "noTextWrap"> & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "disabled" | "size" | "elevation" | keyof import("@tamagui/core").StackStylePropsBase | "transparent" | "fullscreen" | "circular" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless" | "unstyled" | "active"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase & {
-    disabled?: boolean | undefined;
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     unstyled?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
+    disabled?: boolean | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -21,10 +21,10 @@ export declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<import(
     chromeless?: boolean | "all" | undefined;
     active?: boolean | undefined;
 }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase & {
-    disabled?: boolean | undefined;
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     unstyled?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
+    disabled?: boolean | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -39,10 +39,10 @@ export declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<import(
     chromeless?: boolean | "all" | undefined;
     active?: boolean | undefined;
 }>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase & {
-    disabled?: boolean | undefined;
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     unstyled?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
+    disabled?: boolean | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -57,10 +57,10 @@ export declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<import(
     chromeless?: boolean | "all" | undefined;
     active?: boolean | undefined;
 }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase & {
-    disabled?: boolean | undefined;
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     unstyled?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
+    disabled?: boolean | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -75,10 +75,10 @@ export declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<import(
     chromeless?: boolean | "all" | undefined;
     active?: boolean | undefined;
 }>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStylePropsBase & {
-    disabled?: boolean | undefined;
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     unstyled?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
+    disabled?: boolean | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;

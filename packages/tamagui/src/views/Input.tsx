@@ -1,5 +1,5 @@
 import { isWeb } from '@tamagui/constants'
-import { ColorStyleProp, GetProps, styled, useTheme } from '@tamagui/core'
+import { GetProps, styled, useTheme } from '@tamagui/core'
 import { useFocusable } from '@tamagui/focusable'
 import { TextInput } from 'react-native'
 
@@ -73,12 +73,13 @@ export type Input = TextInput
 
 export type InputFrameProps = GetProps<typeof InputFrame>
 
-export type InputProps = Omit<InputFrameProps, 'placeholderTextColor'> & {
-  placeholderTextColor?: ColorStyleProp
+type InputExtraProps = {
   rows?: number
 }
 
-export const Input = InputFrame.styleable<InputProps>((propsIn, ref) => {
+export type InputProps = InputFrameProps & InputExtraProps
+
+export const Input = InputFrame.styleable<InputExtraProps>((propsIn, ref) => {
   const props = useInputProps(propsIn, ref)
   return <InputFrame {...props} />
 })

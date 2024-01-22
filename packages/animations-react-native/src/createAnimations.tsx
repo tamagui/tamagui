@@ -159,9 +159,6 @@ export function useAnimatedNumberStyle<V extends UniversalAnimatedNumber<Animate
 export function createAnimations<A extends AnimationsConfig>(
   animations: A
 ): AnimationDriver<A> {
-  AnimatedView['displayName'] = 'AnimatedView'
-  AnimatedText['displayName'] = 'AnimatedText'
-
   return {
     isReactNative: true,
     animations,

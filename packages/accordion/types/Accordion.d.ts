@@ -89,15 +89,11 @@ interface AccordionItemProps extends Omit<CollapsibleProps, 'open' | 'defaultOpe
 }
 type PrimitiveHeading3Props = React.ComponentPropsWithoutRef<typeof H3>;
 type AccordionHeaderProps = PrimitiveHeading3Props;
-declare const AccordionTriggerFrame: import("@tamagui/web").TamaguiComponent<{
-    __tamaDefer: true;
-}, TamaguiElement, import("@tamagui/web").StackNonStyleProps & void, import("@tamagui/web").StackStylePropsBase, {
+declare const AccordionTriggerFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, TamaguiElement, import("@tamagui/web").StackNonStyleProps & void, import("@tamagui/web").StackStylePropsBase, {
     unstyled?: boolean | undefined;
 }, {}>;
 type AccordionTriggerProps = GetProps<typeof AccordionTriggerFrame>;
-declare const AccordionContentFrame: import("@tamagui/web").TamaguiComponent<{
-    __tamaDefer: true;
-}, TamaguiElement, import("@tamagui/web").StackNonStyleProps & import("@tamagui/collapsible/types/Collapsible").CollapsibleContentProps & {
+declare const AccordionContentFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, TamaguiElement, import("@tamagui/web").StackNonStyleProps & import("@tamagui/collapsible/types/Collapsible").CollapsibleContentProps & {
     __scopeCollapsible?: string | undefined;
 }, import("@tamagui/web").StackStylePropsBase, {
     unstyled?: boolean | undefined;
@@ -109,7 +105,7 @@ declare const Accordion: React.ForwardRefExoticComponent<ScopedProps<AccordionSi
     }>, TamaguiElement, import("@tamagui/web").StackNonStyleProps & void, import("@tamagui/web").StackStylePropsBase, {
         unstyled?: boolean | undefined;
     }, {}>;
-    Header: React.ForwardRefExoticComponent<Omit<Omit<import("@tamagui/web").TextNonStyleProps, keyof import("@tamagui/web").TextStylePropsBase | "unstyled" | "size"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase & {
+    Header: React.ForwardRefExoticComponent<Omit<Omit<import("@tamagui/web").TextNonStyleProps, "unstyled" | "size" | keyof import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase & {
         size?: import("@tamagui/web").FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
     }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase & {

@@ -396,11 +396,8 @@ export const getSplitStyles: StyleSplitter = (
         }
 
         if (keyInit === 'id' || keyInit === 'nativeID') {
-          if (isReactNative) {
-            viewProps.nativeID = valInit
-          } else {
-            viewProps.id = valInit
-          }
+          // nativeId now deprecated for RN
+          viewProps.id = valInit
           continue
         }
 
@@ -692,7 +689,7 @@ export const getSplitStyles: StyleSplitter = (
         const isExit = key === 'exitStyle'
 
         // don't continue here on isEnter && !state.unmounted because we need to merge defaults
-        if (!descriptor || (isExit && !styleProps.isExiting)) {
+        if (!descriptor) {
           continue
         }
 
@@ -766,7 +763,7 @@ export const getSplitStyles: StyleSplitter = (
 
             if (isDisabled) {
               const defaultValues = animatableDefaults[pkey]
-              if (defaultValues && !(pkey in usedKeys)) {
+              if (defaultValues != null && !(pkey in usedKeys)) {
                 mergeStyle(styleState, pkey, defaultValues)
               }
             } else {

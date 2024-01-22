@@ -1,17 +1,13 @@
 /// <reference types="react" />
 export { createSheetScope } from './SheetContext';
 export * from './types';
-export declare const Handle: import("@tamagui/core").TamaguiComponent<{
-    __tamaDefer: true;
-}, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
+export declare const Handle: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     open?: boolean | undefined;
     unstyled?: boolean | undefined;
 }, {}>;
-export declare const Overlay: import("@tamagui/core").TamaguiComponent<{
-    __tamaDefer: true;
-}, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
+export declare const Overlay: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     open?: boolean | undefined;
@@ -28,9 +24,7 @@ export declare const Overlay: import("@tamagui/core").TamaguiComponent<{
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }, {}>;
-export declare const Frame: import("@tamagui/core").TamaguiComponent<{
-    __tamaDefer: true;
-}, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
+export declare const Frame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     unstyled?: boolean | undefined;
@@ -111,7 +105,7 @@ export declare const Sheet: import("react").ForwardRefExoticComponent<{
             open?: boolean | undefined;
             unstyled?: boolean | undefined;
         }>>) => JSX.Element | null;
-        ScrollView: import("react").ForwardRefExoticComponent<Omit<import("react-native").ScrollViewProps & Omit<import("@tamagui/core").StackProps, keyof import("react-native").ScrollViewProps>, keyof import("@tamagui/core").StackStylePropsBase | "fullscreen"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase & {
+        ScrollView: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, keyof import("@tamagui/core").StackStylePropsBase | "fullscreen"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase & {
             fullscreen?: boolean | undefined;
         }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase & {
             fullscreen?: boolean | undefined;
@@ -172,7 +166,7 @@ export declare const Sheet: import("react").ForwardRefExoticComponent<{
         open?: boolean | undefined;
         unstyled?: boolean | undefined;
     }>>) => JSX.Element | null;
-    ScrollView: import("react").ForwardRefExoticComponent<Omit<import("react-native").ScrollViewProps & Omit<import("@tamagui/core").StackProps, keyof import("react-native").ScrollViewProps>, keyof import("@tamagui/core").StackStylePropsBase | "fullscreen"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase & {
+    ScrollView: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, keyof import("@tamagui/core").StackStylePropsBase | "fullscreen"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase & {
         fullscreen?: boolean | undefined;
     }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase & {
         fullscreen?: boolean | undefined;
@@ -185,9 +179,7 @@ export declare const Sheet: import("react").ForwardRefExoticComponent<{
     }>> & import("react").RefAttributes<import("react-native").ScrollView>>;
 };
 /** @deprecated use Overlay instead  */
-export declare const SheetOverlayFrame: import("@tamagui/core").TamaguiComponent<{
-    __tamaDefer: true;
-}, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
+export declare const SheetOverlayFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     open?: boolean | undefined;
@@ -205,9 +197,7 @@ export declare const SheetOverlayFrame: import("@tamagui/core").TamaguiComponent
     chromeless?: boolean | "all" | undefined;
 }, {}>;
 /** @deprecated use Overlay instead  */
-export declare const SheetHandleFrame: import("@tamagui/core").TamaguiComponent<{
-    __tamaDefer: true;
-}, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
+export declare const SheetHandleFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     open?: boolean | undefined;

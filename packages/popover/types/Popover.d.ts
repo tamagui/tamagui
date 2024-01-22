@@ -160,10 +160,7 @@ export declare const PopoverArrow: import("@tamagui/core").TamaguiComponent<Omit
     fullscreen?: boolean | undefined;
 }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase & {
     elevation?: number | SizeTokens | undefined;
-    fullscreen?: boolean | undefined; /**
-     * Whether focus should be trapped within the `Popover`
-     * @default false
-     */
+    fullscreen?: boolean | undefined;
 }>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStylePropsBase & {
     elevation?: number | SizeTokens | undefined;
     fullscreen?: boolean | undefined;
@@ -261,10 +258,7 @@ export declare const Popover: React.ForwardRefExoticComponent<PopperProps & {
         fullscreen?: boolean | undefined;
     }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase & {
         elevation?: number | SizeTokens | undefined;
-        fullscreen?: boolean | undefined; /**
-         * Whether focus should be trapped within the `Popover`
-         * @default false
-         */
+        fullscreen?: boolean | undefined;
     }>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStylePropsBase & {
         elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;
@@ -337,10 +331,12 @@ export declare const Popover: React.ForwardRefExoticComponent<PopperProps & {
             __scopeSheet?: import("@tamagui/create-context").Scope<any>;
         } & React.RefAttributes<unknown>>;
         Overlay: React.MemoExoticComponent<(propsIn: import("@tamagui/sheet").SheetScopedProps<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase & {
-            elevation?: number | SizeTokens | undefined;
+            elevation?: number | SizeTokens | undefined; /**
+             * @see https://github.com/theKashey/react-remove-scroll#usage
+             */
             fullscreen?: boolean | undefined;
             open?: boolean | undefined;
-            transparent?: boolean | undefined;
+            transparent?: boolean | undefined; /** enable animation for content position changing */
             circular?: boolean | undefined;
             unstyled?: boolean | undefined;
             backgrounded?: boolean | undefined;
@@ -359,7 +355,7 @@ export declare const Popover: React.ForwardRefExoticComponent<PopperProps & {
             open?: boolean | undefined;
             unstyled?: boolean | undefined;
         }>>) => JSX.Element | null;
-        ScrollView: React.ForwardRefExoticComponent<Omit<import("react-native").ScrollViewProps & Omit<StackProps, keyof import("react-native").ScrollViewProps>, keyof import("@tamagui/core").StackStylePropsBase | "fullscreen"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase & {
+        ScrollView: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, keyof import("@tamagui/core").StackStylePropsBase | "fullscreen"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase & {
             fullscreen?: boolean | undefined;
         }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase & {
             fullscreen?: boolean | undefined;

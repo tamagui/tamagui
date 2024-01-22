@@ -219,6 +219,7 @@ const GroupItem = (props: ScopedProps<GroupItemProps>) => {
 
   return React.cloneElement(children, {
     style: {
+      // @ts-ignore
       ...children.props?.['style'],
       ...groupItemProps,
     },

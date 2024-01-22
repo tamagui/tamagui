@@ -1,12 +1,11 @@
 // import '../lib/wdyr'
 
+import { AnimationsPresenceDemo } from '@tamagui/demos'
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { Header } from '@tamagui/site/components/Header'
 import { SearchProvider } from '@tamagui/site/components/Search'
 import { useState } from 'react'
-import { AnimatePresence, Button, styled, Text, YStack } from 'tamagui'
-import { AnimationsPresenceDemo } from '@tamagui/demos'
-import * as Framer from 'framer-motion'
+import { AnimatePresence, Button, Progress, Text, YStack, styled } from 'tamagui'
 
 // debugger
 global.shouldDebugMoti = true
@@ -23,7 +22,10 @@ function TestPage() {
         flex: 1,
       }}
     >
-      <AnimationsPresenceDemo />
+      <Progress size="$4">
+        <Progress.Indicator bc="$color6" animation="bouncy" />
+      </Progress>
+      {/* <AnimationsPresenceDemo /> */}
       {/* <SSRAnimationTest /> */}
       {/* <AnimatedNumbers /> */}
       {/* <AnimatePresenceDemo /> */}

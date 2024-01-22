@@ -30,7 +30,9 @@ export const DocsMenuContents = React.memo(function DocsMenuContents() {
       <Input
         size="$3"
         w="100%"
-        borderWidth={0.5}
+        bw={0}
+        bbw={0.5}
+        br="$0"
         borderColor="$color4"
         backgroundColor="transparent"
         focusStyle={{
@@ -139,7 +141,7 @@ export const DocsMenuContents = React.memo(function DocsMenuContents() {
               })}
             </>
           )
-        }, [items])}
+        }, [items, currentPath])}
       </div>
     </>
   )

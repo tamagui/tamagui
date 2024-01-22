@@ -2,22 +2,16 @@ import { FontSizeTokens, TamaguiElement } from '@tamagui/core';
 import { ListItemProps } from '@tamagui/list-item';
 import * as React from 'react';
 import { ScopedProps, SelectProps } from './types';
-export declare const SelectIcon: import("@tamagui/core").TamaguiComponent<{
-    __tamaDefer: true;
-}, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
+export declare const SelectIcon: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
 }, {}>;
-export declare const SelectGroupFrame: import("@tamagui/core").TamaguiComponent<{
-    __tamaDefer: true;
-}, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
+export declare const SelectGroupFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
 }, {}>;
 export type SelectLabelProps = ListItemProps;
-export declare const SelectSeparator: import("@tamagui/core").TamaguiComponent<{
-    __tamaDefer: true;
-}, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
+export declare const SelectSeparator: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
     vertical?: boolean | undefined;
 }, {}>;
 export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) & {
@@ -49,17 +43,15 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
     }>> & React.RefAttributes<TamaguiElement>>;
-    Icon: import("@tamagui/core").TamaguiComponent<{
-        __tamaDefer: true;
-    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
+    Icon: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
     }, {}>;
     Item: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase & {
-        disabled?: boolean | undefined;
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         unstyled?: boolean | undefined;
         size?: import("@tamagui/core").SizeTokens | undefined;
+        disabled?: boolean | undefined;
+        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
@@ -74,10 +66,10 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         chromeless?: boolean | "all" | undefined;
         active?: boolean | undefined;
     }>, keyof import("./SelectItem").SelectItemProps> & import("./SelectItem").SelectItemProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("./SelectItem").SelectItemProps, import("@tamagui/core").StackStylePropsBase, {
-        disabled?: boolean | undefined;
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         unstyled?: boolean | undefined;
         size?: import("@tamagui/core").SizeTokens | undefined;
+        disabled?: boolean | undefined;
+        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
@@ -116,10 +108,10 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         unstyled?: boolean | undefined;
     }, {}>;
     Label: React.ForwardRefExoticComponent<Omit<import("@tamagui/text").TextParentStyles, "TextComponent" | "noTextWrap"> & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "disabled" | "size" | "elevation" | keyof import("@tamagui/core").StackStylePropsBase | "transparent" | "fullscreen" | "circular" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless" | "unstyled" | "active"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase & {
-        disabled?: boolean | undefined;
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         unstyled?: boolean | undefined;
         size?: import("@tamagui/core").SizeTokens | undefined;
+        disabled?: boolean | undefined;
+        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
@@ -134,10 +126,10 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         chromeless?: boolean | "all" | undefined;
         active?: boolean | undefined;
     }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase & {
-        disabled?: boolean | undefined;
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         unstyled?: boolean | undefined;
         size?: import("@tamagui/core").SizeTokens | undefined;
+        disabled?: boolean | undefined;
+        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
@@ -152,10 +144,10 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         chromeless?: boolean | "all" | undefined;
         active?: boolean | undefined;
     }>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase & {
-        disabled?: boolean | undefined;
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         unstyled?: boolean | undefined;
         size?: import("@tamagui/core").SizeTokens | undefined;
+        disabled?: boolean | undefined;
+        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
@@ -170,10 +162,10 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         chromeless?: boolean | "all" | undefined;
         active?: boolean | undefined;
     }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase & {
-        disabled?: boolean | undefined;
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         unstyled?: boolean | undefined;
         size?: import("@tamagui/core").SizeTokens | undefined;
+        disabled?: boolean | undefined;
+        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
@@ -188,10 +180,10 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         chromeless?: boolean | "all" | undefined;
         active?: boolean | undefined;
     }>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStylePropsBase & {
-        disabled?: boolean | undefined;
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         unstyled?: boolean | undefined;
         size?: import("@tamagui/core").SizeTokens | undefined;
+        disabled?: boolean | undefined;
+        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
@@ -224,10 +216,10 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
     ScrollDownButton: React.ForwardRefExoticComponent<import("./types").SelectScrollButtonProps & React.RefAttributes<TamaguiElement>>;
     ScrollUpButton: React.ForwardRefExoticComponent<import("./types").SelectScrollButtonProps & React.RefAttributes<TamaguiElement>>;
     Trigger: React.ForwardRefExoticComponent<Omit<import("@tamagui/text").TextParentStyles, "TextComponent" | "noTextWrap"> & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "disabled" | "size" | "elevation" | keyof import("@tamagui/core").StackStylePropsBase | "transparent" | "fullscreen" | "circular" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless" | "unstyled" | "active"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase & {
-        disabled?: boolean | undefined;
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         unstyled?: boolean | undefined;
         size?: import("@tamagui/core").SizeTokens | undefined;
+        disabled?: boolean | undefined;
+        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
@@ -242,10 +234,10 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         chromeless?: boolean | "all" | undefined;
         active?: boolean | undefined;
     }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase & {
-        disabled?: boolean | undefined;
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         unstyled?: boolean | undefined;
         size?: import("@tamagui/core").SizeTokens | undefined;
+        disabled?: boolean | undefined;
+        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
@@ -260,10 +252,10 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         chromeless?: boolean | "all" | undefined;
         active?: boolean | undefined;
     }>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase & {
-        disabled?: boolean | undefined;
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         unstyled?: boolean | undefined;
         size?: import("@tamagui/core").SizeTokens | undefined;
+        disabled?: boolean | undefined;
+        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
@@ -278,10 +270,10 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         chromeless?: boolean | "all" | undefined;
         active?: boolean | undefined;
     }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase & {
-        disabled?: boolean | undefined;
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         unstyled?: boolean | undefined;
         size?: import("@tamagui/core").SizeTokens | undefined;
+        disabled?: boolean | undefined;
+        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
@@ -296,10 +288,10 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         chromeless?: boolean | "all" | undefined;
         active?: boolean | undefined;
     }>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStylePropsBase & {
-        disabled?: boolean | undefined;
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         unstyled?: boolean | undefined;
         size?: import("@tamagui/core").SizeTokens | undefined;
+        disabled?: boolean | undefined;
+        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
@@ -332,7 +324,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
     Value: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase & {
         size?: FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
-    }>, "style" | "disabled" | "size" | "className" | "id" | "placeholder" | "tabIndex" | "role" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-hidden" | "aria-label" | "aria-labelledby" | "aria-live" | "aria-modal" | "aria-selected" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "children" | "dangerouslySetInnerHTML" | "onFocus" | "onBlur" | "onMouseDown" | "onMouseEnter" | "onMouseLeave" | "onMouseUp" | "onScroll" | `$${string}` | `$${number}` | "nativeID" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "accessibilityRole" | "accessibilityState" | "accessibilityHint" | "accessibilityValue" | "onAccessibilityAction" | "importantForAccessibility" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "target" | "asChild" | "debug" | "themeShallow" | "themeInverse" | "tag" | "theme" | "group" | "untilMeasured" | "componentName" | "disableOptimization" | "forceStyle" | "disableClassName" | "onPress" | "onLongPress" | "onPressIn" | "onPressOut" | "onHoverIn" | "onHoverOut" | `$theme-${string}` | `$theme-${number}` | "maxFontSizeMultiplier" | "unstyled" | "allowFontScaling" | "ellipsizeMode" | "lineBreakMode" | "numberOfLines" | "onTextLayout" | "adjustsFontSizeToFit" | "dynamicTypeRamp" | "minimumFontScale" | "suppressHighlighting" | "lineBreakStrategyIOS" | "selectable" | "selectionColor" | "textBreakStrategy" | "dataDetectorType" | "android_hyphenationFrequency" | keyof import("@tamagui/core").TextStylePropsBase | keyof import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
+    }>, "style" | "disabled" | "size" | "className" | "id" | "placeholder" | "tabIndex" | "role" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-hidden" | "aria-label" | "aria-labelledby" | "aria-live" | "aria-modal" | "aria-selected" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "children" | "dangerouslySetInnerHTML" | "onFocus" | "onBlur" | "onMouseDown" | "onMouseEnter" | "onMouseLeave" | "onMouseUp" | `$${string}` | `$${number}` | "nativeID" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "accessibilityRole" | "accessibilityState" | "accessibilityHint" | "accessibilityValue" | "onAccessibilityAction" | "importantForAccessibility" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "target" | "asChild" | "debug" | "themeShallow" | "themeInverse" | "tag" | "theme" | "group" | "untilMeasured" | "componentName" | "disableOptimization" | "forceStyle" | "disableClassName" | "onPress" | "onLongPress" | "onPressIn" | "onPressOut" | "onHoverIn" | "onHoverOut" | `$theme-${string}` | `$theme-${number}` | "maxFontSizeMultiplier" | "unstyled" | "allowFontScaling" | "ellipsizeMode" | "lineBreakMode" | "numberOfLines" | "onTextLayout" | "adjustsFontSizeToFit" | "dynamicTypeRamp" | "minimumFontScale" | "suppressHighlighting" | "lineBreakStrategyIOS" | "selectable" | "selectionColor" | "textBreakStrategy" | "dataDetectorType" | "android_hyphenationFrequency" | keyof import("@tamagui/core").TextStylePropsBase | keyof import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
         size?: FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
     }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
@@ -635,7 +627,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
             open?: boolean | undefined;
             unstyled?: boolean | undefined;
         }>>) => JSX.Element | null;
-        ScrollView: React.ForwardRefExoticComponent<Omit<import("react-native").ScrollViewProps & Omit<import("@tamagui/core").StackProps, keyof import("react-native").ScrollViewProps>, keyof import("@tamagui/core").StackStylePropsBase | "fullscreen"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase & {
+        ScrollView: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, keyof import("@tamagui/core").StackStylePropsBase | "fullscreen"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase & {
             fullscreen?: boolean | undefined;
         }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase & {
             fullscreen?: boolean | undefined;

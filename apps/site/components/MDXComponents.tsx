@@ -158,7 +158,8 @@ function TabsComponent(props: TabsProps) {
   const router = useRouter()
 
   const id = props.id || 'value'
-  const updateUrl = function (newValue: string) {
+
+  const updateUrl = (newValue: string) => {
     const url = new URL(location.href)
     url.searchParams.set(id, newValue)
     url.hash = '' // having this set messes with the scroll
@@ -167,6 +168,7 @@ function TabsComponent(props: TabsProps) {
       shallow: true,
     })
   }
+
   const value =
     typeof router.query[id] === 'string'
       ? (router.query[id] as string)
@@ -176,10 +178,10 @@ function TabsComponent(props: TabsProps) {
     <Tabs
       onValueChange={updateUrl}
       unstyled
-      orientation={'horizontal'}
-      flexDirection={'column'}
+      orientation="horizontal"
+      flexDirection="column"
       borderWidth={0}
-      position={'unset'}
+      position="unset"
       {...props}
       value={value}
     />
@@ -362,13 +364,7 @@ export const components = {
 
   h3: ({ children, id, ...props }) => (
     <LinkHeading pt="$8" mt="$-4" mb="$1" id={id}>
-      <H3
-        pos="relative"
-        width={`fit-content` as any}
-        nativeID={id}
-        data-heading
-        {...props}
-      >
+      <H3 pos="relative" width={`fit-content` as any} id={id} data-heading {...props}>
         {children}
       </H3>
       {getNonTextChildren(children)}

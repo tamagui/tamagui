@@ -1,11 +1,9 @@
 import { SizeTokens } from '@tamagui/core';
-export declare const SwitchThumb: import("@tamagui/core").TamaguiComponent<{
-    __tamaDefer: true;
-}, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
+export declare const SwitchThumb: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
     size?: SizeTokens | undefined;
-    elevation?: number | SizeTokens | undefined;
     unstyled?: boolean | undefined;
     checked?: boolean | undefined;
+    elevation?: number | SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -19,14 +17,12 @@ export declare const SwitchThumb: import("@tamagui/core").TamaguiComponent<{
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }, {}>;
-export declare const SwitchFrame: import("@tamagui/core").TamaguiComponent<{
-    __tamaDefer: true;
-}, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
+export declare const SwitchFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
     size?: SizeTokens | undefined;
     frameWidth?: number | undefined;
-    elevation?: number | SizeTokens | undefined;
     unstyled?: boolean | undefined;
     checked?: boolean | undefined;
+    elevation?: number | SizeTokens | undefined;
     fullscreen?: boolean | undefined;
 }, {}>;
 //# sourceMappingURL=Switch.d.ts.map

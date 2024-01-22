@@ -94,8 +94,6 @@ export type TamaguiComponentPropsBaseBase = {
      * Disables className output of styles, instead using only inline styles
      */
     disableClassName?: boolean;
-    onFocus?: (event: React.FocusEvent<HTMLDivElement>) => void;
-    onScroll?: (event: React.UIEvent<HTMLDivElement, UIEvent>) => void;
 };
 export interface WebOnlyPressEvents {
     onPress?: PressableProps['onPress'];
@@ -131,10 +129,6 @@ export type TamaguiProjectInfo = {
     nameToPaths: NameToPaths;
 };
 type DivAttributes = HTMLAttributes<HTMLDivElement>;
-export type TamaguiReactElement<P = {}> = React.ReactElement<P> & {
-    type: TamaguiComponent;
-};
-export { RefAttributes } from 'react';
 export type ReactComponentWithRef<Props, Ref> = ForwardRefExoticComponent<Props & RefAttributes<Ref>>;
 export type ComponentContextI = {
     disableSSR?: boolean;
@@ -637,6 +631,9 @@ export type ThemeValueFallbackColor = ThemeValueFallback | GetThemeValueFallback
 export type ThemeValueFallbackRadius = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingRadius, never, UnionableNumber, UnionableNumber, WebStyleValueUniversal>;
 export type ThemeValueFallbackZIndex = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingZIndex, never, UnionableNumber, UnionableNumber, WebStyleValueUniversal>;
 export type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`;
+export type GetTokenPropsFromAcceptedTokens<AcceptedTokens> = AcceptedTokens extends Record<string, any> ? {
+    [Key in keyof AcceptedTokens]?: ThemeValueByCategory<AcceptedTokens[Key]>;
+} : {};
 export type SpecificTokens<Record = Tokens, RK extends keyof Record = keyof Record> = RK extends string ? `$${RK}.${keyof Record[RK] extends string | number ? keyof Record[RK] : never}` : never;
 export type SpecificTokensSpecial = TamaguiSettings extends {
     autocompleteSpecificTokens: infer Val;
@@ -696,7 +693,6 @@ export type WithThemeValues<T extends object> = {
 export type NarrowShorthands = Narrow<Shorthands>;
 export type Longhands = NarrowShorthands[keyof NarrowShorthands];
 type OnlyAllowShorthands = TamaguiConfig['onlyAllowShorthands'];
-export type OmitLonghands<R extends Record<string, any>> = OnlyAllowShorthands extends true ? Omit<R, Longhands> : R;
 export type WithShorthands<StyleProps> = {
     [Key in keyof Shorthands]?: Shorthands[Key] extends keyof StyleProps ? StyleProps[Shorthands[Key]] | null : undefined;
 };
@@ -716,7 +712,7 @@ export type PseudoStyles = {
     exitStyle?: ViewStyle;
 };
 export type AllPlatforms = 'web' | 'native' | 'android' | 'ios';
-export type WithThemeAndShorthands<A extends Object> = OnlyAllowShorthands extends true ? WithThemeValues<OmitLonghands<A>> : WithThemeValues<A> & WithShorthands<WithThemeValues<A>>;
+export type WithThemeAndShorthands<A extends Object> = OnlyAllowShorthands extends true ? WithThemeValues<Omit<A, Longhands>> & WithShorthands<WithThemeValues<A>> : WithThemeValues<A> & WithShorthands<WithThemeValues<A>>;
 export type WithThemeShorthandsAndPseudos<A extends Object> = WithThemeAndShorthands<A> & WithPseudoProps<WithThemeAndShorthands<A>>;
 export type WithThemeShorthandsPseudosMedia<A extends Object> = WithThemeShorthandsAndPseudos<A> & WithMediaProps<WithThemeShorthandsAndPseudos<A>>;
 /**
@@ -731,6 +727,8 @@ export interface TransformStyleProps {
     y?: number;
     perspective?: number;
     scale?: number;
+    scaleX?: number;
+    scaleY?: number;
     skewX?: string;
     skewY?: string;
     matrix?: number[];
@@ -748,6 +746,7 @@ interface ExtraStyleProps {
     outlineStyle?: Properties['outlineStyle'];
     outlineWidth?: SpaceValue;
     pointerEvents?: ViewProps['pointerEvents'];
+    userSelect?: Properties['userSelect'];
     /**
      * @deprecated Use `gap`
      */
@@ -756,18 +755,20 @@ interface ExtraStyleProps {
      * @deprecated Use `gap`
      */
     spaceDirection?: SpaceDirection;
+    /**
+     * @deprecated can implement your own hook or component
+     */
     separator?: ReactNode;
     animation?: AnimationProp | null;
     animateOnly?: string[];
-    userSelect?: Properties['userSelect'];
     transformOrigin?: PxOrPct | 'left' | 'center' | 'right' | 'top' | 'bottom' | TwoValueTransformOrigin | `${TwoValueTransformOrigin} ${Px}`;
-}
-interface OverrideNonStyledProps {
-    display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex';
 }
 export interface ExtendBaseStackProps {
 }
 export interface ExtendBaseTextProps {
+}
+interface OverrideNonStyledProps extends TransformStyleProps, ExtendBaseTextProps, ExtendBaseStackProps, ExtraStyleProps {
+    display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex';
 }
 export interface StackStylePropsBase extends Omit<ViewStyle, keyof OverrideNonStyledProps | 'elevation'>, TransformStyleProps, ExtraStyleProps, OverrideNonStyledProps {
 }
@@ -802,14 +803,16 @@ export type StyleableOptions = {
 };
 export type Styleable<Props, Ref, NonStyledProps, BaseStyles extends Object, VariantProps, ParentStaticProperties> = <CustomProps extends Object | void = void, MergedProps = CustomProps extends void ? Props : Omit<Props, keyof CustomProps> & CustomProps, FunctionDef extends FunctionComponent<MergedProps> = FunctionComponent<MergedProps>>(a: FunctionDef, options?: StyleableOptions) => TamaguiComponent<MergedProps, Ref, NonStyledProps & CustomProps, BaseStyles, VariantProps, ParentStaticProperties>;
 export type GetFinalProps<NonStyleProps, StylePropsBase> = Omit<NonStyleProps, keyof StylePropsBase> & (StylePropsBase extends Object ? WithThemeShorthandsPseudosMedia<StylePropsBase> : {});
-export type TamaguiComponent<Props = any, Ref = any, NonStyledProps = {}, BaseStyles extends Object = {}, VariantProps = {}, ParentStaticProperties = {}> = ForwardRefExoticComponent<(Props extends {
-    __tamaDefer: true;
-} ? GetFinalProps<NonStyledProps, BaseStyles & VariantProps> : Props) & RefAttributes<Ref>> & StaticComponentObject<Props, Ref, NonStyledProps, BaseStyles, VariantProps, ParentStaticProperties> & Omit<ParentStaticProperties, 'staticConfig' | 'extractable' | 'styleable'> & {
+export type TamaguiComponent<Props = any, Ref = any, NonStyledProps = {}, BaseStyles extends Object = {}, VariantProps = {}, ParentStaticProperties = {}> = ForwardRefExoticComponent<(Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles & VariantProps> : Props) & RefAttributes<Ref>> & StaticComponentObject<Props, Ref, NonStyledProps, BaseStyles, VariantProps, ParentStaticProperties> & Omit<ParentStaticProperties, 'staticConfig' | 'extractable' | 'styleable'> & {
     __tama: [Props, Ref, NonStyledProps, BaseStyles, VariantProps, ParentStaticProperties];
 };
 export type GetStyledProps<A extends StylableComponent> = A extends {
     __tama: [any, any, any, infer BaseStyles, infer VariantProps, any];
 } ? BaseStyles & VariantProps : GetProps<A>;
+export type InferGenericComponentProps<A> = A extends ComponentType<infer Props> ? Props : A extends new (props: infer Props) => any ? Props : {};
+export type InferStyledProps<A extends StylableComponent, B extends StaticConfigPublic> = A extends {
+    __tama: any;
+} ? GetProps<A> : GetFinalProps<InferGenericComponentProps<A>, GetBaseStyles<{}, B>>;
 export type GetProps<A extends StylableComponent> = A extends {
     __tama: [
         infer Props,
@@ -819,15 +822,13 @@ export type GetProps<A extends StylableComponent> = A extends {
         infer VariantProps,
         any
     ];
-} ? Props extends {
-    __tamaDefer: true;
-} ? GetFinalProps<NonStyledProps, BaseStyles & VariantProps> : Props : A extends TamaguiReactElement<infer Props> ? Props : A extends ComponentType<infer Props> ? GetGenericComponentTamaguiProps<Props> : A extends new (props: infer Props) => any ? GetGenericComponentTamaguiProps<Props> : {};
+} ? Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles & VariantProps> : Props : InferGenericComponentProps<A>;
 export type GetNonStyledProps<A extends StylableComponent> = A extends {
     __tama: [any, any, infer B, any, any, any];
-} ? B : GetProps<A>;
+} ? B : TamaguiComponentPropsBaseBase & GetProps<A>;
 export type GetBaseStyles<A, B> = A extends {
-    __tama: [any, any, any, infer B, any, any];
-} ? B : B extends {
+    __tama: [any, any, any, infer C, any, any];
+} ? C : B extends {
     isText: true;
 } ? TextStylePropsBase : StackStylePropsBase;
 export type GetStyledVariants<A> = A extends {
@@ -836,14 +837,11 @@ export type GetStyledVariants<A> = A extends {
 export type GetStaticConfig<A> = A extends {
     __tama: [any, any, any, any, any, infer B];
 } ? B : A;
-type GetGenericComponentTamaguiProps<P> = P & Omit<'textAlign' extends keyof P ? TextProps : StackProps, keyof P>;
 export type StaticComponentObject<Props, Ref, NonStyledProps, BaseStyles extends Object, VariantProps, ParentStaticProperties> = {
     staticConfig: StaticConfig;
     /** @deprecated use `styleable` instead (same functionality, better name) */
     extractable: <X>(a: X, staticConfig?: Partial<StaticConfig>) => X;
-    styleable: Styleable<Props extends {
-        __tamaDefer: true;
-    } ? GetFinalProps<NonStyledProps, BaseStyles & VariantProps> : Props, Ref, NonStyledProps, BaseStyles, VariantProps, ParentStaticProperties>;
+    styleable: Styleable<Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles & VariantProps> : Props, Ref, NonStyledProps, BaseStyles, VariantProps, ParentStaticProperties>;
 };
 export type TamaguiComponentExpectingVariants<Props = {}, Variants extends Object = {}> = TamaguiComponent<Props, any, any, Variants>;
 export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>> & {
@@ -976,9 +974,7 @@ export type VariantDefinitions<Parent extends StylableComponent = TamaguiCompone
 };
 export type GetStyleableProps<A extends StylableComponent, IsText extends boolean | undefined> = A extends {
     __tama: [infer Props, any, any, infer BaseStyles, infer VariantProps, any];
-} ? Props extends {
-    __tamaDefer: true;
-} ? GetFinalProps<{}, BaseStyles & VariantProps> : Props : WithThemeShorthandsPseudosMedia<IsText extends true ? TextStylePropsBase : StackStylePropsBase>;
+} ? Props extends TamaDefer ? GetFinalProps<{}, BaseStyles & VariantProps> : Props : WithThemeShorthandsPseudosMedia<IsText extends true ? TextStylePropsBase : StackStylePropsBase>;
 export type VariantDefinitionFromProps<MyProps, Val> = MyProps extends Object ? {
     [propName: string]: VariantSpreadFunction<MyProps, Val> | ({
         [Key in SpreadKeys]?: Key extends '...fontSize' ? FontSizeVariantSpreadFunction<MyProps> : Key extends '...size' ? SizeVariantSpreadFunction<MyProps> : Key extends '...space' ? SpaceVariantSpreadFunction<MyProps> : Key extends '...color' ? ColorVariantSpreadFunction<MyProps> : Key extends '...lineHeight' ? FontLineHeightVariantSpreadFunction<MyProps> : Key extends '...fontTransform' ? FontTransformVariantSpreadFunction<MyProps> : Key extends '...fontStyle' ? FontStyleVariantSpreadFunction<MyProps> : Key extends '...letterSpacing' ? FontLetterSpacingVariantSpreadFunction<MyProps> : Key extends '...zIndex' ? ZIndexVariantSpreadFunction<MyProps> : Key extends '...radius' ? RadiusVariantSpreadFunction<MyProps> : Key extends '...theme' ? ThemeVariantSpreadFunction<MyProps> : never;
@@ -1226,5 +1222,8 @@ export type DedupedTheme = {
 export type DedupedThemes = DedupedTheme[];
 export type UseMediaState = {
     [key in MediaQueryKey]: boolean;
+};
+export type TamaDefer = {
+    __tamaDefer: true;
 };
 //# sourceMappingURL=types.d.ts.map

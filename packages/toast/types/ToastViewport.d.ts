@@ -3,9 +3,7 @@ import * as React from 'react';
 declare const VIEWPORT_DEFAULT_HOTKEY: string[];
 declare const VIEWPORT_PAUSE = "toast.viewportPause";
 declare const VIEWPORT_RESUME = "toast.viewportResume";
-declare const ToastViewportFrame: import("@tamagui/core").TamaguiComponent<{
-    __tamaDefer: true;
-}, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
+declare const ToastViewportFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     unstyled?: boolean | undefined;

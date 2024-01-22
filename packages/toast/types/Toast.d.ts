@@ -4,16 +4,12 @@ import { CustomData, useToast, useToastController, useToastState } from './Toast
 import { ToastExtraProps, ToastProps } from './ToastImpl';
 import { ToastProvider, ToastProviderProps } from './ToastProvider';
 import { ToastViewport, ToastViewportProps } from './ToastViewport';
-declare const ToastTitle: import("@tamagui/core").TamaguiComponent<{
-    __tamaDefer: true;
-}, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
+declare const ToastTitle: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
     size?: import("@tamagui/core").FontSizeTokens | undefined;
     unstyled?: boolean | undefined;
 }, {}>;
 type ToastTitleProps = GetProps<typeof ToastTitle>;
-declare const ToastDescription: import("@tamagui/core").TamaguiComponent<{
-    __tamaDefer: true;
-}, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
+declare const ToastDescription: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
     size?: import("@tamagui/core").FontSizeTokens | undefined;
     unstyled?: boolean | undefined;
 }, {}>;
@@ -27,9 +23,7 @@ type ToastActionProps = ToastCloseProps & {
      */
     altText: string;
 };
-declare const ToastCloseFrame: import("@tamagui/core").TamaguiComponent<{
-    __tamaDefer: true;
-}, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
+declare const ToastCloseFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
@@ -124,15 +118,11 @@ declare const Toast: React.ForwardRefExoticComponent<Omit<import("@tamagui/core"
         chromeless?: boolean | "all" | undefined;
     }, {}];
 } & {
-    Title: import("@tamagui/core").TamaguiComponent<{
-        __tamaDefer: true;
-    }, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
+    Title: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
         size?: import("@tamagui/core").FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
     }, {}>;
-    Description: import("@tamagui/core").TamaguiComponent<{
-        __tamaDefer: true;
-    }, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
+    Description: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
         size?: import("@tamagui/core").FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
     }, {}>;

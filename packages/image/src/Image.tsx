@@ -13,11 +13,7 @@ import { Image as RNImage } from 'react-native'
 
 const StyledImage = styled(RNImage, {
   name: 'Image',
-  position: 'relative',
-  source: { uri: '' },
 })
-
-type SIProps = GetProps<typeof StyledImage>
 
 type StyledImageProps = Omit<GetProps<typeof StyledImage>, 'borderRadius'> & {
   borderRadius?: RadiusTokens

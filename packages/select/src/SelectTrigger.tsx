@@ -43,7 +43,7 @@ export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps
           focusStyle: {
             outlineStyle: 'solid',
             outlineWidth: 2,
-            outlineColor: '$borderColorFocus',
+            outlineColor: '$outlineColor',
           },
           borderWidth: 1,
         })}

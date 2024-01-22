@@ -1,6 +1,6 @@
 import { useTint } from '@tamagui/logo'
 import { memo, useMemo, useState } from 'react'
-import { ThemeName, YStack, isClient, useDebounce } from 'tamagui'
+import { ThemeName, YStack, isClient, useDebounce, useThemeName } from 'tamagui'
 
 import { useTintSectionIndex } from './TintSection'
 
@@ -13,7 +13,7 @@ export const HomeGlow = memo(() => {
   const [scrollTop, setScrollTopRaw] = useState(0)
   const setScrollTop = useDebounce(setScrollTopRaw, 200)
   const xs = 400
-  const scale = isOnHeroBelow ? 0.5 : 1
+  const scale = isOnHeroBelow ? 2 : 1.2
 
   if (isClient) {
     useTintSectionIndex((index) => {
@@ -37,12 +37,11 @@ export const HomeGlow = memo(() => {
               h="100vh"
               w={1000}
               theme={cur as ThemeName}
-              o={active ? 0.1 : 0}
               fullscreen
               left={`calc(50vw - 500px)`}
               x={isOnHeroBelow ? 0 : isDouble ? (isOpposite ? -500 : 500) : 0}
               scale={scale}
-              className="hero-blur"
+              className={"hero-blur " + (active ? ' active' : '')}
             />
           )
         })}
@@ -57,15 +56,15 @@ export const HomeGlow = memo(() => {
       l={0}
       contain="layout"
       pe="none"
-      animation="quick"
+      animation="lazy"
       key={0}
       zi={-1}
       x={0}
       y={scrollTop}
       {...(isOnHeroBelow && {
-        animation: 'quick',
+        animation: 'lazy',
         x: tintIndex === 2 ? -xs : tintIndex === 4 ? xs : 0,
-        y: 300,
+        y: -100,
       })}
       // display={isResizing ? 'none' : 'flex'}
     >

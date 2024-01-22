@@ -1,7 +1,6 @@
 import { useResponderEvents } from '@tamagui/react-native-use-responder-events'
 import type {
   StackNonStyleProps,
-  StackProps,
   StackStylePropsBase,
   TamaguiComponent,
   TamaguiElement,
@@ -9,6 +8,7 @@ import type {
   TextNonStyleProps,
   TextProps,
   TextStylePropsBase,
+  TamaDefer,
 } from '@tamagui/web'
 import {
   Stack as WebStack,
@@ -16,7 +16,6 @@ import {
   View as WebView,
   composeEventHandlers,
   setupHooks,
-  styled,
 } from '@tamagui/web'
 import { createElement } from 'react'
 
@@ -24,7 +23,7 @@ import { createOptimizedView } from './createOptimizedView'
 import { getBaseViews } from './getBaseViews'
 import { useElementLayout } from './hooks/useElementLayout'
 import { usePlatformMethods } from './hooks/usePlatformMethods'
-import { RNTextProps, RNViewProps } from './reactNativeTypes'
+import type { RNTextProps, RNViewProps } from './reactNativeTypes'
 import { usePressability } from './vendor/Pressability'
 
 // adds extra types to View/Stack/Text:
@@ -35,7 +34,7 @@ export interface RNTamaguiViewNonStyleProps
     RNExclusiveViewProps {}
 
 type RNTamaguiView = TamaguiComponent<
-  { __tamaDefer: true },
+  TamaDefer,
   TamaguiElement,
   RNTamaguiViewNonStyleProps,
   StackStylePropsBase,
@@ -48,7 +47,7 @@ export interface RNTamaguiTextNonStyleProps
     RNExclusiveTextProps {}
 
 type RNTamaguiText = TamaguiComponent<
-  { __tamaDefer: true },
+  TamaDefer,
   TamaguiTextElement,
   RNTamaguiTextNonStyleProps,
   TextStylePropsBase,
@@ -299,3 +298,101 @@ export const Text = WebText as any as RNTamaguiText
 //   flexDirection: 'column',
 //   variants,
 // })
+
+// import { TextInput } from 'react-native'
+// export const InputFrame = styled(
+//   TextInput,
+//   {
+//     name: 'Input',
+//     backgroundColor: 'green',
+
+//     variants: {
+//       // unstyled: {
+//       //   false: {},
+//       // },
+
+//       size: {
+//         '...size': () => ({}),
+//       },
+
+//       // disabled: {
+//       //   ':boolean': () => ({})
+//       // },
+//     } as const,
+
+//     // defaultVariants: {
+//     //   unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+//     // },
+//   },
+//   {
+//     isText: true,
+//     acceptTokens: {
+//       placeholderTextColor: 'color',
+//     },
+//   }
+// )
+
+// export const StyledInputFrame = styled(InputFrame, {
+//   fontSize: 16,
+//   fontFamily: '$silkscreen',
+//   color: '$color5',
+//   minWidth: 0,
+//   borderWidth: 0,
+//   borderColor: 'transparent',
+
+//   variants: {
+//     unset: {
+//       false: {
+//         borderWidth: 2,
+//         py: 12,
+//         px: 14,
+//         borderRadius: 6,
+//         bg: '$color3',
+//         focusStyle: {
+//           bg: '$color4',
+//           margin: 0,
+//         },
+//       },
+//     },
+//   } as const,
+
+//   defaultVariants: {
+//     unset: false,
+//   },
+// })
+
+// export const StyledStyledInputFrame = styled(
+//   StyledInputFrame,
+//   {
+//     fontSize: 16,
+//     fontFamily: '$silkscreen',
+//     color: '$color5',
+//     minWidth: 0,
+//     borderWidth: 0,
+//     borderColor: 'transparent',
+
+//     variants: {
+//       unset: {
+//         false: {
+//           borderWidth: 2,
+//           py: 12,
+//           px: 14,
+//           borderRadius: 6,
+//           bg: '$color3',
+//           focusStyle: {
+//             bg: '$color4',
+//             margin: 0,
+//           },
+//         },
+//       },
+//     } as const,
+
+//     defaultVariants: {
+//       unset: false,
+//     },
+//   },
+//   {
+//     inlineProps: new Set(['id', 'testID']),
+//   }
+// )
+// export const DepthTest = () => <StyledStyledInputFrame placeholder="" />

@@ -1,8 +1,6 @@
 import { GetProps, ReactComponentWithRef } from '@tamagui/web';
 import { View } from 'react-native';
-export declare const LabelFrame: import("@tamagui/web").TamaguiComponent<{
-    __tamaDefer: true;
-}, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
+export declare const LabelFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
     unstyled?: boolean | undefined;
     size?: number | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | undefined;
 }, {}>;
