@@ -1,9 +1,8 @@
-import { Role } from './Role';
-import { DebugProp, ThemeName, GroupNames } from '../types';
-
+import { Role } from './Role'
+import { DebugProp, ThemeName, GroupNames } from '../types'
 
 export type TamaguiComponentPropsBaseBase = {
-  target?: string;
+  target?: string
 
   /**
    * When truthy passes through all props to a single child element, and avoids rendering its own element.
@@ -16,187 +15,188 @@ export type TamaguiComponentPropsBaseBase = {
    * The option "except-style-web" combines the except-style and web options.
    *
    */
-  asChild?: boolean | 'except-style' | 'except-style-web' | 'web';
+  asChild?: boolean | 'except-style' | 'except-style-web' | 'web'
 
-  dangerouslySetInnerHTML?: { __html: string; };
-  children?: any | any[];
+  dangerouslySetInnerHTML?: { __html: string }
+  children?: any | any[]
 
-  debug?: DebugProp;
+  debug?: DebugProp
 
-  disabled?: boolean;
+  disabled?: boolean
 
   /**
    * Same as the web className property, useful for applying styles from CSS on web only
    */
-  className?: string;
+  className?: string
 
   /**
    * If given a theme it will only apply to this element, instead of passing down to children
    */
-  themeShallow?: boolean;
+  themeShallow?: boolean
 
-  themeInverse?: boolean;
+  themeInverse?: boolean
 
   /**
    * Same as the web id property for setting a uid on an element
    */
-  id?: string;
+  id?: string
 
   /**
    * Controls the output tag on web
    * {@see https://developer.mozilla.org/en-US/docs/Web/HTML/Element}
    */
-  tag?: (string & {}) |
-  'address' |
-  'article' |
-  'aside' |
-  'footer' |
-  'header' |
-  'h1' |
-  'h2' |
-  'h3' |
-  'h4' |
-  'h5' |
-  'h6' |
-  'main' |
-  'nav' |
-  'section' |
-  'search' |
-  'blockquote' |
-  'dd' |
-  'div' |
-  'dl' |
-  'dt' |
-  'figcaption' |
-  'figure' |
-  'hr' |
-  'li' |
-  'ol' |
-  'ul' |
-  'p' |
-  'pre' |
-  'a' |
-  'abbr' |
-  'p' |
-  'b' |
-  'abbr' |
-  'bdi' |
-  'bdo' |
-  'br' |
-  'cite' |
-  'code' |
-  'data' |
-  'dfn' |
-  'em' |
-  'i' |
-  'kbd' |
-  'mark' |
-  'q' |
-  'rp' |
-  'rt' |
-  'rtc' |
-  'ruby' |
-  's' |
-  'samp' |
-  'small' |
-  'span' |
-  'strong' |
-  'sub' |
-  'sup' |
-  'time' |
-  'u' |
-  'var' |
-  'wbr' |
-  'area' |
-  'audio' |
-  'img' |
-  'map' |
-  'track' |
-  'video' |
-  'embed' |
-  'object' |
-  'param' |
-  'picture' |
-  'source' |
-  'canvas' |
-  'noscript' |
-  'script' |
-  'del' |
-  'ins' |
-  'caption' |
-  'col' |
-  'colgroup' |
-  'table' |
-  'thead' |
-  'tbody' |
-  'td' |
-  'th' |
-  'tr' |
-  'button' |
-  'datalist' |
-  'fieldset' |
-  'form' |
-  'input' |
-  'label' |
-  'legend' |
-  'meter' |
-  'optgroup' |
-  'option' |
-  'output' |
-  'progress' |
-  'select' |
-  'textarea' |
-  'details' |
-  'dialog' |
-  'menu' |
-  'summary' |
-  'template';
+  tag?:
+    | (string & {})
+    | 'address'
+    | 'article'
+    | 'aside'
+    | 'footer'
+    | 'header'
+    | 'h1'
+    | 'h2'
+    | 'h3'
+    | 'h4'
+    | 'h5'
+    | 'h6'
+    | 'main'
+    | 'nav'
+    | 'section'
+    | 'search'
+    | 'blockquote'
+    | 'dd'
+    | 'div'
+    | 'dl'
+    | 'dt'
+    | 'figcaption'
+    | 'figure'
+    | 'hr'
+    | 'li'
+    | 'ol'
+    | 'ul'
+    | 'p'
+    | 'pre'
+    | 'a'
+    | 'abbr'
+    | 'p'
+    | 'b'
+    | 'abbr'
+    | 'bdi'
+    | 'bdo'
+    | 'br'
+    | 'cite'
+    | 'code'
+    | 'data'
+    | 'dfn'
+    | 'em'
+    | 'i'
+    | 'kbd'
+    | 'mark'
+    | 'q'
+    | 'rp'
+    | 'rt'
+    | 'rtc'
+    | 'ruby'
+    | 's'
+    | 'samp'
+    | 'small'
+    | 'span'
+    | 'strong'
+    | 'sub'
+    | 'sup'
+    | 'time'
+    | 'u'
+    | 'var'
+    | 'wbr'
+    | 'area'
+    | 'audio'
+    | 'img'
+    | 'map'
+    | 'track'
+    | 'video'
+    | 'embed'
+    | 'object'
+    | 'param'
+    | 'picture'
+    | 'source'
+    | 'canvas'
+    | 'noscript'
+    | 'script'
+    | 'del'
+    | 'ins'
+    | 'caption'
+    | 'col'
+    | 'colgroup'
+    | 'table'
+    | 'thead'
+    | 'tbody'
+    | 'td'
+    | 'th'
+    | 'tr'
+    | 'button'
+    | 'datalist'
+    | 'fieldset'
+    | 'form'
+    | 'input'
+    | 'label'
+    | 'legend'
+    | 'meter'
+    | 'optgroup'
+    | 'option'
+    | 'output'
+    | 'progress'
+    | 'select'
+    | 'textarea'
+    | 'details'
+    | 'dialog'
+    | 'menu'
+    | 'summary'
+    | 'template'
 
   /**
    * Applies a theme to this element
    */
-  theme?: ThemeName | null;
+  theme?: ThemeName | null
 
   /**
    * Marks this component as a group for use in styling children based on parents named group
    * See: https://tamagui.dev/docs/intro/props
    */
-  group?: GroupNames;
+  group?: GroupNames
 
   /**
    * Works only alongside group, when children of the group are using container based sizing on native you can hide them until parent is measured.
    * See: https://tamagui.dev/docs/intro/props
    */
-  untilMeasured?: 'hide' | 'show';
+  untilMeasured?: 'hide' | 'show'
 
   /**
    * Equivalent to "name" property on styled() for automatically applying a theme
    */
-  componentName?: string;
+  componentName?: string
 
   /**
    * Used for controlling the order of focus with keyboard or assistive device enavigation
    * See https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex
    */
-  tabIndex?: string | number;
+  tabIndex?: string | number
 
   /**
    * Equivalent to role="" attribute on web for accessibility
    */
-  role?: Role;
+  role?: Role
 
   /**
    * Disable all compiler optimization
    */
-  disableOptimization?: boolean;
+  disableOptimization?: boolean
 
   /**
    * Forces the pseudo style state to be on
    */
-  forceStyle?: 'hover' | 'press' | 'focus';
+  forceStyle?: 'hover' | 'press' | 'focus'
 
   /**
    * Disables className output of styles, instead using only inline styles
    */
-  disableClassName?: boolean;
-};
+  disableClassName?: boolean
+}
