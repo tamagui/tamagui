@@ -3,7 +3,6 @@ import {
   SizeTokens,
   Stack,
   StackProps,
-  TamaguiComponentExpectingVariants,
   composeEventHandlers,
   isWeb,
   shouldRenderNativePlatform,
@@ -85,8 +84,8 @@ export function createSwitch<
   Frame.staticConfig.context = SwitchStyledContext;
   Thumb.staticConfig.context = SwitchStyledContext;
 
-  const SwitchThumbComponent = Thumb.styleable(function SwitchThumb(
-    props: SwitchThumbProps,
+  const SwitchThumbComponent = Thumb.styleable<SwitchThumbProps>(function SwitchThumb(
+    props,
     forwardedRef
   ) {
     const {
@@ -115,8 +114,8 @@ export function createSwitch<
         ? 0
         : -distance
       : checked
-      ? distance
-      : 0;
+        ? distance
+        : 0;
     return (
       <Thumb
         ref={forwardedRef}
@@ -141,8 +140,8 @@ export function createSwitch<
     );
   });
 
-  const SwitchComponent = Frame.styleable(
-    function SwitchFrame(_props: SwitchProps, forwardedRef) {
+  const SwitchComponent = Frame.styleable<SwitchProps>(
+    function SwitchFrame(_props, forwardedRef) {
       const {
         native,
         nativeProps,
