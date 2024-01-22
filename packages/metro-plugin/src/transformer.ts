@@ -8,7 +8,7 @@ import { writeFile, mkdir } from 'fs/promises'
 
 import { createExtractor, extractToClassNames, TamaguiOptions } from '@tamagui/static'
 
-interface NativeWindJsTransformerConfig extends JsTransformerConfig {
+interface TamaguiJsTransformerConfig extends JsTransformerConfig {
   transformerPath?: string
   tamagui: TamaguiOptions
 }
@@ -16,7 +16,7 @@ interface NativeWindJsTransformerConfig extends JsTransformerConfig {
 const extractor = createExtractor()
 
 export async function transform(
-  config: NativeWindJsTransformerConfig,
+  config: TamaguiJsTransformerConfig,
   projectRoot: string,
   filename: string,
   data: Buffer,
@@ -63,7 +63,7 @@ export async function transform(
         `${filename}`.replace(/[^a-zA-Z0-9]/gi, '') + '.css'
       )
       console.info(' 🥚', outStylePath)
-      await writeFile(outStylePath, out.styles)
+      await writeFile(outStylePath, out.styles, 'utf-8')
       return transformer(
         config,
         projectRoot,

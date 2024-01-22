@@ -35,6 +35,10 @@ export default function RootLayout() {
     }
   }, [interLoaded, interError])
 
+  if (!interLoaded && !interError) {
+    return null
+  }
+
   return <RootLayoutNav />
 }
 
