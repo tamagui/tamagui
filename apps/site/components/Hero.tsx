@@ -29,16 +29,6 @@ export function Hero() {
   return (
     <ThemeTint>
       <div className={`${name}-season _dsp-contents`}>
-        {/* <YStack
-          o={0.75}
-          zi={-1}
-          pos="absolute"
-          t={0}
-          l={0}
-          r={0}
-          h={2000}
-          className="hero-blur"
-        /> */}
         <HeroContents />
       </div>
     </ThemeTint>
@@ -384,7 +374,7 @@ const RunsFasterTextEffects = () => {
       </HeroText>
       <ThemeTintAlt offset={2}>
         <HeroText
-          className="mask-gradient-left"
+          className="mask-gradient-down mix-hard-light"
           pe="none"
           o={0.5}
           col="$color8"
@@ -396,7 +386,7 @@ const RunsFasterTextEffects = () => {
       <ThemeTintAlt offset={1}>
         <HeroText
           l={-3}
-          className="mask-gradient-left"
+          className="mask-gradient-up"
           pe="none"
           col="$color8"
           $sm={{ l: 1.5 }}
@@ -410,7 +400,7 @@ const RunsFasterTextEffects = () => {
           className="mask-gradient-right"
           pe="none"
           col="$color8"
-          o={0.6}
+          o={0.26}
           $sm={{ l: 3 }}
         >
           runs&nbsp;faster

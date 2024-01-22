@@ -20,7 +20,7 @@ export const TintSection = ({ children, index, themed, zIndex, ...props }: Props
     (entries) => {
       const count = entries.reduce((a, b) => a + (b?.isIntersecting ? 1 : 0), 0)
 
-      if (count < 2) {
+      if (count < 1) {
         return
       }
 
