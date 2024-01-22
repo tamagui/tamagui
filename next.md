@@ -1,3 +1,63 @@
+missing disabled prop when using a variant function. Here's an example:
+
+```tsx
+const CustomStack = styled(Stack, {
+  variants: {
+    selected: {
+      ':boolean'(selected, { props }) {
+        if (props.disabled) {
+         
+        }
+      },
+    },
+  },
+});
+```
+
+onPress
+
+```tsx
+const CustomStack = styled(Stack, {
+  variants: {
+    disabled: {
+      ':boolean': (disabled, { props: { onPress } }) =>
+    },
+  },
+});
+```
+
+error when we use aria-selected and aria-disabled inside variants:
+
+```tsx
+const CustomStack = styled(Stack, {
+  variants: {
+    selected: {
+      true: {
+        'aria-selected': true,
+      },
+    },
+  },
+});
+
+variants changed to feature unset as an option. We set the type as the function argument:
+
+const CustomStack = styled(Stack, {
+  variants: {
+    variant: (variant: 'primary' | 'secondary') => {
+      return {
+        backgroundColor: `$control.${variant}.enabled` as const,
+      };
+    },
+  },
+});
+
+type CustomStackProps = GetProps<typeof CustomStack>;
+
+type Variants = CustomStackProps['variant'];
+// Used to be 'primary' | 'secondary' | undefined
+// Now is 'unset' | 'primary' | 'secondary' | undefined
+```
+
 - compiler - no need to setup any separate package
 
 - 2.0 rename SizableStack to Surface and simplify a bit
