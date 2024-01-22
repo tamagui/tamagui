@@ -232,6 +232,7 @@ export function createSwitch<
               // @ts-ignore
               value={value}
               {...switchProps}
+              // @ts-expect-error
               ref={composedRefs}
               onPress={composeEventHandlers(props.onPress, (event) => {
                 setChecked((prevChecked) => !prevChecked)

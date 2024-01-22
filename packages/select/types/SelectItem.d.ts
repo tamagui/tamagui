@@ -21,7 +21,7 @@ export interface SelectItemProps extends ListItemProps {
     disabled?: boolean;
     textValue?: string;
 }
-export declare const SelectItem: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStylePropsBase & {
+export declare const SelectItem: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase & {
     unstyled?: boolean | undefined;
     size?: import("@tamagui/web").SizeTokens | undefined;
     disabled?: boolean | undefined;
@@ -39,7 +39,7 @@ export declare const SelectItem: import("@tamagui/web").TamaguiComponent<Omit<im
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
     active?: boolean | undefined;
-}>, keyof SelectItemProps> & SelectItemProps, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & SelectItemProps, import("@tamagui/web").StackStylePropsBase, {
+}>, keyof SelectItemProps> & SelectItemProps, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & SelectItemProps, import("@tamagui/web").StackStyleBase, {
     unstyled?: boolean | undefined;
     size?: import("@tamagui/web").SizeTokens | undefined;
     disabled?: boolean | undefined;

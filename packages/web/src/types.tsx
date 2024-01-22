@@ -30,6 +30,7 @@ import { TamaguiComponentPropsBaseBase } from './interfaces/TamaguiComponentProp
 import { SizeKeys, SpaceKeys, ColorKeys } from './interfaces/KeyTypes'
 
 export * from './interfaces/KeyTypes'
+export * from './interfaces/TamaguiComponentState'
 
 export type { MediaStyleObject, StyleObject } from '@tamagui/helpers'
 
@@ -1399,10 +1400,10 @@ export type InferStyledProps<
 > = A extends {
   __tama: any
 }
-  ? GetProps<A, true>
+  ? GetProps<A>
   : GetFinalProps<InferGenericComponentProps<A>, GetBaseStyles<{}, B>>
 
-export type GetProps<A extends StylableComponent, Infer extends boolean = false> = A extends {
+export type GetProps<A extends StylableComponent> = A extends {
   __tama: [
     infer Props,
     any,
@@ -1412,8 +1413,8 @@ export type GetProps<A extends StylableComponent, Infer extends boolean = false>
     any,
   ]
 }
-  ? Infer extends true ? 
-    (Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles & VariantProps> : Props)
+  ? Props extends TamaDefer
+    ? GetFinalProps<NonStyledProps, BaseStyles & VariantProps>
     : Props
   : InferGenericComponentProps<A>
 
@@ -1421,7 +1422,7 @@ export type GetNonStyledProps<A extends StylableComponent> = A extends {
   __tama: [any, any, infer B, any, any, any]
 }
   ? B
-  : TamaguiComponentPropsBaseBase & GetProps<A, true>
+  : TamaguiComponentPropsBaseBase & GetProps<A>
 
 export type GetBaseStyles<A, B> = A extends {
   __tama: [any, any, any, infer C, any, any]
@@ -1473,7 +1474,7 @@ export type StaticComponentObject<
 export type TamaguiComponentExpectingVariants<
   Props = {},
   Variants extends Object = {},
-> = TamaguiComponent<Props, any, any, Variants>
+> = TamaguiComponent<Props, any, any, any, Variants>
 
 export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>> & {
   config: TamaguiInternalConfig

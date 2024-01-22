@@ -13,6 +13,7 @@ import { WebOnlyPressEvents } from './interfaces/WebOnlyPressEvents';
 import { TamaguiComponentPropsBaseBase } from './interfaces/TamaguiComponentPropsBaseBase';
 import { SizeKeys, SpaceKeys, ColorKeys } from './interfaces/KeyTypes';
 export * from './interfaces/KeyTypes';
+export * from './interfaces/TamaguiComponentState';
 export type { MediaStyleObject, StyleObject } from '@tamagui/helpers';
 export type ColorScheme = 'light' | 'dark';
 export type IsMediaType = boolean | 'platform' | 'theme' | 'group';
@@ -721,8 +722,8 @@ export type TamaguiComponent<Props = any, Ref = any, NonStyledProps = {}, BaseSt
 export type InferGenericComponentProps<A> = A extends ComponentType<infer Props> ? Props : A extends new (props: infer Props) => any ? Props : {};
 export type InferStyledProps<A extends StylableComponent, B extends StaticConfigPublic> = A extends {
     __tama: any;
-} ? GetProps<A, true> : GetFinalProps<InferGenericComponentProps<A>, GetBaseStyles<{}, B>>;
-export type GetProps<A extends StylableComponent, Infer extends boolean = false> = A extends {
+} ? GetProps<A> : GetFinalProps<InferGenericComponentProps<A>, GetBaseStyles<{}, B>>;
+export type GetProps<A extends StylableComponent> = A extends {
     __tama: [
         infer Props,
         any,
@@ -731,10 +732,10 @@ export type GetProps<A extends StylableComponent, Infer extends boolean = false>
         infer VariantProps,
         any
     ];
-} ? Infer extends true ? (Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles & VariantProps> : Props) : Props : InferGenericComponentProps<A>;
+} ? Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles & VariantProps> : Props : InferGenericComponentProps<A>;
 export type GetNonStyledProps<A extends StylableComponent> = A extends {
     __tama: [any, any, infer B, any, any, any];
-} ? B : TamaguiComponentPropsBaseBase & GetProps<A, true>;
+} ? B : TamaguiComponentPropsBaseBase & GetProps<A>;
 export type GetBaseStyles<A, B> = A extends {
     __tama: [any, any, any, infer C, any, any];
 } ? C : B extends {
@@ -752,7 +753,7 @@ export type StaticComponentObject<Props, Ref, NonStyledProps, BaseStyles extends
     extractable: <X>(a: X, staticConfig?: Partial<StaticConfig>) => X;
     styleable: Styleable<Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles & VariantProps> : Props, Ref, NonStyledProps, BaseStyles, VariantProps, ParentStaticProperties>;
 };
-export type TamaguiComponentExpectingVariants<Props = {}, Variants extends Object = {}> = TamaguiComponent<Props, any, any, Variants>;
+export type TamaguiComponentExpectingVariants<Props = {}, Variants extends Object = {}> = TamaguiComponent<Props, any, any, any, Variants>;
 export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>> & {
     config: TamaguiInternalConfig;
     disableInjectCSS?: boolean;

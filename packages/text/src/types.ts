@@ -12,6 +12,7 @@ export type TextContextStyles = {
   maxFontSizeMultiplier?: number
 }
 
+
 export type TextParentStyles = TextContextStyles & {
   // all the other text controls
   textProps?: Partial<SizableTextProps>

@@ -15,7 +15,7 @@ interface BubbleInputProps extends Omit<InputProps, 'checked'> {
     isHidden?: boolean;
 }
 export declare const BubbleInput: (props: BubbleInputProps) => JSX.Element;
-declare const CheckboxIndicatorFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
+declare const CheckboxIndicatorFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
@@ -42,7 +42,7 @@ export type CheckboxIndicatorProps = CheckboxIndicatorFrameProps & {
      */
     disablePassStyles?: boolean;
 };
-export declare const CheckboxFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
+export declare const CheckboxFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     size?: SizeTokens | undefined;
     disabled?: boolean | undefined;
     elevation?: number | SizeTokens | undefined;
@@ -80,7 +80,7 @@ type CheckboxExtraProps = {
     sizeAdjust?: number;
 };
 export type CheckboxProps = Omit<CheckboxFrameProps, 'checked' | 'defaultChecked'> & CheckboxExtraProps;
-export declare const Checkbox: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase & {
+export declare const Checkbox: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase & {
     size?: SizeTokens | undefined;
     disabled?: boolean | undefined;
     elevation?: number | SizeTokens | undefined;
@@ -97,7 +97,7 @@ export declare const Checkbox: React.ForwardRefExoticComponent<Omit<import("@tam
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
     unstyled?: boolean | undefined;
-}>, keyof CheckboxExtraProps> & CheckboxExtraProps & React.RefAttributes<TamaguiElement>> & import("@tamagui/core").StaticComponentObject<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase & {
+}>, keyof CheckboxExtraProps> & CheckboxExtraProps & React.RefAttributes<TamaguiElement>> & import("@tamagui/core").StaticComponentObject<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase & {
     size?: SizeTokens | undefined;
     disabled?: boolean | undefined;
     elevation?: number | SizeTokens | undefined;
@@ -114,7 +114,7 @@ export declare const Checkbox: React.ForwardRefExoticComponent<Omit<import("@tam
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
     unstyled?: boolean | undefined;
-}>, keyof CheckboxExtraProps> & CheckboxExtraProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & CheckboxExtraProps, import("@tamagui/core").StackStylePropsBase, {
+}>, keyof CheckboxExtraProps> & CheckboxExtraProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & CheckboxExtraProps, import("@tamagui/core").StackStyleBase, {
     size?: SizeTokens | undefined;
     disabled?: boolean | undefined;
     elevation?: number | SizeTokens | undefined;
@@ -132,7 +132,7 @@ export declare const Checkbox: React.ForwardRefExoticComponent<Omit<import("@tam
     chromeless?: boolean | "all" | undefined;
     unstyled?: boolean | undefined;
 }, {}> & Omit<{}, "staticConfig" | "extractable" | "styleable"> & {
-    __tama: [Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase & {
+    __tama: [Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase & {
         size?: SizeTokens | undefined;
         disabled?: boolean | undefined;
         elevation?: number | SizeTokens | undefined;
@@ -149,7 +149,7 @@ export declare const Checkbox: React.ForwardRefExoticComponent<Omit<import("@tam
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
         unstyled?: boolean | undefined;
-    }>, keyof CheckboxExtraProps> & CheckboxExtraProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & CheckboxExtraProps, import("@tamagui/core").StackStylePropsBase, {
+    }>, keyof CheckboxExtraProps> & CheckboxExtraProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & CheckboxExtraProps, import("@tamagui/core").StackStyleBase, {
         size?: SizeTokens | undefined;
         disabled?: boolean | undefined;
         elevation?: number | SizeTokens | undefined;
@@ -168,7 +168,7 @@ export declare const Checkbox: React.ForwardRefExoticComponent<Omit<import("@tam
         unstyled?: boolean | undefined;
     }, {}];
 } & {
-    Indicator: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStylePropsBase | "transparent" | "fullscreen" | "circular" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase & {
+    Indicator: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
         elevation?: number | SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
@@ -182,7 +182,7 @@ export declare const Checkbox: React.ForwardRefExoticComponent<Omit<import("@tam
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase & {
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
         elevation?: number | SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
@@ -196,7 +196,7 @@ export declare const Checkbox: React.ForwardRefExoticComponent<Omit<import("@tam
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-    }>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase & {
+    }>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
         elevation?: number | SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
@@ -210,7 +210,7 @@ export declare const Checkbox: React.ForwardRefExoticComponent<Omit<import("@tam
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase & {
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
         elevation?: number | SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
@@ -224,7 +224,7 @@ export declare const Checkbox: React.ForwardRefExoticComponent<Omit<import("@tam
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-    }>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStylePropsBase & {
+    }>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase & {
         elevation?: number | SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
