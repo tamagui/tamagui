@@ -23,7 +23,7 @@ import { createOptimizedView } from './createOptimizedView'
 import { getBaseViews } from './getBaseViews'
 import { useElementLayout } from './hooks/useElementLayout'
 import { usePlatformMethods } from './hooks/usePlatformMethods'
-import { RNTextProps, RNViewProps } from './reactNativeTypes'
+import type { RNTextProps, RNViewProps } from './reactNativeTypes'
 import { usePressability } from './vendor/Pressability'
 
 // adds extra types to View/Stack/Text:
