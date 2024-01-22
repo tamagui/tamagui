@@ -1,0 +1,177 @@
+---
+title: Style API
+description: All the styles supported on base Tamagui components.
+---
+
+Tamagui supports a superset of the style properties React Native style
+properties either to the `styled()` function as the second argument, or directly
+as props on View and Text.
+
+Here's how that looks in code:
+
+```tsx
+import { View, styled } from 'tamagui' // or '@tamagui/core'
+
+const StyledView = styled(View, {
+  padding: 10,
+})
+
+const MyView = () => (
+    <StyledView
+      backgroundColor="red"
+      hoverStyle={{
+        backgroundColor: 'green'
+      }}
+    />
+)
+```
+
+The types for the full set of styles accepted by styled, View and Text are exported as `ViewStyle` and `TextStyle`. The Text style props are small superset of the View ones, and you can find them both listed nicely on the React Native website:
+
+- [React Native View style props](https://reactnative.dev/docs/view-style-props)
+- [React Native Text style props](https://reactnative.dev/docs/text-style-props)
+
+The full Tamagui typed style props can be simplified to something like this, except the values can accept `"unset"` or one of your design tokens:
+
+```tsx
+import { ViewStyle as RNViewStyle } from 'react-native'
+
+type BaseViewStyle = RNViewStyle & FlatTransformStyles & WebOnlyStyles
+
+// these are accepted but only render on web:
+type WebOnlyStyles =  {
+  contain?: Properties['contain']
+  touchAction?: Properties['touchAction']
+  cursor?: Properties['cursor']
+  outlineColor?: Properties['outlineColor']
+  outlineOffset?: SpaceValue
+  outlineStyle?: Properties['outlineStyle']
+  outlineWidth?: SpaceValue
+  userSelect?: Properties['userSelect']
+}
+
+// these turn into the equivalent transform style props:
+type FlatTransformStyles = {
+  x?: number
+  y?: number
+  perspective?: number
+  scale?: number
+  scaleX?: number
+  scaleY?: number
+  skewX?: string
+  skewY?: string
+  matrix?: number[]
+  rotate?: string
+  rotateY?: string
+  rotateX?: string
+  rotateZ?: string
+}
+
+// add the pseudo and enter/exit style states
+type WithStates = BaseViewStyle & {
+  hoverStyle?: BaseViewStyle
+  pressStyle?: BaseViewStyle
+  focusStyle?: BaseViewStyle
+  enterStyle?: BaseViewStyle
+  exitStyle?: BaseViewStyle
+}
+
+type ViewStyle = WithStates & {
+  $sm?: WithStates
+  $group-tabs?: WithStates
+  $group-tabs-hover?: WithStates
+  $group-tabs-focus?: WithStates
+  $group-tabs-press?: WithStates
+  $theme-light?: WithStates
+  $theme-dark?: WithStates
+}
+
+// Text style starts with this base but builds up the same:
+type TextStyleBase = BaseViewStyle & {
+  color?: string,
+  fontFamily?: string,
+  fontSize?: string,
+  fontStyle?: string,
+  fontWeight?: string,
+  letterSpacing?: string,
+  lineHeight?: string,
+  textAlign?: string,
+  textDecorationColor?: string,
+  textDecorationLine?: string,
+  textDecorationStyle?: string,
+  textShadowColor?: string,
+  textShadowOffset?: string,
+  textShadowRadius?: string,
+  textTransform?: string,
+}
+```
+
+### Order is important
+
+Tamagui props are sensitive to their order - a very nice feature, that without
+which would leave you with impossible styling challenges. Let's first explain
+how it works, and then why it's necessary.
+
+Define a new styled component:
+
+```tsx
+const CalHeader = styled(Text, {
+  variants: {
+    isHero: {
+      true: {
+        fontSize: 36,
+        backgroundColor: 'blue',
+        color: 'white',
+      },
+    },
+  },
+})
+```
+
+And then use it in a view you're building:
+
+```tsx
+export const MyCalendar = (props: { isHero?: boolean; headerFontSize?: number }) => {
+  return (
+    <>
+      {/* ... some other components... */}
+      <CalHeader isHero={props.isHero} fontSize={props.headerFontSize}>
+        {monthName}
+      </CalHeader>
+    </>
+  )
+}
+```
+
+#### Why it's important
+
+Notice two things: `isHero` sets a variety of properties, but you want to allow
+overriding one of those properties, `fontSize`.
+
+If Tamagui didn't respect the order of the props on the JSX element of
+`CalHeader`, you wouldn't know if the `isHero` font size wins, or if the
+`headerFontSize` wins.
+
+CSS does a "last defined style wins", which is a huge pain because it means you
+have to carefully manage the order your CSS is actually loaded into the
+document. Tamagui could do something similar, with a "inline props always win,
+defined props go in order of definition", but this would be dramatically less
+flexible.
+
+Especially when it comes to spreading props downwards. Because Tamagui supports
+prop order, you have complete control over which styles you want to always win,
+vs which can be overridden by a user:
+
+```tsx
+export const MyCalendarHeader = (props: CalHeaderProps) => {
+  return (
+    <CalHeader isHero {...props} fontSize={36}>
+      {monthName}
+    </CalHeader>
+  )
+}
+```
+
+This component defaults to `isHero` styles, but if a user passes in `isHero` as
+`false`, it will disable all those styles. But because `fontSize` is **always**
+after the spread, it will always be set to 36.
