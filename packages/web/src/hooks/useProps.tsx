@@ -5,7 +5,7 @@ import { defaultComponentStateMounted } from '../defaultComponentState'
 import { useSplitStyles } from '../helpers/getSplitStyles'
 import {
   SplitStyleProps,
-  StackStyleProps,
+  StackStyle,
   StaticConfig,
   ThemeParsed,
   UseMediaState,
@@ -27,7 +27,7 @@ export type PropsWithoutMediaStyles<A> = {
   [Key in keyof A extends `$${string}` ? never : keyof A]?: A[Key]
 }
 
-type StyleLikeObject = (StackStyleProps & Record<string, any>) | Object
+type StyleLikeObject = (StackStyle & Record<string, any>) | Object
 
 /**
  * Returns props and style as a single object, expanding and merging shorthands and media queries.

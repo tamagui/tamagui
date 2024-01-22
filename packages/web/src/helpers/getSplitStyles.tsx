@@ -48,12 +48,12 @@ import type {
   SplitStyleProps,
   StaticConfig,
   StyleObject,
-  TamaguiComponentState,
   TamaguiInternalConfig,
   TextStyleProps,
   ThemeParsed,
   ViewStyleWithPseudos,
 } from '../types'
+import type { TamaguiComponentState } from '../interfaces/TamaguiComponentState'
 import { createMediaStyle } from './createMediaStyle'
 import { fixStyles } from './expandStyles'
 import { getGroupPropParts } from './getGroupPropParts'
