@@ -19,6 +19,7 @@ export type SwitchThumbProps = SwitchThumbBaseProps & SwitchThumbExtraProps;
 type SwitchThumbComponent = TamaguiComponentExpectingVariants<SwitchThumbProps & ExpectingVariantProps, ExpectingVariantProps>;
 export declare const SwitchContext: React.Context<{
     checked: SwitchState;
+    frameWidth: number;
     disabled?: boolean | undefined;
 }>;
 export declare function createSwitch<F extends SwitchComponent, T extends SwitchThumbComponent>({ disableActiveTheme, Frame, Thumb, }: {

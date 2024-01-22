@@ -55,10 +55,12 @@ type SwitchThumbComponent = TamaguiComponentExpectingVariants<
 
 export const SwitchContext = React.createContext<{
   checked: SwitchState
+  frameWidth: number
   disabled?: boolean
 }>({
   checked: false,
   disabled: false,
+  frameWidth: 0,
 })
 
 export function createSwitch<F extends SwitchComponent, T extends SwitchThumbComponent>({
@@ -89,10 +91,10 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
   const SwitchThumbComponent = Thumb.styleable(function SwitchThumb(props, forwardedRef) {
     const { size: sizeProp, unstyled: unstyledProp, nativeID, ...thumbProps } = props
     const context = React.useContext(SwitchContext)
-    const { checked, disabled } = context
+    const { checked, disabled, frameWidth } = context
     // __scope?
     const styledContext = SwitchStyledContext.useStyledContext()
-    const { frameWidth, unstyled: unstyledContext, size: sizeContext } = styledContext
+    const { unstyled: unstyledContext, size: sizeContext } = styledContext
     const unstyled =
       process.env.TAMAGUI_HEADLESS === '1'
         ? true
@@ -174,12 +176,11 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
       }
 
       return (
-        <SwitchContext.Provider value={{ checked, disabled: switchProps.disabled }}>
+        <SwitchContext.Provider value={{ checked, disabled: switchProps.disabled, frameWidth }}>
           <Frame
             ref={switchRef}
             tag="button"
             {...(isWeb && { type: 'button' })}
-            frameWidth={frameWidth}
             onLayout={composeEventHandlers((switchProps as ViewProps).onLayout, (e) => {
               setFrameWidth(e.nativeEvent.layout.width)
             })}

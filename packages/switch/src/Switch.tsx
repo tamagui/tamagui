@@ -67,10 +67,6 @@ export const SwitchFrame = styled(YStack, {
       true: {},
     },
 
-    frameWidth: {
-      ':number': () => null,
-    },
-
     size: {
       '...size': (val) => {
         const height = getSwitchHeight(val) + 4
