@@ -1,5 +1,5 @@
 import type { StackNonStyleProps, StackStylePropsBase, TamaguiComponent, TamaguiElement, TamaguiTextElement, TextNonStyleProps, TextProps, TextStylePropsBase, TamaDefer } from '@tamagui/web';
-import { RNTextProps, RNViewProps } from './reactNativeTypes';
+import type { RNTextProps, RNViewProps } from './reactNativeTypes';
 type RNExclusiveViewProps = Omit<RNViewProps, keyof StackNonStyleProps>;
 export interface RNTamaguiViewNonStyleProps extends StackNonStyleProps, RNExclusiveViewProps {
 }
