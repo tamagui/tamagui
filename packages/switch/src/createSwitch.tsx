@@ -1,6 +1,7 @@
 import {
   NativeValue,
   SizeTokens,
+  Stack,
   StackProps,
   TamaguiComponentExpectingVariants,
   composeEventHandlers,
@@ -181,9 +182,6 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
             ref={switchRef}
             tag="button"
             {...(isWeb && { type: 'button' })}
-            onLayout={composeEventHandlers((switchProps as ViewProps).onLayout, (e) => {
-              setFrameWidth(e.nativeEvent.layout.width)
-            })}
             {...(switchProps as any)}
             {...(!disableActiveTheme && {
               theme: checked ? 'active' : null,
@@ -193,8 +191,17 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
             checked={checked}
             disabled={switchProps.disabled}
           >
-            {switchProps.children}
+            <Stack
+              alignSelf="stretch"
+              flex={1}
+              onLayout={(e) => {
+                setFrameWidth(e.nativeEvent.layout.width)
+              }}
+            >
+              {switchProps.children}
+            </Stack>
           </Frame>
+
           {bubbleInput}
         </SwitchContext.Provider>
       )
