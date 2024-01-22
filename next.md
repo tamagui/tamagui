@@ -1,18 +1,10 @@
+- compiler - no need to setup any separate package
+
 - 2.0 rename SizableStack to Surface and simplify a bit
 
 - make it so media queries can be shared with groups easily
 
 - Remove the need for Text
-
-- `import { _ } from '@tamagui/core'`
-  - `<_.view />` `<_.text />`
-  - put it on globalThis and override type for super quick authoring
-  - can extend with your own
-    - `<_.p />` `<_.a />` `<.img />` etc
-  - can proxy to itself allowing for naming?
-    - `<_.view.my-thing />`
-  - or boolean variants?
-    - `<_.view.p-5.m-10 />`
 
 - document the t_unmounted / SSR
 - $theme-light in prod mode SSR issue
@@ -573,3 +565,13 @@ Themes can completely transform the look and feel, a button could have multiple 
     - defaults to theme: 'active'
 
 - <Image borderWidth="$2" /> not turning into val via psgeorge
+
+- `import { _ } from '@tamagui/core'`
+  - `<_.view />` `<_.text />`
+  - put it on globalThis and override type for super quick authoring
+  - can extend with your own
+    - `<_.p />` `<_.a />` `<.img />` etc
+  - can proxy to itself allowing for naming?
+    - `<_.view.my-thing />`
+  - or boolean variants?
+    - `<_.view.p-5.m-10 />`
