@@ -6,10 +6,10 @@ import { GetProps, XStack, YStack, styled } from 'tamagui'
 
 type Props = SectionProps & { themed?: boolean; index: number }
 
-// not use its fixed size
-const numIntersectingAtSection: number[] = getTints().tints.map((_) => 0)
-
 export const TintSection = ({ children, index, themed, zIndex, ...props }: Props) => {
+  const numIntersectingAtSection: number[] = useRef(
+    getTints().tints.map((_) => 0)
+  ).current
   const top = useRef<HTMLElement>(null)
   const bottom = useRef<HTMLElement>(null)
   const mid = useRef<HTMLElement>(null)
