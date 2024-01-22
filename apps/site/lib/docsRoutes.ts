@@ -14,7 +14,7 @@ export const docsRoutes = [
       { title: 'Tokens', route: '/docs/core/tokens' },
       { title: 'View & Text', route: '/docs/core/stack-and-text' },
       { title: 'Props', route: '/docs/intro/props' },
-      { title: 'Styles', route: '/docs/intro/props' },
+      { title: 'Styles', route: '/docs/intro/styles' },
       { title: 'styled()', route: '/docs/core/styled' },
       { title: 'Variants', route: '/docs/core/variants' },
       { title: 'Themes', route: '/docs/intro/themes' },

@@ -1,37 +1,41 @@
 ---
 title: Style API
-description: All the styles supported on base Tamagui components.
+description: The Tamagui superset of React Native styles
 ---
 
 Tamagui supports a superset of the style properties React Native style
 properties either to the `styled()` function as the second argument, or directly
-as props on View and Text.
+as props on the View and Text base components.
 
-Here's how that looks in code:
+Here's how that looks in practice:
 
 ```tsx
-import { View, styled } from 'tamagui' // or '@tamagui/core'
+import { View, styled } from '@tamagui/core'
 
 const StyledView = styled(View, {
   padding: 10,
 })
 
 const MyView = () => (
-    <StyledView
-      backgroundColor="red"
-      hoverStyle={{
-        backgroundColor: 'green'
-      }}
-    />
+  <StyledView
+    backgroundColor="red"
+    hoverStyle={{
+      backgroundColor: 'green'
+    }}
+  />
 )
 ```
 
-The types for the full set of styles accepted by styled, View and Text are exported as `ViewStyle` and `TextStyle`. The Text style props are small superset of the View ones, and you can find them both listed nicely on the React Native website:
+The types for the full set of styles accepted by styled, View and Text are
+exported as `ViewStyle` and `TextStyle`.
+
+For the full base styles, see the React Native docs:
 
 - [React Native View style props](https://reactnative.dev/docs/view-style-props)
 - [React Native Text style props](https://reactnative.dev/docs/text-style-props)
 
-The full Tamagui typed style props can be simplified to something like this, except the values can accept `"unset"` or one of your design tokens:
+The full Tamagui typed style props can be simplified to something like this,
+except the values can accept `"unset"` or one of your design tokens:
 
 ```tsx
 import { ViewStyle as RNViewStyle } from 'react-native'
@@ -76,14 +80,26 @@ type WithStates = BaseViewStyle & {
   exitStyle?: BaseViewStyle
 }
 
+// final View style props
 type ViewStyle = WithStates & {
+  // add media queries
   $sm?: WithStates
+
+  // add group queries
   $group-tabs?: WithStates
   $group-tabs-hover?: WithStates
   $group-tabs-focus?: WithStates
   $group-tabs-press?: WithStates
+
+  // add theme queries
   $theme-light?: WithStates
   $theme-dark?: WithStates
+
+  // add platform queries
+  $platform-native?: WithStates
+  $platform-ios?: WithStates
+  $platform-android?: WithStates
+  $platform-web?: WithStates
 }
 
 // Text style starts with this base but builds up the same:
@@ -108,9 +124,11 @@ type TextStyleBase = BaseViewStyle & {
 
 ### Order is important
 
-Tamagui props are sensitive to their order - a very nice feature, that without
-which would leave you with impossible styling challenges. Let's first explain
-how it works, and then why it's necessary.
+On thing that's very important to understand in Tamagui is that style props are
+sensitive to their order - a feature that without which would leave us with
+impossible styling challenges and awkward rules of inheritence we're trying to
+get away from with CSS in JS. Let's first explain how it works, and then why
+it's necessary.
 
 Define a new styled component:
 
