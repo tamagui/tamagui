@@ -46,25 +46,27 @@ export type SwitchProps = Omit<SwitchBaseProps & SwitchExtraProps, 'children'> &
   children?: React.ReactNode | ((checked: boolean) => React.ReactNode)
 }
 
-type SwitchComponent = TamaguiComponentExpectingVariants<
-  SwitchProps,
-  SwitchSharedProps & SwitchExtraProps
->
+type SwitchComponent = (props: SwitchSharedProps & SwitchExtraProps) => any
+type SwitchThumbComponent = (props: SwitchSharedProps) => any
 
-type SwitchThumbComponent = TamaguiComponentExpectingVariants<
-  SwitchBaseProps,
-  SwitchSharedProps
->
-
-export function createSwitch<F extends SwitchComponent, T extends SwitchThumbComponent>({
-  disableActiveTheme,
-  Frame = DefaultSwitchFrame as any,
-  Thumb = SwitchThumb as any,
-}: {
+export function createSwitch<
+  F extends SwitchComponent,
+  T extends SwitchThumbComponent,
+>(createProps: {
   disableActiveTheme?: boolean
   Frame?: F
   Thumb?: T
 }) {
+  const {
+    disableActiveTheme,
+    Frame = DefaultSwitchFrame,
+    Thumb = SwitchThumb,
+  } = createProps as any as {
+    disableActiveTheme?: boolean
+    Frame: typeof DefaultSwitchFrame
+    Thumb: typeof SwitchThumb
+  }
+
   if (process.env.NODE_ENV === 'development') {
     // @ts-ignore
     if (Frame !== DefaultSwitchFrame && Frame.staticConfig.context) {
@@ -207,7 +209,6 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
       return (
         <>
           <ButtonNestingContext.Provider value={true}>
-            {/* @ts-expect-error todo */}
             <Frame
               tag={isInsideButton ? 'span' : 'button'}
               unstyled={unstyled}
