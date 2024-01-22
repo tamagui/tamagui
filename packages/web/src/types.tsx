@@ -660,7 +660,8 @@ export type SpacerUniqueProps = {
 }
 
 export interface SpacerStyleProps
-  extends Omit<StackStylePropsBase, keyof SpacerUniqueProps>, SpacerUniqueProps {}
+  extends Omit<StackStylePropsBase, keyof SpacerUniqueProps>,
+    SpacerUniqueProps {}
 
 export type SpacerProps = WithThemeShorthandsPseudosMedia<SpacerStyleProps>
 
