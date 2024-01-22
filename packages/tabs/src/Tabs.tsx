@@ -143,6 +143,7 @@ type TabLayout = LayoutRectangle
 type InteractionType = 'select' | 'focus' | 'hover'
 
 type TabsTriggerFrameProps = GetProps<typeof TabsTriggerFrame>
+
 /**
  * @deprecated use `TabTabsProps` instead
  */
@@ -152,6 +153,9 @@ type TabsTriggerProps = TabsTriggerFrameProps & {
 
   /** Used for making custom indicators when trigger interacted with */
   onInteraction?: (type: InteractionType, layout: TabLayout | null) => void
+
+  /** Disables setting the active theme when tab is active */
+  disableActiveTheme?: boolean
 }
 
 type TabsTabProps = TabsTriggerProps
@@ -159,7 +163,14 @@ type TabsTabProps = TabsTriggerProps
 const TabsTrigger = TabsTriggerFrame.styleable(
   // @ts-expect-error
   (props: ScopedProps<TabsTriggerProps>, forwardedRef) => {
-    const { __scopeTabs, value, disabled = false, onInteraction, ...triggerProps } = props
+    const {
+      __scopeTabs,
+      value,
+      disabled = false,
+      onInteraction,
+      disableActiveTheme,
+      ...triggerProps
+    } = props
     const context = useTabsContext(__scopeTabs)
     const triggerId = makeTriggerId(context.baseId, value)
     const contentId = makeContentId(context.baseId, value)
@@ -203,7 +214,7 @@ const TabsTrigger = TabsTriggerFrame.styleable(
     }, [isSelected, value, layout])
 
     return (
-      <Theme name={isSelected ? 'active' : null} forceClassName>
+      <Theme name={isSelected && !disableActiveTheme ? 'active' : null} forceClassName>
         <RovingFocusGroup.Item
           __scopeRovingFocusGroup={__scopeTabs || TABS_CONTEXT}
           asChild
@@ -231,8 +242,9 @@ const TabsTrigger = TabsTriggerFrame.styleable(
             data-disabled={disabled ? '' : undefined}
             disabled={disabled}
             id={triggerId}
-            // @ts-ignore
-            size={context.size}
+            {...(!props.unstyled && {
+              size: context.size,
+            })}
             {...groupItemProps}
             {...triggerProps}
             ref={composeRefs(forwardedRef, triggerRef)}
