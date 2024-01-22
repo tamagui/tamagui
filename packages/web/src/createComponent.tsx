@@ -48,10 +48,9 @@ import {
   SpaceDirection,
   SpaceValue,
   SpacerProps,
-  SpacerPropsBase,
+  SpacerStyleProps,
   StackNonStyleProps,
   StackProps,
-  StackStylePropsBase,
   StaticConfig,
   StyleableOptions,
   TamaguiComponent,
@@ -144,7 +143,7 @@ let BaseView: any
 let hasSetupBaseViews = false
 
 export function createComponent<
-  ComponentPropTypes extends StackProps | TextProps = {},
+  ComponentPropTypes extends Record<string, any> = {},
   Ref extends TamaguiElement = TamaguiElement,
   BaseProps = never,
   BaseStyles extends Object = never,
@@ -1390,11 +1389,10 @@ const getSpacerSize = (size: SizeTokens | number | boolean, { tokens }) => {
 // dont used styled() here to avoid circular deps
 // keep inline to avoid circular deps
 export const Spacer = createComponent<
-  // @ts-expect-error its fine
   SpacerProps,
   TamaguiElement,
   StackNonStyleProps,
-  StackStylePropsBase & SpacerPropsBase
+  SpacerStyleProps
 >({
   acceptsClassName: true,
   memo: true,
