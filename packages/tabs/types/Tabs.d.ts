@@ -45,6 +45,8 @@ type TabsTriggerProps = TabsTriggerFrameProps & {
     value: string;
     /** Used for making custom indicators when trigger interacted with */
     onInteraction?: (type: InteractionType, layout: TabLayout | null) => void;
+    /** Disables setting the active theme when tab is active */
+    disableActiveTheme?: boolean;
 };
 type TabsTabProps = TabsTriggerProps;
 declare const TabsContentFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStylePropsBase, {

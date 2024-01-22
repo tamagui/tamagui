@@ -191,36 +191,38 @@ function TabsComponent(props: TabsProps) {
 const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
   return (
     <Tabs.Tab
-      size="$2"
+      disableActiveTheme
+      size="$4"
+      $sm={{ f: 1 }}
       ref={ref as any}
-      $sm={{
-        size: '$3',
-      }}
       {...props}
+      // bblr={0}
+      // bbrr={0}
     >
-      <Paragraph
-        size="$1"
-        $sm={{
-          size: '$2',
-        }}
-      >
-        {props.children}
-      </Paragraph>
+      <Paragraph>{props.children}</Paragraph>
     </Tabs.Tab>
   )
 })
 
+const TabsList = styled(Tabs.List, {
+  alignSelf: 'flex-end',
+  size: '$4',
+  top: 70,
+  marginRight: 0,
+  marginTop: -50,
+  marginBottom: 0,
+  zIndex: 10000,
+  position: 'sticky' as any,
+
+  $sm: {
+    marginTop: 20,
+    marginRight: 0,
+    width: '100%',
+  },
+})
+
 const CustomTabs = withStaticProperties(TabsComponent, {
-  List: styled(Tabs.List, {
-    alignSelf: 'flex-end',
-    size: '$1',
-    top: 70,
-    marginRight: 10,
-    marginBottom: -60,
-    marginTop: 30,
-    zIndex: 10000,
-    position: 'sticky' as any,
-  }),
+  List: TabsList,
   Tab,
   Content: Tabs.Content,
 })
