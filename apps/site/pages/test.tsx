@@ -5,7 +5,7 @@ import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { Header } from '@tamagui/site/components/Header'
 import { SearchProvider } from '@tamagui/site/components/Search'
 import { useState } from 'react'
-import { AnimatePresence, Button, Progress, Text, YStack, styled } from 'tamagui'
+import { AnimatePresence, Button, Progress, Stack, Text, YStack, styled } from 'tamagui'
 
 // debugger
 global.shouldDebugMoti = true
@@ -22,9 +22,12 @@ function TestPage() {
         flex: 1,
       }}
     >
-      <Progress size="$4">
-        <Progress.Indicator bc="$color6" animation="bouncy" />
-      </Progress>
+      <Stack
+        hitSlop={5}
+        onAccessibilityAction={[]}
+        importantForAccessibility="no"
+        needsOffscreenAlphaCompositing
+      />
       {/* <AnimationsPresenceDemo /> */}
       {/* <SSRAnimationTest /> */}
       {/* <AnimatedNumbers /> */}

@@ -1,18 +1,18 @@
 /// <reference types="react" />
 import { XStackProps } from 'tamagui';
-export declare const LogoWords: import("react").MemoExoticComponent<({ downscale, grayscale, animated, ...props }: Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/web").StackStylePropsBase | "fullscreen"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase & {
+export declare const LogoWords: import("react").MemoExoticComponent<({ downscale, grayscale, animated, ...props }: Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/web").StackStyleBase | "fullscreen"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
     elevation?: number | import("tamagui").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase & {
+}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
     elevation?: number | import("tamagui").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-}>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase & {
+}>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
     elevation?: number | import("tamagui").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase & {
+}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
     elevation?: number | import("tamagui").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-}>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStylePropsBase & {
+}>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase & {
     elevation?: number | import("tamagui").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
 }>> & {

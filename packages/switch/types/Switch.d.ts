@@ -1,5 +1,5 @@
 import { SizeTokens } from '@tamagui/core';
-export declare const SwitchThumb: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
+export declare const SwitchThumb: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     size?: SizeTokens | undefined;
     unstyled?: boolean | undefined;
     checked?: boolean | undefined;
@@ -17,7 +17,7 @@ export declare const SwitchThumb: import("@tamagui/core").TamaguiComponent<impor
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }, {}>;
-export declare const SwitchFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStylePropsBase, {
+export declare const SwitchFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     size?: SizeTokens | undefined;
     unstyled?: boolean | undefined;
     checked?: boolean | undefined;

@@ -127,7 +127,7 @@ span._display-1adg3ll > span._display-xoduu5 {
   background: radial-gradient(var(--color6) 0%, transparent 72%);
 }
 
-.t_dark .hero-blur.active { opacity: 0.7 }
+.t_dark .hero-blur.active { opacity: 0.6 }
 .hero-blur.active { opacity: 0.05 }
 
 /* reset */

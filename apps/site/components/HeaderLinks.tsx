@@ -53,7 +53,7 @@ const HeadAnchor = styled(Paragraph, {
 
     dim: {
       true: {
-        o: 0.6,
+        // color: '$color10',
       },
     },
   } as const,

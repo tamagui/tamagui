@@ -5,14 +5,16 @@ import { createComponent } from '../createComponent'
 import type {
   StackNonStyleProps,
   StackProps,
-  StackStylePropsBase,
+  StackStyle,
+  StackStyleBase,
   TamaguiElement,
 } from '../types'
 
 export type View = TamaguiElement
 export type ViewProps = StackProps
 export type ViewNonStyleProps = StackNonStyleProps
-export type ViewStylePropsBase = StackStylePropsBase
+export type ViewStylePropsBase = StackStyleBase
+export type ViewStyle = StackStyle
 
 export const View = createComponent<
   StackProps,

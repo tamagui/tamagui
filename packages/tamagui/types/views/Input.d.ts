@@ -40,7 +40,7 @@ export declare const defaultStyles: {
     readonly outlineWidth: 0;
     readonly color: "$color";
 };
-export declare const InputFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TextInput, import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").TextInputProps, import("@tamagui/core").TextStylePropsBase & {
+export declare const InputFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TextInput, import("@tamagui/web/types/interfaces/TamaguiComponentPropsBaseBase").TamaguiComponentPropsBaseBase & import("react-native").TextInputProps, import("@tamagui/core").TextStylePropsBase & {
     placeholderTextColor?: `$${string}` | `$${number}` | undefined;
 }, {
     size?: import("@tamagui/core").SizeTokens | undefined;
@@ -53,13 +53,13 @@ type InputExtraProps = {
     rows?: number;
 };
 export type InputProps = InputFrameProps & InputExtraProps;
-export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").TextInputProps, import("@tamagui/core").TextStylePropsBase & {
+export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/web/types/interfaces/TamaguiComponentPropsBaseBase").TamaguiComponentPropsBaseBase & import("react-native").TextInputProps, import("@tamagui/core").TextStylePropsBase & {
     placeholderTextColor?: `$${string}` | `$${number}` | undefined;
 } & {
     size?: import("@tamagui/core").SizeTokens | undefined;
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
-}>, "rows"> & InputExtraProps, TextInput, import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").TextInputProps & InputExtraProps, import("@tamagui/core").TextStylePropsBase & {
+}>, "rows"> & InputExtraProps, TextInput, import("@tamagui/web/types/interfaces/TamaguiComponentPropsBaseBase").TamaguiComponentPropsBaseBase & import("react-native").TextInputProps & InputExtraProps, import("@tamagui/core").TextStylePropsBase & {
     placeholderTextColor?: `$${string}` | `$${number}` | undefined;
 }, {
     size?: import("@tamagui/core").SizeTokens | undefined;

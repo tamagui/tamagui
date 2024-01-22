@@ -1,7 +1,7 @@
 import { useResponderEvents } from '@tamagui/react-native-use-responder-events'
 import type {
   StackNonStyleProps,
-  StackStylePropsBase,
+  StackStyleBase,
   TamaguiComponent,
   TamaguiElement,
   TamaguiTextElement,
@@ -37,7 +37,7 @@ type RNTamaguiView = TamaguiComponent<
   TamaDefer,
   TamaguiElement,
   RNTamaguiViewNonStyleProps,
-  StackStylePropsBase,
+  StackStyleBase,
   void
 >
 

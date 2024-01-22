@@ -2,7 +2,7 @@ import { GetProps } from '@tamagui/web';
 import * as React from 'react';
 type TamaguiButtonElement = HTMLButtonElement;
 export type ToggleElement = TamaguiButtonElement;
-export declare const ToggleFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStylePropsBase, {
+export declare const ToggleFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     unstyled?: boolean | undefined;
     pressTheme?: boolean | undefined;
     active?: boolean | undefined;
@@ -29,7 +29,7 @@ type ToggleItemExtraProps = {
     onPressedChange?(pressed: boolean): void;
 };
 export type ToggleProps = ToggleFrameProps & ToggleItemExtraProps;
-export declare const Toggle: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "unstyled" | "pressTheme" | "active" | "orientation" | "elevation" | keyof import("@tamagui/web").StackStylePropsBase | "transparent" | "fullscreen" | "circular" | "hoverTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase & {
+export declare const Toggle: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "unstyled" | "pressTheme" | "active" | "orientation" | "elevation" | keyof import("@tamagui/web").StackStyleBase | "transparent" | "fullscreen" | "circular" | "hoverTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
     unstyled?: boolean | undefined;
     pressTheme?: boolean | undefined;
     active?: boolean | undefined;
@@ -46,7 +46,7 @@ export declare const Toggle: React.ForwardRefExoticComponent<Omit<import("@tamag
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase & {
+}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
     unstyled?: boolean | undefined;
     pressTheme?: boolean | undefined;
     active?: boolean | undefined;
@@ -63,7 +63,7 @@ export declare const Toggle: React.ForwardRefExoticComponent<Omit<import("@tamag
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase & {
+}>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
     unstyled?: boolean | undefined;
     pressTheme?: boolean | undefined;
     active?: boolean | undefined;
@@ -80,7 +80,7 @@ export declare const Toggle: React.ForwardRefExoticComponent<Omit<import("@tamag
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase & {
+}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
     unstyled?: boolean | undefined;
     pressTheme?: boolean | undefined;
     active?: boolean | undefined;
@@ -97,7 +97,7 @@ export declare const Toggle: React.ForwardRefExoticComponent<Omit<import("@tamag
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStylePropsBase & {
+}>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase & {
     unstyled?: boolean | undefined;
     pressTheme?: boolean | undefined;
     active?: boolean | undefined;

@@ -1,5 +1,5 @@
 import { GetProps } from '@tamagui/web';
-export declare const Circle: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStylePropsBase, {
+export declare const Circle: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     size?: number | import("@tamagui/web").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
