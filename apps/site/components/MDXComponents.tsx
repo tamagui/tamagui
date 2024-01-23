@@ -191,13 +191,11 @@ function TabsComponent(props: TabsProps) {
 const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
   return (
     <Tabs.Tab
-      disableActiveTheme
       size="$4"
       $sm={{ f: 1 }}
       ref={ref as any}
+      elevation="$0.5"
       {...props}
-      // bblr={0}
-      // bbrr={0}
     >
       <Paragraph>{props.children}</Paragraph>
     </Tabs.Tab>
