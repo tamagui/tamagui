@@ -158,7 +158,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
   })
 
   const interactionsProps = [
-    useClick(context, { event: 'mousedown' }),
+    useClick(context, { event: 'mousedown', keyboardHandlers: false }),
     useDismiss(context, { outsidePress: false }),
     useRole(context, { role: 'listbox' }),
     useInnerOffset(context, {
@@ -198,6 +198,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
           onKeyDown(event) {
             if (
               event.key === 'Enter' ||
+              event.code === 'Space' ||
               (event.key === ' ' && !context.dataRef.current.typing)
             ) {
               event.preventDefault()
