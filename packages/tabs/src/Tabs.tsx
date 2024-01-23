@@ -484,9 +484,7 @@ function makeContentId(baseId: string, value: string) {
   return `${baseId}-content-${value}`
 }
 
-export {
-  useTabsContext
-}
+export { useTabsContext }
 
 export type {
   TabsProps,
