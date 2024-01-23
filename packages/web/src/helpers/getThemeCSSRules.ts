@@ -35,6 +35,7 @@ export function getThemeCSSRules(props: {
 
     // themeToVariableToValueMap.set(theme, {})
     // const varToValMap = themeToVariableToValueMap.get(theme)
+
     for (const themeKey in theme) {
       const variable = theme[themeKey] as Variable
       let value: any = null
@@ -71,7 +72,7 @@ export function getThemeCSSRules(props: {
           continue
         }
 
-        const childSelector = `${CNP}${
+        const childSelector = `${
           props.themesNamesToIndexes[subName.replace(/^(dark|light)_/, '')] || subName
         }`
         const order = isDark ? ['dark', 'light'] : ['light', 'dark']
@@ -87,7 +88,7 @@ export function getThemeCSSRules(props: {
           }
 
           const parents = new Array(depth + 1).fill(0).map((_, idx) => {
-            return `${CNP}${idx % 2 === 0 ? stronger : weaker}`
+            return `${idx % 2 === 0 ? stronger : weaker}`
           })
 
           let parentSelectors = parents.length > 1 ? parents.slice(1) : parents
@@ -102,7 +103,11 @@ export function getThemeCSSRules(props: {
             childSelector === lastParentSelector ? '' : childSelector
 
           // for light/dark/light:
-          selectorsSet.add(`${parentSelectors.join(' ')} ${nextChildSelector}`.trim())
+          selectorsSet.add(
+            `${parentSelectors.join(' ')} ${CNP}${
+              props.themesNamesToIndexes[nextChildSelector] || nextChildSelector
+            }`.trim()
+          )
           // selectorsSet.add(
           //   `${parentSelectors.join(' ')} ${nextChildSelector}.is_inversed`.trim()
           // )
