@@ -53,43 +53,47 @@ const SelectValueFrame = styled(SizableText, {
   userSelect: 'none',
 })
 
-type SelectValueProps = GetProps<typeof SelectValueFrame> & {
+interface SelectValueExtraProps {
   placeholder?: React.ReactNode
 }
 
-const SelectValue = SelectValueFrame.styleable<SelectValueProps>(function SelectValue(
-  {
-    __scopeSelect,
-    children: childrenProp,
-    placeholder,
-    ...props
-  }: ScopedProps<SelectValueProps>,
-  forwardedRef
-) {
-  // We ignore `className` and `style` as this part shouldn't be styled.
-  const context = useSelectContext(VALUE_NAME, __scopeSelect)
-  const itemParentContext = useSelectItemParentContext(VALUE_NAME, __scopeSelect)
-  const composedRefs = useComposedRefs(forwardedRef, context.onValueNodeChange)
-  const children = childrenProp ?? context.selectedItem
-  const isEmptyValue = context.value == null || context.value === ''
-  const selectValueChildren = isEmptyValue ? placeholder ?? children : children
+type SelectValueProps = GetProps<typeof SelectValueFrame> & SelectValueExtraProps
 
-  return (
-    <SelectValueFrame
-      {...(!props.unstyled && {
-        size: itemParentContext.size as any,
-        ellipse: true,
-        // we don't want events from the portalled `SelectValue` children to bubble
-        // through the item they came from
-        pointerEvents: 'none',
-      })}
-      ref={composedRefs}
-      {...props}
-    >
-      {unwrapSelectItem(selectValueChildren)}
-    </SelectValueFrame>
-  )
-})
+const SelectValue = SelectValueFrame.styleable<SelectValueExtraProps>(
+  function SelectValue(
+    {
+      __scopeSelect,
+      children: childrenProp,
+      placeholder,
+      ...props
+    }: ScopedProps<SelectValueProps>,
+    forwardedRef
+  ) {
+    // We ignore `className` and `style` as this part shouldn't be styled.
+    const context = useSelectContext(VALUE_NAME, __scopeSelect)
+    const itemParentContext = useSelectItemParentContext(VALUE_NAME, __scopeSelect)
+    const composedRefs = useComposedRefs(forwardedRef, context.onValueNodeChange)
+    const children = childrenProp ?? context.selectedItem
+    const isEmptyValue = context.value == null || context.value === ''
+    const selectValueChildren = isEmptyValue ? placeholder ?? children : children
+
+    return (
+      <SelectValueFrame
+        {...(!props.unstyled && {
+          size: itemParentContext.size as any,
+          ellipse: true,
+          // we don't want events from the portalled `SelectValue` children to bubble
+          // through the item they came from
+          pointerEvents: 'none',
+        })}
+        ref={composedRefs}
+        {...props}
+      >
+        {unwrapSelectItem(selectValueChildren)}
+      </SelectValueFrame>
+    )
+  }
+)
 
 function unwrapSelectItem(selectValueChildren: any) {
   return React.Children.map(selectValueChildren, (child) => {

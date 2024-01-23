@@ -116,7 +116,7 @@ CollapsibleTrigger.displayName = TRIGGER_NAME
  * CollapsibleContent
  * -----------------------------------------------------------------------------------------------*/
 
-interface CollapsibleContentProps extends AnimatePresenceProps, ThemeableStackProps {
+export interface CollapsibleContentExtraProps extends AnimatePresenceProps {
   /**
    * Used to force mounting when more control is needed. Useful when
    * controlling animation with React animation libraries.
@@ -124,28 +124,33 @@ interface CollapsibleContentProps extends AnimatePresenceProps, ThemeableStackPr
   forceMount?: true
 }
 
+interface CollapsibleContentProps
+  extends CollapsibleContentExtraProps,
+    ThemeableStackProps {}
+
 const CONTENT_NAME = 'CollapsibleContent'
 
 const CollapsibleContentFrame = styled(Stack, {
   name: CONTENT_NAME,
 })
 
-const CollapsibleContent = CollapsibleContentFrame.styleable<
-  ScopedProps<CollapsibleContentProps>
->((props, forwardedRef) => {
-  const { forceMount, children, __scopeCollapsible, ...contentProps } = props
-  const context = useCollapsibleContext(__scopeCollapsible)
+const CollapsibleContent =
+  CollapsibleContentFrame.styleable<CollapsibleContentExtraProps>(
+    (props, forwardedRef) => {
+      const { forceMount, children, __scopeCollapsible, ...contentProps } = props
+      const context = useCollapsibleContext(__scopeCollapsible)
 
-  return (
-    <AnimatePresence {...contentProps}>
-      {forceMount || context.open ? (
-        <CollapsibleContentFrame ref={forwardedRef} {...contentProps}>
-          <ResetPresence>{children}</ResetPresence>
-        </CollapsibleContentFrame>
-      ) : null}
-    </AnimatePresence>
+      return (
+        <AnimatePresence {...contentProps}>
+          {forceMount || context.open ? (
+            <CollapsibleContentFrame ref={forwardedRef} {...contentProps}>
+              <ResetPresence>{children}</ResetPresence>
+            </CollapsibleContentFrame>
+          ) : null}
+        </AnimatePresence>
+      )
+    }
   )
-})
 
 CollapsibleContent.displayName = CONTENT_NAME
 

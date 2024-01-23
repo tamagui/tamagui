@@ -17,9 +17,5 @@ export declare const TextLink: import("react").ForwardRefExoticComponent<Pick<Li
 }>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").TextStylePropsBase, {
     size?: import("tamagui").FontSizeTokens | undefined;
     unstyled?: boolean | undefined;
-}>> & {
-    href?: string | undefined;
-    target?: string | undefined;
-    rel?: string | undefined;
-} & import("react").RefAttributes<HTMLAnchorElement>>;
+}>> & import("tamagui").AnchorExtraProps & import("react").RefAttributes<HTMLAnchorElement>>;
 //# sourceMappingURL=TestSolito.d.ts.map

@@ -214,7 +214,7 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
         } & {
             __scopeSheet?: Scope<any>;
         } & React.RefAttributes<unknown>>;
-        Overlay: React.MemoExoticComponent<(propsIn: import("@tamagui/sheet").SheetScopedProps<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+        Overlay: React.MemoExoticComponent<(propsIn: import("@tamagui/sheet").SheetScopedProps<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;
             fullscreen?: boolean | undefined;
             open?: boolean | undefined;
@@ -230,13 +230,100 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
             radiused?: boolean | undefined;
             padded?: boolean | undefined;
             chromeless?: boolean | "all" | undefined;
-        }>>) => null>;
-        Handle: ({ __scopeSheet, ...props }: import("@tamagui/sheet").SheetScopedProps<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+        }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase, {
+            elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+            fullscreen?: boolean | undefined;
+            open?: boolean | undefined;
+            transparent?: boolean | undefined;
+            circular?: boolean | undefined;
+            unstyled?: boolean | undefined;
+            backgrounded?: boolean | undefined;
+            hoverTheme?: boolean | undefined;
+            pressTheme?: boolean | undefined;
+            focusTheme?: boolean | undefined;
+            elevate?: boolean | undefined;
+            bordered?: number | boolean | undefined;
+            radiused?: boolean | undefined;
+            padded?: boolean | undefined;
+            chromeless?: boolean | "all" | undefined;
+        }>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase, {
+            elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+            fullscreen?: boolean | undefined;
+            open?: boolean | undefined;
+            transparent?: boolean | undefined;
+            circular?: boolean | undefined; /**
+             * Used to force mounting when more control is needed. Useful when
+             * controlling animation with React animation libraries.
+             */
+            unstyled?: boolean | undefined;
+            backgrounded?: boolean | undefined;
+            hoverTheme?: boolean | undefined;
+            pressTheme?: boolean | undefined;
+            focusTheme?: boolean | undefined;
+            elevate?: boolean | undefined;
+            bordered?: number | boolean | undefined;
+            radiused?: boolean | undefined;
+            padded?: boolean | undefined;
+            chromeless?: boolean | "all" | undefined;
+        }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase, {
+            elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+            fullscreen?: boolean | undefined;
+            open?: boolean | undefined;
+            transparent?: boolean | undefined;
+            circular?: boolean | undefined;
+            unstyled?: boolean | undefined;
+            backgrounded?: boolean | undefined;
+            hoverTheme?: boolean | undefined;
+            pressTheme?: boolean | undefined;
+            focusTheme?: boolean | undefined;
+            elevate?: boolean | undefined;
+            bordered?: number | boolean | undefined;
+            radiused?: boolean | undefined;
+            padded?: boolean | undefined;
+            chromeless?: boolean | "all" | undefined;
+        }>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
+            elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+            fullscreen?: boolean | undefined;
+            open?: boolean | undefined;
+            transparent?: boolean | undefined;
+            circular?: boolean | undefined;
+            unstyled?: boolean | undefined;
+            backgrounded?: boolean | undefined;
+            hoverTheme?: boolean | undefined;
+            pressTheme?: boolean | undefined;
+            focusTheme?: boolean | undefined;
+            elevate?: boolean | undefined;
+            bordered?: number | boolean | undefined;
+            radiused?: boolean | undefined;
+            padded?: boolean | undefined;
+            chromeless?: boolean | "all" | undefined;
+        }>>>) => null>;
+        Handle: ({ __scopeSheet, ...props }: import("@tamagui/sheet").SheetScopedProps<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;
             fullscreen?: boolean | undefined;
             open?: boolean | undefined;
             unstyled?: boolean | undefined;
-        }>>) => JSX.Element | null;
+        }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase, {
+            elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+            fullscreen?: boolean | undefined;
+            open?: boolean | undefined;
+            unstyled?: boolean | undefined;
+        }>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase, {
+            elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+            fullscreen?: boolean | undefined;
+            open?: boolean | undefined;
+            unstyled?: boolean | undefined;
+        }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase, {
+            elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+            fullscreen?: boolean | undefined;
+            open?: boolean | undefined;
+            unstyled?: boolean | undefined;
+        }>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
+            elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+            fullscreen?: boolean | undefined;
+            open?: boolean | undefined;
+            unstyled?: boolean | undefined;
+        }>>>) => JSX.Element | null;
         ScrollView: React.ForwardRefExoticComponent<Omit<import("@tamagui/web/types/interfaces/TamaguiComponentPropsBaseBase").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase, {
             fullscreen?: boolean | undefined;
         }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase, {

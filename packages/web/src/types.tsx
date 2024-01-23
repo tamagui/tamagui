@@ -1379,10 +1379,10 @@ export type GetFinalProps<
   NonStyleProps,
   StylePropsBase,
   VariantProps extends Object,
-> = Omit<NonStyleProps, keyof StylePropsBase> &
-  (StylePropsBase extends Object
-    ? WithThemeShorthandsPseudosMedia<StylePropsBase, VariantProps>
-    : {})
+> = StylePropsBase extends Object
+  ? Omit<NonStyleProps, keyof StylePropsBase> &
+      WithThemeShorthandsPseudosMedia<StylePropsBase, VariantProps>
+  : NonStyleProps
 
 export type TamaguiComponent<
   Props = any,
@@ -1413,22 +1413,21 @@ export type InferGenericComponentProps<A> = A extends ComponentType<infer Props>
   ? Props
   : A extends ReactComponentWithRef<infer P, any>
     ? P
-    : A extends new (
-          props: infer Props
-        ) => any
-      ? Props
-      : {}
+    : A extends ForwardRefExoticComponent<infer P>
+      ? P
+      : A extends new (
+            props: infer Props
+          ) => any
+        ? Props
+        : {}
 
-export type InferStyledProps<
-  A extends StylableComponent,
-  B extends StaticConfigPublic,
-> = A extends {
+export type InferStyledProps<A extends StylableComponent, B extends Object> = A extends {
   __tama: any
 }
   ? GetProps<A>
   : GetFinalProps<
       InferGenericComponentProps<A>,
-      GetBaseStyles<{}, B>,
+      GetBaseStyles<A, B>,
       GetVariantProps<A, B>
     >
 
@@ -1724,10 +1723,7 @@ export type GetVariantProps<
       ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps>
       : never
     : Props
-  : WithThemeShorthandsPseudosMedia<
-      ShouldHaveTextBaseStyles<B> extends true ? TextStylePropsBase : StackStyleBase,
-      {}
-    >
+  : {}
 
 export type VariantDefinitionFromProps<MyProps, Val> = MyProps extends Object
   ? {

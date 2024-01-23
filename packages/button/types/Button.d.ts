@@ -73,10 +73,22 @@ declare const buttonStaticConfig: {
     inlineProps: Set<string>;
 };
 declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & TextContextStyles & {
-    textProps?: Partial<import("@tamagui/web").GetFinalProps<import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
+    textProps?: Partial<Omit<import("@tamagui/web").TextNonStyleProps, keyof import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase, {
         size?: FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
-    }>> | undefined;
+    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase, {
+        size?: FontSizeTokens | undefined;
+        unstyled?: boolean | undefined;
+    }>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase, {
+        size?: FontSizeTokens | undefined;
+        unstyled?: boolean | undefined;
+    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase, {
+        size?: FontSizeTokens | undefined;
+        unstyled?: boolean | undefined;
+    }>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").TextStylePropsBase, {
+        size?: FontSizeTokens | undefined;
+        unstyled?: boolean | undefined;
+    }>>> | undefined;
     noTextWrap?: boolean | undefined;
 } & ThemeableProps & {
     /**
@@ -196,10 +208,22 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }>> & import("react").RefAttributes<import("@tamagui/web").TamaguiElement>> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & TextContextStyles & {
-    textProps?: Partial<import("@tamagui/web").GetFinalProps<import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
+    textProps?: Partial<Omit<import("@tamagui/web").TextNonStyleProps, keyof import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase, {
         size?: FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
-    }>> | undefined;
+    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase, {
+        size?: FontSizeTokens | undefined;
+        unstyled?: boolean | undefined;
+    }>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase, {
+        size?: FontSizeTokens | undefined;
+        unstyled?: boolean | undefined;
+    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase, {
+        size?: FontSizeTokens | undefined;
+        unstyled?: boolean | undefined;
+    }>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").TextStylePropsBase, {
+        size?: FontSizeTokens | undefined;
+        unstyled?: boolean | undefined;
+    }>>> | undefined;
     noTextWrap?: boolean | undefined;
 } & ThemeableProps & {
     /**
@@ -248,10 +272,22 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
     chromeless?: boolean | "all" | undefined;
 }, {}> & Omit<{}, "staticConfig" | "extractable" | "styleable"> & {
     __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & TextContextStyles & {
-        textProps?: Partial<import("@tamagui/web").GetFinalProps<import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
+        textProps?: Partial<Omit<import("@tamagui/web").TextNonStyleProps, keyof import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase, {
             size?: FontSizeTokens | undefined;
             unstyled?: boolean | undefined;
-        }>> | undefined;
+        }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase, {
+            size?: FontSizeTokens | undefined;
+            unstyled?: boolean | undefined;
+        }>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase, {
+            size?: FontSizeTokens | undefined;
+            unstyled?: boolean | undefined;
+        }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase, {
+            size?: FontSizeTokens | undefined;
+            unstyled?: boolean | undefined;
+        }>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").TextStylePropsBase, {
+            size?: FontSizeTokens | undefined;
+            unstyled?: boolean | undefined;
+        }>>> | undefined;
         noTextWrap?: boolean | undefined;
     } & ThemeableProps & {
         /**

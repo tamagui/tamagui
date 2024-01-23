@@ -11,24 +11,22 @@ interface CollapsibleProps extends StackProps {
 type CollapsibleTriggerProps = GetProps<typeof Stack>;
 declare const CollapsibleTriggerFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>;
 declare const CollapsibleTrigger: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps & void, Omit<import("@tamagui/web").StackStyleBase, never>, {}, {}>;
-interface CollapsibleContentProps extends AnimatePresenceProps, ThemeableStackProps {
+export interface CollapsibleContentExtraProps extends AnimatePresenceProps {
     /**
      * Used to force mounting when more control is needed. Useful when
      * controlling animation with React animation libraries.
      */
     forceMount?: true;
 }
+interface CollapsibleContentProps extends CollapsibleContentExtraProps, ThemeableStackProps {
+}
 declare const CollapsibleContentFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>;
-declare const CollapsibleContent: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps & CollapsibleContentProps & {
-    __scopeCollapsible?: string | undefined;
-}, Omit<import("@tamagui/web").StackStyleBase, "__scopeCollapsible" | keyof CollapsibleContentProps>, {}, {}>;
+declare const CollapsibleContent: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps & CollapsibleContentExtraProps, Omit<import("@tamagui/web").StackStyleBase, keyof CollapsibleContentExtraProps>, {}, {}>;
 declare const Collapsible: React.ForwardRefExoticComponent<CollapsibleProps & {
     __scopeCollapsible?: string | undefined;
 } & React.RefAttributes<import("@tamagui/web").TamaguiElement>> & {
     Trigger: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps & void, Omit<import("@tamagui/web").StackStyleBase, never>, {}, {}>;
-    Content: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps & CollapsibleContentProps & {
-        __scopeCollapsible?: string | undefined;
-    }, Omit<import("@tamagui/web").StackStyleBase, "__scopeCollapsible" | keyof CollapsibleContentProps>, {}, {}>;
+    Content: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps & CollapsibleContentExtraProps, Omit<import("@tamagui/web").StackStyleBase, keyof CollapsibleContentExtraProps>, {}, {}>;
 };
 export { Collapsible, CollapsibleContent, CollapsibleContentFrame, CollapsibleTrigger, CollapsibleTriggerFrame, };
 export type { CollapsibleContentProps, CollapsibleProps, CollapsibleTriggerProps };

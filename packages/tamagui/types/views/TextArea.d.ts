@@ -1,4 +1,4 @@
-import { InputProps } from './Input';
+import { InputExtraProps, InputProps } from './Input';
 /**
  * Is basically Input but with rows = 4 to start
  */
@@ -10,9 +10,7 @@ export declare const TextAreaFrame: import("@tamagui/core").TamaguiComponent<imp
     unstyled?: boolean | undefined;
 }, typeof import("react-native").TextInput>;
 export type TextAreaProps = InputProps;
-export declare const TextArea: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("react-native").TextInput, import("@tamagui/web/types/interfaces/TamaguiComponentPropsBaseBase").TamaguiComponentPropsBaseBase & import("react-native").TextInputProps & {
-    rows?: number | undefined;
-}, Omit<import("@tamagui/core").TextStylePropsBase & {
+export declare const TextArea: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("react-native").TextInput, import("@tamagui/web/types/interfaces/TamaguiComponentPropsBaseBase").TamaguiComponentPropsBaseBase & import("react-native").TextInputProps & InputExtraProps, Omit<import("@tamagui/core").TextStylePropsBase & {
     placeholderTextColor?: `$${string}` | `$${number}` | undefined;
 }, "rows">, {
     size?: import("@tamagui/core").SizeTokens | undefined;

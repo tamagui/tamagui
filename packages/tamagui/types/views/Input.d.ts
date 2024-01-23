@@ -49,7 +49,7 @@ export declare const InputFrame: import("@tamagui/core").TamaguiComponent<import
 }, typeof TextInput>;
 export type Input = TextInput;
 export type InputFrameProps = GetProps<typeof InputFrame>;
-type InputExtraProps = {
+export type InputExtraProps = {
     rows?: number;
 };
 export type InputProps = InputFrameProps & InputExtraProps;
@@ -272,7 +272,6 @@ export declare function useInputProps(props: InputProps, ref: any): {
     lineHeight?: "unset" | import("@tamagui/core").GetThemeValueForKey<"lineHeight"> | undefined;
     ellipse?: boolean | "unset" | undefined;
     separator?: import("react").ReactNode;
-    testID?: string | undefined;
     display?: "unset" | "inherit" | "flex" | "none" | "inline" | "block" | "contents" | "inline-flex" | undefined;
     x?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"x"> | undefined;
     y?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"y"> | undefined;
@@ -314,6 +313,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     } | undefined;
     textShadowRadius?: number | "unset" | undefined;
     textTransform?: "unset" | "none" | "capitalize" | "uppercase" | "lowercase" | undefined;
+    testID?: string | undefined;
     fontVariant?: "unset" | import("react-native").FontVariant[] | undefined;
     writingDirection?: "unset" | "auto" | "ltr" | "rtl" | undefined;
     backfaceVisibility?: "unset" | "hidden" | "visible" | undefined;
@@ -452,5 +452,4 @@ export declare function useInputProps(props: InputProps, ref: any): {
     ref: (node: any) => void;
     readOnly: boolean | undefined;
 };
-export {};
 //# sourceMappingURL=Input.d.ts.map

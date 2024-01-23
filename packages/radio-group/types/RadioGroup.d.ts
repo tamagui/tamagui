@@ -196,8 +196,8 @@ declare const RadioGroup: React.ForwardRefExoticComponent<Omit<import("@tamagui/
     Item: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase, {
         unstyled?: boolean | undefined;
         pressTheme?: boolean | undefined;
-        disabled?: boolean | undefined;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+        disabled?: boolean | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
@@ -213,8 +213,8 @@ declare const RadioGroup: React.ForwardRefExoticComponent<Omit<import("@tamagui/
     }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase, {
         unstyled?: boolean | undefined;
         pressTheme?: boolean | undefined;
-        disabled?: boolean | undefined;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+        disabled?: boolean | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
@@ -230,8 +230,8 @@ declare const RadioGroup: React.ForwardRefExoticComponent<Omit<import("@tamagui/
     }>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase, {
         unstyled?: boolean | undefined;
         pressTheme?: boolean | undefined;
-        disabled?: boolean | undefined;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+        disabled?: boolean | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
@@ -247,8 +247,8 @@ declare const RadioGroup: React.ForwardRefExoticComponent<Omit<import("@tamagui/
     }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase, {
         unstyled?: boolean | undefined;
         pressTheme?: boolean | undefined;
-        disabled?: boolean | undefined;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+        disabled?: boolean | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
@@ -264,8 +264,8 @@ declare const RadioGroup: React.ForwardRefExoticComponent<Omit<import("@tamagui/
     }>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
         unstyled?: boolean | undefined;
         pressTheme?: boolean | undefined;
-        disabled?: boolean | undefined;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+        disabled?: boolean | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;

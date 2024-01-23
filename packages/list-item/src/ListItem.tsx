@@ -22,7 +22,7 @@ import React, { FunctionComponent } from 'react'
 type ListItemIconProps = { color?: string; size?: number }
 type IconProp = JSX.Element | FunctionComponent<ListItemIconProps> | null
 
-type ListItemExtraProps = Omit<TextParentStyles, 'TextComponent' | 'noTextWrap'> &
+export type ListItemExtraProps = Omit<TextParentStyles, 'TextComponent' | 'noTextWrap'> &
   ThemeableProps & {
     /**
      * add icon before, passes color and size automatically if Component

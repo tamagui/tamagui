@@ -21,14 +21,16 @@ type SelectItemContextValue = {
 export const [SelectItemContextProvider, useSelectItemContext] =
   createSelectContext<SelectItemContextValue>(ITEM_NAME)
 
-export interface SelectItemProps extends ListItemProps {
+export interface SelectItemExtraProps {
   value: string
   index: number
   disabled?: boolean
   textValue?: string
 }
 
-export const SelectItem = ListItemFrame.styleable<SelectItemProps>(
+export interface SelectItemProps extends ListItemProps, SelectItemExtraProps {}
+
+export const SelectItem = ListItemFrame.styleable<SelectItemExtraProps>(
   function SelectItem(props: ScopedProps<SelectItemProps>, forwardedRef) {
     const {
       __scopeSelect,

@@ -716,14 +716,14 @@ export type StyleableOptions = {
     staticConfig?: Partial<StaticConfig>;
 };
 export type Styleable<Props, Ref, NonStyledProps, BaseStyles extends Object, VariantProps extends Object, ParentStaticProperties> = <CustomProps extends Object | void = void, FunctionDef extends FunctionComponent<any> = FunctionComponent<any>>(a: FunctionDef, options?: StyleableOptions) => TamaguiComponent<Props, Ref, NonStyledProps & CustomProps, Omit<BaseStyles, keyof CustomProps>, VariantProps, ParentStaticProperties>;
-export type GetFinalProps<NonStyleProps, StylePropsBase, VariantProps extends Object> = Omit<NonStyleProps, keyof StylePropsBase> & (StylePropsBase extends Object ? WithThemeShorthandsPseudosMedia<StylePropsBase, VariantProps> : {});
+export type GetFinalProps<NonStyleProps, StylePropsBase, VariantProps extends Object> = StylePropsBase extends Object ? Omit<NonStyleProps, keyof StylePropsBase> & WithThemeShorthandsPseudosMedia<StylePropsBase, VariantProps> : NonStyleProps;
 export type TamaguiComponent<Props = any, Ref = any, NonStyledProps = {}, BaseStyles extends Object = {}, VariantProps extends Object = {}, ParentStaticProperties = {}> = ForwardRefExoticComponent<(Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps> : Props) & RefAttributes<Ref>> & StaticComponentObject<Props, Ref, NonStyledProps, BaseStyles, VariantProps, ParentStaticProperties> & Omit<ParentStaticProperties, 'staticConfig' | 'extractable' | 'styleable'> & {
     __tama: [Props, Ref, NonStyledProps, BaseStyles, VariantProps, ParentStaticProperties];
 };
-export type InferGenericComponentProps<A> = A extends ComponentType<infer Props> ? Props : A extends ReactComponentWithRef<infer P, any> ? P : A extends new (props: infer Props) => any ? Props : {};
-export type InferStyledProps<A extends StylableComponent, B extends StaticConfigPublic> = A extends {
+export type InferGenericComponentProps<A> = A extends ComponentType<infer Props> ? Props : A extends ReactComponentWithRef<infer P, any> ? P : A extends ForwardRefExoticComponent<infer P> ? P : A extends new (props: infer Props) => any ? Props : {};
+export type InferStyledProps<A extends StylableComponent, B extends Object> = A extends {
     __tama: any;
-} ? GetProps<A> : GetFinalProps<InferGenericComponentProps<A>, GetBaseStyles<{}, B>, GetVariantProps<A, B>>;
+} ? GetProps<A> : GetFinalProps<InferGenericComponentProps<A>, GetBaseStyles<A, B>, GetVariantProps<A, B>>;
 export type GetProps<A extends StylableComponent> = A extends {
     __tama: [
         infer Props,
@@ -895,7 +895,7 @@ export type GetVariantProps<A extends StylableComponent, B extends StaticConfigP
         infer VariantProps,
         any
     ];
-} ? Props extends TamaDefer ? VariantProps extends Object ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps> : never : Props : WithThemeShorthandsPseudosMedia<ShouldHaveTextBaseStyles<B> extends true ? TextStylePropsBase : StackStyleBase, {}>;
+} ? Props extends TamaDefer ? VariantProps extends Object ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps> : never : Props : {};
 export type VariantDefinitionFromProps<MyProps, Val> = MyProps extends Object ? {
     [propName: string]: VariantSpreadFunction<MyProps, Val> | ({
         [Key in SpreadKeys]?: Key extends '...fontSize' ? FontSizeVariantSpreadFunction<MyProps> : Key extends '...size' ? SizeVariantSpreadFunction<MyProps> : Key extends '...space' ? SpaceVariantSpreadFunction<MyProps> : Key extends '...color' ? ColorVariantSpreadFunction<MyProps> : Key extends '...lineHeight' ? FontLineHeightVariantSpreadFunction<MyProps> : Key extends '...fontTransform' ? FontTransformVariantSpreadFunction<MyProps> : Key extends '...fontStyle' ? FontStyleVariantSpreadFunction<MyProps> : Key extends '...letterSpacing' ? FontLetterSpacingVariantSpreadFunction<MyProps> : Key extends '...zIndex' ? ZIndexVariantSpreadFunction<MyProps> : Key extends '...radius' ? RadiusVariantSpreadFunction<MyProps> : Key extends '...theme' ? ThemeVariantSpreadFunction<MyProps> : never;

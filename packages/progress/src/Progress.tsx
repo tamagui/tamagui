@@ -146,14 +146,16 @@ export const ProgressFrame = styled(ThemeableStack, {
   },
 })
 
-type ProgressProps = GetProps<typeof ProgressFrame> & {
+interface ProgressExtraProps {
   value?: number | null | undefined
   max?: number
   getValueLabel?(value: number, max: number): string
 }
 
+type ProgressProps = GetProps<typeof ProgressFrame> & ProgressExtraProps
+
 const Progress = withStaticProperties(
-  ProgressFrame.styleable<ProgressProps>(function Progress(
+  ProgressFrame.styleable<ProgressExtraProps>(function Progress(
     props: ScopedProps<ProgressProps>,
     forwardedRef
   ) {

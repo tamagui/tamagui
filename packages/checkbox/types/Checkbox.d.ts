@@ -44,8 +44,8 @@ export type CheckboxIndicatorProps = CheckboxIndicatorFrameProps & {
 };
 export declare const CheckboxFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     size?: SizeTokens | undefined;
-    disabled?: boolean | undefined;
     elevation?: number | SizeTokens | undefined;
+    disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -80,10 +80,10 @@ type CheckboxExtraProps = {
     sizeAdjust?: number;
 };
 export type CheckboxProps = Omit<CheckboxFrameProps, 'checked' | 'defaultChecked'> & CheckboxExtraProps;
-export declare const Checkbox: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & CheckboxExtraProps, "space" | "zIndex" | "pointerEvents" | "display" | "x" | "y" | "perspective" | "scale" | "scaleX" | "scaleY" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "contain" | "touchAction" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "userSelect" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "transformOrigin" | "backfaceVisibility" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "rowGap" | "gap" | "columnGap" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY"> & import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, keyof CheckboxExtraProps>, {
+export declare const Checkbox: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & CheckboxExtraProps, "space" | "zIndex" | "display" | "x" | "y" | "perspective" | "scale" | "scaleX" | "scaleY" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "contain" | "touchAction" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "pointerEvents" | "userSelect" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "transformOrigin" | "backfaceVisibility" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "rowGap" | "gap" | "columnGap" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY"> & import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, keyof CheckboxExtraProps>, {
     size?: SizeTokens | undefined;
-    disabled?: boolean | undefined;
     elevation?: number | SizeTokens | undefined;
+    disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -99,8 +99,8 @@ export declare const Checkbox: React.ForwardRefExoticComponent<Omit<import("@tam
     unstyled?: boolean | undefined;
 }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, keyof CheckboxExtraProps>, {
     size?: SizeTokens | undefined;
-    disabled?: boolean | undefined;
     elevation?: number | SizeTokens | undefined;
+    disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -116,8 +116,8 @@ export declare const Checkbox: React.ForwardRefExoticComponent<Omit<import("@tam
     unstyled?: boolean | undefined;
 }>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, keyof CheckboxExtraProps>, {
     size?: SizeTokens | undefined;
-    disabled?: boolean | undefined;
     elevation?: number | SizeTokens | undefined;
+    disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -133,8 +133,8 @@ export declare const Checkbox: React.ForwardRefExoticComponent<Omit<import("@tam
     unstyled?: boolean | undefined;
 }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, keyof CheckboxExtraProps>, {
     size?: SizeTokens | undefined;
-    disabled?: boolean | undefined;
     elevation?: number | SizeTokens | undefined;
+    disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -150,8 +150,8 @@ export declare const Checkbox: React.ForwardRefExoticComponent<Omit<import("@tam
     unstyled?: boolean | undefined;
 }>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<Omit<import("@tamagui/core").StackStyleBase, keyof CheckboxExtraProps>, {
     size?: SizeTokens | undefined;
-    disabled?: boolean | undefined;
     elevation?: number | SizeTokens | undefined;
+    disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -167,8 +167,8 @@ export declare const Checkbox: React.ForwardRefExoticComponent<Omit<import("@tam
     unstyled?: boolean | undefined;
 }>> & React.RefAttributes<TamaguiElement>> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & CheckboxExtraProps, Omit<import("@tamagui/core").StackStyleBase, keyof CheckboxExtraProps>, {
     size?: SizeTokens | undefined;
-    disabled?: boolean | undefined;
     elevation?: number | SizeTokens | undefined;
+    disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -185,8 +185,8 @@ export declare const Checkbox: React.ForwardRefExoticComponent<Omit<import("@tam
 }, {}> & Omit<{}, "staticConfig" | "extractable" | "styleable"> & {
     __tama: [import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & CheckboxExtraProps, Omit<import("@tamagui/core").StackStyleBase, keyof CheckboxExtraProps>, {
         size?: SizeTokens | undefined;
-        disabled?: boolean | undefined;
         elevation?: number | SizeTokens | undefined;
+        disabled?: boolean | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;

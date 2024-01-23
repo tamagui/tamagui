@@ -15,17 +15,19 @@ export declare const SelectItemContextProvider: {
     warn?: boolean | undefined;
     fallback?: Partial<SelectItemContextValue> | undefined;
 } | undefined) => SelectItemContextValue;
-export interface SelectItemProps extends ListItemProps {
+export interface SelectItemExtraProps {
     value: string;
     index: number;
     disabled?: boolean;
     textValue?: string;
 }
-export declare const SelectItem: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & SelectItemProps, Omit<import("@tamagui/web").StackStyleBase, keyof SelectItemProps>, {
+export interface SelectItemProps extends ListItemProps, SelectItemExtraProps {
+}
+export declare const SelectItem: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & SelectItemExtraProps, Omit<import("@tamagui/web").StackStyleBase, keyof SelectItemExtraProps>, {
     unstyled?: boolean | undefined;
     size?: import("@tamagui/web").SizeTokens | undefined;
-    disabled?: boolean | undefined;
     elevation?: number | import("@tamagui/web").SizeTokens | undefined;
+    disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;

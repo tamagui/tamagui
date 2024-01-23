@@ -13,7 +13,7 @@ import {
   useSelectContext,
   useSelectItemParentContext,
 } from './context'
-import { ScopedProps, SelectViewportProps } from './types'
+import { ScopedProps, SelectViewportExtraProps, SelectViewportProps } from './types'
 import { useSelectBreakpointActive } from './useSelectBreakpointActive'
 
 /* -------------------------------------------------------------------------------------------------
@@ -49,7 +49,7 @@ export const SelectViewportFrame = styled(ThemeableStack, {
   },
 })
 
-export const SelectViewport = SelectViewportFrame.styleable<SelectViewportProps>(
+export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraProps>(
   function SelectViewport(props: ScopedProps<SelectViewportProps>, forwardedRef) {
     const { __scopeSelect, children, disableScroll, ...viewportProps } = props
     const context = useSelectContext(VIEWPORT_NAME, __scopeSelect)
