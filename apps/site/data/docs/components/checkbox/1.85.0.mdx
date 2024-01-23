@@ -9,7 +9,7 @@ demoName: Checkbox
 
 # Checkbox
 
-<Description>Use in forms to toggle between two states.</Description>
+<Description>Toggle state in forms.</Description>
 
 <Tabs id="type" defaultValue="styled">
 <Tabs.List>
@@ -101,7 +101,8 @@ npm install @tamagui/checkbox
 
 To use the headless switch, you want to import it from the
 `@tamagui/switch-headless` package. This package has no dependency on
-`@tamagui/core`.
+`@tamagui/core`, but still works off the react-native APIs.
+This means can bring your own style library.
 
 ```bash
 npm install @tamagui/switch-headless
@@ -144,8 +145,7 @@ indicated in the types of `createCheckbox`.
 
 <Tabs.Content value="headless">
 
-Using the `useCheckbox` API, you can make your own Checkbox from scratch. You
-could even do it without Tamagui's styling system if you wanted to.
+Using the `useCheckbox` API, you can make your own Checkbox from scratch.
 
 ```tsx template=CheckboxHeadless
 

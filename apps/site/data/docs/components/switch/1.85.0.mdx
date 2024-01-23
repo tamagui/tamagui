@@ -106,7 +106,8 @@ npm install @tamagui/switch
 
 To use the headless switch, you want to import it from the
 `@tamagui/switch-headless` package. This package has no dependency on
-`@tamagui/core`.
+`@tamagui/core`, but still works off the react-native APIs.
+This means can bring your own style library.
 
 ```bash
 npm install @tamagui/switch-headless
@@ -150,8 +151,7 @@ If you define a `checked` variant, it will apply those styles.
 
 <Tabs.Content value="headless">
 
-Using the `useSwitch` API, you can make your own Switch from scratch. You could
-even do it without Tamagui's styling system if you wanted to.
+Using the `useSwitch` API, you can make your own Switch from scratch.
 
 ```tsx template=SwitchHeadless
 
