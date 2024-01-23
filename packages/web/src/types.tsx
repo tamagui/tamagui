@@ -1665,20 +1665,27 @@ export type SpreadKeys =
 export type VariantDefinitions<
   Parent extends StylableComponent = TamaguiComponent,
   StaticConfig extends StaticConfigPublic = {},
-  MyProps extends Object = Partial<GetStyleableProps<Parent, StaticConfig['isText']>>,
+  MyProps extends Object = Partial<GetVariantProps<Parent, StaticConfig['isText']>>,
   Val = any,
 > = VariantDefinitionFromProps<MyProps, Val> & {
   _isEmpty?: 1
 }
 
-export type GetStyleableProps<
+export type GetVariantProps<
   A extends StylableComponent,
   IsText extends boolean | undefined,
 > = A extends {
-  __tama: [infer Props, any, any, infer BaseStyles, infer VariantProps, any]
+  __tama: [
+    infer Props,
+    any,
+    infer NonStyledProps,
+    infer BaseStyles,
+    infer VariantProps,
+    any,
+  ]
 }
   ? Props extends TamaDefer
-    ? GetFinalProps<{}, BaseStyles & VariantProps>
+    ? GetFinalProps<NonStyledProps, BaseStyles & VariantProps>
     : Props
   : WithThemeShorthandsPseudosMedia<
       IsText extends true ? TextStylePropsBase : StackStyleBase
