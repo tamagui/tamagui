@@ -298,11 +298,13 @@ function getState(
       const scheme =
         firstName === 'light' ? 'light' : firstName === 'dark' ? 'dark' : undefined
       const pre = THEME_CLASSNAME_PREFIX
-      const afterPre =
-        themesNames[!scheme || !restNames.length ? firstName : restNames.join('_')]
+      const afterPre = !scheme || !restNames.length ? firstName : restNames.join('_')
       const className = !isWeb
         ? ''
-        : `${pre}sub_theme ${pre}${themesNames[afterPre] || afterPre}`
+        : `${pre}sub_theme ${pre}${
+            themesNames[scheme !== afterPre ? scheme + '_' + afterPre : afterPre] ||
+            afterPre
+          }`
 
       // because its a new theme the baseManager is now the parent
       const parentState = (baseManager || parentManager)?.state
