@@ -13,6 +13,7 @@ import {
   SizeTokens,
   Stack,
   StackProps,
+  TamaguiComponent,
   TamaguiElement,
   Theme,
   View,
@@ -29,7 +30,6 @@ import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import {
   Popper,
   PopperAnchor,
-  PopperAnchorProps,
   PopperArrow,
   PopperArrowProps,
   PopperContent,
@@ -37,7 +37,7 @@ import {
   PopperContentProps,
   PopperContext,
   PopperProps,
-  usePopperContext,
+  usePopperContext
 } from '@tamagui/popper'
 import { Portal, PortalHost, PortalItem } from '@tamagui/portal'
 import { RemoveScroll, RemoveScrollProps } from '@tamagui/remove-scroll'
@@ -199,7 +199,10 @@ export interface PopoverContentTypeProps
   enableAnimationForPositionChange?: boolean
 }
 
-export const PopoverContent = PopperContentFrame.extractable(
+type PopoverContentType = TamaguiComponent<ScopedPopoverProps<PopoverContentTypeProps>, PopoverContentTypeElement>
+
+// @ts-expect-error
+export const PopoverContent: PopoverContentType = PopperContentFrame.extractable(
   React.forwardRef<
     PopoverContentTypeElement,
     ScopedPopoverProps<PopoverContentTypeProps>

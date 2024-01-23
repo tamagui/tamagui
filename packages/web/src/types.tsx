@@ -1183,7 +1183,8 @@ export type WithThemeAndShorthands<
 export type WithThemeShorthandsAndPseudos<
   A extends Object,
   Variants extends Object,
-> = WithThemeAndShorthands<A, Variants> & WithPseudoProps<WithThemeAndShorthands<A, Variants>>
+> = WithThemeAndShorthands<A, Variants> &
+  WithPseudoProps<WithThemeAndShorthands<A, Variants>>
 
 //
 // ... media queries and animations
@@ -1361,26 +1362,24 @@ export type Styleable<
   ParentStaticProperties,
 > = <
   CustomProps extends Object | void = void,
-  MergedProps = CustomProps extends void
-    ? Props
-    : Omit<Props, keyof CustomProps> & CustomProps,
-  FunctionDef extends FunctionComponent<MergedProps> = FunctionComponent<MergedProps>,
+  FunctionDef extends FunctionComponent<any> = FunctionComponent<any>,
 >(
   a: FunctionDef,
   options?: StyleableOptions
 ) => TamaguiComponent<
-  MergedProps,
+  Props,
   Ref,
   NonStyledProps & CustomProps,
-  BaseStyles,
+  Omit<BaseStyles, keyof CustomProps>,
   VariantProps,
   ParentStaticProperties
 >
 
-export type GetFinalProps<NonStyleProps, StylePropsBase, VariantProps extends Object> = Omit<
+export type GetFinalProps<
   NonStyleProps,
-  keyof StylePropsBase
-> &
+  StylePropsBase,
+  VariantProps extends Object,
+> = Omit<NonStyleProps, keyof StylePropsBase> &
   (StylePropsBase extends Object
     ? WithThemeShorthandsPseudosMedia<StylePropsBase, VariantProps>
     : {})
@@ -1412,11 +1411,13 @@ export type TamaguiComponent<
 
 export type InferGenericComponentProps<A> = A extends ComponentType<infer Props>
   ? Props
-  : A extends new (
-        props: infer Props
-      ) => any
-    ? Props
-    : {}
+  : A extends ReactComponentWithRef<infer P, any>
+    ? P
+    : A extends new (
+          props: infer Props
+        ) => any
+      ? Props
+      : {}
 
 export type InferStyledProps<
   A extends StylableComponent,
@@ -1442,7 +1443,9 @@ export type GetProps<A extends StylableComponent> = A extends {
   ]
 }
   ? Props extends TamaDefer
-    ? VariantProps extends Object ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps> : never
+    ? VariantProps extends Object
+      ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps>
+      : never
     : Props
   : InferGenericComponentProps<A>
 
@@ -1494,9 +1497,7 @@ export type StaticComponentObject<
    * If you want your HOC of a styled() component to also be able to be styled(), you need this to wrap it.
    */
   styleable: Styleable<
-    Props extends TamaDefer
-      ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps>
-      : Props,
+    Props,
     Ref,
     NonStyledProps,
     BaseStyles,
@@ -1719,10 +1720,13 @@ export type GetVariantProps<
   ]
 }
   ? Props extends TamaDefer
-    ?  VariantProps extends Object ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps> : never
+    ? VariantProps extends Object
+      ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps>
+      : never
     : Props
   : WithThemeShorthandsPseudosMedia<
-      ShouldHaveTextBaseStyles<B> extends true ? TextStylePropsBase : StackStyleBase, {}
+      ShouldHaveTextBaseStyles<B> extends true ? TextStylePropsBase : StackStyleBase,
+      {}
     >
 
 export type VariantDefinitionFromProps<MyProps, Val> = MyProps extends Object
