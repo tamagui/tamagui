@@ -66,16 +66,22 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
   // { orange: 1, blue: 2}
   const themesNamesToIndexes = areThemesJustNames
-    ? Object.fromEntries((configIn.themes as string[]).map((name, i) => [name, i]))
-    : Object.fromEntries(Object.keys(configIn.themes || {}).map((name, i) => [name, i]))
+    ? Object.fromEntries((configIn.themes as string[]).map((name, i) => [name, i + 1]))
+    : Object.fromEntries(
+        Object.keys(configIn.themes || {}).map((name, i) => [name, i + 1])
+      )
 
   delete themesNamesToIndexes['dark']
   delete themesNamesToIndexes['light']
 
+  // insert at the start of the array
+
   // { 1: 'orange', 2: 'blue'}
   const themesIndexesToNames = areThemesJustNames
-    ? Object.fromEntries((configIn.themes as string[]).map((name, i) => [i, name]))
-    : Object.fromEntries(Object.keys(configIn.themes || {}).map((name, i) => [i, name]))
+    ? Object.fromEntries((configIn.themes as string[]).map((name, i) => [i + 1, name]))
+    : Object.fromEntries(
+        Object.keys(configIn.themes || {}).map((name, i) => [i + 1, name])
+      )
 
   if (configIn.themes) {
     const noThemes = areThemesJustNames

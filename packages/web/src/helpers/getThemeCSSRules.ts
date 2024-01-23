@@ -102,12 +102,16 @@ export function getThemeCSSRules(props: {
           const nextChildSelector =
             childSelector === lastParentSelector ? '' : childSelector
 
+          if (!nextChildSelector) {
+            selectorsSet.add(`${parentSelectors.join(' ')}`.trim())
+          } else {
+            selectorsSet.add(
+              `${parentSelectors.join(' ')} ${CNP}${
+                props.themesNamesToIndexes[nextChildSelector] || nextChildSelector
+              }`.trim()
+            )
+          }
           // for light/dark/light:
-          selectorsSet.add(
-            `${parentSelectors.join(' ')} ${CNP}${
-              props.themesNamesToIndexes[nextChildSelector] || nextChildSelector
-            }`.trim()
-          )
           // selectorsSet.add(
           //   `${parentSelectors.join(' ')} ${nextChildSelector}.is_inversed`.trim()
           // )
