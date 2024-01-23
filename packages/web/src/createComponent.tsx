@@ -1192,7 +1192,7 @@ export function createComponent<
     }
 
     if (process.env.TAMAGUI_TARGET === 'web') {
-      if (isReactNative && !asChild && !isHOC) {
+      if (isReactNative && !asChild) {
         content = (
           <span
             {...(!isHydrated
