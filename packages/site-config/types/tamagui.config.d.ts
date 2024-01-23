@@ -73,9 +73,7 @@ export declare const config: {
         [key: string]: {
             [key: string]: string | number | import("@tamagui/web").Variable<any>;
         };
-    } | {
-        [key: string]: number;
-    } | undefined;
+    } | string[] | undefined;
     media: {
         xl: {
             maxWidth: number;

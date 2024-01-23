@@ -453,9 +453,7 @@ export type CreateTamaguiProps = {
         [key: string]: {
             [key: string]: string | number | Variable;
         };
-    } | {
-        [key: string]: number;
-    };
+    } | string[];
     settings?: Partial<GenericTamaguiSettings>;
     /**
      * Define a default font, for better types and default font on Text
@@ -521,8 +519,11 @@ export type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B ext
     fontSizeTokens: Set<string>;
     specificTokens: Record<string, Variable>;
     settings: Omit<GenericTamaguiSettings, keyof I> & I;
-    themesNames: {
+    themesNamesToIndexes: {
         [key: string]: number;
+    };
+    themesIndexesToNames: {
+        [key: number]: string;
     };
 };
 export type GetAnimationKeys<A extends GenericTamaguiConfig> = keyof A['animations'];

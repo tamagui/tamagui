@@ -42,18 +42,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   // ensure variables
   const tokensParsed: TokensParsed = {} as any
   const tokens = createVariables(configIn.tokens || {})
-
-  let themesNames = (
-    typeof configIn.themes?.[0] === 'number'
-      ? configIn.themes
-      : Object.fromEntries(
-          Object.entries(configIn.themes || {}).map(([key], index) => [key, index])
-        )
-  ) as {
-    [key: string]: number
-  }
-  delete themesNames['light']
-  delete themesNames['dark']
+  const areThemesJustNames = Array.isArray(configIn.themes)
 
   if (configIn.tokens) {
     // faster lookups
@@ -74,9 +63,25 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   }
 
   let foundThemes: DedupedThemes | undefined
+
+  // { orange: 1, blue: 2}
+  const themesNamesToIndexes = areThemesJustNames
+    ? Object.fromEntries((configIn.themes as string[]).map((name, i) => [name, i]))
+    : Object.fromEntries(Object.keys(configIn.themes || {}).map((name, i) => [name, i]))
+
+  delete themesNamesToIndexes['dark']
+  delete themesNamesToIndexes['light']
+
+  // { 1: 'orange', 2: 'blue'}
+  const themesIndexesToNames = areThemesJustNames
+    ? Object.fromEntries((configIn.themes as string[]).map((name, i) => [i, name]))
+    : Object.fromEntries(Object.keys(configIn.themes || {}).map((name, i) => [i, name]))
+
   if (configIn.themes) {
-    const noThemes = Object.keys(configIn.themes).length === 0
-    foundThemes = scanAllSheets(noThemes, tokensParsed)
+    const noThemes = areThemesJustNames
+      ? false
+      : Object.keys(configIn.themes).length === 0
+    foundThemes = scanAllSheets(noThemes, tokensParsed, themesIndexesToNames)
   }
 
   listenForSheetChanges()
@@ -206,7 +211,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
               themeName: names[0],
               names,
               theme,
-              themesNames,
+              themesNamesToIndexes,
             })
             themeRuleSets = [...themeRuleSets, ...nextRules]
           }
@@ -293,7 +298,8 @@ ${runtimeStyles}`
     themes: themeConfig.themes as any,
     fontsParsed: fontsParsed || {},
     themeConfig,
-    themesNames,
+    themesNamesToIndexes,
+    themesIndexesToNames,
     tokensParsed: tokensParsed as any,
     parsed: true,
     getNewCSS,

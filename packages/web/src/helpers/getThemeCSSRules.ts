@@ -11,7 +11,7 @@ export function getThemeCSSRules(props: {
   theme: ThemeParsed
   names: string[]
   hasDarkLight?: boolean
-  themesNames: { [key: string]: number }
+  themesNamesToIndexes: Record<string, number>
 }) {
   const cssRuleSets: string[] = []
 
@@ -35,7 +35,6 @@ export function getThemeCSSRules(props: {
 
     // themeToVariableToValueMap.set(theme, {})
     // const varToValMap = themeToVariableToValueMap.get(theme)
-    debugger
     for (const themeKey in theme) {
       const variable = theme[themeKey] as Variable
       let value: any = null
@@ -52,7 +51,7 @@ export function getThemeCSSRules(props: {
     const isDarkBase = themeName === 'dark'
     const isLightBase = themeName === 'light'
     const baseSelectors = names.map((name) => {
-      return `${CNP}${props.themesNames[name] || name}`
+      return `${CNP}${props.themesNamesToIndexes[name] || name}`
     })
     const selectorsSet = new Set(isDarkBase || isLightBase ? baseSelectors : [])
 
@@ -68,12 +67,12 @@ export function getThemeCSSRules(props: {
         if (!(isDark || isLight)) {
           // neither light nor dark subtheme, just generate one selector with :root:root which
           // will override all :root light/dark selectors generated below
-          selectorsSet.add(`${CNP}${props.themesNames[subName] || subName}`)
+          selectorsSet.add(`${CNP}${props.themesNamesToIndexes[subName] || subName}`)
           continue
         }
 
         const childSelector = `${CNP}${
-          props.themesNames[subName.replace(/^(dark|light)_/, '')] || subName
+          props.themesNamesToIndexes[subName.replace(/^(dark|light)_/, '')] || subName
         }`
         const order = isDark ? ['dark', 'light'] : ['light', 'dark']
         const [stronger, weaker] = order

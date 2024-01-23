@@ -72,7 +72,8 @@ let lastScannedSheets: Set<CSSStyleSheet> | null = null
 
 export function scanAllSheets(
   collectThemes = false,
-  tokens?: TokensParsed
+  tokens?: TokensParsed,
+  themesIndexes?: { [key: number]: string }
 ): DedupedThemes | undefined {
   if (process.env.NODE_ENV === 'test') return
   if (!isClient) return
@@ -85,7 +86,7 @@ export function scanAllSheets(
   if (document.styleSheets) {
     for (const sheet of current) {
       if (sheet) {
-        const out = updateSheetStyles(sheet, false, collectThemes, tokens)
+        const out = updateSheetStyles(sheet, false, collectThemes, tokens, themesIndexes)
         if (out) {
           themes = out
         }
@@ -94,6 +95,7 @@ export function scanAllSheets(
     lastScannedSheets = current
   }
 
+  // TODO check this part
   if (prev) {
     for (const sheet of prev) {
       if (sheet && !current.has(sheet)) {
@@ -118,7 +120,10 @@ function updateSheetStyles(
   sheet: CSSStyleSheet,
   remove = false,
   collectThemes = false,
-  tokens?: TokensParsed
+  tokens?: TokensParsed,
+  themesIndexes?: {
+    [key: number]: string
+  }
 ): DedupedThemes | undefined {
   // avoid errors on cross origin sheets
   // https://stackoverflow.com/questions/49993633/uncaught-domexception-failed-to-read-the-cssrules-property
@@ -170,7 +175,7 @@ function updateSheetStyles(
     const [identifier, cssRule, isTheme] = response
 
     if (isTheme) {
-      const deduped = addThemesFromCSS(cssRule, tokens)
+      const deduped = addThemesFromCSS(cssRule, tokens, themesIndexes)
       if (deduped) {
         dedupedThemes ||= []
         dedupedThemes.push(deduped)
@@ -204,7 +209,14 @@ function updateSheetStyles(
 let colorVarToVal: Record<string, string>
 let rootComputedStyle: CSSStyleDeclaration | null = null
 
-function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
+function addThemesFromCSS(
+  cssStyleRule: CSSStyleRule,
+  tokens?: TokensParsed,
+  themesIndexes?: {
+    [key: number]: string
+  }
+) {
+  if (!themesIndexes) return
   const selectors = cssStyleRule.selectorText.split(',')
 
   if (!selectors.length) return
@@ -268,11 +280,16 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
       ([] as string[])
     const [_0, _1, scheme, _2, name] = matches
     const themeName =
-      name && scheme && scheme !== name ? `${scheme}_${name}` : name || scheme
-    if (dedupedEntry.names.includes(themeName) || themeName === 'light_dark') {
+      name && scheme && scheme !== name
+        ? `${scheme}_${themesIndexes[name] || name}`
+        : themesIndexes[name] || name || scheme
+    if (
+      dedupedEntry.names.includes(themesIndexes[themeName] || themeName) ||
+      themeName === 'light_dark'
+    ) {
       continue
     }
-    dedupedEntry.names.push(themeName)
+    dedupedEntry.names.push(themesIndexes[themeName] || themeName)
   }
 
   return dedupedEntry

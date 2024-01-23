@@ -45,6 +45,9 @@ export declare const getThemes: () => {
 export declare const getThemesNames: () => {
     [key: string]: number;
 };
+export declare const getThemesIndexes: () => {
+    [key: number]: string;
+};
 export declare const configListeners: Set<ConfigListener>;
 export declare const onConfiguredOnce: (cb: ConfigListener) => void;
 export declare const updateConfig: (key: string, value: any) => void;

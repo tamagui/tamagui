@@ -5,7 +5,4 @@ export declare function ThemeDebug({ themeState, themeProps, children, }: {
     themeProps: ThemeProps;
     children: any;
 }): any;
-export declare namespace ThemeDebug {
-    var displayName: string;
-}
 //# sourceMappingURL=ThemeDebug.native.d.ts.map
