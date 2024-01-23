@@ -75,6 +75,19 @@ type TabsContentExtraProps = {
     forceMount?: true;
 };
 type TabsContentProps = TabsContentFrameProps & TabsContentExtraProps;
+type TabsContextValue = {
+    baseId: string;
+    value?: string;
+    onChange: (value: string) => void;
+    orientation?: TabsProps['orientation'];
+    dir?: TabsProps['dir'];
+    activationMode?: TabsProps['activationMode'];
+    size: SizeTokens;
+    registerTrigger: () => void;
+    unregisterTrigger: () => void;
+    triggersCount: number;
+};
+declare const useTabsContext: (scope?: string | undefined) => TabsContextValue;
 declare const TabsFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: SizeTokens | undefined;
     elevation?: number | SizeTokens | undefined;
@@ -841,5 +854,6 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         chromeless?: boolean | "all" | undefined;
     }, {}>;
 };
+export { useTabsContext };
 export type { TabsProps, TabsListProps, TabsTriggerProps, TabsTriggerLayout, TabsTabProps, TabsContentProps, TabLayout, };
 //# sourceMappingURL=Tabs.d.ts.map

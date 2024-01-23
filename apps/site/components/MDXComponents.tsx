@@ -29,6 +29,7 @@ import {
   XStackProps,
   YStack,
   styled,
+  useTabsContext,
   withStaticProperties,
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
@@ -188,9 +189,18 @@ function TabsComponent(props: TabsProps) {
   )
 }
 
+
 const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
+  const { value } = useTabsContext()
+  const isSelected = value === props.value
+
   return (
     <Tabs.Tab
+      disableActiveTheme
+      backgroundColor={isSelected ? "$backgroundHover" : "$background"}
+      hoverStyle={{
+        backgroundColor: isSelected ? "$background" : "$backgroundHover"
+      }}
       size="$4"
       $sm={{ f: 1 }}
       ref={ref as any}
