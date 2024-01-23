@@ -1564,7 +1564,7 @@ export type StaticConfigPublic = {
   neverFlatten?: boolean | 'jsx'
 
   /**
-   * Determines ultimate output tag (Text vs View)
+   * Determines ultimate output tag (Text vs View) and accepted props (text props vs view)
    */
   isText?: boolean
 

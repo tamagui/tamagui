@@ -62,7 +62,7 @@ export const InputFrame = styled(
     },
   },
   {
-    isText: true,
+    isInput: true,
     acceptTokens: {
       placeholderTextColor: 'color',
     },

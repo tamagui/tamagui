@@ -164,6 +164,7 @@ export function createComponent<
   const {
     Component,
     isText,
+    isInput,
     isZStack,
     isHOC,
     validStyles = {},
@@ -858,9 +859,10 @@ export function createComponent<
       mediaGroups ? Object.keys([...mediaGroups]).join('') : 0,
     ])
 
-    let fontFamily = isText
-      ? splitStyles.fontFamily || staticConfig.defaultProps?.fontFamily
-      : null
+    let fontFamily =
+      isText || isInput
+        ? splitStyles.fontFamily || staticConfig.defaultProps?.fontFamily
+        : null
     if (fontFamily && fontFamily[0] === '$') {
       fontFamily = fontFamily.slice(1)
     }

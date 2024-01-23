@@ -40,7 +40,7 @@ export declare const defaultStyles: {
     readonly outlineWidth: 0;
     readonly color: "$color";
 };
-export declare const InputFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TextInput, import("@tamagui/web/types/interfaces/TamaguiComponentPropsBaseBase").TamaguiComponentPropsBaseBase & import("react-native").TextInputProps, import("@tamagui/core").TextStylePropsBase & {
+export declare const InputFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TextInput, import("@tamagui/web/types/interfaces/TamaguiComponentPropsBaseBase").TamaguiComponentPropsBaseBase & import("react-native").TextInputProps, import("@tamagui/core").StackStyleBase & {
     placeholderTextColor?: `$${string}` | `$${number}` | undefined;
 }, {
     size?: import("@tamagui/core").SizeTokens | undefined;
@@ -53,13 +53,13 @@ type InputExtraProps = {
     rows?: number;
 };
 export type InputProps = InputFrameProps & InputExtraProps;
-export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/web/types/interfaces/TamaguiComponentPropsBaseBase").TamaguiComponentPropsBaseBase & import("react-native").TextInputProps, import("@tamagui/core").TextStylePropsBase & {
+export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/web/types/interfaces/TamaguiComponentPropsBaseBase").TamaguiComponentPropsBaseBase & import("react-native").TextInputProps, import("@tamagui/core").StackStyleBase & {
     placeholderTextColor?: `$${string}` | `$${number}` | undefined;
 } & {
     size?: import("@tamagui/core").SizeTokens | undefined;
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
-}>, "rows"> & InputExtraProps, TextInput, import("@tamagui/web/types/interfaces/TamaguiComponentPropsBaseBase").TamaguiComponentPropsBaseBase & import("react-native").TextInputProps & InputExtraProps, import("@tamagui/core").TextStylePropsBase & {
+}>, "rows"> & InputExtraProps, TextInput, import("@tamagui/web/types/interfaces/TamaguiComponentPropsBaseBase").TamaguiComponentPropsBaseBase & import("react-native").TextInputProps & InputExtraProps, import("@tamagui/core").StackStyleBase & {
     placeholderTextColor?: `$${string}` | `$${number}` | undefined;
 }, {
     size?: import("@tamagui/core").SizeTokens | undefined;
@@ -69,6 +69,7 @@ export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import
 export declare function useInputProps(props: InputProps, ref: any): {
     placeholderTextColor: any;
     onChangeText: (value: any) => void;
+    textAlign?: "center" | "left" | "right" | undefined;
     children?: any;
     className?: string | undefined;
     style?: import("react-native").StyleProp<import("react-native").TextStyle>;
@@ -94,6 +95,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     allowFontScaling?: boolean | undefined;
     id?: string | undefined;
     numberOfLines?: number | undefined;
+    testID?: string | undefined;
     nativeID?: string | undefined;
     maxFontSizeMultiplier?: number | null | undefined;
     lineBreakStrategyIOS?: "none" | "standard" | "hangul-word" | "push-out" | undefined;
@@ -151,6 +153,8 @@ export declare function useInputProps(props: InputProps, ref: any): {
     disableOptimization?: boolean | undefined;
     forceStyle?: "hover" | "press" | "focus" | undefined;
     disableClassName?: boolean | undefined;
+    textAlignVertical?: "auto" | "center" | "bottom" | "top" | undefined;
+    verticalAlign?: "auto" | "middle" | "bottom" | "top" | undefined;
     hitSlop?: import("react-native").Insets | undefined;
     removeClippedSubviews?: boolean | undefined;
     collapsable?: boolean | undefined;
@@ -232,12 +236,6 @@ export declare function useInputProps(props: InputProps, ref: any): {
     returnKeyLabel?: string | undefined;
     underlineColorAndroid?: import("react-native").ColorValue | undefined;
     showSoftInputOnFocus?: boolean | undefined;
-    ellipse?: boolean | "unset" | undefined;
-    textDecorationDistance?: number | "unset" | undefined;
-    textOverflow?: import("csstype").Property.TextOverflow | undefined;
-    whiteSpace?: import("csstype").Property.WhiteSpace | undefined;
-    wordWrap?: import("csstype").Property.WordWrap | undefined;
-    color?: "unset" | import("react-native").OpaqueColorValue | import("@tamagui/core").GetThemeValueForKey<"color"> | undefined;
     borderColor?: "unset" | import("react-native").OpaqueColorValue | import("@tamagui/core").GetThemeValueForKey<"borderColor"> | undefined;
     shadowColor?: "unset" | import("react-native").OpaqueColorValue | import("@tamagui/core").GetThemeValueForKey<"shadowColor"> | undefined;
     zIndex?: "unset" | import("@tamagui/core").GetThemeValueForKey<"zIndex"> | undefined;
@@ -273,28 +271,8 @@ export declare function useInputProps(props: InputProps, ref: any): {
     borderBottomRightRadius?: number | "unset" | import("react-native").Animated.AnimatedNode | `$${string}` | `$${number}` | import("@tamagui/core").UnionableString | import("@tamagui/core").Variable<any> | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/core").UnionableNumber | undefined;
     borderBottomLeftRadius?: number | "unset" | import("react-native").Animated.AnimatedNode | `$${string}` | `$${number}` | import("@tamagui/core").UnionableString | import("@tamagui/core").Variable<any> | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/core").UnionableNumber | undefined;
     borderTopLeftRadius?: number | "unset" | import("react-native").Animated.AnimatedNode | `$${string}` | `$${number}` | import("@tamagui/core").UnionableString | import("@tamagui/core").Variable<any> | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/core").UnionableNumber | undefined;
-    textAlign?: "unset" | "auto" | "center" | "left" | "right" | "justify" | undefined;
     left?: number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"left"> | null | undefined;
     right?: number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"right"> | null | undefined;
-    fontSize?: "unset" | import("@tamagui/core").GetThemeValueForKey<"fontSize"> | undefined;
-    lineHeight?: "unset" | import("@tamagui/core").GetThemeValueForKey<"lineHeight"> | undefined;
-    testID?: string | undefined;
-    fontFamily?: "unset" | import("@tamagui/core").GetThemeValueForKey<"fontFamily"> | undefined;
-    fontStyle?: "unset" | "normal" | "italic" | undefined;
-    fontWeight?: "unset" | import("@tamagui/core").GetThemeValueForKey<"fontWeight"> | undefined;
-    letterSpacing?: "unset" | import("@tamagui/core").GetThemeValueForKey<"letterSpacing"> | undefined;
-    textDecorationLine?: "unset" | "none" | "underline" | "line-through" | "underline line-through" | undefined;
-    textDecorationStyle?: "unset" | "solid" | "double" | "dotted" | "dashed" | undefined;
-    textDecorationColor?: import("react-native").ColorValue | undefined;
-    textShadowColor?: "unset" | import("react-native").OpaqueColorValue | import("@tamagui/core").GetThemeValueForKey<"textShadowColor"> | undefined;
-    textShadowOffset?: "unset" | {
-        width: number;
-        height: number;
-    } | undefined;
-    textShadowRadius?: number | "unset" | undefined;
-    textTransform?: "unset" | "none" | "capitalize" | "uppercase" | "lowercase" | undefined;
-    fontVariant?: "unset" | import("react-native").FontVariant[] | undefined;
-    writingDirection?: "unset" | "auto" | "ltr" | "rtl" | undefined;
     backfaceVisibility?: "unset" | "hidden" | "visible" | undefined;
     borderBlockColor?: "unset" | import("react-native").OpaqueColorValue | import("@tamagui/core").GetThemeValueForKey<"borderBlockColor"> | undefined;
     borderBlockEndColor?: "unset" | import("react-native").OpaqueColorValue | import("@tamagui/core").GetThemeValueForKey<"borderBlockEndColor"> | undefined;
@@ -316,7 +294,6 @@ export declare function useInputProps(props: InputProps, ref: any): {
     borderTopEndRadius?: number | "unset" | import("react-native").Animated.AnimatedNode | `$${string}` | `$${number}` | import("@tamagui/core").UnionableString | import("@tamagui/core").Variable<any> | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/core").UnionableNumber | undefined;
     borderTopStartRadius?: number | "unset" | import("react-native").Animated.AnimatedNode | `$${string}` | `$${number}` | import("@tamagui/core").UnionableString | import("@tamagui/core").Variable<any> | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/core").UnionableNumber | undefined;
     opacity?: "unset" | import("react-native").AnimatableNumericValue | undefined;
-    elevation?: number | "unset" | undefined;
     aspectRatio?: string | number | undefined;
     borderBottomWidth?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"borderBottomWidth"> | undefined;
     borderEndWidth?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"borderEndWidth"> | undefined;
@@ -354,9 +331,6 @@ export declare function useInputProps(props: InputProps, ref: any): {
     rotation?: "unset" | import("react-native").AnimatableNumericValue | undefined;
     translateX?: "unset" | import("react-native").AnimatableNumericValue | undefined;
     translateY?: "unset" | import("react-native").AnimatableNumericValue | undefined;
-    textAlignVertical?: "unset" | "auto" | "center" | "bottom" | "top" | undefined;
-    verticalAlign?: "unset" | "auto" | "middle" | "bottom" | "top" | undefined;
-    includeFontPadding?: boolean | "unset" | undefined;
     x?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"x"> | undefined;
     y?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"y"> | undefined;
     perspective?: number | "unset" | undefined;
@@ -389,65 +363,65 @@ export declare function useInputProps(props: InputProps, ref: any): {
     size?: "unset" | import("@tamagui/core").SizeTokens | undefined;
     disabled?: boolean | "unset" | undefined;
     unstyled?: boolean | "unset" | undefined;
-    hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
+    hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
         placeholderTextColor?: `$${string}` | `$${number}` | undefined;
     } & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
-    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
-        placeholderTextColor?: `$${string}` | `$${number}` | undefined;
-    } & {
-        size?: import("@tamagui/core").SizeTokens | undefined;
-        disabled?: boolean | undefined;
-        unstyled?: boolean | undefined;
-    }>>) | null | undefined;
-    pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
-        placeholderTextColor?: `$${string}` | `$${number}` | undefined;
-    } & {
-        size?: import("@tamagui/core").SizeTokens | undefined;
-        disabled?: boolean | undefined;
-        unstyled?: boolean | undefined;
-    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
         placeholderTextColor?: `$${string}` | `$${number}` | undefined;
     } & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
     }>>) | null | undefined;
-    focusStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
+    pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
         placeholderTextColor?: `$${string}` | `$${number}` | undefined;
     } & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
-    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
-        placeholderTextColor?: `$${string}` | `$${number}` | undefined;
-    } & {
-        size?: import("@tamagui/core").SizeTokens | undefined;
-        disabled?: boolean | undefined;
-        unstyled?: boolean | undefined;
-    }>>) | null | undefined;
-    exitStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
-        placeholderTextColor?: `$${string}` | `$${number}` | undefined;
-    } & {
-        size?: import("@tamagui/core").SizeTokens | undefined;
-        disabled?: boolean | undefined;
-        unstyled?: boolean | undefined;
-    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
         placeholderTextColor?: `$${string}` | `$${number}` | undefined;
     } & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
     }>>) | null | undefined;
-    enterStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
+    focusStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
         placeholderTextColor?: `$${string}` | `$${number}` | undefined;
     } & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
-    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
+        placeholderTextColor?: `$${string}` | `$${number}` | undefined;
+    } & {
+        size?: import("@tamagui/core").SizeTokens | undefined;
+        disabled?: boolean | undefined;
+        unstyled?: boolean | undefined;
+    }>>) | null | undefined;
+    exitStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
+        placeholderTextColor?: `$${string}` | `$${number}` | undefined;
+    } & {
+        size?: import("@tamagui/core").SizeTokens | undefined;
+        disabled?: boolean | undefined;
+        unstyled?: boolean | undefined;
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
+        placeholderTextColor?: `$${string}` | `$${number}` | undefined;
+    } & {
+        size?: import("@tamagui/core").SizeTokens | undefined;
+        disabled?: boolean | undefined;
+        unstyled?: boolean | undefined;
+    }>>) | null | undefined;
+    enterStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
+        placeholderTextColor?: `$${string}` | `$${number}` | undefined;
+    } & {
+        size?: import("@tamagui/core").SizeTokens | undefined;
+        disabled?: boolean | undefined;
+        unstyled?: boolean | undefined;
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
         placeholderTextColor?: `$${string}` | `$${number}` | undefined;
     } & {
         size?: import("@tamagui/core").SizeTokens | undefined;
