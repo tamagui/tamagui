@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/image",
-  "version": "1.88.6",
+  "version": "1.88.7",
   "sideEffects": [
     "*.css"
   ],
@@ -23,15 +23,15 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/constants": "1.88.6",
-    "@tamagui/core": "1.88.6"
+    "@tamagui/constants": "1.88.7",
+    "@tamagui/core": "1.88.7"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.88.6",
+    "@tamagui/build": "1.88.7",
     "react": "^18.2.0",
     "react-native": "^0.72.6"
   },
