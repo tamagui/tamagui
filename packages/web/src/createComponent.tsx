@@ -1298,7 +1298,7 @@ export function createComponent<
     Ref,
     BaseProps,
     BaseStyles,
-    void
+    {}
   >
 
   let res: ComponentType = component as any

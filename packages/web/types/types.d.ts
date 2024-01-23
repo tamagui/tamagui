@@ -270,7 +270,7 @@ export type SpacerUniqueProps = {
 };
 export interface SpacerStyleProps extends Omit<StackStyleBase, keyof SpacerUniqueProps>, SpacerUniqueProps {
 }
-export type SpacerProps = WithThemeShorthandsPseudosMedia<SpacerStyleProps>;
+export type SpacerProps = WithThemeShorthandsPseudosMedia<SpacerStyleProps, {}>;
 type AllowedValueSettingBase = boolean | 'strict' | 'somewhat-strict' | 'strict-web' | 'somewhat-strict-web';
 type AllowedStyleValuesSettingSize = AllowedValueSettingBase | 'number' | 'percent';
 type AllowedStyleValuesSettingZIndex = AllowedValueSettingBase | 'number';
@@ -600,8 +600,9 @@ export type ThemeValueGet<K extends string | number | symbol> = K extends 'theme
 export type GetThemeValueForKey<K extends string | symbol | number> = ThemeValueGet<K> | ThemeValueFallback | (TamaguiSettings extends {
     autocompleteSpecificTokens: infer Val;
 } ? Val extends true | undefined ? SpecificTokens : never : never);
-export type WithThemeValues<T extends object, AddUnset extends boolean = true> = {
-    [K in keyof T]: ThemeValueGet<K> extends never ? T[K] | (AddUnset extends true ? 'unset' : never) : GetThemeValueForKey<K> | Exclude<T[K], string> | (AddUnset extends true ? 'unset' : never);
+export type GetThemeValuesFor<T extends Object, K extends keyof T, AddUnset> = ThemeValueGet<K> extends never ? T[K] | (AddUnset extends true ? 'unset' : never) : GetThemeValueForKey<K> | Exclude<T[K], string> | (AddUnset extends true ? 'unset' : never);
+export type WithThemeValues<T extends Object, Variants extends Object> = {
+    [K in keyof T | keyof Variants]?: K extends keyof Variants ? GetThemeValuesFor<Variants, K, false> : K extends keyof T ? GetThemeValuesFor<T, K, true> : never;
 };
 export type NarrowShorthands = Narrow<Shorthands>;
 export type Longhands = NarrowShorthands[keyof NarrowShorthands];
@@ -625,9 +626,9 @@ export type PseudoStyles = {
     exitStyle?: ViewStyle;
 };
 export type AllPlatforms = 'web' | 'native' | 'android' | 'ios';
-export type WithThemeAndShorthands<A extends Object, AddUnset extends boolean = true> = OnlyAllowShorthands extends true ? WithThemeValues<Omit<A, Longhands>, AddUnset> & WithShorthands<WithThemeValues<A, AddUnset>> : WithThemeValues<A, AddUnset> & WithShorthands<WithThemeValues<A, AddUnset>>;
-export type WithThemeShorthandsAndPseudos<A extends Object, AddUnset extends boolean = true> = WithThemeAndShorthands<A> & WithPseudoProps<WithThemeAndShorthands<A, AddUnset>>;
-export type WithThemeShorthandsPseudosMedia<A extends Object, AddUnset extends boolean = true> = WithThemeShorthandsAndPseudos<A, AddUnset> & WithMediaProps<WithThemeShorthandsAndPseudos<A, AddUnset>>;
+export type WithThemeAndShorthands<A extends Object, Variants extends Object> = OnlyAllowShorthands extends true ? WithThemeValues<Omit<A, Longhands>, Variants> & WithShorthands<WithThemeValues<A, Variants>> : WithThemeValues<A, Variants> & WithShorthands<WithThemeValues<A, Variants>>;
+export type WithThemeShorthandsAndPseudos<A extends Object, Variants extends Object> = WithThemeAndShorthands<A, Variants> & WithPseudoProps<WithThemeAndShorthands<A, Variants>>;
+export type WithThemeShorthandsPseudosMedia<A extends Object, Variants extends Object> = WithThemeShorthandsAndPseudos<A, Variants> & WithMediaProps<WithThemeShorthandsAndPseudos<A, Variants>>;
 /**
  * Base style-only props (no media, pseudo):
  */
@@ -696,12 +697,12 @@ type LooseCombinedObjects<A extends Object, B extends Object> = A | B | (A & B);
 export interface StackNonStyleProps extends Omit<ViewProps, 'pointerEvents' | 'display' | 'children' | RNOnlyProps | keyof ExtendBaseStackProps | 'style'>, ExtendBaseStackProps, TamaguiComponentPropsBase {
     style?: StyleProp<LooseCombinedObjects<React.CSSProperties, ViewStyle>>;
 }
-export type StackStyle = WithThemeShorthandsPseudosMedia<StackStyleBase>;
+export type StackStyle = WithThemeShorthandsPseudosMedia<StackStyleBase, {}>;
 export type StackProps = StackNonStyleProps & StackStyle;
 export interface TextNonStyleProps extends Omit<ReactTextProps, 'children' | keyof WebOnlyPressEvents | RNOnlyProps | keyof ExtendBaseTextProps | 'style'>, ExtendBaseTextProps, TamaguiComponentPropsBase {
     style?: StyleProp<LooseCombinedObjects<React.CSSProperties, TextStyle>>;
 }
-export type TextStyleProps = WithThemeShorthandsPseudosMedia<TextStylePropsBase>;
+export type TextStyleProps = WithThemeShorthandsPseudosMedia<TextStylePropsBase, {}>;
 export type TextProps = TextNonStyleProps & TextStyleProps;
 export interface ThemeableProps {
     theme?: ThemeName | null;
@@ -714,9 +715,9 @@ export type StyleableOptions = {
     disableTheme?: boolean;
     staticConfig?: Partial<StaticConfig>;
 };
-export type Styleable<Props, Ref, NonStyledProps, BaseStyles extends Object, VariantProps, ParentStaticProperties> = <CustomProps extends Object | void = void, MergedProps = CustomProps extends void ? Props : Omit<Props, keyof CustomProps> & CustomProps, FunctionDef extends FunctionComponent<MergedProps> = FunctionComponent<MergedProps>>(a: FunctionDef, options?: StyleableOptions) => TamaguiComponent<MergedProps, Ref, NonStyledProps & CustomProps, BaseStyles, VariantProps, ParentStaticProperties>;
-export type GetFinalProps<NonStyleProps, StylePropsBase, VariantProps> = Omit<NonStyleProps, keyof StylePropsBase> & (StylePropsBase extends Object ? WithThemeShorthandsPseudosMedia<StylePropsBase> : {}) & (VariantProps extends Object ? WithThemeAndShorthands<VariantProps, false> : {});
-export type TamaguiComponent<Props = any, Ref = any, NonStyledProps = {}, BaseStyles extends Object = {}, VariantProps = {}, ParentStaticProperties = {}> = ForwardRefExoticComponent<(Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps> : Props) & RefAttributes<Ref>> & StaticComponentObject<Props, Ref, NonStyledProps, BaseStyles, VariantProps, ParentStaticProperties> & Omit<ParentStaticProperties, 'staticConfig' | 'extractable' | 'styleable'> & {
+export type Styleable<Props, Ref, NonStyledProps, BaseStyles extends Object, VariantProps extends Object, ParentStaticProperties> = <CustomProps extends Object | void = void, MergedProps = CustomProps extends void ? Props : Omit<Props, keyof CustomProps> & CustomProps, FunctionDef extends FunctionComponent<MergedProps> = FunctionComponent<MergedProps>>(a: FunctionDef, options?: StyleableOptions) => TamaguiComponent<MergedProps, Ref, NonStyledProps & CustomProps, BaseStyles, VariantProps, ParentStaticProperties>;
+export type GetFinalProps<NonStyleProps, StylePropsBase, VariantProps extends Object> = Omit<NonStyleProps, keyof StylePropsBase> & (StylePropsBase extends Object ? WithThemeShorthandsPseudosMedia<StylePropsBase, VariantProps> : {});
+export type TamaguiComponent<Props = any, Ref = any, NonStyledProps = {}, BaseStyles extends Object = {}, VariantProps extends Object = {}, ParentStaticProperties = {}> = ForwardRefExoticComponent<(Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps> : Props) & RefAttributes<Ref>> & StaticComponentObject<Props, Ref, NonStyledProps, BaseStyles, VariantProps, ParentStaticProperties> & Omit<ParentStaticProperties, 'staticConfig' | 'extractable' | 'styleable'> & {
     __tama: [Props, Ref, NonStyledProps, BaseStyles, VariantProps, ParentStaticProperties];
 };
 export type InferGenericComponentProps<A> = A extends ComponentType<infer Props> ? Props : A extends new (props: infer Props) => any ? Props : {};
@@ -732,7 +733,7 @@ export type GetProps<A extends StylableComponent> = A extends {
         infer VariantProps,
         any
     ];
-} ? Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps> : Props : InferGenericComponentProps<A>;
+} ? Props extends TamaDefer ? VariantProps extends Object ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps> : never : Props : InferGenericComponentProps<A>;
 export type GetNonStyledProps<A extends StylableComponent> = A extends {
     __tama: [any, any, infer B, any, any, any];
 } ? B : TamaguiComponentPropsBaseBase & GetProps<A>;
@@ -750,7 +751,7 @@ export type GetStyledVariants<A> = A extends {
 export type GetStaticConfig<A> = A extends {
     __tama: [any, any, any, any, any, infer B];
 } ? B : A;
-export type StaticComponentObject<Props, Ref, NonStyledProps, BaseStyles extends Object, VariantProps, ParentStaticProperties> = {
+export type StaticComponentObject<Props, Ref, NonStyledProps, BaseStyles extends Object, VariantProps extends Object, ParentStaticProperties> = {
     staticConfig: StaticConfig;
     /** @deprecated use `styleable` instead (same functionality, better name) */
     extractable: <X>(a: X, staticConfig?: Partial<StaticConfig>) => X;
@@ -894,7 +895,7 @@ export type GetVariantProps<A extends StylableComponent, B extends StaticConfigP
         infer VariantProps,
         any
     ];
-} ? Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps> : Props : WithThemeShorthandsPseudosMedia<ShouldHaveTextBaseStyles<B> extends true ? TextStylePropsBase : StackStyleBase>;
+} ? Props extends TamaDefer ? VariantProps extends Object ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps> : never : Props : WithThemeShorthandsPseudosMedia<ShouldHaveTextBaseStyles<B> extends true ? TextStylePropsBase : StackStyleBase, {}>;
 export type VariantDefinitionFromProps<MyProps, Val> = MyProps extends Object ? {
     [propName: string]: VariantSpreadFunction<MyProps, Val> | ({
         [Key in SpreadKeys]?: Key extends '...fontSize' ? FontSizeVariantSpreadFunction<MyProps> : Key extends '...size' ? SizeVariantSpreadFunction<MyProps> : Key extends '...space' ? SpaceVariantSpreadFunction<MyProps> : Key extends '...color' ? ColorVariantSpreadFunction<MyProps> : Key extends '...lineHeight' ? FontLineHeightVariantSpreadFunction<MyProps> : Key extends '...fontTransform' ? FontTransformVariantSpreadFunction<MyProps> : Key extends '...fontStyle' ? FontStyleVariantSpreadFunction<MyProps> : Key extends '...letterSpacing' ? FontLetterSpacingVariantSpreadFunction<MyProps> : Key extends '...zIndex' ? ZIndexVariantSpreadFunction<MyProps> : Key extends '...radius' ? RadiusVariantSpreadFunction<MyProps> : Key extends '...theme' ? ThemeVariantSpreadFunction<MyProps> : never;

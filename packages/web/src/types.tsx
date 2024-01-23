@@ -453,7 +453,7 @@ export interface SpacerStyleProps
   extends Omit<StackStyleBase, keyof SpacerUniqueProps>,
     SpacerUniqueProps {}
 
-export type SpacerProps = WithThemeShorthandsPseudosMedia<SpacerStyleProps>
+export type SpacerProps = WithThemeShorthandsPseudosMedia<SpacerStyleProps, {}>
 
 type AllowedValueSettingBase =
   | boolean
@@ -1112,13 +1112,23 @@ export type GetThemeValueForKey<K extends string | symbol | number> =
         : never
       : never)
 
-export type WithThemeValues<T extends object, AddUnset extends boolean = true> = {
-  [K in keyof T]: ThemeValueGet<K> extends never
-    ? T[K] | (AddUnset extends true ? 'unset' : never)
-    :
-        | GetThemeValueForKey<K>
-        | Exclude<T[K], string>
-        | (AddUnset extends true ? 'unset' : never)
+export type GetThemeValuesFor<
+  T extends Object,
+  K extends keyof T,
+  AddUnset,
+> = ThemeValueGet<K> extends never
+  ? T[K] | (AddUnset extends true ? 'unset' : never)
+  :
+      | GetThemeValueForKey<K>
+      | Exclude<T[K], string>
+      | (AddUnset extends true ? 'unset' : never)
+
+export type WithThemeValues<T extends Object, Variants extends Object> = {
+  [K in keyof T | keyof Variants]?: K extends keyof Variants
+    ? GetThemeValuesFor<Variants, K, false>
+    : K extends keyof T
+      ? GetThemeValuesFor<T, K, true>
+      : never
 }
 
 export type NarrowShorthands = Narrow<Shorthands>
@@ -1161,28 +1171,28 @@ export type AllPlatforms = 'web' | 'native' | 'android' | 'ios'
 //
 export type WithThemeAndShorthands<
   A extends Object,
-  AddUnset extends boolean = true,
+  Variants extends Object,
 > = OnlyAllowShorthands extends true
-  ? WithThemeValues<Omit<A, Longhands>, AddUnset> &
-      WithShorthands<WithThemeValues<A, AddUnset>>
-  : WithThemeValues<A, AddUnset> & WithShorthands<WithThemeValues<A, AddUnset>>
+  ? WithThemeValues<Omit<A, Longhands>, Variants> &
+      WithShorthands<WithThemeValues<A, Variants>>
+  : WithThemeValues<A, Variants> & WithShorthands<WithThemeValues<A, Variants>>
 
 //
 // combines all of theme, shorthands, pseudos...
 //
 export type WithThemeShorthandsAndPseudos<
   A extends Object,
-  AddUnset extends boolean = true,
-> = WithThemeAndShorthands<A> & WithPseudoProps<WithThemeAndShorthands<A, AddUnset>>
+  Variants extends Object,
+> = WithThemeAndShorthands<A, Variants> & WithPseudoProps<WithThemeAndShorthands<A, Variants>>
 
 //
 // ... media queries and animations
 //
 export type WithThemeShorthandsPseudosMedia<
   A extends Object,
-  AddUnset extends boolean = true,
-> = WithThemeShorthandsAndPseudos<A, AddUnset> &
-  WithMediaProps<WithThemeShorthandsAndPseudos<A, AddUnset>>
+  Variants extends Object,
+> = WithThemeShorthandsAndPseudos<A, Variants> &
+  WithMediaProps<WithThemeShorthandsAndPseudos<A, Variants>>
 
 /**
  * Base style-only props (no media, pseudo):
@@ -1301,7 +1311,7 @@ export interface StackNonStyleProps
   style?: StyleProp<LooseCombinedObjects<React.CSSProperties, ViewStyle>>
 }
 
-export type StackStyle = WithThemeShorthandsPseudosMedia<StackStyleBase>
+export type StackStyle = WithThemeShorthandsPseudosMedia<StackStyleBase, {}>
 
 export type StackProps = StackNonStyleProps & StackStyle
 
@@ -1325,7 +1335,7 @@ export interface TextNonStyleProps
   style?: StyleProp<LooseCombinedObjects<React.CSSProperties, TextStyle>>
 }
 
-export type TextStyleProps = WithThemeShorthandsPseudosMedia<TextStylePropsBase>
+export type TextStyleProps = WithThemeShorthandsPseudosMedia<TextStylePropsBase, {}>
 
 export type TextProps = TextNonStyleProps & TextStyleProps
 
@@ -1347,7 +1357,7 @@ export type Styleable<
   Ref,
   NonStyledProps,
   BaseStyles extends Object,
-  VariantProps,
+  VariantProps extends Object,
   ParentStaticProperties,
 > = <
   CustomProps extends Object | void = void,
@@ -1367,19 +1377,20 @@ export type Styleable<
   ParentStaticProperties
 >
 
-export type GetFinalProps<NonStyleProps, StylePropsBase, VariantProps> = Omit<
+export type GetFinalProps<NonStyleProps, StylePropsBase, VariantProps extends Object> = Omit<
   NonStyleProps,
   keyof StylePropsBase
 > &
-  (StylePropsBase extends Object ? WithThemeShorthandsPseudosMedia<StylePropsBase> : {}) &
-  (VariantProps extends Object ? WithThemeAndShorthands<VariantProps, false> : {})
+  (StylePropsBase extends Object
+    ? WithThemeShorthandsPseudosMedia<StylePropsBase, VariantProps>
+    : {})
 
 export type TamaguiComponent<
   Props = any,
   Ref = any,
   NonStyledProps = {},
   BaseStyles extends Object = {},
-  VariantProps = {},
+  VariantProps extends Object = {},
   ParentStaticProperties = {},
 > = ForwardRefExoticComponent<
   (Props extends TamaDefer
@@ -1431,7 +1442,7 @@ export type GetProps<A extends StylableComponent> = A extends {
   ]
 }
   ? Props extends TamaDefer
-    ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps>
+    ? VariantProps extends Object ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps> : never
     : Props
   : InferGenericComponentProps<A>
 
@@ -1472,7 +1483,7 @@ export type StaticComponentObject<
   Ref,
   NonStyledProps,
   BaseStyles extends Object,
-  VariantProps,
+  VariantProps extends Object,
   ParentStaticProperties,
 > = {
   staticConfig: StaticConfig
@@ -1708,10 +1719,10 @@ export type GetVariantProps<
   ]
 }
   ? Props extends TamaDefer
-    ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps>
+    ?  VariantProps extends Object ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps> : never
     : Props
   : WithThemeShorthandsPseudosMedia<
-      ShouldHaveTextBaseStyles<B> extends true ? TextStylePropsBase : StackStyleBase
+      ShouldHaveTextBaseStyles<B> extends true ? TextStylePropsBase : StackStyleBase, {}
     >
 
 export type VariantDefinitionFromProps<MyProps, Val> = MyProps extends Object
