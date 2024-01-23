@@ -19,7 +19,7 @@
     "build:verbose": "yarn build -vvv",
     "check-deps": "check-dependency-version-consistency .",
     "check": "manypkg check",
-    "ci": "yarn && yarn check && yarn lint && yarn build && yarn test",
+    "ci": "yarn && yarn check && yarn lint && yarn typecheck && yarn build && yarn test",
     "clean:build": "turbo run clean:build",
     "clean:ts": "tsc -b --clean tsconfig.build.json",
     "clean": "turbo run clean:build",
@@ -67,6 +67,7 @@
     "test:ci": "turbo test --concurrency=1",
     "test:demos": "yarn workspace @tamagui/demos test",
     "test": "CLEANUP=1 turbo run --concurrency=1 test",
+    "typecheck": "tsc -b --preserveWatchOutput tsconfig.build.json",
     "upgrade:starters:free": "cd ../starter-free && yarn && yarn upgrade:tamagui",
     "upgrade:starters:expo-router": "cd starters/expo-router && yarn && yarn upgrade:tamagui",
     "upgrade:starters:simple-web": "cd starters/simple-web && yarn && yarn upgrade:tamagui",
@@ -75,7 +76,7 @@
     "vercel:build-studio": "yarn build:js && cd apps/studio && yarn ci:build",
     "watch:packages": "SKIP_TYPES_INITIAL=1 ultra -r --no-pretty --concurrency 400 watch",
     "watch:js": "SKIP_TYPES=1 yarn watch:packages",
-    "watch:ts": "tsc -b -w --preserveWatchOutput tsconfig.build.json",
+    "watch:ts": "yarn typecheck -w",
     "watch": "npm-run-all --parallel watch:ts watch:packages"
   },
   "resolutions": {
