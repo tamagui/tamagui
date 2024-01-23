@@ -1,11 +1,10 @@
 // import '../lib/wdyr'
 
-import { AnimationsPresenceDemo } from '@tamagui/demos'
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { Header } from '@tamagui/site/components/Header'
 import { SearchProvider } from '@tamagui/site/components/Search'
 import { useState } from 'react'
-import { AnimatePresence, Button, Progress, Stack, Text, YStack, styled } from 'tamagui'
+import { AnimatePresence, Button, Stack, Text, YStack, styled } from 'tamagui'
 
 // debugger
 global.shouldDebugMoti = true
@@ -23,8 +22,7 @@ function TestPage() {
       }}
     >
       <Stack
-        hitSlop={5}
-        onAccessibilityAction={[]}
+        // hitSlop={5}
         importantForAccessibility="no"
         needsOffscreenAlphaCompositing
       />

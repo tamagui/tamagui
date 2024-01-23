@@ -1,18 +1,70 @@
+missing disabled prop when using a variant function. Here's an example:
+
+```tsx
+const CustomStack = styled(Stack, {
+  variants: {
+    selected: {
+      ':boolean'(selected, { props }) {
+        if (props.disabled) {
+         
+        }
+      },
+    },
+  },
+});
+```
+
+onPress
+
+```tsx
+const CustomStack = styled(Stack, {
+  variants: {
+    disabled: {
+      ':boolean': (disabled, { props: { onPress } }) =>
+    },
+  },
+});
+```
+
+error when we use aria-selected and aria-disabled inside variants:
+
+```tsx
+const CustomStack = styled(Stack, {
+  variants: {
+    selected: {
+      true: {
+        'aria-selected': true,
+      },
+    },
+  },
+});
+
+variants changed to feature unset as an option. We set the type as the function argument:
+
+const CustomStack = styled(Stack, {
+  variants: {
+    variant: (variant: 'primary' | 'secondary') => {
+      return {
+        backgroundColor: `$control.${variant}.enabled` as const,
+      };
+    },
+  },
+});
+
+type CustomStackProps = GetProps<typeof CustomStack>;
+
+type Variants = CustomStackProps['variant'];
+// Used to be 'primary' | 'secondary' | undefined
+// Now is 'unset' | 'primary' | 'secondary' | undefined
+```
+
+- compiler - no need to setup any separate package
+
 - 2.0 rename SizableStack to Surface and simplify a bit
 
 - make it so media queries can be shared with groups easily
 
 - Remove the need for Text
-
-- `import { _ } from '@tamagui/core'`
-  - `<_.view />` `<_.text />`
-  - put it on globalThis and override type for super quick authoring
-  - can extend with your own
-    - `<_.p />` `<_.a />` `<.img />` etc
-  - can proxy to itself allowing for naming?
-    - `<_.view.my-thing />`
-  - or boolean variants?
-    - `<_.view.p-5.m-10 />`
 
 - document the t_unmounted / SSR
 - $theme-light in prod mode SSR issue
@@ -573,3 +625,13 @@ Themes can completely transform the look and feel, a button could have multiple 
     - defaults to theme: 'active'
 
 - <Image borderWidth="$2" /> not turning into val via psgeorge
+
+- `import { _ } from '@tamagui/core'`
+  - `<_.view />` `<_.text />`
+  - put it on globalThis and override type for super quick authoring
+  - can extend with your own
+    - `<_.p />` `<_.a />` `<.img />` etc
+  - can proxy to itself allowing for naming?
+    - `<_.view.my-thing />`
+  - or boolean variants?
+    - `<_.view.p-5.m-10 />`

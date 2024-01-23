@@ -880,12 +880,19 @@ export type ViewStyleWithPseudos = TextStyleProps | (TextStyleProps & {
  */
 export type StylableComponent = TamaguiComponent | ComponentType<any> | ForwardRefExoticComponent<any> | ReactComponentWithRef<any, any> | (new (props: any) => any);
 export type SpreadKeys = '...fontSize' | '...fontStyle' | '...fontTransform' | '...lineHeight' | '...letterSpacing' | '...size' | '...space' | '...color' | '...zIndex' | '...theme' | '...radius';
-export type VariantDefinitions<Parent extends StylableComponent = TamaguiComponent, StaticConfig extends StaticConfigPublic = {}, MyProps extends Object = Partial<GetStyleableProps<Parent, StaticConfig['isText']>>, Val = any> = VariantDefinitionFromProps<MyProps, Val> & {
+export type VariantDefinitions<Parent extends StylableComponent = TamaguiComponent, StaticConfig extends StaticConfigPublic = {}, MyProps extends Object = Partial<GetVariantProps<Parent, StaticConfig['isText']>>, Val = any> = VariantDefinitionFromProps<MyProps, Val> & {
     _isEmpty?: 1;
 };
-export type GetStyleableProps<A extends StylableComponent, IsText extends boolean | undefined> = A extends {
-    __tama: [infer Props, any, any, infer BaseStyles, infer VariantProps, any];
-} ? Props extends TamaDefer ? GetFinalProps<{}, BaseStyles & VariantProps> : Props : WithThemeShorthandsPseudosMedia<IsText extends true ? TextStylePropsBase : StackStyleBase>;
+export type GetVariantProps<A extends StylableComponent, IsText extends boolean | undefined> = A extends {
+    __tama: [
+        infer Props,
+        any,
+        infer NonStyledProps,
+        infer BaseStyles,
+        infer VariantProps,
+        any
+    ];
+} ? Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles & VariantProps> : Props : WithThemeShorthandsPseudosMedia<IsText extends true ? TextStylePropsBase : StackStyleBase>;
 export type VariantDefinitionFromProps<MyProps, Val> = MyProps extends Object ? {
     [propName: string]: VariantSpreadFunction<MyProps, Val> | ({
         [Key in SpreadKeys]?: Key extends '...fontSize' ? FontSizeVariantSpreadFunction<MyProps> : Key extends '...size' ? SizeVariantSpreadFunction<MyProps> : Key extends '...space' ? SpaceVariantSpreadFunction<MyProps> : Key extends '...color' ? ColorVariantSpreadFunction<MyProps> : Key extends '...lineHeight' ? FontLineHeightVariantSpreadFunction<MyProps> : Key extends '...fontTransform' ? FontTransformVariantSpreadFunction<MyProps> : Key extends '...fontStyle' ? FontStyleVariantSpreadFunction<MyProps> : Key extends '...letterSpacing' ? FontLetterSpacingVariantSpreadFunction<MyProps> : Key extends '...zIndex' ? ZIndexVariantSpreadFunction<MyProps> : Key extends '...radius' ? RadiusVariantSpreadFunction<MyProps> : Key extends '...theme' ? ThemeVariantSpreadFunction<MyProps> : never;

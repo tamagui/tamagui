@@ -21,6 +21,7 @@ export declare const useTint: () => {
 export declare const ThemeTint: ({ disable, children, ...rest }: ThemeProps & {
     disable?: boolean | undefined;
 }) => JSX.Element;
+export declare const useTintAlt: (offset?: number) => string;
 export declare const ThemeTintAlt: ({ children, disable, offset, ...rest }: ThemeProps & {
     disable?: boolean | undefined;
     offset?: number | undefined;

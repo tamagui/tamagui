@@ -1,11 +1,12 @@
-import { useTint } from '@tamagui/logo'
+import { useTint, useTintAlt } from '@tamagui/logo'
 import { memo, useMemo, useState } from 'react'
-import { ThemeName, YStack, isClient, useDebounce, useThemeName } from 'tamagui'
+import { ThemeName, YStack, isClient, useDebounce } from 'tamagui'
 
 import { useTintSectionIndex } from './TintSection'
 
 export const HomeGlow = memo(() => {
   const { tints, tint, name, tintIndex } = useTint()
+  const altTint = useTintAlt()
   const isHeroBelowColor = tint === 'blue' || tint === 'green' || tint === 'purple'
   const [index, setIndex] = useState(0)
   const isAtTop = index <= 1
@@ -23,25 +24,38 @@ export const HomeGlow = memo(() => {
     })
   }
 
+  const isDouble = true
+
   const glows = useMemo(() => {
     return (
       <>
-        {tints.map((cur, i) => {
-          const isDouble = name === 'xmas' || name === 'easter'
+        {[tint, altTint].map((cur, i) => {
+          const isOpposing = tintIndex % 2 === 0
+          const xScale = isOpposing ? 0 : 1
           const active = isDouble ? i == 0 || i == 1 : cur === tint
-          const isOpposite = isDouble && cur === 'green' && tint !== cur
+          const isAlt = i === 1
+          const xRand = isOnHeroBelow
+            ? 0
+            : Math.random() * 300 * (Math.random() > 0.5 ? 1 : -1)
+          const yRand = isOnHeroBelow
+            ? 0
+            : Math.random() * 300 * (Math.random() > 0.5 ? 1 : -1)
           return (
             <YStack
-              key={`${cur}${i}`}
+              key={`${i}`}
               overflow="hidden"
               h="100vh"
               w={1000}
               theme={cur as ThemeName}
               fullscreen
               left={`calc(50vw - 500px)`}
-              x={isOnHeroBelow ? 0 : isDouble ? (isOpposite ? -500 : 500) : 0}
+              x={
+                xScale *
+                (xRand + (isOnHeroBelow ? (isAlt ? -600 : 600) : isAlt ? -400 : 400))
+              }
+              y={yRand}
               scale={scale}
-              className={"hero-blur " + (active ? ' active' : '')}
+              className={'home-glow ' + (active ? ' active' : '')}
             />
           )
         })}
@@ -56,7 +70,7 @@ export const HomeGlow = memo(() => {
       l={0}
       contain="layout"
       pe="none"
-      animation="lazy"
+      animation="quicker"
       key={0}
       zi={-1}
       x={0}
