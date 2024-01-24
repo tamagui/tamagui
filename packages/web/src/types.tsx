@@ -1156,21 +1156,30 @@ export type AllPlatforms = 'web' | 'native' | 'android' | 'ios'
 //
 // add both theme and shorthands
 //
-export type WithThemeAndShorthands<A extends Object, Variants = {}> = OnlyAllowShorthands extends true
-  ? WithThemeValues<Omit<A & Variants, Longhands>> & WithShorthands<WithThemeValues<A>>
-  : WithThemeValues<A & Variants> & WithShorthands<WithThemeValues<A>>
+export type WithThemeAndShorthands<
+  A extends Object,
+  Variants = {},
+> = OnlyAllowShorthands extends true
+  ? WithThemeValues<Omit<A, Longhands>> & Variants & WithShorthands<WithThemeValues<A>>
+  : WithThemeValues<A> & Variants & WithShorthands<WithThemeValues<A>>
 
 //
 // combines all of theme, shorthands, pseudos...
 //
-export type WithThemeShorthandsAndPseudos<A extends Object, Variants = {}> = WithThemeAndShorthands<A, Variants> &
+export type WithThemeShorthandsAndPseudos<
+  A extends Object,
+  Variants = {},
+> = WithThemeAndShorthands<A, Variants> &
   WithPseudoProps<WithThemeAndShorthands<A, Variants>>
 
 //
 // ... media queries and animations
 //
-export type WithThemeShorthandsPseudosMedia<A extends Object, Variants = {}> =
-  WithThemeShorthandsAndPseudos<A, Variants> & WithMediaProps<WithThemeShorthandsAndPseudos<A, Variants>>
+export type WithThemeShorthandsPseudosMedia<
+  A extends Object,
+  Variants = {},
+> = WithThemeShorthandsAndPseudos<A, Variants> &
+  WithMediaProps<WithThemeShorthandsAndPseudos<A, Variants>>
 
 /**
  * Base style-only props (no media, pseudo):
@@ -1359,7 +1368,9 @@ export type GetFinalProps<NonStyleProps, StylePropsBase, Variants> = Omit<
   NonStyleProps,
   keyof StylePropsBase | keyof Variants
 > &
-  (StylePropsBase extends Object ? WithThemeShorthandsPseudosMedia<StylePropsBase, Variants> : {})
+  (StylePropsBase extends Object
+    ? WithThemeShorthandsPseudosMedia<StylePropsBase, Variants>
+    : {})
 
 export type TamaguiComponent<
   Props = any,

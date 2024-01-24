@@ -9,6 +9,8 @@ const TextInput2 = styled(TamaguiInput, {
   fontSize: '$1',
   keyboardAppearance: 'dark',
   paddingHorizontal: '$2',
+  // its not a token so expect error
+  // @ts-expect-error
   placeholderTextColor: 'rgba(255,255,255,0.3)',
   color: 'green',
 

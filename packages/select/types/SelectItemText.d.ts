@@ -5,7 +5,7 @@ export declare const SelectItemTextFrame: import("@tamagui/core").TamaguiCompone
     unstyled?: boolean | undefined;
 }, {}>;
 export type SelectItemTextProps = GetProps<typeof SelectItemTextFrame>;
-export declare const SelectItemText: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase & {
+export declare const SelectItemText: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
     size?: import("@tamagui/core").FontSizeTokens | undefined;
     unstyled?: boolean | undefined;
 }>, TamaguiTextElement, import("@tamagui/core").TextNonStyleProps & void, import("@tamagui/core").TextStylePropsBase, {
