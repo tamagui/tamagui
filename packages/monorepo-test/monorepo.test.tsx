@@ -23,7 +23,7 @@ test('performance of types', async () => {
   // 2650/14 = ~189
 
   // this should = 1 if its at baseline, 2 if 2x slower
-  const slowdown = total / 189 / 14
+  const slowdown = total / baseline / 189
   
   expect(slowdown).toBeLessThan(1.5)
 }, 40_000)
