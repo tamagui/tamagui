@@ -7,7 +7,7 @@ declare const ToastViewportFrame: import("@tamagui/core").TamaguiComponent<impor
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     unstyled?: boolean | undefined;
-}, {}>;
+}, import("@tamagui/core").StaticConfigPublic>;
 type ToastViewportFrameProps = GetProps<typeof ToastViewportFrame>;
 type ToastViewportProps = ToastViewportFrameProps & {
     /**

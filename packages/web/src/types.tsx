@@ -1455,11 +1455,11 @@ export type GetStyledVariants<A> = A extends {
   ? B
   : {}
 
-export type GetStaticConfig<A> = A extends {
+export type GetStaticConfig<A, Extra = {}> = A extends {
   __tama: [any, any, any, any, any, infer B]
 }
-  ? B
-  : A
+  ? B & Extra
+  : Extra
 
 export type StaticComponentObject<
   Props,
@@ -1681,9 +1681,20 @@ export type SpreadKeys =
 
 export type VariantDefinitions<
   Parent extends StylableComponent = TamaguiComponent,
-  StaticConfig extends StaticConfigPublic = {},
+  StaticConfig extends StaticConfigPublic = Parent extends {
+    __tama: [any, any, any, any, any, infer S]
+  }
+    ? S
+    : {},
   MyProps extends Object = Partial<
-    GetVariantProps<Parent, StaticConfig['isText'] | StaticConfig['isInput']>
+    GetVariantProps<
+      Parent,
+      StaticConfig['isText'] extends true
+        ? true
+        : StaticConfig['isInput'] extends true
+          ? true
+          : false
+    >
   >,
   Val = any,
 > = VariantDefinitionFromProps<MyProps, Val> & {

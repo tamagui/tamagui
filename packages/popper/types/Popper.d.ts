@@ -71,7 +71,7 @@ export declare const PopperContentFrame: import("@tamagui/core").TamaguiComponen
     backgrounded?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}, {}>;
+}, import("@tamagui/core").StaticConfigPublic>;
 export declare const PopperContent: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "circular" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "unstyled"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
     size?: SizeTokens | undefined;
     elevation?: number | SizeTokens | undefined;
@@ -124,6 +124,6 @@ export declare const PopperArrow: import("@tamagui/core").TamaguiComponent<Omit<
     elevation?: number | SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     unstyled?: boolean | undefined;
-}, {}>;
+}, import("@tamagui/core").StaticConfigPublic>;
 export {};
 //# sourceMappingURL=Popper.d.ts.map

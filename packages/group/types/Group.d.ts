@@ -21,7 +21,7 @@ export declare const GroupFrame: import("@tamagui/core").TamaguiComponent<import
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}, {}>;
+}, import("@tamagui/core").StaticConfigPublic>;
 export type GroupProps = GetProps<typeof GroupFrame> & {
     /**
      * @deprecated use `orientation` instead

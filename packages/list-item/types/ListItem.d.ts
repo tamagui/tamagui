@@ -62,19 +62,19 @@ export declare const ListItemFrame: import("@tamagui/web").TamaguiComponent<impo
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
     active?: boolean | undefined;
-}, {}>;
+}, import("@tamagui/web").StaticConfigPublic>;
 export declare const ListItemText: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
     unstyled?: boolean | undefined;
     size?: FontSizeTokens | undefined;
-}, {}>;
+}, import("@tamagui/web").StaticConfigPublic>;
 export declare const ListItemSubtitle: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
     unstyled?: boolean | undefined;
     size?: number | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | undefined;
-}, {}>;
+}, import("@tamagui/web").StaticConfigPublic>;
 export declare const ListItemTitle: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
     unstyled?: boolean | undefined;
     size?: FontSizeTokens | undefined;
-}, {}>;
+}, import("@tamagui/web").StaticConfigPublic>;
 export declare const useListItem: (propsIn: ListItemProps, { Text, Subtitle, Title, }?: {
     Title?: any;
     Subtitle?: any;
@@ -244,7 +244,7 @@ export declare const ListItem: React.ForwardRefExoticComponent<Omit<import("@tam
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
     active?: boolean | undefined;
-}, {}> & Omit<{}, "staticConfig" | "extractable" | "styleable"> & {
+}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
     __tama: [Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         unstyled?: boolean | undefined;
         size?: SizeTokens | undefined;
@@ -353,16 +353,16 @@ export declare const ListItem: React.ForwardRefExoticComponent<Omit<import("@tam
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
         active?: boolean | undefined;
-    }, {}];
+    }, import("@tamagui/web").StaticConfigPublic];
 } & {
     Text: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
         unstyled?: boolean | undefined;
         size?: FontSizeTokens | undefined;
-    }, {}>;
+    }, import("@tamagui/web").StaticConfigPublic>;
     Subtitle: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
         unstyled?: boolean | undefined;
         size?: number | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | undefined;
-    }, {}>;
+    }, import("@tamagui/web").StaticConfigPublic>;
 };
 export {};
 //# sourceMappingURL=ListItem.d.ts.map

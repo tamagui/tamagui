@@ -46,7 +46,12 @@ export declare const InputFrame: import("@tamagui/core").TamaguiComponent<import
     size?: import("@tamagui/core").SizeTokens | undefined;
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
-}, typeof TextInput>;
+}, {
+    isInput: true;
+    acceptTokens: {
+        placeholderTextColor: string;
+    };
+}>;
 export type Input = TextInput;
 export type InputFrameProps = GetProps<typeof InputFrame>;
 export type InputExtraProps = {
@@ -65,7 +70,12 @@ export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import
     size?: import("@tamagui/core").SizeTokens | undefined;
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
-}, typeof TextInput>;
+}, {
+    isInput: true;
+    acceptTokens: {
+        placeholderTextColor: string;
+    };
+}>;
 export declare function useInputProps(props: InputProps, ref: any): {
     placeholderTextColor: any;
     onChangeText: (value: any) => void;

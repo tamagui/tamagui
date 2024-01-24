@@ -11,5 +11,5 @@ export declare const Anchor: import("@tamagui/core").TamaguiComponent<Omit<impor
 }>, keyof AnchorExtraProps> & AnchorExtraProps, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps & AnchorExtraProps, import("@tamagui/core").TextStylePropsBase, {
     size?: import("@tamagui/core").FontSizeTokens | undefined;
     unstyled?: boolean | undefined;
-}, {}>;
+}, import("@tamagui/core").StaticConfigPublic>;
 //# sourceMappingURL=Anchor.d.ts.map

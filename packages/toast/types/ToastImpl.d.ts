@@ -17,7 +17,7 @@ declare const ToastImplFrame: import("@tamagui/core").TamaguiComponent<import("@
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}, {}>;
+}, import("@tamagui/core").StaticConfigPublic>;
 type ToastProps = Omit<ToastImplProps, keyof ToastImplPrivateProps>;
 type SwipeEvent = GestureResponderEvent;
 declare const useToastInteractiveContext: (scope?: string | undefined) => {

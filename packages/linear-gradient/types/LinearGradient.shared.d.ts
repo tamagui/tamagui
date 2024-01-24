@@ -12,6 +12,6 @@ export declare const LinearGradient: import("@tamagui/core").TamaguiComponent<Om
 }>, keyof LinearGradientExtraProps> & LinearGradientExtraProps, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & LinearGradientExtraProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-}, {}>;
+}, import("@tamagui/core").StaticConfigPublic>;
 export type LinearGradientProps = GetProps<typeof LinearGradient>;
 //# sourceMappingURL=LinearGradient.shared.d.ts.map

@@ -29,7 +29,7 @@ declare const CheckboxIndicatorFrame: import("@tamagui/core").TamaguiComponent<i
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}, {}>;
+}, import("@tamagui/core").StaticConfigPublic>;
 type CheckboxIndicatorFrameProps = GetProps<typeof CheckboxIndicatorFrame>;
 export type CheckboxIndicatorProps = CheckboxIndicatorFrameProps & {
     /**
@@ -59,7 +59,7 @@ export declare const CheckboxFrame: import("@tamagui/core").TamaguiComponent<imp
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
     unstyled?: boolean | undefined;
-}, {}>;
+}, import("@tamagui/core").StaticConfigPublic>;
 declare const createCheckboxScope: import("@tamagui/create-context").CreateScope;
 type CheckboxFrameProps = GetProps<typeof CheckboxFrame>;
 type CheckboxExtraProps = {
@@ -131,7 +131,7 @@ export declare const Checkbox: React.ForwardRefExoticComponent<Omit<import("@tam
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
     unstyled?: boolean | undefined;
-}, {}> & Omit<{}, "staticConfig" | "extractable" | "styleable"> & {
+}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
     __tama: [Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         size?: SizeTokens | undefined;
         disabled?: boolean | undefined;
@@ -166,7 +166,7 @@ export declare const Checkbox: React.ForwardRefExoticComponent<Omit<import("@tam
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
         unstyled?: boolean | undefined;
-    }, {}];
+    }, import("@tamagui/core").StaticConfigPublic];
 } & {
     Indicator: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
         elevation?: number | SizeTokens | undefined;

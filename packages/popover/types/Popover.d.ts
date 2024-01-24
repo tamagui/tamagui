@@ -117,7 +117,7 @@ export declare const PopoverArrow: TamaguiComponent<Omit<Omit<import("@tamagui/c
     elevation?: number | SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     unstyled?: boolean | undefined;
-}, {}>;
+}, import("@tamagui/core").StaticConfigPublic>;
 type Rect = {
     x: number;
     y: number;
@@ -163,7 +163,7 @@ export declare const Popover: React.ForwardRefExoticComponent<PopperProps & {
         elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;
         unstyled?: boolean | undefined;
-    }, {}>;
+    }, import("@tamagui/core").StaticConfigPublic>;
     Trigger: React.ForwardRefExoticComponent<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {}>> & {
         __scopePopover?: string | undefined;
     } & React.RefAttributes<TamaguiElement>>;

@@ -10,7 +10,7 @@ export declare const SliderTrackFrame: import("@tamagui/core").TamaguiComponent<
     fullscreen?: boolean | undefined;
     unstyled?: boolean | undefined;
     orientation?: "horizontal" | "vertical" | undefined;
-}, {}>;
+}, import("@tamagui/core").StaticConfigPublic>;
 declare const SliderTrack: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "size" | "fullscreen" | "circular" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "unstyled"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
     size?: SizeTokens | undefined;
     elevation?: number | SizeTokens | undefined;
@@ -50,7 +50,7 @@ export declare const SliderTrackActiveFrame: import("@tamagui/core").TamaguiComp
     size?: any;
     fullscreen?: boolean | undefined;
     orientation?: "horizontal" | "vertical" | undefined;
-}, {}>;
+}, import("@tamagui/core").StaticConfigPublic>;
 type SliderTrackActiveProps = GetProps<typeof SliderTrackActiveFrame>;
 declare const SliderTrackActive: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "size" | "fullscreen" | "orientation"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
     elevation?: number | SizeTokens | undefined;
@@ -84,7 +84,7 @@ export declare const SliderThumbFrame: import("@tamagui/core").TamaguiComponent<
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}, {}>;
+}, import("@tamagui/core").StaticConfigPublic>;
 export interface SliderThumbExtraProps {
     index: number;
 }
@@ -122,7 +122,7 @@ declare const SliderThumb: React.MemoExoticComponent<import("@tamagui/core").Tam
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}, {}>>;
+}, import("@tamagui/core").StaticConfigPublic>>;
 declare const Slider: React.ForwardRefExoticComponent<SliderProps & React.RefAttributes<TamaguiElement>> & {
     Track: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "size" | "fullscreen" | "circular" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "unstyled"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
         size?: SizeTokens | undefined;
@@ -206,7 +206,7 @@ declare const Slider: React.ForwardRefExoticComponent<SliderProps & React.RefAtt
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-    }, {}>>;
+    }, import("@tamagui/core").StaticConfigPublic>>;
 };
 declare const Track: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "size" | "fullscreen" | "circular" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "unstyled"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
     size?: SizeTokens | undefined;
@@ -290,7 +290,7 @@ declare const Thumb: React.MemoExoticComponent<import("@tamagui/core").TamaguiCo
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}, {}>>;
+}, import("@tamagui/core").StaticConfigPublic>>;
 export { Slider, SliderTrack, SliderTrackActive, SliderThumb, Track, Range, Thumb, };
 export type { SliderProps, SliderTrackProps, SliderTrackActiveProps };
 //# sourceMappingURL=Slider.d.ts.map

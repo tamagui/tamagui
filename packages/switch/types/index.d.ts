@@ -23,7 +23,7 @@ export declare const Switch: import("react").ForwardRefExoticComponent<Omit<impo
     unstyled?: boolean | undefined;
     elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-}, {}> & Omit<{}, "staticConfig" | "extractable" | "styleable"> & {
+}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
     __tama: [Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         size?: import("@tamagui/web").SizeTokens | undefined;
         checked?: boolean | undefined;
@@ -38,7 +38,7 @@ export declare const Switch: import("react").ForwardRefExoticComponent<Omit<impo
         unstyled?: boolean | undefined;
         elevation?: number | import("@tamagui/web").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
-    }, {}];
+    }, import("@tamagui/web").StaticConfigPublic];
 } & {
     Thumb: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         size?: import("@tamagui/web").SizeTokens | undefined;
@@ -74,6 +74,6 @@ export declare const Switch: import("react").ForwardRefExoticComponent<Omit<impo
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-    }, {}>;
+    }, import("@tamagui/web").StaticConfigPublic>;
 };
 //# sourceMappingURL=index.d.ts.map

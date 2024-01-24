@@ -28,7 +28,7 @@ export const DocsMenuContents = React.memo(function DocsMenuContents() {
   return (
     <>
       <Input
-        size="$3"
+        size="$4"
         w="100%"
         bw={0}
         bbw={0.5}

@@ -746,9 +746,9 @@ export type GetBaseStyles<A, B> = A extends {
 export type GetStyledVariants<A> = A extends {
     __tama: [any, any, any, any, infer B, any];
 } ? B : {};
-export type GetStaticConfig<A> = A extends {
+export type GetStaticConfig<A, Extra = {}> = A extends {
     __tama: [any, any, any, any, any, infer B];
-} ? B : A;
+} ? B & Extra : Extra;
 export type StaticComponentObject<Props, Ref, NonStyledProps, BaseStyles extends Object, VariantProps, ParentStaticProperties> = {
     staticConfig: StaticConfig;
     /** @deprecated use `styleable` instead (same functionality, better name) */
@@ -881,7 +881,9 @@ export type ViewStyleWithPseudos = TextStyleProps | (TextStyleProps & {
  */
 export type StylableComponent = TamaguiComponent | ComponentType<any> | ForwardRefExoticComponent<any> | ReactComponentWithRef<any, any> | (new (props: any) => any);
 export type SpreadKeys = '...fontSize' | '...fontStyle' | '...fontTransform' | '...lineHeight' | '...letterSpacing' | '...size' | '...space' | '...color' | '...zIndex' | '...theme' | '...radius';
-export type VariantDefinitions<Parent extends StylableComponent = TamaguiComponent, StaticConfig extends StaticConfigPublic = {}, MyProps extends Object = Partial<GetVariantProps<Parent, StaticConfig['isText'] | StaticConfig['isInput']>>, Val = any> = VariantDefinitionFromProps<MyProps, Val> & {
+export type VariantDefinitions<Parent extends StylableComponent = TamaguiComponent, StaticConfig extends StaticConfigPublic = Parent extends {
+    __tama: [any, any, any, any, any, infer S];
+} ? S : {}, MyProps extends Object = Partial<GetVariantProps<Parent, StaticConfig['isText'] extends true ? true : StaticConfig['isInput'] extends true ? true : false>>, Val = any> = VariantDefinitionFromProps<MyProps, Val> & {
     _isEmpty?: 1;
 };
 export type GetVariantProps<A extends StylableComponent, IsText extends boolean | undefined> = A extends {
