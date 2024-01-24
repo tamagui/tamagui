@@ -53,6 +53,7 @@
     "@tamagui/stacks": "1.88.7",
     "@tamagui/text": "1.88.7",
     "@tamagui/use-controllable-state": "1.88.7",
+    "@tamagui/use-debounce": "1.88.7",
     "@tamagui/use-event": "1.88.7",
     "@tamagui/use-previous": "1.88.7",
     "react-dom": "^18.2.0"

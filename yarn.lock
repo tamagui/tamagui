@@ -7415,6 +7415,7 @@ __metadata:
     "@tamagui/stacks": "npm:1.88.7"
     "@tamagui/text": "npm:1.88.7"
     "@tamagui/use-controllable-state": "npm:1.88.7"
+    "@tamagui/use-debounce": "npm:1.88.7"
     "@tamagui/use-event": "npm:1.88.7"
     "@tamagui/use-previous": "npm:1.88.7"
     react: "npm:^18.2.0"

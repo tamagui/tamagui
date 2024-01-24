@@ -20,6 +20,7 @@ import { ThemeableStack, XStack, YStack } from '@tamagui/stacks'
 import { Paragraph, SizableText } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
+import { useDebounce } from '@tamagui/use-debounce'
 
 import { SELECT_NAME } from './constants'
 import {
@@ -418,6 +419,25 @@ export const Select = withStaticProperties(
         native === 'web' ||
         (Array.isArray(native) && native.includes('web')))
 
+    // TODO its calling this a bunch if you move mouse around on select items fast
+    // using a debounce for now but need to fix root issue
+    const setActiveIndexDebounced = useDebounce(
+      (index: number) => {
+        setActiveIndex((prev) => {
+          if (prev !== index) {
+            if (typeof index === 'number') {
+              emitActiveIndex(index)
+            }
+            return index
+          }
+          return prev
+        })
+      },
+      10,
+      {},
+      []
+    )
+
     return (
       <AdaptProvider>
         <SelectItemParentProvider
@@ -455,17 +475,7 @@ export const Select = withStaticProperties(
             sheetBreakpoint={sheetBreakpoint}
             activeIndex={activeIndex}
             selectedIndex={selectedIndex}
-            setActiveIndex={React.useCallback((index) => {
-              setActiveIndex((prev) => {
-                if (prev !== index) {
-                  if (typeof index === 'number') {
-                    emitActiveIndex(index)
-                  }
-                  return index
-                }
-                return prev
-              })
-            }, [])}
+            setActiveIndex={setActiveIndexDebounced}
             value={value}
             open={open}
             native={native}
