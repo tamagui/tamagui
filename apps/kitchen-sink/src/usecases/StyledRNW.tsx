@@ -5,7 +5,7 @@ export function StyledRNW() {
   return <Input id="styled-rnw-input" accessibilityLabel="ok" placeholder="search" />
 }
 
-const TextInput = styled(
+            const TextInput = styled(
   TamaguiInput,
   {
     fontSize: 16,

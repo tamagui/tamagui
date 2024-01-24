@@ -68,6 +68,7 @@
     "test:demos": "yarn workspace @tamagui/demos test",
     "test": "CLEANUP=1 turbo run --concurrency=1 test",
     "typecheck": "tsc -b --preserveWatchOutput tsconfig.build.json",
+    "typecheck:perf": "yarn workspace @tamagui/monorepo-test test",
     "upgrade:starters:free": "cd ../starter-free && yarn && yarn upgrade:tamagui",
     "upgrade:starters:expo-router": "cd starters/expo-router && yarn && yarn upgrade:tamagui",
     "upgrade:starters:simple-web": "cd starters/simple-web && yarn && yarn upgrade:tamagui",
