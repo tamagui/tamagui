@@ -91,7 +91,7 @@ export function styled<
       ? ParentStylesBase & CustomTokenProps
       : ParentStylesBase,
     MergedVariants,
-    GetStaticConfig<ParentComponent>
+    GetStaticConfig<ParentComponent, StyledStaticConfig>
   >
 
   // validate not using a variant over an existing valid style

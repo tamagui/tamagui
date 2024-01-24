@@ -48,15 +48,12 @@ import {
   SpaceDirection,
   SpaceValue,
   SpacerProps,
-  SpacerPropsBase,
+  SpacerStyleProps,
   StackNonStyleProps,
   StackProps,
-  StackStylePropsBase,
   StaticConfig,
   StyleableOptions,
   TamaguiComponent,
-  TamaguiComponentEvents,
-  TamaguiComponentState,
   TamaguiComponentStateRef,
   TamaguiElement,
   TamaguiInternalConfig,
@@ -64,14 +61,13 @@ import {
   UseAnimationHook,
   UseAnimationProps,
   UseThemeWithStateProps,
-  WebOnlyPressEvents,
 } from './types'
+import { WebOnlyPressEvents } from './interfaces/WebOnlyPressEvents'
+import { TamaguiComponentState } from './interfaces/TamaguiComponentState'
+import { TamaguiComponentEvents } from './interfaces/TamaguiComponentEvents'
 import { Slot } from './views/Slot'
 import { getThemedChildren } from './views/Theme'
 import { ThemeDebug } from './views/ThemeDebug'
-
-// this appears to fix expo / babel not picking this up sometimes? really odd
-process.env.TAMAGUI_TARGET
 
 /**
  * All things that need one-time setup after createTamagui is called
@@ -144,7 +140,7 @@ let BaseView: any
 let hasSetupBaseViews = false
 
 export function createComponent<
-  ComponentPropTypes extends StackProps | TextProps = {},
+  ComponentPropTypes extends Record<string, any> = {},
   Ref extends TamaguiElement = TamaguiElement,
   BaseProps = never,
   BaseStyles extends Object = never,
@@ -168,6 +164,7 @@ export function createComponent<
   const {
     Component,
     isText,
+    isInput,
     isZStack,
     isHOC,
     validStyles = {},
@@ -862,9 +859,10 @@ export function createComponent<
       mediaGroups ? Object.keys([...mediaGroups]).join('') : 0,
     ])
 
-    let fontFamily = isText
-      ? splitStyles.fontFamily || staticConfig.defaultProps?.fontFamily
-      : null
+    let fontFamily =
+      isText || isInput
+        ? splitStyles.fontFamily || staticConfig.defaultProps?.fontFamily
+        : null
     if (fontFamily && fontFamily[0] === '$') {
       fontFamily = fontFamily.slice(1)
     }
@@ -1300,7 +1298,7 @@ export function createComponent<
     Ref,
     BaseProps,
     BaseStyles,
-    void
+    {}
   >
 
   let res: ComponentType = component as any
@@ -1390,11 +1388,10 @@ const getSpacerSize = (size: SizeTokens | number | boolean, { tokens }) => {
 // dont used styled() here to avoid circular deps
 // keep inline to avoid circular deps
 export const Spacer = createComponent<
-  // @ts-expect-error its fine
   SpacerProps,
   TamaguiElement,
   StackNonStyleProps,
-  StackStylePropsBase & SpacerPropsBase
+  SpacerStyleProps
 >({
   acceptsClassName: true,
   memo: true,

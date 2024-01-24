@@ -12,10 +12,11 @@ export const docsRoutes = [
     pages: [
       { title: 'Configuration', route: '/docs/core/configuration' },
       { title: 'Tokens', route: '/docs/core/tokens' },
-      { title: 'Components', route: '/docs/core/stack-and-text' },
-      { title: 'styled', route: '/docs/core/styled' },
-      { title: 'Variants', route: '/docs/core/variants' },
+      { title: 'View & Text', route: '/docs/core/stack-and-text' },
       { title: 'Props', route: '/docs/intro/props' },
+      { title: 'Styles', route: '/docs/intro/styles' },
+      { title: 'styled()', route: '/docs/core/styled' },
+      { title: 'Variants', route: '/docs/core/variants' },
       { title: 'Themes', route: '/docs/intro/themes' },
       { title: 'Animations', route: '/docs/core/animations' },
       { title: 'Theme', route: '/docs/core/theme' },
@@ -135,7 +136,6 @@ export const docsRoutes = [
   {
     title: 'Guides',
     pages: [
-      { title: 'Design Systems', route: '/docs/guides/design-systems' },
       { title: 'Creating Custom Themes', route: '/docs/guides/theme-builder' },
       { title: 'How to Build a Button', route: '/docs/guides/how-to-build-a-button' },
       { title: 'Developing', route: '/docs/guides/developing' },

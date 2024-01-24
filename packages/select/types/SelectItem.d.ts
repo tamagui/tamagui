@@ -15,13 +15,15 @@ export declare const SelectItemContextProvider: {
     warn?: boolean | undefined;
     fallback?: Partial<SelectItemContextValue> | undefined;
 } | undefined) => SelectItemContextValue;
-export interface SelectItemProps extends ListItemProps {
+export interface SelectItemExtraProps {
     value: string;
     index: number;
     disabled?: boolean;
     textValue?: string;
 }
-export declare const SelectItem: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStylePropsBase & {
+export interface SelectItemProps extends Omit<ListItemProps, keyof SelectItemExtraProps>, SelectItemExtraProps {
+}
+export declare const SelectItem: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     unstyled?: boolean | undefined;
     size?: import("@tamagui/web").SizeTokens | undefined;
     disabled?: boolean | undefined;
@@ -39,7 +41,7 @@ export declare const SelectItem: import("@tamagui/web").TamaguiComponent<Omit<im
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
     active?: boolean | undefined;
-}>, keyof SelectItemProps> & SelectItemProps, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & SelectItemProps, import("@tamagui/web").StackStylePropsBase, {
+}>, keyof SelectItemExtraProps> & SelectItemExtraProps, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & SelectItemExtraProps, import("@tamagui/web").StackStyleBase, {
     unstyled?: boolean | undefined;
     size?: import("@tamagui/web").SizeTokens | undefined;
     disabled?: boolean | undefined;
@@ -57,6 +59,6 @@ export declare const SelectItem: import("@tamagui/web").TamaguiComponent<Omit<im
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
     active?: boolean | undefined;
-}, {}>;
+}, import("@tamagui/web").StaticConfigPublic>;
 export {};
 //# sourceMappingURL=SelectItem.d.ts.map

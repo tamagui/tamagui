@@ -6,8 +6,6 @@ export * from './StyledContext'
 export * from './Switch'
 
 export const Switch = createSwitch({
-  // @ts-ignore
   Frame: SwitchFrame,
-  // @ts-ignore
   Thumb: SwitchThumb,
 })

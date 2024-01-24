@@ -17,7 +17,6 @@ import {
   isClient,
 } from 'tamagui'
 
-import { ColorToggleButton } from './ColorToggleButton'
 import { ContainerLarge } from './Container'
 import { GithubIcon } from './GithubIcon'
 import { HeaderLinks } from './HeaderLinks'
@@ -26,7 +25,6 @@ import { HeaderProps } from './HeaderProps'
 import { NextLink } from './NextLink'
 import { SearchButton } from './SearchButton'
 import { SeasonToggleButton } from './SeasonToggleButton'
-import { SponsorButton } from './SponsorButton'
 
 export function Header(props: HeaderProps) {
   const [isScrolled, setIsScrolled] = React.useState(false)
@@ -126,8 +124,6 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
   const router = useRouter()
   const isHome = router.pathname === '/'
   const isTakeout = router.pathname === '/takeout'
-  const { setNextTint } = useTint()
-  const userSwr = useUser()
 
   return (
     <XStack
@@ -217,28 +213,6 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
         <XStack h={40} jc="flex-end" pointerEvents="auto" tag="nav">
           <XStack ai="center" gap="$2">
             <HeaderLinks isHeader {...props} />
-
-            {userSwr.data?.userDetails && (
-              <XStack ai="center" gap="$2">
-                <NextLink href="/account">
-                  <Avatar circular size="$2">
-                    <Avatar.Image
-                      source={{
-                        width: 28,
-                        height: 28,
-                        uri:
-                          userSwr.data.userDetails?.avatar_url ||
-                          getDefaultAvatarImage(
-                            userSwr.data?.userDetails?.full_name ||
-                              userSwr.data?.session?.user?.email ||
-                              'User'
-                          ),
-                      }}
-                    />
-                  </Avatar>
-                </NextLink>
-              </XStack>
-            )}
 
             <HeaderMenu />
           </XStack>

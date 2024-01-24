@@ -16,9 +16,13 @@ import { DocsMenuContents } from './DocsMenuContents'
 import { HeaderLinks } from './HeaderLinks'
 import { useDocsMenu } from './useDocsMenu'
 import { ThemeTintAlt } from '@tamagui/logo'
+import { Avatar } from 'tamagui'
+import { useUser } from '../hooks/useUser'
+import { getDefaultAvatarImage } from '../lib/avatar'
 
 export const HeaderMenu = React.memo(function HeaderMenu() {
   const { open, setOpen } = useDocsMenu()
+  const userSwr = useUser()
 
   return (
     <ThemeTintAlt>
@@ -48,7 +52,23 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
             theme={open ? 'alt1' : undefined}
             aria-label="Open the main menu"
           >
-            {/* <Menu size={18} color="var(--color)" /> */}
+            {userSwr.data?.userDetails && (
+              <Avatar circular size="$2">
+                <Avatar.Image
+                  source={{
+                    width: 28,
+                    height: 28,
+                    uri:
+                      userSwr.data.userDetails?.avatar_url ||
+                      getDefaultAvatarImage(
+                        userSwr.data?.userDetails?.full_name ||
+                          userSwr.data?.session?.user?.email ||
+                          'User'
+                      ),
+                  }}
+                />
+              </Avatar>
+            )}
             <SizableText ff="$silkscreen">Menu</SizableText>
           </Button>
         </Popover.Anchor>

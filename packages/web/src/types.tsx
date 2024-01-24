@@ -10,7 +10,6 @@ import {
   RefObject,
 } from 'react'
 import type {
-  PressableProps,
   Text as RNText,
   TextProps as ReactTextProps,
   TextStyle,
@@ -23,9 +22,15 @@ import type { Variable } from './createVariable'
 import { StyledContext } from './helpers/createStyledContext'
 import { CSSColorNames } from './interfaces/CSSColorNames'
 import { RNOnlyProps } from './interfaces/RNExclusiveTypes'
-import { Role } from './interfaces/Role'
 import type { LanguageContextType } from './views/FontLanguage.types'
 import type { ThemeProviderProps } from './views/ThemeProvider'
+import { TamaguiComponentState } from './interfaces/TamaguiComponentState'
+import { WebOnlyPressEvents } from './interfaces/WebOnlyPressEvents'
+import { TamaguiComponentPropsBaseBase } from './interfaces/TamaguiComponentPropsBaseBase'
+import { SizeKeys, SpaceKeys, ColorKeys } from './interfaces/KeyTypes'
+
+export * from './interfaces/KeyTypes'
+export * from './interfaces/TamaguiComponentState'
 
 export type { MediaStyleObject, StyleObject } from '@tamagui/helpers'
 
@@ -41,221 +46,6 @@ export type TamaguiElement = HTMLElement | View
 export type TamaguiTextElement = HTMLElement | RNText
 
 export type DebugProp = boolean | 'break' | 'verbose' | 'visualize' | 'profile'
-
-export type TamaguiComponentPropsBaseBase = {
-  target?: string
-
-  /**
-   * When truthy passes through all props to a single child element, and avoids rendering its own element.
-   * Must pass just one child React element that will receive all the props.
-   *
-   * The option "except-style" will avoid passing any style related props.
-   *
-   * The option "web" will map all React Native style props to web props (onPress becomes onClick).
-   *
-   * The option "except-style-web" combines the except-style and web options.
-   *
-   */
-  asChild?: boolean | 'except-style' | 'except-style-web' | 'web'
-
-  dangerouslySetInnerHTML?: { __html: string }
-  children?: any | any[]
-
-  debug?: DebugProp
-
-  disabled?: boolean
-
-  /**
-   * Same as the web className property, useful for applying styles from CSS on web only
-   */
-  className?: string
-
-  /**
-   * If given a theme it will only apply to this element, instead of passing down to children
-   */
-  themeShallow?: boolean
-
-  themeInverse?: boolean
-
-  /**
-   * Same as the web id property for setting a uid on an element
-   */
-  id?: string
-
-  /**
-   * Controls the output tag on web
-   * {@see https://developer.mozilla.org/en-US/docs/Web/HTML/Element}
-   */
-  tag?:
-    | (string & {})
-    | 'address'
-    | 'article'
-    | 'aside'
-    | 'footer'
-    | 'header'
-    | 'h1'
-    | 'h2'
-    | 'h3'
-    | 'h4'
-    | 'h5'
-    | 'h6'
-    | 'main'
-    | 'nav'
-    | 'section'
-    | 'search'
-    | 'blockquote'
-    | 'dd'
-    | 'div'
-    | 'dl'
-    | 'dt'
-    | 'figcaption'
-    | 'figure'
-    | 'hr'
-    | 'li'
-    | 'ol'
-    | 'ul'
-    | 'p'
-    | 'pre'
-    | 'a'
-    | 'abbr'
-    | 'p'
-    | 'b'
-    | 'abbr'
-    | 'bdi'
-    | 'bdo'
-    | 'br'
-    | 'cite'
-    | 'code'
-    | 'data'
-    | 'dfn'
-    | 'em'
-    | 'i'
-    | 'kbd'
-    | 'mark'
-    | 'q'
-    | 'rp'
-    | 'rt'
-    | 'rtc'
-    | 'ruby'
-    | 's'
-    | 'samp'
-    | 'small'
-    | 'span'
-    | 'strong'
-    | 'sub'
-    | 'sup'
-    | 'time'
-    | 'u'
-    | 'var'
-    | 'wbr'
-    | 'area'
-    | 'audio'
-    | 'img'
-    | 'map'
-    | 'track'
-    | 'video'
-    | 'embed'
-    | 'object'
-    | 'param'
-    | 'picture'
-    | 'source'
-    | 'canvas'
-    | 'noscript'
-    | 'script'
-    | 'del'
-    | 'ins'
-    | 'caption'
-    | 'col'
-    | 'colgroup'
-    | 'table'
-    | 'thead'
-    | 'tbody'
-    | 'td'
-    | 'th'
-    | 'tr'
-    | 'button'
-    | 'datalist'
-    | 'fieldset'
-    | 'form'
-    | 'input'
-    | 'label'
-    | 'legend'
-    | 'meter'
-    | 'optgroup'
-    | 'option'
-    | 'output'
-    | 'progress'
-    | 'select'
-    | 'textarea'
-    | 'details'
-    | 'dialog'
-    | 'menu'
-    | 'summary'
-    | 'template'
-
-  /**
-   * Applies a theme to this element
-   */
-  theme?: ThemeName | null
-
-  /**
-   * Marks this component as a group for use in styling children based on parents named group
-   * See: https://tamagui.dev/docs/intro/props
-   */
-  group?: GroupNames
-
-  /**
-   * Works only alongside group, when children of the group are using container based sizing on native you can hide them until parent is measured.
-   * See: https://tamagui.dev/docs/intro/props
-   */
-  untilMeasured?: 'hide' | 'show'
-
-  /**
-   * Equivalent to "name" property on styled() for automatically applying a theme
-   */
-  componentName?: string
-
-  /**
-   * Used for controlling the order of focus with keyboard or assistive device enavigation
-   * See https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex
-   */
-  tabIndex?: string | number
-
-  /**
-   * Equivalent to role="" attribute on web for accessibility
-   */
-  role?: Role
-
-  /**
-   * Disable all compiler optimization
-   */
-  disableOptimization?: boolean
-
-  /**
-   * Forces the pseudo style state to be on
-   */
-  forceStyle?: 'hover' | 'press' | 'focus'
-
-  /**
-   * Disables className output of styles, instead using only inline styles
-   */
-  disableClassName?: boolean
-}
-
-export interface WebOnlyPressEvents {
-  onPress?: PressableProps['onPress']
-  onLongPress?: PressableProps['onLongPress']
-  onPressIn?: PressableProps['onPress']
-  onPressOut?: PressableProps['onPress']
-  onHoverIn?: DivAttributes['onMouseEnter']
-  onHoverOut?: DivAttributes['onMouseLeave']
-  onMouseEnter?: DivAttributes['onMouseEnter']
-  onMouseLeave?: DivAttributes['onMouseLeave']
-  onMouseDown?: DivAttributes['onMouseDown']
-  onMouseUp?: DivAttributes['onMouseUp']
-  onFocus?: DivAttributes['onFocus']
-  onBlur?: DivAttributes['onBlur']
-}
 
 export interface TamaguiComponentPropsBase
   extends TamaguiComponentPropsBaseBase,
@@ -287,7 +77,7 @@ export type TamaguiProjectInfo = {
 
 // base props that are accepted by createComponent (additional to react-native-web)
 
-type DivAttributes = HTMLAttributes<HTMLDivElement>
+export type DivAttributes = HTMLAttributes<HTMLDivElement>
 
 export type ReactComponentWithRef<Props, Ref> = ForwardRefExoticComponent<
   Props & RefAttributes<Ref>
@@ -655,19 +445,17 @@ type GetAltThemeNames<S> =
   | (S extends `${string}_${infer Alt}` ? GetAltThemeNames<Alt> : S)
   | S
 
-export type SpacerPropsBase = {
-  size?: SpaceValue
+export type SpacerUniqueProps = {
+  size?: SpaceValue | number
   flex?: boolean | number
-  direction?: SpaceDirection | 'unset'
+  direction?: SpaceDirection
 }
 
-type SpacerOwnProps = SpacerPropsBase &
-  //
-  WithThemeShorthandsPseudosMedia<SpacerPropsBase>
+export interface SpacerStyleProps
+  extends Omit<StackStyleBase, keyof SpacerUniqueProps>,
+    SpacerUniqueProps {}
 
-export type SpacerProps = Omit<StackProps, 'flex' | 'direction' | 'size'> &
-  //
-  SpacerOwnProps
+export type SpacerProps = WithThemeShorthandsPseudosMedia<SpacerStyleProps>
 
 type AllowedValueSettingBase =
   | boolean
@@ -774,7 +562,7 @@ export type TamaguiSettings = TamaguiConfig['settings']
 export type BaseStyleProps = {
   [Key in keyof TextStylePropsBase]?: TextStyleProps[Key] | GetThemeValueForKey<Key>
 } & {
-  [Key in keyof StackStylePropsBase]?: StackStyleProps[Key] | GetThemeValueForKey<Key>
+  [Key in keyof StackStyleBase]?: StackStyle[Key] | GetThemeValueForKey<Key>
 }
 
 export type CreateTamaguiProps = {
@@ -1370,21 +1158,30 @@ export type AllPlatforms = 'web' | 'native' | 'android' | 'ios'
 //
 // add both theme and shorthands
 //
-export type WithThemeAndShorthands<A extends Object> = OnlyAllowShorthands extends true
-  ? WithThemeValues<Omit<A, Longhands>> & WithShorthands<WithThemeValues<A>>
-  : WithThemeValues<A> & WithShorthands<WithThemeValues<A>>
+export type WithThemeAndShorthands<
+  A extends Object,
+  Variants = {},
+> = OnlyAllowShorthands extends true
+  ? WithThemeValues<Omit<A, Longhands>> & Variants & WithShorthands<WithThemeValues<A>>
+  : WithThemeValues<A> & Variants & WithShorthands<WithThemeValues<A>>
 
 //
 // combines all of theme, shorthands, pseudos...
 //
-export type WithThemeShorthandsAndPseudos<A extends Object> = WithThemeAndShorthands<A> &
-  WithPseudoProps<WithThemeAndShorthands<A>>
+export type WithThemeShorthandsAndPseudos<
+  A extends Object,
+  Variants = {},
+> = WithThemeAndShorthands<A, Variants> &
+  WithPseudoProps<WithThemeAndShorthands<A, Variants>>
 
 //
 // ... media queries and animations
 //
-export type WithThemeShorthandsPseudosMedia<A extends Object> =
-  WithThemeShorthandsAndPseudos<A> & WithMediaProps<WithThemeShorthandsAndPseudos<A>>
+export type WithThemeShorthandsPseudosMedia<
+  A extends Object,
+  Variants = {},
+> = WithThemeShorthandsAndPseudos<A, Variants> &
+  WithMediaProps<WithThemeShorthandsAndPseudos<A, Variants>>
 
 /**
  * Base style-only props (no media, pseudo):
@@ -1462,7 +1259,7 @@ interface OverrideNonStyledProps
   display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex'
 }
 
-export interface StackStylePropsBase
+export interface StackStyleBase
   extends Omit<ViewStyle, keyof OverrideNonStyledProps | 'elevation'>,
     TransformStyleProps,
     ExtraStyleProps,
@@ -1503,9 +1300,9 @@ export interface StackNonStyleProps
   style?: StyleProp<LooseCombinedObjects<React.CSSProperties, ViewStyle>>
 }
 
-export type StackStyleProps = WithThemeShorthandsPseudosMedia<StackStylePropsBase>
+export type StackStyle = WithThemeShorthandsPseudosMedia<StackStyleBase>
 
-export type StackProps = StackNonStyleProps & StackStyleProps
+export type StackProps = StackNonStyleProps & StackStyle
 
 //
 // Text props
@@ -1569,22 +1366,24 @@ export type Styleable<
   ParentStaticProperties
 >
 
-export type GetFinalProps<NonStyleProps, StylePropsBase> = Omit<
+export type GetFinalProps<NonStyleProps, StylePropsBase, Variants> = Omit<
   NonStyleProps,
-  keyof StylePropsBase
+  keyof StylePropsBase | keyof Variants
 > &
-  (StylePropsBase extends Object ? WithThemeShorthandsPseudosMedia<StylePropsBase> : {})
+  (StylePropsBase extends Object
+    ? WithThemeShorthandsPseudosMedia<StylePropsBase, Variants>
+    : {})
 
 export type TamaguiComponent<
   Props = any,
   Ref = any,
   NonStyledProps = {},
   BaseStyles extends Object = {},
-  VariantProps = {},
+  Variants = {},
   ParentStaticProperties = {},
 > = ForwardRefExoticComponent<
   (Props extends TamaDefer
-    ? GetFinalProps<NonStyledProps, BaseStyles & VariantProps>
+    ? GetFinalProps<NonStyledProps, BaseStyles, Variants>
     : Props) &
     RefAttributes<Ref>
 > &
@@ -1593,26 +1392,24 @@ export type TamaguiComponent<
     Ref,
     NonStyledProps,
     BaseStyles,
-    VariantProps,
+    Variants,
     ParentStaticProperties
   > &
   Omit<ParentStaticProperties, 'staticConfig' | 'extractable' | 'styleable'> & {
-    __tama: [Props, Ref, NonStyledProps, BaseStyles, VariantProps, ParentStaticProperties]
+    __tama: [Props, Ref, NonStyledProps, BaseStyles, Variants, ParentStaticProperties]
   }
-
-export type GetStyledProps<A extends StylableComponent> = A extends {
-  __tama: [any, any, any, infer BaseStyles, infer VariantProps, any]
-}
-  ? BaseStyles & VariantProps
-  : GetProps<A>
 
 export type InferGenericComponentProps<A> = A extends ComponentType<infer Props>
   ? Props
-  : A extends new (
-        props: infer Props
-      ) => any
-    ? Props
-    : {}
+  : A extends ForwardRefExoticComponent<infer P>
+    ? P
+    : A extends ReactComponentWithRef<infer P, any>
+      ? P
+      : A extends new (
+            props: infer Props
+          ) => any
+        ? Props
+        : {}
 
 export type InferStyledProps<
   A extends StylableComponent,
@@ -1621,7 +1418,7 @@ export type InferStyledProps<
   __tama: any
 }
   ? GetProps<A>
-  : GetFinalProps<InferGenericComponentProps<A>, GetBaseStyles<{}, B>>
+  : GetFinalProps<InferGenericComponentProps<A>, GetBaseStyles<{}, B>, {}>
 
 export type GetProps<A extends StylableComponent> = A extends {
   __tama: [
@@ -1634,7 +1431,7 @@ export type GetProps<A extends StylableComponent> = A extends {
   ]
 }
   ? Props extends TamaDefer
-    ? GetFinalProps<NonStyledProps, BaseStyles & VariantProps>
+    ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps>
     : Props
   : InferGenericComponentProps<A>
 
@@ -1650,7 +1447,9 @@ export type GetBaseStyles<A, B> = A extends {
   ? C
   : B extends { isText: true }
     ? TextStylePropsBase
-    : StackStylePropsBase
+    : B extends { isInput: true }
+      ? TextStylePropsBase
+      : StackStyleBase
 
 export type GetStyledVariants<A> = A extends {
   __tama: [any, any, any, any, infer B, any]
@@ -1658,11 +1457,11 @@ export type GetStyledVariants<A> = A extends {
   ? B
   : {}
 
-export type GetStaticConfig<A> = A extends {
+export type GetStaticConfig<A, Extra = {}> = A extends {
   __tama: [any, any, any, any, any, infer B]
 }
-  ? B
-  : A
+  ? B & Extra
+  : Extra
 
 export type StaticComponentObject<
   Props,
@@ -1681,7 +1480,7 @@ export type StaticComponentObject<
    */
   styleable: Styleable<
     Props extends TamaDefer
-      ? GetFinalProps<NonStyledProps, BaseStyles & VariantProps>
+      ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps>
       : Props,
     Ref,
     NonStyledProps,
@@ -1694,7 +1493,7 @@ export type StaticComponentObject<
 export type TamaguiComponentExpectingVariants<
   Props = {},
   Variants extends Object = {},
-> = TamaguiComponent<Props, any, any, Variants>
+> = TamaguiComponent<Props, any, any, any, Variants>
 
 export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>> & {
   config: TamaguiInternalConfig
@@ -1759,6 +1558,11 @@ export type StaticConfigPublic = {
    * pass JSX as a children (if its purely string, it will still flatten).
    */
   neverFlatten?: boolean | 'jsx'
+
+  /**
+   * Adds support for text props and handles focus properly
+   */
+  isInput?: boolean
 
   /**
    * Determines ultimate output tag (Text vs View)
@@ -1829,11 +1633,6 @@ type StaticConfigBase = StaticConfigPublic & {
   memo?: boolean
 
   /**
-   * Used internally for handling focus
-   */
-  isInput?: boolean
-
-  /**
    * Used internally for knowing how to handle when a HOC is in-between styled()
    */
   isHOC?: boolean
@@ -1884,24 +1683,44 @@ export type SpreadKeys =
 
 export type VariantDefinitions<
   Parent extends StylableComponent = TamaguiComponent,
-  StaticConfig extends StaticConfigPublic = {},
-  MyProps extends Object = Partial<GetStyleableProps<Parent, StaticConfig['isText']>>,
+  StaticConfig extends StaticConfigPublic = Parent extends {
+    __tama: [any, any, any, any, any, infer S]
+  }
+    ? S
+    : {},
+  MyProps extends Object = Partial<
+    GetVariantProps<
+      Parent,
+      StaticConfig['isText'] extends true
+        ? true
+        : StaticConfig['isInput'] extends true
+          ? true
+          : false
+    >
+  >,
   Val = any,
 > = VariantDefinitionFromProps<MyProps, Val> & {
   _isEmpty?: 1
 }
 
-export type GetStyleableProps<
+export type GetVariantProps<
   A extends StylableComponent,
   IsText extends boolean | undefined,
 > = A extends {
-  __tama: [infer Props, any, any, infer BaseStyles, infer VariantProps, any]
+  __tama: [
+    infer Props,
+    any,
+    infer NonStyledProps,
+    infer BaseStyles,
+    infer VariantProps,
+    any,
+  ]
 }
   ? Props extends TamaDefer
-    ? GetFinalProps<{}, BaseStyles & VariantProps>
+    ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps>
     : Props
   : WithThemeShorthandsPseudosMedia<
-      IsText extends true ? TextStylePropsBase : StackStylePropsBase
+      IsText extends true ? TextStylePropsBase : StackStyleBase
     >
 
 export type VariantDefinitionFromProps<MyProps, Val> = MyProps extends Object
@@ -2031,100 +1850,6 @@ export type ThemeVariantSpreadFunction<A extends PropLike> = VariantSpreadFuncti
  * --------------------------------------------
  */
 
-export type SizeKeys =
-  | 'width'
-  | 'height'
-  | 'minWidth'
-  | 'minHeight'
-  | 'maxWidth'
-  | 'maxHeight'
-  | 'shadowRadius'
-
-export type ColorKeys =
-  | 'color'
-  | 'backgroundColor'
-  | 'borderColor'
-  | 'borderBottomColor'
-  | 'borderTopColor'
-  | 'borderLeftColor'
-  | 'borderRightColor'
-  | 'shadowColor'
-  | 'outlineColor'
-  | 'textShadowColor'
-  | 'borderBlockColor'
-  | 'borderBlockEndColor'
-  | 'borderBlockStartColor'
-
-export type SpaceKeys =
-  | 'space'
-  | 'padding'
-  | 'paddingHorizontal'
-  | 'paddingVertical'
-  | 'paddingLeft'
-  | 'paddingTop'
-  | 'paddingBottom'
-  | 'paddingLeft'
-  | 'paddingRight'
-  | 'paddingEnd'
-  | 'paddingStart'
-  | 'margin'
-  | 'marginHorizontal'
-  | 'marginVertical'
-  | 'marginLeft'
-  | 'marginTop'
-  | 'marginBottom'
-  | 'marginLeft'
-  | 'marginRight'
-  | 'marginEnd'
-  | 'marginStart'
-  | 'x'
-  | 'y'
-  | 'gap'
-  | 'rowGap'
-  | 'columnGap'
-  | 'scale'
-  | 'scaleX'
-  | 'scaleY'
-  | 'borderTopEndRadius'
-  | 'borderTopLeftRadius'
-  | 'borderTopRightRadius'
-  | 'borderTopStartRadius'
-  | 'borderBottomEndRadius'
-  | 'borderBottomLeftRadius'
-  | 'borderBottomRightRadius'
-  | 'borderBottomStartRadius'
-  | 'borderBottomWidth'
-  | 'borderLeftWidth'
-  | 'borderRadius'
-  | 'borderRightWidth'
-  | 'borderTopEndRadius'
-  | 'borderTopLeftRadius'
-  | 'borderTopRightRadius'
-  | 'borderEndWidth'
-  | 'borderStartWidth'
-  | 'borderTopStartRadius'
-  | 'borderTopWidth'
-  | 'borderWidth'
-  | 'left'
-  | 'top'
-  | 'right'
-  | 'bottom'
-  | 'shadowOffset'
-
-export type TamaguiComponentState = {
-  hover: boolean
-  press: boolean
-  pressIn: boolean
-  focus: boolean
-  unmounted: boolean | 'should-enter'
-  animation?: null | {
-    style?: any
-    avoidClasses?: boolean
-  }
-  // for groups:
-  group?: Record<string, GroupState>
-}
-
 export type ResolveVariableAs = 'auto' | 'value' | 'variable' | 'none' | 'web'
 
 export type SplitStyleProps = {
@@ -2250,7 +1975,7 @@ export type UseAnimationHook = (props: {
   onDidAnimate?: any
   delay?: number
 }) => null | {
-  style?: StackStylePropsBase | StackStylePropsBase[]
+  style?: StackStyleBase | StackStyleBase[]
 }
 
 export type GestureReponderEvent = Exclude<
@@ -2277,25 +2002,6 @@ export type GetStyleResult = {
 }
 
 export type ClassNamesObject = Record<string, string>
-
-export type TamaguiComponentEvents = {
-  cancelable?: boolean | undefined
-  disabled?: any
-  hitSlop?: any
-  delayLongPress?: any
-  delayPressIn?: any
-  delayPressOut?: any
-  focusable?: any
-  minPressDuration?: number | undefined
-  onPressIn: ((e: any) => void) | undefined
-  onPress: ((e: any) => void) | undefined
-  onLongPress?: ((e: any) => void) | undefined
-  onMouseEnter?: ((e: any) => void) | undefined
-  onMouseLeave?: ((e: any) => void) | undefined
-  onPressOut: ((e: any) => void) | undefined
-  onFocus?: ((e: any) => void) | undefined
-  onBlur?: ((e: any) => void) | undefined
-}
 
 export type ModifyTamaguiComponentStyleProps<
   Comp extends TamaguiComponent,

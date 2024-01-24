@@ -9,7 +9,7 @@ import {
 } from '@tamagui/demos'
 import { useState } from 'react'
 import { View } from 'react-native'
-import { AnimatePresence, Button, Text, Square, useStyle, styled } from 'tamagui'
+import { AnimatePresence, Button, Text, Square, useStyle, styled, Stack } from 'tamagui'
 
 const AnimatedNumbers = () => {
   const [numbers, setNumbers] = useState(10_000)
@@ -17,6 +17,8 @@ const AnimatedNumbers = () => {
   return (
     <>
       <Button onPress={() => setNumbers(Math.round(Math.random() * 10_000))}>Next</Button>
+
+      <Stack importantForAccessibility="auto" />
 
       <AnimatePresence enterVariant="fromTop" exitVariant="toBottom">
         {`${numbers}`.split('').map((num, i) => {

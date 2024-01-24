@@ -2,10 +2,13 @@ import { useUser } from 'hooks/useUser'
 import { useRouter } from 'next/router'
 import * as React from 'react'
 import {
+  Avatar,
   Button,
   Paragraph,
   Popover,
+  Separator,
   SizableText,
+  Spacer,
   TooltipSimple,
   XStack,
   YStack,
@@ -16,6 +19,7 @@ import { Text } from 'tamagui'
 import { GithubIcon } from './GithubIcon'
 import { HeaderProps } from './HeaderProps'
 import { NextLink } from './NextLink'
+import { getDefaultAvatarImage } from '../lib/avatar'
 
 const HeadAnchor = styled(Paragraph, {
   tag: 'a',
@@ -39,10 +43,13 @@ const HeadAnchor = styled(Paragraph, {
   variants: {
     grid: {
       true: {
-        size: '$3',
-        miw: '48.9%',
+        ff: '$heading',
+        fow: '200',
+        size: '$5',
+        textTransform: 'unset',
+        w: '100%',
         f: 1,
-        p: '$2.5',
+        p: '$2',
         px: '$4',
 
         hoverStyle: {
@@ -51,9 +58,10 @@ const HeadAnchor = styled(Paragraph, {
       },
     },
 
-    dim: {
+    half: {
       true: {
-        o: 0.6,
+        maxWidth: '48.5%',
+        overflow: 'hidden',
       },
     },
   } as const,
@@ -94,6 +102,21 @@ export const HeaderLinks = (props: HeaderProps) => {
         </HeadAnchor>
       </NextLink> */}
 
+      {forceShowAllLinks && (
+        <NextLink legacyBehavior={false} prefetch={false} href="/takeout">
+          <HeadAnchor
+            grid={forceShowAllLinks}
+            tag="span"
+            $sm={{
+              display: forceShowAllLinks ? 'flex' : 'none',
+            }}
+          >
+            Starter Kit
+          </HeadAnchor>
+        </NextLink>
+      )}
+      {!forceShowAllLinks && <TakeoutHeaderLink {...props} />}
+
       <NextLink passHref prefetch={false} href="/studio">
         <HeadAnchor
           grid={forceShowAllLinks}
@@ -104,42 +127,6 @@ export const HeaderLinks = (props: HeaderProps) => {
           Studio
         </HeadAnchor>
       </NextLink>
-
-      {!router.asPath.startsWith('/takeout') && (
-        <>
-          {forceShowAllLinks && (
-            <NextLink legacyBehavior={false} prefetch={false} href="/takeout">
-              <HeadAnchor
-                grid={forceShowAllLinks}
-                tag="span"
-                $sm={{
-                  display: forceShowAllLinks ? 'flex' : 'none',
-                }}
-              >
-                Starter Kit
-              </HeadAnchor>
-            </NextLink>
-          )}
-          {!forceShowAllLinks && <TakeoutHeaderLink {...props} />}
-        </>
-      )}
-
-      {forceShowAllLinks && (
-        <NextLink
-          prefetch={false}
-          legacyBehavior={true}
-          passHref
-          target="_blank"
-          href="https://github.com/tamagui/tamagui"
-        >
-          <HeadAnchor grid={forceShowAllLinks} tag="span">
-            Github{' '}
-            <YStack dsp={'inline-block' as any} y={10} my={-20} o={0.8}>
-              <GithubIcon width={16} />
-            </YStack>
-          </HeadAnchor>
-        </NextLink>
-      )}
 
       {forceShowAllLinks && (
         <NextLink passHref prefetch={false} href="/community">
@@ -154,37 +141,60 @@ export const HeaderLinks = (props: HeaderProps) => {
       )}
 
       {forceShowAllLinks && (
-        <NextLink passHref prefetch={false} href="/blog">
-          <HeadAnchor dim={forceShowAllLinks} grid={forceShowAllLinks}>
-            Blog
-          </HeadAnchor>
-        </NextLink>
-      )}
+        <>
+          <Separator my="$2" />
 
-      {forceShowAllLinks && (
-        <NextLink
-          legacyBehavior={false}
-          target="_blank"
-          href="https://github.com/sponsors/natew"
-        >
-          <HeadAnchor dim={forceShowAllLinks} grid={forceShowAllLinks} tag="span">
-            Sponsor
-          </HeadAnchor>
-        </NextLink>
-      )}
+          <XStack fw="wrap" f={1} gap="$2" w="100%">
+            {forceShowAllLinks && (
+              <NextLink
+                prefetch={false}
+                legacyBehavior={true}
+                passHref
+                target="_blank"
+                href="https://github.com/tamagui/tamagui"
+              >
+                <HeadAnchor half grid={forceShowAllLinks} tag="span">
+                  Github{' '}
+                  <YStack dsp={'inline-block' as any} y={10} my={-20} o={0.8}>
+                    <GithubIcon width={16} />
+                  </YStack>
+                </HeadAnchor>
+              </NextLink>
+            )}
 
-      {!userSwr.data?.session?.user && !isHeader && (
-        <NextLink passHref prefetch={false} href="/login">
-          <HeadAnchor
-            dim={forceShowAllLinks}
-            grid={forceShowAllLinks}
-            $md={{
-              display: forceShowAllLinks ? 'flex' : 'none',
-            }}
-          >
-            Login
-          </HeadAnchor>
-        </NextLink>
+            <NextLink passHref prefetch={false} href="/blog">
+              <HeadAnchor half grid={forceShowAllLinks}>
+                Blog
+              </HeadAnchor>
+            </NextLink>
+
+            <NextLink
+              legacyBehavior={false}
+              target="_blank"
+              href="https://github.com/sponsors/natew"
+            >
+              <HeadAnchor half grid={forceShowAllLinks} tag="span">
+                Sponsor
+              </HeadAnchor>
+            </NextLink>
+
+            {userSwr.data?.userDetails && (
+              <NextLink passHref prefetch={false} href="/account">
+                <HeadAnchor half grid={forceShowAllLinks}>
+                  Account
+                </HeadAnchor>
+              </NextLink>
+            )}
+
+            {!userSwr.data?.userDetails && (
+              <NextLink passHref prefetch={false} href="/login">
+                <HeadAnchor half grid={forceShowAllLinks}>
+                  Login
+                </HeadAnchor>
+              </NextLink>
+            )}
+          </XStack>
+        </>
       )}
     </>
   )

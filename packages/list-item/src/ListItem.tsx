@@ -22,8 +22,7 @@ import React, { FunctionComponent } from 'react'
 type ListItemIconProps = { color?: string; size?: number }
 type IconProp = JSX.Element | FunctionComponent<ListItemIconProps> | null
 
-export type ListItemProps = Omit<TextParentStyles, 'TextComponent' | 'noTextWrap'> &
-  GetProps<typeof ListItemFrame> &
+export type ListItemExtraProps = Omit<TextParentStyles, 'TextComponent' | 'noTextWrap'> &
   ThemeableProps & {
     /**
      * add icon before, passes color and size automatically if Component
@@ -61,6 +60,8 @@ export type ListItemProps = Omit<TextParentStyles, 'TextComponent' | 'noTextWrap
      */
     noTextWrap?: boolean | 'all'
   }
+
+export type ListItemProps = GetProps<typeof ListItemFrame> & ListItemExtraProps
 
 const NAME = 'ListItem'
 
@@ -279,7 +280,7 @@ export const useListItem = (
   }
 }
 
-const ListItemComponent = ListItemFrame.styleable<ListItemProps>(
+const ListItemComponent = ListItemFrame.styleable<ListItemExtraProps>(
   function ListItem(props, ref) {
     const { props: listItemProps } = useListItem(props)
     return <ListItemFrame ref={ref} {...listItemProps} />

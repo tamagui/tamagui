@@ -385,13 +385,15 @@ export const SliderThumbFrame = styled(ThemeableStack, {
   },
 })
 
-interface SliderThumbProps extends SizableStackProps {
+export interface SliderThumbExtraProps {
   index: number
 }
 
+export interface SliderThumbProps extends SizableStackProps, SliderThumbExtraProps {}
+
 // since it doesn't take children usually we can memoize
 const SliderThumb = React.memo(
-  SliderThumbFrame.styleable<SliderThumbProps>(function SliderThumb(
+  SliderThumbFrame.styleable<SliderThumbExtraProps>(function SliderThumb(
     props: ScopedProps<SliderThumbProps>,
     forwardedRef
   ) {
@@ -699,4 +701,4 @@ export {
   Thumb,
 }
 
-export type { SliderProps, SliderTrackProps, SliderTrackActiveProps, SliderThumbProps }
+export type { SliderProps, SliderTrackProps, SliderTrackActiveProps }

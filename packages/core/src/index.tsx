@@ -1,7 +1,7 @@
 import { useResponderEvents } from '@tamagui/react-native-use-responder-events'
 import type {
   StackNonStyleProps,
-  StackStylePropsBase,
+  StackStyleBase,
   TamaguiComponent,
   TamaguiElement,
   TamaguiTextElement,
@@ -37,8 +37,8 @@ type RNTamaguiView = TamaguiComponent<
   TamaDefer,
   TamaguiElement,
   RNTamaguiViewNonStyleProps,
-  StackStylePropsBase,
-  void
+  StackStyleBase,
+  {}
 >
 
 type RNExclusiveTextProps = Omit<RNTextProps, keyof TextProps>
@@ -51,7 +51,7 @@ type RNTamaguiText = TamaguiComponent<
   TamaguiTextElement,
   RNTamaguiTextNonStyleProps,
   TextStylePropsBase,
-  void
+  {}
 >
 
 // re-exports all of @tamagui/web just adds hooks

@@ -1,5 +1,5 @@
 import { GetProps } from '@tamagui/web';
-export declare const Square: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStylePropsBase, {
+export declare const Square: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     size?: number | import("@tamagui/web").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
@@ -14,6 +14,6 @@ export declare const Square: import("@tamagui/web").TamaguiComponent<import("@ta
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}, {}>;
+}, import("@tamagui/web").StaticConfigPublic>;
 export type SquareProps = GetProps<typeof Square>;
 //# sourceMappingURL=Square.d.ts.map
