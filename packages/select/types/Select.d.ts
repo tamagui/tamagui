@@ -2,7 +2,7 @@ import { FontSizeTokens, TamaguiElement } from '@tamagui/core';
 import { ListItemProps } from '@tamagui/list-item';
 import * as React from 'react';
 import { ScopedProps, SelectProps } from './types';
-interface SelectValueExtraProps {
+export interface SelectValueExtraProps {
     placeholder?: React.ReactNode;
 }
 export declare const SelectIcon: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
@@ -331,5 +331,4 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         }>> & React.RefAttributes<import("react-native").ScrollView>>;
     };
 };
-export {};
 //# sourceMappingURL=Select.d.ts.map

@@ -54,7 +54,7 @@ const SelectValueFrame = styled(SizableText, {
   userSelect: 'none',
 })
 
-interface SelectValueExtraProps {
+export interface SelectValueExtraProps {
   placeholder?: React.ReactNode
 }
 
