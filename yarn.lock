@@ -7099,6 +7099,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/monorepo-test@workspace:packages/monorepo-test":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/monorepo-test@workspace:packages/monorepo-test"
+  dependencies:
+    vitest: "npm:^0.34.3"
+    zx: "npm:^7.2.3"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/next-plugin@npm:1.88.9, @tamagui/next-plugin@workspace:packages/next-plugin":
   version: 0.0.0-use.local
   resolution: "@tamagui/next-plugin@workspace:packages/next-plugin"
