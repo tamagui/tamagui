@@ -28,7 +28,9 @@ export interface SelectItemExtraProps {
   textValue?: string
 }
 
-export interface SelectItemProps extends ListItemProps, SelectItemExtraProps {}
+export interface SelectItemProps
+  extends Omit<ListItemProps, keyof SelectItemExtraProps>,
+    SelectItemExtraProps {}
 
 export const SelectItem = ListItemFrame.styleable<SelectItemExtraProps>(
   function SelectItem(props: ScopedProps<SelectItemProps>, forwardedRef) {

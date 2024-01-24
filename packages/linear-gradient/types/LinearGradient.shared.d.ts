@@ -6,7 +6,10 @@ export type LinearGradientExtraProps = {
     start?: LinearGradientPoint | null;
     end?: LinearGradientPoint | null;
 };
-export declare const LinearGradient: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & LinearGradientExtraProps, Omit<import("@tamagui/core").StackStyleBase, keyof LinearGradientExtraProps>, {
+export declare const LinearGradient: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase & {
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    fullscreen?: boolean | undefined;
+}>, keyof LinearGradientExtraProps> & LinearGradientExtraProps, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & LinearGradientExtraProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
 }, {}>;

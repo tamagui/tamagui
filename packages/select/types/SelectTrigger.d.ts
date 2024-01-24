@@ -2,11 +2,11 @@ import { TamaguiElement } from '@tamagui/core';
 import { ListItemProps } from '@tamagui/list-item';
 import * as React from 'react';
 export type SelectTriggerProps = ListItemProps;
-export declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase, {
+export declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "disabled" | "size" | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless" | "unstyled" | "active"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
     unstyled?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     disabled?: boolean | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -20,11 +20,11 @@ export declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<import(
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
     active?: boolean | undefined;
-}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase, {
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
     unstyled?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     disabled?: boolean | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -38,11 +38,11 @@ export declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<import(
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
     active?: boolean | undefined;
-}>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase, {
+}>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
     unstyled?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     disabled?: boolean | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -56,11 +56,11 @@ export declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<import(
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
     active?: boolean | undefined;
-}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase, {
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
     unstyled?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     disabled?: boolean | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -74,11 +74,11 @@ export declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<import(
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
     active?: boolean | undefined;
-}>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
+}>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase & {
     unstyled?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     disabled?: boolean | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;

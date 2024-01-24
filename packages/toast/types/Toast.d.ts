@@ -40,7 +40,7 @@ declare const ToastCloseFrame: import("@tamagui/core").TamaguiComponent<import("
 }, {}>;
 type ToastCloseFrameProps = GetProps<typeof ToastCloseFrame>;
 type ToastCloseProps = ToastCloseFrameProps & {};
-declare const Toast: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & ToastExtraProps, "top" | "bottom" | "left" | "right" | "display" | "x" | "y" | "perspective" | "scale" | "scaleX" | "scaleY" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "contain" | "touchAction" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "pointerEvents" | "userSelect" | "space" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "transformOrigin" | "backfaceVisibility" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "end" | "flex" | "flexBasis" | "flexDirection" | "rowGap" | "gap" | "columnGap" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "start" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY"> & import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, keyof ToastExtraProps>, {
+declare const Toast: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase & {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     transparent?: boolean | undefined;
     circular?: boolean | undefined;
@@ -55,7 +55,7 @@ declare const Toast: React.ForwardRefExoticComponent<Omit<import("@tamagui/core"
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, keyof ToastExtraProps>, {
+}>, keyof ToastExtraProps> & ToastExtraProps & React.RefAttributes<TamaguiElement>> & import("@tamagui/core").StaticComponentObject<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase & {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     transparent?: boolean | undefined;
     circular?: boolean | undefined;
@@ -70,52 +70,7 @@ declare const Toast: React.ForwardRefExoticComponent<Omit<import("@tamagui/core"
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, keyof ToastExtraProps>, {
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    transparent?: boolean | undefined;
-    circular?: boolean | undefined;
-    fullscreen?: boolean | undefined;
-    unstyled?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    padded?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
-}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, keyof ToastExtraProps>, {
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    transparent?: boolean | undefined;
-    circular?: boolean | undefined;
-    fullscreen?: boolean | undefined;
-    unstyled?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    padded?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
-}>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<Omit<import("@tamagui/core").StackStyleBase, keyof ToastExtraProps>, {
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    transparent?: boolean | undefined;
-    circular?: boolean | undefined;
-    fullscreen?: boolean | undefined;
-    unstyled?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    padded?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
-}>> & React.RefAttributes<TamaguiElement>> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & ToastExtraProps, Omit<import("@tamagui/core").StackStyleBase, keyof ToastExtraProps>, {
+}>, keyof ToastExtraProps> & ToastExtraProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & ToastExtraProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     transparent?: boolean | undefined;
     circular?: boolean | undefined;
@@ -131,7 +86,22 @@ declare const Toast: React.ForwardRefExoticComponent<Omit<import("@tamagui/core"
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }, {}> & Omit<{}, "staticConfig" | "extractable" | "styleable"> & {
-    __tama: [import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & ToastExtraProps, Omit<import("@tamagui/core").StackStyleBase, keyof ToastExtraProps>, {
+    __tama: [Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase & {
+        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+        transparent?: boolean | undefined;
+        circular?: boolean | undefined;
+        fullscreen?: boolean | undefined;
+        unstyled?: boolean | undefined;
+        hoverTheme?: boolean | undefined;
+        pressTheme?: boolean | undefined;
+        focusTheme?: boolean | undefined;
+        elevate?: boolean | undefined;
+        bordered?: number | boolean | undefined;
+        backgrounded?: boolean | undefined;
+        radiused?: boolean | undefined;
+        padded?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
+    }>, keyof ToastExtraProps> & ToastExtraProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & ToastExtraProps, import("@tamagui/core").StackStyleBase, {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         transparent?: boolean | undefined;
         circular?: boolean | undefined;
@@ -156,7 +126,7 @@ declare const Toast: React.ForwardRefExoticComponent<Omit<import("@tamagui/core"
         size?: import("@tamagui/core").FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
     }, {}>;
-    Action: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase, {
+    Action: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "circular" | "fullscreen" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
@@ -170,7 +140,7 @@ declare const Toast: React.ForwardRefExoticComponent<Omit<import("@tamagui/core"
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase, {
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
@@ -184,7 +154,7 @@ declare const Toast: React.ForwardRefExoticComponent<Omit<import("@tamagui/core"
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-    }>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase, {
+    }>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
@@ -198,7 +168,7 @@ declare const Toast: React.ForwardRefExoticComponent<Omit<import("@tamagui/core"
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase, {
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
@@ -212,7 +182,7 @@ declare const Toast: React.ForwardRefExoticComponent<Omit<import("@tamagui/core"
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-    }>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
+    }>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase & {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
@@ -237,7 +207,7 @@ declare const Toast: React.ForwardRefExoticComponent<Omit<import("@tamagui/core"
     } & {
         __scopeToast?: string | undefined;
     } & React.RefAttributes<TamaguiElement>>;
-    Close: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase, {
+    Close: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "circular" | "fullscreen" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
@@ -251,7 +221,7 @@ declare const Toast: React.ForwardRefExoticComponent<Omit<import("@tamagui/core"
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase, {
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
@@ -265,7 +235,7 @@ declare const Toast: React.ForwardRefExoticComponent<Omit<import("@tamagui/core"
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-    }>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase, {
+    }>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
@@ -279,7 +249,7 @@ declare const Toast: React.ForwardRefExoticComponent<Omit<import("@tamagui/core"
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase, {
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
@@ -293,7 +263,7 @@ declare const Toast: React.ForwardRefExoticComponent<Omit<import("@tamagui/core"
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-    }>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
+    }>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase & {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;

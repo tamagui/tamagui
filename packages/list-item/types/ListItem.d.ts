@@ -47,8 +47,8 @@ export type ListItemProps = GetProps<typeof ListItemFrame> & ListItemExtraProps;
 export declare const ListItemFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     unstyled?: boolean | undefined;
     size?: SizeTokens | undefined;
-    elevation?: number | SizeTokens | undefined;
     disabled?: boolean | undefined;
+    elevation?: number | SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -69,7 +69,7 @@ export declare const ListItemText: import("@tamagui/web").TamaguiComponent<impor
 }, {}>;
 export declare const ListItemSubtitle: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
     unstyled?: boolean | undefined;
-    size?: number | `$${string}` | `$${number}` | import("@tamagui/web").UnionableString | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/web").UnionableNumber | undefined;
+    size?: number | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | undefined;
 }, {}>;
 export declare const ListItemTitle: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
     unstyled?: boolean | undefined;
@@ -82,7 +82,25 @@ export declare const useListItem: (propsIn: ListItemProps, { Text, Subtitle, Tit
 }) => {
     props: PropsWithoutMediaStyles<ListItemProps>;
 };
-export declare const ListItem: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<TextParentStyles, "TextComponent" | "noTextWrap"> & ThemeableProps & {
+export declare const ListItem: React.ForwardRefExoticComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase & {
+    unstyled?: boolean | undefined;
+    size?: SizeTokens | undefined;
+    disabled?: boolean | undefined;
+    elevation?: number | SizeTokens | undefined;
+    transparent?: boolean | undefined;
+    fullscreen?: boolean | undefined;
+    circular?: boolean | undefined;
+    hoverTheme?: boolean | undefined;
+    pressTheme?: boolean | undefined;
+    focusTheme?: boolean | undefined;
+    elevate?: boolean | undefined;
+    bordered?: number | boolean | undefined;
+    backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
+    padded?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
+    active?: boolean | undefined;
+}>, "noTextWrap" | keyof import("@tamagui/text").TextContextStyles | "textProps" | keyof ThemeableProps | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace" | "title" | "subTitle"> & Omit<TextParentStyles, "TextComponent" | "noTextWrap"> & ThemeableProps & {
     /**
      * add icon before, passes color and size automatically if Component
      */
@@ -118,11 +136,11 @@ export declare const ListItem: React.ForwardRefExoticComponent<Omit<import("@tam
      * will not wrap text around `children` only, "all" will not wrap title or subTitle
      */
     noTextWrap?: boolean | "all" | undefined;
-}, "alignItems" | "justifyContent" | "flexWrap" | "width" | "borderColor" | "maxWidth" | "overflow" | "flexDirection" | "backgroundColor" | "display" | "x" | "y" | "perspective" | "scale" | "scaleX" | "scaleY" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "contain" | "touchAction" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "pointerEvents" | "userSelect" | "space" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "transformOrigin" | "backfaceVisibility" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "rowGap" | "gap" | "columnGap" | "flexGrow" | "flexShrink" | "height" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "minHeight" | "minWidth" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY"> & import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").StackStyleBase, "noTextWrap" | keyof import("@tamagui/text").TextContextStyles | "textProps" | keyof ThemeableProps | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace" | "title" | "subTitle">, {
+} & React.RefAttributes<import("@tamagui/web").TamaguiElement>> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase & {
     unstyled?: boolean | undefined;
     size?: SizeTokens | undefined;
-    elevation?: number | SizeTokens | undefined;
     disabled?: boolean | undefined;
+    elevation?: number | SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -136,79 +154,7 @@ export declare const ListItem: React.ForwardRefExoticComponent<Omit<import("@tam
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
     active?: boolean | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").StackStyleBase, "noTextWrap" | keyof import("@tamagui/text").TextContextStyles | "textProps" | keyof ThemeableProps | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace" | "title" | "subTitle">, {
-    unstyled?: boolean | undefined;
-    size?: SizeTokens | undefined;
-    elevation?: number | SizeTokens | undefined;
-    disabled?: boolean | undefined;
-    transparent?: boolean | undefined;
-    fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    padded?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
-    active?: boolean | undefined;
-}>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").StackStyleBase, "noTextWrap" | keyof import("@tamagui/text").TextContextStyles | "textProps" | keyof ThemeableProps | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace" | "title" | "subTitle">, {
-    unstyled?: boolean | undefined;
-    size?: SizeTokens | undefined;
-    elevation?: number | SizeTokens | undefined;
-    disabled?: boolean | undefined;
-    transparent?: boolean | undefined;
-    fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    padded?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
-    active?: boolean | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").StackStyleBase, "noTextWrap" | keyof import("@tamagui/text").TextContextStyles | "textProps" | keyof ThemeableProps | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace" | "title" | "subTitle">, {
-    unstyled?: boolean | undefined;
-    size?: SizeTokens | undefined;
-    elevation?: number | SizeTokens | undefined;
-    disabled?: boolean | undefined;
-    transparent?: boolean | undefined;
-    fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    padded?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
-    active?: boolean | undefined;
-}>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<Omit<import("@tamagui/web").StackStyleBase, "noTextWrap" | keyof import("@tamagui/text").TextContextStyles | "textProps" | keyof ThemeableProps | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace" | "title" | "subTitle">, {
-    unstyled?: boolean | undefined;
-    size?: SizeTokens | undefined;
-    elevation?: number | SizeTokens | undefined;
-    disabled?: boolean | undefined;
-    transparent?: boolean | undefined;
-    fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    padded?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
-    active?: boolean | undefined;
-}>> & React.RefAttributes<import("@tamagui/web").TamaguiElement>> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<TextParentStyles, "TextComponent" | "noTextWrap"> & ThemeableProps & {
+}>, "noTextWrap" | keyof import("@tamagui/text").TextContextStyles | "textProps" | keyof ThemeableProps | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace" | "title" | "subTitle"> & Omit<TextParentStyles, "TextComponent" | "noTextWrap"> & ThemeableProps & {
     /**
      * add icon before, passes color and size automatically if Component
      */
@@ -244,11 +190,47 @@ export declare const ListItem: React.ForwardRefExoticComponent<Omit<import("@tam
      * will not wrap text around `children` only, "all" will not wrap title or subTitle
      */
     noTextWrap?: boolean | "all" | undefined;
-}, Omit<import("@tamagui/web").StackStyleBase, "noTextWrap" | keyof import("@tamagui/text").TextContextStyles | "textProps" | keyof ThemeableProps | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace" | "title" | "subTitle">, {
+}, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<TextParentStyles, "TextComponent" | "noTextWrap"> & ThemeableProps & {
+    /**
+     * add icon before, passes color and size automatically if Component
+     */
+    icon?: IconProp | undefined;
+    /**
+     * add icon after, passes color and size automatically if Component
+     */
+    iconAfter?: IconProp | undefined;
+    /**
+     * adjust icon relative to size
+     */
+    /**
+     * default: -1
+     */
+    scaleIcon?: number | undefined;
+    /**
+     * make the spacing elements flex
+     */
+    spaceFlex?: number | boolean | undefined;
+    /**
+     * adjust internal space relative to icon size
+     */
+    scaleSpace?: number | undefined;
+    /**
+     * title
+     */
+    title?: React.ReactNode;
+    /**
+     * subtitle
+     */
+    subTitle?: React.ReactNode;
+    /**
+     * will not wrap text around `children` only, "all" will not wrap title or subTitle
+     */
+    noTextWrap?: boolean | "all" | undefined;
+}, import("@tamagui/web").StackStyleBase, {
     unstyled?: boolean | undefined;
     size?: SizeTokens | undefined;
-    elevation?: number | SizeTokens | undefined;
     disabled?: boolean | undefined;
+    elevation?: number | SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -263,7 +245,25 @@ export declare const ListItem: React.ForwardRefExoticComponent<Omit<import("@tam
     chromeless?: boolean | "all" | undefined;
     active?: boolean | undefined;
 }, {}> & Omit<{}, "staticConfig" | "extractable" | "styleable"> & {
-    __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<TextParentStyles, "TextComponent" | "noTextWrap"> & ThemeableProps & {
+    __tama: [Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase & {
+        unstyled?: boolean | undefined;
+        size?: SizeTokens | undefined;
+        disabled?: boolean | undefined;
+        elevation?: number | SizeTokens | undefined;
+        transparent?: boolean | undefined;
+        fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
+        hoverTheme?: boolean | undefined;
+        pressTheme?: boolean | undefined;
+        focusTheme?: boolean | undefined;
+        elevate?: boolean | undefined;
+        bordered?: number | boolean | undefined;
+        backgrounded?: boolean | undefined;
+        radiused?: boolean | undefined;
+        padded?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
+        active?: boolean | undefined;
+    }>, "noTextWrap" | keyof import("@tamagui/text").TextContextStyles | "textProps" | keyof ThemeableProps | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace" | "title" | "subTitle"> & Omit<TextParentStyles, "TextComponent" | "noTextWrap"> & ThemeableProps & {
         /**
          * add icon before, passes color and size automatically if Component
          */
@@ -299,11 +299,47 @@ export declare const ListItem: React.ForwardRefExoticComponent<Omit<import("@tam
          * will not wrap text around `children` only, "all" will not wrap title or subTitle
          */
         noTextWrap?: boolean | "all" | undefined;
-    }, Omit<import("@tamagui/web").StackStyleBase, "noTextWrap" | keyof import("@tamagui/text").TextContextStyles | "textProps" | keyof ThemeableProps | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace" | "title" | "subTitle">, {
+    }, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<TextParentStyles, "TextComponent" | "noTextWrap"> & ThemeableProps & {
+        /**
+         * add icon before, passes color and size automatically if Component
+         */
+        icon?: IconProp | undefined;
+        /**
+         * add icon after, passes color and size automatically if Component
+         */
+        iconAfter?: IconProp | undefined;
+        /**
+         * adjust icon relative to size
+         */
+        /**
+         * default: -1
+         */
+        scaleIcon?: number | undefined;
+        /**
+         * make the spacing elements flex
+         */
+        spaceFlex?: number | boolean | undefined;
+        /**
+         * adjust internal space relative to icon size
+         */
+        scaleSpace?: number | undefined;
+        /**
+         * title
+         */
+        title?: React.ReactNode;
+        /**
+         * subtitle
+         */
+        subTitle?: React.ReactNode;
+        /**
+         * will not wrap text around `children` only, "all" will not wrap title or subTitle
+         */
+        noTextWrap?: boolean | "all" | undefined;
+    }, import("@tamagui/web").StackStyleBase, {
         unstyled?: boolean | undefined;
         size?: SizeTokens | undefined;
-        elevation?: number | SizeTokens | undefined;
         disabled?: boolean | undefined;
+        elevation?: number | SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
@@ -325,7 +361,7 @@ export declare const ListItem: React.ForwardRefExoticComponent<Omit<import("@tam
     }, {}>;
     Subtitle: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
         unstyled?: boolean | undefined;
-        size?: number | `$${string}` | `$${number}` | import("@tamagui/web").UnionableString | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/web").UnionableNumber | undefined;
+        size?: number | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | undefined;
     }, {}>;
 };
 export {};
