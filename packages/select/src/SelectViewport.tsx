@@ -1,9 +1,8 @@
 import { FloatingFocusManager } from '@floating-ui/react'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { composeRefs } from '@tamagui/compose-refs'
-import { isWeb } from '@tamagui/constants'
-import { useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { styled } from '@tamagui/core'
+import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { View, styled } from '@tamagui/core'
 import { PortalItem } from '@tamagui/portal'
 import { ThemeableStack } from '@tamagui/stacks'
 
@@ -62,11 +61,6 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraP
       }
     }, [breakpointActive])
 
-    const composedRefs = composeRefs(
-      forwardedRef,
-      context.floatingContext?.refs.setFloating
-    )
-
     if (itemContext.shouldRenderWebNative) {
       return <>{children}</>
     }
@@ -99,6 +93,12 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraP
       className,
       ...floatingProps
     } = itemContext.interactions.getFloatingProps()
+
+    const composedRefs = composeRefs(
+      forwardedRef,
+      context.floatingContext?.refs.setFloating
+    )
+
     const { scrollbarWidth, listStyleType, overflow, ...restStyle } = style
 
     return (
@@ -110,9 +110,9 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraP
             }}
           />
         )}
-        <FloatingFocusManager context={context.floatingContext!}>
-          <AnimatePresence>
-            {context.open ? (
+        <AnimatePresence>
+          {context.open ? (
+            <FloatingFocusManager context={context.floatingContext!} modal={false}>
               <SelectViewportFrame
                 disableClassName
                 key="select-viewport"
@@ -120,18 +120,17 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraP
                 // @ts-ignore
                 role="presentation"
                 {...viewportProps}
-                ref={composedRefs}
-                {...floatingProps}
                 {...restStyle}
                 {...(!props.unstyled && {
                   overflow: disableScroll ? undefined : overflow ?? 'scroll',
                 })}
+                ref={composedRefs}
               >
-                {children}
+                <View {...floatingProps}>{children}</View>
               </SelectViewportFrame>
-            ) : null}
-          </AnimatePresence>
-        </FloatingFocusManager>
+            </FloatingFocusManager>
+          ) : null}
+        </AnimatePresence>
 
         {/* keep in dom to allow for portal to the trigger... very hacky! we should fix */}
         {!context.open && <div style={{ display: 'none' }}>{props.children}</div>}

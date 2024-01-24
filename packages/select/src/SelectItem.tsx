@@ -70,15 +70,14 @@ export const SelectItem = ListItemFrame.styleable<SelectItemExtraProps>(
     } = context
 
     const [isSelected, setSelected] = React.useState(initialValue === value)
-    const [isActive, setActive] = React.useState(false)
 
     React.useEffect(() => {
       return activeIndexSubscribe((i) => {
         const isActive = index === i
-        setActive(isActive)
 
         if (isActive) {
           onActiveChange(value, index)
+          listRef?.current[index]?.focus()
         }
       })
     }, [index])
@@ -161,12 +160,6 @@ export const SelectItem = ListItemFrame.styleable<SelectItemExtraProps>(
           }
     }, [handleSelect])
 
-    useIsomorphicLayoutEffect(() => {
-      if (isActive) {
-        listRef?.current[index]?.focus()
-      }
-    }, [isActive])
-
     return (
       <SelectItemContextProvider
         scope={__scopeSelect}
@@ -194,6 +187,13 @@ export const SelectItem = ListItemFrame.styleable<SelectItemExtraProps>(
               cursor: 'default',
               size,
               outlineOffset: -1,
+
+              focusStyle: {
+                outlineColor: '$outlineColor',
+                outlineWidth: 2,
+                outlineStyle: 'solid',
+                outlineOffset: -2,
+              },
             })}
             {...listItemProps}
             {...selectItemProps}
