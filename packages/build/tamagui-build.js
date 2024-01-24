@@ -195,10 +195,6 @@ async function buildJs() {
       ? {
           entryPoints: [bundleNative],
           bundle: true,
-          target: 'node16',
-          format: 'cjs',
-          jsx: 'automatic',
-          platform: 'node',
           plugins: [
             alias({
               '@tamagui/web': require.resolve('@tamagui/web/native'),
@@ -252,29 +248,24 @@ async function buildJs() {
   const start = Date.now()
 
   const cjsConfig = {
+    format: 'cjs',
     entryPoints: files,
     outdir: flatOut ? 'dist' : 'dist/cjs',
     bundle: shouldBundle,
     external,
-    target: 'node16',
-    format: 'cjs',
-    jsx: 'automatic',
     plugins: shouldBundleNodeModules ? [] : [externalPlugin],
     minify: process.env.MINIFY ? true : false,
     platform: 'node',
   }
 
   const esmConfig = {
+    format: 'esm',
     entryPoints: files,
     outdir: flatOut ? 'dist' : 'dist/esm',
     bundle: shouldBundle,
     external,
-    target: 'esnext',
-    jsx: 'automatic',
     allowOverwrite: true,
-    format: 'esm',
     minify: process.env.MINIFY ? true : false,
-    platform: shouldBundle ? 'node' : 'neutral',
   }
 
   return await Promise.all([
@@ -395,6 +386,32 @@ async function esbuildWriteIfChanged(
   if (!shouldWatch && !platform) {
     return await esbuild.build(opts)
   }
+
+  // compat with jsx and hermes back a few versions generally:
+  /** @type { import('esbuild').BuildOptions } */
+  const nativeEsbuildSettings = {
+    target: 'node16',
+    format: 'cjs',
+    supported: {
+      'logical-assignment': false
+    },
+    jsx: 'automatic',
+    platform: 'node',
+  }
+  
+  /** @type { import('esbuild').BuildOptions } */
+  const webEsbuildSettings = {
+    target: 'esnext',
+    jsx: 'automatic',
+    platform: shouldBundle ? 'node' : 'neutral',
+    tsconfigRaw: {
+      compilerOptions: {
+        paths: {
+          'react-native': ['react-native-web'],
+        },
+      },
+    },
+  }
   
   const built = await esbuild.build({
     ...opts,
@@ -428,17 +445,8 @@ async function esbuildWriteIfChanged(
     sourcemap: true,
     sourcesContent: false,
     logLevel: 'error',
-
-    ...(platform === 'web' && {
-      tsconfigRaw: {
-        compilerOptions: {
-          paths: {
-            'react-native': ['react-native-web'],
-          },
-        },
-      },
-    }),
-
+    ...platform === 'native' && nativeEsbuildSettings,
+    ...platform === 'web' && webEsbuildSettings,
     define: {
       ...(platform && {
         'process.env.TAMAGUI_TARGET': `"${platform}"`,

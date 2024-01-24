@@ -8,18 +8,15 @@ export const docsRoutes = [
   },
 
   {
-    type: 'hr',
     title: 'Core',
-  },
-
-  {
     pages: [
       { title: 'Configuration', route: '/docs/core/configuration' },
       { title: 'Tokens', route: '/docs/core/tokens' },
-      { title: 'Components', route: '/docs/core/stack-and-text' },
-      { title: 'styled', route: '/docs/core/styled' },
-      { title: 'Variants', route: '/docs/core/variants' },
+      { title: 'View & Text', route: '/docs/core/stack-and-text' },
       { title: 'Props', route: '/docs/intro/props' },
+      { title: 'Styles', route: '/docs/intro/styles' },
+      { title: 'styled()', route: '/docs/core/styled' },
+      { title: 'Variants', route: '/docs/core/variants' },
       { title: 'Themes', route: '/docs/intro/themes' },
       { title: 'Animations', route: '/docs/core/animations' },
       { title: 'Theme', route: '/docs/core/theme' },
@@ -31,11 +28,7 @@ export const docsRoutes = [
   },
 
   {
-    type: 'hr',
     title: 'Compiler',
-  },
-
-  {
     pages: [
       { title: 'About', route: '/docs/intro/why-a-compiler' },
       { title: 'Install', route: '/docs/intro/compiler-install' },
@@ -44,11 +37,7 @@ export const docsRoutes = [
   },
 
   {
-    type: 'hr',
     title: 'Theme',
-  },
-
-  {
     pages: [
       { title: 'Colors', route: '/docs/intro/colors' },
       { title: 'Tokens', route: '/docs/intro/tokens' },
@@ -62,11 +51,7 @@ export const docsRoutes = [
   },
 
   {
-    type: 'hr',
     title: 'Tamagui',
-  },
-
-  {
     pages: [
       { title: 'Stacks', route: '/docs/components/stacks' },
       { title: 'Headings', route: '/docs/components/headings' },
@@ -144,22 +129,13 @@ export const docsRoutes = [
   },
 
   {
-    type: 'hr',
     title: 'Extras',
-  },
-
-  {
     pages: [{ title: 'Lucide Icons', route: '/docs/components/lucide-icons' }],
   },
 
   {
-    type: 'hr',
     title: 'Guides',
-  },
-
-  {
     pages: [
-      { title: 'Design Systems', route: '/docs/guides/design-systems' },
       { title: 'Creating Custom Themes', route: '/docs/guides/theme-builder' },
       { title: 'How to Build a Button', route: '/docs/guides/how-to-build-a-button' },
       { title: 'Developing', route: '/docs/guides/developing' },
@@ -171,11 +147,7 @@ export const docsRoutes = [
   },
 
   {
-    type: 'hr',
     title: 'Community',
-  },
-
-  {
     pages: [
       { title: `Community`, route: '/community' },
       { title: `Blog`, route: '/blog' },

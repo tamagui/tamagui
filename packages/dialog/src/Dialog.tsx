@@ -435,6 +435,9 @@ const DialogContentModal = React.forwardRef<TamaguiElement, DialogContentTypePro
         {...props}
         context={context}
         ref={composedRefs}
+        // we make sure focus isn't trapped once `DialogContent` has been closed
+        // (closed !== unmounted when animating out)
+        trapFocus={context.open}
         disableOutsidePointerEvents
         onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
           event.preventDefault()
@@ -457,6 +460,9 @@ const DialogContentModal = React.forwardRef<TamaguiElement, DialogContentTypePro
         onFocusOutside={composeEventHandlers(props.onFocusOutside, (event) =>
           event.preventDefault()
         )}
+        {...(!props.unstyled && {
+          outlineStyle: 'none',
+        })}
       >
         {children}
       </DialogContentImpl>
@@ -581,28 +587,28 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
 
     return (
       <>
-        <FocusScope
-          loop
-          enabled={context.open}
-          trapped={trapFocus}
-          onMountAutoFocus={onOpenAutoFocus}
+        <Dismissable
+          disableOutsidePointerEvents={context.open && disableOutsidePointerEvents}
           forceUnmount={!context.open}
-          onUnmountAutoFocus={onCloseAutoFocus}
+          onEscapeKeyDown={onEscapeKeyDown}
+          onPointerDownOutside={onPointerDownOutside}
+          onFocusOutside={onFocusOutside}
+          onInteractOutside={onInteractOutside}
+          // @ts-ignore
+          ref={composedRefs}
+          onDismiss={() => context.onOpenChange(false)}
         >
-          <Dismissable
-            disableOutsidePointerEvents={context.open && disableOutsidePointerEvents}
+          <FocusScope
+            loop
+            enabled={context.open}
+            trapped={trapFocus}
+            onMountAutoFocus={onOpenAutoFocus}
             forceUnmount={!context.open}
-            onEscapeKeyDown={onEscapeKeyDown}
-            onPointerDownOutside={onPointerDownOutside}
-            onFocusOutside={onFocusOutside}
-            onInteractOutside={onInteractOutside}
-            // @ts-ignore
-            ref={composedRefs}
-            onDismiss={() => context.onOpenChange(false)}
+            onUnmountAutoFocus={onCloseAutoFocus}
           >
             {contents}
-          </Dismissable>
-        </FocusScope>
+          </FocusScope>
+        </Dismissable>
         {process.env.NODE_ENV === 'development' && (
           <>
             <TitleWarning titleId={context.titleId} />
@@ -677,11 +683,13 @@ const DialogCloseFrame = styled(View, {
   tag: 'button',
 })
 
-type DialogCloseProps = GetProps<typeof DialogCloseFrame> & {
+export interface DialogCloseExtraProps {
   displayWhenAdapted?: boolean
 }
 
-const DialogClose = DialogCloseFrame.styleable<DialogCloseProps>(
+type DialogCloseProps = GetProps<typeof DialogCloseFrame> & DialogCloseExtraProps
+
+const DialogClose = DialogCloseFrame.styleable<DialogCloseExtraProps>(
   (props: ScopedProps<DialogCloseProps>, forwardedRef) => {
     const { __scopeDialog, displayWhenAdapted, ...closeProps } = props
     const context = useDialogContext(CLOSE_NAME, __scopeDialog, {

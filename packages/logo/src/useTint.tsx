@@ -67,6 +67,11 @@ export const ThemeTint = ({
   )
 }
 
+export const useTintAlt = (offset = 1) => {
+  const tint = useTint()
+  return tint.tints[Math.abs((tint.tintIndex + offset) % tint.tints.length)]
+}
+
 export const ThemeTintAlt = ({
   children,
   disable,
@@ -76,8 +81,7 @@ export const ThemeTintAlt = ({
   disable?: boolean
   offset?: number
 }) => {
-  const tint = useTint()
-  const curTint = tint.tints[Math.abs((tint.tintIndex + offset) % tint.tints.length)]
+  const curTint = useTintAlt(offset)
   const name = disable ? null : curTint
   return (
     <Theme {...rest} name={name}>

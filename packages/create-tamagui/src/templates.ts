@@ -4,7 +4,6 @@ import { join } from 'path'
 import chalk from 'chalk'
 
 import { IS_TEST } from './create-tamagui-constants'
-import { makeRainbowChalk } from './helpers/rainbowChalk'
 import simpleWeb from './steps/simple-web'
 import expoRouter from './steps/expo-router'
 import starterFree from './steps/starter-free'
@@ -36,17 +35,20 @@ export const templates = [
   },
 
   {
-    title: `Learning - Vite + Webpack, Tamagui config from scratch`,
-    value: 'simple-web',
-    type: 'included-in-monorepo',
+    title: `${chalk.bold.underline(
+      `🥡 ${chalk.magenta('Take')}${chalk.red('out')}}`
+    )} - Supported stack with more to start: https://tamagui.dev/takeout`,
+    value: `takeout-starter`,
+    type: 'premium',
+    packageManager: 'yarn',
     hidden: false,
     repo: {
-      url: IS_TEST ? `file://${repoRoot}` : `https://github.com/tamagui/tamagui.git`,
-      sshFallback: `git@github.com:tamagui/tamagui.git`,
-      dir: [`starters`, `simple-web`],
-      branch: 'master',
+      url: `https://github.com/tamagui/takeout`,
+      sshFallback: `git@github.com:tamagui/takeout.git`,
+      dir: [],
+      branch: 'main',
     },
-    extraSteps: simpleWeb,
+    extraSteps: takeoutSteps,
   },
 
   {
@@ -64,19 +66,16 @@ export const templates = [
   },
 
   {
-    title: `${chalk.bold.underline(
-      `🥡 ${makeRainbowChalk('Takeout')}`
-    )} - Paid stack to ship apps w/users fast: https://tamagui.dev/takeout`,
-    value: `takeout-starter`,
-    type: 'premium',
-    packageManager: 'yarn',
+    title: `Learn - Vite + Webpack, Tamagui config from scratch`,
+    value: 'simple-web',
+    type: 'included-in-monorepo',
     hidden: false,
     repo: {
-      url: `https://github.com/tamagui/takeout`,
-      sshFallback: `git@github.com:tamagui/takeout.git`,
-      dir: [],
-      branch: 'main',
+      url: IS_TEST ? `file://${repoRoot}` : `https://github.com/tamagui/tamagui.git`,
+      sshFallback: `git@github.com:tamagui/tamagui.git`,
+      dir: [`starters`, `simple-web`],
+      branch: 'master',
     },
-    extraSteps: takeoutSteps,
+    extraSteps: simpleWeb,
   },
 ] as const

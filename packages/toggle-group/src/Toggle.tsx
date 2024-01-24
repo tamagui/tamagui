@@ -37,7 +37,7 @@ export const ToggleFrame = styled(ThemeableStack, {
         },
         focusStyle: {
           borderColor: '$borderColorFocus',
-          outlineColor: '$borderColorFocus',
+          outlineColor: '$outlineColor',
           outlineWidth: 2,
           outlineStyle: 'solid',
         },

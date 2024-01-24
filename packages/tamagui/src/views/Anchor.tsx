@@ -3,11 +3,13 @@ import { styled } from '@tamagui/core'
 import { SizableText, SizableTextProps } from '@tamagui/text'
 import { Linking } from 'react-native'
 
-export type AnchorProps = SizableTextProps & {
+export interface AnchorExtraProps {
   href?: string
   target?: string
   rel?: string
 }
+
+export type AnchorProps = SizableTextProps & AnchorExtraProps
 
 const AnchorFrame = styled(SizableText, {
   name: 'Anchor',
@@ -15,7 +17,7 @@ const AnchorFrame = styled(SizableText, {
   accessibilityRole: 'link',
 })
 
-export const Anchor = AnchorFrame.styleable<AnchorProps>(
+export const Anchor = AnchorFrame.styleable<AnchorExtraProps>(
   ({ href, target, ...props }, ref) => {
     return (
       <AnchorFrame

@@ -1,4 +1,4 @@
-import { NativeValue, SizeTokens, StackProps, TamaguiComponentExpectingVariants } from '@tamagui/core';
+import { NativeValue, SizeTokens, StackProps } from '@tamagui/core';
 import * as React from 'react';
 import { SwitchProps as NativeSwitchProps } from 'react-native';
 type SwitchSharedProps = {
@@ -20,21 +20,85 @@ export type SwitchExtraProps = {
 export type SwitchProps = Omit<SwitchBaseProps & SwitchExtraProps, 'children'> & {
     children?: React.ReactNode | ((checked: boolean) => React.ReactNode);
 };
-type SwitchComponent = TamaguiComponentExpectingVariants<SwitchProps, SwitchSharedProps & SwitchExtraProps>;
-type SwitchThumbComponent = TamaguiComponentExpectingVariants<SwitchBaseProps, SwitchSharedProps>;
-export declare function createSwitch<F extends SwitchComponent, T extends SwitchThumbComponent>({ disableActiveTheme, Frame, Thumb, }: {
+type SwitchComponent = (props: SwitchSharedProps & SwitchExtraProps) => any;
+type SwitchThumbComponent = (props: SwitchSharedProps) => any;
+export declare function createSwitch<F extends SwitchComponent, T extends SwitchThumbComponent>(createProps: {
     disableActiveTheme?: boolean;
     Frame?: F;
     Thumb?: T;
-}): import("@tamagui/core").ReactComponentWithRef<Omit<SwitchProps, keyof SwitchExtraProps> & SwitchExtraProps, any> & {
-    staticConfig: import("@tamagui/core").StaticConfig;
-    extractable: <X>(a: X, staticConfig?: Partial<import("@tamagui/core").StaticConfig> | undefined) => X;
-    styleable: import("@tamagui/core").Styleable<Omit<SwitchProps, keyof SwitchExtraProps> & SwitchExtraProps, any, any, SwitchSharedProps & SwitchExtraProps, {}>;
+}): React.ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase & {
+    size?: SizeTokens | undefined;
+    checked?: boolean | undefined;
+    frameWidth?: number | undefined;
+    unstyled?: boolean | undefined;
+    elevation?: number | SizeTokens | undefined;
+    fullscreen?: boolean | undefined;
+}>, keyof SwitchExtraProps> & SwitchExtraProps & React.RefAttributes<import("@tamagui/core").TamaguiElement>> & import("@tamagui/core").StaticComponentObject<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase & {
+    size?: SizeTokens | undefined;
+    checked?: boolean | undefined;
+    frameWidth?: number | undefined;
+    unstyled?: boolean | undefined;
+    elevation?: number | SizeTokens | undefined;
+    fullscreen?: boolean | undefined;
+}>, keyof SwitchExtraProps> & SwitchExtraProps, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & SwitchExtraProps, import("@tamagui/core").StackStyleBase, {
+    size?: SizeTokens | undefined;
+    checked?: boolean | undefined;
+    frameWidth?: number | undefined;
+    unstyled?: boolean | undefined;
+    elevation?: number | SizeTokens | undefined;
+    fullscreen?: boolean | undefined;
+}, {}> & Omit<{}, "staticConfig" | "extractable" | "styleable"> & {
+    __tama: [Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase & {
+        size?: SizeTokens | undefined;
+        checked?: boolean | undefined;
+        frameWidth?: number | undefined;
+        unstyled?: boolean | undefined;
+        elevation?: number | SizeTokens | undefined;
+        fullscreen?: boolean | undefined;
+    }>, keyof SwitchExtraProps> & SwitchExtraProps, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & SwitchExtraProps, import("@tamagui/core").StackStyleBase, {
+        size?: SizeTokens | undefined;
+        checked?: boolean | undefined;
+        frameWidth?: number | undefined;
+        unstyled?: boolean | undefined;
+        elevation?: number | SizeTokens | undefined;
+        fullscreen?: boolean | undefined;
+    }, {}];
 } & {
-    __baseProps: any;
-    __variantProps: SwitchSharedProps & SwitchExtraProps;
-} & {
-    Thumb: import("@tamagui/core").TamaguiComponent<SwitchBaseProps, any, any, SwitchSharedProps, {}>;
+    Thumb: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase & {
+        size?: SizeTokens | undefined;
+        checked?: boolean | undefined;
+        unstyled?: boolean | undefined;
+        elevation?: number | SizeTokens | undefined;
+        transparent?: boolean | undefined;
+        fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
+        hoverTheme?: boolean | undefined;
+        pressTheme?: boolean | undefined;
+        focusTheme?: boolean | undefined;
+        elevate?: boolean | undefined;
+        bordered?: number | boolean | undefined;
+        backgrounded?: boolean | undefined;
+        radiused?: boolean | undefined;
+        padded?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
+    }>, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & void, import("@tamagui/core").StackStyleBase, {
+        size?: SizeTokens | undefined;
+        checked?: boolean | undefined;
+        unstyled?: boolean | undefined;
+        elevation?: number | SizeTokens | undefined;
+        transparent?: boolean | undefined;
+        fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
+        hoverTheme?: boolean | undefined;
+        pressTheme?: boolean | undefined;
+        focusTheme?: boolean | undefined;
+        elevate?: boolean | undefined;
+        bordered?: number | boolean | undefined;
+        backgrounded?: boolean | undefined;
+        radiused?: boolean | undefined;
+        padded?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
+    }, {}>;
 };
 export {};
 //# sourceMappingURL=createSwitch.d.ts.map

@@ -26,5 +26,5 @@ export declare const SheetImplementationCustom: (props: Omit<{
     moveOnKeyboardChange?: boolean | undefined;
 } & {
     __scopeSheet?: import("@tamagui/create-context").Scope<any>;
-} & import("react").RefAttributes<View>, "theme" | "themeInverse"> & import("@tamagui/core").ThemeableProps) => import("react").ReactElement<any, string | import("react").JSXElementConstructor<any>> | null;
+} & import("react").RefAttributes<View>, "themeInverse" | "theme"> & import("@tamagui/core").ThemeableProps) => import("react").ReactElement<any, string | import("react").JSXElementConstructor<any>> | null;
 //# sourceMappingURL=SheetImplementationCustom.d.ts.map

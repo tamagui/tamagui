@@ -13,6 +13,7 @@ import {
   SizeTokens,
   Stack,
   StackProps,
+  TamaguiComponent,
   TamaguiElement,
   Theme,
   View,
@@ -29,8 +30,8 @@ import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import {
   Popper,
   PopperAnchor,
-  PopperAnchorProps,
   PopperArrow,
+  PopperArrowExtraProps,
   PopperArrowProps,
   PopperContent,
   PopperContentFrame,
@@ -199,7 +200,13 @@ export interface PopoverContentTypeProps
   enableAnimationForPositionChange?: boolean
 }
 
-export const PopoverContent = PopperContentFrame.extractable(
+type PopoverContentType = TamaguiComponent<
+  ScopedPopoverProps<PopoverContentTypeProps>,
+  PopoverContentTypeElement
+>
+
+// @ts-expect-error
+export const PopoverContent: PopoverContentType = PopperContentFrame.extractable(
   React.forwardRef<
     PopoverContentTypeElement,
     ScopedPopoverProps<PopoverContentTypeProps>
@@ -519,27 +526,24 @@ export const PopoverClose = React.forwardRef<
 
 export type PopoverArrowProps = PopperArrowProps
 
-export const PopoverArrow = PopperArrow.styleable(function PopoverArrow(
-  props: ScopedPopoverProps<PopoverArrowProps>,
-  forwardedRef
-) {
-  const { __scopePopover, ...rest } = props
-  const context = usePopoverContext(__scopePopover)
-  const sheetActive = useSheetBreakpointActive(context.sheetBreakpoint)
-
-  if (sheetActive) {
-    return null
+export const PopoverArrow = PopperArrow.styleable<PopperArrowExtraProps>(
+  function PopoverArrow(props: ScopedPopoverProps<PopoverArrowProps>, forwardedRef) {
+    const { __scopePopover, ...rest } = props
+    const context = usePopoverContext(__scopePopover)
+    const sheetActive = useSheetBreakpointActive(context.sheetBreakpoint)
+    if (sheetActive) {
+      return null
+    }
+    return (
+      <PopperArrow
+        __scopePopper={__scopePopover || POPOVER_SCOPE}
+        componentName="PopoverArrow"
+        {...rest}
+        ref={forwardedRef}
+      />
+    )
   }
-
-  return (
-    <PopperArrow
-      __scopePopper={__scopePopover || POPOVER_SCOPE}
-      componentName="PopoverArrow"
-      {...rest}
-      ref={forwardedRef}
-    />
-  )
-})
+)
 
 /* -------------------------------------------------------------------------------------------------
  * Popover

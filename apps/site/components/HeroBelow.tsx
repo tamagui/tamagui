@@ -95,7 +95,7 @@ export const HeroBelowContent = memo(() => {
           </IconStack>
           <TitleLink href="/docs/intro/why-a-compiler">Static</TitleLink>
           <Paragraph o={0.7} size="$5">
-            An smart optimizer that does partial analysis, extracts CSS, flattens your
+            A smart optimizer that does partial analysis, extracts CSS, flattens your
             tree, and removes code. Supports Next, Webpack, Vite, Babel and Metro.
           </Paragraph>
         </Section>

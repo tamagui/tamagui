@@ -287,6 +287,8 @@ export const PopperContent = React.forwardRef<
     ref: contentRefs,
     x: x || 0,
     y: y || 0,
+    top: 0,
+    left: 0,
     position: strategy,
     ...(enableAnimationForPositionChange && {
       // apply animation but disable it on initial render to avoid animating from 0 to the first position
@@ -312,10 +314,13 @@ export const PopperContent = React.forwardRef<
  * PopperArrow
  * -----------------------------------------------------------------------------------------------*/
 
-export type PopperArrowProps = YStackProps & {
+export type PopperArrowExtraProps = {
   offset?: number
   size?: SizeTokens
+  __scopePopper?: string
 }
+
+export type PopperArrowProps = YStackProps & PopperArrowExtraProps
 
 const PopperArrowFrame = styled(YStack, {
   name: 'PopperArrow',
@@ -365,92 +370,92 @@ const opposites = {
 
 type Sides = keyof typeof opposites
 
-export const PopperArrow = PopperArrowFrame.styleable<
-  ScopedPopperProps<PopperArrowProps>
->(function PopperArrow(propsIn: ScopedPopperProps<PopperArrowProps>, forwardedRef) {
-  const { __scopePopper, ...rest } = propsIn
-  const props = useProps(rest)
-  const { offset, size: sizeProp, borderWidth = 0, ...arrowProps } = props
+export const PopperArrow = PopperArrowFrame.styleable<PopperArrowExtraProps>(
+  function PopperArrow(propsIn: ScopedPopperProps<PopperArrowProps>, forwardedRef) {
+    const { __scopePopper, ...rest } = propsIn
+    const props = useProps(rest)
+    const { offset, size: sizeProp, borderWidth = 0, ...arrowProps } = props
 
-  const context = usePopperContext(__scopePopper)
-  const sizeVal = sizeProp ?? context.size
-  const sizeValResolved = getVariableValue(
-    getSpace(sizeVal, {
-      shift: -2,
-      bounds: [2],
-    })
-  )
-  const size = Math.max(0, +sizeValResolved)
+    const context = usePopperContext(__scopePopper)
+    const sizeVal = sizeProp ?? context.size
+    const sizeValResolved = getVariableValue(
+      getSpace(sizeVal, {
+        shift: -2,
+        bounds: [2],
+      })
+    )
+    const size = Math.max(0, +sizeValResolved)
 
-  const { placement } = context
-  const refs = useComposedRefs(context.arrowRef, forwardedRef)
+    const { placement } = context
+    const refs = useComposedRefs(context.arrowRef, forwardedRef)
 
-  // Sometimes floating-ui can return NaN during orientation or screen size changes on native
-  // so we explicitly force the x,y position types as a number
-  const x = (context.arrowStyle?.x as number) || 0
-  const y = (context.arrowStyle?.y as number) || 0
+    // Sometimes floating-ui can return NaN during orientation or screen size changes on native
+    // so we explicitly force the x,y position types as a number
+    const x = (context.arrowStyle?.x as number) || 0
+    const y = (context.arrowStyle?.y as number) || 0
 
-  const primaryPlacement = (placement ? placement.split('-')[0] : 'top') as Sides
+    const primaryPlacement = (placement ? placement.split('-')[0] : 'top') as Sides
 
-  const arrowStyle: StackProps = { x, y, width: size, height: size }
+    const arrowStyle: StackProps = { x, y, width: size, height: size }
 
-  const innerArrowStyle: StackProps = {}
-  const isVertical = primaryPlacement === 'bottom' || primaryPlacement === 'top'
+    const innerArrowStyle: StackProps = {}
+    const isVertical = primaryPlacement === 'bottom' || primaryPlacement === 'top'
 
-  if (primaryPlacement) {
-    // allows for extra diagonal size
-    arrowStyle[isVertical ? 'width' : 'height'] = size * 2
-    const oppSide = opposites[primaryPlacement]
-    if (oppSide) {
-      arrowStyle[oppSide] = -size
-      innerArrowStyle[oppSide] = size / 2
+    if (primaryPlacement) {
+      // allows for extra diagonal size
+      arrowStyle[isVertical ? 'width' : 'height'] = size * 2
+      const oppSide = opposites[primaryPlacement]
+      if (oppSide) {
+        arrowStyle[oppSide] = -size
+        innerArrowStyle[oppSide] = size / 2
+      }
+      if (oppSide === 'bottom') {
+        // on the bottom it needs to be 1px further up
+        // @ts-ignore it exists
+        arrowStyle[oppSide] += 1
+      }
+      if (oppSide === 'top' || oppSide === 'bottom') {
+        arrowStyle.left = 0
+      }
+      if (oppSide === 'left' || oppSide === 'right') {
+        arrowStyle.top = 0
+      }
+
+      // send the Arrow's offset up to Popper
+      useIsomorphicLayoutEffect(() => {
+        context.onArrowSize?.(size)
+      }, [size, context.onArrowSize])
     }
-    if (oppSide === 'bottom') {
-      // on the bottom it needs to be 1px further up
-      // @ts-ignore it exists
-      arrowStyle[oppSide] += 1
-    }
-    if (oppSide === 'top' || oppSide === 'bottom') {
-      arrowStyle.left = 0
-    }
-    if (oppSide === 'left' || oppSide === 'right') {
-      arrowStyle.top = 0
-    }
 
-    // send the Arrow's offset up to Popper
-    useIsomorphicLayoutEffect(() => {
-      context.onArrowSize?.(size)
-    }, [size, context.onArrowSize])
+    // outer frame to cut off for ability to have nicer shadows/borders
+    return (
+      <PopperArrowOuterFrame ref={refs} {...arrowStyle}>
+        <PopperArrowFrame
+          width={size}
+          height={size}
+          {...arrowProps}
+          {...innerArrowStyle}
+          rotate="45deg"
+          {...(primaryPlacement === 'bottom' && {
+            borderLeftWidth: borderWidth,
+            borderTopWidth: borderWidth,
+          })}
+          {...(primaryPlacement === 'top' && {
+            borderBottomWidth: borderWidth,
+            borderRightWidth: borderWidth,
+          })}
+          {...(primaryPlacement === 'right' && {
+            borderLeftWidth: borderWidth,
+            borderBottomWidth: borderWidth,
+          })}
+          {...(primaryPlacement === 'left' && {
+            borderTopWidth: borderWidth,
+            borderRightWidth: borderWidth,
+          })}
+        />
+      </PopperArrowOuterFrame>
+    )
   }
-
-  // outer frame to cut off for ability to have nicer shadows/borders
-  return (
-    <PopperArrowOuterFrame ref={refs} {...arrowStyle}>
-      <PopperArrowFrame
-        width={size}
-        height={size}
-        {...arrowProps}
-        {...innerArrowStyle}
-        rotate="45deg"
-        {...(primaryPlacement === 'bottom' && {
-          borderLeftWidth: borderWidth,
-          borderTopWidth: borderWidth,
-        })}
-        {...(primaryPlacement === 'top' && {
-          borderBottomWidth: borderWidth,
-          borderRightWidth: borderWidth,
-        })}
-        {...(primaryPlacement === 'right' && {
-          borderLeftWidth: borderWidth,
-          borderBottomWidth: borderWidth,
-        })}
-        {...(primaryPlacement === 'left' && {
-          borderTopWidth: borderWidth,
-          borderRightWidth: borderWidth,
-        })}
-      />
-    </PopperArrowOuterFrame>
-  )
-})
+)
 
 /* -----------------------------------------------------------------------------------------------*/

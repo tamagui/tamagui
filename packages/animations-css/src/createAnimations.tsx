@@ -66,9 +66,9 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
       const [animationKey, animationConfig] = [].concat(props.animation)
       const animation = animations[animationKey]
       const keys = props.animateOnly ?? ['all']
-      const host = stateRef.current.host
 
       useIsomorphicLayoutEffect(() => {
+        const host = stateRef.current.host
         if (!sendExitComplete || !isExiting || !host) return
         const node = host as HTMLElement
         const onFinishAnimation = () => {

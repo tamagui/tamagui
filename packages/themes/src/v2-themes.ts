@@ -175,6 +175,8 @@ export const templates = (() => {
     borderColorFocus: 4,
     borderColorPress: 5,
     placeholderColor: -4,
+    // in the future this should be partially transparent
+    outlineColor: 5,
   }
 
   return {

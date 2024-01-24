@@ -28,8 +28,8 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = React.forwardRef(
     const contents = (
       <Tooltip
         offset={15}
-        restMs={0}
-        delay={0}
+        restMs={40}
+        delay={40}
         {...tooltipProps}
         {...(disabled ? { open: false } : null)}
       >
@@ -50,14 +50,15 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = React.forwardRef(
           x={0}
           scale={1}
           y={0}
+          // @ts-ignore
           elevation="$1"
           opacity={1}
           paddingVertical={getSpace(tooltipProps.size || '$true', {
-            shift: -3,
+            shift: -4,
           })}
           animateOnly={['transform', 'opacity']}
           animation={[
-            '75ms',
+            'quicker',
             {
               opacity: {
                 overshootClamping: true,
@@ -67,7 +68,7 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = React.forwardRef(
           {...contentProps}
         >
           <Tooltip.Arrow />
-          <Paragraph size="$2">{label}</Paragraph>
+          <Paragraph size="$3">{label}</Paragraph>
         </Tooltip.Content>
       </Tooltip>
     )

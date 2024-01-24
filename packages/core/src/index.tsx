@@ -1,12 +1,14 @@
 import { useResponderEvents } from '@tamagui/react-native-use-responder-events'
 import type {
-  StackProps,
-  StackPropsBase,
+  StackNonStyleProps,
+  StackStyleBase,
   TamaguiComponent,
   TamaguiElement,
   TamaguiTextElement,
+  TextNonStyleProps,
   TextProps,
-  TextPropsBase,
+  TextStylePropsBase,
+  TamaDefer,
 } from '@tamagui/web'
 import {
   Stack as WebStack,
@@ -15,31 +17,41 @@ import {
   composeEventHandlers,
   setupHooks,
 } from '@tamagui/web'
-import { RefObject, createElement } from 'react'
+import { createElement } from 'react'
 
 import { createOptimizedView } from './createOptimizedView'
 import { getBaseViews } from './getBaseViews'
 import { useElementLayout } from './hooks/useElementLayout'
 import { usePlatformMethods } from './hooks/usePlatformMethods'
-import { RNTextProps, RNViewProps } from './reactNativeTypes'
+import type { RNTextProps, RNViewProps } from './reactNativeTypes'
 import { usePressability } from './vendor/Pressability'
 
 // adds extra types to View/Stack/Text:
 
-type RNExclusiveViewProps = Omit<RNViewProps, keyof StackProps>
+type RNExclusiveViewProps = Omit<RNViewProps, keyof StackNonStyleProps>
+export interface RNTamaguiViewNonStyleProps
+  extends StackNonStyleProps,
+    RNExclusiveViewProps {}
+
 type RNTamaguiView = TamaguiComponent<
-  StackProps & RNExclusiveViewProps,
+  TamaDefer,
   TamaguiElement,
-  StackPropsBase & RNExclusiveViewProps,
-  void
+  RNTamaguiViewNonStyleProps,
+  StackStyleBase,
+  {}
 >
 
 type RNExclusiveTextProps = Omit<RNTextProps, keyof TextProps>
+export interface RNTamaguiTextNonStyleProps
+  extends TextNonStyleProps,
+    RNExclusiveTextProps {}
+
 type RNTamaguiText = TamaguiComponent<
-  TextProps & RNExclusiveTextProps,
+  TamaDefer,
   TamaguiTextElement,
-  TextPropsBase & RNExclusiveTextProps,
-  void
+  RNTamaguiTextNonStyleProps,
+  TextStylePropsBase,
+  {}
 >
 
 // re-exports all of @tamagui/web just adds hooks
@@ -95,7 +107,11 @@ setupHooks({
 
       if (willHydrate || isDOM) {
         // only necessary for DOM elements, but we need the hooks to stay around
-        const hostRef = { current: stateRef.current.host as Element }
+        const hostRef = {
+          get current() {
+            return stateRef.current.host as Element
+          },
+        }
         usePlatformMethods(hostRef)
         useElementLayout(hostRef, !isDOM ? undefined : (onLayout as any))
         useResponderEvents(
@@ -235,3 +251,148 @@ const dontComposePressabilityKeys = {
 export const View = WebView as any as RNTamaguiView
 export const Stack = WebStack as any as RNTamaguiView
 export const Text = WebText as any as RNTamaguiText
+
+// easily test type declaration output and if it gets messy:
+
+// export const X = styled(WebView, {
+//   variants: {
+//     abc: {
+//       true: {},
+//     },
+//   } as const,
+// })
+
+// export const Y = styled(X, {
+//   variants: {
+//     zys: {
+//       true: {},
+//     },
+//   } as const,
+// })
+
+// export const Z = styled(Y, {
+//   variants: {
+//     xxx: {
+//       true: {},
+//     },
+//   } as const,
+// })
+
+// export const A = styled(Z, {
+//   variants: {} as const,
+// })
+
+// const zz = <A />
+
+// const variants = {
+//   fullscreen: {
+//     true: {},
+//   },
+//   elevation: {
+//     '...size': () => ({}),
+//     ':number': () => ({}),
+//   },
+// } as const
+
+// export const YStack = styled(View, {
+//   flexDirection: 'column',
+//   variants,
+// })
+
+// import { TextInput } from 'react-native'
+// export const InputFrame = styled(
+//   TextInput,
+//   {
+//     name: 'Input',
+//     backgroundColor: 'green',
+
+//     variants: {
+//       // unstyled: {
+//       //   false: {},
+//       // },
+
+//       size: {
+//         '...size': () => ({}),
+//       },
+
+//       // disabled: {
+//       //   ':boolean': () => ({})
+//       // },
+//     } as const,
+
+//     // defaultVariants: {
+//     //   unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+//     // },
+//   },
+//   {
+//     isText: true,
+//     acceptTokens: {
+//       placeholderTextColor: 'color',
+//     },
+//   }
+// )
+
+// export const StyledInputFrame = styled(InputFrame, {
+//   fontSize: 16,
+//   fontFamily: '$silkscreen',
+//   color: '$color5',
+//   minWidth: 0,
+//   borderWidth: 0,
+//   borderColor: 'transparent',
+
+//   variants: {
+//     unset: {
+//       false: {
+//         borderWidth: 2,
+//         py: 12,
+//         px: 14,
+//         borderRadius: 6,
+//         bg: '$color3',
+//         focusStyle: {
+//           bg: '$color4',
+//           margin: 0,
+//         },
+//       },
+//     },
+//   } as const,
+
+//   defaultVariants: {
+//     unset: false,
+//   },
+// })
+
+// export const StyledStyledInputFrame = styled(
+//   StyledInputFrame,
+//   {
+//     fontSize: 16,
+//     fontFamily: '$silkscreen',
+//     color: '$color5',
+//     minWidth: 0,
+//     borderWidth: 0,
+//     borderColor: 'transparent',
+
+//     variants: {
+//       unset: {
+//         false: {
+//           borderWidth: 2,
+//           py: 12,
+//           px: 14,
+//           borderRadius: 6,
+//           bg: '$color3',
+//           focusStyle: {
+//             bg: '$color4',
+//             margin: 0,
+//           },
+//         },
+//       },
+//     } as const,
+
+//     defaultVariants: {
+//       unset: false,
+//     },
+//   },
+//   {
+//     inlineProps: new Set(['id', 'testID']),
+//   }
+// )
+// export const DepthTest = () => <StyledStyledInputFrame placeholder="" />

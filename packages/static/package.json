@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/static",
-  "version": "1.86.4",
+  "version": "1.88.9",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs/index.js",
@@ -35,17 +35,17 @@
     "@babel/runtime": "^7.23.2",
     "@babel/traverse": "^7.23.3",
     "@babel/types": "^7.23.3",
-    "@tamagui/build": "1.86.4",
-    "@tamagui/cli-color": "1.86.4",
-    "@tamagui/config-default": "1.86.4",
-    "@tamagui/core": "1.86.4",
-    "@tamagui/fake-react-native": "1.86.4",
-    "@tamagui/generate-themes": "1.86.4",
-    "@tamagui/helpers": "1.86.4",
-    "@tamagui/helpers-node": "1.86.4",
-    "@tamagui/proxy-worm": "1.86.4",
-    "@tamagui/shorthands": "1.86.4",
-    "@tamagui/types": "1.86.4",
+    "@tamagui/build": "1.88.9",
+    "@tamagui/cli-color": "1.88.9",
+    "@tamagui/config-default": "1.88.9",
+    "@tamagui/core": "1.88.9",
+    "@tamagui/fake-react-native": "1.88.9",
+    "@tamagui/generate-themes": "1.88.9",
+    "@tamagui/helpers": "1.88.9",
+    "@tamagui/helpers-node": "1.88.9",
+    "@tamagui/proxy-worm": "1.88.9",
+    "@tamagui/shorthands": "1.88.9",
+    "@tamagui/types": "1.88.9",
     "babel-literal-to-ast": "^2.1.0",
     "browserslist": "^4.22.2",
     "esbuild": "^0.19.11",
@@ -54,11 +54,13 @@
     "find-root": "^1.1.0",
     "fs-extra": "^11.1.0",
     "invariant": "^2.2.4",
-    "lightningcss": "^1.22.1",
     "lodash": "^4.17.21",
     "react-native-web": "^0.19.10",
-    "react-native-web-internals": "1.86.4",
-    "react-native-web-lite": "1.86.4"
+    "react-native-web-internals": "1.88.9",
+    "react-native-web-lite": "1.88.9"
+  },
+  "optionalDependencies": {
+    "lightningcss": "*"
   },
   "devDependencies": {
     "@babel/plugin-syntax-typescript": "^7.23.3",
@@ -70,7 +72,7 @@
     "esbuild-loader": "^3.0.1",
     "null-loader": "^4.0.1",
     "react": "^18.2.0",
-    "typescript": "^5.2.2"
+    "typescript": "^5.3.3"
   },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
 }
