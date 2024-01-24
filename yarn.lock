@@ -3619,7 +3619,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@floating-ui/react-dom@npm:^2.0.1":
+"@floating-ui/react-dom@npm:2.0.1, @floating-ui/react-dom@npm:^2.0.1":
   version: 2.0.1
   resolution: "@floating-ui/react-dom@npm:2.0.1"
   dependencies:
@@ -3631,7 +3631,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@floating-ui/react-native@npm:^0.10.1":
+"@floating-ui/react-native@npm:0.10.1":
   version: 0.10.1
   resolution: "@floating-ui/react-native@npm:0.10.1"
   dependencies:
@@ -3643,7 +3643,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@floating-ui/react@npm:^0.24.7":
+"@floating-ui/react@npm:0.24.7":
   version: 0.24.7
   resolution: "@floating-ui/react@npm:0.24.7"
   dependencies:
@@ -6612,8 +6612,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/floating@workspace:packages/floating"
   dependencies:
-    "@floating-ui/react-dom": "npm:^2.0.1"
-    "@floating-ui/react-native": "npm:^0.10.1"
+    "@floating-ui/react-dom": "npm:2.0.1"
+    "@floating-ui/react-native": "npm:0.10.1"
     "@tamagui/build": "npm:1.88.11"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
@@ -7164,7 +7164,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/popover@workspace:packages/popover"
   dependencies:
-    "@floating-ui/react": "npm:^0.24.7"
+    "@floating-ui/react": "npm:0.24.7"
     "@tamagui/adapt": "npm:1.88.11"
     "@tamagui/animate": "npm:1.88.11"
     "@tamagui/aria-hidden": "npm:1.88.11"
@@ -7392,9 +7392,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/select@workspace:packages/select"
   dependencies:
-    "@floating-ui/react": "npm:^0.24.7"
-    "@floating-ui/react-dom": "npm:^2.0.1"
-    "@floating-ui/react-native": "npm:^0.10.1"
+    "@floating-ui/react": "npm:0.24.7"
+    "@floating-ui/react-dom": "npm:2.0.1"
+    "@floating-ui/react-native": "npm:0.10.1"
     "@tamagui/adapt": "npm:1.88.11"
     "@tamagui/animate-presence": "npm:1.88.11"
     "@tamagui/build": "npm:1.88.11"
@@ -7968,7 +7968,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/tooltip@workspace:packages/tooltip"
   dependencies:
-    "@floating-ui/react": "npm:^0.24.7"
+    "@floating-ui/react": "npm:0.24.7"
     "@tamagui/build": "npm:1.88.11"
     "@tamagui/compose-refs": "npm:1.88.11"
     "@tamagui/core": "npm:1.88.11"

@@ -1,3 +1,5 @@
+- floating ui has a breaking change in patch version, so weve pinned the version to exact, but we should upgrade to latest floating ui and figure out the fixes (last i checked not super easy)
+
 missing disabled prop when using a variant function. Here's an example:
 
 ```tsx
