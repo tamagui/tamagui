@@ -78,7 +78,7 @@ export declare function createSwitch<F extends SwitchComponent, T extends Switch
         fullscreen?: boolean | undefined;
     }, {}];
 } & {
-    Thumb: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & void, Omit<import("@tamagui/core").StackStyleBase, never>, {
+    Thumb: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & (void | Object), Omit<import("@tamagui/core").StackStyleBase, never>, {
         size?: SizeTokens | undefined;
         checked?: boolean | undefined;
         unstyled?: boolean | undefined;

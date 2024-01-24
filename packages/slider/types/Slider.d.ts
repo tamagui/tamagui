@@ -117,10 +117,12 @@ export declare const SliderThumbFrame: import("@tamagui/core").TamaguiComponent<
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }, {}>;
-interface SliderThumbProps extends SizableStackProps {
+export interface SliderThumbExtraProps {
     index: number;
 }
-declare const SliderThumb: React.MemoExoticComponent<import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & SliderThumbProps, Omit<import("@tamagui/core").StackStyleBase, keyof SliderThumbProps>, {
+export interface SliderThumbProps extends SizableStackProps, SliderThumbExtraProps {
+}
+declare const SliderThumb: React.MemoExoticComponent<import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & SliderThumbExtraProps, Omit<import("@tamagui/core").StackStyleBase, "index">, {
     elevation?: number | SizeTokens | undefined;
     size?: SizeTokens | undefined;
     fullscreen?: boolean | undefined;
@@ -220,7 +222,7 @@ declare const Slider: React.ForwardRefExoticComponent<SliderProps & React.RefAtt
         fullscreen?: boolean | undefined;
         orientation?: "horizontal" | "vertical" | undefined;
     }>> & React.RefAttributes<View>>;
-    Thumb: React.MemoExoticComponent<import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & SliderThumbProps, Omit<import("@tamagui/core").StackStyleBase, keyof SliderThumbProps>, {
+    Thumb: React.MemoExoticComponent<import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & SliderThumbExtraProps, Omit<import("@tamagui/core").StackStyleBase, "index">, {
         elevation?: number | SizeTokens | undefined;
         size?: SizeTokens | undefined;
         fullscreen?: boolean | undefined;
@@ -320,7 +322,7 @@ declare const Range: React.ForwardRefExoticComponent<Omit<import("@tamagui/core"
     fullscreen?: boolean | undefined;
     orientation?: "horizontal" | "vertical" | undefined;
 }>> & React.RefAttributes<View>>;
-declare const Thumb: React.MemoExoticComponent<import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & SliderThumbProps, Omit<import("@tamagui/core").StackStyleBase, keyof SliderThumbProps>, {
+declare const Thumb: React.MemoExoticComponent<import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & SliderThumbExtraProps, Omit<import("@tamagui/core").StackStyleBase, "index">, {
     elevation?: number | SizeTokens | undefined;
     size?: SizeTokens | undefined;
     fullscreen?: boolean | undefined;
@@ -338,5 +340,5 @@ declare const Thumb: React.MemoExoticComponent<import("@tamagui/core").TamaguiCo
     chromeless?: boolean | "all" | undefined;
 }, {}>>;
 export { Slider, SliderTrack, SliderTrackActive, SliderThumb, Track, Range, Thumb, };
-export type { SliderProps, SliderTrackProps, SliderTrackActiveProps, SliderThumbProps };
+export type { SliderProps, SliderTrackProps, SliderTrackActiveProps };
 //# sourceMappingURL=Slider.d.ts.map

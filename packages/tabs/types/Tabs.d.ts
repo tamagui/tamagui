@@ -275,8 +275,8 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
     }>> & {
-        axis?: "horizontal" | "vertical" | undefined;
-        orientation?: "horizontal" | "vertical" | undefined;
+        axis?: "vertical" | "horizontal" | undefined;
+        orientation?: "vertical" | "horizontal" | undefined;
         scrollable?: boolean | undefined;
         showScrollIndicator?: boolean | undefined;
         disabled?: boolean | undefined;

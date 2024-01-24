@@ -10,7 +10,7 @@ interface CollapsibleProps extends StackProps {
 }
 type CollapsibleTriggerProps = GetProps<typeof Stack>;
 declare const CollapsibleTriggerFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>;
-declare const CollapsibleTrigger: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps & void, Omit<import("@tamagui/web").StackStyleBase, never>, {}, {}>;
+declare const CollapsibleTrigger: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps & (void | Object), Omit<import("@tamagui/web").StackStyleBase, never>, {}, {}>;
 export interface CollapsibleContentExtraProps extends AnimatePresenceProps {
     /**
      * Used to force mounting when more control is needed. Useful when
@@ -25,7 +25,7 @@ declare const CollapsibleContent: import("@tamagui/web").TamaguiComponent<import
 declare const Collapsible: React.ForwardRefExoticComponent<CollapsibleProps & {
     __scopeCollapsible?: string | undefined;
 } & React.RefAttributes<import("@tamagui/web").TamaguiElement>> & {
-    Trigger: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps & void, Omit<import("@tamagui/web").StackStyleBase, never>, {}, {}>;
+    Trigger: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps & (void | Object), Omit<import("@tamagui/web").StackStyleBase, never>, {}, {}>;
     Content: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps & CollapsibleContentExtraProps, Omit<import("@tamagui/web").StackStyleBase, keyof CollapsibleContentExtraProps>, {}, {}>;
 };
 export { Collapsible, CollapsibleContent, CollapsibleContentFrame, CollapsibleTrigger, CollapsibleTriggerFrame, };

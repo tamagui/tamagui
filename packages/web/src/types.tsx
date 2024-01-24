@@ -28,8 +28,6 @@ import { TamaguiComponentState } from './interfaces/TamaguiComponentState'
 import { WebOnlyPressEvents } from './interfaces/WebOnlyPressEvents'
 import type { LanguageContextType } from './views/FontLanguage.types'
 import type { ThemeProviderProps } from './views/ThemeProvider'
-import { styled } from './styled'
-import { Stack } from './views/Stack'
 
 export * from './interfaces/KeyTypes'
 export * from './interfaces/TamaguiComponentState'
@@ -1365,7 +1363,11 @@ export type Styleable<
 > = <
   CustomProps extends Object | void,
   FunctionDef extends FunctionComponent<any> = FunctionComponent<
-    GetFinalProps<NonStyledProps & CustomProps, BaseStyles, VariantProps>
+    GetFinalProps<
+      NonStyledProps & CustomProps,
+      Omit<BaseStyles, keyof CustomProps>,
+      VariantProps
+    >
   >,
 >(
   a: FunctionDef,

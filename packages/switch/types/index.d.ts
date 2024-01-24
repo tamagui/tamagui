@@ -54,7 +54,7 @@ export declare const Switch: import("react").ForwardRefExoticComponent<Omit<impo
         fullscreen?: boolean | undefined;
     }, {}];
 } & {
-    Thumb: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & void, Omit<import("@tamagui/web").StackStyleBase, never>, {
+    Thumb: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & (void | Object), Omit<import("@tamagui/web").StackStyleBase, never>, {
         size?: import("@tamagui/web").SizeTokens | undefined;
         checked?: boolean | undefined;
         unstyled?: boolean | undefined;

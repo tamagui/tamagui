@@ -422,7 +422,7 @@ export const Select = withStaticProperties(
     // TODO its calling this a bunch if you move mouse around on select items fast
     // using a debounce for now but need to fix root issue
     const setActiveIndexDebounced = useDebounce(
-      (index: number) => {
+      (index: number | null) => {
         setActiveIndex((prev) => {
           if (prev !== index) {
             if (typeof index === 'number') {
@@ -433,7 +433,7 @@ export const Select = withStaticProperties(
           return prev
         })
       },
-      10,
+      1,
       {},
       []
     )

@@ -683,11 +683,13 @@ const DialogCloseFrame = styled(View, {
   tag: 'button',
 })
 
-type DialogCloseProps = GetProps<typeof DialogCloseFrame> & {
+export interface DialogCloseExtraProps {
   displayWhenAdapted?: boolean
 }
 
-const DialogClose = DialogCloseFrame.styleable<DialogCloseProps>(
+type DialogCloseProps = GetProps<typeof DialogCloseFrame> & DialogCloseExtraProps
+
+const DialogClose = DialogCloseFrame.styleable<DialogCloseExtraProps>(
   (props: ScopedProps<DialogCloseProps>, forwardedRef) => {
     const { __scopeDialog, displayWhenAdapted, ...closeProps } = props
     const context = useDialogContext(CLOSE_NAME, __scopeDialog, {

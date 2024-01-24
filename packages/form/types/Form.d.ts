@@ -23,9 +23,9 @@ export type FormProps = StackProps & {
 };
 export interface FormTriggerProps extends StackProps {
 }
-export declare const FormTrigger: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & void, Omit<import("@tamagui/core").StackStyleBase, never>, {}, {}>;
+export declare const FormTrigger: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & (void | Object), Omit<import("@tamagui/core").StackStyleBase, never>, {}, {}>;
 export declare const Form: (({ onSubmit, ...props }: ScopedProps<FormProps>) => JSX.Element) & {
-    Trigger: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & void, Omit<import("@tamagui/core").StackStyleBase, never>, {}, {}>;
+    Trigger: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & (void | Object), Omit<import("@tamagui/core").StackStyleBase, never>, {}, {}>;
 };
 export {};
 //# sourceMappingURL=Form.d.ts.map

@@ -137,7 +137,13 @@ const CollapsibleContentFrame = styled(Stack, {
 const CollapsibleContent =
   CollapsibleContentFrame.styleable<CollapsibleContentExtraProps>(
     (props, forwardedRef) => {
-      const { forceMount, children, __scopeCollapsible, ...contentProps } = props
+      const {
+        forceMount,
+        children,
+        // @ts-expect-error
+        __scopeCollapsible,
+        ...contentProps
+      } = props
       const context = useCollapsibleContext(__scopeCollapsible)
 
       return (

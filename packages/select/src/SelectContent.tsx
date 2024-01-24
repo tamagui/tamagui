@@ -53,9 +53,9 @@ export const SelectContent = ({
         style={overlayStyle}
         lockScroll={!context.disablePreventBodyScroll && !!context.open && !touch}
       >
-        {/* <FocusScope loop enabled={!!context.open} trapped {...focusScopeProps}> */}
-        {contents}
-        {/* </FocusScope> */}
+        <FocusScope loop enabled={!!context.open} trapped {...focusScopeProps}>
+          {contents}
+        </FocusScope>
       </FloatingOverlay>
     </FloatingPortal>
   )

@@ -155,11 +155,9 @@ interface ProgressExtraProps {
 type ProgressProps = GetProps<typeof ProgressFrame> & ProgressExtraProps
 
 const Progress = withStaticProperties(
-  ProgressFrame.styleable<ProgressExtraProps>(function Progress(
-    props: ScopedProps<ProgressProps>,
-    forwardedRef
-  ) {
+  ProgressFrame.styleable<ProgressExtraProps>(function Progress(props, forwardedRef) {
     const {
+      // @ts-expect-error
       __scopeProgress,
       value: valueProp,
       max: maxProp,

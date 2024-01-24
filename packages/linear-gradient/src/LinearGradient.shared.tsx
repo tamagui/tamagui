@@ -12,12 +12,15 @@ import type { ViewStyle } from 'react-native'
 
 import {
   LinearGradient as ExpoLinearGradient,
-  LinearGradientProps as ExpoLinearGradientProps,
+  LinearGradientPoint,
 } from './linear-gradient'
 
-//
-export type LinearGradientExtraProps = Omit<ExpoLinearGradientProps, 'colors'> & {
+// taken from expo-linear-gradient
+export type LinearGradientExtraProps = {
   colors?: (ColorTokens | ThemeTokens | (string & {}))[]
+  locations?: number[] | null
+  start?: LinearGradientPoint | null
+  end?: LinearGradientPoint | null
 }
 
 export const LinearGradient = YStack.styleable<LinearGradientExtraProps>(
