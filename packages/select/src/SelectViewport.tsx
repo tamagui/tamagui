@@ -120,13 +120,14 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraP
                 // @ts-ignore
                 role="presentation"
                 {...viewportProps}
+                {...floatingProps}
                 {...restStyle}
                 {...(!props.unstyled && {
                   overflow: disableScroll ? undefined : overflow ?? 'scroll',
                 })}
                 ref={composedRefs}
               >
-                <View {...floatingProps}>{children}</View>
+                {children}
               </SelectViewportFrame>
             </FloatingFocusManager>
           ) : null}

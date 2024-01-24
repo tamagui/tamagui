@@ -85,7 +85,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
     }>> & React.RefAttributes<TamaguiElement>>;
-    ItemText: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps & void, Omit<import("@tamagui/core").TextStylePropsBase, never>, {
+    ItemText: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps & (void | Object), Omit<import("@tamagui/core").TextStylePropsBase, never>, {
         size?: FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
     }, {}>;
