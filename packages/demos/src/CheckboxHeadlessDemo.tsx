@@ -21,7 +21,7 @@ export function CheckboxHeadlessDemo() {
 
 const HeadlessCheckbox = forwardRef<View, CheckboxHeadlessProps>((props, ref) => {
   const [checked, setChecked] = useState(props.defaultChecked || false)
-  const { checkboxProps, bubbleInput } = useCheckbox(props, [checked, setChecked], ref)
+  const { checkboxProps, checkboxRef, bubbleInput } = useCheckbox(props, [checked, setChecked], ref)
 
   return (
     <Pressable
@@ -33,6 +33,7 @@ const HeadlessCheckbox = forwardRef<View, CheckboxHeadlessProps>((props, ref) =>
         alignItems: 'center',
         backgroundColor: checked === true ? 'lightblue' : 'silver',
       }}
+      ref={checkboxRef}
       {...checkboxProps}
     >
       {checked === 'indeterminate' && <Minus width={18} height={18} />}
