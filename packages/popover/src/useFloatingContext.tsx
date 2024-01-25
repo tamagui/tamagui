@@ -23,7 +23,15 @@ export const useFloatingContext = ({
       const floating = useFloating({
         ...props,
         open,
-        onOpenChange: setOpen,
+        onOpenChange: (val, event) => {
+          const type =
+            event?.type === 'mousemove' ||
+            event?.type === 'mouseenter' ||
+            event?.type === 'mouseleave'
+              ? 'hover'
+              : 'press'
+          setOpen(val, type)
+        },
       }) as any
       const { getReferenceProps, getFloatingProps } = useInteractions([
         hoverable

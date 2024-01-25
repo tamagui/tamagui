@@ -55,7 +55,7 @@ import { useFloatingContext } from './useFloatingContext'
 export type PopoverProps = PopperProps & {
   open?: boolean
   defaultOpen?: boolean
-  onOpenChange?: (open: boolean) => void
+  onOpenChange?: (open: boolean, via?: 'hover' | 'press') => void
   keepChildrenMounted?: boolean
 
   /**
@@ -76,7 +76,7 @@ type PopoverContextValue = {
   triggerRef: React.RefObject<any>
   contentId?: string
   open: boolean
-  onOpenChange(open: boolean): void
+  onOpenChange(open: boolean, via: 'hover' | 'press'): void
   onOpenToggle(): void
   hasCustomAnchor: boolean
   onCustomAnchorAdd(): void
@@ -514,7 +514,7 @@ export const PopoverClose = React.forwardRef<
       ref={forwardedRef}
       componentName="PopoverClose"
       onPress={composeEventHandlers(props.onPress as any, () =>
-        context.onOpenChange(false)
+        context.onOpenChange(false, 'press')
       )}
     />
   )
@@ -584,17 +584,23 @@ export const Popover = withStaticProperties(
       const sheetBreakpoint = when
       const triggerRef = React.useRef<TamaguiElement>(null)
       const [hasCustomAnchor, setHasCustomAnchor] = React.useState(false)
+      const viaRef = React.useRef()
       const [open, setOpen] = useControllableState({
         prop: openProp,
         defaultProp: defaultOpen || false,
-        onChange: onOpenChange,
+        onChange: (val) => {
+          onOpenChange?.(val, viaRef.current)
+        },
       })
 
       const sheetActive = useSheetBreakpointActive(sheetBreakpoint)
 
       const floatingContext = useFloatingContext({
         open,
-        setOpen,
+        setOpen: (val, via) => {
+          viaRef.current = via
+          setOpen(val)
+        },
         disable: sheetActive,
         hoverable,
         disableFocus: disableFocus,
@@ -618,7 +624,10 @@ export const Popover = withStaticProperties(
         triggerRef,
         open,
         breakpointActive: sheetActive,
-        onOpenChange: setOpen,
+        onOpenChange: (val, via) => {
+          viaRef.current = via
+          setOpen(val)
+        },
         onOpenToggle: useEvent(() => {
           if (open && sheetActive) {
             return

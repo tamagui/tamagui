@@ -1,3 +1,5 @@
+- document popover hoverable + onOpenChange second arg via
+
 - add $pointerFine to takeout
 
 - bug in generated icon props

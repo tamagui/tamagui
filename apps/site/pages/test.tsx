@@ -205,7 +205,7 @@ TestPage.getLayout = (page) => {
   return (
     <>
       <SearchProvider>
-        <Header minimal />
+        <Header />
         {page}
       </SearchProvider>
     </>

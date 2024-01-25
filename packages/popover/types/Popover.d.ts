@@ -11,7 +11,7 @@ import { ScrollView } from 'react-native';
 export type PopoverProps = PopperProps & {
     open?: boolean;
     defaultOpen?: boolean;
-    onOpenChange?: (open: boolean) => void;
+    onOpenChange?: (open: boolean, via?: 'hover' | 'press') => void;
     keepChildrenMounted?: boolean;
     /**
      * Enable staying open while mouseover
@@ -28,7 +28,7 @@ type PopoverContextValue = {
     triggerRef: React.RefObject<any>;
     contentId?: string;
     open: boolean;
-    onOpenChange(open: boolean): void;
+    onOpenChange(open: boolean, via: 'hover' | 'press'): void;
     onOpenToggle(): void;
     hasCustomAnchor: boolean;
     onCustomAnchorAdd(): void;
@@ -130,7 +130,7 @@ export type PopoverRef = {
 export declare const Popover: React.ForwardRefExoticComponent<PopperProps & {
     open?: boolean | undefined;
     defaultOpen?: boolean | undefined;
-    onOpenChange?: ((open: boolean) => void) | undefined;
+    onOpenChange?: ((open: boolean, via?: 'hover' | 'press') => void) | undefined;
     keepChildrenMounted?: boolean | undefined;
     /**
      * Enable staying open while mouseover
