@@ -102,6 +102,8 @@ export function getThemeCSSRules(props: {
           const nextChildSelector =
             childSelector === lastParentSelector ? '' : childSelector
 
+          parentSelectors = parentSelectors.map((p) => CNP + p)
+
           if (!nextChildSelector) {
             selectorsSet.add(`${parentSelectors.join(' ')}`.trim())
           } else {
