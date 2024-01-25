@@ -28,11 +28,15 @@ export const DocsMenuContents = React.memo(function DocsMenuContents() {
   return (
     <>
       <Input
-        size="$4"
+        size="$5"
         w="100%"
         bw={0}
         bbw={0.5}
         br="$0"
+        dsp="none"
+        $pointerFine={{
+          dsp: 'flex'
+        }}
         borderColor="$color4"
         backgroundColor="transparent"
         focusStyle={{

@@ -1,3 +1,5 @@
+- add $pointerFine to takeout
+
 - bug in generated icon props
   - https://discord.com/channels/909986013848412191/1178185816426680370/1199854688233857136
 
