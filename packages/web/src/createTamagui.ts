@@ -84,9 +84,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       )
 
   if (configIn.themes) {
-    const noThemes = areThemesJustNames
-      ? false
-      : Object.keys(configIn.themes).length === 0
+    const noThemes = areThemesJustNames ? true : Object.keys(configIn.themes).length === 0
     foundThemes = scanAllSheets(noThemes, tokensParsed, themesIndexesToNames)
   }
 
