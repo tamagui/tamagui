@@ -8,7 +8,6 @@ type ShiftProps = typeof shift extends (options: infer Opts) => void ? Opts : ne
 type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : never;
 export type PopperContextValue = UseFloatingReturn & {
     isMounted: boolean;
-    anchorRef: any;
     size?: SizeTokens;
     placement?: Placement;
     arrowRef: any;

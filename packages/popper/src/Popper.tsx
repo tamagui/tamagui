@@ -11,6 +11,7 @@ import {
   createStyledContext,
   getVariableValue,
   styled,
+  useDidFinishSSR,
   useProps,
 } from '@tamagui/core'
 import {
@@ -40,7 +41,6 @@ type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : neve
 
 export type PopperContextValue = UseFloatingReturn & {
   isMounted: boolean
-  anchorRef: any
   size?: SizeTokens
   placement?: Placement
   arrowRef: any
@@ -79,12 +79,7 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
     __scopePopper,
   } = props
 
-  const [isMounted, setIsMounted] = React.useState(false)
-  useIsomorphicLayoutEffect(() => {
-    setIsMounted(true)
-  }, [])
-
-  const [anchorRef, setAnchorRef] = React.useState<any>()
+  const isMounted = useDidFinishSSR()
   const [arrowEl, setArrow] = React.useState<any>(null)
   const [arrowSize, setArrowSize] = React.useState(0)
   const offsetOptions = offset ?? arrowSize
@@ -109,10 +104,6 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
     // @ts-expect-error this comes from Tooltip for example
     open,
   } = floating
-
-  useIsomorphicLayoutEffect(() => {
-    floating.refs.setReference(anchorRef)
-  }, [anchorRef])
 
   if (isWeb) {
     useIsomorphicLayoutEffect(() => {
@@ -151,7 +142,6 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
   }
 
   const popperContext = {
-    anchorRef: setAnchorRef,
     size,
     arrowRef: setArrow,
     arrowStyle: middlewareData.arrow,
@@ -178,15 +168,11 @@ export const PopperAnchor = YStack.extractable(
   React.forwardRef<PopperAnchorRef, ScopedPopperProps<PopperAnchorProps>>(
     function PopperAnchor(props: ScopedPopperProps<PopperAnchorProps>, forwardedRef) {
       const { virtualRef, __scopePopper, ...anchorProps } = props
-      const { anchorRef, getReferenceProps } = usePopperContext(__scopePopper)
+      const { getReferenceProps, refs } = usePopperContext(__scopePopper)
       const ref = React.useRef<PopperAnchorRef>(null)
-      const composedRefs = useComposedRefs(forwardedRef, ref, anchorRef)
-      React.useEffect(() => {
-        // Consumer can anchor the popper to something that isn't
-        // a DOM node e.g. pointer position, so we override the
-        // `anchorRef` with their virtual ref in this case.
-        anchorRef(virtualRef?.current || ref.current)
-      }, [anchorRef, virtualRef])
+      const composedRefs = useComposedRefs(forwardedRef, ref,
+          virtualRef ?? (refs.setReference as any),
+        )
 
       if (virtualRef) {
         return null
