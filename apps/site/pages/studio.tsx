@@ -94,7 +94,7 @@ export default function StudioSplashPage() {
                   <NextLink target="_blank" href="https://github.com/sponsors/natew">
                     <Button
                       mt={60}
-                      // animation="quick"
+                      animation="quick"
                       bg="$color10"
                       color="$color1"
                       size="$6"

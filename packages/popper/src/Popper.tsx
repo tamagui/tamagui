@@ -170,9 +170,11 @@ export const PopperAnchor = YStack.extractable(
       const { virtualRef, __scopePopper, ...anchorProps } = props
       const { getReferenceProps, refs } = usePopperContext(__scopePopper)
       const ref = React.useRef<PopperAnchorRef>(null)
-      const composedRefs = useComposedRefs(forwardedRef, ref,
-          virtualRef ?? (refs.setReference as any),
-        )
+      const composedRefs = useComposedRefs(
+        forwardedRef,
+        ref,
+        virtualRef ?? (refs.setReference as any)
+      )
 
       if (virtualRef) {
         return null
