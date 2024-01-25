@@ -212,9 +212,7 @@ let rootComputedStyle: CSSStyleDeclaration | null = null
 function addThemesFromCSS(
   cssStyleRule: CSSStyleRule,
   tokens?: TokensParsed,
-  themesIndexes?: {
-    [key: number]: string
-  }
+  themesIndexes?: { [key: number]: string }
 ) {
   if (!themesIndexes) return
   const selectors = cssStyleRule.selectorText.split(',')
@@ -278,18 +276,15 @@ function addThemesFromCSS(
     const matches =
       selector.match(/(.t_(light|dark))?[\s]?(.t_([a-z0-9_]+))[\s]*$/i) ||
       ([] as string[])
-    const [_0, _1, scheme, _2, name] = matches
+    const [_0, _1, scheme, _2, _name] = matches
+    const name =
+      _name === 'dark' || _name === 'light' ? _name : themesIndexes[Number(_name)]
     const themeName =
-      name && scheme && scheme !== name
-        ? `${scheme}_${themesIndexes[name] || name}`
-        : themesIndexes[name] || name || scheme
-    if (
-      dedupedEntry.names.includes(themesIndexes[themeName] || themeName) ||
-      themeName === 'light_dark'
-    ) {
+      name && scheme && scheme !== name ? `${scheme}_${name}` : name || scheme
+    if (dedupedEntry.names.includes(themeName) || themeName === 'light_dark') {
       continue
     }
-    dedupedEntry.names.push(themesIndexes[themeName] || themeName)
+    dedupedEntry.names.push(themeName)
   }
 
   return dedupedEntry
