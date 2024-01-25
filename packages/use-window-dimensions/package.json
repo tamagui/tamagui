@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-window-dimensions",
-  "version": "1.88.12",
+  "version": "1.88.13",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -27,10 +27,10 @@
     }
   },
   "dependencies": {
-    "@tamagui/constants": "1.88.12"
+    "@tamagui/constants": "1.88.13"
   },
   "devDependencies": {
-    "@tamagui/build": "1.88.12",
+    "@tamagui/build": "1.88.13",
     "react": "^18.2.0",
     "react-native": "^0.72.6"
   },

@@ -9,7 +9,7 @@ export type TooltipProps = PopperProps & {
     onOpenChange?: (open: boolean) => void;
     focus?: {
         enabled?: boolean;
-        keyboardOnly?: boolean;
+        visibleOnly?: boolean;
     };
     groupId?: string;
     restMs?: number;
@@ -33,7 +33,7 @@ export declare const Tooltip: React.ForwardRefExoticComponent<PopperProps & {
     onOpenChange?: ((open: boolean) => void) | undefined;
     focus?: {
         enabled?: boolean | undefined;
-        keyboardOnly?: boolean | undefined;
+        visibleOnly?: boolean | undefined;
     } | undefined;
     groupId?: string | undefined;
     restMs?: number | undefined;
