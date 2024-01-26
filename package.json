@@ -50,8 +50,7 @@
     "sandbox": "yarn workspace @tamagui/kitchen-sink dev:web:extract",
     "scripts:setup": "node -r esbuild-register ./scripts/setup.ts",
     "scripts:format": "node -r esbuild-register ./scripts/format.ts",
-    "scripts:fix-exports": "node -r esbuild-register ./scripts/fix-exports.ts",
-    "scripts:fix-scripts": "node -r esbuild-register ./scripts/fix-scripts.ts",
+    "repair": "node -r esbuild-register ./scripts/repair.ts",
     "site:extract": "yarn workspace @tamagui/site dev:extract",
     "site:prod:analyze": "ANALYZE=true yarn site:prod",
     "site:prod:no-extract": "yarn workspace @tamagui/site ci:build:no-extract && yarn workspace @tamagui/site next:start",
@@ -103,6 +102,7 @@
     "@playwright/test": "^1.40.1",
     "@vercel/og": "^0.5.8",
     "check-dependency-version-consistency": "^3.0.3",
+    "fs-extra": "^11.2.0",
     "import-sort-style-module": "^6.0.0",
     "npm-run-all": "^4.1.5",
     "p-map": "^5.5.0",
@@ -110,7 +110,8 @@
     "prompts": "2.1.0",
     "turbo": "^1.11.3",
     "typescript": "^5.3.3",
-    "ultra-runner": "^3.10.5"
+    "ultra-runner": "^3.10.5",
+    "zx": "^7.2.3"
   },
   "stableVersion": "0.0.0"
 }

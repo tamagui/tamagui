@@ -1,3 +1,11 @@
+- native theme change warning logs + theme change speed
+
+- themes v3
+  - remove many masks
+  - get ready for studio integration (export from studio?)
+  - light mode bg's and borders too light in general
+  - dark mode kitchen sink the listitem should be lighter than bg, listitem press theme should be darker
+
 - document popover hoverable + onOpenChange second arg via
 
 - add $pointerFine to takeout

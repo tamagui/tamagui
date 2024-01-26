@@ -37,7 +37,7 @@
     "esbuild": "^0.19.11",
     "execa": "^5.0.0",
     "express": "^4.18.2",
-    "fs-extra": "^11.1.0",
+    "fs-extra": "^11.2.0",
     "get-port": "^7.0.0",
     "graphology": "^0.24.1",
     "graphql": "^16.8.0",

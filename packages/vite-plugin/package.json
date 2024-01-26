@@ -31,7 +31,7 @@
     "@tamagui/react-native-svg": "1.88.13",
     "@tamagui/static": "1.88.13",
     "esm-resolve": "^1.0.8",
-    "fs-extra": "^11.1.0",
+    "fs-extra": "^11.2.0",
     "outdent": "^0.8.0"
   },
   "devDependencies": {

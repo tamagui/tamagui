@@ -17,7 +17,7 @@
     "esbuild": "^0.19.11",
     "execa": "^5.0.0",
     "fast-glob": "^3.2.11",
-    "fs-extra": "^11.1.0",
+    "fs-extra": "^11.2.0",
     "get-tsconfig": "^4.5.0",
     "lodash.debounce": "^4.0.8",
     "typescript": "^5.3.3"

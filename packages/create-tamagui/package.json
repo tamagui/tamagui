@@ -37,7 +37,7 @@
     "cross-spawn": "6.0.5",
     "detect-package-manager": "^3.0.1",
     "esbuild-register": "^3.4.2",
-    "fs-extra": "^11.1.0",
+    "fs-extra": "^11.2.0",
     "got": "10.7.0",
     "opener": "^1.5.2",
     "prompts": "2.1.0",
