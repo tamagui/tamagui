@@ -530,6 +530,11 @@ export const getSplitStyles: StyleSplitter = (
     const shouldPassThrough = shouldPassProp || isHOCShouldPassThrough
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+      // fix native group nesting issues
+      console.groupEnd() 
+      console.groupEnd()
+      // fix native group nesting issues
+      
       console.groupCollapsed(
         `  🔑 ${keyOg}${keyInit !== keyOg ? ` (shorthand for ${keyInit})` : ''} ${
           shouldPassThrough ? '(pass)' : ''
