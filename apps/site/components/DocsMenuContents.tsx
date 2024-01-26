@@ -28,14 +28,19 @@ export const DocsMenuContents = React.memo(function DocsMenuContents() {
   return (
     <>
       <Input
-        size="$5"
+        size="$4"
         w="100%"
         bw={0}
         bbw={0.5}
+        textContentType="none"
+        autoCapitalize="none"
+        autoCorrect={false}
         br="$0"
+        // @ts-ignore
+        name="Search"
         dsp="none"
         $pointerFine={{
-          dsp: 'flex'
+          dsp: 'flex',
         }}
         borderColor="$color4"
         backgroundColor="transparent"

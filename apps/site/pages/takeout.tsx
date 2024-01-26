@@ -91,13 +91,11 @@ export default function TakeoutPage({
 
   return (
     <YStack maw="100%">
-
-<ThemeTintAlt>
-        <YStack fullscreen t={-100} b={-100} bg="$color7" zi={-3} />
+      <ThemeTintAlt>
+        <YStack pos="absolute" l={0} r={0} t={-100} b={0} bg="$color7" zi={-3} />
         <ThemeTintEffect />
       </ThemeTintAlt>
 
-      
       <>
         <NextSeo
           title="🥡 Tamagui Takeout"
@@ -129,7 +127,15 @@ export default function TakeoutPage({
         </Head>
       </>
 
-      <YStack pe="none" pos="absolute" t={-950} r={-420} rotate="120deg" o={0.025} zi={-1}>
+      <YStack
+        pe="none"
+        pos="absolute"
+        t={-950}
+        r={-420}
+        rotate="120deg"
+        o={0.025}
+        zi={-1}
+      >
         <Image alt="mandala" width={2500} height={2500} src="/takeout/geometric.svg" />
       </YStack>
 
