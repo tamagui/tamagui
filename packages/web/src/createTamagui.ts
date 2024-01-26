@@ -66,9 +66,15 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
   // { orange: 1, blue: 2}
   const themesNamesToIndexes = areThemesJustNames
-    ? Object.fromEntries((configIn.themes as string[]).map((name, i) => [name, i + 1]))
+    ? Object.fromEntries(
+        (configIn.themes as string[])
+          .sort((a, b) => a.localeCompare(b))
+          .map((name, i) => [name, i + 1] as const)
+      )
     : Object.fromEntries(
-        Object.keys(configIn.themes || {}).map((name, i) => [name, i + 1])
+        Object.keys(configIn.themes || {})
+          .sort((a, b) => a.localeCompare(b))
+          .map((name, i) => [name, i + 1] as const)
       )
 
   delete themesNamesToIndexes['dark']
@@ -78,9 +84,15 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
   // { 1: 'orange', 2: 'blue'}
   const themesIndexesToNames = areThemesJustNames
-    ? Object.fromEntries((configIn.themes as string[]).map((name, i) => [i + 1, name]))
+    ? Object.fromEntries(
+        (configIn.themes as string[])
+          .sort((a, b) => a.localeCompare(b))
+          .map((name, i) => [i + 1, name] as const)
+      )
     : Object.fromEntries(
-        Object.keys(configIn.themes || {}).map((name, i) => [i + 1, name])
+        Object.keys(configIn.themes || {})
+          .sort((a, b) => a.localeCompare(b))
+          .map((name, i) => [i + 1, name] as const)
       )
 
   if (configIn.themes) {
