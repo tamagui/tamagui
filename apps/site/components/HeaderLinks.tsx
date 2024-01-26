@@ -12,7 +12,9 @@ import {
   TooltipSimple,
   XStack,
   YStack,
+  getMedia,
   styled,
+  useMedia,
 } from 'tamagui'
 import { Text } from 'tamagui'
 
@@ -212,6 +214,7 @@ const TakeoutHeaderLink = ({ forceShowAllLinks }: HeaderProps) => {
   }
 
   const openIt = () => {
+    if (getMedia().xs) return
     setOpen(true)
     setHasOpenedOnce(true)
   }
