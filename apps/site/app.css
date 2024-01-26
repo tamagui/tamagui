@@ -319,6 +319,10 @@ iframe {
   backdrop-filter: blur(30px);
 }
 
+.blur-4 {
+  backdrop-filter: blur(4px);
+}
+
 .blur-light {
   backdrop-filter: blur(2px);
 }

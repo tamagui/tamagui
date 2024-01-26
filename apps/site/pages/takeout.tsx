@@ -651,6 +651,7 @@ const ThemeTintEffect = () => {
 
   useEffect(() => {
     document.querySelector('#theme-color')?.setAttribute('content', color)
+    document.body.style.backgroundColor = color
   }, [color])
 
   return null
@@ -739,13 +740,14 @@ type TakeoutPageProps = {
 }
 
 const TakeoutCard2Frame = styled(YStack, {
-  className: 'blur-8',
+  className: 'blur-4',
   minWidth: 282,
   maxWidth: 282,
   minHeight: 312,
   maxHeight: 312,
   elevation: '$1',
   overflow: 'hidden',
+  contain: 'strict',
   scale: 1,
 
   '$group-takeoutBody-gtSm': {
@@ -1690,6 +1692,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
           x={-50}
           y={50}
           mah="calc(min(85vh, 800px))"
+          br="$8"
           $md={{
             x: -20,
             y: 0,
@@ -2491,6 +2494,10 @@ const PromoVideo = () => {
       o={loaded ? 1 : 0}
       scale={!loaded ? 0.5 : 0.22}
       rotate="-5deg"
+      $md={{
+        l: -300,
+        scale: 0.15,
+      }}
       $sm={{
         dsp: 'none',
       }}

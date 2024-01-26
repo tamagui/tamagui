@@ -8,10 +8,9 @@ import { ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
 import {
   Check,
   CheckCircle,
-  ShoppingBag,
   ShoppingCart,
   X,
-  XCircle,
+  XCircle
 } from '@tamagui/lucide-icons'
 import { useBentoStore } from 'hooks/useBentoStore'
 import React, { useMemo, useState } from 'react'
@@ -23,6 +22,7 @@ import {
   ButtonProps,
   Card,
   Dialog,
+  EnsureFlexed,
   FontSizeTokens,
   H1,
   H2,
@@ -39,13 +39,11 @@ import {
   Sheet,
   SizableText,
   Spacer,
-  Text,
   Theme,
   Unspaced,
   XStack,
   XStackProps,
-  YStack,
-  useThemeName,
+  YStack
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 
@@ -657,16 +655,26 @@ const PurchaseModal = ({ starter, coupon }) => {
 
 const Hero = () => {
   const store = useBentoStore()
-  const { tint } = useTint()
 
   return (
     <YStack pos="relative" mt={-55} pt={55} zi={0}>
+      <ThemeTint>
       <LinearGradient
-        colors={[`$backgroundStrong`, `$${tint}5`]}
+        colors={[`$backgroundStrong`, `$color5`]}
         start={[0, 1]}
         end={[0, 0]}
         fullscreen
-      />
+      /></ThemeTint>
+      <ThemeTintAlt>
+        <LinearGradient
+          // colors={[`$color8`, `transparent`]}
+          colors={[`transparent`, `$color5`]}
+          start={[0, 1]}
+          end={[0, 0]}
+          fullscreen
+        />
+      </ThemeTintAlt>
+      
       <ContainerLarge>
         <XStack gap="$6" py="$12" bc="transparent" jc="space-between" w={'100%'}>
           <YStack
@@ -679,20 +687,19 @@ const Hero = () => {
             gap="$4"
           >
             <H1 maw="100%" f={1} size="$14" mb="$-2">
-              Well crafted add-ons.
+              Bento
             </H1>
 
-            <YStack gap="$4">
+            <YStack gap="$3">
               <ThemeTintAlt>
                 <Paragraph size="$9" color="$color10">
-                  Screens, components, and early access to upcoming OSS features.
+                  Boost your React Native app development speed with a suite
+                  of copy-paste components and screens.
                 </Paragraph>
               </ThemeTintAlt>
 
               <Paragraph color="$gray12" size="$6">
-                For just $200/year get access to ongoing releases of well designed,
-                responsive and accessible cross-platform components for React and React
-                Native, ready to copy-paste into your app.
+                $200 for lifetime access.
               </Paragraph>
             </YStack>
 
@@ -701,14 +708,23 @@ const Hero = () => {
             <XStack gap="$3">
               <ThemeTintAlt>
                 <Button
-                  theme="active"
-                  iconAfter={ShoppingCart}
+                  icon={ShoppingCart}
                   fontFamily="$mono"
+                  size="$5"
+                  bg="$color8"
+                  color="$color4"
+                  hoverStyle={{
+                    bg: '$color9',
+                    boc: '$color9'
+                  }}
+                  pressStyle={{
+                    bg: '$color6'
+                  }}
                   onPress={() => {
                     store.showPurchase = true
                   }}
                 >
-                  Purchase — $200
+                  $200
                 </Button>
               </ThemeTintAlt>
             </XStack>
@@ -732,7 +748,6 @@ const Hero = () => {
 }
 
 const Body = () => {
-  const store = useBentoStore()
   return (
     <ContainerLarge gap="$2">
       <H2>Sections</H2>
@@ -786,16 +801,17 @@ function ComponentGroupsBanner({
       hoverStyle={{
         borderColor: '$blue5',
       }}
-      bw={1}
-      boc="$gray2"
-      br="$2"
+      maw="calc(50% - var(--size-5))"
       ov="hidden"
+      bc="$background"
+      mih={300}
+      br="$9"
       accessible
       cursor="pointer"
       href={BASE_PATH + path}
     >
-      <Image bc="$background" w={200} h={200} source={{ uri: '' }} />
-      <YStack px="$4" py="$2">
+      <EnsureFlexed />
+      <YStack p="$5">
         <H4 fontWeight={'normal'} fontSize="$4">
           {name}
         </H4>
