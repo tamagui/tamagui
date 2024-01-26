@@ -195,20 +195,7 @@ export default function TakeoutPage({
           </YStack>
 
           <YStack t={heroHeight - 1300} l={-100} pos="absolute" b={0} zi={-3}>
-            <Separator o={0.75} vertical h={4100} pos="absolute" l={0.5} />
-            <Separator o={0.75} vertical h={4100} pos="absolute" r={0} />
-
             <YStack t={750} px="$6">
-              <Separator o={0.75} w={3000} pos="absolute" t={0.5} l={-1000} />
-              <Separator o={0.75} w={3000} pos="absolute" b={0} l={-1000} />
-
-              <YStack mb="$6" space="$4">
-                <H2 ta="right" fontFamily="$munro" o={0.1}>
-                  x
-                </H2>
-                <LogoIcon />
-              </YStack>
-
               <H2
                 t={-100}
                 pos="absolute"
@@ -508,9 +495,7 @@ export default function TakeoutPage({
                         color="$color10"
                         className="text-wrap-balance"
                         ls={-2}
-                        $lg={{ size: '$9' }}
-                        $md={{ size: '$8' }}
-                        $sm={{ size: '$7', ls: 0 }}
+                        $md={{ size: '$9' }}
                         fow="400"
                         mb="$4"
                       >
