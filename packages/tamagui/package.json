@@ -74,6 +74,7 @@
     "@tamagui/compose-refs": "1.88.13",
     "@tamagui/constants": "1.88.13",
     "@tamagui/core": "1.88.13",
+    "@tamagui/elements": "1.88.13",
     "@tamagui/create-context": "1.88.13",
     "@tamagui/dialog": "1.88.13",
     "@tamagui/fake-react-native": "1.88.13",
