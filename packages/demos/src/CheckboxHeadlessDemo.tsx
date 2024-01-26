@@ -21,7 +21,11 @@ export function CheckboxHeadlessDemo() {
 
 const HeadlessCheckbox = forwardRef<View, CheckboxHeadlessProps>((props, ref) => {
   const [checked, setChecked] = useState(props.defaultChecked || false)
-  const { checkboxProps, checkboxRef, bubbleInput } = useCheckbox(props, [checked, setChecked], ref)
+  const { checkboxProps, checkboxRef, bubbleInput } = useCheckbox(
+    props,
+    [checked, setChecked],
+    ref
+  )
 
   return (
     <Pressable

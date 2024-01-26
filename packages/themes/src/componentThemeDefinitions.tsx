@@ -130,9 +130,9 @@ export const componentThemeDefinitions = {
 
   TabsTrigger: [
     {
-      parent: "light",
+      parent: 'light',
       mask: 'strengthen',
-      ...maskOptions.component
+      ...maskOptions.component,
     },
   ],
 } satisfies ThemeDefinitions<keyof Masks>
