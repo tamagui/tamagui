@@ -46,6 +46,7 @@ export const DocsMenuContents = React.memo(function DocsMenuContents() {
         hoverStyle={{
           borderColor: '$color6',
         }}
+        autoComplete="off"
         placeholder="Filter..."
         placeholderTextColor="$gray9"
         onKeyPress={(e) => {

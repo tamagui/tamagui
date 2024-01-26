@@ -44,7 +44,7 @@ const HeadAnchor = styled(Paragraph, {
     grid: {
       true: {
         fow: '200',
-        size: '$5',
+        size: '$4',
         ls: 1,
         textTransform: 'unset',
         w: '100%',

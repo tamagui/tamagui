@@ -97,6 +97,10 @@ a {
   font-size: inherit;
 }
 
+.is_Paragraph {
+  text-wrap: pretty;
+}
+
 :is(.is_Paragraph a, .link a, article p a, footer a) {
   text-decoration: underline;
   text-underline-offset: 4px;
@@ -845,4 +849,11 @@ textarea {
 .text-wrap-pretty {
   text-wrap: pretty;
   -webkit-text-wrap: pretty;
+}
+
+.tooltip {
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-decoration-color: var(--color7);
+  text-underline-offset: 6px;
 }

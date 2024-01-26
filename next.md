@@ -1,3 +1,6 @@
+- // TODO ?
+- make studio not build unless `studio(` in commit
+
 - native theme change warning logs + theme change speed
 
 - themes v3
@@ -78,6 +81,7 @@ type Variants = CustomStackProps['variant'];
 - compiler - no need to setup any separate package
 
 - 2.0 rename SizableStack to Surface and simplify a bit
+- 2.0 rename
 
 - make it so media queries can be shared with groups easily
 
@@ -470,7 +474,6 @@ Ali:
 
 - createThemes accepts array not object
 - site _app has t_unmounted helper, move that into tamagui proper
-- SimpleTooltip no sub theme looks bad on dark mode
 
 ---
 
