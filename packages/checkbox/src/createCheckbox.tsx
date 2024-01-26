@@ -77,18 +77,21 @@ const ensureContext = (x: any) => {
 export function createCheckbox<
   F extends CheckboxComponent,
   T extends CheckboxIndicatorComponent,
->({
-  Frame = CheckboxFrame as any,
-  Indicator = CheckboxIndicatorFrame as any,
-}: {
-  Frame?: F
-  Indicator?: T
-}) {
+>(createProps: { disableActiveTheme?: boolean; Frame?: F; Indicator?: T }) {
+  const {
+    disableActiveTheme,
+    Frame = CheckboxFrame,
+    Indicator = CheckboxIndicatorFrame,
+  } = createProps as any as {
+    disableActiveTheme?: boolean
+    Frame: typeof CheckboxFrame
+    Indicator: typeof CheckboxIndicatorFrame
+  }
+
   ensureContext(Frame)
   ensureContext(Indicator)
 
-  // @ts-expect-error
-  const FrameComponent = Frame.styleable(function Checkbox(_props, forwardedRef) {
+  const FrameComponent = Frame.styleable<CheckboxProps>(function Checkbox(_props, forwardedRef) {
     const {
       scaleSize = 0.45,
       sizeAdjust = 0,
@@ -157,7 +160,6 @@ export function createCheckbox<
           size={propsActive.size ?? styledContext?.size ?? '$true'}
           scaleIcon={scaleIcon ?? styledContext?.scaleIcon ?? 1}
         >
-          {/* @ts-ignore */}
           <Frame
             {...(!unstyled && {
               width: size,
@@ -182,8 +184,7 @@ export function createCheckbox<
     )
   })
 
-  // @ts-expect-error
-  const IndicatorComponent = Indicator.styleable((props, forwardedRef) => {
+  const IndicatorComponent = Indicator.styleable<CheckboxIndicatorProps>((props, forwardedRef) => {
     const {
       // __scopeCheckbox,
       children: childrenProp,
@@ -215,7 +216,6 @@ export function createCheckbox<
     const context = useContext(CheckboxContext)
     if (forceMount || isIndeterminate(context.checked) || context.checked === true)
       return (
-        // @ts-ignore
         <Indicator pointerEvents="none" {...indicatorProps} ref={forwardedRef}>
           {children}
         </Indicator>
