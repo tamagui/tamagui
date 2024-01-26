@@ -501,22 +501,22 @@ export default function TakeoutPage({
                       </Paragraph>
                     </YStack>
 
-                    <ThemeTintAlt>
+                    <ThemeTint>
                       <Paragraph
                         fontFamily="$silkscreen"
-                        size="$11"
+                        size="$10"
                         color="$color10"
                         className="text-wrap-balance"
-                        ls={-1}
-                        $lg={{ size: '$10' }}
-                        $md={{ size: '$9' }}
-                        $sm={{ size: '$8' }}
+                        ls={-2}
+                        $lg={{ size: '$9' }}
+                        $md={{ size: '$8' }}
+                        $sm={{ size: '$7', ls: 0 }}
                         fow="400"
                         mb="$4"
                       >
                         It's not just about shipping fast.
                       </Paragraph>
-                    </ThemeTintAlt>
+                    </ThemeTint>
 
                     <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
                       Takeout is a template repo that comes with a Github bot that sends
@@ -1253,7 +1253,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
           <ScrollView $gtSm={{ maxHeight: '90vh' }}>
             <YStack group="takeoutBody" p="$6" space>
               <XStack ai="center" jc="center" gap="$6" mx="$8">
-                <Dialog.Title ff="$silkscreen" size="$4" ls={2} als="center" theme="alt2">
+                <Dialog.Title ff="$silkscreen" size="$7" mt="$-3" ls={5} als="center" theme="alt2">
                   Checkout
                 </Dialog.Title>
               </XStack>
@@ -1362,7 +1362,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                         <Paragraph size="$6" fow="bold">
                           Lifetime access, 1 year of updates
                         </Paragraph>
-                        <Paragraph size="$3" theme="alt1">
+                        <Paragraph  className="text-wrap-balance" size="$3" theme="alt1">
                           You own the code for life, with updates for a year
                         </Paragraph>
                       </YStack>
@@ -1373,7 +1373,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                     <XStack px="$4" py="$4" gap="$3">
                       <YStack width="80%">
                         <Paragraph size="$6">License Seats</Paragraph>
-                        <Paragraph size="$3" theme="alt1">
+                        <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
                           Number of people that are allowed to develop on it
                         </Paragraph>
                       </YStack>
@@ -1381,49 +1381,10 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                         <Paragraph size="$8">{takeoutPriceInfo.licenseSeats}</Paragraph>
                       </XStack>
                     </XStack>
-                    {/* <XStack px="$4" py="$4" gap="$3">
-                      <YStack width="80%">
-                        <Paragraph size="$6">Public Releases</Paragraph>
-                        <Paragraph size="$3" theme="alt1">
-                          Number public domains deployed to
-                        </Paragraph>
-                      </YStack>
-                      <XStack f={1} ai="center" gap="$2" jc="center">
-                        <Paragraph size="$8">
-                          {takeoutPriceInfo.publicDomainUses}
-                        </Paragraph>
-                      </XStack>
-                    </XStack>
-                    <XStack px="$4" py="$4" gap="$3">
-                      <YStack width="80%">
-                        <Paragraph size="$6">Play Store Apps</Paragraph>
-                        <Paragraph size="$3" theme="alt1">
-                          Number of public Android apps
-                        </Paragraph>
-                      </YStack>
-                      <XStack f={1} ai="center" gap="$2" jc="center">
-                        <Paragraph size="$8">
-                          {takeoutPriceInfo.androidAppsPublished}
-                        </Paragraph>
-                      </XStack>
-                    </XStack>
-                    <XStack px="$4" py="$4" gap="$3">
-                      <YStack width="80%">
-                        <Paragraph size="$6">App Store Apps</Paragraph>
-                        <Paragraph size="$3" theme="alt1">
-                          Number of public iOS apps
-                        </Paragraph>
-                      </YStack>
-                      <XStack f={1} ai="center" gap="$2" jc="center">
-                        <Paragraph size="$8">
-                          {takeoutPriceInfo.iosAppsPublished}
-                        </Paragraph>
-                      </XStack>
-                    </XStack> */}
                     <XStack px="$4" py="$4" gap="$3">
                       <YStack width="80%">
                         <Paragraph size="$6">Discord Seats</Paragraph>
-                        <Paragraph size="$3" theme="alt1">
+                        <Paragraph  className="text-wrap-balance" size="$3" theme="alt1">
                           Access to the Takeout channel
                         </Paragraph>
                       </YStack>
@@ -1434,7 +1395,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                     <XStack px="$4" py="$4" gap="$3">
                       <YStack width="80%">
                         <Paragraph size="$6">Discord Private Channel</Paragraph>
-                        <Paragraph size="$3" theme="alt1">
+                        <Paragraph  className="text-wrap-balance" size="$3" theme="alt1">
                           Private chat for your team only
                         </Paragraph>
                       </YStack>
@@ -1449,7 +1410,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                     <XStack px="$4" py="$4" gap="$3">
                       <YStack width="80%">
                         <Paragraph size="$6">GitHub Seats</Paragraph>
-                        <Paragraph size="$3" theme="alt1">
+                        <Paragraph  className="text-wrap-balance" size="$3" theme="alt1">
                           Open PRs and issues on the Github repo
                         </Paragraph>
                       </YStack>
@@ -1736,7 +1697,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
             l={0}
             r={0}
             h={200}
-            colors={['$backgroundTransparent', 'rgba(0,0,0,1)']}
+            colors={['$backgroundTransparent', 'rgba(0,0,0,0.5)']}
             zi={100}
           />
 
@@ -1877,8 +1838,6 @@ const Row = (props: { title: any; description: any; after: any }) => {
 
   return (
     <XStack
-      bbw={1}
-      boc="$borderColor"
       px="$8"
       mx="$-8"
       onPress={() => {
@@ -2617,13 +2576,13 @@ const Bullet = ({
       $gtLg={{ w: 'calc(50% - 20px)' }}
     >
       <YStack y={-1}>
-        <Circle size={42} my={-6} boc="$borderColor" bw={1}>
+        <Circle size={32}  elevation="$1">
           {status === 'done' ? (
-            <Check size={24} color="$color10" />
+            <Check size={18} color="$color10" />
           ) : status === 'building' ? (
-            <Hammer size={24} color="$color10" />
+            <Hammer size={18} color="$color10" />
           ) : (
-            <Dot size={24} color="$color10" />
+            <Dot size={18} color="$color10" />
           )}
         </Circle>
       </YStack>

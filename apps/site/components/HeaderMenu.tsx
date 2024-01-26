@@ -73,7 +73,7 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
             theme={open ? 'alt1' : undefined}
             aria-label="Open the main menu"
           >
-            {userSwr.data?.userDetails && (
+            {userSwr.data?.userDetails ? (
               <Avatar circular size="$2">
                 <Avatar.Image
                   source={{
@@ -89,6 +89,8 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
                   }}
                 />
               </Avatar>
+            ) : (
+              <Menu size={16} />
             )}
             <SizableText ff="$silkscreen">Menu</SizableText>
           </Button>
