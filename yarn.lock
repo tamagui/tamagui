@@ -6612,7 +6612,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/elements@workspace:packages/elements":
+"@tamagui/elements@npm:1.88.13, @tamagui/elements@workspace:packages/elements":
   version: 0.0.0-use.local
   resolution: "@tamagui/elements@workspace:packages/elements"
   dependencies:
@@ -27020,6 +27020,7 @@ __metadata:
     "@tamagui/core": "npm:1.88.13"
     "@tamagui/create-context": "npm:1.88.13"
     "@tamagui/dialog": "npm:1.88.13"
+    "@tamagui/elements": "npm:1.88.13"
     "@tamagui/fake-react-native": "npm:1.88.13"
     "@tamagui/focusable": "npm:1.88.13"
     "@tamagui/font-size": "npm:1.88.13"
