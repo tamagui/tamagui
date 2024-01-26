@@ -589,6 +589,14 @@ const themeBuilder = createThemeBuilder()
         mask: 'softenBorder2',
         ...maskOptions.component,
       },
+
+      TabsTrigger: [
+        {
+          parent: "light",
+          mask: 'strengthen',
+          ...maskOptions.component
+        },
+      ],
     },
     {
       // to save bundle size but make alt themes not work on components
@@ -617,8 +625,8 @@ function postfixObjKeys<
   obj: A,
   postfix: B
 ): {
-  [Key in `${keyof A extends string ? keyof A : never}${B}`]: Variable<string> | string
-} {
+    [Key in `${keyof A extends string ? keyof A : never}${B}`]: Variable<string> | string
+  } {
   return Object.fromEntries(
     Object.entries(obj).map(([k, v]) => [`${k}${postfix}`, v])
   ) as any
@@ -647,15 +655,15 @@ type EntriesType =
 type DeepWritable<OBJ_T> = { -readonly [P in keyof OBJ_T]: DeepWritable<OBJ_T[P]> }
 type UnionToIntersection<UNION_T> = // From https://stackoverflow.com/a/50375286
   (UNION_T extends any ? (k: UNION_T) => void : never) extends (k: infer I) => void
-    ? I
-    : never
+  ? I
+  : never
 
 type UnionObjectFromArrayOfPairs<ARR_T extends EntriesType> =
   DeepWritable<ARR_T> extends (infer R)[]
-    ? R extends [infer key, infer val]
-      ? { [prop in key & PropertyKey]: val }
-      : never
-    : never
+  ? R extends [infer key, infer val]
+  ? { [prop in key & PropertyKey]: val }
+  : never
+  : never
 type MergeIntersectingObjects<ObjT> = { [key in keyof ObjT]: ObjT[key] }
 type EntriesToObject<ARR_T extends EntriesType> = MergeIntersectingObjects<
   UnionToIntersection<UnionObjectFromArrayOfPairs<ARR_T>>

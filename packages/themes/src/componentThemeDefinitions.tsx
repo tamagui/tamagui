@@ -127,4 +127,12 @@ export const componentThemeDefinitions = {
     mask: 'softenBorder2',
     ...maskOptions.component,
   },
+
+  TabsTrigger: [
+    {
+      parent: "light",
+      mask: 'strengthen',
+      ...maskOptions.component
+    },
+  ],
 } satisfies ThemeDefinitions<keyof Masks>
