@@ -512,7 +512,7 @@ export default function TakeoutPage({
                         fow="400"
                         mb="$4"
                       >
-                        It's not just about shipping fast.
+                        It's not just about shipping&nbsp;fast.
                       </Paragraph>
                     </ThemeTint>
 
