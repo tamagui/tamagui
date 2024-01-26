@@ -72,9 +72,7 @@ export function getThemeCSSRules(props: {
           continue
         }
 
-        const childSelector = `${
-          props.themesNamesToIndexes[subName.replace(/^(dark|light)_/, '')] || subName
-        }`
+        const childSelector = `${subName.replace(/^(dark|light)_/, '')}`
         const order = isDark ? ['dark', 'light'] : ['light', 'dark']
         const [stronger, weaker] = order
         const numSelectors = Math.round(maxDepth * 1.5)
@@ -102,17 +100,18 @@ export function getThemeCSSRules(props: {
           const nextChildSelector =
             childSelector === lastParentSelector ? '' : childSelector
 
-          parentSelectors = parentSelectors.map((p) => CNP + p)
-
-          if (!nextChildSelector) {
-            selectorsSet.add(`${parentSelectors.join(' ')}`.trim())
-          } else {
-            selectorsSet.add(
-              `${parentSelectors.join(' ')} ${CNP}${
-                props.themesNamesToIndexes[nextChildSelector] || nextChildSelector
-              }`.trim()
-            )
+          let nextChildShorname = ''
+          if (nextChildSelector) {
+            nextChildShorname = `${CNP}${
+              props.themesNamesToIndexes[nextChildSelector] ||
+              props.themesNamesToIndexes['light_' + nextChildSelector] ||
+              props.themesNamesToIndexes['dark_' + nextChildSelector]
+            }`.trim()
           }
+          // TODO: make sure to add CNP to childSelector and parentSelectors
+          parentSelectors = parentSelectors.map((x) => `${CNP}${x}`)
+
+          selectorsSet.add(`${parentSelectors.join(' ')} ${nextChildShorname}`.trim())
           // for light/dark/light:
           // selectorsSet.add(
           //   `${parentSelectors.join(' ')} ${nextChildSelector}.is_inversed`.trim()
