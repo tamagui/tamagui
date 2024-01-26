@@ -63,9 +63,11 @@ import {
   YStack,
   YStackProps,
   composeRefs,
+  getToken,
   isClient,
   styled,
   useMedia,
+  useTheme,
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 
@@ -90,19 +92,13 @@ export default function TakeoutPage({
   return (
     <>
       <ThemeTintAlt>
-      <YStack fullscreen bg="$color7" zi={-3} />
+        <YStack fullscreen bg="$color7" zi={-3} />
+        <ThemeTintEffect />
       </ThemeTintAlt>
 
-
       <YStack pos="absolute" t={-950} r={-420} rotate="120deg" o={0.025} zi={-1}>
-            <Image
-              alt="mandala"
-              width={2500}
-              height={2500}
-              src="/takeout/geometric.svg"
-            />
-          </YStack>
-      
+        <Image alt="mandala" width={2500} height={2500} src="/takeout/geometric.svg" />
+      </YStack>
 
       <>
         <NextSeo
@@ -158,9 +154,8 @@ export default function TakeoutPage({
       </ThemeTint>
 
       <YStack>
-        
         <ContainerXL>
-          <YStack h={0} mah={0}>            
+          <YStack h={0} mah={0}>
             <YStack position="absolute" t={20} r="5%">
               <PurchaseButton
                 onPress={() => {
@@ -652,6 +647,17 @@ export default function TakeoutPage({
       </YStack>
     </>
   )
+}
+
+const ThemeTintEffect = () => {
+  const theme = useTheme()
+  const color = theme.color7.val
+
+  useEffect(() => {
+    document.querySelector('#theme-color')?.setAttribute('content', color)
+  }, [color])
+
+  return null
 }
 
 const CodeInline = styled(Paragraph, {
@@ -1253,7 +1259,14 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
           <ScrollView $gtSm={{ maxHeight: '90vh' }}>
             <YStack group="takeoutBody" p="$6" space>
               <XStack ai="center" jc="center" gap="$6" mx="$8">
-                <Dialog.Title ff="$silkscreen" size="$7" mt="$-3" ls={5} als="center" theme="alt2">
+                <Dialog.Title
+                  ff="$silkscreen"
+                  size="$7"
+                  mt="$-3"
+                  ls={5}
+                  als="center"
+                  theme="alt2"
+                >
                   Checkout
                 </Dialog.Title>
               </XStack>
@@ -1347,9 +1360,13 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                 separator={<Separator vertical />}
                 $group-takeoutBody-sm={{ fd: 'column-reverse' }}
               >
-                <YStack f={1} maw="50%" $group-takeoutBody-sm={{
-                  maw: '100%'
-                }}>
+                <YStack
+                  f={1}
+                  maw="50%"
+                  $group-takeoutBody-sm={{
+                    maw: '100%',
+                  }}
+                >
                   <EnsureFlexed />
                   <YStack
                     separator={<Separator o={0.35} />}
@@ -1362,7 +1379,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                         <Paragraph size="$6" fow="bold">
                           Lifetime access, 1 year of updates
                         </Paragraph>
-                        <Paragraph  className="text-wrap-balance" size="$3" theme="alt1">
+                        <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
                           You own the code for life, with updates for a year
                         </Paragraph>
                       </YStack>
@@ -1384,7 +1401,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                     <XStack px="$4" py="$4" gap="$3">
                       <YStack width="80%">
                         <Paragraph size="$6">Discord Seats</Paragraph>
-                        <Paragraph  className="text-wrap-balance" size="$3" theme="alt1">
+                        <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
                           Access to the Takeout channel
                         </Paragraph>
                       </YStack>
@@ -1395,7 +1412,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                     <XStack px="$4" py="$4" gap="$3">
                       <YStack width="80%">
                         <Paragraph size="$6">Discord Private Channel</Paragraph>
-                        <Paragraph  className="text-wrap-balance" size="$3" theme="alt1">
+                        <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
                           Private chat for your team only
                         </Paragraph>
                       </YStack>
@@ -1410,7 +1427,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                     <XStack px="$4" py="$4" gap="$3">
                       <YStack width="80%">
                         <Paragraph size="$6">GitHub Seats</Paragraph>
-                        <Paragraph  className="text-wrap-balance" size="$3" theme="alt1">
+                        <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
                           Open PRs and issues on the Github repo
                         </Paragraph>
                       </YStack>
@@ -1436,11 +1453,9 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                       </MunroP>
                     </XStack>
 
-
                     <Paragraph size="$3" theme="alt2">
                       One-click cancel the updates and subscription from your account.
                     </Paragraph>
-                    
                   </YStack>
                 </YStack>
 
@@ -1518,12 +1533,12 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                         <H3 size="$11">{formatPrice(finalPrice! / 100, 'usd')}</H3>
                       )}
                     </XStack>
-                    
+
                     <Unspaced>
                       <YStack mt="$2">
                         <PromotionInput />
                       </YStack>
-                    </Unspaced>                    
+                    </Unspaced>
 
                     <YStack pb="$8" px="$4" space>
                       <NextLink
@@ -2388,7 +2403,7 @@ const PromotionInput = () => {
           gap="$2"
           jc="center"
           ai="center"
-        >          
+        >
           {store.appliedPromoCode ? (
             <>
               <Paragraph theme="green_alt2">
@@ -2576,7 +2591,7 @@ const Bullet = ({
       $gtLg={{ w: 'calc(50% - 20px)' }}
     >
       <YStack y={-1}>
-        <Circle size={32}  elevation="$1">
+        <Circle size={32} elevation="$1">
           {status === 'done' ? (
             <Check size={18} color="$color10" />
           ) : status === 'building' ? (
