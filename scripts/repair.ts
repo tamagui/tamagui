@@ -48,7 +48,7 @@ async function format() {
       }
 
       if (changed) {
-        writeFileSync(jsonPath, JSON.stringify(pkgJson, null, 2), {
+        writeFileSync(jsonPath, JSON.stringify(pkgJson, null, 2) + '\n', {
           encoding: 'utf-8',
         })
       }
@@ -75,7 +75,7 @@ async function format() {
         if (!pkgJson.scripts['clean']) {
           pkgJson.scripts['clean'] = 'tamagui-build clean'
           pkgJson.scripts['clean:build'] = 'tamagui-build clean:build'
-          writeFileSync(jsonPath, JSON.stringify(pkgJson, null, 2), {
+          writeFileSync(jsonPath, JSON.stringify(pkgJson, null, 2) + '\n', {
             encoding: 'utf-8',
           })
         }
