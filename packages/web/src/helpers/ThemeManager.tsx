@@ -302,7 +302,9 @@ function getState(
       const className = !isWeb
         ? ''
         : `${pre}sub_theme ${pre}${
-            themesNames[scheme !== afterPre ? scheme + '_' + afterPre : afterPre] ||
+            themesNames[afterPre] ||
+            themesNames['light_' + afterPre] ||
+            themesNames['dark_' + afterPre] ||
             afterPre
           }`
 

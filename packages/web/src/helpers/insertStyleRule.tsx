@@ -278,7 +278,10 @@ function addThemesFromCSS(
       ([] as string[])
     const [_0, _1, scheme, _2, _name] = matches
     const name =
-      _name === 'dark' || _name === 'light' ? _name : themesIndexes[Number(_name)]
+      _name === 'dark' || _name === 'light'
+        ? _name
+        : // remove dark_ or light_ from name so t_3 will match light_orange and we remove the light_ prefix
+          themesIndexes[Number(_name)].replace(/(dark|light)_/, '')
     const themeName =
       name && scheme && scheme !== name ? `${scheme}_${name}` : name || scheme
     if (dedupedEntry.names.includes(themeName) || themeName === 'light_dark') {
