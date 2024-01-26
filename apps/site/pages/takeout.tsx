@@ -268,40 +268,43 @@ export default function TakeoutPage({
                   </H2>
                 </ThemeTint>
 
-                <Paragraph
-                  className="text-wrap-balance"
-                  size="$8"
-                  $sm={{ size: '$7' }}
-                  fow="400"
-                >
-                  Takeout 🥡 is a bootstrap extracted from our experience creating and
-                  consulting on apps with Tamagui. It builds off the OSS starter{' '}
-                  <CodeInline>(npm create tamagui)</CodeInline>, adding{' '}
-                  <a target="_blank" href="https://supabase.com">
-                    Supabase
-                  </a>{' '}
-                  for data and auth, all the flows you'd want for any user-based app, and
-                  a bunch of other goodies that take a while to set up well.
-                </Paragraph>
+                <ThemeTintAlt>
+                  <Paragraph
+                    className="text-wrap-balance"
+                    size="$8"
+                    $sm={{ size: '$7' }}
+                    fow="400"
+                  >
+                    Takeout 🥡 is a bootstrap extracted from our experience creating and
+                    consulting on apps with Tamagui. It builds off the OSS starter{' '}
+                    <CodeInline>(npm&nbsp;create&nbsp;tamagui)</CodeInline>, adding{' '}
+                    <a target="_blank" href="https://supabase.com">
+                      Supabase
+                    </a>{' '}
+                    for data and auth, all the flows you'd want for any user-based app,
+                    and a bunch of other goodies that take a while to set up well.
+                  </Paragraph>
 
-                <Paragraph
-                  className="text-wrap-balance"
-                  size="$7"
-                  $sm={{ size: '$6' }}
-                  $xs={{ size: '$5' }}
-                  fow="400"
-                >
-                  With <CodeInline>npx tamagui add font</CodeInline> and{' '}
-                  <CodeInline>npx tamagui add icon</CodeInline>, add on the ~1,500{' '}
-                  <NextLink href="https://fonts.google.com" target="_blank">
-                    Google Fonts
-                  </NextLink>{' '}
-                  and 120{' '}
-                  <NextLink href="https://icones.js.org" target="_blank">
-                    icones.js.org
-                  </NextLink>{' '}
-                  icon packs to your app as typed and Tamagui styled components.
-                </Paragraph>
+                  <Paragraph
+                    className="text-wrap-balance"
+                    size="$7"
+                    $sm={{ size: '$6' }}
+                    $xs={{ size: '$5' }}
+                    fow="400"
+                  >
+                    With <CodeInline>npx&nbsp;tamagui&nbsp;add&nbsp;font</CodeInline> and{' '}
+                    <CodeInline>npx&nbsp;tamagui&nbsp;add&nbsp;icon</CodeInline>, add on
+                    the ~1,500{' '}
+                    <NextLink href="https://fonts.google.com" target="_blank">
+                      Google Fonts
+                    </NextLink>{' '}
+                    and 120{' '}
+                    <NextLink href="https://icones.js.org" target="_blank">
+                      icones.js.org
+                    </NextLink>{' '}
+                    icon packs to your app as typed and Tamagui styled components.
+                  </Paragraph>
+                </ThemeTintAlt>
 
                 <Spacer size="$6" />
 
@@ -664,7 +667,7 @@ const CodeInline = styled(Paragraph, {
   tag: 'code',
   fontFamily: '$mono',
   color: '$color12',
-  backgroundColor: '$color9',
+  backgroundColor: '$color5',
   cursor: 'inherit',
   br: '$3',
   // @ts-ignore
