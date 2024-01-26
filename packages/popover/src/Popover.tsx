@@ -13,6 +13,7 @@ import {
   SizeTokens,
   Stack,
   StackProps,
+  TamaguiComponent,
   TamaguiElement,
   Theme,
   View,
@@ -29,8 +30,8 @@ import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import {
   Popper,
   PopperAnchor,
-  PopperAnchorProps,
   PopperArrow,
+  PopperArrowExtraProps,
   PopperArrowProps,
   PopperContent,
   PopperContentFrame,
@@ -54,7 +55,7 @@ import { useFloatingContext } from './useFloatingContext'
 export type PopoverProps = PopperProps & {
   open?: boolean
   defaultOpen?: boolean
-  onOpenChange?: (open: boolean) => void
+  onOpenChange?: (open: boolean, via?: 'hover' | 'press') => void
   keepChildrenMounted?: boolean
 
   /**
@@ -75,7 +76,7 @@ type PopoverContextValue = {
   triggerRef: React.RefObject<any>
   contentId?: string
   open: boolean
-  onOpenChange(open: boolean): void
+  onOpenChange(open: boolean, via: 'hover' | 'press'): void
   onOpenToggle(): void
   hasCustomAnchor: boolean
   onCustomAnchorAdd(): void
@@ -199,7 +200,13 @@ export interface PopoverContentTypeProps
   enableAnimationForPositionChange?: boolean
 }
 
-export const PopoverContent = PopperContentFrame.extractable(
+type PopoverContentType = TamaguiComponent<
+  ScopedPopoverProps<PopoverContentTypeProps>,
+  PopoverContentTypeElement
+>
+
+// @ts-expect-error
+export const PopoverContent: PopoverContentType = PopperContentFrame.extractable(
   React.forwardRef<
     PopoverContentTypeElement,
     ScopedPopoverProps<PopoverContentTypeProps>
@@ -507,7 +514,7 @@ export const PopoverClose = React.forwardRef<
       ref={forwardedRef}
       componentName="PopoverClose"
       onPress={composeEventHandlers(props.onPress as any, () =>
-        context.onOpenChange(false)
+        context.onOpenChange(false, 'press')
       )}
     />
   )
@@ -519,27 +526,24 @@ export const PopoverClose = React.forwardRef<
 
 export type PopoverArrowProps = PopperArrowProps
 
-export const PopoverArrow = PopperArrow.styleable(function PopoverArrow(
-  props: ScopedPopoverProps<PopoverArrowProps>,
-  forwardedRef
-) {
-  const { __scopePopover, ...rest } = props
-  const context = usePopoverContext(__scopePopover)
-  const sheetActive = useSheetBreakpointActive(context.sheetBreakpoint)
-
-  if (sheetActive) {
-    return null
+export const PopoverArrow = PopperArrow.styleable<PopperArrowExtraProps>(
+  function PopoverArrow(props: ScopedPopoverProps<PopoverArrowProps>, forwardedRef) {
+    const { __scopePopover, ...rest } = props
+    const context = usePopoverContext(__scopePopover)
+    const sheetActive = useSheetBreakpointActive(context.sheetBreakpoint)
+    if (sheetActive) {
+      return null
+    }
+    return (
+      <PopperArrow
+        __scopePopper={__scopePopover || POPOVER_SCOPE}
+        componentName="PopoverArrow"
+        {...rest}
+        ref={forwardedRef}
+      />
+    )
   }
-
-  return (
-    <PopperArrow
-      __scopePopper={__scopePopover || POPOVER_SCOPE}
-      componentName="PopoverArrow"
-      {...rest}
-      ref={forwardedRef}
-    />
-  )
-})
+)
 
 /* -------------------------------------------------------------------------------------------------
  * Popover
@@ -580,17 +584,23 @@ export const Popover = withStaticProperties(
       const sheetBreakpoint = when
       const triggerRef = React.useRef<TamaguiElement>(null)
       const [hasCustomAnchor, setHasCustomAnchor] = React.useState(false)
+      const viaRef = React.useRef()
       const [open, setOpen] = useControllableState({
         prop: openProp,
         defaultProp: defaultOpen || false,
-        onChange: onOpenChange,
+        onChange: (val) => {
+          onOpenChange?.(val, viaRef.current)
+        },
       })
 
       const sheetActive = useSheetBreakpointActive(sheetBreakpoint)
 
       const floatingContext = useFloatingContext({
         open,
-        setOpen,
+        setOpen: (val, via) => {
+          viaRef.current = via
+          setOpen(val)
+        },
         disable: sheetActive,
         hoverable,
         disableFocus: disableFocus,
@@ -614,7 +624,10 @@ export const Popover = withStaticProperties(
         triggerRef,
         open,
         breakpointActive: sheetActive,
-        onOpenChange: setOpen,
+        onOpenChange: (val, via) => {
+          viaRef.current = via
+          setOpen(val)
+        },
         onOpenToggle: useEvent(() => {
           if (open && sheetActive) {
             return

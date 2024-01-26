@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/create-themes",
-  "version": "1.88.6",
+  "version": "1.88.13",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -28,10 +28,10 @@
     }
   },
   "dependencies": {
-    "@tamagui/core": "1.88.6"
+    "@tamagui/core": "1.88.13"
   },
   "devDependencies": {
-    "@tamagui/build": "1.88.6"
+    "@tamagui/build": "1.88.13"
   },
   "publishConfig": {
     "access": "public"

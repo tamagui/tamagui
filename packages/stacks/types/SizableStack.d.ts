@@ -10,6 +10,6 @@ export declare const SizableStack: import("@tamagui/core").TamaguiComponent<impo
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     unstyled?: boolean | undefined;
-}, {}>;
+}, import("@tamagui/core").StaticConfigPublic>;
 export type SizableStackProps = GetProps<typeof SizableStack>;
 //# sourceMappingURL=SizableStack.d.ts.map

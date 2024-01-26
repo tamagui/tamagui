@@ -3,11 +3,11 @@ import type { RNTextProps, RNViewProps } from './reactNativeTypes';
 type RNExclusiveViewProps = Omit<RNViewProps, keyof StackNonStyleProps>;
 export interface RNTamaguiViewNonStyleProps extends StackNonStyleProps, RNExclusiveViewProps {
 }
-type RNTamaguiView = TamaguiComponent<TamaDefer, TamaguiElement, RNTamaguiViewNonStyleProps, StackStyleBase, void>;
+type RNTamaguiView = TamaguiComponent<TamaDefer, TamaguiElement, RNTamaguiViewNonStyleProps, StackStyleBase, {}>;
 type RNExclusiveTextProps = Omit<RNTextProps, keyof TextProps>;
 export interface RNTamaguiTextNonStyleProps extends TextNonStyleProps, RNExclusiveTextProps {
 }
-type RNTamaguiText = TamaguiComponent<TamaDefer, TamaguiTextElement, RNTamaguiTextNonStyleProps, TextStylePropsBase, void>;
+type RNTamaguiText = TamaguiComponent<TamaDefer, TamaguiTextElement, RNTamaguiTextNonStyleProps, TextStylePropsBase, {}>;
 export * from '@tamagui/web';
 export * from './reactNativeTypes';
 export declare const View: RNTamaguiView;

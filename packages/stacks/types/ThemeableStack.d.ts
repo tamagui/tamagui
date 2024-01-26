@@ -126,6 +126,6 @@ export declare const ThemeableStack: import("@tamagui/core").TamaguiComponent<im
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}, {}>;
+}, import("@tamagui/core").StaticConfigPublic>;
 export type ThemeableStackProps = GetProps<typeof ThemeableStack>;
 //# sourceMappingURL=ThemeableStack.d.ts.map

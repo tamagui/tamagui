@@ -52,7 +52,7 @@ export const templates = [
   },
 
   {
-    title: `Expo Router (beta) - The base Expo router starter + Tamagui`,
+    title: `Expo Router (beta) - Expo router for unified Web + Native FS routes`,
     value: 'expo-router',
     type: 'included-in-monorepo',
     hidden: false,

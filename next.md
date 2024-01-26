@@ -1,3 +1,23 @@
+- // TODO ?
+- make studio not build unless `studio(` in commit
+
+- native theme change warning logs + theme change speed
+
+- themes v3
+  - remove many masks
+  - get ready for studio integration (export from studio?)
+  - light mode bg's and borders too light in general
+  - dark mode kitchen sink the listitem should be lighter than bg, listitem press theme should be darker
+
+- document popover hoverable + onOpenChange second arg via
+
+- add $pointerFine to takeout
+
+- bug in generated icon props
+  - https://discord.com/channels/909986013848412191/1178185816426680370/1199854688233857136
+
+- floating ui has a breaking change in patch version, so weve pinned the version to exact, but we should upgrade to latest floating ui and figure out the fixes (last i checked not super easy)
+
 missing disabled prop when using a variant function. Here's an example:
 
 ```tsx
@@ -61,6 +81,7 @@ type Variants = CustomStackProps['variant'];
 - compiler - no need to setup any separate package
 
 - 2.0 rename SizableStack to Surface and simplify a bit
+- 2.0 rename
 
 - make it so media queries can be shared with groups easily
 
@@ -453,7 +474,6 @@ Ali:
 
 - createThemes accepts array not object
 - site _app has t_unmounted helper, move that into tamagui proper
-- SimpleTooltip no sub theme looks bad on dark mode
 
 ---
 

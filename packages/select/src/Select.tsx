@@ -20,6 +20,7 @@ import { ThemeableStack, XStack, YStack } from '@tamagui/stacks'
 import { Paragraph, SizableText } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
+import { useDebounce } from '@tamagui/use-debounce'
 
 import { SELECT_NAME } from './constants'
 import {
@@ -53,43 +54,47 @@ const SelectValueFrame = styled(SizableText, {
   userSelect: 'none',
 })
 
-type SelectValueProps = GetProps<typeof SelectValueFrame> & {
+export interface SelectValueExtraProps {
   placeholder?: React.ReactNode
 }
 
-const SelectValue = SelectValueFrame.styleable<SelectValueProps>(function SelectValue(
-  {
-    __scopeSelect,
-    children: childrenProp,
-    placeholder,
-    ...props
-  }: ScopedProps<SelectValueProps>,
-  forwardedRef
-) {
-  // We ignore `className` and `style` as this part shouldn't be styled.
-  const context = useSelectContext(VALUE_NAME, __scopeSelect)
-  const itemParentContext = useSelectItemParentContext(VALUE_NAME, __scopeSelect)
-  const composedRefs = useComposedRefs(forwardedRef, context.onValueNodeChange)
-  const children = childrenProp ?? context.selectedItem
-  const isEmptyValue = context.value == null || context.value === ''
-  const selectValueChildren = isEmptyValue ? placeholder ?? children : children
+type SelectValueProps = GetProps<typeof SelectValueFrame> & SelectValueExtraProps
 
-  return (
-    <SelectValueFrame
-      {...(!props.unstyled && {
-        size: itemParentContext.size as any,
-        ellipse: true,
-        // we don't want events from the portalled `SelectValue` children to bubble
-        // through the item they came from
-        pointerEvents: 'none',
-      })}
-      ref={composedRefs}
-      {...props}
-    >
-      {unwrapSelectItem(selectValueChildren)}
-    </SelectValueFrame>
-  )
-})
+const SelectValue = SelectValueFrame.styleable<SelectValueExtraProps>(
+  function SelectValue(
+    {
+      __scopeSelect,
+      children: childrenProp,
+      placeholder,
+      ...props
+    }: ScopedProps<SelectValueProps>,
+    forwardedRef
+  ) {
+    // We ignore `className` and `style` as this part shouldn't be styled.
+    const context = useSelectContext(VALUE_NAME, __scopeSelect)
+    const itemParentContext = useSelectItemParentContext(VALUE_NAME, __scopeSelect)
+    const composedRefs = useComposedRefs(forwardedRef, context.onValueNodeChange)
+    const children = childrenProp ?? context.selectedItem
+    const isEmptyValue = context.value == null || context.value === ''
+    const selectValueChildren = isEmptyValue ? placeholder ?? children : children
+
+    return (
+      <SelectValueFrame
+        {...(!props.unstyled && {
+          size: itemParentContext.size as any,
+          ellipse: true,
+          // we don't want events from the portalled `SelectValue` children to bubble
+          // through the item they came from
+          pointerEvents: 'none',
+        })}
+        ref={composedRefs}
+        {...props}
+      >
+        {unwrapSelectItem(selectValueChildren)}
+      </SelectValueFrame>
+    )
+  }
+)
 
 function unwrapSelectItem(selectValueChildren: any) {
   return React.Children.map(selectValueChildren, (child) => {
@@ -414,6 +419,25 @@ export const Select = withStaticProperties(
         native === 'web' ||
         (Array.isArray(native) && native.includes('web')))
 
+    // TODO its calling this a bunch if you move mouse around on select items fast
+    // using a debounce for now but need to fix root issue
+    const setActiveIndexDebounced = useDebounce(
+      (index: number | null) => {
+        setActiveIndex((prev) => {
+          if (prev !== index) {
+            if (typeof index === 'number') {
+              emitActiveIndex(index)
+            }
+            return index
+          }
+          return prev
+        })
+      },
+      1,
+      {},
+      []
+    )
+
     return (
       <AdaptProvider>
         <SelectItemParentProvider
@@ -451,17 +475,7 @@ export const Select = withStaticProperties(
             sheetBreakpoint={sheetBreakpoint}
             activeIndex={activeIndex}
             selectedIndex={selectedIndex}
-            setActiveIndex={React.useCallback((index) => {
-              setActiveIndex((prev) => {
-                if (prev !== index) {
-                  if (typeof index === 'number') {
-                    emitActiveIndex(index)
-                  }
-                  return index
-                }
-                return prev
-              })
-            }, [])}
+            setActiveIndex={setActiveIndexDebounced}
             value={value}
             open={open}
             native={native}

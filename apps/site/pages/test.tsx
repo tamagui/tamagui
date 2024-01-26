@@ -21,11 +21,17 @@ function TestPage() {
         flex: 1,
       }}
     >
-      <Stack
+      <Button
+        animation="quick"
+        bg="$color10"
+      >
+        Sponsor for early access
+      </Button>
+      {/* <Stack
         // hitSlop={5}
         importantForAccessibility="no"
         needsOffscreenAlphaCompositing
-      />
+      /> */}
       {/* <AnimationsPresenceDemo /> */}
       {/* <SSRAnimationTest /> */}
       {/* <AnimatedNumbers /> */}
@@ -205,7 +211,7 @@ TestPage.getLayout = (page) => {
   return (
     <>
       <SearchProvider>
-        <Header minimal />
+        <Header />
         {page}
       </SearchProvider>
     </>

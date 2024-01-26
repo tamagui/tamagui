@@ -1158,21 +1158,30 @@ export type AllPlatforms = 'web' | 'native' | 'android' | 'ios'
 //
 // add both theme and shorthands
 //
-export type WithThemeAndShorthands<A extends Object> = OnlyAllowShorthands extends true
-  ? WithThemeValues<Omit<A, Longhands>> & WithShorthands<WithThemeValues<A>>
-  : WithThemeValues<A> & WithShorthands<WithThemeValues<A>>
+export type WithThemeAndShorthands<
+  A extends Object,
+  Variants = {},
+> = OnlyAllowShorthands extends true
+  ? WithThemeValues<Omit<A, Longhands>> & Variants & WithShorthands<WithThemeValues<A>>
+  : WithThemeValues<A> & Variants & WithShorthands<WithThemeValues<A>>
 
 //
 // combines all of theme, shorthands, pseudos...
 //
-export type WithThemeShorthandsAndPseudos<A extends Object> = WithThemeAndShorthands<A> &
-  WithPseudoProps<WithThemeAndShorthands<A>>
+export type WithThemeShorthandsAndPseudos<
+  A extends Object,
+  Variants = {},
+> = WithThemeAndShorthands<A, Variants> &
+  WithPseudoProps<WithThemeAndShorthands<A, Variants>>
 
 //
 // ... media queries and animations
 //
-export type WithThemeShorthandsPseudosMedia<A extends Object> =
-  WithThemeShorthandsAndPseudos<A> & WithMediaProps<WithThemeShorthandsAndPseudos<A>>
+export type WithThemeShorthandsPseudosMedia<
+  A extends Object,
+  Variants = {},
+> = WithThemeShorthandsAndPseudos<A, Variants> &
+  WithMediaProps<WithThemeShorthandsAndPseudos<A, Variants>>
 
 /**
  * Base style-only props (no media, pseudo):
@@ -1357,22 +1366,24 @@ export type Styleable<
   ParentStaticProperties
 >
 
-export type GetFinalProps<NonStyleProps, StylePropsBase> = Omit<
+export type GetFinalProps<NonStyleProps, StylePropsBase, Variants> = Omit<
   NonStyleProps,
-  keyof StylePropsBase
+  keyof StylePropsBase | keyof Variants
 > &
-  (StylePropsBase extends Object ? WithThemeShorthandsPseudosMedia<StylePropsBase> : {})
+  (StylePropsBase extends Object
+    ? WithThemeShorthandsPseudosMedia<StylePropsBase, Variants>
+    : {})
 
 export type TamaguiComponent<
   Props = any,
   Ref = any,
   NonStyledProps = {},
   BaseStyles extends Object = {},
-  VariantProps = {},
+  Variants = {},
   ParentStaticProperties = {},
 > = ForwardRefExoticComponent<
   (Props extends TamaDefer
-    ? GetFinalProps<NonStyledProps, BaseStyles & VariantProps>
+    ? GetFinalProps<NonStyledProps, BaseStyles, Variants>
     : Props) &
     RefAttributes<Ref>
 > &
@@ -1381,20 +1392,24 @@ export type TamaguiComponent<
     Ref,
     NonStyledProps,
     BaseStyles,
-    VariantProps,
+    Variants,
     ParentStaticProperties
   > &
   Omit<ParentStaticProperties, 'staticConfig' | 'extractable' | 'styleable'> & {
-    __tama: [Props, Ref, NonStyledProps, BaseStyles, VariantProps, ParentStaticProperties]
+    __tama: [Props, Ref, NonStyledProps, BaseStyles, Variants, ParentStaticProperties]
   }
 
 export type InferGenericComponentProps<A> = A extends ComponentType<infer Props>
   ? Props
-  : A extends new (
-        props: infer Props
-      ) => any
-    ? Props
-    : {}
+  : A extends ForwardRefExoticComponent<infer P>
+    ? P
+    : A extends ReactComponentWithRef<infer P, any>
+      ? P
+      : A extends new (
+            props: infer Props
+          ) => any
+        ? Props
+        : {}
 
 export type InferStyledProps<
   A extends StylableComponent,
@@ -1403,7 +1418,7 @@ export type InferStyledProps<
   __tama: any
 }
   ? GetProps<A>
-  : GetFinalProps<InferGenericComponentProps<A>, GetBaseStyles<{}, B>>
+  : GetFinalProps<InferGenericComponentProps<A>, GetBaseStyles<{}, B>, {}>
 
 export type GetProps<A extends StylableComponent> = A extends {
   __tama: [
@@ -1416,7 +1431,7 @@ export type GetProps<A extends StylableComponent> = A extends {
   ]
 }
   ? Props extends TamaDefer
-    ? GetFinalProps<NonStyledProps, BaseStyles & VariantProps>
+    ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps>
     : Props
   : InferGenericComponentProps<A>
 
@@ -1432,7 +1447,9 @@ export type GetBaseStyles<A, B> = A extends {
   ? C
   : B extends { isText: true }
     ? TextStylePropsBase
-    : StackStyleBase
+    : B extends { isInput: true }
+      ? TextStylePropsBase
+      : StackStyleBase
 
 export type GetStyledVariants<A> = A extends {
   __tama: [any, any, any, any, infer B, any]
@@ -1440,11 +1457,11 @@ export type GetStyledVariants<A> = A extends {
   ? B
   : {}
 
-export type GetStaticConfig<A> = A extends {
+export type GetStaticConfig<A, Extra = {}> = A extends {
   __tama: [any, any, any, any, any, infer B]
 }
-  ? B
-  : A
+  ? B & Extra
+  : Extra
 
 export type StaticComponentObject<
   Props,
@@ -1463,7 +1480,7 @@ export type StaticComponentObject<
    */
   styleable: Styleable<
     Props extends TamaDefer
-      ? GetFinalProps<NonStyledProps, BaseStyles & VariantProps>
+      ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps>
       : Props,
     Ref,
     NonStyledProps,
@@ -1543,6 +1560,11 @@ export type StaticConfigPublic = {
   neverFlatten?: boolean | 'jsx'
 
   /**
+   * Adds support for text props and handles focus properly
+   */
+  isInput?: boolean
+
+  /**
    * Determines ultimate output tag (Text vs View)
    */
   isText?: boolean
@@ -1611,11 +1633,6 @@ type StaticConfigBase = StaticConfigPublic & {
   memo?: boolean
 
   /**
-   * Used internally for handling focus
-   */
-  isInput?: boolean
-
-  /**
    * Used internally for knowing how to handle when a HOC is in-between styled()
    */
   isHOC?: boolean
@@ -1666,8 +1683,21 @@ export type SpreadKeys =
 
 export type VariantDefinitions<
   Parent extends StylableComponent = TamaguiComponent,
-  StaticConfig extends StaticConfigPublic = {},
-  MyProps extends Object = Partial<GetVariantProps<Parent, StaticConfig['isText']>>,
+  StaticConfig extends StaticConfigPublic = Parent extends {
+    __tama: [any, any, any, any, any, infer S]
+  }
+    ? S
+    : {},
+  MyProps extends Object = Partial<
+    GetVariantProps<
+      Parent,
+      StaticConfig['isText'] extends true
+        ? true
+        : StaticConfig['isInput'] extends true
+          ? true
+          : false
+    >
+  >,
   Val = any,
 > = VariantDefinitionFromProps<MyProps, Val> & {
   _isEmpty?: 1
@@ -1687,7 +1717,7 @@ export type GetVariantProps<
   ]
 }
   ? Props extends TamaDefer
-    ? GetFinalProps<NonStyledProps, BaseStyles & VariantProps>
+    ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps>
     : Props
   : WithThemeShorthandsPseudosMedia<
       IsText extends true ? TextStylePropsBase : StackStyleBase

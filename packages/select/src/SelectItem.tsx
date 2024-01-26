@@ -21,14 +21,18 @@ type SelectItemContextValue = {
 export const [SelectItemContextProvider, useSelectItemContext] =
   createSelectContext<SelectItemContextValue>(ITEM_NAME)
 
-export interface SelectItemProps extends ListItemProps {
+export interface SelectItemExtraProps {
   value: string
   index: number
   disabled?: boolean
   textValue?: string
 }
 
-export const SelectItem = ListItemFrame.styleable<SelectItemProps>(
+export interface SelectItemProps
+  extends Omit<ListItemProps, keyof SelectItemExtraProps>,
+    SelectItemExtraProps {}
+
+export const SelectItem = ListItemFrame.styleable<SelectItemExtraProps>(
   function SelectItem(props: ScopedProps<SelectItemProps>, forwardedRef) {
     const {
       __scopeSelect,
@@ -68,15 +72,14 @@ export const SelectItem = ListItemFrame.styleable<SelectItemProps>(
     } = context
 
     const [isSelected, setSelected] = React.useState(initialValue === value)
-    const [isActive, setActive] = React.useState(false)
 
     React.useEffect(() => {
       return activeIndexSubscribe((i) => {
         const isActive = index === i
-        setActive(isActive)
 
         if (isActive) {
           onActiveChange(value, index)
+          listRef?.current[index]?.focus()
         }
       })
     }, [index])
@@ -159,12 +162,6 @@ export const SelectItem = ListItemFrame.styleable<SelectItemProps>(
           }
     }, [handleSelect])
 
-    useIsomorphicLayoutEffect(() => {
-      if (isActive) {
-        listRef?.current[index]?.focus()
-      }
-    }, [isActive])
-
     return (
       <SelectItemContextProvider
         scope={__scopeSelect}
@@ -192,6 +189,13 @@ export const SelectItem = ListItemFrame.styleable<SelectItemProps>(
               cursor: 'default',
               size,
               outlineOffset: -1,
+
+              focusStyle: {
+                outlineColor: '$outlineColor',
+                outlineWidth: 2,
+                outlineStyle: 'solid',
+                outlineOffset: -2,
+              },
             })}
             {...listItemProps}
             {...selectItemProps}

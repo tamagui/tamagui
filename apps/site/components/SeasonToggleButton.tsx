@@ -22,7 +22,7 @@ export const SeasonToggleButton = (props: ButtonProps) => {
 
   return (
     <Popover hoverable>
-      <Popover.Trigger>
+      <Popover.Trigger asChild>
         <Button
           size="$3"
           w={38}

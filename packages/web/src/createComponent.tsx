@@ -164,6 +164,7 @@ export function createComponent<
   const {
     Component,
     isText,
+    isInput,
     isZStack,
     isHOC,
     validStyles = {},
@@ -436,8 +437,13 @@ export function createComponent<
       !isWeb ||
         (isAnimated && !supportsCSSVars) ||
         !staticConfig.acceptsClassName ||
-        propsIn.disableClassName
+        // on server for SSR and animation compat added the && isHydrated but perhaps we want
+        // disableClassName="until-hydrated" to be more straightforward
+        // see issue if not, Button sets disableClassName to true <Button animation="" /> with
+        // the react-native driver errors because it tries to animate var(--color) to rbga(..)
+        (propsIn.disableClassName && isHydrated)
     )
+
     const shouldForcePseudo = !!propsIn.forceStyle
     const noClassNames = shouldAvoidClasses || shouldForcePseudo
 
@@ -551,7 +557,9 @@ export function createComponent<
           `%c ${banner} (hydrated: ${isHydrated}) (unmounted: ${state.unmounted})`,
           'background: green; color: white;'
         )
-        if (!isServer) {
+        if (isServer) {
+          log({ noClassNames, isAnimated, shouldAvoidClasses, isWeb, supportsCSSVars })
+        } else {
           // if strict mode or something messes with our nesting this fixes:
           console.groupEnd()
 
@@ -858,9 +866,10 @@ export function createComponent<
       mediaGroups ? Object.keys([...mediaGroups]).join('') : 0,
     ])
 
-    let fontFamily = isText
-      ? splitStyles.fontFamily || staticConfig.defaultProps?.fontFamily
-      : null
+    let fontFamily =
+      isText || isInput
+        ? splitStyles.fontFamily || staticConfig.defaultProps?.fontFamily
+        : null
     if (fontFamily && fontFamily[0] === '$') {
       fontFamily = fontFamily.slice(1)
     }
@@ -1183,7 +1192,7 @@ export function createComponent<
     }
 
     if (process.env.TAMAGUI_TARGET === 'web') {
-      if (isReactNative && !asChild && !isHOC) {
+      if (isReactNative && !asChild) {
         content = (
           <span
             {...(!isHydrated
@@ -1296,7 +1305,7 @@ export function createComponent<
     Ref,
     BaseProps,
     BaseStyles,
-    void
+    {}
   >
 
   let res: ComponentType = component as any

@@ -62,7 +62,7 @@ export const InputFrame = styled(
     },
   },
   {
-    isText: true,
+    isInput: true,
     acceptTokens: {
       placeholderTextColor: 'color',
     },
@@ -73,7 +73,7 @@ export type Input = TextInput
 
 export type InputFrameProps = GetProps<typeof InputFrame>
 
-type InputExtraProps = {
+export type InputExtraProps = {
   rows?: number
 }
 

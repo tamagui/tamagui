@@ -15,6 +15,22 @@ body:has(.strong-background) {
   background: var(--color4) !important;
 }
 
+html.t_dark body:has(.strong-background) {
+  background: var(--color2) !important;
+}
+
+html.t_light body:has(.strong-background)::before {
+  display: flex;
+  content: ' ';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 900px;
+  background: linear-gradient(#fff, transparent);
+  z-index: 1;
+}
+
 body {
   margin: 0;
   position: relative;
@@ -36,7 +52,7 @@ body {
 
 .home-glow {
   background: radial-gradient(#fff 0%, transparent 50%);
-  transition: all ease-out 0.5s;
+  transition: all ease-out 0.25s;
 }
 
 .t_dark .home-glow {
@@ -301,6 +317,10 @@ iframe {
 
 .blur-8 {
   backdrop-filter: blur(30px);
+}
+
+.blur-4 {
+  backdrop-filter: blur(4px);
 }
 
 .blur-light {
@@ -825,7 +845,14 @@ textarea {
   -webkit-text-wrap: balance;
 }
 
-.text-wrap-pretty {
+.text-wrap-pretty, p {
   text-wrap: pretty;
   -webkit-text-wrap: pretty;
+}
+
+.tooltip {
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-decoration-color: var(--color7);
+  text-underline-offset: 6px;
 }

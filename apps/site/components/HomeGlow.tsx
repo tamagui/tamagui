@@ -4,8 +4,15 @@ import { ThemeName, YStack, isClient, useDebounce } from 'tamagui'
 
 import { useTintSectionIndex } from './TintSection'
 
+const positions = new Array(15).fill(0).map(() => {
+  return [
+    Math.random() * 300 * (Math.random() > 0.5 ? 1 : -1),
+    Math.random() * 300 * (Math.random() > 0.5 ? 1 : -1),
+  ]
+})
+
 export const HomeGlow = memo(() => {
-  const { tints, tint, name, tintIndex } = useTint()
+  const { tints, tint, tintIndex } = useTint()
   const altTint = useTintAlt()
   const isHeroBelowColor = tint === 'blue' || tint === 'green' || tint === 'purple'
   const [index, setIndex] = useState(0)
@@ -14,7 +21,7 @@ export const HomeGlow = memo(() => {
   const [scrollTop, setScrollTopRaw] = useState(0)
   const setScrollTop = useDebounce(setScrollTopRaw, 200)
   const xs = 400
-  const scale = isOnHeroBelow ? 2 : 1.2
+  const scale = isOnHeroBelow ? 2 : 1.4
 
   if (isClient) {
     useTintSectionIndex((index) => {
@@ -34,12 +41,10 @@ export const HomeGlow = memo(() => {
           const xScale = isOpposing ? 0 : 1
           const active = isDouble ? i == 0 || i == 1 : cur === tint
           const isAlt = i === 1
-          const xRand = isOnHeroBelow
-            ? 0
-            : Math.random() * 300 * (Math.random() > 0.5 ? 1 : -1)
-          const yRand = isOnHeroBelow
-            ? 0
-            : Math.random() * 300 * (Math.random() > 0.5 ? 1 : -1)
+          const xRand = isOnHeroBelow ? 0 : positions[i][0]
+          const yRand = isOnHeroBelow ? 0 : positions[i][1]
+          const x =
+            xScale * (xRand + (isOnHeroBelow ? (isAlt ? -300 : 300) : isAlt ? -400 : 400))
           return (
             <YStack
               key={`${i}`}
@@ -49,10 +54,7 @@ export const HomeGlow = memo(() => {
               theme={cur as ThemeName}
               fullscreen
               left={`calc(50vw - 500px)`}
-              x={
-                xScale *
-                (xRand + (isOnHeroBelow ? (isAlt ? -600 : 600) : isAlt ? -400 : 400))
-              }
+              x={x}
               y={yRand}
               scale={scale}
               className={'home-glow ' + (active ? ' active' : '')}

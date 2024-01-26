@@ -128,7 +128,8 @@ export const PROP_SPLIT = '-'
 
 function isValidStyleKey(key: string, staticConfig: StaticConfig) {
   const validStyleProps =
-    staticConfig.validStyles || (staticConfig.isText ? stylePropsText : validStyles)
+    staticConfig.validStyles ||
+    (staticConfig.isText || staticConfig.isInput ? stylePropsText : validStyles)
   return (
     validStyleProps[key] || (staticConfig.acceptTokens && staticConfig.acceptTokens[key])
   )
@@ -162,6 +163,7 @@ export const getSplitStyles: StyleSplitter = (
   const {
     isHOC,
     isText,
+    isInput,
     variants,
     isReactNative,
     inlineProps,
@@ -528,6 +530,11 @@ export const getSplitStyles: StyleSplitter = (
     const shouldPassThrough = shouldPassProp || isHOCShouldPassThrough
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+      // fix native group nesting issues
+      console.groupEnd()
+      console.groupEnd()
+      // fix native group nesting issues
+
       console.groupCollapsed(
         `  🔑 ${keyOg}${keyInit !== keyOg ? ` (shorthand for ${keyInit})` : ''} ${
           shouldPassThrough ? '(pass)' : ''
@@ -582,7 +589,7 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     // we sort of have to update fontFamily all the time: before variants run, after each variant
-    if (isText) {
+    if (isText || isInput) {
       if (
         valInit &&
         (keyInit === 'fontFamily' || keyInit === shorthands['fontFamily']) &&

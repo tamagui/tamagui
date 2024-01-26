@@ -13,7 +13,7 @@ export declare const CheckboxIndicatorFrame: import("@tamagui/core").TamaguiComp
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}, {}>;
+}, import("@tamagui/core").StaticConfigPublic>;
 export declare const CheckboxFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     size?: import("@tamagui/core").SizeTokens | undefined;
     unstyled?: boolean | undefined;
@@ -31,5 +31,5 @@ export declare const CheckboxFrame: import("@tamagui/core").TamaguiComponent<imp
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}, {}>;
+}, import("@tamagui/core").StaticConfigPublic>;
 //# sourceMappingURL=Checkbox.d.ts.map

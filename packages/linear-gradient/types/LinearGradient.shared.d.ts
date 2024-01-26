@@ -1,18 +1,17 @@
 import { ColorTokens, GetProps, ThemeTokens } from '@tamagui/core';
-import { LinearGradientProps as ExpoLinearGradientProps } from './linear-gradient';
-export type LinearGradientExtraProps = Omit<ExpoLinearGradientProps, 'colors'> & {
+import { LinearGradientPoint } from './linear-gradient';
+export type LinearGradientExtraProps = {
     colors?: (ColorTokens | ThemeTokens | (string & {}))[];
+    locations?: number[] | null;
+    start?: LinearGradientPoint | null;
+    end?: LinearGradientPoint | null;
 };
-export declare const LinearGradient: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase & {
+export declare const LinearGradient: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-}>, "colors" | keyof import("react-native").ViewProps | "locations" | "start" | "end"> & Omit<ExpoLinearGradientProps, "colors"> & {
-    colors?: (ColorTokens | (string & {}))[] | undefined;
-}, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<ExpoLinearGradientProps, "colors"> & {
-    colors?: (ColorTokens | (string & {}))[] | undefined;
-}, import("@tamagui/core").StackStyleBase, {
+}>, keyof LinearGradientExtraProps> & LinearGradientExtraProps, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & LinearGradientExtraProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-}, {}>;
+}, import("@tamagui/core").StaticConfigPublic>;
 export type LinearGradientProps = GetProps<typeof LinearGradient>;
 //# sourceMappingURL=LinearGradient.shared.d.ts.map

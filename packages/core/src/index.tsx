@@ -38,7 +38,7 @@ type RNTamaguiView = TamaguiComponent<
   TamaguiElement,
   RNTamaguiViewNonStyleProps,
   StackStyleBase,
-  void
+  {}
 >
 
 type RNExclusiveTextProps = Omit<RNTextProps, keyof TextProps>
@@ -51,7 +51,7 @@ type RNTamaguiText = TamaguiComponent<
   TamaguiTextElement,
   RNTamaguiTextNonStyleProps,
   TextStylePropsBase,
-  void
+  {}
 >
 
 // re-exports all of @tamagui/web just adds hooks
