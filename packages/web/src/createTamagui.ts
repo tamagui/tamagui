@@ -65,35 +65,21 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   let foundThemes: DedupedThemes | undefined
 
   // { orange: 1, blue: 2}
-  const themesNamesToIndexes = areThemesJustNames
-    ? Object.fromEntries(
-        (configIn.themes as string[])
-          .sort((a, b) => a.localeCompare(b))
-          .map((name, i) => [name, i + 1] as const)
-      )
-    : Object.fromEntries(
-        Object.keys(configIn.themes || {})
-          .sort((a, b) => a.localeCompare(b))
-          .map((name, i) => [name, i + 1] as const)
-      )
+  const sortedThemeKeys = (
+    areThemesJustNames
+      ? (configIn.themes as string[])
+      : Object.keys(configIn.themes as string[])
+  ).sort((a, b) => a.localeCompare(b))
+
+  const themesNamesToIndexes = {}
+  const themesIndexesToNames = {}
+  sortedThemeKeys.forEach((name, index) => {
+    themesNamesToIndexes[name] = index + 1
+    themesIndexesToNames[index + 1] = name
+  })
 
   delete themesNamesToIndexes['dark']
   delete themesNamesToIndexes['light']
-
-  // insert at the start of the array
-
-  // { 1: 'orange', 2: 'blue'}
-  const themesIndexesToNames = areThemesJustNames
-    ? Object.fromEntries(
-        (configIn.themes as string[])
-          .sort((a, b) => a.localeCompare(b))
-          .map((name, i) => [i + 1, name] as const)
-      )
-    : Object.fromEntries(
-        Object.keys(configIn.themes || {})
-          .sort((a, b) => a.localeCompare(b))
-          .map((name, i) => [i + 1, name] as const)
-      )
 
   if (configIn.themes) {
     const noThemes = areThemesJustNames ? true : Object.keys(configIn.themes).length === 0
