@@ -1,4 +1,5 @@
-import { Variable, VariableValGeneric, getTokens, isVariable, } from '@tamagui/web'
+import type { Variable, VariableValGeneric } from '@tamagui/web'
+import { getTokens, isVariable } from '@tamagui/web'
 
 // technically number | undefined just for compat with the generic VariableVal
 type GetTokenBase = Variable | string | number | undefined | VariableValGeneric

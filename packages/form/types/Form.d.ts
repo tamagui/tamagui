@@ -1,6 +1,6 @@
 /// <reference types="react" />
-import { StackProps } from '@tamagui/core';
-import { Scope } from '@tamagui/create-context';
+import type { StackProps } from '@tamagui/core';
+import type { Scope } from '@tamagui/create-context';
 export declare const FormFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
 type ScopedProps<P> = P & {
     __scopeForm?: Scope;

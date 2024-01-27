@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test'
 import waitPort from 'wait-port'
-import { $, ProcessPromise, fetch, sleep } from 'zx'
+import type { ProcessPromise} from 'zx';
+import { $, fetch, sleep } from 'zx'
 
 let server: ProcessPromise | null = null
 

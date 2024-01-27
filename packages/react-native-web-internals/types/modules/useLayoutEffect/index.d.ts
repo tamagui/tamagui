@@ -9,7 +9,7 @@
  *
  * @flow
  */
-import { useLayoutEffect } from 'react';
+import type { useLayoutEffect } from 'react';
 declare const useLayoutEffectImpl: typeof useLayoutEffect;
 export default useLayoutEffectImpl;
 //# sourceMappingURL=index.d.ts.map

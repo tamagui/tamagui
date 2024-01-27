@@ -1,7 +1,7 @@
-import { GetProps, StackProps, TamaguiComponent, TamaguiComponentExpectingVariants } from '@tamagui/core';
-import { FunctionComponent, RefAttributes } from 'react';
-import { View } from 'react-native';
-import { SheetProps, SheetScopedProps } from './types';
+import type { GetProps, StackProps, TamaguiComponent, TamaguiComponentExpectingVariants } from '@tamagui/core';
+import type { FunctionComponent, RefAttributes } from 'react';
+import type { View } from 'react-native';
+import type { SheetProps, SheetScopedProps } from './types';
 type SharedSheetProps = {
     open?: boolean;
 };

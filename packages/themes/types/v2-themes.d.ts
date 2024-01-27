@@ -1,4 +1,4 @@
-import { Variable } from '@tamagui/web';
+import type { Variable } from '@tamagui/web';
 export { masks } from './masks';
 export declare const palettes: {
     dark_blue: string[];

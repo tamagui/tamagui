@@ -3,7 +3,7 @@ import { basename } from 'path'
 import generator from '@babel/generator'
 import { declare } from '@babel/helper-plugin-utils'
 import template from '@babel/template'
-import { Visitor } from '@babel/traverse'
+import type { Visitor } from '@babel/traverse'
 import * as t from '@babel/types'
 import type { TamaguiOptions } from '@tamagui/static'
 import {

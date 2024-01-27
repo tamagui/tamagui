@@ -1,4 +1,5 @@
-import { GenericFont, createFont } from '@tamagui/web'
+import type { GenericFont } from '@tamagui/web'
+import { createFont } from '@tamagui/web'
 
 export const createGluspFont = <A extends GenericFont>(font: Partial<A> = {}): A => {
   return createFont({

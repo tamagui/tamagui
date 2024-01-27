@@ -1,19 +1,10 @@
-import {
-  ColorTokens,
-  GetProps,
-  ThemeTokens,
-  normalizeColor,
-  styled,
-  useProps,
-  useTheme,
-} from '@tamagui/core'
+import type { ColorTokens, GetProps, ThemeTokens } from '@tamagui/core'
+import { normalizeColor, styled, useProps, useTheme } from '@tamagui/core'
 import { YStack } from '@tamagui/stacks'
 import type { ViewStyle } from 'react-native'
 
-import {
-  LinearGradient as ExpoLinearGradient,
-  LinearGradientPoint,
-} from './linear-gradient'
+import type { LinearGradientPoint } from './linear-gradient'
+import { LinearGradient as ExpoLinearGradient } from './linear-gradient'
 
 // taken from expo-linear-gradient
 export type LinearGradientExtraProps = {

@@ -1,7 +1,7 @@
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { startTransition, useState } from 'react'
 
-import { ColorScheme } from './types'
+import type { ColorScheme } from './types'
 
 export const useRootTheme = ({ fallback = 'light' }: { fallback?: ColorScheme } = {}) => {
   const [val, setVal] = useState<ColorScheme>(fallback)

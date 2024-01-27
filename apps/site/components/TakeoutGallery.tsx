@@ -1,7 +1,10 @@
 import { ArrowLeft, ArrowRight, X } from '@tamagui/lucide-icons'
 import { createUseStore } from '@tamagui/use-store'
-import Image, { ImageProps } from 'next/image'
+import type { ImageProps } from 'next/image';
+import Image from 'next/image'
 import { useEffect } from 'react'
+import type {
+  StackProps} from 'tamagui';
 import {
   AnimatePresence,
   Button,
@@ -9,7 +12,6 @@ import {
   H6,
   Paragraph,
   Spacer,
-  StackProps,
   Unspaced,
   XStack,
   YStack,

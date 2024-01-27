@@ -3,6 +3,9 @@ import { Link, Subtitles } from '@tamagui/lucide-icons'
 import { NextLink } from 'components/NextLink'
 import React, { useState } from 'react'
 import { ScrollView } from 'react-native'
+import type {
+  ImageProps,
+  XStackProps} from 'tamagui';
 import {
   Button,
   Card,
@@ -12,7 +15,6 @@ import {
   H4,
   H5,
   Image,
-  ImageProps,
   Paragraph,
   Separator,
   Spacer,
@@ -22,7 +24,6 @@ import {
   TooltipSimple,
   XGroup,
   XStack,
-  XStackProps,
   YStack,
   styled,
 } from 'tamagui'

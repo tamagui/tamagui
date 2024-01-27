@@ -1,8 +1,8 @@
-import { GetProps, SizeTokens, TamaguiElement } from '@tamagui/core';
-import { SizableStackProps } from '@tamagui/stacks';
-import * as React from 'react';
-import { View } from 'react-native';
-import { SliderProps, SliderTrackProps } from './types';
+import type { GetProps, SizeTokens, TamaguiElement } from '@tamagui/core';
+import type { SizableStackProps } from '@tamagui/stacks';
+import type * as React from 'react';
+import type { View } from 'react-native';
+import type { SliderProps, SliderTrackProps } from './types';
 type SliderTrackElement = HTMLElement | View;
 export declare const SliderTrackFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | SizeTokens | undefined;

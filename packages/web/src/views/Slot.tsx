@@ -3,7 +3,8 @@
 import { composeRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
 import { composeEventHandlers } from '@tamagui/helpers'
-import { Children, ReactNode, cloneElement, forwardRef, isValidElement } from 'react'
+import type { ReactNode } from 'react'
+import { Children, cloneElement, forwardRef, isValidElement } from 'react'
 
 /* -------------------------------------------------------------------------------------------------
  * Slot

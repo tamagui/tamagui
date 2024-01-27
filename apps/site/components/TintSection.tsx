@@ -2,7 +2,8 @@ import { useOnIntersecting } from '@tamagui/demos'
 import { getTints } from '@tamagui/logo'
 import { useTint } from '@tamagui/logo'
 import { useEffect, useMemo, useRef } from 'react'
-import { GetProps, XStack, YStack, styled } from 'tamagui'
+import type { GetProps} from 'tamagui';
+import { XStack, YStack, styled } from 'tamagui'
 
 type Props = SectionProps & { themed?: boolean; index: number }
 

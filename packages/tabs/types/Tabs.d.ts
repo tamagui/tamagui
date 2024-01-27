@@ -1,7 +1,7 @@
-import { GroupProps } from '@tamagui/group';
-import { RovingFocusGroup } from '@tamagui/roving-focus';
-import { GetProps, SizeTokens, TamaguiElement } from '@tamagui/web';
-import * as React from 'react';
+import type { GroupProps } from '@tamagui/group';
+import type { RovingFocusGroup } from '@tamagui/roving-focus';
+import type { GetProps, SizeTokens, TamaguiElement } from '@tamagui/web';
+import type * as React from 'react';
 import type { LayoutRectangle } from 'react-native';
 type TabsListFrameProps = GroupProps;
 type TabsListProps = TabsListFrameProps & {

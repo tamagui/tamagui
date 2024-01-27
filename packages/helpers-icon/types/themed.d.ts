@@ -1,5 +1,5 @@
-import React from 'react';
-import { IconProps } from './IconProps';
+import type React from 'react';
+import type { IconProps } from './IconProps';
 type ThemedOptions = {
     defaultThemeColor?: string;
     defaultStrokeWidth?: number;

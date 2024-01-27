@@ -1,6 +1,6 @@
 import chalk from 'chalk'
 
-import { ExtraSteps } from './types'
+import type { ExtraSteps } from './types'
 
 const packageManager = 'yarn'
 const useYarn = packageManager === 'yarn'

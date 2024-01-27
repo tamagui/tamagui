@@ -1,24 +1,26 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
-import {
+import type {
   GetProps,
-  Stack,
   StackProps,
   TamaguiComponent,
   TamaguiComponentExpectingVariants,
 } from '@tamagui/core'
+import { Stack } from '@tamagui/core'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { RemoveScroll } from '@tamagui/remove-scroll'
 import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
-import { FunctionComponent, RefAttributes, forwardRef, memo, useMemo } from 'react'
-import { Platform, View } from 'react-native'
+import type { FunctionComponent, RefAttributes } from 'react'
+import { forwardRef, memo, useMemo } from 'react'
+import type { View } from 'react-native'
+import { Platform } from 'react-native'
 
 import { SHEET_HANDLE_NAME, SHEET_NAME, SHEET_OVERLAY_NAME } from './constants'
 import { getNativeSheet } from './nativeSheet'
 import { useSheetContext } from './SheetContext'
 import { SheetImplementationCustom } from './SheetImplementationCustom'
 import { SheetScrollView } from './SheetScrollView'
-import { SheetProps, SheetScopedProps } from './types'
+import type { SheetProps, SheetScopedProps } from './types'
 import { useSheetController } from './useSheetController'
 import { useSheetOffscreenSize } from './useSheetOffscreenSize'
 

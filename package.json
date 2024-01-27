@@ -38,7 +38,7 @@
     "lighthouse:prod": "npx lighthouse http://localhost:3333 --view --chrome-flags='--headless' --throttling.cpuSlowdownMultiplier=16 --output-path=/tmp/report.html",
     "lighthouse:vite:prod": "npx lighthouse http://localhost:8080 --view --chrome-flags='--headless' --throttling.cpuSlowdownMultiplier=16 --output-path=/tmp/report.html",
     "lighthouse": "npx lighthouse http://localhost:3000 --view --chrome-flags='--headless' --throttling.cpuSlowdownMultiplier=16 --output-path=/tmp/report.html",
-    "lint:fix": "ultra -r --no-pretty lint:fix",
+    "lint:fix": "ultra -r --no-pretty lint:fix && yarn lint:eslint --fix",
     "lint": "yarn lint:eslint && ultra -r --no-pretty lint",
     "lint:eslint": "eslint '**/*.{ts,tsx}'",
     "postinstall": "npm-run-all --parallel check git-crypt-unlock build:js",
@@ -97,7 +97,7 @@
     }
   },
   "dependencies": {
-    "@biomejs/biome": "^1.5.1",
+    "@biomejs/biome": "^1.5.3",
     "@faker-js/faker": "^8.3.1",
     "@manypkg/cli": "^0.19.1",
     "@nderscore/tamagui-typescript-plugin": "^0.6.0",

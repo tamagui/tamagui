@@ -29,7 +29,7 @@
     "react-native-svg": ">=12"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.5.1",
+    "@biomejs/biome": "^1.5.3",
     "@tamagui/build": "1.89.0-1706308641099",
     "camelcase": "^6.0.0",
     "cheerio": "^1.0.0-rc.5",

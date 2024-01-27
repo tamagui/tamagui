@@ -9,7 +9,7 @@
  * @flow
  */
 
-import { ComponentType, ReactNode } from 'react'
+import type { ComponentType, ReactNode } from 'react'
 import { unmountComponentAtNode } from 'react-dom'
 import { invariant } from 'react-native-web-internals'
 

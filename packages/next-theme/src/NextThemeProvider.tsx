@@ -7,8 +7,8 @@ import { memo, useEffect, useMemo, useState } from 'react'
 import { MEDIA, colorSchemes } from './constants'
 import { getSystemTheme, getTheme } from './helpers'
 import { ThemeSettingContext } from './ThemeSettingContext'
-import { ValueObject } from './types'
-import { ThemeProviderProps, UseThemeProps } from './UseThemeProps'
+import type { ValueObject } from './types'
+import type { ThemeProviderProps, UseThemeProps } from './UseThemeProps'
 
 export const NextThemeProvider = memo(
   ({

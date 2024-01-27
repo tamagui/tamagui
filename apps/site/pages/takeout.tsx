@@ -3,7 +3,7 @@ import { PoweredByStripeIcon } from '@components/PoweredByStripeIcon'
 import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { getTakeoutPriceInfo } from '@lib/getProductInfo'
 import { stripe } from '@lib/stripe'
-import { Database } from '@lib/supabase-types'
+import type { Database } from '@lib/supabase-types'
 import { getArray } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { getSize } from '@tamagui/get-token'
@@ -19,24 +19,31 @@ import {
 } from '@tamagui/lucide-icons'
 import { useClientValue } from '@tamagui/use-did-finish-ssr'
 import { useUser } from 'hooks/useUser'
-import { GetStaticProps } from 'next'
+import type { GetStaticProps } from 'next'
 import { NextSeo } from 'next-seo'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { Suspense, memo, useEffect, useMemo, useState } from 'react'
-import Stripe from 'stripe'
+import type Stripe from 'stripe'
+import type {
+  ButtonProps,
+  FontSizeTokens,
+  GetProps,
+  TabLayout,
+  TabsProps,
+  TabsTabProps,
+  ThemeName,
+  XStackProps,
+  YStackProps} from 'tamagui';
 import {
   AnimatePresence,
   Button,
-  ButtonProps,
   Checkbox,
   Circle,
   Dialog,
   EnsureFlexed,
-  FontSizeTokens,
-  GetProps,
   H1,
   H2,
   H3,
@@ -51,17 +58,11 @@ import {
   SizableText,
   Spacer,
   Stack,
-  TabLayout,
   Tabs,
-  TabsProps,
-  TabsTabProps,
   Theme,
-  ThemeName,
   Unspaced,
   XStack,
-  XStackProps,
   YStack,
-  YStackProps,
   composeRefs,
   getToken,
   isClient,

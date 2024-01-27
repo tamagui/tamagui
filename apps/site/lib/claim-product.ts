@@ -1,6 +1,6 @@
-import { Database, Json } from '@lib/supabase-types'
+import type { Database, Json } from '@lib/supabase-types'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
-import { User } from '@supabase/auth-helpers-nextjs'
+import type { User } from '@supabase/auth-helpers-nextjs'
 import { inviteCollaboratorToRepo } from 'protected/_utils/github'
 
 export class ClaimError extends Error {}

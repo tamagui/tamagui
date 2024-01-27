@@ -1,9 +1,9 @@
 import type { ScopedProps } from '@tamagui/core';
-import { SizeTokens } from '@tamagui/core';
-import { Coords, OffsetOptions, Placement, Strategy, UseFloatingReturn, flip, shift } from '@tamagui/floating/types';
-import { SizableStackProps, YStackProps } from '@tamagui/stacks';
-import * as React from 'react';
-import { View } from 'react-native';
+import type { SizeTokens } from '@tamagui/core';
+import type { Coords, OffsetOptions, Placement, Strategy, UseFloatingReturn, flip, shift } from '@tamagui/floating/types';
+import type { SizableStackProps, YStackProps } from '@tamagui/stacks';
+import type * as React from 'react';
+import type { View } from 'react-native';
 type ShiftProps = typeof shift extends (options: infer Opts) => void ? Opts : never;
 type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : never;
 export type PopperContextValue = UseFloatingReturn & {

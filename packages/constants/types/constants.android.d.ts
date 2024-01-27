@@ -1,4 +1,4 @@
-import { useLayoutEffect } from 'react';
+import type { useLayoutEffect } from 'react';
 export declare const isWeb: boolean;
 export declare const isWindowDefined: boolean;
 export declare const isServer: boolean;

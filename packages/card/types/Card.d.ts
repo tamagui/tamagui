@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import { GetProps, SizeTokens } from '@tamagui/web';
+import type { GetProps, SizeTokens } from '@tamagui/web';
 export declare const CardFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: SizeTokens | undefined;
     unstyled?: boolean | undefined;

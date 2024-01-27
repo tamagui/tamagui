@@ -3,7 +3,8 @@ import { tokenCategories } from '@tamagui/helpers'
 
 import { getConfig } from '../config'
 import { isDevTools } from '../constants/isDevTools'
-import { Variable, getVariableValue, isVariable } from '../createVariable'
+import type { Variable } from '../createVariable'
+import { getVariableValue, isVariable } from '../createVariable'
 import type {
   GetStyleState,
   PropMapper,

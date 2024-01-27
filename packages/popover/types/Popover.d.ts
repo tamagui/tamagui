@@ -1,13 +1,13 @@
 import '@tamagui/polyfill-dev';
-import { UseHoverProps } from '@floating-ui/react';
-import { ScopedProps, SizeTokens, StackProps, TamaguiComponent, TamaguiElement } from '@tamagui/core';
-import { DismissableProps } from '@tamagui/dismissable/types';
-import { FocusScopeProps } from '@tamagui/focus-scope';
-import { PopperArrowExtraProps, PopperArrowProps, PopperContent, PopperContentProps, PopperProps } from '@tamagui/popper';
-import { RemoveScrollProps } from '@tamagui/remove-scroll';
-import { YStackProps } from '@tamagui/stacks';
-import * as React from 'react';
-import { ScrollView } from 'react-native';
+import type { UseHoverProps } from '@floating-ui/react';
+import type { ScopedProps, SizeTokens, StackProps, TamaguiComponent, TamaguiElement } from '@tamagui/core';
+import type { DismissableProps } from '@tamagui/dismissable/types';
+import type { FocusScopeProps } from '@tamagui/focus-scope';
+import type { PopperArrowExtraProps, PopperArrowProps, PopperContent, PopperContentProps, PopperProps } from '@tamagui/popper';
+import type { RemoveScrollProps } from '@tamagui/remove-scroll';
+import type { YStackProps } from '@tamagui/stacks';
+import type * as React from 'react';
+import type { ScrollView } from 'react-native';
 export type PopoverProps = PopperProps & {
     open?: boolean;
     defaultOpen?: boolean;

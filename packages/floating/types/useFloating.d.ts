@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import * as Floating from './Floating';
+import type * as Floating from './Floating';
 export type UseFloatingFn = typeof Floating.useFloating;
 type InferFloatingProps = UseFloatingFn extends (props: infer Props) => any ? Props : never;
 export type UseFloatingProps = InferFloatingProps & {

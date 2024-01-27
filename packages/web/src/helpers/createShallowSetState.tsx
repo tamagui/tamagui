@@ -1,5 +1,5 @@
-import React from 'react'
-import { DebugProp } from '../types'
+import type React from 'react'
+import type { DebugProp } from '../types'
 
 export function createShallowSetState<State extends Object>(
   setter: React.Dispatch<React.SetStateAction<State>>,

@@ -1,20 +1,22 @@
 import '@tamagui/polyfill-dev'
 
-import { UseHoverProps } from '@floating-ui/react'
+import type { UseHoverProps } from '@floating-ui/react'
 import { Adapt, useAdaptParent } from '@tamagui/adapt'
 import { Animate } from '@tamagui/animate'
 import { ResetPresence } from '@tamagui/animate-presence'
 import { hideOthers } from '@tamagui/aria-hidden'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
-import {
+import type {
   MediaQueryKey,
   ScopedProps,
   SizeTokens,
-  Stack,
   StackProps,
   TamaguiComponent,
   TamaguiElement,
+} from '@tamagui/core'
+import {
+  Stack,
   Theme,
   View,
   createStyledContext,
@@ -23,27 +25,32 @@ import {
   useMedia,
   useThemeName,
 } from '@tamagui/core'
-import { DismissableProps } from '@tamagui/dismissable'
+import type { DismissableProps } from '@tamagui/dismissable'
 import { FloatingOverrideContext } from '@tamagui/floating'
-import { FocusScope, FocusScopeProps } from '@tamagui/focus-scope'
+import type { FocusScopeProps } from '@tamagui/focus-scope'
+import { FocusScope } from '@tamagui/focus-scope'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
+import type {
+  PopperArrowExtraProps,
+  PopperArrowProps,
+  PopperContentProps,
+  PopperProps,
+} from '@tamagui/popper'
 import {
   Popper,
   PopperAnchor,
   PopperArrow,
-  PopperArrowExtraProps,
-  PopperArrowProps,
   PopperContent,
   PopperContentFrame,
-  PopperContentProps,
   PopperContext,
-  PopperProps,
   usePopperContext,
 } from '@tamagui/popper'
 import { Portal, PortalHost, PortalItem } from '@tamagui/portal'
-import { RemoveScroll, RemoveScrollProps } from '@tamagui/remove-scroll'
+import type { RemoveScrollProps } from '@tamagui/remove-scroll'
+import { RemoveScroll } from '@tamagui/remove-scroll'
 import { Sheet, SheetController } from '@tamagui/sheet'
-import { YStack, YStackProps } from '@tamagui/stacks'
+import type { YStackProps } from '@tamagui/stacks'
+import { YStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
 import { Platform, ScrollView } from 'react-native'

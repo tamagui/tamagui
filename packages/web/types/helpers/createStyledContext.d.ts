@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 export type StyledContext<Props extends Object = any> = Omit<React.Context<Props>, 'Provider'> & {
     context: React.Context<Props>;
     props: Object | undefined;

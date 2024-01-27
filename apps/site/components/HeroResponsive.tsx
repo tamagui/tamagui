@@ -12,6 +12,8 @@ import {
 import { demoMedia } from '@tamagui/site-config'
 import React, { startTransition, useMemo } from 'react'
 import { memo, useCallback, useEffect, useRef, useState } from 'react'
+import type {
+  YStackProps} from 'tamagui';
 import {
   Button,
   Circle,
@@ -24,7 +26,6 @@ import {
   Theme,
   XStack,
   YStack,
-  YStackProps,
   isTouchable,
   useDebounce,
   useDidFinishSSR,

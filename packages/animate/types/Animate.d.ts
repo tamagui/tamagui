@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import { AnimatePresenceProps } from '@tamagui/animate-presence';
+import type { AnimatePresenceProps } from '@tamagui/animate-presence';
 type BaseProps = {
     children: React.ReactNode;
 };

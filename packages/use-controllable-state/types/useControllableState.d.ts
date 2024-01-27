@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 type ChangeCb<T> = ((next: T) => void) | React.Dispatch<React.SetStateAction<T>>;
 export declare function useControllableState<T>({ prop, defaultProp, onChange, strategy, preventUpdate, transition, }: {
     prop?: T | undefined;

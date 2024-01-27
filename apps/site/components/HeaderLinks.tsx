@@ -19,7 +19,7 @@ import {
 import { Text } from 'tamagui'
 
 import { GithubIcon } from './GithubIcon'
-import { HeaderProps } from './HeaderProps'
+import type { HeaderProps } from './HeaderProps'
 import { NextLink } from './NextLink'
 import { getDefaultAvatarImage } from '../lib/avatar'
 

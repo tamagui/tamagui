@@ -1,4 +1,4 @@
-import { Price } from 'types'
+import type { Price } from 'types'
 
 export const getURL = () => {
   const url =

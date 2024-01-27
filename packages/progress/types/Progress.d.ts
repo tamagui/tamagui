@@ -1,5 +1,5 @@
-import { GetProps } from '@tamagui/core';
-import * as React from 'react';
+import type { GetProps } from '@tamagui/core';
+import type * as React from 'react';
 declare const createProgressScope: import("@tamagui/create-context").CreateScope;
 export declare const ProgressIndicatorFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     unstyled?: boolean | undefined;

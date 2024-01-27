@@ -1,7 +1,8 @@
 import { TamaguiLogo, setTintFamily, useTint } from '@tamagui/logo'
+import type {
+  ButtonProps} from 'tamagui';
 import {
   Button,
-  ButtonProps,
   Circle,
   Popover,
   SizableText,

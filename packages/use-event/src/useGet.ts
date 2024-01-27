@@ -12,7 +12,7 @@ export function useGet<A>(
   useIsomorphicLayoutEffect(() => {
     curRef.current = currentValue
   })
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+
   return useCallback(
     forwardToFunction
       ? (...args) => curRef.current?.apply(null, args)

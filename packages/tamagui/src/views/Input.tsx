@@ -1,5 +1,6 @@
 import { isWeb } from '@tamagui/constants'
-import { GetProps, styled, useTheme } from '@tamagui/core'
+import type { GetProps } from '@tamagui/core'
+import { styled, useTheme } from '@tamagui/core'
 import { useFocusable } from '@tamagui/focusable'
 import { TextInput } from 'react-native'
 

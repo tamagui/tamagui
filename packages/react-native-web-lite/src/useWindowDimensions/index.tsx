@@ -12,7 +12,7 @@
 
 import { useEffect, useState } from 'react'
 
-import { DisplayMetrics } from '../Dimensions/index'
+import type { DisplayMetrics } from '../Dimensions/index'
 import Dimensions from '../Dimensions/index'
 
 export default function useWindowDimensions(): DisplayMetrics {

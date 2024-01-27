@@ -1,10 +1,11 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { TamaguiElement } from '@tamagui/core'
-import { ListItem, ListItemProps } from '@tamagui/list-item'
+import type { TamaguiElement } from '@tamagui/core'
+import type { ListItemProps } from '@tamagui/list-item'
+import { ListItem } from '@tamagui/list-item'
 import * as React from 'react'
 
 import { useSelectContext, useSelectItemParentContext } from './context'
-import { ScopedProps } from './types'
+import type { ScopedProps } from './types'
 
 /* -------------------------------------------------------------------------------------------------
  * SelectTrigger

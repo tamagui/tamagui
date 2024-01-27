@@ -1,11 +1,11 @@
 import type { NodePath } from '@babel/traverse'
-import * as t from '@babel/types'
+import type * as t from '@babel/types'
 import type { PseudoStyles, StaticConfig, TamaguiConfig } from '@tamagui/core'
 import type { StyleObject } from '@tamagui/helpers'
 import type { TamaguiOptions } from '@tamagui/types'
 import type { ViewStyle } from 'react-native'
 
-import { LoadedComponents } from './extractor/bundleConfig'
+import type { LoadedComponents } from './extractor/bundleConfig'
 
 export type TamaguiPlatform = 'native' | 'web'
 

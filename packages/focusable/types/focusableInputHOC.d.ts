@@ -1,5 +1,5 @@
-import { TamaguiComponent } from '@tamagui/web';
-import React from 'react';
+import type { TamaguiComponent } from '@tamagui/web';
+import type React from 'react';
 type FocusableProps = {
     id?: string;
     onChangeText?: (val: string) => void;

@@ -1,7 +1,7 @@
 import { register } from 'esbuild-register/dist/node'
 
 import { requireTamaguiCore } from './helpers/requireTamaguiCore'
-import { TamaguiPlatform } from './types'
+import type { TamaguiPlatform } from './types'
 
 const nameToPaths = {}
 const Module = require('module')

@@ -1,6 +1,7 @@
 import { useTint, useTintAlt } from '@tamagui/logo'
 import { memo, useMemo, useState } from 'react'
-import { ThemeName, YStack, isClient, useDebounce } from 'tamagui'
+import type { ThemeName} from 'tamagui';
+import { YStack, isClient, useDebounce } from 'tamagui'
 
 import { useTintSectionIndex } from './TintSection'
 

@@ -1,4 +1,4 @@
-import { Locator } from '@playwright/test'
+import type { Locator } from '@playwright/test'
 
 export async function getStyles(locator: Locator) {
   return await locator.evaluate((el) => {

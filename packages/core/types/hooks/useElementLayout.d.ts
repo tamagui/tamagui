@@ -1,4 +1,4 @@
-import { RefObject } from 'react';
+import type { RefObject } from 'react';
 export type LayoutValue = {
     x: number;
     y: number;

@@ -1,12 +1,7 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
-import {
-  NativeValue,
-  SizeTokens,
-  StackProps,
-  TamaguiComponentExpectingVariants,
-  useProps,
-} from '@tamagui/core'
+import type { NativeValue, SizeTokens, StackProps } from '@tamagui/core'
+import { TamaguiComponentExpectingVariants, useProps } from '@tamagui/core'
 import { registerFocusable } from '@tamagui/focusable'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { useLabelContext } from '@tamagui/label'
@@ -14,11 +9,8 @@ import { ButtonNestingContext, YStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { usePrevious } from '@tamagui/use-previous'
 import * as React from 'react'
-import {
-  Switch as NativeSwitch,
-  SwitchProps as NativeSwitchProps,
-  Platform,
-} from 'react-native'
+import type { SwitchProps as NativeSwitchProps } from 'react-native'
+import { Switch as NativeSwitch, Platform } from 'react-native'
 
 import { SwitchFrame as DefaultSwitchFrame, SwitchThumb } from './Switch'
 import { SwitchContext } from './SwitchContext'
@@ -193,7 +185,6 @@ export function createSwitch<
       }
 
       if (!isWeb) {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
         React.useEffect(() => {
           if (!props.id) return
           return registerFocusable(props.id, {

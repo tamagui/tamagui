@@ -1,4 +1,4 @@
-import { SizeTokens } from '@tamagui/core';
+import type { SizeTokens } from '@tamagui/core';
 export declare const SwitchThumb: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     size?: SizeTokens | undefined;
     checked?: boolean | undefined;

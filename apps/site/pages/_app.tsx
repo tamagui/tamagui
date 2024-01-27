@@ -2,14 +2,15 @@ import '@tamagui/core/reset.css'
 
 import '../app.css'
 
-import { GetLayout } from '@lib/getDefaultLayout'
+import type { GetLayout } from '@lib/getDefaultLayout'
+import type {
+  ColorScheme} from '@tamagui/next-theme';
 import {
-  ColorScheme,
   NextThemeProvider,
   useRootTheme,
   useThemeSetting,
 } from '@tamagui/next-theme'
-import { AppProps } from 'next/app'
+import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 import { TamaguiProvider, useDebounceValue, useDidFinishSSR } from 'tamagui'

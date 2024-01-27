@@ -1,6 +1,7 @@
 import * as babel from '@babel/core'
+import type {
+  ExtractToClassNamesProps} from '@tamagui/static';
 import {
-  ExtractToClassNamesProps,
   createExtractor,
   extractToClassNames,
 } from '@tamagui/static'

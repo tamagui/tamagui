@@ -1,4 +1,5 @@
-import { Slider, SliderProps, XStack } from 'tamagui'
+import type { SliderProps } from 'tamagui'
+import { Slider, XStack } from 'tamagui'
 
 export function SliderDemo() {
   return (

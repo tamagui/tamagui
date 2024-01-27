@@ -8,16 +8,18 @@ import { ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
 import { Check, CheckCircle, ShoppingCart, X, XCircle } from '@tamagui/lucide-icons'
 import { useBentoStore } from 'hooks/useBentoStore'
 import React, { useMemo, useState } from 'react'
-import Stripe from 'stripe'
+import type Stripe from 'stripe'
+import type {
+  ButtonProps,
+  FontSizeTokens,
+  XStackProps} from 'tamagui';
 import {
   Anchor,
   AnimatePresence,
   Button,
-  ButtonProps,
   Card,
   Dialog,
   EnsureFlexed,
-  FontSizeTokens,
   H1,
   H2,
   H3,
@@ -36,7 +38,6 @@ import {
   Theme,
   Unspaced,
   XStack,
-  XStackProps,
   YStack,
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'

@@ -1,4 +1,4 @@
-import * as t from '@babel/types';
+import type * as t from '@babel/types';
 /**
  * getPropValueFromAttributes gets a prop by name from a list of attributes and accounts for potential spread operators.
  * Here's an example. Given this component:

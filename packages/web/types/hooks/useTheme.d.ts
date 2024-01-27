@@ -1,5 +1,5 @@
-import { Variable } from '../createVariable';
-import { ThemeManager, ThemeManagerState } from '../helpers/ThemeManager';
+import type { Variable } from '../createVariable';
+import type { ThemeManager, ThemeManagerState } from '../helpers/ThemeManager';
 import type { DebugProp, ThemeParsed, ThemeProps, UseThemeWithStateProps, VariableVal, VariableValGeneric } from '../types';
 export type ChangedThemeResponse = {
     state?: ThemeManagerState;

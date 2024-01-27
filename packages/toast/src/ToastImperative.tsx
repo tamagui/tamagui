@@ -1,9 +1,10 @@
-import { NativePlatform, NativeValue, isWeb } from '@tamagui/core'
+import type { NativePlatform, NativeValue } from '@tamagui/core'
+import { isWeb } from '@tamagui/core'
 import React, { createContext, useContext, useMemo, useRef } from 'react'
 import { Platform } from 'react-native'
 
 import { createNativeToast } from './createNativeToast'
-import { CreateNativeToastOptions, NativeToastRef } from './types'
+import type { CreateNativeToastOptions, NativeToastRef } from './types'
 
 export interface ToastImperativeOptions
   extends Omit<CreateNativeToastOptions, 'message'> {

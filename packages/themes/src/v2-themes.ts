@@ -1,4 +1,5 @@
-import { createThemeBuilder, MaskOptions } from '@tamagui/theme-builder'
+import type { MaskOptions } from '@tamagui/theme-builder'
+import { createThemeBuilder } from '@tamagui/theme-builder'
 import {
   blue,
   blueDark,
@@ -17,7 +18,8 @@ import {
   yellow,
   yellowDark,
 } from '@tamagui/colors'
-import { Variable, createTokens } from '@tamagui/web'
+import type { Variable } from '@tamagui/web'
+import { createTokens } from '@tamagui/web'
 
 import { masks } from './masks'
 

@@ -1,4 +1,4 @@
-import { ThemeName } from '../types';
+import type { ThemeName } from '../types';
 export declare function useThemeName(opts?: {
     parent?: true;
 }): ThemeName;

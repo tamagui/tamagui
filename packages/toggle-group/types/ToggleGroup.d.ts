@@ -1,8 +1,8 @@
-import { GroupProps } from '@tamagui/group';
-import { RovingFocusGroup } from '@tamagui/roving-focus';
-import { GetProps, SizeTokens } from '@tamagui/web';
-import React from 'react';
-import { ToggleFrame } from './Toggle';
+import type { GroupProps } from '@tamagui/group';
+import type { RovingFocusGroup } from '@tamagui/roving-focus';
+import type { GetProps, SizeTokens } from '@tamagui/web';
+import type React from 'react';
+import type { ToggleFrame } from './Toggle';
 type ToggleGroupItemProps = GetProps<typeof ToggleFrame> & {
     value: string;
     id?: string;

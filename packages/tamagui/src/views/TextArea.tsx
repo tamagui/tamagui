@@ -2,14 +2,8 @@ import { isWeb } from '@tamagui/constants'
 import { styled } from '@tamagui/core'
 
 import { textAreaSizeVariant } from '../helpers/inputHelpers'
-import {
-  Input,
-  InputExtraProps,
-  InputFrame,
-  InputProps,
-  defaultStyles,
-  useInputProps,
-} from './Input'
+import type { Input, InputExtraProps, InputProps } from './Input'
+import { InputFrame, defaultStyles, useInputProps } from './Input'
 
 /**
  * Is basically Input but with rows = 4 to start

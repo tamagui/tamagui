@@ -1,7 +1,7 @@
 import { getTokenValue, getVariable, usePropsAndStyle } from '@tamagui/core'
 import React from 'react'
 
-import { IconProps } from './IconProps'
+import type { IconProps } from './IconProps'
 
 // sad fix https://github.com/tamagui/tamagui/issues/1812
 React['keep']

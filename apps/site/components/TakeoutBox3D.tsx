@@ -1,5 +1,6 @@
 import { useGLTF } from '@react-three/drei'
-import { Canvas, Object3DNode, useFrame } from '@react-three/fiber'
+import type { Object3DNode} from '@react-three/fiber';
+import { Canvas, useFrame } from '@react-three/fiber'
 import { useRouter } from 'next/router'
 import { Suspense, useEffect, useRef } from 'react'
 import { useMedia } from 'tamagui'

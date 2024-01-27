@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { VariantLabels } from './types';
+import type * as React from 'react';
+import type { VariantLabels } from './types';
 interface PresenceChildProps {
     children: React.ReactElement<any>;
     isPresent: boolean;

@@ -1,4 +1,4 @@
-import { Shorthands } from '../types';
+import type { Shorthands } from '../types';
 /**
  * @deprecated use useProps instead
  */

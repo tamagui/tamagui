@@ -1,7 +1,7 @@
-import { TamaguiElement } from '@tamagui/core';
-import React from 'react';
-import { ScrollBridge, SheetProps } from './types';
-import { SheetOpenState } from './useSheetOpenState';
+import type { TamaguiElement } from '@tamagui/core';
+import type React from 'react';
+import type { ScrollBridge, SheetProps } from './types';
+import type { SheetOpenState } from './useSheetOpenState';
 export type SheetContextValue = ReturnType<typeof useSheetProviderProps>;
 export declare function useSheetProviderProps(props: SheetProps, state: SheetOpenState, options?: {
     onOverlayComponent?: (comp: any) => void;
