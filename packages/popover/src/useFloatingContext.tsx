@@ -40,7 +40,7 @@ export const useFloatingContext = ({
             }),
         useFocus(floating.context, {
           enabled: !disable && !disableFocus,
-          keyboardOnly: true,
+          visibleOnly: true,
         }),
         useRole(floating.context, { role: 'dialog' }),
         useDismiss(floating.context, {
