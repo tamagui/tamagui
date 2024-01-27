@@ -2487,17 +2487,13 @@ const PromoVideo = () => {
       className="all ease-in ms300"
       disableOptimization
       pos="absolute"
-      t={200}
-      l={-250}
+      t={240}
+      l={-230}
       pe={!loaded ? 'none' : 'auto'}
       zi={1000}
       o={loaded ? 1 : 0}
-      scale={!loaded ? 0.5 : 0.22}
-      rotate="-5deg"
-      $md={{
-        l: -300,
-        scale: 0.15,
-      }}
+      scale={!loaded ? 0.25 : 0.175}
+      rotate="-4deg"
       $sm={{
         dsp: 'none',
       }}
