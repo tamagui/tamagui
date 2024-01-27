@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/font-size",
-  "version": "1.89.0-1706308641099",
+  "version": "1.89.0-1706360676826",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -20,13 +20,13 @@
     "lint:fix": "../../node_modules/.bin/biome check --apply-unsafe src"
   },
   "dependencies": {
-    "@tamagui/core": "1.89.0-1706308641099"
+    "@tamagui/core": "1.89.0-1706360676826"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.89.0-1706308641099",
+    "@tamagui/build": "1.89.0-1706360676826",
     "react": "^18.2.0"
   },
   "publishConfig": {

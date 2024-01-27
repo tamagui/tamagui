@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/components-test",
-  "version": "1.89.0-1706308641099",
+  "version": "1.89.0-1706360676826",
   "module": "dist/esm",
   "private": true,
   "license": "MIT",
