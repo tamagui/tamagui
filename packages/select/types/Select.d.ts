@@ -1,6 +1,6 @@
 import type { FontSizeTokens, TamaguiElement } from '@tamagui/core';
 import type { ListItemProps } from '@tamagui/list-item';
-import type * as React from 'react';
+import * as React from 'react';
 import type { ScopedProps, SelectProps } from './types';
 export interface SelectValueExtraProps {
     placeholder?: React.ReactNode;

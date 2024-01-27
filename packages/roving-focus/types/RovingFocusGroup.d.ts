@@ -1,5 +1,5 @@
-import type { Stack } from '@tamagui/core';
-import type * as React from 'react';
+import { Stack } from '@tamagui/core';
+import * as React from 'react';
 type PrimitiveDivProps = React.ComponentPropsWithoutRef<typeof Stack>;
 interface RovingFocusGroupImplProps extends Omit<PrimitiveDivProps, 'dir'>, RovingFocusGroupOptions {
     currentTabStopId?: string | null;

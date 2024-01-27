@@ -1,8 +1,8 @@
 import type { NodePath } from '@babel/traverse';
-import type * as t from '@babel/types';
+import * as t from '@babel/types';
 import type { ExtractorOptions, ExtractorParseProps, TamaguiOptions } from '../types';
 import type { TamaguiProjectInfo } from './bundleConfig';
-import type { cleanupBeforeExit } from './getStaticBindingsForScope';
+import { cleanupBeforeExit } from './getStaticBindingsForScope';
 export type Extractor = ReturnType<typeof createExtractor>;
 type FileOrPath = NodePath<t.Program> | t.File;
 export declare function createExtractor({ logger, platform }?: ExtractorOptions): {

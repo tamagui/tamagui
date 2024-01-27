@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import type * as t from '@babel/types';
+import * as t from '@babel/types';
 import type { TamaguiOptions } from '../types';
 import type { Extractor } from './createExtractor';
 export type ExtractedResponse = {

@@ -1,7 +1,7 @@
 import type { SupabaseClient} from '@supabase/supabase-js';
 import { createClient } from '@supabase/supabase-js'
 import type Stripe from 'stripe'
-import type { Price, Product } from 'types'
+import type { Price, Product } from 'site-types'
 
 import { sendTakeoutWelcomeEmail } from './email'
 import { toDateTime } from './helpers'

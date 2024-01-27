@@ -1,6 +1,6 @@
 import type { GetProps, SizeTokens, TamaguiElement } from '@tamagui/core';
 import type { SizableStackProps } from '@tamagui/stacks';
-import type * as React from 'react';
+import * as React from 'react';
 import type { View } from 'react-native';
 import type { SliderProps, SliderTrackProps } from './types';
 type SliderTrackElement = HTMLElement | View;

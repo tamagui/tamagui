@@ -1,5 +1,5 @@
 import type { TamaguiElement } from '@tamagui/core';
-import type React from 'react';
+import React from 'react';
 import type { ScrollBridge, SheetProps } from './types';
 import type { SheetOpenState } from './useSheetOpenState';
 export type SheetContextValue = ReturnType<typeof useSheetProviderProps>;

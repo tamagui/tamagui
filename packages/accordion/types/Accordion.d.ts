@@ -1,7 +1,7 @@
-import type { Collapsible } from '@tamagui/collapsible';
+import { Collapsible } from '@tamagui/collapsible';
 import type { H3 } from '@tamagui/text';
 import type { GetProps, Stack, TamaguiElement } from '@tamagui/web';
-import type * as React from 'react';
+import * as React from 'react';
 type Direction = 'ltr' | 'rtl';
 type ScopedProps<P> = P & {
     __scopeAccordion?: string;

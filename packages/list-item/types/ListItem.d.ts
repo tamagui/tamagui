@@ -1,7 +1,7 @@
 import type { TextParentStyles } from '@tamagui/text';
 import type { FontSizeTokens, GetProps, PropsWithoutMediaStyles, SizeTokens, ThemeableProps } from '@tamagui/web';
 import type { FunctionComponent } from 'react';
-import type React from 'react';
+import React from 'react';
 type ListItemIconProps = {
     color?: string;
     size?: number;

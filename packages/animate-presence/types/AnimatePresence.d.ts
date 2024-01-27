@@ -1,4 +1,4 @@
-import type React from 'react';
+import React from 'react';
 import type { AnimatePresenceProps } from './types';
 /**
  * `AnimatePresence` enables the animation of components that have been removed from the tree.

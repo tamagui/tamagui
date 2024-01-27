@@ -270,11 +270,15 @@ async function buildJs() {
   }
 
   if (pkgSource) {
-    const contents = await fs.readFile(pkgSource)
-    if (contents.slice(0, 40).includes('GITCRYPT')) {
-      // encrypted file, ignore
-      console.info(`This package is encrypted, skipping`)
-      return
+    try {
+      const contents = await fs.readFile(pkgSource)
+      if (contents.slice(0, 40).includes('GITCRYPT')) {
+        // encrypted file, ignore
+        console.info(`This package is encrypted, skipping`)
+        return
+      }
+    } catch {
+      // ok
     }
   }
 

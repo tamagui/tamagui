@@ -11,10 +11,10 @@ import {
   useEvent,
   useThemeName,
 } from '@tamagui/core'
-import type { DismissableProps } from '@tamagui/dismissable/types'
-import { Dismissable } from '@tamagui/dismissable/types'
+import type { DismissableProps } from '@tamagui/dismissable'
+import { Dismissable } from '@tamagui/dismissable'
 import { composeEventHandlers } from '@tamagui/helpers'
-import { PortalItem } from '@tamagui/portal/types'
+import { PortalItem } from '@tamagui/portal'
 import { ThemeableStack } from '@tamagui/stacks'
 import * as React from 'react'
 import type {

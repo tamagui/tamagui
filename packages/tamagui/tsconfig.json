@@ -3,9 +3,9 @@
   "compilerOptions": { "composite": true },
   "exclude": [
     "tamagui.config.ts",
-    "**/test",
-    "**/dist",
-    "**/types",
+    "test",
+    "dist",
+    "types",
     "./linear-gradient",
     "./native.d.ts",
     "./native-test.d.ts"

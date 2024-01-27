@@ -18,7 +18,7 @@ import type {
   Placement,
   Strategy,
   UseFloatingReturn,
-} from '@tamagui/floating/types'
+} from '@tamagui/floating'
 import {
   arrow,
   autoUpdate,
@@ -26,7 +26,7 @@ import {
   offset as offsetFn,
   shift,
   useFloating,
-} from '@tamagui/floating/types'
+} from '@tamagui/floating'
 import { getSpace } from '@tamagui/get-token'
 import type { SizableStackProps, YStackProps } from '@tamagui/stacks'
 import { ThemeableStack, YStack } from '@tamagui/stacks'

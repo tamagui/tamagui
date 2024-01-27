@@ -1,4 +1,4 @@
-import type { themes } from '@tamagui/themes';
+import { themes } from '@tamagui/themes';
 export * from './media';
 export * from './createGenericFont';
 export * from './animations';

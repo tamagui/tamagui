@@ -1,5 +1,5 @@
 import type { AnimationDriver, UniversalAnimatedNumber } from '@tamagui/web';
-import type { Animated } from 'react-native';
+import { Animated } from 'react-native';
 type AnimationsConfig<A extends Object = any> = {
     [Key in keyof A]: AnimationConfig;
 };

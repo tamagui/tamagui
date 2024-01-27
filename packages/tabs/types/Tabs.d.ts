@@ -1,7 +1,7 @@
 import type { GroupProps } from '@tamagui/group';
-import type { RovingFocusGroup } from '@tamagui/roving-focus';
+import { RovingFocusGroup } from '@tamagui/roving-focus';
 import type { GetProps, SizeTokens, TamaguiElement } from '@tamagui/web';
-import type * as React from 'react';
+import * as React from 'react';
 import type { LayoutRectangle } from 'react-native';
 type TabsListFrameProps = GroupProps;
 type TabsListProps = TabsListFrameProps & {
@@ -58,9 +58,6 @@ declare const TabsContentFrame: import("@tamagui/web").TamaguiComponent<import("
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     backgrounded?: boolean | undefined;
-    /**
-     * @deprecated use `TabTabsProps` instead
-     */
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
@@ -373,9 +370,6 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         backgrounded?: boolean | undefined;
-        /**
-         * @deprecated use `TabTabsProps` instead
-         */
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
@@ -390,9 +384,6 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         backgrounded?: boolean | undefined;
-        /**
-         * @deprecated use `TabTabsProps` instead
-         */
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;

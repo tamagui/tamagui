@@ -1,4 +1,4 @@
-import type * as Helpers from '@tamagui/helpers';
+import * as Helpers from '@tamagui/helpers';
 export declare const Tamagui: {
     Helpers: typeof Helpers;
     getThemeManager: (id: number) => import("./helpers/ThemeManager").ThemeManager | undefined;

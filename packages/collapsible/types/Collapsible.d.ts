@@ -1,7 +1,8 @@
 import type { AnimatePresenceProps } from '@tamagui/animate-presence';
 import type { ThemeableStackProps } from '@tamagui/stacks';
-import type { GetProps, Stack, StackProps } from '@tamagui/web';
-import type * as React from 'react';
+import type { GetProps, StackProps } from '@tamagui/web';
+import { Stack } from '@tamagui/web';
+import * as React from 'react';
 interface CollapsibleProps extends StackProps {
     defaultOpen?: boolean;
     open?: boolean;

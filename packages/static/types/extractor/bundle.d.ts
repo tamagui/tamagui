@@ -1,4 +1,4 @@
-import type esbuild from 'esbuild';
+import esbuild from 'esbuild';
 import type { TamaguiPlatform } from '../types';
 /**
  * For internal loading of new files

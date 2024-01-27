@@ -1,5 +1,5 @@
 import type { GetProps } from '@tamagui/web';
-import type * as React from 'react';
+import * as React from 'react';
 type TamaguiButtonElement = HTMLButtonElement;
 export type ToggleElement = TamaguiButtonElement;
 export declare const ToggleFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {

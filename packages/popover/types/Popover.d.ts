@@ -1,13 +1,14 @@
 import '@tamagui/polyfill-dev';
 import type { UseHoverProps } from '@floating-ui/react';
 import type { ScopedProps, SizeTokens, StackProps, TamaguiComponent, TamaguiElement } from '@tamagui/core';
-import type { DismissableProps } from '@tamagui/dismissable/types';
+import type { DismissableProps } from '@tamagui/dismissable';
 import type { FocusScopeProps } from '@tamagui/focus-scope';
-import type { PopperArrowExtraProps, PopperArrowProps, PopperContent, PopperContentProps, PopperProps } from '@tamagui/popper';
+import type { PopperArrowExtraProps, PopperArrowProps, PopperContentProps, PopperProps } from '@tamagui/popper';
+import { PopperContent } from '@tamagui/popper';
 import type { RemoveScrollProps } from '@tamagui/remove-scroll';
 import type { YStackProps } from '@tamagui/stacks';
-import type * as React from 'react';
-import type { ScrollView } from 'react-native';
+import * as React from 'react';
+import { ScrollView } from 'react-native';
 export type PopoverProps = PopperProps & {
     open?: boolean;
     defaultOpen?: boolean;
@@ -220,7 +221,9 @@ export declare const Popover: React.ForwardRefExoticComponent<PopperProps & {
             elevate?: boolean | undefined;
             bordered?: number | boolean | undefined;
             radiused?: boolean | undefined;
-            padded?: boolean | undefined;
+            padded?: boolean | undefined; /**
+             * @see https://github.com/theKashey/react-remove-scroll#usage
+             */
             chromeless?: boolean | "all" | undefined;
         }>>) => null>;
         Handle: ({ __scopeSheet, ...props }: import("@tamagui/sheet").SheetScopedProps<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {

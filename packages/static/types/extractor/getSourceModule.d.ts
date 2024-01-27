@@ -1,4 +1,4 @@
-import type * as t from '@babel/types';
+import * as t from '@babel/types';
 export interface SourceModule {
     sourceModule?: string;
     imported?: string;

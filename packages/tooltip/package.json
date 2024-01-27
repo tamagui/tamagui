@@ -4,7 +4,7 @@
   "sideEffects": [
     "*.css"
   ],
-  "source": "tooltip/src/index.tsx",
+  "source": "src/index.tsx",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",

@@ -1,5 +1,5 @@
 import type { ListItemProps } from '@tamagui/list-item';
-import type * as React from 'react';
+import * as React from 'react';
 type SelectItemContextValue = {
     value: string;
     textId: string;

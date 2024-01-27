@@ -1,6 +1,6 @@
 import type { GetProps, TamaguiElement } from '@tamagui/core';
 import type { Scope } from '@tamagui/create-context';
-import type React from 'react';
+import React from 'react';
 type DisablePassBorderRadius = boolean | 'bottom' | 'top' | 'start' | 'end';
 type ScopedProps<P> = P & {
     __scopeGroup?: Scope;

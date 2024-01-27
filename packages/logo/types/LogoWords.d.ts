@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import { XStackProps } from 'tamagui';
+import type { XStackProps } from 'tamagui';
 export declare const LogoWords: import("react").MemoExoticComponent<({ downscale, grayscale, animated, ...props }: Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/web").StackStyleBase | "fullscreen"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
     elevation?: number | import("tamagui").SizeTokens | undefined;
     fullscreen?: boolean | undefined;

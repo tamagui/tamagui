@@ -1,5 +1,5 @@
 import type { NativeValue, SizeTokens, StackProps } from '@tamagui/core';
-import type * as React from 'react';
+import * as React from 'react';
 import type { SwitchProps as NativeSwitchProps } from 'react-native';
 type SwitchSharedProps = {
     size?: SizeTokens | number;

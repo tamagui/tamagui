@@ -1,4 +1,4 @@
-import type * as React from 'react';
+import * as React from 'react';
 import type { VariantLabels } from './types';
 interface PresenceChildProps {
     children: React.ReactElement<any>;

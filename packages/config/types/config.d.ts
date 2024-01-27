@@ -1,4 +1,4 @@
-import type { themes } from '@tamagui/themes';
+import { themes } from '@tamagui/themes';
 export declare const configWithoutAnimations: {
     defaultFont: string;
     shouldAddPrefersColorThemes: true;

@@ -1,4 +1,4 @@
-import type * as React from 'react';
+import * as React from 'react';
 type PossibleRef<T> = React.Ref<T> | React.ForwardedRef<T> | React.RefObject<T> | undefined;
 /**
  * Set a given ref to a given value

@@ -1,4 +1,4 @@
-import type * as React from 'react';
+import * as React from 'react';
 type Direction = 'ltr' | 'rtl';
 interface DirectionProviderProps {
     children?: React.ReactNode;

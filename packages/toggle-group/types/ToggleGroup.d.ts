@@ -1,8 +1,8 @@
 import type { GroupProps } from '@tamagui/group';
-import type { RovingFocusGroup } from '@tamagui/roving-focus';
+import { RovingFocusGroup } from '@tamagui/roving-focus';
 import type { GetProps, SizeTokens } from '@tamagui/web';
-import type React from 'react';
-import type { ToggleFrame } from './Toggle';
+import React from 'react';
+import { ToggleFrame } from './Toggle';
 type ToggleGroupItemProps = GetProps<typeof ToggleFrame> & {
     value: string;
     id?: string;
@@ -156,9 +156,7 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     chromeless?: boolean | "all" | undefined;
 } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
     unstyled?: boolean | undefined;
-    size?: any; /**
-     * A string value for the toggle group item. All items within a toggle group should use a unique value.
-     */
+    size?: any;
     elevation?: number | SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;

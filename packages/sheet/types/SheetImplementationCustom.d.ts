@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import type { View } from 'react-native';
+import { View } from 'react-native';
 import type { SnapPointsMode } from './types';
 export declare const SheetImplementationCustom: (props: Omit<{
     open?: boolean | undefined;
@@ -22,7 +22,7 @@ export declare const SheetImplementationCustom: (props: Omit<{
     disableDrag?: boolean | undefined;
     modal?: boolean | undefined;
     zIndex?: number | undefined;
-    portalProps?: import("@tamagui/portal/types").PortalProps | undefined;
+    portalProps?: import("@tamagui/portal").PortalProps | undefined;
     moveOnKeyboardChange?: boolean | undefined;
 } & {
     __scopeSheet?: import("@tamagui/create-context").Scope<any>;

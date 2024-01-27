@@ -1,5 +1,5 @@
 import type { GetProps } from '@tamagui/core';
-import type * as React from 'react';
+import * as React from 'react';
 import type { View } from 'react-native';
 declare const createRadioGroupScope: import("@tamagui/create-context").CreateScope;
 type TamaguiElement = HTMLElement | View;

@@ -1,8 +1,8 @@
-import type { ScopedProps } from '@tamagui/core';
-import type { SizeTokens } from '@tamagui/core';
-import type { Coords, OffsetOptions, Placement, Strategy, UseFloatingReturn, flip, shift } from '@tamagui/floating/types';
+import type { ScopedProps, SizeTokens } from '@tamagui/core';
+import type { Coords, OffsetOptions, Placement, Strategy, UseFloatingReturn } from '@tamagui/floating/types';
+import { flip, shift } from '@tamagui/floating/types';
 import type { SizableStackProps, YStackProps } from '@tamagui/stacks';
-import type * as React from 'react';
+import * as React from 'react';
 import type { View } from 'react-native';
 type ShiftProps = typeof shift extends (options: infer Opts) => void ? Opts : never;
 type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : never;

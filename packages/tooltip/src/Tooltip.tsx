@@ -13,8 +13,8 @@ import {
 } from '@floating-ui/react'
 import type { ScopedProps, SizeTokens } from '@tamagui/core'
 import { useEvent, styled } from '@tamagui/core'
-import type { UseFloatingFn } from '@tamagui/floating/types'
-import { FloatingOverrideContext } from '@tamagui/floating/types'
+import type { UseFloatingFn } from '@tamagui/floating'
+import { FloatingOverrideContext } from '@tamagui/floating'
 import { getSize } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
 import type {

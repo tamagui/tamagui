@@ -6,5 +6,5 @@
   "references": [
   ],
   "include": ["src/**/*"],
-  "exclude": ["tests/**/*", "types/**/*"]
+  "exclude": ["tests", "types"]
 }
