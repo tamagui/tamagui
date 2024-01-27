@@ -66,8 +66,8 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
   const sortedThemeKeys = (
     areThemesJustNames
-      ? (configIn.themes as string[])
-      : Object.keys(configIn.themes as string[])
+      ? (configIn.themes as unknown as string[])
+      : Object.keys(configIn.themes!)
   ).sort((a, b) => a.localeCompare(b))
 
   // { orange: 1, blue: 2}

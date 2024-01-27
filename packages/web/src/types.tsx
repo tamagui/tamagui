@@ -791,14 +791,11 @@ export type CreateTamaguiProps = {
   animations?: AnimationDriver<any>
   fonts?: GenericTamaguiConfig['fonts']
   tokens?: GenericTamaguiConfig['tokens']
-  themes?:
-    | {
-        [key: string]: {
-          [key: string]: string | number | Variable
-        }
-      }
-    | string[]
-
+  themes?: {
+    [key: string]: {
+      [key: string]: string | number | Variable
+    }
+  }
   settings?: Partial<GenericTamaguiSettings>
 
   /**

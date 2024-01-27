@@ -211,11 +211,10 @@ const monoFont = createGenericFont(
   }
 )
 
-const themes = (
+const themes =
   process.env.TAMAGUI_IS_SERVER || process.env.TAMAGUI_KEEP_THEMES
     ? themesIn
-    : Object.keys(themesIn).sort()
-) as CreateTamaguiProps['themes']
+    : (Object.keys(themesIn).sort() as unknown as typeof themesIn)
 
 export const config = {
   defaultFont: 'body',

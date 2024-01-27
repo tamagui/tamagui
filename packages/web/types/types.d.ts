@@ -453,7 +453,7 @@ export type CreateTamaguiProps = {
         [key: string]: {
             [key: string]: string | number | Variable;
         };
-    } | string[];
+    };
     settings?: Partial<GenericTamaguiSettings>;
     /**
      * Define a default font, for better types and default font on Text
