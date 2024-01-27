@@ -7,7 +7,7 @@ import type { Database } from '@lib/supabase-types'
 import { getArray } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { getSize } from '@tamagui/get-token'
-import { LogoIcon, ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
+import { ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
 import {
   Check,
   CheckCircle,
@@ -36,7 +36,8 @@ import type {
   TabsTabProps,
   ThemeName,
   XStackProps,
-  YStackProps} from 'tamagui';
+  YStackProps
+} from 'tamagui'
 import {
   AnimatePresence,
   Button,
@@ -64,11 +65,10 @@ import {
   XStack,
   YStack,
   composeRefs,
-  getToken,
   isClient,
   styled,
   useMedia,
-  useTheme,
+  useTheme
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 
@@ -80,7 +80,7 @@ import { NextLink } from '../components/NextLink'
 import { seasons } from '../components/SeasonToggleButton'
 import { TakeoutLicense } from '../components/TakeoutLicense'
 import { useTakeoutStore } from '../hooks/useTakeoutStore'
-import { Notice } from '../components/Notice'
+import { Footer } from '../components/Footer'
 
 export default function TakeoutPage({
   starter,
@@ -132,7 +132,8 @@ export default function TakeoutPage({
         pe="none"
         pos="absolute"
         t={-950}
-        r={-420}
+        l="50%"
+        x={-200}
         rotate="120deg"
         o={0.025}
         zi={-1}
@@ -584,7 +585,6 @@ export default function TakeoutPage({
                 </YStack>
 
                 <Spacer />
-                <Separator />
 
                 <XStack my="$8" gap="$4" f={1} jc="space-around">
                   <Image
@@ -628,7 +628,7 @@ export default function TakeoutPage({
                   />
                 </XStack>
 
-                <HeartsRow />
+                <Spacer size="$10" />
 
                 <MunroP size="$9" $sm={{ size: '$8' }} color="$yellow10">
                   We hope you enjoy.
@@ -640,6 +640,8 @@ export default function TakeoutPage({
           </XStack>
 
           <Spacer size="$10" />
+
+          <Footer />
         </ContainerXL>
       </YStack>
     </YStack>

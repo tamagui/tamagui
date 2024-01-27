@@ -115,10 +115,10 @@ export default function TakeoutGallery() {
       <ImageGallery />
 
       <XStack
-        mx="$-4"
         ai="center"
         jc="center"
-        gap="$4"
+        gap="$6"
+        px="$4"
         $md={{
           flexDirection: 'column',
         }}
@@ -132,9 +132,9 @@ export default function TakeoutGallery() {
           wrapperProps={{
             flexGrow: 1,
             position: 'relative',
-            height: 400,
+            height: 300,
 
-            borderRadius: '$6',
+            borderRadius: '$12',
             overflow: 'hidden',
             $md: {
               width: '100%',
@@ -151,9 +151,9 @@ export default function TakeoutGallery() {
           wrapperProps={{
             flexGrow: 2,
             position: 'relative',
-            height: 400,
+            height: 300,
 
-            borderRadius: '$6',
+            borderRadius: '$12',
             overflow: 'hidden',
             $md: {
               width: '100%',
@@ -170,9 +170,9 @@ export default function TakeoutGallery() {
           wrapperProps={{
             flexGrow: 1,
             position: 'relative',
-            height: 400,
+            height: 300,
 
-            borderRadius: '$6',
+            borderRadius: '$12',
             overflow: 'hidden',
             $md: {
               width: '100%',
@@ -181,18 +181,21 @@ export default function TakeoutGallery() {
         />
       </XStack>
 
-      <Spacer />
+      <Spacer size="$8" />
 
-      <XStack fw="wrap" gap="$3" mx="$1" ai="center" jc="center">
+      <XStack fw="wrap" gap="$4" mx="$1" ai="center" jc="center">
         {takeoutImages.slice(1, 12).map((image, index) => (
-          <YStack key={index} pos="relative">
+          <YStack  key={index} pos="relative">
             <TakeoutImage
               alt={image.alt}
               src={image.src}
               style={{ objectFit: 'cover' }}
-              width={50}
-              height={50}
+              width={100}
+              height={100}
               index={index}
+              wrapperProps={{
+                br: '$10'
+              }}
             />
           </YStack>
         ))}
@@ -201,8 +204,8 @@ export default function TakeoutGallery() {
             onPress={() => {
               store.galleryOpen = true
             }}
-            width={50}
-            height={50}
+            width={100}
+            height={100}
             bc="$color12"
             br="$6"
             ov="hidden"
@@ -413,12 +416,6 @@ const TakeoutImage = ({
       borderColor="$borderColor"
       {...wrapperProps}
     >
-      <YStack
-        style={{
-          boxShadow: `inset 0 0 ${+(props.width || 100) / 2.5}px rgba(0, 0, 0, 0.6)`,
-        }}
-        fullscreen
-      />
       <Image {...props} />
     </XStack>
   )
