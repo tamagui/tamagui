@@ -18,7 +18,9 @@ const allItemsStrings = allItems.map((s) =>
   `${s?.page.title || ''} ${s?.section?.title || ''}`.trim()
 )
 
-export const DocsMenuContents = React.memo(function DocsMenuContents() {
+export const DocsMenuContents = React.memo(function DocsMenuContents({
+  inMenu,
+}: { inMenu?: boolean }) {
   const store = useStore(DocsItemsStore)
   const router = useRouter()
   const { currentPath } = useDocsMenu()
@@ -101,7 +103,7 @@ export const DocsMenuContents = React.memo(function DocsMenuContents() {
 
                 const contents = (
                   <DocsRouteNavItem
-                    inMenu
+                    inMenu={inMenu}
                     href={page.route}
                     active={currentPath === page.route}
                     pending={page['pending']}

@@ -24,7 +24,7 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
   const { open, setOpen } = useDocsMenu()
   const [state, setState] = React.useState({
     via: undefined as 'hover' | 'press' | undefined,
-    viaAt: Date.now()
+    viaAt: Date.now(),
   })
   const userSwr = useUser()
 
@@ -35,7 +35,7 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
         hoverable={{
           delay: 50,
           restMs: 40,
-          move: false
+          move: false,
         }}
         open={open}
         onOpenChange={(next, via) => {
@@ -162,7 +162,7 @@ const HeaderMenuContent = React.memo(function HeaderMenuContent() {
 
           <Spacer size="$3" />
 
-          <DocsMenuContents />
+          <DocsMenuContents inMenu />
         </YStack>
       </Popover.ScrollView>
     </Popover.Content>
