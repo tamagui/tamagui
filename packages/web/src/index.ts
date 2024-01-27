@@ -22,6 +22,8 @@ export {
   updateConfig,
   getToken,
   getTokenValue,
+  getThemesIndexes,
+  getThemesNames,
 } from './config'
 
 export * from './constants/constants'

@@ -9,6 +9,7 @@ import {
   simpleHash,
   updateConfig,
 } from '@tamagui/web'
+import { getThemesNames } from '@tamagui/web'
 import { startTransition } from 'react'
 
 type MutateThemeOptions = {
@@ -161,17 +162,18 @@ function insertThemeCSS(themes: Record<string, PartialTheme>, batch: Batch = fal
 
   const config = getConfig()
   let cssRules: string[] = []
+  const themesNamesToIndexes = getThemesNames()
 
   for (const themeName in themes) {
     const theme = themes[themeName]
 
-    // TODO: ehsan fix this
     const rules = getThemeCSSRules({
       config,
       themeName,
       names: [themeName],
       hasDarkLight: true,
       theme,
+      themesNamesToIndexes,
     })
 
     cssRules = [...cssRules, ...rules]

@@ -64,14 +64,15 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
   let foundThemes: DedupedThemes | undefined
 
-  // { orange: 1, blue: 2}
   const sortedThemeKeys = (
     areThemesJustNames
       ? (configIn.themes as string[])
       : Object.keys(configIn.themes as string[])
   ).sort((a, b) => a.localeCompare(b))
 
+  // { orange: 1, blue: 2}
   const themesNamesToIndexes = {}
+  // { 1: orange, 2: orange}
   const themesIndexesToNames = {}
   sortedThemeKeys.forEach((name, index) => {
     themesNamesToIndexes[name] = index + 1
