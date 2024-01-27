@@ -133,7 +133,7 @@ export default function TakeoutPage({
         pos="absolute"
         t={-950}
         l="50%"
-        x={-200}
+        x={-300}
         rotate="120deg"
         o={0.025}
         zi={-1}
@@ -2242,7 +2242,7 @@ const DiscountText = ({
       : ''
   return (
     <ThemeTintAlt offset={6}>
-      <YStack m="auto" scale={1} $xs={{ scale: 1.2, rotate: '0deg' }} rotate="7deg">
+      <YStack m="auto" scale={1} $xs={{ scale: 1.2 }}>
         <YStack
           fullscreen
           shadowColor="$shadowColor"
@@ -2490,7 +2490,7 @@ const PromoVideo = () => {
       className="all ease-in ms300"
       disableOptimization
       pos="absolute"
-      t={240}
+      t={360}
       l={-230}
       pe={!loaded ? 'none' : 'auto'}
       zi={1000}
@@ -2504,7 +2504,7 @@ const PromoVideo = () => {
         scale: 1,
         rotate: '0deg',
         x: 400,
-        y: -80,
+        y: -180,
       })}
       cursor="pointer"
       onPress={() => {
