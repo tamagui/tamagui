@@ -166,8 +166,7 @@ function insertThemeCSS(themes: Record<string, PartialTheme>, batch: Batch = fal
 
   for (const themeName in themes) {
     const theme = themes[themeName]
-
-    const rules = getThemeCSSRules({
+    const result = getThemeCSSRules({
       config,
       themeName,
       names: [themeName],
@@ -175,9 +174,11 @@ function insertThemeCSS(themes: Record<string, PartialTheme>, batch: Batch = fal
       theme,
       themesNamesToIndexes,
     })
-
+    const rules = result.themes
+    if (result.selection[0]) {
+      rules.push(`${result.selection[0]} {${result.selection[1]}`)
+    }
     cssRules = [...cssRules, ...rules]
-
     if (!batch) {
       updateStyle(`t_theme_style_${themeName}`, rules)
     }

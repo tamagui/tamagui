@@ -1,8 +1,7 @@
 import { LogoWords, TamaguiLogo } from '@tamagui/logo'
-import { useThemeSetting } from '@tamagui/next-theme'
 import { NextSeo } from 'next-seo'
 import { useEffect, useState } from 'react'
-import { Spacer, TamaguiInternalConfig, XStack, YStack } from 'tamagui'
+import { Spacer, XStack, YStack } from 'tamagui'
 
 import { Slides, slideDimensions } from '../../components/Slides'
 import { ThemeToggle } from '../../components/ThemeToggle'

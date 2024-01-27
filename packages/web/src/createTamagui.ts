@@ -209,15 +209,26 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
         let themeRuleSets: string[] = []
 
         if (isWeb) {
+          let selectionStyle = ''
+          const selectionSelectors = new Set<string>()
           for (const { names, theme } of dedupedThemes) {
-            const nextRules = getThemeCSSRules({
+            const { themes, selection } = getThemeCSSRules({
               config: configIn,
               themeName: names[0],
               names,
               theme,
               themesNamesToIndexes,
             })
-            themeRuleSets = [...themeRuleSets, ...nextRules]
+            if (selection[0] && selection[1]) {
+              selectionSelectors.add(selection[0])
+              selectionStyle ||= selection[1]
+            }
+            themeRuleSets = [...themeRuleSets, ...themes]
+          }
+          if (selectionStyle) {
+            themeRuleSets.push(
+              `${[...selectionSelectors].join(', ')} {${selectionStyle}}`
+            )
           }
         }
 

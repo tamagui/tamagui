@@ -14,10 +14,13 @@ export function getThemeCSSRules(props: {
   hasDarkLight?: boolean
   themesNamesToIndexes: Record<string, number>
 }) {
-  const cssRuleSets: string[] = []
+  const result = {
+    themes: [] as string[],
+    selection: [] as [string, string] | [],
+  }
 
   if (process.env.TAMAGUI_TARGET === 'native') {
-    return cssRuleSets
+    return result
   }
   if (
     !process.env.TAMAGUI_DOES_SSR_CSS ||
@@ -133,15 +136,9 @@ export function getThemeCSSRules(props: {
       .join(', ')
 
     const css = `${selectorsString} {${vars}}`
-    cssRuleSets.push(css)
+    result.themes.push(css)
 
     if (config.shouldAddPrefersColorThemes) {
-      const bgString = theme.background
-        ? `background:${variableToString(theme.background)};`
-        : ''
-      const fgString = theme.color ? `color:${variableToString(theme.color)}` : ''
-
-      const bodyRules = `body{${bgString}${fgString}}`
       const isDark = themeName.startsWith('dark')
       const baseName = isDark ? 'dark' : 'light'
       const lessSpecificSelectors = selectors
@@ -160,16 +157,16 @@ export function getThemeCSSRules(props: {
 
       const themeRules = `${lessSpecificSelectors} {${vars}}`
       const prefersMediaSelectors = `@media(prefers-color-scheme:${baseName}){
-    ${bodyRules}
     ${themeRules}
   }`
-      cssRuleSets.push(prefersMediaSelectors)
+      result.themes.push(prefersMediaSelectors)
     }
 
+    // styles => selector to de-dupe
     if (config.selectionStyles) {
-      const selectionSelectors = baseSelectors.map((s) => `${s} ::selection`).join(', ')
       const rules = config.selectionStyles(theme as any)
       if (rules) {
+        const selector = baseSelectors.map((s) => `${s} ::selection`).join(', ')
         const styles = Object.entries(rules)
           .flatMap(([k, v]) =>
             v
@@ -177,13 +174,12 @@ export function getThemeCSSRules(props: {
               : []
           )
           .join(';')
-        const css = `${selectionSelectors} {${styles}}`
-        cssRuleSets.push(css)
+        result.selection = [selector, styles]
       }
     }
   }
 
-  return cssRuleSets
+  return result
 }
 
 const darkSelector = '.t_dark'

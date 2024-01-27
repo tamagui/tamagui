@@ -1,6 +1,5 @@
 import { getSize, getSpace } from '@tamagui/get-token'
-import type {
-  SizeTokens} from '@tamagui/web';
+import type { SizeTokens } from '@tamagui/web'
 import {
   GetProps,
   Stack,
