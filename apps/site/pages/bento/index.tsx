@@ -5,13 +5,7 @@ import * as sections from '@tamagui/bento'
 import { ButtonDemo, InputsDemo, SelectDemo } from '@tamagui/demos'
 import { getSize } from '@tamagui/get-token'
 import { ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
-import {
-  Check,
-  CheckCircle,
-  ShoppingCart,
-  X,
-  XCircle
-} from '@tamagui/lucide-icons'
+import { Check, CheckCircle, ShoppingCart, X, XCircle } from '@tamagui/lucide-icons'
 import { useBentoStore } from 'hooks/useBentoStore'
 import React, { useMemo, useState } from 'react'
 import Stripe from 'stripe'
@@ -43,7 +37,7 @@ import {
   Unspaced,
   XStack,
   XStackProps,
-  YStack
+  YStack,
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 
@@ -99,7 +93,7 @@ const points = {
   ],
   design: [
     'Complete design system with the new ThemeBuilder for easy customization.',
-    'Two brand new theme packs - Neon and Pastel.',
+    'Two new theme packs - Neon and Pastel.',
   ],
   deploy: [
     'Vercel + Preview Deploys.',
@@ -659,12 +653,13 @@ const Hero = () => {
   return (
     <YStack pos="relative" mt={-55} pt={55} zi={0}>
       <ThemeTint>
-      <LinearGradient
-        colors={[`$backgroundStrong`, `$color5`]}
-        start={[0, 1]}
-        end={[0, 0]}
-        fullscreen
-      /></ThemeTint>
+        <LinearGradient
+          colors={[`$backgroundStrong`, `$color5`]}
+          start={[0, 1]}
+          end={[0, 0]}
+          fullscreen
+        />
+      </ThemeTint>
       <ThemeTintAlt>
         <LinearGradient
           // colors={[`$color8`, `transparent`]}
@@ -674,7 +669,7 @@ const Hero = () => {
           fullscreen
         />
       </ThemeTintAlt>
-      
+
       <ContainerLarge>
         <XStack gap="$6" py="$12" bc="transparent" jc="space-between" w={'100%'}>
           <YStack
@@ -693,8 +688,8 @@ const Hero = () => {
             <YStack gap="$3">
               <ThemeTintAlt>
                 <Paragraph size="$9" color="$color10">
-                  Boost your React Native app development speed with a suite
-                  of copy-paste components and screens.
+                  Boost your React Native app development speed with a suite of copy-paste
+                  components and screens.
                 </Paragraph>
               </ThemeTintAlt>
 
@@ -715,10 +710,10 @@ const Hero = () => {
                   color="$color4"
                   hoverStyle={{
                     bg: '$color9',
-                    boc: '$color9'
+                    boc: '$color9',
                   }}
                   pressStyle={{
-                    bg: '$color6'
+                    bg: '$color6',
                   }}
                   onPress={() => {
                     store.showPurchase = true

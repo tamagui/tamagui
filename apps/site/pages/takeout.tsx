@@ -681,7 +681,7 @@ const points = {
   ],
   design: [
     'Complete design system with the new ThemeBuilder for easy customization.',
-    'Two brand new theme packs - Neon and Pastel.',
+    'Two new theme packs - Neon and Pastel.',
   ],
   deploy: [
     'Vercel + Preview Deploys.',
