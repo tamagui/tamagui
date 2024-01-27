@@ -1,6 +1,6 @@
 import type { ScopedProps } from '@tamagui/core';
 import { SizeTokens } from '@tamagui/core';
-import { Coords, OffsetOptions, Placement, Strategy, UseFloatingReturn, flip, shift } from '@tamagui/floating';
+import { Coords, OffsetOptions, Placement, Strategy, UseFloatingReturn, flip, shift } from '@tamagui/floating/types';
 import { SizableStackProps, YStackProps } from '@tamagui/stacks';
 import * as React from 'react';
 import { View } from 'react-native';

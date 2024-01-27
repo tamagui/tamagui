@@ -1,8 +1,8 @@
 import { GetProps, StackProps, TamaguiElement, TamaguiTextElement } from '@tamagui/core';
 import { Scope } from '@tamagui/create-context';
-import { DismissableProps } from '@tamagui/dismissable';
+import { DismissableProps } from '@tamagui/dismissable/types';
 import { FocusScopeProps } from '@tamagui/focus-scope';
-import { PortalItemProps } from '@tamagui/portal';
+import { PortalItemProps } from '@tamagui/portal/types';
 import { RemoveScroll } from '@tamagui/remove-scroll';
 import { YStackProps } from '@tamagui/stacks';
 import * as React from 'react';

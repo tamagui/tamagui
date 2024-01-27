@@ -71,7 +71,7 @@
     "compare-versions": "^4.1.3",
     "cookies-next": "^3.0.0",
     "d3-scale": "^3.3.0",
-    "eslint": "8.37.0",
+    "eslint": "^8.56.0",
     "eslint-config-next": "13.2.4",
     "file-system-access": "^1.0.4",
     "framer-motion": "^10.18.0",

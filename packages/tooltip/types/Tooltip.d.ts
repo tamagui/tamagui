@@ -68,7 +68,7 @@ export declare const Tooltip: React.ForwardRefExoticComponent<PopperProps & {
     }>> & import("@tamagui/popper").PopperArrowExtraProps & {
         __scopeTooltip?: string | undefined;
     } & React.RefAttributes<unknown>>;
-    Content: React.ForwardRefExoticComponent<import("@tamagui/popover").PopoverContentTypeProps & {
+    Content: React.ForwardRefExoticComponent<import("@tamagui/popover/types").PopoverContentTypeProps & {
         __scopeTooltip?: string | undefined;
     } & React.RefAttributes<unknown>>;
     Trigger: React.ForwardRefExoticComponent<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {}>> & {

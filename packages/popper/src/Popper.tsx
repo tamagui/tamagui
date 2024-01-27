@@ -26,7 +26,7 @@ import {
   offset as offsetFn,
   shift,
   useFloating,
-} from '@tamagui/floating'
+} from '@tamagui/floating/types'
 import { getSpace } from '@tamagui/get-token'
 import { SizableStackProps, ThemeableStack, YStack, YStackProps } from '@tamagui/stacks'
 import * as React from 'react'

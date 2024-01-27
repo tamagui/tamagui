@@ -1,7 +1,7 @@
 import '@tamagui/polyfill-dev';
 import { UseHoverProps } from '@floating-ui/react';
 import { ScopedProps, SizeTokens, StackProps, TamaguiComponent, TamaguiElement } from '@tamagui/core';
-import { DismissableProps } from '@tamagui/dismissable';
+import { DismissableProps } from '@tamagui/dismissable/types';
 import { FocusScopeProps } from '@tamagui/focus-scope';
 import { PopperArrowExtraProps, PopperArrowProps, PopperContent, PopperContentProps, PopperProps } from '@tamagui/popper';
 import { RemoveScrollProps } from '@tamagui/remove-scroll';

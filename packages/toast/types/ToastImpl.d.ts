@@ -1,5 +1,5 @@
 import { GetProps, TamaguiElement } from '@tamagui/core';
-import { DismissableProps } from '@tamagui/dismissable';
+import { DismissableProps } from '@tamagui/dismissable/types';
 import * as React from 'react';
 import { GestureResponderEvent } from 'react-native';
 declare const ToastImplFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {

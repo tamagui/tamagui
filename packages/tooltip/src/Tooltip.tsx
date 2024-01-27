@@ -12,7 +12,7 @@ import {
   useRole,
 } from '@floating-ui/react'
 import { ScopedProps, SizeTokens, useEvent, styled } from '@tamagui/core'
-import { FloatingOverrideContext, UseFloatingFn } from '@tamagui/floating'
+import { FloatingOverrideContext, UseFloatingFn } from '@tamagui/floating/types'
 import { getSize } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
 import {

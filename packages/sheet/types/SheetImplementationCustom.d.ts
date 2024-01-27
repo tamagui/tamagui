@@ -22,7 +22,7 @@ export declare const SheetImplementationCustom: (props: Omit<{
     disableDrag?: boolean | undefined;
     modal?: boolean | undefined;
     zIndex?: number | undefined;
-    portalProps?: import("@tamagui/portal").PortalProps | undefined;
+    portalProps?: import("@tamagui/portal/types").PortalProps | undefined;
     moveOnKeyboardChange?: boolean | undefined;
 } & {
     __scopeSheet?: import("@tamagui/create-context").Scope<any>;

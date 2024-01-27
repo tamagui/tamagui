@@ -1,4 +1,4 @@
-import { Portal } from '@tamagui/portal'
+import { Portal } from '@tamagui/portal/types'
 import * as React from 'react'
 import { Platform } from 'react-native'
 
