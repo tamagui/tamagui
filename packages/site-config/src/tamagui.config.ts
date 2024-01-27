@@ -5,7 +5,7 @@ import { createInterFont } from '@tamagui/font-inter'
 import { createMunroFont } from '@tamagui/font-munro'
 import { createNohemi } from '@tamagui/font-nohemi'
 import { createSilkscreenFont } from '@tamagui/font-silkscreen'
-import { shorthands } from '@tamagui/shorthands'
+import { shorthands } from '@tamagui/shorthands/types'
 import { tokens } from '@tamagui/themes/v2'
 import { themes as themesIn } from '@tamagui/themes/v2-themes'
 import type { CreateTamaguiProps } from '@tamagui/web'
@@ -97,7 +97,10 @@ const dmSansHeadingFont = createDmSansFont(
     },
     face: {},
   },
-  { sizeLineHeight: (size) => Math.round(size * 1.15), sizeSize: (size) => size * 1.3 }
+  {
+    sizeLineHeight: (size) => Math.round(size * 1.15),
+    sizeSize: (size) => size * 1.3,
+  }
 )
 
 const nohemiFont = createNohemi(
@@ -129,7 +132,10 @@ const nohemiFont = createNohemi(
     },
     face: {},
   },
-  { sizeLineHeight: (size) => Math.round(size * 1.15), sizeSize: (size) => size * 1.3 }
+  {
+    sizeLineHeight: (size) => Math.round(size * 1.15),
+    sizeSize: (size) => size * 1.3,
+  }
 )
 const dmSerifDisplayHeadingFont = createDmSerifDisplayFont(
   {
@@ -167,7 +173,10 @@ const dmSerifDisplayHeadingFont = createDmSerifDisplayFont(
     },
     face: {},
   },
-  { sizeLineHeight: (size) => Math.round(size * 1.1), sizeSize: (size) => size * 1.55 }
+  {
+    sizeLineHeight: (size) => Math.round(size * 1.1),
+    sizeSize: (size) => size * 1.55,
+  }
 )
 
 const bodyFont = createInterFont(

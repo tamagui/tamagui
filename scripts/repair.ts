@@ -1,102 +1,158 @@
-import { access, writeFile, writeJSON } from 'fs-extra'
-import * as proc from 'node:child_process'
-import { readFileSync, writeFileSync,  } from 'node:fs'
-import { join } from 'node:path'
-import { promisify } from 'node:util'
+import * as proc from "node:child_process";
+import { readFileSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
+import { promisify } from "node:util";
 
-import pMap from 'p-map'
+import { access, accessSync, writeFile, writeJSON } from "fs-extra";
+import pMap from "p-map";
 
-const exec = promisify(proc.exec)
+const exec = promisify(proc.exec);
 
-format()
+format();
 
 async function format() {
-  const workspaces = (await exec(`yarn workspaces list --json`)).stdout.trim().split('\n')
+  const workspaces = (await exec(`yarn workspaces list --json`)).stdout
+    .trim()
+    .split("\n");
   const packagePaths = workspaces.map((p) => JSON.parse(p)) as {
-    name: string
-    location: string
-  }[]
+    name: string;
+    location: string;
+  }[];
 
-  console.info(` repair exports: ${packagePaths.map((x) => x.name).join('\n')}`)
+  console.info(` packages: ${packagePaths.length}`);
+
+  console.info(` repair exports..`);
 
   await pMap(
     packagePaths,
     async ({ location }) => {
-      const cwd = join(process.cwd(), location)
-      const jsonPath = join(cwd, 'package.json')
+      const cwd = join(process.cwd(), location);
+      const jsonPath = join(cwd, "package.json");
       const pkgJson = JSON.parse(
         readFileSync(jsonPath, {
-          encoding: 'utf-8',
+          encoding: "utf-8",
         })
-      )
+      );
 
-      let changed = false
+      let changed = false;
 
       if (pkgJson.exports) {
         for (const key in pkgJson.exports) {
-          const val = pkgJson.exports[key]
+          const val = pkgJson.exports[key];
 
-          if (typeof val !== 'object') continue
-          if (!val.require) continue
-          if (!val.require.endsWith('.js')) continue
-          if (!val.require.includes('dist/cjs')) continue
+          if (typeof val !== "object") continue;
+          if (!val.require) continue;
+          if (!val.require.endsWith(".js")) continue;
+          if (!val.require.includes("dist/cjs")) continue;
 
           // adds react-native entry
-          val['react-native'] = val.require.replace('.js', '.native.js')
-          changed = true
+          val["react-native"] = val.require.replace(".js", ".native.js");
+          changed = true;
         }
       }
 
       if (changed) {
-        writeFileSync(jsonPath, JSON.stringify(pkgJson, null, 2) + '\n', {
-          encoding: 'utf-8',
-        })
+        writeFileSync(jsonPath, JSON.stringify(pkgJson, null, 2) + "\n", {
+          encoding: "utf-8",
+        });
       }
     },
     {
       concurrency: 10,
     }
-  )
+  );
 
-  console.info(` repair scripts: ${packagePaths.map((x) => x.name).join('\n')}`)
+  console.info(` repair scripts..`);
 
   await pMap(
     packagePaths,
     async ({ location }) => {
-      const cwd = join(process.cwd(), location)
-      const jsonPath = join(cwd, 'package.json')
+      const cwd = join(process.cwd(), location);
+      const jsonPath = join(cwd, "package.json");
       const pkgJson = JSON.parse(
         readFileSync(jsonPath, {
-          encoding: 'utf-8',
+          encoding: "utf-8",
         })
-      )
+      );
 
-      if (pkgJson.devDependencies?.['@tamagui/build']) {
-        if (!pkgJson.scripts['clean']) {
-          pkgJson.scripts['clean'] = 'tamagui-build clean'
-          pkgJson.scripts['clean:build'] = 'tamagui-build clean:build'
-          writeFileSync(jsonPath, JSON.stringify(pkgJson, null, 2) + '\n', {
-            encoding: 'utf-8',
-          })
+      if (pkgJson.devDependencies?.["@tamagui/build"]) {
+        if (!pkgJson.scripts["clean"]) {
+          pkgJson.scripts["clean"] = "tamagui-build clean";
+          pkgJson.scripts["clean:build"] = "tamagui-build clean:build";
+          writeFileSync(jsonPath, JSON.stringify(pkgJson, null, 2) + "\n", {
+            encoding: "utf-8",
+          });
         }
       }
     },
     {
       concurrency: 10,
     }
-  )
+  );
 
+  console.info(` repair package.json source paths..`);
 
-  console.info(` repair LICENSE`)
+  await pMap(
+    packagePaths,
+    async ({ name, location }) => {
+      if (name === "tamagui-monorepo" || location.startsWith("apps/")) {
+        return;
+      }
+
+      const cwd = join(process.cwd(), location);
+      const jsonPath = join(cwd, "package.json");
+      const pkgJson = JSON.parse(
+        readFileSync(jsonPath, {
+          encoding: "utf-8",
+        })
+      );
+
+      if (!pkgJson.source) {
+        console.warn(`No source`, name, location);
+        return;
+      }
+
+      try {
+        accessSync(join(cwd, pkgJson.source));
+      } catch {
+        console.info(`Source not found`, { name, location });
+
+        let [filepath, ext] = pkgJson.source.split(".");
+
+        try {
+          const potentialName = `${filepath}.${ext === "ts" ? "tsx" : "ts"}`
+          const potential = join(
+            cwd,
+            potentialName
+          );
+          accessSync(potential);
+          pkgJson.source = potentialName;
+          await writeJSON(jsonPath, pkgJson, {
+            spaces: 2,
+          });
+        } catch {
+          console.error(`No entry file?`, name, location);
+          process.exit(1);
+        }
+      }
+    },
+    {
+      concurrency: 10,
+    }
+  );
+
+  console.info(` repair LICENSE`);
 
   await pMap(
     packagePaths,
     async ({ location }) => {
-      let licenseFile = join(process.cwd(), location, 'LICENSE')
+      let licenseFile = join(process.cwd(), location, "LICENSE");
       try {
-        await access(licenseFile)
+        await access(licenseFile);
       } catch {
-        await writeFile(licenseFile, `
+        await writeFile(
+          licenseFile,
+          `
   MIT License
 
   Copyright (c) 2020 Nate Wienert
@@ -119,11 +175,12 @@ async function format() {
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
         
-        `.trim() + '\n')
+        `.trim() + "\n"
+        );
       }
     },
     {
       concurrency: 10,
     }
-  )
+  );
 }

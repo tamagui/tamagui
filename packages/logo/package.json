@@ -2,7 +2,7 @@
   "name": "@tamagui/logo",
   "version": "1.89.0-1706308641099",
   "sideEffects": false,
-  "source": "src/index.ts",
+  "source": "logo/src/index.tsx",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
