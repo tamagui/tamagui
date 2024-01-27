@@ -1,7 +1,7 @@
 {
   "name": "@tamagui/animations-reanimated",
   "version": "1.89.0-1706308641099",
-  "source": "src/index.ts",
+  "source": "src/index.tsx",
   "sideEffects": true,
   "license": "MIT",
   "types": "./types/index.d.ts",

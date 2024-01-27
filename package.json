@@ -67,6 +67,7 @@
     "test:demos": "yarn workspace @tamagui/demos test",
     "test": "CLEANUP=1 turbo run --concurrency=1 test",
     "typecheck": "tsc -b --preserveWatchOutput tsconfig.build.json",
+    "typecheck:locked": "tsc -b --preserveWatchOutput tsconfig.locked.json",
     "typecheck:perf": "yarn workspace @tamagui/monorepo-test test",
     "upgrade:starters:free": "cd ../starter-free && yarn && yarn upgrade:tamagui",
     "upgrade:starters:expo-router": "cd starters/expo-router && yarn && yarn upgrade:tamagui",
@@ -74,10 +75,10 @@
     "upgrade:starters": "yarn upgrade:starters:free && yarn upgrade:starters:simple-web && yarn upgrade:starters:expo-router",
     "vercel:build": "yarn build:js && cd apps/site && yarn ci:build",
     "vercel:build-studio": "yarn build:js && cd apps/studio && yarn ci:build",
+    "watch": "npm-run-all --parallel watch:ts watch:packages",
     "watch:packages": "SKIP_TYPES_INITIAL=1 ultra -r --no-pretty --concurrency 400 watch",
     "watch:js": "SKIP_TYPES=1 yarn watch:packages",
-    "watch:ts": "yarn typecheck -w",
-    "watch": "npm-run-all --parallel watch:ts watch:packages"
+    "watch:ts": "node -r esbuild-register ./scripts/watch-ts.ts"
   },
   "resolutions": {
     "react-native-svg": "13.9.0",
