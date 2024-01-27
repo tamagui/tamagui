@@ -1,5 +1,5 @@
 import { createAnimations as createAnimationsCSS } from '@tamagui/animations-css'
-import { createAnimations as createAnimationsMoti } from '@tamagui/animations-moti/types'
+import { createAnimations as createAnimationsMoti } from '@tamagui/animations-moti'
 import { createAnimations as createAnimationsNative } from '@tamagui/animations-react-native'
 import { config } from '@tamagui/config/v2'
 import { createTamagui } from 'tamagui'

@@ -3,6 +3,10 @@
   "compilerOptions": {
     "composite": true
   },
-  "exclude": ["types"],
+  "exclude": [
+    "types",
+    "dist",
+    "**/__tests__"
+  ],
   "references": []
 }

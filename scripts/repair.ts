@@ -158,23 +158,29 @@ async function format() {
         return
       }
 
-      const cwd = join(process.cwd(), location)
-      const file = join(cwd, 'tsconfig.json')
-      console.info('go', file)
-      const contents = await readFile(file, {
-        encoding: 'utf-8',
-      })
-
       try {
+        const cwd = join(process.cwd(), location)
+        const file = join(cwd, 'tsconfig.json')
+        console.info('go', file)
+        const contents = await readFile(file, {
+          encoding: 'utf-8',
+        })
+
         const tsconfig = JSON5.parse(contents)
 
         if (existsSync(join(cwd, 'types'))) {
+          const always = ['types', 'dist', '**/__tests__']
+
           if (
             !tsconfig.exclude ||
-            (Array.isArray(tsconfig.exclude) && !tsconfig.exclude.includes('types'))
+            (Array.isArray(tsconfig.exclude) &&
+              always.some((a) => !tsconfig.exclude.includes(a)))
           ) {
             tsconfig.exclude ||= []
-            tsconfig.exclude.push('types')
+            for (const a of always) {
+              tsconfig.exclude.push(a)
+            }
+            tsconfig.exclude = [...new Set(tsconfig.exclude)]
             console.info('write', file, tsconfig)
             await writeJSON(file, tsconfig, {
               spaces: 2,
@@ -182,7 +188,7 @@ async function format() {
           }
         }
       } catch (err) {
-        console.error(`Error with`, { name, location })
+        console.error(`Error with`, { name, location }, err.message)
         return
       }
     },
