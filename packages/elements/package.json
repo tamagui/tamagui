@@ -30,7 +30,7 @@
     }
   },
   "dependencies": {
-    "@tamagui/web": "1.89.0-1706308641099"
+    "@tamagui/core": "1.89.0-1706308641099"
   },
   "peerDependencies": {
     "react": "*",

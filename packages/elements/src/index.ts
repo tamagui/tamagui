@@ -1,4 +1,4 @@
-import { View, styled } from '@tamagui/web'
+import { View, styled } from '@tamagui/core'
 
 export const Section = styled(View, {
   name: 'Section',
