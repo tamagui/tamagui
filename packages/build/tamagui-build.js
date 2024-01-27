@@ -269,6 +269,15 @@ async function buildJs() {
     minify: process.env.MINIFY ? true : false,
   }
 
+  if (pkgSource) {
+    const contents = await fs.readFile(pkgSource)
+    if (contents.slice(0, 40).includes('GITCRYPT')) {
+      // encrypted file, ignore
+      console.info(`This package is encrypted, skipping`)
+      return
+    }
+  }
+
   return await Promise.all([
     // web output to cjs
     pkgMain
