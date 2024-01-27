@@ -1,4 +1,5 @@
-import { Variable, createTheme, getVariableValue, isWeb } from '@tamagui/core'
+import type { Variable } from '@tamagui/core'
+import { createTheme, getVariableValue, isWeb } from '@tamagui/core'
 
 import { setColorAlpha } from './colorUtils'
 

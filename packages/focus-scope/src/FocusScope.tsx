@@ -2,7 +2,7 @@ import { useComposedRefs } from '@tamagui/compose-refs'
 import { useEvent } from '@tamagui/use-event'
 import * as React from 'react'
 
-import { FocusScopeProps } from './FocusScopeProps'
+import type { FocusScopeProps } from './FocusScopeProps'
 
 const AUTOFOCUS_ON_MOUNT = 'focusScope.autoFocusOnMount'
 const AUTOFOCUS_ON_UNMOUNT = 'focusScope.autoFocusOnUnmount'

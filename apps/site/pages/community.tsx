@@ -110,13 +110,12 @@ export default function Community({ frontmatters }) {
 
           <Spacer size="$4" />
 
-          <FlatBubbleCard ai="center" feature bw={0} className="hero-gradient">
+          <FlatBubbleCard ai="center" feature bw={0}>
             <H2 size="$9" ta="center">
-              Design Kit
+              Figma Design Kit
             </H2>
-            <Spacer size="$2" />
-            <YStack ai="center" space>
-              <H4 size="$5">Figma Design Kit</H4>
+            <Spacer size="$6" />
+            <YStack ai="center" gap>
               <NextLink href="https://www.figma.com/community/file/1326593766534421119">
                 <YStack
                   target="_blank"
@@ -137,7 +136,7 @@ export default function Community({ frontmatters }) {
                     }}
                     o={0.5}
                     source={{
-                      uri: '/sponsors/design-kit.jpg',
+                      uri: '/figma.png',
                       width: 1466 * 0.25,
                       height: 776 * 0.25,
                     }}

@@ -1,4 +1,4 @@
-import { TamaguiComponentState } from './types';
+import type { TamaguiComponentState } from './interfaces/TamaguiComponentState';
 export declare const defaultComponentState: TamaguiComponentState;
 export declare const defaultComponentStateMounted: TamaguiComponentState;
 export declare const defaultComponentStateShouldEnter: TamaguiComponentState;

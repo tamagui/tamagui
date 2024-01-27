@@ -1,13 +1,9 @@
 import { RefObject } from 'react'
 
-import {
-  GetStyleResult,
-  StaticConfig,
-  TamaguiComponentEvents,
-  TamaguiComponentState,
-  TamaguiComponentStateRef,
-  TamaguiElement,
-} from './types'
+import type { GetStyleResult, StaticConfig, TamaguiComponentStateRef } from './types'
+import { TamaguiElement } from './types'
+import type { TamaguiComponentState } from './interfaces/TamaguiComponentState'
+import type { TamaguiComponentEvents } from './interfaces/TamaguiComponentEvents'
 
 export const hooks: InternalHooks = {}
 

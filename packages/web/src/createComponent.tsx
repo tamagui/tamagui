@@ -1,4 +1,4 @@
-import { composeRefs, useComposedRefs } from '@tamagui/compose-refs'
+import { composeRefs } from '@tamagui/compose-refs'
 import { isClient, isServer, isWeb } from '@tamagui/constants'
 import { composeEventHandlers, validStyles } from '@tamagui/helpers'
 import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
@@ -30,13 +30,14 @@ import {
   mergeIfNotShallowEqual,
 } from './helpers/createShallowSetState'
 import { useSplitStyles } from './helpers/getSplitStyles'
+import { isObj } from './helpers/isObj'
 import { log } from './helpers/log'
 import { mergeProps } from './helpers/mergeProps'
 import { themeable } from './helpers/themeable'
 import { mediaKeyMatch, setMediaShouldUpdate, useMedia } from './hooks/useMedia'
 import { useThemeWithState } from './hooks/useTheme'
 import { hooks } from './setupHooks'
-import {
+import type {
   ComponentContextI,
   DebugProp,
   DisposeFn,
@@ -47,13 +48,12 @@ import {
   SpaceDirection,
   SpaceValue,
   SpacerProps,
+  SpacerStyleProps,
+  StackNonStyleProps,
   StackProps,
-  StackPropsBase,
   StaticConfig,
   StyleableOptions,
   TamaguiComponent,
-  TamaguiComponentEvents,
-  TamaguiComponentState,
   TamaguiComponentStateRef,
   TamaguiElement,
   TamaguiInternalConfig,
@@ -61,14 +61,13 @@ import {
   UseAnimationHook,
   UseAnimationProps,
   UseThemeWithStateProps,
-  WebOnlyPressEvents,
 } from './types'
+import type { WebOnlyPressEvents } from './interfaces/WebOnlyPressEvents'
+import type { TamaguiComponentState } from './interfaces/TamaguiComponentState'
+import type { TamaguiComponentEvents } from './interfaces/TamaguiComponentEvents'
 import { Slot } from './views/Slot'
 import { getThemedChildren } from './views/Theme'
 import { ThemeDebug } from './views/ThemeDebug'
-
-// this appears to fix expo / babel not picking this up sometimes? really odd
-process.env.TAMAGUI_TARGET
 
 /**
  * All things that need one-time setup after createTamagui is called
@@ -141,9 +140,10 @@ let BaseView: any
 let hasSetupBaseViews = false
 
 export function createComponent<
-  ComponentPropTypes extends StackProps | TextProps = {},
+  ComponentPropTypes extends Record<string, any> = {},
   Ref extends TamaguiElement = TamaguiElement,
   BaseProps = never,
+  BaseStyles extends Object = never,
 >(staticConfig: StaticConfig) {
   const { componentName } = staticConfig
 
@@ -164,6 +164,7 @@ export function createComponent<
   const {
     Component,
     isText,
+    isInput,
     isZStack,
     isHOC,
     validStyles = {},
@@ -367,8 +368,9 @@ export function createComponent<
     // HOOK
     const presence = (willBeAnimated && animationsConfig?.usePresence?.()) || null
     const presenceState = presence?.[2]
-    const enterExitVariant = presenceState?.enterExitVariant
-    const enterVariant = enterExitVariant ?? presenceState?.enterVariant
+    const isExiting = presenceState?.isPresent === false
+    const isEntering =
+      presenceState?.isPresent === true && presenceState.initial !== false
 
     const hasEnterStyle = !!props.enterStyle
     // finish animated logic, avoid isAnimated when unmounted
@@ -384,12 +386,14 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`pre-use-state`
 
-    const initialState =
-      hasEnterStyle || enterVariant
-        ? !isHydrated
-          ? defaultComponentStateShouldEnter
-          : defaultComponentState
-        : defaultComponentStateMounted
+    const hasEnterState = hasEnterStyle || isEntering
+    const needsToMount = !isHydrated || !curState.host
+
+    const initialState = hasEnterState
+      ? needsToMount
+        ? defaultComponentStateShouldEnter
+        : defaultComponentState
+      : defaultComponentStateMounted
 
     // HOOK
     const states = useState<TamaguiComponentState>(initialState)
@@ -406,22 +410,26 @@ export function createComponent<
     }
 
     // set enter/exit variants onto our new props object
-    if (presenceState && isAnimated && isHydrated) {
-      const isExiting = !presenceState.isPresent
-      const exitVariant = enterExitVariant ?? presenceState.exitVariant
-
-      if (state.unmounted && enterVariant) {
+    if (presenceState && isAnimated && isHydrated && staticConfig.variants) {
+      if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
+        console.warn(`has presenceState ${JSON.stringify(presenceState)}`)
+      }
+      const { enterVariant, exitVariant, enterExitVariant, custom } = presenceState
+      if (isObj(custom)) {
+        Object.assign(props, custom)
+      }
+      const exv = exitVariant ?? enterExitVariant
+      const env = enterVariant ?? enterExitVariant
+      if (state.unmounted && env && staticConfig.variants[env]) {
         if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
-          console.warn(`Animating presence ENTER "${enterVariant}"`)
+          console.warn(`Animating presence ENTER "${env}"`)
         }
-
-        props[enterVariant] = true
-      } else if (isExiting && exitVariant) {
+        props[env] = true
+      } else if (isExiting && exv) {
         if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
-          console.warn(`Animating presence EXIT "${enterVariant}"`)
+          console.warn(`Animating presence EXIT "${exv}"`)
         }
-
-        props[exitVariant] = enterExitVariant ? false : true
+        props[exv] = exitVariant === enterExitVariant ? false : true
       }
     }
 
@@ -429,8 +437,13 @@ export function createComponent<
       !isWeb ||
         (isAnimated && !supportsCSSVars) ||
         !staticConfig.acceptsClassName ||
-        propsIn.disableClassName
+        // on server for SSR and animation compat added the && isHydrated but perhaps we want
+        // disableClassName="until-hydrated" to be more straightforward
+        // see issue if not, Button sets disableClassName to true <Button animation="" /> with
+        // the react-native driver errors because it tries to animate var(--color) to rbga(..)
+        (propsIn.disableClassName && isHydrated)
     )
+
     const shouldForcePseudo = !!propsIn.forceStyle
     const noClassNames = shouldAvoidClasses || shouldForcePseudo
 
@@ -498,7 +511,8 @@ export function createComponent<
     // internal use only
     const disableThemeProp =
       process.env.TAMAGUI_TARGET === 'native' ? false : props['data-disable-theme']
-    const disableTheme = (disableThemeProp && !willBeAnimated) || isHOC
+
+    const disableTheme = disableThemeProp || isHOC
 
     if (process.env.NODE_ENV === 'development' && time) time`theme-props`
 
@@ -524,8 +538,6 @@ export function createComponent<
       themeStateProps.deopt = willBeAnimated
     }
 
-    const isExiting = Boolean(!state.unmounted && presence?.[0] === false)
-
     if (process.env.NODE_ENV === 'development') {
       if (debugProp && debugProp !== 'profile') {
         const name = `${
@@ -537,24 +549,36 @@ export function createComponent<
         const type =
           (hasEnterStyle ? '(hasEnter)' : '') +
           (isAnimated ? '(animated)' : '') +
-          (isReactNative ? '(rnw)' : '')
+          (isReactNative ? '(rnw)' : '') +
+          (presenceState?.isPresent === false ? '(EXIT)' : '')
         const dataIs = propsIn['data-is'] || ''
         const banner = `${internalID} ${name}${dataIs ? ` ${dataIs}` : ''} ${type}`
-        console.group(
+        console.info(
           `%c ${banner} (hydrated: ${isHydrated}) (unmounted: ${state.unmounted})`,
           'background: green; color: white;'
         )
-        if (!isServer) {
+        if (isServer) {
+          log({ noClassNames, isAnimated, shouldAvoidClasses, isWeb, supportsCSSVars })
+        } else {
           // if strict mode or something messes with our nesting this fixes:
           console.groupEnd()
-          console.groupEnd()
 
-          console.groupCollapsed(
-            `Info (collapsed): ${state.press || state.pressIn ? 'PRESSED ' : ''}${
-              state.hover ? 'HOVERED ' : ''
-            }${state.focus ? 'FOCUSED' : ' '}`
-          )
-          log({ propsIn, props, state, staticConfig, elementType, themeStateProps })
+          const pressLog = `${state.press || state.pressIn ? ' PRESS ' : ''}`
+          const stateLog = `${pressLog}${state.hover ? ' HOVER ' : ''}${
+            state.focus ? ' FOCUS' : ' '
+          }`
+
+          const ch = propsIn.children
+          let childLog =
+            typeof ch === 'string' ? (ch.length > 4 ? ch.slice(0, 4) + '...' : ch) : ''
+          if (childLog.length) {
+            childLog = `(children: ${childLog})`
+          }
+
+          console.groupCollapsed(`${childLog}${stateLog}Props:`)
+          log('props in:', propsIn)
+          log('final props:', props)
+          log({ state, staticConfig, elementType, themeStateProps })
           log({ contextProps: styledContextProps, overriddenContextProps })
           log({ presence, isAnimated, isHOC, hasAnimationProp, useAnimations })
           console.groupEnd()
@@ -842,9 +866,10 @@ export function createComponent<
       mediaGroups ? Object.keys([...mediaGroups]).join('') : 0,
     ])
 
-    let fontFamily = isText
-      ? splitStyles.fontFamily || staticConfig.defaultProps?.fontFamily
-      : null
+    let fontFamily =
+      isText || isInput
+        ? splitStyles.fontFamily || staticConfig.defaultProps?.fontFamily
+        : null
     if (fontFamily && fontFamily[0] === '$') {
       fontFamily = fontFamily.slice(1)
     }
@@ -1167,7 +1192,7 @@ export function createComponent<
     }
 
     if (process.env.TAMAGUI_TARGET === 'web') {
-      if (isReactNative && !asChild && !isHOC) {
+      if (isReactNative && !asChild) {
         content = (
           <span
             {...(!isHydrated
@@ -1275,7 +1300,13 @@ export function createComponent<
     component.displayName = staticConfig.componentName
   }
 
-  type ComponentType = TamaguiComponent<ComponentPropTypes, Ref, BaseProps, void>
+  type ComponentType = TamaguiComponent<
+    ComponentPropTypes,
+    Ref,
+    BaseProps,
+    BaseStyles,
+    {}
+  >
 
   let res: ComponentType = component as any
 
@@ -1363,8 +1394,12 @@ const getSpacerSize = (size: SizeTokens | number | boolean, { tokens }) => {
 
 // dont used styled() here to avoid circular deps
 // keep inline to avoid circular deps
-// @ts-expect-error we override
-export const Spacer = createComponent<SpacerProps, TamaguiElement, StackPropsBase>({
+export const Spacer = createComponent<
+  SpacerProps,
+  TamaguiElement,
+  StackNonStyleProps,
+  SpacerStyleProps
+>({
   acceptsClassName: true,
   memo: true,
   componentName: 'Spacer',

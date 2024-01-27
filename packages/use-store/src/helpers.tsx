@@ -1,6 +1,6 @@
 import { simpleHash } from '@tamagui/simple-hash'
 
-import { StoreInfo } from './interfaces'
+import type { StoreInfo } from './interfaces'
 
 export function getStoreUid(Constructor: any, props: string | Object | void) {
   return simpleHash(

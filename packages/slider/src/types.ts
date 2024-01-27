@@ -25,7 +25,7 @@ type SliderImplPrivateProps = {
   onStepKeyDown(event: React.KeyboardEvent): void
 }
 
-export interface SliderTrackProps extends SizableStackProps {}
+export type SliderTrackProps = SizableStackProps
 
 export interface SliderImplProps extends SliderTrackProps, SliderImplPrivateProps {
   dir?: Direction

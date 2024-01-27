@@ -1,4 +1,5 @@
-import { RenderResult, act, cleanup, fireEvent, render } from '@testing-library/react'
+import type { RenderResult} from '@testing-library/react';
+import { act, cleanup, fireEvent, render } from '@testing-library/react'
 import { last } from 'lodash'
 import React, { StrictMode } from 'react'
 import { afterEach, describe, expect, it } from 'vitest'

@@ -11,7 +11,9 @@ export * from './insertFont'
 export * from './styled'
 export * from './setupReactNative'
 
-export * from './types'
+export type * from './types'
+export type * from './interfaces/RNExclusiveTypes'
+
 export * from './interfaces/GetRef'
 
 export {

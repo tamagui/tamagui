@@ -8,7 +8,7 @@ import { rimraf } from 'rimraf'
 import { $, cd } from 'zx'
 
 import { IS_TEST } from '../create-tamagui-constants'
-import { templates } from '../templates'
+import type { templates } from '../templates'
 
 const open = require('opener')
 

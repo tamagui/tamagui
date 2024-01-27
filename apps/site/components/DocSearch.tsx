@@ -1,4 +1,5 @@
-import { DocSearchModal, DocSearchModalProps } from '@docsearch/react'
+import type { DocSearchModalProps } from '@docsearch/react';
+import { DocSearchModal } from '@docsearch/react'
 import Head from 'next/head'
 
 export default function DocSearch(props: DocSearchModalProps) {

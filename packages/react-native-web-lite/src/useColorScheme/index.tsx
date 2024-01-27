@@ -10,7 +10,7 @@
 
 import * as React from 'react'
 
-import { ColorSchemeName } from '../Appearance/index'
+import type { ColorSchemeName } from '../Appearance/index'
 import Appearance from '../Appearance/index'
 
 export default function useColorScheme(): ColorSchemeName {

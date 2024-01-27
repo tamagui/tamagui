@@ -20,6 +20,8 @@ import { getCompilationExamples } from '../lib/getCompilationExamples'
 export default function Home({ animationCode, compilationExamples }) {
   return (
     <>
+      <YStack className="strong-background" />
+
       <HomeGlow />
       <NextSeo
         title="Tamagui — React Native + Web UI kit"

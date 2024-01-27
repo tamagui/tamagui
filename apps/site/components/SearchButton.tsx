@@ -1,12 +1,11 @@
 import { Search as SearchIcon } from '@tamagui/lucide-icons'
-import React from 'react'
 import { memo, useContext, useEffect, useRef } from 'react'
+import type {
+  ButtonProps} from 'tamagui';
 import {
   Button,
-  ButtonProps,
   SizableText,
-  TooltipSimple,
-  useIsTouchDevice,
+  TooltipSimple
 } from 'tamagui'
 
 import { SearchContext } from './SearchContext'
@@ -43,7 +42,6 @@ export const SearchButton = memo((props: ButtonProps) => {
           <SizableText
             size="$1"
             mx="$1"
-            ml={-1}
             $sm={{ maw: 0, ov: 'hidden', mx: -3 }}
             o={0.25}
           >

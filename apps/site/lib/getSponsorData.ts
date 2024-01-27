@@ -1,11 +1,11 @@
-import { SupabaseClient } from '@supabase/auth-helpers-nextjs'
+import type { SupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { getCookie, setCookie } from 'cookies-next'
 import jwt from 'jsonwebtoken'
-import { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse } from 'next'
 
 import { whitelistGithubUsernames } from '../protected/_utils/github'
 import { HandledResponseTermination } from './apiRoute'
-import { Database } from './supabase-types'
+import type { Database } from './supabase-types'
 import { getArray } from './supabase-utils'
 import { userHasTakeout } from './user-helpers'
 

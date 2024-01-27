@@ -1,5 +1,5 @@
 import * as sections from '@tamagui/bento'
-import { GetStaticPaths } from 'next'
+import type { GetStaticPaths } from 'next'
 import { useRouter } from 'next/router'
 
 import { ContainerLarge } from '../../../components/Container'

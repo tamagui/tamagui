@@ -1,5 +1,5 @@
 import { getTokenObject } from '../config'
-import { DedupedThemes, ThemeParsed } from '../types'
+import type { DedupedThemes, ThemeParsed } from '../types'
 
 const themesRaw: Record<string, ThemeParsed> = {}
 

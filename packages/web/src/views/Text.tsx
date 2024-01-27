@@ -1,7 +1,12 @@
 import { stylePropsTextOnly, validStyles } from '@tamagui/helpers'
 
 import { createComponent } from '../createComponent'
-import { TamaguiTextElement, TextProps, TextPropsBase } from '../types'
+import type {
+  TamaguiTextElement,
+  TextNonStyleProps,
+  TextProps,
+  TextStylePropsBase,
+} from '../types'
 
 const ellipseStyle = {
   maxWidth: '100%',
@@ -27,7 +32,12 @@ const ellipsisStyle =
         lineBreakMode: 'clip',
       }
 
-export const Text = createComponent<TextProps, Text, TextPropsBase>({
+export const Text = createComponent<
+  TextProps,
+  Text,
+  TextNonStyleProps,
+  TextStylePropsBase
+>({
   acceptsClassName: true,
   isText: true,
 

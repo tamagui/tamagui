@@ -1,9 +1,8 @@
 import { FloatingFocusManager } from '@floating-ui/react'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { composeRefs } from '@tamagui/compose-refs'
-import { isWeb } from '@tamagui/constants'
-import { useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { styled } from '@tamagui/core'
+import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { View, styled } from '@tamagui/core'
 import { PortalItem } from '@tamagui/portal'
 import { ThemeableStack } from '@tamagui/stacks'
 
@@ -13,7 +12,7 @@ import {
   useSelectContext,
   useSelectItemParentContext,
 } from './context'
-import { ScopedProps, SelectViewportProps } from './types'
+import type { ScopedProps, SelectViewportExtraProps, SelectViewportProps } from './types'
 import { useSelectBreakpointActive } from './useSelectBreakpointActive'
 
 /* -------------------------------------------------------------------------------------------------
@@ -49,7 +48,7 @@ export const SelectViewportFrame = styled(ThemeableStack, {
   },
 })
 
-export const SelectViewport = SelectViewportFrame.styleable<SelectViewportProps>(
+export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraProps>(
   function SelectViewport(props: ScopedProps<SelectViewportProps>, forwardedRef) {
     const { __scopeSelect, children, disableScroll, ...viewportProps } = props
     const context = useSelectContext(VIEWPORT_NAME, __scopeSelect)
@@ -61,11 +60,6 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportProps>
         context.update()
       }
     }, [breakpointActive])
-
-    const composedRefs = composeRefs(
-      forwardedRef,
-      context.floatingContext?.refs.setFloating
-    )
 
     if (itemContext.shouldRenderWebNative) {
       return <>{children}</>
@@ -99,6 +93,12 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportProps>
       className,
       ...floatingProps
     } = itemContext.interactions.getFloatingProps()
+
+    const composedRefs = composeRefs(
+      forwardedRef,
+      context.floatingContext?.refs.setFloating
+    )
+
     const { scrollbarWidth, listStyleType, overflow, ...restStyle } = style
 
     return (
@@ -110,9 +110,9 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportProps>
             }}
           />
         )}
-        <FloatingFocusManager context={context.floatingContext!}>
-          <AnimatePresence>
-            {context.open ? (
+        <AnimatePresence>
+          {context.open ? (
+            <FloatingFocusManager context={context.floatingContext!} modal={false}>
               <SelectViewportFrame
                 disableClassName
                 key="select-viewport"
@@ -120,18 +120,18 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportProps>
                 // @ts-ignore
                 role="presentation"
                 {...viewportProps}
-                ref={composedRefs}
                 {...floatingProps}
                 {...restStyle}
                 {...(!props.unstyled && {
                   overflow: disableScroll ? undefined : overflow ?? 'scroll',
                 })}
+                ref={composedRefs}
               >
                 {children}
               </SelectViewportFrame>
-            ) : null}
-          </AnimatePresence>
-        </FloatingFocusManager>
+            </FloatingFocusManager>
+          ) : null}
+        </AnimatePresence>
 
         {/* keep in dom to allow for portal to the trigger... very hacky! we should fix */}
         {!context.open && <div style={{ display: 'none' }}>{props.children}</div>}

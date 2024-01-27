@@ -2,7 +2,7 @@ import { isWeb } from '@tamagui/constants'
 
 import { getThemes, getThemesNames } from '../config'
 import { THEME_CLASSNAME_PREFIX, THEME_NAME_SEPARATOR } from '../constants/constants'
-import { ColorScheme, ThemeParsed, ThemeProps } from '../types'
+import type { ColorScheme, ThemeParsed, ThemeProps } from '../types'
 
 type ThemeListener = (
   name: string | null,

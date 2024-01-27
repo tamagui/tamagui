@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import { ThemeProps } from 'tamagui';
+import type { ThemeProps } from 'tamagui';
 export declare const initialTint = 3;
 export declare const onTintChange: (listener: (cur: number) => void) => () => void;
 export declare const setTintIndex: (next: number) => void;
@@ -21,6 +21,7 @@ export declare const useTint: () => {
 export declare const ThemeTint: ({ disable, children, ...rest }: ThemeProps & {
     disable?: boolean | undefined;
 }) => JSX.Element;
+export declare const useTintAlt: (offset?: number) => string;
 export declare const ThemeTintAlt: ({ children, disable, offset, ...rest }: ThemeProps & {
     disable?: boolean | undefined;
     offset?: number | undefined;

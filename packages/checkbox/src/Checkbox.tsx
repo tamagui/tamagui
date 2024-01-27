@@ -3,10 +3,8 @@
 
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
+import type { GetProps, SizeTokens, TamaguiElement } from '@tamagui/core'
 import {
-  GetProps,
-  SizeTokens,
-  TamaguiElement,
   createStyledContext,
   getVariableValue,
   styled,
@@ -211,7 +209,7 @@ export const CheckboxFrame = styled(ThemeableStack, {
           borderColor: '$borderColorFocus',
           outlineStyle: 'solid',
           outlineWidth: 2,
-          outlineColor: '$borderColorFocus',
+          outlineColor: '$outlineColor',
         },
       },
     },
@@ -334,7 +332,6 @@ const CheckboxComponent = CheckboxFrame.styleable<CheckboxExtraProps>(function C
   const labelledBy = ariaLabelledby || labelId
 
   if (process.env.TAMAGUI_TARGET === 'native') {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     React.useEffect(() => {
       if (!props.id) return
       if (disabled) return
@@ -349,7 +346,7 @@ const CheckboxComponent = CheckboxFrame.styleable<CheckboxExtraProps>(function C
   }
 
   return (
-    <CheckboxProvider scope={__scopeCheckbox} state={checked} disabled={disabled}>
+    <CheckboxProvider scope={__scopeCheckbox} state={checked} disabled={!!disabled}>
       {isWeb && native ? (
         <BubbleInput
           control={button}

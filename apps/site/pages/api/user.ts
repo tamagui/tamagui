@@ -1,6 +1,6 @@
 import { apiRoute } from '@lib/apiRoute'
 import { protectApiRoute } from '@lib/protectApiRoute'
-import { Database } from '@lib/supabase-types'
+import type { Database } from '@lib/supabase-types'
 import {
   getMainTeam,
   getOrgTeams,
@@ -10,7 +10,7 @@ import {
   getUserPrivateInfo,
   getUserTeams,
 } from '@lib/user-helpers'
-import { Session, User } from '@supabase/supabase-js'
+import type { Session, User } from '@supabase/supabase-js'
 
 export type UserContextType = {
   subscriptions?: Awaited<ReturnType<typeof getSubscriptions>> | null

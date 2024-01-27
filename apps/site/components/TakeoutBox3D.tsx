@@ -1,5 +1,6 @@
 import { useGLTF } from '@react-three/drei'
-import { Canvas, Object3DNode, useFrame } from '@react-three/fiber'
+import type { Object3DNode} from '@react-three/fiber';
+import { Canvas, useFrame } from '@react-three/fiber'
 import { useRouter } from 'next/router'
 import { Suspense, useEffect, useRef } from 'react'
 import { useMedia } from 'tamagui'
@@ -47,12 +48,12 @@ function TakeoutBox3D(props) {
   useFrame((state, delta) => {
     if (!ref.current) return
 
-    const entryEffectFrames = 50
+    const entryEffectFrames = 80
     const justStarting = frameCount < entryEffectFrames
     const entryEffectPercentComplete = frameCount / entryEffectFrames
     const rotateSpeed = justStarting
-      ? 21 * (1 - entryEffectPercentComplete) + 0.035
-      : 0.035
+      ? 8 * (1 - entryEffectPercentComplete) + 0.04
+      : 0.04
 
     ref.current.rotation.y += delta * rotateSpeed
 
@@ -69,7 +70,7 @@ function TakeoutBox3D(props) {
 
   return (
     <>
-      <Stage scale={1} adjustCamera={1.55} preset="portrait" intensity={2}>
+      <Stage scale={1} adjustCamera={1.6} preset="portrait" intensity={2}>
         <group ref={ref} dispose={null} {...props}>
           <mesh
             castShadow

@@ -3,24 +3,18 @@ import { getButtonSized } from '@tamagui/get-button-sized'
 import { withStaticProperties } from '@tamagui/helpers'
 import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { ButtonNestingContext, ThemeableStack } from '@tamagui/stacks'
+import type { TextContextStyles, TextParentStyles } from '@tamagui/text'
+import { SizableText, wrapChildrenInText } from '@tamagui/text'
+import type { FontSizeTokens, GetProps, SizeTokens, ThemeableProps } from '@tamagui/web'
 import {
-  SizableText,
-  TextContextStyles,
-  TextParentStyles,
-  wrapChildrenInText,
-} from '@tamagui/text'
-import {
-  FontSizeTokens,
-  GetProps,
-  SizeTokens,
-  ThemeableProps,
   createStyledContext,
   getVariableValue,
   spacedChildren,
   styled,
   useProps,
 } from '@tamagui/web'
-import { FunctionComponent, useContext } from 'react'
+import type { FunctionComponent } from 'react'
+import { useContext } from 'react'
 
 type ButtonVariant = 'outlined'
 
@@ -87,8 +81,8 @@ const ButtonFrame = styled(ThemeableStack, {
   name: BUTTON_NAME,
   tag: 'button',
   context: ButtonContext,
-  focusable: true,
   role: 'button',
+  focusable: true,
 
   variants: {
     unstyled: {
@@ -106,7 +100,7 @@ const ButtonFrame = styled(ThemeableStack, {
         borderColor: 'transparent',
 
         focusStyle: {
-          outlineColor: '$borderColorFocus',
+          outlineColor: '$outlineColor',
           outlineStyle: 'solid',
           outlineWidth: 2,
         },
@@ -189,6 +183,7 @@ const ButtonIcon = (props: { children: React.ReactNode; scaleIcon?: number }) =>
 
 const ButtonComponent = ButtonFrame.styleable<ButtonExtraProps>(
   function Button(props, ref) {
+    // @ts-ignore
     const { props: buttonProps } = useButton(props)
     return <ButtonFrame {...buttonProps} ref={ref} />
   }

@@ -1,21 +1,15 @@
 import { composeRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
 import { getButtonSized } from '@tamagui/get-button-sized'
-import { Group, GroupProps, useGroupItem } from '@tamagui/group'
+import type { GroupProps } from '@tamagui/group'
+import { Group, useGroupItem } from '@tamagui/group'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { RovingFocusGroup } from '@tamagui/roving-focus'
 import { SizableStack, ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
-import {
-  GetProps,
-  SizeTokens,
-  TamaguiElement,
-  Theme,
-  createStyledContext,
-  styled,
-  useEvent,
-} from '@tamagui/web'
+import type { GetProps, SizeTokens, TamaguiElement } from '@tamagui/web'
+import { Theme, createStyledContext, styled, useEvent } from '@tamagui/web'
 import * as React from 'react'
 import type { LayoutRectangle } from 'react-native'
 
@@ -171,7 +165,7 @@ const TabsTrigger = TabsTriggerFrame.extractable(
       const isSelected = value === context.value
       const [layout, setLayout] = React.useState<TabLayout | null>(null)
       const triggerRef = React.useRef<HTMLButtonElement>(null)
-      const groupItemProps = useGroupItem({ disabled })
+      const groupItemProps = useGroupItem({ disabled: !!disabled })
 
       React.useEffect(() => {
         context.registerTrigger()

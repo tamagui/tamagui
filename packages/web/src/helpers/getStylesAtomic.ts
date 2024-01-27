@@ -3,17 +3,15 @@
  * Copyright (c) Nicolas Gallagher licensed under the MIT license.
  */
 
-import { StyleObject, simpleHash } from '@tamagui/helpers'
+import type { StyleObject } from '@tamagui/helpers'
+import { simpleHash } from '@tamagui/helpers'
 
 import { getConfig } from '../config'
 import type { DebugProp, TamaguiInternalConfig, ViewStyleWithPseudos } from '../types'
 import { defaultOffset } from './defaultOffset'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
-import {
-  PseudoDescriptor,
-  pseudoDescriptors,
-  pseudoDescriptorsBase,
-} from './pseudoDescriptors'
+import type { PseudoDescriptor } from './pseudoDescriptors'
+import { pseudoDescriptors, pseudoDescriptorsBase } from './pseudoDescriptors'
 import { normalizeColor } from './normalizeColor'
 
 // refactor this file away next...

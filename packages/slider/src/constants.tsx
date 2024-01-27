@@ -1,7 +1,7 @@
-import { SizeTokens } from '@tamagui/core'
+import type { SizeTokens } from '@tamagui/core'
 import { createContextScope } from '@tamagui/create-context'
 
-import { Direction, SliderContextValue } from './types'
+import type { Direction, SliderContextValue } from './types'
 
 export const SLIDER_NAME = 'Slider'
 

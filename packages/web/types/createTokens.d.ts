@@ -1,5 +1,5 @@
-import { Variable } from './createVariable';
-import { CreateTokens } from './types';
+import type { Variable } from './createVariable';
+import type { CreateTokens } from './types';
 export declare function createTokens<T extends CreateTokens>(tokens: T): MakeTokens<T>;
 type NormalizeTokens<A, Type = A[keyof A]> = {
     [Key in keyof A extends `$${infer X}` ? X : keyof A]: Variable<Type>;

@@ -1,5 +1,5 @@
-import { ColorTokens, SizeTokens, ThemeTokens } from '@tamagui/core';
-import { SvgProps } from 'react-native-svg';
+import type { ColorTokens, SizeTokens, ThemeTokens } from '@tamagui/core';
+import type { SvgProps } from 'react-native-svg';
 export type BaseIconProps = {
     size?: number | SizeTokens;
     strokeWidth?: number | SizeTokens;

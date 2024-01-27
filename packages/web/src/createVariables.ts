@@ -1,6 +1,7 @@
 import { simpleHash } from '@tamagui/helpers'
 
-import { Variable, createVariable, isVariable } from './createVariable'
+import type { Variable } from './createVariable'
+import { createVariable, isVariable } from './createVariable'
 
 type DeepTokenObject<Val extends string | number = any> = {
   [key: string]: Val | DeepTokenObject<Val>

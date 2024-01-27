@@ -1,4 +1,4 @@
-import { SplitStyleProps, StackStyleProps, StaticConfig, ThemeParsed, UseMediaState } from '../types';
+import type { SplitStyleProps, StackStyle, StaticConfig, ThemeParsed, UseMediaState } from '../types';
 type UsePropsOptions = Pick<SplitStyleProps, 'noExpand' | 'noNormalize' | 'noClassNames' | 'resolveValues'> & {
     disableExpandShorthands?: boolean;
     forComponent?: {
@@ -8,7 +8,7 @@ type UsePropsOptions = Pick<SplitStyleProps, 'noExpand' | 'noNormalize' | 'noCla
 export type PropsWithoutMediaStyles<A> = {
     [Key in keyof A extends `$${string}` ? never : keyof A]?: A[Key];
 };
-type StyleLikeObject = (StackStyleProps & Record<string, any>) | Object;
+type StyleLikeObject = (StackStyle & Record<string, any>) | Object;
 /**
  * Returns props and style as a single object, expanding and merging shorthands and media queries.
  *

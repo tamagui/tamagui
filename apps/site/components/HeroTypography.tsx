@@ -3,6 +3,9 @@ import { useIsIntersecting } from '@tamagui/demos'
 import { useTint } from '@tamagui/logo'
 import { NextLink } from 'components/NextLink'
 import { memo, useEffect, useRef, useState } from 'react'
+import type {
+  Heading,
+  TextProps} from 'tamagui';
 import {
   Button,
   Card,
@@ -12,9 +15,7 @@ import {
   H4,
   H5,
   H6,
-  Heading,
   Paragraph,
-  TextProps,
   XStack,
   YStack,
   useDidFinishSSR,

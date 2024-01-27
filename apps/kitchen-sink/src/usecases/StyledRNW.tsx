@@ -1,4 +1,3 @@
-import { memo } from 'react'
 import { Platform } from 'react-native'
 import { Input as TamaguiInput, styled, useThemeName } from 'tamagui'
 
@@ -6,9 +5,7 @@ export function StyledRNW() {
   return <Input id="styled-rnw-input" accessibilityLabel="ok" placeholder="search" />
 }
 
-type RequireField<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>
-
-const TextInput = styled(
+            const TextInput = styled(
   TamaguiInput,
   {
     fontSize: 16,
@@ -17,6 +14,7 @@ const TextInput = styled(
     minWidth: 0,
     borderWidth: 0,
     borderColor: 'transparent',
+
     variants: {
       unset: {
         false: {
@@ -32,6 +30,7 @@ const TextInput = styled(
         },
       },
     } as const,
+
     defaultVariants: {
       unset: false,
     },
@@ -41,9 +40,7 @@ const TextInput = styled(
   }
 )
 
-export const Input = TamaguiInput.styleable<
-  RequireField<React.ComponentProps<typeof TextInput>, 'accessibilityLabel'>
->(function MyInput({ ...props }, ref) {
+export const Input = TamaguiInput.styleable(function MyInput({ ...props }, ref) {
   const parentTheme = useThemeName()
 
   return (

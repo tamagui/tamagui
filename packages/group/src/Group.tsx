@@ -1,8 +1,5 @@
+import type { GetProps, TamaguiElement, UnionableString, Variable } from '@tamagui/core'
 import {
-  GetProps,
-  TamaguiElement,
-  UnionableString,
-  Variable,
   getConfig,
   getTokens,
   getVariableValue,
@@ -12,7 +9,8 @@ import {
   styled,
   useProps,
 } from '@tamagui/core'
-import { Scope, createContextScope } from '@tamagui/create-context'
+import type { Scope } from '@tamagui/create-context'
+import { createContextScope } from '@tamagui/create-context'
 import { withStaticProperties } from '@tamagui/helpers'
 import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -219,6 +217,7 @@ const GroupItem = (props: ScopedProps<GroupItemProps>) => {
 
   return React.cloneElement(children, {
     style: {
+      // @ts-ignore
       ...children.props?.['style'],
       ...groupItemProps,
     },

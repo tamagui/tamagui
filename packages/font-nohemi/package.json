@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/font-nohemi",
-  "version": "1.86.6",
+  "version": "1.89.0-1706360676826",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -19,8 +19,8 @@
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
-    "@tamagui/build": "1.86.6",
-    "@tamagui/core": "1.86.6",
+    "@tamagui/build": "1.89.0-1706360676826",
+    "@tamagui/core": "1.89.0-1706360676826",
     "subset-font": "^2.1.0"
   }
 }

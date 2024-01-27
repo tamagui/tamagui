@@ -1,4 +1,4 @@
-import { CreateMask, MaskFunction, MaskOptions } from './createThemeTypes'
+import type { CreateMask, MaskFunction, MaskOptions } from './createThemeTypes'
 import { objectEntries, objectFromEntries } from './helpers'
 import { isMinusZero } from './isMinusZero'
 
