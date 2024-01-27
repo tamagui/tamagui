@@ -1,3 +1,8 @@
+- nextjs plugin should automatically do the t_unmounted thing if disableSSR isnt true
+
+- opacity values desperately needed
+  - dynamic opacity is doable but would only work 0-runtime if css supports shifting opacity
+
 - // TODO ?
 - make studio not build unless `studio(` in commit
 

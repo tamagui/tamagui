@@ -14,10 +14,11 @@ description: Swap out animation drivers per-platform or at runtime
 <Highlights
   disableLinks
   features={[
-    `Pluggable drivers, fully typed and easy to swap.`,
-    `Support hover, press, and focus animations.`,
-    `Supports enter animation on mount.`,
-    `Supports exit animation with AnimatePresence.`,
+    `Animate any style prop with animation config per-prop.`,
+    `Can animate across all states (media queries, hover, etc).`,
+    `Three drivers you can swap out with type safety.`,
+    `SSR safe mount animations.`,
+    `Enter and exit animations with AnimatePresence.`,
   ]}
 />
 
@@ -427,10 +428,6 @@ export function Demo() {
 
 ### What to know when animating
 
-Allowing for spring based animations alongside every other feature of Tamagui
-has been a challenge. In order to preserve performance while still allowing for
-this, we've had to make a couple concessions, which are luckily minor.
-
 #### Conditional animations and HMR
 
 The animation hooks are heavy, which initially meant we either had to choose
@@ -442,9 +439,36 @@ should keep `animation` always set on the component props. You can disable it
 like so:
 
 ```tsx
-<View animation={condition ? 'animation-name' : undefined} />
+<View animation={condition ? 'animation-name' : null} />
 ```
 
 Note that because of this constraint, you also will see an error if you add the
-`animation` prop to a component in dev mode during an HMR. Simple reloading the
-page or triggering another HMR will fix it.
+`animation` prop to a component in dev mode during an HMR. Often just saving once more will remove the screen, or reloading at worst.
+
+#### SSR safe enter animations for web
+
+Tamagui works hard to make all the animations drivers SSR safe. While the CSS driver is relatively easy, the two others: reanimated, and React Native Web, both require some tricky logic to ensure that they don't flicker, don't hide content for users without JavaScript turned on, and still animation properly on initial render.
+
+The short story is that if you want SSR safe animations, add this somewhere in your `head` tag:
+
+```tsx
+<head>
+  <script
+    dangerouslySetInnerHTML={{
+      // avoid flash of entered elements before enter animations run:
+      __html: `document.documentElement.classList.add('t_unmounted')`,
+    }}
+  />
+</head>
+```
+
+##### Perfect SSR
+
+To achieve the ideal behavior for SSR with a spring driver, Tamagui does the following:
+
+1. On server, render using CSS only and with all `enterStyle` off, this way you can use CSS media queries and CSS variables which are a must for the initial render to match on hydration.
+2. During that first server render, gather `enterStyle` as atomic CSS with the `.t_unmounted ` selector prefixed.
+4. Add the code snippet above to your head, which will ensure the t_unmounted is in place before the browser shows anything visually.
+5. On first client render, you have to match the exact server render, so you render once with CSS.
+6. Render once more, this time swapping out for the animated spring component, with enterStyle enabled so it matches the initial render.
+7. Gather your styles once more with enterStyle turned off, and send the spring drivers happily off to do their bouncy things.

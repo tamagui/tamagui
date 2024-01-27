@@ -105,8 +105,6 @@ function AppContents(
   return (
     <>
       <script
-        key="tamagui-animations-mount"
-        type="text/javascript"
         dangerouslySetInnerHTML={{
           // avoid flash of animated things on enter
           __html: `document.documentElement.classList.add('t_unmounted')`,
