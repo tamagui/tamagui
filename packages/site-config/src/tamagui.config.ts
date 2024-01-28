@@ -6,8 +6,8 @@ import { createMunroFont } from '@tamagui/font-munro'
 import { createNohemi } from '@tamagui/font-nohemi'
 import { createSilkscreenFont } from '@tamagui/font-silkscreen'
 import { shorthands } from '@tamagui/shorthands'
-import { tokens } from '@tamagui/themes/v2'
-import { themes as themesIn } from '@tamagui/themes/v2-themes'
+import { tokens } from '@tamagui/themes/v3'
+import { themes as themesIn } from '@tamagui/themes/v3-themes'
 import type { CreateTamaguiProps } from '@tamagui/web'
 import { setupDev } from '@tamagui/web'
 
@@ -222,10 +222,11 @@ const monoFont = createGenericFont(
 )
 
 // avoid themes only on client bundle
-const themes =
-  process.env.TAMAGUI_IS_SERVER || process.env.TAMAGUI_KEEP_THEMES
-    ? themesIn
-    : ({} as typeof themesIn)
+const themes = themesIn
+
+  // process.env.TAMAGUI_IS_SERVER || process.env.TAMAGUI_KEEP_THEMES
+  //   ? 
+  //   : ({} as typeof themesIn)
 
 export const config = {
   defaultFont: 'body',

@@ -21,12 +21,15 @@ function TestPage() {
         flex: 1,
       }}
     >
+      <ThemeTint>
+
       <Button
-        animation="quick"
+        // animation="quick"
         bg="$color10"
       >
         Sponsor for early access
       </Button>
+      </ThemeTint>
       {/* <Stack
         // hitSlop={5}
         importantForAccessibility="no"

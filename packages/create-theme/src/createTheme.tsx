@@ -43,6 +43,7 @@ export function createThemeWithPalettes<
       }
     }
   }
+
   return createTheme(palettes[defaultPalette], newDef, options, name, skipCache)
 }
 
