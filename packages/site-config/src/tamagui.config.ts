@@ -113,8 +113,6 @@ const themes =
     ? themesIn
     : ({} as typeof themesIn)
 
-console.log('themes', themes)
-
 export const config = {
   defaultFont: 'body',
   shouldAddPrefersColorThemes: true,
