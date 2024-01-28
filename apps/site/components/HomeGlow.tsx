@@ -1,6 +1,6 @@
 import { useTint, useTintAlt } from '@tamagui/logo'
 import { memo, useMemo, useState } from 'react'
-import type { ThemeName} from 'tamagui';
+import type { ThemeName } from 'tamagui'
 import { YStack, isClient, useDebounce } from 'tamagui'
 
 import { useTintSectionIndex } from './TintSection'
@@ -45,7 +45,7 @@ export const HomeGlow = memo(() => {
           const xRand = isOnHeroBelow ? 0 : positions[i][0]
           const yRand = isOnHeroBelow ? 0 : positions[i][1]
           const x =
-            xScale * (xRand + (isOnHeroBelow ? (isAlt ? -300 : 300) : isAlt ? -400 : 400))
+            xScale * (xRand + (isOnHeroBelow ? (isAlt ? -800 : 800) : isAlt ? -400 : 400))
           return (
             <YStack
               key={`${i}`}

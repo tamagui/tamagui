@@ -53,29 +53,31 @@ export default function ProPage() {
 
   return (
     <YStack theme="tan" bg="$color6" y={-100} pt={100}>
-      <>
-        {/* <LinearGradient
+      <ThemeTintAlt>
+        <LinearGradient
           // colors={[`$color8`, `transparent`]}
-          colors={[`transparent`, `$color1`]}
-          start={[0, 0.5]}
-          end={[0, 0]}
+          colors={[`$color10`, `$color11`]}
+          start={[0, 1]}
+          end={[0.1, 0.95]}
           fullscreen
-          mah={1000}
-          y={-100}
-        /> */}
-      </>
+          o={0.25}
+          style={{
+            mixBlendMode: 'color-burn',
+          }}
+        />
+      </ThemeTintAlt>
 
       <YStack
         pe="none"
         pos="absolute"
-        t={-950}
+        t={-1250}
         l="50%"
-        x={-300}
+        x={-850}
         rotate="120deg"
         o={0.025}
         zi={-1}
       >
-        <Image alt="idk" width={2500} height={2500} src="/takeout/geometric.svg" />
+        <Image alt="idk" width={3000} height={3000} src="/takeout/geometric.svg" />
       </YStack>
 
       <YStack pe="none" fullscreen zi={100} rotateZ="20deg">
@@ -120,14 +122,15 @@ const Hero = () => {
       <ContainerLarge>
         <YStack
           fullscreen
-          x={100}
+          x={800}
           y={-100}
-          zi={-1}
+          zi={2}
           pe="none"
-          scale={4}
+          scale={3}
           o={0.1}
-          rotate="70deg"
+          rotate="90deg"
           scaleY={-1}
+          scaleX={-1}
           style={{ filter: 'blur(3px)' }}
         >
           <svg
@@ -244,7 +247,6 @@ l-23 50 56 123 c95 212 118 287 127 423 5 66 18 185 30 263 12 79 20 146 17
           <YStack maw="55%" zi={100} jc="space-between" f={10} ai="flex-start" gap="$6">
             <>
               <H1
-                className="text-3d"
                 ff="$cherryBomb"
                 color="$color10"
                 maw="100%"
@@ -255,11 +257,12 @@ l-23 50 56 123 c95 212 118 287 127 423 5 66 18 185 30 263 12 79 20 146 17
                 fos={190}
                 ussel="none"
                 pe="none"
-                style={
-                  {
-                    // mixBlendMode: 'darken',
-                  }
-                }
+                style={{
+                  textShadow: `1px 1px 1px var(--color8), 1px 2px 1px var(--color6),
+                  1px 3px 1px var(--color6), 1px 4px 1px var(--color6), 1px 5px 1px var(--color6),
+                  1px 6px 1px var(--color4), 1px 7px 1px var(--color4), 1px 8px 1px var(--color4),
+                  1px 9px 1px var(--color2), 1px 10px 1px var(--color2), 1px 18px 400px var(--shadowColor)`,
+                }}
               >
                 BENTO&nbsp;
               </H1>
@@ -311,7 +314,9 @@ l-23 50 56 123 c95 212 118 287 127 423 5 66 18 185 30 263 12 79 20 146 17
                   className="clip-text mask-gradient-down"
                   // @ts-ignore
                   style={{
-                    backgroundImage: 'linear-gradient(var(--color4), var(--color8))',
+                    backgroundImage: 'linear-gradient(var(--color7), var(--color8))',
+                    textShadow: '0 5px 10px rgba(255,255,255,0.3)',
+                    mixBlendMode: 'hard-light',
                   }}
                 >
                   BENTO&nbsp;
@@ -319,140 +324,140 @@ l-23 50 56 123 c95 212 118 287 127 423 5 66 18 185 30 263 12 79 20 146 17
               </ThemeTint>
             </>
 
-            <YStack gap="$4">
+            <YStack gap="$6">
               <>
-                <XStack gap="$4">
+                <XStack gap="$6">
                   <Stack bc="$color7" w={10} br="$10" my={10} />
 
-                  <Paragraph
-                    ff="$munro"
-                    size="$9"
-                    ls={1}
-                    fos={30}
-                    lh={40}
-                    color="$color11"
-                  >
+                  <Paragraph ff="$munro" size="$9" fos={30} lh={50} color="$color11">
                     Boost your React Native development with a suite of copy-paste
                     primitives.
                   </Paragraph>
                 </XStack>
               </>
 
-              <XStack jc="space-between" ai="center" mx="$6">
-                <Paragraph color="$color12" size="$6">
+              <XStack jc="space-between" ai="center" ml="$8">
+                <Paragraph color="$color12" size="$5">
                   $200 one-time Purchase
                 </Paragraph>
 
                 <Circle size={6} bc="$color12" />
 
-                <Paragraph color="$color12" size="$6">
+                <Paragraph color="$color12" size="$5">
                   $10/mo for early releases
                 </Paragraph>
               </XStack>
             </YStack>
 
-            <XStack gap="$3">
-              <>
-                <Button
-                  iconAfter={ShoppingCart}
-                  fontFamily="$mono"
-                  size="$6"
-                  fontSize={22}
-                  bg="$color8"
-                  color="$color12"
-                  fontWeight="600"
-                  scaleSpace={1}
-                  scaleIcon={1.4}
-                  hoverStyle={{
-                    bg: '$color9',
-                    boc: '$color9',
-                  }}
-                  pressStyle={{
-                    bg: '$color6',
-                  }}
-                  onPress={() => {
-                    store.showPurchase = true
-                  }}
-                >
-                  $200
-                </Button>
-              </>
-            </XStack>
+            <Button
+              iconAfter={ShoppingCart}
+              fontFamily="$mono"
+              size="$6"
+              fontSize={22}
+              bg="$color8"
+              color="$color12"
+              fontWeight="600"
+              scaleSpace={1}
+              scaleIcon={1.4}
+              als="flex-end"
+              hoverStyle={{
+                bg: '$color9',
+                boc: '$color9',
+              }}
+              pressStyle={{
+                bg: '$color6',
+              }}
+              onPress={() => {
+                store.showPurchase = true
+              }}
+            >
+              $200
+            </Button>
           </YStack>
 
-          <XStack
-            maw={800}
-            fw="wrap"
-            zi={100}
-            gap="$4"
+          <YStack
             mr={-400}
-            mt={-100}
-            mah={300}
-            transformOrigin="left top"
-            als="center"
-            scale={0.66}
+            maw={840}
+            mt={0}
+            pl="$4"
+            x={20}
+            mb={-300}
+            y={-20}
+            style={{
+              maskImage: `linear-gradient(rgba(0, 0, 0, 1) 80%, transparent)`,
+            }}
           >
-            <ThemeTint>
-              <Card elevate>
-                <ButtonDemo />
-              </Card>
-            </ThemeTint>
-            <ThemeTintAlt>
-              <Card elevate>
-                <InputsDemo />
-              </Card>
-            </ThemeTintAlt>
-            <ThemeTintAlt offset={2}>
-              <Card p="$4" elevate>
-                <SelectDemo />
-              </Card>
-            </ThemeTintAlt>
-            <ThemeTintAlt offset={3}>
-              <Card elevate>
-                <ButtonDemo />
-              </Card>
-            </ThemeTintAlt>
-            <ThemeTintAlt offset={4}>
-              <Card elevate>
-                <InputsDemo />
-              </Card>
-            </ThemeTintAlt>
-            <ThemeTintAlt offset={5}>
-              <Card p="$4" elevate>
-                <SelectDemo />
-              </Card>
-            </ThemeTintAlt>
-            <ThemeTint>
-              <Card elevate>
-                <ButtonDemo />
-              </Card>
-            </ThemeTint>
-            <ThemeTintAlt>
-              <Card elevate>
-                <InputsDemo />
-              </Card>
-            </ThemeTintAlt>
-            <ThemeTintAlt offset={2}>
-              <Card p="$4" elevate>
-                <SelectDemo />
-              </Card>
-            </ThemeTintAlt>
-            <ThemeTintAlt offset={3}>
-              <Card elevate>
-                <ButtonDemo />
-              </Card>
-            </ThemeTintAlt>
-            <ThemeTintAlt offset={4}>
-              <Card elevate>
-                <InputsDemo />
-              </Card>
-            </ThemeTintAlt>
-            <ThemeTintAlt offset={5}>
-              <Card p="$4" elevate>
-                <SelectDemo />
-              </Card>
-            </ThemeTintAlt>
-          </XStack>
+            <XStack
+              fw="wrap"
+              zi={1}
+              gap="$4"
+              mah={300}
+              transformOrigin="left top"
+              als="center"
+              scale={0.75}
+            >
+              <ThemeTint>
+                <Card elevate>
+                  <ButtonDemo />
+                </Card>
+              </ThemeTint>
+              <ThemeTintAlt>
+                <Card elevate>
+                  <InputsDemo />
+                </Card>
+              </ThemeTintAlt>
+              <ThemeTintAlt offset={2}>
+                <Card p="$4" elevate>
+                  <SelectDemo />
+                </Card>
+              </ThemeTintAlt>
+              <ThemeTintAlt offset={3}>
+                <Card elevate>
+                  <ButtonDemo />
+                </Card>
+              </ThemeTintAlt>
+              <ThemeTintAlt offset={4}>
+                <Card elevate>
+                  <InputsDemo />
+                </Card>
+              </ThemeTintAlt>
+              <ThemeTintAlt offset={5}>
+                <Card p="$4" elevate>
+                  <SelectDemo />
+                </Card>
+              </ThemeTintAlt>
+              <ThemeTint>
+                <Card elevate>
+                  <ButtonDemo />
+                </Card>
+              </ThemeTint>
+              <ThemeTintAlt>
+                <Card elevate>
+                  <InputsDemo />
+                </Card>
+              </ThemeTintAlt>
+              <ThemeTintAlt offset={2}>
+                <Card p="$4" elevate>
+                  <SelectDemo />
+                </Card>
+              </ThemeTintAlt>
+              <ThemeTintAlt offset={3}>
+                <Card elevate>
+                  <ButtonDemo />
+                </Card>
+              </ThemeTintAlt>
+              <ThemeTintAlt offset={4}>
+                <Card elevate>
+                  <InputsDemo />
+                </Card>
+              </ThemeTintAlt>
+              <ThemeTintAlt offset={5}>
+                <Card p="$4" elevate>
+                  <SelectDemo />
+                </Card>
+              </ThemeTintAlt>
+            </XStack>
+          </YStack>
         </XStack>
       </ContainerLarge>
     </YStack>
@@ -461,8 +466,19 @@ l-23 50 56 123 c95 212 118 287 127 423 5 66 18 185 30 263 12 79 20 146 17
 
 const Body = () => {
   return (
-    <ContainerLarge gap="$2">
-      {/* <H2>Sections</H2>
+    <YStack
+      pos="relative"
+      py="$4"
+      // style={{
+      //   backdropFilter: 'blur(100px)',
+      //   boxShadow: `0 0 200px rgba(0,0,0,0.2), 0 0 100px rgba(0,0,0,0.2), 0 0 20px rgba(0,0,0,0.125), 0 0 10px rgba(0,0,0,0.125)`,
+      // }}
+      // py="$10"
+    >
+      {/* <YStack fullscreen bg="$color12" o={0.1} /> */}
+
+      <ContainerLarge gap="$2">
+        {/* <H2>Sections</H2>
       <Paragraph size="$6" color={'$gray11'}>
         Components are divided into sections and each section has multiple groups of
         related components.
@@ -470,30 +486,33 @@ const Body = () => {
 
       <Spacer size="$8" /> */}
 
-      <YStack gap="$12">
-        {sections.listingData.sections.map(({ sectionName, parts }) => {
-          return (
-            <YStack gap="$4" jc={'space-between'}>
-              <H2 fontSize={'$8'} f={2}>
-                {`${sectionName[0].toUpperCase()}${sectionName.slice(1)}`}
-              </H2>
-              <XStack gap={'$6'} f={4} fw="wrap" fs={1}>
-                {parts.map(({ name: partsName, numberOfComponents, route, preview }) => (
-                  <ComponentGroupsBanner
-                    path={route}
-                    name={partsName}
-                    numberOfComponents={numberOfComponents}
-                    preview={preview}
-                  />
-                ))}
-              </XStack>
-            </YStack>
-          )
-        })}
-      </YStack>
+        <YStack gap="$12" px="$6">
+          {sections.listingData.sections.map(({ sectionName, parts }) => {
+            return (
+              <YStack gap="$6" jc={'space-between'}>
+                <H2 fontSize="$9" f={2}>
+                  {`${sectionName[0].toUpperCase()}${sectionName.slice(1)}`}
+                </H2>
+                <XStack gap={'$6'} f={4} fw="wrap" fs={1}>
+                  {parts.map(
+                    ({ name: partsName, numberOfComponents, route, preview }) => (
+                      <ComponentGroupsBanner
+                        path={route}
+                        name={partsName}
+                        numberOfComponents={numberOfComponents}
+                        preview={preview}
+                      />
+                    )
+                  )}
+                </XStack>
+              </YStack>
+            )
+          })}
+        </YStack>
 
-      <Spacer size="$12" />
-    </ContainerLarge>
+        <Spacer size="$12" />
+      </ContainerLarge>
+    </YStack>
   )
 }
 
@@ -1029,8 +1048,8 @@ function ComponentGroupsBanner({
         animation="quicker"
         maw="calc(34% - 32px)"
         ov="hidden"
-        elevation="$3"
-        bc="$background"
+        elevation="$6"
+        bc="$color2"
         mih={300}
         br="$9"
         accessible
@@ -1041,7 +1060,7 @@ function ComponentGroupsBanner({
         hoverStyle={{
           y: -2,
           bc: '$color3',
-          outlineWidth: 3,
+          outlineWidth: 0.5,
           outlineStyle: 'solid',
           outlineColor: '$color9',
         }}
@@ -1055,7 +1074,7 @@ function ComponentGroupsBanner({
           fullscreen
           className="bg-grid mask-gradient-down"
           style={{ backgroundPosition: 'top left' }}
-          o={0.075}
+          o={0.085}
         />
         <YStack fullscreen ai="center" jc="center">
           <Preview />
@@ -1064,7 +1083,7 @@ function ComponentGroupsBanner({
           <H4 fontWeight={'normal'} fontSize="$8">
             {name}
           </H4>
-          <H5 theme="alt2" fontWeight={'normal'} fontSize={'$2'}>
+          <H5 theme="alt1" fontWeight={'normal'} fontSize={'$2'}>
             {numberOfComponents} components
           </H5>
         </YStack>
