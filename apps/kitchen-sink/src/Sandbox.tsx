@@ -3,7 +3,52 @@
 
 import { useState } from 'react'
 import { View } from 'react-native'
-import { AnimatePresence, Button, Text, Square, useStyle, styled, Stack } from 'tamagui'
+import {
+  AnimatePresence,
+  Button,
+  Text,
+  Square,
+  useStyle,
+  styled,
+  Stack,
+  Sheet,
+} from 'tamagui'
+
+export const Sandbox = () => {
+  const [open, setOpen] = useState(true)
+
+  return (
+    <View style={{ width: '100%', height: '100%', padding: 50 }}>
+      <>
+        {/* <AnimatedNumbers /> */}
+
+        <Sheet
+          modal
+          open={open}
+          onOpenChange={setOpen}
+          animation="lazy"
+          dismissOnOverlayPress={false}
+          dismissOnSnapToBottom={false}
+        >
+          <Sheet.Overlay
+            animation="lazy"
+            backgroundColor="transparent"
+            height="100%"
+            style={{ backdropFilter: 'blur(6px)' }}
+          />
+          <Sheet.Frame
+            backgroundColor="#fff"
+            flex={1}
+            justifyContent="flex-end"
+            padding="$4"
+          >
+            <Square size={100} bc="red" />
+          </Sheet.Frame>
+        </Sheet>
+      </>
+    </View>
+  )
+}
 
 const AnimatedNumbers = () => {
   const [numbers, setNumbers] = useState(10_000)
@@ -43,15 +88,3 @@ const AnimatedNumber = styled(Text, {
     },
   } as const,
 })
-
-export const Sandbox = () => {
-  const [disabled, setDisabled] = useState(true)
-
-  return (
-    <View style={{ width: '100%', height: '100%', padding: 50 }}>
-      <>
-        <AnimatedNumbers />
-      </>
-    </View>
-  )
-}

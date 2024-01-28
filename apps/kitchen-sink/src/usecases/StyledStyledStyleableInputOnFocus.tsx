@@ -19,7 +19,9 @@ const StyledInput = styled(Input, {
 
 const AnotherStyled = styled(StyledInput)
 
-const MyComponent = AnotherStyled.styleable((props) => <StyledInput {...props} />)
+const MyComponent = AnotherStyled.styleable((props, ref) => (
+  <StyledInput ref={ref} {...props} />
+))
 
 export function StyledStyledStyleableInputOnFocus() {
   const [onFocus, setOnFocus] = useState(false)

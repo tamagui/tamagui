@@ -364,7 +364,7 @@ export const getSplitStyles: StyleSplitter = (
       continue
     }
 
-    if (keyInit[0] === '_' && keyInit.startsWith('_style') && isObj(valInit)) {
+    if (keyInit.startsWith('_style') && isObj(valInit)) {
       Object.assign(styleState.style, valInit)
       continue
     }
@@ -1043,16 +1043,12 @@ export const getSplitStyles: StyleSplitter = (
   // also it makes sense that props.style is basically the last to apply,
   // at least more sense than "it applies at the position its defined in the prop loop"
   if (props.style) {
-    if (isHOC) {
-      viewProps.style = props.style
-    } else {
-      for (const style of [].concat(props.style)) {
-        if (style) {
-          if (style['$$css']) {
-            Object.assign(styleState.classNames, style)
-          } else {
-            Object.assign(styleState.style, style)
-          }
+    for (const style of [].concat(props.style)) {
+      if (style) {
+        if (style['$$css']) {
+          Object.assign(styleState.classNames, style)
+        } else {
+          Object.assign(styleState.style, style)
         }
       }
     }
