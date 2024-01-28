@@ -857,3 +857,17 @@ textarea {
   text-decoration-color: var(--color7);
   text-underline-offset: 6px;
 }
+
+@keyframes breeze {
+  0% {
+    transform: translateX(1300px) translateY(-100px) scale(3.5) rotate(90deg) scaleX(-1) scaleY(-1);
+  }
+
+  100% {
+    transform: translateX(1350px) translateY(0px) scale(3.5) rotate(90deg) scaleX(-1) scaleY(-1);
+  }
+}
+
+.shadow-breeze {
+  animation: breeze 50s alternate-reverse infinite forwards;
+}

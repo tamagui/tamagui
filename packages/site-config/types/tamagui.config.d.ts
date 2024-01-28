@@ -86,20 +86,8 @@ export declare const config: {
             color10: string;
             color11: string;
             color12: string;
-            backgroundHover: string;
-            backgroundFocus: string;
-            backgroundPress: string;
-            colorHover: string;
-            colorFocus: string;
-            colorPress: string;
-            borderHover: string;
-            borderFocus: string;
-            borderPress: string;
-            shadowHover: string;
-            shadowFocus: string;
-            shadowPress: string;
-            outlineColor: string;
-            backgroundTransparent: string;
+            color: string;
+            background: string;
         };
         dark_tan: {
             color1: string;
@@ -114,20 +102,8 @@ export declare const config: {
             color10: string;
             color11: string;
             color12: string;
-            backgroundHover: string;
-            backgroundFocus: string;
-            backgroundPress: string;
-            colorHover: string;
-            colorFocus: string;
-            colorPress: string;
-            borderHover: string;
-            borderFocus: string;
-            borderPress: string;
-            shadowHover: string;
-            shadowFocus: string;
-            shadowPress: string;
-            outlineColor: string;
-            backgroundTransparent: string;
+            color: string;
+            background: string;
         };
         light_blue: {
             background: string;

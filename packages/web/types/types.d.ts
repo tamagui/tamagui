@@ -757,7 +757,7 @@ export type StaticComponentObject<Props, Ref, NonStyledProps, BaseStyles extends
 };
 export type TamaguiComponentExpectingVariants<Props = {}, Variants extends Object = {}> = TamaguiComponent<Props, any, any, any, Variants>;
 export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>> & {
-    config: TamaguiInternalConfig;
+    config?: TamaguiInternalConfig;
     disableInjectCSS?: boolean;
     children?: ReactNode;
 };

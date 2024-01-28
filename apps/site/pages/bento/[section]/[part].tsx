@@ -1,5 +1,9 @@
-import { LinearGradient } from 'tamagui/linear-gradient'
 import * as sections from '@tamagui/bento'
+
+import { ThemeTint } from '@tamagui/logo'
+import { Anchor, H1, Spacer, XStack, YStack } from 'tamagui'
+import { BentoPageFrame } from '../../../components/BentoPageFrame'
+
 import type { GetStaticPaths } from 'next'
 import { useRouter } from 'next/router'
 
@@ -16,18 +20,7 @@ export default function page({ codes }) {
   const Comp = sections[params.section][params.part]
 
   return (
-    <>
-      <ThemeTintAlt>
-        <LinearGradient
-          // colors={[`$color8`, `transparent`]}
-          colors={[`transparent`, `$color1`]}
-          start={[0, 0.5]}
-          end={[0, 0]}
-          fullscreen
-          mah={1000}
-          y={-100}
-        />
-      </ThemeTintAlt>
+    <BentoPageFrame>
       <ContainerLarge>
         <DetailHeader>Test header</DetailHeader>
         <Spacer />
@@ -36,7 +29,7 @@ export default function page({ codes }) {
           <Comp codes={codes} />
         </YStack>
       </ContainerLarge>
-    </>
+    </BentoPageFrame>
   )
 }
 
@@ -57,9 +50,6 @@ export const getStaticProps = (ctx) => {
     props: getCodes(),
   }
 }
-
-import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
-import { Anchor, H1, Spacer, XStack, YStack } from 'tamagui'
 
 export const DetailHeader = (props: { children: string }) => {
   return (

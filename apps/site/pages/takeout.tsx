@@ -104,10 +104,9 @@ export default function TakeoutPage({
         />
         <Head>
           <LoadCherryBomb />
-          <LoadCherryBomb />
           <LoadMunro />
           <script src="https://cdn.paritydeals.com/banner.js" />
-          <script
+          {/* <script
             async
             src="https://cdn.tolt.io/tolt.js"
             data-tolt="df04d39c-a409-4bbf-b68e-2fc0a34cd5a6"
@@ -124,7 +123,7 @@ export default function TakeoutPage({
   }
 `,
             }}
-          />
+          /> */}
         </Head>
       </>
 
