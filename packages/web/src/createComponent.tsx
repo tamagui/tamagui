@@ -925,6 +925,8 @@ export function createComponent<
         onPress ||
         onPressOut ||
         onPressIn ||
+        onMouseDown ||
+        onMouseUp ||
         onLongPress ||
         onClick
     )
