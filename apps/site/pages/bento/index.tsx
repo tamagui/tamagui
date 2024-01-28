@@ -6,7 +6,7 @@ import { ButtonDemo, InputsDemo, SelectDemo } from '@tamagui/demos'
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { CheckCircle, ShoppingCart, X, XCircle } from '@tamagui/lucide-icons'
 import { useBentoStore } from 'hooks/useBentoStore'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import type Stripe from 'stripe'
 import type { ButtonProps } from 'tamagui'
 import {
@@ -35,6 +35,7 @@ import {
   Unspaced,
   XStack,
   YStack,
+  useTheme,
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 import Image from 'next/image'
@@ -44,6 +45,18 @@ import Image from 'next/image'
 import { ContainerLarge } from '../../components/Container'
 import { getDefaultLayout } from '../../lib/getDefaultLayout'
 
+const ThemeTintEffect = () => {
+  const theme = useTheme()
+  const color = theme.color3.val
+
+  useEffect(() => {
+    document.querySelector('#theme-color')?.setAttribute('content', color)
+    document.body.style.backgroundColor = color
+  }, [color])
+
+  return null
+}
+
 export default function ProPage() {
   // const store = useBentoStore()
 
@@ -52,18 +65,17 @@ export default function ProPage() {
   }
 
   return (
-    <YStack theme="tan" bg="$color6" y={-100} pt={100}>
+    <YStack theme="tan" bg="$color6" y={-100} pt={100} pb={100}>
+      <ThemeTintEffect />
+
       <ThemeTintAlt>
         <LinearGradient
           // colors={[`$color8`, `transparent`]}
-          colors={[`$color10`, `$color11`]}
+          colors={[`transparent`, `$color9`]}
           start={[0, 1]}
           end={[0.1, 0.95]}
           fullscreen
           o={0.25}
-          style={{
-            mixBlendMode: 'color-burn',
-          }}
         />
       </ThemeTintAlt>
 
@@ -261,7 +273,7 @@ l-23 50 56 123 c95 212 118 287 127 423 5 66 18 185 30 263 12 79 20 146 17
                   textShadow: `1px 1px 1px var(--color8), 1px 2px 1px var(--color6),
                   1px 3px 1px var(--color6), 1px 4px 1px var(--color6), 1px 5px 1px var(--color6),
                   1px 6px 1px var(--color4), 1px 7px 1px var(--color4), 1px 8px 1px var(--color4),
-                  1px 9px 1px var(--color2), 1px 10px 1px var(--color2), 1px 18px 400px var(--shadowColor)`,
+                  1px 9px 1px var(--color3), 1px 10px 1px var(--color3), 1px 18px 400px var(--shadowColor)`,
                 }}
               >
                 BENTO&nbsp;
@@ -286,7 +298,7 @@ l-23 50 56 123 c95 212 118 287 127 423 5 66 18 185 30 263 12 79 20 146 17
                   className="clip-text mask-gradient-up"
                   // @ts-ignore
                   style={{
-                    mixBlendMode: 'hard-light ',
+                    mixBlendMode: 'hard-light',
                     backgroundImage: 'linear-gradient(var(--color2), var(--color10))',
                   }}
                 >
@@ -310,7 +322,6 @@ l-23 50 56 123 c95 212 118 287 127 423 5 66 18 185 30 263 12 79 20 146 17
                   fos={190}
                   ussel="none"
                   pe="none"
-                  o={0.5}
                   className="clip-text mask-gradient-down"
                   // @ts-ignore
                   style={{
@@ -342,6 +353,8 @@ l-23 50 56 123 c95 212 118 287 127 423 5 66 18 185 30 263 12 79 20 146 17
                 </Paragraph>
 
                 <Circle size={6} bc="$color12" />
+                <Circle size={6} bc="$color12" />
+                <Circle size={6} bc="$color12" />
 
                 <Paragraph color="$color12" size="$5">
                   $10/mo for early releases
@@ -349,30 +362,33 @@ l-23 50 56 123 c95 212 118 287 127 423 5 66 18 185 30 263 12 79 20 146 17
               </XStack>
             </YStack>
 
-            <Button
-              iconAfter={ShoppingCart}
-              fontFamily="$mono"
-              size="$6"
-              fontSize={22}
-              bg="$color8"
-              color="$color12"
-              fontWeight="600"
-              scaleSpace={1}
-              scaleIcon={1.4}
-              als="flex-end"
-              hoverStyle={{
-                bg: '$color9',
-                boc: '$color9',
-              }}
-              pressStyle={{
-                bg: '$color6',
-              }}
-              onPress={() => {
-                store.showPurchase = true
-              }}
-            >
-              $200
-            </Button>
+            <Theme name="green">
+              <Button
+                theme="green"
+                iconAfter={ShoppingCart}
+                fontFamily="$mono"
+                size="$5"
+                fontSize={22}
+                bg="$color8"
+                color="$color12"
+                fontWeight="600"
+                scaleSpace={1}
+                scaleIcon={1.4}
+                als="flex-end"
+                hoverStyle={{
+                  bg: '$color9',
+                  boc: '$color9',
+                }}
+                pressStyle={{
+                  bg: '$color6',
+                }}
+                onPress={() => {
+                  store.showPurchase = true
+                }}
+              >
+                $200
+              </Button>
+            </Theme>
           </YStack>
 
           <YStack

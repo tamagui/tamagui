@@ -185,8 +185,8 @@ export const HeaderLinks = (props: HeaderProps) => {
   )
 }
 
-const TakeoutIcon = () => (
-  <svg width="24px" height="24px" viewBox="0 0 128 128">
+const TakeoutIcon = React.forwardRef((props, ref) => (
+  <svg width="24px" height="24px" viewBox="0 0 128 128" ref={ref as any} {...props}>
     <defs>
       <linearGradient
         x1="67.1763271%"
@@ -311,7 +311,7 @@ const TakeoutIcon = () => (
       </g>
     </g>
   </svg>
-)
+))
 
 const TakeoutHeaderLink = ({ forceShowAllLinks }: HeaderProps) => {
   const router = useRouter()

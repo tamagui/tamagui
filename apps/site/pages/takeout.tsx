@@ -36,7 +36,7 @@ import type {
   TabsTabProps,
   ThemeName,
   XStackProps,
-  YStackProps
+  YStackProps,
 } from 'tamagui'
 import {
   AnimatePresence,
@@ -68,7 +68,7 @@ import {
   isClient,
   styled,
   useMedia,
-  useTheme
+  useTheme,
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 
@@ -630,9 +630,11 @@ export default function TakeoutPage({
 
                 <Spacer size="$10" />
 
-                <MunroP size="$9" $sm={{ size: '$8' }} color="$yellow10">
-                  We hope you enjoy.
-                </MunroP>
+                <ThemeTintAlt>
+                  <MunroP size="$9" $sm={{ size: '$8' }} color="$color6" pe="none">
+                    We hope you enjoy.
+                  </MunroP>
+                </ThemeTintAlt>
               </YStack>
             </XStack>
 
@@ -1106,7 +1108,7 @@ const Point = ({
         <Check size={16} color="$color10" />
       </YStack>
       <YStack f={1}>
-        <Paragraph wordWrap="break-word" size={size}>
+        <Paragraph color="#fff" wordWrap="break-word" size={size}>
           {children}
         </Paragraph>
         {!!subtitle && (
@@ -1116,7 +1118,7 @@ const Point = ({
                 shift: -2,
               }) as any
             }
-            theme="alt2"
+            color="#fff"
             o={0.5}
           >
             {subtitle}
@@ -1392,7 +1394,8 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                       <YStack width="80%">
                         <Paragraph size="$6">License Seats</Paragraph>
                         <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
-                          Number of people that are allowed to develop on it
+                          Number of people that are allowed
+                          to&nbsp;develop&nbsp;on&nbsp;it
                         </Paragraph>
                       </YStack>
                       <XStack f={1} ai="center" gap="$2" jc="center">
@@ -1449,7 +1452,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                       gap="$3"
                     >
                       <Check size={30} color="$color9" />
-                      <MunroP size="$7" color="$color11" ls={0.75}>
+                      <MunroP size="$7" color="$color11">
                         Every plan includes the same assets
                       </MunroP>
                     </XStack>
@@ -1543,7 +1546,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
 
                     <YStack pb="$8" px="$4" space>
                       <NextLink
-                        href={`api/checkout?${(function () {
+                        href={`api/checkout?${(() => {
                           const params = new URLSearchParams({
                             // product_id: products.id,
                             // price_id: selectedPriceId,
@@ -1708,15 +1711,17 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
         >
           <YStack zi={-1} fullscreen bc="$color5" o={0.5} />
 
-          <LinearGradient
-            pos="absolute"
-            b={0}
-            l={0}
-            r={0}
-            h={200}
-            colors={['$backgroundTransparent', 'rgba(0,0,0,0.5)']}
-            zi={100}
-          />
+          <ThemeTintAlt>
+            <LinearGradient
+              pos="absolute"
+              b={0}
+              l={0}
+              r={0}
+              h={200}
+              colors={['$backgroundTransparent', '$color8']}
+              zi={100}
+            />
+          </ThemeTintAlt>
 
           <YStack pos="absolute" b="$4" l="$4" r="$4" zi={100}>
             {/* cant use buttonlink it breaks scroll on press if not enabled, conditionally use a link */}
@@ -1732,7 +1737,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
 
           <ScrollView p="$6" disabled={media.md} showsVerticalScrollIndicator={false}>
             <YStack space="$2">
-              <MunroP size="$3" o={0.1} mt={-5} mb={-5}>
+              <MunroP size="$3" o={0.1} mt={-15} mb={-5}>
                 Drop 0001
               </MunroP>
 
@@ -1832,6 +1837,7 @@ function PurchaseButton(props: ButtonProps) {
         size="$6"
         backgroundColor="$color8"
         borderWidth={2}
+        color="#fff"
         borderColor="$color10"
         hoverStyle={{
           backgroundColor: '$color9',
@@ -1919,7 +1925,7 @@ const TAKEOUT = ({ fontSize = 450, lineHeight = fontSize * 0.64, ...props }) => 
 TakeoutPage.getLayout = getDefaultLayout
 
 const MunroP = styled(Paragraph, {
-  className: 'pixelate',
+  // className: 'pixelate',
   fontFamily: '$munro',
 })
 
@@ -2297,6 +2303,12 @@ const FeatureIcon = ({
   useEffect(() => {
     if (store.showPurchase) return
     if (!keepCycling) return
+    ;(document.querySelector(`.logo-words`) as HTMLDivElement)?.addEventListener(
+      'mouseenter',
+      () => {
+        keepCycling = false
+      }
+    )
 
     const id = setTimeout(() => {
       Tint.setNextTint()
@@ -2316,7 +2328,7 @@ const FeatureIcon = ({
               keepCycling = false
               Tint.setTintIndex(themeIndex)
             }}
-            backgroundColor={active ? '$color9' : '$color3'}
+            backgroundColor={active ? '$color9' : '$color10'}
           >
             <Image className="pixelate" src={icon} alt="Icon" height={18} width={18} />
           </IconFrame>

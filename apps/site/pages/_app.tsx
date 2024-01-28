@@ -39,19 +39,19 @@ export default function App(props: AppProps) {
   const router = useRouter()
   const themeSetting = useThemeSetting()!
 
-  const isTakeout = router.pathname.startsWith('/takeout')
+  // const isTakeout = router.pathname.startsWith('/takeout')
 
-  useEffect(() => {
-    if (isTakeout && theme !== 'dark') {
-      const prev = theme
-      themeSetting.set('dark')
-      setTheme('dark')
-      return () => {
-        setTheme(prev)
-        themeSetting.set(prev)
-      }
-    }
-  }, [isTakeout])
+  // useEffect(() => {
+  //   if (isTakeout && theme !== 'dark') {
+  //     const prev = theme
+  //     themeSetting.set('dark')
+  //     setTheme('dark')
+  //     return () => {
+  //       setTheme(prev)
+  //       themeSetting.set(prev)
+  //     }
+  //   }
+  // }, [isTakeout])
 
   const inner = useMemo(
     () => <AppContents {...props} theme={theme} setTheme={setTheme} />,
@@ -62,11 +62,11 @@ export default function App(props: AppProps) {
     <>
       <NextThemeProvider
         onChangeTheme={setTheme as any}
-        {...(isTakeout && {
-          forcedTheme: 'dark',
-          enableSystem: false,
-          defaultTheme: 'dark',
-        })}
+        // {...(isTakeout && {
+        //   forcedTheme: 'dark',
+        //   enableSystem: false,
+        //   defaultTheme: 'dark',
+        // })}
       >
         {inner}
       </NextThemeProvider>

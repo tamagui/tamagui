@@ -1,6 +1,6 @@
-import { ThemeTintAlt } from "@tamagui/logo";
-import { Menu } from "@tamagui/lucide-icons";
-import * as React from "react";
+import { ThemeTintAlt } from '@tamagui/logo'
+import { Menu } from '@tamagui/lucide-icons'
+import * as React from 'react'
 import {
   Adapt,
   Button,
@@ -12,22 +12,22 @@ import {
   XStack,
   YStack,
   isTouchable,
-} from "tamagui";
-import { Avatar } from "tamagui";
+} from 'tamagui'
+import { Avatar } from 'tamagui'
 
-import { useUser } from "../hooks/useUser";
-import { getDefaultAvatarImage } from "../lib/avatar";
-import { DocsMenuContents } from "./DocsMenuContents";
-import { HeaderLinks } from "./HeaderLinks";
-import { useDocsMenu } from "./useDocsMenu";
+import { useUser } from '../hooks/useUser'
+import { getDefaultAvatarImage } from '../lib/avatar'
+import { DocsMenuContents } from './DocsMenuContents'
+import { HeaderLinks } from './HeaderLinks'
+import { useDocsMenu } from './useDocsMenu'
 
 export const HeaderMenu = React.memo(function HeaderMenu() {
-  const { open, setOpen } = useDocsMenu();
+  const { open, setOpen } = useDocsMenu()
   const [state, setState] = React.useState({
-    via: undefined as "hover" | "press" | undefined,
+    via: undefined as 'hover' | 'press' | undefined,
     viaAt: Date.now(),
-  });
-  const userSwr = useUser();
+  })
+  const userSwr = useUser()
 
   return (
     <ThemeTintAlt>
@@ -40,11 +40,11 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
         }}
         open={open}
         onOpenChange={(next, via) => {
-          if (open && state.via === "press" && via === "hover") {
-            return;
+          if (open && state.via === 'press' && via === 'hover') {
+            return
           }
-          setState({ ...state, via, viaAt: Date.now() });
-          setOpen(next);
+          setState({ ...state, via, viaAt: Date.now() })
+          setOpen(next)
         }}
         size="$5"
         stayInFrame={{ padding: 20 }}
@@ -56,23 +56,30 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
             bc="transparent"
             noTextWrap
             br="$10"
+            bow={2}
             onPress={() => {
               if (isTouchable) {
-                setOpen(!open);
-                return;
+                setOpen(!open)
+                return
               }
-              if (open && state.via === "hover") {
-                setState({ ...state, via: "press", viaAt: Date.now() });
-                return;
+              if (open && state.via === 'hover') {
+                setState({ ...state, via: 'press', viaAt: Date.now() })
+                return
               }
               if (open) {
-                setOpen(false);
-                return;
+                setOpen(false)
+                return
               }
               // hover handles this
             }}
-            theme={open ? "alt1" : undefined}
+            theme={open ? 'alt1' : undefined}
             aria-label="Open the main menu"
+            hoverStyle={{
+              bg: 'transparent',
+              // @ts-ignore
+              boc: 'color-mix(in srgb, var(--color-8) 40%, transparent 60%)',
+              // boc: 'red',
+            }}
           >
             <SizableText ff="$silkscreen">Menu</SizableText>
 
@@ -88,7 +95,7 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
                         getDefaultAvatarImage(
                           userSwr.data?.userDetails?.full_name ||
                             userSwr.data?.session?.user?.email ||
-                            "User"
+                            'User'
                         ),
                     }}
                   />
@@ -107,7 +114,7 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
             dismissOnSnapToBottom
             animation="bouncy"
             animationConfig={{
-              type: "spring",
+              type: 'spring',
               damping: 25,
               mass: 1.2,
               stiffness: 200,
@@ -125,8 +132,8 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
         <HeaderMenuContent />
       </Popover>
     </ThemeTintAlt>
-  );
-});
+  )
+})
 
 const HeaderMenuContent = React.memo(function HeaderMenuContent() {
   return (
@@ -140,14 +147,14 @@ const HeaderMenuContent = React.memo(function HeaderMenuContent() {
       y={0}
       o={1}
       animation={[
-        "quicker",
+        'quicker',
         {
           opacity: {
             overshootClamping: true,
           },
         },
       ]}
-      animateOnly={["transform", "opacity"]}
+      animateOnly={['transform', 'opacity']}
       p={0}
       maxHeight="80vh"
       maxWidth={360}
@@ -158,10 +165,7 @@ const HeaderMenuContent = React.memo(function HeaderMenuContent() {
     >
       <Popover.Arrow size="$4" borderWidth={1} boc="$borderColor" />
 
-      <Popover.ScrollView
-        showsVerticalScrollIndicator={false}
-        style={{ flex: 1 }}
-      >
+      <Popover.ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
         <YStack aria-label="Home menu contents" miw={230} p="$3" ai="flex-end">
           <XStack fw="wrap" f={1} gap="$2">
             <HeaderLinks forceShowAllLinks />
@@ -173,5 +177,5 @@ const HeaderMenuContent = React.memo(function HeaderMenuContent() {
         </YStack>
       </Popover.ScrollView>
     </Popover.Content>
-  );
-});
+  )
+})
