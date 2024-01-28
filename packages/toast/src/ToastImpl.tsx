@@ -1,10 +1,9 @@
 import { useIsPresent } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
+import type { GetProps, TamaguiElement } from '@tamagui/core'
 import {
-  GetProps,
   Stack,
-  TamaguiElement,
   Theme,
   createStyledContext,
   styled,
@@ -12,26 +11,23 @@ import {
   useEvent,
   useThemeName,
 } from '@tamagui/core'
-import { Dismissable, DismissableProps } from '@tamagui/dismissable'
+import type { DismissableProps } from '@tamagui/dismissable'
+import { Dismissable } from '@tamagui/dismissable'
 import { composeEventHandlers } from '@tamagui/helpers'
 import { PortalItem } from '@tamagui/portal'
 import { ThemeableStack } from '@tamagui/stacks'
 import * as React from 'react'
-import {
+import type {
   Animated,
   GestureResponderEvent,
-  PanResponder,
   PanResponderGestureState,
 } from 'react-native'
+import { PanResponder } from 'react-native'
 
 import { TOAST_CONTEXT, TOAST_NAME } from './constants'
 import { ToastAnnounce } from './ToastAnnounce'
-import {
-  Collection,
-  ScopedProps,
-  SwipeDirection,
-  useToastProviderContext,
-} from './ToastProvider'
+import type { ScopedProps, SwipeDirection } from './ToastProvider'
+import { Collection, useToastProviderContext } from './ToastProvider'
 import { VIEWPORT_PAUSE, VIEWPORT_RESUME } from './ToastViewport'
 
 const ToastImplFrame = styled(ThemeableStack, {
@@ -44,7 +40,7 @@ const ToastImplFrame = styled(ThemeableStack, {
         focusStyle: {
           outlineStyle: 'solid',
           outlineWidth: 2,
-          outlineColor: '$borderColorHover',
+          outlineColor: '$outlineColor',
         },
         backgroundColor: '$color6',
         borderRadius: '$10',

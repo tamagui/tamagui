@@ -1,5 +1,5 @@
-import { ComputePositionReturn } from '@floating-ui/react-native'
-import { RefObject } from 'react'
+import type { ComputePositionReturn } from '@floating-ui/react-native'
+import type { RefObject } from 'react'
 
 export const autoUpdate = () => {}
 

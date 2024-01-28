@@ -146,6 +146,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                 contain="paint layout"
                 $gtMd={{
                   display: 'block',
+                  p: '$0.5',
                   pr: '$3',
                   mt: 108,
                   pb: '$18',

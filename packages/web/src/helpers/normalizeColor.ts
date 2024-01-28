@@ -7,20 +7,17 @@ export const normalizeColor = (color?: string | null, opacity?: number) => {
   if (color[0] === '$' || color.startsWith('var(')) {
     return color
   }
-  const colorProcessed = normalizeCSSColor(color)
-  if (colorProcessed != null) {
-    const { r, g, b, a } = rgba(colorProcessed)
-    const o = opacity ?? a ?? 1
-    const alpha = o.toFixed(2)
-    return `rgba(${r},${g},${b},${alpha})`
+  const rgba = getRgba(color)
+  if (rgba) {
+    const colors = `${rgba.r},${rgba.g},${rgba.b}`
+    return opacity === 1 ? `rgb(${colors})` : `rgba(${colors},${opacity ?? rgba.a ?? 1})`
   }
-  if (process.env.NODE_ENV === 'development') {
-    console.warn(`Unknown color value: ${color}`)
-  }
-  if (process.env.TAMAGUI_TARGET === 'native') {
-    // avoids errors
-    return
-  }
-  // on web pass it through could be a var or something
   return color
+}
+
+export const getRgba = (color: string) => {
+  const colorNum = normalizeCSSColor(color)
+  if (colorNum != null) {
+    return rgba(colorNum)
+  }
 }

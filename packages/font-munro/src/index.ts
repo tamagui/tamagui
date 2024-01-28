@@ -1,4 +1,5 @@
-import { GenericFont, createFont, isWeb } from '@tamagui/core'
+import type { GenericFont } from '@tamagui/core'
+import { createFont, isWeb } from '@tamagui/core'
 
 export const createMunroFont = <A extends GenericFont>(font: Partial<A> = {}): A => {
   return createFont({

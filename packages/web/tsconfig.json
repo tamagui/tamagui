@@ -2,8 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "composite": true,
-    "strict": true,
-    
+    "strict": true
   },
   "references": [
     {
@@ -11,6 +10,11 @@
     },
     {
       "path": "../use-force-update"
-    },
+    }
+  ],
+  "exclude": [
+    "types",
+    "dist",
+    "**/__tests__"
   ]
 }

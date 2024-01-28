@@ -1,8 +1,9 @@
+import type {
+  GetProps,
+  ButtonProps as TamaguiButtonProps} from 'tamagui';
 import {
   ButtonFrame,
   ButtonText,
-  GetProps,
-  ButtonProps as TamaguiButtonProps,
   styled,
   useButton,
 } from 'tamagui'

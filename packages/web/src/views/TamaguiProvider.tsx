@@ -16,7 +16,7 @@ export function TamaguiProvider({
 
   if (isClient) {
     // inject CSS if asked to (not SSR compliant)
-    // eslint-disable-next-line react-hooks/rules-of-hooks
+
     React.useLayoutEffect(() => {
       if (!config.disableSSR) {
         // for easier support of hidden-until-js mount animations

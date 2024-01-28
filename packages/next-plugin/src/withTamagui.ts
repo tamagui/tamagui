@@ -3,7 +3,8 @@ import path from 'path'
 import browserslist from 'browserslist'
 import { lazyPostCSS } from 'next/dist/build/webpack/config/blocks/css'
 import { getGlobalCssLoader } from 'next/dist/build/webpack/config/blocks/css/loaders'
-import { PluginOptions as LoaderPluginOptions, TamaguiPlugin } from 'tamagui-loader'
+import type { PluginOptions as LoaderPluginOptions } from 'tamagui-loader'
+import { TamaguiPlugin } from 'tamagui-loader'
 import webpack from 'webpack'
 
 export type WithTamaguiProps = LoaderPluginOptions & {

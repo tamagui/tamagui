@@ -73,10 +73,10 @@ const plugins = [
           const { StatsWriterPlugin } = require('webpack-stats-plugin')
           webpackConfig.plugins.push(
             new StatsWriterPlugin({
-              filename: 'stats.json',
-              stats: {
-                all: true,
-              },
+              // filename: 'stats.json',
+              // stats: {
+              //   all: false,
+              // },
             })
           )
         }

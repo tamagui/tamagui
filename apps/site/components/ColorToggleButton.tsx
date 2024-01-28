@@ -1,5 +1,6 @@
 import { useTint } from '@tamagui/logo'
-import { Button, ButtonProps, Circle, TooltipSimple } from 'tamagui'
+import type { ButtonProps} from 'tamagui';
+import { Button, Circle, TooltipSimple } from 'tamagui'
 
 export const ColorToggleButton = (props: ButtonProps) => {
   const { tint, setNextTint } = useTint()

@@ -1,4 +1,5 @@
-import { Square, SquareProps, ThemeName, XStack, YStack } from 'tamagui'
+import type { SquareProps, ThemeName } from 'tamagui'
+import { Square, XStack, YStack } from 'tamagui'
 
 export function ThemeBuilderDemo() {
   return (

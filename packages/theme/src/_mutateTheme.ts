@@ -169,6 +169,7 @@ function insertThemeCSS(themes: Record<string, PartialTheme>, batch: Batch = fal
       config,
       themeName,
       names: [themeName],
+      hasDarkLight: true,
       theme,
     })
 

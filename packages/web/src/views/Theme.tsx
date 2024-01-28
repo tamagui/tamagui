@@ -3,7 +3,8 @@ import React, { Children, cloneElement, forwardRef, isValidElement, useRef } fro
 
 import { variableToString } from '../createVariable'
 import { ThemeManagerIDContext } from '../helpers/ThemeManagerContext'
-import { ChangedThemeResponse, useChangeThemeEffect } from '../hooks/useTheme'
+import type { ChangedThemeResponse } from '../hooks/useTheme'
+import { useChangeThemeEffect } from '../hooks/useTheme'
 import type { ThemeProps } from '../types'
 import { ThemeDebug } from './ThemeDebug'
 

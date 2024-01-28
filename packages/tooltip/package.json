@@ -1,10 +1,10 @@
 {
   "name": "@tamagui/tooltip",
-  "version": "1.85.12",
+  "version": "1.89.0-1706360676826",
   "sideEffects": [
     "*.css"
   ],
-  "source": "src/index.ts",
+  "source": "src/index.tsx",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -32,26 +32,26 @@
     }
   },
   "dependencies": {
-    "@floating-ui/react": "^0.24.7",
-    "@tamagui/compose-refs": "1.85.12",
-    "@tamagui/core": "1.85.12",
-    "@tamagui/create-context": "1.85.12",
-    "@tamagui/floating": "1.85.12",
-    "@tamagui/get-token": "1.85.12",
-    "@tamagui/helpers": "1.85.12",
-    "@tamagui/polyfill-dev": "1.85.12",
-    "@tamagui/popover": "1.85.12",
-    "@tamagui/popper": "1.85.12",
-    "@tamagui/stacks": "1.85.12",
-    "@tamagui/text": "1.85.12",
-    "@tamagui/use-controllable-state": "1.85.12"
+    "@floating-ui/react": "^0.26.6",
+    "@tamagui/compose-refs": "1.89.0-1706360676826",
+    "@tamagui/core": "1.89.0-1706360676826",
+    "@tamagui/create-context": "1.89.0-1706360676826",
+    "@tamagui/floating": "1.89.0-1706360676826",
+    "@tamagui/get-token": "1.89.0-1706360676826",
+    "@tamagui/helpers": "1.89.0-1706360676826",
+    "@tamagui/polyfill-dev": "1.89.0-1706360676826",
+    "@tamagui/popover": "1.89.0-1706360676826",
+    "@tamagui/popper": "1.89.0-1706360676826",
+    "@tamagui/stacks": "1.89.0-1706360676826",
+    "@tamagui/text": "1.89.0-1706360676826",
+    "@tamagui/use-controllable-state": "1.89.0-1706360676826"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.85.12",
+    "@tamagui/build": "1.89.0-1706360676826",
     "react": "^18.2.0",
     "react-native": "^0.72.6"
   },

@@ -1,4 +1,4 @@
-import { MaskDefinitions, PaletteDefinitions, TemplateDefinitions, ThemeDefinitions } from '@tamagui/create-theme';
+import type { MaskDefinitions, PaletteDefinitions, TemplateDefinitions, ThemeDefinitions } from '@tamagui/create-theme';
 import type { Narrow } from '@tamagui/web';
 export type ThemeBuilderInternalState = {
     palettes?: PaletteDefinitions;

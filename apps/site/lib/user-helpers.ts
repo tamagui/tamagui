@@ -1,7 +1,7 @@
-import { Database } from '@lib/supabase-types'
+import type { Database } from '@lib/supabase-types'
 import { getArray, getSingle } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
-import { SupabaseClient } from '@supabase/supabase-js'
+import type { SupabaseClient } from '@supabase/supabase-js'
 import { tiersPriority } from 'protected/constants'
 
 export const getUserDetails = async (supabase: SupabaseClient<Database>) => {

@@ -1,4 +1,5 @@
-import { SizeTokens, getVariableValue, styled } from '@tamagui/core'
+import type { SizeTokens } from '@tamagui/core'
+import { getVariableValue, styled } from '@tamagui/core'
 import { getSize } from '@tamagui/get-token'
 import { ThemeableStack, YStack } from '@tamagui/stacks'
 
@@ -56,7 +57,7 @@ export const SwitchFrame = styled(YStack, {
         borderColor: '$background',
 
         focusStyle: {
-          outlineColor: '$borderColorFocus',
+          outlineColor: '$outlineColor',
           outlineStyle: 'solid',
           outlineWidth: 2,
         },

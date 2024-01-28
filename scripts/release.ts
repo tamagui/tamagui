@@ -26,9 +26,8 @@ const finish = process.argv.includes('--finish')
 
 const skipStarters = process.argv.includes('--skip-starters')
 const canary = process.argv.includes('--canary')
-const skipVersion =
-  finish || rePublish || process.argv.includes('--skip-version')
-const patch = process.argv.includes('--patch')
+const skipVersion = finish || rePublish || process.argv.includes('--skip-version')
+const shouldPatch = process.argv.includes('--patch')
 const dirty = process.argv.includes('--dirty')
 const skipPublish = process.argv.includes('--skip-publish')
 const skipTest =
@@ -48,12 +47,16 @@ const nextVersion = (() => {
     return curVersion
   }
 
-  const plusVersion = skipVersion ? 0 : 1
+  let plusVersion = skipVersion ? 0 : 1
   const patchAndCanary = curVersion.split('.')[2]
   const [patch, lastCanary] = patchAndCanary.split('-')
-  const patchVersion = patch ? +patch + plusVersion : 0
+  // if were publishing another canary no bump version
+  if (lastCanary && canary) {
+    plusVersion = 0
+  }
+  const patchVersion = shouldPatch ? +patch + plusVersion : 0
   const curMinor = +curVersion.split('.')[1] || 0
-  const minorVersion = curMinor + (patch || canary ? 0 : plusVersion)
+  const minorVersion = curMinor + (shouldPatch ? 0 : plusVersion)
   const next = `1.${minorVersion}.${patchVersion}`
 
   if (canary) {
@@ -81,10 +84,7 @@ async function run() {
     // ensure we are up to date
     // ensure we are on master
     if (!canary) {
-      if (
-        (await exec(`git rev-parse --abbrev-ref HEAD`)).stdout.trim() !==
-        'master'
-      ) {
+      if ((await exec(`git rev-parse --abbrev-ref HEAD`)).stdout.trim() !== 'master') {
         throw new Error(`Not on master`)
       }
       if (!dirty && !rePublish && !finish) {
@@ -114,7 +114,7 @@ async function run() {
               path: path.join(cwd, 'package.json'),
               directory: location,
             }
-          }),
+          })
       )
     ).filter((x) => !x.json['tamagui-publish-skip'])
 
@@ -132,7 +132,7 @@ async function run() {
 
     if (!finish) {
       console.info(
-        `Publishing in order:\n\n${packageJsons.map((x) => x.name).join('\n')}`,
+        `Publishing in order:\n\n${packageJsons.map((x) => x.name).join('\n')}`
       )
     }
 
@@ -147,14 +147,12 @@ async function run() {
             console.warn('no dist dir!', distDir)
             process.exit(1)
           }
-        }),
+        })
       )
     }
     if (tamaguiGitUser) {
       await spawnify(`git config --global user.name 'Tamagui'`)
-      await spawnify(
-        `git config --global user.email 'tamagui@users.noreply.github.com`,
-      )
+      await spawnify(`git config --global user.email 'tamagui@users.noreply.github.com`)
     }
 
     const answer =
@@ -222,7 +220,7 @@ async function run() {
           }
 
           await writeJSON(path, next, { spaces: 2 })
-        }),
+        })
       )
     }
 
@@ -265,9 +263,7 @@ async function run() {
             versionsOut = await spawnify(`npm view ${name} versions --json`, {
               avoidLog: true,
             })
-            const allVersions = JSON.parse(
-              versionsOut.trim().replaceAll(`\n`, ''),
-            )
+            const allVersions = JSON.parse(versionsOut.trim().replaceAll(`\n`, ''))
             const latest = allVersions[allVersions.length - 1]
 
             if (latest === nextVersion) {
@@ -302,11 +298,11 @@ async function run() {
         },
         {
           concurrency: 5,
-        },
+        }
       )
 
       console.info(
-        `✅ Published under dist-tag "prepub" (${erroredPackages.length} errors)\n`,
+        `✅ Published under dist-tag "prepub" (${erroredPackages.length} errors)\n`
       )
     }
 
@@ -318,9 +314,7 @@ async function run() {
           message: 'Ready to publish?',
         })
         if (!confirmed) {
-          console.info(
-            `Not confirmed, can re-run with --republish to try again`,
-          )
+          console.info(`Not confirmed, can re-run with --republish to try again`)
           process.exit(0)
         }
       }
@@ -344,7 +338,7 @@ async function run() {
           },
           {
             concurrency: 15,
-          },
+          }
         )
       } else {
         const distTag = canary ? 'canary' : 'latest'
@@ -359,7 +353,7 @@ async function run() {
           },
           {
             concurrency: 20,
-          },
+          }
         )
       }
 
@@ -372,25 +366,21 @@ async function run() {
       await spawnify(`yarn install`)
     }
 
+    const tagPrefix = canary ? 'canary' : 'v'
+    const gitTag = `${tagPrefix}${version}`
+
     if (!finish) {
       await sleep(4 * 1000)
     }
 
-    if (!skipStarters) {
-      await spawnify(`yarn upgrade:starters`)
-    }
-
     await spawnify(`yarn fix`)
 
-    const starterFreeDir = join(process.cwd(), '../starter-free')
-    await spawnify(`yarn fix`, {
-      cwd: starterFreeDir,
-    })
-
-    const tagPrefix = canary ? 'canary' : 'v'
-    const gitTag = `${tagPrefix}${version}`
-
     if (!canary && !skipStarters) {
+      await spawnify(`yarn upgrade:starters`)
+      const starterFreeDir = join(process.cwd(), '../starter-free')
+      await spawnify(`yarn fix`, {
+        cwd: starterFreeDir,
+      })
       await finishAndCommit(starterFreeDir)
     }
 

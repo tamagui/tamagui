@@ -7,7 +7,7 @@ import chalk from 'chalk'
 import prompts from 'prompts'
 
 import { takeoutAsciiArt, tamaguiRainbowAsciiArt } from '../helpers/asciiArts'
-import { ExtraSteps } from './types'
+import type { ExtraSteps } from './types'
 
 const packageManager = 'yarn'
 const useYarn = packageManager === 'yarn'
@@ -105,7 +105,7 @@ ${takeoutAsciiArt}
     console.info(`
   ${chalk.green.bold('Done!')} created a new project under ./${projectName}
 
-cd into the project using:
+visit your project:
   ${chalk.green('  cd')} ${projectName}
   `)
   }
@@ -114,7 +114,7 @@ cd into the project using:
   To start the Next.js development server, run:
     ${chalk.green(runCommand('web'))}
 
-  To start developing with Expo Go, run:
+  To start developing with Expo for native, run:
     ${chalk.green(runCommand('native'))}
 
   To start developing for Expo dev build, run:

@@ -1,4 +1,4 @@
-import { TextStyle, ViewStyle } from 'react-native';
+import type { TextStyle, ViewStyle } from 'react-native';
 export type ShorthandViewStyleProps = {
     w?: ViewStyle['width'];
     h?: ViewStyle['height'];

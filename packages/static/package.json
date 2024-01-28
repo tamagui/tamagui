@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/static",
-  "version": "1.85.12",
+  "version": "1.89.0-1706360676826",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs/index.js",
@@ -35,30 +35,32 @@
     "@babel/runtime": "^7.23.2",
     "@babel/traverse": "^7.23.3",
     "@babel/types": "^7.23.3",
-    "@tamagui/build": "1.85.12",
-    "@tamagui/cli-color": "1.85.12",
-    "@tamagui/config-default": "1.85.12",
-    "@tamagui/core": "1.85.12",
-    "@tamagui/fake-react-native": "1.85.12",
-    "@tamagui/generate-themes": "1.85.12",
-    "@tamagui/helpers": "1.85.12",
-    "@tamagui/helpers-node": "1.85.12",
-    "@tamagui/proxy-worm": "1.85.12",
-    "@tamagui/shorthands": "1.85.12",
-    "@tamagui/types": "1.85.12",
+    "@tamagui/build": "1.89.0-1706360676826",
+    "@tamagui/cli-color": "1.89.0-1706360676826",
+    "@tamagui/config-default": "1.89.0-1706360676826",
+    "@tamagui/core": "1.89.0-1706360676826",
+    "@tamagui/fake-react-native": "1.89.0-1706360676826",
+    "@tamagui/generate-themes": "1.89.0-1706360676826",
+    "@tamagui/helpers": "1.89.0-1706360676826",
+    "@tamagui/helpers-node": "1.89.0-1706360676826",
+    "@tamagui/proxy-worm": "1.89.0-1706360676826",
+    "@tamagui/shorthands": "1.89.0-1706360676826",
+    "@tamagui/types": "1.89.0-1706360676826",
     "babel-literal-to-ast": "^2.1.0",
     "browserslist": "^4.22.2",
     "esbuild": "^0.19.11",
     "esbuild-register": "^3.4.2",
     "find-cache-dir": "^3.3.2",
     "find-root": "^1.1.0",
-    "fs-extra": "^11.1.0",
+    "fs-extra": "^11.2.0",
     "invariant": "^2.2.4",
-    "lightningcss": "^1.22.1",
     "lodash": "^4.17.21",
     "react-native-web": "^0.19.10",
-    "react-native-web-internals": "1.85.12",
-    "react-native-web-lite": "1.85.12"
+    "react-native-web-internals": "1.89.0-1706360676826",
+    "react-native-web-lite": "1.89.0-1706360676826"
+  },
+  "optionalDependencies": {
+    "lightningcss": "*"
   },
   "devDependencies": {
     "@babel/plugin-syntax-typescript": "^7.23.3",
@@ -70,7 +72,7 @@
     "esbuild-loader": "^3.0.1",
     "null-loader": "^4.0.1",
     "react": "^18.2.0",
-    "typescript": "^5.2.2"
+    "typescript": "^5.3.3"
   },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
 }

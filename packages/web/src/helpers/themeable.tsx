@@ -1,6 +1,6 @@
 import { forwardRef } from 'react'
 
-import { StaticConfig, ThemeableProps } from '../types'
+import type { StaticConfig, ThemeableProps } from '../types'
 import { Theme } from '../views/Theme'
 
 export function themeable<ComponentType extends (props: any) => any>(

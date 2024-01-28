@@ -2,14 +2,16 @@ import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { Lock, Play } from '@tamagui/lucide-icons'
 import { useThemeSetting } from '@tamagui/next-theme'
 import { Container } from 'components/Container'
-import { DivProps, HoverGlowProps, IS_SAFARI, useHoverGlow } from 'components/HoverGlow'
+import type { DivProps, HoverGlowProps} from 'components/HoverGlow';
+import { IS_SAFARI, useHoverGlow } from 'components/HoverGlow'
 import { NextLink } from 'components/NextLink'
 import { memo } from 'react'
+import type {
+  HeadingProps} from 'tamagui';
 import {
   Button,
   H1,
   H2,
-  HeadingProps,
   Separator,
   Spacer,
   XStack,

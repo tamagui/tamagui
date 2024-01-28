@@ -1,4 +1,4 @@
-import { Selector, Store, StoreInfo, UseStoreOptions } from './interfaces';
+import type { Selector, Store, StoreInfo, UseStoreOptions } from './interfaces';
 export declare function useStore<A, B extends Object>(StoreKlass: (new (props: B) => A) | (new () => A) | null | undefined, props?: B | null, options?: UseStoreOptions<A, any>): A;
 export declare function useStoreDebug<A, B extends Object>(StoreKlass: (new (props: B) => A) | (new () => A), props?: B): A;
 export declare function createStore<A, B extends Object>(StoreKlass: new (props: B) => A | (new () => A) | null | undefined, props?: B, options?: UseStoreOptions<A, any>): A;

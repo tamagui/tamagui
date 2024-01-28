@@ -5,7 +5,6 @@ type ResultBox<T> = { v: T }
 export function useConstant<T>(fn: () => T): T {
   // RSC compat
   if (typeof document === 'undefined') {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     return useMemo(() => fn(), [])
   }
 

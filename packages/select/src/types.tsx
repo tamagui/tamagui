@@ -102,11 +102,13 @@ export interface SelectContextValue {
   update?: () => void
 }
 
-export type SelectViewportProps = ThemeableStackProps & {
+export interface SelectViewportExtraProps {
   size?: SizeTokens
   disableScroll?: boolean
   unstyled?: boolean
 }
+
+export type SelectViewportProps = ThemeableStackProps & SelectViewportExtraProps
 
 export type SelectContentProps = ScopedProps<{
   children?: React.ReactNode

@@ -1,9 +1,6 @@
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
-import {
-  AnimationDriver,
-  UniversalAnimatedNumber,
-  transformsToString,
-} from '@tamagui/core'
+import type { AnimationDriver, UniversalAnimatedNumber } from '@tamagui/core'
+import { transformsToString } from '@tamagui/core'
 // import { animate } from '@tamagui/cubic-bezier-animator'
 import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import { useEffect, useState } from 'react'
@@ -66,11 +63,10 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
       const [animationKey, animationConfig] = [].concat(props.animation)
       const animation = animations[animationKey]
       const keys = props.animateOnly ?? ['all']
-      const host = stateRef.current.host
+      const node = stateRef.current.host as HTMLElement
 
       useIsomorphicLayoutEffect(() => {
-        if (!sendExitComplete || !isExiting || !host) return
-        const node = host as HTMLElement
+        if (!sendExitComplete || !isExiting || !node) return
         const onFinishAnimation = () => {
           sendExitComplete?.()
         }
@@ -80,7 +76,7 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
           node.removeEventListener('transitionend', onFinishAnimation)
           node.removeEventListener('transitioncancel', onFinishAnimation)
         }
-      }, [sendExitComplete, isExiting])
+      }, [sendExitComplete, isExiting, node])
 
       // layout animations
       // useIsomorphicLayoutEffect(() => {

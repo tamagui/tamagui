@@ -3,6 +3,9 @@ import { Link, Subtitles } from '@tamagui/lucide-icons'
 import { NextLink } from 'components/NextLink'
 import React, { useState } from 'react'
 import { ScrollView } from 'react-native'
+import type {
+  ImageProps,
+  XStackProps} from 'tamagui';
 import {
   Button,
   Card,
@@ -12,7 +15,6 @@ import {
   H4,
   H5,
   Image,
-  ImageProps,
   Paragraph,
   Separator,
   Spacer,
@@ -22,7 +24,6 @@ import {
   TooltipSimple,
   XGroup,
   XStack,
-  XStackProps,
   YStack,
   styled,
 } from 'tamagui'
@@ -236,7 +237,7 @@ export const components = {
       <Paragraph
         tag="p"
         size={large ? '$9' : '$8'}
-        my="$4"
+        mb="$4"
         fow={large ? '200' : '300'}
         $sm={{
           size: '$7',
@@ -286,13 +287,7 @@ export const components = {
 
   h3: ({ children, id, ...props }) => (
     <LinkHeading pt="$8" mt="$-4" mb="$1" id={id}>
-      <H3
-        pos="relative"
-        width={`fit-content` as any}
-        nativeID={id}
-        data-heading
-        {...props}
-      >
+      <H3 pos="relative" width={`fit-content` as any} id={id} data-heading {...props}>
         {children}
       </H3>
       {getNonTextChildren(children)}

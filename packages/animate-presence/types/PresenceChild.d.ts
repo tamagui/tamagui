@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { VariantLabels } from './types';
+import type { VariantLabels } from './types';
 interface PresenceChildProps {
     children: React.ReactElement<any>;
     isPresent: boolean;
@@ -11,6 +11,6 @@ interface PresenceChildProps {
     enterVariant?: string | null;
     enterExitVariant?: string | null;
 }
-export declare const PresenceChild: ({ children, initial, isPresent, onExitComplete, exitVariant, enterVariant, enterExitVariant, presenceAffectsLayout, }: PresenceChildProps) => JSX.Element;
+export declare const PresenceChild: ({ children, initial, isPresent, onExitComplete, exitVariant, enterVariant, enterExitVariant, presenceAffectsLayout, custom, }: PresenceChildProps) => JSX.Element;
 export {};
 //# sourceMappingURL=PresenceChild.d.ts.map

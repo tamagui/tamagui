@@ -1,10 +1,10 @@
 import { PresenceContext, ResetPresence, usePresence } from '@tamagui/use-presence'
-import { AnimationDriver, UniversalAnimatedNumber } from '@tamagui/web'
+import type { AnimationDriver, UniversalAnimatedNumber } from '@tamagui/web'
 import type { MotiTransition } from 'moti'
 import { useMotify } from 'moti/author'
 import { useCallback, useContext, useMemo } from 'react'
+import type { SharedValue } from 'react-native-reanimated'
 import Animated, {
-  SharedValue,
   cancelAnimation,
   runOnJS,
   useAnimatedReaction,

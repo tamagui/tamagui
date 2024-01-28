@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /* eslint-disable no-console */
 
+const { transform } = require('@babel/core')
 const exec = require('execa')
 const fs = require('fs-extra')
 const esbuild = require('esbuild')
@@ -49,12 +50,12 @@ const flatOut = [pkgMain, pkgModule, pkgModuleJSX].filter(Boolean).length === 1
 const replaceRNWeb = {
   esm: {
     from: 'from "react-native"',
-    to: 'from "react-native-web"'
+    to: 'from "react-native-web"',
   },
   cjs: {
     from: 'require("react-native")',
-    to: 'require("react-native-web")'
-  }
+    to: 'require("react-native-web")',
+  },
 }
 
 async function clean() {
@@ -93,12 +94,12 @@ if (shouldClean || shouldCleanBuildOnly) {
     process.env.DISABLE_AUTORUN = true
     const rebuild = debounce(build, 100)
     const chokidar = require('chokidar')
-  
+
     // do one js build but not types
     build({
       skipTypes: true,
     })
-  
+
     chokidar
       // prevent infinite loop but cause race condition if you just build directly
       .watch('src', {
@@ -110,7 +111,7 @@ if (shouldClean || shouldCleanBuildOnly) {
       .on('add', rebuild)
   } else {
     build()
-  }  
+  }
 }
 
 async function build({ skipTypes } = {}) {
@@ -195,10 +196,6 @@ async function buildJs() {
       ? {
           entryPoints: [bundleNative],
           bundle: true,
-          target: 'node16',
-          format: 'cjs',
-          jsx: 'automatic',
-          platform: 'node',
           plugins: [
             alias({
               '@tamagui/web': require.resolve('@tamagui/web/native'),
@@ -252,29 +249,37 @@ async function buildJs() {
   const start = Date.now()
 
   const cjsConfig = {
+    format: 'cjs',
     entryPoints: files,
     outdir: flatOut ? 'dist' : 'dist/cjs',
     bundle: shouldBundle,
     external,
-    target: 'node16',
-    format: 'cjs',
-    jsx: 'automatic',
     plugins: shouldBundleNodeModules ? [] : [externalPlugin],
     minify: process.env.MINIFY ? true : false,
     platform: 'node',
   }
 
   const esmConfig = {
+    format: 'esm',
     entryPoints: files,
     outdir: flatOut ? 'dist' : 'dist/esm',
     bundle: shouldBundle,
     external,
-    target: 'esnext',
-    jsx: 'automatic',
     allowOverwrite: true,
-    format: 'esm',
     minify: process.env.MINIFY ? true : false,
-    platform: shouldBundle ? 'node' : 'neutral',
+  }
+
+  if (pkgSource) {
+    try {
+      const contents = await fs.readFile(pkgSource)
+      if (contents.slice(0, 40).includes('GITCRYPT')) {
+        // encrypted file, ignore
+        console.info(`This package is encrypted, skipping`)
+        return
+      }
+    } catch {
+      // ok
+    }
   }
 
   return await Promise.all([
@@ -323,10 +328,11 @@ async function buildJs() {
     pkgModule
       ? esbuildWriteIfChanged(esmConfig, {
           platform: 'web',
+          mjs: true,
         })
       : null,
 
-    // web output to esm
+    // native output to esm
     pkgModule
       ? esbuildWriteIfChanged(esmConfig, {
           platform: 'native',
@@ -350,6 +356,7 @@ async function buildJs() {
           },
           {
             platform: 'web',
+            mjs: true,
           }
         )
       : null,
@@ -387,7 +394,8 @@ async function buildJs() {
 async function esbuildWriteIfChanged(
   /** @type { import('esbuild').BuildOptions } */
   opts,
-  { platform, env } = {
+  { platform, env, mjs } = {
+    mjs: false,
     platform: '',
     env: '',
   }
@@ -395,7 +403,33 @@ async function esbuildWriteIfChanged(
   if (!shouldWatch && !platform) {
     return await esbuild.build(opts)
   }
-  
+
+  // compat with jsx and hermes back a few versions generally:
+  /** @type { import('esbuild').BuildOptions } */
+  const nativeEsbuildSettings = {
+    target: 'node16',
+    format: 'cjs',
+    supported: {
+      'logical-assignment': false,
+    },
+    jsx: 'automatic',
+    platform: 'node',
+  }
+
+  /** @type { import('esbuild').BuildOptions } */
+  const webEsbuildSettings = {
+    target: 'esnext',
+    jsx: 'automatic',
+    platform: shouldBundle ? 'node' : 'neutral',
+    tsconfigRaw: {
+      compilerOptions: {
+        paths: {
+          'react-native': ['react-native-web'],
+        },
+      },
+    },
+  }
+
   const built = await esbuild.build({
     ...opts,
 
@@ -428,17 +462,8 @@ async function esbuildWriteIfChanged(
     sourcemap: true,
     sourcesContent: false,
     logLevel: 'error',
-
-    ...(platform === 'web' && {
-      tsconfigRaw: {
-        compilerOptions: {
-          paths: {
-            'react-native': ['react-native-web'],
-          },
-        },
-      },
-    }),
-
+    ...(platform === 'native' && nativeEsbuildSettings),
+    ...(platform === 'web' && webEsbuildSettings),
     define: {
       ...(platform && {
         'process.env.TAMAGUI_TARGET': `"${platform}"`,
@@ -512,16 +537,43 @@ async function esbuildWriteIfChanged(
         outString = outString.replace(/\nimport "[^"]+";\n/g, '\n')
       }
 
-      if (shouldWatch) {
-        if (
-          !(await fs.pathExists(outPath)) ||
-          (await fs.readFile(outPath, 'utf8')) !== outString
-        ) {
-          await fs.writeFile(outPath, outString)
+      async function flush(contents, path) {
+        if (shouldWatch) {
+          if (
+            !(await fs.pathExists(path)) ||
+            (await fs.readFile(path, 'utf8')) !== contents
+          ) {
+            await fs.writeFile(path, contents)
+          }
+        } else {
+          await fs.writeFile(path, contents)
         }
-      } else {
-        await fs.writeFile(outPath, outString)
       }
+
+      await Promise.all([
+        flush(outString, outPath),
+        (async () => {
+          if (platform === 'web' && mjs && outPath.endsWith('.js')) {
+            const mjsOutPath = outPath.replace('.js', '.mjs')
+            const output = transform(outString, {
+              filename: mjsOutPath,
+              plugins: [
+                [
+                  'babel-plugin-fully-specified',
+                  {
+                    ensureFileExists: false,
+                    esExtensionDefault: '.mjs',
+                    tryExtensions: ['.mjs', '.js'],
+                    esExtensions: ['.mjs', '.js'],
+                  },
+                ],
+              ],
+            })
+            // output to mjs fully specified
+            await flush(output.code, mjsOutPath)
+          }
+        })(),
+      ])
     })
   )
 }

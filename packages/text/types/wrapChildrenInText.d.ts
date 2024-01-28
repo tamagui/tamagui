@@ -1,6 +1,6 @@
 import type { SizeTokens } from '@tamagui/web';
 import React from 'react';
-import { TextParentStyles } from './types';
+import type { TextParentStyles } from './types';
 type Props = TextParentStyles & {
     children?: React.ReactNode;
     size?: SizeTokens;

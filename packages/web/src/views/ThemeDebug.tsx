@@ -3,8 +3,8 @@ import { useForceUpdate } from '@tamagui/use-force-update'
 import { useEffect, useId, useState } from 'react'
 import { createPortal } from 'react-dom'
 
-import { ChangedThemeResponse } from '../hooks/useTheme'
-import { ThemeProps } from '../types'
+import type { ChangedThemeResponse } from '../hooks/useTheme'
+import type { ThemeProps } from '../types'
 
 let node
 

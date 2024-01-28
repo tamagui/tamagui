@@ -1,7 +1,7 @@
 import { shorthands } from '@tamagui/shorthands'
 import { tokens } from '@tamagui/themes/v2'
 import { themes } from '@tamagui/themes/v2-themes'
-import { CreateTamaguiProps } from '@tamagui/web'
+import type { CreateTamaguiProps } from '@tamagui/web'
 
 import { fonts } from './fonts'
 import { media, mediaQueryDefaultActive } from './media'

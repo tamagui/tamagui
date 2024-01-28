@@ -1,5 +1,8 @@
 import { FastForward, Pause, Rewind } from '@tamagui/lucide-icons'
 import React, { memo, useMemo } from 'react'
+import type {
+  ThemeName,
+  YStackProps} from 'tamagui';
 import {
   Button,
   Card,
@@ -9,10 +12,8 @@ import {
   Separator,
   Square,
   Theme,
-  ThemeName,
   XStack,
-  YStack,
-  YStackProps,
+  YStack
 } from 'tamagui'
 
 import image from '../public/mj.jpg'

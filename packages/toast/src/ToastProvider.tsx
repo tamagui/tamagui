@@ -1,10 +1,12 @@
 import { createCollection } from '@tamagui/collection'
-import { NativeValue, TamaguiElement, createStyledContext } from '@tamagui/core'
+import type { NativeValue, TamaguiElement } from '@tamagui/core'
+import { createStyledContext } from '@tamagui/core'
 import * as React from 'react'
 
 import { TOAST_CONTEXT } from './constants'
-import { ToastImperativeOptions, ToastImperativeProvider } from './ToastImperative'
-import { BurntToastOptions } from './types'
+import type { ToastImperativeOptions } from './ToastImperative'
+import { ToastImperativeProvider } from './ToastImperative'
+import type { BurntToastOptions } from './types'
 
 /* -------------------------------------------------------------------------------------------------
  * ToastProvider

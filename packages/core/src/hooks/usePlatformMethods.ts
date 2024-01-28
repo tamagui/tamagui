@@ -1,5 +1,5 @@
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { RefObject } from 'react'
+import type { RefObject } from 'react'
 
 import { getRect } from '../helpers/getRect'
 import { measureLayout } from './useElementLayout'

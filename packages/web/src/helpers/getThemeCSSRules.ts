@@ -1,7 +1,8 @@
 import { simpleHash } from '@tamagui/helpers'
 
 import { THEME_CLASSNAME_PREFIX } from '../constants/constants'
-import { Variable, variableToString } from '../createVariable'
+import type { Variable } from '../createVariable'
+import { variableToString } from '../createVariable'
 import type { CreateTamaguiProps, ThemeParsed } from '../types'
 import { tokensValueToVariable } from './registerCSSVariable'
 
@@ -10,6 +11,7 @@ export function getThemeCSSRules(props: {
   themeName: string
   theme: ThemeParsed
   names: string[]
+  hasDarkLight?: boolean
 }) {
   const cssRuleSets: string[] = []
 
@@ -25,7 +27,9 @@ export function getThemeCSSRules(props: {
 
     // special case for SSR
     const hasDarkLight =
-      config.themes && ('light' in config.themes || 'dark' in config.themes)
+      props.hasDarkLight ??
+      (config.themes && ('light' in config.themes || 'dark' in config.themes))
+
     const CNP = `.${THEME_CLASSNAME_PREFIX}`
     let vars = ''
 
@@ -61,7 +65,7 @@ export function getThemeCSSRules(props: {
         if (!(isDark || isLight)) {
           // neither light nor dark subtheme, just generate one selector with :root:root which
           // will override all :root light/dark selectors generated below
-          selectorsSet.add(`:root:root ${CNP}${subName}`)
+          selectorsSet.add(`${CNP}${subName}`)
           continue
         }
 
@@ -103,12 +107,6 @@ export function getThemeCSSRules(props: {
     }
 
     const selectors = [...selectorsSet].sort((a, b) => a.localeCompare(b))
-
-    // let specificity = 1 //themeName.split('_').length
-
-    // if (themeName.includes('accent_Button')) {
-    //   specificity = 2
-    // }
 
     // only do our :root attach if it's not light/dark - not support sub themes on root saves a lot of effort/size
     // this isBaseTheme logic could probably be done more efficiently above

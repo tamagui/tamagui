@@ -325,28 +325,13 @@ const light_translucent: BaseTheme = {
   backgroundFocus: 'rgba(240,240,240,0.7)',
 }
 
-// note the steps here
-// we recommend doing this because it avoids a category of confusing type errors
-
-// 1. to get ThemeNames/Theme, first create an object with all themes
-const allThemes = {
+export const allThemes = {
   dark,
   light,
   dark_translucent,
   light_translucent,
-  ...colorThemes,
-}
-
-// 2. then get the name type
-type ThemeName = keyof typeof allThemes
-
-// 3. then, create a Themes type that explicitly maps ThemeName => BaseTheme
-type Themes = {
-  [key in ThemeName]: BaseTheme
-}
-
-// 4. finally, export it with the stricter type
-export const themes: Themes = allThemes
+} satisfies {[key: string]: BaseTheme}
+// note: `satisfies` was introduced with TypeScript 4.9
 ```
 
 ## Dynamic Themes

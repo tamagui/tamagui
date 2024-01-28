@@ -1,5 +1,6 @@
 import { memo, useEffect, useState } from 'react'
-import { Circle, XStack, XStackProps } from 'tamagui'
+import type { XStackProps } from 'tamagui'
+import { Circle, XStack } from 'tamagui'
 
 import { useTint } from './useTint'
 

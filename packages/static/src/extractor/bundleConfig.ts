@@ -10,7 +10,7 @@ import esbuild from 'esbuild'
 import { ensureDir, removeSync, writeFileSync } from 'fs-extra'
 
 import { registerRequire, setRequireResult } from '../registerRequire'
-import { TamaguiOptions } from '../types'
+import type { TamaguiOptions } from '../types'
 import { babelParse } from './babelParse'
 import { bundle } from './bundle'
 import { getTamaguiConfigPathFromOptionsConfig } from './getTamaguiConfigPathFromOptionsConfig'

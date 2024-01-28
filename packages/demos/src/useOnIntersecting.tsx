@@ -1,4 +1,5 @@
-import { MutableRefObject, useEffect, useState } from 'react'
+import type { MutableRefObject } from 'react'
+import { useEffect, useState } from 'react'
 import { isWeb, useEvent } from 'tamagui'
 
 type DisposeFn = () => void
@@ -82,7 +83,7 @@ export function useOnIntersecting<Ref extends HTMLRef | HTMLRef[]>(
     root,
     rootMargin,
     threshold,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
     ...mountArgs,
   ])
 }

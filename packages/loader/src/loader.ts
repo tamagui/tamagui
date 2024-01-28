@@ -1,9 +1,5 @@
-import {
-  TamaguiOptions,
-  createExtractor,
-  extractToClassNames,
-  getPragmaOptions,
-} from '@tamagui/static'
+import type { TamaguiOptions } from '@tamagui/static'
+import { createExtractor, extractToClassNames, getPragmaOptions } from '@tamagui/static'
 import type { LoaderContext } from 'webpack'
 
 Error.stackTraceLimit = Infinity

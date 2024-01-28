@@ -1,14 +1,12 @@
 import { useState } from 'react'
+import type { StackProps, TabLayout, TabsTabProps } from 'tamagui'
 import {
   AnimatePresence,
   Button,
   H5,
   SizableText,
   Stack,
-  StackProps,
-  TabLayout,
   Tabs,
-  TabsTabProps,
   XStack,
   YStack,
   styled,

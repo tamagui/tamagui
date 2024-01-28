@@ -3,7 +3,13 @@ import { useContext } from 'react'
 import { ComponentContext } from '../contexts/ComponentContext'
 import { defaultComponentStateMounted } from '../defaultComponentState'
 import { useSplitStyles } from '../helpers/getSplitStyles'
-import { SplitStyleProps, StaticConfig, ThemeParsed, UseMediaState } from '../types'
+import type {
+  SplitStyleProps,
+  StackStyle,
+  StaticConfig,
+  ThemeParsed,
+  UseMediaState,
+} from '../types'
 import { Stack } from '../views/Stack'
 import { useMedia } from './useMedia'
 import { useThemeWithState } from './useTheme'
@@ -21,13 +27,15 @@ export type PropsWithoutMediaStyles<A> = {
   [Key in keyof A extends `$${string}` ? never : keyof A]?: A[Key]
 }
 
+type StyleLikeObject = (StackStyle & Record<string, any>) | Object
+
 /**
  * Returns props and style as a single object, expanding and merging shorthands and media queries.
  *
  * Use sparingly, it will loop props and trigger re-render on all media queries you access.
  *
  * */
-export function useProps<A extends Object>(
+export function useProps<A extends StyleLikeObject>(
   props: A,
   opts?: UsePropsOptions
 ): PropsWithoutMediaStyles<A> {
@@ -49,7 +57,7 @@ export function useProps<A extends Object>(
  * Use sparingly, it will loop props and trigger re-render on all media queries you access.
  *
  * */
-export function useStyle<A extends Object>(
+export function useStyle<A extends StyleLikeObject>(
   props: A,
   opts?: UsePropsOptions
 ): PropsWithoutMediaStyles<A> {
@@ -62,7 +70,7 @@ export function useStyle<A extends Object>(
  * Use sparingly, it will loop props and trigger re-render on all media queries you access.
  *
  * */
-export function usePropsAndStyle<A extends Object>(
+export function usePropsAndStyle<A extends StyleLikeObject>(
   props: A,
   opts?: UsePropsOptions
 ): [PropsWithoutMediaStyles<A>, PropsWithoutMediaStyles<A>, ThemeParsed, UseMediaState] {

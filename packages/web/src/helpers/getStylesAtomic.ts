@@ -3,17 +3,16 @@
  * Copyright (c) Nicolas Gallagher licensed under the MIT license.
  */
 
-import { StyleObject, simpleHash } from '@tamagui/helpers'
+import type { StyleObject } from '@tamagui/helpers'
+import { simpleHash } from '@tamagui/helpers'
 
 import { getConfig } from '../config'
 import type { DebugProp, TamaguiInternalConfig, ViewStyleWithPseudos } from '../types'
 import { defaultOffset } from './defaultOffset'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
-import {
-  PseudoDescriptor,
-  pseudoDescriptors,
-  pseudoDescriptorsBase,
-} from './pseudoDescriptors'
+import type { PseudoDescriptor } from './pseudoDescriptors'
+import { pseudoDescriptors, pseudoDescriptorsBase } from './pseudoDescriptors'
+import { normalizeColor } from './normalizeColor'
 
 // refactor this file away next...
 
@@ -97,13 +96,14 @@ export const generateAtomicStyles = (
 
 export function styleToCSS(style: Record<string, any>) {
   // box-shadow
-  const { shadowOffset, shadowRadius, shadowColor } = style
-  if (style.shadowRadius) {
+  const { shadowOffset, shadowRadius, shadowColor, shadowOpacity } = style
+  if (shadowRadius || shadowColor) {
     const offset = shadowOffset || defaultOffset
     const width = normalizeValueWithProperty(offset.width)
     const height = normalizeValueWithProperty(offset.height)
     const radius = normalizeValueWithProperty(shadowRadius)
-    const shadow = `${width} ${height} ${radius} ${shadowColor}`
+    const color = normalizeColor(shadowColor, shadowOpacity)
+    const shadow = `${width} ${height} ${radius} ${color}`
     style.boxShadow = style.boxShadow ? `${style.boxShadow}, ${shadow}` : shadow
     delete style.shadowOffset
     delete style.shadowRadius

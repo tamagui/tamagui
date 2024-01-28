@@ -1,4 +1,5 @@
-import { createThemeBuilder, MaskOptions } from '@tamagui/theme-builder'
+import type { MaskOptions } from '@tamagui/theme-builder'
+import { createThemeBuilder } from '@tamagui/theme-builder'
 import {
   blue,
   blueDark,
@@ -17,7 +18,8 @@ import {
   yellow,
   yellowDark,
 } from '@tamagui/colors'
-import { Variable, createTokens } from '@tamagui/web'
+import type { Variable } from '@tamagui/web'
+import { createTokens } from '@tamagui/web'
 
 import { masks } from './masks'
 
@@ -175,6 +177,8 @@ export const templates = (() => {
     borderColorFocus: 4,
     borderColorPress: 5,
     placeholderColor: -4,
+    // in the future this should be partially transparent
+    outlineColor: 5,
   }
 
   return {

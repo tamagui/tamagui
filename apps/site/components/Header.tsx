@@ -1,12 +1,9 @@
 import { ThemeToggle } from '@components/ThemeToggle'
-import { getDefaultAvatarImage } from '@lib/avatar'
-import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
-import { useUser } from 'hooks/useUser'
+import { LogoWords, TamaguiLogo, ThemeTint } from '@tamagui/logo'
 // import { useUser } from 'hooks/useUser'
 import { useRouter } from 'next/router'
 import * as React from 'react'
 import {
-  Avatar,
   Text,
   TooltipGroup,
   TooltipSimple,
@@ -14,19 +11,17 @@ import {
   XGroup,
   XStack,
   YStack,
-  isClient,
+  isClient
 } from 'tamagui'
 
-import { ColorToggleButton } from './ColorToggleButton'
 import { ContainerLarge } from './Container'
 import { GithubIcon } from './GithubIcon'
 import { HeaderLinks } from './HeaderLinks'
 import { HeaderMenu } from './HeaderMenu'
-import { HeaderProps } from './HeaderProps'
+import type { HeaderProps } from './HeaderProps'
 import { NextLink } from './NextLink'
 import { SearchButton } from './SearchButton'
 import { SeasonToggleButton } from './SeasonToggleButton'
-import { SponsorButton } from './SponsorButton'
 
 export function Header(props: HeaderProps) {
   const [isScrolled, setIsScrolled] = React.useState(false)
@@ -109,7 +104,6 @@ export function Header(props: HeaderProps) {
                 y: 5,
                 // elevation: isStudio ? '$0.5' : '$3',
                 elevation: '$3',
-                boc: '$borderColor',
               },
             })}
           />
@@ -126,8 +120,6 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
   const router = useRouter()
   const isHome = router.pathname === '/'
   const isTakeout = router.pathname === '/takeout'
-  const { setNextTint } = useTint()
-  const userSwr = useUser()
 
   return (
     <XStack
@@ -150,7 +142,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
           )}
 
           <TooltipGroup delay={tooltipDelay}>
-            <XGroup boc="$color2" bw={1} mah={32} bc="transparent" ai="center" size="$3">
+            <XGroup mah={32} bc="transparent" ai="center" size="$4">
               {!isTakeout && (
                 <XGroup.Item>
                   <ThemeToggle borderWidth={0} chromeless />
@@ -165,13 +157,24 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
           <SearchButton
             size="$2"
             br="$10"
-            elevation="$1"
-            shadowRadius={6}
-            shadowOpacity={0.0025}
+            elevation="$0.5"
           />
 
           <YStack $md={{ display: 'none' }}>
-            <SponsorButton tiny />
+            <NextLink
+              legacyBehavior={false}
+              target="_blank"
+              href="https://github.com/tamagui/tamagui"
+            >
+              <TooltipSimple delay={0} restMs={25} label="Github">
+                <YStack p="$2" opacity={0.9} hoverStyle={{ opacity: 1 }}>
+                  <VisuallyHidden>
+                    <Text>Github</Text>
+                  </VisuallyHidden>
+                  <GithubIcon width={26} />
+                </YStack>
+              </TooltipSimple>
+            </NextLink>
           </YStack>
         </XStack>
       )}
@@ -201,53 +204,9 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
 
       {/*  prevent layout shift */}
       {!props.minimal && (
-        <XStack
-          h={40}
-          jc="flex-end"
-          miw={160}
-          $xs={{ miw: 80 }}
-          pointerEvents="auto"
-          tag="nav"
-        >
+        <XStack h={40} jc="flex-end" pointerEvents="auto" tag="nav">
           <XStack ai="center" gap="$2">
             <HeaderLinks isHeader {...props} />
-
-            {userSwr.data?.userDetails && (
-              <XStack ai="center" gap="$2">
-                <NextLink href="/account">
-                  <Avatar circular size="$2">
-                    <Avatar.Image
-                      source={{
-                        width: 28,
-                        height: 28,
-                        uri:
-                          userSwr.data.userDetails?.avatar_url ||
-                          getDefaultAvatarImage(
-                            userSwr.data?.userDetails?.full_name ||
-                              userSwr.data?.session?.user?.email ||
-                              'User'
-                          ),
-                      }}
-                    />
-                  </Avatar>
-                </NextLink>
-              </XStack>
-            )}
-
-            <NextLink
-              legacyBehavior={false}
-              target="_blank"
-              href="https://github.com/tamagui/tamagui"
-            >
-              <TooltipSimple delay={0} restMs={25} label="Github">
-                <YStack p="$2" opacity={0.9} hoverStyle={{ opacity: 1 }}>
-                  <VisuallyHidden>
-                    <Text>Github</Text>
-                  </VisuallyHidden>
-                  <GithubIcon width={26} />
-                </YStack>
-              </TooltipSimple>
-            </NextLink>
 
             <HeaderMenu />
           </XStack>

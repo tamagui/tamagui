@@ -9,7 +9,7 @@ import readingTime from 'reading-time'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeSlug from 'rehype-slug'
 
-import { Frontmatter } from '../frontmatter'
+import type { Frontmatter } from '../frontmatter'
 import rehypeHeroTemplate from './rehype-hero-template'
 import rehypeHighlightCode from './rehype-highlight-code'
 import rehypeMetaAttribute from './rehype-meta-attribute'

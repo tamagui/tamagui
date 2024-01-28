@@ -1,12 +1,12 @@
 import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import {
+import type {
   AnimatedNumberStrategy,
   AnimationDriver,
   AnimationProp,
   UniversalAnimatedNumber,
-  useEvent,
 } from '@tamagui/web'
+import { useEvent } from '@tamagui/web'
 import { useEffect, useMemo, useRef } from 'react'
 import { Animated } from 'react-native'
 
@@ -159,9 +159,6 @@ export function useAnimatedNumberStyle<V extends UniversalAnimatedNumber<Animate
 export function createAnimations<A extends AnimationsConfig>(
   animations: A
 ): AnimationDriver<A> {
-  AnimatedView['displayName'] = 'AnimatedView'
-  AnimatedText['displayName'] = 'AnimatedText'
-
   return {
     isReactNative: true,
     animations,
@@ -175,6 +172,7 @@ export function createAnimations<A extends AnimationsConfig>(
     useAnimations: ({ props, onDidAnimate, style, componentState, presence }) => {
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
+
       /** store Animated value of each key e.g: color: AnimatedValue */
       const animateStyles = useRef<Record<string, Animated.Value>>({})
       const animatedTranforms = useRef<{ [key: string]: Animated.Value }[]>([])
@@ -360,7 +358,6 @@ export function createAnimations<A extends AnimationsConfig>(
           }
           return value
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
       }, args)
 
       useIsomorphicLayoutEffect(() => {
@@ -380,7 +377,7 @@ export function createAnimations<A extends AnimationsConfig>(
 
       if (process.env.NODE_ENV === 'development') {
         if (props['debug'] === 'verbose') {
-          console.info(`Returning animated`, res, 'given style', style)
+          console.info(`Animated`, { response: res, inputStyle: style, isExiting })
         }
       }
 
