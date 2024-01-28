@@ -1043,12 +1043,16 @@ export const getSplitStyles: StyleSplitter = (
   // also it makes sense that props.style is basically the last to apply,
   // at least more sense than "it applies at the position its defined in the prop loop"
   if (props.style) {
-    for (const style of [].concat(props.style)) {
-      if (style) {
-        if (style['$$css']) {
-          Object.assign(styleState.classNames, style)
-        } else {
-          Object.assign(styleState.style, style)
+    if (isHOC) {
+      viewProps.style = props.style
+    } else {
+      for (const style of [].concat(props.style)) {
+        if (style) {
+          if (style['$$css']) {
+            Object.assign(styleState.classNames, style)
+          } else {
+            Object.assign(styleState.style, style)
+          }
         }
       }
     }
@@ -1090,6 +1094,7 @@ export const getSplitStyles: StyleSplitter = (
       if (
         !staticConfig.isReactNative &&
         !staticConfig.isHOC &&
+        (styleProps.isAnimated && !conf.animations.supportsCSSVars ? false : true) &&
         Array.isArray(style.transform)
       ) {
         style.transform = transformsToString(style.transform) as any
