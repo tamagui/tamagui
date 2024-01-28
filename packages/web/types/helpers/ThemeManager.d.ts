@@ -33,7 +33,7 @@ export declare class ThemeManager {
     _allKeys: Set<string> | null;
     get allKeys(): Set<string>;
     notify(forced?: boolean): void;
-    onChangeTheme(cb: ThemeListener, debugId?: number): () => void;
+    onChangeTheme: (cb: ThemeListener, debugId?: number) => () => void;
 }
 type MaybeThemeManager = ThemeManager | undefined;
 export declare function getManagers(themeManager?: ThemeManager | null): readonly [MaybeThemeManager[], MaybeThemeManager[]];

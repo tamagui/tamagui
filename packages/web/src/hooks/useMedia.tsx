@@ -188,6 +188,7 @@ function subscribe(subscriber: any) {
 }
 
 export function useMedia(uid?: any, componentContext?: ComponentContextI): UseMediaState {
+  // TODO perf: move into stateRef in createComponent and pass in
   const internal = useRef<UseMediaInternalState | undefined>()
   // performance boost to avoid using context twice
   const disableSSR = getDisableSSR(componentContext)

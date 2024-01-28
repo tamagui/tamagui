@@ -14,6 +14,22 @@ import type { TamaguiComponentPropsBaseBase } from './interfaces/TamaguiComponen
 import type { SizeKeys, SpaceKeys, ColorKeys } from './interfaces/KeyTypes';
 export * from './interfaces/KeyTypes';
 export * from './interfaces/TamaguiComponentState';
+export type UseThemeResult = {
+    [Key in keyof ThemeParsed]: ThemeGettable<ThemeParsed[Key]>;
+};
+export type ThemeGettable<Val> = Val & {
+    /**
+     * Tries to return an optimized value that avoids the need for re-rendering:
+     * On web a CSS variable, on iOS a dynamic color, on Android it doesn't
+     * optimize and returns the underyling value.
+     *
+     * See: https://reactnative.dev/docs/dynamiccolorios
+     *
+     * @param platform when "web" it will only return the dynamic value for web, avoiding the iOS dynamic value.
+     * For things like SVG, gradients, or other external components that don't support it, use this option.
+     */
+    get: (platform?: 'web') => string | (Val extends Variable<infer X> ? X extends VariableValGeneric ? any : Exclude<X, Variable> : Val extends VariableVal ? string | number : unknown);
+};
 export type { MediaStyleObject, StyleObject } from '@tamagui/helpers';
 export type ColorScheme = 'light' | 'dark';
 export type IsMediaType = boolean | 'platform' | 'theme' | 'group';

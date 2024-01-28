@@ -1,9 +1,17 @@
 // debug-verbose
 // import './wdyr'
 
-import { useState } from 'react'
+import { memo, useState } from 'react'
 import { View } from 'react-native'
-import { AnimatePresence, Button, Text, Square, useStyle, styled, Stack } from 'tamagui'
+import {
+  AnimatePresence,
+  Button,
+  Stack,
+  Text,
+  XStack,
+  XStackProps,
+  styled,
+} from 'tamagui'
 
 const AnimatedNumbers = () => {
   const [numbers, setNumbers] = useState(10_000)
@@ -50,8 +58,35 @@ export const Sandbox = () => {
   return (
     <View style={{ width: '100%', height: '100%', padding: 50 }}>
       <>
-        <AnimatedNumbers />
+        <ThemeTestSquare theme="yellow">
+          <ThemeTestSquare theme="green">
+            <ThemeTestSquare theme="alt1">
+              <ThemeTestSquare bc="$color10" />
+              <ThemeTestSquare animation="bouncy" bc="$color10" />
+            </ThemeTestSquare>
+          </ThemeTestSquare>
+        </ThemeTestSquare>
       </>
     </View>
   )
 }
+
+const ThemeTestSquare = memo(({ children, ...props }: XStackProps) => {
+  const [theme, setTheme] = useState(props.theme)
+
+  return (
+    <XStack
+      width="80%"
+      height="50%"
+      bc="$color5"
+      {...props}
+      theme={theme}
+      onPress={(e) => {
+        setTheme(theme === 'red' ? props.theme : 'red')
+        e.stopPropagation()
+      }}
+    >
+      {children}
+    </XStack>
+  )
+})

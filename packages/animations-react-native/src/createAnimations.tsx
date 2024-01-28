@@ -424,6 +424,9 @@ function getAnimationConfig(
   animations: AnimationsConfig,
   animation?: AnimationProp
 ): AnimationConfig {
+  if (!animation) {
+    return {}
+  }
   if (typeof animation === 'string') {
     return animations[animation]
   }

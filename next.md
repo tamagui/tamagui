@@ -1,3 +1,7 @@
+- playground https://play.tailwindcss.com/
+
+- themeInverse SSR safe
+  - no more mounting to inverse, we'd have to figure out CSS safe way
 - nextjs plugin should automatically do the t_unmounted thing if disableSSR isnt true
 
 - opacity values desperately needed

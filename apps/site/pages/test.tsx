@@ -21,10 +21,7 @@ function TestPage() {
         flex: 1,
       }}
     >
-      <Button
-        animation="quick"
-        bg="$color10"
-      >
+      <Button animation="quick" bg="$color10">
         Sponsor for early access
       </Button>
       {/* <Stack
