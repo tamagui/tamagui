@@ -1,225 +1,105 @@
-import { createCherryBombFont } from '@tamagui/font-cherry-bomb'
-import { createDmSansFont } from '@tamagui/font-dm-sans'
-import { createDmSerifDisplayFont } from '@tamagui/font-dm-serif-display'
-import { createInterFont } from '@tamagui/font-inter'
-import { createMunroFont } from '@tamagui/font-munro'
-import { createNohemi } from '@tamagui/font-nohemi'
-import { createSilkscreenFont } from '@tamagui/font-silkscreen'
 import { shorthands } from '@tamagui/shorthands'
 import { tokens } from '@tamagui/themes/v2'
-import { themes as themesIn } from '@tamagui/themes/v2-themes'
+import { themes as themesv2 } from '@tamagui/themes/v2-themes'
 import type { CreateTamaguiProps } from '@tamagui/web'
 import { setupDev } from '@tamagui/web'
 
 import { animations } from './animations'
-import { createGenericFont } from './createGenericFont'
 import { media, mediaQueryDefaultActive } from './media'
+import {
+  headingFont,
+  dmSansHeadingFont,
+  dmSerifDisplayHeadingFont,
+  nohemiFont,
+  bodyFont,
+  monoFont,
+  silkscreenFont,
+  munroFont,
+  cherryBombFont,
+} from './fonts'
 
 export { animations } from './animations'
-
-export const cherryBombFont = createCherryBombFont()
-export const munroFont = createMunroFont()
 
 setupDev({
   visualizer: true,
 })
 
-const silkscreenFont = createSilkscreenFont()
-const headingFont = createInterFont(
-  {
-    size: {
-      5: 13,
-      6: 15,
-      9: 32,
-      10: 44,
-    },
-    transform: {
-      6: 'uppercase',
-      7: 'none',
-    },
-    weight: {
-      6: '400',
-      7: '700',
-    },
-    color: {
-      6: '$colorFocus',
-      7: '$color',
-    },
-    letterSpacing: {
-      5: 2,
-      6: 1,
-      7: 0,
-      8: 0,
-      9: -0.1,
-      10: -0.25,
-      11: -0.5,
-      12: -0.75,
-      14: -1,
-      15: -2,
-    },
-    // for native
-    face: {
-      700: { normal: 'InterBold' },
-      800: { normal: 'InterBold' },
-      900: { normal: 'InterBold' },
-    },
-  },
-  { sizeLineHeight: (size) => Math.round(size * 1.1 + (size < 30 ? 10 : 5)) }
-)
+const fonts = {
+  heading: headingFont,
+  headingDmSans: dmSansHeadingFont,
+  headingDmSerifDisplay: dmSerifDisplayHeadingFont,
+  headingNohemi: nohemiFont,
+  body: bodyFont,
+  mono: monoFont,
+  silkscreen: silkscreenFont,
+  munro: munroFont,
+  cherryBomb: cherryBombFont,
+}
 
-const dmSansHeadingFont = createDmSansFont(
-  {
-    size: {
-      5: 13,
-      6: 15,
-      9: 32,
-      10: 44,
-    },
-    transform: {
-      6: 'uppercase',
-      7: 'none',
-    },
-    weight: {
-      6: '400',
-      7: '700',
-    },
-    color: {
-      6: '$colorFocus',
-      7: '$color',
-    },
-    letterSpacing: {
-      5: 2,
-      6: 1,
-      7: 0,
-      8: 0,
-      9: 2,
-      11: 3,
-    },
-    face: {},
-  },
-  {
-    sizeLineHeight: (size) => Math.round(size * 1.15),
-    sizeSize: (size) => size * 1.3,
-  }
-)
+const light_tan = {
+  color1: 'rgba(252, 244, 227, 1)',
+  color2: 'rgba(249, 237, 213, 1)',
+  color3: 'rgba(246, 229, 199, 1)',
+  color4: 'rgba(243, 221, 186, 1)',
+  color5: 'rgba(240, 213, 172, 1)',
+  color6: 'rgba(237, 205, 158, 1)',
+  color7: 'rgba(234, 197, 144, 1)',
+  color8: 'rgba(231, 189, 131, 1)',
+  color9: 'rgba(228, 182, 117, 1)',
+  color10: 'rgba(225, 174, 103, 1)',
+  color11: 'rgba(222, 166, 90, 1)',
+  color12: '#000',
+  backgroundHover: 'rgba(246, 229, 199, 0.8)',
+  backgroundFocus: 'rgba(240, 213, 172, 0.8)',
+  backgroundPress: 'rgba(234, 197, 144, 0.8)',
+  colorHover: 'rgba(222, 166, 90, 0.8)',
+  colorFocus: 'rgba(225, 174, 103, 0.8)',
+  colorPress: 'rgba(228, 182, 117, 0.8)',
+  borderHover: 'rgba(237, 205, 158, 0.8)',
+  borderFocus: 'rgba(231, 189, 131, 0.8)',
+  borderPress: 'rgba(225, 174, 103, 0.8)',
+  shadowHover: 'rgba(222, 166, 90, 0.4)',
+  shadowFocus: 'rgba(225, 174, 103, 0.4)',
+  shadowPress: 'rgba(228, 182, 117, 0.4)',
+  outlineColor: 'rgba(219, 158, 76, 1)',
+  backgroundTransparent: 'rgba(252, 244, 227, 0)',
+}
 
-const nohemiFont = createNohemi(
-  {
-    size: {
-      5: 13,
-      6: 15,
-      9: 32,
-      10: 44,
-    },
-    transform: {
-      6: 'uppercase',
-      7: 'none',
-    },
-    weight: {
-      6: '400',
-      7: '700',
-    },
-    color: {
-      6: '$colorFocus',
-      7: '$color',
-    },
-    letterSpacing: {
-      5: 3,
-      6: 2,
-      7: 1,
-      9: 2,
-      12: 3,
-    },
-    face: {},
-  },
-  {
-    sizeLineHeight: (size) => Math.round(size * 1.15),
-    sizeSize: (size) => size * 1.3,
-  }
-)
-const dmSerifDisplayHeadingFont = createDmSerifDisplayFont(
-  {
-    size: {
-      5: 13,
-      6: 15,
-      7: 16,
-      8: 22,
-      9: 32,
-      10: 44,
-    },
-    transform: {
-      6: 'uppercase',
-      7: 'none',
-    },
-    weight: {
-      6: '400',
-      7: '700',
-    },
-    color: {
-      6: '$colorFocus',
-      7: '$color',
-    },
-    letterSpacing: {
-      5: 1,
-      6: 1,
-      7: 1,
-      8: 1,
-      9: 1.9,
-      10: 1.75,
-      11: 1.5,
-      12: 1.25,
-      14: 1,
-      15: 0,
-    },
-    face: {},
-  },
-  {
-    sizeLineHeight: (size) => Math.round(size * 1.1),
-    sizeSize: (size) => size * 1.55,
-  }
-)
+const dark_tan = {
+  color1: 'rgba(55, 43, 31, 1)',
+  color2: 'rgba(61, 48, 35, 1)',
+  color3: 'rgba(68, 54, 39, 1)',
+  color4: 'rgba(74, 59, 43, 1)',
+  color5: 'rgba(80, 64, 47, 1)',
+  color6: 'rgba(86, 69, 51, 1)',
+  color7: 'rgba(93, 74, 55, 1)',
+  color8: 'rgba(99, 79, 59, 1)',
+  color9: 'rgba(105, 84, 63, 1)',
+  color10: 'rgba(112, 89, 67, 1)',
+  color11: 'rgba(222, 166, 90, 1)',
+  color12: 'rgba(242, 200, 190, 1)',
+  backgroundHover: 'rgba(68, 54, 39, 0.8)',
+  backgroundFocus: 'rgba(80, 64, 47, 0.8)',
+  backgroundPress: 'rgba(93, 74, 55, 0.8)',
+  colorHover: 'rgba(118, 94, 71, 0.8)',
+  colorFocus: 'rgba(112, 89, 67, 0.8)',
+  colorPress: 'rgba(105, 84, 63, 0.8)',
+  borderHover: 'rgba(86, 69, 51, 0.8)',
+  borderFocus: 'rgba(99, 79, 59, 0.8)',
+  borderPress: 'rgba(112, 89, 67, 0.8)',
+  shadowHover: 'rgba(118, 94, 71, 0.4)',
+  shadowFocus: 'rgba(112, 89, 67, 0.4)',
+  shadowPress: 'rgba(105, 84, 63, 0.4)',
+  outlineColor: 'rgba(124, 99, 75, 1)',
+  backgroundTransparent: 'rgba(55, 43, 31, 0)',
+}
 
-const bodyFont = createInterFont(
-  {
-    weight: {
-      1: '400',
-    },
-  },
-  {
-    sizeSize: (size) => Math.round(size),
-    sizeLineHeight: (size) => Math.round(size * 1.2 + (size >= 20 ? 12 : 8)),
-  }
-)
+const themesIn = {
+  ...themesv2,
 
-const monoFont = createGenericFont(
-  `"ui-monospace", "SFMono-Regular", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace`,
-  {
-    weight: {
-      1: '500',
-    },
-    size: {
-      1: 11,
-      2: 12,
-      3: 13,
-      4: 13,
-      5: 14,
-      6: 16,
-      7: 18,
-      8: 20,
-      9: 24,
-      10: 32,
-      11: 46,
-      12: 62,
-      13: 72,
-      14: 92,
-      15: 114,
-      16: 124,
-    },
-  },
-  {
-    sizeLineHeight: (x) => x * 1.5,
-  }
-)
+  light_tan,
+  dark_tan,
+}
 
 // avoid themes only on client bundle
 const themes =
@@ -246,15 +126,5 @@ export const config = {
     autocompleteSpecificTokens: 'except-special',
     // mediaPropOrder: true,
   },
-  fonts: {
-    heading: headingFont,
-    headingDmSans: dmSansHeadingFont,
-    headingDmSerifDisplay: dmSerifDisplayHeadingFont,
-    headingNohemi: nohemiFont,
-    body: bodyFont,
-    mono: monoFont,
-    silkscreen: silkscreenFont,
-    munro: munroFont,
-    cherryBomb: cherryBombFont,
-  },
+  fonts,
 } satisfies CreateTamaguiProps

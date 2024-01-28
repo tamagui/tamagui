@@ -8,7 +8,8 @@
   "exports": {
     "./package.json": "./package.json",
     ".": "./dist/index.js",
-    "./api": "./dist/api/index.js"
+    "./api": "./dist/api/index.js",
+    "./components": "./dist/theme-builder/StudioPreviewComponents.mjs"
   },
   "scripts": {
     "dev": "../../node_modules/.bin/tama studio",
