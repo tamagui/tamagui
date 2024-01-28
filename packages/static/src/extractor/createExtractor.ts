@@ -1,7 +1,8 @@
 /* eslint-disable no-console */
 import { basename, relative } from 'path'
 
-import traverse, { NodePath, TraverseOptions } from '@babel/traverse'
+import type { NodePath, TraverseOptions } from '@babel/traverse'
+import traverse from '@babel/traverse'
 import * as t from '@babel/types'
 import { Color, colorLog } from '@tamagui/cli-color'
 import type {
@@ -25,7 +26,7 @@ import type {
   TamaguiOptionsWithFileInfo,
   Ternary,
 } from '../types'
-import { TamaguiProjectInfo } from './bundleConfig'
+import type { TamaguiProjectInfo } from './bundleConfig'
 import { createEvaluator, createSafeEvaluator } from './createEvaluator'
 import { evaluateAstNode } from './evaluateAstNode'
 import {

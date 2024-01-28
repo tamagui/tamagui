@@ -1,4 +1,4 @@
-import { TamaguiOptions } from './types'
+import type { TamaguiOptions } from './types'
 
 import net from 'node:net'
 

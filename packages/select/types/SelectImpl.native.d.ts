@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import { SelectImplProps } from './types';
+import type { SelectImplProps } from './types';
 /**
  * TODO can just make it a sheet for native
  * later on can have `native` prop

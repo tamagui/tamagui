@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 import { findDOMNode } from 'react-dom'
 
 export const findNodeHandle = (host?: React.ReactInstance | Element | Text) => {

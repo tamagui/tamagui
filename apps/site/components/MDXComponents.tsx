@@ -4,6 +4,9 @@ import { NextLink } from 'components/NextLink'
 import { useRouter } from 'next/router'
 import React, { forwardRef, useState } from 'react'
 import { ScrollView } from 'react-native'
+import type {
+  ImageProps,
+  XStackProps} from 'tamagui';
 import {
   Button,
   Card,
@@ -13,7 +16,6 @@ import {
   H4,
   H5,
   Image,
-  ImageProps,
   Paragraph,
   Separator,
   Spacer,
@@ -26,7 +28,6 @@ import {
   TooltipSimple,
   XGroup,
   XStack,
-  XStackProps,
   YStack,
   styled,
   withStaticProperties,
@@ -316,7 +317,7 @@ export const components = {
       <Paragraph
         tag="p"
         size={large ? '$9' : '$8'}
-        my="$4"
+        mb="$4"
         fow={large ? '200' : '300'}
         $sm={{
           size: '$7',

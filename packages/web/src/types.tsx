@@ -1,6 +1,6 @@
 import type { StyleObject } from '@tamagui/helpers'
 import type { Properties } from 'csstype'
-import {
+import type {
   ComponentType,
   ForwardRefExoticComponent,
   FunctionComponent,
@@ -19,15 +19,15 @@ import type {
 } from 'react-native'
 
 import type { Variable } from './createVariable'
-import { StyledContext } from './helpers/createStyledContext'
-import { CSSColorNames } from './interfaces/CSSColorNames'
-import { RNOnlyProps } from './interfaces/RNExclusiveTypes'
+import type { StyledContext } from './helpers/createStyledContext'
+import type { CSSColorNames } from './interfaces/CSSColorNames'
+import type { RNOnlyProps } from './interfaces/RNExclusiveTypes'
 import type { LanguageContextType } from './views/FontLanguage.types'
 import type { ThemeProviderProps } from './views/ThemeProvider'
-import { TamaguiComponentState } from './interfaces/TamaguiComponentState'
-import { WebOnlyPressEvents } from './interfaces/WebOnlyPressEvents'
-import { TamaguiComponentPropsBaseBase } from './interfaces/TamaguiComponentPropsBaseBase'
-import { SizeKeys, SpaceKeys, ColorKeys } from './interfaces/KeyTypes'
+import type { TamaguiComponentState } from './interfaces/TamaguiComponentState'
+import type { WebOnlyPressEvents } from './interfaces/WebOnlyPressEvents'
+import type { TamaguiComponentPropsBaseBase } from './interfaces/TamaguiComponentPropsBaseBase'
+import type { SizeKeys, SpaceKeys, ColorKeys } from './interfaces/KeyTypes'
 
 export * from './interfaces/KeyTypes'
 export * from './interfaces/TamaguiComponentState'

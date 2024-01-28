@@ -1,5 +1,6 @@
+import type {
+  MaskOptions} from '@tamagui/create-theme';
 import {
-  MaskOptions,
   addChildren,
   applyMask,
   createStrengthenMask,

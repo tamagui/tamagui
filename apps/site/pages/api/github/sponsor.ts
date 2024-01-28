@@ -1,5 +1,5 @@
 import { supabaseAdmin } from '@lib/supabaseAdmin'
-import { NextApiHandler } from 'next'
+import type { NextApiHandler } from 'next'
 
 const handler: NextApiHandler = async (req, res) => {
   if (!process.env.GITHUB_SPONSOR_WEBHOOK_SECRET) {

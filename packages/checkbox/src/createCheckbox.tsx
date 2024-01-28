@@ -1,13 +1,10 @@
-import {
+import type {
   CheckedState,
   CheckboxExtraProps as HeadlessCheckboxExtraProps,
-  isIndeterminate,
-  useCheckbox,
 } from '@tamagui/checkbox-headless'
+import { isIndeterminate, useCheckbox } from '@tamagui/checkbox-headless'
+import type { NativeValue, SizeTokens, StackProps } from '@tamagui/core'
 import {
-  NativeValue,
-  SizeTokens,
-  StackProps,
   getVariableValue,
   shouldRenderNativePlatform,
   useProps,
@@ -18,10 +15,12 @@ import { getFontSize } from '@tamagui/font-size'
 import { getSize } from '@tamagui/get-token'
 import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { useControllableState } from '@tamagui/use-controllable-state'
+import { registerFocusable } from '@tamagui/focusable'
 import React, { useContext } from 'react'
 
 import { CheckboxFrame, CheckboxIndicatorFrame } from './Checkbox'
 import { CheckboxStyledContext } from './CheckboxStyledContext'
+import { ButtonNestingContext } from '@tamagui/stacks'
 
 type CheckboxExpectingVariantProps = {
   size?: SizeTokens
@@ -101,6 +100,7 @@ export function createCheckbox<
       ...props
     } = _props
     const propsActive = useProps(props)
+    const isInsideButton = React.useContext(ButtonNestingContext)
 
     // TODO: this could be null - fix the type
     const styledContext = React.useContext(CheckboxStyledContext)
@@ -146,6 +146,20 @@ export function createCheckbox<
       )
     }
 
+    if (process.env.TAMAGUI_TARGET === 'native') {
+      React.useEffect(() => {
+        if (!props.id) return
+        if (checkboxProps.disabled) return
+
+        return registerFocusable(props.id, {
+          focusAndSelect: () => {
+            setChecked((x) => !x)
+          },
+          focus: () => {},
+        })
+      }, [props.id, setChecked, checkboxProps.disabled])
+    }
+
     return (
       <CheckboxContext.Provider
         value={{
@@ -163,7 +177,7 @@ export function createCheckbox<
               width: size,
               height: size,
             })}
-            tag="button"
+            tag={isInsideButton ? 'span' : 'button'}
             ref={checkboxRef}
             {...(unstyled === false && {
               size,

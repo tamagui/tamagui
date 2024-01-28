@@ -1,5 +1,5 @@
-import { GetProps, SizeTokens, TamaguiElement } from '@tamagui/core';
-import { ImageProps } from '@tamagui/image';
+import type { GetProps, SizeTokens, TamaguiElement } from '@tamagui/core';
+import type { ImageProps } from '@tamagui/image';
 import * as React from 'react';
 declare const createAvatarScope: import("@tamagui/create-context").CreateScope;
 type ImageLoadingStatus = 'idle' | 'loading' | 'loaded' | 'error';

@@ -1,12 +1,12 @@
 import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import {
+import type {
   AnimatedNumberStrategy,
   AnimationDriver,
   AnimationProp,
   UniversalAnimatedNumber,
-  useEvent,
 } from '@tamagui/web'
+import { useEvent } from '@tamagui/web'
 import { useEffect, useMemo, useRef } from 'react'
 import { Animated } from 'react-native'
 
@@ -358,7 +358,6 @@ export function createAnimations<A extends AnimationsConfig>(
           }
           return value
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
       }, args)
 
       useIsomorphicLayoutEffect(() => {

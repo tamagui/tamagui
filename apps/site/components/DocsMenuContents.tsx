@@ -18,7 +18,9 @@ const allItemsStrings = allItems.map((s) =>
   `${s?.page.title || ''} ${s?.section?.title || ''}`.trim()
 )
 
-export const DocsMenuContents = React.memo(function DocsMenuContents() {
+export const DocsMenuContents = React.memo(function DocsMenuContents({
+  inMenu,
+}: { inMenu?: boolean }) {
   const store = useStore(DocsItemsStore)
   const router = useRouter()
   const { currentPath } = useDocsMenu()
@@ -32,7 +34,16 @@ export const DocsMenuContents = React.memo(function DocsMenuContents() {
         w="100%"
         bw={0}
         bbw={0.5}
+        textContentType="none"
+        autoCapitalize="none"
+        autoCorrect={false}
         br="$0"
+        // @ts-ignore
+        name="Search"
+        dsp="none"
+        $pointerFine={{
+          dsp: 'flex',
+        }}
         borderColor="$color4"
         backgroundColor="transparent"
         focusStyle={{
@@ -42,6 +53,7 @@ export const DocsMenuContents = React.memo(function DocsMenuContents() {
         hoverStyle={{
           borderColor: '$color6',
         }}
+        autoComplete="off"
         placeholder="Filter..."
         placeholderTextColor="$gray9"
         onKeyPress={(e) => {
@@ -97,7 +109,7 @@ export const DocsMenuContents = React.memo(function DocsMenuContents() {
 
                 const contents = (
                   <DocsRouteNavItem
-                    inMenu
+                    inMenu={inMenu}
                     href={page.route}
                     active={currentPath === page.route}
                     pending={page['pending']}

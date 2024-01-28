@@ -1,6 +1,7 @@
-import { NodePath } from '@babel/traverse'
+import type { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
-import { TamaguiInternalConfig, createMediaStyle } from '@tamagui/core'
+import type { TamaguiInternalConfig } from '@tamagui/core'
+import { createMediaStyle } from '@tamagui/core'
 import type { ViewStyle } from 'react-native'
 
 import { requireTamaguiCore } from '../helpers/requireTamaguiCore'

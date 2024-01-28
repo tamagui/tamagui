@@ -1,6 +1,6 @@
-import { NativePlatform, NativeValue } from '@tamagui/core';
+import type { NativePlatform, NativeValue } from '@tamagui/core';
 import React from 'react';
-import { CreateNativeToastOptions, NativeToastRef } from './types';
+import type { CreateNativeToastOptions, NativeToastRef } from './types';
 export interface ToastImperativeOptions extends Omit<CreateNativeToastOptions, 'message'> {
     /**
      * Will show a native toast if is true or is set to the current platform. On iOS, it wraps `SPIndicator` and `SPAlert`. On Android, it wraps `ToastAndroid`. On web, it wraps Notification API. Mobile's native features are handled by `burnt`.

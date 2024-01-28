@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import { ScopedProps, SelectViewportProps } from './types';
+import type { ScopedProps, SelectViewportProps } from './types';
 export declare const SelectViewport: {
     (props: ScopedProps<SelectViewportProps>): JSX.Element;
     displayName: string;

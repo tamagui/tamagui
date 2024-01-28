@@ -1,5 +1,5 @@
-import React from 'react';
-import { FocusOutsideEvent, PointerDownOutsideEvent } from './Dismissable';
+import type React from 'react';
+import type { FocusOutsideEvent, PointerDownOutsideEvent } from './Dismissable';
 export interface DismissableProps {
     /**
      * When `true`, hover/focus/click interactions will be disabled on elements outside

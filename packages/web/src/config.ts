@@ -1,6 +1,6 @@
 import { isWeb } from '@tamagui/constants'
 
-import {
+import type {
   ConfigListener,
   TamaguiInternalConfig,
   Token,

@@ -7,7 +7,7 @@
  * @flow strict
  */
 
-import { Context } from 'react'
+import type { Context } from 'react'
 import { createContext } from 'react'
 
 export const TextAncestorContext = createContext(false)

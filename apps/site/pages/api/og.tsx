@@ -1,8 +1,8 @@
 import { getURL } from '@lib/helpers'
 import * as colors from '@tamagui/colors'
 import { ImageResponse } from '@vercel/og'
-import { NextRequest } from 'next/server'
-import { ReactElement } from 'react'
+import type { NextRequest } from 'next/server'
+import type { ReactElement } from 'react'
 
 export const config = {
   runtime: 'edge',

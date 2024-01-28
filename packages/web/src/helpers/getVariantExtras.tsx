@@ -1,6 +1,6 @@
 import { getVariableValue } from '../createVariable'
-import { GenericFonts, GetStyleState } from '../types'
-import { LanguageContextType } from '../views/FontLanguage.types'
+import type { GenericFonts, GetStyleState } from '../types'
+import type { LanguageContextType } from '../views/FontLanguage.types'
 
 export function getVariantExtras(styleState: GetStyleState) {
   const { curProps, conf, context, theme } = styleState

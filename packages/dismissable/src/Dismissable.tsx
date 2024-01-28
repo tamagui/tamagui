@@ -8,7 +8,7 @@ import { useEvent } from '@tamagui/use-event'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 
-import { DismissableBranchProps, DismissableProps } from './DismissableProps'
+import type { DismissableBranchProps, DismissableProps } from './DismissableProps'
 
 export function dispatchDiscreteCustomEvent<E extends CustomEvent>(
   target: E['target'],

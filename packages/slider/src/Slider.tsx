@@ -2,24 +2,22 @@
 
 import { composeRefs, useComposedRefs } from '@tamagui/compose-refs'
 import { isClient, isWeb } from '@tamagui/constants'
-import {
+import type {
   GestureReponderEvent,
   GetProps,
   SizeTokens,
   TamaguiElement,
-  createShallowSetState,
-  getTokens,
-  getVariableValue,
-  styled,
 } from '@tamagui/core'
+import { createShallowSetState, getTokens, getVariableValue, styled } from '@tamagui/core'
 import { getSize } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
 import { clamp, composeEventHandlers } from '@tamagui/helpers'
-import { SizableStackProps, ThemeableStack } from '@tamagui/stacks'
+import type { SizableStackProps } from '@tamagui/stacks'
+import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
 import * as React from 'react'
-import { View } from 'react-native'
+import type { View } from 'react-native'
 
 import {
   ARROW_KEYS,
@@ -43,7 +41,7 @@ import {
   roundValue,
 } from './helpers'
 import { SliderFrame, SliderImpl } from './SliderImpl'
-import {
+import type {
   ScopedProps,
   SliderContextValue,
   SliderHorizontalProps,

@@ -1,4 +1,4 @@
-import { ColorScheme, ThemeParsed, ThemeProps } from '../types';
+import type { ColorScheme, ThemeParsed, ThemeProps } from '../types';
 type ThemeListener = (name: string | null, themeManager: ThemeManager, forced: boolean) => void;
 export type SetActiveThemeProps = {
     className?: string;

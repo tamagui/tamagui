@@ -195,7 +195,7 @@ If you access `theme.bg.val` in your render function, the component will only
 re-render when theme.bg changes.
 
 ```tsx
-import { theme, Stack } from '@tamagui/core'
+import { theme, View } from '@tamagui/core'
 
 export default () => {
   const theme = useTheme()
@@ -204,7 +204,7 @@ export default () => {
   console.log(theme.bg.val)
 
   return (
-    <Stack backgroundColor={theme.color1} />
+    <View backgroundColor={theme.color1} />
   )
 }
 ```

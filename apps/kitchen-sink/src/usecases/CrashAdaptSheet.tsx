@@ -1,5 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
-import React from 'react'
 import { useWindowDimensions } from 'react-native'
 import { Button, H1, Dialog as TDialog, YStack } from 'tamagui'
 

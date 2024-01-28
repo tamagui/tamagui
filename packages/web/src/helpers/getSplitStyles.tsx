@@ -530,6 +530,11 @@ export const getSplitStyles: StyleSplitter = (
     const shouldPassThrough = shouldPassProp || isHOCShouldPassThrough
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+      // fix native group nesting issues
+      console.groupEnd()
+      console.groupEnd()
+      // fix native group nesting issues
+
       console.groupCollapsed(
         `  🔑 ${keyOg}${keyInit !== keyOg ? ` (shorthand for ${keyInit})` : ''} ${
           shouldPassThrough ? '(pass)' : ''
@@ -1508,8 +1513,10 @@ if (process.env.TAMAGUI_TARGET === 'native') {
       dataDetectorType: 1,
       dynamicTypeRamp: 1,
       elevationAndroid: 1,
+      hapticFeedback: 1,
       importantForAccessibility: 1,
       lineBreakStrategyIOS: 1,
+      maxFontSizeMultiplier: 1,
       minimumFontScale: 1,
       needsOffscreenAlphaCompositing: 1,
       nextFocusDown: 1,

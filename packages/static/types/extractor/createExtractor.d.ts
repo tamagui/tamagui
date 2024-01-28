@@ -1,7 +1,7 @@
-import { NodePath } from '@babel/traverse';
+import type { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
 import type { ExtractorOptions, ExtractorParseProps, TamaguiOptions } from '../types';
-import { TamaguiProjectInfo } from './bundleConfig';
+import type { TamaguiProjectInfo } from './bundleConfig';
 import { cleanupBeforeExit } from './getStaticBindingsForScope';
 export type Extractor = ReturnType<typeof createExtractor>;
 type FileOrPath = NodePath<t.Program> | t.File;

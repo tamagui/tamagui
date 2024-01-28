@@ -1,6 +1,6 @@
 /// <reference types="react" />
 import { View } from 'react-native';
-import { SnapPointsMode } from './types';
+import type { SnapPointsMode } from './types';
 export declare const SheetImplementationCustom: (props: Omit<{
     open?: boolean | undefined;
     defaultOpen?: boolean | undefined;

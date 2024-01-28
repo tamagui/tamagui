@@ -1,4 +1,4 @@
-import { ListItemProps } from '@tamagui/list-item';
+import type { ListItemProps } from '@tamagui/list-item';
 import * as React from 'react';
 type SelectItemContextValue = {
     value: string;

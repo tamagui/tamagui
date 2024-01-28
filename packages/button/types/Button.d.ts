@@ -1,6 +1,6 @@
-import { TextContextStyles, TextParentStyles } from '@tamagui/text';
-import { FontSizeTokens, GetProps, SizeTokens, ThemeableProps } from '@tamagui/web';
-import { FunctionComponent } from 'react';
+import type { TextContextStyles, TextParentStyles } from '@tamagui/text';
+import type { FontSizeTokens, GetProps, SizeTokens, ThemeableProps } from '@tamagui/web';
+import type { FunctionComponent } from 'react';
 export declare const ButtonContext: import("@tamagui/web").StyledContext<Partial<TextContextStyles & {
     size: SizeTokens;
     variant?: "outlined" | undefined;

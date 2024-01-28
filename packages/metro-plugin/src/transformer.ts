@@ -1,12 +1,14 @@
-import worker, {
+import type {
   JsTransformerConfig,
   JsTransformOptions,
   TransformResponse,
 } from 'metro-transform-worker'
+import worker from 'metro-transform-worker'
 import { join } from 'path'
 import { writeFile, mkdir } from 'fs/promises'
 
-import { createExtractor, extractToClassNames, TamaguiOptions } from '@tamagui/static'
+import type { TamaguiOptions } from '@tamagui/static'
+import { createExtractor, extractToClassNames } from '@tamagui/static'
 
 interface TamaguiJsTransformerConfig extends JsTransformerConfig {
   transformerPath?: string

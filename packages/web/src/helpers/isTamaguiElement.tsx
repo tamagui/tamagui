@@ -1,6 +1,6 @@
 import { isValidElement } from 'react'
 
-import { StaticConfig } from '../types'
+import type { StaticConfig } from '../types'
 import { isTamaguiComponent } from './isTamaguiComponent'
 
 export const isTamaguiElement = (

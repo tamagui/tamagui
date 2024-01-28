@@ -1,6 +1,6 @@
 import '@tamagui/polyfill-dev';
-import { SizeTokens } from '@tamagui/core';
-import { PopperProps } from '@tamagui/popper';
+import type { SizeTokens } from '@tamagui/core';
+import type { PopperProps } from '@tamagui/popper';
 import * as React from 'react';
 export type TooltipProps = PopperProps & {
     open?: boolean;
@@ -9,7 +9,7 @@ export type TooltipProps = PopperProps & {
     onOpenChange?: (open: boolean) => void;
     focus?: {
         enabled?: boolean;
-        keyboardOnly?: boolean;
+        visibleOnly?: boolean;
     };
     groupId?: string;
     restMs?: number;
@@ -33,7 +33,7 @@ export declare const Tooltip: React.ForwardRefExoticComponent<PopperProps & {
     onOpenChange?: ((open: boolean) => void) | undefined;
     focus?: {
         enabled?: boolean | undefined;
-        keyboardOnly?: boolean | undefined;
+        visibleOnly?: boolean | undefined;
     } | undefined;
     groupId?: string | undefined;
     restMs?: number | undefined;

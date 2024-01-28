@@ -1,5 +1,5 @@
 import { createUseStore } from '@tamagui/use-store'
-import Stripe from 'stripe'
+import type Stripe from 'stripe'
 
 class BentoStore {
   showPurchase = false

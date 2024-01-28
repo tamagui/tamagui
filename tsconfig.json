@@ -49,7 +49,7 @@
     "types": ["node", "react"],
     "lib": ["dom", "esnext"],
   },
-  "exclude": ["**/test", "**/dist", "**/types", "**/__tests__"],
+  "exclude": ["test", "dist", "types", "**/__tests__"],
   "typeAcquisition": {
     "enable": true
   },

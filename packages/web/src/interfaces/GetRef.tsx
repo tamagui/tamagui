@@ -1,6 +1,6 @@
-import { Component, JSXElementConstructor, Ref } from 'react'
+import type { Component, JSXElementConstructor, Ref } from 'react'
 
-import { TamaguiComponent } from '../types'
+import type { TamaguiComponent } from '../types'
 
 // gets the ref type of any type of react component
 

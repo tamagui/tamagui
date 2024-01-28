@@ -1,8 +1,15 @@
+<<<<<<< HEAD
 import { NativeValue, SizeTokens, StackProps, TamaguiComponentExpectingVariants } from '@tamagui/core';
 import { SwitchExtraProps as HeadlessSwitchExtraProps, SwitchState } from '@tamagui/switch-headless';
 import * as React from 'react';
 import { SwitchProps as NativeSwitchProps } from 'react-native';
 type ExpectingVariantProps = {
+=======
+import type { NativeValue, SizeTokens, StackProps } from '@tamagui/core';
+import * as React from 'react';
+import type { SwitchProps as NativeSwitchProps } from 'react-native';
+type SwitchSharedProps = {
+>>>>>>> master
     size?: SizeTokens | number;
     unstyled?: boolean;
 };

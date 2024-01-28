@@ -9,6 +9,8 @@ import {
   useProps,
   withStaticProperties,
 } from '@tamagui/core'
+import { registerFocusable } from '@tamagui/focusable'
+import { ButtonNestingContext } from '@tamagui/stacks'
 import {
   SwitchExtraProps as HeadlessSwitchExtraProps,
   SwitchState,
@@ -173,11 +175,24 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
         )
       }
 
+      if (!isWeb) {
+        React.useEffect(() => {
+          if (!props.id) return
+          return registerFocusable(props.id, {
+            focus: () => {
+              setChecked((x) => !x)
+            },
+          })
+        }, [props.id, setChecked])
+      }
+
+      const isInsideButton = React.useContext(ButtonNestingContext)
+
       return (
         <SwitchContext.Provider value={{ checked, disabled: switchProps.disabled }}>
           <Frame
             ref={switchRef}
-            tag="button"
+            tag={isInsideButton ? 'span' : 'button'}
             {...(isWeb && { type: 'button' })}
             frameWidth={frameWidth}
             onLayout={composeEventHandlers((switchProps as ViewProps).onLayout, (e) => {

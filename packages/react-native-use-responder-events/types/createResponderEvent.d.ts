@@ -3,7 +3,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { ResponderTouchHistoryStore, TouchHistory } from './ResponderTouchHistoryStore';
+import type { ResponderTouchHistoryStore, TouchHistory } from './ResponderTouchHistoryStore';
 export type ResponderEvent = {
     bubbles: boolean;
     cancelable: boolean;

@@ -1,6 +1,6 @@
-import { GetProps } from '@tamagui/core';
+import type { GetProps } from '@tamagui/core';
 import * as React from 'react';
-import { View } from 'react-native';
+import type { View } from 'react-native';
 declare const createRadioGroupScope: import("@tamagui/create-context").CreateScope;
 type TamaguiElement = HTMLElement | View;
 declare const RadioGroupFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {

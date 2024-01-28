@@ -1,10 +1,12 @@
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { GetProps, Stack, TamaguiElement, Text, styled, useEvent } from '@tamagui/core'
+import type { GetProps, TamaguiElement } from '@tamagui/core'
+import { Stack, Text, styled, useEvent } from '@tamagui/core'
 import { Portal } from '@tamagui/portal'
 import { VisuallyHidden } from '@tamagui/visually-hidden'
 import * as React from 'react'
 
-import { ScopedProps, useToastProviderContext } from './ToastProvider'
+import type { ScopedProps } from './ToastProvider'
+import { useToastProviderContext } from './ToastProvider'
 
 const ToastAnnounceExcludeFrame = styled(Stack, {
   name: 'ToastAnnounceExclude',

@@ -1,19 +1,20 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
-import {
+import type {
   FontSizeTokens,
+  SizableTextProps,
+  SizeTokens,
+  SpaceTokens,
+  ThemeName,
+  YStackProps} from 'tamagui';
+import {
   H1,
   H2,
   H4,
   Paragraph,
-  SizableTextProps,
-  SizeTokens,
-  SpaceTokens,
   Spacer,
   Theme,
-  ThemeName,
   XStack,
   YStack,
-  YStackProps,
   useComposedRefs,
   usePresence,
   useThemeName,
@@ -21,7 +22,8 @@ import {
 
 import { Code } from './Code'
 import { DocCodeBlock } from './DocsCodeBlock'
-import { DivProps, useHoverGlow } from './HoverGlow'
+import type { DivProps} from './HoverGlow';
+import { useHoverGlow } from './HoverGlow'
 
 export type SlideProps = {
   title?: React.ReactNode

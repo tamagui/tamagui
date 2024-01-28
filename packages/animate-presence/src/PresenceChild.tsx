@@ -1,10 +1,10 @@
 import { useConstant } from '@tamagui/use-constant'
 import { PresenceContext } from '@tamagui/use-presence'
-import { PresenceContextProps } from '@tamagui/web'
+import type { PresenceContextProps } from '@tamagui/web'
 import * as React from 'react'
 import { useId } from 'react'
 
-import { VariantLabels } from './types'
+import type { VariantLabels } from './types'
 
 interface PresenceChildProps {
   children: React.ReactElement<any>
@@ -62,7 +62,7 @@ export const PresenceChild = ({
      * we want to make a new context value to ensure they get re-rendered
      * so they can detect that layout change.
      */
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
     presenceAffectsLayout ? undefined : [isPresent, exitVariant, enterVariant]
   )
 

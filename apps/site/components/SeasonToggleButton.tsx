@@ -1,7 +1,8 @@
 import { TamaguiLogo, setTintFamily, useTint } from '@tamagui/logo'
+import type {
+  ButtonProps} from 'tamagui';
 import {
   Button,
-  ButtonProps,
   Circle,
   Popover,
   SizableText,
@@ -22,7 +23,7 @@ export const SeasonToggleButton = (props: ButtonProps) => {
 
   return (
     <Popover hoverable>
-      <Popover.Trigger>
+      <Popover.Trigger asChild>
         <Button
           size="$3"
           w={38}

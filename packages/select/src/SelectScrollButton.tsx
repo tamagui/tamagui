@@ -1,12 +1,12 @@
 import { autoUpdate, offset, useFloating } from '@floating-ui/react'
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { TamaguiElement } from '@tamagui/core'
+import type { TamaguiElement } from '@tamagui/core'
 import { YStack } from '@tamagui/stacks'
 import * as React from 'react'
 import { flushSync } from 'react-dom'
 
 import { useSelectContext } from './context'
-import {
+import type {
   ScopedProps,
   SelectScrollButtonImplProps,
   SelectScrollButtonProps,

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/monorepo-test",
-  "version": "1.88.11",
+  "version": "1.89.0-1706360676826",
   "module": "dist/esm",
   "private": true,
   "license": "MIT",

@@ -3,7 +3,7 @@ import { useRef } from 'react'
 import { SizableText, Spacer, XStack, YStack } from 'tamagui'
 import { useStore, useStoreSelector, getStore } from '@tamagui/use-store'
 
-import { NavItemProps } from './DocsPage'
+import type { NavItemProps } from './DocsPage'
 import { ExternalIcon } from './ExternalIcon'
 
 export class DocsItemsStore {

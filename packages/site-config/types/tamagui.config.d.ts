@@ -49482,6 +49482,9 @@ export declare const config: {
         gtXl: {
             minWidth: number;
         };
+        pointerFine: {
+            pointer: string;
+        };
     };
     shorthands: {
         readonly ussel: "userSelect";

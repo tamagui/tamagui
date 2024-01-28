@@ -1,10 +1,11 @@
 import { useDelayGroupContext } from '@floating-ui/react'
 import { getSpace } from '@tamagui/get-token'
-import { SizableStackProps } from '@tamagui/stacks'
+import type { SizableStackProps } from '@tamagui/stacks'
 import { Paragraph } from '@tamagui/text'
 import * as React from 'react'
 
-import { Tooltip, TooltipGroup, TooltipProps } from './Tooltip'
+import type { TooltipProps } from './Tooltip'
+import { Tooltip, TooltipGroup } from './Tooltip'
 
 export type TooltipSimpleProps = TooltipProps & {
   disabled?: boolean
@@ -17,7 +18,6 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = React.forwardRef(
   ({ label, children, contentProps, disabled, ...tooltipProps }, ref) => {
     let context
     try {
-      // eslint-disable-next-line react-hooks/rules-of-hooks
       context = useDelayGroupContext()
     } catch {
       // ok
