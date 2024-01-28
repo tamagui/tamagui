@@ -10,7 +10,6 @@ import { useMemo, useState } from 'react'
 import type Stripe from 'stripe'
 import type { ButtonProps } from 'tamagui'
 import {
-  Anchor,
   AnimatePresence,
   Button,
   Card,
@@ -36,6 +35,7 @@ import {
   YStack,
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
+import Image from 'next/image'
 
 import { ContainerLarge } from '../../components/Container'
 import { getDefaultLayout } from '../../lib/getDefaultLayout'
@@ -49,8 +49,31 @@ export default function ProPage() {
 
   return (
     <YStack>
+      <ThemeTintAlt>
+        <LinearGradient
+          // colors={[`$color8`, `transparent`]}
+          colors={[`transparent`, `$color1`]}
+          start={[0, 0.5]}
+          end={[0, 0]}
+          fullscreen
+          mah={1000}
+          y={-100}
+        />
+      </ThemeTintAlt>
+
+      <YStack
+        pe="none"
+        pos="absolute"
+        t={-950}
+        l="50%"
+        x={-300}
+        rotate="120deg"
+        o={0.025}
+        zi={-1}
+      >
+        <Image alt="mandala" width={2500} height={2500} src="/takeout/geometric.svg" />
+      </YStack>
       <Hero />
-      <Spacer size={'$8'} />
       <Body />
       <PurchaseModal
         coupon={
@@ -84,25 +107,7 @@ const Hero = () => {
   const store = useBentoStore()
 
   return (
-    <YStack pos="relative" mt={-55} pt={55} zi={0}>
-      <ThemeTint>
-        <LinearGradient
-          colors={[`$backgroundStrong`, `$color5`]}
-          start={[0, 1]}
-          end={[0, 0]}
-          fullscreen
-        />
-      </ThemeTint>
-      <ThemeTintAlt>
-        <LinearGradient
-          // colors={[`$color8`, `transparent`]}
-          colors={[`transparent`, `$color5`]}
-          start={[0, 1]}
-          end={[0, 0]}
-          fullscreen
-        />
-      </ThemeTintAlt>
-
+    <YStack pos="relative" pb="$4" zi={0}>
       <ContainerLarge>
         <XStack gap="$6" py="$12" bc="transparent" jc="space-between" w={'100%'}>
           <YStack
@@ -114,9 +119,18 @@ const Hero = () => {
             ai="flex-start"
             gap="$4"
           >
-            <H1 maw="100%" f={1} size="$14" mb="$-2">
-              Bento
-            </H1>
+            <ThemeTint>
+              <H1
+                className="text-3d"
+                ff="$cherryBomb"
+                color="$color10"
+                maw="100%"
+                f={1}
+                size="$14"
+              >
+                BENTO
+              </H1>
+            </ThemeTint>
 
             <YStack gap="$3">
               <ThemeTintAlt>
@@ -126,7 +140,7 @@ const Hero = () => {
                 </Paragraph>
               </ThemeTintAlt>
 
-              <Paragraph color="$gray12" size="$6">
+              <Paragraph color="$gray11" size="$6">
                 $200 for lifetime access.
               </Paragraph>
             </YStack>
@@ -136,11 +150,15 @@ const Hero = () => {
             <XStack gap="$3">
               <ThemeTintAlt>
                 <Button
-                  icon={ShoppingCart}
+                  iconAfter={ShoppingCart}
                   fontFamily="$mono"
-                  size="$5"
+                  size="$6"
+                  fontSize={22}
                   bg="$color8"
                   color="$color4"
+                  fontWeight="600"
+                  scaleSpace={1}
+                  scaleIcon={1.4}
                   hoverStyle={{
                     bg: '$color9',
                     boc: '$color9',
@@ -178,13 +196,13 @@ const Hero = () => {
 const Body = () => {
   return (
     <ContainerLarge gap="$2">
-      <H2>Sections</H2>
+      {/* <H2>Sections</H2>
       <Paragraph size="$6" color={'$gray11'}>
         Components are divided into sections and each section has multiple groups of
         related components.
       </Paragraph>
 
-      <Spacer size="$8" />
+      <Spacer size="$8" /> */}
 
       <YStack gap="$12">
         {sections.listingData.sections.map(({ sectionName, parts }) => {
@@ -193,13 +211,13 @@ const Body = () => {
               <H2 fontSize={'$8'} f={2}>
                 {`${sectionName[0].toUpperCase()}${sectionName.slice(1)}`}
               </H2>
-              <Separator o={0.5} />
               <XStack gap={'$6'} f={4} fw="wrap" fs={1}>
-                {parts.map(({ name: partsName, numberOfComponents, route }) => (
+                {parts.map(({ name: partsName, numberOfComponents, route, preview }) => (
                   <ComponentGroupsBanner
                     path={route}
                     name={partsName}
                     numberOfComponents={numberOfComponents}
+                    preview={preview}
                   />
                 ))}
               </XStack>
@@ -208,8 +226,6 @@ const Body = () => {
         })}
       </YStack>
 
-      <Spacer size="$12" />
-      <Separator />
       <Spacer size="$12" />
     </ContainerLarge>
   )
@@ -723,39 +739,71 @@ const PurchaseModal = ({ starter, coupon }) => {
   )
 }
 
+const EmptyFn = () => (
+  <XStack w={200} br="$10" bg="$color8" h="$4" elevation="$4" bw={1} boc="$color10" />
+)
+
 function ComponentGroupsBanner({
   name,
   numberOfComponents,
   path,
+  preview,
 }: {
   name: string
   numberOfComponents: number
   path: string
+  preview?: () => JSX.Element
 }) {
+  const Preview = preview || EmptyFn
+
   return (
-    <Anchor
-      hoverStyle={{
-        borderColor: '$blue5',
-      }}
-      maw="calc(50% - var(--size-5))"
-      ov="hidden"
-      bc="$background"
-      mih={300}
-      br="$9"
-      accessible
-      cursor="pointer"
-      href={BASE_PATH + path}
-    >
-      <EnsureFlexed />
-      <YStack p="$5">
-        <H4 fontWeight={'normal'} fontSize="$4">
-          {name}
-        </H4>
-        <H5 fontWeight={'normal'} fontSize={'$2'}>
-          {numberOfComponents} components
-        </H5>
+    <NextLink href={BASE_PATH + path} passHref>
+      <YStack
+        tag="a"
+        animation="quicker"
+        maw="calc(34% - 32px)"
+        ov="hidden"
+        elevation="$3"
+        bc="$background"
+        mih={300}
+        br="$9"
+        accessible
+        cursor="pointer"
+        pos="relative"
+        btc="$color5"
+        btw={1}
+        hoverStyle={{
+          y: -2,
+          bc: '$color3',
+          outlineWidth: 3,
+          outlineStyle: 'solid',
+          outlineColor: '$color9',
+        }}
+        pressStyle={{
+          bc: '$color1',
+          y: 3,
+        }}
+      >
+        <EnsureFlexed />
+        <YStack
+          fullscreen
+          className="bg-grid mask-gradient-down"
+          style={{ backgroundPosition: 'top left' }}
+          o={0.075}
+        />
+        <YStack fullscreen ai="center" jc="center">
+          <Preview />
+        </YStack>
+        <YStack p="$5" gap="$1">
+          <H4 fontWeight={'normal'} fontSize="$8">
+            {name}
+          </H4>
+          <H5 theme="alt2" fontWeight={'normal'} fontSize={'$2'}>
+            {numberOfComponents} components
+          </H5>
+        </YStack>
       </YStack>
-    </Anchor>
+    </NextLink>
   )
 }
 
