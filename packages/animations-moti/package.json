@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/animations-moti",
-  "version": "1.89.0-1706360676826",
+  "version": "1.89.0-1706483140977",
   "source": "src/index.ts",
   "license": "MIT",
   "types": "./types/index.d.ts",
@@ -15,13 +15,13 @@
     "dist"
   ],
   "dependencies": {
-    "@tamagui/use-presence": "1.89.0-1706360676826",
-    "@tamagui/web": "1.89.0-1706360676826",
+    "@tamagui/use-presence": "1.89.0-1706483140977",
+    "@tamagui/web": "1.89.0-1706483140977",
     "moti": "^0.27.2",
     "react": "^18.2.0"
   },
   "devDependencies": {
-    "@tamagui/build": "1.89.0-1706360676826",
+    "@tamagui/build": "1.89.0-1706483140977",
     "react-native-reanimated": "~3.3.0"
   },
   "scripts": {
