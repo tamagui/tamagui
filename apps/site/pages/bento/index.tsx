@@ -3,16 +3,12 @@ import { PoweredByStripeIcon } from '@components/PoweredByStripeIcon'
 import { getTakeoutPriceInfo } from '@lib/getProductInfo'
 import * as sections from '@tamagui/bento'
 import { ButtonDemo, InputsDemo, SelectDemo } from '@tamagui/demos'
-import { getSize } from '@tamagui/get-token'
-import { ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
-import { Check, CheckCircle, ShoppingCart, X, XCircle } from '@tamagui/lucide-icons'
+import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
+import { CheckCircle, ShoppingCart, X, XCircle } from '@tamagui/lucide-icons'
 import { useBentoStore } from 'hooks/useBentoStore'
-import React, { useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import type Stripe from 'stripe'
-import type {
-  ButtonProps,
-  FontSizeTokens,
-  XStackProps} from 'tamagui';
+import type { ButtonProps } from 'tamagui'
 import {
   Anchor,
   AnimatePresence,
@@ -25,7 +21,6 @@ import {
   H3,
   H4,
   H5,
-  Image,
   Input,
   Label,
   Paragraph,
@@ -45,103 +40,183 @@ import { LinearGradient } from 'tamagui/linear-gradient'
 import { ContainerLarge } from '../../components/Container'
 import { getDefaultLayout } from '../../lib/getDefaultLayout'
 
-const Point = ({
-  size = '$4',
-  children,
-  subtitle,
-  ...props
-}: XStackProps & {
-  children: any
-  subtitle?: any
-  size?: FontSizeTokens
-}) => {
+export default function ProPage() {
+  // const store = useBentoStore()
+
+  if (!process.env.NEXT_PUBLIC_IS_TAMAGUI_DEV) {
+    return null
+  }
+
   return (
-    <XStack tag="li" ai="flex-start" space f={1} ov="hidden" {...props}>
-      <YStack py="$1.5">
-        <Check size={16} color="$color10" />
-      </YStack>
-      <YStack f={1}>
-        <Paragraph wordWrap="break-word" size={size}>
-          {children}
-        </Paragraph>
-        {!!subtitle && (
-          <Paragraph
-            size={
-              getSize(size, {
-                shift: -2,
-              }) as any
-            }
-            theme="alt2"
-            o={0.5}
+    <YStack>
+      <Hero />
+      <Spacer size={'$8'} />
+      <Body />
+      <PurchaseModal
+        coupon={
+          {
+            // stripe coupon
+          } as Stripe.Coupon
+        }
+        starter={{
+          active: true,
+          description: 'a collection of components',
+          id: 'bento',
+          image: '/img',
+          name: 'Bento',
+          prices: [
+            {
+              active: true,
+              currency: 'usd',
+              unit_amount: 20000,
+            },
+          ],
+        }}
+      />
+      <Spacer size="$10" />
+    </YStack>
+  )
+}
+
+ProPage.getLayout = getDefaultLayout
+
+const Hero = () => {
+  const store = useBentoStore()
+
+  return (
+    <YStack pos="relative" mt={-55} pt={55} zi={0}>
+      <ThemeTint>
+        <LinearGradient
+          colors={[`$backgroundStrong`, `$color5`]}
+          start={[0, 1]}
+          end={[0, 0]}
+          fullscreen
+        />
+      </ThemeTint>
+      <ThemeTintAlt>
+        <LinearGradient
+          // colors={[`$color8`, `transparent`]}
+          colors={[`transparent`, `$color5`]}
+          start={[0, 1]}
+          end={[0, 0]}
+          fullscreen
+        />
+      </ThemeTintAlt>
+
+      <ContainerLarge>
+        <XStack gap="$6" py="$12" bc="transparent" jc="space-between" w={'100%'}>
+          <YStack
+            maw="55%"
+            ov="hidden"
+            zi={100}
+            jc="space-between"
+            f={10}
+            ai="flex-start"
+            gap="$4"
           >
-            {subtitle}
-          </Paragraph>
-        )}
+            <H1 maw="100%" f={1} size="$14" mb="$-2">
+              Bento
+            </H1>
+
+            <YStack gap="$3">
+              <ThemeTintAlt>
+                <Paragraph size="$9" color="$color10">
+                  Boost your React Native app development speed with a suite of copy-paste
+                  components and screens.
+                </Paragraph>
+              </ThemeTintAlt>
+
+              <Paragraph color="$gray12" size="$6">
+                $200 for lifetime access.
+              </Paragraph>
+            </YStack>
+
+            <Separator />
+
+            <XStack gap="$3">
+              <ThemeTintAlt>
+                <Button
+                  icon={ShoppingCart}
+                  fontFamily="$mono"
+                  size="$5"
+                  bg="$color8"
+                  color="$color4"
+                  hoverStyle={{
+                    bg: '$color9',
+                    boc: '$color9',
+                  }}
+                  pressStyle={{
+                    bg: '$color6',
+                  }}
+                  onPress={() => {
+                    store.showPurchase = true
+                  }}
+                >
+                  $200
+                </Button>
+              </ThemeTintAlt>
+            </XStack>
+          </YStack>
+
+          <XStack zi={100} gap="$4" mr={-400} mah={300} als="center">
+            <Card elevate>
+              <ButtonDemo />
+            </Card>
+            <Card elevate>
+              <InputsDemo />
+            </Card>
+            <Card p="$4" elevate>
+              <SelectDemo />
+            </Card>
+          </XStack>
+        </XStack>
+      </ContainerLarge>
+    </YStack>
+  )
+}
+
+const Body = () => {
+  return (
+    <ContainerLarge gap="$2">
+      <H2>Sections</H2>
+      <Paragraph size="$6" color={'$gray11'}>
+        Components are divided into sections and each section has multiple groups of
+        related components.
+      </Paragraph>
+
+      <Spacer size="$8" />
+
+      <YStack gap="$12">
+        {sections.listingData.sections.map(({ sectionName, parts }) => {
+          return (
+            <YStack gap="$4" jc={'space-between'}>
+              <H2 fontSize={'$8'} f={2}>
+                {`${sectionName[0].toUpperCase()}${sectionName.slice(1)}`}
+              </H2>
+              <Separator o={0.5} />
+              <XStack gap={'$6'} f={4} fw="wrap" fs={1}>
+                {parts.map(({ name: partsName, numberOfComponents, route }) => (
+                  <ComponentGroupsBanner
+                    path={route}
+                    name={partsName}
+                    numberOfComponents={numberOfComponents}
+                  />
+                ))}
+              </XStack>
+            </YStack>
+          )
+        })}
       </YStack>
-    </XStack>
+
+      <Spacer size="$12" />
+      <Separator />
+      <Spacer size="$12" />
+    </ContainerLarge>
   )
 }
 
 const checkCircle = <CheckCircle color="$green9" />
 const xCircle = <XCircle size={28} color="$red9" />
-
-const points = {
-  // this one's only shown on modal
-  monorepo: [
-    'Well-isolated configuration.',
-    'Nearly all code shared between web and native.',
-    'Guided setup script, easily generate common patterns.',
-  ],
-  design: [
-    'Complete design system with the new ThemeBuilder for easy customization.',
-    'Two new theme packs - Neon and Pastel.',
-  ],
-  deploy: [
-    'Vercel + Preview Deploys.',
-    'Expo EAS + Expo Router.',
-    'Script that sets up both local and remote dev environments.',
-  ],
-  screens: [
-    'Variety of screen types adapted to each platform.',
-    'Onboarding, auth, account, settings, profile, feed, edit profile.',
-    'Universal forms + zod validation.',
-  ],
-  assets: [
-    '+150 icon packs, adapted to use themes, sizing, and tree shaking.',
-    'All of Google fonts, over +1500 packs.',
-  ],
-  more: [
-    'Image upload and Supabase utils.',
-    'Reanimated, Solito, React Query, Zod & more',
-    'TakeoutBot ongoing updates.',
-    'Private Discord.',
-  ],
-}
-
-const Points = () => (
-  <YStack tag="ul" gap="$1.5" zi={2} ov="hidden">
-    {/* <Point>React (web, native, ios) monorepo sharing a single codebase</Point>
-    <Point>
-      All the important screens: Onboard, Register, Login, Forgot Password, Account,
-      Settings, Profile, Edit Profile, Feed
-    </Point>
-    <Point>SSR, RSC, choose from 3 animation drivers</Point> 
-    <Point>Complete & fully typed design system</Point>
-    <Point>+150 icon packs</Point>
-    <Point>2 all new theme suites: Pastel & Neon</Point>
-    <Point>All of Google fonts fonts</Point>
-    <Point>Github template with PR bot for updates</Point>
-    <Point>Fully tested CI/CD: unit, integration, web and native</Point>
-    <Point>Preview deploys for web, app-store builds with EAS</Point> */}
-    {Object.entries(points).map(([key, group]) => (
-      <React.Fragment key={key}>
-        {group.map((point) => (
-          <Point key={point}>{point}</Point>
-        ))}
-      </React.Fragment>
-    ))}
-  </YStack>
-)
 
 function formatPrice(amount: number, currency: string) {
   return new Intl.NumberFormat('en', {
@@ -556,7 +631,7 @@ const PurchaseModal = ({ starter, coupon }) => {
 
                     <YStack pb="$8" px="$4" space>
                       <NextLink
-                        href={`api/checkout?${(function () {
+                        href={`api/checkout?${(() => {
                           const params = new URLSearchParams({
                             // product_id: products.id,
                             // price_id: selectedPriceId,
@@ -648,141 +723,6 @@ const PurchaseModal = ({ starter, coupon }) => {
   )
 }
 
-const Hero = () => {
-  const store = useBentoStore()
-
-  return (
-    <YStack pos="relative" mt={-55} pt={55} zi={0}>
-      <ThemeTint>
-        <LinearGradient
-          colors={[`$backgroundStrong`, `$color5`]}
-          start={[0, 1]}
-          end={[0, 0]}
-          fullscreen
-        />
-      </ThemeTint>
-      <ThemeTintAlt>
-        <LinearGradient
-          // colors={[`$color8`, `transparent`]}
-          colors={[`transparent`, `$color5`]}
-          start={[0, 1]}
-          end={[0, 0]}
-          fullscreen
-        />
-      </ThemeTintAlt>
-
-      <ContainerLarge>
-        <XStack gap="$6" py="$12" bc="transparent" jc="space-between" w={'100%'}>
-          <YStack
-            maw="55%"
-            ov="hidden"
-            zi={100}
-            jc="space-between"
-            f={10}
-            ai="flex-start"
-            gap="$4"
-          >
-            <H1 maw="100%" f={1} size="$14" mb="$-2">
-              Bento
-            </H1>
-
-            <YStack gap="$3">
-              <ThemeTintAlt>
-                <Paragraph size="$9" color="$color10">
-                  Boost your React Native app development speed with a suite of copy-paste
-                  components and screens.
-                </Paragraph>
-              </ThemeTintAlt>
-
-              <Paragraph color="$gray12" size="$6">
-                $200 for lifetime access.
-              </Paragraph>
-            </YStack>
-
-            <Separator />
-
-            <XStack gap="$3">
-              <ThemeTintAlt>
-                <Button
-                  icon={ShoppingCart}
-                  fontFamily="$mono"
-                  size="$5"
-                  bg="$color8"
-                  color="$color4"
-                  hoverStyle={{
-                    bg: '$color9',
-                    boc: '$color9',
-                  }}
-                  pressStyle={{
-                    bg: '$color6',
-                  }}
-                  onPress={() => {
-                    store.showPurchase = true
-                  }}
-                >
-                  $200
-                </Button>
-              </ThemeTintAlt>
-            </XStack>
-          </YStack>
-
-          <XStack zi={100} gap="$4" mr={-400} mah={300} als="center">
-            <Card elevate>
-              <ButtonDemo />
-            </Card>
-            <Card elevate>
-              <InputsDemo />
-            </Card>
-            <Card p="$4" elevate>
-              <SelectDemo />
-            </Card>
-          </XStack>
-        </XStack>
-      </ContainerLarge>
-    </YStack>
-  )
-}
-
-const Body = () => {
-  return (
-    <ContainerLarge gap="$2">
-      <H2>Sections</H2>
-      <Paragraph size="$6" color={'$gray11'}>
-        Components are divided into sections and each section has multiple groups of
-        related components.
-      </Paragraph>
-
-      <Spacer size="$8" />
-
-      <YStack gap="$12">
-        {sections.listingData.sections.map(({ sectionName, parts }) => {
-          return (
-            <YStack gap="$4" jc={'space-between'}>
-              <H2 fontSize={'$8'} f={2}>
-                {`${sectionName[0].toUpperCase()}${sectionName.slice(1)}`}
-              </H2>
-              <Separator o={0.5} />
-              <XStack gap={'$6'} f={4} fw="wrap" fs={1}>
-                {parts.map(({ name: partsName, numberOfComponents, route }) => (
-                  <ComponentGroupsBanner
-                    path={route}
-                    name={partsName}
-                    numberOfComponents={numberOfComponents}
-                  />
-                ))}
-              </XStack>
-            </YStack>
-          )
-        })}
-      </YStack>
-
-      <Spacer size="$12" />
-      <Separator />
-      <Spacer size="$12" />
-    </ContainerLarge>
-  )
-}
-
 function ComponentGroupsBanner({
   name,
   numberOfComponents,
@@ -820,42 +760,3 @@ function ComponentGroupsBanner({
 }
 
 const BASE_PATH = ' /bento'
-
-export default () => null
-
-// export default this component
-export function ProPage() {
-  const store = useBentoStore()
-  return (
-    <YStack>
-      <Hero />
-      <Spacer size={'$8'} />
-      <Body />
-      <PurchaseModal
-        coupon={
-          {
-            // stripe coupon
-          } as Stripe.Coupon
-        }
-        starter={{
-          active: true,
-          description: 'a collection of components',
-          id: 'bento',
-          image: '/img',
-          name: 'Bento',
-          prices: [
-            {
-              active: true,
-              currency: 'usd',
-              unit_amount: 20000,
-            },
-          ],
-        }}
-      />
-
-      <Spacer size="$10" />
-    </YStack>
-  )
-}
-
-ProPage.getLayout = getDefaultLayout

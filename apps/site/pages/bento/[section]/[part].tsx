@@ -5,9 +5,11 @@ import { useRouter } from 'next/router'
 import { ContainerLarge } from '../../../components/Container'
 import { getDefaultLayout } from '../../../lib/getDefaultLayout'
 
-export default () => null
+export default function page({ codes }) {
+  if (!process.env.NEXT_PUBLIC_IS_TAMAGUI_DEV) {
+    return null
+  }
 
-export function page({ codes }) {
   const router = useRouter()
   const params = router.query as { section: string; part: string }
   const Comp = sections[params.section][params.part]
