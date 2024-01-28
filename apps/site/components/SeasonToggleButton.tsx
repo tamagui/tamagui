@@ -14,11 +14,10 @@ export const SeasonToggleButton = (props: ButtonProps) => {
 
   return (
     <Popover hoverable>
-      <Popover.Trigger asChild>
+      <Popover.Trigger>
         <Button
           size="$3"
           w={38}
-          h={30}
           onPress={(e) => {
             setNextTint()
             e.stopPropagation()
