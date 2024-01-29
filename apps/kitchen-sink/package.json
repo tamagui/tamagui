@@ -76,7 +76,6 @@
     "@rnx-kit/metro-resolver-symlinks": "^0.1.26",
     "@tamagui/babel-plugin": "1.88.16",
     "@welldone-software/why-did-you-render": "^7.0.1",
-    "babel-plugin-transform-inline-environment-variables": "^0.4.4",
     "html-webpack-plugin": "^5.5.0",
     "metro-runtime": "*",
     "mini-css-extract-plugin": "^2.7.6",
