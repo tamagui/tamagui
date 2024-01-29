@@ -14,31 +14,7 @@ export const Sandbox = () => {
       <>
         {/* <AnimatedNumbers /> */}
 
-        <MenuSquare bg="$background" />
-
-        <Sheet
-          modal
-          open={open}
-          onOpenChange={setOpen}
-          animation="lazy"
-          dismissOnOverlayPress={false}
-          dismissOnSnapToBottom={false}
-        >
-          <Sheet.Overlay
-            animation="lazy"
-            backgroundColor="transparent"
-            height="100%"
-            style={{ backdropFilter: 'blur(6px)' }}
-          />
-          <Sheet.Frame
-            backgroundColor="#fff"
-            flex={1}
-            justifyContent="flex-end"
-            padding="$4"
-          >
-            <Square size={100} bc="red" />
-          </Sheet.Frame>
-        </Sheet>
+        {/* <Square debug="verbose" size={100} bg="$tokenNonExistent" /> */}
       </>
     </View>
   )

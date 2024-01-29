@@ -1,4 +1,4 @@
-import { isWeb } from '@tamagui/constants'
+import { isClient, isWeb } from '@tamagui/constants'
 
 import { getThemes } from '../config'
 import { THEME_CLASSNAME_PREFIX, THEME_NAME_SEPARATOR } from '../constants/constants'
@@ -277,7 +277,11 @@ function getState(
 
     const found = potentials.find((t) => t in themes)
 
-    if (process.env.NODE_ENV !== 'production' && typeof props.debug === 'string') {
+    if (
+      process.env.NODE_ENV !== 'production' &&
+      typeof props.debug === 'string' &&
+      isClient
+    ) {
       console.info(' getState ', {
         props,
         found,
@@ -320,11 +324,7 @@ function getState(
     }
   }
 
-  if (
-    process.env.NODE_ENV !== 'production' &&
-    props.debug === 'verbose' &&
-    typeof window !== 'undefined'
-  ) {
+  if (process.env.NODE_ENV !== 'production' && props.debug === 'verbose' && isClient) {
     console.groupCollapsed('ThemeManager.getState()')
     console.info({ props, baseName, base, min, max })
     console.warn('result', { result })
