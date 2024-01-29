@@ -1,3 +1,5 @@
+- icons move from themed() to just styled()
+
 - nextjs plugin should automatically do the t_unmounted thing if disableSSR isnt true
 
 - opacity values desperately needed

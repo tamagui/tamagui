@@ -1,4 +1,4 @@
-import { getTokenValue, getVariable, usePropsAndStyle } from '@tamagui/core'
+import { getTokenValue, getVariable, usePropsAndStyle, Text } from '@tamagui/core'
 import React from 'react'
 
 import type { IconProps } from './IconProps'
@@ -22,13 +22,14 @@ export function themed(
 ) {
   const wrapped = (propsIn: IconProps) => {
     const [props, style, theme] = usePropsAndStyle(propsIn, {
+      // forComponent: Text,
       resolveValues: 'web', // iOS doesnt support dynamic values for SVG so only optimize on web
     })
 
     const defaultColor = style.color ?? opts.defaultThemeColor
 
     const color = getVariable(
-      (defaultColor ? theme[defaultColor] : undefined) ||
+      (defaultColor ? theme[defaultColor as string] : undefined) ||
         style.color ||
         (!props.disableTheme ? theme.color : null) ||
         opts.fallbackColor

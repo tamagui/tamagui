@@ -1,18 +1,10 @@
 // debug-verbose
 // import './wdyr'
 
+import { MenuSquare } from '@tamagui/lucide-icons'
 import { useState } from 'react'
 import { View } from 'react-native'
-import {
-  AnimatePresence,
-  Button,
-  Text,
-  Square,
-  useStyle,
-  styled,
-  Stack,
-  Sheet,
-} from 'tamagui'
+import { AnimatePresence, Button, Sheet, Square, Stack, Text, styled } from 'tamagui'
 
 export const Sandbox = () => {
   const [open, setOpen] = useState(true)
@@ -21,6 +13,8 @@ export const Sandbox = () => {
     <View style={{ width: '100%', height: '100%', padding: 50 }}>
       <>
         {/* <AnimatedNumbers /> */}
+
+        <MenuSquare bg="$background" />
 
         <Sheet
           modal
