@@ -1,3 +1,5 @@
+- // TODO: pulling past the limit breaks scroll on native, need to better make ScrollView
+
 - icons move from themed() to just styled()
 
 - nextjs plugin should automatically do the t_unmounted thing if disableSSR isnt true

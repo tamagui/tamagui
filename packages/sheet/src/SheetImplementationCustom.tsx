@@ -281,9 +281,10 @@ export const SheetImplementationCustom = themeable(
         // prevent drag once at top and pulling up
         if (isNearTop) {
           if (!isScrolled && isDraggingUp) {
-            // this was here but it breaks the pull past limit
-            // maybe this caused issues with scrolling, but if so we should probably make it configurable
-            // return false
+            // TODO: pulling past the limit breaks scroll on native, need to better make ScrollView
+            if (!isWeb) {
+              return false
+            }
           }
         }
         // we could do some detection of other touchables and cancel here..
