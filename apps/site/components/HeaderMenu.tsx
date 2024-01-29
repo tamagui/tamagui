@@ -169,8 +169,8 @@ const HeaderMenuContent = React.memo(function HeaderMenuContent() {
         style: { backdropFilter: 'blur(18px)' },
       }}
     >
-      <Popover.Arrow bg="$color5" size="$4" borderWidth={0} o={0.85} />
-      <YStack fullscreen bg="$color5" zi={0} br="$6" o={0.85} />
+      <Popover.Arrow bg="$color5" size="$4" borderWidth={0} o={0.95} />
+      <YStack fullscreen bg="$color5" zi={0} br="$6" o={0.95} />
 
       <Popover.ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
         <YStack aria-label="Home menu contents" miw={230} p="$3" ai="flex-end">
