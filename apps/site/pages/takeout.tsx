@@ -100,7 +100,7 @@ export default function TakeoutPage({
           t={-100}
           b={0}
           style={{
-            background: 'linear-gradient(var(--color6), var(--color2))',
+            background: 'linear-gradient(var(--color1), var(--color4))',
           }}
           zi={-3}
         />
@@ -117,7 +117,7 @@ export default function TakeoutPage({
           style={{
             background: 'linear-gradient(to bottom, transparent, var(--color6))',
           }}
-          zi={-3}
+          zi={-2}
         />
       </ThemeTintAlt>
 
@@ -254,7 +254,7 @@ export default function TakeoutPage({
                     pr={200}
                     maw={800}
                     size="$10"
-                    color="#fff"
+                    color="$color10"
                     $group-takeoutBody-xs={{
                       size: '$9',
                       pr: '8%',
@@ -309,25 +309,6 @@ export default function TakeoutPage({
                 </ThemeTintAlt>
 
                 <Spacer size="$6" />
-
-                <YStack marginTop={-260} marginBottom={-890} x={700} zi={-1}>
-                  <div
-                    style={{
-                      transform: 'rotateX(41deg) rotateZ(33deg)',
-                      transformStyle: 'preserve-3d',
-                      width: 715 * 0.75,
-                      borderRadius: 78,
-                      boxShadow: '0 0 30px 40px rgba(0,0,0,0.2)',
-                    }}
-                  >
-                    <Image
-                      alt="iPhone screenshot of Tamagui"
-                      src="/tama-phone.svg"
-                      width={715 * 0.75}
-                      height={1467 * 0.75}
-                    />
-                  </div>
-                </YStack>
 
                 <XStack fw="wrap" gap="$3" mx="$-10" ai="center" jc="center">
                   <TakeoutCard
@@ -540,18 +521,46 @@ export default function TakeoutPage({
 
                 <Spacer />
 
-                <ThemeTint>
-                  <Paragraph als="center" fontFamily="$munro" size="$9">
-                    Gallery
-                  </Paragraph>
-                </ThemeTint>
+                <YStack
+                  marginTop={-450}
+                  marginBottom={-680}
+                  x={700}
+                  zi={-1}
+                  style={{
+                    mixBlendMode: 'lighten',
+                  }}
+                >
+                  <div
+                    style={{
+                      transform: 'rotateX(41deg) rotateZ(33deg)',
+                      transformStyle: 'preserve-3d',
+                      width: 715 * 0.75,
+                      borderRadius: 78,
+                      boxShadow: '0 0 30px 40px rgba(0,0,0,0.2)',
+                    }}
+                  >
+                    <Image
+                      alt="iPhone screenshot of Tamagui"
+                      src="/tama-phone.svg"
+                      width={715 * 0.75}
+                      height={1467 * 0.75}
+                    />
+                  </div>
+                </YStack>
+                <YStack br="$10" bc="#000" p="$7">
+                  <ThemeTint>
+                    <Paragraph als="center" col="#fff" fontFamily="$munro" size="$10">
+                      Gallery
+                    </Paragraph>
+                  </ThemeTint>
 
-                <Spacer />
+                  <Spacer />
 
-                <YStack mih={530}>
-                  <Lazy>
-                    <TakeoutGallery />
-                  </Lazy>
+                  <YStack mih={530}>
+                    <Lazy>
+                      <TakeoutGallery />
+                    </Lazy>
+                  </YStack>
                 </YStack>
 
                 <Spacer />
@@ -664,7 +673,7 @@ type TakeoutPageProps = {
 }
 
 const TakeoutCard2Frame = styled(YStack, {
-  // className: 'blur-4',
+  className: 'blur-4',
   minWidth: 282,
   maxWidth: 282,
   minHeight: 312,
@@ -699,12 +708,12 @@ type TakeoutCardFrameProps = GetProps<typeof TakeoutCard2Frame> & {
 
 const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps) => {
   const innerGlow = useHoverGlow({
-    resist: 40,
+    resist: 70,
     size: 450,
     strategy: 'blur',
     blurPct: 50,
     // inverse: true,
-    color: 'var(--color9)',
+    color: 'var(--color7)',
     opacity: 0.2,
     background: 'transparent',
     style: {
@@ -842,12 +851,6 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
         <ThemeTint>
           <TAKEOUT className="text-3d" zi={1000} color="$color10" />
         </ThemeTint>
-      </YStack>
-
-      <YStack pos="absolute" zi={-1} o={0.2}>
-        <ThemeTintAlt>
-          <TAKEOUT className="text-3d" zi={1000} color="$color8" />
-        </ThemeTintAlt>
       </YStack>
 
       <YStack
@@ -1026,7 +1029,7 @@ const Point = ({
         <Check size={16} color="$color10" />
       </YStack>
       <YStack f={1}>
-        <Paragraph color="#fff" wordWrap="break-word" size={size}>
+        <Paragraph color="$color" wordWrap="break-word" size={size}>
           {children}
         </Paragraph>
         {!!subtitle && (
@@ -1036,7 +1039,7 @@ const Point = ({
                 shift: -2,
               }) as any
             }
-            color="#fff"
+            color="$color"
             o={0.5}
           >
             {subtitle}
@@ -1755,7 +1758,7 @@ function PurchaseButton(props: ButtonProps) {
         size="$6"
         backgroundColor="$color8"
         borderWidth={2}
-        color="#fff"
+        color="$color"
         borderColor="$color10"
         hoverStyle={{
           backgroundColor: '$color9',
@@ -1765,7 +1768,7 @@ function PurchaseButton(props: ButtonProps) {
         }}
         {...props}
       >
-        <Button.Text ff="$silkscreen" fontWeight="700">
+        <Button.Text ff="$silkscreen" fontWeight="700" color="#fff">
           {props.children} 🥡
         </Button.Text>
       </Button>

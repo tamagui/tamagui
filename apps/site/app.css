@@ -798,7 +798,7 @@ textarea {
 
 .clip-slice {
   mask-image: url(./public/heart.svg);
-  mask-size: 20% 20%;
+  mask-size: 60% 60%;
   animation: clip-fade2 90s infinite alternate;
 }
 
@@ -809,7 +809,7 @@ textarea {
 }
 
 .slice-alt {
-  mask-size: 30% 30%;
+  mask-size: 50% 50%;
   animation: clip-fade2 30s infinite alternate;
 }
 
