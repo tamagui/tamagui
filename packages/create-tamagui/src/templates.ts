@@ -36,7 +36,7 @@ export const templates = [
 
   {
     title: `${chalk.bold.underline(
-      `🥡 ${chalk.magenta('Take')}${chalk.red('out')}}`
+      `🥡 ${chalk.magenta('Take')}${chalk.red('out')}`
     )} - Supported stack with more to start: https://tamagui.dev/takeout`,
     value: `takeout-starter`,
     type: 'premium',
@@ -52,7 +52,7 @@ export const templates = [
   },
 
   {
-    title: `Expo Router (beta) - Expo router for unified Web + Native FS routes`,
+    title: `Expo Router (beta) - Expo Router starter with Tamagui set up`,
     value: 'expo-router',
     type: 'included-in-monorepo',
     hidden: false,
