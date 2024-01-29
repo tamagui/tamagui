@@ -34,6 +34,10 @@ import { BentoPageFrame } from '../../components/BentoPageFrame';
 import { ContainerLarge } from '../../components/Container';
 import { getDefaultLayout } from '../../lib/getDefaultLayout';
 import { Database } from "@lib/supabase-types";
+import { GetStaticProps } from "next";
+import { stripe } from "@lib/stripe";
+import { supabaseAdmin } from "@lib/supabaseAdmin";
+import { getArray } from "@lib/supabase-utils";
 
 export const ThemeTintEffect = () => {
   const theme = useTheme()
@@ -55,7 +59,7 @@ export type ProComponentsProps = {
 };
 
 export default function ProPage(props: ProComponentsProps) {
-  // const store = useBentoStore()
+  const store = useBentoStore()
 
   if (!process.env.NEXT_PUBLIC_IS_TAMAGUI_DEV) {
     return null
@@ -271,6 +275,7 @@ const Body = () => {
                   {parts.map(
                     ({ name: partsName, numberOfComponents, route, preview }) => (
                       <ComponentGroupsBanner
+                        key={route + partsName + numberOfComponents.toString()}
                         path={route}
                         name={partsName}
                         numberOfComponents={numberOfComponents}
@@ -359,3 +364,76 @@ function ComponentGroupsBanner({
 }
 
 const BASE_PATH = ' /bento'
+
+
+ProPage.getLayout = getDefaultLayout;
+
+export const getStaticProps: GetStaticProps<
+  ProComponentsProps | any
+> = async () => {
+  try {
+    const props = await getTakeoutProducts();
+    return {
+      props,
+    };
+  } catch (err) {
+    console.error(`Error getting props`, err);
+    return {
+      props: {},
+    };
+  }
+};
+
+const getTakeoutProducts = async (): Promise<ProComponentsProps> => {
+  const promoListPromise = stripe.promotionCodes.list({
+    code: "SITE-PRO-COMPONENTS", // ones with code SITE-PRO-COMPONENTS are considered public and will be shown here
+    active: true,
+    expand: ["data.coupon"],
+  });
+  const productPromises = [
+    supabaseAdmin
+      .from("products")
+      .select("*, prices(*)")
+      .eq("metadata->>slug", "pro-components")
+      .single(),
+  ];
+  const promises = [promoListPromise, ...productPromises];
+  const queries = await Promise.all(promises);
+
+  const products = queries.slice(1) as Awaited<
+    (typeof productPromises)[number]
+  >[];
+  const couponsList = queries[0] as Awaited<typeof promoListPromise>;
+
+  let coupon: Stripe.Coupon | null = null;
+
+  if (couponsList.data.length > 0) {
+    coupon = couponsList.data[0].coupon;
+  }
+
+  if (!products.length) {
+    throw new Error(`No products found`);
+  }
+
+  for (const product of products) {
+    if (product.error) throw product.error;
+    if (
+      !product.data.prices ||
+      !Array.isArray(product.data.prices) ||
+      product.data.prices.length === 0
+    ) {
+      throw new Error("No prices are attached to the product.");
+    }
+  }
+
+  return {
+    proComponents: {
+      ...products[0].data!,
+      prices: getArray(products[0].data!.prices!).filter(
+        (p) => p.active && !(p.metadata as Record<string, any>).hide_from_lists
+      ),
+    },
+    coupon,
+  };
+};
+
