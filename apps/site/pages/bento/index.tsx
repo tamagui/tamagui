@@ -326,9 +326,9 @@ const PurchaseModal = ({
       return 0;
     }
     let final = 0;
-    if (selectedProductsIds.includes(proComponents!.id)) {
+    if (selectedProductsIds.includes(proComponents.id)) {
       final += proComponentsProductPriceId
-        ? proComponents!.prices.find(
+        ? proComponents.prices.find(
           (p) => p.id === proComponentsProductPriceId
         )?.unit_amount ?? 0
         : 0;
@@ -553,14 +553,8 @@ const PurchaseModal = ({
                               <YStack gap="$0" f={1}>
                                 <H4 mt="$-1">{price.description}</H4>
 
-                                <Paragraph
-                                  theme="alt1"
-                                  textTransform="capitalize"
-                                >
-                                  {formatPrice(price.unit_amount! / 100, "usd")}{" "}
-                                  {price.type === "one_time"
-                                    ? "lifetime access"
-                                    : `per ${price.interval}`}
+                                <Paragraph theme="alt2">
+                                  {formatPrice(price.unit_amount! / 100, 'usd')} {(price.metadata as Record<any, any>).is_lifetime ? "lifetime access" : `base + 1 year of updates`}
                                 </Paragraph>
                                 {/* <Paragraph theme="alt1" size="$2">
                                   {formatPrice(price.unit_amount! / (100 * 2), 'usd')}{' '}
@@ -896,7 +890,7 @@ type ProComponentsProps = {
 };
 // export default this component
 export function ProPage(props: ProComponentsProps) {
-  const store = useBentoStore();
+
   return (
     <YStack>
       <Hero />
