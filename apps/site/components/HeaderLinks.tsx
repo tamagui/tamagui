@@ -50,7 +50,8 @@ const HeadAnchor = styled(Paragraph, {
         px: '$4',
 
         hoverStyle: {
-          backgroundColor: '$color3',
+          backgroundColor:
+            'color-mix(in srgb, var(--color8) 10%, transparent 50%)' as any,
         },
       },
     },

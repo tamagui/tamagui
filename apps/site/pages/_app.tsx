@@ -7,8 +7,13 @@ import type { ColorScheme } from '@tamagui/next-theme'
 import { NextThemeProvider, useRootTheme, useThemeSetting } from '@tamagui/next-theme'
 import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
-import { useEffect, useMemo, useState } from 'react'
-import { TamaguiProvider, useDebounceValue, useDidFinishSSR } from 'tamagui'
+import { useEffect, useLayoutEffect, useMemo, useState } from 'react'
+import {
+  TamaguiProvider,
+  useDebounceValue,
+  useDidFinishSSR,
+  useIsomorphicLayoutEffect,
+} from 'tamagui'
 
 import { LoadCherryBomb, LoadInter900, LoadMunro } from '../components/LoadFont'
 import config from '../tamagui.config'
@@ -39,19 +44,19 @@ export default function App(props: AppProps) {
   const router = useRouter()
   const themeSetting = useThemeSetting()!
 
-  // const isTakeout = router.pathname.startsWith('/takeout')
+  const isTakeout = router.pathname.startsWith('/takeout')
 
-  // useEffect(() => {
-  //   if (isTakeout && theme !== 'dark') {
-  //     const prev = theme
-  //     themeSetting.set('dark')
-  //     setTheme('dark')
-  //     return () => {
-  //       setTheme(prev)
-  //       themeSetting.set(prev)
-  //     }
-  //   }
-  // }, [isTakeout])
+  useIsomorphicLayoutEffect(() => {
+    if (isTakeout && theme !== 'dark') {
+      const prev = theme
+      themeSetting.set('dark')
+      setTheme('dark')
+      return () => {
+        setTheme(prev)
+        themeSetting.set(prev)
+      }
+    }
+  }, [isTakeout])
 
   const inner = useMemo(
     () => <AppContents {...props} theme={theme} setTheme={setTheme} />,

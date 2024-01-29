@@ -3,9 +3,7 @@ import { Link, Subtitles } from '@tamagui/lucide-icons'
 import { NextLink } from 'components/NextLink'
 import React, { useState } from 'react'
 import { ScrollView } from 'react-native'
-import type {
-  ImageProps,
-  XStackProps} from 'tamagui';
+import type { ImageProps, XStackProps } from 'tamagui'
 import {
   Button,
   Card,
@@ -544,7 +542,7 @@ export const components = {
 
   GetStarted: () => {
     return (
-      <XStack gap="$4" f={1} fw="wrap" mt="$2" mb="$4">
+      <XStack gap="$4" f={1} fw="wrap" my="$5">
         <ThemeTintAlt>
           <Card f={1}>
             <Card.Header gap="$2">

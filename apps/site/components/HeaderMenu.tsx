@@ -139,12 +139,12 @@ const HeaderMenuContent = React.memo(function HeaderMenuContent() {
   return (
     <Popover.Content
       mt={-5}
-      bw={1}
-      boc="$borderColor"
+      bw={0}
+      bg="transparent"
       enterStyle={{ x: -10, o: 0 }}
       exitStyle={{ x: 10, o: 0 }}
       x={0}
-      y={0}
+      y={4}
       o={1}
       animation={[
         'quicker',
@@ -158,12 +158,16 @@ const HeaderMenuContent = React.memo(function HeaderMenuContent() {
       p={0}
       maxHeight="80vh"
       maxWidth={360}
-      elevation="$12"
+      elevation="$10"
+      shadowColor="#000"
+      shadowOpacity={0.2}
       zIndex={100000000}
       trapFocus
+      style={{ backdropFilter: 'blur(10px)' }}
       br="$6"
     >
-      <Popover.Arrow size="$4" borderWidth={1} boc="$borderColor" />
+      <Popover.Arrow bg="$color6" size="$4" borderWidth={0} o={0.85} />
+      <YStack fullscreen bg="$color6" zi={0} br="$6" o={0.85} />
 
       <Popover.ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
         <YStack aria-label="Home menu contents" miw={230} p="$3" ai="flex-end">
