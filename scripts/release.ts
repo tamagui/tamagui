@@ -28,7 +28,7 @@ const skipStarters = process.argv.includes('--skip-starters')
 const canary = process.argv.includes('--canary')
 const skipVersion = finish || rePublish || process.argv.includes('--skip-version')
 const shouldPatch = process.argv.includes('--patch')
-const dirty = process.argv.includes('--dirty')
+const dirty = finish || process.argv.includes('--dirty')
 const skipPublish = process.argv.includes('--skip-publish')
 const skipTest =
   finish ||
@@ -362,7 +362,6 @@ async function run() {
 
     // then git tag, commit, push
     if (!finish) {
-      await spawnify(`yarn fix`)
       await spawnify(`yarn install`)
     }
 
@@ -373,14 +372,9 @@ async function run() {
       await sleep(4 * 1000)
     }
 
-    await spawnify(`yarn fix`)
-
     if (!canary && !skipStarters) {
       await spawnify(`yarn upgrade:starters`)
       const starterFreeDir = join(process.cwd(), '../starter-free')
-      await spawnify(`yarn fix`, {
-        cwd: starterFreeDir,
-      })
       await finishAndCommit(starterFreeDir)
     }
 
