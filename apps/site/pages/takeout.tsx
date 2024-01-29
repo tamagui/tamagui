@@ -93,8 +93,32 @@ export default function TakeoutPage({
   return (
     <YStack maw="100%">
       <ThemeTintAlt>
-        <YStack pos="absolute" l={0} r={0} t={-100} b={0} bg="$color7" zi={-3} />
+        <YStack
+          pos="absolute"
+          l={0}
+          r={0}
+          t={-100}
+          b={0}
+          style={{
+            background: 'linear-gradient(var(--color6), var(--color2))',
+          }}
+          zi={-3}
+        />
         <ThemeTintEffect />
+      </ThemeTintAlt>
+
+      <ThemeTintAlt offset={5}>
+        <YStack
+          pos="absolute"
+          l={0}
+          r={0}
+          t={-100}
+          b={0}
+          style={{
+            background: 'linear-gradient(to bottom, transparent, var(--color6))',
+          }}
+          zi={-3}
+        />
       </ThemeTintAlt>
 
       <>
@@ -134,7 +158,7 @@ export default function TakeoutPage({
         l="50%"
         x={-300}
         rotate="120deg"
-        o={0.025}
+        o={0.01}
         zi={-1}
       >
         <Image alt="mandala" width={2500} height={2500} src="/takeout/geometric.svg" />
@@ -199,26 +223,6 @@ export default function TakeoutPage({
             <PromoVideo />
 
             <TakeoutHero coupon={coupon} />
-          </YStack>
-
-          <YStack t={heroHeight - 1300} l={-100} pos="absolute" b={0} zi={-3}>
-            <YStack t={750} px="$6">
-              <H2
-                t={-100}
-                pos="absolute"
-                fontFamily="$munro"
-                tt="uppercase"
-                x={-650}
-                scale={0.5}
-                rotate="-90deg"
-                o={0.15}
-                ls={15}
-                w={4000}
-              >
-                A new take on bootstrapping · A new take on bootstrapping · A new take on
-                bootstrapping · A new take on bootstrapping
-              </H2>
-            </YStack>
           </YStack>
 
           <XStack mt={heroHeight} space="$10" $md={{ fd: 'column' }}>
@@ -435,10 +439,10 @@ export default function TakeoutPage({
                 <ThemeTint>
                   <YStack
                     p="$6"
-                    mt="$8"
                     className="blur-medium"
                     px="$8"
-                    space="$5"
+                    py="$8"
+                    gap="$5"
                     elevation="$6"
                     br="$10"
                     $sm={{
@@ -459,56 +463,21 @@ export default function TakeoutPage({
                       scale={1.5}
                       style={{
                         background: 'radial-gradient(var(--color9), transparent 70%)',
+                        mixBlendMode: 'color-dodge',
                       }}
                     />
-
-                    <YStack
-                      bc="#000"
-                      rotate="-2deg"
-                      mt={-130}
-                      mb={20}
-                      px="$6"
-                      py="$2"
-                      elevation="$4"
-                      als="center"
-                      br="$5"
-                    >
-                      <Paragraph
-                        color="$color9"
-                        fontFamily="$munro"
-                        size="$9"
-                        $sm={{ size: '$8' }}
-                        fow="800"
-                        ta="center"
-                      >
-                        Speedrun from 0-to-100 🥡
-                      </Paragraph>
-                      <Paragraph
-                        color="$color9"
-                        fontFamily="$munro"
-                        size="$8"
-                        mt={-10}
-                        $sm={{ dsp: 'none' }}
-                        fow="800"
-                        ta="center"
-                        o={0.5}
-                      >
-                        (...but don't forget the long run)
-                      </Paragraph>
-                    </YStack>
 
                     <ThemeTint>
                       <Paragraph
                         fontFamily="$silkscreen"
-                        size="$10"
+                        size="$9"
                         color="$color10"
                         className="text-wrap-balance"
                         ls={-2}
-                        $md={{ size: '$9' }}
                         fow="400"
                         mb="$4"
                       >
-                        It's not just about shipping&nbsp;fast.
+                        it's not all about shipping&nbsp;fast.
                       </Paragraph>
                     </ThemeTint>
 
@@ -587,63 +556,12 @@ export default function TakeoutPage({
 
                 <Spacer />
 
-                <XStack my="$8" gap="$4" f={1} jc="space-around">
-                  <Image
-                    className="pixelate"
-                    src="/retro-icons/coding-app-website-ui-62.svg"
-                    alt="Icon"
-                    width={28}
-                    height={28}
-                  />
-
-                  <Image
-                    className="pixelate"
-                    src="/retro-icons/coding-apps-websites-browser-bugs-2-58.svg"
-                    alt="Icon"
-                    width={28}
-                    height={28}
-                  />
-
-                  <Image
-                    className="pixelate"
-                    src="/retro-icons/coding-apps-websites-database-60.svg"
-                    alt="Icon"
-                    width={28}
-                    height={28}
-                  />
-
-                  <Image
-                    className="pixelate"
-                    src="/retro-icons/design-color-bucket-brush-63.svg"
-                    alt="Icon"
-                    width={28}
-                    height={28}
-                  />
-
-                  <Image
-                    className="pixelate"
-                    src="/retro-icons/design-color-palette-sample-26.svg"
-                    alt="Icon"
-                    width={28}
-                    height={28}
-                  />
-                </XStack>
-
                 <Spacer size="$10" />
-
-                <ThemeTintAlt>
-                  <MunroP size="$9" $sm={{ size: '$8' }} color="$color6" pe="none">
-                    We hope you enjoy.
-                  </MunroP>
-                </ThemeTintAlt>
               </YStack>
             </XStack>
 
             <YStack mt={200} w={3} mih={500} h="100%" $sm={{ display: 'none' }} />
           </XStack>
-
-          <Spacer size="$10" />
-
           <Footer />
         </ContainerXL>
       </YStack>
@@ -746,15 +664,14 @@ type TakeoutPageProps = {
 }
 
 const TakeoutCard2Frame = styled(YStack, {
-  className: 'blur-4',
+  // className: 'blur-4',
   minWidth: 282,
   maxWidth: 282,
   minHeight: 312,
   maxHeight: 312,
   elevation: '$1',
   overflow: 'hidden',
-  contain: 'strict',
-  scale: 1,
+  borderRadius: '$10',
 
   '$group-takeoutBody-gtSm': {
     scale: 0.915,
@@ -783,12 +700,12 @@ type TakeoutCardFrameProps = GetProps<typeof TakeoutCard2Frame> & {
 const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps) => {
   const innerGlow = useHoverGlow({
     resist: 40,
-    size: 150,
+    size: 450,
     strategy: 'blur',
-    blurPct: 100,
+    blurPct: 50,
     // inverse: true,
     color: 'var(--color9)',
-    opacity: 1,
+    opacity: 0.2,
     background: 'transparent',
     style: {
       transition: `all ease-out 300ms`,
