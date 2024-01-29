@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/dismissable",
-  "version": "1.89.0-1706483140977",
+  "version": "1.88.14",
   "sideEffects": true,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -30,17 +30,17 @@
     }
   },
   "dependencies": {
-    "@tamagui/compose-refs": "1.89.0-1706483140977",
-    "@tamagui/core": "1.89.0-1706483140977",
-    "@tamagui/helpers": "1.89.0-1706483140977",
-    "@tamagui/use-escape-keydown": "1.89.0-1706483140977",
-    "@tamagui/use-event": "1.89.0-1706483140977"
+    "@tamagui/compose-refs": "1.88.14",
+    "@tamagui/core": "1.88.14",
+    "@tamagui/helpers": "1.88.14",
+    "@tamagui/use-escape-keydown": "1.88.14",
+    "@tamagui/use-event": "1.88.14"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.89.0-1706483140977",
+    "@tamagui/build": "1.88.14",
     "react": "^18.2.0"
   },
   "publishConfig": {

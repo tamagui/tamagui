@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/logo",
-  "version": "1.89.0-1706483140977",
+  "version": "1.88.14",
   "sideEffects": false,
   "source": "src/index.tsx",
   "types": "./types/index.d.ts",
@@ -24,10 +24,10 @@
     "react": "*"
   },
   "dependencies": {
-    "tamagui": "1.89.0-1706483140977"
+    "tamagui": "1.88.14"
   },
   "devDependencies": {
-    "@tamagui/build": "1.89.0-1706483140977",
+    "@tamagui/build": "1.88.14",
     "react": "^18.2.0"
   },
   "publishConfig": {

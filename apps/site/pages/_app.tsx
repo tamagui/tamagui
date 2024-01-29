@@ -67,11 +67,11 @@ export default function App(props: AppProps) {
     <>
       <NextThemeProvider
         onChangeTheme={setTheme as any}
-        // {...(isTakeout && {
-        //   forcedTheme: 'dark',
-        //   enableSystem: false,
-        //   defaultTheme: 'dark',
-        // })}
+        {...(isTakeout && {
+          forcedTheme: 'dark',
+          enableSystem: false,
+          defaultTheme: 'dark',
+        })}
       >
         {inner}
       </NextThemeProvider>
