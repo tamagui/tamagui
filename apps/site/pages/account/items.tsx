@@ -344,7 +344,7 @@ const ItemDetails = (
       const res = await fetch(`/api/claim`, {
         body: JSON.stringify({
           subscription_id: 'subscriptionId' in props ? props.subscriptionId : undefined,
-          product_ownership_id: 'productOwnershipId' in props ? props.item.id : undefined,
+          product_ownership_id: props.type === 'owned_item' ? props.item.id : undefined,
           product_id: product!.id,
         }),
         headers: {

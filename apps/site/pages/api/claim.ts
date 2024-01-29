@@ -97,7 +97,7 @@ export default apiRoute(async (req, res) => {
     const productOwnershipRes = await supabase
       .from('product_ownership')
       .select('*, prices(*, products(*))')
-      .eq('id', subscriptionId)
+      .eq('id', productOwnershipId)
       .single()
 
     if (productOwnershipRes.error) {
