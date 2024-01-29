@@ -73,7 +73,7 @@ export const DetailHeader = (props: { children: string }) => {
 
         <H1 size="$12">{props.children}</H1>
 
-        <XStack theme="alt2" ai="center" gap="$2">
+        <XStack p="$3" ai="center" gap="$2">
           <Anchor>Section</Anchor>
           <Anchor size="$2">{'>'}</Anchor>
           <Anchor>Inputs</Anchor>
