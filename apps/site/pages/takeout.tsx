@@ -100,7 +100,7 @@ export default function TakeoutPage({
           t={-100}
           b={0}
           style={{
-            background: 'linear-gradient(var(--color1), var(--color4))',
+            background: 'linear-gradient(var(--color6), var(--color4))',
           }}
           zi={-3}
         />
@@ -416,7 +416,33 @@ export default function TakeoutPage({
                 </XStack>
 
                 <Spacer />
-
+                <YStack
+                  className="phone-preview"
+                  marginTop={-450}
+                  marginBottom={-680}
+                  x={700}
+                  zi={-1}
+                  style={{
+                    mixBlendMode: 'lighten',
+                  }}
+                >
+                  <div
+                    style={{
+                      transform: 'rotateX(41deg) rotateZ(33deg)',
+                      transformStyle: 'preserve-3d',
+                      width: 715 * 0.75,
+                      borderRadius: 78,
+                      boxShadow: '0 0 30px 40px rgba(0,0,0,0.2)',
+                    }}
+                  >
+                    <Image
+                      alt="iPhone screenshot of Tamagui"
+                      src="/tama-phone.svg"
+                      width={715 * 0.75}
+                      height={1467 * 0.75}
+                    />
+                  </div>
+                </YStack>
                 <ThemeTint>
                   <YStack
                     p="$6"
@@ -521,32 +547,6 @@ export default function TakeoutPage({
 
                 <Spacer />
 
-                <YStack
-                  marginTop={-450}
-                  marginBottom={-680}
-                  x={700}
-                  zi={-1}
-                  style={{
-                    mixBlendMode: 'lighten',
-                  }}
-                >
-                  <div
-                    style={{
-                      transform: 'rotateX(41deg) rotateZ(33deg)',
-                      transformStyle: 'preserve-3d',
-                      width: 715 * 0.75,
-                      borderRadius: 78,
-                      boxShadow: '0 0 30px 40px rgba(0,0,0,0.2)',
-                    }}
-                  >
-                    <Image
-                      alt="iPhone screenshot of Tamagui"
-                      src="/tama-phone.svg"
-                      width={715 * 0.75}
-                      height={1467 * 0.75}
-                    />
-                  </div>
-                </YStack>
                 <YStack br="$10" bc="#000" p="$7">
                   <ThemeTint>
                     <Paragraph als="center" col="#fff" fontFamily="$munro" size="$10">
@@ -580,7 +580,7 @@ export default function TakeoutPage({
 
 const ThemeTintEffect = () => {
   const theme = useTheme()
-  const color = theme.color7.val
+  const color = theme.color6.val
 
   useEffect(() => {
     document.querySelector('#theme-color')?.setAttribute('content', color)

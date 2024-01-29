@@ -163,8 +163,11 @@ const HeaderMenuContent = React.memo(function HeaderMenuContent() {
       shadowOpacity={0.2}
       zIndex={100000000}
       trapFocus
-      style={{ backdropFilter: 'blur(18px)' }}
+      className="blur-8"
       br="$6"
+      {...{
+        style: { backdropFilter: 'blur(18px)' },
+      }}
     >
       <Popover.Arrow bg="$color5" size="$4" borderWidth={0} o={0.75} />
       <YStack fullscreen bg="$color5" zi={0} br="$6" o={0.75} />
