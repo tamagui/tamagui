@@ -1,7 +1,8 @@
 import { simpleHash } from '@tamagui/helpers'
 
 import { THEME_CLASSNAME_PREFIX } from '../constants/constants'
-import { Variable, variableToString } from '../createVariable'
+import type { Variable } from '../createVariable'
+import { variableToString } from '../createVariable'
 import type { CreateTamaguiProps, ThemeParsed } from '../types'
 import { tokensValueToVariable } from './registerCSSVariable'
 

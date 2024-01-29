@@ -77,6 +77,7 @@ import {
 } from './normalizeValueWithProperty'
 import { getPropMappedFontFamily, propMapper } from './propMapper'
 import { pseudoDescriptors, pseudoPriorities } from './pseudoDescriptors'
+import { isObj } from './isObj'
 
 // bugfix for some reason it gets reset
 const IS_STATIC = process.env.IS_STATIC === 'is_static'
@@ -363,8 +364,8 @@ export const getSplitStyles: StyleSplitter = (
       continue
     }
 
-    if (keyInit[0] === '_' && keyInit.startsWith('_style')) {
-      mergeStylePropIntoStyle(styleState, valInit)
+    if (keyInit.startsWith('_style') && isObj(valInit)) {
+      Object.assign(styleState.style, valInit)
       continue
     }
 
@@ -1042,7 +1043,19 @@ export const getSplitStyles: StyleSplitter = (
   // also it makes sense that props.style is basically the last to apply,
   // at least more sense than "it applies at the position its defined in the prop loop"
   if (props.style) {
-    mergeStylePropIntoStyle(styleState, props.style)
+    if (isHOC) {
+      viewProps.style = props.style
+    } else {
+      for (const style of [].concat(props.style)) {
+        if (style) {
+          if (style['$$css']) {
+            Object.assign(styleState.classNames, style)
+          } else {
+            Object.assign(styleState.style, style)
+          }
+        }
+      }
+    }
   }
 
   const avoidNormalize = styleProps.noNormalize === false
@@ -1074,16 +1087,17 @@ export const getSplitStyles: StyleSplitter = (
         .forEach(([key, val]) => {
           mergeTransform(style, key, val, true)
         })
+    }
 
-      // Button for example uses disableClassName: true but renders to a 'button' element, so needs this
-      if (process.env.TAMAGUI_TARGET === 'web') {
-        if (
-          !staticConfig.isReactNative &&
-          !styleProps.isAnimated &&
-          Array.isArray(style.transform)
-        ) {
-          style.transform = transformsToString(style.transform) as any
-        }
+    // Button for example uses disableClassName: true but renders to a 'button' element, so needs this
+    if (process.env.TAMAGUI_TARGET === 'web') {
+      if (
+        !staticConfig.isReactNative &&
+        !staticConfig.isHOC &&
+        (styleProps.isAnimated && !conf.animations.supportsCSSVars ? false : true) &&
+        Array.isArray(style.transform)
+      ) {
+        style.transform = transformsToString(style.transform) as any
       }
     }
 
@@ -1390,20 +1404,6 @@ export const getSubStyle = (
   return styleOut
 }
 
-function mergeStylePropIntoStyle(styleState: GetStyleState, cur: Object[] | Object) {
-  if (!cur) return
-  const styles = Array.isArray(cur) ? cur : [cur]
-  for (const style of styles) {
-    if (!style) continue
-    const isRNW = style['$$css']
-    if (isRNW) {
-      Object.assign(styleState.classNames, style)
-    } else {
-      Object.assign(styleState.style, style)
-    }
-  }
-}
-
 // on native no need to insert any css
 const useInsertEffectCompat = isWeb
   ? useInsertionEffect || useIsomorphicLayoutEffect
@@ -1513,8 +1513,10 @@ if (process.env.TAMAGUI_TARGET === 'native') {
       dataDetectorType: 1,
       dynamicTypeRamp: 1,
       elevationAndroid: 1,
+      hapticFeedback: 1,
       importantForAccessibility: 1,
       lineBreakStrategyIOS: 1,
+      maxFontSizeMultiplier: 1,
       minimumFontScale: 1,
       needsOffscreenAlphaCompositing: 1,
       nextFocusDown: 1,

@@ -10,6 +10,7 @@ import { Container } from './Container'
 import { DocsMenuContents } from './DocsMenuContents'
 import { Link } from './Link'
 import { useDocsMenu } from './useDocsMenu'
+import { ThemeNameEffect } from './ThemeNameEffect'
 
 export const allNotPending = allDocsRoutes.filter((x) => !x['pending'])
 
@@ -23,6 +24,9 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
   const pageContents = React.useMemo(() => {
     return (
       <>
+        {/* capture all docs pages */}
+        <ThemeNameEffect />
+
         <YStack tag="article">
           <Container pos="relative">{children}</Container>
 

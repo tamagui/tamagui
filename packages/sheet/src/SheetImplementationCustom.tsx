@@ -22,22 +22,19 @@ import {
   useRef,
   useState,
 } from 'react'
-import {
+import type {
   Animated,
-  Dimensions,
   GestureResponderEvent,
-  Keyboard,
   LayoutChangeEvent,
-  PanResponder,
   PanResponderGestureState,
-  View,
 } from 'react-native'
+import { Dimensions, Keyboard, PanResponder, View } from 'react-native'
 
 import { SHEET_HIDDEN_STYLESHEET } from './constants'
 import { ParentSheetContext, SheetInsideSheetContext } from './contexts'
 import { resisted } from './helpers'
 import { SheetProvider } from './SheetContext'
-import { SheetProps, SnapPointsMode } from './types'
+import type { SheetProps, SnapPointsMode } from './types'
 import { useSheetOpenState } from './useSheetOpenState'
 import { useSheetProviderProps } from './useSheetProviderProps'
 
@@ -215,118 +212,116 @@ export const SheetImplementationCustom = themeable(
     const themeName = useThemeName()
     const [isDragging, setIsDragging] = useState(false)
 
-    const panResponder = useMemo(
-      () => {
-        if (disableDrag) return
-        if (!frameSize) return
-        if (isShowingInnerSheet) return
+    const panResponder = useMemo(() => {
+      if (disableDrag) return
+      if (!frameSize) return
+      if (isShowingInnerSheet) return
 
-        const minY = positions[0]
-        scrollBridge.paneMinY = minY
-        let startY = at.current
+      const minY = positions[0]
+      scrollBridge.paneMinY = minY
+      let startY = at.current
 
-        function setPanning(val: boolean) {
-          setIsDragging(val)
+      function setPanning(val: boolean) {
+        setIsDragging(val)
 
-          // make unselectable:
-          if (!SHEET_HIDDEN_STYLESHEET) return
-          if (!val) {
-            SHEET_HIDDEN_STYLESHEET.innerText = ''
-          } else {
-            SHEET_HIDDEN_STYLESHEET.innerText =
-              ':root * { user-select: none !important; -webkit-user-select: none !important; }'
+        // make unselectable:
+        if (!SHEET_HIDDEN_STYLESHEET) return
+        if (!val) {
+          SHEET_HIDDEN_STYLESHEET.innerText = ''
+        } else {
+          SHEET_HIDDEN_STYLESHEET.innerText =
+            ':root * { user-select: none !important; -webkit-user-select: none !important; }'
+        }
+      }
+
+      const release = ({ vy, dragAt }: { dragAt: number; vy: number }) => {
+        isExternalDrag = false
+        previouslyScrolling = false
+        setPanning(false)
+        const at = dragAt + startY
+        // seems liky vy goes up to about 4 at the very most (+ is down, - is up)
+        // lets base our multiplier on the total layout height
+        const end = at + frameSize * vy * 0.2
+        let closestPoint = 0
+        let dist = Infinity
+        for (let i = 0; i < positions.length; i++) {
+          const position = positions[i]
+          const curDist = end > position ? end - position : position - end
+          if (curDist < dist) {
+            dist = curDist
+            closestPoint = i
           }
         }
+        // have to call both because state may not change but need to snap back
+        setPosition(closestPoint)
+        animateTo(closestPoint)
+      }
 
-        const release = ({ vy, dragAt }: { dragAt: number; vy: number }) => {
-          isExternalDrag = false
-          previouslyScrolling = false
-          setPanning(false)
-          const at = dragAt + startY
-          // seems liky vy goes up to about 4 at the very most (+ is down, - is up)
-          // lets base our multiplier on the total layout height
-          const end = at + frameSize * vy * 0.2
-          let closestPoint = 0
-          let dist = Infinity
-          for (let i = 0; i < positions.length; i++) {
-            const position = positions[i]
-            const curDist = end > position ? end - position : position - end
-            if (curDist < dist) {
-              dist = curDist
-              closestPoint = i
-            }
-          }
-          // have to call both because state may not change but need to snap back
-          setPosition(closestPoint)
-          animateTo(closestPoint)
-        }
-
-        const finish = (_e: GestureResponderEvent, state: PanResponderGestureState) => {
-          release({
-            vy: state.vy,
-            dragAt: state.dy,
-          })
-        }
-
-        let previouslyScrolling = false
-
-        const onMoveShouldSet = (
-          _e: GestureResponderEvent,
-          { dy }: PanResponderGestureState
-        ) => {
-          const isScrolled = scrollBridge.y !== 0
-          const isDraggingUp = dy < 0
-          // we can treat near top instead of exactly to avoid trouble with springs
-          const isNearTop = scrollBridge.paneY - 5 <= scrollBridge.paneMinY
-          if (isScrolled) {
-            previouslyScrolling = true
-            return false
-          }
-          // prevent drag once at top and pulling up
-          if (isNearTop) {
-            if (!isScrolled && isDraggingUp) {
-              return false
-            }
-          }
-          // we could do some detection of other touchables and cancel here..
-          return Math.abs(dy) > 5
-        }
-
-        const grant = () => {
-          setPanning(true)
-          stopSpring()
-          startY = at.current
-        }
-
-        let isExternalDrag = false
-
-        scrollBridge.drag = (dy) => {
-          if (!isExternalDrag) {
-            isExternalDrag = true
-            grant()
-          }
-          const to = dy + startY
-          animatedNumber.setValue(resisted(to, minY), { type: 'direct' })
-        }
-
-        scrollBridge.release = release
-
-        return PanResponder.create({
-          onMoveShouldSetPanResponder: onMoveShouldSet,
-          onPanResponderGrant: grant,
-          onPanResponderMove: (_e, { dy }) => {
-            const toFull = dy + startY
-            const to = resisted(toFull, minY)
-            animatedNumber.setValue(to, { type: 'direct' })
-          },
-          onPanResponderEnd: finish,
-          onPanResponderTerminate: finish,
-          onPanResponderRelease: finish,
+      const finish = (_e: GestureResponderEvent, state: PanResponderGestureState) => {
+        release({
+          vy: state.vy,
+          dragAt: state.dy,
         })
-      },
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      [disableDrag, isShowingInnerSheet, animateTo, frameSize, positions, setPosition]
-    )
+      }
+
+      let previouslyScrolling = false
+
+      const onMoveShouldSet = (
+        _e: GestureResponderEvent,
+        { dy }: PanResponderGestureState
+      ) => {
+        const isScrolled = scrollBridge.y !== 0
+        const isDraggingUp = dy < 0
+        // we can treat near top instead of exactly to avoid trouble with springs
+        const isNearTop = scrollBridge.paneY - 5 <= scrollBridge.paneMinY
+        if (isScrolled) {
+          previouslyScrolling = true
+          return false
+        }
+        // prevent drag once at top and pulling up
+        if (isNearTop) {
+          if (!isScrolled && isDraggingUp) {
+            // this was here but it breaks the pull past limit
+            // maybe this caused issues with scrolling, but if so we should probably make it configurable
+            // return false
+          }
+        }
+        // we could do some detection of other touchables and cancel here..
+        return Math.abs(dy) > 5
+      }
+
+      const grant = () => {
+        setPanning(true)
+        stopSpring()
+        startY = at.current
+      }
+
+      let isExternalDrag = false
+
+      scrollBridge.drag = (dy) => {
+        if (!isExternalDrag) {
+          isExternalDrag = true
+          grant()
+        }
+        const to = dy + startY
+        animatedNumber.setValue(resisted(to, minY), { type: 'direct' })
+      }
+
+      scrollBridge.release = release
+
+      return PanResponder.create({
+        onMoveShouldSetPanResponder: onMoveShouldSet,
+        onPanResponderGrant: grant,
+        onPanResponderMove: (_e, { dy }) => {
+          const toFull = dy + startY
+          const to = resisted(toFull, minY)
+          animatedNumber.setValue(to, { type: 'direct' })
+        },
+        onPanResponderEnd: finish,
+        onPanResponderTerminate: finish,
+        onPanResponderRelease: finish,
+      })
+    }, [disableDrag, isShowingInnerSheet, animateTo, frameSize, positions, setPosition])
 
     const handleAnimationViewLayout = useCallback(
       (e: LayoutChangeEvent) => {
@@ -357,6 +352,7 @@ export const SheetImplementationCustom = themeable(
     const animatedStyle = useAnimatedNumberStyle(animatedNumber, (val) => {
       'worklet'
       const translateY = frameSize === 0 ? hiddenSize : val
+
       return {
         transform: [{ translateY }],
       }
@@ -440,6 +436,8 @@ export const SheetImplementationCustom = themeable(
               // @ts-ignore for CSS driver this is necessary to attach the transition
               animation,
             })}
+            // @ts-ignore
+            disableClassName
             style={[
               {
                 position: 'absolute',

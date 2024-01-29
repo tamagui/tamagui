@@ -3,24 +3,18 @@ import { getButtonSized } from '@tamagui/get-button-sized'
 import { withStaticProperties } from '@tamagui/helpers'
 import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { ButtonNestingContext, ThemeableStack } from '@tamagui/stacks'
+import type { TextContextStyles, TextParentStyles } from '@tamagui/text'
+import { SizableText, wrapChildrenInText } from '@tamagui/text'
+import type { FontSizeTokens, GetProps, SizeTokens, ThemeableProps } from '@tamagui/web'
 import {
-  SizableText,
-  TextContextStyles,
-  TextParentStyles,
-  wrapChildrenInText,
-} from '@tamagui/text'
-import {
-  FontSizeTokens,
-  GetProps,
-  SizeTokens,
-  ThemeableProps,
   createStyledContext,
   getVariableValue,
   spacedChildren,
   styled,
   useProps,
 } from '@tamagui/web'
-import { FunctionComponent, useContext } from 'react'
+import type { FunctionComponent } from 'react'
+import { useContext } from 'react'
 
 type ButtonVariant = 'outlined'
 
@@ -46,8 +40,12 @@ export const ButtonContext = createStyledContext<
   variant: undefined,
 })
 
-type ButtonIconProps = { color?: string; size?: number }
-type IconProp = JSX.Element | FunctionComponent<ButtonIconProps> | null
+type ButtonIconProps = { color?: any; size?: any }
+type IconProp =
+  | JSX.Element
+  | FunctionComponent<ButtonIconProps>
+  | ((props: ButtonIconProps) => any)
+  | null
 
 type ButtonExtraProps = TextParentStyles &
   ThemeableProps & {

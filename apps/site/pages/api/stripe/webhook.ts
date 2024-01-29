@@ -10,8 +10,8 @@ import {
 } from '@lib/supabaseAdmin'
 import { unclaimSubscription } from '@lib/unclaim-product'
 import { buffer } from 'micro'
-import { NextApiHandler, PageConfig } from 'next'
-import Stripe from 'stripe'
+import type { NextApiHandler, PageConfig } from 'next'
+import type Stripe from 'stripe'
 
 const endpointSecret = process.env.STRIPE_SIGNING_SIGNATURE_SECRET
 

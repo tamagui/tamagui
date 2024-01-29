@@ -1,11 +1,12 @@
 import { composeRefs } from '@tamagui/compose-refs'
-import { GetRef } from '@tamagui/core'
-import { ScrollView, ScrollViewProps } from '@tamagui/scroll-view'
+import type { GetRef } from '@tamagui/core'
+import type { ScrollViewProps } from '@tamagui/scroll-view'
+import { ScrollView } from '@tamagui/scroll-view'
 import { forwardRef, useMemo, useRef } from 'react'
-import { ScrollView as RNScrollView } from 'react-native'
+import type { ScrollView as RNScrollView } from 'react-native'
 
 import { useSheetContext } from './SheetContext'
-import { SheetScopedProps } from './types'
+import type { SheetScopedProps } from './types'
 
 // TODO ideally would replicate https://github.com/ammarahm-ed/react-native-actions-sheet/blob/master/src/index.tsx
 

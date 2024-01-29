@@ -1,8 +1,10 @@
+import { ThemeTintAlt } from '@tamagui/logo'
 import { Menu } from '@tamagui/lucide-icons'
 import * as React from 'react'
 import {
   Adapt,
   Button,
+  Circle,
   Popover,
   Sheet,
   SizableText,
@@ -11,20 +13,19 @@ import {
   YStack,
   isTouchable,
 } from 'tamagui'
+import { Avatar } from 'tamagui'
 
+import { useUser } from '../hooks/useUser'
+import { getDefaultAvatarImage } from '../lib/avatar'
 import { DocsMenuContents } from './DocsMenuContents'
 import { HeaderLinks } from './HeaderLinks'
 import { useDocsMenu } from './useDocsMenu'
-import { ThemeTintAlt } from '@tamagui/logo'
-import { Avatar } from 'tamagui'
-import { useUser } from '../hooks/useUser'
-import { getDefaultAvatarImage } from '../lib/avatar'
 
 export const HeaderMenu = React.memo(function HeaderMenu() {
   const { open, setOpen } = useDocsMenu()
   const [state, setState] = React.useState({
     via: undefined as 'hover' | 'press' | undefined,
-    viaAt: Date.now()
+    viaAt: Date.now(),
   })
   const userSwr = useUser()
 
@@ -35,7 +36,7 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
         hoverable={{
           delay: 50,
           restMs: 40,
-          move: false
+          move: false,
         }}
         open={open}
         onOpenChange={(next, via) => {
@@ -55,6 +56,7 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
             bc="transparent"
             noTextWrap
             br="$10"
+            bow={2}
             onPress={() => {
               if (isTouchable) {
                 setOpen(!open)
@@ -72,27 +74,36 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
             }}
             theme={open ? 'alt1' : undefined}
             aria-label="Open the main menu"
+            hoverStyle={{
+              bg: 'transparent',
+              // @ts-ignore
+              boc: 'color-mix(in srgb, var(--color-8) 40%, transparent 60%)',
+              // boc: 'red',
+            }}
           >
-            {userSwr.data?.userDetails ? (
-              <Avatar circular size="$2">
-                <Avatar.Image
-                  source={{
-                    width: 28,
-                    height: 28,
-                    uri:
-                      userSwr.data.userDetails?.avatar_url ||
-                      getDefaultAvatarImage(
-                        userSwr.data?.userDetails?.full_name ||
-                          userSwr.data?.session?.user?.email ||
-                          'User'
-                      ),
-                  }}
-                />
-              </Avatar>
-            ) : (
-              <Menu size={16} />
-            )}
             <SizableText ff="$silkscreen">Menu</SizableText>
+
+            <Circle size={28} ai="center" jc="center" ml={-2} mr={-9}>
+              {userSwr.data?.userDetails ? (
+                <Avatar circular size="$2">
+                  <Avatar.Image
+                    source={{
+                      width: 28,
+                      height: 28,
+                      uri:
+                        userSwr.data.userDetails?.avatar_url ||
+                        getDefaultAvatarImage(
+                          userSwr.data?.userDetails?.full_name ||
+                            userSwr.data?.session?.user?.email ||
+                            'User'
+                        ),
+                    }}
+                  />
+                </Avatar>
+              ) : (
+                <Menu size={14} />
+              )}
+            </Circle>
           </Button>
         </Popover.Anchor>
 
@@ -128,12 +139,12 @@ const HeaderMenuContent = React.memo(function HeaderMenuContent() {
   return (
     <Popover.Content
       mt={-5}
-      bw={1}
-      boc="$borderColor"
+      bw={0}
+      bg="transparent"
       enterStyle={{ x: -10, o: 0 }}
       exitStyle={{ x: 10, o: 0 }}
       x={0}
-      y={0}
+      y={4}
       o={1}
       animation={[
         'quicker',
@@ -147,12 +158,16 @@ const HeaderMenuContent = React.memo(function HeaderMenuContent() {
       p={0}
       maxHeight="80vh"
       maxWidth={360}
-      elevation="$12"
+      elevation="$10"
+      shadowColor="#000"
+      shadowOpacity={0.2}
       zIndex={100000000}
       trapFocus
+      style={{ backdropFilter: 'blur(18px)' }}
       br="$6"
     >
-      <Popover.Arrow size="$4" borderWidth={1} boc="$borderColor" />
+      <Popover.Arrow bg="$color5" size="$4" borderWidth={0} o={0.9} />
+      <YStack fullscreen bg="$color5" zi={0} br="$6" o={0.9} />
 
       <Popover.ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
         <YStack aria-label="Home menu contents" miw={230} p="$3" ai="flex-end">
@@ -162,7 +177,7 @@ const HeaderMenuContent = React.memo(function HeaderMenuContent() {
 
           <Spacer size="$3" />
 
-          <DocsMenuContents />
+          <DocsMenuContents inMenu />
         </YStack>
       </Popover.ScrollView>
     </Popover.Content>

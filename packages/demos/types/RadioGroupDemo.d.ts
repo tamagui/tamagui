@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import { SizeTokens } from 'tamagui';
+import type { SizeTokens } from 'tamagui';
 export declare function RadioGroupDemo(): JSX.Element;
 export declare function RadioGroupItemWithLabel(props: {
     size: SizeTokens;

@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react'
 import { Spacer, YStack } from 'tamagui'
 
-import { getCompilationExamples } from '../lib/getCompilationExamples'
+import type { getCompilationExamples } from '../lib/getCompilationExamples'
 import { HeroContainer } from './HeroContainer'
 import { HeroExampleCode } from './HeroExampleCode'
 

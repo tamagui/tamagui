@@ -1,12 +1,28 @@
 {
   "extends": "../../tsconfig.json",
-  "compilerOptions": { "composite": true},
+  "compilerOptions": {
+    "composite": true
+  },
   "references": [
-    { "path": "../core" },
-    { "path": "../floating" },
-    { "path": "../create-context" },
-    { "path": "../compose-refs" },
-    { "path": "../use-controllable-state" },
-    
+    {
+      "path": "../core"
+    },
+    {
+      "path": "../floating"
+    },
+    {
+      "path": "../create-context"
+    },
+    {
+      "path": "../compose-refs"
+    },
+    {
+      "path": "../use-controllable-state"
+    }
+  ],
+  "exclude": [
+    "types",
+    "dist",
+    "**/__tests__"
   ]
 }

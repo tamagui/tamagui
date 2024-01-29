@@ -1,7 +1,7 @@
-import { NativeValue, TamaguiElement } from '@tamagui/core';
+import type { NativeValue, TamaguiElement } from '@tamagui/core';
 import * as React from 'react';
-import { ToastImperativeOptions } from './ToastImperative';
-import { BurntToastOptions } from './types';
+import type { ToastImperativeOptions } from './ToastImperative';
+import type { BurntToastOptions } from './types';
 declare const Collection: {
     readonly Provider: React.FC<{
         children?: React.ReactNode;

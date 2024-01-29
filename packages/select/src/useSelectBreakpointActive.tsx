@@ -1,6 +1,6 @@
 import { useMedia } from '@tamagui/core'
 
-import { SelectContextValue } from './types'
+import type { SelectContextValue } from './types'
 
 export const useSelectBreakpointActive = (
   sheetBreakpoint: SelectContextValue['sheetBreakpoint']

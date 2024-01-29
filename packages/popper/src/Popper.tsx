@@ -2,11 +2,9 @@
 
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import type { ScopedProps } from '@tamagui/core'
+import type { ScopedProps, SizeTokens, StackProps } from '@tamagui/core'
 import {
-  SizeTokens,
   Stack,
-  StackProps,
   View as TamaguiView,
   createStyledContext,
   getVariableValue,
@@ -14,12 +12,14 @@ import {
   useDidFinishSSR,
   useProps,
 } from '@tamagui/core'
-import {
+import type {
   Coords,
   OffsetOptions,
   Placement,
   Strategy,
   UseFloatingReturn,
+} from '@tamagui/floating'
+import {
   arrow,
   autoUpdate,
   flip,
@@ -28,9 +28,11 @@ import {
   useFloating,
 } from '@tamagui/floating'
 import { getSpace } from '@tamagui/get-token'
-import { SizableStackProps, ThemeableStack, YStack, YStackProps } from '@tamagui/stacks'
+import type { SizableStackProps, YStackProps } from '@tamagui/stacks'
+import { ThemeableStack, YStack } from '@tamagui/stacks'
 import * as React from 'react'
-import { Keyboard, View, useWindowDimensions } from 'react-native'
+import type { View } from 'react-native'
+import { Keyboard, useWindowDimensions } from 'react-native'
 
 type ShiftProps = typeof shift extends (options: infer Opts) => void ? Opts : never
 type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : never

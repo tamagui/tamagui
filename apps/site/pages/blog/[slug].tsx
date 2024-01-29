@@ -5,7 +5,8 @@ import { getMDXComponent } from 'mdx-bundler/client'
 import { NextSeo } from 'next-seo'
 import React from 'react'
 
-import { BlogPost, BlogSlugPage } from '../../components/BlogSlugPage'
+import type { BlogPost} from '../../components/BlogSlugPage';
+import { BlogSlugPage } from '../../components/BlogSlugPage'
 import { TamaguiExamples } from '../../components/TamaguiExamplesCode'
 import { getCompilationExamples } from '../../lib/getCompilationExamples'
 

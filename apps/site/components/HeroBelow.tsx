@@ -2,7 +2,8 @@ import { ChevronRight, Code, Cpu, Layers, Star } from '@tamagui/lucide-icons'
 import { NextLink } from 'components/NextLink'
 import Link from 'next/link'
 import { memo } from 'react'
-import { Button, H3, Paragraph, Theme, XStack, YStack, YStackProps } from 'tamagui'
+import type { YStackProps } from 'tamagui';
+import { Button, H3, Paragraph, Theme, XStack, YStack } from 'tamagui'
 
 import { CodeInline } from './Code'
 import { ContainerLarge } from './Container'

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Button, Form, H4, SizeTokens, Spinner } from 'tamagui'
+import type { SizeTokens } from 'tamagui'
+import { Button, Form, H4, Spinner } from 'tamagui'
 
 export function FormsDemo(props: { size: SizeTokens }) {
   const [status, setStatus] = useState<'off' | 'submitting' | 'submitted'>('off')

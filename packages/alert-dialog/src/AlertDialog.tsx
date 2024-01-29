@@ -3,26 +3,30 @@
 
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { Slottable, TamaguiElement, View, isTamaguiElement, styled } from '@tamagui/core'
-import { Scope, createContextScope } from '@tamagui/create-context'
+import type { TamaguiElement } from '@tamagui/core'
+import { Slottable, View, isTamaguiElement, styled } from '@tamagui/core'
+import type { Scope } from '@tamagui/create-context'
+import { createContextScope } from '@tamagui/create-context'
+import type {
+  DialogCloseProps,
+  DialogContentProps,
+  DialogDescriptionProps,
+  DialogOverlayProps,
+  DialogPortalProps,
+  DialogProps,
+  DialogTitleProps,
+  DialogTriggerProps,
+} from '@tamagui/dialog'
 import {
   Dialog,
   DialogClose,
-  DialogCloseProps,
   DialogContent,
-  DialogContentProps,
   DialogDescription,
-  DialogDescriptionProps,
   DialogOverlay,
   DialogOverlayFrame,
-  DialogOverlayProps,
   DialogPortal,
-  DialogPortalProps,
-  DialogProps,
   DialogTitle,
-  DialogTitleProps,
   DialogTrigger,
-  DialogTriggerProps,
   DialogWarningProvider,
   createDialogScope,
 } from '@tamagui/dialog'
@@ -367,7 +371,6 @@ const AlertDialogInner: React.FC<AlertDialogProps> = (
       if (title || description) {
         Alert.alert(title, description, buttons)
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [native, open])
 
     if (native) {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { ThemeName } from 'tamagui'
+import type { ThemeName } from 'tamagui'
 
 type ChangeHandler = (next: TintFamily) => void
 

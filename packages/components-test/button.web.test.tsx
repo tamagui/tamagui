@@ -4,7 +4,8 @@ import 'vitest-axe/extend-expect'
 import { Button } from '@tamagui/button'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
 import { Stack, TamaguiProvider, createTamagui } from '@tamagui/core'
-import { RenderResult, render } from '@testing-library/react'
+import type { RenderResult} from '@testing-library/react';
+import { render } from '@testing-library/react'
 import * as React from 'react'
 import { beforeEach, describe, expect, it } from 'vitest'
 

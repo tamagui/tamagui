@@ -1,4 +1,4 @@
-import { SelectImplProps } from './types'
+import type { SelectImplProps } from './types'
 
 /**
  * TODO can just make it a sheet for native

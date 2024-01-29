@@ -1,4 +1,4 @@
-import { SelectViewportExtraProps } from './types';
+import type { SelectViewportExtraProps } from './types';
 export declare const SelectViewportFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     size?: import("@tamagui/core").SizeTokens | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;

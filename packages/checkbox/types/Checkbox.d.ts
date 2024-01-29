@@ -1,4 +1,4 @@
-import { GetProps, SizeTokens, TamaguiElement } from '@tamagui/core';
+import type { GetProps, SizeTokens, TamaguiElement } from '@tamagui/core';
 import * as React from 'react';
 export declare const CheckboxStyledContext: import("@tamagui/core").StyledContext<{
     size: SizeTokens;

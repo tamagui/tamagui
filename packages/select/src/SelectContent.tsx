@@ -1,10 +1,11 @@
 import { FloatingOverlay, FloatingPortal } from '@floating-ui/react'
 import { Theme, useIsTouchDevice, useThemeName } from '@tamagui/core'
-import { FocusScope, FocusScopeProps } from '@tamagui/focus-scope'
+import type { FocusScopeProps } from '@tamagui/focus-scope'
+import { FocusScope } from '@tamagui/focus-scope'
 import { useMemo } from 'react'
 
 import { useSelectContext, useSelectItemParentContext } from './context'
-import { SelectContentProps } from './types'
+import type { SelectContentProps } from './types'
 import { useShowSelectSheet } from './useSelectBreakpointActive'
 
 /* -------------------------------------------------------------------------------------------------

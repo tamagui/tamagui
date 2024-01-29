@@ -1,5 +1,5 @@
 import type { PressableProps } from 'react-native';
-import { DivAttributes } from '../types';
+import type { DivAttributes } from '../types';
 export interface WebOnlyPressEvents {
     onPress?: PressableProps['onPress'];
     onLongPress?: PressableProps['onLongPress'];

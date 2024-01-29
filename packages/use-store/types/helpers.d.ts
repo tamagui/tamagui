@@ -1,4 +1,4 @@
-import { StoreInfo } from './interfaces';
+import type { StoreInfo } from './interfaces';
 export declare function getStoreUid(Constructor: any, props: string | Object | void): any;
 export declare const UNWRAP_STORE_INFO: unique symbol;
 export declare const cache: Map<string, StoreInfo>;

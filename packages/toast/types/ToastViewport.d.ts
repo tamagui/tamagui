@@ -1,4 +1,4 @@
-import { GetProps, TamaguiElement } from '@tamagui/core';
+import type { GetProps, TamaguiElement } from '@tamagui/core';
 import * as React from 'react';
 declare const VIEWPORT_DEFAULT_HOTKEY: string[];
 declare const VIEWPORT_PAUSE = "toast.viewportPause";

@@ -1,8 +1,10 @@
 // forked from Radix UI
 // https://github.com/radix-ui/primitives/blob/main/packages/react/progress/src/Progress.tsx
 
-import { GetProps, getVariableValue, styled } from '@tamagui/core'
-import { Scope, createContextScope } from '@tamagui/create-context'
+import type { GetProps } from '@tamagui/core'
+import { getVariableValue, styled } from '@tamagui/core'
+import type { Scope } from '@tamagui/create-context'
+import { createContextScope } from '@tamagui/create-context'
 import { getSize } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
 import { ThemeableStack, YStackProps } from '@tamagui/stacks'

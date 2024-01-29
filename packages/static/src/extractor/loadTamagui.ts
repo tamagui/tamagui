@@ -3,7 +3,7 @@ import { basename, dirname, extname, join, relative, resolve } from 'path'
 
 import { Color, colorLog } from '@tamagui/cli-color'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import { CLIResolvedOptions, CLIUserOptions, TamaguiOptions } from '@tamagui/types'
+import type { CLIResolvedOptions, CLIUserOptions, TamaguiOptions } from '@tamagui/types'
 import type { TamaguiInternalConfig } from '@tamagui/web'
 import esbuild from 'esbuild'
 import { existsSync, pathExists, readJSON, writeFile } from 'fs-extra'

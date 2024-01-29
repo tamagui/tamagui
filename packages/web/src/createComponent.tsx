@@ -37,7 +37,7 @@ import { themeable } from './helpers/themeable'
 import { mediaKeyMatch, setMediaShouldUpdate, useMedia } from './hooks/useMedia'
 import { useThemeWithState } from './hooks/useTheme'
 import { hooks } from './setupHooks'
-import {
+import type {
   ComponentContextI,
   DebugProp,
   DisposeFn,
@@ -62,9 +62,9 @@ import {
   UseAnimationProps,
   UseThemeWithStateProps,
 } from './types'
-import { WebOnlyPressEvents } from './interfaces/WebOnlyPressEvents'
-import { TamaguiComponentState } from './interfaces/TamaguiComponentState'
-import { TamaguiComponentEvents } from './interfaces/TamaguiComponentEvents'
+import type { WebOnlyPressEvents } from './interfaces/WebOnlyPressEvents'
+import type { TamaguiComponentState } from './interfaces/TamaguiComponentState'
+import type { TamaguiComponentEvents } from './interfaces/TamaguiComponentEvents'
 import { Slot } from './views/Slot'
 import { getThemedChildren } from './views/Theme'
 import { ThemeDebug } from './views/ThemeDebug'
@@ -925,6 +925,8 @@ export function createComponent<
         onPress ||
         onPressOut ||
         onPressIn ||
+        onMouseDown ||
+        onMouseUp ||
         onLongPress ||
         onClick
     )

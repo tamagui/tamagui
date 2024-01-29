@@ -2,7 +2,7 @@ import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useContext, useState } from 'react'
 
 import { ThemeManagerIDContext } from '../helpers/ThemeManagerContext'
-import { ThemeName } from '../types'
+import type { ThemeName } from '../types'
 import { getThemeManager } from './useTheme'
 
 export function useThemeName(opts?: { parent?: true }): ThemeName {

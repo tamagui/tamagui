@@ -1,9 +1,11 @@
-import {
+import type {
   MaskDefinitions,
   PaletteDefinitions,
   TemplateDefinitions,
   ThemeDefinitions,
   ThemeUsingMask,
+} from '@tamagui/create-theme'
+import {
   applyMask,
   createMask,
   createThemeWithPalettes,

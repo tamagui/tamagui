@@ -1,7 +1,7 @@
 import { stylePropsTextOnly, validStyles } from '@tamagui/helpers'
 
 import { createComponent } from '../createComponent'
-import {
+import type {
   TamaguiTextElement,
   TextNonStyleProps,
   TextProps,

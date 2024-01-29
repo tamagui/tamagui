@@ -1,5 +1,5 @@
 import { createComponent } from './createComponent'
-import { StyledContext } from './helpers/createStyledContext'
+import type { StyledContext } from './helpers/createStyledContext'
 import { mergeVariants } from './helpers/mergeVariants'
 import type { GetRef } from './interfaces/GetRef'
 import { getReactNativeConfig } from './setupReactNative'

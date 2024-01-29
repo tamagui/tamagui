@@ -1,5 +1,5 @@
 import { applyMaskStateless } from './applyMask'
-import { CreateMask } from './createThemeTypes'
+import type { CreateMask } from './createThemeTypes'
 import { getThemeInfo } from './themeInfo'
 
 export const combineMasks = (...masks: CreateMask[]) => {

@@ -19,7 +19,7 @@ import {
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 
-import { Frontmatter } from '../frontmatter'
+import type { Frontmatter } from '../frontmatter'
 import { NextLink } from './NextLink'
 
 export type BlogPost = {

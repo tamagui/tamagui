@@ -2,20 +2,22 @@ import '@tamagui/core/reset.css'
 
 import '../app.css'
 
-import { GetLayout } from '@lib/getDefaultLayout'
-import {
-  ColorScheme,
-  NextThemeProvider,
-  useRootTheme,
-  useThemeSetting,
-} from '@tamagui/next-theme'
-import { AppProps } from 'next/app'
+import type { GetLayout } from '@lib/getDefaultLayout'
+import type { ColorScheme } from '@tamagui/next-theme'
+import { NextThemeProvider, useRootTheme, useThemeSetting } from '@tamagui/next-theme'
+import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
-import { useEffect, useMemo, useState } from 'react'
-import { TamaguiProvider, useDebounceValue, useDidFinishSSR } from 'tamagui'
+import { useEffect, useLayoutEffect, useMemo, useState } from 'react'
+import {
+  TamaguiProvider,
+  useDebounceValue,
+  useDidFinishSSR,
+  useIsomorphicLayoutEffect,
+} from 'tamagui'
 
 import { LoadCherryBomb, LoadInter900, LoadMunro } from '../components/LoadFont'
 import config from '../tamagui.config'
+import Head from 'next/head'
 
 // import '../lib/wdyr'
 
@@ -44,7 +46,7 @@ export default function App(props: AppProps) {
 
   const isTakeout = router.pathname.startsWith('/takeout')
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (isTakeout && theme !== 'dark') {
       const prev = theme
       themeSetting.set('dark')
@@ -104,14 +106,14 @@ function AppContents(
 
   return (
     <>
-      <script
-        key="tamagui-animations-mount"
-        type="text/javascript"
-        dangerouslySetInnerHTML={{
-          // avoid flash of animated things on enter
-          __html: `document.documentElement.classList.add('t_unmounted')`,
-        }}
-      />
+      <Head>
+        <script
+          dangerouslySetInnerHTML={{
+            // avoid flash of animated things on enter
+            __html: `document.documentElement.classList.add('t_unmounted')`,
+          }}
+        />
+      </Head>
 
       {didHydrateDelayed && (
         <>

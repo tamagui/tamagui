@@ -10,7 +10,7 @@
 
 import canUseDOM from '../../modules/canUseDOM'
 import createCSSStyleSheet from './createCSSStyleSheet'
-import { OrderedCSSStyleSheet } from './createOrderedCSSStyleSheet'
+import type { OrderedCSSStyleSheet } from './createOrderedCSSStyleSheet'
 import createOrderedCSSStyleSheet from './createOrderedCSSStyleSheet'
 
 type Sheet = {

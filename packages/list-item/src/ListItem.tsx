@@ -4,22 +4,20 @@ import { getSize, getSpace } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
 import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { ThemeableStack, YStack } from '@tamagui/stacks'
-import { SizableText, TextParentStyles, wrapChildrenInText } from '@tamagui/text'
-import {
+import type { TextParentStyles } from '@tamagui/text'
+import { SizableText, wrapChildrenInText } from '@tamagui/text'
+import type {
   FontSizeTokens,
   GetProps,
   PropsWithoutMediaStyles,
   SizeTokens,
-  Spacer,
   ThemeableProps,
-  getTokens,
-  getVariableValue,
-  styled,
-  useProps,
 } from '@tamagui/web'
-import React, { FunctionComponent } from 'react'
+import { Spacer, getTokens, getVariableValue, styled, useProps } from '@tamagui/web'
+import type { FunctionComponent } from 'react'
+import React from 'react'
 
-type ListItemIconProps = { color?: string; size?: number }
+type ListItemIconProps = { color?: any; size?: any }
 type IconProp = JSX.Element | FunctionComponent<ListItemIconProps> | null
 
 export type ListItemExtraProps = Omit<TextParentStyles, 'TextComponent' | 'noTextWrap'> &

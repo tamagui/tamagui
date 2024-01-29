@@ -1,5 +1,6 @@
 import { ThemeableStack } from '@tamagui/stacks'
-import { GetProps, styled } from '@tamagui/web'
+import type { GetProps } from '@tamagui/web'
+import { styled } from '@tamagui/web'
 
 import { getShapeSize } from './getShapeSize'
 

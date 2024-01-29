@@ -1,4 +1,4 @@
-import { SplitStyleProps, StackStyle, StaticConfig, ThemeParsed, UseMediaState } from '../types';
+import type { SplitStyleProps, StackStyle, StaticConfig, ThemeParsed, UseMediaState } from '../types';
 type UsePropsOptions = Pick<SplitStyleProps, 'noExpand' | 'noNormalize' | 'noClassNames' | 'resolveValues'> & {
     disableExpandShorthands?: boolean;
     forComponent?: {

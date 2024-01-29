@@ -3,11 +3,9 @@ import { AnimatePresence } from '@tamagui/animate-presence'
 import { hideOthers } from '@tamagui/aria-hidden'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
+import type { GetProps, StackProps, TamaguiElement } from '@tamagui/core'
 import {
-  GetProps,
   GetRef,
-  StackProps,
-  TamaguiElement,
   TamaguiTextElement,
   Theme,
   View,
@@ -17,19 +15,19 @@ import {
   useMedia,
   useThemeName,
 } from '@tamagui/core'
-import { Scope, createContext, createContextScope } from '@tamagui/create-context'
-import { Dismissable, DismissableProps } from '@tamagui/dismissable'
-import { FocusScope, FocusScopeProps } from '@tamagui/focus-scope'
+import type { Scope } from '@tamagui/create-context'
+import { createContext, createContextScope } from '@tamagui/create-context'
+import type { DismissableProps } from '@tamagui/dismissable'
+import { Dismissable } from '@tamagui/dismissable'
+import type { FocusScopeProps } from '@tamagui/focus-scope'
+import { FocusScope } from '@tamagui/focus-scope'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
-import { PortalHost, PortalItem, PortalItemProps } from '@tamagui/portal'
+import type { PortalItemProps } from '@tamagui/portal'
+import { PortalHost, PortalItem } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
 import { Overlay, Sheet, SheetController } from '@tamagui/sheet'
-import {
-  ButtonNestingContext,
-  ThemeableStack,
-  YStack,
-  YStackProps,
-} from '@tamagui/stacks'
+import type { YStackProps } from '@tamagui/stacks'
+import { ButtonNestingContext, ThemeableStack, YStack } from '@tamagui/stacks'
 import { H2, Paragraph } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'

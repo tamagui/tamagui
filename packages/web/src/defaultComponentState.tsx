@@ -1,4 +1,4 @@
-import { TamaguiComponentState } from './interfaces/TamaguiComponentState'
+import type { TamaguiComponentState } from './interfaces/TamaguiComponentState'
 
 export const defaultComponentState: TamaguiComponentState = {
   hover: false,

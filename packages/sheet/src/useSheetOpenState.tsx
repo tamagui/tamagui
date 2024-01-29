@@ -1,6 +1,6 @@
 import { useControllableState } from '@tamagui/use-controllable-state'
 
-import { SheetProps } from './types'
+import type { SheetProps } from './types'
 import { useSheetController } from './useSheetController'
 
 export const useSheetOpenState = (props: SheetProps) => {

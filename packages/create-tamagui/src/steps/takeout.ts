@@ -7,7 +7,7 @@ import chalk from 'chalk'
 import prompts from 'prompts'
 
 import { takeoutAsciiArt, tamaguiRainbowAsciiArt } from '../helpers/asciiArts'
-import { ExtraSteps } from './types'
+import type { ExtraSteps } from './types'
 
 const packageManager = 'yarn'
 const useYarn = packageManager === 'yarn'

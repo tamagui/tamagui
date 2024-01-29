@@ -1,4 +1,4 @@
-import { InputExtraProps, InputProps } from './Input';
+import type { InputExtraProps, InputProps } from './Input';
 /**
  * Is basically Input but with rows = 4 to start
  */

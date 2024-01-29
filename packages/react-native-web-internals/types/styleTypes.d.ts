@@ -6,7 +6,7 @@
  *
  * @flow
  */
-import { ColorValue, DimensionValue } from './types';
+import type { ColorValue, DimensionValue } from './types';
 type NumberOrString = number | string;
 /**
  * Animations and transitions

@@ -1,4 +1,4 @@
-import { MutableRefObject } from 'react';
+import type { MutableRefObject } from 'react';
 type DisposeFn = () => void;
 type IntersectCallback = (props: (IntersectionObserverEntry | null)[], didResize?: boolean) => DisposeFn | void | null;
 type HTMLRef = MutableRefObject<HTMLElement | null>;

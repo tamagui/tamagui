@@ -1,4 +1,4 @@
-import { CLIResolvedOptions, CLIUserOptions, TamaguiOptions } from '@tamagui/types';
+import type { CLIResolvedOptions, CLIUserOptions, TamaguiOptions } from '@tamagui/types';
 import { TamaguiProjectInfo } from './bundleConfig';
 export declare function loadTamagui(propsIn: Partial<TamaguiOptions>): Promise<TamaguiProjectInfo | null>;
 export declare function loadTamaguiSync({ forceExports, cacheKey, ...propsIn }: Partial<TamaguiOptions> & {

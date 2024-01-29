@@ -1,4 +1,4 @@
-import { Variable } from '@tamagui/web';
+import type { Variable } from '@tamagui/web';
 export declare const size: {
     $0: number;
     '$0.25': number;

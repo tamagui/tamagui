@@ -20,6 +20,7 @@ import { Features } from '../components/Features'
 import { LoadInter900 } from '../components/LoadFont'
 import { NextLink } from '../components/NextLink'
 import { StudioScreen1 } from '../components/StudioScreen1'
+import { ThemeNameEffect } from '../components/ThemeNameEffect'
 
 export default function StudioSplashPage() {
   // const [state, setState] = useState({
@@ -39,6 +40,8 @@ export default function StudioSplashPage() {
       <Head>
         <LoadInter900 />
       </Head>
+
+      <ThemeNameEffect />
 
       {/* biome-ignore lint/a11y/useIframeTitle: <explanation> */}
       {/* <iframe

@@ -3,7 +3,7 @@ import { useContext } from 'react'
 import { ComponentContext } from '../contexts/ComponentContext'
 import { defaultComponentStateMounted } from '../defaultComponentState'
 import { useSplitStyles } from '../helpers/getSplitStyles'
-import {
+import type {
   SplitStyleProps,
   StackStyle,
   StaticConfig,

@@ -1,4 +1,4 @@
-import { SizableTextProps } from '@tamagui/text';
+import type { SizableTextProps } from '@tamagui/text';
 export interface AnchorExtraProps {
     href?: string;
     target?: string;

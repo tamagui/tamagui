@@ -1,4 +1,4 @@
-import { GetProps } from '@tamagui/core';
+import type { GetProps } from '@tamagui/core';
 export type YStackProps = GetProps<typeof YStack>;
 export type XStackProps = YStackProps;
 export type ZStackProps = YStackProps;

@@ -4,17 +4,12 @@ import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { YStack } from '@tamagui/stacks'
-import { H1, H3 } from '@tamagui/text'
+import type { H3 } from '@tamagui/text'
+import { H1 } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
-import {
-  GetProps,
-  GetRef,
-  Stack,
-  TamaguiElement,
-  createStyledContext,
-  styled,
-} from '@tamagui/web'
+import type { GetProps, GetRef, Stack, TamaguiElement } from '@tamagui/web'
+import { createStyledContext, styled } from '@tamagui/web'
 import * as React from 'react'
 
 type Direction = 'ltr' | 'rtl'

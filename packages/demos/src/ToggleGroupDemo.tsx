@@ -1,5 +1,6 @@
 import { AlignCenter, AlignLeft, AlignRight } from '@tamagui/lucide-icons'
-import { Label, SizeTokens, ToggleGroup, XStack, YStack } from 'tamagui'
+import type { SizeTokens } from 'tamagui'
+import { Label, ToggleGroup, XStack, YStack } from 'tamagui'
 
 export function ToggleGroupDemo() {
   return (
