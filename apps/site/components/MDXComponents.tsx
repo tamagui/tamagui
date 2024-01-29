@@ -236,7 +236,7 @@ export const components = {
       <Paragraph
         tag="p"
         size={large ? '$9' : '$8'}
-        my="$4"
+        mb="$4"
         fow={large ? '200' : '300'}
         $sm={{
           size: '$7',

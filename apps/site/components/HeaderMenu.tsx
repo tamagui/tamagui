@@ -22,6 +22,10 @@ import { getDefaultAvatarImage } from '../lib/avatar'
 
 export const HeaderMenu = React.memo(function HeaderMenu() {
   const { open, setOpen } = useDocsMenu()
+  const [state, setState] = React.useState({
+    via: undefined as 'hover' | 'press' | undefined,
+    viaAt: Date.now()
+  })
   const userSwr = useUser()
 
   return (
@@ -31,9 +35,16 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
         hoverable={{
           delay: 50,
           restMs: 40,
+          move: false
         }}
         open={open}
-        onOpenChange={setOpen}
+        onOpenChange={(next, via) => {
+          if (open && state.via === 'press' && via === 'hover') {
+            return
+          }
+          setState({ ...state, via, viaAt: Date.now() })
+          setOpen(next)
+        }}
         size="$5"
         stayInFrame={{ padding: 20 }}
       >
@@ -45,14 +56,24 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
             noTextWrap
             br="$10"
             onPress={() => {
-              if (isTouchable || !open) {
+              if (isTouchable) {
                 setOpen(!open)
+                return
               }
+              if (open && state.via === 'hover') {
+                setState({ ...state, via: 'press', viaAt: Date.now() })
+                return
+              }
+              if (open) {
+                setOpen(false)
+                return
+              }
+              // hover handles this
             }}
             theme={open ? 'alt1' : undefined}
             aria-label="Open the main menu"
           >
-            {userSwr.data?.userDetails && (
+            {userSwr.data?.userDetails ? (
               <Avatar circular size="$2">
                 <Avatar.Image
                   source={{
@@ -68,6 +89,8 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
                   }}
                 />
               </Avatar>
+            ) : (
+              <Menu size={16} />
             )}
             <SizableText ff="$silkscreen">Menu</SizableText>
           </Button>

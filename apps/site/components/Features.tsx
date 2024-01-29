@@ -3,15 +3,15 @@ import { Paragraph, XStack, YStack } from 'tamagui'
 
 import { CheckCircle } from './CheckCircle'
 
-export const Features = ({ items, size, ...props }: any) => {
+export const Features = ({ items, size, large, ...props }: any) => {
   return (
-    <YStack mt="$4" mb="$6" {...props} space="$3">
+    <YStack mt="$4" mb="$6" {...props} gap="$3">
       {items.map((feature, i) => (
         <XStack tag="li" key={i}>
           <YStack mt={-3}>
             <CheckCircle />
           </YStack>
-          <Paragraph size={size} color="$gray11">
+          <Paragraph size={size ?? (large ? '$6' : '$4')} color="$gray11">
             {feature}
           </Paragraph>
         </XStack>

@@ -12,7 +12,9 @@ import {
   TooltipSimple,
   XStack,
   YStack,
+  getMedia,
   styled,
+  useMedia,
 } from 'tamagui'
 import { Text } from 'tamagui'
 
@@ -43,9 +45,9 @@ const HeadAnchor = styled(Paragraph, {
   variants: {
     grid: {
       true: {
-        ff: '$heading',
         fow: '200',
-        size: '$5',
+        size: '$4',
+        ls: 1,
         textTransform: 'unset',
         w: '100%',
         f: 1,
@@ -85,23 +87,6 @@ export const HeaderLinks = (props: HeaderProps) => {
         </HeadAnchor>
       </NextLink>
 
-      {/* <NextLink passHref prefetch={false} href="/themes">
-        <HeadAnchor
-
-        {...forceShowAllLinks && {
-          miw: '50%',
-          f: 1,
-        }}
-        
-        
-          $sm={{
-            display: forceShowAllLinks ? 'flex' : 'none',
-          }}
-        >
-          Themes
-        </HeadAnchor>
-      </NextLink> */}
-
       {forceShowAllLinks && (
         <NextLink legacyBehavior={false} prefetch={false} href="/takeout">
           <HeadAnchor
@@ -115,7 +100,12 @@ export const HeaderLinks = (props: HeaderProps) => {
           </HeadAnchor>
         </NextLink>
       )}
+
       {!forceShowAllLinks && <TakeoutHeaderLink {...props} />}
+
+      {/* {!forceShowAllLinks && (
+        <BentoHeaderLink {...props} />
+      )} */}
 
       <NextLink passHref prefetch={false} href="/studio">
         <HeadAnchor
@@ -212,6 +202,7 @@ const TakeoutHeaderLink = ({ forceShowAllLinks }: HeaderProps) => {
   }
 
   const openIt = () => {
+    if (getMedia().xs) return
     setOpen(true)
     setHasOpenedOnce(true)
   }
@@ -261,6 +252,117 @@ const TakeoutHeaderLink = ({ forceShowAllLinks }: HeaderProps) => {
           >
             <TooltipSimple label="Starter kit">
               <Text>🥡</Text>
+            </TooltipSimple>
+          </HeadAnchor>
+        </Popover.Trigger>
+
+        <Popover.Content
+          unstyled
+          animation={[
+            'bouncy',
+            {
+              opacity: {
+                overshootClamping: true,
+              },
+            },
+          ]}
+          enterStyle={{ y: -10, opacity: 0 }}
+          exitStyle={{ y: -10, opacity: 0 }}
+        >
+          <Popover.Arrow size="$3" />
+          <XStack
+            tag="a"
+            cur="pointer"
+            bg="$background"
+            ai="center"
+            py="$2"
+            px="$3"
+            br="$4"
+            hoverStyle={{
+              bg: '$backgroundHover',
+            }}
+            elevation="$0.25"
+          >
+            <SizableText ff="$silkscreen">Takeout </SizableText>
+            <Text
+              ff="$body"
+              fontSize="$3"
+              color="$color10"
+              $sm={{ dsp: 'none' }}
+              y={0.98}
+              ml={6}
+            >
+              starter kit
+            </Text>
+          </XStack>
+        </Popover.Content>
+      </Popover>
+    </NextLink>
+  )
+}
+
+const BentoHeaderLink = ({ forceShowAllLinks }: HeaderProps) => {
+  const router = useRouter()
+  const isDisabledRoute = router.asPath === '/'
+  const [disabled, setDisabled] = React.useState(isDisabledRoute)
+  const [open, setOpen] = React.useState(false)
+  const [hasOpenedOnce, setHasOpenedOnce] = React.useState(false)
+
+  if (disabled && open) {
+    setOpen(false)
+  }
+
+  const openIt = () => {
+    if (getMedia().xs) return
+    setOpen(true)
+    setHasOpenedOnce(true)
+  }
+
+  // open just a touch delayed to show the animation
+  React.useEffect(() => {
+    if (open || disabled || hasOpenedOnce) return
+
+    const tm = setTimeout(openIt, 0)
+
+    return () => {
+      clearTimeout(tm)
+    }
+  }, [open, disabled])
+
+  // remember if you closed it
+  React.useEffect(() => {
+    const key = 'tkt-cta-times-close2'
+    const timesClosed = +(localStorage.getItem(key) || 0)
+    if (timesClosed > 3) {
+      setDisabled(true)
+    }
+    localStorage.setItem(key, `${timesClosed + 1}`)
+  }, [])
+
+  return (
+    <NextLink legacyBehavior={false} prefetch={false} href="/takeout">
+      <Popover
+        open={open}
+        onOpenChange={(open) => {
+          if (open) {
+            openIt()
+          } else {
+            setOpen(false)
+          }
+        }}
+        offset={12}
+      >
+        <Popover.Trigger asChild>
+          <HeadAnchor
+            grid={forceShowAllLinks}
+            tag="span"
+            fontSize={24}
+            $sm={{
+              display: 'none',
+            }}
+          >
+            <TooltipSimple label="Starter kit">
+              <Text>🍱</Text>
             </TooltipSimple>
           </HeadAnchor>
         </Popover.Trigger>

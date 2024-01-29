@@ -1,10 +1,6 @@
 import { NextLink } from "@components/NextLink";
 import { PoweredByStripeIcon } from "@components/PoweredByStripeIcon";
 import { getTakeoutPriceInfo } from "@lib/getProductInfo";
-import { stripe } from "@lib/stripe";
-import { Database } from "@lib/supabase-types";
-import { getArray } from "@lib/supabase-utils";
-import { supabaseAdmin } from "@lib/supabaseAdmin";
 import * as sections from "@tamagui/bento";
 import { ButtonDemo, InputsDemo, SelectDemo } from "@tamagui/demos";
 import { getSize } from "@tamagui/get-token";
@@ -17,9 +13,9 @@ import {
   XCircle,
 } from "@tamagui/lucide-icons";
 import { useBentoStore } from "hooks/useBentoStore";
-import { GetStaticProps } from "next";
 import React, { useMemo, useState } from "react";
 import Stripe from "stripe";
+
 import {
   Anchor,
   AnimatePresence,
@@ -27,13 +23,13 @@ import {
   ButtonProps,
   Card,
   Dialog,
+  EnsureFlexed,
   FontSizeTokens,
   H1,
   H2,
   H3,
   H4,
   H5,
-  Image,
   Input,
   Label,
   Paragraph,
@@ -47,12 +43,18 @@ import {
   Unspaced,
   XStack,
   XStackProps,
-  YStack,
+  YStack
 } from "tamagui";
 import { LinearGradient } from "tamagui/linear-gradient";
 
+
+import { getDefaultLayout } from "@lib/getDefaultLayout";
+import { stripe } from "@lib/stripe";
+import { Database } from "@lib/supabase-types";
+import { getArray } from "@lib/supabase-utils";
+import { supabaseAdmin } from "@lib/supabaseAdmin";
+import { GetStaticProps } from "next";
 import { ContainerLarge } from "../../components/Container";
-import { getDefaultLayout } from "../../lib/getDefaultLayout";
 
 const Point = ({
   size = "$4",
@@ -324,13 +326,11 @@ const PurchaseModal = ({
       return 0;
     }
     let final = 0;
-    return proComponents.prices[0].unit_amount;
-    // TODO: fix this part
-    if (selectedProductsIds.includes(proComponentsProduct.id)) {
+    if (selectedProductsIds.includes(proComponents!.id)) {
       final += proComponentsProductPriceId
-        ? proComponentsProduct.prices.find(
-            (p) => p.id === proComponentsProductPriceId
-          )?.unit_amount ?? 0
+        ? proComponents!.prices.find(
+          (p) => p.id === proComponentsProductPriceId
+        )?.unit_amount ?? 0
         : 0;
     }
     return final;
@@ -713,12 +713,23 @@ const Hero = () => {
 
   return (
     <YStack pos="relative" mt={-55} pt={55} zi={0}>
-      <LinearGradient
-        colors={[`$backgroundStrong`, `$${tint}5`]}
-        start={[0, 1]}
-        end={[0, 0]}
-        fullscreen
-      />
+      <ThemeTint>
+        <LinearGradient
+          colors={[`$backgroundStrong`, `$color5`]}
+          start={[0, 1]}
+          end={[0, 0]}
+          fullscreen
+        /></ThemeTint>
+      <ThemeTintAlt>
+        <LinearGradient
+          // colors={[`$color8`, `transparent`]}
+          colors={[`transparent`, `$color5`]}
+          start={[0, 1]}
+          end={[0, 0]}
+          fullscreen
+        />
+      </ThemeTintAlt>
+
       <ContainerLarge>
         <XStack
           gap="$6"
@@ -737,21 +748,19 @@ const Hero = () => {
             gap="$4"
           >
             <H1 maw="100%" f={1} size="$14" mb="$-2">
-              Well crafted add-ons.
+              Bento
             </H1>
 
-            <YStack gap="$4">
+            <YStack gap="$3">
               <ThemeTintAlt>
                 <Paragraph size="$9" color="$color10">
-                  Screens, components, and early access to upcoming OSS
-                  features.
+                  Boost your React Native app development speed with a suite
+                  of copy-paste components and screens.
                 </Paragraph>
               </ThemeTintAlt>
 
               <Paragraph color="$gray12" size="$6">
-                For just $200/year get access to ongoing releases of well
-                designed, responsive and accessible cross-platform components
-                for React and React Native, ready to copy-paste into your app.
+                $200 for lifetime access.
               </Paragraph>
             </YStack>
 
@@ -760,14 +769,23 @@ const Hero = () => {
             <XStack gap="$3">
               <ThemeTintAlt>
                 <Button
-                  theme="active"
-                  iconAfter={ShoppingCart}
+                  icon={ShoppingCart}
                   fontFamily="$mono"
+                  size="$5"
+                  bg="$color8"
+                  color="$color4"
+                  hoverStyle={{
+                    bg: '$color9',
+                    boc: '$color9'
+                  }}
+                  pressStyle={{
+                    bg: '$color6'
+                  }}
                   onPress={() => {
                     store.showPurchase = true;
                   }}
                 >
-                  Purchase — $200
+                  $200
                 </Button>
               </ThemeTintAlt>
             </XStack>
@@ -791,7 +809,6 @@ const Hero = () => {
 };
 
 const Body = () => {
-  const store = useBentoStore();
   return (
     <ContainerLarge gap="$2">
       <H2>Sections</H2>
@@ -845,17 +862,18 @@ function ComponentGroupsBanner({
       hoverStyle={{
         borderColor: "$blue5",
       }}
-      bw={1}
-      boc="$gray2"
-      br="$2"
+      maw="calc(50% - var(--size-5))"
       ov="hidden"
+      bc="$background"
+      mih={300}
+      br="$9"
       accessible
       cursor="pointer"
       href={BASE_PATH + path}
     >
-      <Image bc="$background" w={200} h={200} source={{ uri: "" }} />
-      <YStack px="$4" py="$2">
-        <H4 fontWeight={"normal"} fontSize="$4">
+      <EnsureFlexed />
+      <YStack p="$5">
+        <H4 fontWeight={'normal'} fontSize="$4">
           {name}
         </H4>
         <H5 fontWeight={"normal"} fontSize={"$2"}>
@@ -868,7 +886,7 @@ function ComponentGroupsBanner({
 
 const BASE_PATH = "/bento";
 
-export default () => null;
+export default ProPage;
 
 type ProComponentsProps = {
   proComponents?: Database["public"]["Tables"]["products"]["Row"] & {

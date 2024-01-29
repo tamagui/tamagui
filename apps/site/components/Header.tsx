@@ -1,12 +1,9 @@
 import { ThemeToggle } from '@components/ThemeToggle'
-import { getDefaultAvatarImage } from '@lib/avatar'
-import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
-import { useUser } from 'hooks/useUser'
+import { LogoWords, TamaguiLogo, ThemeTint } from '@tamagui/logo'
 // import { useUser } from 'hooks/useUser'
 import { useRouter } from 'next/router'
 import * as React from 'react'
 import {
-  Avatar,
   Text,
   TooltipGroup,
   TooltipSimple,
@@ -14,7 +11,7 @@ import {
   XGroup,
   XStack,
   YStack,
-  isClient,
+  isClient
 } from 'tamagui'
 
 import { ContainerLarge } from './Container'
@@ -107,7 +104,6 @@ export function Header(props: HeaderProps) {
                 y: 5,
                 // elevation: isStudio ? '$0.5' : '$3',
                 elevation: '$3',
-                boc: '$borderColor',
               },
             })}
           />
@@ -146,7 +142,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
           )}
 
           <TooltipGroup delay={tooltipDelay}>
-            <XGroup boc="$color2" bw={1} mah={32} bc="transparent" ai="center" size="$3">
+            <XGroup mah={32} bc="transparent" ai="center" size="$4">
               {!isTakeout && (
                 <XGroup.Item>
                   <ThemeToggle borderWidth={0} chromeless />
@@ -161,9 +157,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
           <SearchButton
             size="$2"
             br="$10"
-            elevation="$1"
-            shadowRadius={6}
-            shadowOpacity={0.0025}
+            elevation="$0.5"
           />
 
           <YStack $md={{ display: 'none' }}>

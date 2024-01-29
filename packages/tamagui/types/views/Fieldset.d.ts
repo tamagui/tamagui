@@ -3,6 +3,6 @@ export declare const Fieldset: import("@tamagui/core").TamaguiComponent<import("
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     horizontal?: boolean | undefined;
     fullscreen?: boolean | undefined;
-}, {}>;
+}, import("@tamagui/core").StaticConfigPublic>;
 export type FieldsetProps = GetProps<typeof Fieldset>;
 //# sourceMappingURL=Fieldset.d.ts.map

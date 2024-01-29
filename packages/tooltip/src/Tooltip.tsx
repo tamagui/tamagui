@@ -88,7 +88,7 @@ export type TooltipProps = PopperProps & {
   onOpenChange?: (open: boolean) => void
   focus?: {
     enabled?: boolean
-    keyboardOnly?: boolean
+    visibleOnly?: boolean
   }
   groupId?: string
   restMs?: number

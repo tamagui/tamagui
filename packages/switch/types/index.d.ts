@@ -2,14 +2,14 @@
 export * from './Switch';
 export * from './SwitchContext';
 export * from './createSwitch';
-export declare const Switch: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase & {
+export declare const Switch: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: import("@tamagui/web").SizeTokens | undefined;
     checked?: boolean | undefined;
     frameWidth?: number | undefined;
     unstyled?: boolean | undefined;
     elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-}>, keyof import("./createSwitch").SwitchExtraProps> & import("./createSwitch").SwitchExtraProps & import("react").RefAttributes<import("@tamagui/web").TamaguiElement>> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase & {
+}>, keyof import("./createSwitch").SwitchExtraProps> & import("./createSwitch").SwitchExtraProps & import("react").RefAttributes<import("@tamagui/web").TamaguiElement>> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: import("@tamagui/web").SizeTokens | undefined;
     checked?: boolean | undefined;
     frameWidth?: number | undefined;
@@ -23,8 +23,8 @@ export declare const Switch: import("react").ForwardRefExoticComponent<Omit<impo
     unstyled?: boolean | undefined;
     elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-}, {}> & Omit<{}, "staticConfig" | "extractable" | "styleable"> & {
-    __tama: [Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase & {
+}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
+    __tama: [Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         size?: import("@tamagui/web").SizeTokens | undefined;
         checked?: boolean | undefined;
         frameWidth?: number | undefined;
@@ -38,9 +38,9 @@ export declare const Switch: import("react").ForwardRefExoticComponent<Omit<impo
         unstyled?: boolean | undefined;
         elevation?: number | import("@tamagui/web").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
-    }, {}];
+    }, import("@tamagui/web").StaticConfigPublic];
 } & {
-    Thumb: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase & {
+    Thumb: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         size?: import("@tamagui/web").SizeTokens | undefined;
         checked?: boolean | undefined;
         unstyled?: boolean | undefined;
@@ -74,6 +74,6 @@ export declare const Switch: import("react").ForwardRefExoticComponent<Omit<impo
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-    }, {}>;
+    }, import("@tamagui/web").StaticConfigPublic>;
 };
 //# sourceMappingURL=index.d.ts.map

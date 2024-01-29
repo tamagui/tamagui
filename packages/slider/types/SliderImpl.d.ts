@@ -7,6 +7,6 @@ export declare const SliderFrame: import("@tamagui/core").TamaguiComponent<impor
     size?: any;
     fullscreen?: boolean | undefined;
     orientation?: "horizontal" | "vertical" | undefined;
-}, {}>;
+}, import("@tamagui/core").StaticConfigPublic>;
 export declare const SliderImpl: React.ForwardRefExoticComponent<SliderImplProps & React.RefAttributes<View>>;
 //# sourceMappingURL=SliderImpl.d.ts.map

@@ -28,11 +28,20 @@ export const DocsMenuContents = React.memo(function DocsMenuContents() {
   return (
     <>
       <Input
-        size="$3"
+        size="$4"
         w="100%"
         bw={0}
         bbw={0.5}
+        textContentType="none"
+        autoCapitalize="none"
+        autoCorrect={false}
         br="$0"
+        // @ts-ignore
+        name="Search"
+        dsp="none"
+        $pointerFine={{
+          dsp: 'flex',
+        }}
         borderColor="$color4"
         backgroundColor="transparent"
         focusStyle={{
@@ -42,6 +51,7 @@ export const DocsMenuContents = React.memo(function DocsMenuContents() {
         hoverStyle={{
           borderColor: '$color6',
         }}
+        autoComplete="off"
         placeholder="Filter..."
         placeholderTextColor="$gray9"
         onKeyPress={(e) => {

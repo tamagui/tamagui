@@ -319,6 +319,10 @@ iframe {
   backdrop-filter: blur(30px);
 }
 
+.blur-4 {
+  backdrop-filter: blur(4px);
+}
+
 .blur-light {
   backdrop-filter: blur(2px);
 }
@@ -842,7 +846,14 @@ textarea {
   -webkit-text-wrap: balance;
 }
 
-.text-wrap-pretty {
+.text-wrap-pretty, p {
   text-wrap: pretty;
   -webkit-text-wrap: pretty;
+}
+
+.tooltip {
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-decoration-color: var(--color7);
+  text-underline-offset: 6px;
 }
