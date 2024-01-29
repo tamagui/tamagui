@@ -1,14 +1,12 @@
-import { NextLink } from "@components/NextLink";
-import * as sections from "@tamagui/bento";
-import { ButtonDemo, InputsDemo, SelectDemo } from "@tamagui/demos";
-import { ThemeTint, ThemeTintAlt } from "@tamagui/logo";
-import {
-  ShoppingCart
-} from "@tamagui/lucide-icons";
-import { useBentoStore } from "hooks/useBentoStore";
-import Stripe from "stripe";
+import { NextLink } from '@components/NextLink'
+import * as sections from '@tamagui/bento'
+import { ButtonDemo, InputsDemo, SelectDemo } from '@tamagui/demos'
+import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
+import { ShoppingCart } from '@tamagui/lucide-icons'
+import { useBentoStore } from 'hooks/useBentoStore'
+import type Stripe from 'stripe'
 
-import { useEffect } from 'react';
+import { useEffect } from 'react'
 import {
   Button,
   Card,
@@ -23,21 +21,21 @@ import {
   Theme,
   XStack,
   YStack,
-  useTheme
-} from 'tamagui';
+  useTheme,
+} from 'tamagui'
 // import * as S from '@tamagui/studio/components'
 // console.log('SSSSSSSS', S)
 
-import { PurchaseModal } from '@components/BentoPurchaseModal';
-import { BentoLogo } from '../../components/BentoLogo';
-import { BentoPageFrame } from '../../components/BentoPageFrame';
-import { ContainerLarge } from '../../components/Container';
-import { getDefaultLayout } from '../../lib/getDefaultLayout';
-import { Database } from "@lib/supabase-types";
-import { GetStaticProps } from "next";
-import { stripe } from "@lib/stripe";
-import { supabaseAdmin } from "@lib/supabaseAdmin";
-import { getArray } from "@lib/supabase-utils";
+import { PurchaseModal } from '@components/BentoPurchaseModal'
+import { BentoLogo } from '../../components/BentoLogo'
+import { BentoPageFrame } from '../../components/BentoPageFrame'
+import { ContainerLarge } from '../../components/Container'
+import { getDefaultLayout } from '../../lib/getDefaultLayout'
+import type { Database } from '@lib/supabase-types'
+import type { GetStaticProps } from 'next'
+import { stripe } from '@lib/stripe'
+import { supabaseAdmin } from '@lib/supabaseAdmin'
+import { getArray } from '@lib/supabase-utils'
 
 export const ThemeTintEffect = () => {
   const theme = useTheme()
@@ -52,11 +50,11 @@ export const ThemeTintEffect = () => {
 }
 
 export type ProComponentsProps = {
-  proComponents?: Database["public"]["Tables"]["products"]["Row"] & {
-    prices: Database["public"]["Tables"]["prices"]["Row"][];
-  };
-  coupon?: Stripe.Coupon | null;
-};
+  proComponents?: Database['public']['Tables']['products']['Row'] & {
+    prices: Database['public']['Tables']['prices']['Row'][]
+  }
+  coupon?: Stripe.Coupon | null
+}
 
 export default function ProPage(props: ProComponentsProps) {
   const store = useBentoStore()
@@ -73,14 +71,7 @@ export default function ProPage(props: ProComponentsProps) {
 
       <Hero />
       <Body />
-      <PurchaseModal
-        coupon={
-          {
-            // stripe coupon
-          } as Stripe.Coupon
-        }
-        mainProduct={props.proComponents}
-      />
+      <PurchaseModal coupon={props.coupon} mainProduct={props.proComponents} />
       <Spacer size="$10" />
     </BentoPageFrame>
   )
@@ -247,11 +238,11 @@ const Body = () => {
     <YStack
       pos="relative"
       py="$4"
-    // style={{
-    //   backdropFilter: 'blur(100px)',
-    //   boxShadow: `0 0 200px rgba(0,0,0,0.2), 0 0 100px rgba(0,0,0,0.2), 0 0 20px rgba(0,0,0,0.125), 0 0 10px rgba(0,0,0,0.125)`,
-    // }}
-    // py="$10"
+      // style={{
+      //   backdropFilter: 'blur(100px)',
+      //   boxShadow: `0 0 200px rgba(0,0,0,0.2), 0 0 100px rgba(0,0,0,0.2), 0 0 20px rgba(0,0,0,0.125), 0 0 10px rgba(0,0,0,0.125)`,
+      // }}
+      // py="$10"
     >
       {/* <YStack fullscreen bg="$color12" o={0.1} /> */}
 
@@ -267,7 +258,7 @@ const Body = () => {
         <YStack gap="$12" px="$6">
           {sections.listingData.sections.map(({ sectionName, parts }) => {
             return (
-              <YStack gap="$6" jc={'space-between'}>
+              <YStack key={sectionName} gap="$6" jc={'space-between'}>
                 <H2 fontSize="$9" f={2}>
                   {`${sectionName[0].toUpperCase()}${sectionName.slice(1)}`}
                 </H2>
@@ -365,64 +356,59 @@ function ComponentGroupsBanner({
 
 const BASE_PATH = ' /bento'
 
+ProPage.getLayout = getDefaultLayout
 
-ProPage.getLayout = getDefaultLayout;
-
-export const getStaticProps: GetStaticProps<
-  ProComponentsProps | any
-> = async () => {
+export const getStaticProps: GetStaticProps<ProComponentsProps | any> = async () => {
   try {
-    const props = await getTakeoutProducts();
+    const props = await getTakeoutProducts()
     return {
       props,
-    };
+    }
   } catch (err) {
-    console.error(`Error getting props`, err);
+    console.error(`Error getting props`, err)
     return {
       props: {},
-    };
+    }
   }
-};
+}
 
 const getTakeoutProducts = async (): Promise<ProComponentsProps> => {
   const promoListPromise = stripe.promotionCodes.list({
-    code: "SITE-PRO-COMPONENTS", // ones with code SITE-PRO-COMPONENTS are considered public and will be shown here
+    code: 'SITE-PRO-COMPONENTS', // ones with code SITE-PRO-COMPONENTS are considered public and will be shown here
     active: true,
-    expand: ["data.coupon"],
-  });
+    expand: ['data.coupon'],
+  })
   const productPromises = [
     supabaseAdmin
-      .from("products")
-      .select("*, prices(*)")
-      .eq("metadata->>slug", "pro-components")
+      .from('products')
+      .select('*, prices(*)')
+      .eq('metadata->>slug', 'pro-components')
       .single(),
-  ];
-  const promises = [promoListPromise, ...productPromises];
-  const queries = await Promise.all(promises);
+  ]
+  const promises = [promoListPromise, ...productPromises]
+  const queries = await Promise.all(promises)
 
-  const products = queries.slice(1) as Awaited<
-    (typeof productPromises)[number]
-  >[];
-  const couponsList = queries[0] as Awaited<typeof promoListPromise>;
+  const products = queries.slice(1) as Awaited<(typeof productPromises)[number]>[]
+  const couponsList = queries[0] as Awaited<typeof promoListPromise>
 
-  let coupon: Stripe.Coupon | null = null;
+  let coupon: Stripe.Coupon | null = null
 
   if (couponsList.data.length > 0) {
-    coupon = couponsList.data[0].coupon;
+    coupon = couponsList.data[0].coupon
   }
 
   if (!products.length) {
-    throw new Error(`No products found`);
+    throw new Error(`No products found`)
   }
 
   for (const product of products) {
-    if (product.error) throw product.error;
+    if (product.error) throw product.error
     if (
       !product.data.prices ||
       !Array.isArray(product.data.prices) ||
       product.data.prices.length === 0
     ) {
-      throw new Error("No prices are attached to the product.");
+      throw new Error('No prices are attached to the product.')
     }
   }
 
@@ -434,6 +420,5 @@ const getTakeoutProducts = async (): Promise<ProComponentsProps> => {
       ),
     },
     coupon,
-  };
-};
-
+  }
+}

@@ -21,6 +21,7 @@ import {
 
 import { PoweredByStripeIcon } from '@components/PoweredByStripeIcon'
 import { getTakeoutPriceInfo } from '@lib/getProductInfo'
+import type { Database } from '@lib/supabase-types'
 import { X } from '@tamagui/lucide-icons'
 import { useMemo } from 'react'
 import {
@@ -34,16 +35,18 @@ import {
   SizableText,
   Unspaced,
 } from 'tamagui'
-import { Database } from '@lib/supabase-types'
 
 const checkCircle = <CheckCircle color="$green9" />
 const xCircle = <XCircle size={28} color="$red9" />
 
-export const PurchaseModal = ({ mainProduct, coupon }: {
-  mainProduct?: Database["public"]["Tables"]["products"]["Row"] & {
-    prices: Database["public"]["Tables"]["prices"]["Row"][];
-  };
-  coupon?: Stripe.Coupon | null;
+export const PurchaseModal = ({
+  mainProduct,
+  coupon,
+}: {
+  mainProduct?: Database['public']['Tables']['products']['Row'] & {
+    prices: Database['public']['Tables']['prices']['Row'][]
+  }
+  coupon?: Stripe.Coupon | null
 }) => {
   const products = [mainProduct]
   const store = useBentoStore()
@@ -270,7 +273,10 @@ export const PurchaseModal = ({ mainProduct, coupon }: {
                                 <H4 mt="$-1">{price.description}</H4>
 
                                 <Paragraph theme="alt1">
-                                  {formatPrice(price.unit_amount! / 100, 'usd')} {(price.metadata as Record<any, any>).is_lifetime ? "lifetime access" : `base + 1 year of updates`}
+                                  {formatPrice(price.unit_amount! / 100, 'usd')}{' '}
+                                  {(price.metadata as Record<any, any>).is_lifetime
+                                    ? 'lifetime access'
+                                    : `base + 1 year of updates`}
                                 </Paragraph>
                                 {/* <Paragraph theme="alt1" size="$2">
                           {formatPrice(price.unit_amount! / (100 * 2), 'usd')}{' '}

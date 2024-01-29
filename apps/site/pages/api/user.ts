@@ -5,6 +5,7 @@ import {
   getMainTeam,
   getOrgTeams,
   getPersonalTeam,
+  getProductOwnerships,
   getSubscriptions,
   getUserDetails,
   getUserPrivateInfo,
@@ -14,6 +15,7 @@ import type { Session, User } from '@supabase/supabase-js'
 
 export type UserContextType = {
   subscriptions?: Awaited<ReturnType<typeof getSubscriptions>> | null
+  productOwnerships?: Awaited<ReturnType<typeof getProductOwnerships>> | null
   session: Session
   user: User
   userDetails?: Awaited<ReturnType<typeof getUserDetails>> | null
@@ -42,18 +44,21 @@ export default apiRoute(async (req, res) => {
     return
   }
 
-  const [userTeams, userDetails, subscriptions, privateInfo] = await Promise.all([
-    getUserTeams(supabase),
-    getUserDetails(supabase),
-    getSubscriptions(supabase),
-    getUserPrivateInfo(user.id),
-  ])
+  const [userTeams, userDetails, subscriptions, productOwnerships, privateInfo] =
+    await Promise.all([
+      getUserTeams(supabase),
+      getUserDetails(supabase),
+      getSubscriptions(supabase),
+      getProductOwnerships(supabase),
+      getUserPrivateInfo(user.id),
+    ])
 
   res.json({
     session,
     user,
     userDetails,
     subscriptions,
+    productOwnerships,
     teams: {
       all: userTeams,
       personal: getPersonalTeam(userTeams, user.id),
