@@ -244,13 +244,13 @@ export default function TakeoutPage({
               <YStack mt={-440} group="takeoutBody" f={1} gap="$5">
                 <ThemeTint>
                   <H2
-                    className="text-wrap-balance"
-                    ff="$silkscreen"
+                    className="text-wrap-balance pixelate"
+                    ff="$munro"
                     my="$2"
                     pr={200}
                     maw={800}
                     size="$10"
-                    color="$color10"
+                    color="#fff"
                     $group-takeoutBody-xs={{
                       size: '$9',
                       pr: '8%',
@@ -272,13 +272,15 @@ export default function TakeoutPage({
                     fow="400"
                   >
                     Takeout 🥡 is a bootstrap extracted from our experience creating and
-                    consulting on apps with Tamagui. It builds off the OSS starter{' '}
-                    <CodeInline>(npm&nbsp;create&nbsp;tamagui)</CodeInline>, adding{' '}
+                    consulting on apps with Tamagui. It builds off the free and open
+                    source starter <CodeInline>(npm&nbsp;create&nbsp;tamagui)</CodeInline>
+                    , adding{' '}
                     <a target="_blank" href="https://supabase.com">
                       Supabase
                     </a>{' '}
                     for data and auth, all the flows you'd want for any user-based app,
-                    and a bunch of other goodies that take a while to set up well.
+                    and a bunch of other goodies that take a while
+                    to&nbsp;set&nbsp;up&nbsp;well.
                   </Paragraph>
 
                   <Paragraph
@@ -665,7 +667,7 @@ const CodeInline = styled(Paragraph, {
   tag: 'code',
   fontFamily: '$mono',
   color: '$color12',
-  backgroundColor: '$color5',
+  backgroundColor: 'color-mix(in srgb, var(--color8) 50%, transparent 50%)' as any,
   cursor: 'inherit',
   br: '$3',
   // @ts-ignore
@@ -1717,7 +1719,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
               l={0}
               r={0}
               h={200}
-              colors={['$backgroundTransparent', '$color8']}
+              colors={['$backgroundTransparent', '$color5']}
               zi={100}
             />
           </ThemeTintAlt>
@@ -2248,35 +2250,44 @@ const DiscountText = ({
   return (
     <ThemeTintAlt offset={6}>
       <YStack m="auto" scale={1} $xs={{ scale: 1.2 }}>
-        <YStack
+        {/* <YStack
           fullscreen
           shadowColor="$shadowColor"
           shadowRadius={30}
           shadowOffset={{ height: 5, width: 0 }}
           scale={0.95}
-        />
+        /> */}
         <YStack
           px="$4"
           py="$1"
-          backgroundColor="$color8"
-          style={{
-            clipPath: `polygon(
-            0% 3px,
-            3px 3px,
-            3px 0%,
-            calc(100% - 3px) 0%,
-            calc(100% - 3px) 3px,
-            100% 3px,
-            100% calc(100% - 3px),
-            calc(100% - 3px) calc(100% - 3px),
-            calc(100% - 3px) 100%,
-            3px 100%,
-            3px calc(100% - 3px),
-            0% calc(100% - 3px)
-          )`,
-          }}
+          rotate="10deg"
+          y={-40}
+          $sm={{ dsp: 'none' }}
+          // backgroundColor="$color8"
+          // style={{
+          //   clipPath: `polygon(
+          //   0% 3px,
+          //   3px 3px,
+          //   3px 0%,
+          //   calc(100% - 3px) 0%,
+          //   calc(100% - 3px) 3px,
+          //   100% 3px,
+          //   100% calc(100% - 3px),
+          //   calc(100% - 3px) calc(100% - 3px),
+          //   calc(100% - 3px) 100%,
+          //   3px 100%,
+          //   3px calc(100% - 3px),
+          //   0% calc(100% - 3px)
+          // )`,
+          // }}
         >
-          <Paragraph ff="$munro" color="white" textAlign="center" size="$7">
+          <Paragraph
+            o={0.8}
+            ff="$silkscreen"
+            color="$color11"
+            textAlign="center"
+            size="$5"
+          >
             {text.trim()}
           </Paragraph>
         </YStack>
