@@ -155,27 +155,28 @@ async function run() {
       await spawnify(`git config --global user.email 'tamagui@users.noreply.github.com`)
     }
 
-    const answer =
-      isCI || skipVersion
-        ? { version: nextVersion }
-        : await prompts({
-            type: 'text',
-            name: 'version',
-            message: 'Version?',
-            initial: nextVersion,
-          })
+    if (!finish) {
+      const answer =
+        isCI || skipVersion
+          ? { version: nextVersion }
+          : await prompts({
+              type: 'text',
+              name: 'version',
+              message: 'Version?',
+              initial: nextVersion,
+            })
 
-    version = answer.version
-
-    console.info('Next:', version, '\n')
+      version = answer.version
+      console.info('Next:', version, '\n')
+    }
 
     console.info('install and build')
 
-    if (!rePublish) {
+    if (!rePublish && !finish) {
       await spawnify(`yarn install`)
     }
 
-    if (!skipBuild) {
+    if (!skipBuild && !finish) {
       await spawnify(`yarn build`)
       await checkDistDirs()
     }
