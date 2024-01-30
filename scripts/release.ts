@@ -214,7 +214,7 @@ async function run() {
             const nextDeps = next[field]
             if (!nextDeps) continue
             for (const depName in nextDeps) {
-              if (packageJsons.some((p) => p.name === depName)) {
+              if (allPackageJsons.some((p) => p.name === depName)) {
                 nextDeps[depName] = version
               }
             }
