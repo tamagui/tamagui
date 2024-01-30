@@ -66,7 +66,7 @@ export const InputFrame = styled(
     isInput: true,
     acceptTokens: {
       placeholderTextColor: 'color',
-    },
+    } as const,
   }
 )
 

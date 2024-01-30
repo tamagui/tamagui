@@ -709,7 +709,7 @@ type TakeoutCardFrameProps = GetProps<typeof TakeoutCard2Frame> & {
 const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps) => {
   const innerGlow = useHoverGlow({
     resist: 70,
-    size: 450,
+    size: 250,
     strategy: 'blur',
     blurPct: 50,
     // inverse: true,
@@ -861,68 +861,30 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
           clipPath: `polygon(0% 0%, 0% 100%, 100% 100%, 0% 0%, 100% 0, 0% 100%)`,
         }}
       >
-        <TAKEOUT zi={1000} />
+        <TAKEOUT className="mix-blend font-outlined" zi={1000} />
 
         {!disableMotion && (
-          <ThemeTint>
-            {/* main color slices */}
-            <TAKEOUT
-              className="clip-slice mix-blend"
-              pos="absolute"
-              color="$color8"
-              scale={1.04}
-              o={1}
-            />
-
+          <>
+            <ThemeTint>
+              {/* main color slices */}
+              <TAKEOUT
+                className="clip-slice mix-blend"
+                pos="absolute"
+                color="$color8"
+                o={1}
+              />
+            </ThemeTint>
             {/* alt color slices */}
             <ThemeTintAlt>
               <TAKEOUT
                 className="clip-slice mix-blend slice-alt"
                 pos="absolute"
                 color="$color8"
-                y={2}
                 o={1}
               />
             </ThemeTintAlt>
-
-            {/* alt color slices */}
-
-            {/* <ThemeTintAlt offset={3}>
-              <TAKEOUT
-                className="clip-wave mix-blend"
-                pos="absolute"
-                color="$color8"
-                scale={1}
-              />
-            </ThemeTintAlt> */}
-          </ThemeTint>
+          </>
         )}
-
-        {/* <YStack
-          pos="absolute"
-          fullscreen
-          zi={2}
-          pe="none"
-          ai="center"
-          jc="center"
-          y={30}
-          scaleX={0.95}
-        >
-          <TAKEOUT className="bg-dot-grid clip-text" />
-        </YStack> */}
-
-        {/* takeout shadow */}
-        {/* <YStack
-          pos="absolute"
-          fullscreen
-          zi={-1}
-          pe="none"
-          ai="center"
-          jc="center"
-          y={-20}
-        >
-          <TAKEOUT color="$color3" className="" />
-        </YStack> */}
       </YStack>
       <YStack
         position="absolute"
@@ -1826,9 +1788,8 @@ const TakeoutCardFrame = styled(YStack, {
 
 const TAKEOUT = ({ fontSize = 450, lineHeight = fontSize * 0.64, ...props }) => (
   <H1
-    className="mix-blend font-outlined"
     userSelect="none"
-    color="$backgroundStrong"
+    color="$color1"
     fontFamily="$cherryBomb"
     fontSize={fontSize}
     lineHeight={lineHeight}

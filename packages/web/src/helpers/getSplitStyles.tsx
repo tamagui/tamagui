@@ -131,9 +131,7 @@ function isValidStyleKey(key: string, staticConfig: StaticConfig) {
   const validStyleProps =
     staticConfig.validStyles ||
     (staticConfig.isText || staticConfig.isInput ? stylePropsText : validStyles)
-  return (
-    validStyleProps[key] || (staticConfig.acceptTokens && staticConfig.acceptTokens[key])
-  )
+  return validStyleProps[key] || staticConfig.acceptTokens?.[key]
 }
 
 export const getSplitStyles: StyleSplitter = (

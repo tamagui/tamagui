@@ -41,7 +41,7 @@ export declare const defaultStyles: {
     readonly color: "$color";
 };
 export declare const InputFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TextInput, import("@tamagui/web/types/interfaces/TamaguiComponentPropsBaseBase").TamaguiComponentPropsBaseBase & import("react-native").TextInputProps, import("@tamagui/core").TextStylePropsBase & {
-    placeholderTextColor?: `$${string}` | `$${number}` | undefined;
+    readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
 }, {
     size?: import("@tamagui/core").SizeTokens | undefined;
     disabled?: boolean | undefined;
@@ -49,7 +49,7 @@ export declare const InputFrame: import("@tamagui/core").TamaguiComponent<import
 }, {
     isInput: true;
     acceptTokens: {
-        placeholderTextColor: string;
+        readonly placeholderTextColor: "color";
     };
 }>;
 export type Input = TextInput;
@@ -59,13 +59,13 @@ export type InputExtraProps = {
 };
 export type InputProps = InputFrameProps & InputExtraProps;
 export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/web/types/interfaces/TamaguiComponentPropsBaseBase").TamaguiComponentPropsBaseBase & import("react-native").TextInputProps, import("@tamagui/core").TextStylePropsBase & {
-    placeholderTextColor?: `$${string}` | `$${number}` | undefined;
+    readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
 }, {
     size?: import("@tamagui/core").SizeTokens | undefined;
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
 }>, "rows"> & InputExtraProps, TextInput, import("@tamagui/web/types/interfaces/TamaguiComponentPropsBaseBase").TamaguiComponentPropsBaseBase & import("react-native").TextInputProps & InputExtraProps, import("@tamagui/core").TextStylePropsBase & {
-    placeholderTextColor?: `$${string}` | `$${number}` | undefined;
+    readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
 }, {
     size?: import("@tamagui/core").SizeTokens | undefined;
     disabled?: boolean | undefined;
@@ -73,7 +73,7 @@ export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import
 }, {
     isInput: true;
     acceptTokens: {
-        placeholderTextColor: string;
+        readonly placeholderTextColor: "color";
     };
 }>;
 export declare function useInputProps(props: InputProps, ref: any): {
@@ -400,49 +400,49 @@ export declare function useInputProps(props: InputProps, ref: any): {
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
     hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
-        placeholderTextColor?: `$${string}` | `$${number}` | undefined;
+        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
     }> & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
     } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
-        placeholderTextColor?: `$${string}` | `$${number}` | undefined;
+        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
     }>>) | null | undefined;
     pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
-        placeholderTextColor?: `$${string}` | `$${number}` | undefined;
+        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
     }> & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
     } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
-        placeholderTextColor?: `$${string}` | `$${number}` | undefined;
+        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
     }>>) | null | undefined;
     focusStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
-        placeholderTextColor?: `$${string}` | `$${number}` | undefined;
+        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
     }> & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
     } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
-        placeholderTextColor?: `$${string}` | `$${number}` | undefined;
+        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
     }>>) | null | undefined;
     exitStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
-        placeholderTextColor?: `$${string}` | `$${number}` | undefined;
+        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
     }> & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
     } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
-        placeholderTextColor?: `$${string}` | `$${number}` | undefined;
+        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
     }>>) | null | undefined;
     enterStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
-        placeholderTextColor?: `$${string}` | `$${number}` | undefined;
+        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
     }> & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
     } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
-        placeholderTextColor?: `$${string}` | `$${number}` | undefined;
+        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
     }>>) | null | undefined;
     rows?: number | undefined;
     ref: (node: any) => void;
