@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { GestureResponderEvent, PressableProps, View, ViewProps } from 'react-native';
+import type { GestureResponderEvent, PressableProps, View, ViewProps } from 'react-native';
 type SwitchBaseProps = ViewProps & Pick<PressableProps, 'onPress'>;
 export type SwitchExtraProps = {
     labeledBy?: string;

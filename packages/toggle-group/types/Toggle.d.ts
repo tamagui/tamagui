@@ -1,4 +1,4 @@
-import { GetProps } from '@tamagui/web';
+import type { GetProps } from '@tamagui/web';
 import * as React from 'react';
 type TamaguiButtonElement = HTMLButtonElement;
 export type ToggleElement = TamaguiButtonElement;

@@ -1,6 +1,6 @@
-import { GroupProps } from '@tamagui/group';
+import type { GroupProps } from '@tamagui/group';
 import { RovingFocusGroup } from '@tamagui/roving-focus';
-import { GetProps, SizeTokens, TamaguiElement } from '@tamagui/web';
+import type { GetProps, SizeTokens, TamaguiElement } from '@tamagui/web';
 import * as React from 'react';
 import type { LayoutRectangle } from 'react-native';
 type TabsListFrameProps = GroupProps;
@@ -62,6 +62,9 @@ declare const TabsContentFrame: import("@tamagui/web").TamaguiComponent<import("
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
+    /**
+     * @deprecated use `TabTabsProps` instead
+     */
     chromeless?: boolean | "all" | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 type TabsContentFrameProps = GetProps<typeof TabsContentFrame>;
@@ -625,6 +628,9 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         backgrounded?: boolean | undefined;
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
+        /**
+         * @deprecated use `TabTabsProps` instead
+         */
         chromeless?: boolean | "all" | undefined;
     }>, keyof TabsContentExtraProps> & TabsContentExtraProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & TabsContentExtraProps, import("@tamagui/web").StackStyleBase, {
         elevation?: number | SizeTokens | undefined;
@@ -639,6 +645,9 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         backgrounded?: boolean | undefined;
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
+        /**
+         * @deprecated use `TabTabsProps` instead
+         */
         chromeless?: boolean | "all" | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
 };

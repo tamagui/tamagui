@@ -1,5 +1,5 @@
 import React from 'react';
-import { PressableProps, View, ViewProps } from 'react-native';
+import type { PressableProps, View, ViewProps } from 'react-native';
 export type CheckedState = boolean | 'indeterminate';
 type CheckboxBaseProps = ViewProps & Pick<PressableProps, 'onPress'>;
 export type CheckboxExtraProps = {

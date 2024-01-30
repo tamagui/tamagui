@@ -1,13 +1,10 @@
-import {
+import type {
   CheckedState,
   CheckboxExtraProps as HeadlessCheckboxExtraProps,
-  isIndeterminate,
-  useCheckbox,
 } from '@tamagui/checkbox-headless'
+import { isIndeterminate, useCheckbox } from '@tamagui/checkbox-headless'
+import type { NativeValue, SizeTokens, StackProps } from '@tamagui/core'
 import {
-  NativeValue,
-  SizeTokens,
-  StackProps,
   getVariableValue,
   shouldRenderNativePlatform,
   useProps,

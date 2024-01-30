@@ -4,7 +4,8 @@ import { join } from 'path'
 import { expect, test } from '@playwright/test'
 import { readFile } from 'fs-extra'
 import waitPort from 'wait-port'
-import { $, ProcessPromise, cd, fetch, fs, sleep } from 'zx'
+import type { ProcessPromise} from 'zx';
+import { $, cd, fetch, fs, sleep } from 'zx'
 
 let server: ProcessPromise | null = null
 

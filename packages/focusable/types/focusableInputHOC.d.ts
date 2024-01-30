@@ -1,4 +1,4 @@
-import { TamaguiComponent } from '@tamagui/web';
+import type { TamaguiComponent } from '@tamagui/web';
 import React from 'react';
 type FocusableProps = {
     id?: string;

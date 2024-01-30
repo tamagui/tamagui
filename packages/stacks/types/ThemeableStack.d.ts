@@ -1,4 +1,4 @@
-import { GetProps } from '@tamagui/core';
+import type { GetProps } from '@tamagui/core';
 export declare const themeableVariants: {
     readonly backgrounded: {
         readonly true: {

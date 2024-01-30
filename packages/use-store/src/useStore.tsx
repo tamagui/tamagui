@@ -10,7 +10,7 @@ import {
   getStoreUid,
   simpleStr,
 } from './helpers'
-import { Selector, Store, StoreInfo, UseStoreOptions } from './interfaces'
+import type { Selector, Store, StoreInfo, UseStoreOptions } from './interfaces'
 import { DebugStores, shouldDebug, useCurrentComponent } from './useStoreDebug'
 
 const idFn = (_) => _

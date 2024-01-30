@@ -1,3 +1,6 @@
+// fork of radix
+// https://github.com/radix-ui/primitives/tree/main/packages/react/checkbox/src/Checkbox.tsx
+
 import { getVariableValue, styled } from '@tamagui/core'
 import { getSize } from '@tamagui/get-token'
 import { ThemeableStack } from '@tamagui/stacks'

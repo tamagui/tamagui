@@ -1,5 +1,5 @@
-import { TamaguiElement } from '@tamagui/core';
-import { DialogCloseProps, DialogContentProps, DialogDescriptionProps, DialogOverlayProps, DialogPortalProps, DialogProps, DialogTitleProps, DialogTriggerProps } from '@tamagui/dialog';
+import type { TamaguiElement } from '@tamagui/core';
+import type { DialogCloseProps, DialogContentProps, DialogDescriptionProps, DialogOverlayProps, DialogPortalProps, DialogProps, DialogTitleProps, DialogTriggerProps } from '@tamagui/dialog';
 import * as React from 'react';
 declare const createAlertDialogScope: import("@tamagui/create-context").CreateScope;
 type AlertDialogProps = DialogProps & {

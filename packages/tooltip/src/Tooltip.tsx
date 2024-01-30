@@ -11,27 +11,27 @@ import {
   useInteractions,
   useRole,
 } from '@floating-ui/react'
-import { ScopedProps, SizeTokens, useEvent, styled } from '@tamagui/core'
-import { FloatingOverrideContext, UseFloatingFn } from '@tamagui/floating'
+import type { ScopedProps, SizeTokens } from '@tamagui/core'
+import { useEvent, styled } from '@tamagui/core'
+import type { UseFloatingFn } from '@tamagui/floating'
+import { FloatingOverrideContext } from '@tamagui/floating'
 import { getSize } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
-import {
-  PopoverAnchor,
+import type {
   PopoverAnchorProps,
-  PopoverArrow,
   PopoverArrowProps,
-  PopoverContent,
   PopoverContentProps,
-  PopoverContext,
-  PopoverTrigger,
   PopoverTriggerProps,
 } from '@tamagui/popover'
 import {
-  Popper,
-  PopperContentFrame,
-  PopperProps,
-  usePopperContext,
-} from '@tamagui/popper'
+  PopoverAnchor,
+  PopoverArrow,
+  PopoverContent,
+  PopoverContext,
+  PopoverTrigger,
+} from '@tamagui/popover'
+import type { PopperProps } from '@tamagui/popper'
+import { Popper, PopperContentFrame, usePopperContext } from '@tamagui/popper'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
 

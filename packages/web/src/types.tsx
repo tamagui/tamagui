@@ -1,6 +1,6 @@
 import type { StyleObject } from '@tamagui/helpers'
 import type { Properties } from 'csstype'
-import {
+import type {
   ComponentType,
   ForwardRefExoticComponent,
   FunctionComponent,
@@ -19,15 +19,15 @@ import type {
 } from 'react-native'
 
 import type { Variable } from './createVariable'
-import { StyledContext } from './helpers/createStyledContext'
-import { CSSColorNames } from './interfaces/CSSColorNames'
-import { RNOnlyProps } from './interfaces/RNExclusiveTypes'
+import type { StyledContext } from './helpers/createStyledContext'
+import type { CSSColorNames } from './interfaces/CSSColorNames'
+import type { RNOnlyProps } from './interfaces/RNExclusiveTypes'
 import type { LanguageContextType } from './views/FontLanguage.types'
 import type { ThemeProviderProps } from './views/ThemeProvider'
-import { TamaguiComponentState } from './interfaces/TamaguiComponentState'
-import { WebOnlyPressEvents } from './interfaces/WebOnlyPressEvents'
-import { TamaguiComponentPropsBaseBase } from './interfaces/TamaguiComponentPropsBaseBase'
-import { SizeKeys, SpaceKeys, ColorKeys } from './interfaces/KeyTypes'
+import type { TamaguiComponentState } from './interfaces/TamaguiComponentState'
+import type { WebOnlyPressEvents } from './interfaces/WebOnlyPressEvents'
+import type { TamaguiComponentPropsBaseBase } from './interfaces/TamaguiComponentPropsBaseBase'
+import type { SizeKeys, SpaceKeys, ColorKeys } from './interfaces/KeyTypes'
 
 export * from './interfaces/KeyTypes'
 export * from './interfaces/TamaguiComponentState'
@@ -541,6 +541,19 @@ type GenericTamaguiSettings = {
    * Then this feature is safe to turn on and will significantly speed up dark/light re-renders.
    */
   fastSchemeChange?: boolean
+
+  /**
+   * By default Tamagui won't accept anything except for style props inside all parent style
+   * selectors or pseudo style selectors (like $sm, $platform-ios, or hoverStyle).
+   *
+   * But it does support taking any property inside of these attributes, historically, and it
+   * can be useful especially on native where props like maxFontSizeMultiplier or minimumFontScale
+   * should be style props but aren't.
+   *
+   * On the web, in the future, we aim to enable a full 0-runtime mode which would enforce the default
+   * "style" setting here. But if you're willing to accept that it maybe slow, set to "all" for more power
+   */
+  // subStyleProps?: 'style' | 'all'
 
   /**
    * On Web, this allows changing the behavior of container groups which by default uses
@@ -1496,7 +1509,7 @@ export type TamaguiComponentExpectingVariants<
 > = TamaguiComponent<Props, any, any, any, Variants>
 
 export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>> & {
-  config: TamaguiInternalConfig
+  config?: TamaguiInternalConfig
   disableInjectCSS?: boolean
   children?: ReactNode
 }

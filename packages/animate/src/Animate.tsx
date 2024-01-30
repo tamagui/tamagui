@@ -1,8 +1,5 @@
-import {
-  AnimatePresence,
-  AnimatePresenceProps,
-  PresenceChild,
-} from '@tamagui/animate-presence'
+import type { AnimatePresenceProps } from '@tamagui/animate-presence'
+import { AnimatePresence, PresenceChild } from '@tamagui/animate-presence'
 
 type BaseProps = {
   children: React.ReactNode

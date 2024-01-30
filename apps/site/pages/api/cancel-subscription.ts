@@ -1,6 +1,6 @@
 import { protectApiRoute } from '@lib/protectApiRoute'
 import { stripe } from '@lib/stripe'
-import { NextApiHandler } from 'next'
+import type { NextApiHandler } from 'next'
 import Stripe from 'stripe'
 
 const handler: NextApiHandler = async (req, res) => {

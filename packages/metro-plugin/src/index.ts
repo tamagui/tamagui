@@ -1,8 +1,6 @@
 import { createExtractor, type TamaguiOptions } from '@tamagui/static'
-import {
-  withCssInterop,
-  ComposableIntermediateConfigT,
-} from 'react-native-css-interop/metro'
+import type { ComposableIntermediateConfigT } from 'react-native-css-interop/metro'
+import { withCssInterop } from 'react-native-css-interop/metro'
 
 export function withTamagui(
   metroConfig: ComposableIntermediateConfigT,

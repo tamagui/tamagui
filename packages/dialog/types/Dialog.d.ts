@@ -1,10 +1,11 @@
-import { GetProps, StackProps, TamaguiElement, TamaguiTextElement } from '@tamagui/core';
-import { Scope } from '@tamagui/create-context';
-import { DismissableProps } from '@tamagui/dismissable';
-import { FocusScopeProps } from '@tamagui/focus-scope';
-import { PortalItemProps } from '@tamagui/portal';
+import type { GetProps, StackProps, TamaguiElement } from '@tamagui/core';
+import { TamaguiTextElement } from '@tamagui/core';
+import type { Scope } from '@tamagui/create-context';
+import type { DismissableProps } from '@tamagui/dismissable';
+import type { FocusScopeProps } from '@tamagui/focus-scope';
+import type { PortalItemProps } from '@tamagui/portal';
 import { RemoveScroll } from '@tamagui/remove-scroll';
-import { YStackProps } from '@tamagui/stacks';
+import type { YStackProps } from '@tamagui/stacks';
 import * as React from 'react';
 declare const createDialogScope: import("@tamagui/create-context").CreateScope;
 type RemoveScrollProps = React.ComponentProps<typeof RemoveScroll>;

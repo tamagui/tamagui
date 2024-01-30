@@ -3,7 +3,8 @@ import { tokenCategories } from '@tamagui/helpers'
 
 import { getConfig } from '../config'
 import { isDevTools } from '../constants/isDevTools'
-import { Variable, getVariableValue, isVariable } from '../createVariable'
+import type { Variable } from '../createVariable'
+import { getVariableValue, isVariable } from '../createVariable'
 import type {
   GetStyleState,
   PropMapper,
@@ -463,17 +464,11 @@ export const getTokenForKey = (
     return out
   }
 
-  if (
-    process.env.NODE_ENV === 'development' &&
-    isDevTools &&
-    styleState.debug === 'verbose'
-  ) {
-    console.groupCollapsed('  ﹒ propMap (val)', key, value)
-    console.info({ valOrVar, theme, hasSet }, theme ? theme[key] : '')
-    console.groupEnd()
-  }
+  // they didn't define this token don't return anything, we could warn?
 
-  return value
+  if (process.env.NODE_ENV === 'development' && styleState.debug === 'verbose') {
+    console.warn(`Warning: no token found for ${key}, omitting`)
+  }
 }
 
 function resolveVariableValue(

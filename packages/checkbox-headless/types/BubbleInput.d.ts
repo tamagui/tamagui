@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { CheckedState } from './useCheckbox';
+import type { CheckedState } from './useCheckbox';
 export interface BubbleInputProps extends Omit<React.ComponentProps<'input'>, 'checked'> {
     checked: CheckedState;
     control: HTMLElement | null;

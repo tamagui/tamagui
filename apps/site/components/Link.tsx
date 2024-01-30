@@ -1,7 +1,10 @@
-import NextLink, { LinkProps as NextLinkProps } from 'next/link'
+import type { LinkProps as NextLinkProps } from 'next/link';
+import NextLink from 'next/link'
 import React from 'react'
-import { Paragraph, SizableText, TextProps } from 'tamagui'
-import { Button, ButtonProps } from 'tamagui'
+import type { TextProps } from 'tamagui';
+import { Paragraph, SizableText } from 'tamagui'
+import type { ButtonProps } from 'tamagui';
+import { Button } from 'tamagui'
 
 export type LinkProps = Omit<NextLinkProps, 'passHref' | 'as'> &
   TextProps & {

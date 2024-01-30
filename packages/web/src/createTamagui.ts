@@ -1,8 +1,9 @@
 import { isWeb } from '@tamagui/constants'
 
 import { configListeners, setConfig, setTokens } from './config'
-import { Variable } from './createVariable'
-import { DeepVariableObject, createVariables } from './createVariables'
+import type { Variable } from './createVariable'
+import type { DeepVariableObject } from './createVariables'
+import { createVariables } from './createVariables'
 import { getThemeCSSRules } from './helpers/getThemeCSSRules'
 import {
   getAllRules,
@@ -15,7 +16,7 @@ import { ensureThemeVariable } from './helpers/themes'
 import { configureMedia } from './hooks/useMedia'
 import { parseFont, registerFontVariables } from './insertFont'
 import { Tamagui } from './Tamagui'
-import {
+import type {
   CreateTamaguiProps,
   DedupedTheme,
   DedupedThemes,

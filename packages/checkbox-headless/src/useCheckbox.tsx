@@ -1,10 +1,10 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
-import { GestureReponderEvent } from '@tamagui/core/types'
+import type { GestureReponderEvent } from '@tamagui/core/types'
 import { composeEventHandlers } from '@tamagui/helpers'
 import { useLabelContext } from '@tamagui/label'
 import React from 'react'
-import { PressableProps, View, ViewProps } from 'react-native'
+import type { PressableProps, View, ViewProps } from 'react-native'
 
 import { BubbleInput } from './BubbleInput'
 import { getState, isIndeterminate } from './utils'

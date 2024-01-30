@@ -1,5 +1,6 @@
 import { Drumstick, Hand } from '@tamagui/lucide-icons'
-import { Button, ButtonProps, ThemeName, XStack, YStack } from 'tamagui'
+import type { ButtonProps, ThemeName } from 'tamagui'
+import { Button, XStack, YStack } from 'tamagui'
 
 const outlined = {
   backgroundColor: 'transparent',

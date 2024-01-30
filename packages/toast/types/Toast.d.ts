@@ -1,9 +1,12 @@
-import { GetProps, NativePlatform, NativeValue, TamaguiElement } from '@tamagui/core';
+import type { GetProps, NativePlatform, NativeValue, TamaguiElement } from '@tamagui/core';
 import * as React from 'react';
-import { CustomData, useToast, useToastController, useToastState } from './ToastImperative';
-import { ToastExtraProps, ToastProps } from './ToastImpl';
-import { ToastProvider, ToastProviderProps } from './ToastProvider';
-import { ToastViewport, ToastViewportProps } from './ToastViewport';
+import type { CustomData } from './ToastImperative';
+import { useToast, useToastController, useToastState } from './ToastImperative';
+import type { ToastExtraProps, ToastProps } from './ToastImpl';
+import type { ToastProviderProps } from './ToastProvider';
+import { ToastProvider } from './ToastProvider';
+import type { ToastViewportProps } from './ToastViewport';
+import { ToastViewport } from './ToastViewport';
 declare const ToastTitle: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
     size?: import("@tamagui/core").FontSizeTokens | undefined;
     unstyled?: boolean | undefined;

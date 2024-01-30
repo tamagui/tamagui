@@ -1,10 +1,11 @@
 import { forwardRef } from 'react'
-import {
+import type {
   GetProps,
+  TamaguiElement} from 'tamagui';
+import {
   Paragraph,
   Separator,
   Stack,
-  TamaguiElement,
   Text,
   XStack,
   YStack,

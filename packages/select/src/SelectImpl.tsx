@@ -1,5 +1,5 @@
+import type { SideObject } from '@floating-ui/react'
 import {
-  SideObject,
   flip,
   inner,
   offset,
@@ -26,7 +26,7 @@ import {
   useSelectContext,
   useSelectItemParentContext,
 } from './context'
-import { SelectImplProps } from './types'
+import type { SelectImplProps } from './types'
 
 // TODO use id for focusing from label
 export const SelectInlineImpl = (props: SelectImplProps) => {

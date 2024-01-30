@@ -1,5 +1,6 @@
 import { startTransition, useMemo, useSyncExternalStore } from 'react'
-import { Theme, ThemeName, ThemeProps } from 'tamagui'
+import type { ThemeName, ThemeProps } from 'tamagui'
+import { Theme } from 'tamagui'
 
 import { getTints, setNextTintFamily, useTints } from './tints'
 

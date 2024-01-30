@@ -1,4 +1,5 @@
-import { FillInFont, GenericFont, createFont, isWeb } from '@tamagui/core'
+import type { FillInFont, GenericFont } from '@tamagui/core'
+import { createFont, isWeb } from '@tamagui/core'
 
 export const createSilkscreenFont = <A extends GenericFont>(
   font: Partial<A> = {}

@@ -18,7 +18,9 @@ const allItemsStrings = allItems.map((s) =>
   `${s?.page.title || ''} ${s?.section?.title || ''}`.trim()
 )
 
-export const DocsMenuContents = React.memo(function DocsMenuContents() {
+export const DocsMenuContents = React.memo(function DocsMenuContents({
+  inMenu,
+}: { inMenu?: boolean }) {
   const store = useStore(DocsItemsStore)
   const router = useRouter()
   const { currentPath } = useDocsMenu()
@@ -52,8 +54,9 @@ export const DocsMenuContents = React.memo(function DocsMenuContents() {
           borderColor: '$color6',
         }}
         autoComplete="off"
-        placeholder="Filter..."
-        placeholderTextColor="$gray9"
+        placeholder="Search for friend to chat"
+        // @ts-ignore
+        placeholderTextColor="transparent"
         onKeyPress={(e) => {
           const event = e.nativeEvent
           if (event.key === 'Escape') {
@@ -107,7 +110,7 @@ export const DocsMenuContents = React.memo(function DocsMenuContents() {
 
                 const contents = (
                   <DocsRouteNavItem
-                    inMenu
+                    inMenu={inMenu}
                     href={page.route}
                     active={currentPath === page.route}
                     pending={page['pending']}

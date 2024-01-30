@@ -22,16 +22,20 @@ export function useForwardToDashboard() {
           let redirectTo = '/account' // default
           if (typeof router.query.redirect_to === 'string') {
             const decodedUrl = decodeURIComponent(router.query.redirect_to)
-            if (decodedUrl.startsWith('/')) { // e.g. /account/subscriptions
+            if (decodedUrl.startsWith('/')) {
+              // e.g. /account/items
               redirectTo = decodedUrl
             } else {
               try {
                 const url = new URL(decodedUrl)
-                if (ALLOWED_REDIRECT_DOMAINS.includes(url.host) || process.env.NODE_ENV !== "production") {
+                if (
+                  ALLOWED_REDIRECT_DOMAINS.includes(url.host) ||
+                  process.env.NODE_ENV !== 'production'
+                ) {
                   redirectTo = decodedUrl
                 }
               } catch {
-                // means the url is invalid 
+                // means the url is invalid
                 // just use the default "/account"
               }
             }

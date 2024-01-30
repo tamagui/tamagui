@@ -1,6 +1,7 @@
 import { createTheme } from './createTheme'
-import { CreateMask, GenericTheme, MaskOptions, ThemeMask } from './createThemeTypes'
-import { ThemeInfo, getThemeInfo, setThemeInfo } from './themeInfo'
+import type { CreateMask, GenericTheme, MaskOptions, ThemeMask } from './createThemeTypes'
+import type { ThemeInfo } from './themeInfo'
+import { getThemeInfo, setThemeInfo } from './themeInfo'
 
 export function applyMask<Theme extends GenericTheme | ThemeMask>(
   theme: Theme,

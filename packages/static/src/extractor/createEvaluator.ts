@@ -1,12 +1,12 @@
 import vm from 'vm'
 
 import generate from '@babel/generator'
-import { NodePath } from '@babel/traverse'
+import type { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
 import esbuild from 'esbuild'
 
 import { FAILED_EVAL } from '../constants'
-import { TamaguiOptionsWithFileInfo } from '../types'
+import type { TamaguiOptionsWithFileInfo } from '../types'
 import { evaluateAstNode } from './evaluateAstNode'
 
 export function createEvaluator({

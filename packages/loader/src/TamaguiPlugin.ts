@@ -1,12 +1,8 @@
 import { existsSync } from 'fs'
 import path, { dirname, join } from 'path'
 
-import {
-  TamaguiOptions,
-  loadTamagui,
-  minifyCSS,
-  watchTamaguiConfig,
-} from '@tamagui/static'
+import type { TamaguiOptions } from '@tamagui/static'
+import { loadTamagui, minifyCSS, watchTamaguiConfig } from '@tamagui/static'
 import buildResolver from 'esm-resolve'
 import type { Compiler, RuleSetRule } from 'webpack'
 import webpack from 'webpack'

@@ -13,7 +13,6 @@ module.exports = function (api) {
           // disableExtraction: true,
         },
       ],
-      'transform-inline-environment-variables',
       'react-native-reanimated/plugin',
     ],
   }

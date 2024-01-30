@@ -1,6 +1,8 @@
-import { SwitchProps as SwitchHeadlessProps, useSwitch } from '@tamagui/switch-headless'
+import type { SwitchProps as SwitchHeadlessProps } from '@tamagui/switch-headless'
+import { useSwitch } from '@tamagui/switch-headless'
 import { forwardRef, useEffect, useRef, useState } from 'react'
-import { Animated, Pressable, View } from 'react-native'
+import type { View } from 'react-native'
+import { Animated, Pressable } from 'react-native'
 import { Label, XStack, YStack } from 'tamagui'
 
 export function SwitchHeadlessDemo() {

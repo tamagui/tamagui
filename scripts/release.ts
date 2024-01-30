@@ -28,7 +28,7 @@ const skipStarters = process.argv.includes('--skip-starters')
 const canary = process.argv.includes('--canary')
 const skipVersion = finish || rePublish || process.argv.includes('--skip-version')
 const shouldPatch = process.argv.includes('--patch')
-const dirty = process.argv.includes('--dirty')
+const dirty = finish || process.argv.includes('--dirty')
 const skipPublish = process.argv.includes('--skip-publish')
 const skipTest =
   finish ||
@@ -155,27 +155,28 @@ async function run() {
       await spawnify(`git config --global user.email 'tamagui@users.noreply.github.com`)
     }
 
-    const answer =
-      isCI || skipVersion
-        ? { version: nextVersion }
-        : await prompts({
-            type: 'text',
-            name: 'version',
-            message: 'Version?',
-            initial: nextVersion,
-          })
+    if (!finish) {
+      const answer =
+        isCI || skipVersion
+          ? { version: nextVersion }
+          : await prompts({
+              type: 'text',
+              name: 'version',
+              message: 'Version?',
+              initial: nextVersion,
+            })
 
-    version = answer.version
-
-    console.info('Next:', version, '\n')
+      version = answer.version
+      console.info('Next:', version, '\n')
+    }
 
     console.info('install and build')
 
-    if (!rePublish) {
+    if (!rePublish && !finish) {
       await spawnify(`yarn install`)
     }
 
-    if (!skipBuild) {
+    if (!skipBuild && !finish) {
       await spawnify(`yarn build`)
       await checkDistDirs()
     }
@@ -213,7 +214,7 @@ async function run() {
             const nextDeps = next[field]
             if (!nextDeps) continue
             for (const depName in nextDeps) {
-              if (packageJsons.some((p) => p.name === depName)) {
+              if (allPackageJsons.some((p) => p.name === depName)) {
                 nextDeps[depName] = version
               }
             }
@@ -362,7 +363,6 @@ async function run() {
 
     // then git tag, commit, push
     if (!finish) {
-      await spawnify(`yarn fix`)
       await spawnify(`yarn install`)
     }
 
@@ -373,14 +373,9 @@ async function run() {
       await sleep(4 * 1000)
     }
 
-    await spawnify(`yarn fix`)
-
     if (!canary && !skipStarters) {
       await spawnify(`yarn upgrade:starters`)
       const starterFreeDir = join(process.cwd(), '../starter-free')
-      await spawnify(`yarn fix`, {
-        cwd: starterFreeDir,
-      })
       await finishAndCommit(starterFreeDir)
     }
 

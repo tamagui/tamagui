@@ -1,6 +1,4 @@
 export { animations } from './animations';
-export declare const cherryBombFont: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 5 | 9 | 15 | 1 | 10 | 14 | 11 | 12 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
-export declare const munroFont: import("@tamagui/font-inter").GenericFont;
 export declare const config: {
     defaultFont: string;
     shouldAddPrefersColorThemes: true;
@@ -74,25 +72,8 @@ export declare const config: {
             stiffness: number;
         };
     }>;
-    themes: Omit<{
-        readonly light: {
-            background: string;
-            backgroundHover: string;
-            backgroundPress: string;
-            backgroundFocus: string;
-            backgroundStrong: string;
-            backgroundTransparent: string;
-            color: string;
-            colorHover: string;
-            colorPress: string;
-            colorFocus: string;
-            colorTransparent: string;
-            borderColor: string;
-            borderColorHover: string;
-            borderColorFocus: string;
-            borderColorPress: string;
-            placeholderColor: string;
-            outlineColor: string;
+    themes: {
+        light_tan: {
             color1: string;
             color2: string;
             color3: string;
@@ -105,25 +86,10 @@ export declare const config: {
             color10: string;
             color11: string;
             color12: string;
+            color: string;
+            background: string;
         };
-        readonly dark: {
-            background: string;
-            backgroundHover: string;
-            backgroundPress: string;
-            backgroundFocus: string;
-            backgroundStrong: string;
-            backgroundTransparent: string;
-            color: string;
-            colorHover: string;
-            colorPress: string;
-            colorFocus: string;
-            colorTransparent: string;
-            borderColor: string;
-            borderColorHover: string;
-            borderColorFocus: string;
-            borderColorPress: string;
-            placeholderColor: string;
-            outlineColor: string;
+        dark_tan: {
             color1: string;
             color2: string;
             color3: string;
@@ -136,6 +102,8 @@ export declare const config: {
             color10: string;
             color11: string;
             color12: string;
+            color: string;
+            background: string;
         };
         light_blue: {
             background: string;
@@ -49179,7 +49147,6 @@ export declare const config: {
             color11: string;
             color12: string;
         };
-    }, "light" | "dark"> & {
         light: {
             background: string;
             backgroundHover: string;
@@ -50198,7 +50165,7 @@ export declare const config: {
         autocompleteSpecificTokens: "except-special";
     };
     fonts: {
-        heading: import("@tamagui/font-inter").FillInFont<{
+        heading: import("@tamagui/web").FillInFont<{
             size: {
                 5: number;
                 6: number;
@@ -50241,7 +50208,7 @@ export declare const config: {
                 };
             };
         }, 5 | 9 | 15 | 1 | 10 | 14 | 11 | 12 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
-        headingDmSans: import("@tamagui/font-inter").FillInFont<{
+        headingDmSans: import("@tamagui/web").FillInFont<{
             size: {
                 5: number;
                 6: number;
@@ -50270,7 +50237,7 @@ export declare const config: {
             };
             face: {};
         }, 5 | 9 | 15 | 1 | 10 | 14 | 11 | 12 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
-        headingDmSerifDisplay: import("@tamagui/font-inter").FillInFont<{
+        headingDmSerifDisplay: import("@tamagui/web").FillInFont<{
             size: {
                 5: number;
                 6: number;
@@ -50305,7 +50272,7 @@ export declare const config: {
             };
             face: {};
         }, 5 | 9 | 15 | 1 | 10 | 14 | 11 | 12 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
-        headingNohemi: import("@tamagui/font-inter").FillInFont<{
+        headingNohemi: import("@tamagui/web").FillInFont<{
             size: {
                 5: number;
                 6: number;
@@ -50333,7 +50300,7 @@ export declare const config: {
             };
             face: {};
         }, 5 | 9 | 15 | 1 | 10 | 14 | 11 | 12 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
-        body: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 5 | 9 | 15 | 1 | 10 | 14 | 11 | 12 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+        body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 5 | 9 | 15 | 1 | 10 | 14 | 11 | 12 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
         mono: {
             weight: {
                 1: string;
@@ -50357,9 +50324,9 @@ export declare const config: {
                 16: number;
             };
         };
-        silkscreen: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 5 | 9 | 15 | 1 | 10 | 14 | 11 | 12 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13>;
-        munro: import("@tamagui/font-inter").GenericFont;
-        cherryBomb: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 5 | 9 | 15 | 1 | 10 | 14 | 11 | 12 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+        silkscreen: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 5 | 9 | 15 | 1 | 10 | 14 | 11 | 12 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13>;
+        munro: import("@tamagui/web").GenericFont;
+        cherryBomb: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 5 | 9 | 15 | 1 | 10 | 14 | 11 | 12 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
     };
 };
 //# sourceMappingURL=tamagui.config.d.ts.map

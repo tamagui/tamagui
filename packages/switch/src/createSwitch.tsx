@@ -1,26 +1,21 @@
+import type { NativeValue, SizeTokens, StackProps } from '@tamagui/core'
 import {
-  NativeValue,
-  SizeTokens,
   Stack,
-  StackProps,
   composeEventHandlers,
   isWeb,
   shouldRenderNativePlatform,
   useProps,
   withStaticProperties,
 } from '@tamagui/core'
-import {
+import type {
   SwitchExtraProps as HeadlessSwitchExtraProps,
   SwitchState,
-  useSwitch,
 } from '@tamagui/switch-headless'
+import { useSwitch } from '@tamagui/switch-headless'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
-import {
-  Switch as NativeSwitch,
-  SwitchProps as NativeSwitchProps,
-  ViewProps,
-} from 'react-native'
+import type { SwitchProps as NativeSwitchProps, ViewProps } from 'react-native'
+import { Switch as NativeSwitch } from 'react-native'
 
 import { SwitchStyledContext } from './StyledContext'
 import { SwitchFrame as DefaultSwitchFrame, SwitchThumb } from './Switch'

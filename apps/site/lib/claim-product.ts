@@ -1,15 +1,26 @@
-import { Database, Json } from '@lib/supabase-types'
+import type { Database, Json } from '@lib/supabase-types'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
-import { User } from '@supabase/auth-helpers-nextjs'
+import type { User } from '@supabase/auth-helpers-nextjs'
 import { inviteCollaboratorToRepo } from 'protected/_utils/github'
 
 export class ClaimError extends Error {}
 
-export const claimProductAccess = async (
-  subscription: Database['public']['Tables']['subscriptions']['Row'],
-  product: Database['public']['Tables']['products']['Row'],
+type ClaimProductArgs = {
+  product: Database['public']['Tables']['products']['Row']
   user: User
-) => {
+} & (
+  | {
+      type: 'subscription'
+      subscription: Database['public']['Tables']['subscriptions']['Row']
+    }
+  | {
+      type: 'product_ownership'
+      productOwnership: Database['public']['Tables']['product_ownership']['Row']
+    }
+)
+export const claimProductAccess = async (args: ClaimProductArgs) => {
+  const { product } = args
+
   const metadata = product.metadata
   if (typeof metadata !== 'object' || !metadata || Array.isArray(metadata)) {
     throw new Error('bad metadata')
@@ -20,8 +31,8 @@ export const claimProductAccess = async (
   // check the product claim type and call the related claim function
   switch (metadata.claim_type) {
     case 'repo_access':
-      // @ts-ignore
-      claimData = await claimRepositoryAccess({ subscription, product, user, metadata })
+      claimData = await claimRepositoryAccess({ ...args, metadata })
+
       break
     default:
       throw new Error('unsupported claim_type on product metadata')
@@ -29,21 +40,22 @@ export const claimProductAccess = async (
 
   await supabaseAdmin.from('claims').insert({
     product_id: product.id,
-    subscription_id: subscription.id,
+    subscription_id: args.type === 'subscription' ? args.subscription.id : undefined,
+    product_ownership_id:
+      args.type === 'product_ownership' ? args.productOwnership.id : undefined,
     data: { claim_type: metadata.claim_type, ...claimData.data },
   })
 
   return claimData
 }
 
-type ClaimFunction = (args: {
-  subscription: Database['public']['Tables']['subscriptions']['Row']
-  product: Database['public']['Tables']['products']['Row']
-  user: User
-  metadata: {
-    [key: string]: Json | undefined
+type ClaimFunction = (
+  args: ClaimProductArgs & {
+    metadata: {
+      [key: string]: Json | undefined
+    }
   }
-}) => Promise<{
+) => Promise<{
   /**
    * Will be shown to the user as feedback
    */

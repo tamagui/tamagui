@@ -1,18 +1,12 @@
 import { Adapt, useAdaptParent } from '@tamagui/adapt'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import {
-  FontSizeTokens,
-  GetProps,
-  TamaguiElement,
-  getVariableValue,
-  styled,
-  useEvent,
-  useGet,
-} from '@tamagui/core'
+import type { FontSizeTokens, GetProps, TamaguiElement } from '@tamagui/core'
+import { getVariableValue, styled, useEvent, useGet } from '@tamagui/core'
 import { getSpace } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
-import { ListItem, ListItemProps } from '@tamagui/list-item'
+import type { ListItemProps } from '@tamagui/list-item'
+import { ListItem } from '@tamagui/list-item'
 import { PortalHost } from '@tamagui/portal'
 import { Separator } from '@tamagui/separator'
 import { Sheet, SheetController } from '@tamagui/sheet'
@@ -37,7 +31,7 @@ import { ITEM_TEXT_NAME, SelectItemText } from './SelectItemText'
 import { SelectScrollDownButton, SelectScrollUpButton } from './SelectScrollButton'
 import { SelectTrigger } from './SelectTrigger'
 import { SelectViewport } from './SelectViewport'
-import { ScopedProps, SelectImplProps, SelectProps } from './types'
+import type { ScopedProps, SelectImplProps, SelectProps } from './types'
 import {
   useSelectBreakpointActive,
   useShowSelectSheet,

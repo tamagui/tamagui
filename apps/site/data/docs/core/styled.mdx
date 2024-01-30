@@ -251,11 +251,11 @@ If you are wrapping something like an SVG, you may want it to accept theme and t
 const StyledSVG = styled(SVG, {}, {
   acceptsTokens: {
     fill: 'color'
-  }
+  } as const
 })
 ```
 
-Now your StyledSVG will properly type the `fill` property to accept token and theme values. It will then map any values it recieves to the style prop with any token or theme values resolved.
+Now your StyledSVG will properly type the `fill` property to accept token and theme values.  It will then map any values it recieves to the style prop with any token or theme values resolved. Note the `as const`, until TypeScript 5 is more fully supported this improves the generated types.
 
 ### styleable
 

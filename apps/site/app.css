@@ -769,8 +769,8 @@ textarea {
 }
 
 .font-outlined {
-  text-shadow: 8px 8px var(--color), -8px -8px var(--color), -8px 8px var(--color),
-    8px -8px var(--color);
+  -webkit-text-stroke-width: 8px;
+  -webkit-text-stroke-color: var(--color);
 }
 
 .font-outlined-sm {
@@ -797,7 +797,7 @@ textarea {
 
 .clip-slice {
   mask-image: url(./public/heart.svg);
-  mask-size: 20% 20%;
+  mask-size: 25% 25%;
   animation: clip-fade2 90s infinite alternate;
 }
 
@@ -808,7 +808,7 @@ textarea {
 }
 
 .slice-alt {
-  mask-size: 30% 30%;
+  mask-size: 50% 50%;
   animation: clip-fade2 30s infinite alternate;
 }
 
@@ -855,4 +855,22 @@ textarea {
   text-decoration-style: dotted;
   text-decoration-color: var(--color7);
   text-underline-offset: 6px;
+}
+
+@keyframes breeze {
+  0% {
+    transform: translateX(1300px) translateY(-100px) scale(3.5) rotate(90deg) scaleX(-1) scaleY(-1);
+  }
+
+  100% {
+    transform: translateX(1350px) translateY(0px) scale(3.5) rotate(90deg) scaleX(-1) scaleY(-1);
+  }
+}
+
+.shadow-breeze {
+  animation: breeze 50s alternate-reverse infinite forwards;
+}
+
+:root.t_light .phone-preview {
+  opacity: 0;
 }

@@ -136,7 +136,7 @@ export const Sandbox = () => {
         >
           {/* <SelectDemo /> */}
 
-          <Header dataSet={{ hello: 'world' }}>
+          <Header data-hello="world">
             <StyledSizableText>ok</StyledSizableText>
           </Header>
 

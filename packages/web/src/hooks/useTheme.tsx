@@ -2,13 +2,11 @@ import { isClient, isIos, isServer } from '@tamagui/constants'
 import { useContext, useEffect, useMemo, useRef, useState } from 'react'
 
 import { getConfig } from '../config'
-import { Variable, getVariable } from '../createVariable'
+import type { Variable } from '../createVariable'
+import { getVariable } from '../createVariable'
 import { isEqualShallow } from '../helpers/createShallowSetState'
-import {
-  ThemeManager,
-  ThemeManagerState,
-  getHasThemeUpdatingProps,
-} from '../helpers/ThemeManager'
+import type { ThemeManagerState } from '../helpers/ThemeManager'
+import { ThemeManager, getHasThemeUpdatingProps } from '../helpers/ThemeManager'
 import { ThemeManagerIDContext } from '../helpers/ThemeManagerContext'
 import type {
   DebugProp,
@@ -94,10 +92,16 @@ export const useThemeWithState = (
             typeof props.debug === 'string' &&
             props.debug !== 'profile'
           ) {
-            console.info(`  🎨 useTheme() shouldUpdate?`, next, {
-              shouldUpdateProp: props.shouldUpdate?.(),
-              keys: [...keys.current],
-            })
+            console.info(
+              `  🎨 useTheme() shouldUpdate?`,
+              next,
+              isClient
+                ? {
+                    shouldUpdateProp: props.shouldUpdate?.(),
+                    keys: [...keys.current],
+                  }
+                : ''
+            )
           }
           return next
         }

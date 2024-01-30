@@ -1,4 +1,5 @@
-import React, { ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import React from 'react';
 declare enum ACTIONS {
     REGISTER_HOST = 0,
     DEREGISTER_HOST = 1,

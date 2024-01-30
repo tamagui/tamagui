@@ -11,14 +11,14 @@ import {
   XGroup,
   XStack,
   YStack,
-  isClient
+  isClient,
 } from 'tamagui'
 
 import { ContainerLarge } from './Container'
 import { GithubIcon } from './GithubIcon'
 import { HeaderLinks } from './HeaderLinks'
 import { HeaderMenu } from './HeaderMenu'
-import { HeaderProps } from './HeaderProps'
+import type { HeaderProps } from './HeaderProps'
 import { NextLink } from './NextLink'
 import { SearchButton } from './SearchButton'
 import { SeasonToggleButton } from './SeasonToggleButton'
@@ -85,7 +85,7 @@ export function Header(props: HeaderProps) {
               },
             })}
           >
-            <YStack o={isScrolled ? 0.75 : 0} fullscreen bc="$background" />
+            <YStack o={isScrolled ? 0.5 : 0} fullscreen bc="$background" />
             <ContainerLarge>
               <ThemeTint>
                 <HeaderContents floating {...props} />
@@ -119,7 +119,7 @@ const tooltipDelay = { open: 0, close: 150 }
 export const HeaderContents = React.memo((props: HeaderProps) => {
   const router = useRouter()
   const isHome = router.pathname === '/'
-  const isTakeout = router.pathname === '/takeout'
+  // const isTakeout = router.pathname === '/takeout'
 
   return (
     <XStack
@@ -143,22 +143,16 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
 
           <TooltipGroup delay={tooltipDelay}>
             <XGroup mah={32} bc="transparent" ai="center" size="$4">
-              {!isTakeout && (
-                <XGroup.Item>
-                  <ThemeToggle borderWidth={0} chromeless />
-                </XGroup.Item>
-              )}
+              <XGroup.Item>
+                <ThemeToggle borderWidth={0} chromeless />
+              </XGroup.Item>
               <XGroup.Item>
                 <SeasonToggleButton borderWidth={0} chromeless />
               </XGroup.Item>
             </XGroup>
           </TooltipGroup>
 
-          <SearchButton
-            size="$2"
-            br="$10"
-            elevation="$0.5"
-          />
+          <SearchButton size="$2" br="$10" elevation="$0.5" />
 
           <YStack $md={{ display: 'none' }}>
             <NextLink

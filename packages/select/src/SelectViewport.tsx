@@ -12,7 +12,7 @@ import {
   useSelectContext,
   useSelectItemParentContext,
 } from './context'
-import { ScopedProps, SelectViewportExtraProps, SelectViewportProps } from './types'
+import type { ScopedProps, SelectViewportExtraProps, SelectViewportProps } from './types'
 import { useSelectBreakpointActive } from './useSelectBreakpointActive'
 
 /* -------------------------------------------------------------------------------------------------

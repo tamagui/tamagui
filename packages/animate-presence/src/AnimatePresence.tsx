@@ -1,9 +1,8 @@
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useForceUpdate } from '@tamagui/use-force-update'
+import type { ReactElement, ReactNode } from 'react'
 import React, {
   Children,
-  ReactElement,
-  ReactNode,
   cloneElement,
   isValidElement,
   useContext,
@@ -13,7 +12,7 @@ import React, {
 
 import { LayoutGroupContext } from './LayoutGroupContext'
 import { PresenceChild } from './PresenceChild'
-import { AnimatePresenceProps } from './types'
+import type { AnimatePresenceProps } from './types'
 
 type ComponentKey = string | number
 

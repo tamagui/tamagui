@@ -1,9 +1,10 @@
-import { TextParentStyles } from '@tamagui/text';
-import { FontSizeTokens, GetProps, PropsWithoutMediaStyles, SizeTokens, ThemeableProps } from '@tamagui/web';
-import React, { FunctionComponent } from 'react';
+import type { TextParentStyles } from '@tamagui/text';
+import type { FontSizeTokens, GetProps, PropsWithoutMediaStyles, SizeTokens, ThemeableProps } from '@tamagui/web';
+import type { FunctionComponent } from 'react';
+import React from 'react';
 type ListItemIconProps = {
-    color?: string;
-    size?: number;
+    color?: any;
+    size?: any;
 };
 type IconProp = JSX.Element | FunctionComponent<ListItemIconProps> | null;
 export type ListItemExtraProps = Omit<TextParentStyles, 'TextComponent' | 'noTextWrap'> & ThemeableProps & {

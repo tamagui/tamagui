@@ -1,7 +1,7 @@
-import { FontSizeTokens, TamaguiElement } from '@tamagui/core';
-import { ListItemProps } from '@tamagui/list-item';
+import type { FontSizeTokens, TamaguiElement } from '@tamagui/core';
+import type { ListItemProps } from '@tamagui/list-item';
 import * as React from 'react';
-import { ScopedProps, SelectProps } from './types';
+import type { ScopedProps, SelectProps } from './types';
 export interface SelectValueExtraProps {
     placeholder?: React.ReactNode;
 }
@@ -154,12 +154,12 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         active?: boolean | undefined;
     }>> & Omit<import("@tamagui/text").TextParentStyles, "TextComponent" | "noTextWrap"> & import("@tamagui/core").ThemeableProps & {
         icon?: (JSX.Element | React.FunctionComponent<{
-            color?: string | undefined;
-            size?: number | undefined;
+            color?: any;
+            size?: any;
         }> | null) | undefined;
         iconAfter?: (JSX.Element | React.FunctionComponent<{
-            color?: string | undefined;
-            size?: number | undefined;
+            color?: any;
+            size?: any;
         }> | null) | undefined;
         scaleIcon?: number | undefined;
         spaceFlex?: number | boolean | undefined;
@@ -226,12 +226,12 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         active?: boolean | undefined;
     }>> & Omit<import("@tamagui/text").TextParentStyles, "TextComponent" | "noTextWrap"> & import("@tamagui/core").ThemeableProps & {
         icon?: (JSX.Element | React.FunctionComponent<{
-            color?: string | undefined;
-            size?: number | undefined;
+            color?: any;
+            size?: any;
         }> | null) | undefined;
         iconAfter?: (JSX.Element | React.FunctionComponent<{
-            color?: string | undefined;
-            size?: number | undefined;
+            color?: any;
+            size?: any;
         }> | null) | undefined;
         scaleIcon?: number | undefined;
         spaceFlex?: number | boolean | undefined;

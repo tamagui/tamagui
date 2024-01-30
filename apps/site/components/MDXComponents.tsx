@@ -4,6 +4,9 @@ import { NextLink } from 'components/NextLink'
 import { useRouter } from 'next/router'
 import React, { forwardRef, useState } from 'react'
 import { ScrollView } from 'react-native'
+import type { ImageProps, XStackProps ,
+  TabsProps,
+  TabsTabProps} from 'tamagui'
 import {
   Button,
   Card,
@@ -13,14 +16,11 @@ import {
   H4,
   H5,
   Image,
-  ImageProps,
   Paragraph,
   Separator,
   Spacer,
   styled,
   Tabs,
-  TabsProps,
-  TabsTabProps,
   Text,
   Theme,
   ThemeableStack,
@@ -28,8 +28,7 @@ import {
   withStaticProperties,
   XGroup,
   XStack,
-  XStackProps,
-  YStack
+  YStack,
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 
@@ -188,17 +187,9 @@ function TabsComponent(props: TabsProps) {
   )
 }
 
-
 const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
-
   return (
-    <Tabs.Tab
-      size="$4"
-      $sm={{ f: 1 }}
-      ref={ref as any}
-      elevation="$0.5"
-      {...props}
-    >
+    <Tabs.Tab size="$4" $sm={{ f: 1 }} ref={ref as any} elevation="$0.5" {...props}>
       <Paragraph>{props.children}</Paragraph>
     </Tabs.Tab>
   )
@@ -206,14 +197,14 @@ const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
 
 const TabsList = styled(Tabs.List, {
   marginTop: -50,
-  width: "100%",
-  justifyContent: "flex-end",
-  size: "$4",
+  width: '100%',
+  justifyContent: 'flex-end',
+  size: '$4',
   top: 70,
   marginRight: 0,
   marginBottom: 0,
   zIndex: 10000,
-  position: "sticky" as any,
+  position: 'sticky' as any,
   right: 0,
   $sm: {
     marginTop: 20,
@@ -622,7 +613,7 @@ export const components = {
 
   GetStarted: () => {
     return (
-      <XStack gap="$4" f={1} fw="wrap" mt="$2" mb="$4">
+      <XStack gap="$4" f={1} fw="wrap" my="$5">
         <ThemeTintAlt>
           <Card f={1}>
             <Card.Header gap="$2">

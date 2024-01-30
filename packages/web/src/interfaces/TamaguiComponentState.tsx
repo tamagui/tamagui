@@ -1,4 +1,4 @@
-import { GroupState } from '../types'
+import type { GroupState } from '../types'
 
 export type TamaguiComponentState = {
   hover: boolean

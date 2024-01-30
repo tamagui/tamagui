@@ -1,7 +1,7 @@
-import { NativeValue, SizeTokens, StackProps } from '@tamagui/core';
-import { SwitchExtraProps as HeadlessSwitchExtraProps, SwitchState } from '@tamagui/switch-headless';
+import type { NativeValue, SizeTokens, StackProps } from '@tamagui/core';
+import type { SwitchExtraProps as HeadlessSwitchExtraProps, SwitchState } from '@tamagui/switch-headless';
 import * as React from 'react';
-import { SwitchProps as NativeSwitchProps } from 'react-native';
+import type { SwitchProps as NativeSwitchProps } from 'react-native';
 type SwitchSharedProps = {
     size?: SizeTokens | number;
     unstyled?: boolean;

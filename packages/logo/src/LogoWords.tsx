@@ -1,5 +1,6 @@
 import { memo, useEffect, useState } from 'react'
-import { Circle, XStack, XStackProps } from 'tamagui'
+import type { XStackProps } from 'tamagui'
+import { Circle, XStack } from 'tamagui'
 
 import { useTint } from './useTint'
 
@@ -59,6 +60,7 @@ export const LogoWords = memo(
         data-tauri-drag-region
         marginVertical="$-2"
         position="relative"
+        className="logo-words"
         {...props}
       >
         {animated && (

@@ -1,7 +1,8 @@
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
-import { GetProps, TamaguiElement, styled } from '@tamagui/core'
+import type { GetProps, TamaguiElement } from '@tamagui/core'
+import { styled } from '@tamagui/core'
 import { PortalHost } from '@tamagui/portal'
 import { YStack } from '@tamagui/stacks'
 import { VisuallyHidden } from '@tamagui/visually-hidden'
@@ -9,12 +10,8 @@ import * as React from 'react'
 
 import { TOAST_CONTEXT } from './constants'
 import { ToastPortal } from './ToastPortal'
-import {
-  Collection,
-  ScopedProps,
-  useCollection,
-  useToastProviderContext,
-} from './ToastProvider'
+import type { ScopedProps } from './ToastProvider'
+import { Collection, useCollection, useToastProviderContext } from './ToastProvider'
 
 const VIEWPORT_NAME = 'ToastViewport'
 const VIEWPORT_DEFAULT_HOTKEY = ['F8']

@@ -37,7 +37,7 @@ import { themeable } from './helpers/themeable'
 import { mediaKeyMatch, setMediaShouldUpdate, useMedia } from './hooks/useMedia'
 import { useThemeWithState } from './hooks/useTheme'
 import { hooks } from './setupHooks'
-import {
+import type {
   ComponentContextI,
   DebugProp,
   DisposeFn,
@@ -62,9 +62,9 @@ import {
   UseAnimationProps,
   UseThemeWithStateProps,
 } from './types'
-import { WebOnlyPressEvents } from './interfaces/WebOnlyPressEvents'
-import { TamaguiComponentState } from './interfaces/TamaguiComponentState'
-import { TamaguiComponentEvents } from './interfaces/TamaguiComponentEvents'
+import type { WebOnlyPressEvents } from './interfaces/WebOnlyPressEvents'
+import type { TamaguiComponentState } from './interfaces/TamaguiComponentState'
+import type { TamaguiComponentEvents } from './interfaces/TamaguiComponentEvents'
 import { Slot } from './views/Slot'
 import { getThemedChildren } from './views/Theme'
 import { ThemeDebug } from './views/ThemeDebug'
@@ -925,6 +925,8 @@ export function createComponent<
         onPress ||
         onPressOut ||
         onPressIn ||
+        onMouseDown ||
+        onMouseUp ||
         onLongPress ||
         onClick
     )
@@ -1233,45 +1235,54 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development') {
       if (debugProp && debugProp !== 'profile') {
         const element = typeof elementType === 'string' ? elementType : 'Component'
-        console.groupCollapsed(`render <${element} /> (${internalID}) with props`)
-        try {
-          log('viewProps', viewProps)
-          log('children', content)
-          if (typeof window !== 'undefined') {
-            log('props in', propsIn, 'mapped to', props, 'in order', Object.keys(props))
-            log({
-              animationStyles,
-              classNames,
-              content,
-              defaultProps,
-              elementType,
-              events,
-              initialState,
-              isAnimated,
-              isMediaArray,
-              isStringElement,
-              mediaListeningKeys,
-              pseudos,
-              shouldAttach,
-              shouldAvoidClasses,
-              shouldForcePseudo,
-              shouldListenForMedia,
-              splitStyles,
-              splitStylesStyle,
-              state,
-              stateRef,
-              staticConfig,
-              styleProps,
-              tamaguiConfig,
-              themeState,
-              viewProps,
-              willBeAnimated,
-            })
+        const title = `render <${element} /> (${internalID}) with props`
+        if (!isWeb) {
+          log(title)
+          log(`final styles:`)
+          for (const key in splitStylesStyle) {
+            log(key, splitStylesStyle[key])
           }
-        } catch {
-          // RN can run into PayloadTooLargeError: request entity too large
+        } else {
+          console.groupCollapsed(title)
+          try {
+            log('viewProps', viewProps)
+            log('children', content)
+            if (typeof window !== 'undefined') {
+              log('props in', propsIn, 'mapped to', props, 'in order', Object.keys(props))
+              log({
+                animationStyles,
+                classNames,
+                content,
+                defaultProps,
+                elementType,
+                events,
+                initialState,
+                isAnimated,
+                isMediaArray,
+                isStringElement,
+                mediaListeningKeys,
+                pseudos,
+                shouldAttach,
+                shouldAvoidClasses,
+                shouldForcePseudo,
+                shouldListenForMedia,
+                splitStyles,
+                splitStylesStyle,
+                state,
+                stateRef,
+                staticConfig,
+                styleProps,
+                tamaguiConfig,
+                themeState,
+                viewProps,
+                willBeAnimated,
+              })
+            }
+          } catch {
+            // RN can run into PayloadTooLargeError: request entity too large
+          }
+          console.groupEnd()
         }
-        console.groupEnd()
         if (debugProp === 'break') {
           // biome-ignore lint/suspicious/noDebugger: ok
           debugger

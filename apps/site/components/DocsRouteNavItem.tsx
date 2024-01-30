@@ -3,7 +3,7 @@ import { useRef } from 'react'
 import { SizableText, Spacer, XStack, YStack } from 'tamagui'
 import { useStore, useStoreSelector, getStore } from '@tamagui/use-store'
 
-import { NavItemProps } from './DocsPage'
+import type { NavItemProps } from './DocsPage'
 import { ExternalIcon } from './ExternalIcon'
 
 export class DocsItemsStore {
@@ -50,7 +50,7 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
           py: '$1.5',
         }}
         {...(isActive && {
-          bc: '$color1',
+          bc: 'color-mix(in srgb, var(--color8) 10%, transparent 50%)' as any,
         })}
         {...(inMenu && {
           jc: 'flex-start',

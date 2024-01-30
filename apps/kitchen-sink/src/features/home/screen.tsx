@@ -1,12 +1,14 @@
 import { ChevronRight, Moon, Sun } from '@tamagui/lucide-icons'
 import { ScrollView } from 'react-native'
-import { UseLinkProps, useLink } from 'solito/link'
+import type { UseLinkProps} from 'solito/link';
+import { useLink } from 'solito/link'
 // import { UseLinkProps, useLink } from 'solito/link'
+import type {
+  ListItemProps} from 'tamagui';
 import {
   Button,
   H1,
   ListItem,
-  ListItemProps,
   Paragraph,
   Separator,
   Spacer,

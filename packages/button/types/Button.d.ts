@@ -1,15 +1,15 @@
-import { TextContextStyles, TextParentStyles } from '@tamagui/text';
-import { FontSizeTokens, GetProps, SizeTokens, ThemeableProps } from '@tamagui/web';
-import { FunctionComponent } from 'react';
+import type { TextContextStyles, TextParentStyles } from '@tamagui/text';
+import type { FontSizeTokens, GetProps, SizeTokens, ThemeableProps } from '@tamagui/web';
+import type { FunctionComponent } from 'react';
 export declare const ButtonContext: import("@tamagui/web").StyledContext<Partial<TextContextStyles & {
     size: SizeTokens;
     variant?: "outlined" | undefined;
 }>>;
 type ButtonIconProps = {
-    color?: string;
-    size?: number;
+    color?: any;
+    size?: any;
 };
-type IconProp = JSX.Element | FunctionComponent<ButtonIconProps> | null;
+type IconProp = JSX.Element | FunctionComponent<ButtonIconProps> | ((props: ButtonIconProps) => any) | null;
 type ButtonExtraProps = TextParentStyles & ThemeableProps & {
     /**
      * add icon before, passes color and size automatically if Component

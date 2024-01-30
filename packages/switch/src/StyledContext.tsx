@@ -1,4 +1,5 @@
-import { SizeTokens, createStyledContext } from '@tamagui/core'
+import type { SizeTokens } from '@tamagui/core'
+import { createStyledContext } from '@tamagui/core'
 
 export const SwitchStyledContext = createStyledContext<{
   size?: SizeTokens

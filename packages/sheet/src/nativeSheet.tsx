@@ -1,9 +1,10 @@
 import { YStack } from '@tamagui/stacks'
-import { FunctionComponent, useEffect, useRef } from 'react'
+import type { FunctionComponent } from 'react'
+import { useEffect, useRef } from 'react'
 import { View } from 'react-native'
 
 import { SheetProvider } from './SheetContext'
-import { SheetProps } from './types'
+import type { SheetProps } from './types'
 import { useSheetOpenState } from './useSheetOpenState'
 import { useSheetProviderProps } from './useSheetProviderProps'
 

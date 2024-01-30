@@ -1,10 +1,9 @@
-import {
-  CheckboxProps as CheckboxHeadlessProps,
-  useCheckbox,
-} from '@tamagui/checkbox-headless'
+import type { CheckboxProps as CheckboxHeadlessProps } from '@tamagui/checkbox-headless'
+import { useCheckbox } from '@tamagui/checkbox-headless'
 import { Check, Minus } from '@tamagui/lucide-icons'
 import { forwardRef, useState } from 'react'
-import { Pressable, View } from 'react-native'
+import type { View } from 'react-native'
+import { Pressable } from 'react-native'
 import { Label, XStack, YStack } from 'tamagui'
 
 export function CheckboxHeadlessDemo() {

@@ -8,7 +8,7 @@
  * @flow
  */
 
-import {
+import type {
   AnimationStyles,
   BorderStyles,
   InteractionStyles,
@@ -16,8 +16,8 @@ import {
   ShadowStyles,
   TransformStyles,
 } from '../../styleTypes'
-import { ColorValue, GenericStyleProp } from '../../types'
-import { ViewProps } from '../View/types'
+import type { ColorValue, GenericStyleProp } from '../../types'
+import type { ViewProps } from '../View/types'
 
 type SourceObject = {
   /**

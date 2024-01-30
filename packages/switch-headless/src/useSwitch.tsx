@@ -4,7 +4,7 @@ import { composeEventHandlers } from '@tamagui/helpers'
 import { useLabelContext } from '@tamagui/label'
 import { usePrevious } from '@tamagui/use-previous'
 import * as React from 'react'
-import { GestureResponderEvent, PressableProps, View, ViewProps } from 'react-native'
+import type { GestureResponderEvent, PressableProps, View, ViewProps } from 'react-native'
 
 type SwitchBaseProps = ViewProps & Pick<PressableProps, 'onPress'>
 

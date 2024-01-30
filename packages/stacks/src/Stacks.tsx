@@ -1,4 +1,5 @@
-import { GetProps, View, styled } from '@tamagui/core'
+import type { GetProps } from '@tamagui/core'
+import { View, styled } from '@tamagui/core'
 
 import { getElevation } from './getElevation'
 
