@@ -64,7 +64,7 @@ const Items = () => {
       <YStack gap="$4">
         <H2>Owned Items</H2>
         <YStack gap="$8">
-          {productOwnerships?.length === 0 && (
+          {productOwnerships?.length === 0 ? (
             <YStack gap="$1">
               <Paragraph ta="center" theme="alt1">
                 You don't have any owned items.
@@ -74,20 +74,17 @@ const Items = () => {
                 items.
               </Paragraph>
             </YStack>
-          )}
-          {productOwnerships.map((ownership) => {
-            return (
-              <YStack
-                key={ownership.id}
-                borderColor="$color2"
-                borderWidth="$1"
-                borderRadius="$4"
-                p="$4"
-              >
-                <ItemDetails type="owned_item" item={ownership} />
+          ) : (
+            <YStack borderColor="$color2" borderWidth="$1" borderRadius="$4">
+              <YStack p="$4" gap="$6" separator={<Separator o={0.5} />}>
+                {productOwnerships.map((ownership) => {
+                  return (
+                    <ItemDetails key={ownership.id} type="owned_item" item={ownership} />
+                  )
+                })}
               </YStack>
-            )
-          })}
+            </YStack>
+          )}
         </YStack>
       </YStack>
 
