@@ -115,6 +115,10 @@ const Account = () => {
       <YStack>
         <UserSettings />
       </YStack>
+
+      <YStack>
+        <Paragraph ff="$mono">User ID: {userDetails?.id}</Paragraph>
+      </YStack>
     </Container>
   )
 }
