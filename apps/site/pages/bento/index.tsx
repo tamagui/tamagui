@@ -382,7 +382,7 @@ const getTakeoutProducts = async (): Promise<ProComponentsProps> => {
     supabaseAdmin
       .from('products')
       .select('*, prices(*)')
-      .eq('metadata->>slug', 'pro-components')
+      .eq('metadata->>slug', 'bento')
       .single(),
   ]
   const promises = [promoListPromise, ...productPromises]
