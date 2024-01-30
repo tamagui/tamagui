@@ -46,9 +46,14 @@ export type GroupItemProps = {
      * forces the item to be a starting, center or ending item and gets the respective styles
      */
     forcePlacement?: 'first' | 'center' | 'last';
+    /**
+     * When Group.Item is nested, it needs an index
+     */
+    index?: number;
 };
 export declare const useGroupItem: (childrenProps: {
     disabled: boolean;
+    index?: number;
 }, forcePlacement?: GroupItemProps['forcePlacement'], __scopeGroup?: Scope) => Record<string, any>;
 export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "unstyled" | "size" | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
     unstyled?: boolean | undefined;

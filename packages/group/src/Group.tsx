@@ -197,12 +197,20 @@ export type GroupItemProps = {
    * forces the item to be a starting, center or ending item and gets the respective styles
    */
   forcePlacement?: 'first' | 'center' | 'last'
+
+  /**
+   * When Group.Item is nested, it needs an index
+   */
+  index?: number
 }
 
 const GroupItem = (props: ScopedProps<GroupItemProps>) => {
   const { __scopeGroup, children, forcePlacement } = props
   const groupItemProps = useGroupItem(
-    { disabled: isValidElement(children) ? children.props.disabled : undefined },
+    {
+      disabled: isValidElement(children) ? children.props.disabled : undefined,
+      index: props.index,
+    },
     forcePlacement,
     __scopeGroup
   )
@@ -225,7 +233,7 @@ const GroupItem = (props: ScopedProps<GroupItemProps>) => {
 }
 
 export const useGroupItem = (
-  childrenProps: { disabled: boolean },
+  childrenProps: { disabled: boolean; index?: number },
   forcePlacement?: GroupItemProps['forcePlacement'],
   __scopeGroup?: Scope
 ) => {
@@ -243,11 +251,11 @@ export const useGroupItem = (
     throw Error('<Group.Item/> should only be used within a <Group/>')
   }
 
-  const isFirst =
-    forcePlacement === 'first' || (forcePlacement !== 'last' && treeIndex.index === 0)
+  const index = childrenProps.index ?? treeIndex.index
+  const isFirst = forcePlacement === 'first' || (forcePlacement !== 'last' && index === 0)
   const isLast =
     forcePlacement === 'last' ||
-    (forcePlacement !== 'first' && treeIndex.index === treeIndex.maxIndex)
+    (forcePlacement !== 'first' && index === treeIndex.maxIndex)
 
   const disabled = childrenProps.disabled ?? context.disabled
 
