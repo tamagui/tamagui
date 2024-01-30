@@ -318,7 +318,7 @@ const TakeoutIcon = React.forwardRef((props, ref) => (
 
 const TakeoutHeaderLink = ({ forceShowAllLinks }: HeaderProps) => {
   const router = useRouter()
-  const isDisabledRoute = router.asPath === '/'
+  const isDisabledRoute = router.asPath === '/' || router.asPath === '/takeout'
   const [disabled, setDisabled] = React.useState(isDisabledRoute)
   const [open, setOpen] = React.useState(false)
   const [hasOpenedOnce, setHasOpenedOnce] = React.useState(false)

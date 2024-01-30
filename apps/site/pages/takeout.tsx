@@ -69,6 +69,7 @@ import {
   styled,
   useMedia,
   useTheme,
+  useThemeName,
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 
@@ -225,7 +226,13 @@ export default function TakeoutPage({
             <TakeoutHero coupon={coupon} />
           </YStack>
 
-          <XStack mt={heroHeight} space="$10" $md={{ fd: 'column' }}>
+          <XStack
+            mt={heroHeight}
+            $sm={{ mt: heroHeight - 200 }}
+            $xs={{ mt: heroHeight - 250 }}
+            space="$10"
+            $md={{ fd: 'column' }}
+          >
             <XStack
               f={1}
               p="$10"
@@ -237,7 +244,6 @@ export default function TakeoutPage({
                 px: '$4',
               }}
               $xxs={{
-                mt: -200,
                 px: '$2',
               }}
             >
@@ -252,7 +258,7 @@ export default function TakeoutPage({
                     ff="$munro"
                     my="$2"
                     pr={200}
-                    maw={800}
+                    maw={600}
                     size="$10"
                     color="$color10"
                     $group-takeoutBody-xs={{
@@ -275,16 +281,15 @@ export default function TakeoutPage({
                     $sm={{ size: '$7' }}
                     fow="400"
                   >
-                    Takeout 🥡 is a bootstrap extracted from our experience creating and
+                    Takeout is a bootstrap extracted from our experience creating and
                     consulting on apps with Tamagui. It builds off the free and open
                     source starter <CodeInline>(npm&nbsp;create&nbsp;tamagui)</CodeInline>
                     , adding{' '}
                     <a target="_blank" href="https://supabase.com">
                       Supabase
                     </a>{' '}
-                    for data and auth, all the flows you'd want for any user-based app,
-                    and a bunch of other goodies that take a while
-                    to&nbsp;set&nbsp;up&nbsp;well.
+                    for data and auth, all the flows for a user-based app, and a bunch of
+                    other goodies that take time to&nbsp;set&nbsp;up&nbsp;well.
                   </Paragraph>
 
                   <Paragraph
@@ -304,11 +309,11 @@ export default function TakeoutPage({
                     <NextLink href="https://icones.js.org" target="_blank">
                       icones.js.org
                     </NextLink>{' '}
-                    icon packs to your app as typed and Tamagui styled components.
+                    icon packs to your app as typed, Tamagui-styled components.
                   </Paragraph>
                 </ThemeTintAlt>
 
-                <Spacer size="$6" />
+                <Spacer size="$4" />
 
                 <XStack fw="wrap" gap="$3" mx="$-10" ai="center" jc="center">
                   <TakeoutCard
@@ -416,10 +421,11 @@ export default function TakeoutPage({
                 </XStack>
 
                 <Spacer />
+
                 <YStack
                   className="phone-preview"
-                  marginTop={-450}
-                  marginBottom={-680}
+                  marginTop={-580}
+                  marginBottom={-530}
                   x={700}
                   zi={-1}
                   style={{
@@ -450,7 +456,6 @@ export default function TakeoutPage({
                     px="$8"
                     py="$8"
                     gap="$5"
-                    elevation="$6"
                     br="$10"
                     $sm={{
                       px: '$4',
@@ -478,11 +483,14 @@ export default function TakeoutPage({
                       <Paragraph
                         fontFamily="$silkscreen"
                         size="$9"
-                        color="$color10"
-                        className="text-wrap-balance"
+                        color="$color1"
                         ls={-2}
                         fow="400"
-                        mb="$4"
+                        bc="$color12"
+                        als="center"
+                        px="$2"
+                        mt={-55}
+                        mb={10}
                       >
                         it's not all about shipping&nbsp;fast.
                       </Paragraph>
@@ -547,7 +555,7 @@ export default function TakeoutPage({
 
                 <Spacer />
 
-                <YStack br="$10" bc="#000" p="$7">
+                <YStack br="$12" elevation="$4" bc="#000" p="$7" gap="$3">
                   <ThemeTint>
                     <Paragraph als="center" col="#fff" fontFamily="$munro" size="$10">
                       Gallery
@@ -673,7 +681,7 @@ type TakeoutPageProps = {
 }
 
 const TakeoutCard2Frame = styled(YStack, {
-  className: 'blur-4',
+  className: 'blur-8',
   minWidth: 282,
   maxWidth: 282,
   minHeight: 312,
@@ -682,7 +690,7 @@ const TakeoutCard2Frame = styled(YStack, {
   overflow: 'hidden',
   borderRadius: '$10',
 
-  '$group-takeoutBody-gtSm': {
+  '$group-takeoutBody-gtXs': {
     scale: 0.915,
     m: -12,
   },
@@ -707,14 +715,15 @@ type TakeoutCardFrameProps = GetProps<typeof TakeoutCard2Frame> & {
 }
 
 const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps) => {
+  const isDark = useThemeName().startsWith('dark')
   const innerGlow = useHoverGlow({
-    resist: 70,
+    resist: 50,
     size: 250,
     strategy: 'blur',
-    blurPct: 50,
+    blurPct: 60,
     // inverse: true,
-    color: 'var(--color7)',
-    opacity: 0.2,
+    color: isDark ? 'var(--color9)' : 'var(--color4)',
+    opacity: isDark ? 0.18 : 1,
     background: 'transparent',
     style: {
       transition: `all ease-out 300ms`,
@@ -768,7 +777,7 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
 
           {!!icon && (
             <YStack pos="absolute" b={0} r={0}>
-              <Image className="pixelate" src={icon} alt="Icon" width={52} height={52} />
+              <Image className="pixelate" src={icon} alt="Icon" width={32} height={32} />
             </YStack>
           )}
         </YStack>
@@ -812,17 +821,14 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
       scale={1}
       $xxs={{
         scale: 0.35,
-        y: '40%',
-        my: -100,
       }}
       $xs={{
         scale: 0.45,
-        my: -50,
-        y: '35%',
+        y: 0,
       }}
       $sm={{
         scale: 0.65,
-        y: '25%',
+        y: 0,
       }}
       $md={{
         scale: 0.85,
@@ -861,26 +867,30 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
           clipPath: `polygon(0% 0%, 0% 100%, 100% 100%, 0% 0%, 100% 0, 0% 100%)`,
         }}
       >
-        <TAKEOUT className="mix-blend font-outlined" zi={1000} />
+        <ThemeTintAlt>
+          <TAKEOUT className="font-outlined" zi={1000} color="var(--color8)" />
+        </ThemeTintAlt>
 
         {!disableMotion && (
           <>
             <ThemeTint>
               {/* main color slices */}
               <TAKEOUT
+                color="$color7"
                 className="clip-slice mix-blend"
                 pos="absolute"
-                color="$color8"
                 o={1}
+                zi={1001}
               />
             </ThemeTint>
             {/* alt color slices */}
             <ThemeTintAlt>
               <TAKEOUT
+                color="$color7"
                 className="clip-slice mix-blend slice-alt"
                 pos="absolute"
-                color="$color8"
                 o={1}
+                zi={1002}
               />
             </ThemeTintAlt>
           </>
@@ -1114,7 +1124,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
         </Sheet>
       </Dialog.Adapt>
 
-      <Dialog.Portal>
+      <Dialog.Portal theme="dark">
         <Dialog.Overlay
           key="overlay"
           animation="medium"
@@ -1572,7 +1582,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
       <ThemeTint>
         <TakeoutCardFrame
           className="blur-medium"
-          zi={100000}
+          zi={100_000}
           maw={310}
           als="center"
           shadowRadius={30}
@@ -1789,7 +1799,7 @@ const TakeoutCardFrame = styled(YStack, {
 const TAKEOUT = ({ fontSize = 450, lineHeight = fontSize * 0.64, ...props }) => (
   <H1
     userSelect="none"
-    color="$color1"
+    color="transparent"
     fontFamily="$cherryBomb"
     fontSize={fontSize}
     lineHeight={lineHeight}

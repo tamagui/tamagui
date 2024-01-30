@@ -770,8 +770,8 @@ textarea {
 }
 
 .font-outlined {
-  text-shadow: 5px 5px var(--color), -5px -5px var(--color), -5px 5px var(--color),
-    5px -5px var(--color);
+  -webkit-text-stroke-width: 8px;
+  -webkit-text-stroke-color: var(--color);
 }
 
 .font-outlined-sm {
