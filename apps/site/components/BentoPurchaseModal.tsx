@@ -21,6 +21,7 @@ import {
 
 import { PoweredByStripeIcon } from '@components/PoweredByStripeIcon'
 import { getTakeoutPriceInfo } from '@lib/getProductInfo'
+import type { Database } from '@lib/supabase-types'
 import { X } from '@tamagui/lucide-icons'
 import { useMemo } from 'react'
 import {
@@ -38,32 +39,38 @@ import {
 const checkCircle = <CheckCircle color="$green9" />
 const xCircle = <XCircle size={28} color="$red9" />
 
-export const PurchaseModal = ({ starter, coupon }) => {
-  const products = [starter]
+export const PurchaseModal = ({
+  mainProduct,
+  coupon,
+}: {
+  mainProduct?: Database['public']['Tables']['products']['Row'] & {
+    prices: Database['public']['Tables']['prices']['Row'][]
+  }
+  coupon?: Stripe.Coupon | null
+}) => {
+  const products = [mainProduct]
   const store = useBentoStore()
   const [selectedProductsIds, setSelectedProductsIds] = useState<string[]>(
     products.filter(Boolean).map((p) => p!.id)
   )
-  const sortedStarterPrices = (starter?.prices ?? []).sort(
+  const sortedPrices = (mainProduct?.prices ?? []).sort(
     (a, b) => a.unit_amount! - b.unit_amount!
   )
 
-  const [starterPriceId, setStarterPriceId] = useState(sortedStarterPrices[0]?.id)
+  const [selectedPriceId, setPriceId] = useState(sortedPrices[0]?.id)
 
   const sum = useMemo(() => {
-    if (!starter) {
+    if (!mainProduct) {
       return 0
     }
     let final = 0
-    return starter.prices[0].unit_amount
-    // TODO: fix this part
-    // if (selectedProductsIds.includes(starter.id)) {
-    //   final += starterPriceId
-    //     ? starter.prices.find((p) => p.id === starterPriceId)?.unit_amount ?? 0
-    //     : 0
-    // }
-    // return final
-  }, [selectedProductsIds, starterPriceId, starter])
+    if (selectedProductsIds.includes(mainProduct.id)) {
+      final += selectedPriceId
+        ? mainProduct.prices.find((p) => p.id === selectedPriceId)?.unit_amount ?? 0
+        : 0
+    }
+    return final
+  }, [selectedProductsIds, selectedPriceId, mainProduct])
 
   // with discount applied
   const finalPrice = useMemo(() => {
@@ -79,11 +86,11 @@ export const PurchaseModal = ({ starter, coupon }) => {
   const hasDiscountApplied = finalPrice !== sum
 
   const noProductSelected = selectedProductsIds.length === 0
-  const showTeamSelect = selectedProductsIds.includes(starter?.id || '')
+  const showTeamSelect = selectedProductsIds.includes(mainProduct?.id || '')
 
   // TODO: get bento price info
   const takeoutPriceInfo = getTakeoutPriceInfo(
-    starter?.prices.find((price) => price.id === starterPriceId)?.description ?? ''
+    mainProduct?.prices.find((price) => price.id === selectedPriceId)?.description ?? ''
   )
   return (
     <Dialog
@@ -235,11 +242,11 @@ export const PurchaseModal = ({ starter, coupon }) => {
                   >
                     <RadioGroup
                       gap="$2"
-                      value={starterPriceId}
-                      onValueChange={(val) => setStarterPriceId(val)}
+                      value={selectedPriceId}
+                      onValueChange={(val) => setPriceId(val)}
                     >
-                      {sortedStarterPrices.map((price) => {
-                        const active = starterPriceId === price.id
+                      {sortedPrices.map((price) => {
+                        const active = selectedPriceId === price.id
                         const htmlId = `price-${price.id}`
                         return (
                           <ThemeTint key={price.id} disable={!active}>
@@ -266,8 +273,10 @@ export const PurchaseModal = ({ starter, coupon }) => {
                                 <H4 mt="$-1">{price.description}</H4>
 
                                 <Paragraph theme="alt1">
-                                  {formatPrice(price.unit_amount! / 100, 'usd')} base + 1
-                                  year of updates
+                                  {formatPrice(price.unit_amount! / 100, 'usd')}{' '}
+                                  {(price.metadata as Record<any, any>).is_lifetime
+                                    ? 'lifetime access'
+                                    : `base + 1 year of updates`}
                                 </Paragraph>
                                 {/* <Paragraph theme="alt1" size="$2">
                           {formatPrice(price.unit_amount! / (100 * 2), 'usd')}{' '}
@@ -315,7 +324,7 @@ export const PurchaseModal = ({ starter, coupon }) => {
                           for (const productId of selectedProductsIds) {
                             params.append('product_id', productId)
                           }
-                          params.append(`price-${starter?.id}`, starterPriceId)
+                          params.append(`price-${mainProduct?.id}`, selectedPriceId)
                           if (store.appliedPromoCode) {
                             // the coupon user applied
                             params.append(`promotion_code`, store.appliedPromoCode)

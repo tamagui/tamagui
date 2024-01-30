@@ -1182,9 +1182,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                           ? sub.subscription_items
                           : [sub.subscription_items]
                         : []
-                      return !!items.find((i) =>
-                        Array.isArray(i.prices) ? i.prices[0] : i.prices
-                      )
+                      return !!items.find((i) => i.price)
                       //   const price = sub.prices
                       //   ? Array.isArray(sub.prices)
                       //     ? sub.prices[0]
@@ -1618,7 +1616,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
 
           <YStack pos="absolute" b="$4" l="$4" r="$4" zi={100}>
             {/* cant use buttonlink it breaks scroll on press if not enabled, conditionally use a link */}
-            {/* subscription ? `/account/subscriptions#${subscription.id}` : '' */}
+            {/* subscription ? `/account/items#${subscription.id}` : '' */}
             <PurchaseButton
               onPress={() => {
                 store.showPurchase = true
@@ -1976,7 +1974,7 @@ const PurchaseSelectTeam = ({
                 borderRadius="$2"
                 value={currentTab}
                 onChangeText={(text) => {
-                  if (isNaN(Number(text))) return
+                  if (Number.isNaN(Number(text))) return
                   setActiveIndicator(null)
                   setCurrentTab?.(text)
                 }}

@@ -34,14 +34,29 @@ export const getSubscriptions = async (supabase: SupabaseClient<Database>) => {
   if (result.error) throw new Error(result.error.message)
   return result.data.map((sub) => ({
     ...sub,
-    subscription_items: getArray(sub.subscription_items).map((item) => {
-      const price = getSingle(item?.prices)
+    subscription_items: getArray(sub.subscription_items).map(({ prices, ...item }) => {
+      const price = getSingle(prices)
+
       return {
         ...item,
         price: { ...price, product: getSingle(price?.products) },
       }
     }),
   }))
+}
+
+export const getProductOwnerships = async (supabase: SupabaseClient<Database>) => {
+  const result = await supabase
+    .from('product_ownership')
+    .select('*, prices(*, products(*))')
+  if (result.error) throw new Error(result.error.message)
+  return result.data.map(({ prices, ...sub }) => {
+    const price = getSingle(prices)
+    return {
+      ...sub,
+      price: { ...price, product: getSingle(price?.products) },
+    }
+  })
 }
 
 export function getPersonalTeam(

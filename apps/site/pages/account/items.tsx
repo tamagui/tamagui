@@ -20,7 +20,6 @@ import {
   H2,
   H3,
   H4,
-  H6,
   Image,
   Input,
   Label,
@@ -34,51 +33,79 @@ import {
 
 import { ButtonLink } from '../../components/Link'
 import { NextLink } from '../../components/NextLink'
-import { Notice, NoticeFrame } from '../../components/Notice'
+import { Notice } from '../../components/Notice'
+import type { UserContextType } from 'pages/api/user'
 
 export default function Page() {
   return (
     <>
-      <NextSeo
-        title="Subscriptions — Tamagui"
-        description="A better universal UI system."
-      />
+      <NextSeo title="Items — Tamagui" description="A better universal UI system." />
 
       <UserGuard>
-        <Subscriptions />
+        <Items />
       </UserGuard>
     </>
   )
 }
 
-const Subscriptions = () => {
+const Items = () => {
   const { data, isLoading } = useUser()
 
   if (isLoading || !data) {
     return <Spinner my="$10" />
   }
 
-  const { subscriptions } = data
-  if (!subscriptions) return null
+  const { subscriptions, productOwnerships } = data
+  if (!subscriptions || !productOwnerships) return null
   return (
     <Container f={1} py="$8" gap="$8">
       <GithubAppMessage />
-      <H2>Subscriptions</H2>
-      <YStack gap="$8">
-        {subscriptions.length === 0 && (
-          <YStack gap="$1">
-            <Paragraph ta="center" theme="alt1">
-              You don't have any subscriptions.
-            </Paragraph>
-            <Paragraph ta="center" theme="alt2">
-              You may need to refresh your page after a few seconds to see the new
-              subscriptions.
-            </Paragraph>
-          </YStack>
-        )}
-        {subscriptions.map((sub) => {
-          return <SubscriptionDetail key={sub.id} subscription={sub} />
-        })}
+
+      <YStack gap="$4">
+        <H2>Owned Items</H2>
+        <YStack gap="$8">
+          {productOwnerships?.length === 0 ? (
+            <YStack gap="$1">
+              <Paragraph ta="center" theme="alt1">
+                You don't have any owned items.
+              </Paragraph>
+              <Paragraph ta="center" theme="alt2">
+                You may need to refresh your page after a few seconds to see the new
+                items.
+              </Paragraph>
+            </YStack>
+          ) : (
+            <YStack borderColor="$color2" borderWidth="$1" borderRadius="$4">
+              <YStack p="$4" gap="$6" separator={<Separator o={0.5} />}>
+                {productOwnerships.map((ownership) => {
+                  return (
+                    <ItemDetails key={ownership.id} type="owned_item" item={ownership} />
+                  )
+                })}
+              </YStack>
+            </YStack>
+          )}
+        </YStack>
+      </YStack>
+
+      <YStack gap="$4">
+        <H2>Subscriptions</H2>
+        <YStack gap="$8">
+          {subscriptions.length === 0 && (
+            <YStack gap="$1">
+              <Paragraph ta="center" theme="alt1">
+                You don't have any subscriptions.
+              </Paragraph>
+              <Paragraph ta="center" theme="alt2">
+                You may need to refresh your page after a few seconds to see the new
+                subscriptions.
+              </Paragraph>
+            </YStack>
+          )}
+          {subscriptions.map((sub) => {
+            return <SubscriptionDetail key={sub.id} subscription={sub} />
+          })}
+        </YStack>
       </YStack>
     </Container>
   )
@@ -230,15 +257,15 @@ const SubscriptionDetail = ({ subscription }: SubscriptionDetailProps) => {
 
       <YStack p="$4" gap="$6" separator={<Separator o={0.5} />}>
         {items.map((item) => {
-          const price = getSingle(item?.prices)
-          const product = getSingle(price?.products)
-          if (!price || !product) return null
+          const product = getSingle(item.price?.products)
+          if (!item.price || !product) return null
           // const product = item?.prices
           return (
-            <SubscriptionItem
-              key={`${price.id}-${subscription.id}`}
+            <ItemDetails
+              key={`${item.price.id}-${subscription.id}`}
               item={item}
-              subscription={subscription}
+              type="subscription_item"
+              subscriptionId={subscription.id}
             />
           )
         })}
@@ -247,16 +274,24 @@ const SubscriptionDetail = ({ subscription }: SubscriptionDetailProps) => {
   )
 }
 
-const SubscriptionItem = ({
-  item,
-  subscription,
-}: {
-  item: Exclude<
-    SubscriptionDetailProps['subscription']['subscription_items'],
-    undefined | null
-  >[number]
-  subscription: SubscriptionDetailProps['subscription']
-}) => {
+const ItemDetails = (
+  props: {} & (
+    | {
+        type: 'subscription_item'
+        item: Exclude<
+          SubscriptionDetailProps['subscription']['subscription_items'],
+          undefined | null
+        >[number]
+        subscriptionId: Database['public']['Tables']['subscriptions']['Row']['id']
+      }
+    | {
+        type: 'owned_item'
+        item: Exclude<UserContextType['productOwnerships'], undefined | null>[number]
+      }
+  )
+) => {
+  const { item } = props
+
   const hasDiscordInvites =
     (item.price.product?.metadata as Record<string, any>).slug === 'universal-starter'
 
@@ -305,7 +340,8 @@ const SubscriptionItem = ({
     try {
       const res = await fetch(`/api/claim`, {
         body: JSON.stringify({
-          subscription_id: subscription.id,
+          subscription_id: 'subscriptionId' in props ? props.subscriptionId : undefined,
+          product_ownership_id: props.type === 'owned_item' ? props.item.id : undefined,
           product_id: product!.id,
         }),
         headers: {
@@ -382,12 +418,16 @@ const SubscriptionItem = ({
           </Paragraph>
         )}
 
-        {hasDiscordInvites && <DiscordPanel subscriptionId={subscription.id} />}
+        {hasDiscordInvites && 'subscriptionId' in props && (
+          <DiscordPanel subscriptionId={props.subscriptionId} />
+        )}
 
-        {hasGithubApp && item.id && (
+        {hasGithubApp && props.type === 'subscription_item' && item.id && (
           <BotInstallPanel
-            subItemId={item.id}
-            appInstallations={getArray(item.app_installations ?? [])}
+            subItemId={item.id.toString()}
+            appInstallations={getArray(
+              'app_installations' in item ? item.app_installations ?? [] : []
+            )}
           />
         )}
       </YStack>
