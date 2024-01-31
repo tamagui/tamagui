@@ -175,7 +175,8 @@ export const getSplitStyles: StyleSplitter = (
   const mediaState = styleProps.mediaState || globalMediaState
   const usedKeys: Record<string, number> = {}
   const shouldDoClasses = acceptsClassName && isWeb && !styleProps.noClassNames
-  const rulesToInsert: RulesToInsert = []
+  const rulesToInsert: RulesToInsert =
+    process.env.TAMAGUI_TARGET === 'native' ? (undefined as any) : []
   const classNames: ClassNamesObject = {}
   // we need to gather these specific to each media query / pseudo
   // value is [hash, val], so ["-jnjad-asdnjk", "scaleX(1) rotate(10deg)"]
@@ -188,14 +189,14 @@ export const getSplitStyles: StyleSplitter = (
   let pseudoGroups: Set<string> | undefined
   let mediaGroups: Set<string> | undefined
   let style: ViewStyleWithPseudos = {}
-  let className = (props.className as string) ?? '' // existing classNames
+  let className = (props.className as string) || '' // existing classNames
   let mediaStylesSeen = 0
 
   /**
    * Not the biggest fan of creating an object but it is a nice API
    */
   const styleState: GetStyleState = {
-    curProps: { ...props },
+    curProps: {},
     classNames,
     conf,
     props,
@@ -303,7 +304,9 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
-    styleState.curProps[keyInit] = valInit
+    if (valInit !== props[keyInit]) {
+      styleState.curProps[keyInit] = valInit
+    }
 
     if (process.env.TAMAGUI_TARGET === 'native') {
       if (!isAndroid) {
@@ -1411,12 +1414,15 @@ const useInsertEffectCompat = isWeb
   ? useInsertionEffect || useIsomorphicLayoutEffect
   : () => {}
 
-export const useSplitStyles: StyleSplitter = (...args) => {
-  const res = getSplitStyles(...args)
+// perf: ...args a bit expensive on native
+export const useSplitStyles: StyleSplitter = (a, b, c, d, e, f, g, h, i, j) => {
+  const res = getSplitStyles(a, b, c, d, e, f, g, h, i, j)
 
-  useInsertEffectCompat(() => {
-    insertStyleRules(res.rulesToInsert)
-  }, [res.rulesToInsert])
+  if (process.env.TAMAGUI_TARGET !== 'native') {
+    useInsertEffectCompat(() => {
+      insertStyleRules(res.rulesToInsert)
+    }, [res.rulesToInsert])
+  }
 
   return res
 }
