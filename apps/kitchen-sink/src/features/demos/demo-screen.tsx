@@ -42,8 +42,6 @@ export function DemoScreen() {
     })
     .join('')
 
-  console.log(`Showing demo ${name}`)
-
   const demoName = `${nameMap[name] || name}Demo`
   const DemoComponent = NativeDemos[demoName] ?? NotFound
 
