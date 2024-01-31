@@ -7,7 +7,7 @@ import { BentoPageFrame } from '../../../components/BentoPageFrame'
 import type { GetStaticPaths } from 'next'
 import { useRouter } from 'next/router'
 
-import { ContainerLarge } from '../../../components/Container'
+import { ContainerLarge, ContainerXL } from '../../../components/Container'
 import { getDefaultLayout } from '../../../lib/getDefaultLayout'
 import { BentoLogo } from '../../../components/BentoLogo'
 
@@ -22,16 +22,18 @@ export default function page({ codes }) {
 
   return (
     <BentoPageFrame>
-      <ContainerLarge>
-        <DetailHeader>
-          {`${params.section[0].toUpperCase()}${params.section.slice(1)}`}
-        </DetailHeader>
-        <Spacer />
-        <Spacer />
-        <YStack>
-          <Comp codes={codes} />
+      <ContainerXL>
+        <YStack px="$8">
+          <DetailHeader>
+            {`${params.section[0].toUpperCase()}${params.section.slice(1)}`}
+          </DetailHeader>
+          <Spacer />
+          <Spacer />
+          <YStack>
+            <Comp codes={codes} />
+          </YStack>
         </YStack>
-      </ContainerLarge>
+      </ContainerXL>
     </BentoPageFrame>
   )
 }
