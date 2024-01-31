@@ -769,7 +769,11 @@ export const getSplitStyles: StyleSplitter = (
 
             if (isDisabled) {
               const defaultValues = animatableDefaults[pkey]
-              if (defaultValues != null && !(pkey in usedKeys)) {
+              if (
+                defaultValues != null &&
+                !(pkey in usedKeys) &&
+                !(pkey in styleState.style)
+              ) {
                 mergeStyle(styleState, pkey, defaultValues)
               }
             } else {
