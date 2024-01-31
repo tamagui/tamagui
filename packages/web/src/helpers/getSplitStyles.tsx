@@ -309,52 +309,54 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     if (process.env.TAMAGUI_TARGET === 'native') {
-      if (!isAndroid) {
-        // only works in android
-        if (keyInit === 'elevationAndroid') continue
-      }
+      if (!isValidStyleKeyInit) {
+        if (!isAndroid) {
+          // only works in android
+          if (keyInit === 'elevationAndroid') continue
+        }
 
-      // map userSelect to native prop
-      if (keyInit === 'userSelect') {
-        keyInit = 'selectable'
-        valInit = valInit === 'none' ? false : true
-      } else if (keyInit === 'role') {
-        viewProps['accessibilityRole'] = accessibilityWebRoleToNativeRole[
-          valInit
-        ] as GetStyleResult['viewProps']['AccessibilityRole']
-        continue
-      } else if (keyInit.startsWith('aria-')) {
-        if (webToNativeAccessibilityDirectMap[keyInit]) {
-          const nativeA11yProp = webToNativeAccessibilityDirectMap[keyInit]
-          if (keyInit === 'aria-hidden') {
-            // accessibilityElementsHidden only works with ios, RN version >0.71.1 support aria-hidden which works for both ios/android
-            viewProps['aria-hidden'] = valInit
+        // map userSelect to native prop
+        if (keyInit === 'userSelect') {
+          keyInit = 'selectable'
+          valInit = valInit === 'none' ? false : true
+        } else if (keyInit === 'role') {
+          viewProps['accessibilityRole'] = accessibilityWebRoleToNativeRole[
+            valInit
+          ] as GetStyleResult['viewProps']['AccessibilityRole']
+          continue
+        } else if (keyInit.startsWith('aria-')) {
+          if (webToNativeAccessibilityDirectMap[keyInit]) {
+            const nativeA11yProp = webToNativeAccessibilityDirectMap[keyInit]
+            if (keyInit === 'aria-hidden') {
+              // accessibilityElementsHidden only works with ios, RN version >0.71.1 support aria-hidden which works for both ios/android
+              viewProps['aria-hidden'] = valInit
+            }
+            viewProps[nativeA11yProp] = valInit
+            continue
           }
-          viewProps[nativeA11yProp] = valInit
+          if (nativeAccessibilityValue[keyInit]) {
+            let field = nativeAccessibilityValue[keyInit]
+            if (viewProps['accessibilityValue']) {
+              viewProps['accessibilityValue'][field] = valInit
+            } else {
+              viewProps['accessibilityValue'] = {
+                [field]: valInit,
+              }
+            }
+          } else if (nativeAccessibilityState[keyInit]) {
+            let field = nativeAccessibilityState[keyInit]
+            if (viewProps['accessibilityState']) {
+              viewProps['accessibilityState'][field] = valInit
+            } else {
+              viewProps['accessibilityState'] = {
+                [field]: valInit,
+              }
+            }
+          }
+          continue
+        } else if (keyInit.startsWith('data-')) {
           continue
         }
-        if (nativeAccessibilityValue[keyInit]) {
-          let field = nativeAccessibilityValue[keyInit]
-          if (viewProps['accessibilityValue']) {
-            viewProps['accessibilityValue'][field] = valInit
-          } else {
-            viewProps['accessibilityValue'] = {
-              [field]: valInit,
-            }
-          }
-        } else if (nativeAccessibilityState[keyInit]) {
-          let field = nativeAccessibilityState[keyInit]
-          if (viewProps['accessibilityState']) {
-            viewProps['accessibilityState'][field] = valInit
-          } else {
-            viewProps['accessibilityState'] = {
-              [field]: valInit,
-            }
-          }
-        }
-        continue
-      } else if (keyInit.startsWith('data-')) {
-        continue
       }
     }
 
@@ -365,9 +367,11 @@ export const getSplitStyles: StyleSplitter = (
       continue
     }
 
-    if (keyInit.startsWith('_style') && isObj(valInit)) {
-      Object.assign(styleState.style, valInit)
-      continue
+    if (!isValidStyleKeyInit) {
+      if (keyInit.startsWith('_style') && isObj(valInit)) {
+        Object.assign(styleState.style, valInit)
+        continue
+      }
     }
 
     if (process.env.TAMAGUI_TARGET === 'web') {
@@ -501,9 +505,9 @@ export const getSplitStyles: StyleSplitter = (
     let isMediaOrPseudo = Boolean(isMedia || isPseudo)
 
     const isStyleProp =
+      isValidStyleKeyInit ||
       isMediaOrPseudo ||
       (isVariant && !styleProps.noExpand) ||
-      isValidStyleKeyInit ||
       isShorthand
 
     if (

@@ -5478,7 +5478,7 @@ __metadata:
     "@tamagui/web": "npm:1.88.17"
     moti: "npm:^0.27.2"
     react: "npm:^18.2.0"
-    react-native-reanimated: "npm:3.4.1"
+    react-native-reanimated: "npm:3.3.0"
   languageName: unknown
   linkType: soft
 
@@ -5602,7 +5602,7 @@ __metadata:
     react-native: "npm:^0.72.6"
     react-native-gesture-handler: "npm:~2.12.0"
     react-native-ios-modal: "npm:2.0.0-3"
-    react-native-reanimated: "npm:3.4.1"
+    react-native-reanimated: "npm:3.3.0"
     react-native-safe-area-context: "npm:4.6.3"
     react-native-screens: "npm:~3.22.0"
     react-native-svg: "npm:^13.9.0"
@@ -6414,7 +6414,7 @@ __metadata:
     react-native: "npm:^0.72.6"
     react-native-gesture-handler: "npm:~2.12.0"
     react-native-ios-modal: "npm:2.0.0-3"
-    react-native-reanimated: "npm:3.4.1"
+    react-native-reanimated: "npm:3.3.0"
     react-native-safe-area-context: "npm:4.6.3"
     react-native-screens: "npm:~3.22.0"
     react-native-svg: "npm:^13.9.0"
@@ -23503,9 +23503,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-reanimated@npm:3.4.1":
-  version: 3.4.1
-  resolution: "react-native-reanimated@npm:3.4.1"
+"react-native-reanimated@npm:3.3.0":
+  version: 3.3.0
+  resolution: "react-native-reanimated@npm:3.3.0"
   dependencies:
     "@babel/plugin-transform-object-assign": "npm:^7.16.7"
     "@babel/preset-typescript": "npm:^7.16.7"
@@ -23520,7 +23520,7 @@ __metadata:
     "@babel/plugin-transform-template-literals": ^7.0.0-0
     react: "*"
     react-native: "*"
-  checksum: 2b7390d8ca18d31d1c324d5cb053148e25ba60f14e54ab1a32f537045ba6d0f16acfc854328b65cb9fd199b1dbc7de2c5fe9ba39e588b01218145716cf30ca6e
+  checksum: 44496b834461dc6968f9add6a318d4ebc40c0989021fd4fab78832cef9507873cb7b9737ad2f7d9c8ac072b84870bfbddd2c27b94de4024d9103017388d7e3ed
   languageName: node
   linkType: hard
 
