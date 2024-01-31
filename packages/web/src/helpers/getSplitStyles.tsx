@@ -231,11 +231,6 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   for (const keyOg in props) {
-    if (process.env.NODE_ENV === 'development') {
-      //  we leave open some verbose logs to log each prop details
-      console.groupEnd()
-    }
-
     let keyInit = keyOg
     let valInit = props[keyOg]
 
@@ -536,11 +531,6 @@ export const getSplitStyles: StyleSplitter = (
     const shouldPassThrough = shouldPassProp || isHOCShouldPassThrough
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-      // fix native group nesting issues
-      console.groupEnd()
-      console.groupEnd()
-      // fix native group nesting issues
-
       console.groupCollapsed(
         `  🔑 ${keyOg}${keyInit !== keyOg ? ` (shorthand for ${keyInit})` : ''} ${
           shouldPassThrough ? '(pass)' : ''
