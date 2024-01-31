@@ -274,7 +274,7 @@ export const SheetImplementationCustom = themeable(
         const isDraggingUp = dy < 0
         // we can treat near top instead of exactly to avoid trouble with springs
         const isNearTop = scrollBridge.paneY - 5 <= scrollBridge.paneMinY
-        if (isScrolled) {
+        if (isScrolled && !isWeb) {
           previouslyScrolling = true
           return false
         }
