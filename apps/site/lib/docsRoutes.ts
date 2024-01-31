@@ -30,23 +30,9 @@ export const docsRoutes = [
   {
     title: 'Compiler',
     pages: [
-      { title: 'About', route: '/docs/intro/why-a-compiler' },
-      { title: 'Install', route: '/docs/intro/compiler-install' },
+      { title: 'Background', route: '/docs/intro/why-a-compiler' },
+      { title: 'Installation', route: '/docs/intro/compiler-install' },
       { title: 'Benchmarks', route: '/docs/intro/benchmarks' },
-    ],
-  },
-
-  {
-    title: 'Theme',
-    pages: [
-      { title: 'Colors', route: '/docs/intro/colors' },
-      { title: 'Tokens', route: '/docs/intro/tokens' },
-      // { title: 'Themes', route: '/docs/intro/themes' },
-      // { title: 'Fonts', route: '/docs/intro/themes' },
-      // { title: 'Icons', route: '/docs/intro/themes' },
-      // { title: 'Animations', route: '/docs/intro/themes' },
-      // { title: 'Shorthands', route: '/docs/intro/themes' },
-      // { title: 'Media Queries', route: '/docs/intro/themes' },
     ],
   },
 
@@ -143,6 +129,20 @@ export const docsRoutes = [
       { title: 'Expo', route: '/docs/guides/expo' },
       { title: 'Vite', route: '/docs/guides/vite' },
       { title: 'create-tamagui', route: '/docs/guides/create-tamagui-app' },
+    ],
+  },
+
+  {
+    title: '@tamagui/config',
+    pages: [
+      { title: 'Colors', route: '/docs/intro/colors' },
+      { title: 'Tokens', route: '/docs/intro/tokens' },
+      // { title: 'Themes', route: '/docs/intro/themes' },
+      // { title: 'Fonts', route: '/docs/intro/themes' },
+      // { title: 'Icons', route: '/docs/intro/themes' },
+      // { title: 'Animations', route: '/docs/intro/themes' },
+      // { title: 'Shorthands', route: '/docs/intro/themes' },
+      // { title: 'Media Queries', route: '/docs/intro/themes' },
     ],
   },
 

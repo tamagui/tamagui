@@ -138,11 +138,13 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
                 if (isStartingSection) {
                   return (
                     <React.Fragment key={`${page.route}${index}`}>
-                      {section.label ? <NavHeading>{section.label}</NavHeading> : null}
+                      {section.label ? (
+                        <NavHeading inMenu={!!inMenu}>{section.label}</NavHeading>
+                      ) : null}
                       {section.title && (
-                        <XStack py="$2" px="$2" ai="center" gap="$3">
+                        <XStack py="$2" px="$4" ai="center" gap="$3">
                           <Paragraph size="$4">{section.title}</Paragraph>
-                          <Separator />
+                          <Separator o={0.5} />
                         </XStack>
                       )}
                       {contents}

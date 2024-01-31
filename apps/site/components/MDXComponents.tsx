@@ -4,9 +4,7 @@ import { NextLink } from 'components/NextLink'
 import { useRouter } from 'next/router'
 import React, { forwardRef, useState } from 'react'
 import { ScrollView } from 'react-native'
-import type { ImageProps, XStackProps ,
-  TabsProps,
-  TabsTabProps} from 'tamagui'
+import type { ImageProps, XStackProps, TabsProps, TabsTabProps } from 'tamagui'
 import {
   Button,
   Card,

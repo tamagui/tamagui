@@ -68,7 +68,6 @@ const HeadAnchor = styled(Paragraph, {
 export const HeaderLinks = (props: HeaderProps) => {
   const { showExtra, forceShowAllLinks, isHeader } = props
   const userSwr = useUser()
-  const router = useRouter()
   // there is user context and supabase setup in the current page
   return (
     <>

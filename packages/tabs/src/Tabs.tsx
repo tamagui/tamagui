@@ -206,8 +206,10 @@ const TabsTrigger = TabsTriggerFrame.styleable<ScopedProps<TabsTabProps>>(
       }
     }, [isSelected, value, layout])
 
+    console.log(`Render`, isSelected && !disableActiveTheme ? 'active' : null)
+
     return (
-      <Theme name={isSelected && !disableActiveTheme ? 'active' : null} forceClassName>
+      <Theme name={isSelected && !disableActiveTheme ? 'active' : null}>
         <RovingFocusGroup.Item
           __scopeRovingFocusGroup={__scopeTabs || TABS_CONTEXT}
           asChild

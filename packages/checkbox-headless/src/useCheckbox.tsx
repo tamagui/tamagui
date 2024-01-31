@@ -1,6 +1,6 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
-import type { GestureReponderEvent } from '@tamagui/core/types'
+import type { GestureReponderEvent } from '@tamagui/core'
 import { composeEventHandlers } from '@tamagui/helpers'
 import { useLabelContext } from '@tamagui/label'
 import React from 'react'

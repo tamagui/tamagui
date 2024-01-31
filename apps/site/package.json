@@ -83,7 +83,7 @@
     "hsluv": "^0.1.0",
     "jsonwebtoken": "^9.0.2",
     "lodash-es": "^4.17.21",
-    "mdx-bundler": "^9.0.1",
+    "mdx-bundler": "^10.0.1",
     "micro": "^10.0.1",
     "moti": "^0.27.2",
     "next": "^14.0.4",
