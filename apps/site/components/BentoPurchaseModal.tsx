@@ -120,8 +120,11 @@ export const PurchaseModal = ({
           key="overlay"
           animation="medium"
           className="blur-medium"
+          opacity={0.5}
+          bg="$color1"
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
+          debug="verbose"
         />
 
         <Dialog.Content
@@ -146,7 +149,14 @@ export const PurchaseModal = ({
           <ScrollView p="$6" $gtSm={{ maxHeight: '90vh' }}>
             <YStack space>
               <XStack ai="center" jc="center" gap="$6" mx="$8">
-                <Dialog.Title size="$9" $sm={{ size: '$7' }} my="$1" als="center">
+                <Dialog.Title
+                  ff="$silkscreen"
+                  size="$8"
+                  ls={4}
+                  $sm={{ size: '$7' }}
+                  mb="$4"
+                  als="center"
+                >
                   Purchase
                 </Dialog.Title>
               </XStack>
@@ -227,15 +237,9 @@ export const PurchaseModal = ({
                       </XStack>
                     </XStack>
                   </YStack>
-
-                  {/* TODO: fix this */}
-                  {/* <YStack mt="$6" space="$4">
-              <H4>What you will get with this package?</H4>
-              <Points />
-            </YStack> */}
                 </YStack>
 
-                <YStack f={2} space="$4">
+                <YStack f={2} gap="$4">
                   <YStack
                     opacity={showTeamSelect ? 1 : 0.25}
                     pointerEvents={showTeamSelect ? 'auto' : 'none'}
@@ -259,7 +263,7 @@ export const PurchaseModal = ({
                               borderWidth="$0.25"
                               borderColor={active ? '$color8' : '$color5'}
                               borderRadius="$4"
-                              space="$4"
+                              gap="$4"
                               ai="center"
                               hoverStyle={{
                                 borderColor: active ? '$color10' : '$color7',
@@ -276,12 +280,8 @@ export const PurchaseModal = ({
                                   {formatPrice(price.unit_amount! / 100, 'usd')}{' '}
                                   {(price.metadata as Record<any, any>).is_lifetime
                                     ? 'lifetime access'
-                                    : `base + 1 year of updates`}
+                                    : `base`}
                                 </Paragraph>
-                                {/* <Paragraph theme="alt1" size="$2">
-                          {formatPrice(price.unit_amount! / (100 * 2), 'usd')}{' '}
-                          annual renewal (cancel anytime)
-                        </Paragraph> */}
                               </YStack>
                             </Label>
                           </ThemeTint>
@@ -292,7 +292,7 @@ export const PurchaseModal = ({
 
                   <Spacer size="$1" />
 
-                  <YStack space>
+                  <YStack gap>
                     <XStack ai="flex-end" jc="flex-end" gap="$2">
                       {hasDiscountApplied ? (
                         <>
