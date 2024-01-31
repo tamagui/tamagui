@@ -1,7 +1,7 @@
 import * as sections from '@tamagui/bento'
 
 import { ThemeTint } from '@tamagui/logo'
-import { Anchor, H1, Spacer, XStack, YStack } from 'tamagui'
+import { Anchor, H1, Spacer, Theme, XStack, YStack } from 'tamagui'
 import { BentoPageFrame } from '../../../components/BentoPageFrame'
 
 import type { GetStaticPaths } from 'next'
@@ -9,6 +9,7 @@ import { useRouter } from 'next/router'
 
 import { ContainerLarge } from '../../../components/Container'
 import { getDefaultLayout } from '../../../lib/getDefaultLayout'
+import { BentoLogo } from '../../../components/BentoLogo'
 
 export default function page({ codes }) {
   if (!process.env.NEXT_PUBLIC_IS_TAMAGUI_DEV) {
@@ -22,7 +23,9 @@ export default function page({ codes }) {
   return (
     <BentoPageFrame>
       <ContainerLarge>
-        <DetailHeader>Test header</DetailHeader>
+        <DetailHeader>
+          {`${params.section[0].toUpperCase()}${params.section.slice(1)}`}
+        </DetailHeader>
         <Spacer />
         <Spacer />
         <YStack>
@@ -55,23 +58,17 @@ export const DetailHeader = (props: { children: string }) => {
   return (
     <YStack pt="$10" gap="$4">
       <YStack gap="$4">
-        <ThemeTint>
-          <H1
-            className="text-3d"
-            ff="$cherryBomb"
-            color="$color10"
-            maw="100%"
-            f={1}
-            size="$9"
-            pos="absolute"
-            t="$2"
-            r="$2"
-          >
-            BENTO
-          </H1>
-        </ThemeTint>
+        <XStack ai="center" jc="space-between">
+          <Theme reset>
+            <H1 size="$12" color="$color1">
+              {props.children}
+            </H1>
+          </Theme>
 
-        <H1 size="$12">{props.children}</H1>
+          <YStack scale={0.5} m={-150}>
+            <BentoLogo />
+          </YStack>
+        </XStack>
 
         <XStack p="$3" ai="center" gap="$2">
           <Anchor>Section</Anchor>

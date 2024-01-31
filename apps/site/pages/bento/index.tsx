@@ -341,8 +341,8 @@ function ComponentGroupsBanner({
         <YStack fullscreen ai="center" jc="center">
           <Preview />
         </YStack>
-        <YStack p="$5" gap="$1">
-          <H4 fontWeight={'normal'} fontSize="$8">
+        <YStack p="$5" gap="$2">
+          <H4 fontWeight={'normal'} fontSize="$7">
             {name}
           </H4>
           <H5 theme="alt1" fontWeight={'normal'} fontSize={'$2'}>
