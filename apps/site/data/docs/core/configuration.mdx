@@ -3,9 +3,13 @@ title: Configuration
 description: Custom themes, tokens, shorthands, and media queries.
 ---
 
-Create a `tamagui.config.ts` in the root of your app to set up your design
-system. It should only be imported by the top-level file that runs
-`React.render`, to ensure fast refresh works.
+Note that you don't have set up a design system with `createTamagui` at all, and
+that we have a variety of helpful presets if you'd like some of the upsides
+without having to set it up yourself.
+
+To start, create a `tamagui.config.ts` in the root of your app. It should only
+be imported by the top-level file that has all your root providers to ensure no
+cycles exist in your imports.
 
 ## Quick Start
 
@@ -38,8 +42,6 @@ The
 [type output](https://github.com/tamagui/tamagui/blob/master/packages/config/types/config.d.ts)
 of that config is useful as a reference for building your own custom config.
 
----
-
 Another quick start that gives a bit more customization is using
 `@tamagui/shorthands` for our preset shorthands, and `@tamagui/themes` for the
 same themes and tokens used for this site. Then you'll just want to bring along
@@ -69,7 +71,7 @@ Depending on if you're using just `@tamagui/core`, `tamagui`, or your own custom
 design library, be sure the import of `createTamagui` and `declare module` type
 matches to the one you're using.
 
-### Diverging from @tamagui/themes
+#### Diverging from @tamagui/themes
 
 You may fork from the built in themes (which in fairness are specific to the
 Tamagui website) by
