@@ -599,9 +599,9 @@ export function createComponent<
     // HOOK 14 (-1 if no animation, -1 if disableSSR, -1 if no context, -1 if production)
     const mediaState = useMedia(stateRef, componentContext)
 
-    if (process.env.NODE_ENV === 'development' && time) time`media`
-
     setDidGetVariableValue(false)
+
+    if (process.env.NODE_ENV === 'development' && time) time`media`
 
     const resolveValues =
       // if HOC + mounted + has animation prop, resolve as value so it passes non-variable to child

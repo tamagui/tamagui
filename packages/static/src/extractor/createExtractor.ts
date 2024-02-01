@@ -306,8 +306,7 @@ export function createExtractor(
       },
     })
 
-    // @ts-ignore
-    const body =
+    const body: t.Statement[] | NodePath<t.Statement>[] =
       fileOrPath.type === 'Program' ? fileOrPath.get('body') : fileOrPath.program.body
 
     if (!isFullyDisabled(options)) {

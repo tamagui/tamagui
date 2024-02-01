@@ -38,7 +38,7 @@ export * from './helpers/themeable';
 export * from './helpers/themes';
 export * from './helpers/createShallowSetState';
 export * from './internalWithTheme';
-export { configureMedia, mediaState, useMedia, getMedia, mediaObjectToString, mediaQueryConfig, } from './hooks/useMedia';
+export { configureMedia, mediaState, mediaKeyMatch, useMedia, getMedia, mediaObjectToString, mediaQueryConfig, } from './hooks/useMedia';
 export * from './hooks/useTheme';
 export * from './hooks/useThemeName';
 export * from './hooks/useConfiguration';
