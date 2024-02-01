@@ -608,14 +608,14 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     const avoidPropMap = isMediaOrPseudo || (!isVariant && !isValidStyleKeyInit)
+    const expanded = avoidPropMap ? null : propMapper(keyInit, valInit, styleState)
 
-    const expanded = avoidPropMap
-      ? ([[keyInit, valInit]] as const)
-      : propMapper(keyInit, valInit, styleState)
-
-    const next = getPropMappedFontFamily(expanded)
-    if (next) {
-      styleState.fontFamily = next
+    if (!avoidPropMap) {
+      if (!expanded) continue
+      const next = getPropMappedFontFamily(expanded)
+      if (next) {
+        styleState.fontFamily = next
+      }
     }
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
@@ -644,9 +644,19 @@ export const getSplitStyles: StyleSplitter = (
       console.groupEnd()
     }
 
-    if (!expanded) continue
+    let key = keyInit
+    let val = valInit
+    let left = expanded ? expanded.length : 1
 
-    for (const [key, val] of expanded) {
+    // before we just made an array if avoidPropMap, but to avoid making extra arrays in a perf sensitive area
+    // now we do this part more imperatively. saves making a nested array for each prop key on every component
+    while (left--) {
+      if (expanded) {
+        const [k, v] = expanded.shift()!
+        key = k
+        val = v
+      }
+
       if (val == null) continue
       if (key in usedKeys) continue
 
