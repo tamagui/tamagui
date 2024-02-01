@@ -1,5 +1,5 @@
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
-import { Link, Subtitles } from '@tamagui/lucide-icons'
+import { Link as LinkIcon } from '@tamagui/lucide-icons'
 import { NextLink } from 'components/NextLink'
 import React, { useState } from 'react'
 import { ScrollView } from 'react-native'
@@ -53,6 +53,28 @@ import { TamaguiCard } from './TamaguiCard'
 import { TamaguiExamplesCode } from './TamaguiExamplesCode'
 import { UL } from './UL'
 import { unwrapText } from './unwrapText'
+import { Link } from './Link'
+
+const B = styled(Paragraph, {
+  fontWeight: '800',
+})
+
+const IntroParagraph = ({ children, large, disableUnwrapText, ...props }: any) => {
+  return (
+    <Paragraph
+      tag="p"
+      size={large ? '$9' : '$8'}
+      mb="$4"
+      fow={large ? '200' : '300'}
+      $sm={{
+        size: '$7',
+      }}
+      {...props}
+    >
+      {disableUnwrapText ? children : unwrapText(children)}
+    </Paragraph>
+  )
+}
 
 const TableFrame = styled(ThemeableStack, {
   bordered: true,
@@ -230,22 +252,7 @@ export const components = {
     </Button>
   ),
 
-  IntroParagraph: ({ children, large, disableUnwrapText, ...props }) => {
-    return (
-      <Paragraph
-        tag="p"
-        size={large ? '$9' : '$8'}
-        mb="$4"
-        fow={large ? '200' : '300'}
-        $sm={{
-          size: '$7',
-        }}
-        {...props}
-      >
-        {disableUnwrapText ? children : unwrapText(children)}
-      </Paragraph>
-    )
-  },
+  IntroParagraph,
 
   Grid: (props) => <XStack flexWrap="wrap" jc="space-between" {...props} />,
   Card: TamaguiCard,
@@ -540,6 +547,43 @@ export const components = {
     },
   },
 
+  DocsIntro: () => {
+    return (
+      <ThemeTintAlt offset={2}>
+        <IntroParagraph size="$9" $sm={{ size: '$8' }}>
+          Tamagui is a powerful, modern styling solution for React that works well on all
+          platforms. Target just the web, or share styles with React Native.
+        </IntroParagraph>
+
+        <IntroParagraph>
+          Tamagui is three things:&nbsp;
+          <ThemeTintAlt>
+            {/* @ts-ignore */}
+            <Link fontSize="inherit" href="/docs/core/introduction">
+              <span style={{ color: 'var(--color10)' }}>Core</span>
+            </Link>
+          </ThemeTintAlt>
+          &nbsp;brings many features from CSS to the React Native style API, with no
+          outside dependencies.{' '}
+          <ThemeTintAlt offset={-1}>
+            {/* @ts-ignore */}
+            <Link fontSize="inherit" href="/docs/intro/compiler-install">
+              <span style={{ color: 'var(--color10)' }}>Static</span>
+            </Link>
+          </ThemeTintAlt>{' '}
+          is a smart optimizing compiler. And{' '}
+          <ThemeTintAlt>
+            {/* @ts-ignore */}
+            <Link fontSize="inherit" href="/docs/components/stacks">
+              <span style={{ color: 'var(--color10)' }}>Tamagui</span>
+            </Link>
+          </ThemeTintAlt>{' '}
+          is a large component kit where all components come in styled and unstyled forms.
+        </IntroParagraph>
+      </ThemeTintAlt>
+    )
+  },
+
   GetStarted: () => {
     return (
       <XStack gap="$4" f={1} fw="wrap" my="$5">
@@ -647,7 +691,7 @@ const LinkHeading = ({ id, children, ...props }: { id: string } & XStackProps) =
   >
     {children}
     <YStack tag="span" opacity={0.3}>
-      <Link size={12} color="var(--color)" aria-hidden />
+      <LinkIcon size={12} color="var(--color)" aria-hidden />
     </YStack>
   </XStack>
 )
