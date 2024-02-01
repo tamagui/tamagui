@@ -1,3 +1,6 @@
+- for uni: 
+  if you have variant that expands into `maxFontSizeMultiplier` it wont get filtered by skipProps on web
+
 - // TODO: pulling past the limit breaks scroll on native, need to better make ScrollView
 
 - icons move from themed() to just styled()
