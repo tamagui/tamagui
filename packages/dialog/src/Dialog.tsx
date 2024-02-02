@@ -242,22 +242,24 @@ const DialogPortal: React.FC<DialogPortalProps> = (
     }
 
     const framedContents = (
-      <DialogPortalFrame pointerEvents={isShowing ? 'auto' : 'none'} {...frameProps}>
-        {contents}
-      </DialogPortalFrame>
+      <PortalProvider scope={__scopeDialog} forceMount={forceMount}>
+        <DialogPortalFrame pointerEvents={isShowing ? 'auto' : 'none'} {...frameProps}>
+          {contents}
+        </DialogPortalFrame>
+      </PortalProvider>
     )
 
     if (isWeb) {
       // no need for portal nonsense on web
-      return <Portal>{framedContents}</Portal>
+      return (
+        <Portal zIndex={props.zIndex ?? 100_000}>
+          <PassthroughTheme>{framedContents}</PassthroughTheme>
+        </Portal>
+      )
     }
 
     return (
-      <DialogPortalItem __scopeDialog={__scopeDialog}>
-        <PortalProvider scope={__scopeDialog} forceMount={forceMount}>
-          {framedContents}
-        </PortalProvider>
-      </DialogPortalItem>
+      <DialogPortalItem __scopeDialog={__scopeDialog}>{framedContents}</DialogPortalItem>
     )
   }
 
@@ -265,6 +267,16 @@ const DialogPortal: React.FC<DialogPortalProps> = (
 }
 
 DialogPortal.displayName = PORTAL_NAME
+
+const PassthroughTheme = ({ children }) => {
+  const themeName = useThemeName()
+
+  return (
+    <Theme name={themeName} forceClassName>
+      {children}
+    </Theme>
+  )
+}
 
 /* -------------------------------------------------------------------------------------------------
  * DialogOverlay
