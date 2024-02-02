@@ -96,41 +96,56 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     }, [open])
   }
 
-  const flipOrShiftMiddlewares = [
-    touch
-      ? shift({ crossAxis: true, padding: WINDOW_PADDING })
-      : flip({ padding: WINDOW_PADDING }),
-  ]
-
   const { x, y, strategy, context, refs, update } = useFloating({
     open,
     onOpenChange: setOpen,
     placement: 'bottom-start',
-    middleware: [
-      size({
-        apply({
-          rects: {
-            reference: { width },
-          },
-        }) {
-          floatingStyle.current = {
-            minWidth: width + 8,
-          }
-        },
-      }),
-      ...flipOrShiftMiddlewares,
-      inner({
-        listRef: listItemsRef,
-        overflowRef,
-        index: selectedIndex,
-        offset: innerOffset,
-        // onFallbackChange: setFallback,
-        padding: 10,
-        minItemsVisible: touch ? 10 : 4,
-        referenceOverflowThreshold: 20,
-      }),
-      offset({ crossAxis: -5 }),
-    ],
+    middleware: fallback
+      ? [
+          offset(5),
+          touch
+            ? shift({ crossAxis: true, padding: WINDOW_PADDING })
+            : flip({ padding: WINDOW_PADDING }),
+          size({
+            apply({ availableHeight, rects }) {
+              Object.assign(floatingStyle.current, {
+                maxHeight: `${availableHeight}px`,
+                minWidth: `${rects.reference.width}px`,
+              })
+              if (refs.floating.current) {
+                Object.assign(refs.floating.current.style, floatingStyle.current)
+              }
+            },
+            padding: 10,
+          }),
+        ]
+      : [
+          size({
+            apply({
+              rects: {
+                reference: { width },
+              },
+            }) {
+              Object.assign(floatingStyle.current, {
+                minWidth: width + 8,
+              })
+              if (refs.floating.current) {
+                Object.assign(refs.floating.current.style, floatingStyle.current)
+              }
+            },
+          }),
+          inner({
+            listRef: listItemsRef,
+            overflowRef,
+            index: selectedIndex,
+            offset: innerOffset,
+            onFallbackChange: setFallback,
+            padding: 10,
+            minItemsVisible: touch ? 10 : 4,
+            referenceOverflowThreshold: 20,
+          }),
+          offset({ crossAxis: -5 }),
+        ],
   })
 
   useIsomorphicLayoutEffect(() => {
