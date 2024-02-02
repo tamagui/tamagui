@@ -301,6 +301,9 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     if (valInit !== props[keyInit]) {
+      // we collect updated props as we go, for functional variants later
+      // functional variants receive a prop object that represents the current
+      // props at that point in the loop
       styleState.curProps[keyInit] = valInit
     }
 
