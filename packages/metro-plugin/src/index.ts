@@ -15,7 +15,9 @@ export function withTamagui(
   const extractor = createExtractor()
 
   // need to await this somehow.. but generally this starts like 10 seconds before any request
-  void extractor.loadTamagui(options)
+  if (!options.disable) {
+    void extractor.loadTamagui(options)
+  }
 
   metroConfig.transformerPath = require.resolve('./transformer')
   metroConfig.transformer = {
