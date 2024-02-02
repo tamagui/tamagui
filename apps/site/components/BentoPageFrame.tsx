@@ -16,45 +16,53 @@ export const BentoPageFrame = ({ children }: { children: any }) => {
 
       <ThemeTintEffect />
 
-      <YStack theme="tan" bg="$color6" y={-100} pt={100} pb={100}>
-        <YStack
-          fullscreen
-          className="mask-gradient-down"
-          style={{
-            mixBlendMode: 'hard-light',
-          }}
-        >
-          <Theme name="blue">
-            <LinearGradient
-              // colors={[`$color8`, `transparent`]}
-              colors={[`transparent`, `$color7`]}
-              start={[0, 0.5]}
-              end={[1, 0.5]}
+      <YStack pt={100} pb={100}>
+        <Theme name="tan">
+          <YStack pe="none" fullscreen bg="$color6" y={-100}>
+            <YStack
               fullscreen
-              l="30%"
-              o={0.45}
-              $theme-light={{
-                o: 0.75,
+              className="mask-gradient-down"
+              style={{
+                mixBlendMode: 'hard-light',
               }}
-            />
-          </Theme>
-        </YStack>
-
-        <YStack
-          pe="none"
-          pos="absolute"
-          t={-1250}
-          l="50%"
-          x={-850}
-          rotate="120deg"
-          o={0.04}
-          $theme-dark={{
-            o: 0.01,
-          }}
-          zi={-1}
-        >
-          <Image alt="idk" width={3000} height={3000} src="/takeout/geometric.svg" />
-        </YStack>
+            >
+              <Theme name="blue">
+                <LinearGradient
+                  // colors={[`$color8`, `transparent`]}
+                  colors={[`transparent`, `$color7`]}
+                  start={[0, 0.5]}
+                  end={[1, 0.5]}
+                  fullscreen
+                  l="30%"
+                  o={0.45}
+                  $theme-light={{
+                    o: 0.75,
+                  }}
+                />
+              </Theme>
+              <YStack
+                pe="none"
+                pos="absolute"
+                t={-1250}
+                l="50%"
+                x={-850}
+                rotate="120deg"
+                o={0.04}
+                $theme-dark={{
+                  o: 0.01,
+                }}
+                zi={-1}
+              >
+                <Image
+                  alt="idk"
+                  width={3000}
+                  height={3000}
+                  src="/takeout/geometric.svg"
+                />
+              </YStack>
+            </YStack>
+          </YStack>
+        </Theme>
 
         <ContainerLarge height="100vh" mb="-100vh">
           <BentoFrond />

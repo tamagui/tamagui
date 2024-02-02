@@ -1,15 +1,14 @@
 import * as sections from '@tamagui/bento'
 
-import { ThemeTint } from '@tamagui/logo'
 import { Anchor, H1, Spacer, Theme, XStack, YStack } from 'tamagui'
 import { BentoPageFrame } from '../../../components/BentoPageFrame'
 
 import type { GetStaticPaths } from 'next'
 import { useRouter } from 'next/router'
 
-import { ContainerLarge, ContainerXL } from '../../../components/Container'
-import { getDefaultLayout } from '../../../lib/getDefaultLayout'
 import { BentoLogo } from '../../../components/BentoLogo'
+import { ContainerXL } from '../../../components/Container'
+import { getDefaultLayout } from '../../../lib/getDefaultLayout'
 
 export default function page({ codes }) {
   if (!process.env.NEXT_PUBLIC_IS_TAMAGUI_DEV) {

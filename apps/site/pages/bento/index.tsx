@@ -89,8 +89,8 @@ const Hero = () => {
           <YStack maw="55%" zi={100} jc="space-between" f={10} ai="flex-start" gap="$6">
             <BentoLogo />
 
-            <YStack gap="$6">
-              <>
+            <Theme name="tan">
+              <YStack gap="$6">
                 <XStack gap="$6">
                   <Stack bc="$color7" w={10} br="$10" my={10} />
 
@@ -99,21 +99,21 @@ const Hero = () => {
                     primitives.
                   </Paragraph>
                 </XStack>
-              </>
-              <XStack jc="space-between" ai="center" ml="$8" mr="$4">
-                <Paragraph color="$color10" size="$5">
-                  $200 one-time Purchase
-                </Paragraph>
+                <XStack jc="space-between" ai="center" ml="$8" mr="$4">
+                  <Paragraph color="$color10" size="$5">
+                    $200 one-time Purchase
+                  </Paragraph>
 
-                <Circle size={4} bc="$color10" />
-                <Circle size={4} bc="$color10" />
-                <Circle size={4} bc="$color10" />
+                  <Circle size={4} bc="$color10" />
+                  <Circle size={4} bc="$color10" />
+                  <Circle size={4} bc="$color10" />
 
-                <Paragraph color="$color10" size="$5">
-                  $10/mo for early releases
-                </Paragraph>
-              </XStack>
-            </YStack>
+                  <Paragraph color="$color10" size="$5">
+                    $10/mo for early releases
+                  </Paragraph>
+                </XStack>
+              </YStack>
+            </Theme>
 
             <Theme name="green">
               <Button
