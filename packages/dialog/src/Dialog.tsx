@@ -23,7 +23,7 @@ import type { FocusScopeProps } from '@tamagui/focus-scope'
 import { FocusScope } from '@tamagui/focus-scope'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import type { PortalItemProps } from '@tamagui/portal'
-import { PortalHost, PortalItem } from '@tamagui/portal'
+import { Portal, PortalHost, PortalItem } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
 import { Overlay, Sheet, SheetController } from '@tamagui/sheet'
 import type { YStackProps } from '@tamagui/stacks'
@@ -241,12 +241,21 @@ const DialogPortal: React.FC<DialogPortalProps> = (
       return null
     }
 
+    const framedContents = (
+      <DialogPortalFrame pointerEvents={isShowing ? 'auto' : 'none'} {...frameProps}>
+        {contents}
+      </DialogPortalFrame>
+    )
+
+    if (isWeb) {
+      // no need for portal nonsense on web
+      return <Portal>{framedContents}</Portal>
+    }
+
     return (
       <DialogPortalItem __scopeDialog={__scopeDialog}>
         <PortalProvider scope={__scopeDialog} forceMount={forceMount}>
-          <DialogPortalFrame pointerEvents={isShowing ? 'auto' : 'none'} {...frameProps}>
-            {contents}
-          </DialogPortalFrame>
+          {framedContents}
         </PortalProvider>
       </DialogPortalItem>
     )
