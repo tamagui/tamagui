@@ -646,13 +646,13 @@ export const getSplitStyles: StyleSplitter = (
 
     let key = keyInit
     let val = valInit
-    let left = expanded ? expanded.length : 1
+    const max = expanded ? expanded.length : 1
 
     // before we just made an array if avoidPropMap, but to avoid making extra arrays in a perf sensitive area
     // now we do this part more imperatively. saves making a nested array for each prop key on every component
-    while (left--) {
+    for (let i = 0; i < max; i++) {
       if (expanded) {
-        const [k, v] = expanded.shift()!
+        const [k, v] = expanded[i]
         key = k
         val = v
       }
