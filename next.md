@@ -1,3 +1,12 @@
+- Label + Select
+
+- type to search on Select regressed
+
+- masks wasn't exported in my version of @tamagui/theme-builder (1.88.18). I had to grab it from @tamagui/themes/v2-themes instead
+
+- for uni: 
+  if you have variant that expands into `maxFontSizeMultiplier` it wont get filtered by skipProps on web
+
 - // TODO: pulling past the limit breaks scroll on native, need to better make ScrollView
 
 - icons move from themed() to just styled()
