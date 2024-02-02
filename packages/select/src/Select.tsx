@@ -439,7 +439,7 @@ export const Select = withStaticProperties(
       <AdaptProvider>
         <SelectItemParentProvider
           scope={__scopeSelect}
-          initialValue={React.useMemo(() => value, [])}
+          initialValue={React.useMemo(() => value, [open])}
           size={sizeProp}
           activeIndexSubscribe={activeIndexSubscribe}
           valueSubscribe={valueSubscribe}
