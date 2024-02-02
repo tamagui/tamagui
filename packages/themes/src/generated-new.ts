@@ -904,7 +904,6 @@ export const dark_red_active = n66
 const n67 = t([[12, 0],[13, 1],[14, 2],[15, 3],[16, 0],[17, 0],[18, 11],[19, 10],[20, 11],[21, 10],[22, 11],[23, 3],[24, 4],[25, 2],[26, 3],[27, 9]])
 
 export const light_ListItem = n67
-export const light_TabsTrigger = n67
 const n68 = t([[12, 2],[13, 3],[14, 4],[15, 5],[16, 1],[17, 0],[18, 11],[19, 10],[20, 11],[21, 10],[22, 11],[23, 5],[24, 6],[25, 4],[26, 5],[27, 7]])
 
 export const light_Card = n68
@@ -973,7 +972,6 @@ export const dark_ProgressIndicator = n82
 const n83 = t([[12, 48],[13, 49],[14, 50],[15, 51],[16, 48],[17, 48],[18, 11],[19, 59],[20, 11],[21, 59],[22, 11],[23, 50],[24, 51],[25, 50],[26, 50],[27, 58]])
 
 export const light_orange_ListItem = n83
-export const light_orange_TabsTrigger = n83
 const n84 = t([[12, 50],[13, 51],[14, 52],[15, 53],[16, 49],[17, 48],[18, 11],[19, 59],[20, 11],[21, 59],[22, 11],[23, 52],[24, 53],[25, 52],[26, 52],[27, 56]])
 
 export const light_orange_Card = n84
@@ -1008,7 +1006,6 @@ export const light_orange_ProgressIndicator = n90
 const n91 = t([[12, 96],[13, 97],[14, 98],[15, 99],[16, 96],[17, 96],[18, 11],[19, 107],[20, 11],[21, 107],[22, 11],[23, 98],[24, 99],[25, 98],[26, 98],[27, 106]])
 
 export const light_yellow_ListItem = n91
-export const light_yellow_TabsTrigger = n91
 const n92 = t([[12, 98],[13, 99],[14, 100],[15, 101],[16, 97],[17, 96],[18, 11],[19, 107],[20, 11],[21, 107],[22, 11],[23, 100],[24, 101],[25, 100],[26, 100],[27, 104]])
 
 export const light_yellow_Card = n92
@@ -1043,7 +1040,6 @@ export const light_yellow_ProgressIndicator = n98
 const n99 = t([[12, 36],[13, 37],[14, 38],[15, 39],[16, 36],[17, 36],[18, 11],[19, 47],[20, 11],[21, 47],[22, 11],[23, 38],[24, 39],[25, 38],[26, 38],[27, 46]])
 
 export const light_green_ListItem = n99
-export const light_green_TabsTrigger = n99
 const n100 = t([[12, 38],[13, 39],[14, 40],[15, 41],[16, 37],[17, 36],[18, 11],[19, 47],[20, 11],[21, 47],[22, 11],[23, 40],[24, 41],[25, 40],[26, 40],[27, 44]])
 
 export const light_green_Card = n100
@@ -1078,7 +1074,6 @@ export const light_green_ProgressIndicator = n106
 const n107 = t([[12, 14],[13, 15],[14, 16],[15, 17],[16, 14],[17, 14],[18, 11],[19, 25],[20, 11],[21, 25],[22, 11],[23, 16],[24, 17],[25, 16],[26, 16],[27, 24]])
 
 export const light_blue_ListItem = n107
-export const light_blue_TabsTrigger = n107
 const n108 = t([[12, 16],[13, 17],[14, 18],[15, 19],[16, 15],[17, 14],[18, 11],[19, 25],[20, 11],[21, 25],[22, 11],[23, 18],[24, 19],[25, 18],[26, 18],[27, 22]])
 
 export const light_blue_Card = n108
@@ -1113,7 +1108,6 @@ export const light_blue_ProgressIndicator = n114
 const n115 = t([[12, 72],[13, 73],[14, 74],[15, 75],[16, 72],[17, 72],[18, 11],[19, 83],[20, 11],[21, 83],[22, 11],[23, 74],[24, 75],[25, 74],[26, 74],[27, 82]])
 
 export const light_purple_ListItem = n115
-export const light_purple_TabsTrigger = n115
 const n116 = t([[12, 74],[13, 75],[14, 76],[15, 77],[16, 73],[17, 72],[18, 11],[19, 83],[20, 11],[21, 83],[22, 11],[23, 76],[24, 77],[25, 76],[26, 76],[27, 80]])
 
 export const light_purple_Card = n116
@@ -1148,7 +1142,6 @@ export const light_purple_ProgressIndicator = n122
 const n123 = t([[12, 60],[13, 61],[14, 62],[15, 63],[16, 60],[17, 60],[18, 11],[19, 71],[20, 11],[21, 71],[22, 11],[23, 62],[24, 63],[25, 62],[26, 62],[27, 70]])
 
 export const light_pink_ListItem = n123
-export const light_pink_TabsTrigger = n123
 const n124 = t([[12, 62],[13, 63],[14, 64],[15, 65],[16, 61],[17, 60],[18, 11],[19, 71],[20, 11],[21, 71],[22, 11],[23, 64],[24, 65],[25, 64],[26, 64],[27, 68]])
 
 export const light_pink_Card = n124
@@ -1183,7 +1176,6 @@ export const light_pink_ProgressIndicator = n130
 const n131 = t([[12, 84],[13, 85],[14, 86],[15, 87],[16, 84],[17, 84],[18, 11],[19, 95],[20, 11],[21, 95],[22, 11],[23, 86],[24, 87],[25, 86],[26, 86],[27, 94]])
 
 export const light_red_ListItem = n131
-export const light_red_TabsTrigger = n131
 const n132 = t([[12, 86],[13, 87],[14, 88],[15, 89],[16, 85],[17, 84],[18, 11],[19, 95],[20, 11],[21, 95],[22, 11],[23, 88],[24, 89],[25, 88],[26, 88],[27, 92]])
 
 export const light_red_Card = n132
@@ -1456,7 +1448,6 @@ export const dark_red_ProgressIndicator = n194
 const n195 = t([[12, 1],[13, 2],[14, 3],[15, 4],[16, 0],[17, 0],[18, 10],[19, 9],[20, 10],[21, 9],[22, 11],[23, 4],[24, 5],[25, 3],[26, 4],[27, 8]])
 
 export const light_alt1_ListItem = n195
-export const light_alt1_TabsTrigger = n195
 const n196 = t([[12, 3],[13, 4],[14, 5],[15, 6],[16, 2],[17, 1],[18, 10],[19, 9],[20, 10],[21, 9],[22, 10],[23, 6],[24, 7],[25, 5],[26, 6],[27, 6]])
 
 export const light_alt1_Card = n196
@@ -1491,7 +1482,6 @@ export const light_alt1_ProgressIndicator = n202
 const n203 = t([[12, 2],[13, 3],[14, 4],[15, 5],[16, 1],[17, 0],[18, 9],[19, 8],[20, 9],[21, 8],[22, 11],[23, 5],[24, 6],[25, 4],[26, 5],[27, 7]])
 
 export const light_alt2_ListItem = n203
-export const light_alt2_TabsTrigger = n203
 const n204 = t([[12, 4],[13, 5],[14, 6],[15, 7],[16, 3],[17, 2],[18, 9],[19, 8],[20, 9],[21, 8],[22, 9],[23, 7],[24, 8],[25, 6],[26, 7],[27, 5]])
 
 export const light_alt2_Card = n204
@@ -1526,7 +1516,6 @@ export const light_alt2_ProgressIndicator = n210
 const n211 = t([[12, 3],[13, 4],[14, 5],[15, 6],[16, 2],[17, 1],[19, 7],[20, 8],[21, 7],[22, 10],[23, 6],[24, 7],[25, 5],[26, 6],[27, 6]])
 
 export const light_active_ListItem = n211
-export const light_active_TabsTrigger = n211
 const n212 = t([[12, 5],[13, 6],[14, 7],[15, 8],[16, 4],[17, 3],[19, 7],[20, 8],[21, 7],[22, 8],[23, 8],[24, 9],[25, 7],[26, 8],[27, 4]])
 
 export const light_active_Card = n212
@@ -1663,7 +1652,6 @@ export const dark_active_ProgressIndicator = n242
 const n243 = t([[12, 49],[13, 50],[14, 51],[15, 52],[16, 48],[17, 48],[18, 59],[19, 58],[20, 59],[21, 58],[22, 11],[23, 51],[24, 52],[25, 51],[26, 51],[27, 57]])
 
 export const light_orange_alt1_ListItem = n243
-export const light_orange_alt1_TabsTrigger = n243
 const n244 = t([[12, 51],[13, 52],[14, 53],[15, 55],[16, 50],[17, 49],[18, 59],[19, 58],[20, 59],[21, 58],[22, 59],[23, 53],[24, 55],[25, 53],[26, 53],[27, 55]])
 
 export const light_orange_alt1_Card = n244
@@ -1698,7 +1686,6 @@ export const light_orange_alt1_ProgressIndicator = n250
 const n251 = t([[12, 50],[13, 51],[14, 52],[15, 53],[16, 49],[17, 48],[18, 58],[19, 57],[20, 58],[21, 57],[22, 11],[23, 52],[24, 53],[25, 52],[26, 52],[27, 56]])
 
 export const light_orange_alt2_ListItem = n251
-export const light_orange_alt2_TabsTrigger = n251
 const n252 = t([[12, 52],[13, 53],[14, 55],[15, 56],[16, 51],[17, 50],[18, 58],[19, 57],[20, 58],[21, 57],[22, 58],[23, 55],[24, 56],[25, 55],[26, 55],[27, 53]])
 
 export const light_orange_alt2_Card = n252
@@ -1733,7 +1720,6 @@ export const light_orange_alt2_ProgressIndicator = n258
 const n259 = t([[12, 51],[13, 52],[14, 53],[15, 55],[16, 50],[17, 49],[19, 56],[20, 57],[21, 56],[22, 59],[23, 53],[24, 55],[25, 53],[26, 53],[27, 55]])
 
 export const light_orange_active_ListItem = n259
-export const light_orange_active_TabsTrigger = n259
 const n260 = t([[12, 53],[13, 55],[14, 56],[15, 57],[16, 52],[17, 51],[19, 56],[20, 57],[21, 56],[22, 57],[23, 56],[24, 57],[25, 56],[26, 56],[27, 52]])
 
 export const light_orange_active_Card = n260
@@ -1768,7 +1754,6 @@ export const light_orange_active_ProgressIndicator = n266
 const n267 = t([[12, 97],[13, 98],[14, 99],[15, 100],[16, 96],[17, 96],[18, 107],[19, 106],[20, 107],[21, 106],[22, 11],[23, 99],[24, 100],[25, 99],[26, 99],[27, 105]])
 
 export const light_yellow_alt1_ListItem = n267
-export const light_yellow_alt1_TabsTrigger = n267
 const n268 = t([[12, 99],[13, 100],[14, 101],[15, 103],[16, 98],[17, 97],[18, 107],[19, 106],[20, 107],[21, 106],[22, 107],[23, 101],[24, 103],[25, 101],[26, 101],[27, 103]])
 
 export const light_yellow_alt1_Card = n268
@@ -1803,7 +1788,6 @@ export const light_yellow_alt1_ProgressIndicator = n274
 const n275 = t([[12, 98],[13, 99],[14, 100],[15, 101],[16, 97],[17, 96],[18, 106],[19, 105],[20, 106],[21, 105],[22, 11],[23, 100],[24, 101],[25, 100],[26, 100],[27, 104]])
 
 export const light_yellow_alt2_ListItem = n275
-export const light_yellow_alt2_TabsTrigger = n275
 const n276 = t([[12, 100],[13, 101],[14, 103],[15, 104],[16, 99],[17, 98],[18, 106],[19, 105],[20, 106],[21, 105],[22, 106],[23, 103],[24, 104],[25, 103],[26, 103],[27, 101]])
 
 export const light_yellow_alt2_Card = n276
@@ -1838,7 +1822,6 @@ export const light_yellow_alt2_ProgressIndicator = n282
 const n283 = t([[12, 99],[13, 100],[14, 101],[15, 103],[16, 98],[17, 97],[19, 104],[20, 105],[21, 104],[22, 107],[23, 101],[24, 103],[25, 101],[26, 101],[27, 103]])
 
 export const light_yellow_active_ListItem = n283
-export const light_yellow_active_TabsTrigger = n283
 const n284 = t([[12, 101],[13, 103],[14, 104],[15, 105],[16, 100],[17, 99],[19, 104],[20, 105],[21, 104],[22, 105],[23, 104],[24, 105],[25, 104],[26, 104],[27, 100]])
 
 export const light_yellow_active_Card = n284
@@ -1873,7 +1856,6 @@ export const light_yellow_active_ProgressIndicator = n290
 const n291 = t([[12, 37],[13, 38],[14, 39],[15, 40],[16, 36],[17, 36],[18, 47],[19, 46],[20, 47],[21, 46],[22, 11],[23, 39],[24, 40],[25, 39],[26, 39],[27, 45]])
 
 export const light_green_alt1_ListItem = n291
-export const light_green_alt1_TabsTrigger = n291
 const n292 = t([[12, 39],[13, 40],[14, 41],[15, 43],[16, 38],[17, 37],[18, 47],[19, 46],[20, 47],[21, 46],[22, 47],[23, 41],[24, 43],[25, 41],[26, 41],[27, 43]])
 
 export const light_green_alt1_Card = n292
@@ -1908,7 +1890,6 @@ export const light_green_alt1_ProgressIndicator = n298
 const n299 = t([[12, 38],[13, 39],[14, 40],[15, 41],[16, 37],[17, 36],[18, 46],[19, 45],[20, 46],[21, 45],[22, 11],[23, 40],[24, 41],[25, 40],[26, 40],[27, 44]])
 
 export const light_green_alt2_ListItem = n299
-export const light_green_alt2_TabsTrigger = n299
 const n300 = t([[12, 40],[13, 41],[14, 43],[15, 44],[16, 39],[17, 38],[18, 46],[19, 45],[20, 46],[21, 45],[22, 46],[23, 43],[24, 44],[25, 43],[26, 43],[27, 41]])
 
 export const light_green_alt2_Card = n300
@@ -1943,7 +1924,6 @@ export const light_green_alt2_ProgressIndicator = n306
 const n307 = t([[12, 39],[13, 40],[14, 41],[15, 43],[16, 38],[17, 37],[19, 44],[20, 45],[21, 44],[22, 47],[23, 41],[24, 43],[25, 41],[26, 41],[27, 43]])
 
 export const light_green_active_ListItem = n307
-export const light_green_active_TabsTrigger = n307
 const n308 = t([[12, 41],[13, 43],[14, 44],[15, 45],[16, 40],[17, 39],[19, 44],[20, 45],[21, 44],[22, 45],[23, 44],[24, 45],[25, 44],[26, 44],[27, 40]])
 
 export const light_green_active_Card = n308
@@ -1978,7 +1958,6 @@ export const light_green_active_ProgressIndicator = n314
 const n315 = t([[12, 15],[13, 16],[14, 17],[15, 18],[16, 14],[17, 14],[18, 25],[19, 24],[20, 25],[21, 24],[22, 11],[23, 17],[24, 18],[25, 17],[26, 17],[27, 23]])
 
 export const light_blue_alt1_ListItem = n315
-export const light_blue_alt1_TabsTrigger = n315
 const n316 = t([[12, 17],[13, 18],[14, 19],[15, 21],[16, 16],[17, 15],[18, 25],[19, 24],[20, 25],[21, 24],[22, 25],[23, 19],[24, 21],[25, 19],[26, 19],[27, 21]])
 
 export const light_blue_alt1_Card = n316
@@ -2013,7 +1992,6 @@ export const light_blue_alt1_ProgressIndicator = n322
 const n323 = t([[12, 16],[13, 17],[14, 18],[15, 19],[16, 15],[17, 14],[18, 24],[19, 23],[20, 24],[21, 23],[22, 11],[23, 18],[24, 19],[25, 18],[26, 18],[27, 22]])
 
 export const light_blue_alt2_ListItem = n323
-export const light_blue_alt2_TabsTrigger = n323
 const n324 = t([[12, 18],[13, 19],[14, 21],[15, 22],[16, 17],[17, 16],[18, 24],[19, 23],[20, 24],[21, 23],[22, 24],[23, 21],[24, 22],[25, 21],[26, 21],[27, 19]])
 
 export const light_blue_alt2_Card = n324
@@ -2048,7 +2026,6 @@ export const light_blue_alt2_ProgressIndicator = n330
 const n331 = t([[12, 17],[13, 18],[14, 19],[15, 21],[16, 16],[17, 15],[19, 22],[20, 23],[21, 22],[22, 25],[23, 19],[24, 21],[25, 19],[26, 19],[27, 21]])
 
 export const light_blue_active_ListItem = n331
-export const light_blue_active_TabsTrigger = n331
 const n332 = t([[12, 19],[13, 21],[14, 22],[15, 23],[16, 18],[17, 17],[19, 22],[20, 23],[21, 22],[22, 23],[23, 22],[24, 23],[25, 22],[26, 22],[27, 18]])
 
 export const light_blue_active_Card = n332
@@ -2083,7 +2060,6 @@ export const light_blue_active_ProgressIndicator = n338
 const n339 = t([[12, 73],[13, 74],[14, 75],[15, 76],[16, 72],[17, 72],[18, 83],[19, 82],[20, 83],[21, 82],[22, 11],[23, 75],[24, 76],[25, 75],[26, 75],[27, 81]])
 
 export const light_purple_alt1_ListItem = n339
-export const light_purple_alt1_TabsTrigger = n339
 const n340 = t([[12, 75],[13, 76],[14, 77],[15, 79],[16, 74],[17, 73],[18, 83],[19, 82],[20, 83],[21, 82],[22, 83],[23, 77],[24, 79],[25, 77],[26, 77],[27, 79]])
 
 export const light_purple_alt1_Card = n340
@@ -2118,7 +2094,6 @@ export const light_purple_alt1_ProgressIndicator = n346
 const n347 = t([[12, 74],[13, 75],[14, 76],[15, 77],[16, 73],[17, 72],[18, 82],[19, 81],[20, 82],[21, 81],[22, 11],[23, 76],[24, 77],[25, 76],[26, 76],[27, 80]])
 
 export const light_purple_alt2_ListItem = n347
-export const light_purple_alt2_TabsTrigger = n347
 const n348 = t([[12, 76],[13, 77],[14, 79],[15, 80],[16, 75],[17, 74],[18, 82],[19, 81],[20, 82],[21, 81],[22, 82],[23, 79],[24, 80],[25, 79],[26, 79],[27, 77]])
 
 export const light_purple_alt2_Card = n348
@@ -2153,7 +2128,6 @@ export const light_purple_alt2_ProgressIndicator = n354
 const n355 = t([[12, 75],[13, 76],[14, 77],[15, 79],[16, 74],[17, 73],[19, 80],[20, 81],[21, 80],[22, 83],[23, 77],[24, 79],[25, 77],[26, 77],[27, 79]])
 
 export const light_purple_active_ListItem = n355
-export const light_purple_active_TabsTrigger = n355
 const n356 = t([[12, 77],[13, 79],[14, 80],[15, 81],[16, 76],[17, 75],[19, 80],[20, 81],[21, 80],[22, 81],[23, 80],[24, 81],[25, 80],[26, 80],[27, 76]])
 
 export const light_purple_active_Card = n356
@@ -2188,7 +2162,6 @@ export const light_purple_active_ProgressIndicator = n362
 const n363 = t([[12, 61],[13, 62],[14, 63],[15, 64],[16, 60],[17, 60],[18, 71],[19, 70],[20, 71],[21, 70],[22, 11],[23, 63],[24, 64],[25, 63],[26, 63],[27, 69]])
 
 export const light_pink_alt1_ListItem = n363
-export const light_pink_alt1_TabsTrigger = n363
 const n364 = t([[12, 63],[13, 64],[14, 65],[15, 67],[16, 62],[17, 61],[18, 71],[19, 70],[20, 71],[21, 70],[22, 71],[23, 65],[24, 67],[25, 65],[26, 65],[27, 67]])
 
 export const light_pink_alt1_Card = n364
@@ -2223,7 +2196,6 @@ export const light_pink_alt1_ProgressIndicator = n370
 const n371 = t([[12, 62],[13, 63],[14, 64],[15, 65],[16, 61],[17, 60],[18, 70],[19, 69],[20, 70],[21, 69],[22, 11],[23, 64],[24, 65],[25, 64],[26, 64],[27, 68]])
 
 export const light_pink_alt2_ListItem = n371
-export const light_pink_alt2_TabsTrigger = n371
 const n372 = t([[12, 64],[13, 65],[14, 67],[15, 68],[16, 63],[17, 62],[18, 70],[19, 69],[20, 70],[21, 69],[22, 70],[23, 67],[24, 68],[25, 67],[26, 67],[27, 65]])
 
 export const light_pink_alt2_Card = n372
@@ -2258,7 +2230,6 @@ export const light_pink_alt2_ProgressIndicator = n378
 const n379 = t([[12, 63],[13, 64],[14, 65],[15, 67],[16, 62],[17, 61],[19, 68],[20, 69],[21, 68],[22, 71],[23, 65],[24, 67],[25, 65],[26, 65],[27, 67]])
 
 export const light_pink_active_ListItem = n379
-export const light_pink_active_TabsTrigger = n379
 const n380 = t([[12, 65],[13, 67],[14, 68],[15, 69],[16, 64],[17, 63],[19, 68],[20, 69],[21, 68],[22, 69],[23, 68],[24, 69],[25, 68],[26, 68],[27, 64]])
 
 export const light_pink_active_Card = n380
@@ -2293,7 +2264,6 @@ export const light_pink_active_ProgressIndicator = n386
 const n387 = t([[12, 85],[13, 86],[14, 87],[15, 88],[16, 84],[17, 84],[18, 95],[19, 94],[20, 95],[21, 94],[22, 11],[23, 87],[24, 88],[25, 87],[26, 87],[27, 93]])
 
 export const light_red_alt1_ListItem = n387
-export const light_red_alt1_TabsTrigger = n387
 const n388 = t([[12, 87],[13, 88],[14, 89],[15, 91],[16, 86],[17, 85],[18, 95],[19, 94],[20, 95],[21, 94],[22, 95],[23, 89],[24, 91],[25, 89],[26, 89],[27, 91]])
 
 export const light_red_alt1_Card = n388
@@ -2328,7 +2298,6 @@ export const light_red_alt1_ProgressIndicator = n394
 const n395 = t([[12, 86],[13, 87],[14, 88],[15, 89],[16, 85],[17, 84],[18, 94],[19, 93],[20, 94],[21, 93],[22, 11],[23, 88],[24, 89],[25, 88],[26, 88],[27, 92]])
 
 export const light_red_alt2_ListItem = n395
-export const light_red_alt2_TabsTrigger = n395
 const n396 = t([[12, 88],[13, 89],[14, 91],[15, 92],[16, 87],[17, 86],[18, 94],[19, 93],[20, 94],[21, 93],[22, 94],[23, 91],[24, 92],[25, 91],[26, 91],[27, 89]])
 
 export const light_red_alt2_Card = n396
@@ -2363,7 +2332,6 @@ export const light_red_alt2_ProgressIndicator = n402
 const n403 = t([[12, 87],[13, 88],[14, 89],[15, 91],[16, 86],[17, 85],[19, 92],[20, 93],[21, 92],[22, 95],[23, 89],[24, 91],[25, 89],[26, 89],[27, 91]])
 
 export const light_red_active_ListItem = n403
-export const light_red_active_TabsTrigger = n403
 const n404 = t([[12, 89],[13, 91],[14, 92],[15, 93],[16, 88],[17, 87],[19, 92],[20, 93],[21, 92],[22, 93],[23, 92],[24, 93],[25, 92],[26, 92],[27, 88]])
 
 export const light_red_active_Card = n404

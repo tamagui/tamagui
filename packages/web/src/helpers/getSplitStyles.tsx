@@ -1027,8 +1027,8 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-      console.groupCollapsed(` ✔️ expand complete`, keyInit)
       try {
+        log(` ✔️ expand complete`, keyInit)
         log('style', { ...style })
         log('transforms', { ...transforms })
         log('viewProps', { ...viewProps })
@@ -1038,11 +1038,6 @@ export const getSplitStyles: StyleSplitter = (
       console.groupEnd()
     }
   } // end prop loop
-
-  if (process.env.NODE_ENV === 'development') {
-    //  we leave open some verbose logs to log each prop details
-    console.groupEnd()
-  }
 
   // style prop after:
 

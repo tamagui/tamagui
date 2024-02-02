@@ -591,14 +591,6 @@ const themeBuilder = createThemeBuilder()
         mask: 'softenBorder2',
         ...maskOptions.component,
       },
-
-      TabsTrigger: [
-        {
-          parent: 'light',
-          mask: 'strengthen',
-          ...maskOptions.component,
-        },
-      ],
     },
     {
       // to save bundle size but make alt themes not work on components

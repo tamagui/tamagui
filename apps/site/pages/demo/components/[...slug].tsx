@@ -18,7 +18,9 @@ export default function DemoComponentsPage(props) {
   return (
     <>
       <NextSeo
-        title={`${name || ''} Component — Tamagui — style library, design system, and UI kit for React (Native and web)`.trim()}
+        title={`${
+          name || ''
+        } Component — Tamagui — style library, design system, and UI kit for React (Native and web)`.trim()}
       />
       <YStack br="$2" m="$2" bc="$blue3" minHeight={500} ai="center" jc="center">
         <Component />

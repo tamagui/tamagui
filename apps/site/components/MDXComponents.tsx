@@ -57,6 +57,7 @@ import { TamaguiExamplesCode } from './TamaguiExamplesCode'
 import { UL } from './UL'
 import { unwrapText } from './unwrapText'
 import { Link } from './Link'
+import { CustomTabs } from './CustomTabs'
 
 const B = styled(Paragraph, {
   fontWeight: '800',
@@ -173,72 +174,8 @@ const TableHighlight = styled(YStack, {
   bc: '$yellow1',
 })
 
-function TabsComponent(props: TabsProps) {
-  const router = useRouter()
-
-  const id = props.id || 'value'
-
-  const updateUrl = (newValue: string) => {
-    const url = new URL(location.href)
-    url.searchParams.set(id, newValue)
-    url.hash = '' // having this set messes with the scroll
-    router.replace(url, undefined, {
-      scroll: false,
-      shallow: true,
-    })
-  }
-
-  const value =
-    typeof router.query[id] === 'string'
-      ? (router.query[id] as string)
-      : props.defaultValue
-
-  return (
-    <Tabs
-      onValueChange={updateUrl}
-      unstyled
-      orientation="horizontal"
-      flexDirection="column"
-      borderWidth={0}
-      position="unset"
-      {...props}
-      value={value}
-    />
-  )
-}
-
-const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
-  return (
-    <Tabs.Tab size="$4" $sm={{ f: 1 }} ref={ref as any} elevation="$0.5" {...props}>
-      <Paragraph>{props.children}</Paragraph>
-    </Tabs.Tab>
-  )
-})
-
-const TabsList = styled(Tabs.List, {
-  marginTop: -50,
-  width: '100%',
-  justifyContent: 'flex-end',
-  size: '$4',
-  top: 70,
-  marginRight: 0,
-  marginBottom: 0,
-  zIndex: 10000,
-  position: 'sticky' as any,
-  right: 0,
-  $sm: {
-    marginTop: 20,
-  },
-})
-
-const CustomTabs = withStaticProperties(TabsComponent, {
-  List: TabsList,
-  Tab,
-  Content: Tabs.Content,
-})
-
 export const components = {
-  Tabs: CustomTabs as any,
+  Tabs: CustomTabs,
 
   SocialLinksRow: () => (
     <YStack mt="$6" mx="$-4">
