@@ -1,6 +1,5 @@
 import { createExtractor, type TamaguiOptions } from '@tamagui/static'
 import type { ComposableIntermediateConfigT } from 'react-native-css-interop/metro'
-import { withCssInterop } from 'react-native-css-interop/metro'
 
 export function withTamagui(
   metroConfig: ComposableIntermediateConfigT,
@@ -8,13 +7,6 @@ export function withTamagui(
     disableCSSInterop?: boolean
   }
 ) {
-  if (!options.disableCSSInterop) {
-    metroConfig = withCssInterop(metroConfig, {
-      ignorePropertyWarningRegex: ['^--'],
-      // grouping: ['^group(/.*)?'],
-    })
-  }
-
   // run one build up front
   const extractor = createExtractor()
 

@@ -350,10 +350,13 @@ export const Select = withStaticProperties(
       size: sizeProp = '$true',
       onActiveChange,
       dir,
+      id,
     } = props
 
-    const id = React.useId()
-    const scopeKey = __scopeSelect ? Object.keys(__scopeSelect)[0] ?? id : id
+    const internalId = React.useId()
+    const scopeKey = __scopeSelect
+      ? Object.keys(__scopeSelect)[0] ?? internalId
+      : internalId
 
     const { when, AdaptProvider } = useAdaptParent({
       Contents: React.useCallback(
@@ -441,6 +444,7 @@ export const Select = withStaticProperties(
           activeIndexSubscribe={activeIndexSubscribe}
           valueSubscribe={valueSubscribe}
           setOpen={setOpen}
+          id={id}
           onChange={React.useCallback((val) => {
             setValue(val)
             emitValue(val)
