@@ -3,7 +3,7 @@ import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { Community } from '@tamagui/site/components/HeroCommunity'
 import { FeaturesGrid } from '@tamagui/site/components/HeroFeaturesGrid'
 import { NextSeo } from 'next-seo'
-import { Circle, YStack } from 'tamagui'
+import { YStack } from 'tamagui'
 
 import { HeroBelow } from '../components/HeroBelow'
 import { HeroExampleAnimations } from '../components/HeroExampleAnimations'
@@ -14,6 +14,7 @@ import { HeroPerformance } from '../components/HeroPerformance'
 import { HeroResponsive } from '../components/HeroResponsive'
 import { HeroTypography } from '../components/HeroTypography'
 import { HomeGlow } from '../components/HomeGlow'
+import { ThemeNameEffect } from '../components/ThemeNameEffect'
 import { HomeSection, SectionTinted, TintSection } from '../components/TintSection'
 import { getCompilationExamples } from '../lib/getCompilationExamples'
 
@@ -21,7 +22,7 @@ export default function Home({ animationCode, compilationExamples }) {
   return (
     <>
       <YStack className="strong-background" />
-
+      <ThemeNameEffect />
       <HomeGlow />
       <NextSeo
         title="Tamagui — React Native + Web UI kit"

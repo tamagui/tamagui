@@ -1,39 +1,32 @@
 ---
 title: Introduction
-description: Universal styles for React Native and Web
 ---
 
-<IntroParagraph>
-  Tamagui is a lean,{' '}
-  <TooltipSimple
-    placement="top"
-    label="100% shared style code between web and React Native."
-  ><span className="tooltip">universal</span></TooltipSimple>{' '}
-  React style library with remarkable performance thanks to an optimizing
-  compiler that emits near optimal code for web, React Native, or both.
-</IntroParagraph>
+<DocsIntro />
 
 <GetStarted />
+
+#### Highlights
 
 <Highlights
   disableLinks
   disableTitle
   large
   features={[
-    `1-dependency core (only React). Target web with only ~25Kb.`,
-    `View and Text support the full React Native API surface.`,
-    `Optional typed design system, SSR safe, animation drivers.`,
-    `Powerful variants, 0-cost nesting, smart performant hooks.`,
-    `Brings many web styling features as a superset of the RN style API.`,
+    `Core only has one dependency - React - but supports the full React Native View + Text API surface, a superset of the style API, and includes styled() and powerful hooks and design system helpers on the web in ~26Kb total.`,
+    `A smart, partial-evaluating compiler gives you have 0-runtime performance with the ergonomics of writing your code however you want - even inline, logic-filled code is optimized.`,
+    `Everything works runtime and compile-time.`,
+    `useTheme and useMedia hooks with signal-like granularity and dirty tracking.`,
     `Unstyled and styled versions of all components.`,
   ]}
 />
 
 ## Overview
 
-Tamagui aims to bring joy to cross platform development. Use the core style library or
-any of the components in the `tamagui` UI kit independently or together. Styled or
-unstyled, with React Native and React Native Web, or without either.
+Tamagui aims to bring joy to cross platform development. Use the core style
+library or any of the components in the `tamagui` UI kit independently or
+together. Styled or unstyled, with React Native and React Native Web, or without
+either.
 
 #### Core
 

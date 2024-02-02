@@ -75,6 +75,14 @@ async function run() {
     return
   }
 
+  console.info()
+  console.info(
+    chalk.bold(
+      ' Note: You may need to run "npm create tamagui@latest" to get the latest version!'
+    )
+  )
+  console.info()
+
   console.info() // this newline prevents the ascii art from breaking
   console.info(tamaguiRainbowAsciiArt)
   console.info(chalk.bold('Creating tamagui app...'))

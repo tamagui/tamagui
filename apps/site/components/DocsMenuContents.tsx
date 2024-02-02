@@ -54,8 +54,9 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
           borderColor: '$color6',
         }}
         autoComplete="off"
-        placeholder="Filter..."
-        placeholderTextColor="$gray9"
+        placeholder="Search for friend to chat"
+        // @ts-ignore
+        placeholderTextColor="transparent"
         onKeyPress={(e) => {
           const event = e.nativeEvent
           if (event.key === 'Escape') {

@@ -102,8 +102,8 @@ const Account = () => {
 
       <XStack mt="$4" gap="$4" ai="flex-start">
         <ThemeTint>
-          <ButtonLink href="/account/subscriptions" size="$5">
-            View Subscriptions
+          <ButtonLink href="/account/items" size="$5">
+            Items
           </ButtonLink>
 
           <ButtonLink href="https://studio.tamagui.dev" size="$5">
@@ -114,6 +114,10 @@ const Account = () => {
 
       <YStack>
         <UserSettings />
+      </YStack>
+
+      <YStack>
+        <Paragraph ff="$mono">User ID: {userDetails?.id}</Paragraph>
       </YStack>
     </Container>
   )

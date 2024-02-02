@@ -28,7 +28,11 @@ export async function transform(
     ? require(config.transformerPath).transform
     : worker.transform
 
-  if (options.platform !== 'web' || filename.includes('node_modules')) {
+  if (
+    config.tamagui.disable ||
+    options.platform !== 'web' ||
+    filename.includes('node_modules')
+  ) {
     return transformer(config, projectRoot, filename, data, options)
   }
 

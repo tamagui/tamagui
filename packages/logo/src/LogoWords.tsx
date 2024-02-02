@@ -60,6 +60,7 @@ export const LogoWords = memo(
         data-tauri-drag-region
         marginVertical="$-2"
         position="relative"
+        className="logo-words"
         {...props}
       >
         {animated && (

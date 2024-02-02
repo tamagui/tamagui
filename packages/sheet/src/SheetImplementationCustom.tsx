@@ -281,7 +281,10 @@ export const SheetImplementationCustom = themeable(
         // prevent drag once at top and pulling up
         if (isNearTop) {
           if (!isScrolled && isDraggingUp) {
-            return false
+            // TODO: pulling past the limit breaks scroll on native, need to better make ScrollView
+            if (!isWeb) {
+              return false
+            }
           }
         }
         // we could do some detection of other touchables and cancel here..
@@ -350,6 +353,7 @@ export const SheetImplementationCustom = themeable(
     const animatedStyle = useAnimatedNumberStyle(animatedNumber, (val) => {
       'worklet'
       const translateY = frameSize === 0 ? hiddenSize : val
+
       return {
         transform: [{ translateY }],
       }
@@ -433,6 +437,8 @@ export const SheetImplementationCustom = themeable(
               // @ts-ignore for CSS driver this is necessary to attach the transition
               animation,
             })}
+            // @ts-ignore
+            disableClassName
             style={[
               {
                 position: 'absolute',

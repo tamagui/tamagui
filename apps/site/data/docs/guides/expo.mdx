@@ -104,13 +104,10 @@ optimizing compiler, reanimated, as well as using `process.env.XYZ` for
 environment variables.
 
 ```bash
-yarn add @tamagui/babel-plugin babel-plugin-transform-inline-environment-variables
-npx expo install react-native-reanimated
+yarn add @tamagui/babel-plugin
 ```
 
-Update your `babel.config.js` to include the optional `@tamagui/babel-plugin`
-and `transform-inline-environment-variables` (and `react-native-reanimated` if
-using reanimated):
+Update your `babel.config.js` to include the optional `@tamagui/babel-plugin`:
 
 ```js
 module.exports = function (api) {
@@ -118,9 +115,6 @@ module.exports = function (api) {
   return {
     presets: ["babel-preset-expo"],
     plugins: [
-      // optional, only if you ever use process.env
-      "transform-inline-environment-variables",
-      // NOTE: this is optional, you don't *need* the compiler
       [
         "@tamagui/babel-plugin",
         {

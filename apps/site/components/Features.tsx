@@ -8,7 +8,7 @@ export const Features = ({ items, size, large, ...props }: any) => {
     <YStack mt="$4" mb="$6" {...props} gap="$3">
       {items.map((feature, i) => (
         <XStack tag="li" key={i}>
-          <YStack mt={-3}>
+          <YStack y={1}>
             <CheckCircle />
           </YStack>
           <Paragraph size={size ?? (large ? '$6' : '$4')} color="$gray11">

@@ -541,6 +541,19 @@ type GenericTamaguiSettings = {
   fastSchemeChange?: boolean
 
   /**
+   * By default Tamagui won't accept anything except for style props inside all parent style
+   * selectors or pseudo style selectors (like $sm, $platform-ios, or hoverStyle).
+   *
+   * But it does support taking any property inside of these attributes, historically, and it
+   * can be useful especially on native where props like maxFontSizeMultiplier or minimumFontScale
+   * should be style props but aren't.
+   *
+   * On the web, in the future, we aim to enable a full 0-runtime mode which would enforce the default
+   * "style" setting here. But if you're willing to accept that it maybe slow, set to "all" for more power
+   */
+  // subStyleProps?: 'style' | 'all'
+
+  /**
    * On Web, this allows changing the behavior of container groups which by default uses
    * `container-type: inline-size`.
    */
@@ -1494,7 +1507,7 @@ export type TamaguiComponentExpectingVariants<
 > = TamaguiComponent<Props, any, any, any, Variants>
 
 export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>> & {
-  config: TamaguiInternalConfig
+  config?: TamaguiInternalConfig
   disableInjectCSS?: boolean
   children?: ReactNode
 }

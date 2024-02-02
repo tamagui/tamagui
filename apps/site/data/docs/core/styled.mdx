@@ -3,15 +3,15 @@ title: styled()
 description: Extend and build custom and optimizable components.
 ---
 
-<Notice>
-  If you're looking for a full list of style properties accepted by Tamagui, check the
-  [Props documentation](/docs/intro/props).
+<Notice theme="green">
+  If you're looking for a full list of style properties accepted by Tamagui, see the
+  [Styles page](/docs/intro/styles).
 </Notice>
 
 Create a new component by extending an existing one:
 
 ```tsx
-import { GetProps, View, styled } from 'tamagui' // or '@tamagui/core'
+import { GetProps, View, styled } from '@tamagui/core'
 
 export const Circle = styled(View, {
   name: 'Circle', // useful for debugging, and Component themes
@@ -42,7 +42,7 @@ You can pass any prop that is supported by the component you are extending, even
 Let's add some variants:
 
 ```tsx
-import { View, styled } from 'tamagui' // or '@tamagui/core'
+import { View, styled } from '@tamagui/core'
 
 export const Circle = styled(View, {
   borderRadius: 100_000_000,
@@ -137,7 +137,7 @@ import {
   createStyledContext,
   styled,
   withStaticProperties,
-} from 'tamagui' // or @tamagui/core
+} from '@tamagui/core'
 
 export const ButtonContext = createStyledContext<{
   size: SizeTokens
@@ -202,9 +202,9 @@ Finally, it's important to note that the order of style properties is significan
 Lets see how it lets us control overriding styles:
 
 ```tsx
-import { View, StackProps } from 'tamagui' // or @tamagui/core
+import { View, ViewProps } from '@tamagui/core'
 
-export default (props: StackProps) => (
+export default (props: ViewProps) => (
   <View
     background="red"
     {...props}
@@ -219,16 +219,16 @@ It also is necessary for variants to make sense. Say we have a variant `huge` th
 
 ```tsx
 // this will be scale = 3
-export default (props: StackProps) => (
-  <MyStack
+export default (props: ViewProps) => (
+  <MyView
     huge
     scale={3}
   />
 )
 
 // this will be scale = 2
-export default (props: StackProps) => (
-  <MyStack
+export default (props: ViewProps) => (
+  <MyView
     scale={3}
     huge
   />
@@ -251,11 +251,11 @@ If you are wrapping something like an SVG, you may want it to accept theme and t
 const StyledSVG = styled(SVG, {}, {
   acceptsTokens: {
     fill: 'color'
-  }
+  } as const
 })
 ```
 
-Now your StyledSVG will properly type the `fill` property to accept token and theme values. It will then map any values it recieves to the style prop with any token or theme values resolved.
+Now your StyledSVG will properly type the `fill` property to accept token and theme values.  It will then map any values it recieves to the style prop with any token or theme values resolved. Note the `as const`, until TypeScript 5 is more fully supported this improves the generated types.
 
 ### styleable
 
@@ -307,15 +307,15 @@ Also note that you also must always pass the props given to `HigherOrderStyledTe
 A further note on types: if you want to add some extra props to your componentin TypeScript you should do it using the generic first argument of styleable, and do so by only passing in the _extra_ props for type performance reasons:
 
 ```tsx
-import { YStack, YStackProps } from 'tamagui'
+import { View, ViewProps } from '@tamagui/core'
 
 type ExtraProps = {
   someCustomProp: boolean
 }
 
-export type CustomProps = YStackProps & ExtraProps
+export type CustomProps = ViewProps & ExtraProps
 
-const Custom = YStack.styleable<ExtraProps>((props) => {
+const Custom = View.styleable<ExtraProps>((props) => {
   // ...
   return null
 })

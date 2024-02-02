@@ -7,7 +7,7 @@ export const TakeoutLicense = () => {
 
       <Paragraph>
         Tamagui Takeout License grants you a non-exclusive license and permission to use
-        the Takout products based on the number of purchased licenses.
+        the Tamagui LLC Takeout products based on the number of purchased licenses.
       </Paragraph>
 
       <Paragraph>
@@ -75,7 +75,7 @@ export const TakeoutLicense = () => {
           <Li>Licensee is a person or a business entity who has purchased a License.</Li>
           <Li>
             Takeout stack is the code and assets made available to the Licensee after
-            purchasing a Tamagui license.
+            purchasing a Tamagui Takeout license.
           </Li>
           <Li>Product is any artifact produced that incorporates the Takeout stack.</Li>
           <Li>User is any person not licensed to use the Takeout stack.</Li>
@@ -95,18 +95,26 @@ export const TakeoutLicense = () => {
       <H3>Liability</H3>
 
       <Paragraph>
-        Tamagui's liability to you for costs, damages, or other losses arising from your
-        use of the Takeout stack — including third-party claims against you — is limited
-        to a refund of your license fee. Tamagui may not be held liable for any
-        consequential damages related to your use of the Takeout stack. The ownership of
-        the Takeout stack remains with the Tamagui development team. You are required to
-        abide by the licensing terms to avoid termination in case of non-compliance with
-        the agreed terms.
+        Tamagui LLC's liability to you for costs, damages, or other losses arising from
+        your use of the Takeout stack — including third-party claims against you — is
+        limited to a refund of your license fee. Tamagui LLC may not be held liable for
+        any consequential damages related to your use of the Takeout stack. The ownership
+        of the Takeout stack remains with the Tamagui LLC development team. You are
+        required to abide by the licensing terms to avoid termination in case of
+        non-compliance with the agreed terms.
+      </Paragraph>
+
+      <H3>Refund Policy</H3>
+
+      <Paragraph>
+        If something isn't living up to your standards, get in touch within the first 48
+        hours of using Takeout. Tamagui LLC does not guarantee any refund, but there are
+        valid exceptions we will consider.
       </Paragraph>
 
       <Paragraph>
-        Got any further questions?{' '}
-        <a href="mailto:support@tamagui.dev">Send us an email</a>
+        For any further questions{' '}
+        <a href="mailto:support@tamagui.dev">send us an email</a>.
       </Paragraph>
     </YStack>
   )

@@ -10,9 +10,9 @@ export function TimedRender(props) {
   }, [])
 
   return (
-    <View style={{ maxWidth: '100%', overflow: 'hidden' }}>
-      {!!end && <Text>Took {start - end}ms</Text>}
-      <View style={{ flexDirection: 'row', overflow: 'hidden' }}>{props.children}</View>
+    <View style={{ maxWidth: '100%' }}>
+      {!!end && <Text>Took {end - start}ms</Text>}
+      <View style={{ flexDirection: 'column' }}>{props.children}</View>
     </View>
   )
 }

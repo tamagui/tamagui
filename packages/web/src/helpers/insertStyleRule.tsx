@@ -186,7 +186,7 @@ function updateSheetStyles(
         delete allSelectors[identifier]
       }
     } else if (!(identifier in allSelectors)) {
-      const isTransform = identifier.startsWith('_transform')
+      const isTransform = identifier.startsWith('_transform-')
       const shouldInsert = isTransform
         ? addTransform(identifier, cssRule.cssText, cssRule)
         : true
@@ -269,7 +269,12 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
     const [_0, _1, scheme, _2, name] = matches
     const themeName =
       name && scheme && scheme !== name ? `${scheme}_${name}` : name || scheme
-    if (dedupedEntry.names.includes(themeName) || themeName === 'light_dark') {
+    if (
+      !themeName ||
+      dedupedEntry.names.includes(themeName) ||
+      themeName === 'light_dark' ||
+      themeName === 'dark_light'
+    ) {
       continue
     }
     dedupedEntry.names.push(themeName)
@@ -322,7 +327,7 @@ export function updateRules(identifier: string, rules: string[]) {
     return false
   }
   allRules[identifier] = rules.join(' ')
-  if (identifier.startsWith('_transform')) {
+  if (identifier.startsWith('_transform-')) {
     return addTransform(identifier, rules[0])
   }
   return true

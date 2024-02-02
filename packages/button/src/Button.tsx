@@ -40,8 +40,12 @@ export const ButtonContext = createStyledContext<
   variant: undefined,
 })
 
-type ButtonIconProps = { color?: string; size?: number }
-type IconProp = JSX.Element | FunctionComponent<ButtonIconProps> | null
+type ButtonIconProps = { color?: any; size?: any }
+type IconProp =
+  | JSX.Element
+  | FunctionComponent<ButtonIconProps>
+  | ((props: ButtonIconProps) => any)
+  | null
 
 type ButtonExtraProps = TextParentStyles &
   ThemeableProps & {

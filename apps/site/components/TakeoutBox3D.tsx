@@ -1,5 +1,5 @@
 import { useGLTF } from '@react-three/drei'
-import type { Object3DNode} from '@react-three/fiber';
+import type { Object3DNode } from '@react-three/fiber'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { useRouter } from 'next/router'
 import { Suspense, useEffect, useRef } from 'react'
@@ -18,8 +18,8 @@ let frameCount = 0
 export default (props) => (
   <Canvas
     style={{
-      width: 650,
-      height: 650,
+      width: 600,
+      height: 600,
     }}
     gl={{ preserveDrawingBuffer: true }}
     dpr={[1, 1]}
@@ -51,9 +51,7 @@ function TakeoutBox3D(props) {
     const entryEffectFrames = 80
     const justStarting = frameCount < entryEffectFrames
     const entryEffectPercentComplete = frameCount / entryEffectFrames
-    const rotateSpeed = justStarting
-      ? 8 * (1 - entryEffectPercentComplete) + 0.04
-      : 0.04
+    const rotateSpeed = justStarting ? 8 * (1 - entryEffectPercentComplete) + 0.04 : 0.04
 
     ref.current.rotation.y += delta * rotateSpeed
 

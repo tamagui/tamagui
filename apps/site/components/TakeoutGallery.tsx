@@ -1,10 +1,9 @@
 import { ArrowLeft, ArrowRight, X } from '@tamagui/lucide-icons'
 import { createUseStore } from '@tamagui/use-store'
-import type { ImageProps } from 'next/image';
+import type { ImageProps } from 'next/image'
 import Image from 'next/image'
 import { useEffect } from 'react'
-import type {
-  StackProps} from 'tamagui';
+import type { StackProps } from 'tamagui'
 import {
   AnimatePresence,
   Button,
@@ -185,7 +184,7 @@ export default function TakeoutGallery() {
 
       <XStack fw="wrap" gap="$4" mx="$1" ai="center" jc="center">
         {takeoutImages.slice(1, 12).map((image, index) => (
-          <YStack  key={index} pos="relative">
+          <YStack key={index} pos="relative">
             <TakeoutImage
               alt={image.alt}
               src={image.src}
@@ -194,7 +193,7 @@ export default function TakeoutGallery() {
               height={100}
               index={index}
               wrapperProps={{
-                br: '$10'
+                br: '$10',
               }}
             />
           </YStack>
@@ -412,8 +411,6 @@ const TakeoutImage = ({
       animation="100ms"
       hoverStyle={{ scale: 1.015 }}
       pressStyle={{ scale: 0.975 }}
-      borderWidth={1}
-      borderColor="$borderColor"
       {...wrapperProps}
     >
       <Image {...props} />
