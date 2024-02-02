@@ -374,7 +374,8 @@ const RunsFasterTextEffects = () => {
       </HeroText>
       <ThemeTintAlt offset={2}>
         <HeroText
-          className="mask-gradient-down mix-hard-light"
+          className="mask-gradient-down"
+          style={{ mixBlendMode: 'hard-light' }}
           pe="none"
           o={0.5}
           col="$color8"

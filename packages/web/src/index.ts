@@ -58,6 +58,7 @@ export * from './internalWithTheme'
 export {
   configureMedia,
   mediaState,
+  mediaKeyMatch,
   useMedia,
   getMedia,
   mediaObjectToString,

@@ -1,6 +1,7 @@
-module.exports = function (api) {
+module.exports = (api) => {
   api.cache(true)
   return {
+    ignore: [/lucide-icons|\/dist\/cjs\//],
     presets: [['babel-preset-expo', { jsxRuntime: 'automatic' }]],
     plugins: [
       [
@@ -13,7 +14,6 @@ module.exports = function (api) {
           // disableExtraction: true,
         },
       ],
-      'transform-inline-environment-variables',
       'react-native-reanimated/plugin',
     ],
   }

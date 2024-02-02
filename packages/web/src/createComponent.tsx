@@ -599,9 +599,9 @@ export function createComponent<
     // HOOK 14 (-1 if no animation, -1 if disableSSR, -1 if no context, -1 if production)
     const mediaState = useMedia(stateRef, componentContext)
 
-    if (process.env.NODE_ENV === 'development' && time) time`media`
-
     setDidGetVariableValue(false)
+
+    if (process.env.NODE_ENV === 'development' && time) time`media`
 
     const resolveValues =
       // if HOC + mounted + has animation prop, resolve as value so it passes non-variable to child
@@ -925,6 +925,8 @@ export function createComponent<
         onPress ||
         onPressOut ||
         onPressIn ||
+        onMouseDown ||
+        onMouseUp ||
         onLongPress ||
         onClick
     )
@@ -1233,45 +1235,54 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development') {
       if (debugProp && debugProp !== 'profile') {
         const element = typeof elementType === 'string' ? elementType : 'Component'
-        console.groupCollapsed(`render <${element} /> (${internalID}) with props`)
-        try {
-          log('viewProps', viewProps)
-          log('children', content)
-          if (typeof window !== 'undefined') {
-            log('props in', propsIn, 'mapped to', props, 'in order', Object.keys(props))
-            log({
-              animationStyles,
-              classNames,
-              content,
-              defaultProps,
-              elementType,
-              events,
-              initialState,
-              isAnimated,
-              isMediaArray,
-              isStringElement,
-              mediaListeningKeys,
-              pseudos,
-              shouldAttach,
-              shouldAvoidClasses,
-              shouldForcePseudo,
-              shouldListenForMedia,
-              splitStyles,
-              splitStylesStyle,
-              state,
-              stateRef,
-              staticConfig,
-              styleProps,
-              tamaguiConfig,
-              themeState,
-              viewProps,
-              willBeAnimated,
-            })
+        const title = `render <${element} /> (${internalID}) with props`
+        if (!isWeb) {
+          log(title)
+          log(`final styles:`)
+          for (const key in splitStylesStyle) {
+            log(key, splitStylesStyle[key])
           }
-        } catch {
-          // RN can run into PayloadTooLargeError: request entity too large
+        } else {
+          console.groupCollapsed(title)
+          try {
+            log('viewProps', viewProps)
+            log('children', content)
+            if (typeof window !== 'undefined') {
+              log('props in', propsIn, 'mapped to', props, 'in order', Object.keys(props))
+              log({
+                animationStyles,
+                classNames,
+                content,
+                defaultProps,
+                elementType,
+                events,
+                initialState,
+                isAnimated,
+                isMediaArray,
+                isStringElement,
+                mediaListeningKeys,
+                pseudos,
+                shouldAttach,
+                shouldAvoidClasses,
+                shouldForcePseudo,
+                shouldListenForMedia,
+                splitStyles,
+                splitStylesStyle,
+                state,
+                stateRef,
+                staticConfig,
+                styleProps,
+                tamaguiConfig,
+                themeState,
+                viewProps,
+                willBeAnimated,
+              })
+            }
+          } catch {
+            // RN can run into PayloadTooLargeError: request entity too large
+          }
+          console.groupEnd()
         }
-        console.groupEnd()
         if (debugProp === 'break') {
           // biome-ignore lint/suspicious/noDebugger: ok
           debugger

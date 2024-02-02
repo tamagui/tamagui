@@ -3,6 +3,8 @@ export const docsRoutes = [
     pages: [
       { title: 'Introduction', route: '/docs/intro/introduction' },
       { title: 'Installation', route: '/docs/intro/installation' },
+      // { title: 'Thinking in Tamagui', route: '/docs/intro/thinking-in-tamagui' },
+      // { title: 'Comparison', route: '/docs/intro/comparison' },
       { title: 'Releases', route: 'https://github.com/tamagui/tamagui/releases' },
     ],
   },
@@ -10,6 +12,7 @@ export const docsRoutes = [
   {
     title: 'Core',
     pages: [
+      { title: 'Introduction', route: '/docs/core/introduction' },
       { title: 'Configuration', route: '/docs/core/configuration' },
       { title: 'Tokens', route: '/docs/core/tokens' },
       { title: 'View & Text', route: '/docs/core/stack-and-text' },
@@ -33,20 +36,6 @@ export const docsRoutes = [
       { title: 'About', route: '/docs/intro/why-a-compiler' },
       { title: 'Install', route: '/docs/intro/compiler-install' },
       { title: 'Benchmarks', route: '/docs/intro/benchmarks' },
-    ],
-  },
-
-  {
-    title: 'Theme',
-    pages: [
-      { title: 'Colors', route: '/docs/intro/colors' },
-      { title: 'Tokens', route: '/docs/intro/tokens' },
-      // { title: 'Themes', route: '/docs/intro/themes' },
-      // { title: 'Fonts', route: '/docs/intro/themes' },
-      // { title: 'Icons', route: '/docs/intro/themes' },
-      // { title: 'Animations', route: '/docs/intro/themes' },
-      // { title: 'Shorthands', route: '/docs/intro/themes' },
-      // { title: 'Media Queries', route: '/docs/intro/themes' },
     ],
   },
 
@@ -143,6 +132,20 @@ export const docsRoutes = [
       { title: 'Expo', route: '/docs/guides/expo' },
       { title: 'Vite', route: '/docs/guides/vite' },
       { title: 'create-tamagui', route: '/docs/guides/create-tamagui-app' },
+    ],
+  },
+
+  {
+    title: 'Tamagui Config',
+    pages: [
+      { title: 'Colors', route: '/docs/intro/colors' },
+      { title: 'Tokens', route: '/docs/intro/tokens' },
+      // { title: 'Themes', route: '/docs/intro/themes' },
+      // { title: 'Fonts', route: '/docs/intro/themes' },
+      // { title: 'Icons', route: '/docs/intro/themes' },
+      // { title: 'Animations', route: '/docs/intro/themes' },
+      // { title: 'Shorthands', route: '/docs/intro/themes' },
+      // { title: 'Media Queries', route: '/docs/intro/themes' },
     ],
   },
 

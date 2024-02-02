@@ -45,6 +45,14 @@ export default declare(function snackBabelPlugin(
         enter(this: any, root) {
           let sourcePath = this.file.opts.filename
 
+          if (sourcePath?.includes('node_modules')) {
+            return
+          }
+          // by default only pick up .jsx / .tsx
+          if (!sourcePath?.endsWith('.jsx') && !sourcePath?.endsWith('.tsx')) {
+            return
+          }
+
           // this filename comes back incorrect in react-native, it adds /ios/ for some reason
           // adding a fix here, but it's a bit tentative...
           if (process.env.SOURCE_ROOT?.endsWith('ios')) {
@@ -56,7 +64,11 @@ export default declare(function snackBabelPlugin(
           const sheetStyles = {}
           const sheetIdentifier = root.scope.generateUidIdentifier('sheet')
           const firstComment =
-            root.node.body[0]?.leadingComments?.[0]?.value?.trim() ?? ''
+            // join because you can join together multiple pragmas
+            root.node.body[0]?.leadingComments
+              ?.map((comment) => comment?.value || ' ')
+              .join(' ') ?? ''
+
           const { shouldPrintDebug, shouldDisable } = getPragmaOptions({
             disableCommentCheck: true,
             source: firstComment,

@@ -92,10 +92,16 @@ export const useThemeWithState = (
             typeof props.debug === 'string' &&
             props.debug !== 'profile'
           ) {
-            console.info(`  🎨 useTheme() shouldUpdate?`, next, {
-              shouldUpdateProp: props.shouldUpdate?.(),
-              keys: [...keys.current],
-            })
+            console.info(
+              `  🎨 useTheme() shouldUpdate?`,
+              next,
+              isClient
+                ? {
+                    shouldUpdateProp: props.shouldUpdate?.(),
+                    keys: [...keys.current],
+                  }
+                : ''
+            )
           }
           return next
         }

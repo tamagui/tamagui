@@ -77,6 +77,7 @@ import {
 } from './normalizeValueWithProperty'
 import { getPropMappedFontFamily, propMapper } from './propMapper'
 import { pseudoDescriptors, pseudoPriorities } from './pseudoDescriptors'
+import { isObj } from './isObj'
 
 // bugfix for some reason it gets reset
 const IS_STATIC = process.env.IS_STATIC === 'is_static'
@@ -130,9 +131,7 @@ function isValidStyleKey(key: string, staticConfig: StaticConfig) {
   const validStyleProps =
     staticConfig.validStyles ||
     (staticConfig.isText || staticConfig.isInput ? stylePropsText : validStyles)
-  return (
-    validStyleProps[key] || (staticConfig.acceptTokens && staticConfig.acceptTokens[key])
-  )
+  return validStyleProps[key] || staticConfig.acceptTokens?.[key]
 }
 
 export const getSplitStyles: StyleSplitter = (
@@ -176,7 +175,8 @@ export const getSplitStyles: StyleSplitter = (
   const mediaState = styleProps.mediaState || globalMediaState
   const usedKeys: Record<string, number> = {}
   const shouldDoClasses = acceptsClassName && isWeb && !styleProps.noClassNames
-  const rulesToInsert: RulesToInsert = []
+  const rulesToInsert: RulesToInsert =
+    process.env.TAMAGUI_TARGET === 'native' ? (undefined as any) : []
   const classNames: ClassNamesObject = {}
   // we need to gather these specific to each media query / pseudo
   // value is [hash, val], so ["-jnjad-asdnjk", "scaleX(1) rotate(10deg)"]
@@ -189,14 +189,14 @@ export const getSplitStyles: StyleSplitter = (
   let pseudoGroups: Set<string> | undefined
   let mediaGroups: Set<string> | undefined
   let style: ViewStyleWithPseudos = {}
-  let className = (props.className as string) ?? '' // existing classNames
+  let className = (props.className as string) || '' // existing classNames
   let mediaStylesSeen = 0
 
   /**
    * Not the biggest fan of creating an object but it is a nice API
    */
   const styleState: GetStyleState = {
-    curProps: { ...props },
+    curProps: {},
     classNames,
     conf,
     props,
@@ -231,11 +231,6 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   for (const keyOg in props) {
-    if (process.env.NODE_ENV === 'development') {
-      //  we leave open some verbose logs to log each prop details
-      console.groupEnd()
-    }
-
     let keyInit = keyOg
     let valInit = props[keyOg]
 
@@ -304,55 +299,59 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
-    styleState.curProps[keyInit] = valInit
+    if (valInit !== props[keyInit]) {
+      styleState.curProps[keyInit] = valInit
+    }
 
     if (process.env.TAMAGUI_TARGET === 'native') {
-      if (!isAndroid) {
-        // only works in android
-        if (keyInit === 'elevationAndroid') continue
-      }
+      if (!isValidStyleKeyInit) {
+        if (!isAndroid) {
+          // only works in android
+          if (keyInit === 'elevationAndroid') continue
+        }
 
-      // map userSelect to native prop
-      if (keyInit === 'userSelect') {
-        keyInit = 'selectable'
-        valInit = valInit === 'none' ? false : true
-      } else if (keyInit === 'role') {
-        viewProps['accessibilityRole'] = accessibilityWebRoleToNativeRole[
-          valInit
-        ] as GetStyleResult['viewProps']['AccessibilityRole']
-        continue
-      } else if (keyInit.startsWith('aria-')) {
-        if (webToNativeAccessibilityDirectMap[keyInit]) {
-          const nativeA11yProp = webToNativeAccessibilityDirectMap[keyInit]
-          if (keyInit === 'aria-hidden') {
-            // accessibilityElementsHidden only works with ios, RN version >0.71.1 support aria-hidden which works for both ios/android
-            viewProps['aria-hidden'] = valInit
+        // map userSelect to native prop
+        if (keyInit === 'userSelect') {
+          keyInit = 'selectable'
+          valInit = valInit === 'none' ? false : true
+        } else if (keyInit === 'role') {
+          viewProps['accessibilityRole'] = accessibilityWebRoleToNativeRole[
+            valInit
+          ] as GetStyleResult['viewProps']['AccessibilityRole']
+          continue
+        } else if (keyInit.startsWith('aria-')) {
+          if (webToNativeAccessibilityDirectMap[keyInit]) {
+            const nativeA11yProp = webToNativeAccessibilityDirectMap[keyInit]
+            if (keyInit === 'aria-hidden') {
+              // accessibilityElementsHidden only works with ios, RN version >0.71.1 support aria-hidden which works for both ios/android
+              viewProps['aria-hidden'] = valInit
+            }
+            viewProps[nativeA11yProp] = valInit
+            continue
           }
-          viewProps[nativeA11yProp] = valInit
+          if (nativeAccessibilityValue[keyInit]) {
+            let field = nativeAccessibilityValue[keyInit]
+            if (viewProps['accessibilityValue']) {
+              viewProps['accessibilityValue'][field] = valInit
+            } else {
+              viewProps['accessibilityValue'] = {
+                [field]: valInit,
+              }
+            }
+          } else if (nativeAccessibilityState[keyInit]) {
+            let field = nativeAccessibilityState[keyInit]
+            if (viewProps['accessibilityState']) {
+              viewProps['accessibilityState'][field] = valInit
+            } else {
+              viewProps['accessibilityState'] = {
+                [field]: valInit,
+              }
+            }
+          }
+          continue
+        } else if (keyInit.startsWith('data-')) {
           continue
         }
-        if (nativeAccessibilityValue[keyInit]) {
-          let field = nativeAccessibilityValue[keyInit]
-          if (viewProps['accessibilityValue']) {
-            viewProps['accessibilityValue'][field] = valInit
-          } else {
-            viewProps['accessibilityValue'] = {
-              [field]: valInit,
-            }
-          }
-        } else if (nativeAccessibilityState[keyInit]) {
-          let field = nativeAccessibilityState[keyInit]
-          if (viewProps['accessibilityState']) {
-            viewProps['accessibilityState'][field] = valInit
-          } else {
-            viewProps['accessibilityState'] = {
-              [field]: valInit,
-            }
-          }
-        }
-        continue
-      } else if (keyInit.startsWith('data-')) {
-        continue
       }
     }
 
@@ -363,9 +362,11 @@ export const getSplitStyles: StyleSplitter = (
       continue
     }
 
-    if (keyInit[0] === '_' && keyInit.startsWith('_style')) {
-      mergeStylePropIntoStyle(styleState, valInit)
-      continue
+    if (!isValidStyleKeyInit) {
+      if (keyInit.startsWith('_style') && isObj(valInit)) {
+        Object.assign(styleState.style, valInit)
+        continue
+      }
     }
 
     if (process.env.TAMAGUI_TARGET === 'web') {
@@ -499,9 +500,9 @@ export const getSplitStyles: StyleSplitter = (
     let isMediaOrPseudo = Boolean(isMedia || isPseudo)
 
     const isStyleProp =
+      isValidStyleKeyInit ||
       isMediaOrPseudo ||
       (isVariant && !styleProps.noExpand) ||
-      isValidStyleKeyInit ||
       isShorthand
 
     if (
@@ -530,11 +531,6 @@ export const getSplitStyles: StyleSplitter = (
     const shouldPassThrough = shouldPassProp || isHOCShouldPassThrough
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-      // fix native group nesting issues
-      console.groupEnd()
-      console.groupEnd()
-      // fix native group nesting issues
-
       console.groupCollapsed(
         `  🔑 ${keyOg}${keyInit !== keyOg ? ` (shorthand for ${keyInit})` : ''} ${
           shouldPassThrough ? '(pass)' : ''
@@ -612,14 +608,14 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     const avoidPropMap = isMediaOrPseudo || (!isVariant && !isValidStyleKeyInit)
+    const expanded = avoidPropMap ? null : propMapper(keyInit, valInit, styleState)
 
-    const expanded = avoidPropMap
-      ? ([[keyInit, valInit]] as const)
-      : propMapper(keyInit, valInit, styleState)
-
-    const next = getPropMappedFontFamily(expanded)
-    if (next) {
-      styleState.fontFamily = next
+    if (!avoidPropMap) {
+      if (!expanded) continue
+      const next = getPropMappedFontFamily(expanded)
+      if (next) {
+        styleState.fontFamily = next
+      }
     }
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
@@ -648,9 +644,19 @@ export const getSplitStyles: StyleSplitter = (
       console.groupEnd()
     }
 
-    if (!expanded) continue
+    let key = keyInit
+    let val = valInit
+    const max = expanded ? expanded.length : 1
 
-    for (const [key, val] of expanded) {
+    // before we just made an array if avoidPropMap, but to avoid making extra arrays in a perf sensitive area
+    // now we do this part more imperatively. saves making a nested array for each prop key on every component
+    for (let i = 0; i < max; i++) {
+      if (expanded) {
+        const [k, v] = expanded[i]
+        key = k
+        val = v
+      }
+
       if (val == null) continue
       if (key in usedKeys) continue
 
@@ -770,7 +776,11 @@ export const getSplitStyles: StyleSplitter = (
 
             if (isDisabled) {
               const defaultValues = animatableDefaults[pkey]
-              if (defaultValues != null && !(pkey in usedKeys)) {
+              if (
+                defaultValues != null &&
+                !(pkey in usedKeys) &&
+                !(pkey in styleState.style)
+              ) {
                 mergeStyle(styleState, pkey, defaultValues)
               }
             } else {
@@ -1042,7 +1052,19 @@ export const getSplitStyles: StyleSplitter = (
   // also it makes sense that props.style is basically the last to apply,
   // at least more sense than "it applies at the position its defined in the prop loop"
   if (props.style) {
-    mergeStylePropIntoStyle(styleState, props.style)
+    if (isHOC) {
+      viewProps.style = props.style
+    } else {
+      for (const style of [].concat(props.style)) {
+        if (style) {
+          if (style['$$css']) {
+            Object.assign(styleState.classNames, style)
+          } else {
+            Object.assign(styleState.style, style)
+          }
+        }
+      }
+    }
   }
 
   const avoidNormalize = styleProps.noNormalize === false
@@ -1074,16 +1096,17 @@ export const getSplitStyles: StyleSplitter = (
         .forEach(([key, val]) => {
           mergeTransform(style, key, val, true)
         })
+    }
 
-      // Button for example uses disableClassName: true but renders to a 'button' element, so needs this
-      if (process.env.TAMAGUI_TARGET === 'web') {
-        if (
-          !staticConfig.isReactNative &&
-          !styleProps.isAnimated &&
-          Array.isArray(style.transform)
-        ) {
-          style.transform = transformsToString(style.transform) as any
-        }
+    // Button for example uses disableClassName: true but renders to a 'button' element, so needs this
+    if (process.env.TAMAGUI_TARGET === 'web') {
+      if (
+        !staticConfig.isReactNative &&
+        !staticConfig.isHOC &&
+        (styleProps.isAnimated && !conf.animations.supportsCSSVars ? false : true) &&
+        Array.isArray(style.transform)
+      ) {
+        style.transform = transformsToString(style.transform) as any
       }
     }
 
@@ -1390,31 +1413,20 @@ export const getSubStyle = (
   return styleOut
 }
 
-function mergeStylePropIntoStyle(styleState: GetStyleState, cur: Object[] | Object) {
-  if (!cur) return
-  const styles = Array.isArray(cur) ? cur : [cur]
-  for (const style of styles) {
-    if (!style) continue
-    const isRNW = style['$$css']
-    if (isRNW) {
-      Object.assign(styleState.classNames, style)
-    } else {
-      Object.assign(styleState.style, style)
-    }
-  }
-}
-
 // on native no need to insert any css
 const useInsertEffectCompat = isWeb
   ? useInsertionEffect || useIsomorphicLayoutEffect
   : () => {}
 
-export const useSplitStyles: StyleSplitter = (...args) => {
-  const res = getSplitStyles(...args)
+// perf: ...args a bit expensive on native
+export const useSplitStyles: StyleSplitter = (a, b, c, d, e, f, g, h, i, j) => {
+  const res = getSplitStyles(a, b, c, d, e, f, g, h, i, j)
 
-  useInsertEffectCompat(() => {
-    insertStyleRules(res.rulesToInsert)
-  }, [res.rulesToInsert])
+  if (process.env.TAMAGUI_TARGET !== 'native') {
+    useInsertEffectCompat(() => {
+      insertStyleRules(res.rulesToInsert)
+    }, [res.rulesToInsert])
+  }
 
   return res
 }

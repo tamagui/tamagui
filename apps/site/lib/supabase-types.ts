@@ -110,7 +110,8 @@ export interface Database {
           data: Json | null
           id: number
           product_id: string
-          subscription_id: string
+          product_ownership_id: number | null
+          subscription_id: string | null
           unclaimed_at: string | null
         }
         Insert: {
@@ -118,7 +119,8 @@ export interface Database {
           data?: Json | null
           id?: number
           product_id: string
-          subscription_id: string
+          product_ownership_id?: number | null
+          subscription_id?: string | null
           unclaimed_at?: string | null
         }
         Update: {
@@ -126,7 +128,8 @@ export interface Database {
           data?: Json | null
           id?: number
           product_id?: string
-          subscription_id?: string
+          product_ownership_id?: number | null
+          subscription_id?: string | null
           unclaimed_at?: string | null
         }
         Relationships: [
@@ -135,6 +138,13 @@ export interface Database {
             columns: ["product_id"]
             isOneToOne: false
             referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "claims_product_ownership_id_fkey"
+            columns: ["product_ownership_id"]
+            isOneToOne: false
+            referencedRelation: "product_ownership"
             referencedColumns: ["id"]
           },
           {
@@ -280,6 +290,42 @@ export interface Database {
             columns: ["product_id"]
             isOneToOne: false
             referencedRelation: "products"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      product_ownership: {
+        Row: {
+          created_at: string
+          id: number
+          price_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          price_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          price_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_ownership_price_id_fkey"
+            columns: ["price_id"]
+            isOneToOne: false
+            referencedRelation: "prices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "product_ownership_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
             referencedColumns: ["id"]
           }
         ]

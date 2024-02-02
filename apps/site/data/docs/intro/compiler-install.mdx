@@ -22,7 +22,9 @@ We have a full example of a plain Webpack or Vite setup in the simple starter
 accessible through `npm create tamagui@latest`, which shows a complete
 configuration with more detail.
 
-Add `tamagui-loader` and set up your `webpack.config.js`:
+Add `tamagui-loader` and set up your `webpack.config.js`.
+
+You can set it up more manually like so:
 
 ```js
 const { shouldExclude } = require('tamagui-loader')
@@ -76,12 +78,32 @@ module.exports = {
 }
 ```
 
+Or you can use the TamaguiPlugin which automates some of this setup for you:
+
+```tsx
+const { TamaguiPlugin } = require('tamagui-loader')
+
+module.exports = {
+  plugins: [
+    new TamaguiPlugin({
+      config: './tamagui.config.ts',
+      components: ['tamagui'],
+      importsWhitelist: ['constants.js', 'colors.js'],
+      logTimings: true,
+      disableExtraction: process.env.NODE_ENV === 'development',
+    }),
+  ],
+
+```
+
+Some notes on the options:
+
 - _importsWhitelist_: Tamagui takes a conservative approach to partial
   evaluation, this field whitelists (matching against both .ts and .js) files to
   allow files that import them to read and use their values during compilation.
   Typically colors and constants files.
-- _disableExtraction_: Useful for faster developer iteration as themes hot
-  reload more reliably.
+- _disableExtraction_: Useful for faster developer iteration as your design
+  system hot reloads more reliably.
 
 ### Vite
 

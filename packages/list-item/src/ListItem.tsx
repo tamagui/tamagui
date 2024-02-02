@@ -17,7 +17,7 @@ import { Spacer, getTokens, getVariableValue, styled, useProps } from '@tamagui/
 import type { FunctionComponent } from 'react'
 import React from 'react'
 
-type ListItemIconProps = { color?: string; size?: number }
+type ListItemIconProps = { color?: any; size?: any }
 type IconProp = JSX.Element | FunctionComponent<ListItemIconProps> | null
 
 export type ListItemExtraProps = Omit<TextParentStyles, 'TextComponent' | 'noTextWrap'> &

@@ -98,7 +98,7 @@ const plugins = [
   },
 ]
 
-module.exports = function (name, { defaultConfig }) {
+module.exports = (name, { defaultConfig }) => {
   /** @type {import('next').NextConfig} */
   let config = {
     // output: 'export',
@@ -153,6 +153,11 @@ module.exports = function (name, { defaultConfig }) {
     // Next.js config
     async redirects() {
       return [
+        {
+          source: '/account/subscriptions',
+          destination: '/account/items',
+          permanent: false,
+        },
         {
           source: '/docs',
           destination: '/docs/intro/introduction',

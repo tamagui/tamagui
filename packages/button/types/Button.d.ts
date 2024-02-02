@@ -6,10 +6,10 @@ export declare const ButtonContext: import("@tamagui/web").StyledContext<Partial
     variant?: "outlined" | undefined;
 }>>;
 type ButtonIconProps = {
-    color?: string;
-    size?: number;
+    color?: any;
+    size?: any;
 };
-type IconProp = JSX.Element | FunctionComponent<ButtonIconProps> | null;
+type IconProp = JSX.Element | FunctionComponent<ButtonIconProps> | ((props: ButtonIconProps) => any) | null;
 type ButtonExtraProps = TextParentStyles & ThemeableProps & {
     /**
      * add icon before, passes color and size automatically if Component

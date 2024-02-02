@@ -11,7 +11,7 @@ export const Footer = memo(() => {
   return (
     <YStack tag="footer" pos="relative" mb="$10">
       <ContainerLarge>
-        <XStack py="$7" $sm={{ flexDirection: 'column', ai: 'center' }}>
+        <XStack x={40} py="$7" $sm={{ flexDirection: 'column', ai: 'center' }}>
           <YStack
             ai="flex-start"
             $sm={{ ai: 'center' }}
