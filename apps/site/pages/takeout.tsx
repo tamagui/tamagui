@@ -1390,11 +1390,11 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
 
                               <YStack gap="$0" f={1}>
                                 <H4 mt="$-1">
-                                  {price.description === `Unlimited (+9 Seats)`
-                                    ? `Unlimited`
-                                    : price.description === `Hobby (3-8 seats)`
-                                      ? `Team (2-8 seats)`
-                                      : price.description}
+                                  {price.description === 'Unlimited (+9 seats)'
+                                    ? 'Pro'
+                                    : price.description === 'Hobby (3-8 seats)'
+                                      ? 'Team'
+                                      : 'Personal'}
                                 </H4>
 
                                 <Paragraph theme="alt2">
