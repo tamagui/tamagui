@@ -285,7 +285,7 @@ export default function TakeoutPage({
                     consulting on apps with Tamagui. It builds off the free and open
                     source starter <CodeInline>(npm&nbsp;create&nbsp;tamagui)</CodeInline>
                     , adding{' '}
-                    <a target="_blank" href="https://supabase.com">
+                    <a target="_blank" href="https://supabase.com" rel="noreferrer">
                       Supabase
                     </a>{' '}
                     for data and auth, all the flows for a user-based app, and a bunch of
@@ -1167,7 +1167,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                 </Dialog.Title>
               </XStack>
 
-              <YStack my="$2">
+              {/* <YStack my="$2">
                 <YStack gap="$4" $gtSm={{ fd: 'row' }} flexWrap="wrap">
                   {products.map((product) => {
                     if (!product) return null
@@ -1246,7 +1246,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                     )
                   })}
                 </YStack>
-              </YStack>
+              </YStack> */}
 
               <XStack
                 f={1}
@@ -1344,7 +1344,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                     >
                       <Check size={30} color="$color9" />
                       <MunroP size="$7" color="$color11">
-                        Every plan includes the same assets
+                        Every plan includes the starter, icon packs & font packs
                       </MunroP>
                     </XStack>
 
