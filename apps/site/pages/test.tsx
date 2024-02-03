@@ -21,15 +21,7 @@ function TestPage() {
         flex: 1,
       }}
     >
-      <ThemeTint>
-
-      <Button
-        // animation="quick"
-        bg="$color10"
-      >
-        Sponsor for early access
-      </Button>
-      </ThemeTint>
+      <DialogDemo />
       {/* <Stack
         // hitSlop={5}
         importantForAccessibility="no"
@@ -230,6 +222,7 @@ TestPage.getLayout = (page) => {
 
 import { memo, useEffect } from 'react'
 import { Circle, XStack } from 'tamagui'
+import { DialogDemo } from '@tamagui/demos'
 
 const TestCircle = memo(() => {
   const [mounted, setMounted] = useState<'start' | 'animate' | 'done'>('start')

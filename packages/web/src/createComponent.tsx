@@ -1280,8 +1280,9 @@ export function createComponent<
             }
           } catch {
             // RN can run into PayloadTooLargeError: request entity too large
+          } finally {
+            console.groupEnd()
           }
-          console.groupEnd()
         }
         if (debugProp === 'break') {
           // biome-ignore lint/suspicious/noDebugger: ok

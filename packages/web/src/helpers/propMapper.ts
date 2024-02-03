@@ -18,6 +18,7 @@ import { normalizeStyle } from './normalizeStyle'
 import { getFontsForLanguage, getVariantExtras } from './getVariantExtras'
 import { isObj } from './isObj'
 import { pseudoDescriptors } from './pseudoDescriptors'
+import { skipProps } from './skipProps'
 
 export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => {
   lastFontFamilyToken = null
@@ -250,6 +251,10 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
   for (const _key in value) {
     const subKey = conf.shorthands[_key] || _key
     const val = value[_key]
+
+    if (!styleProps.noSkip && subKey in skipProps) {
+      continue
+    }
 
     if (styleProps.noExpand) {
       res[subKey] = val

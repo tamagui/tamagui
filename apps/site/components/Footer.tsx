@@ -36,17 +36,6 @@ export const Footer = memo(() => {
             <NextLink href="/" aria-label="Homepage">
               <TamaguiLogo showWords downscale={1} />
             </NextLink>
-            <Paragraph mt="$2" size="$3">
-              by{' '}
-              <ParagraphLink
-                // @ts-ignore
-                fontSize="inherit"
-                href="https://twitter.com/natebirdman"
-                target="_blank"
-              >
-                nate
-              </ParagraphLink>
-            </Paragraph>
             <Paragraph size="$3">built with Tamagui</Paragraph>
           </YStack>
 
