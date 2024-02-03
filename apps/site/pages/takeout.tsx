@@ -1297,7 +1297,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                       <YStack width="80%">
                         <Paragraph size="$6">Discord Seats</Paragraph>
                         <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
-                          Access to the Takeout channel
+                          Access to the Discord #takeout room
                         </Paragraph>
                       </YStack>
                       <XStack f={1} ai="center" gap="$2" jc="center">
