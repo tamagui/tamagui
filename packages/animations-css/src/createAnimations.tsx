@@ -1,9 +1,6 @@
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
-import {
-  AnimationDriver,
-  UniversalAnimatedNumber,
-  transformsToString,
-} from '@tamagui/core'
+import type { AnimationDriver, UniversalAnimatedNumber } from '@tamagui/core'
+import { transformsToString } from '@tamagui/core'
 // import { animate } from '@tamagui/cubic-bezier-animator'
 import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import { useEffect, useState } from 'react'
@@ -38,7 +35,7 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
       }
     },
 
-    useAnimatedNumberReaction({ hostRef, value }, onValue) {
+    useAnimatedNumberReaction({ value }, onValue) {
       useEffect(() => {
         const instance = value.getInstance()
         let queue = reactionListeners.get(instance)
@@ -58,7 +55,7 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
       return getStyle(val.getValue())
     },
 
-    useAnimations: ({ props, presence, style, componentState, hostRef }) => {
+    useAnimations: ({ props, presence, style, componentState, stateRef }) => {
       const isEntering = !!componentState.unmounted
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
@@ -68,8 +65,9 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
       const keys = props.animateOnly ?? ['all']
 
       useIsomorphicLayoutEffect(() => {
-        if (!sendExitComplete || !isExiting || !hostRef.current) return
-        const node = hostRef.current as HTMLElement
+        const host = stateRef.current.host
+        if (!sendExitComplete || !isExiting || !host) return
+        const node = host as HTMLElement
         const onFinishAnimation = () => {
           sendExitComplete?.()
         }
@@ -83,14 +81,14 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
 
       // layout animations
       // useIsomorphicLayoutEffect(() => {
-      //   if (!hostRef.current || !props.layout) {
+      //   if (!host || !props.layout) {
       //     return
       //   }
       //   // @ts-ignore
-      //   const boundingBox = hostRef.current?.getBoundingClientRect()
+      //   const boundingBox = host?.getBoundingClientRect()
       //   if (isChanged(initialPositionRef.current, boundingBox)) {
       //     const transform = invert(
-      //       hostRef.current,
+      //       host,
       //       boundingBox,
       //       initialPositionRef.current
       //     )
@@ -101,7 +99,7 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
       //       duration: 1000,
       //       onUpdate: ({ x, y, scaleX, scaleY }) => {
       //         // @ts-ignore
-      //         hostRef.current.style.transform = `translate(${x}px, ${y}px) scaleX(${scaleX}) scaleY(${scaleY})`
+      //         host.style.transform = `translate(${x}px, ${y}px) scaleX(${scaleX}) scaleY(${scaleY})`
       //         // TODO: handle childRef inverse scale
       //         //   childRef.current.style.transform = `scaleX(${1 / scaleX}) scaleY(${
       //         //     1 / scaleY

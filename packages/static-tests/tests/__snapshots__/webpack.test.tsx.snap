@@ -13,7 +13,7 @@ exports[`webpack-tests > 1. extracts to a div for simple views, flat transforms 
     }
   >
     <div
-      className="  _dsp-flex _ai-stretch _fd-column _bxs-border-box _pos-relative _mih-0px _miw-0px  _scale-0hover-2 _fg-1 _fs-1 _fb-auto _btlr-100px _btrr-100px _bbrr-100px _bblr-100px _bg-red _bxsh-d0t1303453517  test1"
+      className="  _dsp-flex _ai-stretch _fd-column _bxs-border-box _pos-relative _mih-0px _miw-0px  _scale-0hover-2 _fg-1 _fs-1 _fb-auto _btlr-100px _btrr-100px _bbrr-100px _bblr-100px _bg-red _bxsh-469092149  test1"
     >
       <span
         className="  _ff-299667014 _dsp-inline _bxs-border-box _ww-break-word _mt-0px _mr-0px _mb-0px _ml-0px _col-675002279 font_body "
@@ -27,7 +27,7 @@ exports[`webpack-tests > 1. extracts to a div for simple views, flat transforms 
 
 exports[`webpack-tests > 2. extracts className for complex views but keeps other props 1`] = `
 <span
-  className="t_dark is_inversed _dsp_contents"
+  className=" _dsp_contents"
 >
   <span
     className=" t_dark _dsp_contents is_Theme"
@@ -56,7 +56,7 @@ exports[`webpack-tests > 2. extracts className for complex views but keeps other
 
 exports[`webpack-tests > 2. extracts className for complex views but keeps other props 2`] = `
 <span
-  className="t_dark is_inversed _dsp_contents"
+  className=" _dsp_contents"
 >
   <span
     className=" t_dark _dsp_contents is_Theme"
@@ -85,7 +85,7 @@ exports[`webpack-tests > 2. extracts className for complex views but keeps other
 
 exports[`webpack-tests > 5. spread conditional 1`] = `
 <span
-  className="t_dark is_inversed _dsp_contents"
+  className=" _dsp_contents"
 >
   <span
     className=" t_dark _dsp_contents is_Theme"
@@ -108,7 +108,7 @@ exports[`webpack-tests > 5. spread conditional 1`] = `
 
 exports[`webpack-tests > 6. spread ternary 1`] = `
 <span
-  className="t_dark is_inversed _dsp_contents"
+  className=" _dsp_contents"
 >
   <span
     className=" t_dark _dsp_contents is_Theme"
@@ -133,7 +133,7 @@ exports[`webpack-tests > 6. spread ternary 1`] = `
 
 exports[`webpack-tests > 6. spread ternary 2`] = `
 <span
-  className="t_dark is_inversed _dsp_contents"
+  className=" _dsp_contents"
 >
   <span
     className=" t_dark _dsp_contents is_Theme"
@@ -158,7 +158,7 @@ exports[`webpack-tests > 6. spread ternary 2`] = `
 
 exports[`webpack-tests > 7. ternary + data-is 1`] = `
 <span
-  className="t_dark is_inversed _dsp_contents"
+  className=" _dsp_contents"
 >
   <span
     className=" t_dark _dsp_contents is_Theme"
@@ -182,7 +182,7 @@ exports[`webpack-tests > 7. ternary + data-is 1`] = `
 
 exports[`webpack-tests > 8. styleExpansions 1`] = `
 <span
-  className="t_dark is_inversed _dsp_contents"
+  className=" _dsp_contents"
 >
   <span
     className=" t_dark _dsp_contents is_Theme"
@@ -211,7 +211,7 @@ exports[`webpack-tests > 8. styleExpansions 1`] = `
 
 exports[`webpack-tests > 9. combines with classname 1`] = `
 <span
-  className="t_dark is_inversed _dsp_contents"
+  className=" _dsp_contents"
 >
   <span
     className=" t_dark _dsp_contents is_Theme"
@@ -230,7 +230,7 @@ exports[`webpack-tests > 9. combines with classname 1`] = `
 
 exports[`webpack-tests > 10. extracts Text 1`] = `
 <span
-  className="t_dark is_inversed _dsp_contents"
+  className=" _dsp_contents"
 >
   <span
     className=" t_dark _dsp_contents is_Theme"
@@ -260,7 +260,7 @@ exports[`webpack-tests > 10. extracts Text 1`] = `
 
 exports[`webpack-tests > 12. te  rnary multiple on same key 1`] = `
 <span
-  className="t_dark is_inversed _dsp_contents"
+  className=" _dsp_contents"
 >
   <span
     className=" t_dark _dsp_contents is_Theme"
@@ -279,7 +279,7 @@ exports[`webpack-tests > 12. te  rnary multiple on same key 1`] = `
 
 exports[`webpack-tests > 14. extracts pseudo styles and evaluates constants 1`] = `
 <span
-  className="t_dark is_inversed _dsp_contents"
+  className=" _dsp_contents"
 >
   <span
     className=" t_dark _dsp_contents is_Theme"
@@ -299,7 +299,7 @@ exports[`webpack-tests > 14. extracts pseudo styles and evaluates constants 1`] 
 
 exports[`webpack-tests > 15. extracts spacer (complex expansion) 1`] = `
 <span
-  className="t_dark is_inversed _dsp_contents"
+  className=" _dsp_contents"
 >
   <span
     className=" t_dark _dsp_contents is_Theme"
@@ -321,7 +321,7 @@ exports[`webpack-tests > 15. extracts spacer (complex expansion) 1`] = `
 
 exports[`webpack-tests > 16. deopt when spreading multiple 1`] = `
 <span
-  className="t_dark is_inversed _dsp_contents"
+  className=" _dsp_contents"
 >
   <span
     className=" t_dark _dsp_contents is_Theme"

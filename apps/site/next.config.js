@@ -24,7 +24,7 @@ const plugins = [
   withTamagui({
     emitSingleCSSFile:
       false,
-    useReactNativeWebLite: true,
+    // useReactNativeWebLite: true,
     config: './tamagui.config.ts',
     themeBuilder: {
       input: '@tamagui/themes/src/themes-new.ts',
@@ -46,7 +46,6 @@ const plugins = [
       'Picker',
       'CheckBox',
       'Touchable',
-      'Animated',
       'FlatList',
       'Modal',
     ],
@@ -74,10 +73,10 @@ const plugins = [
           const { StatsWriterPlugin } = require('webpack-stats-plugin')
           webpackConfig.plugins.push(
             new StatsWriterPlugin({
-              filename: 'stats.json',
-              stats: {
-                all: true,
-              },
+              // filename: 'stats.json',
+              // stats: {
+              //   all: false,
+              // },
             })
           )
         }
@@ -100,14 +99,14 @@ const plugins = [
   },
 ]
 
-module.exports = function (name, { defaultConfig }) {
+module.exports = (name, { defaultConfig }) => {
   /** @type {import('next').NextConfig} */
   let config = {
     // output: 'export',
     // runtime: 'experimental-edge',
     productionBrowserSourceMaps: process.env.ANALYZE === 'true',
     swcMinify: true,
-    reactStrictMode: true,
+    // must set to false if using reanimated
     // reactStrictMode: false,
     optimizeFonts: true,
     modularizeImports: {
@@ -155,6 +154,11 @@ module.exports = function (name, { defaultConfig }) {
     // Next.js config
     async redirects() {
       return [
+        {
+          source: '/account/subscriptions',
+          destination: '/account/items',
+          permanent: false,
+        },
         {
           source: '/docs',
           destination: '/docs/intro/introduction',

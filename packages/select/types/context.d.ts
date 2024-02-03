@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import { ScopedProps, SelectContextValue, SelectItemParentContextValue } from './types';
+import type { ScopedProps, SelectContextValue, SelectItemParentContextValue } from './types';
 export declare const createSelectContext: <ContextValueType extends object | null>(rootComponentName: string, defaultContext?: ContextValueType | undefined) => readonly [{
     (props: ContextValueType & {
         scope: import("@tamagui/create-context").Scope<ContextValueType>;

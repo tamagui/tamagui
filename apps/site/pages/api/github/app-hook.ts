@@ -1,5 +1,5 @@
 import { supabaseAdmin } from '@lib/supabaseAdmin'
-import { NextApiHandler } from 'next'
+import type { NextApiHandler } from 'next'
 
 const handler: NextApiHandler = async (req, res) => {
   console.log(req.query, req.body, req.headers['x-hub-signature'], req.headers)

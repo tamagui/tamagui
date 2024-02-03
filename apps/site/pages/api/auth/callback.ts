@@ -1,5 +1,5 @@
 import { createPagesServerClient } from '@supabase/auth-helpers-nextjs'
-import { NextApiHandler } from 'next'
+import type { NextApiHandler } from 'next'
 
 import { supabaseCookieOptions } from '../../../lib/supabase-utils'
 

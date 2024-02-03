@@ -10,7 +10,7 @@ import {
   getStoreUid,
   simpleStr,
 } from './helpers'
-import { Selector, Store, StoreInfo, UseStoreOptions } from './interfaces'
+import type { Selector, Store, StoreInfo, UseStoreOptions } from './interfaces'
 import { DebugStores, shouldDebug, useCurrentComponent } from './useStoreDebug'
 
 const idFn = (_) => _
@@ -71,20 +71,19 @@ export function useGlobalStoreSelector<A, Selector extends (store: A) => any>(
 export function createUseStore<Props, Store>(
   StoreKlass: (new (props: Props) => Store) | (new () => Store)
 ) {
-  return function <Res, C extends Selector<Store, Res>, Props extends Object>(
+  return <Res, C extends Selector<Store, Res>, Props extends Object>(
     props?: Props,
     options?: UseStoreOptions
     // super hacky workaround for now, ts is unknown to me tbh
-  ): C extends Selector<any, infer B> ? (B extends Object ? B : Store) : Store {
-    return useStore(StoreKlass as any, props, options)
-  }
+  ): C extends Selector<any, infer B> ? (B extends Object ? B : Store) : Store =>
+    useStore(StoreKlass as any, props, options)
 }
 
 // for creating a usable selector hook
 export function createUseStoreSelector<
   A extends Store<Props>,
   Props extends Object,
-  Selected
+  Selected,
 >(
   StoreKlass: (new (props: Props) => A) | (new () => A),
   selector: Selector<A, Selected>

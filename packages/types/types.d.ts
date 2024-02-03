@@ -89,6 +89,16 @@ export interface TamaguiOptions {
    */
   disableExtractVariables?: boolean | 'theme'
 
+  /**
+   * (Advanced) Disables the initial build and attempts to load from the .tamagui directory
+   */
+  disableInitialBuild?: boolean
+
+  /**
+   * Disables running lightningcss before emitting outputCSS
+   */
+  disableMinifyCSS?: boolean
+
   evaluateVars?: boolean
   cssPath?: string
   cssData?: any

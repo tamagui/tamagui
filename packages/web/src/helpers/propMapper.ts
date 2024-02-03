@@ -3,7 +3,8 @@ import { tokenCategories } from '@tamagui/helpers'
 
 import { getConfig } from '../config'
 import { isDevTools } from '../constants/isDevTools'
-import { Variable, getVariableValue, isVariable } from '../createVariable'
+import type { Variable } from '../createVariable'
+import { getVariableValue, isVariable } from '../createVariable'
 import type {
   GetStyleState,
   PropMapper,
@@ -13,10 +14,11 @@ import type {
   VariantSpreadFunction,
 } from '../types'
 import { expandStyle } from './expandStyle'
-import { expandStylesAndRemoveNullishValues } from './expandStylesAndRemoveNullishValues'
+import { normalizeStyle } from './normalizeStyle'
 import { getFontsForLanguage, getVariantExtras } from './getVariantExtras'
 import { isObj } from './isObj'
 import { pseudoDescriptors } from './pseudoDescriptors'
+import { skipProps } from './skipProps'
 
 export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => {
   lastFontFamilyToken = null
@@ -54,17 +56,17 @@ export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => 
 
   // prettier-ignore
   if (
-    process.env.NODE_ENV === "development" &&
+    process.env.NODE_ENV === 'development' &&
     fontFamily &&
-    fontFamily[0] === "$" &&
+    fontFamily[0] === '$' &&
     !(fontFamily in conf.fontsParsed)
   ) {
     // prettier-ignore
     console.warn(
-      `Warning: no fontFamily "${fontFamily}" found in config: ${Object.keys(conf.fontsParsed).join(
-        ", ",
-      )}`,
-    );
+      `Warning: no fontFamily "${fontFamily}" found in config: ${Object.keys(
+        conf.fontsParsed
+      ).join(', ')}`
+    )
   }
 
   if (!styleProps.noExpand) {
@@ -186,10 +188,10 @@ const resolveVariants: StyleResolver = (
   }
 
   if (variantValue) {
-    const expanded = expandStylesAndRemoveNullishValues(
-      variantValue,
-      !!styleProps.noNormalize
-    )
+    const expanded = normalizeStyle(variantValue, !!styleProps.noNormalize)
+    if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+      console.info(`   expanding styles from `, variantValue, `to`, expanded)
+    }
     const next = Object.entries(expanded)
 
     // store any changed font family (only support variables for now)
@@ -250,6 +252,10 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
     const subKey = conf.shorthands[_key] || _key
     const val = value[_key]
 
+    if (!styleProps.noSkip && subKey in skipProps) {
+      continue
+    }
+
     if (styleProps.noExpand) {
       res[subKey] = val
     } else {
@@ -287,6 +293,9 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
 
     if (isVariable(val)) {
       res[subKey] = resolveVariableValue(subKey, val, styleProps.resolveValues)
+      if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+        console.info(`variable`, subKey, res[subKey])
+      }
       continue
     }
 
@@ -460,17 +469,11 @@ export const getTokenForKey = (
     return out
   }
 
-  if (
-    process.env.NODE_ENV === 'development' &&
-    isDevTools &&
-    styleState.debug === 'verbose'
-  ) {
-    console.groupCollapsed('  ﹒ propMap (val)', key, value)
-    console.info({ valOrVar, theme, hasSet }, theme ? theme[key] : '')
-    console.groupEnd()
-  }
+  // they didn't define this token don't return anything, we could warn?
 
-  return value
+  if (process.env.NODE_ENV === 'development' && styleState.debug === 'verbose') {
+    console.warn(`Warning: no token found for ${key}, omitting`)
+  }
 }
 
 function resolveVariableValue(

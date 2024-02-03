@@ -1,10 +1,10 @@
 {
   "name": "@tamagui/menu",
-  "version": "1.84.0",
+  "version": "1.88.21",
   "sideEffects": [
     "*.css"
   ],
-  "source": "src/index.ts",
+  "source": "src/index.tsx",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -23,15 +23,15 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/core": "1.84.0",
-    "@tamagui/helpers": "1.84.0",
-    "@tamagui/popover": "1.84.0"
+    "@tamagui/core": "1.88.21",
+    "@tamagui/helpers": "1.88.21",
+    "@tamagui/popover": "1.88.21"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.84.0",
+    "@tamagui/build": "1.88.21",
     "react": "^18.2.0"
   },
   "publishConfig": {

@@ -2,7 +2,7 @@ import { join } from 'path'
 
 import type { TamaguiOptions, TamaguiProjectInfo } from '@tamagui/static'
 import { loadTamagui as loadTamaguiStatic } from '@tamagui/static'
-import { CLIResolvedOptions, CLIUserOptions } from '@tamagui/types'
+import type { CLIResolvedOptions, CLIUserOptions } from '@tamagui/types'
 import chalk from 'chalk'
 import fs, { pathExists, readJSON } from 'fs-extra'
 

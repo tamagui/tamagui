@@ -1,11 +1,20 @@
-import { useTint } from '@tamagui/logo'
+import { useTint, useTintAlt } from '@tamagui/logo'
 import { memo, useMemo, useState } from 'react'
-import { ThemeName, YStack, isClient, useDebounce } from 'tamagui'
+import type { ThemeName } from 'tamagui'
+import { YStack, isClient, useDebounce } from 'tamagui'
 
 import { useTintSectionIndex } from './TintSection'
 
+const positions = new Array(15).fill(0).map(() => {
+  return [
+    Math.random() * 300 * (Math.random() > 0.5 ? 1 : -1),
+    Math.random() * 300 * (Math.random() > 0.5 ? 1 : -1),
+  ]
+})
+
 export const HomeGlow = memo(() => {
-  const { tints, tint, name, tintIndex } = useTint()
+  const { tints, tint, tintIndex } = useTint()
+  const altTint = useTintAlt()
   const isHeroBelowColor = tint === 'blue' || tint === 'green' || tint === 'purple'
   const [index, setIndex] = useState(0)
   const isAtTop = index <= 1
@@ -13,7 +22,7 @@ export const HomeGlow = memo(() => {
   const [scrollTop, setScrollTopRaw] = useState(0)
   const setScrollTop = useDebounce(setScrollTopRaw, 200)
   const xs = 400
-  const scale = isOnHeroBelow ? 0.5 : 1
+  const scale = isOnHeroBelow ? 2 : 1.4
 
   if (isClient) {
     useTintSectionIndex((index) => {
@@ -23,26 +32,33 @@ export const HomeGlow = memo(() => {
     })
   }
 
+  const isDouble = true
+
   const glows = useMemo(() => {
     return (
       <>
-        {tints.map((cur, i) => {
-          const isDouble = name === 'xmas' || name === 'easter'
+        {[tint, altTint].map((cur, i) => {
+          const isOpposing = tintIndex % 2 === 0
+          const xScale = isOpposing ? 0 : 1
           const active = isDouble ? i == 0 || i == 1 : cur === tint
-          const isOpposite = isDouble && cur === 'green' && tint !== cur
+          const isAlt = i === 1
+          const xRand = isOnHeroBelow ? 0 : positions[i][0]
+          const yRand = isOnHeroBelow ? 0 : positions[i][1]
+          const x =
+            xScale * (xRand + (isOnHeroBelow ? (isAlt ? -200 : 200) : isAlt ? -400 : 400))
           return (
             <YStack
-              key={`${cur}${i}`}
+              key={`${i}`}
               overflow="hidden"
               h="100vh"
               w={1000}
               theme={cur as ThemeName}
-              o={active ? 0.1 : 0}
               fullscreen
               left={`calc(50vw - 500px)`}
-              x={isOnHeroBelow ? 0 : isDouble ? (isOpposite ? -500 : 500) : 0}
+              x={x}
+              y={isOnHeroBelow ? 300 : yRand}
               scale={scale}
-              className="hero-blur"
+              className={'home-glow ' + (active ? ' active' : '')}
             />
           )
         })}
@@ -57,15 +73,15 @@ export const HomeGlow = memo(() => {
       l={0}
       contain="layout"
       pe="none"
-      animation="quick"
+      animation="quicker"
       key={0}
       zi={-1}
       x={0}
       y={scrollTop}
       {...(isOnHeroBelow && {
-        animation: 'quick',
+        animation: 'lazy',
         x: tintIndex === 2 ? -xs : tintIndex === 4 ? xs : 0,
-        y: 300,
+        y: -100,
       })}
       // display={isResizing ? 'none' : 'flex'}
     >

@@ -1,4 +1,4 @@
-import { TamaguiOptions } from '@tamagui/static';
+import type { TamaguiOptions } from '@tamagui/static';
 import type { Compiler, RuleSetRule } from 'webpack';
 export type PluginOptions = TamaguiOptions & {
     isServer?: boolean;
@@ -10,6 +10,10 @@ export type PluginOptions = TamaguiOptions & {
     disableModuleJSXEntry?: boolean;
     disableWatchConfig?: boolean;
     disableAliases?: boolean;
+    /**
+     * @deprecated Deprecated
+     */
+    useReactNativeWebLite?: boolean;
 };
 export declare class TamaguiPlugin {
     options: PluginOptions;

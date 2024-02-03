@@ -1,16 +1,34 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "composite": true,
-    
+    "composite": true
   },
   "references": [
-    { "path": "../colors" },
-    { "path": "../shorthands" },
-    { "path": "../animations-reanimated" },
-    { "path": "../core" },
-    { "path": "../font-inter" },
-    { "path": "../font-silkscreen" },
-    { "path": "../core" }
+    {
+      "path": "../colors"
+    },
+    {
+      "path": "../shorthands"
+    },
+    {
+      "path": "../animations-reanimated"
+    },
+    {
+      "path": "../core"
+    },
+    {
+      "path": "../font-inter"
+    },
+    {
+      "path": "../font-silkscreen"
+    },
+    {
+      "path": "../core"
+    }
+  ],
+  "exclude": [
+    "types",
+    "dist",
+    "**/__tests__"
   ]
 }

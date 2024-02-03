@@ -100,7 +100,7 @@ describe('getSplitStyles', () => {
       shadowOpacity: 0.5,
     })
     expect(styles.rulesToInsert.length).toEqual(1)
-    expect(styles.rulesToInsert[0].value).toEqual(`0px 0px 0px rgba(255,0,0,0.50)`)
+    expect(styles.rulesToInsert[0].value).toEqual(`0px 0px 0px rgba(255,0,0,0.5)`)
     expect(styles.rulesToInsert[0].property).toEqual(`boxShadow`)
   })
 
@@ -110,7 +110,9 @@ describe('getSplitStyles', () => {
         color: 'red',
       },
     })
-    expect(styles.rulesToInsert[0].rules[0]).toMatchInlineSnapshot('"@supports (contain: inline-size) {@container testy (max-width: 800px){:root:root .t_group_testy  ._col-_grouptesty-sm_red{color:red;}}}"')
+    expect(styles.rulesToInsert[0].rules[0]).toMatchInlineSnapshot(
+      '"@supports (contain: inline-size) {@container testy (max-width: 800px){:root:root .t_group_testy  ._col-_grouptesty-sm_red{color:red;}}}"'
+    )
   })
 
   // const timed = async (fn: Function, opts?: { runs?: number }) => {

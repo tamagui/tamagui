@@ -8,9 +8,16 @@ import { rimraf } from 'rimraf'
 import { $, cd } from 'zx'
 
 import { IS_TEST } from '../create-tamagui-constants'
-import { templates } from '../templates'
+import type { templates } from '../templates'
 
 const open = require('opener')
+
+const exec = (cmd: string, options?: Parameters<typeof execSync>[1]) => {
+  return execSync(cmd, {
+    stdio: process.env.DEBUG ? 'inherit' : 'ignore',
+    ...options,
+  })
+}
 
 const home = homedir()
 const tamaguiDir = join(home, '.tamagui')
@@ -94,14 +101,14 @@ async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry 
       try {
         console.info(`$ ${cmd}`)
         console.info()
-        execSync(cmd)
+        exec(cmd)
       } catch (error) {
         if (cmd.includes('https://')) {
           console.info(`https failed - trying with ssh now...`)
           const sshCmd = cmd.replace(sourceGitRepo, sourceGitRepoSshFallback)
           console.info(`$ ${sshCmd}`)
           console.info()
-          execSync(sshCmd)
+          exec(sshCmd)
         } else {
           throw error
         }
@@ -128,23 +135,18 @@ async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry 
       process.exit(1)
     }
   }
-  console.info()
-  console.info(`Updating tamagui starters repo`)
-  console.info()
 
   if (isInSubDir) {
     const cmd = `git sparse-checkout set ${template.repo.dir[0] ?? '.'}`
-    execSync(cmd, { cwd: targetGitDir })
+    exec(cmd, { cwd: targetGitDir })
     console.info()
-    console.info(`$ ${cmd}`)
   }
   try {
     const cmd2 = `git pull --rebase --allow-unrelated-histories --depth 1 origin ${branch}`
-    execSync(cmd2, {
+    exec(cmd2, {
       cwd: targetGitDir,
     })
     console.info()
-    console.info(`$ ${cmd2}`)
   } catch (err: any) {
     console.info(
       `Error updating: ${err.message} ${

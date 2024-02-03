@@ -1,20 +1,20 @@
 import { defaultOffset } from './defaultOffset'
-import { normalizeColor } from './normalizeColor'
-import { normalizeValueWithProperty } from './normalizeValueWithProperty'
+import { getRgba, normalizeColor } from './normalizeColor'
 
 export function normalizeShadow({
   shadowColor,
   shadowOffset,
-  shadowOpacity = 1,
+  shadowOpacity,
   shadowRadius,
 }: Record<string, any>) {
   const { height, width } = shadowOffset || defaultOffset
   return {
     shadowOffset: {
-      width: normalizeValueWithProperty(width || 0),
-      height: normalizeValueWithProperty(height || 0),
+      width: width || 0,
+      height: height || 0,
     },
-    shadowRadius: normalizeValueWithProperty(shadowRadius || 0),
-    shadowColor: normalizeColor(shadowColor, shadowOpacity),
+    shadowRadius: shadowRadius || 0,
+    shadowColor: normalizeColor(shadowColor, 1),
+    shadowOpacity: shadowOpacity ?? (shadowColor ? getRgba(shadowColor)?.a : 1),
   }
 }

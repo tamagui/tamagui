@@ -1,31 +1,36 @@
-export { animations } from './animations.reanimated';
-export declare const cherryBombFont: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 5 | 9 | 15 | 1 | 10 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
-export declare const munroFont: import("@tamagui/font-inter").GenericFont;
+export { animations } from './animations';
 export declare const config: {
     defaultFont: string;
     shouldAddPrefersColorThemes: true;
     themeClassNameOnRoot: true;
     animations: import("@tamagui/web").AnimationDriver<{
         '75ms': {
-            type: string;
+            type: "timing";
             duration: number;
         };
         '100ms': {
-            type: string;
+            type: "timing";
             duration: number;
         };
         '200ms': {
-            type: string;
+            type: "timing";
             duration: number;
         };
         superBouncy: {
+            type: "spring";
             damping: number;
             mass: number;
             stiffness: number;
         };
         bouncy: {
+            type: "spring";
             damping: number;
             mass: number;
+            stiffness: number;
+        };
+        lazy: {
+            type: "spring";
+            damping: number;
             stiffness: number;
         };
         medium: {
@@ -33,25 +38,30 @@ export declare const config: {
             stiffness: number;
             mass: number;
         };
-        lazy: {
+        slowest: {
+            type: "spring";
             damping: number;
             stiffness: number;
         };
         slow: {
+            type: "spring";
             damping: number;
             stiffness: number;
         };
         quick: {
+            type: "spring";
             damping: number;
             mass: number;
             stiffness: number;
         };
         tooltip: {
+            type: "spring";
             damping: number;
             mass: number;
             stiffness: number;
         };
         quicker: {
+            type: "spring";
             damping: number;
             mass: number;
             stiffness: number;
@@ -62,24 +72,8 @@ export declare const config: {
             stiffness: number;
         };
     }>;
-    themes: Omit<{
-        readonly light: {
-            background: string;
-            backgroundHover: string;
-            backgroundPress: string;
-            backgroundFocus: string;
-            backgroundStrong: string;
-            backgroundTransparent: string;
-            color: string;
-            colorHover: string;
-            colorPress: string;
-            colorFocus: string;
-            colorTransparent: string;
-            borderColor: string;
-            borderColorHover: string;
-            borderColorFocus: string;
-            borderColorPress: string;
-            placeholderColor: string;
+    themes: {
+        light_tan: {
             color1: string;
             color2: string;
             color3: string;
@@ -92,24 +86,10 @@ export declare const config: {
             color10: string;
             color11: string;
             color12: string;
+            color: string;
+            background: string;
         };
-        readonly dark: {
-            background: string;
-            backgroundHover: string;
-            backgroundPress: string;
-            backgroundFocus: string;
-            backgroundStrong: string;
-            backgroundTransparent: string;
-            color: string;
-            colorHover: string;
-            colorPress: string;
-            colorFocus: string;
-            colorTransparent: string;
-            borderColor: string;
-            borderColorHover: string;
-            borderColorFocus: string;
-            borderColorPress: string;
-            placeholderColor: string;
+        dark_tan: {
             color1: string;
             color2: string;
             color3: string;
@@ -122,6 +102,8 @@ export declare const config: {
             color10: string;
             color11: string;
             color12: string;
+            color: string;
+            background: string;
         };
         light_blue: {
             background: string;
@@ -140,6 +122,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -170,6 +153,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -200,6 +184,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -230,6 +215,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -260,6 +246,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -290,6 +277,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -320,6 +308,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -350,6 +339,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -380,6 +370,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -410,6 +401,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -440,6 +432,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -470,6 +463,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -500,6 +494,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -530,6 +525,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -560,6 +556,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -590,6 +587,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -620,6 +618,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -650,6 +649,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -680,6 +680,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -710,6 +711,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -740,6 +742,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -770,6 +773,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -800,6 +804,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -830,6 +835,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -860,6 +866,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -890,6 +897,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -920,6 +928,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -950,6 +959,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -980,6 +990,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -1010,6 +1021,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -1040,6 +1052,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -1070,6 +1083,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -1100,6 +1114,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -1130,6 +1145,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -1160,6 +1176,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -1190,6 +1207,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -1220,6 +1238,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -1250,6 +1269,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -1280,6 +1300,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -1310,6 +1331,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -1340,6 +1362,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -1370,6 +1393,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -1400,6 +1424,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -1430,6 +1455,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -1460,6 +1486,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -1490,6 +1517,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -1520,6 +1548,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -1550,6 +1579,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -1580,6 +1610,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -1610,6 +1641,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -1640,6 +1672,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -1670,6 +1703,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -1700,6 +1734,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -1730,6 +1765,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -1760,6 +1796,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -1790,6 +1827,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -1820,6 +1858,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -1850,6 +1889,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -1880,6 +1920,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -1910,6 +1951,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -1940,6 +1982,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -1970,6 +2013,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -2000,6 +2044,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -2030,6 +2075,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -2060,6 +2106,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -2090,6 +2137,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -2120,6 +2168,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -2150,6 +2199,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -2180,6 +2230,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -2210,6 +2261,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -2240,6 +2292,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -2270,6 +2323,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -2300,6 +2354,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -2330,6 +2385,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -2360,6 +2416,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -2390,6 +2447,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -2420,6 +2478,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -2450,6 +2509,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -2480,6 +2540,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -2510,6 +2571,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -2540,6 +2602,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -2570,6 +2633,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -2600,6 +2664,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -2630,6 +2695,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -2660,6 +2726,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -2690,6 +2757,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -2720,6 +2788,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -2750,6 +2819,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -2780,6 +2850,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -2810,6 +2881,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -2840,6 +2912,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -2870,6 +2943,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -2900,6 +2974,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -2930,6 +3005,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -2960,6 +3036,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -2990,6 +3067,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -3020,6 +3098,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -3050,6 +3129,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -3080,6 +3160,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -3110,6 +3191,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -3140,6 +3222,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -3170,6 +3253,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -3200,6 +3284,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -3230,6 +3315,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -3260,6 +3346,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -3290,6 +3377,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -3320,6 +3408,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -3350,6 +3439,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -3380,6 +3470,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -3410,6 +3501,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -3440,6 +3532,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -3470,6 +3563,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -3500,6 +3594,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -3530,6 +3625,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -3560,6 +3656,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -3590,6 +3687,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -3620,6 +3718,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -3650,6 +3749,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -3680,6 +3780,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -3710,6 +3811,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -3740,6 +3842,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -3770,6 +3873,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -3800,6 +3904,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -3830,6 +3935,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -3860,6 +3966,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -3890,6 +3997,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -3920,6 +4028,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -3950,6 +4059,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -3980,6 +4090,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -4010,6 +4121,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -4040,6 +4152,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -4070,6 +4183,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -4100,6 +4214,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -4130,6 +4245,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -4160,6 +4276,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -4190,6 +4307,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -4220,6 +4338,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -4250,6 +4369,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -4280,6 +4400,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -4310,6 +4431,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -4340,6 +4462,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -4370,6 +4493,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -4400,6 +4524,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -4430,6 +4555,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -4460,6 +4586,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -4490,6 +4617,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -4520,6 +4648,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -4550,6 +4679,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -4580,6 +4710,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -4610,6 +4741,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -4640,6 +4772,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -4670,6 +4803,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -4700,6 +4834,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -4730,6 +4865,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -4760,6 +4896,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -4790,6 +4927,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -4820,6 +4958,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -4850,6 +4989,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -4880,6 +5020,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -4910,6 +5051,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -4940,6 +5082,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -4970,6 +5113,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -5000,6 +5144,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -5030,6 +5175,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -5060,6 +5206,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -5090,6 +5237,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -5120,6 +5268,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -5150,6 +5299,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -5180,6 +5330,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -5210,6 +5361,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -5240,6 +5392,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -5270,6 +5423,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -5300,6 +5454,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -5330,6 +5485,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -5360,6 +5516,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -5390,6 +5547,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -5420,6 +5578,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -5450,6 +5609,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -5480,6 +5640,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -5510,6 +5671,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -5540,6 +5702,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -5570,6 +5733,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -5600,6 +5764,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -5630,6 +5795,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -5660,6 +5826,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -5690,6 +5857,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -5720,6 +5888,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -5750,6 +5919,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -5780,6 +5950,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -5810,6 +5981,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -5840,6 +6012,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -5870,6 +6043,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -5900,6 +6074,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -5930,6 +6105,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -5960,6 +6136,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -5990,6 +6167,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -6020,6 +6198,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -6050,6 +6229,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -6080,6 +6260,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -6110,6 +6291,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -6140,6 +6322,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -6170,6 +6353,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -6200,6 +6384,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -6230,6 +6415,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -6260,6 +6446,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -6290,6 +6477,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -6320,6 +6508,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -6350,6 +6539,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -6380,6 +6570,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -6410,6 +6601,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -6440,6 +6632,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -6470,6 +6663,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -6500,6 +6694,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -6530,6 +6725,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -6560,6 +6756,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -6590,6 +6787,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -6620,6 +6818,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -6650,6 +6849,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -6680,6 +6880,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -6710,6 +6911,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -6740,6 +6942,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -6770,6 +6973,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -6800,6 +7004,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -6830,6 +7035,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -6860,6 +7066,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -6890,6 +7097,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -6920,6 +7128,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -6950,6 +7159,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -6980,6 +7190,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -7010,6 +7221,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -7040,6 +7252,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -7070,6 +7283,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -7100,6 +7314,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -7130,6 +7345,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -7160,6 +7376,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -7190,6 +7407,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -7220,6 +7438,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -7250,6 +7469,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -7280,6 +7500,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -7310,6 +7531,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -7340,6 +7562,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -7370,6 +7593,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -7400,6 +7624,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -7430,6 +7655,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -7460,6 +7686,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -7490,6 +7717,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -7520,6 +7748,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -7550,6 +7779,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -7580,6 +7810,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -7610,6 +7841,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -7640,6 +7872,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -7670,6 +7903,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -7700,6 +7934,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -7730,6 +7965,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -7760,6 +7996,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -7790,6 +8027,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -7820,6 +8058,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -7850,6 +8089,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -7880,6 +8120,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -7910,6 +8151,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -7940,6 +8182,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -7970,6 +8213,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -8000,6 +8244,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -8030,6 +8275,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -8060,6 +8306,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -8090,6 +8337,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -8120,6 +8368,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -8150,6 +8399,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -8180,6 +8430,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -8210,6 +8461,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -8240,6 +8492,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -8270,6 +8523,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -8300,6 +8554,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -8330,6 +8585,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -8360,6 +8616,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -8390,6 +8647,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -8420,6 +8678,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -8450,6 +8709,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -8480,6 +8740,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -8510,6 +8771,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -8540,6 +8802,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -8570,6 +8833,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -8600,6 +8864,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -8630,6 +8895,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -8660,6 +8926,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -8690,6 +8957,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -8720,6 +8988,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -8750,6 +9019,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -8780,6 +9050,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -8810,6 +9081,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -8840,6 +9112,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -8870,6 +9143,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -8900,6 +9174,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -8930,6 +9205,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -8960,6 +9236,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -8990,6 +9267,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -9020,6 +9298,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -9050,6 +9329,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -9080,6 +9360,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -9110,6 +9391,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -9140,6 +9422,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -9170,6 +9453,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -9200,6 +9484,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -9230,6 +9515,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -9260,6 +9546,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -9290,6 +9577,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -9320,6 +9608,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -9350,6 +9639,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -9380,6 +9670,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -9410,6 +9701,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -9440,6 +9732,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -9470,6 +9763,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -9500,6 +9794,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -9530,6 +9825,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -9560,6 +9856,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -9590,6 +9887,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -9620,6 +9918,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -9650,6 +9949,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -9680,6 +9980,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -9710,6 +10011,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -9740,6 +10042,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -9770,6 +10073,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -9800,6 +10104,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -9830,6 +10135,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -9860,6 +10166,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -9890,6 +10197,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -9920,6 +10228,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -9950,6 +10259,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -9980,6 +10290,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -10010,6 +10321,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -10040,6 +10352,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -10070,6 +10383,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -10100,6 +10414,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -10130,6 +10445,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -10160,6 +10476,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -10190,6 +10507,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -10220,6 +10538,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -10250,6 +10569,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -10280,6 +10600,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -10310,6 +10631,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -10340,6 +10662,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -10370,6 +10693,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -10400,6 +10724,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -10430,6 +10755,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -10460,6 +10786,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -10490,6 +10817,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -10520,6 +10848,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -10550,6 +10879,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -10580,6 +10910,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -10610,6 +10941,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -10640,6 +10972,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -10670,6 +11003,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -10700,6 +11034,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -10730,6 +11065,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -10760,6 +11096,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -10790,6 +11127,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -10820,6 +11158,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -10850,6 +11189,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -10880,6 +11220,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -10910,6 +11251,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -10940,6 +11282,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -10970,6 +11313,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -11000,6 +11344,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -11030,6 +11375,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -11060,6 +11406,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -11090,6 +11437,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -11120,6 +11468,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -11150,6 +11499,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -11180,6 +11530,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -11210,6 +11561,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -11240,6 +11592,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -11270,6 +11623,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -11300,6 +11654,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -11330,6 +11685,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -11360,6 +11716,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -11390,6 +11747,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -11420,6 +11778,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -11450,6 +11809,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -11480,6 +11840,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -11510,6 +11871,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -11540,6 +11902,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -11570,6 +11933,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -11600,6 +11964,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -11630,6 +11995,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -11660,6 +12026,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -11690,6 +12057,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -11720,6 +12088,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -11750,6 +12119,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -11780,6 +12150,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -11810,6 +12181,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -11840,6 +12212,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -11870,6 +12243,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -11900,6 +12274,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -11930,6 +12305,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -11960,6 +12336,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -11990,6 +12367,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -12020,6 +12398,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -12050,6 +12429,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -12080,6 +12460,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -12110,6 +12491,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -12140,6 +12522,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -12170,6 +12553,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -12200,6 +12584,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -12230,6 +12615,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -12260,6 +12646,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -12290,6 +12677,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -12320,6 +12708,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -12350,6 +12739,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -12380,6 +12770,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -12410,6 +12801,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -12440,6 +12832,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -12470,6 +12863,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -12500,6 +12894,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -12530,6 +12925,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -12560,6 +12956,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -12590,6 +12987,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -12620,6 +13018,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -12650,6 +13049,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -12680,6 +13080,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -12710,6 +13111,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -12740,6 +13142,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -12770,6 +13173,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -12800,6 +13204,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -12830,6 +13235,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -12860,6 +13266,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -12890,6 +13297,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -12920,6 +13328,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -12950,6 +13359,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -12980,6 +13390,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -13010,6 +13421,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -13040,6 +13452,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -13070,6 +13483,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -13100,6 +13514,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -13130,6 +13545,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -13160,6 +13576,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -13190,6 +13607,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -13220,6 +13638,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -13250,6 +13669,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -13280,6 +13700,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -13310,6 +13731,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -13340,6 +13762,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -13370,6 +13793,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -13400,6 +13824,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -13430,6 +13855,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -13460,6 +13886,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -13490,6 +13917,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -13520,6 +13948,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -13550,6 +13979,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -13580,6 +14010,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -13610,6 +14041,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -13640,6 +14072,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -13670,6 +14103,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -13700,6 +14134,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -13730,6 +14165,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -13760,6 +14196,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -13790,6 +14227,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -13820,6 +14258,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -13850,6 +14289,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -13880,6 +14320,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -13910,6 +14351,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -13940,6 +14382,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -13970,6 +14413,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -14000,6 +14444,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -14030,6 +14475,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -14060,6 +14506,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -14090,6 +14537,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -14120,6 +14568,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -14150,6 +14599,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -14180,6 +14630,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -14210,6 +14661,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -14240,6 +14692,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -14270,6 +14723,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -14300,6 +14754,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -14330,6 +14785,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -14360,6 +14816,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -14390,6 +14847,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -14420,6 +14878,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -14450,6 +14909,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -14480,6 +14940,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -14510,6 +14971,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -14540,6 +15002,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -14570,6 +15033,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -14600,6 +15064,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -14630,6 +15095,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -14660,6 +15126,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -14690,6 +15157,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -14720,6 +15188,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -14750,6 +15219,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -14780,6 +15250,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -14810,6 +15281,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -14840,6 +15312,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -14870,6 +15343,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -14900,6 +15374,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -14930,6 +15405,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -14960,6 +15436,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -14990,6 +15467,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -15020,6 +15498,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -15050,6 +15529,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -15080,6 +15560,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -15110,6 +15591,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -15140,6 +15622,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -15170,6 +15653,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -15200,6 +15684,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -15230,6 +15715,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -15260,6 +15746,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -15290,6 +15777,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -15320,6 +15808,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -15350,6 +15839,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -15380,6 +15870,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -15410,6 +15901,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -15440,6 +15932,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -15470,6 +15963,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -15500,6 +15994,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -15530,6 +16025,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -15560,6 +16056,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -15590,6 +16087,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -15620,6 +16118,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -15650,6 +16149,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -15680,6 +16180,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -15710,6 +16211,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -15740,6 +16242,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -15770,6 +16273,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -15800,6 +16304,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -15830,6 +16335,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -15860,6 +16366,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -15890,6 +16397,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -15920,6 +16428,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -15950,6 +16459,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -15980,6 +16490,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -16010,6 +16521,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -16040,6 +16552,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -16070,6 +16583,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -16100,6 +16614,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -16130,6 +16645,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -16160,6 +16676,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -16190,6 +16707,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -16220,6 +16738,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -16250,6 +16769,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -16280,6 +16800,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -16310,6 +16831,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -16340,6 +16862,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -16370,6 +16893,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -16400,6 +16924,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -16430,6 +16955,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -16460,6 +16986,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -16490,6 +17017,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -16520,6 +17048,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -16550,6 +17079,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -16580,6 +17110,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -16610,6 +17141,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -16640,6 +17172,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -16670,6 +17203,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -16700,6 +17234,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -16730,6 +17265,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -16760,6 +17296,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -16790,6 +17327,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -16820,6 +17358,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -16850,6 +17389,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -16880,6 +17420,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -16910,6 +17451,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -16940,6 +17482,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -16970,6 +17513,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -17000,6 +17544,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -17030,6 +17575,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -17060,6 +17606,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -17090,6 +17637,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -17120,6 +17668,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -17150,6 +17699,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -17180,6 +17730,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -17210,6 +17761,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -17240,6 +17792,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -17270,6 +17823,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -17300,6 +17854,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -17330,6 +17885,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -17360,6 +17916,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -17390,6 +17947,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -17420,6 +17978,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -17450,6 +18009,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -17480,6 +18040,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -17510,6 +18071,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -17540,6 +18102,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -17570,6 +18133,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -17600,6 +18164,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -17630,6 +18195,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -17660,6 +18226,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -17690,6 +18257,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -17720,6 +18288,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -17750,6 +18319,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -17780,6 +18350,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -17810,6 +18381,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -17840,6 +18412,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -17870,6 +18443,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -17900,6 +18474,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -17930,6 +18505,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -17960,6 +18536,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -17990,6 +18567,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -18020,6 +18598,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -18050,6 +18629,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -18080,6 +18660,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -18110,6 +18691,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -18140,6 +18722,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -18170,6 +18753,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -18200,6 +18784,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -18230,6 +18815,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -18260,6 +18846,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -18290,6 +18877,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -18320,6 +18908,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -18350,6 +18939,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -18380,6 +18970,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -18410,6 +19001,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -18440,6 +19032,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -18470,6 +19063,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -18500,6 +19094,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -18530,6 +19125,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -18560,6 +19156,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -18590,6 +19187,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -18620,6 +19218,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -18650,6 +19249,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -18680,6 +19280,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -18710,6 +19311,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -18740,6 +19342,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -18770,6 +19373,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -18800,6 +19404,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -18830,6 +19435,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -18860,6 +19466,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -18890,6 +19497,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -18920,6 +19528,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -18950,6 +19559,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -18980,6 +19590,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -19010,6 +19621,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -19040,6 +19652,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -19070,6 +19683,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -19100,6 +19714,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -19130,6 +19745,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -19160,6 +19776,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -19190,6 +19807,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -19220,6 +19838,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -19250,6 +19869,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -19280,6 +19900,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -19310,6 +19931,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -19340,6 +19962,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -19370,6 +19993,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -19400,6 +20024,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -19430,6 +20055,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -19460,6 +20086,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -19490,6 +20117,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -19520,6 +20148,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -19550,6 +20179,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -19580,6 +20210,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -19610,6 +20241,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -19640,6 +20272,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -19670,6 +20303,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -19700,6 +20334,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -19730,6 +20365,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -19760,6 +20396,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -19790,6 +20427,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -19820,6 +20458,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -19850,6 +20489,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -19880,6 +20520,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -19910,6 +20551,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -19940,6 +20582,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -19970,6 +20613,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -20000,6 +20644,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -20030,6 +20675,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -20060,6 +20706,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -20090,6 +20737,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -20120,6 +20768,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -20150,6 +20799,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -20180,6 +20830,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -20210,6 +20861,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -20240,6 +20892,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -20270,6 +20923,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -20300,6 +20954,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -20330,6 +20985,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -20360,6 +21016,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -20390,6 +21047,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -20420,6 +21078,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -20450,6 +21109,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -20480,6 +21140,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -20510,6 +21171,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -20540,6 +21202,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -20570,6 +21233,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -20600,6 +21264,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -20630,6 +21295,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -20660,6 +21326,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -20690,6 +21357,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -20720,6 +21388,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -20750,6 +21419,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -20780,6 +21450,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -20810,6 +21481,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -20840,6 +21512,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -20870,6 +21543,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -20900,6 +21574,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -20930,6 +21605,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -20960,6 +21636,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -20990,6 +21667,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -21020,6 +21698,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -21050,6 +21729,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -21080,6 +21760,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -21110,6 +21791,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -21140,6 +21822,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -21170,6 +21853,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -21200,6 +21884,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -21230,6 +21915,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -21260,6 +21946,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -21290,6 +21977,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -21320,6 +22008,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -21350,6 +22039,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -21380,6 +22070,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -21410,6 +22101,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -21440,6 +22132,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -21470,6 +22163,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -21500,6 +22194,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -21530,6 +22225,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -21560,6 +22256,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -21590,6 +22287,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -21620,6 +22318,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -21650,6 +22349,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -21680,6 +22380,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -21710,6 +22411,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -21740,6 +22442,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -21770,6 +22473,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -21800,6 +22504,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -21830,6 +22535,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -21860,6 +22566,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -21890,6 +22597,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -21920,6 +22628,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -21950,6 +22659,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -21980,6 +22690,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -22010,6 +22721,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -22040,6 +22752,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -22070,6 +22783,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -22100,6 +22814,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -22130,6 +22845,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -22160,6 +22876,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -22190,6 +22907,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -22220,6 +22938,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -22250,6 +22969,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -22280,6 +23000,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -22310,6 +23031,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -22340,6 +23062,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -22370,6 +23093,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -22400,6 +23124,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -22430,6 +23155,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -22460,6 +23186,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -22490,6 +23217,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -22520,6 +23248,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -22550,6 +23279,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -22580,6 +23310,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -22610,6 +23341,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -22640,6 +23372,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -22670,6 +23403,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -22700,6 +23434,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -22730,6 +23465,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -22760,6 +23496,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -22790,6 +23527,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -22820,6 +23558,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -22850,6 +23589,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -22880,6 +23620,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -22910,6 +23651,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -22940,6 +23682,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -22970,6 +23713,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -23000,6 +23744,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -23030,6 +23775,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -23060,6 +23806,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -23090,6 +23837,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -23120,6 +23868,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -23150,6 +23899,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -23180,6 +23930,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -23210,6 +23961,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -23240,6 +23992,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -23270,6 +24023,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -23300,6 +24054,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -23330,6 +24085,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -23360,6 +24116,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -23390,6 +24147,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -23420,6 +24178,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -23450,6 +24209,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -23480,6 +24240,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -23510,6 +24271,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -23540,6 +24302,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -23570,6 +24333,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -23600,6 +24364,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -23630,6 +24395,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -23660,6 +24426,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -23690,6 +24457,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -23720,6 +24488,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -23750,6 +24519,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -23780,6 +24550,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -23810,6 +24581,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -23840,6 +24612,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -23870,6 +24643,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -23900,6 +24674,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -23930,6 +24705,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -23960,6 +24736,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -23990,6 +24767,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -24020,6 +24798,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -24050,6 +24829,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -24080,6 +24860,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -24110,6 +24891,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -24140,6 +24922,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -24170,6 +24953,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -24200,6 +24984,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -24230,6 +25015,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -24260,6 +25046,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -24290,6 +25077,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -24320,6 +25108,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -24350,6 +25139,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -24380,6 +25170,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -24410,6 +25201,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -24440,6 +25232,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -24470,6 +25263,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -24500,6 +25294,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -24530,6 +25325,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -24560,6 +25356,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -24590,6 +25387,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -24620,6 +25418,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -24650,6 +25449,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -24680,6 +25480,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -24710,6 +25511,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -24740,6 +25542,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -24770,6 +25573,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -24800,6 +25604,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -24830,6 +25635,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -24860,6 +25666,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -24890,6 +25697,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -24920,6 +25728,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -24950,6 +25759,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -24980,6 +25790,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -25010,6 +25821,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -25040,6 +25852,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -25070,6 +25883,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -25100,6 +25914,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -25130,6 +25945,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -25160,6 +25976,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -25190,6 +26007,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -25220,6 +26038,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -25250,6 +26069,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -25280,6 +26100,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -25310,6 +26131,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -25340,6 +26162,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -25370,6 +26193,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -25400,6 +26224,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -25430,6 +26255,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -25460,6 +26286,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -25490,6 +26317,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -25520,6 +26348,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -25550,6 +26379,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -25580,6 +26410,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -25610,6 +26441,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -25640,6 +26472,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -25670,6 +26503,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -25700,6 +26534,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -25730,6 +26565,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -25760,6 +26596,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -25790,6 +26627,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -25820,6 +26658,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -25850,6 +26689,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -25880,6 +26720,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -25910,6 +26751,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -25940,6 +26782,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -25970,6 +26813,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -26000,6 +26844,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -26030,6 +26875,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -26060,6 +26906,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -26090,6 +26937,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -26120,6 +26968,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -26150,6 +26999,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -26180,6 +27030,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -26210,6 +27061,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -26240,6 +27092,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -26270,6 +27123,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -26300,6 +27154,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -26330,6 +27185,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -26360,6 +27216,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -26390,6 +27247,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -26420,6 +27278,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -26450,6 +27309,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -26480,6 +27340,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -26510,6 +27371,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -26540,6 +27402,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -26570,6 +27433,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -26600,6 +27464,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -26630,6 +27495,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -26660,6 +27526,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -26690,6 +27557,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -26720,6 +27588,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -26750,6 +27619,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -26780,6 +27650,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -26810,6 +27681,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -26840,6 +27712,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -26870,6 +27743,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -26900,6 +27774,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -26930,6 +27805,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -26960,6 +27836,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -26990,6 +27867,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -27020,6 +27898,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -27050,6 +27929,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -27080,6 +27960,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -27110,6 +27991,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -27140,6 +28022,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -27170,6 +28053,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -27200,6 +28084,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -27230,6 +28115,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -27260,6 +28146,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -27290,6 +28177,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -27320,6 +28208,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -27350,6 +28239,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -27380,6 +28270,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -27410,6 +28301,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -27440,6 +28332,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -27470,6 +28363,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -27500,6 +28394,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -27530,6 +28425,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -27560,6 +28456,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -27590,6 +28487,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -27620,6 +28518,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -27650,6 +28549,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -27680,6 +28580,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -27710,6 +28611,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -27740,6 +28642,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -27770,6 +28673,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -27800,6 +28704,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -27830,6 +28735,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -27860,6 +28766,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -27890,6 +28797,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -27920,6 +28828,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -27950,6 +28859,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -27980,6 +28890,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -28010,6 +28921,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -28040,6 +28952,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -28070,6 +28983,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -28100,6 +29014,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -28130,6 +29045,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -28160,6 +29076,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -28190,6 +29107,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -28220,6 +29138,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -28250,6 +29169,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -28280,6 +29200,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -28310,6 +29231,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -28340,6 +29262,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -28370,6 +29293,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -28400,6 +29324,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -28430,6 +29355,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -28460,6 +29386,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -28490,6 +29417,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -28520,6 +29448,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -28550,6 +29479,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -28580,6 +29510,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -28610,6 +29541,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -28640,6 +29572,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -28670,6 +29603,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -28700,6 +29634,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -28730,6 +29665,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -28760,6 +29696,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -28790,6 +29727,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -28820,6 +29758,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -28850,6 +29789,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -28880,6 +29820,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -28910,6 +29851,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -28940,6 +29882,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -28970,6 +29913,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -29000,6 +29944,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -29030,6 +29975,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -29060,6 +30006,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -29090,6 +30037,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -29120,6 +30068,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -29150,6 +30099,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -29180,6 +30130,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -29210,6 +30161,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -29240,6 +30192,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -29270,6 +30223,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -29300,6 +30254,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -29330,6 +30285,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -29360,6 +30316,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -29390,6 +30347,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -29420,6 +30378,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -29450,6 +30409,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -29480,6 +30440,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -29510,6 +30471,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -29540,6 +30502,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -29570,6 +30533,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -29600,6 +30564,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -29630,6 +30595,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -29660,6 +30626,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -29690,6 +30657,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -29720,6 +30688,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -29750,6 +30719,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -29780,6 +30750,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -29810,6 +30781,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -29840,6 +30812,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -29870,6 +30843,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -29900,6 +30874,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -29930,6 +30905,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -29960,6 +30936,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -29990,6 +30967,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -30020,6 +30998,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -30050,6 +31029,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -30080,6 +31060,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -30110,6 +31091,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -30140,6 +31122,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -30170,6 +31153,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -30200,6 +31184,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -30230,6 +31215,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -30260,6 +31246,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -30290,6 +31277,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -30320,6 +31308,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -30350,6 +31339,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -30380,6 +31370,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -30410,6 +31401,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -30440,6 +31432,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -30470,6 +31463,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -30500,6 +31494,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -30530,6 +31525,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -30560,6 +31556,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -30590,6 +31587,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -30620,6 +31618,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -30650,6 +31649,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -30680,6 +31680,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -30710,6 +31711,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -30740,6 +31742,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -30770,6 +31773,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -30800,6 +31804,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -30830,6 +31835,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -30860,6 +31866,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -30890,6 +31897,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -30920,6 +31928,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -30950,6 +31959,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -30980,6 +31990,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -31010,6 +32021,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -31040,6 +32052,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -31070,6 +32083,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -31100,6 +32114,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -31130,6 +32145,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -31160,6 +32176,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -31190,6 +32207,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -31220,6 +32238,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -31250,6 +32269,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -31280,6 +32300,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -31310,6 +32331,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -31340,6 +32362,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -31370,6 +32393,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -31400,6 +32424,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -31430,6 +32455,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -31460,6 +32486,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -31490,6 +32517,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -31520,6 +32548,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -31550,6 +32579,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -31580,6 +32610,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -31610,6 +32641,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -31640,6 +32672,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -31670,6 +32703,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -31700,6 +32734,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -31730,6 +32765,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -31760,6 +32796,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -31790,6 +32827,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -31820,6 +32858,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -31850,6 +32889,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -31880,6 +32920,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -31910,6 +32951,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -31940,6 +32982,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -31970,6 +33013,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -32000,6 +33044,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -32030,6 +33075,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -32060,6 +33106,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -32090,6 +33137,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -32120,6 +33168,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -32150,6 +33199,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -32180,6 +33230,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -32210,6 +33261,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -32240,6 +33292,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -32270,6 +33323,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -32300,6 +33354,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -32330,6 +33385,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -32360,6 +33416,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -32390,6 +33447,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -32420,6 +33478,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -32450,6 +33509,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -32480,6 +33540,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -32510,6 +33571,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -32540,6 +33602,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -32570,6 +33633,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -32600,6 +33664,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -32630,6 +33695,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -32660,6 +33726,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -32690,6 +33757,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -32720,6 +33788,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -32750,6 +33819,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -32780,6 +33850,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -32810,6 +33881,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -32840,6 +33912,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -32870,6 +33943,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -32900,6 +33974,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -32930,6 +34005,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -32960,6 +34036,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -32990,6 +34067,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -33020,6 +34098,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -33050,6 +34129,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -33080,6 +34160,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -33110,6 +34191,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -33140,6 +34222,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -33170,6 +34253,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -33200,6 +34284,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -33230,6 +34315,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -33260,6 +34346,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -33290,6 +34377,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -33320,6 +34408,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -33350,6 +34439,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -33380,6 +34470,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -33410,6 +34501,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -33440,6 +34532,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -33470,6 +34563,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -33500,6 +34594,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -33530,6 +34625,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -33560,6 +34656,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -33590,6 +34687,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -33620,6 +34718,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -33650,6 +34749,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -33680,6 +34780,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -33710,6 +34811,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -33740,6 +34842,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -33770,6 +34873,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -33800,6 +34904,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -33830,6 +34935,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -33860,6 +34966,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -33890,6 +34997,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -33920,6 +35028,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -33950,6 +35059,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -33980,6 +35090,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -34010,6 +35121,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -34040,6 +35152,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -34070,6 +35183,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -34100,6 +35214,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -34130,6 +35245,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -34160,6 +35276,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -34190,6 +35307,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -34220,6 +35338,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -34250,6 +35369,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -34280,6 +35400,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -34310,6 +35431,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -34340,6 +35462,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -34370,6 +35493,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -34400,6 +35524,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -34430,6 +35555,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -34460,6 +35586,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -34490,6 +35617,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -34520,6 +35648,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -34550,6 +35679,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -34580,6 +35710,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -34610,6 +35741,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -34640,6 +35772,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -34670,6 +35803,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -34700,6 +35834,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -34730,6 +35865,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -34760,6 +35896,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -34790,6 +35927,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -34820,6 +35958,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -34850,6 +35989,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -34880,6 +36020,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -34910,6 +36051,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -34940,6 +36082,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -34970,6 +36113,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -35000,6 +36144,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -35030,6 +36175,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -35060,6 +36206,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -35090,6 +36237,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -35120,6 +36268,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -35150,6 +36299,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -35180,6 +36330,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -35210,6 +36361,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -35240,6 +36392,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -35270,6 +36423,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -35300,6 +36454,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -35330,6 +36485,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -35360,6 +36516,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -35390,6 +36547,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -35420,6 +36578,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -35450,6 +36609,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -35480,6 +36640,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -35510,6 +36671,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -35540,6 +36702,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -35570,6 +36733,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -35600,6 +36764,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -35630,6 +36795,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -35660,6 +36826,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -35690,6 +36857,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -35720,6 +36888,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -35750,6 +36919,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -35780,6 +36950,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -35810,6 +36981,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -35840,6 +37012,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -35870,6 +37043,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -35900,6 +37074,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -35930,6 +37105,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -35960,6 +37136,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -35990,6 +37167,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -36020,6 +37198,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -36050,6 +37229,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -36080,6 +37260,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -36110,6 +37291,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -36140,6 +37322,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -36170,6 +37353,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -36200,6 +37384,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -36230,6 +37415,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -36260,6 +37446,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -36290,6 +37477,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -36320,6 +37508,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -36350,6 +37539,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -36380,6 +37570,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -36410,6 +37601,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -36440,6 +37632,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -36470,6 +37663,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -36500,6 +37694,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -36530,6 +37725,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -36560,6 +37756,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -36590,6 +37787,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -36620,6 +37818,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -36650,6 +37849,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -36680,6 +37880,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -36710,6 +37911,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -36740,6 +37942,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -36770,6 +37973,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -36800,6 +38004,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -36830,6 +38035,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -36860,6 +38066,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -36890,6 +38097,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -36920,6 +38128,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -36950,6 +38159,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -36980,6 +38190,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -37010,6 +38221,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -37040,6 +38252,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -37070,6 +38283,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -37100,6 +38314,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -37130,6 +38345,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -37160,6 +38376,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -37190,6 +38407,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -37220,6 +38438,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -37250,6 +38469,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -37280,6 +38500,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -37310,6 +38531,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -37340,6 +38562,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -37370,6 +38593,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -37400,6 +38624,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -37430,6 +38655,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -37460,6 +38686,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -37490,6 +38717,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -37520,6 +38748,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -37550,6 +38779,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -37580,6 +38810,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -37610,6 +38841,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -37640,6 +38872,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -37670,6 +38903,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -37700,6 +38934,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -37730,6 +38965,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -37760,6 +38996,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -37790,6 +39027,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -37820,6 +39058,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -37850,6 +39089,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -37880,6 +39120,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -37910,6 +39151,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -37940,6 +39182,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -37970,6 +39213,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -38000,6 +39244,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -38030,6 +39275,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -38060,6 +39306,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -38090,6 +39337,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -38120,6 +39368,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -38150,6 +39399,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -38180,6 +39430,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -38210,6 +39461,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -38240,6 +39492,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -38270,6 +39523,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -38300,6 +39554,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -38330,6 +39585,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -38360,6 +39616,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -38390,6 +39647,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -38420,6 +39678,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -38450,6 +39709,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -38480,6 +39740,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -38510,6 +39771,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -38540,6 +39802,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -38570,6 +39833,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -38600,6 +39864,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -38630,6 +39895,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -38660,6 +39926,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -38690,6 +39957,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -38720,6 +39988,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -38750,6 +40019,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -38780,6 +40050,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -38810,6 +40081,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -38840,6 +40112,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -38870,6 +40143,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -38900,6 +40174,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -38930,6 +40205,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -38960,6 +40236,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -38990,6 +40267,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -39020,6 +40298,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -39050,6 +40329,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -39080,6 +40360,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -39110,6 +40391,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -39140,6 +40422,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -39170,6 +40453,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -39200,6 +40484,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -39230,6 +40515,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -39260,6 +40546,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -39290,6 +40577,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -39320,6 +40608,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -39350,6 +40639,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -39380,6 +40670,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -39410,6 +40701,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -39440,6 +40732,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -39470,6 +40763,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -39500,6 +40794,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -39530,6 +40825,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -39560,6 +40856,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -39590,6 +40887,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -39620,6 +40918,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -39650,6 +40949,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -39680,6 +40980,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -39710,6 +41011,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -39740,6 +41042,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -39770,6 +41073,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -39800,6 +41104,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -39830,6 +41135,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -39860,6 +41166,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -39890,6 +41197,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -39920,6 +41228,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -39950,6 +41259,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -39980,6 +41290,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -40010,6 +41321,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -40040,6 +41352,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -40070,6 +41383,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -40100,6 +41414,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -40130,6 +41445,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -40160,6 +41476,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -40190,6 +41507,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -40220,6 +41538,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -40250,6 +41569,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -40280,6 +41600,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -40310,6 +41631,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -40340,6 +41662,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -40370,6 +41693,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -40400,6 +41724,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -40430,6 +41755,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -40460,6 +41786,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -40490,6 +41817,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -40520,6 +41848,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -40550,6 +41879,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -40580,6 +41910,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -40610,6 +41941,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -40640,6 +41972,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -40670,6 +42003,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -40700,6 +42034,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -40730,6 +42065,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -40760,6 +42096,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -40790,6 +42127,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -40820,6 +42158,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -40850,6 +42189,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -40880,6 +42220,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -40910,6 +42251,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -40940,6 +42282,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -40970,6 +42313,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -41000,6 +42344,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -41030,6 +42375,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -41060,6 +42406,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -41090,6 +42437,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -41120,6 +42468,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -41150,6 +42499,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -41180,6 +42530,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -41210,6 +42561,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -41240,6 +42592,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -41270,6 +42623,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -41300,6 +42654,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -41330,6 +42685,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -41360,6 +42716,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -41390,6 +42747,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -41420,6 +42778,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -41450,6 +42809,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -41480,6 +42840,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -41510,6 +42871,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -41540,6 +42902,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -41570,6 +42933,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -41600,6 +42964,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -41630,6 +42995,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -41660,6 +43026,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -41690,6 +43057,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -41720,6 +43088,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -41750,6 +43119,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -41780,6 +43150,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -41810,6 +43181,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -41840,6 +43212,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -41870,6 +43243,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -41900,6 +43274,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -41930,6 +43305,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -41960,6 +43336,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -41990,6 +43367,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -42020,6 +43398,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -42050,6 +43429,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -42080,6 +43460,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -42110,6 +43491,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -42140,6 +43522,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -42170,6 +43553,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -42200,6 +43584,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -42230,6 +43615,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -42260,6 +43646,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -42290,6 +43677,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -42320,6 +43708,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -42350,6 +43739,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -42380,6 +43770,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -42410,6 +43801,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -42440,6 +43832,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -42470,6 +43863,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -42500,6 +43894,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -42530,6 +43925,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -42560,6 +43956,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -42590,6 +43987,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -42620,6 +44018,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -42650,6 +44049,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -42680,6 +44080,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -42710,6 +44111,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -42740,6 +44142,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -42770,6 +44173,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -42800,6 +44204,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -42830,6 +44235,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -42860,6 +44266,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -42890,6 +44297,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -42920,6 +44328,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -42950,6 +44359,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -42980,6 +44390,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -43010,6 +44421,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -43040,6 +44452,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -43070,6 +44483,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -43100,6 +44514,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -43130,6 +44545,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -43160,6 +44576,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -43190,6 +44607,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -43220,6 +44638,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -43250,6 +44669,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -43280,6 +44700,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -43310,6 +44731,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -43340,6 +44762,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -43370,6 +44793,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -43400,6 +44824,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -43430,6 +44855,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -43460,6 +44886,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -43490,6 +44917,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -43520,6 +44948,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -43550,6 +44979,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -43580,6 +45010,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -43610,6 +45041,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -43640,6 +45072,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -43670,6 +45103,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -43700,6 +45134,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -43730,6 +45165,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -43760,6 +45196,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -43790,6 +45227,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -43820,6 +45258,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -43850,6 +45289,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -43880,6 +45320,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -43910,6 +45351,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -43940,6 +45382,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -43970,6 +45413,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -44000,6 +45444,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -44030,6 +45475,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -44060,6 +45506,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -44090,6 +45537,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -44120,6 +45568,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -44150,6 +45599,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -44180,6 +45630,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -44210,6 +45661,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -44240,6 +45692,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -44270,6 +45723,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -44300,6 +45754,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -44330,6 +45785,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -44360,6 +45816,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -44390,6 +45847,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -44420,6 +45878,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -44450,6 +45909,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -44480,6 +45940,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -44510,6 +45971,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -44540,6 +46002,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -44570,6 +46033,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -44600,6 +46064,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -44630,6 +46095,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -44660,6 +46126,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -44690,6 +46157,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -44720,6 +46188,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -44750,6 +46219,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -44780,6 +46250,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -44810,6 +46281,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -44840,6 +46312,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -44870,6 +46343,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -44900,6 +46374,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -44930,6 +46405,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -44960,6 +46436,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -44990,6 +46467,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -45020,6 +46498,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -45050,6 +46529,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -45080,6 +46560,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -45110,6 +46591,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -45140,6 +46622,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -45170,6 +46653,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -45200,6 +46684,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -45230,6 +46715,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -45260,6 +46746,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -45290,6 +46777,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -45320,6 +46808,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -45350,6 +46839,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -45380,6 +46870,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -45410,6 +46901,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -45440,6 +46932,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -45470,6 +46963,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -45500,6 +46994,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -45530,6 +47025,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -45560,6 +47056,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -45590,6 +47087,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -45620,6 +47118,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -45650,6 +47149,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -45680,6 +47180,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -45710,6 +47211,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -45740,6 +47242,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -45770,6 +47273,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -45800,6 +47304,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -45830,6 +47335,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -45860,6 +47366,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -45890,6 +47397,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -45920,6 +47428,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -45950,6 +47459,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -45980,6 +47490,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -46010,6 +47521,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -46040,6 +47552,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -46070,6 +47583,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -46100,6 +47614,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -46130,6 +47645,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -46160,6 +47676,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -46190,6 +47707,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -46220,6 +47738,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -46250,6 +47769,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -46280,6 +47800,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -46310,6 +47831,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -46340,6 +47862,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -46370,6 +47893,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -46400,6 +47924,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -46430,6 +47955,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -46460,6 +47986,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -46490,6 +48017,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -46520,6 +48048,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -46550,6 +48079,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -46580,6 +48110,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -46610,6 +48141,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -46640,6 +48172,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -46670,6 +48203,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -46700,6 +48234,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -46730,6 +48265,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -46760,6 +48296,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -46790,6 +48327,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -46820,6 +48358,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -46850,6 +48389,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -46880,6 +48420,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -46910,6 +48451,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -46940,6 +48482,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -46970,6 +48513,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -47000,6 +48544,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -47030,6 +48575,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -47060,6 +48606,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -47090,6 +48637,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -47120,6 +48668,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -47150,6 +48699,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -47180,6 +48730,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -47210,6 +48761,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -47240,6 +48792,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -47270,6 +48823,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -47300,6 +48854,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -47330,6 +48885,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -47360,6 +48916,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -47390,6 +48947,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -47420,6 +48978,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -47450,6 +49009,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -47480,6 +49040,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -47510,6 +49071,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -47540,6 +49102,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -47570,6 +49133,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -47583,7 +49147,6 @@ export declare const config: {
             color11: string;
             color12: string;
         };
-    }, "light" | "dark"> & {
         light: {
             background: string;
             backgroundHover: string;
@@ -47601,6 +49164,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -47732,6 +49296,7 @@ export declare const config: {
             borderColorFocus: string;
             borderColorPress: string;
             placeholderColor: string;
+            outlineColor: string;
             color1: string;
             color2: string;
             color3: string;
@@ -47883,6 +49448,9 @@ export declare const config: {
         };
         gtXl: {
             minWidth: number;
+        };
+        pointerFine: {
+            pointer: string;
         };
     };
     shorthands: {
@@ -48579,18 +50147,25 @@ export declare const config: {
             19: import("@tamagui/web").Variable<number>;
             20: import("@tamagui/web").Variable<number>;
         };
-        icon: {
-            sm: import("@tamagui/web").Variable<number>;
-            md: import("@tamagui/web").Variable<number>;
-            lg: import("@tamagui/web").Variable<number>;
-        };
     }, "zIndex" | "color" | "size" | "space" | "radius">;
+    mediaQueryDefaultActive: {
+        xl: boolean;
+        lg: boolean;
+        md: boolean;
+        sm: boolean;
+        xs: boolean;
+        xxs: boolean;
+    };
+    selectionStyles: (theme: Record<string, string>) => {
+        backgroundColor: string;
+        color: string;
+    };
     settings: {
         allowedStyleValues: "somewhat-strict-web";
         autocompleteSpecificTokens: "except-special";
     };
     fonts: {
-        heading: import("@tamagui/font-inter").FillInFont<{
+        heading: import("@tamagui/web").FillInFont<{
             size: {
                 5: number;
                 6: number;
@@ -48632,8 +50207,8 @@ export declare const config: {
                     normal: string;
                 };
             };
-        }, 5 | 9 | 15 | 1 | 10 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
-        headingDmSans: import("@tamagui/font-inter").FillInFont<{
+        }, 5 | 9 | 15 | 1 | 10 | 14 | 11 | 12 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+        headingDmSans: import("@tamagui/web").FillInFont<{
             size: {
                 5: number;
                 6: number;
@@ -48661,8 +50236,8 @@ export declare const config: {
                 11: number;
             };
             face: {};
-        }, 5 | 9 | 15 | 1 | 10 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
-        headingDmSerifDisplay: import("@tamagui/font-inter").FillInFont<{
+        }, 5 | 9 | 15 | 1 | 10 | 14 | 11 | 12 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+        headingDmSerifDisplay: import("@tamagui/web").FillInFont<{
             size: {
                 5: number;
                 6: number;
@@ -48696,8 +50271,8 @@ export declare const config: {
                 15: number;
             };
             face: {};
-        }, 5 | 9 | 15 | 1 | 10 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
-        headingNohemi: import("@tamagui/font-inter").FillInFont<{
+        }, 5 | 9 | 15 | 1 | 10 | 14 | 11 | 12 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+        headingNohemi: import("@tamagui/web").FillInFont<{
             size: {
                 5: number;
                 6: number;
@@ -48724,8 +50299,8 @@ export declare const config: {
                 12: number;
             };
             face: {};
-        }, 5 | 9 | 15 | 1 | 10 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
-        body: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 5 | 9 | 15 | 1 | 10 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+        }, 5 | 9 | 15 | 1 | 10 | 14 | 11 | 12 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+        body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 5 | 9 | 15 | 1 | 10 | 14 | 11 | 12 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
         mono: {
             weight: {
                 1: string;
@@ -48749,9 +50324,9 @@ export declare const config: {
                 16: number;
             };
         };
-        silkscreen: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 5 | 9 | 15 | 1 | 10 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13>;
-        munro: import("@tamagui/font-inter").GenericFont;
-        cherryBomb: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 5 | 9 | 15 | 1 | 10 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+        silkscreen: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 5 | 9 | 15 | 1 | 10 | 14 | 11 | 12 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13>;
+        munro: import("@tamagui/web").GenericFont;
+        cherryBomb: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 5 | 9 | 15 | 1 | 10 | 14 | 11 | 12 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
     };
 };
 //# sourceMappingURL=tamagui.config.d.ts.map

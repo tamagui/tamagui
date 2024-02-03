@@ -1,6 +1,6 @@
 /// <reference types="react" />
-import { SizeTokens } from '@tamagui/core';
-import { Direction, SliderContextValue } from './types';
+import type { SizeTokens } from '@tamagui/core';
+import type { Direction, SliderContextValue } from './types';
 export declare const SLIDER_NAME = "Slider";
 export declare const createSliderContext: <ContextValueType extends object | null>(rootComponentName: string, defaultContext?: ContextValueType | undefined) => readonly [{
     (props: ContextValueType & {

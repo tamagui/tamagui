@@ -1,33 +1,24 @@
 import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import { useMemo, useState } from 'react'
-import {
-  Adapt,
-  FontSizeTokens,
-  Label,
-  Select,
-  SelectProps,
-  Sheet,
-  XStack,
-  YStack,
-  getFontSize,
-} from 'tamagui'
+import type { FontSizeTokens, SelectProps } from 'tamagui'
+import { Adapt, Label, Select, Sheet, XStack, YStack, getFontSize } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 
 export function SelectDemo() {
   return (
-    <YStack space>
-      <XStack ai="center" space>
-        <Label f={1} fb={0}>
+    <YStack gap="$4">
+      <XStack ai="center" gap="$4">
+        <Label htmlFor="select-demo-1" f={1} miw={80}>
           Custom
         </Label>
-        <SelectDemoItem />
+        <SelectDemoItem id="select-demo-1" />
       </XStack>
 
-      <XStack ai="center" space>
-        <Label f={1} fb={0}>
+      <XStack ai="center" gap="$4">
+        <Label htmlFor="select-demo-2" f={1} miw={80}>
           Native
         </Label>
-        <SelectDemoItem native />
+        <SelectDemoItem id="select-demo-2" native />
       </XStack>
     </YStack>
   )
@@ -37,13 +28,7 @@ export function SelectDemoItem(props: SelectProps) {
   const [val, setVal] = useState('apple')
 
   return (
-    <Select
-      id="food"
-      value={val}
-      onValueChange={setVal}
-      disablePreventBodyScroll
-      {...props}
-    >
+    <Select value={val} onValueChange={setVal} disablePreventBodyScroll {...props}>
       <Select.Trigger width={220} iconAfter={ChevronDown}>
         <Select.Value placeholder="Something" />
       </Select.Trigger>

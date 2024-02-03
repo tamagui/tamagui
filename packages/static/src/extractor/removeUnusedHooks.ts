@@ -1,4 +1,4 @@
-import { NodePath } from '@babel/traverse'
+import type { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
 
 const hooks = {
@@ -58,7 +58,8 @@ export function removeUnusedHooks(
           // remove "const media = useMedia()"
           const name = id.node.name
           return !isBindingReferenced(name)
-        } else if (t.isObjectPattern(id.node)) {
+        }
+        if (t.isObjectPattern(id.node)) {
           // remove "const { sm } = useMedia()"
           const propPaths = id.get('properties') as NodePath<any>[]
           return propPaths.every((prop) => {

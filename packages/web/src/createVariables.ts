@@ -1,6 +1,7 @@
 import { simpleHash } from '@tamagui/helpers'
 
-import { Variable, createVariable, isVariable } from './createVariable'
+import type { Variable } from './createVariable'
+import { createVariable, isVariable } from './createVariable'
 
 type DeepTokenObject<Val extends string | number = any> = {
   [key: string]: Val | DeepTokenObject<Val>
@@ -10,8 +11,8 @@ export type DeepVariableObject<A extends DeepTokenObject> = {
   [Key in keyof A]: A[Key] extends string | number
     ? Variable<A[Key]>
     : A[Key] extends DeepTokenObject
-    ? DeepVariableObject<A[Key]>
-    : never
+      ? DeepVariableObject<A[Key]>
+      : never
 }
 
 const cache = new WeakMap()

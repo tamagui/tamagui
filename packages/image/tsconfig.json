@@ -1,7 +1,19 @@
 {
   "extends": "../../tsconfig.json",
-  "compilerOptions": { "composite": true},
+  "compilerOptions": {
+    "composite": true
+  },
   "references": [
-    { "path": "../core" },
-    { "path": "../stacks" }  ]
+    {
+      "path": "../core"
+    },
+    {
+      "path": "../stacks"
+    }
+  ],
+  "exclude": [
+    "types",
+    "dist",
+    "**/__tests__"
+  ]
 }

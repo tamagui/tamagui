@@ -1,17 +1,17 @@
 import { TamaguiLogo } from '@tamagui/logo'
 import { NextLink } from 'components/NextLink'
-import React from 'react'
+import { memo } from 'react'
 import { H4, Paragraph, Spacer, Text, XStack, YStack } from 'tamagui'
 
 import { ContainerLarge } from './Container'
 import { ExternalIcon } from './ExternalIcon'
 import { ParagraphLink } from './Link'
 
-export const Footer = () => {
+export const Footer = memo(() => {
   return (
-    <YStack tag="footer" pos="relative">
+    <YStack tag="footer" pos="relative" mb="$10">
       <ContainerLarge>
-        <XStack py="$7" $sm={{ flexDirection: 'column', ai: 'center' }}>
+        <XStack x={40} py="$7" $sm={{ flexDirection: 'column', ai: 'center' }}>
           <YStack
             ai="flex-start"
             $sm={{ ai: 'center' }}
@@ -36,17 +36,6 @@ export const Footer = () => {
             <NextLink href="/" aria-label="Homepage">
               <TamaguiLogo showWords downscale={1} />
             </NextLink>
-            <Paragraph mt="$2" size="$3">
-              by{' '}
-              <ParagraphLink
-                // @ts-ignore
-                fontSize="inherit"
-                href="https://twitter.com/natebirdman"
-                target="_blank"
-              >
-                nate
-              </ParagraphLink>
-            </Paragraph>
             <Paragraph size="$3">built with Tamagui</Paragraph>
           </YStack>
 
@@ -63,7 +52,6 @@ export const Footer = () => {
             </H4>
             <ParagraphLink href="/docs/intro/introduction">Introduction</ParagraphLink>
             <ParagraphLink href="/docs/core/configuration">Configuration</ParagraphLink>
-            <ParagraphLink href="/docs/guides/design-systems">Guides</ParagraphLink>
             {/* <ParagraphLink href="/docs/api">API</ParagraphLink>
           <ParagraphLink href="/docs/frequently-asked-questions">FAQ</ParagraphLink> */}
           </YStack>
@@ -121,7 +109,11 @@ export const Footer = () => {
             </XStack>
           </YStack>
         </XStack>
+
+        <Spacer />
+        <Spacer />
+        <Spacer />
       </ContainerLarge>
     </YStack>
   )
-}
+})

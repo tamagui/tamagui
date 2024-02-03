@@ -1,11 +1,10 @@
-import { isServer } from '@tamagui/constants'
 import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import { useForceUpdate } from '@tamagui/use-force-update'
 import { useEffect, useId, useState } from 'react'
 import { createPortal } from 'react-dom'
 
-import { ChangedThemeResponse } from '../hooks/useTheme'
-import { ThemeProps } from '../types'
+import type { ChangedThemeResponse } from '../hooks/useTheme'
+import type { ThemeProps } from '../types'
 
 let node
 
@@ -68,11 +67,15 @@ export function ThemeDebug({
           <code
             style={{
               whiteSpace: 'pre',
+              maxWidth: 250,
+              overflow: 'auto',
+              padding: 5,
             }}
           >
             &lt;Theme {id} /&gt;&nbsp;
             {JSON.stringify(
               {
+                propsName: themeProps.name,
                 name: themeState?.state?.name,
                 className: themeState?.state?.className,
                 inverse: themeProps.inverse,

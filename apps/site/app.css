@@ -8,7 +8,27 @@ body {
 }
 
 body {
-  background-color: var(--backgroundStrong) !important;
+  background: var(--backgroundStrong) !important;
+}
+
+body:has(.strong-background) {
+  background: var(--color4) !important;
+}
+
+html.t_dark body:has(.strong-background) {
+  background: var(--color2) !important;
+}
+
+html.t_light body:has(.strong-background)::before {
+  display: flex;
+  content: ' ';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 900px;
+  background: linear-gradient(#fff, transparent);
+  z-index: 1;
 }
 
 body {
@@ -29,6 +49,18 @@ body {
   max-width: 100vw;
   overflow-x: hidden;
 }
+
+.home-glow {
+  background: radial-gradient(#fff 0%, transparent 50%);
+  transition: all ease-out 0.25s;
+}
+
+.t_dark .home-glow {
+  background: radial-gradient(var(--color6) 0%, transparent 72%);
+}
+
+.t_dark .home-glow.active { opacity: 0.3; }
+.home-glow.active { opacity: 1; }
 
 body .preview {
   border-top-left-radius: 0;
@@ -115,14 +147,6 @@ span._display-1adg3ll > span._display-xoduu5 {
     transparent,
     var(--background) 150%
   );
-}
-
-.hero-blur {
-  background: radial-gradient(var(--color2) 0%, transparent 72%);
-}
-
-.t_dark .hero-blur {
-  background: radial-gradient(var(--color6) 0%, transparent 72%);
 }
 
 /* reset */
@@ -295,6 +319,10 @@ iframe {
   backdrop-filter: blur(30px);
 }
 
+.blur-4 {
+  backdrop-filter: blur(4px);
+}
+
 .blur-light {
   backdrop-filter: blur(2px);
 }
@@ -345,23 +373,24 @@ iframe {
 
 .mask-gradient-up {
   mask-image: linear-gradient(transparent 20%, rgba(0, 0, 0, 1));
+  mix-blend-mode: screen;
 }
 
 .mask-gradient-right {
   mask-image: linear-gradient(120deg, rgba(0, 0, 0, 1) 50%, transparent 100%);
-  mix-blend-mode: color-dodge;
+  mix-blend-mode: screen;
 }
 
 .mask-gradient-left {
   mask-image: linear-gradient(-100deg, rgba(0, 0, 0, 1), transparent 100%);
-  mix-blend-mode: color-dodge;
+  mix-blend-mode: screen;
 }
 
 .t_dark .mask-gradient-right {
   mix-blend-mode: color-dodge;
 }
 
-.t_dark .mask-gradient-left {
+.t_dark .mask-gradient-left, .mix-hard-light {
   mix-blend-mode: hard-light;
 }
 
@@ -741,8 +770,8 @@ textarea {
 }
 
 .font-outlined {
-  text-shadow: 8px 8px var(--color), -8px -8px var(--color), -8px 8px var(--color),
-    8px -8px var(--color);
+  -webkit-text-stroke-width: 8px;
+  -webkit-text-stroke-color: var(--color);
 }
 
 .font-outlined-sm {
@@ -769,7 +798,7 @@ textarea {
 
 .clip-slice {
   mask-image: url(./public/heart.svg);
-  mask-size: 20% 20%;
+  mask-size: 25% 25%;
   animation: clip-fade2 90s infinite alternate;
 }
 
@@ -780,7 +809,7 @@ textarea {
 }
 
 .slice-alt {
-  mask-size: 30% 30%;
+  mask-size: 50% 50%;
   animation: clip-fade2 30s infinite alternate;
 }
 
@@ -817,7 +846,32 @@ textarea {
   -webkit-text-wrap: balance;
 }
 
-.text-wrap-pretty {
+.text-wrap-pretty, p {
   text-wrap: pretty;
   -webkit-text-wrap: pretty;
+}
+
+.tooltip {
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-decoration-color: var(--color7);
+  text-underline-offset: 6px;
+}
+
+@keyframes breeze {
+  0% {
+    transform: translateX(1300px) translateY(-100px) scale(3.5) rotate(90deg) scaleX(-1) scaleY(-1);
+  }
+
+  100% {
+    transform: translateX(1350px) translateY(0px) scale(3.5) rotate(90deg) scaleX(-1) scaleY(-1);
+  }
+}
+
+.shadow-breeze {
+  animation: breeze 50s alternate-reverse infinite forwards;
+}
+
+:root.t_light .phone-preview {
+  opacity: 0;
 }

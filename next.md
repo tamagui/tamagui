@@ -1,3 +1,156 @@
+- Label + Select
+
+- type to search on Select regressed
+
+- masks wasn't exported in my version of @tamagui/theme-builder (1.88.18). I had to grab it from @tamagui/themes/v2-themes instead
+
+- for uni: 
+  if you have variant that expands into `maxFontSizeMultiplier` it wont get filtered by skipProps on web
+
+- // TODO: pulling past the limit breaks scroll on native, need to better make ScrollView
+
+- icons move from themed() to just styled()
+
+- nextjs plugin should automatically do the t_unmounted thing if disableSSR isnt true
+
+- opacity values desperately needed
+  - dynamic opacity is doable but would only work 0-runtime if css supports shifting opacity
+
+- // TODO ?
+- make studio not build unless `studio(` in commit
+
+- native theme change warning logs + theme change speed
+
+- themes v3
+  - remove many masks
+  - get ready for studio integration (export from studio?)
+  - light mode bg's and borders too light in general
+  - dark mode kitchen sink the listitem should be lighter than bg, listitem press theme should be darker
+
+- document popover hoverable + onOpenChange second arg via
+
+- add $pointerFine to takeout
+
+- bug in generated icon props
+  - https://discord.com/channels/909986013848412191/1178185816426680370/1199854688233857136
+
+- floating ui has a breaking change in patch version, so weve pinned the version to exact, but we should upgrade to latest floating ui and figure out the fixes (last i checked not super easy)
+
+missing disabled prop when using a variant function. Here's an example:
+
+```tsx
+const CustomStack = styled(Stack, {
+  variants: {
+    selected: {
+      ':boolean'(selected, { props }) {
+        if (props.disabled) {
+         
+        }
+      },
+    },
+  },
+});
+```
+
+onPress
+
+```tsx
+const CustomStack = styled(Stack, {
+  variants: {
+    disabled: {
+      ':boolean': (disabled, { props: { onPress } }) =>
+    },
+  },
+});
+```
+
+error when we use aria-selected and aria-disabled inside variants:
+
+```tsx
+const CustomStack = styled(Stack, {
+  variants: {
+    selected: {
+      true: {
+        'aria-selected': true,
+      },
+    },
+  },
+});
+
+variants changed to feature unset as an option. We set the type as the function argument:
+
+const CustomStack = styled(Stack, {
+  variants: {
+    variant: (variant: 'primary' | 'secondary') => {
+      return {
+        backgroundColor: `$control.${variant}.enabled` as const,
+      };
+    },
+  },
+});
+
+type CustomStackProps = GetProps<typeof CustomStack>;
+
+type Variants = CustomStackProps['variant'];
+// Used to be 'primary' | 'secondary' | undefined
+// Now is 'unset' | 'primary' | 'secondary' | undefined
+```
+
+- compiler - no need to setup any separate package
+
+- 2.0 rename SizableStack to Surface and simplify a bit
+- 2.0 rename
+
+- make it so media queries can be shared with groups easily
+
+- Remove the need for Text
+
+- document the t_unmounted / SSR
+- $theme-light in prod mode SSR issue
+- popovers work with no js
+
+- remove proxy worm swap behavior except for whitelisted ones
+- TODO
+  - process.env.TAMAGUI_TARGET === 'native' ? false : props['data-disable-theme']
+  - this looks wrong? shouldnt it be the same as on native? we may be doubling them on accident
+- Select `ListItemFrame` area is messy/slow due to inline styles and complex components
+- propMode
+
+- make styled() only not accept most non-style props
+
+- causes leftover props in DOM:
+
+<Stack
+  hitSlop={5}
+  onAccessibilityAction={[]}
+  importantForAccessibility="no"
+  needsOffscreenAlphaCompositing
+/>
+
+- useStyle and others can have forComponent types
+
+- docs:
+  - for ssr need for t_unmounted
+  - explain how ssr works
+
+- tests:
+  - SSR e2e with animations
+  - onLayout + RN or not
+  - active/focus/press styles (+ animations) (+ media queries)
+    - we have some of these but more better
+
+- TODO this is duplicated
+
+- this could work automatically? or with a simple config:
+const ScrollViewTamagui = styled(ScrollView, {
+  bg: '$background',
+  contentContainerStyle: {
+    flex: 1,
+    padding: "$md',
+  }
+})
+
+
 studio: add outlineColor and the pseudos
 studio: export for takeout option
 
@@ -339,7 +492,6 @@ Ali:
 
 - createThemes accepts array not object
 - site _app has t_unmounted helper, move that into tamagui proper
-- SimpleTooltip no sub theme looks bad on dark mode
 
 ---
 
@@ -511,3 +663,13 @@ Themes can completely transform the look and feel, a button could have multiple 
     - defaults to theme: 'active'
 
 - <Image borderWidth="$2" /> not turning into val via psgeorge
+
+- `import { _ } from '@tamagui/core'`
+  - `<_.view />` `<_.text />`
+  - put it on globalThis and override type for super quick authoring
+  - can extend with your own
+    - `<_.p />` `<_.a />` `<.img />` etc
+  - can proxy to itself allowing for naming?
+    - `<_.view.my-thing />`
+  - or boolean variants?
+    - `<_.view.p-5.m-10 />`

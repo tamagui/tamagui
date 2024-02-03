@@ -2,7 +2,8 @@ import { ChevronRight, Code, Cpu, Layers, Star } from '@tamagui/lucide-icons'
 import { NextLink } from 'components/NextLink'
 import Link from 'next/link'
 import { memo } from 'react'
-import { Button, H3, Paragraph, Theme, XStack, YStack, YStackProps } from 'tamagui'
+import type { YStackProps } from 'tamagui';
+import { Button, H3, Paragraph, Theme, XStack, YStack } from 'tamagui'
 
 import { CodeInline } from './Code'
 import { ContainerLarge } from './Container'
@@ -84,9 +85,8 @@ export const HeroBelowContent = memo(() => {
           </IconStack>
           <TitleLink href="/docs/core/configuration">Core</TitleLink>
           <Paragraph o={0.7} size="$5">
-            0-dependency style library for React. Use it web-only, or target React Native
-            with the same code. It adds many missing features to the RN style API in
-            ~24Kb.
+            Style React with no outside deps and 100% feature support across web and React
+            Native. Adds many missing features to the RN Style API in ~24Kb.
           </Paragraph>
         </Section>
 
@@ -96,7 +96,7 @@ export const HeroBelowContent = memo(() => {
           </IconStack>
           <TitleLink href="/docs/intro/why-a-compiler">Static</TitleLink>
           <Paragraph o={0.7} size="$5">
-            An smart optimizer that does partial analysis, extracts CSS, flattens your
+            A smart optimizer that does partial analysis, extracts CSS, flattens your
             tree, and removes code. Supports Next, Webpack, Vite, Babel and Metro.
           </Paragraph>
         </Section>

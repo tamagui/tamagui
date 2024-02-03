@@ -2,7 +2,8 @@ import { Monitor, Moon, Sun } from '@tamagui/lucide-icons'
 import { useThemeSetting } from '@tamagui/next-theme'
 import React from 'react'
 import { useState } from 'react'
-import { Button, ButtonProps, TooltipSimple, useIsomorphicLayoutEffect } from 'tamagui'
+import type { ButtonProps } from 'tamagui'
+import { Button, TooltipSimple, useIsomorphicLayoutEffect } from 'tamagui'
 
 const icons = {
   system: Monitor,
@@ -40,6 +41,9 @@ export const ThemeToggle = (props: ButtonProps) => {
         {...props}
         aria-label="Toggle light/dark color scheme"
         icon={Icon}
+        hoverStyle={{
+          bg: 'rgba(0,0,0,0.15)',
+        }}
       >
         {/* {theme === 'light' ? <Moon size={12} /> : <SunIcon />} */}
       </Button>

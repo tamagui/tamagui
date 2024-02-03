@@ -149,7 +149,7 @@ export const whitelistGithubUsernames = [
   'natew',
   // 'alitnk', // commented out to test `takeout -> studio` access
   'benschac',
-  'danstepanov',
+  'mohamadchehab',
 
   // gather team member - https://discord.com/channels/909986013848412191/1125830682661363794/1156983395566497834
   'pkretzschmar',

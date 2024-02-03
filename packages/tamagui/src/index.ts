@@ -14,6 +14,8 @@ export * from '@tamagui/dialog'
 export * from '@tamagui/font-size'
 export * from '@tamagui/form'
 export * from '@tamagui/group'
+export * from '@tamagui/react-native-media-driver'
+export * from '@tamagui/elements'
 export * from '@tamagui/helpers-tamagui'
 export * from '@tamagui/image'
 export * from '@tamagui/label'
@@ -51,7 +53,6 @@ export * from './views/Anchor'
 export * from './views/EnsureFlexed'
 export * from './views/Fieldset'
 export * from './views/Input'
-export * from './views/Layouts'
 export * from './views/Spinner'
 export * from './views/TextArea'
 export * from './views/Text'
@@ -79,7 +80,6 @@ export type {
   GetAnimationKeys,
   GetProps,
   GetRef,
-  GetVariantProps,
   GroupNames,
   Longhands,
   Media,
@@ -95,12 +95,10 @@ export type {
   StackNonStyleProps,
   ViewProps,
   StackProps,
-  StackPropsBase,
   StaticConfig,
   Styleable,
   TamaguiBaseTheme,
   TamaguiComponent,
-  TamaguiComponentPropsBase,
   TamaguiConfig,
   TamaguiCustomConfig,
   TamaguiElement,
@@ -110,7 +108,6 @@ export type {
   TamaguiTextElement,
   TextNonStyleProps,
   TextProps,
-  TextPropsBase,
   ThemeKeys,
   ThemeName,
   ThemeParsed,
@@ -120,7 +117,6 @@ export type {
   ThemeValueFallback,
   Token,
   Tokens,
-  TransformStyleProps,
   TypeOverride,
   Variable,
   VariantSpreadExtras,

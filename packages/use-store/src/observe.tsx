@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { isEqualSubsetShallow } from './comparators'
 import { UNWRAP_PROXY } from './constants'
-import { StoreInfo } from './interfaces'
+import type { StoreInfo } from './interfaces'
 import { trackStoresAccess } from './useStore'
 
 const logUpdate =

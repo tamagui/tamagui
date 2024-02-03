@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/web",
-  "version": "1.84.0",
+  "version": "1.88.21",
   "source": "src/index.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -27,24 +27,22 @@
     "reset.css"
   ],
   "dependencies": {
-    "@tamagui/compose-refs": "1.84.0",
-    "@tamagui/constants": "1.84.0",
-    "@tamagui/helpers": "1.84.0",
-    "@tamagui/normalize-css-color": "1.84.0",
-    "@tamagui/timer": "1.84.0",
-    "@tamagui/use-did-finish-ssr": "1.84.0",
-    "@tamagui/use-event": "1.84.0",
-    "@tamagui/use-force-update": "1.84.0"
-  },
-  "peerDependencies": {
-    "react": "*"
+    "@tamagui/compose-refs": "1.88.21",
+    "@tamagui/constants": "1.88.21",
+    "@tamagui/helpers": "1.88.21",
+    "@tamagui/normalize-css-color": "1.88.21",
+    "@tamagui/timer": "1.88.21",
+    "@tamagui/use-did-finish-ssr": "1.88.21",
+    "@tamagui/use-event": "1.88.21",
+    "@tamagui/use-force-update": "1.88.21",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@tamagui/build": "1.84.0",
+    "@tamagui/build": "1.88.21",
     "@testing-library/react": "^14.0.0",
     "csstype": "^3.0.10",
-    "react": "^18.2.0",
-    "typescript": "^5.2.2",
+    "typescript": "^5.3.3",
     "vitest": "^0.34.3"
   },
   "exports": {
@@ -59,7 +57,7 @@
     "./native": {
       "import": "./dist/esm/index.native.js",
       "require": "./dist/cjs/index.native.js",
-      "react-native": "./dist/cjs/index.native.native.js"
+      "react-native": "./dist/cjs/index.native.js"
     },
     "./inject-styles": {
       "types": "./types/inject-styles.d.ts",

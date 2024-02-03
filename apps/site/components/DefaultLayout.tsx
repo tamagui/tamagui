@@ -1,6 +1,6 @@
 import { Footer } from '@components/Footer'
 import { Header } from '@components/Header'
-import { HeaderProps } from '@components/HeaderProps'
+import type { HeaderProps } from '@components/HeaderProps'
 import { ToastProvider, ToastViewport } from '@tamagui/toast'
 import { NextSeo } from 'next-seo'
 import React, { Suspense } from 'react'

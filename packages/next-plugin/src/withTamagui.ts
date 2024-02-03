@@ -3,16 +3,12 @@ import path from 'path'
 import browserslist from 'browserslist'
 import { lazyPostCSS } from 'next/dist/build/webpack/config/blocks/css'
 import { getGlobalCssLoader } from 'next/dist/build/webpack/config/blocks/css/loaders'
-import { PluginOptions as LoaderPluginOptions, TamaguiPlugin } from 'tamagui-loader'
+import type { PluginOptions as LoaderPluginOptions } from 'tamagui-loader'
+import { TamaguiPlugin } from 'tamagui-loader'
 import webpack from 'webpack'
 
 export type WithTamaguiProps = LoaderPluginOptions & {
   appDir?: boolean
-
-  /**
-   * @deprecated Deprecated
-   */
-  useReactNativeWebLite: boolean
   enableLegacyFontSupport?: boolean
   aliasReactPackages?: boolean
   includeCSSTest?: RegExp | ((path: string) => boolean)
@@ -31,6 +27,10 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
 
     return {
       ...nextConfig,
+      transpilePackages: [
+        ...(nextConfig.transpilePackages || []),
+        'expo-linear-gradient',
+      ],
       webpack: (webpackConfig: any, options: any) => {
         const { dir, config, dev, isServer } = options
 
@@ -185,8 +185,8 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
                 return !res
                   ? Promise.resolve(undefined)
                   : typeof res === 'string'
-                  ? Promise.resolve(res)
-                  : external(ctx)
+                    ? Promise.resolve(res)
+                    : external(ctx)
               }
             }),
           ]

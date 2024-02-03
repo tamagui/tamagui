@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import { SheetProps } from './types';
+import type { SheetProps } from './types';
 export declare const useSheetOpenState: (props: SheetProps) => {
     open: boolean;
     setOpen: import("react").Dispatch<import("react").SetStateAction<boolean>>;

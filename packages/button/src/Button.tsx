@@ -3,24 +3,18 @@ import { getButtonSized } from '@tamagui/get-button-sized'
 import { withStaticProperties } from '@tamagui/helpers'
 import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { ButtonNestingContext, ThemeableStack } from '@tamagui/stacks'
+import type { TextContextStyles, TextParentStyles } from '@tamagui/text'
+import { SizableText, wrapChildrenInText } from '@tamagui/text'
+import type { FontSizeTokens, GetProps, SizeTokens, ThemeableProps } from '@tamagui/web'
 import {
-  SizableText,
-  TextContextStyles,
-  TextParentStyles,
-  wrapChildrenInText,
-} from '@tamagui/text'
-import {
-  FontSizeTokens,
-  GetProps,
-  SizeTokens,
-  ThemeableProps,
   createStyledContext,
   getVariableValue,
   spacedChildren,
   styled,
   useProps,
 } from '@tamagui/web'
-import { FunctionComponent, useContext } from 'react'
+import type { FunctionComponent } from 'react'
+import { useContext } from 'react'
 
 type ButtonVariant = 'outlined'
 
@@ -46,8 +40,12 @@ export const ButtonContext = createStyledContext<
   variant: undefined,
 })
 
-type ButtonIconProps = { color?: string; size?: number }
-type IconProp = JSX.Element | FunctionComponent<ButtonIconProps> | null
+type ButtonIconProps = { color?: any; size?: any }
+type IconProp =
+  | JSX.Element
+  | FunctionComponent<ButtonIconProps>
+  | ((props: ButtonIconProps) => any)
+  | null
 
 type ButtonExtraProps = TextParentStyles &
   ThemeableProps & {
@@ -87,8 +85,8 @@ const ButtonFrame = styled(ThemeableStack, {
   name: BUTTON_NAME,
   tag: 'button',
   context: ButtonContext,
-  focusable: true,
   role: 'button',
+  focusable: true,
 
   variants: {
     unstyled: {
@@ -106,7 +104,7 @@ const ButtonFrame = styled(ThemeableStack, {
         borderColor: 'transparent',
 
         focusStyle: {
-          outlineColor: '$borderColorFocus',
+          outlineColor: '$outlineColor',
           outlineStyle: 'solid',
           outlineWidth: 2,
         },
@@ -187,13 +185,13 @@ const ButtonIcon = (props: { children: React.ReactNode; scaleIcon?: number }) =>
   return getThemedIcon(children)
 }
 
-const ButtonComponent = ButtonFrame.styleable<ButtonExtraProps>(function Button(
-  props,
-  ref
-) {
-  const { props: buttonProps } = useButton(props)
-  return <ButtonFrame {...buttonProps} ref={ref} />
-})
+const ButtonComponent = ButtonFrame.styleable<ButtonExtraProps>(
+  function Button(props, ref) {
+    // @ts-ignore
+    const { props: buttonProps } = useButton(props)
+    return <ButtonFrame {...buttonProps} ref={ref} />
+  }
+)
 
 /**
  * @deprecated Instead of useButton, see the Button docs for the newer and much improved Advanced customization pattern: https://tamagui.dev/docs/components/button
@@ -319,10 +317,10 @@ function useButton<Props extends ButtonProps>(
       (isNested
         ? 'span'
         : // defaults to <a /> when accessibilityRole = link
-        // see https://github.com/tamagui/tamagui/issues/505
-        propsActive.accessibilityRole === 'link' || propsActive.role === 'link'
-        ? 'a'
-        : 'button'),
+          // see https://github.com/tamagui/tamagui/issues/505
+          propsActive.accessibilityRole === 'link' || propsActive.role === 'link'
+          ? 'a'
+          : 'button'),
     ...restProps,
     children: (
       <ButtonNestingContext.Provider value={true}>{inner}</ButtonNestingContext.Provider>

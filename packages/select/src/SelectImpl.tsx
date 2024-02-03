@@ -1,5 +1,6 @@
+import type { SideObject } from '@floating-ui/react'
 import {
-  SideObject,
+  autoUpdate,
   flip,
   inner,
   offset,
@@ -26,7 +27,7 @@ import {
   useSelectContext,
   useSelectItemParentContext,
 } from './context'
-import { SelectImplProps } from './types'
+import type { SelectImplProps } from './types'
 
 // TODO use id for focusing from label
 export const SelectInlineImpl = (props: SelectImplProps) => {
@@ -96,41 +97,61 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     }, [open])
   }
 
-  const flipOrShiftMiddlewares = [
-    touch
-      ? shift({ crossAxis: true, padding: WINDOW_PADDING })
-      : flip({ padding: WINDOW_PADDING }),
-  ]
-
   const { x, y, strategy, context, refs, update } = useFloating({
     open,
     onOpenChange: setOpen,
     placement: 'bottom-start',
-    middleware: [
-      size({
-        apply({
-          rects: {
-            reference: { width },
-          },
-        }) {
-          floatingStyle.current = {
-            minWidth: width + 8,
-          }
-        },
-      }),
-      ...flipOrShiftMiddlewares,
-      inner({
-        listRef: listItemsRef,
-        overflowRef,
-        index: selectedIndex,
-        offset: innerOffset,
-        // onFallbackChange: setFallback,
-        padding: 10,
-        minItemsVisible: touch ? 10 : 4,
-        referenceOverflowThreshold: 20,
-      }),
-      offset({ crossAxis: -5 }),
-    ],
+    whileElementsMounted: autoUpdate,
+    // biome-ignore lint/correctness/noConstantCondition: <explanation>
+    middleware: false
+      ? // this is the logic from floating-ui
+        // but i find it causes issues (open, drag select, close, then re-open its not positioned "over")
+        // https://github.com/floating-ui/floating-ui/blob/master/packages/react/test/visual/components/MacSelect.tsx
+        [
+          offset(5),
+          touch
+            ? shift({ crossAxis: true, padding: WINDOW_PADDING })
+            : flip({ padding: WINDOW_PADDING }),
+          size({
+            apply({ availableHeight, rects }) {
+              Object.assign(floatingStyle.current, {
+                maxHeight: `${availableHeight}px`,
+                minWidth: `${rects.reference.width}px`,
+              })
+              if (refs.floating.current) {
+                Object.assign(refs.floating.current.style, floatingStyle.current)
+              }
+            },
+            padding: 10,
+          }),
+        ]
+      : [
+          size({
+            apply({
+              rects: {
+                reference: { width },
+              },
+            }) {
+              Object.assign(floatingStyle.current, {
+                minWidth: width + 8,
+              })
+              if (refs.floating.current) {
+                Object.assign(refs.floating.current.style, floatingStyle.current)
+              }
+            },
+          }),
+          inner({
+            listRef: listItemsRef,
+            overflowRef,
+            index: selectedIndex,
+            offset: innerOffset,
+            onFallbackChange: setFallback,
+            padding: 10,
+            minItemsVisible: touch ? 10 : 4,
+            referenceOverflowThreshold: 20,
+          }),
+          offset({ crossAxis: -5 }),
+        ],
   })
 
   useIsomorphicLayoutEffect(() => {
@@ -158,11 +179,11 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
   })
 
   const interactionsProps = [
-    useClick(context, { event: 'mousedown' }),
+    useClick(context, { event: 'mousedown', keyboardHandlers: false }),
     useDismiss(context, { outsidePress: false }),
     useRole(context, { role: 'listbox' }),
     useInnerOffset(context, {
-      enabled: !fallback && (!!showUpArrow || !!showDownArrow),
+      enabled: !fallback,
       onChange: setInnerOffset,
       overflowRef,
       scrollRef: refs.floating,
@@ -198,6 +219,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
           onKeyDown(event) {
             if (
               event.key === 'Enter' ||
+              event.code === 'Space' ||
               (event.key === ' ' && !context.dataRef.current.typing)
             ) {
               event.preventDefault()
@@ -238,9 +260,9 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
             e.preventDefault()
           },
           onScroll(event) {
-            // In React 18, the ScrollArrows need to synchronously know this value to prevent
-            // painting at the wrong time.
-            flushSync(() => setScrollTop(event.currentTarget.scrollTop))
+            flushSync(() => {
+              setScrollTop(event.currentTarget.scrollTop)
+            })
           },
         })
       },
@@ -258,13 +280,12 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
       return () => {
         clearTimeout(selectTimeoutRef.current)
       }
-    } else {
-      allowSelectRef.current = false
-      allowMouseUpRef.current = true
-      setInnerOffset(0)
-      setFallback(false)
-      setBlockSelection(false)
     }
+    allowSelectRef.current = false
+    allowMouseUpRef.current = true
+    setInnerOffset(0)
+    setFallback(false)
+    setBlockSelection(false)
   }, [open])
 
   useIsomorphicLayoutEffect(() => {

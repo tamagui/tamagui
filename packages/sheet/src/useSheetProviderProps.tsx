@@ -1,10 +1,11 @@
-import { TamaguiElement, useConfiguration } from '@tamagui/core'
+import type { TamaguiElement } from '@tamagui/core'
+import { useConfiguration } from '@tamagui/core'
 import { useConstant } from '@tamagui/use-constant'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { ScrollBridge, SheetProps } from './types'
-import { SheetOpenState } from './useSheetOpenState'
+import type { ScrollBridge, SheetProps } from './types'
+import type { SheetOpenState } from './useSheetOpenState'
 
 export type SheetContextValue = ReturnType<typeof useSheetProviderProps>
 
@@ -24,13 +25,13 @@ export function useSheetProviderProps(
     (snapPointsMode === 'percent'
       ? [80]
       : snapPointsMode === 'constant'
-      ? [256]
-      : ['fit'])
+        ? [256]
+        : ['fit'])
   const hasFit = snapPointsProp[0] === 'fit'
 
   const snapPoints = useMemo(
     () => (props.dismissOnSnapToBottom ? [...snapPointsProp, 0] : snapPointsProp),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
     [JSON.stringify(snapPointsProp), props.dismissOnSnapToBottom]
   )
 

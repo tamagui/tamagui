@@ -1,4 +1,4 @@
-import { TamaguiTextElement, TextProps, TextPropsBase } from '../types';
+import type { TamaguiTextElement, TextNonStyleProps, TextProps, TextStylePropsBase } from '../types';
 export type Text = TamaguiTextElement;
-export declare const Text: import("../types").TamaguiComponent<TextProps, TamaguiTextElement, TextPropsBase, void>;
+export declare const Text: import("../types").TamaguiComponent<TextProps, TamaguiTextElement, TextNonStyleProps, TextStylePropsBase, {}>;
 //# sourceMappingURL=Text.d.ts.map

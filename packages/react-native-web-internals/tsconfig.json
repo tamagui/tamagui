@@ -3,7 +3,12 @@
   "compilerOptions": {
     "composite": true,
     "jsx": "react-jsx",
-    "allowJs": true,
+    "allowJs": true
   },
-  "references": []
+  "references": [],
+  "exclude": [
+    "types",
+    "dist",
+    "**/__tests__"
+  ]
 }

@@ -1,7 +1,8 @@
-import { ChildProcess, fork } from 'child_process'
+import type { ChildProcess } from 'child_process'
+import { fork } from 'child_process'
 import { dirname, extname, join, resolve } from 'path'
 
-import { Binding, NodePath } from '@babel/traverse'
+import type { Binding, NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
 
 import { evaluateAstNode } from './evaluateAstNode'
@@ -96,9 +97,7 @@ export async function getStaticBindingsForScope(
   const bindings: Record<string, Binding> = scope.getAllBindings() as any
   const ret: Record<string, any> = {}
 
-  if (
-    shouldPrintDebug
-  ) {
+  if (shouldPrintDebug) {
     // prettier-ignore
     // console.info('  ', Object.keys(bindings).length, 'variables in scope')
     // .map(x => bindings[x].identifier?.name).join(', ')

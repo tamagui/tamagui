@@ -1,8 +1,8 @@
-import { isWeb } from '@tamagui/constants'
+import { isClient, isWeb } from '@tamagui/constants'
 
 import { getThemes } from '../config'
 import { THEME_CLASSNAME_PREFIX, THEME_NAME_SEPARATOR } from '../constants/constants'
-import { ColorScheme, ThemeParsed, ThemeProps } from '../types'
+import type { ColorScheme, ThemeParsed, ThemeProps } from '../types'
 
 type ThemeListener = (
   name: string | null,
@@ -36,7 +36,7 @@ export function getHasThemeUpdatingProps(props: ThemeProps) {
 let uid = 0
 
 export class ThemeManager {
-  id = uid++
+  id = 0
   themeListeners = new Set<ThemeListener>()
   parentManager: ThemeManager | null = null
   state: ThemeManagerState = emptyState
@@ -45,6 +45,9 @@ export class ThemeManager {
     public props: ThemeProps = {},
     parentManager?: ThemeManager | 'root' | null | undefined
   ) {
+    uid = (uid + 1) % Number.MAX_VALUE
+    this.id = uid
+
     if (parentManager === 'root') {
       this.updateStateFromProps(props, false)
       return
@@ -56,7 +59,7 @@ export class ThemeManager {
           `No parent manager given, this is likely due to duplicated Tamagui dependencies. Check your lockfile for mis-matched versions. It could also be from an error somewhere else in your stack causing Tamagui to recieve undefined context, you can try putting some ErrorBoundary components around other areas of your app, or a Suspense boundary.`
         )
       }
-      throw `❌ 0`
+      throw `❌ 000`
     }
 
     // this is used in updateStateFromProps so must be set
@@ -92,10 +95,6 @@ export class ThemeManager {
   updateState(nextState: ThemeManagerState, shouldNotify = true) {
     this.state = nextState
     this._allKeys = null
-    if (process.env.NODE_ENV !== 'production') {
-      this['_numChangeEventsSent'] ??= 0
-      this['_numChangeEventsSent']++
-    }
     if (shouldNotify) {
       if (process.env.TAMAGUI_TARGET === 'native') {
         // native is way slower with queueMicrotask
@@ -153,6 +152,10 @@ export class ThemeManager {
 
   notify(forced = false) {
     this.themeListeners.forEach((cb) => cb(this.state.name, this, forced))
+    if (process.env.NODE_ENV !== 'production') {
+      this['_numChangeEventsSent'] ??= 0
+      this['_numChangeEventsSent']++
+    }
   }
 
   onChangeTheme(cb: ThemeListener, debugId?: number) {
@@ -226,15 +229,6 @@ function getState(
       ? max // component name only don't search upwards
       : 0
 
-  if (
-    process.env.NODE_ENV !== 'production' &&
-    props.debug &&
-    typeof window !== 'undefined'
-  ) {
-    console.groupCollapsed('ThemeManager.getState()')
-    console.info({ props, baseName, base, min, max })
-  }
-
   for (let i = max; i >= min; i--) {
     let prefix = base.slice(0, i).join(THEME_NAME_SEPARATOR)
 
@@ -283,7 +277,11 @@ function getState(
 
     const found = potentials.find((t) => t in themes)
 
-    if (process.env.NODE_ENV !== 'production' && typeof props.debug === 'string') {
+    if (
+      process.env.NODE_ENV !== 'production' &&
+      typeof props.debug === 'string' &&
+      isClient
+    ) {
       console.info(' getState ', {
         props,
         found,
@@ -326,12 +324,10 @@ function getState(
     }
   }
 
-  if (
-    process.env.NODE_ENV !== 'production' &&
-    typeof props.debug === 'string' &&
-    typeof window !== 'undefined'
-  ) {
-    console.warn('ThemeManager.getState():', { result })
+  if (process.env.NODE_ENV !== 'production' && props.debug === 'verbose' && isClient) {
+    console.groupCollapsed('ThemeManager.getState()')
+    console.info({ props, baseName, base, min, max })
+    console.warn('result', { result })
     console.trace()
     console.groupEnd()
   }

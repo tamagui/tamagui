@@ -1,5 +1,6 @@
 import { forwardRef } from 'react'
-import { XStack, XStackProps, YStack } from 'tamagui'
+import type { XStackProps } from 'tamagui'
+import { XStack, YStack } from 'tamagui'
 
 import { LogoIcon } from './LogoIcon'
 import { LogoWords } from './LogoWords'

@@ -1,12 +1,13 @@
 import { SupabaseProvider } from '@components/SupabaseProvider'
 import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { useSessionContext, useSupabaseClient } from '@supabase/auth-helpers-react'
-import { Provider } from '@supabase/supabase-js'
+import type { Provider } from '@supabase/supabase-js'
 import { LogoIcon } from '@tamagui/logo'
 import { useUser } from 'hooks/useUser'
 import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
-import { FormEvent, useEffect, useRef, useState } from 'react'
+import type { FormEvent} from 'react';
+import { useEffect, useRef, useState } from 'react'
 import { Button, Input, Paragraph, Separator, Spinner, XStack, YStack } from 'tamagui'
 
 import { GithubIcon } from '../components/GithubIcon'

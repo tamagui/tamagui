@@ -1,9 +1,11 @@
-import {
+import type {
   MaskDefinitions,
   PaletteDefinitions,
   TemplateDefinitions,
   ThemeDefinitions,
   ThemeUsingMask,
+} from '@tamagui/create-theme'
+import {
   applyMask,
   createMask,
   createThemeWithPalettes,
@@ -31,12 +33,12 @@ type GetParentTheme<P, Themes extends ThemeDefinitions | undefined> = P extends 
   ? P extends keyof Themes
     ? Themes[P]
     : GetParentName<P> extends keyof Themes
-    ? Themes[GetParentName<P>]
-    : GetParentName<GetParentName<P>> extends keyof Themes
-    ? Themes[GetParentName<GetParentName<P>>]
-    : GetParentName<GetParentName<GetParentName<P>>> extends keyof Themes
-    ? Themes[GetParentName<GetParentName<GetParentName<P>>>]
-    : never
+      ? Themes[GetParentName<P>]
+      : GetParentName<GetParentName<P>> extends keyof Themes
+        ? Themes[GetParentName<GetParentName<P>>]
+        : GetParentName<GetParentName<GetParentName<P>>> extends keyof Themes
+          ? Themes[GetParentName<GetParentName<GetParentName<P>>>]
+          : never
   : never
 
 type GetGeneratedTheme<TD, S extends ThemeBuilderInternalState> = TD extends {
@@ -44,12 +46,12 @@ type GetGeneratedTheme<TD, S extends ThemeBuilderInternalState> = TD extends {
 }
   ? T
   : TD extends { parent: infer P }
-  ? GetGeneratedTheme<GetParentTheme<P, S['themes']>, S>
-  : TD extends { template: infer T }
-  ? T extends keyof S['templates']
-    ? GetGeneratedThemeFromTemplate<S['templates'][T], TD>
-    : TD
-  : TD
+    ? GetGeneratedTheme<GetParentTheme<P, S['themes']>, S>
+    : TD extends { template: infer T }
+      ? T extends keyof S['templates']
+        ? GetGeneratedThemeFromTemplate<S['templates'][T], TD>
+        : TD
+      : TD
 
 type ThemeBuilderBuildResult<S extends ThemeBuilderInternalState> = {
   [Key in keyof S['themes']]: GetGeneratedTheme<S['themes'][Key], S>
@@ -59,15 +61,15 @@ type GetParentName<N extends string> =
   N extends `${infer A}_${infer B}_${infer C}_${infer D}_${string}`
     ? `${A}_${B}_${C}_${D}`
     : N extends `${infer A}_${infer B}_${infer C}_${string}`
-    ? `${A}_${B}_${C}`
-    : N extends `${infer A}_${infer B}_${string}`
-    ? `${A}_${B}`
-    : N extends `${infer A}_${string}`
-    ? `${A}`
-    : never
+      ? `${A}_${B}_${C}`
+      : N extends `${infer A}_${infer B}_${string}`
+        ? `${A}_${B}`
+        : N extends `${infer A}_${string}`
+          ? `${A}`
+          : never
 
 export class ThemeBuilder<
-  State extends ThemeBuilderInternalState = ThemeBuilderInternalState
+  State extends ThemeBuilderInternalState = ThemeBuilderInternalState,
 > {
   constructor(public state: State) {}
 
@@ -147,7 +149,7 @@ export class ThemeBuilder<
 
   addChildThemes<
     CTD extends Narrow<ThemeDefinitions<ObjectStringKeys<State['masks']>>>,
-    const AvoidNestingWithin extends string[] = []
+    const AvoidNestingWithin extends string[] = [],
   >(
     childThemeDefinition: CTD,
     options?: {

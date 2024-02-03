@@ -11,7 +11,9 @@ export const getDefaultLayout: GetLayout = (page, pageProps, path) => {
   const isAuthPage = path.startsWith('/login')
   const isAccountPage = path.startsWith('/account')
   const isStudio = path.startsWith('/studio')
-  const isProductLandingPage = path.startsWith('/takeout') || isStudio
+  const isTakeout = path.startsWith('/takeout')
+  const isBento = path.startsWith('/bento')
+  const isProductLandingPage = isTakeout || isStudio
   const isBlog = path.startsWith('/blog')
   const isDocs = path.startsWith('/docs')
 
@@ -21,7 +23,7 @@ export const getDefaultLayout: GetLayout = (page, pageProps, path) => {
         disableNew: isBlog || isAuthPage || isProductLandingPage || isAccountPage,
         showAuth: isAuthPage || isProductLandingPage || isAccountPage,
       }}
-      hideFooter={isDocs}
+      hideFooter={isDocs || isTakeout}
     >
       {isDocs ? <DocsPage>{page}</DocsPage> : page}
     </DefaultLayout>

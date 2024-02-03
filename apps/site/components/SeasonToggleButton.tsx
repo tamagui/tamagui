@@ -1,14 +1,6 @@
 import { TamaguiLogo, setTintFamily, useTint } from '@tamagui/logo'
-import {
-  Button,
-  ButtonProps,
-  Circle,
-  Popover,
-  SizableText,
-  Square,
-  Text,
-  YStack,
-} from 'tamagui'
+import type { ButtonProps } from 'tamagui'
+import { Button, Circle, Popover, SizableText, Square, Text, YStack } from 'tamagui'
 
 export const seasons = {
   tamagui: <TamaguiLogo downscale={2} />,
@@ -26,7 +18,6 @@ export const SeasonToggleButton = (props: ButtonProps) => {
         <Button
           size="$3"
           w={38}
-          h={30}
           onPress={(e) => {
             setNextTint()
             e.stopPropagation()
@@ -34,6 +25,9 @@ export const SeasonToggleButton = (props: ButtonProps) => {
           {...props}
           aria-label="Toggle theme"
           ov="hidden"
+          hoverStyle={{
+            bg: 'rgba(0,0,0,0.15)',
+          }}
         >
           <Circle
             bw={1}
@@ -54,10 +48,11 @@ export const SeasonToggleButton = (props: ButtonProps) => {
       <Popover.Content
         enterStyle={{ y: -6, o: 0 }}
         exitStyle={{ y: -6, o: 0 }}
-        elevate
+        elevation="$4"
         p="$0"
+        t="$2"
         ov="hidden"
-        br="$4"
+        br="$8"
         animation={[
           'medium',
           {

@@ -1,8 +1,10 @@
 // forked from Radix UI
 // https://github.com/radix-ui/primitives/blob/main/packages/react/progress/src/Progress.tsx
 
-import { GetProps, getVariableValue, styled } from '@tamagui/core'
-import { Scope, createContextScope } from '@tamagui/create-context'
+import type { GetProps } from '@tamagui/core'
+import { getVariableValue, styled } from '@tamagui/core'
+import type { Scope } from '@tamagui/create-context'
+import { createContextScope } from '@tamagui/create-context'
 import { getSize } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
 import { ThemeableStack, YStackProps } from '@tamagui/stacks'
@@ -86,11 +88,11 @@ function isNumber(value: any): value is number {
 }
 
 function isValidMaxNumber(max: any): max is number {
-  return isNumber(max) && !isNaN(max) && max > 0
+  return isNumber(max) && !Number.isNaN(max) && max > 0
 }
 
 function isValidValueNumber(value: any, max: number): value is number {
-  return isNumber(value) && !isNaN(value) && value <= max && value >= 0
+  return isNumber(value) && !Number.isNaN(value) && value <= max && value >= 0
 }
 
 // Split this out for clearer readability of the error message.
@@ -146,18 +148,18 @@ export const ProgressFrame = styled(ThemeableStack, {
   },
 })
 
-type ProgressProps = GetProps<typeof ProgressFrame> & {
+interface ProgressExtraProps {
   value?: number | null | undefined
   max?: number
   getValueLabel?(value: number, max: number): string
 }
 
+type ProgressProps = GetProps<typeof ProgressFrame> & ProgressExtraProps
+
 const Progress = withStaticProperties(
-  ProgressFrame.styleable<ProgressProps>(function Progress(
-    props: ScopedProps<ProgressProps>,
-    forwardedRef
-  ) {
+  ProgressFrame.styleable<ProgressExtraProps>(function Progress(props, forwardedRef) {
     const {
+      // @ts-expect-error
       __scopeProgress,
       value: valueProp,
       max: maxProp,

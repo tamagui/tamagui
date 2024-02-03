@@ -1,40 +1,28 @@
 import { createComponent } from './createComponent'
-import { StyledContext } from './helpers/createStyledContext'
+import type { StyledContext } from './helpers/createStyledContext'
 import { mergeVariants } from './helpers/mergeVariants'
 import type { GetRef } from './interfaces/GetRef'
 import { getReactNativeConfig } from './setupReactNative'
 import type {
-  GetProps,
-  GetTokenString,
+  GetBaseStyles,
+  GetNonStyledProps,
+  GetStaticConfig,
+  GetStyledVariants,
+  GetTokenPropsFromAcceptedTokens,
   GetVariantValues,
-  MediaProps,
-  PseudoProps,
+  InferStyledProps,
   StaticConfig,
+  StaticConfigPublic,
   StylableComponent,
+  TamaDefer,
   TamaguiComponent,
-  ThemeValueByCategory,
-  Tokens,
   VariantDefinitions,
   VariantSpreadFunction,
 } from './types'
-import { Stack } from './views/Stack'
 
-type GetBaseProps<A extends StylableComponent> = A extends TamaguiComponent<
-  any,
-  any,
-  infer P
->
-  ? P
-  : GetProps<A>
-
-type GetVariantProps<A extends StylableComponent> = A extends TamaguiComponent<
-  any,
-  any,
-  any,
-  infer V
->
-  ? V
-  : {}
+type AreVariantsUndefined<Variants> =
+  // because we pass in the Generic variants which for some reason has this :)
+  Required<Variants> extends { _isEmpty: 1 } ? true : false
 
 type GetVariantAcceptedValues<V> = V extends Object
   ? {
@@ -44,21 +32,14 @@ type GetVariantAcceptedValues<V> = V extends Object
     }
   : undefined
 
-type ValueOf<T> = T[keyof T]
-type AreVariantsUndefined<V> = V extends undefined
-  ? true
-  : ValueOf<V> extends undefined
-  ? true
-  : false
-
 export function styled<
   ParentComponent extends StylableComponent,
-  Variants extends VariantDefinitions<ParentComponent> | void,
-  StyledStaticConfig extends Partial<StaticConfig>
+  StyledStaticConfig extends StaticConfigPublic,
+  Variants extends VariantDefinitions<ParentComponent, StyledStaticConfig>,
 >(
   ComponentIn: ParentComponent,
   // this should be Partial<GetProps<ParentComponent>> but causes excessively deep type issues
-  options?: GetProps<ParentComponent> & {
+  options?: Partial<InferStyledProps<ParentComponent, StyledStaticConfig>> & {
     name?: string
     variants?: Variants | undefined
     defaultVariants?: GetVariantAcceptedValues<Variants>
@@ -71,69 +52,46 @@ export function styled<
 
   // get parent props without pseudos and medias so we can rebuild both with new variants
   // get parent props without pseudos and medias so we can rebuild both with new variants
-  type ParentPropsBase = GetBaseProps<ParentComponent>
-  type ParentVariants = GetVariantProps<ParentComponent>
+  type ParentNonStyledProps = GetNonStyledProps<ParentComponent>
+  type ParentStylesBase = GetBaseStyles<ParentComponent, StyledStaticConfig>
+  type ParentVariants = GetStyledVariants<ParentComponent>
 
-  type OurVariantProps = Variants extends undefined
+  type OurVariantProps = AreVariantsUndefined<Variants> extends true
     ? {}
     : GetVariantAcceptedValues<Variants>
-
-  type MergedVariants = AreVariantsUndefined<OurVariantProps> extends true
+  type MergedVariants = AreVariantsUndefined<Variants> extends true
     ? ParentVariants
     : AreVariantsUndefined<ParentVariants> extends true
-    ? OurVariantProps
-    : {
-        [Key in keyof ParentVariants | keyof OurVariantProps]?:
-          | (Key extends keyof ParentVariants ? ParentVariants[Key] : undefined)
-          | (Key extends keyof OurVariantProps ? OurVariantProps[Key] : undefined)
-      }
+      ? Omit<OurVariantProps, '_isEmpty'>
+      : {
+          // exclude _isEmpty as it no longer is empty
+          [Key in Exclude<keyof ParentVariants | keyof OurVariantProps, '_isEmpty'>]?:
+            | (Key extends keyof ParentVariants ? ParentVariants[Key] : undefined)
+            | (Key extends keyof OurVariantProps ? OurVariantProps[Key] : undefined)
+        }
 
   type AcceptedTokens = StyledStaticConfig['acceptTokens']
-  type CustomTokenProps = AcceptedTokens extends Object
-    ? {
-        [Key in keyof AcceptedTokens]: ThemeValueByCategory<AcceptedTokens[Key]>
-      }
-    : {}
-
-  type OurPropsBaseBase = ParentPropsBase & MergedVariants & CustomTokenProps
+  type CustomTokenProps = GetTokenPropsFromAcceptedTokens<AcceptedTokens>
 
   /**
    * de-opting a bit of type niceness because were hitting depth issues too soon
    * before we had:
    *
-   * type OurPropsBase = OurPropsBaseBase & PseudoProps<Partial<OurPropsBaseBase>>
+   * type OurPropsBase = OurStylesBase & PseudoProps<Partial<OurStylesBase>>
    * and then below in type Props you would remove the PseudoProps line
    * that would give you nicely merged pseudo sub-styles but its just too much for TS
    * so now pseudos wont be nicely typed inside media queries, but at least we can nest
    */
 
-  type Props = Variants extends void
-    ? GetProps<ParentComponent>
-    : // start with base props
-      OurPropsBaseBase &
-        // add in pseudo
-        PseudoProps<Partial<OurPropsBaseBase>> &
-        // add in media
-        MediaProps<Partial<OurPropsBaseBase>>
-
-  type ParentStaticProperties = {
-    [Key in Exclude<
-      keyof ParentComponent,
-      | 'defaultProps'
-      | 'propTypes'
-      | '$$typeof'
-      | 'staticConfig'
-      | 'extractable'
-      | 'styleable'
-    >]: ParentComponent[Key]
-  }
-
   type StyledComponent = TamaguiComponent<
-    Props,
+    TamaDefer,
     GetRef<ParentComponent>,
-    ParentPropsBase,
+    ParentNonStyledProps,
+    AcceptedTokens extends Record<string, any>
+      ? ParentStylesBase & CustomTokenProps
+      : ParentStylesBase,
     MergedVariants,
-    ParentStaticProperties
+    GetStaticConfig<ParentComponent, StyledStaticConfig>
   >
 
   // validate not using a variant over an existing valid style
@@ -192,6 +150,7 @@ export function styled<
             ...defaultProps,
           }
           if (parentStaticConfig.variants) {
+            // @ts-expect-error
             variants = mergeVariants(parentStaticConfig.variants, variants)
           }
         }
@@ -221,8 +180,7 @@ export function styled<
         ...(!isPlainStyledComponent && {
           Component,
         }),
-        // this type gets messed up by options?: Partial<GetProps<ParentComponent>> above
-        // take away the Partial<> and it's fine
+        // @ts-expect-error
         variants,
         defaultProps,
         defaultVariants,
@@ -257,6 +215,11 @@ export function styled<
 }
 
 // sanity check types:
+
+// type YP = GetProps<typeof InputFrame>
+// type x = YP['onChangeText']
+// type x2 = YP['size']
+// const X = <InputFrame placeholder="red" hoverStyle={{}} />
 
 // import { Stack } from './views/Stack'
 // const X = styled(Stack, {

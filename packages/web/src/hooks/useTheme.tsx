@@ -2,14 +2,12 @@ import { isClient, isIos, isServer } from '@tamagui/constants'
 import { useContext, useEffect, useMemo, useRef, useState } from 'react'
 
 import { getConfig } from '../config'
-import { Variable, getVariable } from '../createVariable'
+import type { Variable } from '../createVariable'
+import { getVariable } from '../createVariable'
 import { isEqualShallow } from '../helpers/createShallowSetState'
-import {
-  ThemeManager,
-  ThemeManagerState,
-  getHasThemeUpdatingProps,
-} from '../helpers/ThemeManager'
-import { ThemeManagerContext } from '../helpers/ThemeManagerContext'
+import type { ThemeManagerState } from '../helpers/ThemeManager'
+import { ThemeManager, getHasThemeUpdatingProps } from '../helpers/ThemeManager'
+import { ThemeManagerIDContext } from '../helpers/ThemeManagerContext'
 import type {
   DebugProp,
   ThemeParsed,
@@ -61,8 +59,8 @@ export type ThemeGettable<Val> = Val & {
           ? any
           : Exclude<X, Variable>
         : Val extends VariableVal
-        ? string | number
-        : unknown)
+          ? string | number
+          : unknown)
 }
 
 export type UseThemeResult = {
@@ -91,13 +89,19 @@ export const useThemeWithState = (
 
           if (
             process.env.NODE_ENV === 'development' &&
-            props.debug &&
+            typeof props.debug === 'string' &&
             props.debug !== 'profile'
           ) {
-            console.info(`  🎨 useTheme() shouldUpdate?`, next, {
-              shouldUpdateProp: props.shouldUpdate?.(),
-              keys: [...keys.current],
-            })
+            console.info(
+              `  🎨 useTheme() shouldUpdate?`,
+              next,
+              isClient
+                ? {
+                    shouldUpdateProp: props.shouldUpdate?.(),
+                    keys: [...keys.current],
+                  }
+                : ''
+            )
           }
           return next
         }
@@ -106,8 +110,8 @@ export const useThemeWithState = (
 
   const { themeManager, state } = changedThemeState
 
-  if (!state?.theme) {
-    if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === 'development') {
+    if (!state?.theme) {
       if (process.env.TAMAGUI_DISABLE_NO_THEME_WARNING !== '1') {
         console.warn(
           `[tamagui] No theme found, this could be due to an invalid theme name (given theme props ${JSON.stringify(
@@ -263,6 +267,22 @@ function someParentIsInversed(manager?: ThemeManager) {
 
 export const activeThemeManagers = new Set<ThemeManager>()
 
+// until WeakRef support:
+const _uidToManager = new WeakMap<Object, ThemeManager>()
+const _idToUID: Record<number, Object> = {}
+const getId = (id: number) => _idToUID[id]
+
+export const getThemeManager = (id: number) => {
+  return _uidToManager.get(getId(id)!)
+}
+
+const registerThemeManager = (t: ThemeManager) => {
+  if (!_idToUID[t.id]) {
+    const id = (_idToUID[t.id] = {})
+    _uidToManager.set(id, t)
+  }
+}
+
 export const useChangeThemeEffect = (
   props: UseThemeWithStateProps,
   isRoot = false,
@@ -270,8 +290,8 @@ export const useChangeThemeEffect = (
   shouldUpdate?: () => boolean | undefined
 ): ChangedThemeResponse => {
   const { disable } = props
-
-  const parentManager = useContext(ThemeManagerContext)
+  const parentManagerId = useContext(ThemeManagerIDContext)
+  const parentManager = getThemeManager(parentManagerId)
 
   if ((!isRoot && !parentManager) || disable) {
     return {
@@ -335,11 +355,8 @@ export const useChangeThemeEffect = (
         return
       }
 
-      if (isNewTheme && themeManager) {
-        activeThemeManagers.add(themeManager)
-      }
-
       if (isNewTheme || getShouldUpdateTheme(themeManager)) {
+        activeThemeManagers.add(themeManager)
         setThemeState(createState)
       }
 
@@ -365,7 +382,14 @@ export const useChangeThemeEffect = (
 
           if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
             // prettier-ignore
-            console.info(` 🔸 onChange`, themeManager.id, { force, shouldTryUpdate, props, name, manager, keys, })
+            console.info(` 🔸 onChange`, themeManager.id, {
+              force,
+              shouldTryUpdate,
+              props,
+              name,
+              manager,
+              keys,
+            })
           }
 
           if (shouldTryUpdate) {
@@ -378,7 +402,9 @@ export const useChangeThemeEffect = (
       return () => {
         selfListenerDispose()
         disposeChangeListener?.()
-        activeThemeManagers.delete(themeManager)
+        if (isNewTheme) {
+          activeThemeManagers.delete(themeManager)
+        }
       }
     }, [
       themeManager,
@@ -479,6 +505,10 @@ export const useChangeThemeEffect = (
 
     const isNewTheme = Boolean(themeManager !== parentManager || props.inverse)
 
+    if (isNewTheme) {
+      registerThemeManager(themeManager)
+    }
+
     // only inverse relies on this for ssr
     const mounted = !props.inverse ? true : isRoot || prev?.mounted
 
@@ -503,8 +533,8 @@ export const useChangeThemeEffect = (
     }
 
     const shouldReturnPrev =
-      !force &&
       prev &&
+      !force &&
       // isEqualShallow uses the second arg as the keys so this should compare without state first...
       isEqualShallow(prev, response) &&
       // ... and then compare just the state, because we make a new state obj but is likely the same

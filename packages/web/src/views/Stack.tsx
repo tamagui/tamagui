@@ -2,11 +2,21 @@ import { validStyles } from '@tamagui/helpers'
 
 import { stackDefaultStyles } from '../constants/constants'
 import { createComponent } from '../createComponent'
-import type { StackProps, StackPropsBase, TamaguiElement } from '../types'
+import type {
+  StackNonStyleProps,
+  StackProps,
+  StackStyleBase,
+  TamaguiElement,
+} from '../types'
 
 export type Stack = TamaguiElement
 
-export const Stack = createComponent<StackProps, Stack, StackPropsBase>({
+export const Stack = createComponent<
+  StackProps,
+  Stack,
+  StackNonStyleProps,
+  StackStyleBase
+>({
   acceptsClassName: true,
   defaultProps: stackDefaultStyles,
   validStyles,

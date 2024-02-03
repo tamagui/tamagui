@@ -1,5 +1,4 @@
 import {
-  blackA,
   blue,
   blueDark,
   gray,
@@ -17,7 +16,8 @@ import {
   yellow,
   yellowDark,
 } from '@tamagui/colors'
-import { Variable, createTokens } from '@tamagui/web'
+import type { Variable } from '@tamagui/web'
+import { createTokens } from '@tamagui/web'
 
 // should roughly map to button/input etc height at each level
 // fonts should match that height/lineHeight at each stop
@@ -157,7 +157,7 @@ export const color = {
 
 function postfixObjKeys<
   A extends { [key: string]: Variable<string> | string },
-  B extends string
+  B extends string,
 >(
   obj: A,
   postfix: B
@@ -192,11 +192,4 @@ export const tokens = createTokens({
   zIndex,
   space,
   size,
-
-  // testing
-  icon: {
-    sm: 16,
-    md: 24,
-    lg: 32,
-  },
 })

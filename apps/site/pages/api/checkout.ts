@@ -98,8 +98,8 @@ export default apiRoute(async (req, res) => {
     discounts: promoCodeId
       ? [{ promotion_code: promoCodeId }]
       : couponId
-      ? [{ coupon: couponId }]
-      : undefined,
+        ? [{ coupon: couponId }]
+        : undefined,
     mode: 'payment',
     success_url: `${getURL()}/payment-finished`,
     cancel_url: `${getURL()}/takeout`,
@@ -110,7 +110,8 @@ export default apiRoute(async (req, res) => {
   //   .upsert({ id: user.id, stripe_customer_id: stripeSession.customer })
 
   if (stripeSession.url) {
-    return res.redirect(303, stripeSession.url)
+    res.redirect(303, stripeSession.url)
+    return
   }
 
   throw new Error(`No stripe session URL in: ${JSON.stringify(stripeSession)}`)

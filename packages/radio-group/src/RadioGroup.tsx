@@ -3,8 +3,10 @@
 
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
-import { GetProps, getVariableValue, styled } from '@tamagui/core'
-import { Scope, createContextScope } from '@tamagui/create-context'
+import type { GetProps } from '@tamagui/core'
+import { getVariableValue, styled } from '@tamagui/core'
+import type { Scope } from '@tamagui/create-context'
+import { createContextScope } from '@tamagui/create-context'
 import { registerFocusable } from '@tamagui/focusable'
 import { getSize } from '@tamagui/get-token'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
@@ -14,7 +16,7 @@ import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { usePrevious } from '@tamagui/use-previous'
 import * as React from 'react'
-import { View } from 'react-native'
+import type { View } from 'react-native'
 
 const RADIO_GROUP_NAME = 'RadioGroup'
 
@@ -138,7 +140,7 @@ const RadioGroupItemFrame = styled(ThemeableStack, {
           backgroundColor: '$backgroundHover',
           outlineStyle: 'solid',
           outlineWidth: 2,
-          outlineColor: '$borderColorFocus',
+          outlineColor: '$outlineColor',
         },
 
         pressStyle: {
@@ -257,7 +259,6 @@ const RadioGroupItem = RadioGroupItemFrame.extractable(
       }, [])
 
       if (process.env.TAMAGUI_TARGET === 'native') {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
         React.useEffect(() => {
           if (!props.id) return
           if (disabled) return
@@ -502,7 +503,7 @@ const RadioGroup = withStaticProperties(
           >
             <RovingFocusGroup
               __scopeRovingFocusGroup={RADIO_GROUP_NAME}
-              orientation={orientation}
+              orientation={orientation as any}
               loop={true}
             >
               <RadioGroupFrame

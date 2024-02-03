@@ -1,9 +1,9 @@
 import { createPagesServerClient } from '@supabase/auth-helpers-nextjs'
-import { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse } from 'next'
 
 import { HandledResponseTermination } from './apiRoute'
 import { setupCors } from './cors'
-import { Database } from './supabase-types'
+import type { Database } from './supabase-types'
 import { supabaseCookieOptions } from './supabase-utils'
 
 /**

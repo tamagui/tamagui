@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import { PopoverProps } from 'tamagui';
+import type { PopoverProps } from 'tamagui';
 export declare function PopoverDemo(): JSX.Element;
 export declare function Demo({ Icon, Name, ...props }: PopoverProps & {
     Icon?: any;

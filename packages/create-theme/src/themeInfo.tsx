@@ -1,4 +1,4 @@
-import {
+import type {
   CreateThemeOptions,
   CreateThemePalette,
   GenericTheme,

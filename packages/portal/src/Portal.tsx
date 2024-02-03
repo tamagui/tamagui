@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import '@tamagui/polyfill-dev'
 
 import { isWeb } from '@tamagui/constants'
@@ -7,7 +6,7 @@ import { YStack } from '@tamagui/stacks'
 import * as React from 'react'
 import { createPortal } from 'react-dom'
 
-import { PortalProps } from './PortalProps'
+import type { PortalProps } from './PortalProps'
 
 export const Portal = React.memo(
   ({ host = globalThis.document?.body, ...props }: PortalProps) => {

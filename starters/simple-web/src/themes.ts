@@ -1,5 +1,6 @@
+import type {
+  MaskOptions} from '@tamagui/create-theme';
 import {
-  MaskOptions,
   addChildren,
   applyMask,
   createStrengthenMask,
@@ -20,7 +21,7 @@ import { tokens } from './tokens'
 export const themes = (() => {
   // background => foreground
   const palettes = {
-    dark: [
+    light: [
       tokens.color.darkTransparent,
       tokens.color.light1,
       tokens.color.light2,
@@ -36,7 +37,7 @@ export const themes = (() => {
       tokens.color.light12,
       tokens.color.lightTransparent,
     ],
-    light: [
+    dark: [
       tokens.color.lightTransparent,
       tokens.color.dark1,
       tokens.color.dark2,

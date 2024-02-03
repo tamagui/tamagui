@@ -1,5 +1,6 @@
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
-import { Sheet, SheetProps, useSheet } from '@tamagui/sheet'
+import type { SheetProps } from '@tamagui/sheet'
+import { Sheet, useSheet } from '@tamagui/sheet'
 import { useState } from 'react'
 import { Button, H1, H2, Input, Paragraph, XStack, YStack } from 'tamagui'
 
@@ -21,12 +22,12 @@ export const SheetDemo = () => {
   const snapPoints = isPercent
     ? [85, 50, 25]
     : isConstant
-    ? [256, 190]
-    : isFit
-    ? undefined
-    : mixedFitDemo
-    ? ['fit', 110]
-    : ['80%', 256, 190]
+      ? [256, 190]
+      : isFit
+        ? undefined
+        : mixedFitDemo
+          ? ['fit', 110]
+          : ['80%', 256, 190]
 
   return (
     <>

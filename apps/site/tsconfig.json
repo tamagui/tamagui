@@ -8,11 +8,11 @@
       "tamagui": [
         "../tamagui"
       ],
-      "@tamagui/*": [
-        "../../packages/*"
-      ],
       "@tamagui/studio": [
         "../studio"
+      ],
+      "@tamagui/*": [
+        "../../packages/*"
       ],
       "@components/*": [
         "./components/*"

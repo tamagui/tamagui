@@ -1,9 +1,9 @@
 import { getVariableValue } from '../createVariable'
-import { GenericFonts, GetStyleState } from '../types'
-import { LanguageContextType } from '../views/FontLanguage.types'
+import type { GenericFonts, GetStyleState } from '../types'
+import type { LanguageContextType } from '../views/FontLanguage.types'
 
 export function getVariantExtras(styleState: GetStyleState) {
-  const { curProps, conf, context, theme } = styleState
+  const { curProps, props, conf, context, theme } = styleState
   let fonts = conf.fontsParsed
   if (context?.language) {
     fonts = getFontsForLanguage(conf.fontsParsed, context.language)
@@ -22,17 +22,13 @@ export function getVariantExtras(styleState: GetStyleState) {
     font: fonts[fontFamily] || fonts[styleState.conf.defaultFont!],
     // TODO do this in splitstlye
     // we avoid passing in default props for media queries because that would confuse things like SizableText.size:
-    props: new Proxy(curProps, {
+    props: new Proxy(props, {
       // handles shorthands
       get(target, key) {
-        const shorthand = conf.inverseShorthands[key as any]
-        // shorthands before longhand because a styled() with longhand combined with inline shorthand
-        // shorthand will always be the overriding key
-        if (shorthand && Reflect.has(target, shorthand)) {
-          return Reflect.get(target, shorthand)
-        }
-        if (Reflect.has(target, key)) {
-          return Reflect.get(target, key)
+        for (const tryKey of [key, conf.inverseShorthands[key as any]]) {
+          if (!tryKey) continue
+          if (Reflect.has(curProps, tryKey)) return Reflect.get(curProps, tryKey)
+          return Reflect.get(target, tryKey)
         }
       },
     }),

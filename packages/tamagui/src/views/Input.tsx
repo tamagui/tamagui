@@ -1,5 +1,6 @@
 import { isWeb } from '@tamagui/constants'
-import { ColorStyleProp, GetProps, styled, useTheme } from '@tamagui/core'
+import type { GetProps } from '@tamagui/core'
+import { styled, useTheme } from '@tamagui/core'
 import { useFocusable } from '@tamagui/focusable'
 import { TextInput } from 'react-native'
 
@@ -31,39 +32,55 @@ export const defaultStyles = {
   },
 
   focusStyle: {
-    outlineColor: '$borderColorFocus',
+    outlineColor: '$outlineColor',
     outlineWidth: 2,
     outlineStyle: 'solid',
     borderColor: '$borderColorFocus',
   },
 } as const
 
-export const InputFrame = styled(TextInput, {
-  name: 'Input',
+export const InputFrame = styled(
+  TextInput,
+  {
+    name: 'Input',
 
-  variants: {
-    unstyled: {
-      false: defaultStyles,
+    variants: {
+      unstyled: {
+        false: defaultStyles,
+      },
+
+      size: {
+        '...size': inputSizeVariant,
+      },
+
+      disabled: {
+        true: {},
+      },
+    } as const,
+
+    defaultVariants: {
+      unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
     },
-
-    size: {
-      '...size': inputSizeVariant,
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
   },
-})
+  {
+    isInput: true,
+    acceptTokens: {
+      placeholderTextColor: 'color',
+    } as const,
+  }
+)
 
 export type Input = TextInput
 
-export type InputProps = Omit<GetProps<typeof InputFrame>, 'placeholderTextColor'> & {
-  placeholderTextColor?: ColorStyleProp
+export type InputFrameProps = GetProps<typeof InputFrame>
+
+export type InputExtraProps = {
   rows?: number
 }
 
-export const Input = InputFrame.styleable<InputProps>((propsIn, ref) => {
+export type InputProps = InputFrameProps & InputExtraProps
+
+export const Input = InputFrame.styleable<InputExtraProps>((propsIn, ref) => {
   const props = useInputProps(propsIn, ref)
   return <InputFrame {...props} />
 })
@@ -71,6 +88,7 @@ export const Input = InputFrame.styleable<InputProps>((propsIn, ref) => {
 export function useInputProps(props: InputProps, ref: any) {
   const theme = useTheme()
   const { onChangeText, ref: combinedRef } = useFocusable({
+    // @ts-ignore
     props,
     ref,
     isInput: true,

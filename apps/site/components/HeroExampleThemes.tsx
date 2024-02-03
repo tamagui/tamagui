@@ -1,18 +1,11 @@
 import { useIsIntersecting } from '@tamagui/demos'
 import { onTintChange, setTintIndex, useTints } from '@tamagui/logo'
 import { useThemeSetting } from '@tamagui/next-theme'
-import {
-  SetStateAction,
-  memo,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import type { SetStateAction } from 'react'
+import { memo, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import type { ThemeName } from 'tamagui'
 import {
   Theme,
-  ThemeName,
   XGroup,
   XStack,
   YStack,
@@ -93,7 +86,6 @@ export const HeroExampleThemes = memo(function HeroExampleThemes() {
       disposeOnChange()
       setTintIndexDebounce.cancel()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isIntersecting])
 
   const move = (dir = 0) => {
@@ -158,7 +150,6 @@ export const HeroExampleThemes = memo(function HeroExampleThemes() {
     return () => {
       window.removeEventListener('keydown', onKey)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isIntersecting])
 
   useEffect(() => {
@@ -254,6 +245,7 @@ export const HeroExampleThemes = memo(function HeroExampleThemes() {
           <XStack
             className="scroll-horizontal no-scrollbar"
             ref={scrollView}
+            // @ts-expect-error it does pass through to web
             onScroll={(e: any) => {
               if (scrollLock === 'animate' || scrollLock === 'shouldAnimate') {
                 return

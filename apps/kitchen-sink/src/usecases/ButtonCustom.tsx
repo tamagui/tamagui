@@ -15,7 +15,7 @@ const Text = styled(ButtonText, {
 const ButtonStyled = styled(Button, {})
 
 export const ButtonCustom = Frame.styleable((props, ref) => {
-  const { props: buttonProps } = useButton(props, { Text })
+  const { props: buttonProps } = useButton(props as any, { Text })
 
   return (
     <>

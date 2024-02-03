@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test'
 import waitPort from 'wait-port'
-import { $, ProcessPromise, fetch, sleep } from 'zx'
+import type { ProcessPromise} from 'zx';
+import { $, fetch, sleep } from 'zx'
 
 let server: ProcessPromise | null = null
 
@@ -74,6 +75,7 @@ test(`Loads home screen content properly`, async ({ page }) => {
   const menuButton = page.locator(`button[aria-label="Open the main menu"]`).first()
   await expect(menuButton).toBeVisible()
   await menuButton.click()
+  await menuButton.hover()
   const menuContents = page.locator(`[aria-label="Home menu contents"]`).last()
   await expect(menuContents).toBeVisible()
 })

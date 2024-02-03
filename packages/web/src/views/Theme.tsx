@@ -2,8 +2,9 @@ import { isWeb } from '@tamagui/constants'
 import React, { Children, cloneElement, forwardRef, isValidElement, useRef } from 'react'
 
 import { variableToString } from '../createVariable'
-import { ThemeManagerContext } from '../helpers/ThemeManagerContext'
-import { ChangedThemeResponse, useChangeThemeEffect } from '../hooks/useTheme'
+import { ThemeManagerIDContext } from '../helpers/ThemeManagerContext'
+import type { ChangedThemeResponse } from '../hooks/useTheme'
+import { useChangeThemeEffect } from '../hooks/useTheme'
 import type { ThemeProps } from '../types'
 import { ThemeDebug } from './ThemeDebug'
 
@@ -56,9 +57,17 @@ export function getThemedChildren(
   const { themeManager, isNewTheme } = themeState
 
   // its always there.. should fix type
-  if (!themeManager) throw `❌`
+  if (!themeManager) {
+    throw new Error(
+      process.env.NODE_ENV === 'development'
+        ? `❌ No theme found, either incorrect name, potential duplicate tamagui deps, or TamaguiProvider not providing themes.`
+        : `❌ 005`
+    )
+  }
 
   const { shallow, forceClassName } = props
+
+  // TODO remove hook and join with the parent stateRef in createComponent
   const hasEverThemed = useRef(false)
 
   const shouldRenderChildrenWithTheme =
@@ -89,9 +98,9 @@ export function getThemedChildren(
   }
 
   const elementsWithContext = (
-    <ThemeManagerContext.Provider value={themeManager}>
+    <ThemeManagerIDContext.Provider value={themeManager.id}>
       {next}
-    </ThemeManagerContext.Provider>
+    </ThemeManagerIDContext.Provider>
   )
 
   if (forceClassName === false) {
@@ -142,8 +151,8 @@ function wrapThemeElements({
     const inverseClassName = name.startsWith('light')
       ? 't_light is_inversed'
       : name.startsWith('dark')
-      ? 't_dark is_inversed'
-      : ''
+        ? 't_dark is_inversed'
+        : ''
     themedChildren = (
       <span className={`${inverse ? inverseClassName : ''} _dsp_contents`}>
         {themedChildren}

@@ -24,19 +24,21 @@ const reRun = process.argv.includes('--rerun')
 const rePublish = reRun || process.argv.includes('--republish')
 const finish = process.argv.includes('--finish')
 
+const skipStarters = process.argv.includes('--skip-starters')
 const canary = process.argv.includes('--canary')
-const skipVersion = rePublish || process.argv.includes('--skip-version')
-const patch = process.argv.includes('--patch')
-const dirty = process.argv.includes('--dirty')
+const skipVersion = finish || rePublish || process.argv.includes('--skip-version')
+const shouldPatch = process.argv.includes('--patch')
+const dirty = finish || process.argv.includes('--dirty')
 const skipPublish = process.argv.includes('--skip-publish')
 const skipTest =
+  finish ||
   rePublish ||
   process.argv.includes('--skip-test') ||
   process.argv.includes('--skip-tests')
-const skipBuild = rePublish || process.argv.includes('--skip-build')
+const skipBuild = finish || rePublish || process.argv.includes('--skip-build')
 const dryRun = process.argv.includes('--dry-run')
 const tamaguiGitUser = process.argv.includes('--tamagui-git-user')
-const isCI = process.argv.includes('--ci')
+const isCI = finish || process.argv.includes('--ci')
 
 const curVersion = fs.readJSONSync('./packages/tamagui/package.json').version
 
@@ -45,11 +47,16 @@ const nextVersion = (() => {
     return curVersion
   }
 
-  const plusVersion = skipVersion ? 0 : 1
-  const curPatch = +curVersion.split('.')[2] || 0
-  const patchVersion = patch ? curPatch + plusVersion : 0
+  let plusVersion = skipVersion ? 0 : 1
+  const patchAndCanary = curVersion.split('.')[2]
+  const [patch, lastCanary] = patchAndCanary.split('-')
+  // if were publishing another canary no bump version
+  if (lastCanary && canary) {
+    plusVersion = 0
+  }
+  const patchVersion = shouldPatch ? +patch + plusVersion : 0
   const curMinor = +curVersion.split('.')[1] || 0
-  const minorVersion = curMinor + (patch || canary ? 0 : plusVersion)
+  const minorVersion = curMinor + (shouldPatch ? 0 : plusVersion)
   const next = `1.${minorVersion}.${patchVersion}`
 
   if (canary) {
@@ -65,7 +72,7 @@ const sleep = (ms) => {
 }
 
 if (!skipVersion) {
-  console.info('Version:', nextVersion, '\n')
+  console.info('Current:', curVersion, '\n')
 } else {
   console.info(`Re-publishing ${curVersion}`)
 }
@@ -148,25 +155,28 @@ async function run() {
       await spawnify(`git config --global user.email 'tamagui@users.noreply.github.com`)
     }
 
-    const answer =
-      isCI || skipVersion
-        ? { version: nextVersion }
-        : await prompts({
-            type: 'text',
-            name: 'version',
-            message: 'Version?',
-            initial: nextVersion,
-          })
+    if (!finish) {
+      const answer =
+        isCI || skipVersion
+          ? { version: nextVersion }
+          : await prompts({
+              type: 'text',
+              name: 'version',
+              message: 'Version?',
+              initial: nextVersion,
+            })
 
-    version = answer.version
+      version = answer.version
+      console.info('Next:', version, '\n')
+    }
 
     console.info('install and build')
 
-    if (!rePublish) {
+    if (!rePublish && !finish) {
       await spawnify(`yarn install`)
     }
 
-    if (!skipBuild) {
+    if (!skipBuild && !finish) {
       await spawnify(`yarn build`)
       await checkDistDirs()
     }
@@ -204,7 +214,7 @@ async function run() {
             const nextDeps = next[field]
             if (!nextDeps) continue
             for (const depName in nextDeps) {
-              if (packageJsons.some((p) => p.name === depName)) {
+              if (allPackageJsons.some((p) => p.name === depName)) {
                 nextDeps[depName] = version
               }
             }
@@ -297,7 +307,7 @@ async function run() {
       )
     }
 
-    if (!finish) {
+    if (!finish && !skipPublish) {
       if (confirmFinalPublish) {
         const { confirmed } = await prompts({
           type: 'confirm',
@@ -353,33 +363,31 @@ async function run() {
 
     // then git tag, commit, push
     if (!finish) {
-      await spawnify(`yarn fix`)
       await spawnify(`yarn install`)
     }
+
+    const tagPrefix = canary ? 'canary' : 'v'
+    const gitTag = `${tagPrefix}${version}`
 
     if (!finish) {
       await sleep(4 * 1000)
     }
 
-    await spawnify(`yarn upgrade:starters`)
-    await spawnify(`yarn fix`)
+    if (!canary && !skipStarters) {
+      await spawnify(`yarn upgrade:starters`)
+      const starterFreeDir = join(process.cwd(), '../starter-free')
+      await finishAndCommit(starterFreeDir)
+    }
 
-    const starterFreeDir = join(process.cwd(), '../starter-free')
-    await spawnify(`yarn fix`, {
-      cwd: starterFreeDir,
-    })
-
-    const tagPrefix = canary ? 'canary' : 'v'
-    const gitTag = `${tagPrefix}${version}`
-
-    await finishAndCommit(starterFreeDir)
     await finishAndCommit()
 
     async function finishAndCommit(cwd = process.cwd()) {
       if (!rePublish || reRun || finish) {
         await spawnify(`git add -A`, { cwd })
         await spawnify(`git commit -m ${gitTag}`, { cwd })
-        await spawnify(`git tag ${gitTag}`, { cwd })
+        if (!canary) {
+          await spawnify(`git tag ${gitTag}`, { cwd })
+        }
 
         if (!dirty) {
           // pull once more before pushing so if there was a push in interim we get it
@@ -387,7 +395,9 @@ async function run() {
         }
 
         await spawnify(`git push origin head`, { cwd })
-        await spawnify(`git push origin ${gitTag}`, { cwd })
+        if (!canary) {
+          await spawnify(`git push origin ${gitTag}`, { cwd })
+        }
 
         console.info(`✅ Pushed and versioned\n`)
       }

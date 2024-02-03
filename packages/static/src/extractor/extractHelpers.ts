@@ -24,10 +24,10 @@ export const attrStr = (attr?: ExtractedAttr) => {
   return !attr
     ? ''
     : attr.type === 'attr'
-    ? getNameAttr(attr.value)
-    : attr.type === 'ternary'
-    ? `...${ternaryStr(attr.value)}`
-    : `${attr.type}(${objToStr(attr.value)})`
+      ? getNameAttr(attr.value)
+      : attr.type === 'ternary'
+        ? `...${ternaryStr(attr.value)}`
+        : `${attr.type}(${objToStr(attr.value)})`
 }
 
 export const objToStr = (obj: any, spacer = ', ') => {
@@ -41,8 +41,8 @@ export const objToStr = (obj: any, spacer = ', ') => {
           Array.isArray(v)
             ? `[...]`
             : v && typeof v === 'object'
-            ? `${objToStr(v, ',')}`
-            : JSON.stringify(v)
+              ? `${objToStr(v, ',')}`
+              : JSON.stringify(v)
         }`
     )
     .join(spacer)}}`
@@ -59,9 +59,9 @@ export const ternaryStr = (x: Ternary) => {
   const conditional = t.isIdentifier(x.test)
     ? x.test.name
     : t.isMemberExpression(x.test)
-    ? [x.test.object['name'], x.test.property['name']]
-    : // @ts-ignore
-      generate(x.test as any).code
+      ? [x.test.object['name'], x.test.property['name']]
+      : // @ts-ignore
+        generate(x.test as any).code
   return [
     'ternary(',
     conditional,

@@ -1,4 +1,4 @@
-import { Variable } from '@tamagui/core'
+import type { Variable } from '@tamagui/core'
 import {
   H2,
   Paragraph,

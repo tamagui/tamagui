@@ -27,6 +27,7 @@ type Theme = {
     borderColorFocus: string;
     borderColorPress: string;
     placeholderColor: string;
+    outlineColor: string;
     blue1: string;
     blue2: string;
     blue3: string;

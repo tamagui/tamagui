@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse } from 'next'
 
 export function setupCors(req: NextApiRequest, res: NextApiResponse) {
   const origin = req.headers.origin
