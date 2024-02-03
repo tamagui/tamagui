@@ -63,11 +63,10 @@ export async function loadTamagui(
 
     if (props.outputCSS) {
       colorLog(Color.FgYellow, `    ➡ [tamagui] output css: ${props.outputCSS}\n`)
+
       // default to not minifying it messes up ssr parsing
-      const css =
-        props.disableMinifyCSS === false
-          ? minifyCSS(config.getCSS()).code
-          : config.getCSS()
+      const cssOut = config.getCSS()
+      const css = props.disableMinifyCSS === false ? minifyCSS(cssOut).code : cssOut
       await writeFile(props.outputCSS, css)
     }
   }

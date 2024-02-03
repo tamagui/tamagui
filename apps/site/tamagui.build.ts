@@ -13,7 +13,7 @@ export default {
       'generated-new.ts'
     ),
   },
-  outputCSS: process.env.NODE_ENV === 'production' ? './public/tamagui.css' : null,
+  outputCSS: './public/tamagui.css',
   components: ['tamagui'],
   importsWhitelist: ['constants.js', 'colors.js'],
   logTimings: true,

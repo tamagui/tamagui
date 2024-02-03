@@ -26,6 +26,12 @@ export interface TamaguiBuildOptions {
   outputCSS?: string | null | false
 
   /**
+   * (Experimental) outputs themes using CSS Nesting https://caniuse.com/css-nesting
+   * Which can cut them in half due to no media query duplication.
+   */
+  useCSSNesting?: boolean
+
+  /**
    * Tamagui can follow imports and evaluate them when parsing styles, leading to
    * higher percent of flattened / optimized views. We normalize this to be the
    * full path of the file, always ending in ".js".
@@ -144,6 +150,7 @@ export type CLIUserOptions = {
   tsconfigPath?: string
   tamaguiOptions: Partial<TamaguiOptions>
   debug?: boolean | 'verbose'
+  loadTamaguiOptions?: boolean
 }
 
 export type CLIResolvedOptions = {
