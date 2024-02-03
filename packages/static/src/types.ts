@@ -9,8 +9,7 @@ import type { LoadedComponents } from './extractor/bundleConfig'
 
 export type TamaguiPlatform = 'native' | 'web'
 
-// @ts-ignore
-export type { TamaguiOptions } from '@tamagui/types'
+export type { TamaguiOptions, TamaguiBuildOptions } from '@tamagui/types'
 
 export type { StyleObject } from '@tamagui/helpers'
 
