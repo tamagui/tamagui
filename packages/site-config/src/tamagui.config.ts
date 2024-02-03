@@ -108,11 +108,10 @@ const themesIn = {
 }
 
 // avoid themes only on client bundle
-const themes = themesIn
-
-// process.env.TAMAGUI_IS_SERVER || process.env.TAMAGUI_KEEP_THEMES
-//   ?
-//   : ({} as typeof themesIn)
+const themes =
+  process.env.TAMAGUI_IS_SERVER || process.env.TAMAGUI_KEEP_THEMES
+    ? themesIn
+    : ({} as typeof themesIn)
 
 export const config = {
   defaultFont: 'body',

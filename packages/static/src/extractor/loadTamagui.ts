@@ -24,7 +24,6 @@ import {
   generateTamaguiThemes,
 } from './generateTamaguiStudioConfig'
 import { getTamaguiConfigPathFromOptionsConfig } from './getTamaguiConfigPathFromOptionsConfig'
-import { TamaguiPlatform } from '..'
 
 const getFilledOptions = (propsIn: Partial<TamaguiOptions>): TamaguiOptions => ({
   // defaults
