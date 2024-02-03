@@ -6,11 +6,11 @@ import { getGlobalCssLoader } from 'next/dist/build/webpack/config/blocks/css/lo
 import type { PluginOptions as LoaderPluginOptions } from 'tamagui-loader'
 import { TamaguiPlugin } from 'tamagui-loader'
 import webpack from 'webpack'
+import { loadTamaguiBuildConfigSync } from '@tamagui/static'
 
 export type WithTamaguiProps = LoaderPluginOptions & {
   appDir?: boolean
   enableLegacyFontSupport?: boolean
-  aliasReactPackages?: boolean
   includeCSSTest?: RegExp | ((path: string) => boolean)
   doesMutateThemes?: boolean
   shouldExtract?: (path: string, projectRoot: string) => boolean | undefined
@@ -21,8 +21,12 @@ export type WithTamaguiProps = LoaderPluginOptions & {
   }) => boolean | string | undefined
 }
 
-export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
+export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
   return (nextConfig: any = {}) => {
+    const tamaguiOptions = {
+      ...tamaguiOptionsIn,
+      ...loadTamaguiBuildConfigSync(tamaguiOptionsIn),
+    }
     const isAppDir = tamaguiOptions?.appDir || nextConfig.experimental?.appDir
 
     return {

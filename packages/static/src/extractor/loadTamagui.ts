@@ -24,6 +24,7 @@ import {
   generateTamaguiThemes,
 } from './generateTamaguiStudioConfig'
 import { getTamaguiConfigPathFromOptionsConfig } from './getTamaguiConfigPathFromOptionsConfig'
+import { TamaguiPlatform } from '..'
 
 const getFilledOptions = (propsIn: Partial<TamaguiOptions>): TamaguiOptions => ({
   // defaults
@@ -108,6 +109,37 @@ const generateThemesAndLog = async (options: TamaguiOptions, force = false) => {
 
 const last: Record<string, TamaguiProjectInfo | null> = {}
 const lastVersion: Record<string, string> = {}
+
+export function loadTamaguiBuildConfigSync(
+  tamaguiOptions: Partial<TamaguiOptions> | undefined
+) {
+  const buildFilePath = tamaguiOptions?.buildFile ?? 'tamagui.build.ts'
+  if (existsSync(buildFilePath)) {
+    const registered = registerRequire('web')
+    try {
+      const out = require(buildFilePath).default
+      if (!out) {
+        throw new Error(`No default export found in ${buildFilePath}: ${out}`)
+      }
+      tamaguiOptions = {
+        ...tamaguiOptions,
+        ...out,
+      }
+    } finally {
+      registered.unregister()
+    }
+  }
+  if (!tamaguiOptions) {
+    throw new Error(
+      `No tamagui build options found either via input props or at tamagui.build.ts`
+    )
+  }
+  return {
+    config: 'tamagui.config.ts',
+    components: ['@tamagui/core'],
+    ...tamaguiOptions,
+  } as TamaguiOptions
+}
 
 // loads in-process using esbuild-register
 export function loadTamaguiSync({

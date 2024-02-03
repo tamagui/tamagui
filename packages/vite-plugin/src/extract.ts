@@ -3,7 +3,12 @@
 import path from 'path'
 
 import type { TamaguiOptions } from '@tamagui/static'
-import { createExtractor, extractToClassNames, getPragmaOptions } from '@tamagui/static'
+import {
+  createExtractor,
+  extractToClassNames,
+  getPragmaOptions,
+  loadTamaguiBuildConfigSync,
+} from '@tamagui/static'
 import outdent from 'outdent'
 import type { Plugin, ResolvedConfig, ViteDevServer } from 'vite'
 import { normalizePath } from 'vite'
@@ -11,7 +16,8 @@ import { normalizePath } from 'vite'
 const styleUpdateEvent = (fileId: string) => `tamagui-style-update:${fileId}`
 const GLOBAL_CSS_VIRTUAL_PATH = '__tamagui_global_css__.css'
 
-export function tamaguiExtractPlugin(options: Partial<TamaguiOptions>): Plugin {
+export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugin {
+  const options = loadTamaguiBuildConfigSync(optionsIn)
   const disableStatic =
     options.disable || (options.disableDebugAttr && options.disableExtraction)
 
@@ -79,7 +85,9 @@ export function tamaguiExtractPlugin(options: Partial<TamaguiOptions>): Plugin {
     async resolveId(source) {
       if (source === 'tamagui.css') {
         await extractor!.loadTamagui({
+          // @ts-ignore
           components: ['tamagui'],
+          // @ts-ignore
           platform: 'web',
           ...options,
         })

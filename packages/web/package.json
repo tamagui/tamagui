@@ -32,6 +32,7 @@
     "@tamagui/helpers": "1.88.22",
     "@tamagui/normalize-css-color": "1.88.22",
     "@tamagui/timer": "1.88.22",
+    "@tamagui/types": "1.88.22",
     "@tamagui/use-did-finish-ssr": "1.88.22",
     "@tamagui/use-event": "1.88.22",
     "@tamagui/use-force-update": "1.88.22",
