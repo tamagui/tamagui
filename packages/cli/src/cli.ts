@@ -4,7 +4,9 @@ import chalk from 'chalk'
 
 import { generatedPackageTypes } from './add.js'
 import { disposeAll, getOptions } from './utils'
+import { loadTamagui } from '@tamagui/static'
 
+// exit handlers
 ;['exit', 'SIGINT'].forEach((_) => {
   process.on(_, () => {
     disposeAll()
@@ -13,6 +15,28 @@ import { disposeAll, getOptions } from './utils'
 })
 
 const COMMAND_MAP = {
+  generate: {
+    description: `Builds your entire tamagui configuration and outputs any CSS.`,
+    shorthands: [],
+    flags: {
+      '--help': Boolean,
+      '--debug': Boolean,
+      '--verbose': Boolean,
+    },
+    async run() {
+      const { _, ...flags } = arg(this.flags)
+      const options = await getOptions({
+        debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
+        loadTamaguiOptions: true,
+      })
+      process.env.TAMAGUI_KEEP_THEMES = '1'
+      await loadTamagui({
+        ...options.tamaguiOptions,
+        platform: 'web',
+      })
+    },
+  },
+
   'generate-themes': {
     shorthands: ['gt'],
     description: `Use to pre-build your themes`,

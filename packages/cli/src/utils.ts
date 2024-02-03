@@ -1,7 +1,10 @@
 import { join } from 'path'
 
 import type { TamaguiOptions, TamaguiProjectInfo } from '@tamagui/static'
-import { loadTamagui as loadTamaguiStatic } from '@tamagui/static'
+import {
+  loadTamaguiBuildConfigSync,
+  loadTamagui as loadTamaguiStatic,
+} from '@tamagui/static'
 import type { CLIResolvedOptions, CLIUserOptions } from '@tamagui/types'
 import chalk from 'chalk'
 import fs, { pathExists, readJSON } from 'fs-extra'
@@ -12,6 +15,7 @@ export async function getOptions({
   tamaguiOptions,
   host,
   debug,
+  loadTamaguiOptions,
 }: Partial<CLIUserOptions> = {}): Promise<CLIResolvedOptions> {
   //
   if (root.includes('tamagui/apps/studio')) {
@@ -31,6 +35,17 @@ export async function getOptions({
     // ok
   }
 
+  const filledOptions = {
+    platform: 'native',
+    components: ['tamagui'],
+    config,
+    ...tamaguiOptions,
+  } satisfies TamaguiOptions
+
+  const finalOptions = loadTamaguiOptions
+    ? loadTamaguiBuildConfigSync(filledOptions)
+    : filledOptions
+
   return {
     mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
     root,
@@ -38,12 +53,7 @@ export async function getOptions({
     pkgJson,
     debug,
     tsconfigPath,
-    tamaguiOptions: {
-      platform: 'native',
-      components: ['tamagui'],
-      config,
-      ...tamaguiOptions,
-    },
+    tamaguiOptions: finalOptions,
     paths: {
       dotDir,
       conf: join(dotDir, 'tamagui.config.json'),
