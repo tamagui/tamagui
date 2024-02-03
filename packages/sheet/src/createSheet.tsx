@@ -5,6 +5,7 @@ import type {
   StackProps,
   TamaguiComponent,
   TamaguiComponentExpectingVariants,
+  TamaguiElement,
 } from '@tamagui/core'
 import { Stack } from '@tamagui/core'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
@@ -37,9 +38,13 @@ export function createSheet<
   F extends SheetStyledComponent | TamaguiComponent,
   O extends SheetStyledComponent | TamaguiComponent,
 >({ Handle, Frame, Overlay }: { Handle: H; Frame: F; Overlay: O }) {
-  const SheetHandle = Handle.extractable(
-    ({ __scopeSheet, ...props }: SheetScopedProps<GetProps<typeof Handle>>) => {
+  const SheetHandle = Handle.styleable<any>(
+    (
+      { __scopeSheet, ...props }: SheetScopedProps<SheetStyledComponent>,
+      forwardedRef
+    ) => {
       const context = useSheetContext(SHEET_HANDLE_NAME, __scopeSheet)
+      const composedRef = useComposedRefs<TamaguiElement>(context.handleRef, forwardedRef)
 
       if (context.onlyShowFrame) {
         return null
@@ -48,6 +53,7 @@ export function createSheet<
       return (
         // @ts-ignore
         <Handle
+          ref={composedRef}
           onPress={() => {
             // don't toggle to the bottom snap position when dismissOnSnapToBottom set
             const max =

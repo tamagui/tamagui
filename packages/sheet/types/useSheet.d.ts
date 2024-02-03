@@ -9,6 +9,7 @@ export declare const useSheet: () => {
     setOpen: import("react").Dispatch<import("react").SetStateAction<boolean>>;
     hidden: boolean;
     contentRef: import("react").RefObject<import("@tamagui/web").TamaguiElement>;
+    handleRef: import("react").RefObject<import("@tamagui/web").TamaguiElement>;
     frameSize: number;
     setFrameSize: import("react").Dispatch<import("react").SetStateAction<number>>;
     dismissOnOverlayPress: boolean;

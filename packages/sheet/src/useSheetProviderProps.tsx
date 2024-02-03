@@ -16,6 +16,7 @@ export function useSheetProviderProps(
     onOverlayComponent?: (comp: any) => void
   } = {}
 ) {
+  const handleRef = React.useRef<TamaguiElement>(null)
   const contentRef = React.useRef<TamaguiElement>(null)
   const [frameSize, setFrameSize] = useState<number>(0)
   const [maxContentSize, setMaxContentSize] = useState<number>(0)
@@ -160,6 +161,7 @@ export function useSheetProviderProps(
     setOpen: state.setOpen,
     hidden: !!state.isHidden,
     contentRef,
+    handleRef,
     frameSize,
     setFrameSize,
     dismissOnOverlayPress: props.dismissOnOverlayPress ?? true,

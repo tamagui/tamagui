@@ -91,12 +91,9 @@ export declare const Sheet: import("react").ForwardRefExoticComponent<{
             padded?: boolean | undefined;
             chromeless?: boolean | "all" | undefined;
         }>>) => null>;
-        Handle: ({ __scopeSheet, ...props }: import("./types").SheetScopedProps<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-            elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-            fullscreen?: boolean | undefined;
+        Handle: import("@tamagui/core").TamaguiComponent<any, any, any, any, {
             open?: boolean | undefined;
-            unstyled?: boolean | undefined;
-        }>>) => JSX.Element | null;
+        }, {}> | import("@tamagui/core").TamaguiComponent<any, any, any, {}, {}, {}>;
         ScrollView: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/web/types/interfaces/TamaguiComponentPropsBaseBase").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, keyof import("@tamagui/core").StackStyleBase | "fullscreen"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
             fullscreen?: boolean | undefined;
         } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
@@ -140,12 +137,9 @@ export declare const Sheet: import("react").ForwardRefExoticComponent<{
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
     }>>) => null>;
-    Handle: ({ __scopeSheet, ...props }: import("./types").SheetScopedProps<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
+    Handle: import("@tamagui/core").TamaguiComponent<any, any, any, any, {
         open?: boolean | undefined;
-        unstyled?: boolean | undefined;
-    }>>) => JSX.Element | null;
+    }, {}> | import("@tamagui/core").TamaguiComponent<any, any, any, {}, {}, {}>;
     ScrollView: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/web/types/interfaces/TamaguiComponentPropsBaseBase").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, keyof import("@tamagui/core").StackStyleBase | "fullscreen"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
         fullscreen?: boolean | undefined;
     } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
