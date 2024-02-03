@@ -5587,7 +5587,7 @@ __metadata:
     expo-document-picker: "npm:^11.7.0"
     expo-font: "npm:~11.4.0"
     expo-image-picker: "npm:^14.5.0"
-    expo-linear-gradient: "npm:~12.3.0"
+    expo-linear-gradient: "npm:~12.7.1"
     expo-linking: "npm:^5.0.2"
     expo-splash-screen: "npm:~0.20.5"
     expo-status-bar: "npm:~1.6.0"
@@ -6400,7 +6400,7 @@ __metadata:
     expo-build-properties: "npm:~0.8.3"
     expo-dev-client: "npm:~2.4.12"
     expo-font: "npm:~11.4.0"
-    expo-linear-gradient: "npm:~12.3.0"
+    expo-linear-gradient: "npm:~12.7.1"
     expo-linking: "npm:^5.0.2"
     expo-splash-screen: "npm:~0.20.5"
     expo-status-bar: "npm:~1.6.0"
@@ -6457,7 +6457,7 @@ __metadata:
     "@tamagui/build": "npm:1.88.21"
     "@tamagui/core": "npm:1.88.21"
     "@tamagui/stacks": "npm:1.88.21"
-    expo-linear-gradient: "npm:~12.3.0"
+    expo-linear-gradient: "npm:~12.7.1"
     react: "npm:^18.2.0"
   peerDependencies:
     react: "*"
@@ -14544,12 +14544,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-linear-gradient@npm:~12.3.0":
-  version: 12.3.0
-  resolution: "expo-linear-gradient@npm:12.3.0"
+"expo-linear-gradient@npm:~12.7.1":
+  version: 12.7.1
+  resolution: "expo-linear-gradient@npm:12.7.1"
   peerDependencies:
     expo: "*"
-  checksum: a2cf2b5f154ead613f408b3cb5bdc58f3dab2153b152e104a6578244f743dd0ee95dabb35fb8077414f2f275c9a5f20589d09264051cf1d28da55ddd221e5418
+  checksum: 7836acb751adea60de84982e394c3ca41c54110311dc5ed7ad656053a7bb5e1c5e97865cd90f0256dfbd5c700d4a80030f215adfa7d12b9dbb9c13662eacc3cd
   languageName: node
   linkType: hard
 
