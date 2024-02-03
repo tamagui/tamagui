@@ -66,7 +66,7 @@ export function createSheet<
         />
       )
     }
-  )
+  ) as SheetStyledComponent
 
   /* -------------------------------------------------------------------------------------------------
    * SheetOverlay
