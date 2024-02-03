@@ -1,5 +1,8 @@
 import { createExtractor, type TamaguiOptions } from '@tamagui/static'
-import type { ComposableIntermediateConfigT } from 'react-native-css-interop/metro'
+import {
+  withCssInterop,
+  type ComposableIntermediateConfigT,
+} from 'react-native-css-interop/metro'
 
 export function withTamagui(
   metroConfig: ComposableIntermediateConfigT,
@@ -15,6 +18,19 @@ export function withTamagui(
     void extractor.loadTamagui(options)
   }
 
+  if (!options.disableCSSInterop) {
+    metroConfig = withCssInterop(metroConfig, {
+      ignorePropertyWarningRegex: ['^--'],
+      // grouping: ['^group(/.*)?'],
+    })
+  }
+
+  // done in css interop
+  // metroConfig.resolver = {
+  //   ...metroConfig.resolver,
+  //   sourceExts: [...metroConfig.resolver.sourceExts, 'css'],
+  // }
+
   metroConfig.transformerPath = require.resolve('./transformer')
   metroConfig.transformer = {
     ...metroConfig.transformer,
@@ -23,5 +39,6 @@ export function withTamagui(
       disableInitialBuild: true,
     },
   }
+
   return metroConfig
 }
