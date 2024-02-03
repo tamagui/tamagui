@@ -248,7 +248,10 @@ export class ThemeBuilder<
         ? (() => {
             const found = definitions.find(
               // endWith match stronger than startsWith
-              (d) => parentName.endsWith(d.parent!) || parentName.startsWith(d.parent!)
+              (d) =>
+                d.parent
+                  ? parentName.endsWith(d.parent!) || parentName.startsWith(d.parent!)
+                  : true
             )
             if (!found) {
               return null

@@ -88,6 +88,18 @@ export declare const templates: {
         borderColorPress: number;
         outlineColor: number;
     };
+    surfaceActive: {
+        background: number;
+        backgroundHover: number;
+        backgroundPress: number;
+        backgroundFocus: number;
+        backgroundStrong: number;
+        borderColor: number;
+        borderColorHover: number;
+        borderColorFocus: number;
+        borderColorPress: number;
+        outlineColor: number;
+    };
 };
 export declare const maskOptions: {
     component: {

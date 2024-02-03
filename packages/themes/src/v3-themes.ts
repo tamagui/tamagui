@@ -220,11 +220,25 @@ export const templates = (() => {
     outlineColor: base.outlineColor + 3,
   }
 
+  const surfaceActive = {
+    background: base.background + 5,
+    backgroundHover: base.background + 5,
+    backgroundPress: base.backgroundPress + 5,
+    backgroundFocus: base.backgroundFocus + 5,
+    backgroundStrong: base.backgroundStrong + 5,
+    borderColor: base.borderColor + 5,
+    borderColorHover: base.borderColor + 5,
+    borderColorFocus: base.borderColorFocus + 5,
+    borderColorPress: base.borderColorPress + 5,
+    outlineColor: base.outlineColor + 5,
+  }
+
   return {
     base,
     surface1,
     surface2,
     surface3,
+    surfaceActive,
   }
 })()
 
@@ -457,6 +471,44 @@ const overlayThemeDefinitions = [
   },
 ]
 
+const inversed = {
+  mask: 'inverse',
+  ...maskOptions.component,
+} as const
+
+const surface1 = [
+  {
+    parent: 'active',
+    template: 'surfaceActive',
+  },
+  {
+    parent: '',
+    template: 'surface1',
+  },
+] as any
+
+const surface2 = [
+  {
+    parent: 'active',
+    template: 'surfaceActive',
+  },
+  {
+    parent: '',
+    template: 'surface2',
+  },
+] as any
+
+const surface3 = [
+  {
+    parent: 'active',
+    template: 'surfaceActive',
+  },
+  {
+    parent: '',
+    template: 'surface3',
+  },
+] as any
+
 // --- themeBuilder ---
 
 const themeBuilder = createThemeBuilder()
@@ -489,9 +541,7 @@ const themeBuilder = createThemeBuilder()
     alt1: {
       template: 'surface1',
     },
-    alt2: {
-      template: 'surface2',
-    },
+    alt2: surface2,
     active: {
       template: 'surface3',
     },
@@ -500,82 +550,40 @@ const themeBuilder = createThemeBuilder()
     ListItem: {
       template: 'surface1',
     },
-
-    Card: {
-      template: 'surface1',
-    },
-
-    Button: {
-      template: 'surface2',
-    },
-
-    Checkbox: {
-      template: 'surface2',
-    },
-
-    Switch: {
-      template: 'surface2',
-    },
-
-    SwitchThumb: {
-      mask: 'inverse',
-      ...maskOptions.component,
-    },
-
-    TooltipContent: {
-      template: 'surface2',
-    },
-
+    Card: surface1,
+    Button: surface3,
+    Checkbox: surface2,
+    Switch: surface2,
+    SwitchThumb: inversed,
+    TooltipContent: surface2,
     DrawerFrame: {
       template: 'surface1',
     },
-
     Progress: {
       template: 'surface1',
     },
-
-    RadioGroupItem: {
-      template: 'surface2',
-    },
-
+    RadioGroupItem: surface2,
     TooltipArrow: {
       template: 'surface1',
     },
-
     SliderTrackActive: {
       template: 'surface3',
     },
-
     SliderTrack: {
       template: 'surface1',
     },
-
-    SliderThumb: {
-      mask: 'inverse',
-      ...maskOptions.component,
-    },
-
-    Tooltip: {
-      mask: 'inverse',
-      ...maskOptions.component,
-    },
+    SliderThumb: inversed,
+    Tooltip: inversed,
 
     ProgressIndicator: {
       mask: 'inverse',
       ...maskOptions.component,
     },
-
     SheetOverlay: overlayThemeDefinitions,
     DialogOverlay: overlayThemeDefinitions,
     ModalOverlay: overlayThemeDefinitions,
-
-    Input: {
-      template: 'surface2',
-    },
-
-    TextArea: {
-      template: 'surface2',
-    },
+    Input: surface1,
+    TextArea: surface1,
   })
 
 // --- main export ---
