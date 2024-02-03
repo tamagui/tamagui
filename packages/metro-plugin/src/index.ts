@@ -1,4 +1,8 @@
-import { createExtractor, type TamaguiOptions } from '@tamagui/static'
+import {
+  createExtractor,
+  loadTamaguiBuildConfigSync,
+  type TamaguiOptions,
+} from '@tamagui/static'
 import {
   withCssInterop,
   type ComposableIntermediateConfigT,
@@ -6,10 +10,15 @@ import {
 
 export function withTamagui(
   metroConfig: ComposableIntermediateConfigT,
-  options: TamaguiOptions & {
+  optionsIn?: TamaguiOptions & {
     disableCSSInterop?: boolean
   }
 ) {
+  const options = {
+    ...optionsIn,
+    ...loadTamaguiBuildConfigSync(optionsIn),
+  }
+
   // run one build up front
   const extractor = createExtractor()
 
