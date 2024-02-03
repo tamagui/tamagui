@@ -546,45 +546,50 @@ const themeBuilder = createThemeBuilder()
       template: 'surface3',
     },
   })
-  .addChildThemes({
-    ListItem: {
-      template: 'surface1',
-    },
-    Card: surface1,
-    Button: surface3,
-    Checkbox: surface2,
-    Switch: surface2,
-    SwitchThumb: inversed,
-    TooltipContent: surface2,
-    DrawerFrame: {
-      template: 'surface1',
-    },
-    Progress: {
-      template: 'surface1',
-    },
-    RadioGroupItem: surface2,
-    TooltipArrow: {
-      template: 'surface1',
-    },
-    SliderTrackActive: {
-      template: 'surface3',
-    },
-    SliderTrack: {
-      template: 'surface1',
-    },
-    SliderThumb: inversed,
-    Tooltip: inversed,
+  .addChildThemes(
+    {
+      ListItem: {
+        template: 'surface1',
+      },
+      Card: surface1,
+      Button: surface3,
+      Checkbox: surface2,
+      Switch: surface2,
+      SwitchThumb: inversed,
+      TooltipContent: surface2,
+      DrawerFrame: {
+        template: 'surface1',
+      },
+      Progress: {
+        template: 'surface1',
+      },
+      RadioGroupItem: surface2,
+      TooltipArrow: {
+        template: 'surface1',
+      },
+      SliderTrackActive: {
+        template: 'surface3',
+      },
+      SliderTrack: {
+        template: 'surface1',
+      },
+      SliderThumb: inversed,
+      Tooltip: inversed,
 
-    ProgressIndicator: {
-      mask: 'inverse',
-      ...maskOptions.component,
+      ProgressIndicator: {
+        mask: 'inverse',
+        ...maskOptions.component,
+      },
+      SheetOverlay: overlayThemeDefinitions,
+      DialogOverlay: overlayThemeDefinitions,
+      ModalOverlay: overlayThemeDefinitions,
+      Input: surface1,
+      TextArea: surface1,
     },
-    SheetOverlay: overlayThemeDefinitions,
-    DialogOverlay: overlayThemeDefinitions,
-    ModalOverlay: overlayThemeDefinitions,
-    Input: surface1,
-    TextArea: surface1,
-  })
+    {
+      avoidNestingWithin: ['alt1', 'alt2'],
+    }
+  )
 
 // --- main export ---
 

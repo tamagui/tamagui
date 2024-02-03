@@ -29,6 +29,7 @@ const COMMAND_MAP = {
         debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
         loadTamaguiOptions: true,
       })
+      process.env.TAMAGUI_KEEP_THEMES = '1'
       await loadTamagui({
         ...options.tamaguiOptions,
         platform: 'web',

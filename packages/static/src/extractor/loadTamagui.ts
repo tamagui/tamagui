@@ -60,9 +60,8 @@ export async function loadTamagui(
     // init config
     const config = createTamagui(bundleInfo.tamaguiConfig) as any
 
-    if (props.outputCSS) {
+    if (props.outputCSS && props.platform === 'web') {
       colorLog(Color.FgYellow, `    ➡ [tamagui] output css: ${props.outputCSS}\n`)
-
       // default to not minifying it messes up ssr parsing
       const cssOut = config.getCSS()
       const css = props.disableMinifyCSS === false ? minifyCSS(cssOut).code : cssOut
