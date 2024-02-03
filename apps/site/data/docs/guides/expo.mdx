@@ -42,7 +42,7 @@ const { withTamagui } = require('@tamagui/metro-plugin')
 module.exports = withTamagui(config, {
   components: ['tamagui'],
   config: './tamagui.config.ts',
-  outputCSS: './tamagui.css',
+  outputCSS: './tamagui-web.css',
 })
 ```
 
@@ -66,7 +66,7 @@ declare module 'tamagui' {
 Then update `app/_layout.tsx`:
 
 ```tsx
-import '../tamagui.css'
+import '../tamagui-web.css'
 
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native'
 import { Stack } from 'expo-router'

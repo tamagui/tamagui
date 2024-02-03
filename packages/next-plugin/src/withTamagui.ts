@@ -27,6 +27,10 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
 
     return {
       ...nextConfig,
+      transpilePackages: [
+        ...(nextConfig.transpilePackages || []),
+        'expo-linear-gradient',
+      ],
       webpack: (webpackConfig: any, options: any) => {
         const { dir, config, dev, isServer } = options
 

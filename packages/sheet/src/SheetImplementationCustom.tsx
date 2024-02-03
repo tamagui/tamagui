@@ -267,9 +267,15 @@ export const SheetImplementationCustom = themeable(
       let previouslyScrolling = false
 
       const onMoveShouldSet = (
-        _e: GestureResponderEvent,
+        e: GestureResponderEvent,
         { dy }: PanResponderGestureState
       ) => {
+        // if dragging handle always allow:
+        // @ts-expect-error
+        if (e.target === providerProps.handleRef.current) {
+          return true
+        }
+
         const isScrolled = scrollBridge.y !== 0
         const isDraggingUp = dy < 0
         // we can treat near top instead of exactly to avoid trouble with springs
