@@ -58,9 +58,7 @@ export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
           })
         }
 
-        const enableStudio = options.dev && options.nextRuntime === 'nodejs' && isServer
         const tamaguiPlugin = new TamaguiPlugin({
-          enableStudio,
           isServer,
           ...tamaguiOptions,
         })
