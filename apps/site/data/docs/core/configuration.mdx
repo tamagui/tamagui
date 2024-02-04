@@ -389,8 +389,7 @@ will handle emitting a css file for you. But you can also just do this yourself
 by calling Tamagui.getCSS() with any other bundler or framework sometime in your
 pre-build or on the server and handing it over as CSS.
 
-One final optimization you can make if you are doing these server-side CSS
-patterns is setting the environment variable `TAMAGUI_DOES_SSR_CSS` to `"true"`
+One final optimization you can make if you are serving getCSS from the server is setting the environment variable `TAMAGUI_DOES_SSR_CSS` to `"true"`
 for the client bundle only. One gotcha - if you plan on calling `mutateTheme` or
 `addTheme` at some point, set `TAMAGUI_DOES_SSR_CSS` to `"mutates-themes"`. This
 will still give you the benefits of reduced bundle size, but avoids removing the
@@ -554,7 +553,6 @@ const light = {
   backgroundHover: tokens.color.gray2,
   backgroundPress: tokens.color.gray4,
   backgroundFocus: tokens.color.gray5,
-  backgroundTransparent: tokens.color.grayA1,
   borderColor: tokens.color.gray4,
   borderColorHover: tokens.color.gray6,
   borderColorPress: tokens.color.gray12,

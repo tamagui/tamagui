@@ -127,7 +127,7 @@ export const Sandbox = () => {
             pointerEvents: 'auto',
             display: 'flex',
             flexDirection: 'column',
-            background: 'var(--backgroundStrong)',
+            background: 'var(--background)',
             alignItems: 'center',
             justifyContent: 'center',
             minHeight: '120vh',

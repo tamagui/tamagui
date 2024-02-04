@@ -10,11 +10,11 @@ const QuickNavLink = ({ href, ...rest }: LinkProps) => (
     <Paragraph
       tag="span"
       size="$3"
-      color="$color10"
+      color="$color11"
       cursor="pointer"
       py="$0.5"
       hoverStyle={{
-        color: '$color11',
+        color: '$color12',
       }}
       {...rest}
     />
@@ -55,7 +55,7 @@ export function QuickNav() {
         zIndex: 1,
         position: 'fixed' as any,
         left: '50%',
-        top: 105,
+        top: 135,
         marginLeft: 450,
       }}
     >

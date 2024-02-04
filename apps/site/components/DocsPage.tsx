@@ -144,7 +144,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
             h={100}
             w={300}
             zi={100}
-            colors={['$backgroundStrong', '$backgroundStrong', '$backgroundTransparent']}
+            colors={['$background', '$background', '$background0']}
           />
           <ScrollView>
             <ThemeTint>

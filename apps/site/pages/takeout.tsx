@@ -1609,7 +1609,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
               l={0}
               r={0}
               h={200}
-              colors={['$backgroundTransparent', '$color5']}
+              colors={['$background0', '$color5']}
               zi={100}
             />
           </ThemeTintAlt>
@@ -1898,7 +1898,7 @@ const PurchaseSelectTeam = ({
       activationMode="manual"
       position="relative"
       p="$2"
-      bc="$backgroundStrong"
+      bc="$background"
       als="center"
       br="$3"
     >
