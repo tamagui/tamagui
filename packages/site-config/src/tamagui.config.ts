@@ -1,6 +1,6 @@
 import { shorthands } from '@tamagui/shorthands'
-import { tokens } from '@tamagui/themes/v2'
-import { themes as themesv2 } from '@tamagui/themes/v2-themes'
+import { tokens } from '@tamagui/themes/v3'
+import { themes as themesv3 } from '@tamagui/themes/v3-themes'
 import type { CreateTamaguiProps } from '@tamagui/web'
 import { setupDev } from '@tamagui/web'
 
@@ -101,7 +101,7 @@ const dark_tan = {
 }
 
 const themesIn = {
-  ...themesv2,
+  ...themesv3,
 
   light_tan,
   dark_tan,
