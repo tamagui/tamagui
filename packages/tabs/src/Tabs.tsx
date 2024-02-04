@@ -21,10 +21,6 @@ const TABS_CONTEXT = 'TabsContext'
 
 const TAB_LIST_NAME = 'TabsList'
 
-const TabsListFrame = styled(Group, {
-  name: TAB_LIST_NAME,
-})
-
 type TabsListFrameProps = GroupProps
 
 type TabsListProps = TabsListFrameProps & {
@@ -35,32 +31,32 @@ type TabsListProps = TabsListFrameProps & {
   loop?: boolean
 }
 
-const TabsList = TabsListFrame.extractable(
-  React.forwardRef<TamaguiElement, TabsListProps>(
-    (props: ScopedProps<TabsListProps>, forwardedRef) => {
-      const { __scopeTabs, loop = true, children, ...listProps } = props
-      const context = useTabsContext(__scopeTabs)
+const TabsList = React.forwardRef<TamaguiElement, TabsListProps>(
+  (props: ScopedProps<TabsListProps>, forwardedRef) => {
+    const { __scopeTabs, loop = true, children, ...listProps } = props
+    const context = useTabsContext(__scopeTabs)
 
-      return (
-        <RovingFocusGroup
-          __scopeRovingFocusGroup={__scopeTabs || TABS_CONTEXT}
+    return (
+      <RovingFocusGroup
+        __scopeRovingFocusGroup={__scopeTabs || TABS_CONTEXT}
+        orientation={context.orientation}
+        dir={context.dir}
+        loop={loop}
+        asChild
+      >
+        <Group
+          role="tablist"
+          componentName={TAB_LIST_NAME}
+          aria-orientation={context.orientation}
+          ref={forwardedRef}
           orientation={context.orientation}
-          dir={context.dir}
-          loop={loop}
+          {...listProps}
         >
-          <TabsListFrame
-            role="tablist"
-            aria-orientation={context.orientation}
-            ref={forwardedRef}
-            orientation={context.orientation}
-            {...listProps}
-          >
-            {children}
-          </TabsListFrame>
-        </RovingFocusGroup>
-      )
-    }
-  )
+          {children}
+        </Group>
+      </RovingFocusGroup>
+    )
+  }
 )
 
 TabsList.displayName = TAB_LIST_NAME
@@ -136,6 +132,7 @@ type TabLayout = LayoutRectangle
 type InteractionType = 'select' | 'focus' | 'hover'
 
 type TabsTriggerFrameProps = GetProps<typeof TabsTriggerFrame>
+
 /**
  * @deprecated use `TabTabsProps` instead
  */
@@ -145,143 +142,146 @@ type TabsTriggerProps = TabsTriggerFrameProps & {
 
   /** Used for making custom indicators when trigger interacted with */
   onInteraction?: (type: InteractionType, layout: TabLayout | null) => void
+
+  /** Disables setting the active theme when tab is active */
+  disableActiveTheme?: boolean
 }
 
 type TabsTabProps = TabsTriggerProps
 
-const TabsTrigger = TabsTriggerFrame.extractable(
-  React.forwardRef<TamaguiElement, ScopedProps<TabsTriggerProps>>(
-    (props: ScopedProps<TabsTriggerProps>, forwardedRef) => {
-      const {
-        __scopeTabs,
-        value,
-        disabled = false,
-        onInteraction,
-        ...triggerProps
-      } = props
-      const context = useTabsContext(__scopeTabs)
-      const triggerId = makeTriggerId(context.baseId, value)
-      const contentId = makeContentId(context.baseId, value)
-      const isSelected = value === context.value
-      const [layout, setLayout] = React.useState<TabLayout | null>(null)
-      const triggerRef = React.useRef<HTMLButtonElement>(null)
-      const groupItemProps = useGroupItem({ disabled: !!disabled })
+const TabsTrigger = TabsTriggerFrame.styleable<ScopedProps<TabsTabProps>>(
+  (props, forwardedRef) => {
+    const {
+      __scopeTabs,
+      value,
+      disabled = false,
+      onInteraction,
+      disableActiveTheme,
+      ...triggerProps
+    } = props
+    const context = useTabsContext(__scopeTabs)
+    const triggerId = makeTriggerId(context.baseId, value)
+    const contentId = makeContentId(context.baseId, value)
+    const isSelected = value === context.value
+    const [layout, setLayout] = React.useState<TabLayout | null>(null)
+    const triggerRef = React.useRef<HTMLButtonElement>(null)
+    const groupItemProps = useGroupItem({ disabled: !!disabled })
 
-      React.useEffect(() => {
-        context.registerTrigger()
-        return () => context.unregisterTrigger()
-      }, [])
+    React.useEffect(() => {
+      context.registerTrigger()
+      return () => context.unregisterTrigger()
+    }, [])
 
-      React.useEffect(() => {
-        if (!triggerRef.current || !isWeb) return
+    React.useEffect(() => {
+      if (!triggerRef.current || !isWeb) return
 
-        function getTriggerSize() {
-          if (!triggerRef.current) return
-          setLayout({
-            width: triggerRef.current.offsetWidth,
-            height: triggerRef.current.offsetHeight,
-            x: triggerRef.current.offsetLeft,
-            y: triggerRef.current.offsetTop,
-          })
-        }
-        getTriggerSize()
+      function getTriggerSize() {
+        if (!triggerRef.current) return
+        setLayout({
+          width: triggerRef.current.offsetWidth,
+          height: triggerRef.current.offsetHeight,
+          x: triggerRef.current.offsetLeft,
+          y: triggerRef.current.offsetTop,
+        })
+      }
+      getTriggerSize()
 
-        const observer = new ResizeObserver(getTriggerSize)
-        observer.observe(triggerRef.current)
+      const observer = new ResizeObserver(getTriggerSize)
+      observer.observe(triggerRef.current)
 
-        return () => {
-          if (!triggerRef.current) return
-          observer.unobserve(triggerRef.current)
-        }
-      }, [context.triggersCount])
+      return () => {
+        if (!triggerRef.current) return
+        observer.unobserve(triggerRef.current)
+      }
+    }, [context.triggersCount])
 
-      React.useEffect(() => {
-        if (isSelected && layout) {
-          onInteraction?.('select', layout)
-        }
-      }, [isSelected, value, layout])
+    React.useEffect(() => {
+      if (isSelected && layout) {
+        onInteraction?.('select', layout)
+      }
+    }, [isSelected, value, layout])
 
-      return (
-        <Theme name={isSelected ? 'active' : null} forceClassName>
-          <RovingFocusGroup.Item
-            __scopeRovingFocusGroup={__scopeTabs || TABS_CONTEXT}
-            asChild
-            focusable={!disabled}
-            active={isSelected}
-          >
-            <TabsTriggerFrame
-              onLayout={(event) => {
-                if (!isWeb) {
-                  setLayout(event.nativeEvent.layout)
-                }
-              }}
-              onHoverIn={composeEventHandlers(props.onHoverIn, () => {
-                if (layout) {
-                  onInteraction?.('hover', layout)
-                }
-              })}
-              onHoverOut={composeEventHandlers(props.onHoverOut, () => {
-                onInteraction?.('hover', null)
-              })}
-              role="tab"
-              aria-selected={isSelected}
-              aria-controls={contentId}
-              data-state={isSelected ? 'active' : 'inactive'}
-              data-disabled={disabled ? '' : undefined}
-              disabled={disabled}
-              id={triggerId}
-              // @ts-ignore
-              size={context.size}
-              {...groupItemProps}
-              {...triggerProps}
-              ref={composeRefs(forwardedRef, triggerRef)}
-              onPress={composeEventHandlers(props.onPress ?? undefined, (event) => {
-                // only call handler if it's the left button (mousedown gets triggered by all mouse buttons)
-                // but not when the control key is pressed (avoiding MacOS right click)
+    return (
+      <Theme name={isSelected && !disableActiveTheme ? 'active' : null}>
+        <RovingFocusGroup.Item
+          __scopeRovingFocusGroup={__scopeTabs || TABS_CONTEXT}
+          asChild
+          focusable={!disabled}
+          active={isSelected}
+        >
+          <TabsTriggerFrame
+            onLayout={(event) => {
+              if (!isWeb) {
+                setLayout(event.nativeEvent.layout)
+              }
+            }}
+            onHoverIn={composeEventHandlers(props.onHoverIn, () => {
+              if (layout) {
+                onInteraction?.('hover', layout)
+              }
+            })}
+            onHoverOut={composeEventHandlers(props.onHoverOut, () => {
+              onInteraction?.('hover', null)
+            })}
+            role="tab"
+            aria-selected={isSelected}
+            aria-controls={contentId}
+            data-state={isSelected ? 'active' : 'inactive'}
+            data-disabled={disabled ? '' : undefined}
+            disabled={disabled}
+            id={triggerId}
+            {...(!props.unstyled && {
+              size: context.size,
+            })}
+            {...groupItemProps}
+            {...triggerProps}
+            ref={composeRefs(forwardedRef, triggerRef)}
+            onPress={composeEventHandlers(props.onPress ?? undefined, (event) => {
+              // only call handler if it's the left button (mousedown gets triggered by all mouse buttons)
+              // but not when the control key is pressed (avoiding MacOS right click)
 
-                const webChecks =
-                  !isWeb ||
-                  ((event as unknown as React.MouseEvent).button === 0 &&
-                    (event as unknown as React.MouseEvent).ctrlKey === false)
-                if (!disabled && !isSelected && webChecks) {
-                  context.onChange(value)
-                } else {
-                  // prevent focus to avoid accidental activation
-                  event.preventDefault()
-                }
-              })}
-              {...(isWeb && {
-                type: 'button',
-                onKeyDown: composeEventHandlers(
-                  (props as React.HTMLProps<HTMLButtonElement>).onKeyDown,
-                  (event) => {
-                    if ([' ', 'Enter'].includes(event.key)) {
-                      context.onChange(value)
-                      event.preventDefault()
-                    }
-                  }
-                ),
-                onFocus: composeEventHandlers(props.onFocus, (event) => {
-                  if (layout) {
-                    onInteraction?.('focus', layout)
-                  }
-                  // handle "automatic" activation if necessary
-                  // ie. activate tab following focus
-                  const isAutomaticActivation = context.activationMode !== 'manual'
-                  if (!isSelected && !disabled && isAutomaticActivation) {
+              const webChecks =
+                !isWeb ||
+                ((event as unknown as React.MouseEvent).button === 0 &&
+                  (event as unknown as React.MouseEvent).ctrlKey === false)
+              if (!disabled && !isSelected && webChecks) {
+                context.onChange(value)
+              } else {
+                // prevent focus to avoid accidental activation
+                event.preventDefault()
+              }
+            })}
+            {...(isWeb && {
+              type: 'button',
+              onKeyDown: composeEventHandlers(
+                (props as React.HTMLProps<HTMLButtonElement>).onKeyDown,
+                (event) => {
+                  if ([' ', 'Enter'].includes(event.key)) {
                     context.onChange(value)
+                    event.preventDefault()
                   }
-                }),
-                onBlur: composeEventHandlers(props.onFocus, () => {
-                  onInteraction?.('focus', null)
-                }),
-              })}
-            />
-          </RovingFocusGroup.Item>
-        </Theme>
-      )
-    }
-  )
+                }
+              ),
+              onFocus: composeEventHandlers(props.onFocus, (event) => {
+                if (layout) {
+                  onInteraction?.('focus', layout)
+                }
+                // handle "automatic" activation if necessary
+                // ie. activate tab following focus
+                const isAutomaticActivation = context.activationMode !== 'manual'
+                if (!isSelected && !disabled && isAutomaticActivation) {
+                  context.onChange(value)
+                }
+              }),
+              onBlur: composeEventHandlers(props.onFocus, () => {
+                onInteraction?.('focus', null)
+              }),
+            })}
+          />
+        </RovingFocusGroup.Item>
+      </Theme>
+    )
+  }
 )
 
 TabsTrigger.displayName = TRIGGER_NAME
@@ -472,6 +472,8 @@ function makeTriggerId(baseId: string, value: string) {
 function makeContentId(baseId: string, value: string) {
   return `${baseId}-content-${value}`
 }
+
+export { useTabsContext }
 
 export type {
   TabsProps,
