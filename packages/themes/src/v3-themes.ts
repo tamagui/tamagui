@@ -1,5 +1,3 @@
-import type { MaskOptions } from '@tamagui/theme-builder'
-import { createThemeBuilder } from '@tamagui/theme-builder'
 import {
   blue,
   blueDark,
@@ -18,12 +16,9 @@ import {
   yellow,
   yellowDark,
 } from '@tamagui/colors'
+import { createThemeBuilder } from '@tamagui/theme-builder'
 import type { Variable } from '@tamagui/web'
 import { createTokens } from '@tamagui/web'
-
-import { masks } from './masks'
-
-export { masks } from './masks'
 
 const colorTokens = {
   light: {
@@ -118,6 +113,8 @@ export const palettes = (() => {
 
   const getColorPalette = (colors: Object): string[] => {
     const colorPalette = Object.values(colors)
+    // make the transparent color vibrant and towards the middle
+    const colorI = colorPalette.length - 4
 
     // add our transparent colors first/last
     // and make sure the last (foreground) color is white/black rather than colorful
@@ -128,10 +125,10 @@ export const palettes = (() => {
       transparent(colorPalette[0], 0.5),
       transparent(colorPalette[0], 0.75),
       ...colorPalette,
-      transparent(colorPalette[colorPalette.length - 1], 0.75),
-      transparent(colorPalette[colorPalette.length - 1], 0.5),
-      transparent(colorPalette[colorPalette.length - 1], 0.25),
-      transparent(colorPalette[colorPalette.length - 1], 0),
+      transparent(colorPalette[colorI], 0.75),
+      transparent(colorPalette[colorI], 0.5),
+      transparent(colorPalette[colorI], 0.25),
+      transparent(colorPalette[colorI], 0),
     ]
   }
 
@@ -205,46 +202,40 @@ export const palettes = (() => {
   }
 })()
 
-const transparencies = 3
-
-const templateColorsSpecific = {
-  background0: 0,
-  background025: 1,
-  background05: 2,
-  background075: 3,
-  color1: transparencies + 1,
-  color2: transparencies + 2,
-  color3: transparencies + 3,
-  color4: transparencies + 4,
-  color5: transparencies + 5,
-  color6: transparencies + 6,
-  color7: transparencies + 7,
-  color8: transparencies + 8,
-  color9: transparencies + 9,
-  color10: transparencies + 10,
-  color11: transparencies + 11,
-  color12: transparencies + 12,
-  color0: -0,
-  color025: -1,
-  color05: -2,
-  color075: -3,
-}
-
 export const templates = (() => {
+  const transparencies = 3
+
   // templates use the palette and specify index
   // negative goes backwards from end so -1 is the last item
   const base = {
-    ...templateColorsSpecific,
+    background0: 0,
+    background025: 1,
+    background05: 2,
+    background075: 3,
+    color1: transparencies + 1,
+    color2: transparencies + 2,
+    color3: transparencies + 3,
+    color4: transparencies + 4,
+    color5: transparencies + 5,
+    color6: transparencies + 6,
+    color7: transparencies + 7,
+    color8: transparencies + 8,
+    color9: transparencies + 9,
+    color10: transparencies + 10,
+    color11: transparencies + 11,
+    color12: transparencies + 12,
+    color0: -0,
+    color025: -1,
+    color05: -2,
+    color075: -3,
     // the background, color, etc keys here work like generics - they make it so you
     // can publish components for others to use without mandating a specific color scale
     // the @tamagui/button Button component looks for `$background`, so you set the
     // dark_red_Button theme to have a stronger background than the dark_red theme.
-    background: transparencies + 2,
-    backgroundHover: transparencies + 3,
-    backgroundPress: transparencies + 4,
-    backgroundFocus: transparencies + 5,
-    backgroundStrong: transparencies + 1,
-    backgroundTransparent: 0,
+    background: transparencies + 1,
+    backgroundHover: transparencies + 2,
+    backgroundPress: transparencies + 3,
+    backgroundFocus: transparencies + 1,
     borderColor: transparencies + 4,
     borderColorHover: transparencies + 5,
     borderColorFocus: transparencies + 2,
@@ -255,7 +246,7 @@ export const templates = (() => {
     colorFocus: -transparencies - 2,
     colorTransparent: -0,
     placeholderColor: -transparencies - 4,
-    outlineColor: 2,
+    outlineColor: -1,
   }
 
   const surface1 = {
@@ -263,7 +254,6 @@ export const templates = (() => {
     backgroundHover: base.backgroundHover + 1,
     backgroundPress: base.backgroundPress + 1,
     backgroundFocus: base.backgroundFocus + 1,
-    backgroundStrong: base.backgroundStrong + 1,
     borderColor: base.borderColor + 1,
     borderColorHover: base.borderColorHover + 1,
     borderColorFocus: base.borderColorFocus + 1,
@@ -275,7 +265,6 @@ export const templates = (() => {
     backgroundHover: base.backgroundHover + 2,
     backgroundPress: base.backgroundPress + 2,
     backgroundFocus: base.backgroundFocus + 2,
-    backgroundStrong: base.backgroundStrong + 2,
     borderColor: base.borderColor + 2,
     borderColorHover: base.borderColorHover + 2,
     borderColorFocus: base.borderColorFocus + 2,
@@ -287,7 +276,6 @@ export const templates = (() => {
     backgroundHover: base.backgroundHover + 3,
     backgroundPress: base.backgroundPress + 3,
     backgroundFocus: base.backgroundFocus + 3,
-    backgroundStrong: base.backgroundStrong + 3,
     borderColor: base.borderColor + 3,
     borderColorHover: base.borderColorHover + 3,
     borderColorFocus: base.borderColorFocus + 3,
@@ -299,11 +287,37 @@ export const templates = (() => {
     backgroundHover: base.background + 5,
     backgroundPress: base.backgroundPress + 5,
     backgroundFocus: base.backgroundFocus + 5,
-    backgroundStrong: base.backgroundStrong + 5,
     borderColor: base.borderColor + 5,
     borderColorHover: base.borderColor + 5,
     borderColorFocus: base.borderColorFocus + 5,
     borderColorPress: base.borderColorPress + 5,
+  }
+
+  const inverseSurface1 = {
+    color: surface1.background,
+    colorHover: surface1.backgroundHover,
+    colorPress: surface1.backgroundPress,
+    colorFocus: surface1.backgroundFocus,
+    background: base.color,
+    backgroundHover: base.colorHover,
+    backgroundPress: base.colorPress,
+    backgroundFocus: base.colorFocus,
+    borderColor: base.color - 2,
+    borderColorHover: base.color - 3,
+    borderColorFocus: base.color - 4,
+    borderColorPress: base.color - 5,
+  }
+
+  const inverseActive = {
+    ...inverseSurface1,
+    background: base.color - 2,
+    backgroundHover: base.colorHover - 2,
+    backgroundPress: base.colorPress - 2,
+    backgroundFocus: base.colorFocus - 2,
+    borderColor: base.color - 2 - 2,
+    borderColorHover: base.color - 3 - 2,
+    borderColorFocus: base.color - 4 - 2,
+    borderColorPress: base.color - 5 - 2,
   }
 
   const alt1 = {
@@ -327,42 +341,10 @@ export const templates = (() => {
     surface1,
     surface2,
     surface3,
+    inverseSurface1,
+    inverseActive,
     surfaceActive,
   }
-})()
-
-export const maskOptions = (() => {
-  const shadows = {
-    shadowColor: 0,
-    shadowColorHover: 0,
-    shadowColorPress: 0,
-    shadowColorFocus: 0,
-  }
-
-  const colors = {
-    ...shadows,
-    color: 0,
-    colorHover: 0,
-    colorFocus: 0,
-    colorPress: 0,
-  }
-
-  const skipShadowsAndSpecificColors = {
-    ...shadows,
-    ...templateColorsSpecific,
-  }
-
-  const component = {
-    // avoids the transparent ends
-    max: palettes.light.length - transparencies,
-    min: transparencies,
-    override: colors,
-    skip: skipShadowsAndSpecificColors,
-  }
-
-  return {
-    component,
-  } satisfies Record<string, MaskOptions>
 })()
 
 const shadows = {
@@ -379,11 +361,6 @@ const shadows = {
     shadowColorFocus: darkShadowColor,
   },
 }
-
-const colorThemeDefinition = (colorName: string) => ({
-  palette: colorName,
-  template: 'base',
-})
 
 const nonInherited = {
   light: {
@@ -411,10 +388,16 @@ const overlayThemeDefinitions = [
   },
 ]
 
-const inversed = {
-  mask: 'inverse',
-  ...maskOptions.component,
-} as const
+const inverseSurface1 = [
+  {
+    parent: 'active',
+    template: 'inverseActive',
+  },
+  {
+    parent: '',
+    template: 'inverseSurface1',
+  },
+] as any
 
 const surface1 = [
   {
@@ -454,7 +437,6 @@ const surface3 = [
 const themeBuilder = createThemeBuilder()
   .addPalettes(palettes)
   .addTemplates(templates)
-  .addMasks(masks)
   .addThemes({
     light: {
       template: 'base',
@@ -468,14 +450,38 @@ const themeBuilder = createThemeBuilder()
     },
   })
   .addChildThemes({
-    orange: colorThemeDefinition('orange'),
-    yellow: colorThemeDefinition('yellow'),
-    green: colorThemeDefinition('green'),
-    blue: colorThemeDefinition('blue'),
-    purple: colorThemeDefinition('purple'),
-    pink: colorThemeDefinition('pink'),
-    red: colorThemeDefinition('red'),
-    gray: colorThemeDefinition('gray'),
+    orange: {
+      palette: 'orange',
+      template: 'base',
+    },
+    yellow: {
+      palette: 'yellow',
+      template: 'base',
+    },
+    green: {
+      palette: 'green',
+      template: 'base',
+    },
+    blue: {
+      palette: 'blue',
+      template: 'base',
+    },
+    purple: {
+      palette: 'purple',
+      template: 'base',
+    },
+    pink: {
+      palette: 'pink',
+      template: 'base',
+    },
+    red: {
+      palette: 'red',
+      template: 'base',
+    },
+    gray: {
+      palette: 'gray',
+      template: 'base',
+    },
   })
   .addChildThemes({
     alt1: {
@@ -497,7 +503,7 @@ const themeBuilder = createThemeBuilder()
       Button: surface3,
       Checkbox: surface2,
       Switch: surface2,
-      SwitchThumb: inversed,
+      SwitchThumb: inverseSurface1,
       TooltipContent: surface2,
       DrawerFrame: {
         template: 'surface1',
@@ -515,13 +521,9 @@ const themeBuilder = createThemeBuilder()
       SliderTrack: {
         template: 'surface1',
       },
-      SliderThumb: inversed,
-      Tooltip: inversed,
-
-      ProgressIndicator: {
-        mask: 'inverse',
-        ...maskOptions.component,
-      },
+      SliderThumb: inverseSurface1,
+      Tooltip: inverseSurface1,
+      ProgressIndicator: inverseSurface1,
       SheetOverlay: overlayThemeDefinitions,
       DialogOverlay: overlayThemeDefinitions,
       ModalOverlay: overlayThemeDefinitions,
