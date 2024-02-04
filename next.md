@@ -1,3 +1,5 @@
+- on scroll clear open tooltip (homepage hero is bad)
+
 - Group is not SSR safe because useProps is evaluating to specific media queries
 on the server and then ultimately becomes not-media-css
 

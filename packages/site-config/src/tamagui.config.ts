@@ -37,16 +37,34 @@ const fonts = {
   cherryBomb: cherryBombFont,
 }
 
-type Theme = (typeof themes)['light']
-type Themes = Record<keyof typeof themes, Theme>
+// Converts a union of two types into an intersection
+// i.e. A | B -> A & B
+type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
+  k: infer I
+) => void
+  ? I
+  : never
+
+// Flattens two union types into a single type with optional values
+// i.e. FlattenUnion<{ a: number, c: number } | { b: string, c: number }> = { a?: number, b?: string, c: number }
+type FlattenUnion<T> = {
+  [K in keyof UnionToIntersection<T>]: K extends keyof T
+    ? T[K] extends any[]
+      ? T[K]
+      : T[K] extends object
+        ? FlattenUnion<T[K]>
+        : T[K]
+    : UnionToIntersection<T>[K] | undefined
+}
+
+export type Theme = FlattenUnion<(typeof themes)['light']>
+export type Themes = Record<keyof typeof themes, Theme>
 
 // avoid themes only on client bundle
 const maybeThemes =
   process.env.TAMAGUI_IS_SERVER || process.env.TAMAGUI_KEEP_THEMES
     ? (themes as Themes)
     : ({} as Themes)
-
-console.log('maybeThemes', Object.keys(maybeThemes))
 
 export const config = {
   defaultFont: 'body',
