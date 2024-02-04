@@ -18,10 +18,6 @@ import config from '../tamagui.config'
 
 Error.stackTraceLimit = Infinity
 
-if (process.env.NODE_ENV === 'production') {
-  require('../public/tamagui.css')
-}
-
 // prevent next.js from prefetching stuff
 if (typeof navigator !== 'undefined') {
   try {

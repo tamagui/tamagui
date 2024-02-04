@@ -1,7 +1,11 @@
 import { themes } from './themes';
 export { animations } from './animations';
-type Theme = (typeof themes)['light'];
-type Themes = Record<keyof typeof themes, Theme>;
+type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (k: infer I) => void ? I : never;
+type FlattenUnion<T> = {
+    [K in keyof UnionToIntersection<T>]: K extends keyof T ? T[K] extends any[] ? T[K] : T[K] extends object ? FlattenUnion<T[K]> : T[K] : UnionToIntersection<T>[K] | undefined;
+};
+export type Theme = FlattenUnion<(typeof themes)['light']>;
+export type Themes = Record<keyof typeof themes, Theme>;
 export declare const config: {
     defaultFont: string;
     shouldAddPrefersColorThemes: true;
