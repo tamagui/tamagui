@@ -69,7 +69,7 @@ export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
           __DEV__: JSON.stringify(dev),
           ...((tamaguiOptions.outputCSS || process.env.TAMAGUI_DOES_SSR_CSS) && {
             'process.env.TAMAGUI_DOES_SSR_CSS': JSON.stringify(
-              process.env.TAMAGUI_DOES_SSR_CSS ?? true
+              process.env.TAMAGUI_DOES_SSR_CSS ?? !isServer
             ),
           }),
 
