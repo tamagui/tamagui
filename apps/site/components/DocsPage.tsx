@@ -115,6 +115,9 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
         $gtSm={{
           flexDirection: 'row',
         }}
+        $gtLg={{
+          l: -50,
+        }}
         maw={1250}
         zi={100}
         pos="relative"
@@ -167,6 +170,9 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
         maxWidth="100%"
         flex={1}
         py="$8"
+        $gtLg={{
+          l: -50,
+        }}
         $gtMd={{
           pb: '$9',
           pl: 250,

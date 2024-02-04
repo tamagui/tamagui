@@ -20,15 +20,16 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
 
   return (
     <YStack
-      my="$2"
+      mt="$-3"
+      mb="$2"
       f={1}
       $gtSm={{
         fd: 'row',
         justifyContent: 'space-between',
       }}
-      {...disableTitle && {
+      {...(disableTitle && {
         mt: 0,
-      }}
+      })}
     >
       <YStack
         f={1}
@@ -39,9 +40,11 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
           mr: '$5',
         }}
       >
-        {!disableTitle && <H2 fontFamily="$body" size="$6" mb="$1" fow="800">
-          Features
-        </H2>}
+        {!disableTitle && (
+          <H2 fontFamily="$body" size="$6" mb="$1" fow="800">
+            Features
+          </H2>
+        )}
 
         <YStack tag="ul" p={0} m={0} gap>
           <Features large={large} items={features} />
@@ -49,12 +52,7 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
       </YStack>
 
       {!disableLinks && (
-        <YStack
-          gap="$3"
-          tag="nav"
-          aria-labelledby="site-component-info-header"
-          miw={140}
-        >
+        <YStack gap="$3" tag="nav" aria-labelledby="site-component-info-header" miw={140}>
           <VisuallyHidden>
             <h2 id="site-component-info-heading">Component Reference Links</h2>
           </VisuallyHidden>

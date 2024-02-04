@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import React, { forwardRef } from 'react'
 import type { TabsProps, TabsTabProps } from 'tamagui'
-import { Paragraph, styled, Tabs, withStaticProperties } from 'tamagui'
+import { Paragraph, styled, Tabs, withStaticProperties, XStack } from 'tamagui'
 import { useStore, useStoreSelector } from '@tamagui/use-store'
 
 class TabsStore {
@@ -50,10 +50,12 @@ const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
   return (
     <Tabs.Tab
       disableActiveTheme
-      size="$4"
-      $sm={{ f: 1 }}
+      size="$3"
+      flex={1}
       ref={ref as any}
       elevation="$0.5"
+      px="$5"
+      pe="auto"
       {...props}
       focusStyle={{
         outlineColor: '$outlineColor',
@@ -70,26 +72,38 @@ const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
         },
       })}
     >
-      <Paragraph>{props.children}</Paragraph>
+      <Paragraph size="$3">{props.children}</Paragraph>
     </Tabs.Tab>
   )
 })
 
-const TabsList = styled(Tabs.List, {
-  marginTop: -50,
-  width: '100%',
+const TabsListFrame = styled(XStack, {
+  pe: 'none',
+  maxWidth: '50%',
+  marginTop: -30,
   justifyContent: 'flex-end',
-  size: '$4',
+  alignSelf: 'flex-end',
   top: 70,
   marginRight: 0,
   marginBottom: 0,
   zIndex: 10000,
   position: 'sticky' as any,
   right: 0,
+
   $sm: {
-    marginTop: 20,
+    minWidth: '100%',
+    alignSelf: 'stretch',
+    marginTop: 0,
   },
 })
+
+const TabsList = (props) => {
+  return (
+    <TabsListFrame>
+      <Tabs.List size="$4" width="100%" {...props} />
+    </TabsListFrame>
+  )
+}
 
 export const CustomTabs = withStaticProperties(TabsComponent, {
   List: TabsList,
