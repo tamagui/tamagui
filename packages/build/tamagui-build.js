@@ -408,7 +408,6 @@ async function esbuildWriteIfChanged(
   /** @type { import('esbuild').BuildOptions } */
   const nativeEsbuildSettings = {
     target: 'node16',
-    format: 'cjs',
     supported: {
       'logical-assignment': false,
     },

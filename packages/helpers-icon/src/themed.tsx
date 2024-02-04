@@ -22,7 +22,7 @@ export function themed(
 ) {
   const wrapped = (propsIn: IconProps) => {
     const [props, style, theme] = usePropsAndStyle(propsIn, {
-      // forComponent: Text,
+      forComponent: Text,
       resolveValues: 'web', // iOS doesnt support dynamic values for SVG so only optimize on web
     })
 

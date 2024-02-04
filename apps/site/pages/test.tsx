@@ -29,10 +29,7 @@ function TestPage() {
         flex: 1,
       }}
     >
-      <CustomTabs>
-        <CustomTabs.List />
-      </CustomTabs>
-      <TabsList />
+      <DialogDemo />
       {/* <Stack
         // hitSlop={5}
         importantForAccessibility="no"
@@ -233,7 +230,7 @@ TestPage.getLayout = (page) => {
 
 import { memo, useEffect } from 'react'
 import { Circle, XStack } from 'tamagui'
-import { CustomTabs } from '../components/CustomTabs'
+import { DialogDemo } from '@tamagui/demos'
 
 const TestCircle = memo(() => {
   const [mounted, setMounted] = useState<'start' | 'animate' | 'done'>('start')

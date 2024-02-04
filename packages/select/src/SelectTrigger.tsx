@@ -35,6 +35,8 @@ export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps
       <ListItem
         componentName={TRIGGER_NAME}
         unstyled={unstyled}
+        tag="button"
+        id={itemParentContext.id}
         {...(!unstyled && {
           backgrounded: true,
           radiused: true,
@@ -47,8 +49,8 @@ export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps
             outlineColor: '$outlineColor',
           },
           borderWidth: 1,
+          size: itemParentContext.size,
         })}
-        size={itemParentContext.size}
         // aria-controls={context.contentId}
         aria-expanded={context.open}
         aria-autocomplete="none"

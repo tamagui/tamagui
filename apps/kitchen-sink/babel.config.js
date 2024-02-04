@@ -1,7 +1,6 @@
 module.exports = (api) => {
   api.cache(true)
   return {
-    ignore: [/lucide-icons|\/dist\/cjs\//],
     presets: [['babel-preset-expo', { jsxRuntime: 'automatic' }]],
     plugins: [
       [

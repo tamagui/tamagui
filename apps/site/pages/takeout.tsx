@@ -285,7 +285,7 @@ export default function TakeoutPage({
                     consulting on apps with Tamagui. It builds off the free and open
                     source starter <CodeInline>(npm&nbsp;create&nbsp;tamagui)</CodeInline>
                     , adding{' '}
-                    <a target="_blank" href="https://supabase.com">
+                    <a target="_blank" href="https://supabase.com" rel="noreferrer">
                       Supabase
                     </a>{' '}
                     for data and auth, all the flows for a user-based app, and a bunch of
@@ -1167,7 +1167,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                 </Dialog.Title>
               </XStack>
 
-              <YStack my="$2">
+              {/* <YStack my="$2">
                 <YStack gap="$4" $gtSm={{ fd: 'row' }} flexWrap="wrap">
                   {products.map((product) => {
                     if (!product) return null
@@ -1246,7 +1246,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                     )
                   })}
                 </YStack>
-              </YStack>
+              </YStack> */}
 
               <XStack
                 f={1}
@@ -1297,7 +1297,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                       <YStack width="80%">
                         <Paragraph size="$6">Discord Seats</Paragraph>
                         <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
-                          Access to the Takeout channel
+                          Access to the Discord #takeout room
                         </Paragraph>
                       </YStack>
                       <XStack f={1} ai="center" gap="$2" jc="center">
@@ -1344,7 +1344,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                     >
                       <Check size={30} color="$color9" />
                       <MunroP size="$7" color="$color11">
-                        Every plan includes the same assets
+                        Every plan includes the starter, icon packs & font packs
                       </MunroP>
                     </XStack>
 
@@ -1390,11 +1390,11 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
 
                               <YStack gap="$0" f={1}>
                                 <H4 mt="$-1">
-                                  {price.description === `Unlimited (+9 Seats)`
-                                    ? `Unlimited`
-                                    : price.description === `Hobby (3-8 seats)`
-                                      ? `Team (2-8 seats)`
-                                      : price.description}
+                                  {price.description === 'Unlimited (+9 seats)'
+                                    ? 'Pro'
+                                    : price.description === 'Hobby (3-8 seats)'
+                                      ? 'Team'
+                                      : 'Personal'}
                                 </H4>
 
                                 <Paragraph theme="alt2">

@@ -12,20 +12,20 @@ npm create tamagui@latest --template expo-router
 
 There are also [pre-made community Expo starters](/community).
 
-### Install
+## Install
 
 To support dark mode, update your `app.json` to `app.config.ts` and set
 `userInterfaceStyle` to `"automatic"`.
 
-#### Expo Router / Web
+### Expo Router / Web
 
 We have beta support via `@tamagui/metro-plugin`. Install:
 
 ```bash
-yarn add @tamagui/metro-plugin
+yarn add tamagui @tamagui/config @tamagui/metro-plugin
 ```
 
-Then adjust your `metro.config.js`:
+If you want web support, adjust your `metro.config.js`:
 
 ```ts
 // Learn more https://docs.expo.io/guides/customizing-metro
@@ -37,18 +37,19 @@ const config = getDefaultConfig(__dirname, {
   isCSSEnabled: true,
 })
 
+// add nice web support with optimizing compiler + CSS extraction
 const { withTamagui } = require('@tamagui/metro-plugin')
 module.exports = withTamagui(config, {
   components: ['tamagui'],
   config: './tamagui.config.ts',
-  outputCSS: './tamagui.css',
+  outputCSS: './tamagui-web.css',
 })
 ```
 
 Add your `tamagui.config.ts`:
 
 ```tsx
-import { config as configBase } from '@tamagui/config'
+import { config as configBase } from '@tamagui/config/v2'
 import { createTamagui } from 'tamagui'
 
 export const config = createTamagui(configBase)
@@ -65,7 +66,7 @@ declare module 'tamagui' {
 Then update `app/_layout.tsx`:
 
 ```tsx
-import '../tamagui.css'
+import '../tamagui-web.css'
 
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native'
 import { Stack } from 'expo-router'
@@ -91,7 +92,7 @@ export default function RootLayout() {
 }
 ```
 
-#### Native
+### Native
 
 This guide assumes Expo is configured with TypeScript support.
 
@@ -150,7 +151,7 @@ config.resolver.sourceExts.push('mjs');
 module.exports = config;
 ```
 
-### Setup Tamagui
+#### Setup Tamagui
 
 From here on out you can follow the [Installation](/docs/intro/installation) and
 [Configuration](/docs/core/configuration) docs.
