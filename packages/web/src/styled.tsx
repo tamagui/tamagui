@@ -160,9 +160,7 @@ export function styled<
 
       const acceptsClassName =
         acceptsClassNameProp ??
-        (isPlainStyledComponent ||
-          isReactNative ||
-          (parentSC?.isHOC && parentSC?.acceptsClassName))
+        Boolean(isPlainStyledComponent || isReactNative || parentSC?.acceptsClassName)
 
       const conf: Partial<StaticConfig> = {
         ...parentSC,
