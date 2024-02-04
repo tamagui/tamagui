@@ -5,7 +5,10 @@ export const docsRoutes = [
       { title: 'Installation', route: '/docs/intro/installation' },
       // { title: 'Thinking in Tamagui', route: '/docs/intro/thinking-in-tamagui' },
       // { title: 'Comparison', route: '/docs/intro/comparison' },
-      { title: 'Releases', route: 'https://github.com/tamagui/tamagui/releases' },
+      {
+        title: 'Releases',
+        route: 'https://github.com/tamagui/tamagui/releases',
+      },
     ],
   },
 
@@ -33,8 +36,8 @@ export const docsRoutes = [
   {
     title: 'Compiler',
     pages: [
-      { title: 'About', route: '/docs/intro/why-a-compiler' },
-      { title: 'Install', route: '/docs/intro/compiler-install' },
+      { title: 'Background', route: '/docs/intro/why-a-compiler' },
+      { title: 'Installation', route: '/docs/intro/compiler-install' },
       { title: 'Benchmarks', route: '/docs/intro/benchmarks' },
     ],
   },
@@ -126,7 +129,10 @@ export const docsRoutes = [
     title: 'Guides',
     pages: [
       { title: 'Creating Custom Themes', route: '/docs/guides/theme-builder' },
-      { title: 'How to Build a Button', route: '/docs/guides/how-to-build-a-button' },
+      {
+        title: 'How to Build a Button',
+        route: '/docs/guides/how-to-build-a-button',
+      },
       { title: 'Developing', route: '/docs/guides/developing' },
       { title: 'Next.js', route: '/docs/guides/next-js' },
       { title: 'Expo', route: '/docs/guides/expo' },

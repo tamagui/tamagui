@@ -1,9 +1,10 @@
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { Link as LinkIcon } from '@tamagui/lucide-icons'
 import { NextLink } from 'components/NextLink'
-import React, { useState } from 'react'
+import { useRouter } from 'next/router'
+import React, { forwardRef, useState } from 'react'
 import { ScrollView } from 'react-native'
-import type { ImageProps, XStackProps } from 'tamagui'
+import type { ImageProps, XStackProps, TabsProps, TabsTabProps } from 'tamagui'
 import {
   Button,
   Card,
@@ -16,14 +17,16 @@ import {
   Paragraph,
   Separator,
   Spacer,
+  styled,
+  Tabs,
   Text,
   Theme,
   ThemeableStack,
   TooltipSimple,
+  withStaticProperties,
   XGroup,
   XStack,
   YStack,
-  styled,
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 
@@ -54,10 +57,7 @@ import { TamaguiExamplesCode } from './TamaguiExamplesCode'
 import { UL } from './UL'
 import { unwrapText } from './unwrapText'
 import { Link } from './Link'
-
-const B = styled(Paragraph, {
-  fontWeight: '800',
-})
+import { CustomTabs } from './CustomTabs'
 
 const IntroParagraph = ({ children, large, disableUnwrapText, ...props }: any) => {
   return (
@@ -171,6 +171,8 @@ const TableHighlight = styled(YStack, {
 })
 
 export const components = {
+  Tabs: CustomTabs,
+
   SocialLinksRow: () => (
     <YStack mt="$6" mx="$-4">
       <SocialLinksRow />
@@ -520,7 +522,7 @@ export const components = {
           <YStack ov="hidden" f={1} o={0.85} space>
             <Paragraph>
               Tamagui is fully OSS, self-funded and built by{' '}
-              <a href="https://twitter.com/natebirdman" target="_blank">
+              <a href="https://twitter.com/natebirdman" target="_blank" rel="noreferrer">
                 me
               </a>
               .

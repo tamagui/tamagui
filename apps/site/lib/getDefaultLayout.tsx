@@ -12,7 +12,7 @@ export const getDefaultLayout: GetLayout = (page, pageProps, path) => {
   const isAccountPage = path.startsWith('/account')
   const isStudio = path.startsWith('/studio')
   const isTakeout = path.startsWith('/takeout')
-  const isBento = path.startsWith('/bento')
+  // const isBento = path.startsWith('/bento')
   const isProductLandingPage = isTakeout || isStudio
   const isBlog = path.startsWith('/blog')
   const isDocs = path.startsWith('/docs')

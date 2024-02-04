@@ -1,13 +1,21 @@
+// debug
 // import '../lib/wdyr'
 
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { Header } from '@tamagui/site/components/Header'
 import { SearchProvider } from '@tamagui/site/components/Search'
 import { useState } from 'react'
-import { AnimatePresence, Button, Stack, Text, YStack, styled } from 'tamagui'
+import { AnimatePresence, Button, View, Text, YStack, styled } from 'tamagui'
 
 // debugger
 global.shouldDebugMoti = true
+
+const TabsList = styled(View, {
+  marginTop: -50,
+  $sm: {
+    marginTop: 20,
+  },
+})
 
 function TestPage() {
   return (
