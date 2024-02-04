@@ -475,7 +475,7 @@ async function esbuildWriteIfChanged(
   }
 
   const built = await esbuild.build(buildSettings)
-  const isESM = buildSettings.target === 'esm'
+  const isESM = buildSettings.target === 'esm' || buildSettings.target === 'esnext'
 
   if (!built.outputFiles) {
     return
@@ -536,7 +536,8 @@ async function esbuildWriteIfChanged(
       }
 
       if (pkgRemoveSideEffects && isESM) {
-        outString = outString.replace(/\nimport "[^"]+";\n/g, '\n')
+        // match whitespace to preserve sourcemaps
+        outString = outString.replace(/\nimport "[^"]+";\n/g, '\n\n')
       }
 
       async function flush(contents, path) {
