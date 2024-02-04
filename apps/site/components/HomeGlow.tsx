@@ -45,7 +45,7 @@ export const HomeGlow = memo(() => {
           const xRand = isOnHeroBelow ? 0 : positions[i][0]
           const yRand = isOnHeroBelow ? 0 : positions[i][1]
           const x =
-            xScale * (xRand + (isOnHeroBelow ? (isAlt ? -200 : 200) : isAlt ? -400 : 400))
+            xScale * (xRand + (isOnHeroBelow ? (isAlt ? -50 : 50) : isAlt ? -400 : 400))
           return (
             <YStack
               key={`${i}`}
@@ -56,7 +56,7 @@ export const HomeGlow = memo(() => {
               fullscreen
               left={`calc(50vw - 500px)`}
               x={x}
-              y={isOnHeroBelow ? 300 : yRand}
+              y={isOnHeroBelow ? 200 : yRand}
               scale={scale}
               className={'home-glow ' + (active ? ' active' : '')}
             />
