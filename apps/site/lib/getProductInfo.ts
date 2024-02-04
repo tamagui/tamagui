@@ -8,16 +8,16 @@ export function getTakeoutPriceInfo(pricingDescription: string) {
   const minMaxMatch = Number(pricingDescription?.match(/.*[0-9]+-([0-9]+) seats.*/i)?.[1])
   // e.g. "Team (10-20 seats)"
   if (minMaxMatch && !isNaN(minMaxMatch)) {
-    discordSeats = minMaxMatch
-    licenseSeats = minMaxMatch
+    discordSeats = Math.min(4, minMaxMatch)
+    licenseSeats = 8
     githubSeats = 2
   }
 
   // e.g. "Team (+20 seats)"
   const minOnlyMatch = Number(pricingDescription?.match(/.*\+([0-9]+) seats.*/i)?.[1])
   if (minOnlyMatch && !isNaN(minOnlyMatch)) {
-    discordSeats = 50
-    licenseSeats = 4
+    discordSeats = 10
+    licenseSeats = 50
     githubSeats = 4
   }
 

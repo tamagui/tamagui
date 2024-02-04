@@ -17,7 +17,7 @@ import {
   composeEventHandlers,
   setupHooks,
 } from '@tamagui/web'
-import { createElement } from 'react'
+import { createElement, useMemo } from 'react'
 
 import { createOptimizedView } from './createOptimizedView'
 import { getBaseViews } from './getBaseViews'
@@ -107,11 +107,14 @@ setupHooks({
 
       if (willHydrate || isDOM) {
         // only necessary for DOM elements, but we need the hooks to stay around
-        const hostRef = {
-          get current() {
-            return stateRef.current.host as Element
-          },
-        }
+        const hostRef = useMemo(
+          () => ({
+            get current() {
+              return stateRef.current.host as Element
+            },
+          }),
+          [stateRef]
+        )
         usePlatformMethods(hostRef)
         useElementLayout(hostRef, !isDOM ? undefined : (onLayout as any))
         useResponderEvents(

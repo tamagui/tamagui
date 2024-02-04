@@ -15,6 +15,7 @@ export declare function useSheetProviderProps(props: SheetProps, state: SheetOpe
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
     hidden: boolean;
     contentRef: React.RefObject<TamaguiElement>;
+    handleRef: React.RefObject<TamaguiElement>;
     frameSize: number;
     setFrameSize: React.Dispatch<React.SetStateAction<number>>;
     dismissOnOverlayPress: boolean;
