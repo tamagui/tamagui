@@ -103,76 +103,66 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   const themeConfig = (() => {
     const cssRuleSets: string[] = []
 
-    if (
-      process.env.TAMAGUI_DOES_SSR_CSS !== 'true' &&
-      // we can leave this out if mutating, only need the js for getThemeCSSRules
-      process.env.TAMAGUI_DOES_SSR_CSS !== 'mutates-themes'
-    ) {
-      const declarations: string[] = []
-      const fontDeclarations: Record<
-        string,
-        { name: string; declarations: string[]; language?: string }
-      > = {}
+    const declarations: string[] = []
+    const fontDeclarations: Record<
+      string,
+      { name: string; declarations: string[]; language?: string }
+    > = {}
 
-      for (const key in tokens) {
-        for (const skey in tokens[key]) {
-          const variable = tokens[key][skey] as any as Variable
+    for (const key in tokens) {
+      for (const skey in tokens[key]) {
+        const variable = tokens[key][skey] as any as Variable
 
-          // set specific tokens (like $size.sm)
-          specificTokens[`$${key}.${skey}`] = variable
+        // set specific tokens (like $size.sm)
+        specificTokens[`$${key}.${skey}`] = variable
 
-          if (process.env.NODE_ENV === 'development') {
-            if (typeof variable === 'undefined') {
-              throw new Error(
-                `No value for tokens.${key}.${skey}:\n${JSON.stringify(
-                  variable,
-                  null,
-                  2
-                )}`
-              )
-            }
+        if (process.env.NODE_ENV === 'development') {
+          if (typeof variable === 'undefined') {
+            throw new Error(
+              `No value for tokens.${key}.${skey}:\n${JSON.stringify(variable, null, 2)}`
+            )
           }
+        }
 
-          if (isWeb) {
-            registerCSSVariable(variable)
-            declarations.push(variableToCSS(variable, key === 'zIndex'))
-          }
+        if (isWeb) {
+          registerCSSVariable(variable)
+          declarations.push(variableToCSS(variable, key === 'zIndex'))
+        }
+      }
+    }
+
+    if (isWeb) {
+      for (const key in fontsParsed) {
+        const fontParsed = fontsParsed[key]
+        const [name, language] = key.includes('_') ? key.split('_') : [key]
+        const fontVars = registerFontVariables(fontParsed)
+        fontDeclarations[key] = {
+          name: name.slice(1),
+          declarations: fontVars,
+          language,
         }
       }
 
-      if (isWeb) {
-        for (const key in fontsParsed) {
-          const fontParsed = fontsParsed[key]
-          const [name, language] = key.includes('_') ? key.split('_') : [key]
-          const fontVars = registerFontVariables(fontParsed)
-          fontDeclarations[key] = {
-            name: name.slice(1),
-            declarations: fontVars,
-            language,
-          }
-        }
+      const sep =
+        process.env.NODE_ENV === 'development' ? configIn.cssStyleSeparator || ' ' : ''
 
-        const sep =
-          process.env.NODE_ENV === 'development' ? configIn.cssStyleSeparator || ' ' : ''
+      function declarationsToRuleSet(decs: string[], selector = '') {
+        return `:root${selector} {${sep}${[...decs].join(`;${sep}`)}${sep}}`
+      }
 
-        function declarationsToRuleSet(decs: string[], selector = '') {
-          return `:root${selector} {${sep}${[...decs].join(`;${sep}`)}${sep}}`
-        }
+      // non-font
+      cssRuleSets.push(declarationsToRuleSet(declarations))
 
-        // non-font
-        cssRuleSets.push(declarationsToRuleSet(declarations))
-
-        // fonts
-        if (fontDeclarations) {
-          for (const key in fontDeclarations) {
-            const { name, declarations, language = 'default' } = fontDeclarations[key]
-            const fontSelector = `.font_${name}`
-            const langSelector = `:root .t_lang-${name}-${language} ${fontSelector}`
-            const selectors =
-              language === 'default' ? ` ${fontSelector}, ${langSelector}` : langSelector
-            const specificRuleSet = declarationsToRuleSet(declarations, selectors)
-            cssRuleSets.push(specificRuleSet)
-          }
+      // fonts
+      if (fontDeclarations) {
+        for (const key in fontDeclarations) {
+          const { name, declarations, language = 'default' } = fontDeclarations[key]
+          const fontSelector = `.font_${name}`
+          const langSelector = `:root .t_lang-${name}-${language} ${fontSelector}`
+          const selectors =
+            language === 'default' ? ` ${fontSelector}, ${langSelector}` : langSelector
+          const specificRuleSet = declarationsToRuleSet(declarations, selectors)
+          cssRuleSets.push(specificRuleSet)
         }
       }
     }
@@ -209,7 +199,8 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
   let lastCSSInsertedRulesIndex = -1
 
-  const getCSS: GetCSS = ({ separator = '\n', sinceLastCall, exclude } = {}) => {
+  const getCSS: GetCSS = (opts = {}) => {
+    const { separator = '\n', sinceLastCall, exclude } = opts
     if (sinceLastCall && lastCSSInsertedRulesIndex >= 0) {
       // after first run with sinceLastCall
       const rules = getAllRules()
