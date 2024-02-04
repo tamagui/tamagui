@@ -12,7 +12,6 @@ export type WithTamaguiProps = LoaderPluginOptions & {
   appDir?: boolean
   enableLegacyFontSupport?: boolean
   includeCSSTest?: RegExp | ((path: string) => boolean)
-  doesMutateThemes?: boolean
   shouldExtract?: (path: string, projectRoot: string) => boolean | undefined
   shouldExcludeFromServer?: (props: {
     context: string
@@ -70,8 +69,7 @@ export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
           __DEV__: JSON.stringify(dev),
           ...((tamaguiOptions.outputCSS || process.env.TAMAGUI_DOES_SSR_CSS) && {
             'process.env.TAMAGUI_DOES_SSR_CSS': JSON.stringify(
-              process.env.TAMAGUI_DOES_SSR_CSS ??
-                (tamaguiOptions?.doesMutateThemes === false ? true : 'mutates-themes')
+              process.env.TAMAGUI_DOES_SSR_CSS ?? true
             ),
           }),
 

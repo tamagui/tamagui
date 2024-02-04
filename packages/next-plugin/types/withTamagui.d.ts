@@ -3,7 +3,6 @@ export type WithTamaguiProps = LoaderPluginOptions & {
     appDir?: boolean;
     enableLegacyFontSupport?: boolean;
     includeCSSTest?: RegExp | ((path: string) => boolean);
-    doesMutateThemes?: boolean;
     shouldExtract?: (path: string, projectRoot: string) => boolean | undefined;
     shouldExcludeFromServer?: (props: {
         context: string;
