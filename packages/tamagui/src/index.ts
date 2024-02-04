@@ -98,6 +98,7 @@ export type {
   StaticConfig,
   Styleable,
   TamaguiBaseTheme,
+  TamaguiBuildOptions,
   TamaguiComponent,
   TamaguiConfig,
   TamaguiCustomConfig,

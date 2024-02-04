@@ -9,7 +9,7 @@
     "./apps/*",
     "./packages/*"
   ],
-  "packageManager": "yarn@4.0.2",
+  "packageManager": "yarn@4.1.0",
   "scripts": {
     "build:force": "yarn clean:build && yarn build --force",
     "build:js": "ultra -r --no-pretty build -- --skip-types",
