@@ -101,27 +101,19 @@ export function styled<
     }
   }
 
-  const parentStaticConfig = ComponentIn['staticConfig'] as StaticConfig | undefined
-
-  const isPlainStyledComponent =
-    !!parentStaticConfig &&
-    !(parentStaticConfig.isReactNative || parentStaticConfig.isHOC)
-
-  const isNonStyledHOC = parentStaticConfig?.isHOC && !parentStaticConfig?.isStyledHOC
+  const parentSC = ComponentIn['staticConfig'] as StaticConfig | undefined
+  const isPlainStyledComponent = !!parentSC && !(parentSC.isReactNative || parentSC.isHOC)
+  const isNonStyledHOC = parentSC?.isHOC && !parentSC?.isStyledHOC
 
   let Component: any =
     isNonStyledHOC || isPlainStyledComponent
       ? ComponentIn
-      : parentStaticConfig?.Component || ComponentIn
+      : parentSC?.Component || ComponentIn
 
-  const reactNativeConfig = !parentStaticConfig
-    ? getReactNativeConfig(Component)
-    : undefined
+  const reactNativeConfig = !parentSC ? getReactNativeConfig(Component) : undefined
 
   const isReactNative = Boolean(
-    reactNativeConfig ||
-      staticExtractionOptions?.isReactNative ||
-      parentStaticConfig?.isReactNative
+    reactNativeConfig || staticExtractionOptions?.isReactNative || parentSC?.isReactNative
   )
 
   const staticConfigProps = (() => {
@@ -142,21 +134,21 @@ export function styled<
         }
       }
 
-      if (parentStaticConfig) {
-        const avoid = parentStaticConfig.isHOC && !parentStaticConfig.isStyledHOC
+      if (parentSC) {
+        const avoid = parentSC.isHOC && !parentSC.isStyledHOC
         if (!avoid) {
           defaultProps = {
-            ...parentStaticConfig.defaultProps,
+            ...parentSC.defaultProps,
             ...defaultProps,
           }
-          if (parentStaticConfig.variants) {
+          if (parentSC.variants) {
             // @ts-expect-error
-            variants = mergeVariants(parentStaticConfig.variants, variants)
+            variants = mergeVariants(parentSC.variants, variants)
           }
         }
       }
 
-      if (parentStaticConfig?.isHOC) {
+      if (parentSC?.isHOC) {
         // if HOC we map name => componentName as we have a difference in how we name prop vs styled() there
         if (name) {
           // @ts-ignore
@@ -164,18 +156,14 @@ export function styled<
         }
       }
 
-      const isText = Boolean(
-        staticExtractionOptions?.isText || parentStaticConfig?.isText
-      )
+      const isText = Boolean(staticExtractionOptions?.isText || parentSC?.isText)
 
       const acceptsClassName =
         acceptsClassNameProp ??
-        (isPlainStyledComponent ||
-          isReactNative ||
-          (parentStaticConfig?.isHOC && parentStaticConfig?.acceptsClassName))
+        Boolean(isPlainStyledComponent || isReactNative || parentSC?.acceptsClassName)
 
       const conf: Partial<StaticConfig> = {
-        ...parentStaticConfig,
+        ...parentSC,
         ...staticExtractionOptions,
         ...(!isPlainStyledComponent && {
           Component,
@@ -184,14 +172,14 @@ export function styled<
         variants,
         defaultProps,
         defaultVariants,
-        componentName: name || parentStaticConfig?.componentName,
+        componentName: name || parentSC?.componentName,
         isReactNative,
         isText,
         acceptsClassName,
         context,
         ...reactNativeConfig,
-        isStyledHOC: Boolean(parentStaticConfig?.isHOC),
-        parentStaticConfig,
+        isStyledHOC: Boolean(parentSC?.isHOC),
+        parentSC,
       }
 
       // bail on non className views as well
