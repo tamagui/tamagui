@@ -103,7 +103,7 @@ const applyMultilineFix = (ast) => {
   // HTML to AST
   const hast = unified().use(parse, { emitParseErrors: true, fragment: true }).parse(html)
 
-  return hast.children
+  return hast['children']
 }
 
 export function highlightLine(ast, lines) {
