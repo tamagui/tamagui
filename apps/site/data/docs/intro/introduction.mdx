@@ -21,55 +21,6 @@ title: Introduction
   ]}
 />
 
-## Overview
-
-Tamagui aims to bring joy to cross platform development. Use the core style
-library or any of the components in the `tamagui` UI kit independently or
-together. Styled or unstyled, with React Native and React Native Web, or without
-either.
-
-#### Core
-
-Core (`@tamagui/core`) is a fully-typed TypeScript
-[style and design system library](/docs/core/configuration), a bit like a modern
-[styled-components](https://styled-components.com) or
-[Stitches](https://stitches.dev). On native it depends on React Native, but on
-web it has no dependency outside `react` itself - yet it supports the full React
-Native API surface in 24-28Kb, depending on tree-shaking.
-
-It primarly exports a `styled` function and `Text` and `View` components, all of
-which accept Tamagui styles. Tamagui styles support a
-[large superset](/docs/intro/styles) of the the React Native style API, bringing
-many powerful abilities from CSS - like container queries.
-
-Create a fully typed design system, re-theme your app or portions of your app
-magically with nested themes, swap between three animation drivers, and gain
-huge runtime performance with smart signal-based hooks for media queries and
-themes.
-
-Swap Core for `@tamagui/web` to drop support for the
-[React Native prop APIs](/docs/intro/props) that Core supports and save bundle
-size, for web-only sites and apps.
-
-#### Static
-
-Static (`@tamagui/static`) is an
-[optimizing compiler for React](/docs/intro/why-a-compiler) that emits
-0-runtime, near optimal code for both web and native, even when faced with
-logic-filled styles or styles that import values from other files. It was forked
-from the great [JSXStyle](https://github.com/jsxstyle/jsxstyle) library.
-
-#### Tamagui
-
-Tamagui (`tamagui`)
-[is a suite of cross-platform React Native components](/docs/components/stacks)
-that can come in styled or unstyled form.
-
-It features novel components like Adapt, a primitive that lets a component
-shapeshift their content into other forms depending on the media query or
-platform and `native` props to adapt many components to their native
-counterparts.
-
 ---
 
 ## Community
