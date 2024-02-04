@@ -1,13 +1,21 @@
+// debug
 // import '../lib/wdyr'
 
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { Header } from '@tamagui/site/components/Header'
 import { SearchProvider } from '@tamagui/site/components/Search'
 import { useState } from 'react'
-import { AnimatePresence, Button, Stack, Text, YStack, styled } from 'tamagui'
+import { AnimatePresence, Button, View, Text, YStack, styled } from 'tamagui'
 
 // debugger
 global.shouldDebugMoti = true
+
+const TabsList = styled(View, {
+  marginTop: -50,
+  $sm: {
+    marginTop: 20,
+  },
+})
 
 function TestPage() {
   return (
@@ -21,12 +29,10 @@ function TestPage() {
         flex: 1,
       }}
     >
-      <Button
-        animation="quick"
-        bg="$color10"
-      >
-        Sponsor for early access
-      </Button>
+      <CustomTabs>
+        <CustomTabs.List />
+      </CustomTabs>
+      <TabsList />
       {/* <Stack
         // hitSlop={5}
         importantForAccessibility="no"
@@ -227,6 +233,7 @@ TestPage.getLayout = (page) => {
 
 import { memo, useEffect } from 'react'
 import { Circle, XStack } from 'tamagui'
+import { CustomTabs } from '../components/CustomTabs'
 
 const TestCircle = memo(() => {
   const [mounted, setMounted] = useState<'start' | 'animate' | 'done'>('start')

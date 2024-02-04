@@ -7,6 +7,7 @@ import {
   mergeProps,
   spacedChildren,
   styled,
+  useDidFinishSSR,
   useProps,
 } from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
@@ -80,7 +81,9 @@ export type GroupProps = GetProps<typeof GroupFrame> & {
 function createGroup(verticalDefault: boolean) {
   return withStaticProperties(
     forwardRef<TamaguiElement, ScopedProps<GroupProps>>((props, ref) => {
-      const activeProps = useProps(props)
+      const isHydrated = useDidFinishSSR()
+      const flatProps = useProps(props)
+      const activeProps = isHydrated ? flatProps : props
 
       const {
         __scopeGroup,

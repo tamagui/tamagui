@@ -234,6 +234,12 @@ export const getSplitStyles: StyleSplitter = (
     let keyInit = keyOg
     let valInit = props[keyOg]
 
+    if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+      // otherwise things just keep nesting - careful don't leave these around
+      // they cause big performance dips in Chrome, only use them when debug prop set
+      console.groupEnd()
+    }
+
     // normalize shorthands up front
     if (!styleProps.disableExpandShorthands) {
       if (keyInit in shorthands) {
@@ -857,6 +863,7 @@ export const getSplitStyles: StyleSplitter = (
             mediaStyle,
             props,
             shouldDoClasses,
+            acceptsClassName,
             componentState,
           })
         }

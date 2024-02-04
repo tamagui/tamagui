@@ -21,10 +21,6 @@ const TABS_CONTEXT = 'TabsContext'
 
 const TAB_LIST_NAME = 'TabsList'
 
-const TabsListFrame = styled(Group, {
-  name: TAB_LIST_NAME,
-})
-
 type TabsListFrameProps = GroupProps
 
 type TabsListProps = TabsListFrameProps & {
@@ -35,33 +31,32 @@ type TabsListProps = TabsListFrameProps & {
   loop?: boolean
 }
 
-const TabsList = TabsListFrame.extractable(
-  React.forwardRef<TamaguiElement, TabsListProps>(
-    (props: ScopedProps<TabsListProps>, forwardedRef) => {
-      const { __scopeTabs, loop = true, children, ...listProps } = props
-      const context = useTabsContext(__scopeTabs)
+const TabsList = React.forwardRef<TamaguiElement, TabsListProps>(
+  (props: ScopedProps<TabsListProps>, forwardedRef) => {
+    const { __scopeTabs, loop = true, children, ...listProps } = props
+    const context = useTabsContext(__scopeTabs)
 
-      return (
-        <RovingFocusGroup
-          __scopeRovingFocusGroup={__scopeTabs || TABS_CONTEXT}
+    return (
+      <RovingFocusGroup
+        __scopeRovingFocusGroup={__scopeTabs || TABS_CONTEXT}
+        orientation={context.orientation}
+        dir={context.dir}
+        loop={loop}
+        asChild
+      >
+        <Group
+          role="tablist"
+          componentName={TAB_LIST_NAME}
+          aria-orientation={context.orientation}
+          ref={forwardedRef}
           orientation={context.orientation}
-          dir={context.dir}
-          loop={loop}
-          asChild
+          {...listProps}
         >
-          <TabsListFrame
-            role="tablist"
-            aria-orientation={context.orientation}
-            ref={forwardedRef}
-            orientation={context.orientation}
-            {...listProps}
-          >
-            {children}
-          </TabsListFrame>
-        </RovingFocusGroup>
-      )
-    }
-  )
+          {children}
+        </Group>
+      </RovingFocusGroup>
+    )
+  }
 )
 
 TabsList.displayName = TAB_LIST_NAME

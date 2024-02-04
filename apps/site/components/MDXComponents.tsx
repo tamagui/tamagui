@@ -59,10 +59,6 @@ import { unwrapText } from './unwrapText'
 import { Link } from './Link'
 import { CustomTabs } from './CustomTabs'
 
-const B = styled(Paragraph, {
-  fontWeight: '800',
-})
-
 const IntroParagraph = ({ children, large, disableUnwrapText, ...props }: any) => {
   return (
     <Paragraph
