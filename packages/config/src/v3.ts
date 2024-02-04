@@ -1,4 +1,4 @@
-import { shorthands } from '@tamagui/shorthands'
+import { shorthands } from '@tamagui/shorthands/v2'
 import { tokens, themes } from '@tamagui/themes/v3-themes'
 import { animations } from './animations'
 import type { CreateTamaguiProps } from '@tamagui/web'
@@ -12,7 +12,7 @@ export { animationsReactNative } from './animationsReactNative'
 export { animationsCSS } from './animationsCSS'
 
 export { tokens, themes } from '@tamagui/themes/v3-themes'
-export { shorthands } from '@tamagui/shorthands'
+export { shorthands } from '@tamagui/shorthands/v2'
 export { fonts } from './fonts'
 export { media, mediaQueryDefaultActive } from './media'
 

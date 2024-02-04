@@ -190,11 +190,7 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
         extractor: extractor!,
         source: code,
         sourcePath: validId,
-        options: {
-          components: ['tamagui'],
-          platform: 'web',
-          ...options,
-        },
+        options,
         shouldPrintDebug,
       })
 

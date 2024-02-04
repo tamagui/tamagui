@@ -506,9 +506,6 @@ const themeBuilder = createThemeBuilder()
       Switch: surface2,
       SwitchThumb: inverseSurface1,
       TooltipContent: surface2,
-      DrawerFrame: {
-        template: 'surface1',
-      },
       Progress: {
         template: 'surface1',
       },

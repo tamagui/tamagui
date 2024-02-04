@@ -21,7 +21,7 @@ import { useThemeControl } from '../../useKitchenSinkTheme'
 export function HomeScreen() {
   return (
     <ScrollView>
-      <YStack bg="$background" p="$3" pt="$6" pb="$8" f={1} space>
+      <YStack bg="$color2" p="$3" pt="$6" pb="$8" f={1} space>
         <H1 fontFamily="$heading" size="$9">
           Kitchen Sink
         </H1>
@@ -42,12 +42,7 @@ export function HomeScreen() {
                 {group.pages.map((page) => {
                   return (
                     <YGroup.Item key={page.route}>
-                      <LinkListItem
-                        bg="$background"
-                        href={page.route}
-                        pressTheme
-                        size="$4"
-                      >
+                      <LinkListItem bg="$color1" href={page.route} pressTheme size="$4">
                         {page.title}
                       </LinkListItem>
                     </YGroup.Item>
@@ -90,7 +85,7 @@ const ColorSchemeListItem = (props: ListItemProps) => {
   const checked = theme.value === 'light'
 
   return (
-    <ListItem {...props} bg="$background" pressTheme paddingVertical={0}>
+    <ListItem {...props} bg="$color1" pressTheme paddingVertical={0}>
       <ListItem.Text>Theme</ListItem.Text>
       <Spacer flex />
       <Button chromeless disabled w={20} icon={Moon} />

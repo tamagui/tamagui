@@ -64,7 +64,7 @@ export default tamaguiConfig
 // be sure the import and declare module lines both use that same name
 ```
 
-**Note:** The `v2` config imports the css driver on web and react-native on native. For react-native, import the `@tamagui/config/v2-native` config, and for reanimated, import the `@tamagui/config/v2-reanimated` config.
+**Note:** The `v3` config imports the `@tamagui/animations-css` driver on web and `@tamagui/animations-react-native` on native. You can change these as you please, we provide exports for `animationsCSS`, `animationsReanimated`, and `animationsNative` to make that easier.
 
 ### Usage
 

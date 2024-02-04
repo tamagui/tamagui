@@ -110,7 +110,6 @@ export declare const themes: {
     light_blue_Switch: import("@tamagui/themes/v3-themes").Theme;
     light_blue_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     light_blue_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    light_blue_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     light_blue_Progress: import("@tamagui/themes/v3-themes").Theme;
     light_blue_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     light_blue_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -131,7 +130,6 @@ export declare const themes: {
     light_green_Switch: import("@tamagui/themes/v3-themes").Theme;
     light_green_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     light_green_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    light_green_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     light_green_Progress: import("@tamagui/themes/v3-themes").Theme;
     light_green_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     light_green_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -152,7 +150,6 @@ export declare const themes: {
     light_orange_Switch: import("@tamagui/themes/v3-themes").Theme;
     light_orange_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     light_orange_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    light_orange_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     light_orange_Progress: import("@tamagui/themes/v3-themes").Theme;
     light_orange_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     light_orange_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -173,7 +170,6 @@ export declare const themes: {
     light_pink_Switch: import("@tamagui/themes/v3-themes").Theme;
     light_pink_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     light_pink_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    light_pink_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     light_pink_Progress: import("@tamagui/themes/v3-themes").Theme;
     light_pink_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     light_pink_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -194,7 +190,6 @@ export declare const themes: {
     light_purple_Switch: import("@tamagui/themes/v3-themes").Theme;
     light_purple_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     light_purple_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    light_purple_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     light_purple_Progress: import("@tamagui/themes/v3-themes").Theme;
     light_purple_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     light_purple_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -215,7 +210,6 @@ export declare const themes: {
     light_red_Switch: import("@tamagui/themes/v3-themes").Theme;
     light_red_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     light_red_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    light_red_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     light_red_Progress: import("@tamagui/themes/v3-themes").Theme;
     light_red_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     light_red_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -236,7 +230,6 @@ export declare const themes: {
     light_yellow_Switch: import("@tamagui/themes/v3-themes").Theme;
     light_yellow_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     light_yellow_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    light_yellow_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     light_yellow_Progress: import("@tamagui/themes/v3-themes").Theme;
     light_yellow_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     light_yellow_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -257,7 +250,6 @@ export declare const themes: {
     dark_blue_Switch: import("@tamagui/themes/v3-themes").Theme;
     dark_blue_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     dark_blue_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    dark_blue_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     dark_blue_Progress: import("@tamagui/themes/v3-themes").Theme;
     dark_blue_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     dark_blue_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -278,7 +270,6 @@ export declare const themes: {
     dark_green_Switch: import("@tamagui/themes/v3-themes").Theme;
     dark_green_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     dark_green_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    dark_green_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     dark_green_Progress: import("@tamagui/themes/v3-themes").Theme;
     dark_green_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     dark_green_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -299,7 +290,6 @@ export declare const themes: {
     dark_orange_Switch: import("@tamagui/themes/v3-themes").Theme;
     dark_orange_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     dark_orange_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    dark_orange_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     dark_orange_Progress: import("@tamagui/themes/v3-themes").Theme;
     dark_orange_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     dark_orange_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -320,7 +310,6 @@ export declare const themes: {
     dark_pink_Switch: import("@tamagui/themes/v3-themes").Theme;
     dark_pink_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     dark_pink_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    dark_pink_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     dark_pink_Progress: import("@tamagui/themes/v3-themes").Theme;
     dark_pink_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     dark_pink_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -341,7 +330,6 @@ export declare const themes: {
     dark_purple_Switch: import("@tamagui/themes/v3-themes").Theme;
     dark_purple_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     dark_purple_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    dark_purple_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     dark_purple_Progress: import("@tamagui/themes/v3-themes").Theme;
     dark_purple_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     dark_purple_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -362,7 +350,6 @@ export declare const themes: {
     dark_red_Switch: import("@tamagui/themes/v3-themes").Theme;
     dark_red_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     dark_red_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    dark_red_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     dark_red_Progress: import("@tamagui/themes/v3-themes").Theme;
     dark_red_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     dark_red_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -383,7 +370,6 @@ export declare const themes: {
     dark_yellow_Switch: import("@tamagui/themes/v3-themes").Theme;
     dark_yellow_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     dark_yellow_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    dark_yellow_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     dark_yellow_Progress: import("@tamagui/themes/v3-themes").Theme;
     dark_yellow_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     dark_yellow_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -404,7 +390,6 @@ export declare const themes: {
     light_Switch: import("@tamagui/themes/v3-themes").Theme;
     light_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     light_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    light_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     light_Progress: import("@tamagui/themes/v3-themes").Theme;
     light_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     light_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -425,7 +410,6 @@ export declare const themes: {
     dark_Switch: import("@tamagui/themes/v3-themes").Theme;
     dark_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     dark_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    dark_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     dark_Progress: import("@tamagui/themes/v3-themes").Theme;
     dark_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     dark_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -446,7 +430,6 @@ export declare const themes: {
     light_blue_alt1_Switch: import("@tamagui/themes/v3-themes").Theme;
     light_blue_alt1_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     light_blue_alt1_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    light_blue_alt1_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     light_blue_alt1_Progress: import("@tamagui/themes/v3-themes").Theme;
     light_blue_alt1_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     light_blue_alt1_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -467,7 +450,6 @@ export declare const themes: {
     light_blue_alt2_Switch: import("@tamagui/themes/v3-themes").Theme;
     light_blue_alt2_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     light_blue_alt2_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    light_blue_alt2_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     light_blue_alt2_Progress: import("@tamagui/themes/v3-themes").Theme;
     light_blue_alt2_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     light_blue_alt2_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -488,7 +470,6 @@ export declare const themes: {
     light_blue_active_Switch: import("@tamagui/themes/v3-themes").Theme;
     light_blue_active_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     light_blue_active_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    light_blue_active_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     light_blue_active_Progress: import("@tamagui/themes/v3-themes").Theme;
     light_blue_active_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     light_blue_active_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -509,7 +490,6 @@ export declare const themes: {
     light_green_alt1_Switch: import("@tamagui/themes/v3-themes").Theme;
     light_green_alt1_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     light_green_alt1_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    light_green_alt1_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     light_green_alt1_Progress: import("@tamagui/themes/v3-themes").Theme;
     light_green_alt1_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     light_green_alt1_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -530,7 +510,6 @@ export declare const themes: {
     light_green_alt2_Switch: import("@tamagui/themes/v3-themes").Theme;
     light_green_alt2_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     light_green_alt2_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    light_green_alt2_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     light_green_alt2_Progress: import("@tamagui/themes/v3-themes").Theme;
     light_green_alt2_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     light_green_alt2_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -551,7 +530,6 @@ export declare const themes: {
     light_green_active_Switch: import("@tamagui/themes/v3-themes").Theme;
     light_green_active_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     light_green_active_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    light_green_active_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     light_green_active_Progress: import("@tamagui/themes/v3-themes").Theme;
     light_green_active_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     light_green_active_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -572,7 +550,6 @@ export declare const themes: {
     light_orange_alt1_Switch: import("@tamagui/themes/v3-themes").Theme;
     light_orange_alt1_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     light_orange_alt1_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    light_orange_alt1_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     light_orange_alt1_Progress: import("@tamagui/themes/v3-themes").Theme;
     light_orange_alt1_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     light_orange_alt1_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -593,7 +570,6 @@ export declare const themes: {
     light_orange_alt2_Switch: import("@tamagui/themes/v3-themes").Theme;
     light_orange_alt2_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     light_orange_alt2_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    light_orange_alt2_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     light_orange_alt2_Progress: import("@tamagui/themes/v3-themes").Theme;
     light_orange_alt2_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     light_orange_alt2_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -614,7 +590,6 @@ export declare const themes: {
     light_orange_active_Switch: import("@tamagui/themes/v3-themes").Theme;
     light_orange_active_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     light_orange_active_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    light_orange_active_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     light_orange_active_Progress: import("@tamagui/themes/v3-themes").Theme;
     light_orange_active_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     light_orange_active_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -635,7 +610,6 @@ export declare const themes: {
     light_pink_alt1_Switch: import("@tamagui/themes/v3-themes").Theme;
     light_pink_alt1_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     light_pink_alt1_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    light_pink_alt1_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     light_pink_alt1_Progress: import("@tamagui/themes/v3-themes").Theme;
     light_pink_alt1_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     light_pink_alt1_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -656,7 +630,6 @@ export declare const themes: {
     light_pink_alt2_Switch: import("@tamagui/themes/v3-themes").Theme;
     light_pink_alt2_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     light_pink_alt2_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    light_pink_alt2_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     light_pink_alt2_Progress: import("@tamagui/themes/v3-themes").Theme;
     light_pink_alt2_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     light_pink_alt2_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -677,7 +650,6 @@ export declare const themes: {
     light_pink_active_Switch: import("@tamagui/themes/v3-themes").Theme;
     light_pink_active_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     light_pink_active_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    light_pink_active_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     light_pink_active_Progress: import("@tamagui/themes/v3-themes").Theme;
     light_pink_active_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     light_pink_active_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -698,7 +670,6 @@ export declare const themes: {
     light_purple_alt1_Switch: import("@tamagui/themes/v3-themes").Theme;
     light_purple_alt1_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     light_purple_alt1_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    light_purple_alt1_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     light_purple_alt1_Progress: import("@tamagui/themes/v3-themes").Theme;
     light_purple_alt1_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     light_purple_alt1_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -719,7 +690,6 @@ export declare const themes: {
     light_purple_alt2_Switch: import("@tamagui/themes/v3-themes").Theme;
     light_purple_alt2_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     light_purple_alt2_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    light_purple_alt2_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     light_purple_alt2_Progress: import("@tamagui/themes/v3-themes").Theme;
     light_purple_alt2_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     light_purple_alt2_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -740,7 +710,6 @@ export declare const themes: {
     light_purple_active_Switch: import("@tamagui/themes/v3-themes").Theme;
     light_purple_active_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     light_purple_active_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    light_purple_active_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     light_purple_active_Progress: import("@tamagui/themes/v3-themes").Theme;
     light_purple_active_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     light_purple_active_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -761,7 +730,6 @@ export declare const themes: {
     light_red_alt1_Switch: import("@tamagui/themes/v3-themes").Theme;
     light_red_alt1_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     light_red_alt1_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    light_red_alt1_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     light_red_alt1_Progress: import("@tamagui/themes/v3-themes").Theme;
     light_red_alt1_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     light_red_alt1_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -782,7 +750,6 @@ export declare const themes: {
     light_red_alt2_Switch: import("@tamagui/themes/v3-themes").Theme;
     light_red_alt2_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     light_red_alt2_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    light_red_alt2_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     light_red_alt2_Progress: import("@tamagui/themes/v3-themes").Theme;
     light_red_alt2_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     light_red_alt2_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -803,7 +770,6 @@ export declare const themes: {
     light_red_active_Switch: import("@tamagui/themes/v3-themes").Theme;
     light_red_active_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     light_red_active_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    light_red_active_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     light_red_active_Progress: import("@tamagui/themes/v3-themes").Theme;
     light_red_active_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     light_red_active_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -824,7 +790,6 @@ export declare const themes: {
     light_yellow_alt1_Switch: import("@tamagui/themes/v3-themes").Theme;
     light_yellow_alt1_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     light_yellow_alt1_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    light_yellow_alt1_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     light_yellow_alt1_Progress: import("@tamagui/themes/v3-themes").Theme;
     light_yellow_alt1_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     light_yellow_alt1_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -845,7 +810,6 @@ export declare const themes: {
     light_yellow_alt2_Switch: import("@tamagui/themes/v3-themes").Theme;
     light_yellow_alt2_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     light_yellow_alt2_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    light_yellow_alt2_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     light_yellow_alt2_Progress: import("@tamagui/themes/v3-themes").Theme;
     light_yellow_alt2_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     light_yellow_alt2_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -866,7 +830,6 @@ export declare const themes: {
     light_yellow_active_Switch: import("@tamagui/themes/v3-themes").Theme;
     light_yellow_active_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     light_yellow_active_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    light_yellow_active_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     light_yellow_active_Progress: import("@tamagui/themes/v3-themes").Theme;
     light_yellow_active_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     light_yellow_active_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -887,7 +850,6 @@ export declare const themes: {
     dark_blue_alt1_Switch: import("@tamagui/themes/v3-themes").Theme;
     dark_blue_alt1_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     dark_blue_alt1_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    dark_blue_alt1_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     dark_blue_alt1_Progress: import("@tamagui/themes/v3-themes").Theme;
     dark_blue_alt1_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     dark_blue_alt1_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -908,7 +870,6 @@ export declare const themes: {
     dark_blue_alt2_Switch: import("@tamagui/themes/v3-themes").Theme;
     dark_blue_alt2_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     dark_blue_alt2_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    dark_blue_alt2_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     dark_blue_alt2_Progress: import("@tamagui/themes/v3-themes").Theme;
     dark_blue_alt2_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     dark_blue_alt2_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -929,7 +890,6 @@ export declare const themes: {
     dark_blue_active_Switch: import("@tamagui/themes/v3-themes").Theme;
     dark_blue_active_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     dark_blue_active_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    dark_blue_active_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     dark_blue_active_Progress: import("@tamagui/themes/v3-themes").Theme;
     dark_blue_active_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     dark_blue_active_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -950,7 +910,6 @@ export declare const themes: {
     dark_green_alt1_Switch: import("@tamagui/themes/v3-themes").Theme;
     dark_green_alt1_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     dark_green_alt1_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    dark_green_alt1_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     dark_green_alt1_Progress: import("@tamagui/themes/v3-themes").Theme;
     dark_green_alt1_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     dark_green_alt1_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -971,7 +930,6 @@ export declare const themes: {
     dark_green_alt2_Switch: import("@tamagui/themes/v3-themes").Theme;
     dark_green_alt2_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     dark_green_alt2_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    dark_green_alt2_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     dark_green_alt2_Progress: import("@tamagui/themes/v3-themes").Theme;
     dark_green_alt2_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     dark_green_alt2_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -992,7 +950,6 @@ export declare const themes: {
     dark_green_active_Switch: import("@tamagui/themes/v3-themes").Theme;
     dark_green_active_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     dark_green_active_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    dark_green_active_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     dark_green_active_Progress: import("@tamagui/themes/v3-themes").Theme;
     dark_green_active_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     dark_green_active_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -1013,7 +970,6 @@ export declare const themes: {
     dark_orange_alt1_Switch: import("@tamagui/themes/v3-themes").Theme;
     dark_orange_alt1_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     dark_orange_alt1_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    dark_orange_alt1_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     dark_orange_alt1_Progress: import("@tamagui/themes/v3-themes").Theme;
     dark_orange_alt1_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     dark_orange_alt1_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -1034,7 +990,6 @@ export declare const themes: {
     dark_orange_alt2_Switch: import("@tamagui/themes/v3-themes").Theme;
     dark_orange_alt2_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     dark_orange_alt2_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    dark_orange_alt2_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     dark_orange_alt2_Progress: import("@tamagui/themes/v3-themes").Theme;
     dark_orange_alt2_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     dark_orange_alt2_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -1055,7 +1010,6 @@ export declare const themes: {
     dark_orange_active_Switch: import("@tamagui/themes/v3-themes").Theme;
     dark_orange_active_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     dark_orange_active_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    dark_orange_active_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     dark_orange_active_Progress: import("@tamagui/themes/v3-themes").Theme;
     dark_orange_active_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     dark_orange_active_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -1076,7 +1030,6 @@ export declare const themes: {
     dark_pink_alt1_Switch: import("@tamagui/themes/v3-themes").Theme;
     dark_pink_alt1_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     dark_pink_alt1_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    dark_pink_alt1_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     dark_pink_alt1_Progress: import("@tamagui/themes/v3-themes").Theme;
     dark_pink_alt1_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     dark_pink_alt1_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -1097,7 +1050,6 @@ export declare const themes: {
     dark_pink_alt2_Switch: import("@tamagui/themes/v3-themes").Theme;
     dark_pink_alt2_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     dark_pink_alt2_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    dark_pink_alt2_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     dark_pink_alt2_Progress: import("@tamagui/themes/v3-themes").Theme;
     dark_pink_alt2_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     dark_pink_alt2_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -1118,7 +1070,6 @@ export declare const themes: {
     dark_pink_active_Switch: import("@tamagui/themes/v3-themes").Theme;
     dark_pink_active_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     dark_pink_active_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    dark_pink_active_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     dark_pink_active_Progress: import("@tamagui/themes/v3-themes").Theme;
     dark_pink_active_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     dark_pink_active_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -1139,7 +1090,6 @@ export declare const themes: {
     dark_purple_alt1_Switch: import("@tamagui/themes/v3-themes").Theme;
     dark_purple_alt1_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     dark_purple_alt1_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    dark_purple_alt1_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     dark_purple_alt1_Progress: import("@tamagui/themes/v3-themes").Theme;
     dark_purple_alt1_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     dark_purple_alt1_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -1160,7 +1110,6 @@ export declare const themes: {
     dark_purple_alt2_Switch: import("@tamagui/themes/v3-themes").Theme;
     dark_purple_alt2_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     dark_purple_alt2_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    dark_purple_alt2_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     dark_purple_alt2_Progress: import("@tamagui/themes/v3-themes").Theme;
     dark_purple_alt2_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     dark_purple_alt2_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -1181,7 +1130,6 @@ export declare const themes: {
     dark_purple_active_Switch: import("@tamagui/themes/v3-themes").Theme;
     dark_purple_active_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     dark_purple_active_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    dark_purple_active_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     dark_purple_active_Progress: import("@tamagui/themes/v3-themes").Theme;
     dark_purple_active_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     dark_purple_active_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -1202,7 +1150,6 @@ export declare const themes: {
     dark_red_alt1_Switch: import("@tamagui/themes/v3-themes").Theme;
     dark_red_alt1_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     dark_red_alt1_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    dark_red_alt1_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     dark_red_alt1_Progress: import("@tamagui/themes/v3-themes").Theme;
     dark_red_alt1_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     dark_red_alt1_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -1223,7 +1170,6 @@ export declare const themes: {
     dark_red_alt2_Switch: import("@tamagui/themes/v3-themes").Theme;
     dark_red_alt2_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     dark_red_alt2_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    dark_red_alt2_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     dark_red_alt2_Progress: import("@tamagui/themes/v3-themes").Theme;
     dark_red_alt2_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     dark_red_alt2_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -1244,7 +1190,6 @@ export declare const themes: {
     dark_red_active_Switch: import("@tamagui/themes/v3-themes").Theme;
     dark_red_active_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     dark_red_active_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    dark_red_active_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     dark_red_active_Progress: import("@tamagui/themes/v3-themes").Theme;
     dark_red_active_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     dark_red_active_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -1265,7 +1210,6 @@ export declare const themes: {
     dark_yellow_alt1_Switch: import("@tamagui/themes/v3-themes").Theme;
     dark_yellow_alt1_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     dark_yellow_alt1_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    dark_yellow_alt1_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     dark_yellow_alt1_Progress: import("@tamagui/themes/v3-themes").Theme;
     dark_yellow_alt1_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     dark_yellow_alt1_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -1286,7 +1230,6 @@ export declare const themes: {
     dark_yellow_alt2_Switch: import("@tamagui/themes/v3-themes").Theme;
     dark_yellow_alt2_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     dark_yellow_alt2_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    dark_yellow_alt2_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     dark_yellow_alt2_Progress: import("@tamagui/themes/v3-themes").Theme;
     dark_yellow_alt2_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     dark_yellow_alt2_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -1307,7 +1250,6 @@ export declare const themes: {
     dark_yellow_active_Switch: import("@tamagui/themes/v3-themes").Theme;
     dark_yellow_active_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     dark_yellow_active_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    dark_yellow_active_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     dark_yellow_active_Progress: import("@tamagui/themes/v3-themes").Theme;
     dark_yellow_active_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     dark_yellow_active_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -1328,7 +1270,6 @@ export declare const themes: {
     light_alt1_Switch: import("@tamagui/themes/v3-themes").Theme;
     light_alt1_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     light_alt1_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    light_alt1_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     light_alt1_Progress: import("@tamagui/themes/v3-themes").Theme;
     light_alt1_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     light_alt1_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -1349,7 +1290,6 @@ export declare const themes: {
     light_alt2_Switch: import("@tamagui/themes/v3-themes").Theme;
     light_alt2_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     light_alt2_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    light_alt2_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     light_alt2_Progress: import("@tamagui/themes/v3-themes").Theme;
     light_alt2_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     light_alt2_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -1370,7 +1310,6 @@ export declare const themes: {
     light_active_Switch: import("@tamagui/themes/v3-themes").Theme;
     light_active_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     light_active_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    light_active_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     light_active_Progress: import("@tamagui/themes/v3-themes").Theme;
     light_active_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     light_active_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -1391,7 +1330,6 @@ export declare const themes: {
     dark_alt1_Switch: import("@tamagui/themes/v3-themes").Theme;
     dark_alt1_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     dark_alt1_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    dark_alt1_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     dark_alt1_Progress: import("@tamagui/themes/v3-themes").Theme;
     dark_alt1_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     dark_alt1_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -1412,7 +1350,6 @@ export declare const themes: {
     dark_alt2_Switch: import("@tamagui/themes/v3-themes").Theme;
     dark_alt2_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     dark_alt2_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    dark_alt2_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     dark_alt2_Progress: import("@tamagui/themes/v3-themes").Theme;
     dark_alt2_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     dark_alt2_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -1433,7 +1370,6 @@ export declare const themes: {
     dark_active_Switch: import("@tamagui/themes/v3-themes").Theme;
     dark_active_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     dark_active_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    dark_active_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     dark_active_Progress: import("@tamagui/themes/v3-themes").Theme;
     dark_active_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     dark_active_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
@@ -1454,7 +1390,6 @@ export declare const themes: {
     light_gray_Switch: import("@tamagui/themes/v3-themes").Theme;
     light_gray_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     light_gray_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    light_gray_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     light_gray_Progress: import("@tamagui/themes/v3-themes").Theme;
     light_gray_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
     light_gray_SliderTrackActive: import("@tamagui/themes/v3-themes").Theme;
@@ -1474,7 +1409,6 @@ export declare const themes: {
     light_gray_alt1_Switch: import("@tamagui/themes/v3-themes").Theme;
     light_gray_alt1_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     light_gray_alt1_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    light_gray_alt1_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     light_gray_alt1_Progress: import("@tamagui/themes/v3-themes").Theme;
     light_gray_alt1_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
     light_gray_alt1_SliderTrackActive: import("@tamagui/themes/v3-themes").Theme;
@@ -1494,7 +1428,6 @@ export declare const themes: {
     light_gray_alt2_Switch: import("@tamagui/themes/v3-themes").Theme;
     light_gray_alt2_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     light_gray_alt2_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    light_gray_alt2_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     light_gray_alt2_Progress: import("@tamagui/themes/v3-themes").Theme;
     light_gray_alt2_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
     light_gray_alt2_SliderTrackActive: import("@tamagui/themes/v3-themes").Theme;
@@ -1514,7 +1447,6 @@ export declare const themes: {
     light_gray_active_Switch: import("@tamagui/themes/v3-themes").Theme;
     light_gray_active_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     light_gray_active_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    light_gray_active_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     light_gray_active_Progress: import("@tamagui/themes/v3-themes").Theme;
     light_gray_active_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
     light_gray_active_SliderTrackActive: import("@tamagui/themes/v3-themes").Theme;
@@ -1534,7 +1466,6 @@ export declare const themes: {
     dark_gray_Switch: import("@tamagui/themes/v3-themes").Theme;
     dark_gray_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     dark_gray_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    dark_gray_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     dark_gray_Progress: import("@tamagui/themes/v3-themes").Theme;
     dark_gray_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
     dark_gray_SliderTrackActive: import("@tamagui/themes/v3-themes").Theme;
@@ -1554,7 +1485,6 @@ export declare const themes: {
     dark_gray_alt1_Switch: import("@tamagui/themes/v3-themes").Theme;
     dark_gray_alt1_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     dark_gray_alt1_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    dark_gray_alt1_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     dark_gray_alt1_Progress: import("@tamagui/themes/v3-themes").Theme;
     dark_gray_alt1_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
     dark_gray_alt1_SliderTrackActive: import("@tamagui/themes/v3-themes").Theme;
@@ -1574,7 +1504,6 @@ export declare const themes: {
     dark_gray_alt2_Switch: import("@tamagui/themes/v3-themes").Theme;
     dark_gray_alt2_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     dark_gray_alt2_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    dark_gray_alt2_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     dark_gray_alt2_Progress: import("@tamagui/themes/v3-themes").Theme;
     dark_gray_alt2_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
     dark_gray_alt2_SliderTrackActive: import("@tamagui/themes/v3-themes").Theme;
@@ -1594,7 +1523,6 @@ export declare const themes: {
     dark_gray_active_Switch: import("@tamagui/themes/v3-themes").Theme;
     dark_gray_active_SwitchThumb: import("@tamagui/themes/v3-themes").Theme;
     dark_gray_active_TooltipContent: import("@tamagui/themes/v3-themes").Theme;
-    dark_gray_active_DrawerFrame: import("@tamagui/themes/v3-themes").Theme;
     dark_gray_active_Progress: import("@tamagui/themes/v3-themes").Theme;
     dark_gray_active_TooltipArrow: import("@tamagui/themes/v3-themes").Theme;
     dark_gray_active_SliderTrackActive: import("@tamagui/themes/v3-themes").Theme;
@@ -1615,5 +1543,77 @@ export declare const themes: {
     dark_gray_alt1_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     dark_gray_alt2_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
     dark_gray_active_RadioGroupItem: import("@tamagui/themes/v3-themes").Theme;
+    light_blue_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    light_gray_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    light_green_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    light_orange_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    light_pink_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    light_purple_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    light_red_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    light_yellow_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    dark_blue_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    dark_gray_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    dark_green_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    dark_orange_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    dark_pink_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    dark_purple_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    dark_red_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    dark_yellow_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    light_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    dark_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    light_blue_alt1_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    light_blue_alt2_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    light_blue_active_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    light_green_alt1_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    light_green_alt2_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    light_green_active_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    light_orange_alt1_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    light_orange_alt2_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    light_orange_active_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    light_pink_alt1_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    light_pink_alt2_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    light_pink_active_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    light_purple_alt1_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    light_purple_alt2_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    light_purple_active_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    light_red_alt1_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    light_red_alt2_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    light_red_active_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    light_yellow_alt1_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    light_yellow_alt2_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    light_yellow_active_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    dark_blue_alt1_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    dark_blue_alt2_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    dark_blue_active_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    dark_green_alt1_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    dark_green_alt2_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    dark_green_active_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    dark_orange_alt1_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    dark_orange_alt2_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    dark_orange_active_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    dark_pink_alt1_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    dark_pink_alt2_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    dark_pink_active_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    dark_purple_alt1_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    dark_purple_alt2_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    dark_purple_active_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    dark_red_alt1_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    dark_red_alt2_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    dark_red_active_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    dark_yellow_alt1_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    dark_yellow_alt2_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    dark_yellow_active_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    light_alt1_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    light_alt2_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    light_active_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    dark_alt1_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    dark_alt2_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    dark_active_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    light_gray_alt1_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    light_gray_alt2_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    light_gray_active_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    dark_gray_alt1_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    dark_gray_alt2_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
+    dark_gray_active_SelectTrigger: import("@tamagui/themes/v3-themes").Theme;
 };
 //# sourceMappingURL=themes.d.ts.map
