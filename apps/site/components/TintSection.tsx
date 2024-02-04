@@ -2,7 +2,7 @@ import { useOnIntersecting } from '@tamagui/demos'
 import { getTints } from '@tamagui/logo'
 import { useTint } from '@tamagui/logo'
 import { useEffect, useMemo, useRef } from 'react'
-import type { GetProps} from 'tamagui';
+import type { GetProps } from 'tamagui'
 import { XStack, YStack, styled } from 'tamagui'
 
 type Props = SectionProps & { themed?: boolean; index: number }
@@ -135,7 +135,7 @@ export const SectionTinted = ({
         className="all ease-in ms1000"
         zi={-1}
         o={0.4}
-        bc={gradient ? (`$${tint}2` as any) : null}
+        bg={gradient ? (`$${tint}2` as any) : null}
         {...(!bubble && {
           btw: noBorderTop ? 0 : 1,
           bbw: 1,

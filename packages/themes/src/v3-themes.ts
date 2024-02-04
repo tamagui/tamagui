@@ -539,12 +539,9 @@ const themeBuilder = createThemeBuilder()
 
 const themesIn = themeBuilder.build()
 
-type ThemesIn = typeof themesIn
-// add non-inherited back to typs
-type ThemesOut = Omit<ThemesIn, 'light' | 'dark'> & {
-  light: ThemesIn['light'] & typeof nonInherited.light
-  dark: ThemesIn['dark'] & typeof nonInherited.dark
-}
+export type Theme = Record<keyof typeof templates.base, string> &
+  typeof nonInherited.light
+export type ThemesOut = Record<keyof typeof themesIn, Theme>
 export const themes = themesIn as ThemesOut
 
 // --- tokens ---
@@ -561,7 +558,7 @@ export const themes = themesIn as ThemesOut
 //  but also one more wrinkle...
 //  space is used in conjunction with size
 //  i'm setting space to generally just a fixed fraction of size (~1/3-2/3 still fine tuning)
-const size = {
+export const size = {
   $0: 0,
   '$0.25': 2,
   '$0.5': 4,
@@ -599,24 +596,24 @@ type Sizes = {
 }
 type SizeKeys = `${keyof Sizes extends `${infer K}` ? K : never}`
 
-const spaces = Object.entries(size).map(([k, v]) => {
+export const spaces = Object.entries(size).map(([k, v]) => {
   return [k, sizeToSpace(v)] as const
 })
 
-const spacesNegative = spaces.slice(1).map(([k, v]) => [`-${k.slice(1)}`, -v])
+export const spacesNegative = spaces.slice(1).map(([k, v]) => [`-${k.slice(1)}`, -v])
 
 type SizeKeysWithNegatives =
   | Exclude<`-${SizeKeys extends `$${infer Key}` ? Key : SizeKeys}`, '-0'>
   | SizeKeys
 
-const space: {
+export const space: {
   [Key in SizeKeysWithNegatives]: Key extends keyof Sizes ? Sizes[Key] : number
 } = {
   ...Object.fromEntries(spaces),
   ...Object.fromEntries(spacesNegative),
 } as any
 
-const zIndex = {
+export const zIndex = {
   0: 0,
   1: 100,
   2: 200,
@@ -625,7 +622,7 @@ const zIndex = {
   5: 500,
 }
 
-const radius = {
+export const radius = {
   0: 0,
   1: 3,
   2: 5,
@@ -652,7 +649,7 @@ export const tokens = createTokens({
 
 // --- utils ---
 
-function postfixObjKeys<
+export function postfixObjKeys<
   A extends { [key: string]: Variable<string> | string },
   B extends string,
 >(
@@ -667,7 +664,7 @@ function postfixObjKeys<
 }
 
 // a bit odd but keeping backward compat for values >8 while fixing below
-function sizeToSpace(v: number) {
+export function sizeToSpace(v: number) {
   if (v === 0) return 0
   if (v === 2) return 0.5
   if (v === 4) return 1
@@ -676,33 +673,33 @@ function sizeToSpace(v: number) {
   return Math.floor(v * 0.7 - 12)
 }
 
-function objectFromEntries<ARR_T extends EntriesType>(
+export function objectFromEntries<ARR_T extends EntriesType>(
   arr: ARR_T
 ): EntriesToObject<ARR_T> {
   return Object.fromEntries(arr) as EntriesToObject<ARR_T>
 }
 
-type EntriesType =
+export type EntriesType =
   | [PropertyKey, unknown][]
   | ReadonlyArray<readonly [PropertyKey, unknown]>
 
-type DeepWritable<OBJ_T> = { -readonly [P in keyof OBJ_T]: DeepWritable<OBJ_T[P]> }
-type UnionToIntersection<UNION_T> = // From https://stackoverflow.com/a/50375286
+export type DeepWritable<OBJ_T> = { -readonly [P in keyof OBJ_T]: DeepWritable<OBJ_T[P]> }
+export type UnionToIntersection<UNION_T> = // From https://stackoverflow.com/a/50375286
   (UNION_T extends any ? (k: UNION_T) => void : never) extends (k: infer I) => void
     ? I
     : never
 
-type UnionObjectFromArrayOfPairs<ARR_T extends EntriesType> =
+export type UnionObjectFromArrayOfPairs<ARR_T extends EntriesType> =
   DeepWritable<ARR_T> extends (infer R)[]
     ? R extends [infer key, infer val]
       ? { [prop in key & PropertyKey]: val }
       : never
     : never
-type MergeIntersectingObjects<ObjT> = { [key in keyof ObjT]: ObjT[key] }
-type EntriesToObject<ARR_T extends EntriesType> = MergeIntersectingObjects<
+export type MergeIntersectingObjects<ObjT> = { [key in keyof ObjT]: ObjT[key] }
+export type EntriesToObject<ARR_T extends EntriesType> = MergeIntersectingObjects<
   UnionToIntersection<UnionObjectFromArrayOfPairs<ARR_T>>
 >
 
-function objectKeys<O extends Object>(obj: O) {
+export function objectKeys<O extends Object>(obj: O) {
   return Object.keys(obj) as Array<keyof O>
 }

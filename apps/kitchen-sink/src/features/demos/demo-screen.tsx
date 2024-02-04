@@ -53,7 +53,7 @@ export function DemoScreen() {
       f={1}
       jc="center"
       ai="center"
-      bc="$background"
+      bg="$background"
       space
     >
       <YStack miw={200} maw={340} ai="center" p="$10" br="$6">

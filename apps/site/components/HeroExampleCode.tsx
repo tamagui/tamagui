@@ -37,7 +37,7 @@ export const HeroExampleCode = memo(
             <XGroup
               scrollable
               bordered
-              bc="$color2"
+              bg="$color2"
               maxWidth="100%"
               als="center"
               ov="hidden"

@@ -95,7 +95,7 @@ const HeroContents = memo(function HeroContents() {
             <Link prefetch={false} href="/takeout">
               <Button
                 bw={2}
-                boc="$color6"
+                bc="$color6"
                 size="$3"
                 br="$10"
                 elevation="$1"
@@ -239,9 +239,9 @@ const HeroContents = memo(function HeroContents() {
                 }}
                 // TODO this is applying in dark mode...
                 // $theme-light={{
-                //   bc: '$color1',
+                //   bg: '$color1',
                 //   hoverStyle: {
-                //     bc: '$color2',
+                //     bg: '$color2',
                 //     color: '$color10',
                 //   },
                 // }}
@@ -323,22 +323,22 @@ const Tag = styled(Text, {
   mx: '$-1',
   cursor: 'pointer',
   color: '$color10',
-  bc: '$color3',
+  bg: '$color3',
 
   hoverStyle: {
     color: '$color',
-    bc: '$color4',
+    bg: '$color4',
   },
 
   variants: {
     active: {
       true: {
         color: '$color10',
-        bc: '$color5',
+        bg: '$color5',
 
         hoverStyle: {
           color: '$color12',
-          bc: '$color5',
+          bg: '$color5',
         },
       },
     },

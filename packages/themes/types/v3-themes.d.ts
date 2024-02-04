@@ -58954,12 +58954,75 @@ declare const themesIn: {
         outlineColor: string;
     };
 };
-type ThemesIn = typeof themesIn;
-type ThemesOut = Omit<ThemesIn, 'light' | 'dark'> & {
-    light: ThemesIn['light'] & typeof nonInherited.light;
-    dark: ThemesIn['dark'] & typeof nonInherited.dark;
-};
+export type Theme = Record<keyof typeof templates.base, string> & typeof nonInherited.light;
+export type ThemesOut = Record<keyof typeof themesIn, Theme>;
 export declare const themes: ThemesOut;
+export declare const size: {
+    $0: number;
+    '$0.25': number;
+    '$0.5': number;
+    '$0.75': number;
+    $1: number;
+    '$1.5': number;
+    $2: number;
+    '$2.5': number;
+    $3: number;
+    '$3.5': number;
+    $4: number;
+    $true: number;
+    '$4.5': number;
+    $5: number;
+    $6: number;
+    $7: number;
+    $8: number;
+    $9: number;
+    $10: number;
+    $11: number;
+    $12: number;
+    $13: number;
+    $14: number;
+    $15: number;
+    $16: number;
+    $17: number;
+    $18: number;
+    $19: number;
+    $20: number;
+};
+type SizeKeysIn = keyof typeof size;
+type Sizes = {
+    [Key in SizeKeysIn extends `$${infer Key}` ? Key : SizeKeysIn]: number;
+};
+type SizeKeys = `${keyof Sizes extends `${infer K}` ? K : never}`;
+export declare const spaces: (readonly [string, number])[];
+export declare const spacesNegative: (string | number)[][];
+type SizeKeysWithNegatives = Exclude<`-${SizeKeys extends `$${infer Key}` ? Key : SizeKeys}`, '-0'> | SizeKeys;
+export declare const space: {
+    [Key in SizeKeysWithNegatives]: Key extends keyof Sizes ? Sizes[Key] : number;
+};
+export declare const zIndex: {
+    0: number;
+    1: number;
+    2: number;
+    3: number;
+    4: number;
+    5: number;
+};
+export declare const radius: {
+    0: number;
+    1: number;
+    2: number;
+    3: number;
+    4: number;
+    true: number;
+    5: number;
+    6: number;
+    7: number;
+    8: number;
+    9: number;
+    10: number;
+    11: number;
+    12: number;
+};
 export declare const tokens: {
     color: {
         yellow1Light: Variable<string>;
@@ -59643,5 +59706,25 @@ export declare const tokens: {
         20: Variable<number>;
     };
 }, "color" | "space" | "size" | "radius" | "zIndex">;
+export declare function postfixObjKeys<A extends {
+    [key: string]: Variable<string> | string;
+}, B extends string>(obj: A, postfix: B): {
+    [Key in `${keyof A extends string ? keyof A : never}${B}`]: Variable<string> | string;
+};
+export declare function sizeToSpace(v: number): number;
+export declare function objectFromEntries<ARR_T extends EntriesType>(arr: ARR_T): EntriesToObject<ARR_T>;
+export type EntriesType = [PropertyKey, unknown][] | ReadonlyArray<readonly [PropertyKey, unknown]>;
+export type DeepWritable<OBJ_T> = {
+    -readonly [P in keyof OBJ_T]: DeepWritable<OBJ_T[P]>;
+};
+export type UnionToIntersection<UNION_T> = (UNION_T extends any ? (k: UNION_T) => void : never) extends (k: infer I) => void ? I : never;
+export type UnionObjectFromArrayOfPairs<ARR_T extends EntriesType> = DeepWritable<ARR_T> extends (infer R)[] ? R extends [infer key, infer val] ? {
+    [prop in key & PropertyKey]: val;
+} : never : never;
+export type MergeIntersectingObjects<ObjT> = {
+    [key in keyof ObjT]: ObjT[key];
+};
+export type EntriesToObject<ARR_T extends EntriesType> = MergeIntersectingObjects<UnionToIntersection<UnionObjectFromArrayOfPairs<ARR_T>>>;
+export declare function objectKeys<O extends Object>(obj: O): (keyof O)[];
 export {};
 //# sourceMappingURL=v3-themes.d.ts.map

@@ -327,7 +327,7 @@ function getTextContent(
                     elevation: '$6',
                     ov: 'hidden',
                     bw: 5,
-                    boc: '$borderColor',
+                    bc: '$borderColor',
                   })}
                   {...(item.variant === 'centered' && {
                     als: 'center',
@@ -440,7 +440,7 @@ function getTextContent(
             case 'code-inline':
               return (
                 <Code
-                  bc="$color8"
+                  bg="$color8"
                   color="$color11"
                   px="$3"
                   py="$2"

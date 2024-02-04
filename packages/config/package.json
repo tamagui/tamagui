@@ -55,6 +55,12 @@
       "import": "./dist/esm/index.reanimated.js",
       "require": "./dist/cjs/index.reanimated.js",
       "react-native": "./dist/cjs/index.reanimated.native.js"
+    },
+    "./v3": {
+      "types": "./types/v3.d.ts",
+      "import": "./dist/esm/v3.js",
+      "require": "./dist/cjs/v3.js",
+      "react-native": "./dist/cjs/v3.native.js"
     }
   },
   "dependencies": {

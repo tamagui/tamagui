@@ -2,7 +2,7 @@ import { ChevronRight, Code, Cpu, Layers, Star } from '@tamagui/lucide-icons'
 import { NextLink } from 'components/NextLink'
 import Link from 'next/link'
 import { memo } from 'react'
-import type { YStackProps } from 'tamagui';
+import type { YStackProps } from 'tamagui'
 import { Button, H3, Paragraph, Theme, XStack, YStack } from 'tamagui'
 
 import { CodeInline } from './Code'
@@ -18,7 +18,7 @@ const TitleLink = ({ href, children, ...props }: any) => {
         <CodeInline
           cursor="pointer"
           fontFamily="$silkscreen"
-          bc="$color2"
+          bg="$color2"
           hoverStyle={{
             backgroundColor: '$color3',
           }}
@@ -48,7 +48,7 @@ export const HeroBelow = memo(() => {
         pt="$6"
         pb="$10"
       >
-        <YStack fullscreen bc="$color3" zi={-1} o={0.25} btw={1} btc="$borderColor" />
+        <YStack fullscreen bg="$color3" zi={-1} o={0.25} btw={1} btc="$borderColor" />
 
         <HeroBelowContent />
       </YStack>

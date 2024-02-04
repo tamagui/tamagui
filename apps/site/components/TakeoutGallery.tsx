@@ -205,7 +205,7 @@ export default function TakeoutGallery() {
             }}
             width={100}
             height={100}
-            bc="$color12"
+            bg="$color12"
             br="$6"
             ov="hidden"
             elevation="$2"

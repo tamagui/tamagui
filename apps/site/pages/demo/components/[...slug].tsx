@@ -22,7 +22,7 @@ export default function DemoComponentsPage(props) {
           name || ''
         } Component — Tamagui — style library, design system, and UI kit for React (Native and web)`.trim()}
       />
-      <YStack br="$2" m="$2" bc="$blue3" minHeight={500} ai="center" jc="center">
+      <YStack br="$2" m="$2" bg="$blue3" minHeight={500} ai="center" jc="center">
         <Component />
       </YStack>
     </>

@@ -92,7 +92,7 @@ const Hero = () => {
             <Theme name="tan">
               <YStack gap="$6">
                 <XStack gap="$6">
-                  <Stack bc="$color7" w={10} br="$10" my={10} />
+                  <Stack bg="$color7" w={10} br="$10" my={10} />
 
                   <Paragraph ff="$munro" size="$9" fos={32} lh={50} color="$color11">
                     Boost your React Native development with a suite of copy-paste
@@ -104,9 +104,9 @@ const Hero = () => {
                     $200 one-time Purchase
                   </Paragraph>
 
-                  <Circle size={4} bc="$color10" />
-                  <Circle size={4} bc="$color10" />
-                  <Circle size={4} bc="$color10" />
+                  <Circle size={4} bg="$color10" />
+                  <Circle size={4} bg="$color10" />
+                  <Circle size={4} bg="$color10" />
 
                   <Paragraph color="$color10" size="$5">
                     $10/mo for early releases
@@ -130,7 +130,7 @@ const Hero = () => {
                 mr="$4"
                 hoverStyle={{
                   bg: '$color9',
-                  boc: '$color9',
+                  bc: '$color9',
                 }}
                 pressStyle={{
                   bg: '$color6',
@@ -287,7 +287,7 @@ const Body = () => {
 }
 
 const EmptyFn = () => (
-  <XStack w={200} br="$10" bg="$color8" h="$4" elevation="$4" bw={1} boc="$color10" />
+  <XStack w={200} br="$10" bg="$color8" h="$4" elevation="$4" bw={1} bc="$color10" />
 )
 
 function ComponentGroupsBanner({
@@ -311,7 +311,7 @@ function ComponentGroupsBanner({
         maw="calc(34% - 32px)"
         ov="hidden"
         elevation="$6"
-        bc="$color2"
+        bg="$color2"
         mih={300}
         br="$9"
         accessible
@@ -321,13 +321,13 @@ function ComponentGroupsBanner({
         btw={1}
         hoverStyle={{
           y: -2,
-          bc: '$color3',
+          bg: '$color3',
           outlineWidth: 0.5,
           outlineStyle: 'solid',
           outlineColor: '$color9',
         }}
         pressStyle={{
-          bc: '$color1',
+          bg: '$color1',
           y: 3,
         }}
       >

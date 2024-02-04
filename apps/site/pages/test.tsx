@@ -204,7 +204,7 @@ const DebugNestedThemeChange = () => {
   return (
     <ThemeTint debug="visualize">
       <ThemeTintAlt debug="visualize">
-        {/* <Square theme="active" debug="visualize" size={100} bc="$color5" /> */}
+        {/* <Square theme="active" debug="visualize" size={100} bg="$color5" /> */}
       </ThemeTintAlt>
     </ThemeTint>
   )

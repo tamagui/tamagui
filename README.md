@@ -46,7 +46,7 @@ npm install tamagui @tamagui/config
 Next, create a Tamagui config file named `tamagui.config.ts`:
 
 ```ts
-import { config } from '@tamagui/config/v2'
+import { config } from '@tamagui/config/v3'
 
 import { createTamagui } from 'tamagui'
 const tamaguiConfig = createTamagui(config)

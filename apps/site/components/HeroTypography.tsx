@@ -3,9 +3,7 @@ import { useIsIntersecting } from '@tamagui/demos'
 import { useTint } from '@tamagui/logo'
 import { NextLink } from 'components/NextLink'
 import { memo, useEffect, useRef, useState } from 'react'
-import type {
-  Heading,
-  TextProps} from 'tamagui';
+import type { Heading, TextProps } from 'tamagui'
 import {
   Button,
   Card,
@@ -157,7 +155,7 @@ const OverlayCard = () => {
 
   // {/* TODO elevation not overriding? */}
   return (
-    <Card bw={1} boc="$borderColor" br="$6" elevation="$6" shadowRadius={60}>
+    <Card bw={1} bc="$borderColor" br="$6" elevation="$6" shadowRadius={60}>
       <YStack
         jc="center"
         p="$6"

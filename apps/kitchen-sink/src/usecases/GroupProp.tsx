@@ -46,8 +46,8 @@ export function GroupProp() {
       <XStack group="testy">
         <Square
           id="inline"
-          bc="rgb(255,0,0)"
-          $group-testy={{ bc: 'rgb(0,0,255)' }}
+          bg="rgb(255,0,0)"
+          $group-testy={{ bg: 'rgb(0,0,255)' }}
           size={100}
         />
       </XStack>

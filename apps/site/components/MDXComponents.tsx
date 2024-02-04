@@ -88,7 +88,7 @@ const Table = ({ heading, children, ...props }) => {
   return (
     <TableFrame className="no-scrollbar" overflow={'scroll' as any} {...props}>
       {!!heading && (
-        <TableCell size="$4" bc="$color1" fow="500" color="$color9">
+        <TableCell size="$4" bg="$color1" fow="500" color="$color9">
           {heading}
         </TableCell>
       )}
@@ -147,12 +147,12 @@ const TableCell = styled(Paragraph, {
   variants: {
     head: {
       true: {
-        bc: '$color1',
+        bg: '$color1',
       },
     },
     highlight: {
       true: {
-        bc: '$yellow2',
+        bg: '$yellow2',
       },
     },
   } as const,
@@ -168,7 +168,7 @@ const TableCol = styled(ThemeableStack, {
 
 const TableHighlight = styled(YStack, {
   fullscreen: true,
-  bc: '$yellow1',
+  bg: '$yellow1',
 })
 
 export const components = {
@@ -232,7 +232,7 @@ export const components = {
         br="$6"
         bw={1}
         o={0.8}
-        boc="$borderColor"
+        bc="$borderColor"
         {...props}
       />
     )
@@ -633,7 +633,7 @@ export const components = {
 
             <Card.Footer p="$6" pt={0}>
               <XStack gap="$4" f={1}>
-                <Code f={1} bc="$color4" p="$3" br="$4" size="$6">
+                <Code f={1} bg="$color4" p="$3" br="$4" size="$6">
                   npm create tamagui@latest
                 </Code>
                 <Button
@@ -664,8 +664,8 @@ export const components = {
             animation="quickest"
             f={1}
             y={0}
-            hoverStyle={{ y: -2, bc: '$backgroundHover' }}
-            pressStyle={{ y: 2, bc: '$color2' }}
+            hoverStyle={{ y: -2, bg: '$backgroundHover' }}
+            pressStyle={{ y: 2, bg: '$color2' }}
           >
             <Card.Header gap="$2">
               <H4 size="$4" color="$color8">
@@ -692,13 +692,13 @@ export const components = {
       <YStack
         tag="aside"
         space="$2"
-        bc="$color1"
+        bg="$color1"
         br="$4"
         p="$5"
         px="$5"
         pb="$10"
         mx="$-2"
-        boc="$borderColor"
+        bc="$borderColor"
         bw={1}
         my="$4"
         pos="relative"

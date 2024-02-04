@@ -56,7 +56,7 @@ export function BenchmarkChart({
             </YStack>
             <XStack mr={65} flex={1} ai="center">
               <YStack
-                bc={getBarColor(result.name)}
+                bg={getBarColor(result.name)}
                 o={result.name === 'Tamagui' ? 1 : skipOthers ? 1 : 1}
                 width={width as any}
                 height={20}
