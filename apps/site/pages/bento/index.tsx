@@ -1,41 +1,41 @@
 import { NextLink } from '@components/NextLink'
-import * as sections from '@tamagui/bento'
-import { ButtonDemo, InputsDemo, SelectDemo } from '@tamagui/demos'
+import * as Sections from '@tamagui/bento'
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
-import { ShoppingCart } from '@tamagui/lucide-icons'
+import { Check, ShoppingCart } from '@tamagui/lucide-icons'
 import { useBentoStore } from 'hooks/useBentoStore'
 import type Stripe from 'stripe'
 
 import { useEffect } from 'react'
 import {
   Button,
-  Card,
+  Checkbox,
   Circle,
   EnsureFlexed,
   H2,
   H4,
   H5,
   Paragraph,
+  Separator,
   Spacer,
   Stack,
   Theme,
+  ThemeableStack,
   XStack,
   YStack,
+  styled,
   useTheme,
 } from 'tamagui'
-// import * as S from '@tamagui/studio/components'
-// console.log('SSSSSSSS', S)
 
 import { PurchaseModal } from '@components/BentoPurchaseModal'
+import { stripe } from '@lib/stripe'
+import type { Database } from '@lib/supabase-types'
+import { getArray } from '@lib/supabase-utils'
+import { supabaseAdmin } from '@lib/supabaseAdmin'
+import type { GetStaticProps } from 'next'
 import { BentoLogo } from '../../components/BentoLogo'
 import { BentoPageFrame } from '../../components/BentoPageFrame'
 import { ContainerLarge } from '../../components/Container'
 import { getDefaultLayout } from '../../lib/getDefaultLayout'
-import type { Database } from '@lib/supabase-types'
-import type { GetStaticProps } from 'next'
-import { stripe } from '@lib/stripe'
-import { supabaseAdmin } from '@lib/supabaseAdmin'
-import { getArray } from '@lib/supabase-utils'
 
 export const ThemeTintEffect = () => {
   const theme = useTheme()
@@ -57,8 +57,6 @@ export type ProComponentsProps = {
 }
 
 export default function ProPage(props: ProComponentsProps) {
-  const store = useBentoStore()
-
   if (!process.env.NEXT_PUBLIC_IS_TAMAGUI_DEV) {
     return null
   }
@@ -85,7 +83,7 @@ const Hero = () => {
   return (
     <YStack pos="relative" pb="$4" zi={0}>
       <ContainerLarge>
-        <XStack gap="$6" py="$12" bc="transparent" jc="space-between" w={'100%'}>
+        <XStack gap="$6" py="$6" bc="transparent" jc="space-between" w={'100%'}>
           <YStack maw="55%" zi={100} jc="space-between" f={10} ai="flex-start" gap="$6">
             <BentoLogo />
 
@@ -153,7 +151,7 @@ const Hero = () => {
             mb={-300}
             y={-20}
             style={{
-              maskImage: `linear-gradient(rgba(0, 0, 0, 1) 80%, transparent)`,
+              maskImage: `linear-gradient(rgba(0, 0, 0, 1) 40%, transparent)`,
             }}
           >
             <XStack
@@ -161,69 +159,66 @@ const Hero = () => {
               zi={1}
               gap="$4"
               mah={300}
+              miw={800}
               transformOrigin="left top"
               als="center"
-              scale={0.75}
+              scale={0.6}
             >
               <ThemeTint>
-                <Card elevate>
-                  <ButtonDemo />
-                </Card>
+                <BentoCard elevate>
+                  <YStack scale={0.5} w={900} mx={-220} my={-146}>
+                    <Sections.Layouts.SignInRightImage />
+                  </YStack>
+                </BentoCard>
               </ThemeTint>
               <ThemeTintAlt>
-                <Card elevate>
-                  <InputsDemo />
-                </Card>
+                <BentoCard elevate>
+                  <YStack scale={0.8} mx={-30}>
+                    <Sections.Textareas.AvatarNameContentAction />
+                  </YStack>
+                </BentoCard>
               </ThemeTintAlt>
               <ThemeTintAlt offset={2}>
-                <Card p="$4" elevate>
-                  <SelectDemo />
-                </Card>
+                <BentoCard elevate>
+                  <YStack scale={0.8} mx={-30}>
+                    <Sections.Radiogroups.VerticalWithDescription />
+                  </YStack>
+                </BentoCard>
               </ThemeTintAlt>
               <ThemeTintAlt offset={3}>
-                <Card elevate>
-                  <ButtonDemo />
-                </Card>
+                <BentoCard elevate>
+                  <YStack scale={0.8} mx={-30}>
+                    <Sections.Checkboxes.CheckboxCards />
+                  </YStack>
+                </BentoCard>
               </ThemeTintAlt>
               <ThemeTintAlt offset={4}>
-                <Card elevate>
-                  <InputsDemo />
-                </Card>
+                <BentoCard elevate>
+                  <YStack scale={0.8} mx={-30}>
+                    <Sections.Textareas.AvatarNameContentAction />
+                  </YStack>
+                </BentoCard>
               </ThemeTintAlt>
               <ThemeTintAlt offset={5}>
-                <Card p="$4" elevate>
-                  <SelectDemo />
-                </Card>
+                <BentoCard elevate>
+                  <YStack scale={0.8} mx={-30}>
+                    <Sections.Textareas.AvatarNameContentAction />
+                  </YStack>
+                </BentoCard>
               </ThemeTintAlt>
               <ThemeTint>
-                <Card elevate>
-                  <ButtonDemo />
-                </Card>
+                <BentoCard elevate>
+                  <YStack scale={0.8} mx={-30}>
+                    <Sections.Textareas.AvatarNameContentAction />
+                  </YStack>
+                </BentoCard>
               </ThemeTint>
               <ThemeTintAlt>
-                <Card elevate>
-                  <InputsDemo />
-                </Card>
-              </ThemeTintAlt>
-              <ThemeTintAlt offset={2}>
-                <Card p="$4" elevate>
-                  <SelectDemo />
-                </Card>
-              </ThemeTintAlt>
-              <ThemeTintAlt offset={3}>
-                <Card elevate>
-                  <ButtonDemo />
-                </Card>
-              </ThemeTintAlt>
-              <ThemeTintAlt offset={4}>
-                <Card elevate>
-                  <InputsDemo />
-                </Card>
-              </ThemeTintAlt>
-              <ThemeTintAlt offset={5}>
-                <Card p="$4" elevate>
-                  <SelectDemo />
-                </Card>
+                <BentoCard elevate>
+                  <YStack scale={0.8} mx={-30}>
+                    <Sections.Textareas.AvatarNameContentAction />
+                  </YStack>
+                </BentoCard>
               </ThemeTintAlt>
             </XStack>
           </YStack>
@@ -237,15 +232,29 @@ const Body = () => {
   return (
     <YStack
       pos="relative"
-      py="$4"
-      // style={{
-      //   backdropFilter: 'blur(100px)',
-      //   boxShadow: `0 0 200px rgba(0,0,0,0.2), 0 0 100px rgba(0,0,0,0.2), 0 0 20px rgba(0,0,0,0.125), 0 0 10px rgba(0,0,0,0.125)`,
-      // }}
+      py="$8"
+      mb="$-10"
+      // bg="$background"
+      shadowColor="$shadowColor"
+      shadowRadius={20}
+      style={{
+        backdropFilter: 'blur(10px)',
+        background: `linear-gradient(var(--background025), var(--background))`,
+        // boxShadow: `0 0 200px rgba(0,0,0,0.2), 0 0 100px rgba(0,0,0,0.2), 0 0 20px rgba(0,0,0,0.125), 0 0 10px rgba(0,0,0,0.125)`,
+      }}
       // py="$10"
     >
       {/* <YStack fullscreen bg="$color12" o={0.1} /> */}
 
+      <Separator
+        bc="$color"
+        pos="absolute"
+        t={0}
+        l={0}
+        r={0}
+        o={0.15}
+        style={{ mixBlendMode: 'multiply' }}
+      />
       <ContainerLarge gap="$2">
         {/* <H2>Sections</H2>
       <Paragraph size="$6" color={'$gray11'}>
@@ -256,7 +265,7 @@ const Body = () => {
       <Spacer size="$8" /> */}
 
         <YStack gap="$12" px="$6">
-          {sections.listingData.sections.map(({ sectionName, parts }) => {
+          {Sections.listingData.sections.map(({ sectionName, parts }) => {
             return (
               <YStack key={sectionName} gap="$6" jc={'space-between'}>
                 <H2 fontSize="$9" f={2}>
@@ -287,7 +296,11 @@ const Body = () => {
 }
 
 const EmptyFn = () => (
-  <XStack w={200} br="$10" bg="$color8" h="$4" elevation="$4" bw={1} bc="$color10" />
+  <Checkbox size="$4" checked>
+    <Checkbox.Indicator>
+      <Check />
+    </Checkbox.Indicator>
+  </Checkbox>
 )
 
 function ComponentGroupsBanner({
@@ -308,23 +321,20 @@ function ComponentGroupsBanner({
       <YStack
         tag="a"
         animation="quicker"
-        maw="calc(34% - 32px)"
+        maw="calc(50% - 16px)"
         ov="hidden"
-        elevation="$6"
+        // elevation="$6"
         bg="$color2"
         mih={300}
         br="$9"
-        accessible
         cursor="pointer"
         pos="relative"
-        btc="$color5"
-        btw={1}
         hoverStyle={{
           y: -2,
           bg: '$color3',
-          outlineWidth: 0.5,
+          outlineWidth: 2,
           outlineStyle: 'solid',
-          outlineColor: '$color9',
+          outlineColor: '$color025',
         }}
         pressStyle={{
           bg: '$color1',
@@ -337,14 +347,24 @@ function ComponentGroupsBanner({
           className="bg-grid mask-gradient-down"
           style={{ backgroundPosition: 'top left' }}
           o={0.085}
+          y={-1}
         />
-        <YStack fullscreen ai="center" jc="center">
+        <YStack
+          fullscreen
+          ai="center"
+          jc="center"
+          y="20%"
+          x="30%"
+          scale={6}
+          o={0.5}
+          rotateY="10deg"
+          rotateX="-20deg"
+          rotateZ="-10deg"
+        >
           <Preview />
         </YStack>
-        <YStack p="$5" gap="$2">
-          <H4 fontWeight={'normal'} fontSize="$7">
-            {name}
-          </H4>
+        <YStack p="$5">
+          <H4 fontSize="$7">{name}</H4>
           <H5 theme="alt1" fontWeight={'normal'} fontSize={'$2'}>
             {numberOfComponents} components
           </H5>
@@ -422,3 +442,14 @@ const getTakeoutProducts = async (): Promise<ProComponentsProps> => {
     coupon,
   }
 }
+
+const BentoCard = styled(ThemeableStack, {
+  elevation: '$4',
+  bg: '$background',
+  ai: 'center',
+  jc: 'center',
+  maw: 'calc(50% - var(--space-8))',
+  h: 300,
+  ov: 'hidden',
+  br: '$4',
+})
