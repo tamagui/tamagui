@@ -44,8 +44,8 @@ function readDirectoryRecursively(directoryPath, outputDirectory) {
         exportedModule
       )
       fs.mkdirSync(path.dirname(outputFilePath), { recursive: true })
-      const outputContent = processFile(modulePath + '.tsx')
-      fs.writeFileSync(outputFilePath + '.txt', outputContent)
+      const outputContent = processFile(`${modulePath}.tsx`)
+      fs.writeFileSync(`${outputFilePath}.txt`, outputContent)
     })
   } else {
     const files = fs.readdirSync(directoryPath)
@@ -61,6 +61,9 @@ function readDirectoryRecursively(directoryPath, outputDirectory) {
   }
 }
 
+const mathImportsRegex =
+  /import\s+(?:\w+\s*)?\{\s*\w+\s*\}\s+from\s+'(\.\/|\.\.\/)[^']+'/g
+
 function processFile(filePath, visitedFiles = new Set()) {
   if (visitedFiles.has(filePath)) {
     return ''
@@ -69,10 +72,8 @@ function processFile(filePath, visitedFiles = new Set()) {
   visitedFiles.add(filePath)
 
   const fileContent = fs.readFileSync(filePath, 'utf8')
-  const importStatements =
-    fileContent.match(
-      /import\s+(?:\w+\s*)?\{\s*\w+\s*\}\s+from\s+'\.\/[^']+'|import\s+\w+\s+from\s+'\.\/[^']+'/
-    ) || []
+
+  const importStatements = Array.from(fileContent.matchAll(mathImportsRegex), (m) => m[0])
 
   let appendedContent = fileContent
   appendedContent = `/** START of the file ${filePath
@@ -85,18 +86,17 @@ function processFile(filePath, visitedFiles = new Set()) {
     if (importPathMatch) {
       const importPath = importPathMatch[1]
 
-      if (importPath.startsWith('./')) {
+      if (importPath.startsWith('./') || importPath.startsWith('../')) {
         const possibleFileExtensions = ['.native.tsx', '.tsx', '.ts']
         let foundImport = false
         for (const extension of possibleFileExtensions) {
-          const alternativePath = path.join(
+          const alternativePath = path.resolve(
             path.dirname(filePath),
             `${importPath}${extension}`
           )
           if (fs.existsSync(alternativePath)) {
             appendedContent += processFile(alternativePath, visitedFiles)
             foundImport = true
-            break
           }
         }
 
