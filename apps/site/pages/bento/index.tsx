@@ -5,7 +5,6 @@ import { Check, ShoppingCart } from '@tamagui/lucide-icons'
 import { useBentoStore } from 'hooks/useBentoStore'
 import type Stripe from 'stripe'
 
-import { useEffect } from 'react'
 import {
   Button,
   Checkbox,
@@ -23,7 +22,6 @@ import {
   XStack,
   YStack,
   styled,
-  useTheme,
 } from 'tamagui'
 
 import { PurchaseModal } from '@components/BentoPurchaseModal'
@@ -37,18 +35,6 @@ import { BentoPageFrame } from '../../components/BentoPageFrame'
 import { ContainerLarge } from '../../components/Container'
 import { getDefaultLayout } from '../../lib/getDefaultLayout'
 
-export const ThemeTintEffect = () => {
-  const theme = useTheme()
-  const color = theme.color5.val
-
-  useEffect(() => {
-    document.querySelector('#theme-color')?.setAttribute('content', color)
-    document.body.style.backgroundColor = color
-  }, [color])
-
-  return null
-}
-
 export type ProComponentsProps = {
   proComponents?: Database['public']['Tables']['products']['Row'] & {
     prices: Database['public']['Tables']['prices']['Row'][]
@@ -56,7 +42,7 @@ export type ProComponentsProps = {
   coupon?: Stripe.Coupon | null
 }
 
-export default function ProPage(props: ProComponentsProps) {
+export default function BentoPage(props: ProComponentsProps) {
   if (!process.env.NEXT_PUBLIC_IS_TAMAGUI_DEV) {
     return null
   }
@@ -67,6 +53,19 @@ export default function ProPage(props: ProComponentsProps) {
         {/* <StudioPreviewComponents /> */}
       </YStack>
 
+      <YStack
+        fullscreen
+        y={-100}
+        o={0.1}
+        $theme-light={{
+          o: 0.3,
+        }}
+        style={{
+          background: `url(/grain.svg) 40%`,
+          mixBlendMode: 'color-dodge',
+        }}
+      />
+
       <Hero />
       <Body />
       <PurchaseModal coupon={props.coupon} mainProduct={props.proComponents} />
@@ -75,7 +74,7 @@ export default function ProPage(props: ProComponentsProps) {
   )
 }
 
-ProPage.getLayout = getDefaultLayout
+BentoPage.getLayout = getDefaultLayout
 
 const Hero = () => {
   const store = useBentoStore()
@@ -85,9 +84,8 @@ const Hero = () => {
       <ContainerLarge>
         <XStack gap="$6" py="$6" bc="transparent" jc="space-between" w={'100%'}>
           <YStack maw="55%" zi={100} jc="space-between" f={10} ai="flex-start" gap="$6">
-            <BentoLogo />
-
             <Theme name="tan">
+              <BentoLogo />
               <YStack gap="$6">
                 <XStack gap="$6">
                   <Stack bg="$color7" w={10} br="$10" my={10} />
@@ -235,16 +233,15 @@ const Body = () => {
       py="$8"
       mb="$-10"
       // bg="$background"
-      shadowColor="$shadowColor"
-      shadowRadius={20}
+      // shadowColor="$shadowColor"
+      // shadowRadius={20}
       style={{
-        backdropFilter: 'blur(10px)',
-        background: `linear-gradient(var(--background025), var(--background))`,
+        backdropFilter: 'blur(2px)',
         // boxShadow: `0 0 200px rgba(0,0,0,0.2), 0 0 100px rgba(0,0,0,0.2), 0 0 20px rgba(0,0,0,0.125), 0 0 10px rgba(0,0,0,0.125)`,
       }}
       // py="$10"
     >
-      {/* <YStack fullscreen bg="$color12" o={0.1} /> */}
+      <YStack fullscreen o={0.35} className="bento-fade" />
 
       <Separator
         bc="$color"
@@ -252,7 +249,7 @@ const Body = () => {
         t={0}
         l={0}
         r={0}
-        o={0.15}
+        o={0.125}
         style={{ mixBlendMode: 'multiply' }}
       />
       <ContainerLarge gap="$2">
@@ -320,19 +317,18 @@ function ComponentGroupsBanner({
     <NextLink href={BASE_PATH + path} passHref>
       <YStack
         tag="a"
-        animation="quicker"
         maw="calc(50% - 16px)"
         ov="hidden"
-        // elevation="$6"
+        elevation="$6"
         bg="$color2"
         mih={300}
         br="$9"
         cursor="pointer"
         pos="relative"
         hoverStyle={{
-          y: -2,
+          // y: -2,
           bg: '$color3',
-          outlineWidth: 2,
+          outlineWidth: 1,
           outlineStyle: 'solid',
           outlineColor: '$color025',
         }}
@@ -376,7 +372,7 @@ function ComponentGroupsBanner({
 
 const BASE_PATH = ' /bento'
 
-ProPage.getLayout = getDefaultLayout
+BentoPage.getLayout = getDefaultLayout
 
 export const getStaticProps: GetStaticProps<ProComponentsProps | any> = async () => {
   try {

@@ -3,7 +3,7 @@ import { Theme, YStack } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 import Head from 'next/head'
 import { LoadCherryBomb, LoadMunro } from './LoadFont'
-import { ThemeTintEffect } from '../pages/bento'
+import { ThemeTintEffect } from '@components/ThemeTintEffect'
 import { ContainerLarge } from './Container'
 
 export const BentoPageFrame = ({ children }: { children: any }) => {
@@ -47,7 +47,7 @@ export const BentoPageFrame = ({ children }: { children: any }) => {
                 l="50%"
                 x={-850}
                 rotate="120deg"
-                o={0.04}
+                o={0.09}
                 $theme-dark={{
                   o: 0.01,
                 }}
