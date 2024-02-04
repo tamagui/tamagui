@@ -3,6 +3,7 @@ export * from './clamp';
 export * from './composeEventHandlers';
 export * from './concatClassName';
 export * from './types';
+export * from './native';
 export * from './validStyleProps';
 export * from './withStaticProperties';
 //# sourceMappingURL=index.d.ts.map

@@ -30,8 +30,8 @@ export const SeasonToggleButton = (props: ButtonProps) => {
           }}
         >
           <Circle
-            bw={1}
             boc="var(--color9)"
+            o={0.85}
             m={2}
             size={12}
             backgroundColor={tint as any}
