@@ -552,35 +552,35 @@ export const components = {
   DocsIntro: () => {
     return (
       <ThemeTintAlt offset={2}>
-        <IntroParagraph size="$9" $sm={{ size: '$8' }}>
-          Tamagui is a powerful, modern styling solution for React that works well on all
-          platforms. Target just the web, or share styles with React Native.
+        <IntroParagraph mt="$4" size="$9" $sm={{ size: '$8' }}>
+          Tamagui makes styling React web and Native easy and fast, in part thanks to an
+          optimizing compiler that outputs nearly optimal platform-optimized code.
         </IntroParagraph>
 
         <IntroParagraph>
-          Tamagui is three things:&nbsp;
+          Tamagui is made of three main libraries:&nbsp;
           <ThemeTintAlt>
             {/* @ts-ignore */}
             <Link fontSize="inherit" href="/docs/core/introduction">
               <span style={{ color: 'var(--color10)' }}>Core</span>
             </Link>
           </ThemeTintAlt>
-          &nbsp;brings many features from CSS to the React Native style API, with no
-          outside dependencies.{' '}
+          &nbsp;handles styling, bringing many features from CSS to the React Native style
+          API - with no outside dependencies.{' '}
           <ThemeTintAlt offset={-1}>
             {/* @ts-ignore */}
             <Link fontSize="inherit" href="/docs/intro/compiler-install">
               <span style={{ color: 'var(--color10)' }}>Static</span>
             </Link>
           </ThemeTintAlt>{' '}
-          is a smart optimizing compiler. And{' '}
+          is a smart optimizing compiler, and{' '}
           <ThemeTintAlt>
             {/* @ts-ignore */}
             <Link fontSize="inherit" href="/docs/components/stacks">
               <span style={{ color: 'var(--color10)' }}>Tamagui</span>
             </Link>
           </ThemeTintAlt>{' '}
-          is a large component kit where all components come in styled and unstyled forms.
+          is a large component kit in styled and unstyled forms.
         </IntroParagraph>
       </ThemeTintAlt>
     )
