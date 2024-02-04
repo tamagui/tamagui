@@ -8,7 +8,7 @@ body {
 }
 
 body {
-  background: var(--backgroundStrong) !important;
+  background: var(--background) !important;
 }
 
 body:has(.strong-background) {
@@ -711,7 +711,7 @@ textarea {
 }
 
 .text-glow {
-  text-shadow: 4px 4px 0 var(--backgroundStrong);
+  text-shadow: 4px 4px 0 var(--background);
 }
 
 .rotate-slow-right {

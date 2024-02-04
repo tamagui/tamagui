@@ -48,7 +48,7 @@ export function PropsTable({
             <XStack
               pos="relative"
               py="$2"
-              bc="$backgroundStrong"
+              bc="$background"
               px="$4"
               $sm={{ flexDirection: 'column' }}
             >

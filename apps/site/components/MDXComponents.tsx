@@ -1,5 +1,5 @@
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
-import { Link as LinkIcon } from '@tamagui/lucide-icons'
+import { CheckCircle, ChevronRight, Copy, Link as LinkIcon } from '@tamagui/lucide-icons'
 import { NextLink } from 'components/NextLink'
 import { useRouter } from 'next/router'
 import React, { forwardRef, useState } from 'react'
@@ -58,6 +58,7 @@ import { UL } from './UL'
 import { unwrapText } from './unwrapText'
 import { Link } from './Link'
 import { CustomTabs } from './CustomTabs'
+import { useClipboard } from '../lib/useClipboard'
 
 const IntroParagraph = ({ children, large, disableUnwrapText, ...props }: any) => {
   return (
@@ -551,59 +552,108 @@ export const components = {
 
   DocsIntro: () => {
     return (
-      <ThemeTintAlt offset={2}>
-        <IntroParagraph mt="$4" size="$9" $sm={{ size: '$8' }}>
-          Tamagui makes styling React web and Native easy and fast, in part thanks to an
-          optimizing compiler that outputs nearly optimal platform-optimized code.
-        </IntroParagraph>
+      <YStack gap="$1">
+        <ThemeTintAlt offset={2}>
+          <IntroParagraph mt="$4">
+            Tamagui makes styling React easy and fast on web, Android, and iOS. It focuses
+            on platform-native output, with an optional optimizing compiler that
+            significantly improves your app or site performance.
+          </IntroParagraph>
 
-        <IntroParagraph>
-          Tamagui is made of three main libraries:&nbsp;
-          <ThemeTintAlt>
-            {/* @ts-ignore */}
-            <Link fontSize="inherit" href="/docs/core/introduction">
-              <span style={{ color: 'var(--color10)' }}>Core</span>
-            </Link>
-          </ThemeTintAlt>
-          &nbsp;handles styling, bringing many features from CSS to the React Native style
-          API - with no outside dependencies.{' '}
-          <ThemeTintAlt offset={-1}>
-            {/* @ts-ignore */}
-            <Link fontSize="inherit" href="/docs/intro/compiler-install">
-              <span style={{ color: 'var(--color10)' }}>Static</span>
-            </Link>
-          </ThemeTintAlt>{' '}
-          is a smart optimizing compiler, and{' '}
-          <ThemeTintAlt>
-            {/* @ts-ignore */}
-            <Link fontSize="inherit" href="/docs/components/stacks">
-              <span style={{ color: 'var(--color10)' }}>Tamagui</span>
-            </Link>
-          </ThemeTintAlt>{' '}
-          is a large component kit in styled and unstyled forms.
-        </IntroParagraph>
-      </ThemeTintAlt>
+          <Paragraph size="$6">Tamagui is three things:</Paragraph>
+
+          <UL mt="$4" gap="$2">
+            <ThemeTintAlt>
+              <LI size="$6" color="$color11">
+                {/* @ts-ignore */}
+                <Link fontSize="inherit" href="/docs/core/introduction">
+                  <CodeInline>
+                    <span style={{ color: 'var(--color12)' }}>@tamagui/core</span>
+                  </CodeInline>
+                </Link>
+                &nbsp;is a style library that expands on the React Native style API with
+                many features from CSS - all without any external dependency except for
+                React.
+              </LI>
+            </ThemeTintAlt>
+
+            <ThemeTintAlt offset={2}>
+              <LI size="$6" color="$color11">
+                {/* @ts-ignore */}
+                <Link fontSize="inherit" href="/docs/intro/compiler-install">
+                  <CodeInline>
+                    <span style={{ color: 'var(--color12)' }}>@tamagui/static</span>
+                  </CodeInline>
+                </Link>{' '}
+                is an optimizing compiler that{' '}
+                <Link
+                  // @ts-ignore
+                  fontSize="inherit"
+                  href="/docs/intro/benchmarks"
+                >
+                  significantly improves performance
+                </Link>{' '}
+                by hoisting objects and CSS at build-time, leaving behind
+                optimally-written React components.
+              </LI>
+            </ThemeTintAlt>
+
+            <ThemeTintAlt offset={3}>
+              <LI size="$6" color="$color11">
+                {/* @ts-ignore */}
+                <Link fontSize="inherit" href="/docs/components/stacks">
+                  <CodeInline>
+                    <span style={{ color: 'var(--color12)' }}>tamagui</span>
+                  </CodeInline>
+                </Link>{' '}
+                is a large universal component kit in styled and unstyled forms.
+              </LI>
+            </ThemeTintAlt>
+          </UL>
+        </ThemeTintAlt>
+      </YStack>
     )
   },
 
   GetStarted: () => {
+    const clipBoard = useClipboard(`npm create tamagui@latest`)
+
     return (
       <XStack gap="$4" f={1} fw="wrap" my="$5">
         <ThemeTintAlt>
           <Card f={1}>
             <Card.Header gap="$2">
-              <H4 size="$4" color="$color8">
+              <H4 size="$4" color="$color9">
                 Quick start
               </H4>
-              <Paragraph size="$6" color="$color9">
-                Choose from a few starters with:
+              <Paragraph size="$6" color="$color11">
+                Choose from a few starters:
               </Paragraph>
             </Card.Header>
 
             <Card.Footer p="$6" pt={0}>
-              <Code f={1} bc="$color4" p="$3" br="$4" size="$6">
-                npm create tamagui@latest
-              </Code>
+              <XStack gap="$4" f={1}>
+                <Code f={1} bc="$color4" p="$3" br="$4" size="$6">
+                  npm create tamagui@latest
+                </Code>
+                <Button
+                  position="absolute"
+                  aria-label="Copy code to clipboard"
+                  size="$2"
+                  top="$3"
+                  right="$3"
+                  display="inline-flex"
+                  icon={clipBoard.hasCopied ? CheckCircle : Copy}
+                  onPress={() => {
+                    clipBoard.onCopy()
+                  }}
+                  $xs={{
+                    display: 'none',
+                  }}
+                >
+                  Copy
+                </Button>
+              </XStack>
             </Card.Footer>
           </Card>
         </ThemeTintAlt>
@@ -625,6 +675,10 @@ export const components = {
                 Set up an app.
               </Paragraph>
             </Card.Header>
+
+            <Card.Footer>
+              <ChevronRight pos="absolute" b="$4" r="$4" color="$color11" />
+            </Card.Footer>
           </Card>
         </NextLink>
       </XStack>
@@ -665,7 +719,7 @@ export const components = {
             l={0}
             r={0}
             height={200}
-            colors={['$backgroundTransparent', '$background']}
+            colors={['$background0', '$background']}
             zi={1000}
           >
             <Spacer f={1} />

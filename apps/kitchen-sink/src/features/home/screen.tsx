@@ -43,7 +43,7 @@ export function HomeScreen() {
                   return (
                     <YGroup.Item key={page.route}>
                       <LinkListItem
-                        bc="$backgroundStrong"
+                        bc="$background"
                         href={page.route}
                         pressTheme
                         size="$4"
@@ -90,7 +90,7 @@ const ColorSchemeListItem = (props: ListItemProps) => {
   const checked = theme.value === 'light'
 
   return (
-    <ListItem {...props} bc="$backgroundStrong" pressTheme paddingVertical={0}>
+    <ListItem {...props} bc="$background" pressTheme paddingVertical={0}>
       <ListItem.Text>Theme</ListItem.Text>
       <Spacer flex />
       <Button chromeless disabled w={20} icon={Moon} />
