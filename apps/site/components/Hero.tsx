@@ -40,19 +40,19 @@ const HeroSubTitle = memo(() => {
   return (
     <Subtitle>
       <NextLink prefetch={false} href="/docs/core/configuration">
-        <Tag theme="green_alt2" onHoverIn={() => setHovered(0)} active={hovered === 0}>
+        <Tag theme="green" onHoverIn={() => setHovered(0)} active={hovered === 0}>
           styles
         </Tag>
       </NextLink>{' '}
       +{' '}
       <NextLink prefetch={false} href="/docs/intro/why-a-compiler">
-        <Tag theme="blue_alt2" onHoverIn={() => setHovered(1)} active={hovered === 1}>
+        <Tag theme="blue" onHoverIn={() => setHovered(1)} active={hovered === 1}>
           optimizing compiler
         </Tag>
       </NextLink>{' '}
       +{' '}
       <NextLink prefetch={false} href="/docs/components/stacks">
-        <Tag theme="purple_alt2" onHoverIn={() => setHovered(2)} active={hovered === 2}>
+        <Tag theme="purple" onHoverIn={() => setHovered(2)} active={hovered === 2}>
           UI&nbsp;kit
         </Tag>
       </NextLink>{' '}
@@ -95,7 +95,7 @@ const HeroContents = memo(function HeroContents() {
             <Link prefetch={false} href="/takeout">
               <Button
                 bw={2}
-                boc="$color5"
+                boc="$color6"
                 size="$3"
                 br="$10"
                 elevation="$1"
@@ -103,7 +103,7 @@ const HeroContents = memo(function HeroContents() {
               >
                 Introducing Takeout 🥡
                 <Text ff="$body" fontSize="$3" color="$color10" $sm={{ dsp: 'none' }}>
-                  pro starter kit
+                  starter kit++
                 </Text>
               </Button>
             </Link>
@@ -322,12 +322,12 @@ const Tag = styled(Text, {
   px: '$1',
   mx: '$-1',
   cursor: 'pointer',
-  color: '$color',
-  bc: '$color2',
+  color: '$color10',
+  bc: '$color3',
 
   hoverStyle: {
     color: '$color',
-    bc: '$color3',
+    bc: '$color4',
   },
 
   variants: {

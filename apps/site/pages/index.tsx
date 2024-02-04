@@ -21,7 +21,7 @@ import { getCompilationExamples } from '../lib/getCompilationExamples'
 export default function Home({ animationCode, compilationExamples }) {
   return (
     <>
-      <YStack className="strong-background" />
+      {/* <YStack className="strong-background" /> */}
       <ThemeNameEffect />
       <HomeGlow />
       <NextSeo

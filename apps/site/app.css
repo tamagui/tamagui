@@ -12,11 +12,11 @@ body {
 }
 
 body:has(.strong-background) {
-  background: var(--color4) !important;
+  background: var(--color6) !important;
 }
 
 html.t_dark body:has(.strong-background) {
-  background: var(--color2) !important;
+  background: var(--color1) !important;
 }
 
 html.t_light body:has(.strong-background)::before {

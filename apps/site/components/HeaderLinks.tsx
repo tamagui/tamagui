@@ -25,7 +25,7 @@ const HeadAnchor = styled(Paragraph, {
   py: '$3',
   cursor: 'pointer',
   size: '$3',
-  color: '$color10',
+  color: '$color11',
   tabIndex: -1,
 
   hoverStyle: {
