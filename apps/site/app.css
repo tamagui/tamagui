@@ -1,8 +1,6 @@
 html,
 body {
   max-width: 100vw;
-  /* overflow-x: hidden;
-  overflow-y: auto; */
   font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
     Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 }
@@ -35,7 +33,6 @@ body {
   margin: 0;
   position: relative;
   max-width: 100vw;
-  /* overflow-x: hidden; */
 }
 
 * {
@@ -47,7 +44,12 @@ body {
   display: flex;
   flex: 1;
   max-width: 100vw;
-  /* overflow-x: hidden; */
+}
+
+:is(#__next, body, html):not(:has(.is-sticky)) {
+  max-width: 100vw;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .home-glow {

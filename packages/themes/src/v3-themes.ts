@@ -499,6 +499,7 @@ const themeBuilder = createThemeBuilder()
       ListItem: {
         template: 'surface1',
       },
+      SelectTrigger: surface1,
       Card: surface1,
       Button: surface3,
       Checkbox: surface2,

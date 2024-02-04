@@ -1,4 +1,4 @@
-import { shorthands } from '@tamagui/shorthands'
+import { shorthands } from '@tamagui/shorthands/v2'
 import { tokens } from '@tamagui/themes/v3'
 import { themes } from './themes'
 

@@ -1726,15 +1726,15 @@ function PurchaseButton(props: ButtonProps) {
     <ThemeTint>
       <Button
         size="$6"
-        backgroundColor="$color8"
+        backgroundColor="$color7"
         borderWidth={2}
         color="$color"
-        borderColor="$color10"
+        borderColor="$color8"
         hoverStyle={{
-          backgroundColor: '$color9',
+          backgroundColor: '$color8',
         }}
         pressStyle={{
-          backgroundColor: '$color8',
+          backgroundColor: '$color6',
         }}
         {...props}
       >

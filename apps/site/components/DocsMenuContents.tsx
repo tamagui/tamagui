@@ -2,7 +2,7 @@ import uFuzzy from '@leeoniya/ufuzzy'
 import { docsRoutes } from '@lib/docsRoutes'
 import { useStore } from '@tamagui/use-store'
 import * as React from 'react'
-import { Input, Paragraph, Separator, Spacer, XStack } from 'tamagui'
+import { Input, Paragraph, Separator, Spacer, XStack, YStack } from 'tamagui'
 
 import { useRouter } from 'next/router'
 import { DocsItemsStore, DocsRouteNavItem } from './DocsRouteNavItem'
@@ -137,7 +137,7 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
 
                 if (isStartingSection) {
                   return (
-                    <React.Fragment key={`${page.route}${index}`}>
+                    <YStack key={`${page.route}${index}`}>
                       {section.label ? (
                         <NavHeading inMenu={!!inMenu}>{section.label}</NavHeading>
                       ) : null}
@@ -148,7 +148,7 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
                         </XStack>
                       )}
                       {contents}
-                    </React.Fragment>
+                    </YStack>
                   )
                 }
 

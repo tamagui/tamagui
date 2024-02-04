@@ -124,7 +124,7 @@ export const SectionTinted = ({
         maw: 1400,
         br: '$6',
         bw: 1,
-        boc: `$${tint}4`,
+        bc: `$${tint}4`,
         als: 'center',
         width: '100%',
       })}
@@ -139,7 +139,7 @@ export const SectionTinted = ({
         {...(!bubble && {
           btw: noBorderTop ? 0 : 1,
           bbw: 1,
-          boc: `$${tint}3` as any,
+          bc: `$${tint}3` as any,
         })}
       />
       {childrenMemo}

@@ -139,7 +139,6 @@ export declare const config: {
         readonly ai: "alignItems";
         readonly als: "alignSelf";
         readonly b: "bottom";
-        readonly bc: "backgroundColor";
         readonly bg: "backgroundColor";
         readonly bbc: "borderBottomColor";
         readonly bblr: "borderBottomLeftRadius";
@@ -147,7 +146,7 @@ export declare const config: {
         readonly bbw: "borderBottomWidth";
         readonly blc: "borderLeftColor";
         readonly blw: "borderLeftWidth";
-        readonly boc: "borderColor";
+        readonly bc: "borderColor";
         readonly br: "borderRadius";
         readonly bs: "borderStyle";
         readonly brw: "borderRightWidth";
