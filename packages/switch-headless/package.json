@@ -1,5 +1,5 @@
 {
-  "name": "@tamagui/switch",
+  "name": "@tamagui/switch-headless",
   "version": "1.88.23",
   "sideEffects": [
     "*.css"
@@ -34,14 +34,8 @@
   "dependencies": {
     "@tamagui/compose-refs": "1.88.23",
     "@tamagui/constants": "1.88.23",
-    "@tamagui/core": "1.88.23",
-    "@tamagui/focusable": "1.88.23",
-    "@tamagui/get-token": "1.88.23",
     "@tamagui/helpers": "1.88.23",
     "@tamagui/label": "1.88.23",
-    "@tamagui/stacks": "1.88.23",
-    "@tamagui/switch-headless": "1.88.23",
-    "@tamagui/use-controllable-state": "1.88.23",
     "@tamagui/use-previous": "1.88.23"
   },
   "peerDependencies": {
