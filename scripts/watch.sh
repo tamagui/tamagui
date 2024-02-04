@@ -5,4 +5,4 @@ if [ "$IS_TAMAGUI_DEV" == "1" ]; then
   git-crypt unlock
 fi
 
-npx npm-run-all --parallel watch:ts watch:packages
+yarn npm-run-all --parallel watch:ts watch:packages
