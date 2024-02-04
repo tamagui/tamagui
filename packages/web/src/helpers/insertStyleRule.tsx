@@ -228,9 +228,9 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
   for (const rule of rules) {
     const sepI = rule.indexOf(':')
     if (sepI === -1) continue
-    const key = rule.slice(rule.indexOf('--') + 2, sepI)
+    const varIndex = rule.indexOf('--')
+    const key = rule.slice(varIndex === -1 ? 0 : varIndex + 2, sepI)
     const val = rule.slice(sepI + 2)
-
     let value: string
     if (val.startsWith('var(')) {
       // var()

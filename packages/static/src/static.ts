@@ -1,4 +1,4 @@
-export { TamaguiOptions } from './types'
+export * from './types'
 export { createExtractor } from './extractor/createExtractor'
 export { literalToAst } from './extractor/literalToAst'
 export * from './constants'

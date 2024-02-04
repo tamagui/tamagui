@@ -408,7 +408,6 @@ async function esbuildWriteIfChanged(
   /** @type { import('esbuild').BuildOptions } */
   const nativeEsbuildSettings = {
     target: 'node16',
-    format: 'cjs',
     supported: {
       'logical-assignment': false,
     },
@@ -430,7 +429,7 @@ async function esbuildWriteIfChanged(
     },
   }
 
-  const built = await esbuild.build({
+  const buildSettings = {
     ...opts,
 
     plugins: [
@@ -473,7 +472,10 @@ async function esbuildWriteIfChanged(
       }),
       ...opts.define,
     },
-  })
+  }
+
+  const built = await esbuild.build(buildSettings)
+  const isESM = buildSettings.target === 'esm'
 
   if (!built.outputFiles) {
     return
@@ -533,7 +535,7 @@ async function esbuildWriteIfChanged(
         }
       }
 
-      if (pkgRemoveSideEffects && opts.format === 'esm') {
+      if (pkgRemoveSideEffects && isESM) {
         outString = outString.replace(/\nimport "[^"]+";\n/g, '\n')
       }
 
@@ -553,24 +555,28 @@ async function esbuildWriteIfChanged(
       await Promise.all([
         flush(outString, outPath),
         (async () => {
-          if (platform === 'web' && mjs && outPath.endsWith('.js')) {
+          if (isESM && mjs && outPath.endsWith('.js')) {
             const mjsOutPath = outPath.replace('.js', '.mjs')
-            const output = transform(outString, {
-              filename: mjsOutPath,
-              plugins: [
-                [
-                  'babel-plugin-fully-specified',
-                  {
-                    ensureFileExists: false,
-                    esExtensionDefault: '.mjs',
-                    tryExtensions: ['.mjs', '.js'],
-                    esExtensions: ['.mjs', '.js'],
-                  },
-                ],
-              ],
-            })
+            // if bundling no need to specify as its all internal
+            // and babel is bad on huge bundled files
+            const output = shouldBundle
+              ? outString
+              : transform(outString, {
+                  filename: mjsOutPath,
+                  plugins: [
+                    [
+                      'babel-plugin-fully-specified',
+                      {
+                        ensureFileExists: false,
+                        esExtensionDefault: '.mjs',
+                        tryExtensions: ['.mjs', '.js'],
+                        esExtensions: ['.mjs', '.js'],
+                      },
+                    ],
+                  ],
+                }).code
             // output to mjs fully specified
-            await flush(output.code, mjsOutPath)
+            await flush(output, mjsOutPath)
           }
         })(),
       ])

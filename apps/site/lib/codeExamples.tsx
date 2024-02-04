@@ -7,7 +7,7 @@ export default () => {
       <Square
         animation="bouncy"
         size={110}
-        bc="$pink10"
+        bg="$pink10"
         br="$9"
         hoverStyle={{
           scale: 1.1,
@@ -118,7 +118,7 @@ export const Heading = styled(Text, {
     px: 'paddingHorizontal',
     w: 'width',
     c: 'color',
-    bc: 'backgroundColor',
+    bg: 'backgroundColor',
     fs: 'fontSize',
   },
   // ...the rest of your configuration

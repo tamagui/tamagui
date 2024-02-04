@@ -6,50 +6,13 @@ process.env.IGNORE_TS_CONFIG_PATHS = 'true'
 /** @type {import('next').NextConfig} */
 const { withTamagui } = require('@tamagui/next-plugin')
 const withBundleAnalyzer = require('@next/bundle-analyzer')
-const { join } = require('path')
-
-const boolVals = {
-  true: true,
-  false: false,
-}
-
-const disableExtraction =
-  boolVals[process.env.DISABLE_EXTRACTION] ?? process.env.NODE_ENV === 'development'
 
 const plugins = [
   withBundleAnalyzer({
     enabled: process.env.NODE_ENV === 'production',
     openAnalyzer: process.env.ANALYZE === 'true',
   }),
-  withTamagui({
-    emitSingleCSSFile:
-      false,
-    // useReactNativeWebLite: true,
-    config: './tamagui.config.ts',
-    themeBuilder: {
-      input: '@tamagui/themes/src/themes-new.ts',
-      output: join(
-        require.resolve('@tamagui/themes/src/themes-new.ts'),
-        '..',
-        'generated-new.ts'
-      ),
-    },
-    outputCSS: process.env.NODE_ENV === 'production' ? './public/tamagui.css' : null,
-    components: ['tamagui'],
-    importsWhitelist: ['constants.js', 'colors.js'],
-    logTimings: true,
-    // enableDynamicEvaluation: true,
-    disableExtraction,
-    excludeReactNativeWebExports: [
-      'Switch',
-      'ProgressBar',
-      'Picker',
-      'CheckBox',
-      'Touchable',
-      'FlatList',
-      'Modal',
-    ],
-  }),
+  withTamagui(),
   (config) => {
     return {
       ...config,

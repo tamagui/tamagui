@@ -346,7 +346,7 @@ export const PurchaseModal = ({
                       <XStack jc="space-between" space="$2" ai="center">
                         <XStack
                           ai="center"
-                          separator={<Separator vertical bc="$color8" my="$2" />}
+                          separator={<Separator vertical bg="$color8" my="$2" />}
                           space="$2"
                         >
                           <SizableText

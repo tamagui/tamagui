@@ -9,7 +9,7 @@
     "./apps/*",
     "./packages/*"
   ],
-  "packageManager": "yarn@4.0.2",
+  "packageManager": "yarn@4.1.0",
   "scripts": {
     "build:force": "yarn clean:build && yarn build --force",
     "build:js": "ultra -r --no-pretty build -- --skip-types",
@@ -75,7 +75,7 @@
     "upgrade:starters": "yarn upgrade:starters:free && yarn upgrade:starters:simple-web && yarn upgrade:starters:expo-router",
     "vercel:build": "yarn build:js && cd apps/site && yarn ci:build",
     "vercel:build-studio": "yarn build:js && cd apps/studio && yarn ci:build",
-    "watch": "npm-run-all --parallel watch:ts watch:packages",
+    "watch": "./scripts/watch.sh",
     "watch:packages": "SKIP_TYPES_INITIAL=1 ultra -r --no-pretty --concurrency 400 watch",
     "watch:js": "SKIP_TYPES=1 yarn watch:packages",
     "watch:ts": "node -r esbuild-register ./scripts/watch-ts.ts"

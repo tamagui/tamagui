@@ -7,25 +7,16 @@ import type { ColorScheme } from '@tamagui/next-theme'
 import { NextThemeProvider, useRootTheme, useThemeSetting } from '@tamagui/next-theme'
 import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
-import { useEffect, useLayoutEffect, useMemo, useState } from 'react'
-import {
-  TamaguiProvider,
-  useDebounceValue,
-  useDidFinishSSR,
-  useIsomorphicLayoutEffect,
-} from 'tamagui'
+import { useEffect, useMemo, useState } from 'react'
+import { TamaguiProvider, useDebounceValue, useDidFinishSSR } from 'tamagui'
 
+import Head from 'next/head'
 import { LoadCherryBomb, LoadInter900, LoadMunro } from '../components/LoadFont'
 import config from '../tamagui.config'
-import Head from 'next/head'
 
 // import '../lib/wdyr'
 
 Error.stackTraceLimit = Infinity
-
-if (process.env.NODE_ENV === 'production') {
-  require('../public/tamagui.css')
-}
 
 // prevent next.js from prefetching stuff
 if (typeof navigator !== 'undefined') {

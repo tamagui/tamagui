@@ -48,7 +48,7 @@ export function PropsTable({
             <XStack
               pos="relative"
               py="$2"
-              bc="$backgroundStrong"
+              bg="$background"
               px="$4"
               $sm={{ flexDirection: 'column' }}
             >
@@ -111,7 +111,7 @@ export function PropsTable({
                             Default:&nbsp;
                           </Paragraph>
                           {/* @ts-ignore */}
-                          <Code my="$-1" bc="$backgroundPress">
+                          <Code my="$-1" bg="$backgroundPress">
                             {defaultValue}
                           </Code>
                         </>

@@ -15,7 +15,7 @@ export const MailingListSignup = memo(() => {
   //     ai="center"
   //     als="center"
   //     elevation="$2"
-  //     bc="$background"
+  //     bg="$background"
   //     br="$10"
   //   >
   //     <Input

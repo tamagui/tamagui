@@ -21,6 +21,19 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
   const REPO_NAME = 'tamagui/tamagui'
   const editUrl = `${GITHUB_URL}/${REPO_NAME}/edit/master/apps/site/data${currentPath}${documentVersionPath}.mdx`
 
+  // React.useEffect(() => {
+  //   // @ts-ignore
+  //   import('../lib/sticksy').then(({ Sticksy }) => {
+  //     const el = document.querySelector('.sticky')
+  //     if (el) {
+  //       const instance = new Sticksy(el)
+  //       return () => {
+  //         instance.disable()
+  //       }
+  //     }
+  //   })
+  // }, [currentPath])
+
   const pageContents = React.useMemo(() => {
     return (
       <>
@@ -115,6 +128,9 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
         $gtSm={{
           flexDirection: 'row',
         }}
+        $gtLg={{
+          l: -50,
+        }}
         maw={1250}
         zi={100}
         pos="relative"
@@ -141,7 +157,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
             h={100}
             w={300}
             zi={100}
-            colors={['$backgroundStrong', '$backgroundStrong', '$backgroundTransparent']}
+            colors={['$background', '$background', '$background0']}
           />
           <ScrollView>
             <ThemeTint>
@@ -167,6 +183,9 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
         maxWidth="100%"
         flex={1}
         py="$8"
+        $gtLg={{
+          l: -50,
+        }}
         $gtMd={{
           pb: '$9',
           pl: 250,

@@ -5,5 +5,5 @@ export const Pre = styled(YStack, {
   tag: 'pre',
   padding: '$4',
   borderRadius: '$4',
-  bc: '$background',
+  bg: '$background',
 })

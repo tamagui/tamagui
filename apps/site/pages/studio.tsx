@@ -69,13 +69,7 @@ export default function StudioSplashPage() {
         <LinearGradient
           pos="absolute"
           fullscreen
-          colors={[
-            '$backgroundStrong',
-            '$color2',
-            '$color2',
-            '$color2',
-            '$backgroundStrong',
-          ]}
+          colors={['$background', '$color2', '$color2', '$color2', '$background']}
         />
 
         <ContainerXL>

@@ -87,7 +87,7 @@ export function Slides(props: { slides: Slides }) {
         position="relative"
         {...slideDimensions}
         bw={1}
-        boc="$borderColor"
+        bc="$borderColor"
         alignItems="center"
       >
         <AnimatePresence enterVariant={enterVariant} exitVariant={exitVariant}>

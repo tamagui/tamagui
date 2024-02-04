@@ -53,10 +53,10 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
           <Button
             size="$3"
             ml="$2"
-            bc="transparent"
+            bg="transparent"
             noTextWrap
             br="$10"
-            bow={2}
+            bw={2}
             onPress={() => {
               if (isTouchable) {
                 setOpen(!open)
@@ -77,8 +77,7 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
             hoverStyle={{
               bg: 'transparent',
               // @ts-ignore
-              boc: 'color-mix(in srgb, var(--color-8) 40%, transparent 60%)',
-              // boc: 'red',
+              bc: 'color-mix(in srgb, var(--color-10) 30%, transparent 60%)',
             }}
           >
             <SizableText ff="$silkscreen">Menu</SizableText>
@@ -166,13 +165,13 @@ const HeaderMenuContent = React.memo(function HeaderMenuContent() {
       br="$6"
       {...{
         style: {
-          WebkitBackdropFilter: 'blur(12px)',
-          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(8px)',
+          backdropFilter: 'blur(8px)',
         },
       }}
     >
-      <Popover.Arrow bg="$color5" size="$4" borderWidth={0} o={0.85} />
-      <YStack fullscreen bg="$color5" zi={0} br="$6" o={0.85} />
+      <Popover.Arrow bg="$color5" size="$4" borderWidth={0} o={0.8} />
+      <YStack fullscreen bg="$color5" zi={0} br="$6" o={0.8} />
 
       <Popover.ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
         <YStack aria-label="Home menu contents" miw={230} p="$3" ai="flex-end">

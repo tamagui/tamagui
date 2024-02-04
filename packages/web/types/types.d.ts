@@ -18,6 +18,7 @@ export type { MediaStyleObject, StyleObject } from '@tamagui/helpers';
 export type ColorScheme = 'light' | 'dark';
 export type IsMediaType = boolean | 'platform' | 'theme' | 'group';
 export type SpaceDirection = 'vertical' | 'horizontal' | 'both';
+export type MaybeTamaguiComponent<A = any> = TamaguiComponent<A> | React.FC<A>;
 export type TamaguiElement = HTMLElement | View;
 export type TamaguiTextElement = HTMLElement | RNText;
 export type DebugProp = boolean | 'break' | 'verbose' | 'visualize' | 'profile';

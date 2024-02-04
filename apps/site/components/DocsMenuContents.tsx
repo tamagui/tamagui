@@ -2,7 +2,7 @@ import uFuzzy from '@leeoniya/ufuzzy'
 import { docsRoutes } from '@lib/docsRoutes'
 import { useStore } from '@tamagui/use-store'
 import * as React from 'react'
-import { Input, Paragraph, Separator, Spacer, XStack } from 'tamagui'
+import { Input, Paragraph, Separator, Spacer, XStack, YStack } from 'tamagui'
 
 import { useRouter } from 'next/router'
 import { DocsItemsStore, DocsRouteNavItem } from './DocsRouteNavItem'
@@ -54,7 +54,7 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
           borderColor: '$color6',
         }}
         autoComplete="off"
-        placeholder="Search for friend to chat"
+        placeholder="Search..."
         // @ts-ignore
         placeholderTextColor="transparent"
         onKeyPress={(e) => {
@@ -72,7 +72,13 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
           }
           if (event.key === ' ' || event.key === 'Enter') {
             e.preventDefault()
-            router.push(items[store.index].page?.route)
+            const found = items[store.index]
+            if (found) {
+              setItems(allItems)
+              setTimeout(() => {
+                router.push(found.page?.route)
+              })
+            }
           }
         }}
         onChangeText={(next) => {
@@ -85,8 +91,8 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
             setItems(allItems)
             return
           }
-          const found = indexes?.map((i) => allItems[i])
-          setItems(found || allItems)
+          const found = indexes?.map((i) => allItems[i]) || []
+          setItems(found)
           store.index = 0
         }}
       />
@@ -131,16 +137,18 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
 
                 if (isStartingSection) {
                   return (
-                    <React.Fragment key={`${page.route}${index}`}>
-                      {section.label ? <NavHeading>{section.label}</NavHeading> : null}
+                    <YStack key={`${page.route}${index}`}>
+                      {section.label ? (
+                        <NavHeading inMenu={!!inMenu}>{section.label}</NavHeading>
+                      ) : null}
                       {section.title && (
-                        <XStack py="$2" px="$2" ai="center" gap="$3">
+                        <XStack py="$2" px="$4" ai="center" gap="$3">
                           <Paragraph size="$4">{section.title}</Paragraph>
-                          <Separator />
+                          <Separator o={0.5} />
                         </XStack>
                       )}
                       {contents}
-                    </React.Fragment>
+                    </YStack>
                   )
                 }
 

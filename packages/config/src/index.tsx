@@ -3,6 +3,7 @@ import { themes } from '@tamagui/themes'
 import { animations } from './animations'
 import { configWithoutAnimations } from './config'
 
+export { configWithoutAnimations } from './config'
 export * from './media'
 export * from './createGenericFont'
 export * from './animations'

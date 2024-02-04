@@ -37,7 +37,7 @@ export const HeroExampleCode = memo(
             <XGroup
               scrollable
               bordered
-              bc="$color2"
+              bg="$color2"
               maxWidth="100%"
               als="center"
               ov="hidden"
@@ -154,17 +154,13 @@ const CodeExamples = memo(({ examples, title }: any) => {
           zi={10}
           horizontal
           showsHorizontalScrollIndicator={false}
-          mb="$-2"
+          mb="$-2.5"
           maw="100%"
         >
           <XStack px="$4" fs={0} space>
-            <XGroup size="$2" bordered>
-              <XGroup.Item>
-                <Button disabled size="$2" fontSize="$4" px="$4">
-                  {title}
-                </Button>
-              </XGroup.Item>
-            </XGroup>
+            <Button disabled size="$2" fontSize="$4" px="$4">
+              {title}
+            </Button>
             <XGroup size="$2" bordered>
               {examples.map((example, i) => (
                 <XGroup.Item key={i}>

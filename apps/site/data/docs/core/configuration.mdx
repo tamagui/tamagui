@@ -17,10 +17,7 @@ You can use `@tamagui/config` which provides a complete config out of the box,
 the same one this site uses.
 
 ```tsx
-// the v2 config imports the css driver on web and react-native on native
-// for reanimated: @tamagui/config/v2-reanimated
-// for react-native only: @tamagui/config/v2-native
-import { config } from '@tamagui/config/v2'
+import { config } from '@tamagui/config/v3'
 import { Text, View } from 'react-native'
 import { createTamagui } from 'tamagui' // or '@tamagui/core'
 
@@ -38,38 +35,13 @@ declare module 'tamagui' {
 export default appConfig
 ```
 
-The
-[type output](https://github.com/tamagui/tamagui/blob/master/packages/config/types/config.d.ts)
-of that config is useful as a reference for building your own custom config.
+You can also import parts of `@tamagui/config/v3` separately, swapping out any
+piece for your own. The v3 config defaults to the CSS animation driver on the
+web and the built-in Animated on React Native, but you can import
+`animationsReanimated` if you'd like to swap either one out.
 
-Another quick start that gives a bit more customization is using
-`@tamagui/shorthands` for our preset shorthands, and `@tamagui/themes` for the
-same themes and tokens used for this site. Then you'll just want to bring along
-any fonts, media queries, and animations you need.
-
-```tsx
-import { shorthands } from '@tamagui/shorthands'
-import { themes, tokens } from '@tamagui/themes/v2'
-import { createTamagui } from 'tamagui' // or '@tamagui/core'
-
-const appConfig = createTamagui({
-  themes,
-  tokens,
-  shorthands,
-})
-
-export type AppConfig = typeof appConfig
-
-declare module 'tamagui' {
-  interface TamaguiCustomConfig extends AppConfig {}
-}
-
-export default appConfig
-```
-
-Depending on if you're using just `@tamagui/core`, `tamagui`, or your own custom
-design library, be sure the import of `createTamagui` and `declare module` type
-matches to the one you're using.
+Throughout this guide keep in mind that you should import from just one "ui"
+package - whether it's `@tamagui/core` or `tamagui` or it's your custom one.
 
 #### Diverging from @tamagui/themes
 
@@ -389,9 +361,9 @@ will handle emitting a css file for you. But you can also just do this yourself
 by calling Tamagui.getCSS() with any other bundler or framework sometime in your
 pre-build or on the server and handing it over as CSS.
 
-One final optimization you can make if you are doing these server-side CSS
-patterns is setting the environment variable `TAMAGUI_DOES_SSR_CSS` to `"true"`
-for the client bundle only. One gotcha - if you plan on calling `mutateTheme` or
+One final optimization you can make if you are serving getCSS from the server is
+setting the environment variable `TAMAGUI_DOES_SSR_CSS` to `"true"` for the
+client bundle only. One gotcha - if you plan on calling `mutateTheme` or
 `addTheme` at some point, set `TAMAGUI_DOES_SSR_CSS` to `"mutates-themes"`. This
 will still give you the benefits of reduced bundle size, but avoids removing the
 entirety of the theme generation JS so it can mutate themes at runtime.
@@ -554,7 +526,6 @@ const light = {
   backgroundHover: tokens.color.gray2,
   backgroundPress: tokens.color.gray4,
   backgroundFocus: tokens.color.gray5,
-  backgroundTransparent: tokens.color.grayA1,
   borderColor: tokens.color.gray4,
   borderColorHover: tokens.color.gray6,
   borderColorPress: tokens.color.gray12,
@@ -650,7 +621,7 @@ const shorthands = {
   als: 'alignSelf',
   bblr: 'borderBottomLeftRadius',
   bbrr: 'borderBottomRightRadius',
-  bc: 'backgroundColor',
+  bg: 'backgroundColor',
   br: 'borderRadius',
   btlr: 'borderTopLeftRadius',
   btrr: 'borderTopRightRadius',

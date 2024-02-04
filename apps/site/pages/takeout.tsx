@@ -462,8 +462,8 @@ export default function TakeoutPage({
                       mx: '$-4',
                     }}
                   >
-                    <YStack pe="none" br="$10" zi={-1} fullscreen bc="$color6" o={0.2} />
-                    <YStack pe="none" br="$10" zi={-1} fullscreen bc="$color" o={0.1} />
+                    <YStack pe="none" br="$10" zi={-1} fullscreen bg="$color6" o={0.2} />
+                    <YStack pe="none" br="$10" zi={-1} fullscreen bg="$color" o={0.1} />
                     <YStack
                       pos="absolute"
                       t={-400}
@@ -486,7 +486,7 @@ export default function TakeoutPage({
                         color="$color1"
                         ls={-2}
                         fow="400"
-                        bc="$color12"
+                        bg="$color12"
                         als="center"
                         px="$2"
                         mt={-55}
@@ -1025,7 +1025,7 @@ const Point = ({
 const IconFrame = styled(Stack, {
   borderRadius: 1000,
   p: '$2',
-  bc: 'rgba(255, 255, 255, 0.035)',
+  bg: 'rgba(255, 255, 255, 0.035)',
 })
 
 function formatPrice(amount: number, currency: string) {
@@ -1297,7 +1297,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                       <YStack width="80%">
                         <Paragraph size="$6">Discord Seats</Paragraph>
                         <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
-                          Access to the Takeout channel
+                          Access to the Discord #takeout room
                         </Paragraph>
                       </YStack>
                       <XStack f={1} ai="center" gap="$2" jc="center">
@@ -1335,10 +1335,10 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                   <YStack mt="$6" space="$4" ai="center">
                     <XStack
                       theme="green"
-                      bc="$background"
+                      bg="$background"
                       p="$4"
                       bw={1}
-                      boc="$color5"
+                      bc="$color5"
                       br="$4"
                       gap="$3"
                     >
@@ -1468,7 +1468,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                       <XStack jc="space-between" space="$2" ai="center" mb="$2">
                         <XStack
                           ai="center"
-                          separator={<Separator vertical bc="$color8" my="$2" />}
+                          separator={<Separator vertical bg="$color8" my="$2" />}
                           space="$2"
                         >
                           <SizableText
@@ -1600,7 +1600,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
             mt: 100,
           }}
         >
-          <YStack zi={-1} fullscreen bc="$color5" o={0.5} />
+          <YStack zi={-1} fullscreen bg="$color5" o={0.5} />
 
           <ThemeTintAlt>
             <LinearGradient
@@ -1609,7 +1609,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
               l={0}
               r={0}
               h={200}
-              colors={['$backgroundTransparent', '$color5']}
+              colors={['$background0', '$color5']}
               zi={100}
             />
           </ThemeTintAlt>
@@ -1726,15 +1726,15 @@ function PurchaseButton(props: ButtonProps) {
     <ThemeTint>
       <Button
         size="$6"
-        backgroundColor="$color8"
+        backgroundColor="$color7"
         borderWidth={2}
         color="$color"
-        borderColor="$color10"
+        borderColor="$color8"
         hoverStyle={{
-          backgroundColor: '$color9',
+          backgroundColor: '$color8',
         }}
         pressStyle={{
-          backgroundColor: '$color8',
+          backgroundColor: '$color6',
         }}
         {...props}
       >
@@ -1789,7 +1789,7 @@ const Row = (props: { title: any; description: any; after: any }) => {
 }
 
 const TakeoutCardFrame = styled(YStack, {
-  boc: '$color3',
+  bc: '$color3',
   br: '$4',
   ov: 'hidden',
 })
@@ -1898,7 +1898,7 @@ const PurchaseSelectTeam = ({
       activationMode="manual"
       position="relative"
       p="$2"
-      bc="$backgroundStrong"
+      bg="$background"
       als="center"
       br="$3"
     >
@@ -2443,9 +2443,9 @@ const PromoVideo = () => {
         elevation="$10"
         w={840}
         h={480}
-        bc="$color3"
+        bg="$color3"
         bw={3}
-        boc="$borderColor"
+        bc="$borderColor"
       >
         {!open && (
           <YStack fullscreen ai="center" jc="center" bc="rgba(0,0,0,0.75)">
