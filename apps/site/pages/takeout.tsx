@@ -228,7 +228,7 @@ export default function TakeoutPage({
               </YStack>
             )}
 
-            <PromoVideo />
+            {/* <PromoVideo /> */}
 
             <TakeoutHero coupon={coupon} />
           </YStack>
@@ -562,7 +562,7 @@ export default function TakeoutPage({
 
                 <Spacer />
 
-                <YStack br="$12" elevation="$4" bc="#000" p="$7" gap="$3">
+                <YStack br="$12" elevation="$4" bg="#000" p="$7" gap="$3">
                   <ThemeTint>
                     <Paragraph als="center" col="#fff" fontFamily="$munro" size="$10">
                       Gallery
@@ -1571,9 +1571,9 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
             mt: 100,
           }}
         >
-          <YStack zi={-1} fullscreen bg="$color5" o={0.5} />
+          {/* <YStack zi={-1} fullscreen bg="$color5" o={0.5} /> */}
 
-          <ThemeTintAlt>
+          {/* <ThemeTintAlt>
             <LinearGradient
               pos="absolute"
               b={0}
@@ -1583,7 +1583,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
               colors={['$background0', '$color5']}
               zi={100}
             />
-          </ThemeTintAlt>
+          </ThemeTintAlt> */}
 
           <YStack pos="absolute" b="$4" l="$4" r="$4" zi={100}>
             {/* cant use buttonlink it breaks scroll on press if not enabled, conditionally use a link */}
@@ -1695,20 +1695,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
 function PurchaseButton(props: ButtonProps) {
   return (
     <ThemeTint>
-      <Button
-        size="$6"
-        backgroundColor="$color7"
-        borderWidth={2}
-        color="$color"
-        borderColor="$color8"
-        hoverStyle={{
-          backgroundColor: '$color8',
-        }}
-        pressStyle={{
-          backgroundColor: '$color6',
-        }}
-        {...props}
-      >
+      <Button size="$6" borderWidth={2} {...props}>
         <Button.Text ff="$silkscreen" fontWeight="700" color="#fff">
           {props.children} 🥡
         </Button.Text>

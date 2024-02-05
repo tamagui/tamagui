@@ -364,6 +364,7 @@ export interface Database {
           id: number
           team_id: number
           theme_id: string | null
+          uid: string | null
           user_id: string
         }
         Insert: {
@@ -372,6 +373,7 @@ export interface Database {
           id?: number
           team_id: number
           theme_id?: string | null
+          uid?: string | null
           user_id: string
         }
         Update: {
@@ -380,6 +382,7 @@ export interface Database {
           id?: number
           team_id?: number
           theme_id?: string | null
+          uid?: string | null
           user_id?: string
         }
         Relationships: [

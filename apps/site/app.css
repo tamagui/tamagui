@@ -860,8 +860,7 @@ textarea {
   -webkit-text-wrap: balance;
 }
 
-.text-wrap-pretty,
-p {
+.text-wrap-pretty, p {
   text-wrap: pretty;
   -webkit-text-wrap: pretty;
 }
@@ -904,10 +903,10 @@ p {
 }
 
 .t_dark .bento-shadow {
-  text-shadow: 1px 1px var(--color9), 1px 2px 1px var(--color9),
-    1px 3px 1px var(--color8), 1px 4px 1px var(--color8),
-    1px 5px 1px var(--color7), 1px 6px 1px var(--color7),
-    1px 7px 1px var(--color6), 1px 8px 1px var(--color6),
-    1px 9px 1px var(--color5), 1px 12px 1px var(--color5),
+  text-shadow: 1px 1px var(--color11), 1px 2px 1px var(--color10),
+    1px 3px 1px var(--color9), 1px 4px 1px var(--color9),
+    1px 5px 1px var(--color8), 1px 6px 1px var(--color8),
+    1px 7px 1px var(--color7), 1px 8px 1px var(--color7),
+    1px 9px 1px var(--color6), 1px 12px 1px var(--color6),
     0 0 300px rgba(255, 255, 255, 0.4);
 }

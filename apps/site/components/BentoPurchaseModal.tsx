@@ -89,249 +89,250 @@ export const PurchaseModal = ({
   const showTeamSelect = selectedProductsIds.includes(mainProduct?.id || '')
 
   return (
-    <Dialog
-      modal
-      open={store.showPurchase}
-      onOpenChange={(val) => {
-        store.showPurchase = val
-      }}
-    >
-      <Dialog.Adapt when="sm">
-        <Sheet zIndex={200000} modal dismissOnSnapToBottom animation="medium">
-          <Sheet.Frame padding="$4" space>
-            <Sheet.ScrollView>
-              <Dialog.Adapt.Contents />
-            </Sheet.ScrollView>
-          </Sheet.Frame>
-          <Sheet.Overlay
-            animation="lazy"
+    <Theme name="gray">
+      <Dialog
+        modal
+        open={store.showPurchase}
+        onOpenChange={(val) => {
+          store.showPurchase = val
+        }}
+      >
+        <Dialog.Adapt when="sm">
+          <Sheet zIndex={200000} modal dismissOnSnapToBottom animation="medium">
+            <Sheet.Frame padding="$4" space>
+              <Sheet.ScrollView>
+                <Dialog.Adapt.Contents />
+              </Sheet.ScrollView>
+            </Sheet.Frame>
+            <Sheet.Overlay
+              animation="lazy"
+              enterStyle={{ opacity: 0 }}
+              exitStyle={{ opacity: 0 }}
+            />
+          </Sheet>
+        </Dialog.Adapt>
+
+        <Dialog.Portal>
+          <Dialog.Overlay
+            key="overlay"
+            animation="medium"
+            className="blur-medium"
+            opacity={0.5}
+            bg="$color1"
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}
           />
-        </Sheet>
-      </Dialog.Adapt>
 
-      <Dialog.Portal>
-        <Dialog.Overlay
-          key="overlay"
-          animation="medium"
-          className="blur-medium"
-          opacity={0.5}
-          bg="$color1"
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
-          debug="verbose"
-        />
-
-        <Dialog.Content
-          bordered
-          elevate
-          key="content"
-          animation={[
-            'quick',
-            {
-              opacity: {
-                overshootClamping: true,
+          <Dialog.Content
+            bordered
+            elevate
+            key="content"
+            animation={[
+              'quick',
+              {
+                opacity: {
+                  overshootClamping: true,
+                },
               },
-            },
-          ]}
-          // animateOnly={['transform']}
-          enterStyle={{ y: -10, opacity: 0, scale: 0.975 }}
-          exitStyle={{ y: 10, opacity: 0, scale: 0.975 }}
-          w="90%"
-          maw={900}
-          p={0}
-        >
-          <ScrollView p="$6" $gtSm={{ maxHeight: '90vh' }}>
-            <YStack space>
-              <XStack ai="center" jc="center" gap="$6" mx="$8">
-                <Dialog.Title
-                  ff="$silkscreen"
-                  size="$8"
-                  ls={4}
-                  $sm={{ size: '$7' }}
-                  mb="$4"
-                  als="center"
-                >
-                  Purchase
-                </Dialog.Title>
-              </XStack>
-
-              <XStack
-                f={1}
-                space
-                separator={<Separator vertical />}
-                $sm={{ fd: 'column-reverse' }}
-              >
-                <YStack maxWidth={450}>
-                  <BentoTable />
-                </YStack>
-
-                <YStack f={2} gap="$4">
-                  <YStack
-                    opacity={showTeamSelect ? 1 : 0.25}
-                    pointerEvents={showTeamSelect ? 'auto' : 'none'}
+            ]}
+            // animateOnly={['transform']}
+            enterStyle={{ y: -10, opacity: 0, scale: 0.975 }}
+            exitStyle={{ y: 10, opacity: 0, scale: 0.975 }}
+            w="90%"
+            maw={900}
+            p={0}
+          >
+            <ScrollView p="$6" $gtSm={{ maxHeight: '90vh' }}>
+              <YStack space>
+                <XStack ai="center" jc="center" gap="$6" mx="$8">
+                  <Dialog.Title
+                    ff="$silkscreen"
+                    size="$8"
+                    ls={4}
+                    $sm={{ size: '$7' }}
+                    mb="$4"
+                    als="center"
                   >
-                    <RadioGroup
-                      gap="$2"
-                      value={selectedPriceId}
-                      onValueChange={(val) => setPriceId(val)}
-                    >
-                      {sortedPrices.map((price) => {
-                        const active = selectedPriceId === price.id
-                        const htmlId = `price-${price.id}`
-                        return (
-                          <ThemeTint key={price.id} disable={!active}>
-                            <Label
-                              f={1}
-                              htmlFor={htmlId}
-                              p="$4"
-                              height="unset"
-                              display="flex"
-                              borderWidth="$0.25"
-                              borderColor={active ? '$color8' : '$color5'}
-                              borderRadius="$4"
-                              gap="$4"
-                              ai="center"
-                              hoverStyle={{
-                                borderColor: active ? '$color10' : '$color7',
-                              }}
-                            >
-                              <RadioGroup.Item id={htmlId} size="$6" value={price.id}>
-                                <RadioGroup.Indicator />
-                              </RadioGroup.Item>
+                    Purchase
+                  </Dialog.Title>
+                </XStack>
 
-                              <YStack gap="$0" f={1}>
-                                <H4 mt="$-1">{price.description}</H4>
-
-                                <Paragraph theme="alt1">
-                                  {formatPrice(price.unit_amount! / 100, 'usd')}{' '}
-                                  {(price.metadata as Record<any, any>).is_lifetime
-                                    ? 'lifetime access'
-                                    : `base`}
-                                </Paragraph>
-                              </YStack>
-                            </Label>
-                          </ThemeTint>
-                        )
-                      })}
-                    </RadioGroup>
+                <XStack
+                  f={1}
+                  space
+                  separator={<Separator vertical />}
+                  $sm={{ fd: 'column-reverse' }}
+                >
+                  <YStack maxWidth={450}>
+                    <BentoTable selectedPriceId={selectedPriceId} product={mainProduct} />
                   </YStack>
 
-                  <Spacer size="$1" />
-
-                  <YStack gap>
-                    <XStack ai="flex-end" jc="flex-end" gap="$2">
-                      {hasDiscountApplied ? (
-                        <>
-                          <H3 textDecorationLine="line-through" size="$8" theme="alt2">
-                            {formatPrice(sum! / 100, 'usd')}
-                          </H3>
-                          <H3 size="$10">{formatPrice(finalPrice! / 100, 'usd')}</H3>
-                        </>
-                      ) : (
-                        <H3 size="$10">{formatPrice(finalPrice! / 100, 'usd')}</H3>
-                      )}
-                    </XStack>
-                    <Unspaced>
-                      <YStack mt="$2">
-                        <PromotionInput />
-                      </YStack>
-                    </Unspaced>
-
-                    {/* <Separator /> */}
-
-                    <YStack pb="$8" px="$4" space>
-                      <NextLink
-                        href={`api/checkout?${(() => {
-                          const params = new URLSearchParams({
-                            // product_id: products.id,
-                            // price_id: selectedPriceId,
-                            // quantity: seats.toString(),
-                          })
-                          for (const productId of selectedProductsIds) {
-                            params.append('product_id', productId)
-                          }
-                          params.append(`price-${mainProduct?.id}`, selectedPriceId)
-                          if (store.appliedPromoCode) {
-                            // the coupon user applied
-                            params.append(`promotion_code`, store.appliedPromoCode)
-                          } else if (coupon) {
-                            // the coupon that's applied by default (special event, etc.)
-                            params.append(`coupon_id`, coupon.id)
-                          }
-
-                          return params.toString()
-                        })()}`}
+                  <YStack f={2} gap="$4">
+                    <YStack
+                      opacity={showTeamSelect ? 1 : 0.25}
+                      pointerEvents={showTeamSelect ? 'auto' : 'none'}
+                    >
+                      <RadioGroup
+                        gap="$2"
+                        value={selectedPriceId}
+                        onValueChange={(val) => setPriceId(val)}
                       >
-                        <PurchaseButton
-                          disabled={noProductSelected}
-                          opacity={noProductSelected ? 0.5 : undefined}
-                        >
-                          Purchase
-                        </PurchaseButton>
-                      </NextLink>
-                      <XStack jc="space-between" space="$2" ai="center">
-                        <XStack
-                          ai="center"
-                          separator={<Separator vertical bg="$color8" my="$2" />}
-                          space="$2"
-                        >
-                          <SizableText
-                            theme="alt1"
-                            cursor="pointer"
-                            onPress={() => {
-                              store.showFaq = true
-                            }}
-                            style={{ textDecorationLine: 'underline' }}
-                            hoverStyle={{
-                              color: '$color11',
-                            }}
-                            size="$2"
-                          >
-                            FAQ
-                          </SizableText>
+                        {sortedPrices.map((price) => {
+                          const active = selectedPriceId === price.id
+                          const htmlId = `price-${price.id}`
+                          return (
+                            <ThemeTint key={price.id} disable={!active}>
+                              <Label
+                                f={1}
+                                htmlFor={htmlId}
+                                p="$4"
+                                height="unset"
+                                display="flex"
+                                borderWidth="$0.25"
+                                borderColor={active ? '$color8' : '$color5'}
+                                borderRadius="$4"
+                                gap="$4"
+                                ai="center"
+                                hoverStyle={{
+                                  borderColor: active ? '$color10' : '$color7',
+                                }}
+                              >
+                                <RadioGroup.Item id={htmlId} size="$6" value={price.id}>
+                                  <RadioGroup.Indicator />
+                                </RadioGroup.Item>
 
-                          <SizableText
-                            theme="alt1"
-                            cursor="pointer"
-                            onPress={() => {
-                              store.showAgreement = true
-                            }}
-                            style={{ textDecorationLine: 'underline' }}
-                            hoverStyle={{
-                              color: '$color11',
-                            }}
-                            size="$2"
-                          >
-                            License Agreement
-                          </SizableText>
-                        </XStack>
-                        <Theme name="alt1">
-                          <PoweredByStripeIcon width={96} />
-                        </Theme>
+                                <YStack gap="$0" f={1}>
+                                  <H4 mt="$-1">{price.description}</H4>
+
+                                  <Paragraph theme="alt1">
+                                    {formatPrice(price.unit_amount! / 100, 'usd')}{' '}
+                                    {(price.metadata as Record<any, any>).is_lifetime
+                                      ? 'lifetime access'
+                                      : `base`}
+                                  </Paragraph>
+                                </YStack>
+                              </Label>
+                            </ThemeTint>
+                          )
+                        })}
+                      </RadioGroup>
+                    </YStack>
+
+                    <Spacer size="$1" />
+
+                    <YStack gap>
+                      <XStack ai="flex-end" jc="flex-end" gap="$2">
+                        {hasDiscountApplied ? (
+                          <>
+                            <H3 textDecorationLine="line-through" size="$8" theme="alt2">
+                              {formatPrice(sum! / 100, 'usd')}
+                            </H3>
+                            <H3 size="$10">{formatPrice(finalPrice! / 100, 'usd')}</H3>
+                          </>
+                        ) : (
+                          <H3 size="$10">{formatPrice(finalPrice! / 100, 'usd')}</H3>
+                        )}
                       </XStack>
+                      <Unspaced>
+                        <YStack mt="$2">
+                          <PromotionInput />
+                        </YStack>
+                      </Unspaced>
+
+                      {/* <Separator /> */}
+
+                      <YStack py="$6" px="$4" space>
+                        <NextLink
+                          href={`api/checkout?${(() => {
+                            const params = new URLSearchParams({
+                              // product_id: products.id,
+                              // price_id: selectedPriceId,
+                              // quantity: seats.toString(),
+                            })
+                            for (const productId of selectedProductsIds) {
+                              params.append('product_id', productId)
+                            }
+                            params.append(`price-${mainProduct?.id}`, selectedPriceId)
+                            if (store.appliedPromoCode) {
+                              // the coupon user applied
+                              params.append(`promotion_code`, store.appliedPromoCode)
+                            } else if (coupon) {
+                              // the coupon that's applied by default (special event, etc.)
+                              params.append(`coupon_id`, coupon.id)
+                            }
+
+                            return params.toString()
+                          })()}`}
+                        >
+                          <PurchaseButton
+                            disabled={noProductSelected}
+                            opacity={noProductSelected ? 0.5 : undefined}
+                          >
+                            Purchase
+                          </PurchaseButton>
+                        </NextLink>
+                        <XStack jc="space-between" space="$2" ai="center">
+                          <XStack
+                            ai="center"
+                            separator={<Separator vertical bg="$color8" my="$2" />}
+                            space="$2"
+                          >
+                            <SizableText
+                              theme="alt1"
+                              cursor="pointer"
+                              onPress={() => {
+                                store.showFaq = true
+                              }}
+                              style={{ textDecorationLine: 'underline' }}
+                              hoverStyle={{
+                                color: '$color11',
+                              }}
+                              size="$2"
+                            >
+                              FAQ
+                            </SizableText>
+
+                            <SizableText
+                              theme="alt1"
+                              cursor="pointer"
+                              onPress={() => {
+                                store.showAgreement = true
+                              }}
+                              style={{ textDecorationLine: 'underline' }}
+                              hoverStyle={{
+                                color: '$color11',
+                              }}
+                              size="$2"
+                            >
+                              License Agreement
+                            </SizableText>
+                          </XStack>
+                          <Theme name="alt1">
+                            <PoweredByStripeIcon width={96} />
+                          </Theme>
+                        </XStack>
+                      </YStack>
                     </YStack>
                   </YStack>
-                </YStack>
-              </XStack>
-            </YStack>
-          </ScrollView>
-          <Unspaced>
-            <Dialog.Close asChild>
-              <Button
-                position="absolute"
-                top="$4"
-                right="$4"
-                size="$2"
-                circular
-                icon={X}
-              />
-            </Dialog.Close>
-          </Unspaced>
-        </Dialog.Content>
-      </Dialog.Portal>
-    </Dialog>
+                </XStack>
+              </YStack>
+            </ScrollView>
+            <Unspaced>
+              <Dialog.Close asChild>
+                <Button
+                  position="absolute"
+                  top="$4"
+                  right="$4"
+                  size="$2"
+                  circular
+                  icon={X}
+                />
+              </Dialog.Close>
+            </Unspaced>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog>
+    </Theme>
   )
 }
 
@@ -535,7 +536,7 @@ export function BentoTable({
 
 function PurchaseButton(props: ButtonProps) {
   return (
-    <ThemeTint>
+    <Theme name="tan">
       <Button
         size="$6"
         backgroundColor="$color8"
@@ -549,11 +550,11 @@ function PurchaseButton(props: ButtonProps) {
         }}
         {...props}
       >
-        <Button.Text ff="$silkscreen" fontWeight="700">
+        <Button.Text ff="$munro" size="$9" fontWeight="700">
           {props.children}
         </Button.Text>
       </Button>
-    </ThemeTint>
+    </Theme>
   )
 }
 
