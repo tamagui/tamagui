@@ -22,7 +22,7 @@ export const BentoPageFrame = ({ children }: { children: any }) => {
             <YStack
               className="grain"
               fullscreen
-              o={0.5}
+              o={0.75}
               zi={100}
               $theme-light={{
                 o: 1,

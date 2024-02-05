@@ -112,24 +112,33 @@ const IntermediateCard = ({
       f={1}
       br="$9"
       p="$5"
-      bc="$borderColor"
+      bc="$color7"
       bw={1}
       bs="solid"
       gap="$3"
-      bg="$background075"
       elevation="$1"
       style={{
-        backdropFilter: 'blur(10px)',
+        backdropFilter: 'blur(80px)',
       }}
     >
-      <Circle size="$5" elevate>
-        <Icon />
-      </Circle>
-      <YStack f={1} gap="$2">
+      <YStack f={1} gap="$1.5">
         <H4 size="$4">{title}</H4>
-        <Paragraph>{children}</Paragraph>
+        <Paragraph color="$color10" lh="$3">
+          {children}
+        </Paragraph>
         <EnsureFlexed />
       </YStack>
+      <Circle
+        outlineColor="$color025"
+        outlineOffset={-4}
+        outlineWidth={1}
+        outlineStyle="solid"
+        size="$5"
+        elevation="$0.5"
+        bg="$color5"
+      >
+        <Icon />
+      </Circle>
     </XStack>
   )
 }
@@ -163,7 +172,7 @@ const Hero = () => {
               </XStack>
               <XStack jc="space-between" ai="center" ml="$8" mr="$4">
                 <Paragraph color="$color10" size="$5">
-                  $200 one-time Purchase
+                  One-time Purchase
                 </Paragraph>
 
                 <Circle size={4} bg="$color10" />
@@ -171,7 +180,7 @@ const Hero = () => {
                 <Circle size={4} bg="$color10" />
 
                 <Paragraph color="$color10" size="$5">
-                  $10/mo for early releases
+                  Lifetime rights
                 </Paragraph>
               </XStack>
             </YStack>
@@ -179,6 +188,7 @@ const Hero = () => {
             <Theme name="green">
               <Button
                 iconAfter={ShoppingCart}
+                className="box-3d"
                 fontFamily="$mono"
                 size="$5"
                 fontSize={22}
@@ -188,10 +198,14 @@ const Hero = () => {
                 als="flex-end"
                 mr="$4"
                 color="$color1"
-                bg="$color11"
+                bg="red"
+                outlineColor="$background025"
+                outlineOffset={0}
+                outlineWidth={3}
+                outlineStyle="solid"
                 hoverStyle={{
-                  bg: '$color10',
-                  bc: '$color10',
+                  bg: '$color11',
+                  bc: '$color11',
                 }}
                 pressStyle={{
                   bg: '$color6',
@@ -219,8 +233,8 @@ const Hero = () => {
           </YStack>
 
           <YStack
-            mr={-350}
-            ml={-100}
+            mr={-250}
+            ml={-150}
             maw={1000}
             mt={0}
             pl={100}
@@ -244,11 +258,11 @@ const Hero = () => {
           >
             <Theme name="gray">
               <XStack pe="none" rotate="4deg" t={20}>
-                <YStack pos="absolute" zi={-1} l="-15%" scale={0.9} rotate="-5deg">
+                {/* <YStack pos="absolute" zi={-1} l="-15%" scale={0.9} rotate="-5deg">
                   <Theme inverse>
                     <Sections.Preferences.LocationNotification />
                   </Theme>
-                </YStack>
+                </YStack> */}
 
                 <Sections.Preferences.LocationNotification />
 
@@ -374,6 +388,16 @@ const Body = () => {
         r={0}
         o={0.125}
         style={{ mixBlendMode: 'multiply' }}
+      />
+
+      <YStack
+        className="grain"
+        fullscreen
+        o={0.2}
+        zi={0}
+        $theme-light={{
+          o: 1,
+        }}
       />
 
       {/* <H2>Sections</H2>
