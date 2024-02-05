@@ -198,17 +198,19 @@ const Hero = () => {
                 als="flex-end"
                 mr="$4"
                 color="$color1"
-                bg="red"
+                bg="$color9"
                 outlineColor="$background025"
-                outlineOffset={0}
+                outlineOffset={2}
                 outlineWidth={3}
                 outlineStyle="solid"
                 hoverStyle={{
-                  bg: '$color11',
+                  bg: '$color10',
+                  outlineColor: '$background05',
                   bc: '$color11',
                 }}
                 pressStyle={{
-                  bg: '$color6',
+                  bg: '$color9',
+                  outlineColor: '$background075',
                 }}
                 onPress={() => {
                   store.showPurchase = true

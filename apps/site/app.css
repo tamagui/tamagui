@@ -860,8 +860,7 @@ textarea {
   -webkit-text-wrap: balance;
 }
 
-.text-wrap-pretty,
-p {
+.text-wrap-pretty, p {
   text-wrap: pretty;
   -webkit-text-wrap: pretty;
 }
