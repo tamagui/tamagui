@@ -129,6 +129,8 @@
     "@types/jsonwebtoken": "^9.0.2",
     "@types/wicg-file-system-access": "^2020.9.6",
     "@welldone-software/why-did-you-render": "^7.0.1",
+    "acorn": "^8.11.3",
+    "acorn-walk": "^8.3.1",
     "babel-polyfill": "^6.26.0",
     "esbuild-loader": "^3.0.1",
     "fs-extra": "^11.2.0",
