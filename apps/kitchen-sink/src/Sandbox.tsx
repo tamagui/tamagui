@@ -3,7 +3,7 @@
 
 import { useState } from 'react'
 import { View } from 'react-native'
-import { Button, Stack, XStack, YStack } from 'tamagui'
+import { Button, Square, Stack, XStack, YStack } from 'tamagui'
 import { TimedRender } from './components/TimedRender'
 
 export const Sandbox = () => {
@@ -11,15 +11,15 @@ export const Sandbox = () => {
     <View style={{ width: '100%', height: '100%', padding: 50 }}>
       <>
         {/* <AnimatedNumbers /> */}
-        {/* <Square debug="verbose" size={100} bg="$tokenNonExistent" /> */}
+        <Square debug="verbose" size={100} bg="$background" />
 
-        <YStack>
+        {/* <YStack>
           <MeasureTamagui />
         </YStack>
 
         <YStack>
           <MeasureNative />
-        </YStack>
+        </YStack> */}
       </>
     </View>
   )
