@@ -1188,47 +1188,49 @@ const PurchaseModal = ({
                 </Dialog.Title>
               </XStack>
 
-              <YStack my="$2">
-                <YStack gap="$4" $gtSm={{ fd: 'row' }} flexWrap="wrap">
-                  <CheckboxGroupItem
-                    disabled
-                    onCheckedChange={() => {
-                      if (!starter) return
-                      const active = selectedProductsIds.includes(starter.id)
-                      setSelectedProductsIds(
-                        active
-                          ? selectedProductsIds.filter((id) => id !== starter.id)
-                          : [...selectedProductsIds, starter.id]
-                      )
-                    }}
-                    id={'takeout-starter'}
-                    checked={starter && selectedProductsIds.includes(starter.id)}
-                  >
-                    <H3 lh="$6">{starter?.name}</H3>
-                    <Paragraph size="$3" lh="$1" theme="alt2">
-                      {starter?.description}
-                    </Paragraph>
-                  </CheckboxGroupItem>
-                  <CheckboxGroupItem
-                    onCheckedChange={() => {
-                      if (!bento) return
-                      const active = selectedProductsIds.includes(bento.id)
-                      setSelectedProductsIds(
-                        active
-                          ? selectedProductsIds.filter((id) => id !== bento.id)
-                          : [...selectedProductsIds, bento.id]
-                      )
-                    }}
-                    id={'takeout-bento'}
-                    checked={bento && selectedProductsIds.includes(bento.id)}
-                  >
-                    <H3 lh="$6">{bento?.name}</H3>
-                    <Paragraph size="$3" lh="$1" theme="alt2">
-                      {bento?.description}
-                    </Paragraph>
-                  </CheckboxGroupItem>
+              {process.env.NEXT_PUBLIC_IS_TAMAGUI_DEV && (
+                <YStack my="$2">
+                  <YStack gap="$4" $gtSm={{ fd: 'row' }} flexWrap="wrap">
+                    <CheckboxGroupItem
+                      disabled
+                      onCheckedChange={() => {
+                        if (!starter) return
+                        const active = selectedProductsIds.includes(starter.id)
+                        setSelectedProductsIds(
+                          active
+                            ? selectedProductsIds.filter((id) => id !== starter.id)
+                            : [...selectedProductsIds, starter.id]
+                        )
+                      }}
+                      id={'takeout-starter'}
+                      checked={starter && selectedProductsIds.includes(starter.id)}
+                    >
+                      <H3 lh="$6">{starter?.name}</H3>
+                      <Paragraph size="$3" lh="$1" theme="alt2">
+                        {starter?.description}
+                      </Paragraph>
+                    </CheckboxGroupItem>
+                    <CheckboxGroupItem
+                      onCheckedChange={() => {
+                        if (!bento) return
+                        const active = selectedProductsIds.includes(bento.id)
+                        setSelectedProductsIds(
+                          active
+                            ? selectedProductsIds.filter((id) => id !== bento.id)
+                            : [...selectedProductsIds, bento.id]
+                        )
+                      }}
+                      id={'takeout-bento'}
+                      checked={bento && selectedProductsIds.includes(bento.id)}
+                    >
+                      <H3 lh="$6">{bento?.name}</H3>
+                      <Paragraph size="$3" lh="$1" theme="alt2">
+                        {bento?.description}
+                      </Paragraph>
+                    </CheckboxGroupItem>
+                  </YStack>
                 </YStack>
-              </YStack>
+              )}
 
               <XStack
                 f={1}
