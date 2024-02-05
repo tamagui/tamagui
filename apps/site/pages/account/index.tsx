@@ -103,7 +103,7 @@ const Account = () => {
       <XStack mt="$4" gap="$4" ai="flex-start">
         <ThemeTint>
           <ButtonLink href="/account/items" size="$5">
-            Items
+            Items & Subscriptions
           </ButtonLink>
 
           <ButtonLink href="https://studio.tamagui.dev" size="$5">
