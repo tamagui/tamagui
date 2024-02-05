@@ -72,7 +72,7 @@ const Hero = () => {
   const store = useBentoStore()
 
   return (
-    <YStack pos="relative" pb="$6" zi={0}>
+    <YStack pos="relative" pb="$9" zi={0}>
       <ContainerLarge>
         <XStack gap="$6" py="$3" bc="transparent" jc="space-between" w={'100%'}>
           <YStack
@@ -153,7 +153,8 @@ const Hero = () => {
           </YStack>
 
           <YStack
-            mr={-600}
+            mr={-150}
+            ml={-50}
             maw={1000}
             mt={0}
             pl="$4"
@@ -163,8 +164,21 @@ const Hero = () => {
             style={{
               maskImage: `linear-gradient(rgba(0, 0, 0, 1) 40%, transparent)`,
             }}
+            // mr={-600}
+            // maw={1000}
+            // mt={0}
+            // pl="$4"
+            // x={20}
+            // mb={-300}
+            // y={-20}
+            // style={{
+            //   maskImage: `linear-gradient(rgba(0, 0, 0, 1) 40%, transparent)`,
+            // }}
           >
-            <XStack
+            <Theme name="gray">
+              <Sections.Preferences.LocationNotification />
+            </Theme>
+            {/* <XStack
               fw="wrap"
               zi={1}
               gap="$6"
@@ -175,8 +189,8 @@ const Hero = () => {
             >
               <ThemeTint>
                 <BentoCard elevate>
-                  <YStack scale={0.5} w={900} mx={-220} my={-146}>
-                    <Sections.Layouts.SignInRightImage />
+                  <YStack transformOrigin="center" scale={0.7}>
+                    <Sections.Preferences.LocationNotification />
                   </YStack>
                 </BentoCard>
               </ThemeTint>
@@ -236,7 +250,7 @@ const Hero = () => {
                   </YStack>
                 </BentoCard>
               </ThemeTintAlt>
-            </XStack>
+            </XStack> */}
           </YStack>
         </XStack>
       </ContainerLarge>
@@ -285,30 +299,13 @@ const Body = () => {
           return (
             <YStack key={sectionName} gap="$6" jc={'space-between'}>
               <ContainerLarge>
-                <YStack pos="relative">
-                  <H2 ff="$munro" color="$color10" fontSize="$12" f={2} my="$2">
-                    {`${sectionName[0].toUpperCase()}${sectionName.slice(1)}`}
-                  </H2>
-                  <ThemeTintAlt>
-                    <H2
-                      pos="absolute"
-                      t={0}
-                      l={0}
-                      ff="$munro"
-                      color="$color8"
-                      fontSize="$12"
-                      f={2}
-                      my="$2"
-                      className="mask-gradient-left"
-                      o={0.5}
-                      style={{
-                        mixBlendMode: 'hard-light',
-                      }}
-                    >
+                <ThemeTintAlt>
+                  <YStack pos="relative">
+                    <H2 ff="$munro" color="$color12" fontSize="$12" f={2} my="$4">
                       {`${sectionName[0].toUpperCase()}${sectionName.slice(1)}`}
                     </H2>
-                  </ThemeTintAlt>
-                </YStack>
+                  </YStack>
+                </ThemeTintAlt>
               </ContainerLarge>
               <ScrollView
                 horizontal
@@ -320,21 +317,23 @@ const Body = () => {
                 }}
               >
                 <ContainerLarge>
-                  <XStack gap="$6" f={4} fs={1}>
-                    {parts.map(
-                      ({ name: partsName, numberOfComponents, route, preview }) => (
-                        <SectionCard
-                          key={route + partsName + numberOfComponents.toString()}
-                          path={route}
-                          name={partsName}
-                          numberOfComponents={numberOfComponents}
-                          preview={preview}
-                        />
-                      )
-                    )}
-                    {/* @ts-ignore */}
-                    <Spacer width="calc(50vw - 400px)" />
-                  </XStack>
+                  <Theme name="gray">
+                    <XStack gap="$6" f={4} fs={1}>
+                      {parts.map(
+                        ({ name: partsName, numberOfComponents, route, preview }) => (
+                          <SectionCard
+                            key={route + partsName + numberOfComponents.toString()}
+                            path={route}
+                            name={partsName}
+                            numberOfComponents={numberOfComponents}
+                            preview={preview}
+                          />
+                        )
+                      )}
+                      {/* @ts-ignore */}
+                      <Spacer width="calc(50vw - 400px)" />
+                    </XStack>
+                  </Theme>
                 </ContainerLarge>
               </ScrollView>
             </YStack>
@@ -375,17 +374,17 @@ function SectionCard({
         maw="calc(50% - 16px)"
         ov="hidden"
         elevation="$6"
-        bg="$color2"
+        bg="#fff"
         mih={300}
         br="$9"
         cursor="pointer"
         pos="relative"
         hoverStyle={{
           // y: -2,
-          bg: '$color3',
-          outlineWidth: 1,
+          // bg: '$color3',
+          outlineWidth: 10,
           outlineStyle: 'solid',
-          outlineColor: '$color025',
+          outlineColor: '$color05',
         }}
         pressStyle={{
           bg: '$color1',
@@ -412,10 +411,14 @@ function SectionCard({
           rotateX="-20deg"
           rotateZ="-10deg"
         >
-          <Preview />
+          <Theme name="tan">
+            <Preview />
+          </Theme>
         </YStack>
         <YStack p="$5">
-          <H4 fontSize="$7">{name}</H4>
+          <H4 fontSize="$7" color="#000">
+            {name}
+          </H4>
           <H5 theme="alt1" fontWeight={'normal'} fontSize={'$2'}>
             {numberOfComponents} components
           </H5>
@@ -499,9 +502,9 @@ const BentoCard = styled(ThemeableStack, {
   bg: '$background',
   ai: 'center',
   jc: 'center',
-  maw: 'calc(33.33% - 40px)',
+  maw: 'calc(50% - 40px)',
   w: '100%',
-  h: 300,
+  h: 500,
   ov: 'hidden',
   br: '$4',
 })
