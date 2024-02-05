@@ -1259,10 +1259,10 @@ const PurchaseModal = ({
                       <XStack
                         mt="$2"
                         theme="green"
-                        bc="$background"
+                        bg="$background"
                         p="$4"
                         bw={1}
-                        boc="$color5"
+                        bc="$color5"
                         br="$4"
                         gap="$3"
                       >
