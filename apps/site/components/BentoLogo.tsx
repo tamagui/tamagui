@@ -11,18 +11,12 @@ export const BentoLogo = () => (
       color="$color11"
       maw="100%"
       f={1}
-      ls={-20}
-      lh={200}
+      ls={-21}
+      lh={180}
       fos={198}
       ussel="none"
       pe="none"
-      style={{
-        textShadow: `1px 1px 1px var(--color9), 1px 2px 1px var(--color8),
-                  1px 3px 1px var(--color7), 1px 4px 1px var(--color7), 1px 5px 1px var(--color6),
-                  1px 6px 1px var(--color6), 1px 7px 1px var(--color5), 1px 8px 1px var(--color5),
-                  1px 9px 1px var(--color4), 1px 12px 1px var(--color4),
-                  1px 10px 150px rgba(255,255,255,0.2)`,
-      }}
+      className="bento-shadow"
     >
       BENTO&nbsp;
     </H1>
@@ -40,8 +34,8 @@ export const BentoLogo = () => (
         color="$color10"
         maw="100%"
         f={1}
-        ls={-20}
-        lh={200}
+        ls={-21}
+        lh={180}
         fos={198}
         ussel="none"
         pe="none"
@@ -49,7 +43,7 @@ export const BentoLogo = () => (
         // @ts-ignore
         style={{
           mixBlendMode: 'hard-light',
-          backgroundImage: 'linear-gradient(var(--color8), var(--color1))',
+          backgroundImage: 'linear-gradient(var(--background025), var(--color7))',
         }}
       >
         BENTO&nbsp;
@@ -66,19 +60,19 @@ export const BentoLogo = () => (
         px="$3"
         mx="$-3"
         whiteSpace="pre"
-        color="$color6"
+        color="$color8"
         maw="100%"
         f={1}
-        ls={-20}
-        lh={200}
+        ls={-21}
+        lh={180}
         fos={198}
         ussel="none"
         pe="none"
         className="clip-text mask-gradient-down"
         // @ts-ignore
         style={{
-          backgroundImage: 'linear-gradient(var(--color11), var(--color8))',
-          textShadow: '0 5px 20px rgba(255,255,255,0.6)',
+          backgroundImage: 'linear-gradient(var(--color8), transparent)',
+          textShadow: `0 0 4px var(--color075), 0 0 10px rgba(255,255,255,0.35)`,
           mixBlendMode: 'hard-light',
         }}
       >

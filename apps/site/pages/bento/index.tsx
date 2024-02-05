@@ -14,6 +14,7 @@ import {
   H4,
   H5,
   Paragraph,
+  ScrollView,
   Separator,
   Spacer,
   Stack,
@@ -34,6 +35,7 @@ import { BentoLogo } from '../../components/BentoLogo'
 import { BentoPageFrame } from '../../components/BentoPageFrame'
 import { ContainerLarge } from '../../components/Container'
 import { getDefaultLayout } from '../../lib/getDefaultLayout'
+import { ThemeNameEffect } from '../../components/ThemeNameEffect'
 
 export type ProComponentsProps = {
   proComponents?: Database['public']['Tables']['products']['Row'] & {
@@ -49,14 +51,17 @@ export default function BentoPage(props: ProComponentsProps) {
 
   return (
     <BentoPageFrame>
-      <YStack pe="none" fullscreen zi={100} rotateZ="20deg">
-        {/* <StudioPreviewComponents /> */}
-      </YStack>
+      <Theme name="tan">
+        <ThemeNameEffect colorKey="$color6" />
+        <YStack pe="none" fullscreen zi={100} rotateZ="20deg">
+          {/* <StudioPreviewComponents /> */}
+        </YStack>
 
-      <Hero />
-      <Body />
-      <PurchaseModal coupon={props.coupon} mainProduct={props.proComponents} />
-      <Spacer size="$10" />
+        <Hero />
+        <Body />
+        <PurchaseModal coupon={props.coupon} mainProduct={props.proComponents} />
+        <Spacer size="$10" />
+      </Theme>
     </BentoPageFrame>
   )
 }
@@ -69,34 +74,41 @@ const Hero = () => {
   return (
     <YStack pos="relative" pb="$6" zi={0}>
       <ContainerLarge>
-        <XStack gap="$6" py="$6" bc="transparent" jc="space-between" w={'100%'}>
-          <YStack maw="55%" zi={100} jc="space-between" f={10} ai="flex-start" gap="$6">
-            <Theme name="tan">
-              <BentoLogo />
-              <YStack gap="$6">
-                <XStack gap="$6">
-                  <Stack bg="$color7" w={10} br="$10" my={10} />
+        <XStack gap="$6" py="$3" bc="transparent" jc="space-between" w={'100%'}>
+          <YStack
+            mt={-20}
+            mb={30}
+            maw="55%"
+            zi={100}
+            jc="space-between"
+            f={10}
+            ai="flex-start"
+            gap="$6"
+          >
+            <BentoLogo />
+            <YStack gap="$6">
+              <XStack gap="$6">
+                <Stack bg="$color7" w={10} br="$10" my={10} />
 
-                  <Paragraph ff="$munro" size="$9" fos={32} lh={50} color="$color11">
-                    Boost your React Native development with a suite of copy-paste
-                    primitives.
-                  </Paragraph>
-                </XStack>
-                <XStack jc="space-between" ai="center" ml="$8" mr="$4">
-                  <Paragraph color="$color10" size="$5">
-                    $200 one-time Purchase
-                  </Paragraph>
+                <Paragraph ff="$munro" size="$9" fos={32} lh={50} color="$color11">
+                  Boost your React Native development with a suite of copy-paste
+                  primitives.
+                </Paragraph>
+              </XStack>
+              <XStack jc="space-between" ai="center" ml="$8" mr="$4">
+                <Paragraph color="$color10" size="$5">
+                  $200 one-time Purchase
+                </Paragraph>
 
-                  <Circle size={4} bg="$color10" />
-                  <Circle size={4} bg="$color10" />
-                  <Circle size={4} bg="$color10" />
+                <Circle size={4} bg="$color10" />
+                <Circle size={4} bg="$color10" />
+                <Circle size={4} bg="$color10" />
 
-                  <Paragraph color="$color10" size="$5">
-                    $10/mo for early releases
-                  </Paragraph>
-                </XStack>
-              </YStack>
-            </Theme>
+                <Paragraph color="$color10" size="$5">
+                  $10/mo for early releases
+                </Paragraph>
+              </XStack>
+            </YStack>
 
             <Theme name="green">
               <Button
@@ -104,16 +116,16 @@ const Hero = () => {
                 fontFamily="$mono"
                 size="$5"
                 fontSize={22}
-                bg="$color7"
-                color="#fff"
                 fontWeight="600"
                 scaleSpace={0.5}
                 scaleIcon={1.6}
                 als="flex-end"
                 mr="$4"
+                color="$color1"
+                bg="$color11"
                 hoverStyle={{
-                  bg: '$color8',
-                  bc: '$color8',
+                  bg: '$color10',
+                  bc: '$color10',
                 }}
                 pressStyle={{
                   bg: '$color6',
@@ -217,6 +229,13 @@ const Hero = () => {
                   </YStack>
                 </BentoCard>
               </ThemeTintAlt>
+              <ThemeTintAlt>
+                <BentoCard elevate>
+                  <YStack scale={0.8} mx={-30}>
+                    <Sections.Textareas.AvatarNameContentAction />
+                  </YStack>
+                </BentoCard>
+              </ThemeTintAlt>
             </XStack>
           </YStack>
         </XStack>
@@ -235,7 +254,8 @@ const Body = () => {
       // shadowColor="$shadowColor"
       // shadowRadius={20}
       style={{
-        backdropFilter: 'blur(2px)',
+        backdropFilter: 'blur(4px)',
+        WebkitBackdropFilter: 'blur(4px)',
         // boxShadow: `0 0 200px rgba(0,0,0,0.2), 0 0 100px rgba(0,0,0,0.2), 0 0 20px rgba(0,0,0,0.125), 0 0 10px rgba(0,0,0,0.125)`,
       }}
       // py="$10"
@@ -251,8 +271,8 @@ const Body = () => {
         o={0.125}
         style={{ mixBlendMode: 'multiply' }}
       />
-      <ContainerLarge gap="$2">
-        {/* <H2>Sections</H2>
+
+      {/* <H2>Sections</H2>
       <Paragraph size="$6" color={'$gray11'}>
         Components are divided into sections and each section has multiple groups of
         related components.
@@ -260,33 +280,69 @@ const Body = () => {
 
       <Spacer size="$8" /> */}
 
-        <YStack gap="$12" px="$6">
-          {Sections.listingData.sections.map(({ sectionName, parts }) => {
-            return (
-              <YStack key={sectionName} gap="$6" jc={'space-between'}>
-                <H2 ff="$munro" color="$color5" fontSize="$11" f={2} my="$2">
-                  {`${sectionName[0].toUpperCase()}${sectionName.slice(1)}`}
-                </H2>
-                <XStack gap={'$6'} f={4} fw="wrap" fs={1}>
-                  {parts.map(
-                    ({ name: partsName, numberOfComponents, route, preview }) => (
-                      <ComponentGroupsBanner
-                        key={route + partsName + numberOfComponents.toString()}
-                        path={route}
-                        name={partsName}
-                        numberOfComponents={numberOfComponents}
-                        preview={preview}
-                      />
-                    )
-                  )}
-                </XStack>
-              </YStack>
-            )
-          })}
-        </YStack>
+      <YStack gap="$12" px="$6">
+        {Sections.listingData.sections.map(({ sectionName, parts }) => {
+          return (
+            <YStack key={sectionName} gap="$6" jc={'space-between'}>
+              <ContainerLarge>
+                <YStack pos="relative">
+                  <H2 ff="$munro" color="$color10" fontSize="$12" f={2} my="$2">
+                    {`${sectionName[0].toUpperCase()}${sectionName.slice(1)}`}
+                  </H2>
+                  <ThemeTintAlt>
+                    <H2
+                      pos="absolute"
+                      t={0}
+                      l={0}
+                      ff="$munro"
+                      color="$color8"
+                      fontSize="$12"
+                      f={2}
+                      my="$2"
+                      className="mask-gradient-left"
+                      o={0.5}
+                      style={{
+                        mixBlendMode: 'hard-light',
+                      }}
+                    >
+                      {`${sectionName[0].toUpperCase()}${sectionName.slice(1)}`}
+                    </H2>
+                  </ThemeTintAlt>
+                </YStack>
+              </ContainerLarge>
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                p="$10"
+                m="$-10"
+                contentContainerStyle={{
+                  minWidth: '100%',
+                }}
+              >
+                <ContainerLarge>
+                  <XStack gap="$6" f={4} fs={1}>
+                    {parts.map(
+                      ({ name: partsName, numberOfComponents, route, preview }) => (
+                        <SectionCard
+                          key={route + partsName + numberOfComponents.toString()}
+                          path={route}
+                          name={partsName}
+                          numberOfComponents={numberOfComponents}
+                          preview={preview}
+                        />
+                      )
+                    )}
+                    {/* @ts-ignore */}
+                    <Spacer width="calc(50vw - 400px)" />
+                  </XStack>
+                </ContainerLarge>
+              </ScrollView>
+            </YStack>
+          )
+        })}
+      </YStack>
 
-        <Spacer size="$12" />
-      </ContainerLarge>
+      <Spacer size="$12" />
     </YStack>
   )
 }
@@ -299,7 +355,7 @@ const EmptyFn = () => (
   </Checkbox>
 )
 
-function ComponentGroupsBanner({
+function SectionCard({
   name,
   numberOfComponents,
   path,

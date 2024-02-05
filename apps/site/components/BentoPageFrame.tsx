@@ -20,14 +20,14 @@ export const BentoPageFrame = ({ children }: { children: any }) => {
         <Theme name="tan">
           <YStack pe="none" fullscreen bg="$color6" y={-100}>
             <YStack
-              className="mask-gradient-right"
+              className="mask-gradient-right grain"
               fullscreen
-              o={0.1}
+              o={0.15}
               $theme-light={{
                 o: 0.3,
               }}
               style={{
-                background: `url(/grain.svg) 40%`,
+                mixBlendMode: 'color-burn',
               }}
             />
 
@@ -108,7 +108,7 @@ export const BentoFrond = () => (
     className="shadow-breeze"
     zi={2}
     pe="none"
-    o={0.06}
+    o={0.07}
     $theme-dark={{
       o: 0.125,
     }}
