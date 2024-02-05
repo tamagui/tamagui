@@ -742,8 +742,10 @@ export function createComponent<
     // so the type is pretty loose
     let viewProps = nonTamaguiProps
 
-    if (hasAnimationProp && props.tag && !props.role && !props.accessibilityRole) {
-      viewProps.role = props.tag as any
+    if (process.env.TAMAGUI_TARGET === 'web') {
+      if (hasAnimationProp && props.tag && !props.role && !props.accessibilityRole) {
+        viewProps.role = props.tag as any
+      }
     }
 
     if (isHOC && _themeProp) {
