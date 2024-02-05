@@ -12,7 +12,7 @@ export const createSilkscreenFont = <A extends GenericFont>(
     lineHeight: Object.fromEntries(
       Object.entries(font.size || size).map(([k, v]) => [
         k,
-        typeof v === 'number' ? v * 1.2 + 6 : v,
+        typeof v === 'number' ? Math.round(v * 1.2 + 6) : v,
       ])
     ) as typeof size,
     weight: {
