@@ -448,7 +448,6 @@ export function createComponent<
     const noClassNames = shouldAvoidClasses || shouldForcePseudo
 
     const groupName = props.group as any as string
-    const groupClassName = groupName ? `t_group_${props.group}` : ''
 
     if (groupName && !curState.group) {
       const listeners = new Set<GroupStateListener>()
@@ -485,10 +484,6 @@ export function createComponent<
     }
 
     if (process.env.NODE_ENV === 'development' && time) time`use-state`
-
-    const componentNameFinal = props.componentName || componentName
-    const componentClassName =
-      props.asChild || !componentNameFinal ? '' : `is_${componentNameFinal}`
 
     const hasTextAncestor = !!(isWeb && isText ? componentContext.inText : false)
     const isDisabled = props.disabled ?? props.accessibilityState?.disabled
@@ -866,51 +861,7 @@ export function createComponent<
       mediaGroups ? Object.keys([...mediaGroups]).join('') : 0,
     ])
 
-    let fontFamily =
-      isText || isInput
-        ? splitStyles.fontFamily || staticConfig.defaultProps?.fontFamily
-        : null
-    if (fontFamily && fontFamily[0] === '$') {
-      fontFamily = fontFamily.slice(1)
-    }
-    const fontFamilyClassName = fontFamily ? `font_${fontFamily}` : ''
-
     const style = animationStyles || splitStyles.style
-
-    let className: string | undefined
-
-    const asChildExceptStyleLike =
-      asChild === 'except-style' || asChild === 'except-style-web'
-
-    if (!asChildExceptStyleLike) {
-      if (process.env.TAMAGUI_TARGET === 'web') {
-        let classList: string[] = []
-        if (componentName) classList.push(componentClassName)
-        if (fontFamilyClassName) classList.push(fontFamilyClassName)
-        if (classNames) classList.push(Object.values(classNames).join(' '))
-        if (groupClassName) classList.push(groupClassName)
-
-        className = classList.join(' ')
-
-        if (isAnimated && !supportsCSSVars && isReactNative) {
-          viewProps.style = style
-        } else if (isReactNative) {
-          const cnStyles = { $$css: true }
-          for (const name of className.split(' ')) {
-            cnStyles[name] = name
-          }
-          viewProps.style = [...(Array.isArray(style) ? style : [style]), cnStyles]
-        } else {
-          if (className) {
-            viewProps.className = className
-          }
-          viewProps.style = style
-        }
-      } else {
-        // native assign styles
-        viewProps.style = style
-      }
-    }
 
     // if its a group its gotta listen for pseudos to emit them to children
 

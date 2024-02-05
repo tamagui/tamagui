@@ -1296,8 +1296,53 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
-  if (className) {
-    classNames.className = className
+  // merge className and style back into viewProps:
+  let fontFamily =
+    isText || isInput
+      ? styleState.fontFamily || staticConfig.defaultProps?.fontFamily
+      : null
+  if (fontFamily && fontFamily[0] === '$') {
+    fontFamily = fontFamily.slice(1)
+  }
+  const fontFamilyClassName = fontFamily ? `font_${fontFamily}` : ''
+  const asChild = props.asChild
+  const asChildExceptStyleLike =
+    asChild === 'except-style' || asChild === 'except-style-web'
+
+  if (!asChildExceptStyleLike) {
+    if (process.env.TAMAGUI_TARGET === 'web') {
+      const groupClassName = props.group ? `t_group_${props.group}` : ''
+      const componentNameFinal = props.componentName || staticConfig.componentName
+      const componentClassName =
+        props.asChild || !componentNameFinal ? '' : `is_${componentNameFinal}`
+
+      let classList: string[] = []
+      if (componentClassName) classList.push(componentClassName)
+      if (fontFamilyClassName) classList.push(fontFamilyClassName)
+      if (classNames) classList.push(Object.values(classNames).join(' '))
+      if (groupClassName) classList.push(groupClassName)
+      if (props.className) classList.push(props.className)
+
+      className = classList.join(' ')
+
+      if (styleProps.isAnimated && !conf.animations.supportsCSSVars && isReactNative) {
+        viewProps.style = style as any
+      } else if (isReactNative) {
+        const cnStyles = { $$css: true }
+        for (const name of className.split(' ')) {
+          cnStyles[name] = name
+        }
+        viewProps.style = [...(Array.isArray(style) ? style : [style]), cnStyles]
+      } else {
+        if (className) {
+          viewProps.className = className
+        }
+        viewProps.style = style as any
+      }
+    } else {
+      // native assign styles
+      viewProps.style = style as any
+    }
   }
 
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
