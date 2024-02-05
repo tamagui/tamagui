@@ -98,6 +98,7 @@ export type TooltipProps = PopperProps & {
         open?: number
         close?: number
       }
+  disableAutoCloseOnScroll?: boolean
 }
 
 type Delay =
@@ -131,6 +132,7 @@ const TooltipComponent = React.forwardRef(function Tooltip(
     onOpenChange: onOpenChangeProp,
     focus,
     open: openProp,
+    disableAutoCloseOnScroll,
     __scopeTooltip,
     ...restProps
   } = props
@@ -151,6 +153,20 @@ const TooltipComponent = React.forwardRef(function Tooltip(
     }
     setOpen(open)
   })
+
+  // Auto close when document scroll
+  React.useEffect(() => {
+    if (!open) return
+    if (disableAutoCloseOnScroll) return
+    if (typeof document === 'undefined') return
+    const openIt = () => {
+      setOpen(false)
+    }
+    document.documentElement.addEventListener('scroll', openIt)
+    return () => {
+      document.documentElement.removeEventListener('scroll', openIt)
+    }
+  }, [open, disableAutoCloseOnScroll])
 
   const useFloatingFn: UseFloatingFn = (props) => {
     // @ts-ignore
