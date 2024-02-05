@@ -9,7 +9,9 @@
   "files": [
     "src",
     "types",
-    "dist"
+    "dist",
+    "v2.js",
+    "v2.d.ts"
   ],
   "scripts": {
     "build": "tamagui-build",
