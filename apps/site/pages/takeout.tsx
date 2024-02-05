@@ -166,6 +166,9 @@ export default function TakeoutPage({
         x={-300}
         rotate="120deg"
         o={0.01}
+        $theme-light={{
+          o: 0.12,
+        }}
         zi={-1}
       >
         <Image alt="mandala" width={2500} height={2500} src="/takeout/geometric.svg" />
@@ -1571,9 +1574,9 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
             mt: 100,
           }}
         >
-          {/* <YStack zi={-1} fullscreen bg="$color5" o={0.5} /> */}
+          <YStack zi={-1} fullscreen bg="$color5" o={0.5} />
 
-          {/* <ThemeTintAlt>
+          <ThemeTintAlt>
             <LinearGradient
               pos="absolute"
               b={0}
@@ -1583,7 +1586,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
               colors={['$background0', '$color5']}
               zi={100}
             />
-          </ThemeTintAlt> */}
+          </ThemeTintAlt>
 
           <YStack pos="absolute" b="$4" l="$4" r="$4" zi={100}>
             {/* cant use buttonlink it breaks scroll on press if not enabled, conditionally use a link */}
@@ -1695,10 +1698,8 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
 function PurchaseButton(props: ButtonProps) {
   return (
     <ThemeTint>
-      <Button size="$6" borderWidth={2} {...props}>
-        <Button.Text ff="$silkscreen" fontWeight="700" color="#fff">
-          {props.children} 🥡
-        </Button.Text>
+      <Button size="$6" borderWidth={2} bc="$color8" {...props}>
+        <Button.Text ff="$silkscreen">{props.children} 🥡</Button.Text>
       </Button>
     </ThemeTint>
   )

@@ -29,7 +29,9 @@ function TestPage() {
         flex: 1,
       }}
     >
-      <DialogDemo />
+      <Button debug="verbose" mr="$-10">
+        ok
+      </Button>
       {/* <Stack
         // hitSlop={5}
         importantForAccessibility="no"
