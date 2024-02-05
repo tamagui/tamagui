@@ -20,17 +20,8 @@ html.t_dark body:has(.strong-background) {
 
 .bento-fade {
   background: linear-gradient(
-    var(--background025),
-    var(--background075) 5%,
-    var(--background)
-  );
-}
-
-.t_dark .bento-fade {
-  background: linear-gradient(
-    var(--color025),
-    var(--background0) 10%,
-    var(--background025)
+    var(--background075),
+    var(--background) 20%
   );
 }
 

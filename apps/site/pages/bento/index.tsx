@@ -1,7 +1,15 @@
 import { NextLink } from '@components/NextLink'
 import * as Sections from '@tamagui/bento'
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
-import { Check, ShoppingCart } from '@tamagui/lucide-icons'
+import {
+  Check,
+  CloudLightning,
+  Globe,
+  Leaf,
+  Plug,
+  Puzzle,
+  ShoppingCart,
+} from '@tamagui/lucide-icons'
 import { useBentoStore } from 'hooks/useBentoStore'
 import type Stripe from 'stripe'
 
@@ -11,6 +19,7 @@ import {
   Circle,
   EnsureFlexed,
   H2,
+  H3,
   H4,
   H5,
   Paragraph,
@@ -56,9 +65,11 @@ export default function BentoPage(props: ProComponentsProps) {
         <YStack pe="none" fullscreen zi={100} rotateZ="20deg">
           {/* <StudioPreviewComponents /> */}
         </YStack>
-
         <Hero />
-        <Body />
+        <Intermediate />
+        <Theme name="gray">
+          <Body />
+        </Theme>
         <PurchaseModal coupon={props.coupon} mainProduct={props.proComponents} />
         <Spacer size="$10" />
       </Theme>
@@ -67,6 +78,61 @@ export default function BentoPage(props: ProComponentsProps) {
 }
 
 BentoPage.getLayout = getDefaultLayout
+
+const Intermediate = () => {
+  return (
+    <YStack zi={1000} mih={200} bc="red" w="100%">
+      {/* <YStack fullscreen className="bento-fade" /> */}
+      <ContainerLarge>
+        <XStack gap="$4">
+          <IntermediateCard Icon={Globe} title="Universal">
+            Components that adapt well to all screen sizes.
+          </IntermediateCard>
+          <IntermediateCard Icon={Puzzle} title="Copy & Paste">
+            Designed for easy adoption into your app and easy customization.
+          </IntermediateCard>
+          <IntermediateCard Icon={Leaf} title="Always Growing">
+            Lorem ipsum dolor sit amet.
+          </IntermediateCard>
+        </XStack>
+      </ContainerLarge>
+    </YStack>
+  )
+}
+
+const IntermediateCard = ({
+  title,
+  children,
+  Icon,
+}: { title?: any; children?: any; Icon?: any }) => {
+  return (
+    <XStack
+      miw="calc(33.333 - 20px)"
+      ov="hidden"
+      f={1}
+      br="$9"
+      p="$5"
+      bc="$borderColor"
+      bw={1}
+      bs="solid"
+      gap="$3"
+      bg="$background075"
+      elevation="$1"
+      style={{
+        backdropFilter: 'blur(10px)',
+      }}
+    >
+      <Circle size="$5" elevate>
+        <Icon />
+      </Circle>
+      <YStack f={1} gap="$2">
+        <H4 size="$4">{title}</H4>
+        <Paragraph>{children}</Paragraph>
+        <EnsureFlexed />
+      </YStack>
+    </XStack>
+  )
+}
 
 const Hero = () => {
   const store = useBentoStore()
@@ -90,7 +156,7 @@ const Hero = () => {
               <XStack gap="$6">
                 <Stack bg="$color7" w={10} br="$10" my={10} />
 
-                <Paragraph ff="$munro" size="$9" fos={32} lh={50} color="$color11">
+                <Paragraph ff="$munro" size="$9" fos={32} lh={50} color="$color12">
                   Boost your React Native development with a suite of copy-paste
                   primitives.
                 </Paragraph>
@@ -153,16 +219,17 @@ const Hero = () => {
           </YStack>
 
           <YStack
-            mr={-150}
-            ml={-50}
+            mr={-350}
+            ml={-100}
             maw={1000}
             mt={0}
-            pl="$4"
+            pl={100}
+            pr={200}
             x={20}
             mb={-300}
             y={-20}
             style={{
-              maskImage: `linear-gradient(rgba(0, 0, 0, 1) 40%, transparent)`,
+              maskImage: `linear-gradient(rgba(0, 0, 0, 1) 60%, transparent)`,
             }}
             // mr={-600}
             // maw={1000}
@@ -176,7 +243,32 @@ const Hero = () => {
             // }}
           >
             <Theme name="gray">
-              <Sections.Preferences.LocationNotification />
+              <XStack pe="none" rotate="4deg" t={20}>
+                <YStack pos="absolute" zi={-1} l="-15%" scale={0.9} rotate="-5deg">
+                  <Theme inverse>
+                    <Sections.Preferences.LocationNotification />
+                  </Theme>
+                </YStack>
+
+                <Sections.Preferences.LocationNotification />
+
+                <YStack
+                  pos="absolute"
+                  zi={1}
+                  l={0}
+                  style={{
+                    clipPath: `polygon(0% 0%, 60% 0%, 40% 100%, 0% 100%)`,
+                  }}
+                >
+                  <Theme inverse>
+                    <Sections.Preferences.LocationNotification />
+                  </Theme>
+                </YStack>
+
+                <YStack pos="absolute" zi={-1} l="15%" scale={0.9} rotate="5deg">
+                  <Sections.Preferences.LocationNotification />
+                </YStack>
+              </XStack>
             </Theme>
             {/* <XStack
               fw="wrap"
@@ -264,7 +356,7 @@ const Body = () => {
       pos="relative"
       py="$8"
       mb="$-10"
-      // bg="$background"
+      bg="$background"
       // shadowColor="$shadowColor"
       // shadowRadius={20}
       style={{
@@ -274,8 +366,6 @@ const Body = () => {
       }}
       // py="$10"
     >
-      <YStack fullscreen o={0.35} className="bento-fade" />
-
       <Separator
         bc="$color"
         pos="absolute"
@@ -301,9 +391,9 @@ const Body = () => {
               <ContainerLarge>
                 <ThemeTintAlt>
                   <YStack pos="relative">
-                    <H2 ff="$munro" color="$color12" fontSize="$12" f={2} my="$4">
+                    <H3 ff="$munro" size="$10" color="$color12" f={2} my="$2">
                       {`${sectionName[0].toUpperCase()}${sectionName.slice(1)}`}
-                    </H2>
+                    </H3>
                   </YStack>
                 </ThemeTintAlt>
               </ContainerLarge>
@@ -317,23 +407,23 @@ const Body = () => {
                 }}
               >
                 <ContainerLarge>
-                  <Theme name="gray">
-                    <XStack gap="$6" f={4} fs={1}>
-                      {parts.map(
-                        ({ name: partsName, numberOfComponents, route, preview }) => (
-                          <SectionCard
-                            key={route + partsName + numberOfComponents.toString()}
-                            path={route}
-                            name={partsName}
-                            numberOfComponents={numberOfComponents}
-                            preview={preview}
-                          />
-                        )
-                      )}
-                      {/* @ts-ignore */}
-                      <Spacer width="calc(50vw - 400px)" />
-                    </XStack>
-                  </Theme>
+                  {/* <Theme name="gray"> */}
+                  <XStack gap="$6" f={4} fs={1}>
+                    {parts.map(
+                      ({ name: partsName, numberOfComponents, route, preview }) => (
+                        <SectionCard
+                          key={route + partsName + numberOfComponents.toString()}
+                          path={route}
+                          name={partsName}
+                          numberOfComponents={numberOfComponents}
+                          preview={preview}
+                        />
+                      )
+                    )}
+                    {/* @ts-ignore */}
+                    <Spacer width="calc(50vw - 400px)" />
+                  </XStack>
+                  {/* </Theme> */}
                 </ContainerLarge>
               </ScrollView>
             </YStack>
@@ -371,20 +461,20 @@ function SectionCard({
     <NextLink href={BASE_PATH + path} passHref>
       <YStack
         tag="a"
-        maw="calc(50% - 16px)"
+        maw={300}
         ov="hidden"
-        elevation="$6"
-        bg="#fff"
+        // elevation="$6"
+        bg="$color2"
         mih={300}
         br="$9"
         cursor="pointer"
         pos="relative"
         hoverStyle={{
           // y: -2,
-          // bg: '$color3',
-          outlineWidth: 10,
+          bg: '$color3',
+          outlineWidth: 3,
           outlineStyle: 'solid',
-          outlineColor: '$color05',
+          outlineColor: '$color025',
         }}
         pressStyle={{
           bg: '$color1',
@@ -392,13 +482,13 @@ function SectionCard({
         }}
       >
         <EnsureFlexed />
-        <YStack
+        {/* <YStack
           fullscreen
           className="bg-grid mask-gradient-down"
           style={{ backgroundPosition: 'top left' }}
           o={0.085}
           y={-1}
-        />
+        /> */}
         <YStack
           fullscreen
           ai="center"
@@ -416,10 +506,8 @@ function SectionCard({
           </Theme>
         </YStack>
         <YStack p="$5">
-          <H4 fontSize="$7" color="#000">
-            {name}
-          </H4>
-          <H5 theme="alt1" fontWeight={'normal'} fontSize={'$2'}>
+          <H4 fontSize="$7">{name}</H4>
+          <H5 o={0.5} fontSize="$3">
             {numberOfComponents} components
           </H5>
         </YStack>

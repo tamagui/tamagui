@@ -81,9 +81,9 @@ export const BentoPageFrame = ({ children }: { children: any }) => {
                 rotate="220deg"
                 l="50%"
                 x={-250}
-                o={0.05}
+                o={0.4}
                 $theme-dark={{
-                  o: 0.09,
+                  o: 0.14,
                 }}
                 zi={1}
                 style={{
@@ -97,7 +97,7 @@ export const BentoPageFrame = ({ children }: { children: any }) => {
           </YStack>
         </Theme>
 
-        <ContainerLarge height="100vh" mb="-100vh">
+        <ContainerLarge pos="relative" height="100vh" mb="-100vh">
           <BentoFrond />
         </ContainerLarge>
 
@@ -113,7 +113,7 @@ export const BentoFrond = () => (
     className="shadow-breeze"
     zi={2}
     pe="none"
-    o={0.07}
+    o={0.086}
     $theme-dark={{
       o: 0.125,
     }}
