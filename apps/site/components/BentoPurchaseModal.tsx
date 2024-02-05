@@ -88,10 +88,6 @@ export const PurchaseModal = ({
   const noProductSelected = selectedProductsIds.length === 0
   const showTeamSelect = selectedProductsIds.includes(mainProduct?.id || '')
 
-  // TODO: get bento price info
-  const takeoutPriceInfo = getTakeoutPriceInfo(
-    mainProduct?.prices.find((price) => price.id === selectedPriceId)?.description ?? ''
-  )
   return (
     <Theme name="gray">
       <Dialog
@@ -168,91 +164,7 @@ export const PurchaseModal = ({
                   $sm={{ fd: 'column-reverse' }}
                 >
                   <YStack maxWidth={450}>
-                    <YStack
-                      separator={<Separator o={0.35} />}
-                      borderWidth="$0.5"
-                      borderRadius="$4"
-                      borderColor="$borderColor"
-                    >
-                      <XStack px="$4" py="$4" gap="$3">
-                        <YStack width="80%">
-                          <Paragraph className="text-wrap-balance" size="$6" fow="bold">
-                            Lifetime access
-                          </Paragraph>
-                          <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
-                            Updates for life.
-                          </Paragraph>
-                        </YStack>
-                        <XStack f={1} ai="center" gap="$2" jc="center">
-                          <Paragraph className="text-wrap-balance" size="$8">
-                            {checkCircle}
-                          </Paragraph>
-                        </XStack>
-                      </XStack>
-                      <XStack px="$4" py="$4" gap="$3">
-                        <YStack width="80%">
-                          <Paragraph className="text-wrap-balance" size="$6">
-                            License Seats
-                          </Paragraph>
-                          <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
-                            Number of people that are allowed to develop on it
-                          </Paragraph>
-                        </YStack>
-                        <XStack f={1} ai="center" gap="$2" jc="center">
-                          <Paragraph className="text-wrap-balance" size="$8">
-                            {takeoutPriceInfo.licenseSeats}
-                          </Paragraph>
-                        </XStack>
-                      </XStack>
-
-                      <XStack px="$4" py="$4" gap="$3">
-                        <YStack width="80%">
-                          <Paragraph className="text-wrap-balance" size="$6">
-                            Discord Seats
-                          </Paragraph>
-                          <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
-                            Access to the Bento channel
-                          </Paragraph>
-                        </YStack>
-                        <XStack f={1} ai="center" gap="$2" jc="center">
-                          <Paragraph className="text-wrap-balance" size="$8">
-                            {takeoutPriceInfo.discordSeats}
-                          </Paragraph>
-                        </XStack>
-                      </XStack>
-                      <XStack px="$4" py="$4" gap="$3">
-                        <YStack width="80%">
-                          <Paragraph className="text-wrap-balance" size="$6">
-                            Discord #bento-general channel
-                          </Paragraph>
-                          <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
-                            Private group chat for all Bento purchasers
-                          </Paragraph>
-                        </YStack>
-                        <XStack f={1} ai="center" gap="$2" jc="center">
-                          <Paragraph className="text-wrap-balance" size="$8">
-                            {checkCircle}
-                          </Paragraph>
-                        </XStack>
-                      </XStack>
-                      <XStack px="$4" py="$4" gap="$3">
-                        <YStack width="80%">
-                          <Paragraph className="text-wrap-balance" size="$6">
-                            Discord Private Channel
-                          </Paragraph>
-                          <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
-                            Private chat for your team only
-                          </Paragraph>
-                        </YStack>
-                        <XStack f={1} ai="center" gap="$2" jc="center">
-                          <Paragraph className="text-wrap-balance" size="$8">
-                            {takeoutPriceInfo.hasDiscordPrivateChannels
-                              ? checkCircle
-                              : xCircle}
-                          </Paragraph>
-                        </XStack>
-                      </XStack>
-                    </YStack>
+                    <BentoTable selectedPriceId={selectedPriceId} product={mainProduct} />
                   </YStack>
 
                   <YStack f={2} gap="$4">
@@ -535,6 +447,90 @@ const PromotionInput = () => {
         </Paragraph>
       )}
     </AnimatePresence>
+  )
+}
+
+export function BentoTable({
+  product,
+  selectedPriceId,
+}: {
+  product?: Database['public']['Tables']['products']['Row'] & {
+    prices: Database['public']['Tables']['prices']['Row'][]
+  }
+  selectedPriceId: string
+}) {
+  // TODO: get bento price info
+  const takeoutPriceInfo = getTakeoutPriceInfo(
+    product?.prices.find((price) => price.id === selectedPriceId)?.description ?? ''
+  )
+  return (
+    <YStack
+      separator={<Separator o={0.35} />}
+      borderWidth="$0.5"
+      borderRadius="$4"
+      borderColor="$borderColor"
+    >
+      <XStack px="$4" py="$4" gap="$3">
+        <YStack width="80%">
+          <Paragraph size="$6" fow="bold">
+            Lifetime access + 1 year of updates
+          </Paragraph>
+          <Paragraph size="$3" theme="alt1">
+            You own the code for life, with updates for a year
+          </Paragraph>
+        </YStack>
+        <XStack f={1} ai="center" gap="$2" jc="center">
+          <Paragraph size="$8">{checkCircle}</Paragraph>
+        </XStack>
+      </XStack>
+      <XStack px="$4" py="$4" gap="$3">
+        <YStack width="80%">
+          <Paragraph size="$6">License Seats</Paragraph>
+          <Paragraph size="$3" theme="alt1">
+            Number of people that are allowed to develop on it
+          </Paragraph>
+        </YStack>
+        <XStack f={1} ai="center" gap="$2" jc="center">
+          <Paragraph size="$8">{takeoutPriceInfo.licenseSeats}</Paragraph>
+        </XStack>
+      </XStack>
+
+      <XStack px="$4" py="$4" gap="$3">
+        <YStack width="80%">
+          <Paragraph size="$6">Discord Seats</Paragraph>
+          <Paragraph size="$3" theme="alt1">
+            Access to the Bento channel
+          </Paragraph>
+        </YStack>
+        <XStack f={1} ai="center" gap="$2" jc="center">
+          <Paragraph size="$8">{takeoutPriceInfo.discordSeats}</Paragraph>
+        </XStack>
+      </XStack>
+      <XStack px="$4" py="$4" gap="$3">
+        <YStack width="80%">
+          <Paragraph size="$6">Discord #bento-general channel</Paragraph>
+          <Paragraph size="$3" theme="alt1">
+            Private group chat for all Bento purchasers
+          </Paragraph>
+        </YStack>
+        <XStack f={1} ai="center" gap="$2" jc="center">
+          <Paragraph size="$8">{checkCircle}</Paragraph>
+        </XStack>
+      </XStack>
+      <XStack px="$4" py="$4" gap="$3">
+        <YStack width="80%">
+          <Paragraph size="$6">Discord Private Channel</Paragraph>
+          <Paragraph size="$3" theme="alt1">
+            Private chat for your team only
+          </Paragraph>
+        </YStack>
+        <XStack f={1} ai="center" gap="$2" jc="center">
+          <Paragraph size="$8">
+            {takeoutPriceInfo.hasDiscordPrivateChannels ? checkCircle : xCircle}
+          </Paragraph>
+        </XStack>
+      </XStack>
+    </YStack>
   )
 }
 
