@@ -3,15 +3,30 @@
 
 import { useState } from 'react'
 import { View } from 'react-native'
-import { Button, Square, Stack, XStack, YStack } from 'tamagui'
+import {
+  Button,
+  Square,
+  Stack,
+  XStack,
+  YStack,
+  useProps,
+  usePropsAndStyle,
+} from 'tamagui'
 import { TimedRender } from './components/TimedRender'
+
+const TestThing = (props) => {
+  const [p2, style] = usePropsAndStyle(props)
+  console.log('ta', p2, style)
+
+  return null
+}
 
 export const Sandbox = () => {
   return (
     <View style={{ width: '100%', height: '100%', padding: 50 }}>
       <>
         {/* <AnimatedNumbers /> */}
-        <Square debug="verbose" size={100} bg="$background" />
+        <TestThing opacity={0.5} />
 
         {/* <YStack>
           <MeasureTamagui />

@@ -1324,9 +1324,8 @@ export const getSplitStyles: StyleSplitter = (
       if (props.className) classList.push(props.className)
       const finalClassName = classList.join(' ')
 
-      if (styleProps.noExpand) {
+      if (styleProps.noMergeStyle) {
         // this is passed in by useProps() and we want to avoid all .style setting then
-        // TODO make it its own attribute
         if (finalClassName) {
           viewProps.className = finalClassName
         }
@@ -1350,8 +1349,7 @@ export const getSplitStyles: StyleSplitter = (
       }
     } else {
       // this is passed in by useProps() and we want to avoid all .style setting then
-      // TODO make it its own attribute
-      if (!styleProps.noExpand) {
+      if (!styleProps.noMergeStyle) {
         // native assign styles
         viewProps.style = style as any
       }

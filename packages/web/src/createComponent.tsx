@@ -1072,6 +1072,7 @@ export function createComponent<
         staticConfig
       )
     }
+
     if (useChildrenResult) {
       content = useChildrenResult
     } else {

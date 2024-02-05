@@ -90,6 +90,7 @@ export function usePropsAndStyle<A extends StyleLikeObject>(
       isAnimated: false,
       mediaState: media,
       noSkip: true,
+      noMergeStyle: true,
       noClassNames: true,
       resolveValues: 'auto',
       ...opts,
