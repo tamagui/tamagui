@@ -528,6 +528,7 @@ export function createComponent<
       inverse: props.themeInverse,
       debug: debugProp,
     }
+    delete props.themeInverse
 
     if (typeof curState.isListeningToTheme === 'boolean') {
       themeStateProps.shouldUpdate = () => stateRef.current.isListeningToTheme
