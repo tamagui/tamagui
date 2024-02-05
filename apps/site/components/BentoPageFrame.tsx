@@ -20,6 +20,18 @@ export const BentoPageFrame = ({ children }: { children: any }) => {
         <Theme name="tan">
           <YStack pe="none" fullscreen bg="$color6" y={-100}>
             <YStack
+              className="mask-gradient-right"
+              fullscreen
+              o={0.1}
+              $theme-light={{
+                o: 0.3,
+              }}
+              style={{
+                background: `url(/grain.svg) 40%`,
+              }}
+            />
+
+            <YStack
               fullscreen
               className="mask-gradient-down"
               style={{
@@ -47,7 +59,7 @@ export const BentoPageFrame = ({ children }: { children: any }) => {
                 l="50%"
                 x={-850}
                 rotate="120deg"
-                o={0.09}
+                o={0.07}
                 $theme-dark={{
                   o: 0.01,
                 }}
@@ -59,6 +71,22 @@ export const BentoPageFrame = ({ children }: { children: any }) => {
                   height={3000}
                   src="/takeout/geometric.svg"
                 />
+              </YStack>
+
+              <YStack
+                pe="none"
+                pos="absolute"
+                t={-10}
+                rotate="220deg"
+                l="50%"
+                x={-250}
+                o={0.05}
+                zi={1}
+                style={{
+                  mixBlendMode: 'color-burn',
+                }}
+              >
+                <Image alt="idk" width={2000} height={2000} src="/takeout/wave.svg" />
               </YStack>
             </YStack>
           </YStack>
@@ -81,6 +109,9 @@ export const BentoFrond = () => (
     zi={2}
     pe="none"
     o={0.06}
+    $theme-dark={{
+      o: 0.125,
+    }}
     style={{ filter: 'blur(3px)' }}
   >
     <svg

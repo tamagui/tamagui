@@ -878,7 +878,7 @@ textarea {
 }
 
 .shadow-breeze {
-  animation: breeze 50s alternate-reverse infinite forwards;
+  animation: breeze 20s alternate-reverse infinite forwards;
 }
 
 :root.t_light .phone-preview {

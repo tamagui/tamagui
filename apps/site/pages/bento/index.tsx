@@ -53,19 +53,6 @@ export default function BentoPage(props: ProComponentsProps) {
         {/* <StudioPreviewComponents /> */}
       </YStack>
 
-      <YStack
-        fullscreen
-        y={-100}
-        o={0.1}
-        $theme-light={{
-          o: 0.3,
-        }}
-        style={{
-          background: `url(/grain.svg) 40%`,
-          mixBlendMode: 'color-dodge',
-        }}
-      />
-
       <Hero />
       <Body />
       <PurchaseModal coupon={props.coupon} mainProduct={props.proComponents} />
@@ -80,7 +67,7 @@ const Hero = () => {
   const store = useBentoStore()
 
   return (
-    <YStack pos="relative" pb="$4" zi={0}>
+    <YStack pos="relative" pb="$6" zi={0}>
       <ContainerLarge>
         <XStack gap="$6" py="$6" bc="transparent" jc="space-between" w={'100%'}>
           <YStack maw="55%" zi={100} jc="space-between" f={10} ai="flex-start" gap="$6">
@@ -117,16 +104,16 @@ const Hero = () => {
                 fontFamily="$mono"
                 size="$5"
                 fontSize={22}
-                bg="$color8"
+                bg="$color7"
                 color="#fff"
                 fontWeight="600"
-                scaleSpace={1}
-                scaleIcon={1.4}
+                scaleSpace={0.5}
+                scaleIcon={1.6}
                 als="flex-end"
                 mr="$4"
                 hoverStyle={{
-                  bg: '$color9',
-                  bc: '$color9',
+                  bg: '$color8',
+                  bc: '$color8',
                 }}
                 pressStyle={{
                   bg: '$color6',
@@ -136,13 +123,26 @@ const Hero = () => {
                 }}
               >
                 $200
+                <YStack
+                  zi={100}
+                  pos="absolute"
+                  t={-13}
+                  r={-13}
+                  bg="red"
+                  style={{
+                    background: `url(/leaf.webp)`,
+                    backgroundSize: 'contain',
+                  }}
+                  w={33}
+                  h={33}
+                />
               </Button>
             </Theme>
           </YStack>
 
           <YStack
-            mr={-400}
-            maw={840}
+            mr={-600}
+            maw={1000}
             mt={0}
             pl="$4"
             x={20}
@@ -155,9 +155,8 @@ const Hero = () => {
             <XStack
               fw="wrap"
               zi={1}
-              gap="$4"
+              gap="$6"
               mah={300}
-              miw={800}
               transformOrigin="left top"
               als="center"
               scale={0.6}
@@ -192,8 +191,8 @@ const Hero = () => {
               </ThemeTintAlt>
               <ThemeTintAlt offset={4}>
                 <BentoCard elevate>
-                  <YStack scale={0.8} mx={-30}>
-                    <Sections.Textareas.AvatarNameContentAction />
+                  <YStack scale={0.5} w={900} mx={-220} my={-146}>
+                    <Sections.Layouts.SignInRightImage />
                   </YStack>
                 </BentoCard>
               </ThemeTintAlt>
@@ -207,7 +206,7 @@ const Hero = () => {
               <ThemeTint>
                 <BentoCard elevate>
                   <YStack scale={0.8} mx={-30}>
-                    <Sections.Textareas.AvatarNameContentAction />
+                    <Sections.Checkboxes.CheckboxCards />
                   </YStack>
                 </BentoCard>
               </ThemeTint>
@@ -265,7 +264,7 @@ const Body = () => {
           {Sections.listingData.sections.map(({ sectionName, parts }) => {
             return (
               <YStack key={sectionName} gap="$6" jc={'space-between'}>
-                <H2 fontSize="$9" f={2}>
+                <H2 ff="$munro" color="$color5" fontSize="$11" f={2} my="$2">
                   {`${sectionName[0].toUpperCase()}${sectionName.slice(1)}`}
                 </H2>
                 <XStack gap={'$6'} f={4} fw="wrap" fs={1}>
@@ -444,7 +443,8 @@ const BentoCard = styled(ThemeableStack, {
   bg: '$background',
   ai: 'center',
   jc: 'center',
-  maw: 'calc(50% - var(--space-8))',
+  maw: 'calc(33.33% - 40px)',
+  w: '100%',
   h: 300,
   ov: 'hidden',
   br: '$4',
