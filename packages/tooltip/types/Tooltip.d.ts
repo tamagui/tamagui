@@ -17,6 +17,7 @@ export type TooltipProps = PopperProps & {
         open?: number;
         close?: number;
     };
+    disableAutoCloseOnScroll?: boolean;
 };
 type Delay = number | Partial<{
     open: number;
@@ -41,6 +42,7 @@ export declare const Tooltip: React.ForwardRefExoticComponent<PopperProps & {
         open?: number | undefined;
         close?: number | undefined;
     } | undefined;
+    disableAutoCloseOnScroll?: boolean | undefined;
 } & {
     __scopeTooltip?: string | undefined;
 } & React.RefAttributes<unknown>> & {

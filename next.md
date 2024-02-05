@@ -1,5 +1,5 @@
-- on scroll clear open tooltip (homepage hero is bad)
-
+- add more web-only stlye props:
+  - filter, backdropFilter, mixBlendMode are really good for $theme-light/dark
 - Group is not SSR safe because useProps is evaluating to specific media queries
 on the server and then ultimately becomes not-media-css
 

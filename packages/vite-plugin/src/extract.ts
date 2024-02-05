@@ -17,7 +17,10 @@ const styleUpdateEvent = (fileId: string) => `tamagui-style-update:${fileId}`
 const GLOBAL_CSS_VIRTUAL_PATH = '__tamagui_global_css__.css'
 
 export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugin {
-  const options = loadTamaguiBuildConfigSync(optionsIn)
+  const options = loadTamaguiBuildConfigSync({
+    ...optionsIn,
+    platform: 'web',
+  })
   const disableStatic =
     options.disable || (options.disableDebugAttr && options.disableExtraction)
 

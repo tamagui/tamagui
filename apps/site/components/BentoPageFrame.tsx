@@ -3,7 +3,7 @@ import { Theme, YStack } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 import Head from 'next/head'
 import { LoadCherryBomb, LoadMunro } from './LoadFont'
-import { ThemeTintEffect } from '../pages/bento'
+import { ThemeTintEffect } from '@components/ThemeTintEffect'
 import { ContainerLarge } from './Container'
 
 export const BentoPageFrame = ({ children }: { children: any }) => {
@@ -19,6 +19,19 @@ export const BentoPageFrame = ({ children }: { children: any }) => {
       <YStack pt={100} pb={100}>
         <Theme name="tan">
           <YStack pe="none" fullscreen bg="$color6" y={-100}>
+            <YStack
+              className="grain"
+              fullscreen
+              o={0.5}
+              zi={100}
+              $theme-light={{
+                o: 1,
+              }}
+              style={{
+                mixBlendMode: 'screen',
+              }}
+            />
+
             <YStack
               fullscreen
               className="mask-gradient-down"
@@ -47,9 +60,9 @@ export const BentoPageFrame = ({ children }: { children: any }) => {
                 l="50%"
                 x={-850}
                 rotate="120deg"
-                o={0.04}
+                o={0.07}
                 $theme-dark={{
-                  o: 0.01,
+                  o: 0.02,
                 }}
                 zi={-1}
               >
@@ -59,6 +72,26 @@ export const BentoPageFrame = ({ children }: { children: any }) => {
                   height={3000}
                   src="/takeout/geometric.svg"
                 />
+              </YStack>
+
+              <YStack
+                pe="none"
+                pos="absolute"
+                t={-10}
+                rotate="220deg"
+                l="50%"
+                x={-250}
+                o={0.05}
+                $theme-dark={{
+                  o: 0.09,
+                }}
+                zi={1}
+                style={{
+                  mixBlendMode: 'color-burn',
+                  filter: 'blur(2px)',
+                }}
+              >
+                <Image alt="idk" width={2000} height={2000} src="/takeout/wave.svg" />
               </YStack>
             </YStack>
           </YStack>
@@ -80,7 +113,10 @@ export const BentoFrond = () => (
     className="shadow-breeze"
     zi={2}
     pe="none"
-    o={0.06}
+    o={0.07}
+    $theme-dark={{
+      o: 0.125,
+    }}
     style={{ filter: 'blur(3px)' }}
   >
     <svg

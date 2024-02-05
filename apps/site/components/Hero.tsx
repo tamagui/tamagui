@@ -94,7 +94,6 @@ const HeroContents = memo(function HeroContents() {
           <XStack pos="absolute" als="center" y={-80}>
             <Link prefetch={false} href="/takeout">
               <Button
-                bw={2}
                 bc="$color6"
                 size="$3"
                 br="$10"

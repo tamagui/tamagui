@@ -399,11 +399,6 @@ export const PopperArrow = PopperArrowFrame.styleable<PopperArrowExtraProps>(
         arrowStyle[oppSide] = -size
         innerArrowStyle[oppSide] = size / 2
       }
-      if (oppSide === 'bottom') {
-        // on the bottom it needs to be 1px further up
-        // @ts-ignore it exists
-        arrowStyle[oppSide] += 1
-      }
       if (oppSide === 'top' || oppSide === 'bottom') {
         arrowStyle.left = 0
       }

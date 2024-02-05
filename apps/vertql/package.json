@@ -1,6 +1,6 @@
 {
   "name": "vertql",
-  "version": "1.89.0",
+  "version": "1.89.1",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist",
@@ -23,7 +23,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/vite-plugin": "1.89.0",
+    "@tamagui/vite-plugin": "1.89.1",
     "chalk": "^4.1.2",
     "citty": "^0.1.4",
     "esbuild": "^0.19.11",
@@ -33,11 +33,11 @@
     "graphology": "^0.24.1",
     "graphql": "^16.8.0",
     "http-proxy-middleware": "^2.0.6",
-    "vite": "^5.0.2",
+    "vite": "^5.0.12",
     "vite-plugin-inspect": "^0.7.38",
     "vxrn": "^0.0.7"
   },
   "devDependencies": {
-    "@tamagui/build": "1.89.0"
+    "@tamagui/build": "1.89.1"
   }
 }

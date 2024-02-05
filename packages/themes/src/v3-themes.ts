@@ -134,9 +134,9 @@ export const palettes = (() => {
 
   const lightPalette = [
     color.white0,
-    color.white075,
-    color.white05,
     color.white025,
+    color.white05,
+    color.white075,
     color.white1,
     color.white2,
     color.white3,
@@ -157,9 +157,9 @@ export const palettes = (() => {
 
   const darkPalette = [
     color.black0,
-    color.black075,
-    color.black05,
     color.black025,
+    color.black05,
+    color.black075,
     color.black1,
     color.black2,
     color.black3,
