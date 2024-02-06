@@ -1,3 +1,5 @@
+- not seeing data-at props
+
 - add more web-only stlye props:
   - filter, backdropFilter, mixBlendMode are really good for $theme-light/dark
 - Group is not SSR safe because useProps is evaluating to specific media queries
