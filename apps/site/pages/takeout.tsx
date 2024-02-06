@@ -87,6 +87,7 @@ import { useTakeoutStore } from '../hooks/useTakeoutStore'
 import { Footer } from '../components/Footer'
 import { PropsTable } from '@components/PropsTable'
 import { BentoTable } from '@components/BentoPurchaseModal'
+import { ThemeNameEffect } from '../components/ThemeNameEffect'
 
 export default function TakeoutPage({
   starter,
@@ -99,7 +100,19 @@ export default function TakeoutPage({
 
   return (
     <YStack maw="100%">
-      <ThemeTintAlt>
+      <YStack
+        pos="absolute"
+        l={0}
+        r={0}
+        t={-100}
+        b={0}
+        style={{
+          background: 'linear-gradient(var(--color6), var(--color4))',
+        }}
+        zi={-3}
+      />
+
+      <ThemeTintAlt offset={0}>
         <YStack
           pos="absolute"
           l={0}
@@ -107,14 +120,13 @@ export default function TakeoutPage({
           t={-100}
           b={0}
           style={{
-            background: 'linear-gradient(var(--color6), var(--color4))',
+            background: 'linear-gradient(10deg, var(--color6), var(--color4))',
           }}
           zi={-3}
         />
-        <ThemeTintEffect />
       </ThemeTintAlt>
 
-      <ThemeTintAlt offset={5}>
+      <ThemeTintAlt offset={0}>
         <YStack
           pos="absolute"
           l={0}
@@ -122,7 +134,22 @@ export default function TakeoutPage({
           t={-100}
           b={0}
           style={{
-            background: 'linear-gradient(to bottom, transparent, var(--color6))',
+            background: 'linear-gradient(to bottom, var(--color3) 2%, transparent 20%)',
+          }}
+          zi={-1}
+        />
+        <ThemeNameEffect colorKey="$color3" />
+      </ThemeTintAlt>
+
+      <ThemeTintAlt offset={1}>
+        <YStack
+          pos="absolute"
+          l={0}
+          r={0}
+          t={-100}
+          b={0}
+          style={{
+            background: 'linear-gradient(to right, transparent, var(--color7))',
           }}
           zi={-2}
         />
@@ -596,18 +623,6 @@ export default function TakeoutPage({
   )
 }
 
-const ThemeTintEffect = () => {
-  const theme = useTheme()
-  const color = theme.color6.val
-
-  useEffect(() => {
-    document.querySelector('#theme-color')?.setAttribute('content', color)
-    document.body.style.backgroundColor = color
-  }, [color])
-
-  return null
-}
-
 const CodeInline = styled(Paragraph, {
   tag: 'code',
   fontFamily: '$mono',
@@ -730,8 +745,8 @@ type TakeoutCardFrameProps = GetProps<typeof TakeoutCard2Frame> & {
 const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps) => {
   const isDark = useThemeName().startsWith('dark')
   const innerGlow = useHoverGlow({
-    resist: 50,
-    size: 250,
+    resist: 30,
+    size: 300,
     strategy: 'blur',
     blurPct: 60,
     // inverse: true,
@@ -1148,7 +1163,7 @@ const PurchaseModal = ({
         </Sheet>
       </Dialog.Adapt>
 
-      <Dialog.Portal theme="dark">
+      <Dialog.Portal>
         <Dialog.Overlay
           key="overlay"
           animation="medium"
@@ -1269,9 +1284,9 @@ const PurchaseModal = ({
                         br="$4"
                         gap="$3"
                       >
-                        <Check size={30} color="$color9" />
+                        <Check size={24} mt={2} color="$color9" />
                         <MunroP size="$7" color="$color11">
-                          Every plan includes the starter, icon packs & font packs
+                          Every plan includes the starter, icons & fonts
                         </MunroP>
                       </XStack>
                     </YStack>
@@ -1292,8 +1307,8 @@ const PurchaseModal = ({
                   </YStack>
 
                   <YStack mt="$6" space="$4" ai="center">
-                    <Paragraph size="$3" theme="alt2">
-                      One-click cancel the updates and subscription from your account.
+                    <Paragraph size="$3" theme="alt1">
+                      Instant one-click cancel your subscription from /account
                     </Paragraph>
                   </YStack>
                 </YStack>
@@ -1697,11 +1712,11 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
 
 function PurchaseButton(props: ButtonProps) {
   return (
-    <ThemeTint>
+    <ThemeTintAlt>
       <Button size="$6" borderWidth={2} bc="$color8" {...props}>
         <Button.Text ff="$silkscreen">{props.children} 🥡</Button.Text>
       </Button>
-    </ThemeTint>
+    </ThemeTintAlt>
   )
 }
 

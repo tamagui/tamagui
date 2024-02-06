@@ -107,18 +107,19 @@ const IntermediateCard = ({
 }: { title?: any; children?: any; Icon?: any }) => {
   return (
     <XStack
-      miw="calc(33.333 - 20px)"
+      miw="calc(33.333 - 5px)"
       ov="hidden"
       f={1}
       br="$9"
       p="$5"
       bc="$color7"
-      bw={1}
+      bw={0.25}
       bs="solid"
       gap="$3"
       elevation="$1"
       style={{
         backdropFilter: 'blur(80px)',
+        WebkitBackdropFilter: 'blur(80px)',
       }}
     >
       <YStack f={1} gap="$1.5">

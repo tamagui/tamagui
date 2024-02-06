@@ -20,6 +20,7 @@ import { getDefaultAvatarImage } from '../lib/avatar'
 import { DocsMenuContents } from './DocsMenuContents'
 import { HeaderLinks } from './HeaderLinks'
 import { useDocsMenu } from './useDocsMenu'
+import { useRouter } from 'next/router'
 
 export const HeaderMenu = React.memo(function HeaderMenu() {
   const { open, setOpen } = useDocsMenu()
@@ -30,7 +31,7 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
   const userSwr = useUser()
 
   return (
-    <ThemeTintAlt>
+    <HeaderMenuTheme>
       <Popover
         keepChildrenMounted
         hoverable={{
@@ -130,9 +131,24 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
 
         <HeaderMenuContent />
       </Popover>
-    </ThemeTintAlt>
+    </HeaderMenuTheme>
   )
 })
+
+const HeaderMenuTheme = (props: { children: any }) => {
+  const router = useRouter()
+  const isBento = router.pathname.startsWith('/bento')
+
+  return (
+    <ThemeTintAlt
+      {...(isBento && {
+        name: 'tan',
+      })}
+    >
+      {props.children}
+    </ThemeTintAlt>
+  )
+}
 
 const HeaderMenuContent = React.memo(function HeaderMenuContent() {
   return (

@@ -1,3 +1,5 @@
+- themes v3 needs to add "surface1" "surface2" "surface3" as generics basically
+
 - not seeing data-at props
 
 - add more web-only stlye props:

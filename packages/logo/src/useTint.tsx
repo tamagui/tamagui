@@ -85,7 +85,7 @@ export const ThemeTintAlt = ({
   const curTint = useTintAlt(offset)
   const name = disable ? null : curTint
   return (
-    <Theme {...rest} name={name}>
+    <Theme name={name} {...rest}>
       {children}
     </Theme>
   )

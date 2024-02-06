@@ -60,22 +60,6 @@ body {
   overflow-y: auto;
 }
 
-.home-glow {
-  background: radial-gradient(#fff 0%, transparent 50%);
-  transition: all ease-out 0.25s;
-}
-
-.t_dark .home-glow {
-  background: radial-gradient(var(--color6) 0%, transparent 72%);
-}
-
-.t_dark .home-glow.active {
-  opacity: 0.3;
-}
-.home-glow.active {
-  opacity: 1;
-}
-
 body .preview {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
@@ -647,12 +631,13 @@ textarea {
 }
 
 .text-3d {
-  text-shadow: 1px 1px 1px var(--color8), 1px 2px 1px var(--color8),
-    1px 3px 1px var(--color8), 1px 4px 1px var(--color8),
-    1px 5px 1px var(--color8), 1px 6px 1px var(--color8),
-    1px 7px 1px var(--color8), 1px 8px 1px var(--color8),
-    1px 9px 1px var(--color8), 1px 10px 1px var(--color8),
-    1px 18px 6px var(--shadowColor);
+  text-shadow: 
+    1px 1px 1px var(--color9), 1px 2px 1px var(--color9),
+    1px 3px 1px var(--color9), 1px 4px 1px var(--color9),
+    1px 5px 1px var(--color9), 1px 6px 1px var(--color9),
+    1px 7px 1px var(--color9), 1px 8px 1px var(--color9),
+    1px 9px 1px var(--color9), 1px 10px 1px var(--color9),
+    1px 28px 30px var(--background025);
 }
 
 .button-3d::before {
