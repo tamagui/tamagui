@@ -99,7 +99,7 @@ describe('flatten-tests', () => {
     })
   })
 
-  test.only(`work with experimentalFlattenThemesOnNative`, async () => {
+  test(`work with experimentalFlattenThemesOnNative`, async () => {
     const output = await extractForNative(`
       import { YStack } from 'tamagui/src/YStack'
   
@@ -116,5 +116,19 @@ describe('flatten-tests', () => {
     `)
 
     expect(output?.code).toMatchSnapshot()
+  })
+
+  test(`keeps style object a single object`, async () => {
+    const output = await extractForNative(`// debug
+      import { Stack } from 'tamagui'
+  
+      export function Test() {
+        return (
+          <Stack key={i} width={2} height={2} backgroundColor="#000" />
+        )
+      }
+    `)
+
+    expect(output?.code).toContain(`style={_sheet["0"]}`)
   })
 })

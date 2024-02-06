@@ -2245,6 +2245,7 @@ export function createExtractor(
                 }
               }
             }
+
             if (attr.type === 'dynamic-style') {
               if (existingStyleKeys.has(attr.name)) {
                 //@ts-ignore
@@ -2254,6 +2255,7 @@ export function createExtractor(
               }
             }
           }
+
           if (options.experimentalFlattenThemesOnNative) {
             attrs = attrs.filter(Boolean)
           }
@@ -2281,6 +2283,14 @@ export function createExtractor(
               }
             }
           }
+
+          // delete empty styles:
+          attrs = attrs.filter((x) => {
+            if (x.type === 'style' && Object.keys(x.value).length === 0) {
+              return false
+            }
+            return true
+          })
 
           if (shouldFlatten) {
             // DO FLATTEN
