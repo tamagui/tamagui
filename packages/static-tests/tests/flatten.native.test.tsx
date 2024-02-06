@@ -9,6 +9,27 @@ process.env.TAMAGUI_TARGET = 'native'
 window['React'] = React
 
 describe('flatten-tests', () => {
+  test(`flattened without extra attributes`, async () => {
+    const output = await extractForNative(`
+      import { YStack } from 'tamagui/src/YStack'
+      import { useMedia } from 'tamagui'
+  
+      export function Test(isLoading) {
+        const media = useMedia()
+        
+        return (
+          <YStack
+            y={10}
+            x={20}
+            rotate="10deg"
+          />
+        )
+      }
+    `)
+
+    expect(output?.code).toContain(`<__ReactNativeView style={_sheet["0"]} />`)
+  })
+
   test('flattened media queries', async () => {
     const output = await extractForNative(`
       import { YStack } from 'tamagui/src/YStack'

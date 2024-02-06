@@ -189,7 +189,6 @@ export const getSplitStyles: StyleSplitter = (
   let dynamicThemeAccess: boolean | undefined
   let pseudoGroups: Set<string> | undefined
   let mediaGroups: Set<string> | undefined
-  let style: ViewStyleWithPseudos = {}
   let className = (props.className as string) || '' // existing classNames
   let mediaStylesSeen = 0
 
@@ -204,7 +203,7 @@ export const getSplitStyles: StyleSplitter = (
     styleProps,
     componentState,
     staticConfig,
-    style,
+    style: null,
     theme,
     usedKeys,
     viewProps,
@@ -295,9 +294,12 @@ export const getSplitStyles: StyleSplitter = (
           if (isValidClassName || isMediaOrPseudo) {
             if (shouldDoClasses) {
               mergeClassName(transforms, classNames, keyInit, valInit, isMediaOrPseudo)
-              delete style[keyInit]
+              if (styleState.style) {
+                delete styleState.style[keyInit]
+              }
             } else {
-              style[keyInit] = reverseMapClassNameToValue(keyInit, valInit)
+              styleState.style ||= {}
+              styleState.style[keyInit] = reverseMapClassNameToValue(keyInit, valInit)
               delete classNames[keyInit]
             }
             continue
@@ -374,6 +376,7 @@ export const getSplitStyles: StyleSplitter = (
 
     if (!isValidStyleKeyInit) {
       if (keyInit.startsWith('_style') && isObj(valInit)) {
+        styleState.style ||= {}
         Object.assign(styleState.style, valInit)
         continue
       }
@@ -613,7 +616,8 @@ export const getSplitStyles: StyleSplitter = (
       valInit !== 'unset' &&
       (valInitType === 'number' || (valInitType === 'string' && valInit[0] !== '$'))
     ) {
-      style[keyInit] = valInit
+      styleState.style ||= {}
+      styleState.style[keyInit] = valInit
       continue
     }
 
@@ -645,7 +649,7 @@ export const getSplitStyles: StyleSplitter = (
             curProps: { ...styleState.curProps },
           })
           log('expanded', expanded, '\nusedKeys', { ...usedKeys }, '\ncurrent', {
-            ...style,
+            ...styleState.style,
           })
         }
       } catch {
@@ -789,7 +793,7 @@ export const getSplitStyles: StyleSplitter = (
               if (
                 defaultValues != null &&
                 !(pkey in usedKeys) &&
-                !(pkey in styleState.style)
+                (!styleState.style || !(pkey in styleState.style))
               ) {
                 mergeStyle(styleState, pkey, defaultValues)
               }
@@ -996,8 +1000,9 @@ export const getSplitStyles: StyleSplitter = (
               space = valInit.space
               continue
             }
+            styleState.style ||= {}
             mergeMediaByImportance(
-              style,
+              styleState.style,
               mediaKeyShort,
               subKey,
               mediaStyle[subKey],
@@ -1040,7 +1045,7 @@ export const getSplitStyles: StyleSplitter = (
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
       try {
         log(` ✔️ expand complete`, keyInit)
-        log('style', { ...style })
+        log('style', { ...styleState.style })
         log('transforms', { ...transforms })
         log('viewProps', { ...viewProps })
       } catch {
@@ -1066,6 +1071,7 @@ export const getSplitStyles: StyleSplitter = (
           if (style['$$css']) {
             Object.assign(styleState.classNames, style)
           } else {
+            styleState.style ||= {}
             Object.assign(styleState.style, style)
           }
         }
@@ -1076,12 +1082,14 @@ export const getSplitStyles: StyleSplitter = (
   const avoidNormalize = styleProps.noNormalize === false
 
   if (!avoidNormalize) {
-    fixStyles(style)
+    if (styleState.style) {
+      fixStyles(styleState.style)
 
-    // shouldn't this be better? but breaks some tests weirdly, need to check
-    // if (isWeb && !staticConfig.isReactNative) {
-    if (isWeb && !staticConfig.isReactNative) {
-      styleToCSS(style)
+      // shouldn't this be better? but breaks some tests weirdly, need to check
+      // if (isWeb && !staticConfig.isReactNative) {
+      if (isWeb && !staticConfig.isReactNative) {
+        styleToCSS(styleState.style)
+      }
     }
 
     // these are only the flat transforms
@@ -1097,10 +1105,11 @@ export const getSplitStyles: StyleSplitter = (
       // so basically we sort until we get to a duplicate... we could sort even smarter but
       // this should work for most (all?) of our cases since the order preservation really only needs to apply
       // to the "flat" transform props
+      styleState.style ||= {}
       Object.entries(styleState.transforms)
         .sort(([a], [b]) => a.localeCompare(b))
         .forEach(([key, val]) => {
-          mergeTransform(style, key, val, true)
+          mergeTransform(styleState.style!, key, val, true)
         })
     }
 
@@ -1110,9 +1119,9 @@ export const getSplitStyles: StyleSplitter = (
         !staticConfig.isReactNative &&
         !staticConfig.isHOC &&
         (styleProps.isAnimated && !conf.animations.supportsCSSVars ? false : true) &&
-        Array.isArray(style.transform)
+        Array.isArray(styleState.style?.transform)
       ) {
-        style.transform = transformsToString(style.transform) as any
+        styleState.style.transform = transformsToString(styleState.style.transform) as any
       }
     }
 
@@ -1122,29 +1131,31 @@ export const getSplitStyles: StyleSplitter = (
         if (shouldDoClasses) {
           for (const key in parentSplitStyles.classNames) {
             const val = parentSplitStyles.classNames[key]
-            if (key in style || key in classNames) continue
+            if ((styleState.style && key in styleState.style) || key in classNames)
+              continue
             classNames[key] = val
           }
         }
       }
       if (!shouldDoClasses) {
         for (const key in parentSplitStyles.style) {
-          if (key in classNames || key in style) continue
-          style[key] = parentSplitStyles.style[key]
+          if (key in classNames || (styleState.style && key in styleState.style)) continue
+          styleState.style ||= {}
+          styleState.style[key] = parentSplitStyles.style[key]
         }
       }
     }
   }
 
   if (process.env.TAMAGUI_TARGET === 'web') {
-    if (shouldDoClasses) {
+    if (styleState.style && shouldDoClasses) {
       let retainedStyles: ViewStyleWithPseudos | undefined
       let shouldRetain = false
 
-      if (style['$$css']) {
+      if (styleState.style['$$css']) {
         // avoid re-processing for rnw
       } else {
-        const atomic = getStylesAtomic(style)
+        const atomic = getStylesAtomic(styleState.style)
 
         for (const atomicStyle of atomic) {
           const key = atomicStyle.property
@@ -1162,7 +1173,7 @@ export const getSplitStyles: StyleSplitter = (
 
           if (isAnimatedAndAnimateOnly) {
             retainedStyles ||= {}
-            retainedStyles[key] = style[key]
+            retainedStyles[key] = styleState.style[key]
           } else if (nonAnimatedAnimateOnly) {
             retainedStyles ||= {}
             retainedStyles[key] = atomicStyle.value
@@ -1182,12 +1193,12 @@ export const getSplitStyles: StyleSplitter = (
 
         if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
           console.groupCollapsed(`🔹 getSplitStyles final style object`)
-          console.info(style)
+          console.info(styleState.style)
           console.groupEnd()
         }
 
         if (shouldRetain || !IS_STATIC) {
-          style = retainedStyles || {}
+          styleState.style = retainedStyles || {}
         }
       }
 
@@ -1265,8 +1276,7 @@ export const getSplitStyles: StyleSplitter = (
     hasMedia,
     fontFamily: styleState.fontFamily,
     viewProps,
-    // @ts-expect-error
-    style,
+    style: styleState.style as any,
     pseudos,
     classNames,
     rulesToInsert,
@@ -1277,7 +1287,8 @@ export const getSplitStyles: StyleSplitter = (
 
   // native: swap out the right family based on weight/style
   if (process.env.TAMAGUI_TARGET === 'native') {
-    if (style.fontFamily) {
+    const style = styleState.style
+    if (style?.fontFamily) {
       const faceInfo = getFont(style.fontFamily as string)?.face
       if (faceInfo) {
         const overrideFace =
@@ -1296,21 +1307,23 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
-  // merge className and style back into viewProps:
-  let fontFamily =
-    isText || isInput
-      ? styleState.fontFamily || staticConfig.defaultProps?.fontFamily
-      : null
-  if (fontFamily && fontFamily[0] === '$') {
-    fontFamily = fontFamily.slice(1)
-  }
-  const fontFamilyClassName = fontFamily ? `font_${fontFamily}` : ''
   const asChild = props.asChild
   const asChildExceptStyleLike =
     asChild === 'except-style' || asChild === 'except-style-web'
 
   if (!asChildExceptStyleLike) {
+    const style = styleState.style
+
     if (process.env.TAMAGUI_TARGET === 'web') {
+      // merge className and style back into viewProps:
+      let fontFamily =
+        isText || isInput
+          ? styleState.fontFamily || staticConfig.defaultProps?.fontFamily
+          : null
+      if (fontFamily && fontFamily[0] === '$') {
+        fontFamily = fontFamily.slice(1)
+      }
+      const fontFamilyClassName = fontFamily ? `font_${fontFamily}` : ''
       const groupClassName = props.group ? `t_group_${props.group}` : ''
       const componentNameFinal = props.componentName || staticConfig.componentName
       const componentClassName =
@@ -1334,7 +1347,9 @@ export const getSplitStyles: StyleSplitter = (
         !conf.animations.supportsCSSVars &&
         isReactNative
       ) {
-        viewProps.style = style as any
+        if (style) {
+          viewProps.style = style as any
+        }
       } else if (isReactNative) {
         const cnStyles = { $$css: true }
         for (const name of finalClassName.split(' ')) {
@@ -1345,11 +1360,13 @@ export const getSplitStyles: StyleSplitter = (
         if (finalClassName) {
           viewProps.className = finalClassName
         }
-        viewProps.style = style as any
+        if (style) {
+          viewProps.style = style as any
+        }
       }
     } else {
       // this is passed in by useProps() and we want to avoid all .style setting then
-      if (!styleProps.noMergeStyle) {
+      if (style && !styleProps.noMergeStyle) {
         // native assign styles
         viewProps.style = style as any
       }
@@ -1367,7 +1384,6 @@ export const getSplitStyles: StyleSplitter = (
           componentState,
           transforms,
           viewProps,
-          viewPropsOrder: Object.keys(viewProps),
           rulesToInsert,
           parentSplitStyles,
         }
@@ -1423,7 +1439,7 @@ function mergeStyle(
   val: any,
   disableNormalize = false
 ) {
-  const { classNames, viewProps, style, usedKeys, styleProps } = styleState
+  const { classNames, viewProps, usedKeys, styleProps } = styleState
   if (isWeb && val?.[0] === '_') {
     classNames[key] = val
     usedKeys[key] ||= 1
@@ -1436,7 +1452,8 @@ function mergeStyle(
     if (key in validStylesOnBaseProps) {
       viewProps[key] = out
     } else {
-      style[key] = out
+      styleState.style ||= {}
+      styleState.style[key] = out
     }
   }
 }

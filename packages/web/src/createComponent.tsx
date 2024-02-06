@@ -629,6 +629,7 @@ export function createComponent<
 
     // hide strategy will set this opacity = 0 until measured
     if (props.group && props.untilMeasured === 'hide' && !curState.hasMeasured) {
+      splitStyles.style ||= {}
       splitStyles.style.opacity = 0
     }
 
@@ -715,7 +716,7 @@ export function createComponent<
       const animations = useAnimations({
         props: propsWithAnimation,
         // if hydrating, send empty style
-        style: splitStylesStyle,
+        style: splitStylesStyle || {},
         presence,
         componentState: state,
         styleProps,
@@ -1109,8 +1110,8 @@ export function createComponent<
             // capture just initial width and height if they exist
             // will have top, left, width, height (not x, y)
             layout: {
-              width: fromPx(splitStyles.style.width as any),
-              height: fromPx(splitStyles.style.height as any),
+              width: fromPx(splitStyles.style?.width as any),
+              height: fromPx(splitStyles.style?.height as any),
             } as any,
           },
         },

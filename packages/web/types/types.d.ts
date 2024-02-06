@@ -776,7 +776,7 @@ export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>>
 export type PropMappedValue = [string, any][] | undefined;
 type FlatTransforms = Record<string, any>;
 export type GetStyleState = {
-    style: TextStyleProps;
+    style: TextStyleProps | null;
     usedKeys: Record<string, number>;
     classNames: ClassNamesObject;
     staticConfig: StaticConfig;
@@ -1064,7 +1064,7 @@ export type GestureReponderEvent = Exclude<View['props']['onResponderMove'], voi
 export type RulesToInsert = StyleObject[];
 export type GetStyleResult = {
     pseudos?: PseudoStyles | null;
-    style: ViewStyle;
+    style: ViewStyle | null;
     classNames: ClassNamesObject;
     rulesToInsert: RulesToInsert;
     viewProps: StackProps & Record<string, any>;
