@@ -905,3 +905,19 @@ textarea {
     1px 9px 1px var(--color6), 1px 12px 1px var(--color6),
     0 0 300px rgba(255, 255, 255, 0.4);
 }
+
+.home-glow {
+  background: radial-gradient(#fff 0%, transparent 50%);
+  transition: all ease-out 5s;
+}
+
+.t_dark .home-glow {
+  background: radial-gradient(var(--color6) 0%, transparent 72%);
+}
+
+.t_dark .home-glow.active {
+  opacity: 0.3;
+}
+.home-glow.active {
+  opacity: 1;
+}

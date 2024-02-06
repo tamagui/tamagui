@@ -22,8 +22,8 @@ const TitleLink = ({ href, children, ...props }: any) => {
           hoverStyle={{
             backgroundColor: '$color3',
           }}
-          size="$10"
-          fontSize="$8"
+          size="$9"
+          fontSize="$6"
           ls={0}
           {...props}
         >
