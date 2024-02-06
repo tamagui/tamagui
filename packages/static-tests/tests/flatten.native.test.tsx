@@ -98,4 +98,23 @@ describe('flatten-tests', () => {
       backgroundColor: 'blue',
     })
   })
+
+  test.only(`work with experimentalFlattenThemesOnNative`, async () => {
+    const output = await extractForNative(`
+      import { YStack } from 'tamagui/src/YStack'
+  
+      export function Test(isLoading) {
+        return (
+          <YStack
+            y={10}
+            x={20}
+            rotate="10deg"
+            backgroundColor="$background"
+          />
+        )
+      }
+    `)
+
+    expect(output?.code).toMatchSnapshot()
+  })
 })

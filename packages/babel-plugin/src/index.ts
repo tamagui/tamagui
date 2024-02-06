@@ -216,7 +216,7 @@ export default declare(function snackBabelPlugin(
 
                       const styleExpr = t.conditionalExpression(
                         options.experimentalFlattenThemesOnNative
-                          ? t.identifier(`expressions[${expressions.length - 1}]`)
+                          ? t.identifier(`_expressions[${expressions.length - 1}]`)
                           : attr.value.test,
                         consExpr || t.nullLiteral(),
                         altExpr || t.nullLiteral()
@@ -234,7 +234,7 @@ export default declare(function snackBabelPlugin(
                         t.objectExpression([
                           t.objectProperty(
                             t.identifier(attr.name as string),
-                            t.identifier(`expressions[${expressions.length - 1}]`)
+                            t.identifier(`_expressions[${expressions.length - 1}]`)
                           ),
                         ])
                       )
@@ -276,7 +276,7 @@ export default declare(function snackBabelPlugin(
                           t.callExpression(t.identifier('__internalWithTheme'), [
                             t.identifier(name),
                             t.arrowFunctionExpression(
-                              [t.identifier('theme'), t.identifier('expressions')],
+                              [t.identifier('theme'), t.identifier('_expressions')],
                               t.blockStatement([
                                 t.returnStatement(
                                   t.callExpression(
@@ -294,7 +294,11 @@ export default declare(function snackBabelPlugin(
                                                 t.identifier('Object'),
                                                 t.identifier('assign')
                                               ),
-                                              [...stylesExpr.elements, ...[]] as any[]
+                                              [
+                                                t.objectExpression([]),
+                                                ...stylesExpr.elements,
+                                                ...[],
+                                              ] as any[]
                                             )
                                           ),
                                         ])
@@ -306,7 +310,7 @@ export default declare(function snackBabelPlugin(
                                             t.identifier(k)
                                           )
                                         ),
-                                        t.spreadElement(t.identifier('expressions')),
+                                        t.spreadElement(t.identifier('_expressions')),
                                       ]),
                                     ]
                                   )
