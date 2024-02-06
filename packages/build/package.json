@@ -21,7 +21,12 @@
     "fast-glob": "^3.2.11",
     "fs-extra": "^11.2.0",
     "get-tsconfig": "^4.5.0",
-    "lodash.debounce": "^4.0.8",
+    "lodash.debounce": "^4.0.8"
+  },
+  "peerDependencies": {
+    "typescript": "*"
+  },
+  "devDependencies": {
     "typescript": "^5.3.3"
   },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"

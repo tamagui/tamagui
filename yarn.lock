@@ -5639,6 +5639,8 @@ __metadata:
     get-tsconfig: "npm:^4.5.0"
     lodash.debounce: "npm:^4.0.8"
     typescript: "npm:^5.3.3"
+  peerDependencies:
+    typescript: "*"
   bin:
     tamagui-build: tamagui-build.js
   languageName: unknown
