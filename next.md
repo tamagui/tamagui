@@ -1,3 +1,5 @@
+- addTheme updateTheme regression needs a test
+
 - themes v3 needs to add "surface1" "surface2" "surface3" as generics basically
 
 - not seeing data-at props
