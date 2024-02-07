@@ -1,3 +1,20 @@
+- animatedStyle showing up in animated component snapshot on native
+  - add some native snapshots in ci tests
+
+- fix hitSlop on View to accept number since it uses Pressable internally
+
+- experimentalFlattenThemesOnNative is breaking on ternaries now
+
+```tsx
+<Flex backgroundColor={showBackground ? '$surface1' : '$transparent'} />
+```
+
+seems to not me merging style into one object on flatten here:
+
+```tsx
+<Flex position="absolute" right="$spacing20" top="$spacing20" />
+```
+
 - expo router ExpoResponse not a constructor issue
 
 - addTheme updateTheme regression needs a test
@@ -11,14 +28,9 @@
 - Group is not SSR safe because useProps is evaluating to specific media queries
 on the server and then ultimately becomes not-media-css
 
-- Label + Select
-
 - type to search on Select regressed
 
 - masks wasn't exported in my version of @tamagui/theme-builder (1.88.18). I had to grab it from @tamagui/themes/v2-themes instead
-
-- for uni: 
-  if you have variant that expands into `maxFontSizeMultiplier` it wont get filtered by skipProps on web
 
 - // TODO: pulling past the limit breaks scroll on native, need to better make ScrollView
 
@@ -26,95 +38,21 @@ on the server and then ultimately becomes not-media-css
 
 - nextjs plugin should automatically do the t_unmounted thing if disableSSR isnt true
 
-- opacity values desperately needed
-  - dynamic opacity is doable but would only work 0-runtime if css supports shifting opacity
-
 - // TODO ?
 - make studio not build unless `studio(` in commit
 
 - native theme change warning logs + theme change speed
 
-- themes v3
-  - remove many masks
-  - get ready for studio integration (export from studio?)
-  - light mode bg's and borders too light in general
-  - dark mode kitchen sink the listitem should be lighter than bg, listitem press theme should be darker
-
 - document popover hoverable + onOpenChange second arg via
 
-- add $pointerFine to takeout
+- add $mouse to takeout
 
 - bug in generated icon props
   - https://discord.com/channels/909986013848412191/1178185816426680370/1199854688233857136
 
-- floating ui has a breaking change in patch version, so weve pinned the version to exact, but we should upgrade to latest floating ui and figure out the fixes (last i checked not super easy)
-
-missing disabled prop when using a variant function. Here's an example:
-
-```tsx
-const CustomStack = styled(Stack, {
-  variants: {
-    selected: {
-      ':boolean'(selected, { props }) {
-        if (props.disabled) {
-         
-        }
-      },
-    },
-  },
-});
-```
-
-onPress
-
-```tsx
-const CustomStack = styled(Stack, {
-  variants: {
-    disabled: {
-      ':boolean': (disabled, { props: { onPress } }) =>
-    },
-  },
-});
-```
-
-error when we use aria-selected and aria-disabled inside variants:
-
-```tsx
-const CustomStack = styled(Stack, {
-  variants: {
-    selected: {
-      true: {
-        'aria-selected': true,
-      },
-    },
-  },
-});
-
-variants changed to feature unset as an option. We set the type as the function argument:
-
-const CustomStack = styled(Stack, {
-  variants: {
-    variant: (variant: 'primary' | 'secondary') => {
-      return {
-        backgroundColor: `$control.${variant}.enabled` as const,
-      };
-    },
-  },
-});
-
-type CustomStackProps = GetProps<typeof CustomStack>;
-
-type Variants = CustomStackProps['variant'];
-// Used to be 'primary' | 'secondary' | undefined
-// Now is 'unset' | 'primary' | 'secondary' | undefined
-```
-
 - compiler - no need to setup any separate package
 
 - 2.0 rename SizableStack to Surface and simplify a bit
-- 2.0 rename
-
-- make it so media queries can be shared with groups easily
 
 - Remove the need for Text
 

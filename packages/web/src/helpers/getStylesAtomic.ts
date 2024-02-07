@@ -36,7 +36,7 @@ let conf: TamaguiInternalConfig
 
 // mutates...
 
-export function transformsToString(transforms: any[]) {
+export function transformsToString(transforms: Object[]) {
   return transforms
     .map(
       // { scale: 2 } => 'scale(2)'
