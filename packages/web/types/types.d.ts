@@ -18,6 +18,7 @@ export type { MediaStyleObject, StyleObject } from '@tamagui/helpers';
 export type ColorScheme = 'light' | 'dark';
 export type IsMediaType = boolean | 'platform' | 'theme' | 'group';
 export type SpaceDirection = 'vertical' | 'horizontal' | 'both';
+export type MaybeTamaguiComponent<A = any> = TamaguiComponent<A> | React.FC<A>;
 export type TamaguiElement = HTMLElement | View;
 export type TamaguiTextElement = HTMLElement | RNText;
 export type DebugProp = boolean | 'break' | 'verbose' | 'visualize' | 'profile';
@@ -781,7 +782,7 @@ export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>>
 export type PropMappedValue = [string, any][] | undefined;
 type FlatTransforms = Record<string, any>;
 export type GetStyleState = {
-    style: TextStyleProps;
+    style: TextStyleProps | null;
     usedKeys: Record<string, number>;
     classNames: ClassNamesObject;
     staticConfig: StaticConfig;
@@ -965,6 +966,7 @@ export type SplitStyleProps = {
     noExpand?: boolean;
     noNormalize?: boolean | 'values';
     noSkip?: boolean;
+    noMergeStyle?: boolean;
     resolveValues?: ResolveVariableAs;
     disableExpandShorthands?: boolean;
     fallbackProps?: Record<string, any>;
@@ -1068,7 +1070,7 @@ export type GestureReponderEvent = Exclude<View['props']['onResponderMove'], voi
 export type RulesToInsert = StyleObject[];
 export type GetStyleResult = {
     pseudos?: PseudoStyles | null;
-    style: ViewStyle;
+    style: ViewStyle | null;
     classNames: ClassNamesObject;
     rulesToInsert: RulesToInsert;
     viewProps: StackProps & Record<string, any>;

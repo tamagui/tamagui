@@ -25,28 +25,36 @@ If you want `tamagui`, you can avoid core and just:
 yarn add tamagui
 ```
 
-Tamagui doesn't require any special bundler setup. It also doesn't necessarily require you to set up your design system with `createTamagui`, but we provide some helpful default setups if you want.
-
-Beyond adding the `TamaguiProvider` at the root of your app, you are ready to go. For a more detailed design system setup, [follow the configuration docs](/docs/core/configuration).
-
-At the root of your app:
+Add `TamaguiProvider` at the root of your app and you are fully set up:
 
 ```tsx
-// some helpful reset styles for web:
+// optional but recommended CSS reset:
 import '@tamagui/core/reset.css'
+import { TamaguiProvider, View } from '@tamagui/core'
 
-import { TamaguiProvider, createTamagui } from 'tamagui'
+export default () => (
+  <TamaguiProvider>
+    <View width={200} height={200} backgroundColor="red" />
+  </TamaguiProvider>
+)
+```
 
-// some nice defaults:
-import { config } from '@tamagui/config/v2'
+Tamagui doesn't require any bundler setup for either web or native.
 
-// you usually export this from a tamagui.config.ts file:
-// this can be as simple as an empty object
+Typically you'll want to set up a few things with `createTamagui` though - for example media queries, or custom fonts.
+
+The [configuration documentation](/docs/core/configuration) covers this in detail, but if you'd like to get started quick with some decent defaults we have `@tamagui/config`:
+
+```tsx
+import { TamaguiProvider, createTamagui } from '@tamagui/core'
+import { config } from '@tamagui/config/v3'
+
+// you usually export this from a tamagui.config.ts file
 const tamaguiConfig = createTamagui(config)
 
-// this makes typescript properly type everything based on the config
+// make TypeScript type everything based on your config
 type Conf = typeof tamaguiConfig
-declare module 'tamagui' {
+declare module '@tamagui/core' {
   interface TamaguiCustomConfig extends Conf {}
 }
 
@@ -73,11 +81,11 @@ export default function Demo() {
 }
 ```
 
-From here, we'd recommend [spending some time understanding configuration](/docs/core/configuration). You could also [setup the compiler](/docs/intro/compiler-install), but we'd recommend waiting to do that once you're well into developing your app, as Tamagui works 100% the same at runtime as at compile.
+From here, we'd recommend [spending some time understanding configuration](/docs/core/configuration). Tamagui works 100% the same at runtime as at compile-time, so you can wait until you're needing some extra performance to [set up the compiler](/docs/intro/compiler-install).
 
 We also have more in depth guides for [Next.js](/docs/guides/next-js), [Expo](/docs/guides/expo) and [Vite](/docs/guides/vite).
 
-Note that while Tamagui generally doesn't require any special bundler setup, React Native Web and the ecosystem sometimes does, so we do recommend a few simple configurations for them:
+Note that while Tamagui generally doesn't require any special bundler setup, React Native Web and the ecosystem of React Native packages often do, and Tamagui has a variety of plugins to aid in compatibility and make setting up the optimizing compile easy:
 
 #### Webpack
 
@@ -92,7 +100,7 @@ config.plugins.push(
 )
 ```
 
-Or manually:
+Or a minimal manual setup:
 
 ```tsx
 // some stuff for react-native
@@ -136,7 +144,7 @@ export default {
 }
 ```
 
-Or manually:
+Or a minimal manual setup:
 
 ```tsx
 config.define = {
@@ -166,4 +174,27 @@ config.optimizeDeps.esbuildOptions = {
     '.js': 'jsx',
   },
 }
+```
+
+#### Metro
+
+Early support for Metro web support is here with `@tamagui/metro-plugin`:
+
+```tsx
+// Learn more https://docs.expo.io/guides/customizing-metro
+const { getDefaultConfig } = require('expo/metro-config')
+
+/** @type {import('expo/metro-config').MetroConfig} */
+const config = getDefaultConfig(__dirname, {
+  // [Web-only]: Enables CSS support in Metro.
+  isCSSEnabled: true,
+})
+
+// 2. Enable Tamagui
+const { withTamagui } = require('@tamagui/metro-plugin')
+module.exports = withTamagui(config, {
+  components: ['tamagui'],
+  config: './tamagui.config.ts',
+  outputCSS: './tamagui-web.css',
+})
 ```

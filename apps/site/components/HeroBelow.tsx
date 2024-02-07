@@ -2,7 +2,7 @@ import { ChevronRight, Code, Cpu, Layers, Star } from '@tamagui/lucide-icons'
 import { NextLink } from 'components/NextLink'
 import Link from 'next/link'
 import { memo } from 'react'
-import type { YStackProps } from 'tamagui';
+import type { YStackProps } from 'tamagui'
 import { Button, H3, Paragraph, Theme, XStack, YStack } from 'tamagui'
 
 import { CodeInline } from './Code'
@@ -18,12 +18,12 @@ const TitleLink = ({ href, children, ...props }: any) => {
         <CodeInline
           cursor="pointer"
           fontFamily="$silkscreen"
-          bc="$color2"
+          bg="$color2"
           hoverStyle={{
             backgroundColor: '$color3',
           }}
-          size="$10"
-          fontSize="$8"
+          size="$9"
+          fontSize="$6"
           ls={0}
           {...props}
         >
@@ -48,7 +48,7 @@ export const HeroBelow = memo(() => {
         pt="$6"
         pb="$10"
       >
-        <YStack fullscreen bc="$color3" zi={-1} o={0.25} btw={1} btc="$borderColor" />
+        <YStack fullscreen bg="$color3" zi={-1} o={0.25} btw={1} btc="$borderColor" />
 
         <HeroBelowContent />
       </YStack>
@@ -58,10 +58,6 @@ export const HeroBelow = memo(() => {
 
 export const HeroBelowContent = memo(() => {
   const [hovered, setHovered] = useHeroHovered()
-
-  const greenTheme = hovered === 0 ? 'green_alt1' : 'green'
-  const blueTheme = hovered === 1 ? 'blue_alt1' : 'blue'
-  const purpleTheme = hovered === 2 ? 'purple_alt1' : 'purple'
 
   return (
     <ContainerLarge>
@@ -79,7 +75,7 @@ export const HeroBelowContent = memo(() => {
           px: '$6',
         }}
       >
-        <Section theme={greenTheme} onHoverIn={() => setHovered(0)}>
+        <Section theme="green" onHoverIn={() => setHovered(0)}>
           <IconStack>
             <Code size={16} color="var(--color9)" />
           </IconStack>
@@ -90,7 +86,7 @@ export const HeroBelowContent = memo(() => {
           </Paragraph>
         </Section>
 
-        <Section theme={blueTheme} onHoverIn={() => setHovered(1)}>
+        <Section theme="blue" onHoverIn={() => setHovered(1)}>
           <IconStack>
             <Cpu size={16} color="var(--color9)" />
           </IconStack>
@@ -101,7 +97,7 @@ export const HeroBelowContent = memo(() => {
           </Paragraph>
         </Section>
 
-        <Section theme={purpleTheme} onHoverIn={() => setHovered(2)}>
+        <Section theme="purple" onHoverIn={() => setHovered(2)}>
           <IconStack>
             <Layers size={16} color="var(--color9)" />
           </IconStack>

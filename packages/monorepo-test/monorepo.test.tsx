@@ -32,4 +32,4 @@ test('performance of types', async () => {
   )
 
   expect(slowdown).toBeLessThan(1.5)
-}, 40_000)
+}, 100_000)

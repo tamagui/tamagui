@@ -69,13 +69,7 @@ export default function StudioSplashPage() {
         <LinearGradient
           pos="absolute"
           fullscreen
-          colors={[
-            '$backgroundStrong',
-            '$color2',
-            '$color2',
-            '$color2',
-            '$backgroundStrong',
-          ]}
+          colors={['$background', '$color2', '$color2', '$color2', '$background']}
         />
 
         <ContainerXL>
@@ -159,7 +153,7 @@ export default function StudioSplashPage() {
                   items={[
                     `Generate complete theme suites step-by-step.`,
                     `Visualize your design system.`,
-                    `Helpers for media queries, tokens, fonts and more`,
+                    `Export themes directly to your app.`,
                   ]}
                 />
               </YStack>

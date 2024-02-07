@@ -19,7 +19,7 @@ export const NoticeFrame = styled(XStack, {
   borderColor: '$borderColor',
   p: '$4',
   py: '$3',
-  bc: '$background',
+  bg: '$background',
   br: '$4',
   space: '$3',
   my: '$4',

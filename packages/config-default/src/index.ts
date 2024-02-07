@@ -1,8 +1,10 @@
-import { createFont, createTamagui, createTokens } from '@tamagui/core'
+import { createFont, createTokens } from '@tamagui/core'
 import { shorthands } from '@tamagui/shorthands'
+// import { animations } from './animations'
+// import { animations as animationsNative } from './animations.native'
 
 // basic fallback theme just to have compiler load in decent tate
-export function getDefaultTamaguiConfig() {
+export function getDefaultTamaguiConfig(platform: 'native' | 'web' = 'web') {
   const headingFont = createFont({
     family: 'Heading',
     size: {
@@ -212,13 +214,14 @@ export function getDefaultTamaguiConfig() {
     pointerCoarse: { pointer: 'coarse' },
   }
 
-  return createTamagui({
+  return {
     shouldAddPrefersColorThemes: true,
     themeClassNameOnRoot: true,
+    // animations: platform === 'web' ? animations : animationsNative,
     shorthands,
     fonts,
     themes,
     tokens,
     media,
-  })
+  }
 }

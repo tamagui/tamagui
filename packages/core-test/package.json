@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/core-test",
-  "version": "1.88.23",
+  "version": "1.89.11",
   "module": "dist/esm",
   "private": true,
   "license": "MIT",
@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "@testing-library/react": "^14.0.0",
+    "@testing-library/react-native": "^12.4.3",
     "csstype": "^3.0.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

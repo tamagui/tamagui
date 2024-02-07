@@ -3,22 +3,18 @@ import { Label, Separator, Switch, XStack, YStack, styled } from 'tamagui'
 
 export function SwitchDemo() {
   return (
-    <YStack width={200} alignItems="center" space="$3">
-      <XStack space="$3" $xs={{ flexDirection: 'column' }}>
+    <YStack width={200} alignItems="center" gap="$3">
+      <XStack gap="$3" $xs={{ flexDirection: 'column' }}>
         <SwitchWithLabel size="$2" />
         <SwitchWithLabel size="$2" defaultChecked />
       </XStack>
-      <XStack space="$3" $xs={{ flexDirection: 'column' }}>
+      <XStack gap="$3" $xs={{ flexDirection: 'column' }}>
         <SwitchWithLabel size="$3" />
         <SwitchWithLabel size="$3" defaultChecked />
       </XStack>
-      <XStack space="$3" $xs={{ flexDirection: 'column' }}>
+      <XStack gap="$3" $xs={{ flexDirection: 'column' }}>
         <SwitchWithLabel size="$4" />
         <SwitchWithLabel size="$4" defaultChecked />
-      </XStack>
-      <XStack space="$3" $xs={{ flexDirection: 'column' }}>
-        <SwitchWithLabel size="$5" />
-        <SwitchWithLabel size="$5" defaultChecked />
       </XStack>
     </YStack>
   )
@@ -27,7 +23,7 @@ export function SwitchDemo() {
 export function SwitchWithLabel(props: { size: SizeTokens; defaultChecked?: boolean }) {
   const id = `switch-${props.size.toString().slice(1)}-${props.defaultChecked ?? ''}}`
   return (
-    <XStack width={200} alignItems="center" space="$4">
+    <XStack width={200} alignItems="center" gap="$4">
       <Label
         paddingRight="$0"
         minWidth={90}

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/shorthands",
-  "version": "1.88.23",
+  "version": "1.89.11",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -9,7 +9,9 @@
   "files": [
     "src",
     "types",
-    "dist"
+    "dist",
+    "v2.js",
+    "v2.d.ts"
   ],
   "scripts": {
     "build": "tamagui-build",
@@ -26,10 +28,16 @@
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js",
       "react-native": "./dist/cjs/index.native.js"
+    },
+    "./v2": {
+      "types": "./types/v2.d.ts",
+      "import": "./dist/esm/v2.js",
+      "require": "./dist/cjs/v2.js",
+      "react-native": "./dist/cjs/v2.native.js"
     }
   },
   "devDependencies": {
-    "@tamagui/build": "1.88.23"
+    "@tamagui/build": "1.89.11"
   },
   "publishConfig": {
     "access": "public"

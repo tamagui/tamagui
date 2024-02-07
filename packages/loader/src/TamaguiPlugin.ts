@@ -11,7 +11,6 @@ import { shouldExclude } from './shouldExclude'
 
 export type PluginOptions = TamaguiOptions & {
   isServer?: boolean
-  enableStudio?: boolean
   exclude?: RuleSetRule['exclude']
   test?: RuleSetRule['test']
   jsLoader?: any

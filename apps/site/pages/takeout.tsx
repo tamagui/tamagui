@@ -29,8 +29,10 @@ import React, { Suspense, memo, useEffect, useMemo, useState } from 'react'
 import type Stripe from 'stripe'
 import type {
   ButtonProps,
+  CheckboxProps,
   FontSizeTokens,
   GetProps,
+  RadioGroupItemProps,
   TabLayout,
   TabsProps,
   TabsTabProps,
@@ -49,6 +51,7 @@ import {
   H2,
   H3,
   H4,
+  H6,
   Input,
   Label,
   Paragraph,
@@ -82,18 +85,34 @@ import { seasons } from '../components/SeasonToggleButton'
 import { TakeoutLicense } from '../components/TakeoutLicense'
 import { useTakeoutStore } from '../hooks/useTakeoutStore'
 import { Footer } from '../components/Footer'
+import { PropsTable } from '@components/PropsTable'
+import { BentoTable } from '@components/BentoPurchaseModal'
+import { ThemeNameEffect } from '../components/ThemeNameEffect'
 
 export default function TakeoutPage({
   starter,
   fontsPack,
   iconsPack,
+  bento,
   coupon,
 }: TakeoutPageProps) {
   const store = useTakeoutStore()
 
   return (
     <YStack maw="100%">
-      <ThemeTintAlt>
+      <YStack
+        pos="absolute"
+        l={0}
+        r={0}
+        t={-100}
+        b={0}
+        style={{
+          background: 'linear-gradient(var(--color6), var(--color4))',
+        }}
+        zi={-3}
+      />
+
+      <ThemeTintAlt offset={0}>
         <YStack
           pos="absolute"
           l={0}
@@ -101,14 +120,13 @@ export default function TakeoutPage({
           t={-100}
           b={0}
           style={{
-            background: 'linear-gradient(var(--color6), var(--color4))',
+            background: 'linear-gradient(10deg, var(--color6), var(--color4))',
           }}
           zi={-3}
         />
-        <ThemeTintEffect />
       </ThemeTintAlt>
 
-      <ThemeTintAlt offset={5}>
+      <ThemeTintAlt offset={0}>
         <YStack
           pos="absolute"
           l={0}
@@ -116,7 +134,22 @@ export default function TakeoutPage({
           t={-100}
           b={0}
           style={{
-            background: 'linear-gradient(to bottom, transparent, var(--color6))',
+            background: 'linear-gradient(to bottom, var(--color3) 2%, transparent 20%)',
+          }}
+          zi={-1}
+        />
+        <ThemeNameEffect colorKey="$color3" />
+      </ThemeTintAlt>
+
+      <ThemeTintAlt offset={1}>
+        <YStack
+          pos="absolute"
+          l={0}
+          r={0}
+          t={-100}
+          b={0}
+          style={{
+            background: 'linear-gradient(to right, transparent, var(--color7))',
           }}
           zi={-2}
         />
@@ -160,6 +193,9 @@ export default function TakeoutPage({
         x={-300}
         rotate="120deg"
         o={0.01}
+        $theme-light={{
+          o: 0.12,
+        }}
         zi={-1}
       >
         <Image alt="mandala" width={2500} height={2500} src="/takeout/geometric.svg" />
@@ -172,6 +208,7 @@ export default function TakeoutPage({
         starter={starter}
         iconsPack={iconsPack}
         fontsPack={fontsPack}
+        bento={bento}
       />
       <FaqModal />
       <AgreementModal />
@@ -221,7 +258,7 @@ export default function TakeoutPage({
               </YStack>
             )}
 
-            <PromoVideo />
+            {/* <PromoVideo /> */}
 
             <TakeoutHero coupon={coupon} />
           </YStack>
@@ -462,8 +499,8 @@ export default function TakeoutPage({
                       mx: '$-4',
                     }}
                   >
-                    <YStack pe="none" br="$10" zi={-1} fullscreen bc="$color6" o={0.2} />
-                    <YStack pe="none" br="$10" zi={-1} fullscreen bc="$color" o={0.1} />
+                    <YStack pe="none" br="$10" zi={-1} fullscreen bg="$color6" o={0.2} />
+                    <YStack pe="none" br="$10" zi={-1} fullscreen bg="$color" o={0.1} />
                     <YStack
                       pos="absolute"
                       t={-400}
@@ -486,7 +523,7 @@ export default function TakeoutPage({
                         color="$color1"
                         ls={-2}
                         fow="400"
-                        bc="$color12"
+                        bg="$color12"
                         als="center"
                         px="$2"
                         mt={-55}
@@ -555,7 +592,7 @@ export default function TakeoutPage({
 
                 <Spacer />
 
-                <YStack br="$12" elevation="$4" bc="#000" p="$7" gap="$3">
+                <YStack br="$12" elevation="$4" bg="#000" p="$7" gap="$3">
                   <ThemeTint>
                     <Paragraph als="center" col="#fff" fontFamily="$munro" size="$10">
                       Gallery
@@ -584,18 +621,6 @@ export default function TakeoutPage({
       </YStack>
     </YStack>
   )
-}
-
-const ThemeTintEffect = () => {
-  const theme = useTheme()
-  const color = theme.color6.val
-
-  useEffect(() => {
-    document.querySelector('#theme-color')?.setAttribute('content', color)
-    document.body.style.backgroundColor = color
-  }, [color])
-
-  return null
 }
 
 const CodeInline = styled(Paragraph, {
@@ -677,6 +702,9 @@ type TakeoutPageProps = {
   fontsPack?: Database['public']['Tables']['products']['Row'] & {
     prices: Database['public']['Tables']['prices']['Row'][]
   }
+  bento?: Database['public']['Tables']['products']['Row'] & {
+    prices: Database['public']['Tables']['prices']['Row'][]
+  }
   coupon?: Stripe.Coupon | null
 }
 
@@ -717,8 +745,8 @@ type TakeoutCardFrameProps = GetProps<typeof TakeoutCard2Frame> & {
 const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps) => {
   const isDark = useThemeName().startsWith('dark')
   const innerGlow = useHoverGlow({
-    resist: 50,
-    size: 250,
+    resist: 30,
+    size: 300,
     strategy: 'blur',
     blurPct: 60,
     // inverse: true,
@@ -1025,7 +1053,7 @@ const Point = ({
 const IconFrame = styled(Stack, {
   borderRadius: 1000,
   p: '$2',
-  bc: 'rgba(255, 255, 255, 0.035)',
+  bg: 'rgba(255, 255, 255, 0.035)',
 })
 
 function formatPrice(amount: number, currency: string) {
@@ -1035,7 +1063,13 @@ function formatPrice(amount: number, currency: string) {
   }).format(amount)
 }
 
-const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPageProps) => {
+const PurchaseModal = ({
+  starter,
+  iconsPack,
+  fontsPack,
+  bento,
+  coupon,
+}: TakeoutPageProps) => {
   const products = [starter, iconsPack, fontsPack]
   // const prices = products.prices
   const store = useTakeoutStore()
@@ -1046,8 +1080,11 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
   const sortedStarterPrices = (starter?.prices ?? []).sort(
     (a, b) => a.unit_amount! - b.unit_amount!
   )
-
+  const sortedBentoPrices = (bento?.prices ?? []).sort(
+    (a, b) => a.unit_amount! - b.unit_amount!
+  )
   const [starterPriceId, setStarterPriceId] = useState(sortedStarterPrices[0]?.id)
+  const [bentoPriceId, setBentoPriceId] = useState(sortedBentoPrices[0]?.id)
   // const selectedProducts = products.filter((p) => selectedProductsIds.includes(p.id))
   const { data } = useUser()
   const subscriptions = data?.subscriptions
@@ -1079,8 +1116,13 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
     if (selectedProductsIds.includes(fontsPack.id)) {
       final += fontsPack.prices[0].unit_amount ?? 0
     }
+    if (bento && selectedProductsIds.includes(bento.id)) {
+      final += bentoPriceId
+        ? bento.prices.find((p) => p.id === bentoPriceId)?.unit_amount ?? 0
+        : 0
+    }
     return final
-  }, [selectedProductsIds, starterPriceId, starter, iconsPack, fontsPack])
+  }, [selectedProductsIds, starterPriceId, bentoPriceId, starter, iconsPack, fontsPack])
 
   // with discount applied
   const finalPrice = useMemo(() => {
@@ -1098,9 +1140,6 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
   const noProductSelected = selectedProductsIds.length === 0
   const showTeamSelect = selectedProductsIds.includes(starter?.id || '')
 
-  const takeoutPriceInfo = getTakeoutPriceInfo(
-    starter?.prices.find((price) => price.id === starterPriceId)?.description ?? ''
-  )
   return (
     <Dialog
       modal
@@ -1124,7 +1163,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
         </Sheet>
       </Dialog.Adapt>
 
-      <Dialog.Portal theme="dark">
+      <Dialog.Portal>
         <Dialog.Overlay
           key="overlay"
           animation="medium"
@@ -1167,86 +1206,49 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                 </Dialog.Title>
               </XStack>
 
-              {/* <YStack my="$2">
-                <YStack gap="$4" $gtSm={{ fd: 'row' }} flexWrap="wrap">
-                  {products.map((product) => {
-                    if (!product) return null
-                    const active = selectedProductsIds.includes(product.id)
-                    const price = product.prices[0]
-                    const htmlId = `check-${price.id}`
-                    // const hasSubscription =
-                    const subscription = subscriptions?.find((sub) => {
-                      if (sub.status !== 'active') return false
-                      const items = sub.subscription_items
-                        ? Array.isArray(sub.subscription_items)
-                          ? sub.subscription_items
-                          : [sub.subscription_items]
-                        : []
-                      return !!items.find((i) => i.price)
-                      //   const price = sub.prices
-                      //   ? Array.isArray(sub.prices)
-                      //     ? sub.prices[0]
-                      //     : sub.prices
-                      //   : null
-                      // if (!price) return false
-                      // return price.product_id === product.id
-                    })
-
-                    const onChange = (value: boolean) => {
-                      setSelectedProductsIds(
-                        active
-                          ? selectedProductsIds.filter((id) => id !== product.id)
-                          : [...selectedProductsIds, product.id]
-                      )
-                    }
-
-                    return (
-                      <ThemeTint key={price.id} disable={!active}>
-                        <Label
-                          f={1}
-                          htmlFor={htmlId}
-                          p="$4"
-                          height="unset"
-                          display="flex"
-                          borderWidth="$0.25"
-                          backgroundColor={active ? '$color7' : '$color5'}
-                          borderColor={active ? '$color8' : '$color7'}
-                          borderRadius="$4"
-                          space="$4"
-                          ai="center"
-                          $gtSm={{
-                            maw: 'calc(33% - 8px)',
-                          }}
-                          hoverStyle={{
-                            borderColor: active ? '$color10' : '$color7',
-                          }}
-                        >
-                          <Checkbox
-                            checked={active}
-                            onCheckedChange={onChange}
-                            id={htmlId}
-                            size="$6"
-                            value={price.id}
-                          >
-                            <Checkbox.Indicator
-                            // backgroundColor={active ? '$color8' : '$color1'}
-                            >
-                              <Check />
-                            </Checkbox.Indicator>
-                          </Checkbox>
-
-                          <YStack gap="$1" f={1}>
-                            <H3 lh="$6">{product?.name}</H3>
-                            <Paragraph size="$3" lh="$1" theme="alt2">
-                              {product?.description}
-                            </Paragraph>
-                          </YStack>
-                        </Label>
-                      </ThemeTint>
-                    )
-                  })}
+              {process.env.NEXT_PUBLIC_IS_TAMAGUI_DEV && (
+                <YStack my="$2">
+                  <YStack gap="$4" $gtSm={{ fd: 'row' }} flexWrap="wrap">
+                    <CheckboxGroupItem
+                      disabled
+                      onCheckedChange={() => {
+                        if (!starter) return
+                        const active = selectedProductsIds.includes(starter.id)
+                        setSelectedProductsIds(
+                          active
+                            ? selectedProductsIds.filter((id) => id !== starter.id)
+                            : [...selectedProductsIds, starter.id]
+                        )
+                      }}
+                      id={'takeout-starter'}
+                      checked={starter && selectedProductsIds.includes(starter.id)}
+                    >
+                      <H3 lh="$6">{starter?.name}</H3>
+                      <Paragraph size="$3" lh="$1" theme="alt2">
+                        {starter?.description}
+                      </Paragraph>
+                    </CheckboxGroupItem>
+                    <CheckboxGroupItem
+                      onCheckedChange={() => {
+                        if (!bento) return
+                        const active = selectedProductsIds.includes(bento.id)
+                        setSelectedProductsIds(
+                          active
+                            ? selectedProductsIds.filter((id) => id !== bento.id)
+                            : [...selectedProductsIds, bento.id]
+                        )
+                      }}
+                      id={'takeout-bento'}
+                      checked={bento && selectedProductsIds.includes(bento.id)}
+                    >
+                      <H3 lh="$6">{bento?.name}</H3>
+                      <Paragraph size="$3" lh="$1" theme="alt2">
+                        {bento?.description}
+                      </Paragraph>
+                    </CheckboxGroupItem>
+                  </YStack>
                 </YStack>
-              </YStack> */}
+              )}
 
               <XStack
                 f={1}
@@ -1262,94 +1264,51 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                   }}
                 >
                   <EnsureFlexed />
-                  <YStack
-                    separator={<Separator o={0.35} />}
-                    borderWidth="$0.5"
-                    borderRadius="$4"
-                    borderColor="$borderColor"
-                  >
-                    <XStack px="$4" py="$4" gap="$3">
-                      <YStack width="80%">
-                        <Paragraph size="$6" fow="bold">
-                          Lifetime access, 1 year of updates
-                        </Paragraph>
-                        <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
-                          You own the code for life, with updates for a year
-                        </Paragraph>
-                      </YStack>
-                      <XStack f={1} ai="center" gap="$2" jc="center">
-                        <Paragraph size="$8">{checkCircle}</Paragraph>
+
+                  <YStack gap="$4">
+                    <YStack gap="$2">
+                      <H6
+                        o={bento && selectedProductsIds.includes(bento.id) ? 1 : 0}
+                        animation="100ms"
+                      >
+                        {starter?.name}
+                      </H6>
+                      <TakeoutTable product={starter} selectedPriceId={starterPriceId} />
+                      <XStack
+                        mt="$2"
+                        theme="green"
+                        bg="$background"
+                        p="$4"
+                        bw={1}
+                        bc="$color5"
+                        br="$4"
+                        gap="$3"
+                      >
+                        <Check size={24} mt={2} color="$color9" />
+                        <MunroP size="$7" color="$color11">
+                          Every plan includes the starter, icons & fonts
+                        </MunroP>
                       </XStack>
-                    </XStack>
-                    <XStack px="$4" py="$4" gap="$3">
-                      <YStack width="80%">
-                        <Paragraph size="$6">License Seats</Paragraph>
-                        <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
-                          Number of people that are allowed
-                          to&nbsp;develop&nbsp;on&nbsp;it
-                        </Paragraph>
+                    </YStack>
+
+                    {bento && selectedProductsIds.includes(bento.id) && (
+                      <YStack
+                        gap="$2"
+                        animation="100ms"
+                        o={1}
+                        enterStyle={{ o: 0 }}
+                        exitStyle={{ o: 0 }}
+                      >
+                        <H6>{bento?.name}</H6>
+
+                        <BentoTable product={bento} selectedPriceId={bentoPriceId} />
                       </YStack>
-                      <XStack f={1} ai="center" gap="$2" jc="center">
-                        <Paragraph size="$8">{takeoutPriceInfo.licenseSeats}</Paragraph>
-                      </XStack>
-                    </XStack>
-                    <XStack px="$4" py="$4" gap="$3">
-                      <YStack width="80%">
-                        <Paragraph size="$6">Discord Seats</Paragraph>
-                        <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
-                          Access to the Discord #takeout room
-                        </Paragraph>
-                      </YStack>
-                      <XStack f={1} ai="center" gap="$2" jc="center">
-                        <Paragraph size="$8">{takeoutPriceInfo.discordSeats}</Paragraph>
-                      </XStack>
-                    </XStack>
-                    <XStack px="$4" py="$4" gap="$3">
-                      <YStack width="80%">
-                        <Paragraph size="$6">Discord Private Channel</Paragraph>
-                        <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
-                          Private chat for your team only
-                        </Paragraph>
-                      </YStack>
-                      <XStack f={1} ai="center" gap="$2" jc="center">
-                        <Paragraph size="$8">
-                          {takeoutPriceInfo.hasDiscordPrivateChannels
-                            ? checkCircle
-                            : xCircle}
-                        </Paragraph>
-                      </XStack>
-                    </XStack>
-                    <XStack px="$4" py="$4" gap="$3">
-                      <YStack width="80%">
-                        <Paragraph size="$6">GitHub Seats</Paragraph>
-                        <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
-                          Open PRs and issues on the Github repo
-                        </Paragraph>
-                      </YStack>
-                      <XStack f={1} ai="center" gap="$2" jc="center">
-                        <Paragraph size="$8">{takeoutPriceInfo.githubSeats}</Paragraph>
-                      </XStack>
-                    </XStack>
+                    )}
                   </YStack>
 
                   <YStack mt="$6" space="$4" ai="center">
-                    <XStack
-                      theme="green"
-                      bc="$background"
-                      p="$4"
-                      bw={1}
-                      boc="$color5"
-                      br="$4"
-                      gap="$3"
-                    >
-                      <Check size={30} color="$color9" />
-                      <MunroP size="$7" color="$color11">
-                        Every plan includes the starter, icon packs & font packs
-                      </MunroP>
-                    </XStack>
-
-                    <Paragraph size="$3" theme="alt2">
-                      One-click cancel the updates and subscription from your account.
+                    <Paragraph size="$3" theme="alt1">
+                      Instant one-click cancel your subscription from /account
                     </Paragraph>
                   </YStack>
                 </YStack>
@@ -1358,59 +1317,89 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                   <YStack
                     opacity={showTeamSelect ? 1 : 0.25}
                     pointerEvents={showTeamSelect ? 'auto' : 'none'}
+                    gap="$3"
                   >
-                    <RadioGroup
-                      gap="$2"
-                      value={starterPriceId}
-                      onValueChange={(val) => setStarterPriceId(val)}
-                    >
-                      {sortedStarterPrices.map((price) => {
-                        const active = starterPriceId === price.id
-                        const htmlId = `price-${price.id}`
-                        return (
-                          <ThemeTint key={price.id} disable={!active}>
-                            <Label
-                              f={1}
-                              htmlFor={htmlId}
-                              p="$4"
-                              height="unset"
-                              display="flex"
-                              borderWidth="$0.25"
-                              borderColor={active ? '$color8' : '$color5'}
-                              borderRadius="$4"
-                              space="$4"
-                              ai="center"
-                              hoverStyle={{
-                                borderColor: active ? '$color10' : '$color7',
-                              }}
-                            >
-                              <RadioGroup.Item id={htmlId} size="$6" value={price.id}>
-                                <RadioGroup.Indicator />
-                              </RadioGroup.Item>
+                    <YStack gap="$2">
+                      <H6
+                        o={bento && selectedProductsIds.includes(bento.id) ? 1 : 0}
+                        animation="100ms"
+                      >
+                        {starter?.name}
+                      </H6>
+                      <RadioGroup
+                        gap="$2"
+                        value={starterPriceId}
+                        onValueChange={(val) => setStarterPriceId(val)}
+                      >
+                        {sortedStarterPrices.map((price) => {
+                          const active = starterPriceId === price.id
+                          const htmlId = `price-${price.id}`
+                          return (
+                            <RadioGroupItem active={active} value={price.id} id={htmlId}>
+                              <H4 mt="$-1">
+                                {price.description === 'Unlimited (+9 seats)'
+                                  ? 'Pro'
+                                  : price.description === 'Hobby (3-8 seats)'
+                                    ? 'Team'
+                                    : 'Personal'}
+                              </H4>
 
-                              <YStack gap="$0" f={1}>
-                                <H4 mt="$-1">
-                                  {price.description === 'Unlimited (+9 seats)'
-                                    ? 'Pro'
-                                    : price.description === 'Hobby (3-8 seats)'
-                                      ? 'Team'
-                                      : 'Personal'}
-                                </H4>
-
-                                <Paragraph theme="alt2">
-                                  {formatPrice(price.unit_amount! / 100, 'usd')} base + 1
-                                  year of updates
-                                </Paragraph>
-                                {/* <Paragraph theme="alt1" size="$2">
+                              <Paragraph theme="alt2">
+                                {formatPrice(price.unit_amount! / 100, 'usd')} base + 1
+                                year of updates
+                              </Paragraph>
+                              {/* <Paragraph theme="alt1" size="$2">
                                   {formatPrice(price.unit_amount! / (100 * 2), 'usd')}{' '}
                                   annual renewal (cancel anytime)
                                 </Paragraph> */}
-                              </YStack>
-                            </Label>
-                          </ThemeTint>
-                        )
-                      })}
-                    </RadioGroup>
+                            </RadioGroupItem>
+                          )
+                        })}
+                      </RadioGroup>
+                    </YStack>
+                    <AnimatePresence>
+                      {bento && selectedProductsIds.includes(bento.id) && (
+                        <YStack
+                          gap="$2"
+                          o={1}
+                          enterStyle={{ o: 0 }}
+                          exitStyle={{ o: 0 }}
+                          animation="100ms"
+                        >
+                          <H6>{bento.name}</H6>
+
+                          <RadioGroup
+                            gap="$2"
+                            value={bentoPriceId}
+                            onValueChange={(val) => setBentoPriceId(val)}
+                          >
+                            {sortedBentoPrices.map((price) => {
+                              const active = bentoPriceId === price.id
+                              const htmlId = `price-${price.id}`
+                              return (
+                                <RadioGroupItem
+                                  key={price.id}
+                                  active={active}
+                                  value={price.id}
+                                  id={htmlId}
+                                >
+                                  <H4 mt="$-1">{price.description}</H4>
+
+                                  <Paragraph theme="alt2">
+                                    {formatPrice(price.unit_amount! / 100, 'usd')} base +
+                                    1 year of updates
+                                  </Paragraph>
+                                  {/* <Paragraph theme="alt1" size="$2">
+                                  {formatPrice(price.unit_amount! / (100 * 2), 'usd')}{' '}
+                                  annual renewal (cancel anytime)
+                                </Paragraph> */}
+                                </RadioGroupItem>
+                              )
+                            })}
+                          </RadioGroup>
+                        </YStack>
+                      )}
+                    </AnimatePresence>
                   </YStack>
 
                   <Spacer size="$1" />
@@ -1468,7 +1457,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                       <XStack jc="space-between" space="$2" ai="center" mb="$2">
                         <XStack
                           ai="center"
-                          separator={<Separator vertical bc="$color8" my="$2" />}
+                          separator={<Separator vertical bg="$color8" my="$2" />}
                           space="$2"
                         >
                           <SizableText
@@ -1600,7 +1589,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
             mt: 100,
           }}
         >
-          <YStack zi={-1} fullscreen bc="$color5" o={0.5} />
+          <YStack zi={-1} fullscreen bg="$color5" o={0.5} />
 
           <ThemeTintAlt>
             <LinearGradient
@@ -1609,7 +1598,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
               l={0}
               r={0}
               h={200}
-              colors={['$backgroundTransparent', '$color5']}
+              colors={['$background0', '$color5']}
               zi={100}
             />
           </ThemeTintAlt>
@@ -1723,26 +1712,11 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
 
 function PurchaseButton(props: ButtonProps) {
   return (
-    <ThemeTint>
-      <Button
-        size="$6"
-        backgroundColor="$color8"
-        borderWidth={2}
-        color="$color"
-        borderColor="$color10"
-        hoverStyle={{
-          backgroundColor: '$color9',
-        }}
-        pressStyle={{
-          backgroundColor: '$color8',
-        }}
-        {...props}
-      >
-        <Button.Text ff="$silkscreen" fontWeight="700" color="#fff">
-          {props.children} 🥡
-        </Button.Text>
+    <ThemeTintAlt>
+      <Button size="$6" borderWidth={2} bc="$color8" {...props}>
+        <Button.Text ff="$silkscreen">{props.children} 🥡</Button.Text>
       </Button>
-    </ThemeTint>
+    </ThemeTintAlt>
   )
 }
 
@@ -1789,7 +1763,7 @@ const Row = (props: { title: any; description: any; after: any }) => {
 }
 
 const TakeoutCardFrame = styled(YStack, {
-  boc: '$color3',
+  bc: '$color3',
   br: '$4',
   ov: 'hidden',
 })
@@ -1898,7 +1872,7 @@ const PurchaseSelectTeam = ({
       activationMode="manual"
       position="relative"
       p="$2"
-      bc="$backgroundStrong"
+      bg="$background"
       als="center"
       br="$3"
     >
@@ -2443,9 +2417,9 @@ const PromoVideo = () => {
         elevation="$10"
         w={840}
         h={480}
-        bc="$color3"
+        bg="$color3"
         bw={3}
-        boc="$borderColor"
+        bc="$borderColor"
       >
         {!open && (
           <YStack fullscreen ai="center" jc="center" bc="rgba(0,0,0,0.75)">
@@ -2541,6 +2515,162 @@ const Lazy = (props: { children: any }) => {
   return loaded ? props.children : null
 }
 
+const CheckboxGroupItem = ({ children, ...props }: CheckboxProps) => {
+  return (
+    <ThemeTint disable={!props.checked}>
+      <Label
+        f={1}
+        htmlFor={props.id}
+        p="$4"
+        height="unset"
+        display="flex"
+        borderWidth="$0.25"
+        backgroundColor={props.checked ? '$color7' : '$color5'}
+        borderColor={props.checked ? '$color8' : '$color7'}
+        borderRadius="$4"
+        space="$4"
+        ai="center"
+        opacity={props.disabled ? 0.75 : 1}
+        cursor={props.disabled ? 'not-allowed' : 'default'}
+        $gtSm={{
+          maw: 'calc(50% - 8px)',
+        }}
+        hoverStyle={{
+          borderColor: props.checked ? '$color10' : '$color7',
+        }}
+      >
+        <Checkbox checked={props.checked} size="$6" {...props}>
+          <Checkbox.Indicator
+          // backgroundColor={props.checked ? '$color8' : '$color1'}
+          >
+            <Check />
+          </Checkbox.Indicator>
+        </Checkbox>
+
+        <YStack gap="$1" f={1}>
+          {children}
+        </YStack>
+      </Label>
+    </ThemeTint>
+  )
+}
+
+const RadioGroupItem = ({
+  children,
+  active,
+  ...props
+}: RadioGroupItemProps & { active: boolean }) => {
+  return (
+    <ThemeTint disable={!active}>
+      <Label
+        f={1}
+        htmlFor={props.id}
+        p="$4"
+        height="unset"
+        display="flex"
+        borderWidth="$0.25"
+        borderColor={active ? '$color8' : '$color5'}
+        borderRadius="$4"
+        space="$4"
+        ai="center"
+        hoverStyle={{
+          borderColor: active ? '$color10' : '$color7',
+        }}
+      >
+        <RadioGroup.Item size="$6" {...props}>
+          <RadioGroup.Indicator />
+        </RadioGroup.Item>
+
+        <YStack gap="$0" f={1}>
+          {children}
+        </YStack>
+      </Label>
+    </ThemeTint>
+  )
+}
+
+const TakeoutTable = ({
+  product,
+  selectedPriceId,
+}: {
+  product?: Database['public']['Tables']['products']['Row'] & {
+    prices: Database['public']['Tables']['prices']['Row'][]
+  }
+  selectedPriceId: string
+}) => {
+  const takeoutPriceInfo = getTakeoutPriceInfo(
+    product?.prices.find((price) => price.id === selectedPriceId)?.description ?? ''
+  )
+  return (
+    <YStack
+      separator={<Separator o={0.35} />}
+      borderWidth="$0.5"
+      borderRadius="$4"
+      borderColor="$borderColor"
+    >
+      <XStack px="$4" py="$4" gap="$3">
+        <YStack width="80%">
+          <Paragraph size="$6" fow="bold">
+            Lifetime access, 1 year of updates
+          </Paragraph>
+          <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
+            You own the code for life, with updates for a year
+          </Paragraph>
+        </YStack>
+        <XStack f={1} ai="center" gap="$2" jc="center">
+          <Paragraph size="$8">{checkCircle}</Paragraph>
+        </XStack>
+      </XStack>
+      <XStack px="$4" py="$4" gap="$3">
+        <YStack width="80%">
+          <Paragraph size="$6">License Seats</Paragraph>
+          <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
+            Number of people that are allowed to&nbsp;develop&nbsp;on&nbsp;it
+          </Paragraph>
+        </YStack>
+        <XStack f={1} ai="center" gap="$2" jc="center">
+          <Paragraph size="$8">{takeoutPriceInfo.licenseSeats}</Paragraph>
+        </XStack>
+      </XStack>
+      <XStack px="$4" py="$4" gap="$3">
+        <YStack width="80%">
+          <Paragraph size="$6">Discord Seats</Paragraph>
+          <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
+            Access to the Discord #takeout room
+          </Paragraph>
+        </YStack>
+        <XStack f={1} ai="center" gap="$2" jc="center">
+          <Paragraph size="$8">{takeoutPriceInfo.discordSeats}</Paragraph>
+        </XStack>
+      </XStack>
+      <XStack px="$4" py="$4" gap="$3">
+        <YStack width="80%">
+          <Paragraph size="$6">Discord Private Channel</Paragraph>
+          <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
+            Private chat for your team only
+          </Paragraph>
+        </YStack>
+        <XStack f={1} ai="center" gap="$2" jc="center">
+          <Paragraph size="$8">
+            {takeoutPriceInfo.hasDiscordPrivateChannels ? checkCircle : xCircle}
+          </Paragraph>
+        </XStack>
+      </XStack>
+      <XStack px="$4" py="$4" gap="$3">
+        <YStack width="80%">
+          <Paragraph size="$6">GitHub Seats</Paragraph>
+          <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
+            Open PRs and issues on the Github repo
+          </Paragraph>
+        </YStack>
+        <XStack f={1} ai="center" gap="$2" jc="center">
+          <Paragraph size="$8">{takeoutPriceInfo.githubSeats}</Paragraph>
+        </XStack>
+      </XStack>
+    </YStack>
+  )
+}
+
 export const getStaticProps: GetStaticProps<TakeoutPageProps | any> = async () => {
   try {
     const props = await getTakeoutProducts()
@@ -2576,6 +2706,11 @@ const getTakeoutProducts = async (): Promise<TakeoutPageProps> => {
       .from('products')
       .select('*, prices(*)')
       .eq('metadata->>slug', 'font-packs')
+      .single(),
+    supabaseAdmin
+      .from('products')
+      .select('*, prices(*)')
+      .eq('metadata->>slug', 'bento')
       .single(),
   ]
   const promises = [promoListPromise, ...productPromises]
@@ -2621,6 +2756,12 @@ const getTakeoutProducts = async (): Promise<TakeoutPageProps> => {
     fontsPack: {
       ...products[2].data!,
       prices: getArray(products[2].data!.prices!).filter(
+        (p) => p.active && !(p.metadata as Record<string, any>).hide_from_lists
+      ),
+    },
+    bento: {
+      ...products[3].data!,
+      prices: getArray(products[3].data!.prices!).filter(
         (p) => p.active && !(p.metadata as Record<string, any>).hide_from_lists
       ),
     },

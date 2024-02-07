@@ -1,13 +1,21 @@
+// debug
 // import '../lib/wdyr'
 
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { Header } from '@tamagui/site/components/Header'
 import { SearchProvider } from '@tamagui/site/components/Search'
 import { useState } from 'react'
-import { AnimatePresence, Button, Stack, Text, YStack, styled } from 'tamagui'
+import { AnimatePresence, Button, View, Text, YStack, styled } from 'tamagui'
 
 // debugger
 global.shouldDebugMoti = true
+
+const TabsList = styled(View, {
+  marginTop: -50,
+  $sm: {
+    marginTop: 20,
+  },
+})
 
 function TestPage() {
   return (
@@ -21,7 +29,9 @@ function TestPage() {
         flex: 1,
       }}
     >
-      <DialogDemo />
+      <Button debug="verbose" mr="$-10">
+        ok
+      </Button>
       {/* <Stack
         // hitSlop={5}
         importantForAccessibility="no"
@@ -196,7 +206,7 @@ const DebugNestedThemeChange = () => {
   return (
     <ThemeTint debug="visualize">
       <ThemeTintAlt debug="visualize">
-        {/* <Square theme="active" debug="visualize" size={100} bc="$color5" /> */}
+        {/* <Square theme="active" debug="visualize" size={100} bg="$color5" /> */}
       </ThemeTintAlt>
     </ThemeTint>
   )

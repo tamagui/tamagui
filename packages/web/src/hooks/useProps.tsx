@@ -61,7 +61,7 @@ export function useStyle<A extends StyleLikeObject>(
   props: A,
   opts?: UsePropsOptions
 ): PropsWithoutMediaStyles<A> {
-  return usePropsAndStyle(props, opts)[1]
+  return usePropsAndStyle(props, opts)[1] || {}
 }
 
 /**
@@ -90,6 +90,7 @@ export function usePropsAndStyle<A extends StyleLikeObject>(
       isAnimated: false,
       mediaState: media,
       noSkip: true,
+      noMergeStyle: true,
       noClassNames: true,
       resolveValues: 'auto',
       ...opts,
@@ -97,5 +98,5 @@ export function usePropsAndStyle<A extends StyleLikeObject>(
     null,
     componentContext
   )
-  return [splitStyles.viewProps, splitStyles.style, theme, media] as any
+  return [splitStyles.viewProps, splitStyles.style || {}, theme, media] as any
 }

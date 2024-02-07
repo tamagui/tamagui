@@ -30,8 +30,8 @@ export const SeasonToggleButton = (props: ButtonProps) => {
           }}
         >
           <Circle
-            bw={1}
-            boc="var(--color9)"
+            bc="var(--color9)"
+            o={0.85}
             m={2}
             size={12}
             backgroundColor={tint as any}
@@ -70,15 +70,15 @@ export const SeasonToggleButton = (props: ButtonProps) => {
                 size="$4"
                 $sm={{ size: '$5' }}
                 hoverStyle={{
-                  bc: '$backgroundHover',
+                  bg: '$backgroundHover',
                 }}
                 pressStyle={{
-                  bc: '$backgroundPress',
+                  bg: '$backgroundPress',
                 }}
                 {...(name === optionName && {
-                  bc: '$color5',
+                  bg: '$color5',
                   hoverStyle: {
-                    bc: '$color5',
+                    bg: '$color5',
                   },
                 })}
                 onPress={() => {

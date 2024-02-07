@@ -20,6 +20,7 @@ import { getDefaultAvatarImage } from '../lib/avatar'
 import { DocsMenuContents } from './DocsMenuContents'
 import { HeaderLinks } from './HeaderLinks'
 import { useDocsMenu } from './useDocsMenu'
+import { useRouter } from 'next/router'
 
 export const HeaderMenu = React.memo(function HeaderMenu() {
   const { open, setOpen } = useDocsMenu()
@@ -30,7 +31,7 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
   const userSwr = useUser()
 
   return (
-    <ThemeTintAlt>
+    <HeaderMenuTheme>
       <Popover
         keepChildrenMounted
         hoverable={{
@@ -53,10 +54,10 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
           <Button
             size="$3"
             ml="$2"
-            bc="transparent"
+            bg="transparent"
             noTextWrap
             br="$10"
-            bow={2}
+            bw={2}
             onPress={() => {
               if (isTouchable) {
                 setOpen(!open)
@@ -77,8 +78,7 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
             hoverStyle={{
               bg: 'transparent',
               // @ts-ignore
-              boc: 'color-mix(in srgb, var(--color-8) 40%, transparent 60%)',
-              // boc: 'red',
+              bc: 'color-mix(in srgb, var(--color-10) 30%, transparent 60%)',
             }}
           >
             <SizableText ff="$silkscreen">Menu</SizableText>
@@ -131,9 +131,24 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
 
         <HeaderMenuContent />
       </Popover>
-    </ThemeTintAlt>
+    </HeaderMenuTheme>
   )
 })
+
+const HeaderMenuTheme = (props: { children: any }) => {
+  const router = useRouter()
+  const isBento = router.pathname.startsWith('/bento')
+
+  return (
+    <ThemeTintAlt
+      {...(isBento && {
+        name: 'tan',
+      })}
+    >
+      {props.children}
+    </ThemeTintAlt>
+  )
+}
 
 const HeaderMenuContent = React.memo(function HeaderMenuContent() {
   return (
@@ -166,13 +181,13 @@ const HeaderMenuContent = React.memo(function HeaderMenuContent() {
       br="$6"
       {...{
         style: {
-          WebkitBackdropFilter: 'blur(12px)',
-          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          backdropFilter: 'blur(20px)',
         },
       }}
     >
-      <Popover.Arrow bg="$color5" size="$4" borderWidth={0} o={0.85} />
-      <YStack fullscreen bg="$color5" zi={0} br="$6" o={0.85} />
+      <Popover.Arrow bg="$color5" size="$4" borderWidth={0} o={0.84} />
+      <YStack fullscreen bg="$color5" zi={0} br="$6" o={0.84} />
 
       <Popover.ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
         <YStack aria-label="Home menu contents" miw={230} p="$3" ai="flex-end">

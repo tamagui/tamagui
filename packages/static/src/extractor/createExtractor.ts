@@ -1292,15 +1292,16 @@ export function createExtractor(
               return { type: 'ternary', value: staticLogical }
             }
 
-            if (options.experimentalFlattenThemesOnNative) {
-              if (isValidStyleKey(name, staticConfig)) {
-                return {
-                  type: 'dynamic-style',
-                  value,
-                  name,
-                }
-              }
-            }
+            // Disabling: this probably doesn't optimize much and needs to be done a bit differently
+            // if (options.experimentalFlattenThemesOnNative) {
+            //   if (isValidStyleKey(name, staticConfig)) {
+            //     return {
+            //       type: 'dynamic-style',
+            //       value,
+            //       name,
+            //     }
+            //   }
+            // }
 
             // if we've made it this far, the prop stays inline
             inlined.set(name, true)
@@ -2245,6 +2246,7 @@ export function createExtractor(
                 }
               }
             }
+
             if (attr.type === 'dynamic-style') {
               if (existingStyleKeys.has(attr.name)) {
                 //@ts-ignore
@@ -2254,6 +2256,7 @@ export function createExtractor(
               }
             }
           }
+
           if (options.experimentalFlattenThemesOnNative) {
             attrs = attrs.filter(Boolean)
           }
@@ -2281,6 +2284,14 @@ export function createExtractor(
               }
             }
           }
+
+          // delete empty styles:
+          attrs = attrs.filter((x) => {
+            if (x.type === 'style' && Object.keys(x.value).length === 0) {
+              return false
+            }
+            return true
+          })
 
           if (shouldFlatten) {
             // DO FLATTEN

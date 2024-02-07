@@ -4,7 +4,7 @@ import { beforeAll, describe, expect, test } from 'vitest'
 import config from '../config-default'
 
 beforeAll(() => {
-  createTamagui(config.getDefaultTamaguiConfig())
+  createTamagui(config.getDefaultTamaguiConfig('native'))
 })
 
 describe('getSplitStyles', () => {
@@ -14,8 +14,8 @@ describe('getSplitStyles', () => {
       rowGap: 10,
     })
 
-    expect(style.columnGap).toBe(10)
-    expect(style.rowGap).toBe(10)
+    expect(style?.columnGap).toBe(10)
+    expect(style?.rowGap).toBe(10)
   })
 })
 

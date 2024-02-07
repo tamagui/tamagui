@@ -1,4 +1,5 @@
-import { CheckCircle, Clipboard, Paintbrush } from '@tamagui/lucide-icons'
+import { CheckCircle, Copy, Paintbrush } from '@tamagui/lucide-icons'
+import { useStore } from '@tamagui/use-store'
 import { forwardRef, useEffect, useRef, useState } from 'react'
 import { ScrollView } from 'react-native'
 import { Button, Spacer, TooltipSimple, XStack, YStack } from 'tamagui'
@@ -9,6 +10,13 @@ import { useClipboard } from '../lib/useClipboard'
 import { Code } from './Code'
 import { ErrorBoundary } from './ErrorBoundary'
 import { Pre } from './Pre'
+
+class CollapseStore {
+  isCollapsed = true
+  setIsCollapsed(val: boolean) {
+    this.isCollapsed = val
+  }
+}
 
 export const DocCodeBlock = forwardRef((props: any, ref) => {
   const {
@@ -24,7 +32,8 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
   } = props
   const lines = Array.isArray(children) ? children.length : 0
   const isCollapsible = isHero || props.isCollapsible
-  const [isCollapsed, setIsCollapsed] = useState(isCollapsible)
+  const store = useStore(CollapseStore)
+  const { isCollapsed, setIsCollapsed } = store
   const isLong = lines > 22
   const [isCutoff, setIsCutoff] = useState(isLong && !isCollapsible)
   const [code, setCode] = useState(undefined)
@@ -83,7 +92,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
             <Button
               accessibilityLabel="Show or hide code"
               size="$2"
-              onPress={() => setIsCollapsed((x) => !x)}
+              onPress={() => setIsCollapsed(!isCollapsed)}
             >
               {isCollapsed ? 'Show code' : 'Hide code'}
             </Button>
@@ -114,7 +123,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                 l={0}
                 r={0}
                 height={200}
-                colors={['$backgroundTransparent', '$background']}
+                colors={['$background0', '$background']}
                 zi={1000}
               >
                 <Spacer f={1} />
@@ -164,7 +173,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                   top="$3"
                   right="$3"
                   display="inline-flex"
-                  icon={hasCopied ? CheckCircle : Clipboard}
+                  icon={hasCopied ? CheckCircle : Copy}
                   onPress={onCopy}
                   $xs={{
                     display: 'none',

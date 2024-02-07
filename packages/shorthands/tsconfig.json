@@ -7,6 +7,8 @@
   "exclude": [
     "types",
     "dist",
-    "**/__tests__"
+    "**/__tests__",
+    "v2.js",
+    "v2.d.ts",
   ]
 }

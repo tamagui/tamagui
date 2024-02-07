@@ -1,6 +1,7 @@
-import { shorthands } from '@tamagui/shorthands'
-import { tokens } from '@tamagui/themes/v2'
-import { themes as themesv2 } from '@tamagui/themes/v2-themes'
+import { shorthands } from '@tamagui/shorthands/v2'
+import { tokens } from '@tamagui/themes/v3'
+import { themes } from './themes'
+
 import type { CreateTamaguiProps } from '@tamagui/web'
 import { setupDev } from '@tamagui/web'
 
@@ -36,88 +37,40 @@ const fonts = {
   cherryBomb: cherryBombFont,
 }
 
-const light_tan_palette = [
-  'hsla(40, 40%, 93%, 1)',
-  'hsla(40, 36%, 90%, 1)',
-  'hsla(38, 35%, 87%, 1)',
-  'hsla(36, 34%, 84%, 1)',
-  'hsla(36, 33%, 80%, 1)',
-  'hsla(35, 32%, 77%, 1)',
-  'hsla(35, 31%, 74%, 1)',
-  'hsla(34, 30%, 70%, 1)',
-  'hsla(35, 30%, 67%, 1)',
-  'hsla(34, 29%, 47%, 1)',
-  'hsla(35, 28%, 37%, 1)',
-  'hsla(35, 27%, 20%, 1)',
-]
+// Converts a union of two types into an intersection
+// i.e. A | B -> A & B
+type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
+  k: infer I
+) => void
+  ? I
+  : never
 
-const light_tan = {
-  color1: light_tan_palette[0],
-  color2: light_tan_palette[1],
-  color3: light_tan_palette[2],
-  color4: light_tan_palette[3],
-  color5: light_tan_palette[4],
-  color6: light_tan_palette[5],
-  color7: light_tan_palette[6],
-  color8: light_tan_palette[7],
-  color9: light_tan_palette[8],
-  color10: light_tan_palette[9],
-  color11: light_tan_palette[10],
-  color12: light_tan_palette[11],
-  color: light_tan_palette[11],
-  background: light_tan_palette[0],
+// Flattens two union types into a single type with optional values
+// i.e. FlattenUnion<{ a: number, c: number } | { b: string, c: number }> = { a?: number, b?: string, c: number }
+type FlattenUnion<T> = {
+  [K in keyof UnionToIntersection<T>]: K extends keyof T
+    ? T[K] extends any[]
+      ? T[K]
+      : T[K] extends object
+        ? FlattenUnion<T[K]>
+        : T[K]
+    : UnionToIntersection<T>[K] | undefined
 }
 
-const dark_tan_palette = [
-  'hsla(30, 10%, 14%, 1)',
-  'hsla(30, 13%, 16%, 1)',
-  'hsla(31, 15%, 22%, 1)',
-  'hsla(30, 18%, 25%, 1)',
-  'hsla(30, 21%, 32%, 1)',
-  'hsla(30, 22%, 36%, 1)',
-  'hsla(30, 23%, 49%, 1)',
-  'hsla(30, 24%, 50%, 1)',
-  'hsla(30, 25%, 52%, 1)',
-  'hsla(29, 28%, 65%, 1)',
-  'hsla(34, 24%, 71%, 1)',
-  'hsla(11, 16%, 74%, 1)',
-]
+export type Theme = FlattenUnion<(typeof themes)['light']>
+export type Themes = Record<keyof typeof themes, Theme>
 
-const dark_tan = {
-  color1: dark_tan_palette[0],
-  color2: dark_tan_palette[1],
-  color3: dark_tan_palette[2],
-  color4: dark_tan_palette[3],
-  color5: dark_tan_palette[4],
-  color6: dark_tan_palette[5],
-  color7: dark_tan_palette[6],
-  color8: dark_tan_palette[7],
-  color9: dark_tan_palette[8],
-  color10: dark_tan_palette[9],
-  color11: dark_tan_palette[10],
-  color12: dark_tan_palette[11],
-  color: dark_tan_palette[11],
-  background: dark_tan_palette[0],
-}
-
-const themesIn = {
-  ...themesv2,
-
-  light_tan,
-  dark_tan,
-}
-
-const themes =
+const maybeThemes =
   process.env.TAMAGUI_IS_SERVER || process.env.TAMAGUI_KEEP_THEMES
-    ? themesIn
-    : (Object.keys(themesIn).sort() as unknown as typeof themesIn)
+    ? themes
+    : (Object.keys(themes).sort() as unknown as typeof themes)
 
 export const config = {
   defaultFont: 'body',
   shouldAddPrefersColorThemes: true,
   themeClassNameOnRoot: true,
   animations,
-  themes,
+  themes: maybeThemes,
   media,
   shorthands,
   tokens,

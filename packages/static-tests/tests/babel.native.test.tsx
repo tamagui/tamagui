@@ -115,6 +115,6 @@ test(`normalize ternaries flips the conditional properly`, async () => {
 `
   const output = await extractForNative(inputCode)
   const outCode = output?.code ?? ''
-  expect(outCode).toContain(`props === 123 ? _sheet["1"] : _sheet["2"]`)
+  expect(outCode).toContain(`props === 123 ? _sheet["0"] : _sheet["1"]`)
   expect(outCode).toMatchSnapshot()
 })

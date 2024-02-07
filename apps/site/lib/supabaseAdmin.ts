@@ -352,7 +352,8 @@ export async function getOrCreateRenewalPriceId(price: Stripe.Price) {
       : await stripe.products.retrieve(price.product)
   if (
     !product.metadata.has_renewals || // this product doesn't need renewal prices
-    price.type === 'recurring' // this price is already a subscription price - not having this check might cause an infinite loop of creating prices
+    price.type === 'recurring' || // this price is already a subscription price - not having this check might cause an infinite loop of creating prices
+    price.metadata.is_lifetime // there is no need for creating a subscription as this is a lifetime purchase
   ) {
     return null
   }
@@ -378,4 +379,20 @@ export async function getOrCreateRenewalPriceId(price: Stripe.Price) {
     })
   }
   return renewalPriceId
+}
+
+export async function populateStripeData() {
+  // products
+  const products = await stripe.products.list({ limit: 100 })
+  for (const product of products.data) {
+    await upsertProductRecord(product)
+    console.info('populated product', product.name)
+  }
+
+  // prices
+  const prices = await stripe.prices.list({ limit: 100 })
+  for (const price of prices.data) {
+    await upsertPriceRecord(price)
+    console.info('populated price ', price.nickname)
+  }
 }

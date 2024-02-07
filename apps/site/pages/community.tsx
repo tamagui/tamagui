@@ -55,8 +55,8 @@ export default function Community({ frontmatters }) {
           <FlatBubbleCard w="50%" $sm={{ w: 'auto' }} ai="center" bw={0}>
             <NextLink href="/blog">
               <Button
-                bc="transparent"
-                boc="$borderColor"
+                bg="transparent"
+                bc="$borderColor"
                 bw={1}
                 mt="$-3"
                 size="$6"
@@ -123,7 +123,7 @@ export default function Community({ frontmatters }) {
                   br="$5"
                   overflow="hidden"
                   bw={0.5}
-                  boc="$borderColor"
+                  bc="$borderColor"
                 >
                   <Image
                     animation="quick"
@@ -416,8 +416,8 @@ function IndividualSponsor(props: { name: string; link: string }) {
               cursor="pointer"
               p="$4"
               br="$4"
-              hoverStyle={{ bc: 'rgba(0,0,0,0.1)' }}
-              pressStyle={{ bc: 'rgba(0,0,0,0.2)' }}
+              hoverStyle={{ bg: 'rgba(0,0,0,0.1)' }}
+              pressStyle={{ bg: 'rgba(0,0,0,0.2)' }}
               space
             >
               <H5 cursor="inherit" als="center" letterSpacing={4} ai="center">

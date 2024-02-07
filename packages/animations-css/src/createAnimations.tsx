@@ -1,7 +1,7 @@
-import { useIsomorphicLayoutEffect } from '@tamagui/constants'
-import type { AnimationDriver, UniversalAnimatedNumber } from '@tamagui/core'
-import { transformsToString } from '@tamagui/core'
 // import { animate } from '@tamagui/cubic-bezier-animator'
+import { useIsomorphicLayoutEffect } from '@tamagui/constants'
+import type { AnimationDriver, UniversalAnimatedNumber } from '@tamagui/web'
+import { transformsToString } from '@tamagui/web'
 import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import { useEffect, useState } from 'react'
 

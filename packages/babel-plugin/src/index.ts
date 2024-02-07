@@ -198,16 +198,20 @@ export default declare(function snackBabelPlugin(
                   return themedStylesAst
                 }
 
+                const willFlattenTheme =
+                  options.experimentalFlattenThemesOnNative && themeKeysUsed.size
+
                 for (const attr of props.attrs) {
                   switch (attr.type) {
                     case 'style': {
                       addStyleExpression(getStyleExpression(attr.value))
                       break
                     }
+
                     case 'ternary': {
                       const { consequent, alternate } = attr.value
 
-                      if (options.experimentalFlattenThemesOnNative) {
+                      if (willFlattenTheme) {
                         expressions.push(attr.value.test)
                       }
 
@@ -215,8 +219,8 @@ export default declare(function snackBabelPlugin(
                       const altExpr = getStyleExpression(alternate)
 
                       const styleExpr = t.conditionalExpression(
-                        options.experimentalFlattenThemesOnNative
-                          ? t.identifier(`expressions[${expressions.length - 1}]`)
+                        willFlattenTheme
+                          ? t.identifier(`_expressions[${expressions.length - 1}]`)
                           : attr.value.test,
                         consExpr || t.nullLiteral(),
                         altExpr || t.nullLiteral()
@@ -228,18 +232,20 @@ export default declare(function snackBabelPlugin(
                       )
                       break
                     }
+
                     case 'dynamic-style': {
                       expressions.push(attr.value as t.Expression)
                       addStyleExpression(
                         t.objectExpression([
                           t.objectProperty(
                             t.identifier(attr.name as string),
-                            t.identifier(`expressions[${expressions.length - 1}]`)
+                            t.identifier(`_expressions[${expressions.length - 1}]`)
                           ),
                         ])
                       )
                       break
                     }
+
                     case 'attr': {
                       if (t.isJSXSpreadAttribute(attr.value)) {
                         if (isSimpleSpread(attr.value)) {
@@ -257,7 +263,7 @@ export default declare(function snackBabelPlugin(
                 props.node.attributes = finalAttrs
 
                 if (props.isFlattened) {
-                  if (themeKeysUsed.size || expressions.length) {
+                  if (themeKeysUsed.size) {
                     if (!hasImportedViewWrapper) {
                       root.unshiftContainer('body', importWithTheme())
                       hasImportedViewWrapper = true
@@ -276,7 +282,7 @@ export default declare(function snackBabelPlugin(
                           t.callExpression(t.identifier('__internalWithTheme'), [
                             t.identifier(name),
                             t.arrowFunctionExpression(
-                              [t.identifier('theme'), t.identifier('expressions')],
+                              [t.identifier('theme'), t.identifier('_expressions')],
                               t.blockStatement([
                                 t.returnStatement(
                                   t.callExpression(
@@ -294,7 +300,11 @@ export default declare(function snackBabelPlugin(
                                                 t.identifier('Object'),
                                                 t.identifier('assign')
                                               ),
-                                              [...stylesExpr.elements, ...[]] as any[]
+                                              [
+                                                t.objectExpression([]),
+                                                ...stylesExpr.elements,
+                                                ...[],
+                                              ] as any[]
                                             )
                                           ),
                                         ])
@@ -306,7 +316,7 @@ export default declare(function snackBabelPlugin(
                                             t.identifier(k)
                                           )
                                         ),
-                                        t.spreadElement(t.identifier('expressions')),
+                                        t.spreadElement(t.identifier('_expressions')),
                                       ]),
                                     ]
                                   )

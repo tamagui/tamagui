@@ -529,4 +529,4 @@ const RadioGroup = withStaticProperties(
 RadioGroup.displayName = RADIO_GROUP_NAME
 
 export { createRadioGroupScope, RadioGroup }
-export type { RadioGroupProps }
+export type { RadioGroupProps, RadioGroupItemProps }

@@ -130,8 +130,6 @@ export async function extractToClassNames({
       lineNumbers,
       programPath,
       isFlattened,
-      config,
-      completeProps,
       staticConfig,
     }) => {
       // bail out of views that don't accept className (falls back to runtime + style={})

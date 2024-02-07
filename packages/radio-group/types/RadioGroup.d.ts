@@ -2,6 +2,30 @@ import type { GetProps } from '@tamagui/core';
 import * as React from 'react';
 import type { View } from 'react-native';
 declare const createRadioGroupScope: import("@tamagui/create-context").CreateScope;
+declare const RadioGroupItemFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    unstyled?: boolean | undefined;
+    pressTheme?: boolean | undefined;
+    disabled?: boolean | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    transparent?: boolean | undefined;
+    fullscreen?: boolean | undefined;
+    circular?: boolean | undefined;
+    hoverTheme?: boolean | undefined;
+    focusTheme?: boolean | undefined;
+    elevate?: boolean | undefined;
+    bordered?: number | boolean | undefined;
+    backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
+    padded?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
+    size?: import("@tamagui/core").SizeTokens | undefined;
+}, import("@tamagui/core").StaticConfigPublic>;
+type RadioGroupItemProps = GetProps<typeof RadioGroupItemFrame> & {
+    value: string;
+    id?: string;
+    labelledBy?: string;
+    disabled?: boolean;
+};
 type TamaguiElement = HTMLElement | View;
 declare const RadioGroupFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     pressTheme?: boolean | undefined;
@@ -192,5 +216,5 @@ declare const RadioGroup: React.ForwardRefExoticComponent<Omit<import("@tamagui/
     } & React.RefAttributes<HTMLButtonElement>>;
 };
 export { createRadioGroupScope, RadioGroup };
-export type { RadioGroupProps };
+export type { RadioGroupProps, RadioGroupItemProps };
 //# sourceMappingURL=RadioGroup.d.ts.map

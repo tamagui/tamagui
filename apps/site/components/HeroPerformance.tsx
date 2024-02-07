@@ -22,8 +22,8 @@ export function HeroPerformance() {
 
   return (
     <ContainerLarge position="relative">
-      <YStack ai="center" zi={1} space="$4">
-        <YStack ai="center" space="$2">
+      <YStack ai="center" zi={1} gap="$4">
+        <YStack ai="center" gap="$2">
           <HomeH2 size="$10" maw={500} ref={ref}>
             Automatically fast
           </HomeH2>

@@ -9,6 +9,27 @@ process.env.TAMAGUI_TARGET = 'native'
 window['React'] = React
 
 describe('flatten-tests', () => {
+  test(`flattened without extra attributes`, async () => {
+    const output = await extractForNative(`
+      import { YStack } from 'tamagui/src/YStack'
+      import { useMedia } from 'tamagui'
+  
+      export function Test(isLoading) {
+        const media = useMedia()
+        
+        return (
+          <YStack
+            y={10}
+            x={20}
+            rotate="10deg"
+          />
+        )
+      }
+    `)
+
+    expect(output?.code).toContain(`<__ReactNativeView style={_sheet["0"]} />`)
+  })
+
   test('flattened media queries', async () => {
     const output = await extractForNative(`
       import { YStack } from 'tamagui/src/YStack'
@@ -76,5 +97,38 @@ describe('flatten-tests', () => {
     expect(sheetStyles['5']).toEqual({
       backgroundColor: 'blue',
     })
+  })
+
+  test(`work with experimentalFlattenThemesOnNative`, async () => {
+    const output = await extractForNative(`
+      import { YStack } from 'tamagui/src/YStack'
+  
+      export function Test(isLoading) {
+        return (
+          <YStack
+            y={10}
+            x={20}
+            rotate="10deg"
+            backgroundColor="$background"
+          />
+        )
+      }
+    `)
+
+    expect(output?.code).toMatchSnapshot()
+  })
+
+  test(`keeps style object a single object`, async () => {
+    const output = await extractForNative(`// debug
+      import { Stack } from 'tamagui'
+  
+      export function Test() {
+        return (
+          <Stack key={i} width={2} height={2} backgroundColor="#000" />
+        )
+      }
+    `)
+
+    expect(output?.code).toContain(`style={_sheet["0"]}`)
   })
 })

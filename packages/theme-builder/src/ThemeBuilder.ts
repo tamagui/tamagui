@@ -147,6 +147,19 @@ export class ThemeBuilder<
     >
   }
 
+  // these wont be typed to save some complexity and because they don't need to be typed!
+  addComponentThemes<
+    CTD extends Narrow<ThemeDefinitions<ObjectStringKeys<State['masks']>>>,
+  >(
+    childThemeDefinition: CTD,
+    options?: {
+      avoidNestingWithin?: string[]
+    }
+  ) {
+    void this.addChildThemes(childThemeDefinition, options)
+    return this
+  }
+
   addChildThemes<
     CTD extends Narrow<ThemeDefinitions<ObjectStringKeys<State['masks']>>>,
     const AvoidNestingWithin extends string[] = [],
@@ -248,7 +261,10 @@ export class ThemeBuilder<
         ? (() => {
             const found = definitions.find(
               // endWith match stronger than startsWith
-              (d) => parentName.endsWith(d.parent!) || parentName.startsWith(d.parent!)
+              (d) =>
+                d.parent
+                  ? parentName.endsWith(d.parent!) || parentName.startsWith(d.parent!)
+                  : true
             )
             if (!found) {
               return null
@@ -267,7 +283,13 @@ export class ThemeBuilder<
       } else if ('mask' in themeDefinition) {
         maskedThemes.push({ parentName, themeName, mask: themeDefinition })
       } else {
-        let { palette: paletteName, template: templateName, ...options } = themeDefinition
+        let {
+          palette: paletteName = '',
+          template: templateName,
+          ...options
+        } = themeDefinition
+
+        const parentDefinition = this.state.themes[parentName]
 
         if (!this.state.palettes) {
           throw new Error(
@@ -275,19 +297,27 @@ export class ThemeBuilder<
           )
         }
 
-        let palette = this.state.palettes[paletteName]
-        if (!palette) {
-          paletteName = `${parentName}_${paletteName}`
-          palette = this.state.palettes[paletteName]
-          // try using the prefix
+        let palette = this.state.palettes[paletteName || '']
+        let attemptParentName = `${parentName}_${paletteName}`
+
+        while (!palette && attemptParentName) {
+          if (attemptParentName in this.state.palettes) {
+            palette = this.state.palettes[attemptParentName]
+            paletteName = attemptParentName
+          } else {
+            attemptParentName = attemptParentName.split('_').slice(0, -1).join('_')
+          }
         }
 
         if (!palette) {
-          throw new Error(
-            `No palette for theme ${themeName}: ${paletteName} (${Object.keys(
-              this.state.palettes
-            ).join(', ')})`
-          )
+          const msg =
+            process.env.NODE_ENV !== 'production'
+              ? `: ${themeName}: ${paletteName}
+          Definition: ${JSON.stringify(themeDefinition)}
+          Parent: ${JSON.stringify(parentDefinition)}
+          Potential: (${Object.keys(this.state.palettes).join(', ')})`
+              : ``
+          throw new Error(`No palette for theme${msg}`)
         }
 
         const template = this.state.templates?.[templateName]

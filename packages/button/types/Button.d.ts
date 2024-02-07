@@ -41,9 +41,9 @@ type ButtonExtraProps = TextParentStyles & ThemeableProps & {
 type ButtonProps = ButtonExtraProps & GetProps<typeof ButtonFrame>;
 declare const ButtonFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: SizeTokens | undefined;
-    elevation?: number | SizeTokens | undefined;
     variant?: "outlined" | undefined;
     disabled?: boolean | undefined;
+    elevation?: number | SizeTokens | undefined;
     unstyled?: boolean | undefined;
     transparent?: boolean | undefined;
     hoverTheme?: boolean | undefined;
@@ -74,9 +74,9 @@ declare const buttonStaticConfig: {
 };
 declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: SizeTokens | undefined;
-    elevation?: number | SizeTokens | undefined;
     variant?: "outlined" | undefined;
     disabled?: boolean | undefined;
+    elevation?: number | SizeTokens | undefined;
     unstyled?: boolean | undefined;
     transparent?: boolean | undefined;
     hoverTheme?: boolean | undefined;
@@ -125,9 +125,9 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
     unstyled?: boolean | undefined;
 } & import("react").RefAttributes<import("@tamagui/web").TamaguiElement>> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: SizeTokens | undefined;
-    elevation?: number | SizeTokens | undefined;
     variant?: "outlined" | undefined;
     disabled?: boolean | undefined;
+    elevation?: number | SizeTokens | undefined;
     unstyled?: boolean | undefined;
     transparent?: boolean | undefined;
     hoverTheme?: boolean | undefined;
@@ -209,9 +209,9 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
     unstyled?: boolean | undefined;
 }, import("@tamagui/web").StackStyleBase, {
     size?: SizeTokens | undefined;
-    elevation?: number | SizeTokens | undefined;
     variant?: "outlined" | undefined;
     disabled?: boolean | undefined;
+    elevation?: number | SizeTokens | undefined;
     unstyled?: boolean | undefined;
     transparent?: boolean | undefined;
     hoverTheme?: boolean | undefined;
@@ -228,9 +228,9 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
 }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
     __tama: [Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         size?: SizeTokens | undefined;
-        elevation?: number | SizeTokens | undefined;
         variant?: "outlined" | undefined;
         disabled?: boolean | undefined;
+        elevation?: number | SizeTokens | undefined;
         unstyled?: boolean | undefined;
         transparent?: boolean | undefined;
         hoverTheme?: boolean | undefined;
@@ -312,9 +312,9 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
         unstyled?: boolean | undefined;
     }, import("@tamagui/web").StackStyleBase, {
         size?: SizeTokens | undefined;
-        elevation?: number | SizeTokens | undefined;
         variant?: "outlined" | undefined;
         disabled?: boolean | undefined;
+        elevation?: number | SizeTokens | undefined;
         unstyled?: boolean | undefined;
         transparent?: boolean | undefined;
         hoverTheme?: boolean | undefined;

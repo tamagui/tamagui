@@ -448,7 +448,6 @@ export function createComponent<
     const noClassNames = shouldAvoidClasses || shouldForcePseudo
 
     const groupName = props.group as any as string
-    const groupClassName = groupName ? `t_group_${props.group}` : ''
 
     if (groupName && !curState.group) {
       const listeners = new Set<GroupStateListener>()
@@ -485,10 +484,6 @@ export function createComponent<
     }
 
     if (process.env.NODE_ENV === 'development' && time) time`use-state`
-
-    const componentNameFinal = props.componentName || componentName
-    const componentClassName =
-      props.asChild || !componentNameFinal ? '' : `is_${componentNameFinal}`
 
     const hasTextAncestor = !!(isWeb && isText ? componentContext.inText : false)
     const isDisabled = props.disabled ?? props.accessibilityState?.disabled
@@ -634,6 +629,7 @@ export function createComponent<
 
     // hide strategy will set this opacity = 0 until measured
     if (props.group && props.untilMeasured === 'hide' && !curState.hasMeasured) {
+      splitStyles.style ||= {}
       splitStyles.style.opacity = 0
     }
 
@@ -665,36 +661,6 @@ export function createComponent<
 
     const propsWithAnimation = props as UseAnimationProps
 
-    // once you set animation prop don't remove it, you can set to undefined/false
-    // reason is animations are heavy - no way around it, and must be run inline here (🙅 loading as a sub-component)
-    let animationStyles: any
-    if (
-      // if it supports css vars we run it on server too to get matching initial style
-      (supportsCSSVars ? willBeAnimatedClient : willBeAnimated) &&
-      useAnimations &&
-      !isHOC
-    ) {
-      // HOOK 16... (depends on driver) (-1 if no animation, -1 if disableSSR, -1 if no context, -1 if production)
-      const animations = useAnimations({
-        props: propsWithAnimation,
-        // if hydrating, send empty style
-        style: splitStylesStyle,
-        presence,
-        componentState: state,
-        styleProps,
-        theme: themeState.state?.theme!,
-        pseudos: pseudos || null,
-        staticConfig,
-        stateRef,
-      })
-
-      if ((isAnimated || supportsCSSVars) && animations) {
-        animationStyles = animations.style
-      }
-
-      if (process.env.NODE_ENV === 'development' && time) time`animations`
-    }
-
     const {
       asChild,
       children,
@@ -725,6 +691,45 @@ export function createComponent<
       ...nonTamaguiProps
     } = viewPropsIn
 
+    // these can ultimately be for DOM, react-native-web views, or animated views
+    // so the type is pretty loose
+    let viewProps = nonTamaguiProps
+
+    if (isHOC && _themeProp) {
+      viewProps.theme = _themeProp
+    }
+
+    // once you set animation prop don't remove it, you can set to undefined/false
+    // reason is animations are heavy - no way around it, and must be run inline here (🙅 loading as a sub-component)
+    let animationStyles: any
+    if (
+      // if it supports css vars we run it on server too to get matching initial style
+      (supportsCSSVars ? willBeAnimatedClient : willBeAnimated) &&
+      useAnimations &&
+      !isHOC
+    ) {
+      // HOOK 16... (depends on driver) (-1 if no animation, -1 if disableSSR, -1 if no context, -1 if production)
+      const animations = useAnimations({
+        props: propsWithAnimation,
+        // if hydrating, send empty style
+        style: splitStylesStyle || {},
+        presence,
+        componentState: state,
+        styleProps,
+        theme: themeState.state?.theme!,
+        pseudos: pseudos || null,
+        staticConfig,
+        stateRef,
+      })
+
+      if ((isAnimated || supportsCSSVars) && animations) {
+        animationStyles = animations.style
+        viewProps.style = animationStyles
+      }
+
+      if (process.env.NODE_ENV === 'development' && time) time`animations`
+    }
+
     if (process.env.NODE_ENV === 'development' && props.untilMeasured && !props.group) {
       console.warn(
         `You set the untilMeasured prop without setting group. This doesn't work, be sure to set untilMeasured on the parent that sets group, not the children that use the $group- prop.\n\nIf you meant to do this, you can disable this warning - either change untilMeasured and group at the same time, or do group={conditional ? 'name' : undefined}`
@@ -737,18 +742,6 @@ export function createComponent<
       props.accessibilityState?.disabled ||
       // @ts-expect-error (comes from core)
       props.accessibilityDisabled
-
-    // these can ultimately be for DOM, react-native-web views, or animated views
-    // so the type is pretty loose
-    let viewProps = nonTamaguiProps
-
-    if (hasAnimationProp && props.tag && !props.role && !props.accessibilityRole) {
-      viewProps.role = props.tag as any
-    }
-
-    if (isHOC && _themeProp) {
-      viewProps.theme = _themeProp
-    }
 
     if (groupName) {
       nonTamaguiProps.onLayout = composeEventHandlers(
@@ -865,52 +858,6 @@ export function createComponent<
       pseudoGroups ? Object.keys([...pseudoGroups]).join('') : 0,
       mediaGroups ? Object.keys([...mediaGroups]).join('') : 0,
     ])
-
-    let fontFamily =
-      isText || isInput
-        ? splitStyles.fontFamily || staticConfig.defaultProps?.fontFamily
-        : null
-    if (fontFamily && fontFamily[0] === '$') {
-      fontFamily = fontFamily.slice(1)
-    }
-    const fontFamilyClassName = fontFamily ? `font_${fontFamily}` : ''
-
-    const style = animationStyles || splitStyles.style
-
-    let className: string | undefined
-
-    const asChildExceptStyleLike =
-      asChild === 'except-style' || asChild === 'except-style-web'
-
-    if (!asChildExceptStyleLike) {
-      if (process.env.TAMAGUI_TARGET === 'web') {
-        let classList: string[] = []
-        if (componentName) classList.push(componentClassName)
-        if (fontFamilyClassName) classList.push(fontFamilyClassName)
-        if (classNames) classList.push(Object.values(classNames).join(' '))
-        if (groupClassName) classList.push(groupClassName)
-
-        className = classList.join(' ')
-
-        if (isAnimated && !supportsCSSVars && isReactNative) {
-          viewProps.style = style
-        } else if (isReactNative) {
-          const cnStyles = { $$css: true }
-          for (const name of className.split(' ')) {
-            cnStyles[name] = name
-          }
-          viewProps.style = [...(Array.isArray(style) ? style : [style]), cnStyles]
-        } else {
-          if (className) {
-            viewProps.className = className
-          }
-          viewProps.style = style
-        }
-      } else {
-        // native assign styles
-        viewProps.style = style
-      }
-    }
 
     // if its a group its gotta listen for pseudos to emit them to children
 
@@ -1122,6 +1069,7 @@ export function createComponent<
         staticConfig
       )
     }
+
     if (useChildrenResult) {
       content = useChildrenResult
     } else {
@@ -1158,8 +1106,8 @@ export function createComponent<
             // capture just initial width and height if they exist
             // will have top, left, width, height (not x, y)
             layout: {
-              width: fromPx(splitStyles.style.width as any),
-              height: fromPx(splitStyles.style.height as any),
+              width: fromPx(splitStyles.style?.width as any),
+              height: fromPx(splitStyles.style?.height as any),
             } as any,
           },
         },
@@ -1216,9 +1164,9 @@ export function createComponent<
     if (staticConfig.context) {
       const contextProps = staticConfig.context.props
       for (const key in contextProps) {
-        if (key in style || key in viewProps) {
+        if ((viewProps.style && key in viewProps.style) || key in viewProps) {
           overriddenContextProps ||= {}
-          overriddenContextProps[key] = style[key] ?? viewProps[key]
+          overriddenContextProps[key] = viewProps.style?.[key] ?? viewProps[key]
         }
       }
     }

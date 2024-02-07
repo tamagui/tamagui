@@ -176,7 +176,7 @@ export const ExampleAnimations = memo(() => {
   return (
     <XStack
       bw={1}
-      boc="$borderColor"
+      bc="$borderColor"
       elevation="$1"
       w="100%"
       br="$4"
@@ -194,7 +194,7 @@ export const ExampleAnimations = memo(() => {
         width="60%"
         $sm={{ width: '100%' }}
       >
-        <YStack fullscreen zi={-1} bc="$background" o={0.5} />
+        <YStack fullscreen zi={-1} bg="$background" o={0.5} />
         {isIntersecting ? (
           <AnimationsDemo position={positionI} animation={animation.animation} />
         ) : null}
@@ -203,7 +203,7 @@ export const ExampleAnimations = memo(() => {
       <Separator vertical />
 
       <YStack pos="relative" $sm={{ display: 'none' }} width="40%">
-        <YStack f={1} theme="alt2" bc="$color1">
+        <YStack f={1} theme="alt2" bg="$color1">
           {animationDescriptions.map((item, i) => {
             const isActive = item === animation
             return (
@@ -213,7 +213,7 @@ export const ExampleAnimations = memo(() => {
                 px="$4"
                 py="$2"
                 title={item.name}
-                bc={isActive ? '$color2' : '$color1'}
+                bg={isActive ? '$color2' : '$color1'}
                 subTitle={item.description}
                 cursor="pointer"
                 onPress={() => {
@@ -227,7 +227,7 @@ export const ExampleAnimations = memo(() => {
 
         <Separator />
 
-        <XStack bc="$background" p="$4" ai="center" jc="center">
+        <XStack bg="$background" p="$4" ai="center" jc="center">
           {settings.map(([key, value], i) => {
             if (key === 'type') {
               return null

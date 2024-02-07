@@ -14,7 +14,13 @@ export type LinearGradientExtraProps = {
   end?: LinearGradientPoint | null
 }
 
-export const LinearGradient = YStack.styleable<LinearGradientExtraProps>(
+const LinearGradientFrame = styled(YStack, {
+  name: 'LinearGradient',
+  overflow: 'hidden',
+  position: 'relative',
+})
+
+export const LinearGradient = LinearGradientFrame.styleable<LinearGradientExtraProps>(
   (propsIn, ref) => {
     const props = useProps(propsIn)
 
@@ -67,9 +73,3 @@ const gradientStyle: ViewStyle = {
   bottom: 0,
   zIndex: 0,
 }
-
-const LinearGradientFrame = styled(YStack, {
-  name: 'LinearGradient',
-  overflow: 'hidden',
-  position: 'relative',
-})

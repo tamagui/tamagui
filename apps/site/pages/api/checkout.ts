@@ -103,6 +103,12 @@ export default apiRoute(async (req, res) => {
     mode: 'payment',
     success_url: `${getURL()}/payment-finished`,
     cancel_url: `${getURL()}/takeout`,
+    // @ts-ignore
+    custom_text: {
+      submit: {
+        message: 'One-click cancel from your account on tamagui.dev/account',
+      },
+    },
   })
 
   // await supabaseAdmin

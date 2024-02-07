@@ -173,7 +173,7 @@ const snippetUsageInverseSub = highlightCode(
 )
 
 const MyWidget = ({ text, stack }: any = {}) => (
-  <Square size={250} bc={stack || '$background'} ai="center" jc="center">
+  <Square size={250} bg={stack || '$background'} ai="center" jc="center">
     <Paragraph size="$8" color={text || '$color'}>
       Hello world
     </Paragraph>

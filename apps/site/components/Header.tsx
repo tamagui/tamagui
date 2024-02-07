@@ -69,7 +69,7 @@ export function Header(props: HeaderProps) {
             ov="hidden"
             contain="paint"
             width="100%"
-            boc="transparent"
+            bc="transparent"
             br="$10"
             $sm={{
               br: 0,
@@ -81,11 +81,11 @@ export function Header(props: HeaderProps) {
               $gtSm: {
                 py: '$2',
                 y: 5,
-                boc: '$borderColor',
+                bc: '$borderColor',
               },
             })}
           >
-            <YStack o={isScrolled ? 0.5 : 0} fullscreen bc="$background" />
+            <YStack o={isScrolled ? 0.5 : 0} fullscreen bg="$background" />
             <ContainerLarge>
               <ThemeTint>
                 <HeaderContents floating {...props} />

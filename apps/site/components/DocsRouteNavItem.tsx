@@ -1,7 +1,7 @@
+import { getStore, useStoreSelector } from '@tamagui/use-store'
 import { NextLink } from 'components/NextLink'
 import { useRef } from 'react'
 import { SizableText, Spacer, XStack, YStack } from 'tamagui'
-import { useStore, useStoreSelector, getStore } from '@tamagui/use-store'
 
 import type { NavItemProps } from './DocsPage'
 import { ExternalIcon } from './ExternalIcon'
@@ -17,13 +17,13 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
   pending,
   inMenu,
   index,
-  ...props
+  external,
 }: NavItemProps & {
   inMenu?: boolean
   index: number
 }) {
   const isActive = useStoreSelector(DocsItemsStore, (x) => x.index === index)
-  const isExternal = href.startsWith('http')
+  const isExternal = external || href.startsWith('http')
   const ref = useRef<any>()
 
   return (
@@ -31,7 +31,6 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
       <XStack
         ref={ref}
         className="docs-nav-item"
-        {...props}
         {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
         ai="center"
         jc="flex-end"
@@ -39,7 +38,7 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
         py="$1"
         opacity={pending ? 0.25 : 1}
         pressStyle={{
-          backgroundColor: '$background',
+          backgroundColor: '$color025',
         }}
         pointerEvents={pending ? 'none' : ('inherit' as any)}
         pos="relative"
@@ -50,7 +49,7 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
           py: '$1.5',
         }}
         {...(isActive && {
-          bc: 'color-mix(in srgb, var(--color8) 10%, transparent 50%)' as any,
+          bg: 'color-mix(in srgb, var(--color8) 10%, transparent 50%)' as any,
         })}
         {...(inMenu && {
           jc: 'flex-start',
@@ -66,7 +65,7 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
             r={0}
             br="$2"
             w={3}
-            bc={active ? '$color' : '$backgroundHover'}
+            bg={active ? '$color' : '$backgroundHover'}
           />
         )}
         <SizableText
@@ -101,7 +100,7 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
               size="$1"
               px="$2"
               py="$1"
-              bc="$background"
+              bg="$background"
               borderRadius="$3"
             >
               WIP

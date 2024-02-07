@@ -41,6 +41,9 @@ export declare class ThemeBuilder<State extends ThemeBuilderInternalState = Them
     addThemes<const T extends ThemeDefinitions<ObjectStringKeys<State['masks']>>>(themes: T): ThemeBuilder<Omit<State, "themes"> & {
         themes: T;
     }>;
+    addComponentThemes<CTD extends Narrow<ThemeDefinitions<ObjectStringKeys<State['masks']>>>>(childThemeDefinition: CTD, options?: {
+        avoidNestingWithin?: string[];
+    }): this;
     addChildThemes<CTD extends Narrow<ThemeDefinitions<ObjectStringKeys<State['masks']>>>, const AvoidNestingWithin extends string[] = []>(childThemeDefinition: CTD, options?: {
         avoidNestingWithin?: AvoidNestingWithin;
     }): ThemeBuilder<State & {

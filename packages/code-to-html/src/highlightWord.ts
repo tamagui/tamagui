@@ -14,5 +14,5 @@ export function highlightWord(code) {
   const hast = unified()
     .use(parse, { emitParseErrors: true, fragment: true })
     .parse(result)
-  return hast.children
+  return hast['children']
 }
