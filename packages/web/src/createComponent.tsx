@@ -346,6 +346,15 @@ export function createComponent<
       'animation' in props || (props.style && hasAnimatedStyleValue(props.style))
     )
 
+    if (
+      hasAnimationProp &&
+      process.env.TAMAGUI_TARGET === 'web' &&
+      animationsConfig?.isReactNative
+    ) {
+      // because react-native-web only support role and not tag we need to set role
+      props.role = props.tag || props.role || (props.accessibilityRole as any)
+    }
+
     // disable for now still ssr issues
     const supportsCSSVars = animationsConfig?.supportsCSSVars
     const curState = stateRef.current
@@ -741,16 +750,6 @@ export function createComponent<
     // these can ultimately be for DOM, react-native-web views, or animated views
     // so the type is pretty loose
     let viewProps = nonTamaguiProps
-
-    if (
-      hasAnimationProp &&
-      process.env.TAMAGUI_TARGET === 'web' &&
-      animationsConfig?.isReactNative
-    ) {
-      // because react-native-web only support role and not tag we need to set role
-      viewProps.role =
-        viewProps.tag || viewProps.role || (viewProps.accessibilityRole as any)
-    }
 
     if (isHOC && _themeProp) {
       viewProps.theme = _themeProp
