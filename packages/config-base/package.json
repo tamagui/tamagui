@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/config-base",
-  "version": "1.89.9",
+  "version": "1.89.10",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -28,7 +28,7 @@
     }
   },
   "devDependencies": {
-    "@tamagui/build": "1.89.9"
+    "@tamagui/build": "1.89.10"
   },
   "publishConfig": {
     "access": "public"
