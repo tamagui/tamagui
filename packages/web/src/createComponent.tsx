@@ -695,10 +695,6 @@ export function createComponent<
     // so the type is pretty loose
     let viewProps = nonTamaguiProps
 
-    // TODO move into getSplitStyles?
-    if (hasAnimationProp && props.tag && !props.role && !props.accessibilityRole) {
-      viewProps.role = props.tag as any
-    }
     if (isHOC && _themeProp) {
       viewProps.theme = _themeProp
     }
