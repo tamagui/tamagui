@@ -1299,6 +1299,7 @@ type LooseCombinedObjects<A extends Object, B extends Object> = A | B | (A & B)
 export interface StackNonStyleProps
   extends Omit<
       ViewProps,
+      | 'hitSlop' //  we bring our own via Pressable in TamaguiComponentPropsBase
       | 'pointerEvents'
       | 'display'
       | 'children'
