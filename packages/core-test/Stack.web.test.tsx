@@ -4,7 +4,7 @@ import { getDefaultTamaguiConfig } from '@tamagui/config-default'
 import { render } from '@testing-library/react'
 import { describe, expect, test } from 'vitest'
 
-import type { StackProps} from '../core/src';
+import type { StackProps } from '../core/src'
 import { Stack, TamaguiProvider, createTamagui } from '../core/src'
 
 const conf = createTamagui(getDefaultTamaguiConfig())

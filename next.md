@@ -1,3 +1,5 @@
+- settings page in takeout SSR hydration issue due to useThemeSetting
+
 - animatedStyle showing up in animated component snapshot on native
   - add some native snapshots in ci tests
 

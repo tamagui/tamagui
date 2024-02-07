@@ -1,7 +1,7 @@
 import { createTamagui, normalizeStyle, getStylesAtomic } from '@tamagui/core'
 import { beforeAll, describe, expect, test } from 'vitest'
 
-import config from '../../config-default/dist'
+import config from '../../config-default'
 
 beforeAll(() => {
   createTamagui(config.getDefaultTamaguiConfig())

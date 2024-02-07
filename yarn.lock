@@ -5924,6 +5924,7 @@ __metadata:
   resolution: "@tamagui/core-test@workspace:packages/core-test"
   dependencies:
     "@testing-library/react": "npm:^14.0.0"
+    "@testing-library/react-native": "npm:^12.4.3"
     csstype: "npm:^3.0.10"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
@@ -7699,7 +7700,7 @@ __metadata:
     vitest: "npm:^0.34.3"
     vitest-axe: "npm:^0.1.0"
     vitest-mock-process: "npm:^1.0.4"
-    vitest-react-native: "npm:^0.1.4"
+    vitest-react-native: "npm:^0.1.5"
   languageName: unknown
   linkType: soft
 
@@ -7921,6 +7922,25 @@ __metadata:
     vitest:
       optional: true
   checksum: 10/36e27f9011dd60de8936d3edb2a81753ef7a370480019e571c6e85b935b5fa2aba47244104badf6d6b636fd170fdee5c0fdd92fb3630957d4a6f11d302b57398
+  languageName: node
+  linkType: hard
+
+"@testing-library/react-native@npm:^12.4.3":
+  version: 12.4.3
+  resolution: "@testing-library/react-native@npm:12.4.3"
+  dependencies:
+    jest-matcher-utils: "npm:^29.7.0"
+    pretty-format: "npm:^29.7.0"
+    redent: "npm:^3.0.0"
+  peerDependencies:
+    jest: ">=28.0.0"
+    react: ">=16.8.0"
+    react-native: ">=0.59"
+    react-test-renderer: ">=16.8.0"
+  peerDependenciesMeta:
+    jest:
+      optional: true
+  checksum: 10/f60b6158c63aa32470e6e40016c823917b7de3e8cc4aac8b7c906153a6edae40727092ae3e2750c468182ad84cb39ccb2329e8e03e13563c920f18b5485c754a
   languageName: node
   linkType: hard
 
@@ -13014,6 +13034,13 @@ __metadata:
   version: 29.4.3
   resolution: "diff-sequences@npm:29.4.3"
   checksum: 10/2287b259400513332d757f921eeda7c740863a919a00bd1d1b22ab2532b3e763538c404aec0953a813bbe33e660cbc77d0742875d6674d8dc5bc31d74ec88cc1
+  languageName: node
+  linkType: hard
+
+"diff-sequences@npm:^29.6.3":
+  version: 29.6.3
+  resolution: "diff-sequences@npm:29.6.3"
+  checksum: 10/179daf9d2f9af5c57ad66d97cb902a538bcf8ed64963fa7aa0c329b3de3665ce2eb6ffdc2f69f29d445fa4af2517e5e55e5b6e00c00a9ae4f43645f97f7078cb
   languageName: node
   linkType: hard
 
@@ -18181,6 +18208,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jest-diff@npm:^29.7.0":
+  version: 29.7.0
+  resolution: "jest-diff@npm:29.7.0"
+  dependencies:
+    chalk: "npm:^4.0.0"
+    diff-sequences: "npm:^29.6.3"
+    jest-get-type: "npm:^29.6.3"
+    pretty-format: "npm:^29.7.0"
+  checksum: 10/6f3a7eb9cd9de5ea9e5aa94aed535631fa6f80221832952839b3cb59dd419b91c20b73887deb0b62230d06d02d6b6cf34ebb810b88d904bb4fe1e2e4f0905c98
+  languageName: node
+  linkType: hard
+
 "jest-environment-node@npm:^29.2.1":
   version: 29.5.0
   resolution: "jest-environment-node@npm:29.5.0"
@@ -18199,6 +18238,18 @@ __metadata:
   version: 29.6.3
   resolution: "jest-get-type@npm:29.6.3"
   checksum: 10/88ac9102d4679d768accae29f1e75f592b760b44277df288ad76ce5bf038c3f5ce3719dea8aa0f035dac30e9eb034b848ce716b9183ad7cc222d029f03e92205
+  languageName: node
+  linkType: hard
+
+"jest-matcher-utils@npm:^29.7.0":
+  version: 29.7.0
+  resolution: "jest-matcher-utils@npm:29.7.0"
+  dependencies:
+    chalk: "npm:^4.0.0"
+    jest-diff: "npm:^29.7.0"
+    jest-get-type: "npm:^29.6.3"
+    pretty-format: "npm:^29.7.0"
+  checksum: 10/981904a494299cf1e3baed352f8a3bd8b50a8c13a662c509b6a53c31461f94ea3bfeffa9d5efcfeb248e384e318c87de7e3baa6af0f79674e987482aa189af40
   languageName: node
   linkType: hard
 
@@ -28946,9 +28997,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vitest-react-native@npm:^0.1.4":
-  version: 0.1.4
-  resolution: "vitest-react-native@npm:0.1.4"
+"vitest-react-native@npm:^0.1.5":
+  version: 0.1.5
+  resolution: "vitest-react-native@npm:0.1.5"
   dependencies:
     "@bunchtogether/vite-plugin-flow": "npm:^1.0.2"
     "@react-native/polyfills": "npm:^2.0.0"
@@ -28960,7 +29011,7 @@ __metadata:
     react: "*"
     react-native: "*"
     vite: "*"
-  checksum: 10/60b25d0f3e2edfa168b0601ff69800785194a6f17a90e6a90fa8775f9ba9c7cf378ee85c720288781f3977ea4dc4c14db8a6866acbd1d162594b81ed3dc1b81c
+  checksum: 10/835ffef781a61b52fdbe34d063ab42d1595a17d748e043f002007c7d820410bcb0be986f1e0d01ed2d86c1254c476011c70912df5520753363ae0a326521999e
   languageName: node
   linkType: hard
 
