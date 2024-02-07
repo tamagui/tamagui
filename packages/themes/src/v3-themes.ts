@@ -493,8 +493,20 @@ const themeBuilder = createThemeBuilder()
     active: {
       template: 'surface3',
     },
+    surface1: {
+      template: 'surface1',
+    },
+    surface2: {
+      template: 'surface2',
+    },
+    surface3: {
+      template: 'surface3',
+    },
+    surface4: {
+      template: 'surfaceActive',
+    },
   })
-  .addChildThemes(
+  .addComponentThemes(
     {
       ListItem: {
         template: 'surface1',
@@ -529,7 +541,14 @@ const themeBuilder = createThemeBuilder()
       TextArea: surface1,
     },
     {
-      avoidNestingWithin: ['alt1', 'alt2'],
+      avoidNestingWithin: [
+        'alt1',
+        'alt2',
+        'surface1',
+        'surface2',
+        'surface3',
+        'surface4',
+      ],
     }
   )
 
@@ -539,7 +558,9 @@ const themesIn = themeBuilder.build()
 
 export type Theme = Record<keyof typeof templates.base, string> &
   typeof nonInherited.light
+
 export type ThemesOut = Record<keyof typeof themesIn, Theme>
+
 export const themes = themesIn as ThemesOut
 
 // --- tokens ---

@@ -84,6 +84,14 @@ export function tamaguiPlugin({
           'process.env.ENABLE_STEPS': JSON.stringify(process.env.ENABLE_STEPS || ''),
           'process.env.IS_STATIC': JSON.stringify(false),
         },
+        optimizeDeps: {
+          disabled: false,
+          esbuildOptions: {
+            loader: {
+              '.js': 'jsx',
+            },
+          },
+        },
         ssr: {
           noExternal: noExternalSSR,
         },

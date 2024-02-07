@@ -147,6 +147,19 @@ export class ThemeBuilder<
     >
   }
 
+  // these wont be typed to save some complexity and because they don't need to be typed!
+  addComponentThemes<
+    CTD extends Narrow<ThemeDefinitions<ObjectStringKeys<State['masks']>>>,
+  >(
+    childThemeDefinition: CTD,
+    options?: {
+      avoidNestingWithin?: string[]
+    }
+  ) {
+    void this.addChildThemes(childThemeDefinition, options)
+    return this
+  }
+
   addChildThemes<
     CTD extends Narrow<ThemeDefinitions<ObjectStringKeys<State['masks']>>>,
     const AvoidNestingWithin extends string[] = [],
