@@ -54,7 +54,7 @@ export const getOwnedProducts = async (supabase: SupabaseClient<Database>) => {
     const price = getSingle(prices)
     return {
       ...productOwnership,
-      price,
+      price: { ...price, product: getSingle(price?.products) },
     }
   })
 }
@@ -113,7 +113,8 @@ function checkAccessToProduct(
     }
   }
   const hasLifetimeOwnership = ownedProducts.some(
-    (ownedProduct) => getSingle(ownedProduct.price?.metadata?.['slug']) === productSlug
+    (ownedProduct) =>
+      getSingle(ownedProduct.price?.product?.metadata?.['slug']) === productSlug
   )
   if (hasLifetimeOwnership) {
     return {
