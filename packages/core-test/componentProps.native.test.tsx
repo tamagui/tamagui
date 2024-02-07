@@ -26,13 +26,10 @@ describe('animation props', () => {
     )
 
     expect(tree.toJSON()).toMatchInlineSnapshot(`
-      <div
-        className="css-view-175oi2r"
-        dir={null}
+      <View
         style={
           {
-            "transform": "",
-            "x": "0px",
+            "x": 0,
           }
         }
       />

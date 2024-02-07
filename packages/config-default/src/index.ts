@@ -1,7 +1,7 @@
 import { createFont, createTokens } from '@tamagui/core'
 import { shorthands } from '@tamagui/shorthands'
-import { animations } from './animations'
-import { animations as animationsNative } from './animations.native'
+// import { animations } from './animations'
+// import { animations as animationsNative } from './animations.native'
 
 // basic fallback theme just to have compiler load in decent tate
 export function getDefaultTamaguiConfig(platform: 'native' | 'web' = 'web') {
@@ -217,7 +217,7 @@ export function getDefaultTamaguiConfig(platform: 'native' | 'web' = 'web') {
   return {
     shouldAddPrefersColorThemes: true,
     themeClassNameOnRoot: true,
-    animations: platform === 'web' ? animations : animationsNative,
+    // animations: platform === 'web' ? animations : animationsNative,
     shorthands,
     fonts,
     themes,

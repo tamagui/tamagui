@@ -49,6 +49,8 @@ const final = defineConfig({
   define: {
     'process.env.TAMAGUI_TARGET': JSON.stringify(process.env.TAMAGUI_TARGET),
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+    // otherwise react logs Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+    __REACT_DEVTOOLS_GLOBAL_HOOK__: '({ isDisabled: true })',
   },
 
   ...(isNative && {

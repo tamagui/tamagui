@@ -86,7 +86,7 @@ export function tamaguiPlugin({
         },
         optimizeDeps: {
           jsx: 'transform',
-          include: platform === 'web' ? ['styleq', 'expo-linear-gradient'] : [],
+          include: platform === 'web' ? ['expo-linear-gradient'] : [],
           disabled: false,
           esbuildOptions: {
             resolveExtensions: extensions,

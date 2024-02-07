@@ -56,6 +56,7 @@ export default function BentoPage(props: ProComponentsProps) {
         <YStack pe="none" fullscreen zi={100} rotateZ="20deg">
           {/* <StudioPreviewComponents /> */}
         </YStack>
+
         <Hero />
         <Intermediate />
         <Theme name="gray">
@@ -73,8 +74,8 @@ BentoPage.getLayout = getDefaultLayout
 const Intermediate = () => {
   return (
     <YStack zi={1} w="100%" className="blur-8">
-      <YStack btw={0.5} bc="$color05" />
-      <YStack fullscreen bg="$background" o={0.4} />
+      <YStack btw={0.5} bc="$color025" />
+      <YStack fullscreen bg="$background" o={0.24} />
       <YStack
         className="grain"
         fullscreen
@@ -115,7 +116,7 @@ const IntermediateCard = ({
       bw={0.25}
       bs="solid"
       gap="$5"
-      shac="$background05"
+      shac="$background025"
       shof={{ height: 5, width: 0 }}
       shar="$6"
       // style={{
@@ -153,6 +154,25 @@ const Hero = () => {
   return (
     <YStack pos="relative" pb="$9" zi={0}>
       <ContainerLarge>
+        <YStack
+          pos="absolute"
+          y="-50%"
+          scaleY={-1}
+          t={-206}
+          l="50%"
+          h={400}
+          w={50}
+          rotate="-90deg"
+          style={{
+            background: 'url(/bento/foilage2.png) repeat-y',
+            backgroundSize: '100%',
+            backgroundPosition: 'top left',
+            maskImage: `linear-gradient(120deg, rgba(0, 0, 0, 1) 70%, transparent 75%)`,
+            // mixBlendMode: 'color-dodge',
+            // clipPath: `polygon(0% 0%, 0% 100%, 5% 96%, 10% 92%, 15% 92%, 25% 88%, 30% 85%, 50% 65%, 58% 50%, 65% 44%, 72% 35%, 79% 22%, 85% 18%, 92% 11%, 100% 0%)`,
+          }}
+        />
+
         <XStack gap="$6" py="$3" bc="transparent" jc="space-between" w={'100%'}>
           <YStack
             mt={-20}
@@ -492,18 +512,25 @@ function SectionCard({
         tag="a"
         maw={300}
         ov="hidden"
+        className="all ease-in ms300"
         // elevation="$6"
         bg="$color2"
         mih={300}
         br="$9"
         cursor="pointer"
         pos="relative"
+        shac="$background075"
+        shar="$0"
+        shof={{ width: -10, height: 10 }}
         hoverStyle={{
           // y: -2,
-          bg: '$color3',
-          outlineWidth: 3,
-          outlineStyle: 'solid',
-          outlineColor: '$color025',
+          bg: '$color2',
+          // outlineWidth: 3,
+          // outlineStyle: 'solid',
+          // outlineColor: '$color025',
+          // shac: '$background075',
+          // shar: '$0',
+          // shof: { width: -20, height: 20 },
         }}
         pressStyle={{
           bg: '$color1',
