@@ -1,15 +1,7 @@
 import { NextLink } from '@components/NextLink'
 import * as Sections from '@tamagui/bento'
-import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
-import {
-  Check,
-  CloudLightning,
-  Globe,
-  Leaf,
-  Plug,
-  Puzzle,
-  ShoppingCart,
-} from '@tamagui/lucide-icons'
+import { ThemeTintAlt } from '@tamagui/logo'
+import { Check, Globe, Leaf, Puzzle, ShoppingCart } from '@tamagui/lucide-icons'
 import { useBentoStore } from 'hooks/useBentoStore'
 import type Stripe from 'stripe'
 
@@ -18,7 +10,6 @@ import {
   Checkbox,
   Circle,
   EnsureFlexed,
-  H2,
   H3,
   H4,
   H5,
@@ -43,8 +34,8 @@ import type { GetStaticProps } from 'next'
 import { BentoLogo } from '../../components/BentoLogo'
 import { BentoPageFrame } from '../../components/BentoPageFrame'
 import { ContainerLarge } from '../../components/Container'
-import { getDefaultLayout } from '../../lib/getDefaultLayout'
 import { ThemeNameEffect } from '../../components/ThemeNameEffect'
+import { getDefaultLayout } from '../../lib/getDefaultLayout'
 
 export type ProComponentsProps = {
   proComponents?: Database['public']['Tables']['products']['Row'] & {
@@ -81,18 +72,26 @@ BentoPage.getLayout = getDefaultLayout
 
 const Intermediate = () => {
   return (
-    <YStack zi={1000} mih={200} bc="red" w="100%">
-      {/* <YStack fullscreen className="bento-fade" /> */}
+    <YStack zi={1} w="100%" className="blur-8">
+      <YStack btw={0.5} bc="$color05" />
+      <YStack fullscreen bg="$background" o={0.4} />
+      <YStack
+        className="grain"
+        fullscreen
+        o={0.5}
+        zi={0}
+        style={{ mixBlendMode: 'color-dodge' }}
+      />
       <ContainerLarge>
-        <XStack gap="$4">
+        <XStack gap="$4" py="$6">
           <IntermediateCard Icon={Globe} title="Universal">
-            Components that adapt well to all screen sizes.
+            Components that adapt well to all screen sizes and platforms.
           </IntermediateCard>
           <IntermediateCard Icon={Puzzle} title="Copy & Paste">
             Designed for easy adoption into your app and easy customization.
           </IntermediateCard>
           <IntermediateCard Icon={Leaf} title="Always Growing">
-            Lorem ipsum dolor sit amet.
+            We continuously improve and add to the collection.
           </IntermediateCard>
         </XStack>
       </ContainerLarge>
@@ -107,23 +106,27 @@ const IntermediateCard = ({
 }: { title?: any; children?: any; Icon?: any }) => {
   return (
     <XStack
-      miw="calc(33.333 - 5px)"
       ov="hidden"
       f={1}
       br="$9"
-      p="$5"
-      bc="$color7"
+      px="$5"
+      py="$4"
+      bc="$color025"
       bw={0.25}
       bs="solid"
-      gap="$3"
-      elevation="$1"
-      style={{
-        backdropFilter: 'blur(80px)',
-        WebkitBackdropFilter: 'blur(80px)',
-      }}
+      gap="$5"
+      shac="$background05"
+      shof={{ height: 5, width: 0 }}
+      shar="$6"
+      // style={{
+      //   backdropFilter: 'blur(80px)',
+      //   WebkitBackdropFilter: 'blur(80px)',
+      // }}
     >
-      <YStack f={1} gap="$1.5">
-        <H4 size="$4">{title}</H4>
+      <YStack f={1} gap="$2">
+        <H4 o={0.35} size="$4">
+          {title}
+        </H4>
         <Paragraph color="$color10" lh="$3">
           {children}
         </Paragraph>
@@ -165,7 +168,6 @@ const Hero = () => {
             <YStack gap="$6">
               <XStack gap="$6">
                 <Stack bg="$color7" w={10} br="$10" my={10} />
-
                 <Paragraph ff="$munro" size="$9" fos={32} lh={50} color="$color12">
                   Boost your React Native development with a suite of copy-paste
                   primitives.

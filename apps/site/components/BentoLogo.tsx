@@ -1,8 +1,8 @@
 import { ThemeTintAlt, ThemeTint } from '@tamagui/logo'
-import { H1 } from 'tamagui'
+import { H1, YStack } from 'tamagui'
 
 export const BentoLogo = () => (
-  <>
+  <YStack h={200} w={600}>
     <H1
       ff="$cherryBomb"
       px="$3"
@@ -81,5 +81,5 @@ export const BentoLogo = () => (
         BENTO&nbsp;
       </H1>
     </ThemeTint>
-  </>
+  </YStack>
 )
