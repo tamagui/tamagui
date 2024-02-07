@@ -742,10 +742,14 @@ export function createComponent<
     // so the type is pretty loose
     let viewProps = nonTamaguiProps
 
-    if (process.env.TAMAGUI_TARGET === 'web') {
-      if (hasAnimationProp && props.tag && !props.role && !props.accessibilityRole) {
-        viewProps.role = props.tag as any
-      }
+    if (
+      hasAnimationProp &&
+      process.env.TAMAGUI_TARGET === 'web' &&
+      animationsConfig?.isReactNative
+    ) {
+      // because react-native-web only support role and not tag we need to set role
+      viewProps.role =
+        viewProps.tag || viewProps.role || (viewProps.accessibilityRole as any)
     }
 
     if (isHOC && _themeProp) {
