@@ -89,7 +89,10 @@ export const animationsNative = createAnimationsNative({
 // this is used by the button test...
 config.themes = {
   ...config.themes,
+
+  // @ts-ignore
   light_green_Button: {
+    // @ts-ignore
     ...config.themes.light_green_Button,
     background: 'green',
   },
