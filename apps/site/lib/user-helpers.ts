@@ -45,6 +45,20 @@ export const getSubscriptions = async (supabase: SupabaseClient<Database>) => {
   }))
 }
 
+export const getOwnedProducts = async (supabase: SupabaseClient<Database>) => {
+  const result = await supabase
+    .from('product_ownership')
+    .select('*, prices(*, products(*))')
+  if (result.error) throw new Error(result.error.message)
+  return result.data.map(({ prices, ...productOwnership }) => {
+    const price = getSingle(prices)
+    return {
+      ...productOwnership,
+      price,
+    }
+  })
+}
+
 export const getProductOwnerships = async (supabase: SupabaseClient<Database>) => {
   const result = await supabase
     .from('product_ownership')
@@ -80,19 +94,46 @@ export function getMainTeam(teams: Awaited<ReturnType<typeof getUserTeams>>) {
   return sortedTeams?.[0]
 }
 
-export async function userHasTakeout(supabase: SupabaseClient<Database>) {
-  const subscriptions = await getSubscriptions(supabase)
-  for (const sub of subscriptions) {
-    for (const subItem of sub.subscription_items) {
-      const productId = subItem.price.product?.id || subItem.price.product_id
-      if (productId && isProductTakeout(productId)) {
-        return true
-      }
+function checkAccessToProduct(
+  productSlug: string,
+  subscriptions: Awaited<ReturnType<typeof getSubscriptions>>,
+  ownedProducts: Awaited<ReturnType<typeof getOwnedProducts>>
+) {
+  const hasActiveSubscription = subscriptions.some(
+    (subscription) =>
+      (subscription.status === 'trialing' || subscription.status === 'active') &&
+      subscription.subscription_items.some(
+        (item) => getSingle(item.price.product?.metadata?.['slug']) === productSlug
+      )
+  )
+  if (hasActiveSubscription) {
+    return {
+      access: true,
+      type: 'subscription' as const,
     }
   }
-  return false
+  const hasLifetimeOwnership = ownedProducts.some(
+    (ownedProduct) => getSingle(ownedProduct.price?.metadata?.['slug']) === productSlug
+  )
+  if (hasLifetimeOwnership) {
+    return {
+      access: true,
+      type: 'lifetime' as const,
+    }
+  }
+  return {
+    access: false,
+  }
 }
 
-function isProductTakeout(productId: string) {
-  return productId === 'prod_NzLEazaqBgoKnC' // takeout's stripe product id
+export async function getProductAccessInfo(supabase: SupabaseClient<Database>) {
+  const [subscriptions, ownedProducts] = await Promise.all([
+    getSubscriptions(supabase),
+    getOwnedProducts(supabase),
+  ])
+
+  return {
+    bento: checkAccessToProduct('bento', subscriptions, ownedProducts),
+    takeout: checkAccessToProduct('takeout', subscriptions, ownedProducts),
+  }
 }

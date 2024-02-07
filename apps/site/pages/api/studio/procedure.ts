@@ -1,5 +1,5 @@
 import { apiRoute } from '@lib/apiRoute'
-import { checkSponsorAccess } from '@lib/getSponsorData'
+import { authorizeUserAccess } from '@lib/authorizeUserAccess'
 import { protectApiRoute } from '@lib/protectApiRoute'
 
 let apis
@@ -14,12 +14,16 @@ export default apiRoute(async (req, res) => {
 
   const { supabase } = await protectApiRoute({ req, res })
 
-  await checkSponsorAccess({
-    req,
-    res,
-    supabase,
-    throwIfNoAccess: true,
-  })
+  await authorizeUserAccess(
+    {
+      req,
+      res,
+      supabase,
+    },
+    {
+      checkForStudioAccess: true,
+    }
+  )
 
   const procedureName = req.query.procedure
 

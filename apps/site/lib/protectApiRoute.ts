@@ -38,14 +38,14 @@ export async function protectApiRoute({
         }).toString()}`
       )
       throw new HandledResponseTermination(`Redirecting to login`)
-    } else {
-      res.status(401).json({
-        error: 'The user is not authenticated',
-      })
-      throw new HandledResponseTermination(
-        `Not authed: ${!session ? 'no session' : ''} ${!user ? 'no user' : ''}`
-      )
     }
+
+    res.status(401).json({
+      error: 'The user is not authenticated',
+    })
+    throw new HandledResponseTermination(
+      `Not authed: ${!session ? 'no session' : ''} ${!user ? 'no user' : ''}`
+    )
   }
 
   return { supabase, session, user }
