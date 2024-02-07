@@ -58,12 +58,8 @@ import type { TamaguiComponentState } from '../interfaces/TamaguiComponentState'
 import { createMediaStyle } from './createMediaStyle'
 import { fixStyles } from './expandStyles'
 import { getGroupPropParts } from './getGroupPropParts'
-import {
-  generateAtomicStyles,
-  getStylesAtomic,
-  styleToCSS,
-  transformsToString,
-} from './getStylesAtomic'
+import { generateAtomicStyles, getStylesAtomic, styleToCSS } from './getStylesAtomic'
+import { transformsToString } from './transformsToString'
 import {
   insertStyleRules,
   insertedTransforms,
