@@ -277,6 +277,7 @@ function addThemesFromCSS(
       selector.match(/(.t_(light|dark))?[\s]?(.t_([a-z0-9_]+))[\s]*$/i) ||
       ([] as string[])
     const [_0, _1, scheme, _2, _name] = matches
+    if (!_name) continue
     const name =
       _name === 'dark' || _name === 'light'
         ? _name
