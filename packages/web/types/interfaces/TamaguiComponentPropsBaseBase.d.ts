@@ -77,5 +77,16 @@ export type TamaguiComponentPropsBaseBase = {
      * Disables className output of styles, instead using only inline styles
      */
     disableClassName?: boolean;
+    /**
+     * Adds some area outside the typical bounds of the component for touch actions to register.
+     * Tamagui uses Pressable internally so it supports `number | Insets` rather than just `Insets`
+     */
+    hitSlop?: number | Insets;
 };
+export interface Insets {
+    top?: number;
+    left?: number;
+    bottom?: number;
+    right?: number;
+}
 //# sourceMappingURL=TamaguiComponentPropsBaseBase.d.ts.map

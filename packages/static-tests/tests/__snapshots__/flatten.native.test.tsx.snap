@@ -42,6 +42,26 @@ export function Test(isLoading) {
 }"
 `;
 
+exports[`flatten-tests > work with experimentalFlattenThemesOnNative + ternary 1`] = `
+"const __internalWithTheme = require('@tamagui/core').internalWithTheme;
+const __ReactNativeView = require('react-native').View;
+const __ReactNativeText = require('react-native').Text;
+// debug
+import { View } from 'tamagui';
+export function Test() {
+  return <_ReactNativeViewWrapper expressions={[showBackground]} />;
+}
+const _ReactNativeViewWrapper = __internalWithTheme(__ReactNativeView, (theme, _expressions) => {
+  return React.useMemo(() => {
+    return Object.assign({}, _expressions[0] ? {
+      \\"backgroundColor\\": theme.color1
+    } : {
+      \\"backgroundColor\\": theme.color2
+    });
+  }, [theme.color1, theme.color2, ..._expressions]);
+});"
+`;
+
 exports[`flatten-tests > work with experimentalFlattenThemesOnNative 1`] = `
 "const __internalWithTheme = require('@tamagui/core').internalWithTheme;
 const __ReactNativeView = require('react-native').View;

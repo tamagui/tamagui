@@ -198,9 +198,6 @@ export default declare(function snackBabelPlugin(
                   return themedStylesAst
                 }
 
-                const willFlattenTheme =
-                  options.experimentalFlattenThemesOnNative && themeKeysUsed.size
-
                 for (const attr of props.attrs) {
                   switch (attr.type) {
                     case 'style': {
@@ -211,12 +208,14 @@ export default declare(function snackBabelPlugin(
                     case 'ternary': {
                       const { consequent, alternate } = attr.value
 
+                      const consExpr = getStyleExpression(consequent)
+                      const altExpr = getStyleExpression(alternate)
+
+                      const willFlattenTheme =
+                        options.experimentalFlattenThemesOnNative && themeKeysUsed.size
                       if (willFlattenTheme) {
                         expressions.push(attr.value.test)
                       }
-
-                      const consExpr = getStyleExpression(consequent)
-                      const altExpr = getStyleExpression(alternate)
 
                       const styleExpr = t.conditionalExpression(
                         willFlattenTheme

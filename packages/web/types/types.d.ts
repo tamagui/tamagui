@@ -705,7 +705,7 @@ export interface TextStylePropsBase extends Omit<TextStyle, keyof OverrideNonSty
     wordWrap?: Properties['wordWrap'];
 }
 type LooseCombinedObjects<A extends Object, B extends Object> = A | B | (A & B);
-export interface StackNonStyleProps extends Omit<ViewProps, 'pointerEvents' | 'display' | 'children' | RNOnlyProps | keyof ExtendBaseStackProps | 'style'>, ExtendBaseStackProps, TamaguiComponentPropsBase {
+export interface StackNonStyleProps extends Omit<ViewProps, 'hitSlop' | 'pointerEvents' | 'display' | 'children' | RNOnlyProps | keyof ExtendBaseStackProps | 'style'>, ExtendBaseStackProps, TamaguiComponentPropsBase {
     style?: StyleProp<LooseCombinedObjects<React.CSSProperties, ViewStyle>>;
 }
 export type StackStyle = WithThemeShorthandsPseudosMedia<StackStyleBase>;

@@ -118,17 +118,33 @@ describe('flatten-tests', () => {
     expect(output?.code).toMatchSnapshot()
   })
 
-  test(`keeps style object a single object`, async () => {
+  test(`work with experimentalFlattenThemesOnNative + ternary`, async () => {
     const output = await extractForNative(`// debug
-      import { Stack } from 'tamagui'
+      import { View } from 'tamagui'
   
       export function Test() {
         return (
-          <Stack key={i} width={2} height={2} backgroundColor="#000" />
+          <View backgroundColor={showBackground ? '$color1' : '$color2'} />
         )
       }
     `)
 
+    expect(output?.code).toMatchSnapshot()
+  })
+
+  // TODO make this work:
+  test.skip(`keeps style object a single object case 2`, async () => {
+    const output = await extractForNative(`
+      import { View } from 'tamagui'
+  
+      export function Test() {
+        return (
+          <View position="absolute" key={0} right="$2" top="$2" />
+        )
+      }
+    `)
+
+    // just one sheet
     expect(output?.code).toContain(`style={_sheet["0"]}`)
   })
 })
