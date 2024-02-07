@@ -593,8 +593,8 @@ export const components = {
                 >
                   significantly improves performance
                 </Link>{' '}
-                by hoisting objects and CSS at build-time, leaving behind
-                optimally-written React components.
+                by hoisting objects and CSS at build-time, leaving behind flatter React
+                trees.
               </LI>
             </ThemeTintAlt>
 

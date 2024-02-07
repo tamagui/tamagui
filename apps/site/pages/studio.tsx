@@ -153,7 +153,7 @@ export default function StudioSplashPage() {
                   items={[
                     `Generate complete theme suites step-by-step.`,
                     `Visualize your design system.`,
-                    `Helpers for media queries, tokens, fonts and more`,
+                    `Export themes directly to your app.`,
                   ]}
                 />
               </YStack>

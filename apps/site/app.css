@@ -11,7 +11,7 @@ body {
 }
 
 body:has(.strong-background) {
-  background: var(--color6) !important;
+  background: var(--color1) !important;
 }
 
 html.t_dark body:has(.strong-background) {
