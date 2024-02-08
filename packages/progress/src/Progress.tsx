@@ -1,35 +1,34 @@
 // forked from Radix UI
 // https://github.com/radix-ui/primitives/blob/main/packages/react/progress/src/Progress.tsx
 
-import type { GetProps } from "@tamagui/core";
-import { getVariableValue, styled } from "@tamagui/core";
-import type { Scope } from "@tamagui/create-context";
-import { createContextScope } from "@tamagui/create-context";
-import { getSize } from "@tamagui/get-token";
-import { withStaticProperties } from "@tamagui/helpers";
-import { ThemeableStack } from "@tamagui/stacks";
-import * as React from "react";
-import { Platform } from "react-native";
+import type { GetProps } from '@tamagui/core'
+import { getVariableValue, styled } from '@tamagui/core'
+import type { Scope } from '@tamagui/create-context'
+import { createContextScope } from '@tamagui/create-context'
+import { getSize } from '@tamagui/get-token'
+import { withStaticProperties } from '@tamagui/helpers'
+import { ThemeableStack } from '@tamagui/stacks'
+import * as React from 'react'
+import { Platform } from 'react-native'
 
-import { Progress as NativeProgressIOS } from "./NativeProgressIOS";
+import { Progress as NativeProgressIOS } from './NativeProgressIOS'
 
-const PROGRESS_NAME = "Progress";
+const PROGRESS_NAME = 'Progress'
 
-const [createProgressContext, createProgressScope] =
-  createContextScope(PROGRESS_NAME);
+const [createProgressContext, createProgressScope] = createContextScope(PROGRESS_NAME)
 type ProgressContextValue = {
-  value: number | null;
-  max: number;
-  width: number;
-};
+  value: number | null
+  max: number
+  width: number
+}
 const [ProgressProvider, useProgressContext] =
-  createProgressContext<ProgressContextValue>(PROGRESS_NAME);
+  createProgressContext<ProgressContextValue>(PROGRESS_NAME)
 
 /* -------------------------------------------------------------------------------------------------
  * ProgressIndicator
  * -----------------------------------------------------------------------------------------------*/
 
-const INDICATOR_NAME = "ProgressIndicator";
+const INDICATOR_NAME = 'ProgressIndicator'
 
 export const ProgressIndicatorFrame = styled(ThemeableStack, {
   name: INDICATOR_NAME,
@@ -37,80 +36,74 @@ export const ProgressIndicatorFrame = styled(ThemeableStack, {
   variants: {
     unstyled: {
       false: {
-        height: "100%",
-        width: "100%",
+        height: '100%',
+        width: '100%',
         backgrounded: true,
       },
     },
   } as const,
 
   defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === "1" ? true : false,
+    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
   },
-});
+})
 
-type ProgressIndicatorProps = GetProps<typeof ProgressIndicatorFrame>;
+type ProgressIndicatorProps = GetProps<typeof ProgressIndicatorFrame>
 
-const ProgressIndicator = ProgressIndicatorFrame.styleable(
-  function ProgressIndicator(
-    props: ScopedProps<ProgressIndicatorProps>,
-    forwardedRef
-  ) {
-    const { __scopeProgress, ...indicatorProps } = props;
-    const context = useProgressContext(INDICATOR_NAME, __scopeProgress);
-    const pct = context.max - (context.value ?? 0);
-    // default somewhat far off
-    const x = -(context.width === 0 ? 300 : context.width) * (pct / 100);
-    return (
-      <ProgressIndicatorFrame
-        data-state={getProgressState(context.value, context.max)}
-        data-value={context.value ?? undefined}
-        data-max={context.max}
-        x={x}
-        width={context.width}
-        {...(!props.unstyled && {
-          animateOnly: ["transform"],
-          opacity: context.width === 0 ? 0 : 1,
-        })}
-        {...indicatorProps}
-        ref={forwardedRef}
-      />
-    );
-  }
-);
+const ProgressIndicator = ProgressIndicatorFrame.styleable(function ProgressIndicator(
+  props: ScopedProps<ProgressIndicatorProps>,
+  forwardedRef
+) {
+  const { __scopeProgress, ...indicatorProps } = props
+  const context = useProgressContext(INDICATOR_NAME, __scopeProgress)
+  const pct = context.max - (context.value ?? 0)
+  // default somewhat far off
+  const x = -(context.width === 0 ? 300 : context.width) * (pct / 100)
+  return (
+    <ProgressIndicatorFrame
+      data-state={getProgressState(context.value, context.max)}
+      data-value={context.value ?? undefined}
+      data-max={context.max}
+      x={x}
+      width={context.width}
+      {...(!props.unstyled && {
+        animateOnly: ['transform'],
+        opacity: context.width === 0 ? 0 : 1,
+      })}
+      {...indicatorProps}
+      ref={forwardedRef}
+    />
+  )
+})
 
 /* ---------------------------------------------------------------------------------------------- */
 
 function defaultGetValueLabel(value: number, max: number) {
-  return `${Math.round((value / max) * 100)}%`;
+  return `${Math.round((value / max) * 100)}%`
 }
 
 function getProgressState(
   value: number | undefined | null,
   maxValue: number
 ): ProgressState {
-  return value == null
-    ? "indeterminate"
-    : value === maxValue
-    ? "complete"
-    : "loading";
+  return value == null ? 'indeterminate' : value === maxValue ? 'complete' : 'loading'
 }
 
 function isNumber(value: any): value is number {
-  return typeof value === "number";
+  return typeof value === 'number'
 }
 
 function isValidMaxNumber(max: any): max is number {
-  return isNumber(max) && !Number.isNaN(max) && max > 0;
+  return isNumber(max) && !Number.isNaN(max) && max > 0
 }
 
 function isValidValueNumber(value: any, max: number): value is number {
-  return isNumber(value) && !Number.isNaN(value) && value <= max && value >= 0;
+  return isNumber(value) && !Number.isNaN(value) && value <= max && value >= 0
 }
 
 // Split this out for clearer readability of the error message.
 function getInvalidMaxError(propValue: string, componentName: string) {
-  return `Invalid prop \`max\` of value \`${propValue}\` supplied to \`${componentName}\`. Only numbers greater than 0 are valid max values. Defaulting to \`${DEFAULT_MAX}\`.`;
+  return `Invalid prop \`max\` of value \`${propValue}\` supplied to \`${componentName}\`. Only numbers greater than 0 are valid max values. Defaulting to \`${DEFAULT_MAX}\`.`
 }
 
 function getInvalidValueError(propValue: string, componentName: string) {
@@ -119,88 +112,80 @@ function getInvalidValueError(propValue: string, componentName: string) {
   - less than the value passed to \`max\` (or ${DEFAULT_MAX} if no \`max\` prop is set)
   - \`null\` if the progress is indeterminate.
 
-Defaulting to \`null\`.`;
+Defaulting to \`null\`.`
 }
 
 /* -------------------------------------------------------------------------------------------------
  * Progress
  * -----------------------------------------------------------------------------------------------*/
 
-const DEFAULT_MAX = 100;
+const DEFAULT_MAX = 100
 
-type ScopedProps<P> = P & { __scopeProgress?: Scope };
+type ScopedProps<P> = P & { __scopeProgress?: Scope }
 
-type ProgressState = "indeterminate" | "complete" | "loading";
+type ProgressState = 'indeterminate' | 'complete' | 'loading'
 
 export const ProgressFrame = styled(ThemeableStack, {
-  name: "Progress",
+  name: 'Progress',
 
   variants: {
     unstyled: {
       false: {
         borderRadius: 100_000,
-        overflow: "hidden",
+        overflow: 'hidden',
         backgrounded: true,
       },
     },
 
     size: {
-      "...size": (val) => {
-        const size = Math.round(getVariableValue(getSize(val)) * 0.25);
+      '...size': (val) => {
+        const size = Math.round(getVariableValue(getSize(val)) * 0.25)
         return {
           height: size,
           minWidth: getVariableValue(size) * 20,
-          width: "100%",
-        };
+          width: '100%',
+        }
       },
     },
   } as const,
 
   defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === "1" ? true : false,
+    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
   },
-});
+})
 
 interface ProgressExtraProps {
-  value?: number | null | undefined;
-  max?: number;
-  native?: "ios";
-  getValueLabel?(value: number, max: number): string;
+  value?: number | null | undefined
+  max?: number
+  native?: 'ios'
+  getValueLabel?(value: number, max: number): string
 }
 
-type ProgressProps = GetProps<typeof ProgressFrame> & ProgressExtraProps;
+type ProgressProps = GetProps<typeof ProgressFrame> & ProgressExtraProps
 
 const Progress = withStaticProperties(
-  ProgressFrame.styleable<ProgressExtraProps>(function Progress(
-    props,
-    forwardedRef
-  ) {
+  ProgressFrame.styleable<ProgressExtraProps>(function Progress(props, forwardedRef) {
     const {
       // @ts-expect-error
       __scopeProgress,
       value: valueProp,
       max: maxProp,
       getValueLabel = defaultGetValueLabel,
-      size = "$true",
+      size = '$true',
       ...progressProps
-    } = props;
+    } = props
 
-    const max = isValidMaxNumber(maxProp) ? maxProp : DEFAULT_MAX;
-    const value = isValidValueNumber(valueProp, max) ? valueProp : null;
-    const valueLabel = isNumber(value) ? getValueLabel(value, max) : undefined;
-    const [width, setWidth] = React.useState(0);
+    const max = isValidMaxNumber(maxProp) ? maxProp : DEFAULT_MAX
+    const value = isValidValueNumber(valueProp, max) ? valueProp : null
+    const valueLabel = isNumber(value) ? getValueLabel(value, max) : undefined
+    const [width, setWidth] = React.useState(0)
 
-    if (props.native && Platform.OS === "ios") {
-      return <NativeProgressIOS {...props} />;
+    if (props.native && Platform.OS === 'ios') {
+      return <NativeProgressIOS {...props} />
     }
 
     return (
-      <ProgressProvider
-        scope={__scopeProgress}
-        value={value}
-        max={max}
-        width={width}
-      >
+      <ProgressProvider scope={__scopeProgress} value={value} max={max} width={width}>
         <ProgressFrame
           aria-valuemax={max}
           aria-valuemin={0}
@@ -216,18 +201,18 @@ const Progress = withStaticProperties(
           })}
           {...progressProps}
           onLayout={(e) => {
-            setWidth(e.nativeEvent.layout.width);
-            progressProps.onLayout?.(e);
+            setWidth(e.nativeEvent.layout.width)
+            progressProps.onLayout?.(e)
           }}
           ref={forwardedRef}
         />
       </ProgressProvider>
-    );
+    )
   }),
   {
     Indicator: ProgressIndicator,
   }
-);
+)
 
-export { Progress, ProgressIndicator, createProgressScope };
-export type { ProgressIndicatorProps, ProgressProps };
+export { Progress, ProgressIndicator, createProgressScope }
+export type { ProgressIndicatorProps, ProgressProps }
