@@ -1293,15 +1293,15 @@ export function createExtractor(
             }
 
             // Disabling: this probably doesn't optimize much and needs to be done a bit differently
-            // if (options.experimentalFlattenThemesOnNative) {
-            //   if (isValidStyleKey(name, staticConfig)) {
-            //     return {
-            //       type: 'dynamic-style',
-            //       value,
-            //       name,
-            //     }
-            //   }
-            // }
+            if (options.experimentalFlattenThemesOnNative) {
+              if (isValidStyleKey(name, staticConfig)) {
+                return {
+                  type: 'dynamic-style',
+                  value,
+                  name,
+                }
+              }
+            }
 
             // if we've made it this far, the prop stays inline
             inlined.set(name, true)
@@ -1988,6 +1988,8 @@ export function createExtractor(
             }
 
             try {
+              const beforeProcessUsedThemeKeys = usedThemeKeys.size
+
               const out = getSplitStyles(
                 props,
                 staticConfig,
@@ -2019,7 +2021,8 @@ export function createExtractor(
               }
 
               if (options.experimentalFlattenThemesOnNative) {
-                if (usedThemeKeys.size > 0) {
+                if (beforeProcessUsedThemeKeys < usedThemeKeys.size) {
+                  // we used a theme key
                   Object.entries(props).forEach(([key, value]) => {
                     if (usedThemeKeys.has(value)) {
                       outProps[key] = value

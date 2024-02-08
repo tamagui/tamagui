@@ -1,27 +1,15 @@
+- experimetnalFlattenThemes 
+  - <Flex centered gap={amountAndEquivalentValueGap}>
+  - is leaving _expressions in the render incorrectly
+
 - settings page in takeout SSR hydration issue due to useThemeSetting
 
 - animatedStyle showing up in animated component snapshot on native
   - add some native snapshots in ci tests
 
-- fix hitSlop on View to accept number since it uses Pressable internally
-
-- experimentalFlattenThemesOnNative is breaking on ternaries now
-
-```tsx
-<Flex backgroundColor={showBackground ? '$surface1' : '$transparent'} />
-```
-
-seems to not me merging style into one object on flatten here:
-
-```tsx
-<Flex position="absolute" right="$spacing20" top="$spacing20" />
-```
-
 - expo router ExpoResponse not a constructor issue
 
 - addTheme updateTheme regression needs a test
-
-- themes v3 needs to add "surface1" "surface2" "surface3" as generics basically
 
 - not seeing data-at props
 

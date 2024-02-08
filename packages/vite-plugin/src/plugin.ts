@@ -60,17 +60,17 @@ export function tamaguiPlugin({
     },
 
     // // fix expo-linear-gradient
-    // async transform(code, id) {
-    //   if (!id.includes('expo-linear-gradient')) {
-    //     return
-    //   }
-    //   // Use the exposed transform from vite, instead of directly
-    //   // transforming with esbuild
-    //   return transformWithEsbuild(code, id, {
-    //     loader: 'jsx',
-    //     jsx: 'automatic', // 👈 this is important
-    //   })
-    // },
+    async transform(code, id) {
+      if (!id.includes('expo-linear-gradient')) {
+        return
+      }
+      // Use the exposed transform from vite, instead of directly
+      // transforming with esbuild
+      return transformWithEsbuild(code, id, {
+        loader: 'jsx',
+        jsx: 'automatic', // 👈 this is important
+      })
+    },
 
     config(userConfig, env) {
       return {
@@ -87,7 +87,7 @@ export function tamaguiPlugin({
         optimizeDeps: {
           jsx: 'transform',
           include: platform === 'web' ? ['expo-linear-gradient'] : [],
-          disabled: false,
+          // disabled: false,
           esbuildOptions: {
             resolveExtensions: extensions,
             loader: {

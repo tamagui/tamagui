@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/metro-plugin",
-  "version": "1.89.11",
+  "version": "1.89.13",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -23,12 +23,12 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/static": "1.89.11",
+    "@tamagui/static": "1.89.13",
     "metro-config": "^0.80.4",
     "metro-transform-worker": "^0.80.4",
     "react-native-css-interop": "~0.0.21"
   },
   "devDependencies": {
-    "@tamagui/build": "1.89.11"
+    "@tamagui/build": "1.89.13"
   }
 }
