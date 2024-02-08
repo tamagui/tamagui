@@ -87,7 +87,7 @@ Finally, there are a few non-style props Tamagui adds:
       type: 'string',
       description: (
         <span>
-          <strong>Web Only</strong>: Renders the final element as the given tag.
+          <strong>Web Only</strong>: Renders the final element as the given tag. Note: React Native Web doesn't support tag and as such if using any animation driver except CSS the tag prop will stop working. We'd recommend using "role" for most cases.
         </span>
       ),
     },
