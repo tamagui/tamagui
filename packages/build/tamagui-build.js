@@ -566,7 +566,7 @@ async function esbuildWriteIfChanged(
                   filename: mjsOutPath,
                   plugins: [
                     [
-                      'babel-plugin-fully-specified',
+                      require.resolve('babel-plugin-fully-specified'),
                       {
                         ensureFileExists: false,
                         esExtensionDefault: '.mjs',
