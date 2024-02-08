@@ -7,6 +7,7 @@ const domain = `http://localhost:${port}`
 
 test(`loads dev mode no error or warning logs`, async ({ page }) => {
   const server = $`yarn dev`
+  server.catch(console.log)
   try {
     await waitPort({
       port: port,
@@ -31,14 +32,17 @@ test(`loads dev mode no error or warning logs`, async ({ page }) => {
     expect(logs.error.length).toBe(0)
     expect(logs.warn.length).toBe(0)
     await expect(page.getByText('Hello world').first()).toBeVisible()
+  } catch (err) {
+    console.error(err)
   } finally {
-    server.kill()
+    await server.kill()
   }
 })
 
 test(`builds to prod same thing`, async ({ page }) => {
   await $`yarn build`
   const server = $`yarn vite preview --port ${port}`
+  server.catch(console.log)
 
   try {
     await waitPort({
@@ -65,6 +69,6 @@ test(`builds to prod same thing`, async ({ page }) => {
     expect(logs.warn.length).toBe(0)
     await expect(page.getByText('Hello world').first()).toBeVisible()
   } finally {
-    server.kill()
+    await server.kill()
   }
 })

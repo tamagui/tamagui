@@ -5230,23 +5230,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core-darwin-arm64@npm:1.4.0":
-  version: 1.4.0
-  resolution: "@swc/core-darwin-arm64@npm:1.4.0"
-  conditions: os=darwin & cpu=arm64
-  languageName: node
-  linkType: hard
-
 "@swc/core-darwin-x64@npm:1.3.92":
   version: 1.3.92
   resolution: "@swc/core-darwin-x64@npm:1.3.92"
-  conditions: os=darwin & cpu=x64
-  languageName: node
-  linkType: hard
-
-"@swc/core-darwin-x64@npm:1.4.0":
-  version: 1.4.0
-  resolution: "@swc/core-darwin-x64@npm:1.4.0"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
@@ -5258,23 +5244,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core-linux-arm-gnueabihf@npm:1.4.0":
-  version: 1.4.0
-  resolution: "@swc/core-linux-arm-gnueabihf@npm:1.4.0"
-  conditions: os=linux & cpu=arm
-  languageName: node
-  linkType: hard
-
 "@swc/core-linux-arm64-gnu@npm:1.3.92":
   version: 1.3.92
   resolution: "@swc/core-linux-arm64-gnu@npm:1.3.92"
-  conditions: os=linux & cpu=arm64 & libc=glibc
-  languageName: node
-  linkType: hard
-
-"@swc/core-linux-arm64-gnu@npm:1.4.0":
-  version: 1.4.0
-  resolution: "@swc/core-linux-arm64-gnu@npm:1.4.0"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
@@ -5286,23 +5258,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core-linux-arm64-musl@npm:1.4.0":
-  version: 1.4.0
-  resolution: "@swc/core-linux-arm64-musl@npm:1.4.0"
-  conditions: os=linux & cpu=arm64 & libc=musl
-  languageName: node
-  linkType: hard
-
 "@swc/core-linux-x64-gnu@npm:1.3.92":
   version: 1.3.92
   resolution: "@swc/core-linux-x64-gnu@npm:1.3.92"
-  conditions: os=linux & cpu=x64 & libc=glibc
-  languageName: node
-  linkType: hard
-
-"@swc/core-linux-x64-gnu@npm:1.4.0":
-  version: 1.4.0
-  resolution: "@swc/core-linux-x64-gnu@npm:1.4.0"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
@@ -5314,23 +5272,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core-linux-x64-musl@npm:1.4.0":
-  version: 1.4.0
-  resolution: "@swc/core-linux-x64-musl@npm:1.4.0"
-  conditions: os=linux & cpu=x64 & libc=musl
-  languageName: node
-  linkType: hard
-
 "@swc/core-win32-arm64-msvc@npm:1.3.92":
   version: 1.3.92
   resolution: "@swc/core-win32-arm64-msvc@npm:1.3.92"
-  conditions: os=win32 & cpu=arm64
-  languageName: node
-  linkType: hard
-
-"@swc/core-win32-arm64-msvc@npm:1.4.0":
-  version: 1.4.0
-  resolution: "@swc/core-win32-arm64-msvc@npm:1.4.0"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
@@ -5342,70 +5286,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core-win32-ia32-msvc@npm:1.4.0":
-  version: 1.4.0
-  resolution: "@swc/core-win32-ia32-msvc@npm:1.4.0"
-  conditions: os=win32 & cpu=ia32
-  languageName: node
-  linkType: hard
-
 "@swc/core-win32-x64-msvc@npm:1.3.92":
   version: 1.3.92
   resolution: "@swc/core-win32-x64-msvc@npm:1.3.92"
   conditions: os=win32 & cpu=x64
-  languageName: node
-  linkType: hard
-
-"@swc/core-win32-x64-msvc@npm:1.4.0":
-  version: 1.4.0
-  resolution: "@swc/core-win32-x64-msvc@npm:1.4.0"
-  conditions: os=win32 & cpu=x64
-  languageName: node
-  linkType: hard
-
-"@swc/core@npm:^1.3.107":
-  version: 1.4.0
-  resolution: "@swc/core@npm:1.4.0"
-  dependencies:
-    "@swc/core-darwin-arm64": "npm:1.4.0"
-    "@swc/core-darwin-x64": "npm:1.4.0"
-    "@swc/core-linux-arm-gnueabihf": "npm:1.4.0"
-    "@swc/core-linux-arm64-gnu": "npm:1.4.0"
-    "@swc/core-linux-arm64-musl": "npm:1.4.0"
-    "@swc/core-linux-x64-gnu": "npm:1.4.0"
-    "@swc/core-linux-x64-musl": "npm:1.4.0"
-    "@swc/core-win32-arm64-msvc": "npm:1.4.0"
-    "@swc/core-win32-ia32-msvc": "npm:1.4.0"
-    "@swc/core-win32-x64-msvc": "npm:1.4.0"
-    "@swc/counter": "npm:^0.1.1"
-    "@swc/types": "npm:^0.1.5"
-  peerDependencies:
-    "@swc/helpers": ^0.5.0
-  dependenciesMeta:
-    "@swc/core-darwin-arm64":
-      optional: true
-    "@swc/core-darwin-x64":
-      optional: true
-    "@swc/core-linux-arm-gnueabihf":
-      optional: true
-    "@swc/core-linux-arm64-gnu":
-      optional: true
-    "@swc/core-linux-arm64-musl":
-      optional: true
-    "@swc/core-linux-x64-gnu":
-      optional: true
-    "@swc/core-linux-x64-musl":
-      optional: true
-    "@swc/core-win32-arm64-msvc":
-      optional: true
-    "@swc/core-win32-ia32-msvc":
-      optional: true
-    "@swc/core-win32-x64-msvc":
-      optional: true
-  peerDependenciesMeta:
-    "@swc/helpers":
-      optional: true
-  checksum: 10/2f310f81c24b5688a6d4171b4fdb59987070ecda03aad51d755592607b461ddcd6a9d0488510f47785ce634707fd6f30f986ab1f1138e794972d53ce0e94db80
   languageName: node
   linkType: hard
 
@@ -9274,17 +9158,6 @@ __metadata:
   peerDependencies:
     vite: ^4
   checksum: 10/f39c90379c26c25387d60b30c20f156a09745f5a1e639f5d29c22afad358c0d78d5943a60bb5a08c43a1d0640bf3458c86181980361d9e708dd495ba5fe725a2
-  languageName: node
-  linkType: hard
-
-"@vitejs/plugin-react-swc@npm:^3.5.0":
-  version: 3.6.0
-  resolution: "@vitejs/plugin-react-swc@npm:3.6.0"
-  dependencies:
-    "@swc/core": "npm:^1.3.107"
-  peerDependencies:
-    vite: ^4 || ^5
-  checksum: 10/8bff5065e9689d0b0405932b5f2483bd0c388812dc13219a1511023f7eaca7a53c43f75f3eae785e27f7ce5a60e99d5d32bac4845a63ab095d5562180f7efa7c
   languageName: node
   linkType: hard
 
@@ -23906,7 +23779,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"react-native-web@npm:^0.19.10, react-native-web@npm:~0.19.9":
+"react-native-web@npm:^0.19.10":
   version: 0.19.10
   resolution: "react-native-web@npm:0.19.10"
   dependencies:
@@ -25600,18 +25473,21 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "simple@workspace:apps/simple"
   dependencies:
+    "@playwright/test": "npm:^1.40.1"
     "@tamagui/animations-css": "npm:1.89.12"
     "@tamagui/core": "npm:1.89.12"
     "@tamagui/create-theme": "npm:1.89.12"
     "@tamagui/react-native-svg": "npm:1.89.12"
     "@tamagui/vite-plugin": "npm:1.89.12"
-    "@vitejs/plugin-react-swc": "npm:^3.5.0"
+    "@vitejs/plugin-react-swc": "npm:^3.4.0"
     async-retry: "npm:1.3.1"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
-    react-native-web: "npm:~0.19.9"
+    react-native-web: "npm:^0.19.10"
     tamagui: "npm:1.89.12"
     vite: "npm:^5.0.12"
+    wait-port: "npm:^0.3.0"
+    zx: "npm:^7.2.3"
   languageName: unknown
   linkType: soft
 

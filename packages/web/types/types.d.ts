@@ -648,7 +648,13 @@ type Px = `${string | number}px`;
 type PxOrPct = Px | `${string | number}%`;
 type TwoValueTransformOrigin = `${PxOrPct | 'left' | 'center' | 'right'} ${PxOrPct | 'top' | 'center' | 'bottom'}`;
 export interface TransformStyleProps {
+    /**
+     * Maps to translateX
+     */
     x?: number;
+    /**
+     * Maps to translateY
+     */
     y?: number;
     perspective?: number;
     scale?: number;
@@ -663,15 +669,39 @@ export interface TransformStyleProps {
     rotateZ?: string;
 }
 interface ExtraStyleProps {
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
     contain?: Properties['contain'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
     touchAction?: Properties['touchAction'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
     cursor?: Properties['cursor'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
     outlineColor?: Properties['outlineColor'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
     outlineOffset?: SpaceValue;
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
     outlineStyle?: Properties['outlineStyle'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
     outlineWidth?: SpaceValue;
-    pointerEvents?: ViewProps['pointerEvents'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
     userSelect?: Properties['userSelect'];
+    pointerEvents?: ViewProps['pointerEvents'];
     /**
      * @deprecated Use `gap`
      */
@@ -684,8 +714,21 @@ interface ExtraStyleProps {
      * @deprecated can implement your own hook or component
      */
     separator?: ReactNode;
+    /**
+     * Animations are defined using `createTamagui` typically in a tamagui.config.ts file.
+     * Pass a string animation here and it uses an animation driver to execute it.
+     *
+     * See: https://tamagui.dev/docs/core/animations
+     */
     animation?: AnimationProp | null;
+    /**
+     * Pass an array of strings containing the long style property names
+     * which will be exclusively animated.
+     */
     animateOnly?: string[];
+    /**
+     * The point at which transforms originate from.
+     */
     transformOrigin?: PxOrPct | 'left' | 'center' | 'right' | 'top' | 'bottom' | TwoValueTransformOrigin | `${TwoValueTransformOrigin} ${Px}`;
 }
 export interface ExtendBaseStackProps {
