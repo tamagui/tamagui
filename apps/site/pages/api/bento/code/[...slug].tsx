@@ -3,8 +3,10 @@ import { protectApiRoute } from '@lib/protectApiRoute'
 import fs from 'fs'
 import path from 'path'
 
-const CODE_ASSETS_DIR = '../bento/src/components'
-// process.env.NODE_ENV === 'development' ? './.next/bento' : './bento'
+const CODE_ASSETS_DIR =
+  process.env.NODE_ENV === 'development' && process.env.IS_TAMAGUI_DEV === '1'
+    ? './.next/bento'
+    : './bento'
 
 const handler = async (req, res) => {
   if (process.env.NODE_ENV === 'production') {
@@ -25,7 +27,7 @@ const handler = async (req, res) => {
   if (!filePath.startsWith(path.resolve(CODE_ASSETS_DIR))) {
     res.status(404).json({ error: 'Not found' })
   }
-  const fileBuffer = fs.readFileSync(filePath + '.tsx')
+  const fileBuffer = fs.readFileSync(filePath + '.txt')
   res.setHeader('Content-Type', 'text/plain')
   return res.send(fileBuffer)
 }
