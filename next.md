@@ -1,3 +1,7 @@
+- experimetnalFlattenThemes 
+  - <Flex centered gap={amountAndEquivalentValueGap}>
+  - is leaving _expressions in the render incorrectly
+
 - settings page in takeout SSR hydration issue due to useThemeSetting
 
 - animatedStyle showing up in animated component snapshot on native

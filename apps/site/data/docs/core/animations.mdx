@@ -107,22 +107,17 @@ export default createTamagui({
 
 [Reanimated](https://docs.swmansion.com/react-native-reanimated/) is an
 animation library that targets React Native and React Native Web. It runs
-off-thread animations, and provides nicer syntax and hooks. It weighs over 100Kb
-minified though, which makes it not always useful for the web.
+off-thread animations, and provides simple syntax and hooks.
 
-<Notice>
-  If using the starter, it configures `excludeReactNativeWebExports` to omit
-  FlatList and other views reanimated expects, change that config to fix errors.
-</Notice>
-
-To install it add to your package.json. We use [Moti](https://moti.fyi) as the
-driver, which is a very light layer above reanimated:
+To install it add to your package.json:
 
 ```bash
 yarn add @tamagui/animations-moti react-native-reanimated
 ```
 
-Then add it to your [config](/docs/core/configuration):
+Tamagui leverages and appreciates the popular open source library [Moti](https://moti.fyi) for the Reanimated driver as it saved us many lines of complex code.
+
+Add your animations to your [configuration](/docs/core/configuration):
 
 ```tsx
 import { createAnimations } from '@tamagui/animations-moti'
@@ -160,10 +155,9 @@ time - reanimated must run via JS.
 
 Note the keys match between CSS and reanimated, so you can swap them out.
 
-<Notice>
-  **Save bundle size** by removing `Animated` and `AnimatedFlatList` from
-  react-native-web. On Next.js, use the [excludeReactNativeWebExports`
-  option](/docs/intro/installation#next.js) config option.
+<Notice theme="green">
+  The Animated driver in React Native Web can be excluded from your bundle with either the Webpack or Next.js plugins with [`excludeReactNativeWebExports`
+  compiler option](#excludeReactNativeWebExports).
 </Notice>
 
 ### Usage
@@ -445,30 +439,23 @@ like so:
 Note that because of this constraint, you also will see an error if you add the
 `animation` prop to a component in dev mode during an HMR. Often just saving once more will remove the screen, or reloading at worst.
 
-#### SSR safe enter animations for web
+#### Server side rendered enter animations on web
 
-Tamagui works hard to make all the animations drivers SSR safe. While the CSS driver is relatively easy, the two others: reanimated, and React Native Web, both require some tricky logic to ensure that they don't flicker, don't hide content for users without JavaScript turned on, and still animation properly on initial render.
+To get easy, safe and ideal server side rendering, Tamagui avoids rendering using the spring animation drivers on the server. Instead, it uses the CSS driver so that it can generate both enter-style and non-enter-style CSS, with the enter-style CSS under the new selector `.t_unmounted`.
 
-The short story is that if you want SSR safe animations, add this somewhere in your `head` tag:
+On the first load in a browser, to avoid [hydration mis-matches](https://nextjs.org/docs/messages/react-hydration-error)), Tamagui renders once more using the CSS driver. Finally, it renders again (only for components with both animation and enterStyle set), swapping in the spring driver and removing the `t_unmounted` selector so that the enter animations hand off without any visible difference. But you have to add one script tag to the head element, from the server:
 
 ```tsx
 <head>
   <script
     dangerouslySetInnerHTML={{
       // avoid flash of entered elements before enter animations run:
+      // https://tamagui.dev/docs/core/animations#server-side-rendered-enter-animations-on-web
       __html: `document.documentElement.classList.add('t_unmounted')`,
     }}
   />
 </head>
 ```
 
-##### Perfect SSR
+This adds the className `t_unmounted` to your body tag only if JavaScript is enabled. If a user doesn't have JavaScript on, they see the normal page, without any hidden elements. If they do have JavaScript on, because this script runs in the head before the browser has any body to show, browsers will add the `t_unmounted` className on first render and your content will be in the "entering" state, or else it would flicker the "entered" content.
 
-To achieve the ideal behavior for SSR with a spring driver, Tamagui does the following:
-
-1. On server, render using CSS only and with all `enterStyle` off, this way you can use CSS media queries and CSS variables which are a must for the initial render to match on hydration.
-2. During that first server render, gather `enterStyle` as atomic CSS with the `.t_unmounted ` selector prefixed.
-4. Add the code snippet above to your head, which will ensure the t_unmounted is in place before the browser shows anything visually.
-5. On first client render, you have to match the exact server render, so you render once with CSS.
-6. Render once more, this time swapping out for the animated spring component, with enterStyle enabled so it matches the initial render.
-7. Gather your styles once more with enterStyle turned off, and send the spring drivers happily off to do their bouncy things.
