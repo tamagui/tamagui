@@ -5615,6 +5615,7 @@ __metadata:
     react-native-svg: "npm:^13.9.0"
     react-native-web: "npm:^0.19.10"
     solito: "npm:^4.0.0-alpha.4"
+    swr: "npm:^2.2.0"
     tamagui: "npm:1.89.15"
     tilg: "npm:0.1.1"
     webpack: "npm:^5.88.2"

@@ -76,6 +76,7 @@
     "react-native-svg": "^13.9.0",
     "react-native-web": "^0.19.10",
     "solito": "^4.0.0-alpha.4",
+    "swr": "^2.2.0",
     "tamagui": "1.89.15"
   },
   "devDependencies": {
