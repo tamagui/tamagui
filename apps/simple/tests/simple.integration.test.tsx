@@ -40,7 +40,7 @@ test(`loads dev mode no error or warning logs`, async ({ page }) => {
 })
 
 test(`builds to prod same thing`, async ({ page }) => {
-  await $`yarn build`
+  await $`yarn build:prod`
   const server = $`yarn vite preview --port ${port}`
   server.catch(console.log)
 

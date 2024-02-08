@@ -4,7 +4,8 @@
   "scripts": {
     "web": "yarn dev",
     "test": "node -r esbuild-register ../../node_modules/.bin/playwright test simple.integration.test.tsx",
-    "build": "NODE_ENV=production vite build",
+    "build:prod": "vite build",
+    "preview": "vite preview",
     "dev": "NODE_ENV=development vite --host --clearScreen false",
     "dev:extract": "EXTRACT=1 yarn dev",
     "prod": "NODE_ENV=production webpack --json=dist/compilation-stats.json",
