@@ -32,7 +32,10 @@ type CheckboxExtraProps = HeadlessCheckboxExtraProps & {
   native?: NativeValue<'web'>
 }
 type CheckboxBaseProps = StackProps
-export type CheckboxProps = CheckboxBaseProps & CheckboxExtraProps
+
+export type CheckboxProps = CheckboxBaseProps &
+  CheckboxExtraProps &
+  CheckboxExpectingVariantProps
 
 type CheckboxComponent = (
   props: CheckboxExtraProps & CheckboxExpectingVariantProps
