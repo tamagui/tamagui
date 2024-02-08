@@ -1,17 +1,19 @@
 import { apiRoute } from '@lib/apiRoute'
-import { checkSponsorAccess } from '@lib/getSponsorData'
+import { authorizeUserAccess } from '@lib/authorizeUserAccess'
 import { protectApiRoute } from '@lib/protectApiRoute'
 
 export type StoreData = { themeSuites: Record<string, any> }
 
 export default apiRoute(async (req, res) => {
   const { supabase, user } = await protectApiRoute({ req, res })
-  const { teamId } = await checkSponsorAccess({
-    req,
-    res,
-    supabase,
-    throwIfNoAccess: true,
-  })
+  const { teamId } = await authorizeUserAccess(
+    {
+      req,
+      res,
+      supabase,
+    },
+    { checkForStudioAccess: true }
+  )
 
   let body: StoreData
   try {
