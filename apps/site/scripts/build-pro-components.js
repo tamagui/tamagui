@@ -19,6 +19,10 @@ function analyzeIndexFile(filePath) {
   return exportedModules
 }
 
+function shake(content) {
+  return content.replaceAll('$group-window-sm', '$sm').replaceAll('$group-window-md', '$md').replaceAll(/([a-zA-Z0-9_]+\.fileName\s*=\s*)'([^']*)'/g, '')
+}
+
 function readDirectoryRecursively(directoryPath, outputDirectory) {
   const indexFiles = ['index.js', 'index.tsx', 'index.ts']
 
@@ -44,7 +48,7 @@ function readDirectoryRecursively(directoryPath, outputDirectory) {
         exportedModule
       )
       fs.mkdirSync(path.dirname(outputFilePath), { recursive: true })
-      const outputContent = processFile(`${modulePath}.tsx`)
+      const outputContent = shake(processFile(`${modulePath}.tsx`))
       fs.writeFileSync(`${outputFilePath}.txt`, outputContent)
     })
   } else {
