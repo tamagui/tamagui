@@ -131,7 +131,6 @@
     "@welldone-software/why-did-you-render": "^7.0.1",
     "acorn": "^8.11.3",
     "acorn-walk": "^8.3.1",
-    "babel-polyfill": "^6.26.0",
     "esbuild-loader": "^3.0.1",
     "fs-extra": "^11.2.0",
     "next-remote-watch": "^2.0.0",
