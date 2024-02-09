@@ -5587,6 +5587,7 @@ __metadata:
     "@tamagui/web": "npm:1.89.18"
     "@tanstack/react-table": "npm:^8.11.2"
     "@welldone-software/why-did-you-render": "npm:^7.0.1"
+    awesome-phonenumber: "npm:^6.4.0"
     burnt: "npm:^0.12.1"
     expo: "npm:^49.0.21"
     expo-build-properties: "npm:~0.8.3"
@@ -10272,6 +10273,13 @@ __metadata:
     fastq: "npm:^1.6.1"
     queue-microtask: "npm:^1.1.2"
   checksum: 10/6e3128de9bb4cabf2ac4c6bb9efad9a1a2397249b1b302193aba6fd9af1764c9f41240894679c74f9a86988a769b650792afc7267e5e8c735eaeaf255429af4a
+  languageName: node
+  linkType: hard
+
+"awesome-phonenumber@npm:^6.4.0":
+  version: 6.4.0
+  resolution: "awesome-phonenumber@npm:6.4.0"
+  checksum: 10/cf8b611021b0c2a287692d71eb06992c86a5468e89b26305dc223b5b3283d93f8568beaa362b7e8f9e52623ea733d75ead6018fbb06324ca6e10a725c3fbeea0
   languageName: node
   linkType: hard
 

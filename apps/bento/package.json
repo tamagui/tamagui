@@ -52,6 +52,7 @@
     "@tamagui/themes": "1.89.18",
     "@tamagui/web": "1.89.18",
     "@tanstack/react-table": "^8.11.2",
+    "awesome-phonenumber": "^6.4.0",
     "burnt": "^0.12.1",
     "expo": "^49.0.21",
     "expo-build-properties": "~0.8.3",
