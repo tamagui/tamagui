@@ -74,7 +74,7 @@ BentoPage.getLayout = getDefaultLayout
 const Intermediate = () => {
   return (
     <YStack zi={1} w="100%" className="blur-8">
-      <YStack btw={0.5} bc="$color025" />
+      <YStack o={0.5} btw={0.5} bc="$color025" />
       <YStack fullscreen bg="$background" o={0.24} />
       <YStack
         className="grain"
@@ -109,25 +109,21 @@ const IntermediateCard = ({
     <XStack
       ov="hidden"
       f={1}
-      br="$9"
-      px="$5"
-      py="$4"
-      bc="$color025"
-      bw={0.25}
-      bs="solid"
       gap="$5"
+      br="$9"
       shac="$background025"
       shof={{ height: 5, width: 0 }}
       shar="$6"
+      px="$5"
+      py="$4"
       // style={{
       //   backdropFilter: 'blur(80px)',
       //   WebkitBackdropFilter: 'blur(80px)',
       // }}
     >
+      <YStack fullscreen br="$9" bc="$color025" bw={0.25} bs="solid" o={0.5} />
       <YStack f={1} gap="$2">
-        <H4 o={0.35} size="$4">
-          {title}
-        </H4>
+        <H4 size="$4">{title}</H4>
         <Paragraph color="$color10" lh="$3">
           {children}
         </Paragraph>
@@ -258,12 +254,13 @@ const Hero = () => {
           </YStack>
 
           <YStack
-            mr={-250}
+            mr={-360}
             ml={-150}
             maw={1000}
-            mt={0}
+            mt={-100}
             pl={100}
-            pr={200}
+            pr={300}
+            pt={100}
             x={20}
             mb={-300}
             y={-20}
@@ -289,7 +286,9 @@ const Hero = () => {
                   </Theme>
                 </YStack> */}
 
-                <Sections.Preferences.LocationNotification />
+                <YStack br="$4" shac="rgba(0,0,0,0.2)" shar="$8">
+                  <Sections.Preferences.LocationNotification />
+                </YStack>
 
                 <YStack
                   pos="absolute"
@@ -304,7 +303,16 @@ const Hero = () => {
                   </Theme>
                 </YStack>
 
-                <YStack pos="absolute" zi={-1} l="15%" scale={0.9} rotate="5deg">
+                <YStack
+                  pos="absolute"
+                  zi={-1}
+                  l="15%"
+                  scale={0.9}
+                  rotate="5deg"
+                  br="$4"
+                  shac="rgba(0,0,0,0.2)"
+                  shar="$8"
+                >
                   <Sections.Preferences.LocationNotification />
                 </YStack>
               </XStack>

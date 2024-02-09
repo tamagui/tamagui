@@ -7,7 +7,7 @@ import type { GetStaticPaths } from 'next'
 import { useRouter } from 'next/router'
 
 import { BentoLogo } from '../../../components/BentoLogo'
-import { ContainerXL } from '../../../components/Container'
+import { ContainerLarge } from '../../../components/Container'
 import { getDefaultLayout } from '../../../lib/getDefaultLayout'
 
 export default function page({ codes }) {
@@ -20,20 +20,18 @@ export default function page({ codes }) {
   const Comp = sections[params.section][params.part]
 
   return (
-    <BentoPageFrame>
-      <ContainerXL>
-        <YStack px="$8">
+    <>
+      <BentoPageFrame>
+        <ContainerLarge>
           <DetailHeader>
             {`${params.section[0].toUpperCase()}${params.section.slice(1)}`}
           </DetailHeader>
-          <Spacer />
-          <Spacer />
-          <YStack>
-            <Comp codes={codes} />
-          </YStack>
-        </YStack>
-      </ContainerXL>
-    </BentoPageFrame>
+        </ContainerLarge>
+      </BentoPageFrame>
+      <ContainerLarge bg="$background">
+        <Comp codes={codes} />
+      </ContainerLarge>
+    </>
   )
 }
 
@@ -57,13 +55,11 @@ export const getStaticProps = (ctx) => {
 
 export const DetailHeader = (props: { children: string }) => {
   return (
-    <YStack pt="$10" gap="$4">
+    <YStack pt="$12" pb="$6" gap="$4">
       <YStack gap="$4">
         <XStack ai="center" jc="space-between">
           <Theme reset>
-            <H1 size="$12" color="$color1">
-              {props.children}
-            </H1>
+            <H1 size="$12">{props.children}</H1>
           </Theme>
 
           <YStack scale={0.5} m={-150}>
@@ -71,7 +67,7 @@ export const DetailHeader = (props: { children: string }) => {
           </YStack>
         </XStack>
 
-        <XStack p="$3" ai="center" gap="$2">
+        <XStack p={0.5} ai="center" gap="$2">
           <Anchor>Section</Anchor>
           <Anchor size="$2">{'>'}</Anchor>
           <Anchor>Inputs</Anchor>

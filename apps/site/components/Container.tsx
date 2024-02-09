@@ -13,6 +13,7 @@ export const Container = styled(YStack, {
   mx: 'auto',
   px: '$4',
   width: '100%',
+  pos: 'relative',
 
   $gtSm: {
     maxWidth: 760,
@@ -36,6 +37,7 @@ export const ContainerLarge = styled(YStack, {
   mx: 'auto',
   px: '$4',
   width: '100%',
+  pos: 'relative',
 
   $gtSm: {
     maxWidth: 980,
@@ -51,6 +53,7 @@ export const ContainerLarge = styled(YStack, {
 export const ContainerXL = styled(YStack, {
   mx: 'auto',
   width: '100%',
+  pos: 'relative',
 
   $gtSm: {
     px: '$4',
