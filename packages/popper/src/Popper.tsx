@@ -105,6 +105,7 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
     middlewareData,
     // @ts-expect-error this comes from Tooltip for example
     open,
+    floatingStyles,
   } = floating
 
   if (isWeb) {
@@ -237,8 +238,18 @@ export const PopperContent = React.forwardRef<
   ScopedPopperProps<PopperContentProps>
 >(function PopperContent(props: ScopedPopperProps<PopperContentProps>, forwardedRef) {
   const { __scopePopper, enableAnimationForPositionChange, ...rest } = props
-  const { strategy, placement, refs, x, y, getFloatingProps, size, isMounted, update } =
-    usePopperContext(__scopePopper)
+  const {
+    strategy,
+    placement,
+    refs,
+    x,
+    y,
+    getFloatingProps,
+    size,
+    isMounted,
+    update,
+    floatingStyles,
+  } = usePopperContext(__scopePopper)
   const contentRefs = useComposedRefs<any>(refs.setFloating, forwardedRef)
 
   const contents = React.useMemo(() => {
@@ -290,6 +301,7 @@ export const PopperContent = React.forwardRef<
         animation: rest.animation,
         animateOnly: rest.animateOnly,
       }),
+    ...(!isWeb && floatingStyles),
   }
 
   // outer frame because we explicitly don't want animation to apply to this
