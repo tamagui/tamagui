@@ -110,15 +110,15 @@ export const BentoPageFrame = ({ children }: { children: any }) => {
 
 export const BentoFrond = () => (
   <YStack
-    t={0}
-    r={400}
+    t={-450}
+    r={150}
     pos="absolute"
     className="shadow-breeze"
     zi={2}
     pe="none"
-    o={0.086}
+    o={0.15}
     $theme-dark={{
-      o: 0.125,
+      o: 0.15,
     }}
     style={{
       filter: 'blur(3px)',
@@ -126,8 +126,8 @@ export const BentoFrond = () => (
     }}
   >
     <svg
-      width="1280px"
-      height="640px"
+      width={1280 * 1.2}
+      height={640 * 1.2}
       viewBox="0 0 1280.000000 640.000000"
       preserveAspectRatio="xMidYMid meet"
     >

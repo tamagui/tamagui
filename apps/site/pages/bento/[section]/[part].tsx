@@ -28,7 +28,19 @@ export default function page({ codes }) {
           </DetailHeader>
         </ContainerLarge>
       </BentoPageFrame>
-      <ContainerLarge bg="$background">
+
+      <YStack
+        className="grain"
+        pe="none"
+        fullscreen
+        o={0.2}
+        zi={0}
+        $theme-light={{
+          o: 1,
+        }}
+      />
+
+      <ContainerLarge mt={-100}>
         <Comp codes={codes} />
       </ContainerLarge>
     </>

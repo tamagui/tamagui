@@ -85,15 +85,21 @@ const Intermediate = () => {
       />
       <ContainerLarge>
         <XStack gap="$4" py="$6">
-          <IntermediateCard Icon={Globe} title="Universal">
-            Components that adapt well to all screen sizes and platforms.
-          </IntermediateCard>
-          <IntermediateCard Icon={Puzzle} title="Copy & Paste">
-            Designed for easy adoption into your app and easy customization.
-          </IntermediateCard>
-          <IntermediateCard Icon={Leaf} title="Always Growing">
-            We continuously improve and add to the collection.
-          </IntermediateCard>
+          <ThemeTintAlt offset={-1}>
+            <IntermediateCard Icon={Globe} title="Universal">
+              Components that adapt well to all screen sizes and platforms.
+            </IntermediateCard>
+          </ThemeTintAlt>
+          <ThemeTintAlt offset={0}>
+            <IntermediateCard Icon={Puzzle} title="Copy & Paste">
+              Designed for easy adoption into your app and easy customization.
+            </IntermediateCard>
+          </ThemeTintAlt>
+          <ThemeTintAlt offset={1}>
+            <IntermediateCard Icon={Leaf} title="Always Growing">
+              We continuously improve and add to the collection.
+            </IntermediateCard>
+          </ThemeTintAlt>
         </XStack>
       </ContainerLarge>
     </YStack>
@@ -123,8 +129,10 @@ const IntermediateCard = ({
     >
       <YStack fullscreen br="$9" bc="$color025" bw={0.25} bs="solid" o={0.5} />
       <YStack f={1} gap="$2">
-        <H4 size="$4">{title}</H4>
-        <Paragraph color="$color10" lh="$3">
+        <H4 color="$color11" size="$4">
+          {title}
+        </H4>
+        <Paragraph color="$color12" lh="$3">
           {children}
         </Paragraph>
         <EnsureFlexed />
@@ -184,7 +192,7 @@ const Hero = () => {
             <YStack gap="$6">
               <XStack gap="$6">
                 <Stack bg="$color7" w={10} br="$10" my={10} />
-                <Paragraph ff="$munro" size="$9" fos={32} lh={50} color="$color12">
+                <Paragraph ff="$munro" size="$9" fos={32} lh={50} color="$color12" ls={1}>
                   Boost your React Native development with a suite of copy-paste
                   primitives.
                 </Paragraph>
@@ -425,6 +433,7 @@ const Body = () => {
 
       <YStack
         className="grain"
+        pe="none"
         fullscreen
         o={0.2}
         zi={0}
@@ -441,18 +450,26 @@ const Body = () => {
 
       <Spacer size="$8" /> */}
 
-      <YStack gap="$12" px="$6">
+      <YStack gap="$11" px="$6">
         {Sections.listingData.sections.map(({ sectionName, parts }) => {
           return (
-            <YStack key={sectionName} gap="$6" jc={'space-between'}>
+            <YStack key={sectionName} gap="$4" jc={'space-between'}>
               <ContainerLarge>
-                <ThemeTintAlt>
+                <Theme name="tan">
                   <YStack pos="relative">
-                    <H3 ff="$munro" size="$10" color="$color12" f={2} my="$2">
+                    <H3
+                      ff="$munro"
+                      size="$8"
+                      ls={4}
+                      tt="uppercase"
+                      color="$color9"
+                      f={2}
+                      my="$2"
+                    >
                       {`${sectionName[0].toUpperCase()}${sectionName.slice(1)}`}
                     </H3>
                   </YStack>
-                </ThemeTintAlt>
+                </Theme>
               </ContainerLarge>
               <ScrollView
                 horizontal
@@ -465,7 +482,7 @@ const Body = () => {
               >
                 <ContainerLarge>
                   {/* <Theme name="gray"> */}
-                  <XStack gap="$6" f={4} fs={1}>
+                  <XStack gap="$5" f={4} fs={1}>
                     {parts.map(
                       ({ name: partsName, numberOfComponents, route, preview }) => (
                         <SectionCard
@@ -518,21 +535,21 @@ function SectionCard({
     <NextLink href={BASE_PATH + path} passHref>
       <YStack
         tag="a"
-        maw={300}
         ov="hidden"
-        className="all ease-in ms300"
+        animation="quickest"
         // elevation="$6"
         bg="$color2"
-        mih={300}
+        w={220}
+        h={220}
         br="$9"
         cursor="pointer"
         pos="relative"
-        shac="$background075"
-        shar="$0"
+        shac="$background05"
+        shar="$2"
         shof={{ width: -10, height: 10 }}
         hoverStyle={{
-          // y: -2,
-          bg: '$color2',
+          y: -4,
+          bg: '$color3',
           // outlineWidth: 3,
           // outlineStyle: 'solid',
           // outlineColor: '$color025',
@@ -545,15 +562,7 @@ function SectionCard({
           y: 3,
         }}
       >
-        <EnsureFlexed />
         {/* <YStack
-          fullscreen
-          className="bg-grid mask-gradient-down"
-          style={{ backgroundPosition: 'top left' }}
-          o={0.085}
-          y={-1}
-        /> */}
-        <YStack
           fullscreen
           ai="center"
           jc="center"
@@ -568,10 +577,10 @@ function SectionCard({
           <Theme name="tan">
             <Preview />
           </Theme>
-        </YStack>
+        </YStack> */}
         <YStack p="$5">
           <H4 fontSize="$7">{name}</H4>
-          <H5 o={0.5} fontSize="$3">
+          <H5 o={0.2} fontSize="$3">
             {numberOfComponents} components
           </H5>
         </YStack>
