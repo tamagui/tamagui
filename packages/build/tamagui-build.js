@@ -25,6 +25,7 @@ const declarationToRoot = !!process.argv.includes('--declaration-root')
 const ignoreBaseUrl = process.argv.includes('--ignore-base-url')
 const baseUrlIndex = process.argv.indexOf('--base-url')
 const tsProjectIndex = process.argv.indexOf('--ts-project')
+const exludeIndex = process.argv.indexOf('--exclude')
 const baseUrl =
   baseUrlIndex > -1 && process.argv[baseUrlIndex + 1]
     ? process.argv[baseUrlIndex + 1]
@@ -33,6 +34,10 @@ const tsProject =
   tsProjectIndex > -1 && process.argv[tsProjectIndex + 1]
     ? process.argv[tsProjectIndex + 1]
     : null
+
+const exclude = exludeIndex > -1 && process.argv[exludeIndex + 1]
+? process.argv[exludeIndex + 1]
+: null
 
 const pkg = fs.readJSONSync('./package.json')
 let shouldSkipInitialTypes = !!process.env.SKIP_TYPES_INITIAL
@@ -181,7 +186,7 @@ async function buildJs() {
   const files = shouldBundle
     ? [pkgSource || './src/index.ts']
     : (await fg(['src/**/*.(m)?[jt]s(x)?', 'src/**/*.css'])).filter(
-        (x) => !x.includes('.d.ts')
+        (x) => !x.includes('.d.ts') && (exclude ? !x.match(exclude) : true)
       )
 
   const externalPlugin = createExternalPlugin({
@@ -564,6 +569,7 @@ async function esbuildWriteIfChanged(
               ? outString
               : transform(outString, {
                   filename: mjsOutPath,
+                  configFile: false,
                   plugins: [
                     [
                       require.resolve('babel-plugin-fully-specified'),
