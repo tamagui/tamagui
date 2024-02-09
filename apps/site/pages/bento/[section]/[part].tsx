@@ -10,7 +10,7 @@ import { BentoLogo } from '../../../components/BentoLogo'
 import { ContainerLarge } from '../../../components/Container'
 import { getDefaultLayout } from '../../../lib/getDefaultLayout'
 
-export default function page({ codes }) {
+export default function page() {
   if (!process.env.NEXT_PUBLIC_IS_TAMAGUI_DEV) {
     return null
   }
@@ -41,7 +41,7 @@ export default function page({ codes }) {
       />
 
       <ContainerLarge mt={-100}>
-        <Comp codes={codes} />
+        <Comp />
       </ContainerLarge>
     </>
   )
@@ -57,11 +57,12 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths
 
 export const getStaticProps = (ctx) => {
-  const { section, part } = ctx.params as { section: string; part: string }
-  const getCodes = sections[section][`${part}GetComponentCodes`]
+  // const { section, part } = ctx.params as { section: string; part: string }
+  // const getCodes = sections[section][`${part}GetComponentCodes`]
 
   return {
-    props: getCodes(),
+    // props: getCodes(),
+    props: {},
   }
 }
 
