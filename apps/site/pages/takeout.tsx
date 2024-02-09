@@ -1173,6 +1173,7 @@ const PurchaseModal = ({
         />
 
         <Dialog.Content
+          theme="surface1"
           bordered
           elevate
           key="content"

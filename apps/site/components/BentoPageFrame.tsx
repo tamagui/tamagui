@@ -89,6 +89,7 @@ export const BentoPageFrame = ({ children }: { children: any }) => {
                 style={{
                   mixBlendMode: 'color-burn',
                   filter: 'blur(2px)',
+                  mask: `linear-gradient(black 80%, transparent)`,
                 }}
               >
                 <Image alt="idk" width={2000} height={2000} src="/takeout/wave.svg" />
@@ -97,7 +98,7 @@ export const BentoPageFrame = ({ children }: { children: any }) => {
           </YStack>
         </Theme>
 
-        <ContainerLarge pos="relative" height="100vh" mb="-100vh">
+        <ContainerLarge>
           <BentoFrond />
         </ContainerLarge>
 
@@ -109,19 +110,24 @@ export const BentoPageFrame = ({ children }: { children: any }) => {
 
 export const BentoFrond = () => (
   <YStack
-    fullscreen
+    t={-450}
+    r={150}
+    pos="absolute"
     className="shadow-breeze"
     zi={2}
     pe="none"
-    o={0.086}
+    o={0.15}
     $theme-dark={{
-      o: 0.125,
+      o: 0.15,
     }}
-    style={{ filter: 'blur(3px)' }}
+    style={{
+      filter: 'blur(3px)',
+      mask: `linear-gradient(black, transparent 75%)`,
+    }}
   >
     <svg
-      width="1280px"
-      height="640px"
+      width={1280 * 1.2}
+      height={640 * 1.2}
       viewBox="0 0 1280.000000 640.000000"
       preserveAspectRatio="xMidYMid meet"
     >

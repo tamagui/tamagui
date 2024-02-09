@@ -371,7 +371,6 @@ iframe {
 
 .mask-gradient-up {
   mask-image: linear-gradient(transparent 20%, rgba(0, 0, 0, 1));
-  mix-blend-mode: screen;
 }
 
 .mask-gradient-right {
@@ -920,4 +919,16 @@ textarea {
 }
 .home-glow.active {
   opacity: 1;
+}
+
+.bento-up-text {
+  /* mix-blend-mode: luminosity; */
+  mask-image: linear-gradient(rgba(0, 0, 0, 1), transparent, rgba(0, 0, 0, 1));
+  background-image: linear-gradient(var(--color0), var(--color7));
+  /* filter: blur(10px); */
+}
+
+.t_dark .bento-up-text {
+  mix-blend-mode: color-dodge;
+  background-image: linear-gradient(var(--background025), var(--color8));
 }

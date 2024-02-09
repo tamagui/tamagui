@@ -162,6 +162,7 @@ const config = createTamagui({
   // Shorthands
   // Adds <View m={10} /> to <View margin={10} />
   // See Settings section on this page to only allow shorthands
+  // Be sure to have `as const` at the end
   shorthands: {
     px: 'paddingHorizontal',
     f: 'flex',
