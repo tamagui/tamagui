@@ -1,3 +1,12 @@
+- ./LinearGradient.shared isnt being fully specified tripping up webpack:
+
+```
+Module not found: Error: Can't resolve './LinearGradient.shared' in '/Users/n8/universe/node_modules/@tamagui/linear-gradient/dist/esm'
+Did you mean 'LinearGradient.shared.mjs'?
+BREAKING CHANGE: The request './LinearGradient.shared' failed to resolve only because it was resolved as fully specified
+(probably because the origin is strict EcmaScript Module, e. g. a module with javascript mimetype, a '*.mjs' file, or a '*.js' file where the package.json contains '"type": "module"').
+```
+
 - experimetnalFlattenThemes 
   - <Flex centered gap={amountAndEquivalentValueGap}>
   - is leaving _expressions in the render incorrectly
