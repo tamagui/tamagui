@@ -209,53 +209,70 @@ const Hero = () => {
               </XStack>
             </YStack>
 
-            <Theme name="green">
-              <Button
-                iconAfter={ShoppingCart}
-                className="box-3d"
-                fontFamily="$mono"
-                size="$5"
-                fontSize={22}
-                fontWeight="600"
-                scaleSpace={0.5}
-                scaleIcon={1.6}
-                als="flex-end"
-                mr="$4"
-                color="$color1"
-                bg="$color9"
-                outlineColor="$background025"
-                outlineOffset={2}
-                outlineWidth={3}
-                outlineStyle="solid"
-                hoverStyle={{
-                  bg: '$color10',
-                  outlineColor: '$background05',
-                  bc: '$color11',
-                }}
-                pressStyle={{
-                  bg: '$color9',
-                  outlineColor: '$background075',
-                }}
-                onPress={() => {
-                  store.showPurchase = true
-                }}
-              >
-                $200
-                <YStack
-                  zi={100}
-                  pos="absolute"
-                  t={-13}
-                  r={-13}
-                  bg="red"
-                  style={{
-                    background: `url(/leaf.webp)`,
-                    backgroundSize: 'contain',
+            <XStack ai="center" w="100%" jc="space-between">
+              <Spacer />
+              <Theme name="green">
+                <Button
+                  icon={<ShoppingCart size={16} />}
+                  iconAfter={
+                    <YStack
+                      zi={100}
+                      bg="red"
+                      style={{
+                        background: `url(/bento/bentoicon.svg)`,
+                        backgroundSize: 'contain',
+                      }}
+                      w={42}
+                      h={42}
+                      ml={-10}
+                      mr={-15}
+                    />
+                  }
+                  className="box-3d"
+                  fontFamily="$mono"
+                  size="$5"
+                  fontSize={22}
+                  fontWeight="600"
+                  scaleSpace={0.5}
+                  scaleIcon={1.6}
+                  als="flex-end"
+                  mr="$4"
+                  color="$color1"
+                  bg="$color9"
+                  outlineColor="$background025"
+                  outlineOffset={2}
+                  outlineWidth={3}
+                  outlineStyle="solid"
+                  hoverStyle={{
+                    bg: '$color10',
+                    outlineColor: '$background05',
+                    bc: '$color11',
                   }}
-                  w={33}
-                  h={33}
-                />
-              </Button>
-            </Theme>
+                  pressStyle={{
+                    bg: '$color9',
+                    outlineColor: '$background075',
+                  }}
+                  onPress={() => {
+                    store.showPurchase = true
+                  }}
+                >
+                  $200
+                  <YStack
+                    zi={100}
+                    pos="absolute"
+                    t={-13}
+                    r={-13}
+                    bg="red"
+                    style={{
+                      background: `url(/leaf.webp)`,
+                      backgroundSize: 'contain',
+                    }}
+                    w={33}
+                    h={33}
+                  />
+                </Button>
+              </Theme>
+            </XStack>
           </YStack>
 
           <YStack
