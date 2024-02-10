@@ -921,7 +921,9 @@ export const getSplitStyles: StyleSplitter = (
             if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
               log(`📺 media style:`, out)
             }
-            const fullKey = `${style.property}${PROP_SPLIT}${mediaKeyShort}`
+            const fullKey = `${style.property}${PROP_SPLIT}${mediaKeyShort}${
+              style.pseudo || ''
+            }`
             if (fullKey in usedKeys) continue
             addStyleToInsertRules(rulesToInsert, out as any)
             mergeClassName(transforms, classNames, fullKey, out.identifier, true, true)
@@ -1151,7 +1153,7 @@ export const getSplitStyles: StyleSplitter = (
       if (styleState.style['$$css']) {
         // avoid re-processing for rnw
       } else {
-        const atomic = getStylesAtomic(styleState.style)
+        const atomic = getStylesAtomic(styleState.style, debug)
 
         for (const atomicStyle of atomic) {
           const key = atomicStyle.property
