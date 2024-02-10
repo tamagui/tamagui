@@ -70,6 +70,11 @@ export function useFocusScope(
       if (focusScope.paused || !container) return
       const target = event.target as HTMLElement | null
       if (container.contains(target)) {
+        // Set container as lastFocusedElement to prevent inputs
+        // to be refocused on blur events
+        target?.addEventListener('blur', () => {
+          lastFocusedElementRef.current = container
+        })
         lastFocusedElementRef.current = target
       } else {
         focus(lastFocusedElementRef.current, { select: true })
