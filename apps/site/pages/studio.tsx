@@ -2,17 +2,7 @@ import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { ThemeTintAlt } from '@tamagui/logo'
 import { NextSeo } from 'next-seo'
 import Head from 'next/head'
-import { useState } from 'react'
-import {
-  Button,
-  EnsureFlexed,
-  H2,
-  Separator,
-  Spacer,
-  XStack,
-  YStack,
-  useThemeName,
-} from 'tamagui'
+import { Button, EnsureFlexed, H2, Separator, Spacer, XStack, YStack } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 
 import { Container, ContainerXL } from '../components/Container'
