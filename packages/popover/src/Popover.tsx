@@ -233,6 +233,11 @@ export const PopoverContent: PopoverContentType = PopperContentFrame.extractable
     const contentRef = React.useRef<any>(null)
     const composedRefs = useComposedRefs(forwardedRef, contentRef)
     const isRightClickOutsideRef = React.useRef(false)
+    const [isFullyHidden, setIsFullyHidden] = React.useState(!context.open)
+
+    if (context.open && isFullyHidden) {
+      setIsFullyHidden(false)
+    }
 
     // aria-hide everything except the content (better supported equivalent to setting aria-modal)
     React.useEffect(() => {
@@ -241,6 +246,12 @@ export const PopoverContent: PopoverContentType = PopperContentFrame.extractable
       if (content) return hideOthers(content)
     }, [context.open])
 
+     if (!context.keepChildrenMounted) {
+      if (isFullyHidden) {
+        return null
+      }
+     }
+
     return (
       <PopoverContentPortal __scopePopover={__scopePopover} zIndex={props.zIndex}>
         <Stack pointerEvents={context.open ? 'auto' : 'none'}>
@@ -248,6 +259,7 @@ export const PopoverContent: PopoverContentType = PopperContentFrame.extractable
             {...contentImplProps}
             disableRemoveScroll={disableRemoveScroll}
             ref={composedRefs}
+            setIsFullyHidden={setIsFullyHidden}
             __scopePopover={__scopePopover}
             // we make sure we're not trapping once it's been closed
             // (closed !== unmounted when animating out)
@@ -370,6 +382,8 @@ export interface PopoverContentImplProps
   disableRemoveScroll?: boolean
 
   freezeContentsWhenHidden?: boolean
+
+  setIsFullyHidden?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const PopoverContentImpl = React.forwardRef<
@@ -393,27 +407,17 @@ const PopoverContentImpl = React.forwardRef<
     children,
     disableRemoveScroll,
     freezeContentsWhenHidden,
+    setIsFullyHidden,
     ...contentProps
   } = props
 
   const context = usePopoverContext(__scopePopover)
   const { open, keepChildrenMounted } = context
   const popperContext = usePopperContext(__scopePopover || POPOVER_SCOPE)
-  const [isFullyHidden, setIsFullyHidden] = React.useState(!context.open)
 
   const contents = React.useMemo(() => {
     return isWeb ? <div style={{ display: 'contents' }}>{children}</div> : children
   }, [children])
-
-  if (open && isFullyHidden) {
-    setIsFullyHidden(false)
-  }
-
-  if (!keepChildrenMounted) {
-    if (isFullyHidden) {
-      return null
-    }
-  }
 
   if (context.breakpointActive) {
     // unwrap the PopoverScrollView if used, as it will use the SheetScrollView if that exists
@@ -466,7 +470,7 @@ const PopoverContentImpl = React.forwardRef<
       present={Boolean(open)}
       keepChildrenMounted={keepChildrenMounted}
       onExitComplete={() => {
-        setIsFullyHidden(true)
+        setIsFullyHidden && setIsFullyHidden(true)
       }}
     >
       <PopperContent
