@@ -3,8 +3,8 @@ import { Theme, YStack } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 import Head from 'next/head'
 import { LoadCherryBomb, LoadMunro } from './LoadFont'
-import { ThemeTintEffect } from '@components/ThemeTintEffect'
 import { ContainerLarge } from './Container'
+import { ThemeNameEffect } from './ThemeNameEffect'
 
 export const BentoPageFrame = ({ children }: { children: any }) => {
   return (
@@ -14,7 +14,7 @@ export const BentoPageFrame = ({ children }: { children: any }) => {
         <LoadMunro />
       </Head>
 
-      <ThemeTintEffect />
+      <ThemeNameEffect colorKey="$color5" />
 
       <YStack pt={100} pb={100}>
         <Theme name="tan">

@@ -15,13 +15,15 @@ export const ThemeNameEffect = memo(
     }, [isActive, color])
 
     return (
-      <Stack
-        onLayout={() => {
-          startTransition(() => {
-            setIsActive(true)
-          })
-        }}
-      />
+      <>
+        <Stack
+          onLayout={() => {
+            startTransition(() => {
+              setIsActive(true)
+            })
+          }}
+        />
+      </>
     )
   }
 )

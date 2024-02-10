@@ -76,21 +76,21 @@ const Intermediate = () => {
             fd: 'column',
           }}
         >
-          <ThemeTintAlt offset={-1}>
-            <IntermediateCard Icon={Globe} title="Universal">
-              Components that adapt well to all screen sizes and platforms.
-            </IntermediateCard>
-          </ThemeTintAlt>
-          <ThemeTintAlt offset={0}>
-            <IntermediateCard Icon={Puzzle} title="Copy & Paste">
-              Designed for easy adoption into your app and easy customization.
-            </IntermediateCard>
-          </ThemeTintAlt>
-          <ThemeTintAlt offset={1}>
-            <IntermediateCard Icon={Leaf} title="Always Growing">
-              We continuously improve and add to the collection.
-            </IntermediateCard>
-          </ThemeTintAlt>
+          {/* <ThemeTintAlt offset={-1}> */}
+          <IntermediateCard Icon={Globe} title="Universal">
+            Components that adapt well to all screen sizes and platforms.
+          </IntermediateCard>
+          {/* </ThemeTintAlt> */}
+          {/* <ThemeTintAlt offset={0}> */}
+          <IntermediateCard Icon={Puzzle} title="Copy & Paste">
+            Designed for easy adoption into your app and easy customization.
+          </IntermediateCard>
+          {/* </ThemeTintAlt> */}
+          {/* <ThemeTintAlt offset={1}> */}
+          <IntermediateCard Icon={Leaf} title="Always Growing">
+            We continuously improve and add to the collection.
+          </IntermediateCard>
+          {/* </ThemeTintAlt> */}
         </XStack>
       </ContainerLarge>
     </YStack>

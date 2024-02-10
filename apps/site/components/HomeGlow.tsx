@@ -22,7 +22,7 @@ export const HomeGlow = memo(() => {
   const [scrollTop, setScrollTopRaw] = useState(0)
   const setScrollTop = useDebounce(setScrollTopRaw, 200)
   const xs = 400
-  const scale = isOnHeroBelow ? 1.6 : 1.4
+  const scale = isOnHeroBelow ? 2 : 1.4
 
   if (isClient) {
     useTintSectionIndex((index) => {
@@ -45,7 +45,7 @@ export const HomeGlow = memo(() => {
           const xRand = isOnHeroBelow ? 0 : positions[i][0]
           const yRand = isOnHeroBelow ? 0 : positions[i][1]
           const x =
-            xScale * (xRand + (isOnHeroBelow ? (isAlt ? -700 : 700) : isAlt ? -400 : 400))
+            xScale * (xRand + (isOnHeroBelow ? (isAlt ? -350 : 350) : isAlt ? -400 : 400))
           return (
             <YStack
               key={`${i}`}
@@ -56,7 +56,7 @@ export const HomeGlow = memo(() => {
               theme={cur as ThemeName}
               left={`calc(50vw - 500px)`}
               x={x}
-              y={isOnHeroBelow ? 300 : yRand}
+              y={isOnHeroBelow ? 350 : yRand}
               scale={scale}
               className={'home-glow ' + (active ? ' active' : '')}
             />

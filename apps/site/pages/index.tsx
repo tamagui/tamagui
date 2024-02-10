@@ -27,8 +27,12 @@ export default function Home({ animationCode, compilationExamples }) {
       <YStack
         fullscreen
         className="grain"
-        style={{ mixBlendMode: 'color-dodge' }}
-        o={1}
+        o={0.1}
+        style={{
+          mixBlendMode: 'color-dodge',
+          maskImage: `linear-gradient(transparent, rgba(0, 0, 0, 1) 100px)`,
+        }}
+        // o={0}
       />
       <NextSeo
         title="Tamagui — React Native + Web UI kit"

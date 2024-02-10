@@ -119,7 +119,7 @@ export const StudioScreen1 = memo(() => {
                 t={1}
                 l={1}
                 o={0.75}
-                className="clip-text grain-light"
+                className="clip-text grain"
                 cursor="default"
                 fos={320}
                 lh={300}
