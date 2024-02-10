@@ -2,7 +2,20 @@ import { ThemeTintAlt, ThemeTint } from '@tamagui/logo'
 import { H1, YStack } from 'tamagui'
 
 export const BentoLogo = () => (
-  <YStack h={200} w={600}>
+  <YStack
+    h={200}
+    w={600}
+    $sm={{
+      als: 'center',
+      scale: 0.8,
+    }}
+    $xs={{
+      scale: 0.7,
+    }}
+    $xxs={{
+      scale: 0.5,
+    }}
+  >
     <H1
       ff="$cherryBomb"
       px="$3"

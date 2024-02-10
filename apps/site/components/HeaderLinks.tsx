@@ -127,7 +127,7 @@ export const HeaderLinks = (props: HeaderProps) => {
 
       {forceShowAllLinks && (
         <>
-          <Separator my="$2" />
+          <Separator o={0.5} my="$2" />
 
           <XStack fw="wrap" f={1} gap="$2" w="100%">
             {forceShowAllLinks && (

@@ -45,18 +45,10 @@ export type ProComponentsProps = {
 }
 
 export default function BentoPage(props: ProComponentsProps) {
-  if (!process.env.NEXT_PUBLIC_IS_TAMAGUI_DEV) {
-    return null
-  }
-
   return (
     <BentoPageFrame>
       <Theme name="tan">
         <ThemeNameEffect colorKey="$color6" />
-        <YStack pe="none" fullscreen zi={100} rotateZ="20deg">
-          {/* <StudioPreviewComponents /> */}
-        </YStack>
-
         <Hero />
         <Intermediate />
         <Theme name="gray">
@@ -75,16 +67,15 @@ const Intermediate = () => {
   return (
     <YStack zi={1} w="100%" className="blur-8">
       <YStack o={0.5} btw={0.5} bc="$color025" />
-      <YStack fullscreen bg="$background" o={0.24} />
-      <YStack
-        className="grain"
-        fullscreen
-        o={0.5}
-        zi={0}
-        style={{ mixBlendMode: 'color-dodge' }}
-      />
+      <YStack fullscreen bg="$color3" o={0.5} />
       <ContainerLarge>
-        <XStack gap="$4" py="$6">
+        <XStack
+          gap="$4"
+          py="$6"
+          $sm={{
+            fd: 'column',
+          }}
+        >
           <ThemeTintAlt offset={-1}>
             <IntermediateCard Icon={Globe} title="Universal">
               Components that adapt well to all screen sizes and platforms.
@@ -122,10 +113,6 @@ const IntermediateCard = ({
       shar="$6"
       px="$5"
       py="$4"
-      // style={{
-      //   backdropFilter: 'blur(80px)',
-      //   WebkitBackdropFilter: 'blur(80px)',
-      // }}
     >
       <YStack fullscreen br="$9" bc="$color025" bw={0.25} bs="solid" o={0.5} />
       <YStack f={1} gap="$2">
@@ -158,7 +145,7 @@ const Hero = () => {
   return (
     <YStack pos="relative" pb="$9" zi={0}>
       <ContainerLarge>
-        <YStack
+        {/* <YStack
           pos="absolute"
           y="-50%"
           scaleY={-1}
@@ -172,12 +159,19 @@ const Hero = () => {
             backgroundSize: '100%',
             backgroundPosition: 'top left',
             maskImage: `linear-gradient(120deg, rgba(0, 0, 0, 1) 70%, transparent 75%)`,
-            // mixBlendMode: 'color-dodge',
-            // clipPath: `polygon(0% 0%, 0% 100%, 5% 96%, 10% 92%, 15% 92%, 25% 88%, 30% 85%, 50% 65%, 58% 50%, 65% 44%, 72% 35%, 79% 22%, 85% 18%, 92% 11%, 100% 0%)`,
           }}
-        />
+        /> */}
 
-        <XStack gap="$6" py="$3" bc="transparent" jc="space-between" w={'100%'}>
+        <XStack
+          gap="$6"
+          py="$3"
+          bc="transparent"
+          jc="space-between"
+          w={'100%'}
+          $sm={{
+            fd: 'column',
+          }}
+        >
           <YStack
             mt={-20}
             mb={30}
@@ -187,17 +181,20 @@ const Hero = () => {
             f={10}
             ai="flex-start"
             gap="$6"
+            $sm={{
+              maw: '100%',
+            }}
           >
             <BentoLogo />
-            <YStack gap="$6">
+            <YStack gap="$6" $sm={{ px: '$4' }}>
               <XStack gap="$6">
-                <Stack bg="$color7" w={10} br="$10" my={10} />
-                <Paragraph ff="$munro" size="$9" fos={32} lh={50} color="$color12" ls={1}>
+                <Stack bg="$color7" w={8} br="$2" my={18} $sm={{ dsp: 'none' }} />
+                <Paragraph ff="$munro" size="$9" fos={32} lh={50} color="$color11" ls={1}>
                   Boost your React Native development with a suite of copy-paste
                   primitives.
                 </Paragraph>
               </XStack>
-              <XStack jc="space-between" ai="center" ml="$8" mr="$4">
+              <XStack jc="space-between" ai="center" ml="$8" mr="$4" $sm={{ mx: 0 }}>
                 <Paragraph color="$color10" size="$5">
                   One-time Purchase
                 </Paragraph>
@@ -275,25 +272,17 @@ const Hero = () => {
             style={{
               maskImage: `linear-gradient(rgba(0, 0, 0, 1) 60%, transparent)`,
             }}
-            // mr={-600}
-            // maw={1000}
-            // mt={0}
-            // pl="$4"
-            // x={20}
-            // mb={-300}
-            // y={-20}
-            // style={{
-            //   maskImage: `linear-gradient(rgba(0, 0, 0, 1) 40%, transparent)`,
-            // }}
           >
             <Theme name="gray">
-              <XStack pe="none" rotate="4deg" t={20}>
-                {/* <YStack pos="absolute" zi={-1} l="-15%" scale={0.9} rotate="-5deg">
-                  <Theme inverse>
-                    <Sections.Preferences.LocationNotification />
-                  </Theme>
-                </YStack> */}
-
+              <XStack
+                pe="none"
+                rotate="4deg"
+                t={20}
+                $sm={{
+                  mb: -250,
+                  l: '10%',
+                }}
+              >
                 <YStack br="$4" shac="rgba(0,0,0,0.2)" shar="$8">
                   <Sections.Preferences.LocationNotification />
                 </YStack>
@@ -325,79 +314,6 @@ const Hero = () => {
                 </YStack>
               </XStack>
             </Theme>
-            {/* <XStack
-              fw="wrap"
-              zi={1}
-              gap="$6"
-              mah={300}
-              transformOrigin="left top"
-              als="center"
-              scale={0.6}
-            >
-              <ThemeTint>
-                <BentoCard elevate>
-                  <YStack transformOrigin="center" scale={0.7}>
-                    <Sections.Preferences.LocationNotification />
-                  </YStack>
-                </BentoCard>
-              </ThemeTint>
-              <ThemeTintAlt>
-                <BentoCard elevate>
-                  <YStack scale={0.8} mx={-30}>
-                    <Sections.Textareas.AvatarNameContentAction />
-                  </YStack>
-                </BentoCard>
-              </ThemeTintAlt>
-              <ThemeTintAlt offset={2}>
-                <BentoCard elevate>
-                  <YStack scale={0.8} mx={-30}>
-                    <Sections.Radiogroups.VerticalWithDescription />
-                  </YStack>
-                </BentoCard>
-              </ThemeTintAlt>
-              <ThemeTintAlt offset={3}>
-                <BentoCard elevate>
-                  <YStack scale={0.8} mx={-30}>
-                    <Sections.Checkboxes.CheckboxCards />
-                  </YStack>
-                </BentoCard>
-              </ThemeTintAlt>
-              <ThemeTintAlt offset={4}>
-                <BentoCard elevate>
-                  <YStack scale={0.5} w={900} mx={-220} my={-146}>
-                    <Sections.Layouts.SignInRightImage />
-                  </YStack>
-                </BentoCard>
-              </ThemeTintAlt>
-              <ThemeTintAlt offset={5}>
-                <BentoCard elevate>
-                  <YStack scale={0.8} mx={-30}>
-                    <Sections.Textareas.AvatarNameContentAction />
-                  </YStack>
-                </BentoCard>
-              </ThemeTintAlt>
-              <ThemeTint>
-                <BentoCard elevate>
-                  <YStack scale={0.8} mx={-30}>
-                    <Sections.Checkboxes.CheckboxCards />
-                  </YStack>
-                </BentoCard>
-              </ThemeTint>
-              <ThemeTintAlt>
-                <BentoCard elevate>
-                  <YStack scale={0.8} mx={-30}>
-                    <Sections.Textareas.AvatarNameContentAction />
-                  </YStack>
-                </BentoCard>
-              </ThemeTintAlt>
-              <ThemeTintAlt>
-                <BentoCard elevate>
-                  <YStack scale={0.8} mx={-30}>
-                    <Sections.Textareas.AvatarNameContentAction />
-                  </YStack>
-                </BentoCard>
-              </ThemeTintAlt>
-            </XStack> */}
           </YStack>
         </XStack>
       </ContainerLarge>
@@ -412,14 +328,10 @@ const Body = () => {
       py="$8"
       mb="$-10"
       bg="$background"
-      // shadowColor="$shadowColor"
-      // shadowRadius={20}
       style={{
         backdropFilter: 'blur(4px)',
         WebkitBackdropFilter: 'blur(4px)',
-        // boxShadow: `0 0 200px rgba(0,0,0,0.2), 0 0 100px rgba(0,0,0,0.2), 0 0 20px rgba(0,0,0,0.125), 0 0 10px rgba(0,0,0,0.125)`,
       }}
-      // py="$10"
     >
       <Separator
         bc="$color"
@@ -435,20 +347,12 @@ const Body = () => {
         className="grain"
         pe="none"
         fullscreen
-        o={0.2}
+        o={0.4}
         zi={0}
         $theme-light={{
           o: 1,
         }}
       />
-
-      {/* <H2>Sections</H2>
-      <Paragraph size="$6" color={'$gray11'}>
-        Components are divided into sections and each section has multiple groups of
-        related components.
-      </Paragraph>
-
-      <Spacer size="$8" /> */}
 
       <YStack gap="$11" px="$6">
         {Sections.listingData.sections.map(({ sectionName, parts }) => {

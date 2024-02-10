@@ -24,7 +24,12 @@ export default function Home({ animationCode, compilationExamples }) {
       <YStack className="strong-background" />
       <ThemeNameEffect />
       <HomeGlow />
-      <YStack fullscreen className="grain" o={0.175} />
+      <YStack
+        fullscreen
+        className="grain"
+        style={{ mixBlendMode: 'color-dodge' }}
+        o={1}
+      />
       <NextSeo
         title="Tamagui — React Native + Web UI kit"
         description="Write less, run faster. Styles, optimizing compiler & UI kit that unify React Native + Web."

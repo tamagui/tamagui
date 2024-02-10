@@ -22,7 +22,7 @@ export const BentoPageFrame = ({ children }: { children: any }) => {
             <YStack
               className="grain"
               fullscreen
-              o={0.75}
+              o={0.35}
               zi={100}
               $theme-light={{
                 o: 1,
@@ -111,7 +111,7 @@ export const BentoPageFrame = ({ children }: { children: any }) => {
 export const BentoFrond = () => (
   <YStack
     t={-450}
-    r={150}
+    r={180}
     pos="absolute"
     className="shadow-breeze"
     zi={2}
