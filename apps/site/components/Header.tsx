@@ -60,12 +60,9 @@ export function Header(props: HeaderProps) {
       >
         <XStack pe="auto" width="100%" maw={1120} pos="relative">
           <XStack
-            className={`ease-out all ms200 ${
-              isScrolled ? 'blur-medium hover-highlights ' : ''
-            }`}
-            bbc="$borderColor"
-            py="$1"
-            y={3}
+            className={`ease-out all ms300`}
+            py="$1.5"
+            y={0}
             ov="hidden"
             contain="paint"
             width="100%"
@@ -79,13 +76,31 @@ export function Header(props: HeaderProps) {
             }}
             {...(isScrolled && {
               $gtSm: {
-                py: '$2',
-                y: 5,
+                y: 6,
                 bc: '$borderColor',
               },
             })}
           >
-            <YStack o={isScrolled ? 0.5 : 0} fullscreen bg="$background" />
+            <YStack
+              pos="absolute"
+              inset={0}
+              className={'ease-out all ms100'}
+              style={{
+                ...(isScrolled && {
+                  backdropFilter: `blur(16px)`,
+                  WebkitBackdropFilter: `blur(16px)`,
+                }),
+              }}
+            />
+            <YStack
+              o={isScrolled ? 0.6 : 0}
+              className={`ease-out all ms300`}
+              fullscreen
+              bg="$color2"
+              $theme-dark={{
+                bg: '$color7',
+              }}
+            />
             <ContainerLarge>
               <ThemeTint>
                 <HeaderContents floating {...props} />
