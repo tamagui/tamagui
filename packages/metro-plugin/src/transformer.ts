@@ -74,7 +74,7 @@ export async function transform(
         config,
         projectRoot,
         filename,
-        Buffer.from(`${out.js}\nrequire("${outStylePath}")`),
+        Buffer.from(`${out.js}\nrequire("${outStylePath}")`, 'utf-8'),
         options
       )
     }
