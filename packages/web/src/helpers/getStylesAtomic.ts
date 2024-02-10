@@ -216,7 +216,7 @@ function createAtomicRules(
   // WEIRD SYNTAX, SEE:
   //   https://stackoverflow.com/questions/40532204/media-query-for-devices-supporting-hover
   if (pseudo?.name === 'hover') {
-    rules = rules.map((r) => `@media not all and (hover: none) { ${r} }`)
+    rules = rules.map((r) => `@media (hover) { ${r} }`)
   }
 
   return rules
