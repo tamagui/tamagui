@@ -36,6 +36,7 @@ const GITHUB_TOKEN = process.env.GITHUB_TOKEN
 // whitelisting uniswap org for feedback
 const whitelistOrgs = {
   uniswap: true,
+  codingscape: true,
 }
 
 export function checkOrgSponsor(orgLogin: string) {
@@ -145,6 +146,8 @@ const uniswapGithubUsers = [
   'brianmcmichael',
 ]
 
+const codinscapeusers = ['NathanBeesley']
+
 export const whitelistGithubUsernames = [
   'natew',
   // 'alitnk', // commented out to test `takeout -> studio` access
@@ -153,6 +156,9 @@ export const whitelistGithubUsernames = [
 
   // gather team member - https://discord.com/channels/909986013848412191/1125830682661363794/1156983395566497834
   'pkretzschmar',
+
+  // codingscape
+  ...codinscapeusers,
 
   // uniswap:
   ...uniswapGithubUsers,

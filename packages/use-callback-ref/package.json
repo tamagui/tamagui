@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-callback-ref",
-  "version": "1.89.19",
+  "version": "1.89.20",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -18,7 +18,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
-    "@tamagui/build": "1.89.19"
+    "@tamagui/build": "1.89.20"
   },
   "exports": {
     "./package.json": "./package.json",
