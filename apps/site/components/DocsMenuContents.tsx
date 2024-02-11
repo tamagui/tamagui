@@ -115,6 +115,7 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
                     active={currentPath === page.route}
                     pending={page['pending']}
                     key={`${page.route}${index}`}
+                    icon={page.icon}
                     index={index}
                   >
                     {page.title}

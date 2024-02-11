@@ -9,6 +9,7 @@ import {
   SizableText,
   Spacer,
   Text,
+  Theme,
   TooltipSimple,
   VisuallyHidden,
   XStack,
@@ -22,6 +23,8 @@ import { useHeroHovered } from './heroState'
 import { InstallInput } from './InstallInput'
 import { seasons } from './SeasonToggleButton'
 import { TwitterIcon } from './TwitterIcon'
+import { Figma } from '@tamagui/lucide-icons'
+import { FigmaButton } from './FigmaButton'
 
 export function Hero() {
   const { name } = useTint()
@@ -91,7 +94,7 @@ const HeroContents = memo(function HeroContents() {
         }}
       >
         <>
-          <XStack pos="absolute" als="center" y={-80}>
+          <XStack pos="absolute" als="center" y={-80} gap="$4">
             <Link prefetch={false} href="/takeout">
               <Button
                 bc="$color6"
@@ -106,6 +109,7 @@ const HeroContents = memo(function HeroContents() {
                 </Text>
               </Button>
             </Link>
+            <FigmaButton />
           </XStack>
         </>
 

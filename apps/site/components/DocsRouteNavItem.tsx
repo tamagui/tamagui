@@ -1,6 +1,6 @@
 import { getStore, useStoreSelector } from '@tamagui/use-store'
 import { NextLink } from 'components/NextLink'
-import { useRef } from 'react'
+import { createElement, useRef } from 'react'
 import { SizableText, Spacer, XStack, YStack } from 'tamagui'
 
 import type { NavItemProps } from './DocsPage'
@@ -14,11 +14,13 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
   children,
   active,
   href,
+  icon,
   pending,
   inMenu,
   index,
   external,
 }: NavItemProps & {
+  icon?: any
   inMenu?: boolean
   index: number
 }) {
@@ -27,11 +29,15 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
   const ref = useRef<any>()
 
   return (
-    <NextLink legacyBehavior={false} prefetch={false} href={href}>
+    <NextLink
+      {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+      legacyBehavior={false}
+      prefetch={false}
+      href={href}
+    >
       <XStack
         ref={ref}
         className="docs-nav-item"
-        {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
         ai="center"
         jc="flex-end"
         px="$4"
@@ -85,6 +91,14 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
           })}
         >
           {children}
+          {!!icon && (
+            <>
+              &nbsp;
+              {createElement(icon, {
+                size: 12,
+              })}
+            </>
+          )}
         </SizableText>
         {isExternal && (
           <XStack opacity={0.5}>
