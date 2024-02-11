@@ -22,6 +22,8 @@ export const TakeoutLicense = () => {
         your seat limit, you must upgrade or cancel your subscription.
       </Paragraph>
 
+      <H3>License Terms</H3>
+
       <Paragraph>You can:</Paragraph>
 
       <Paragraph>
@@ -97,19 +99,12 @@ export const TakeoutLicense = () => {
       <Paragraph>
         Tamagui LLC's liability to you for costs, damages, or other losses arising from
         your use of the Takeout stack — including third-party claims against you — is
-        limited to a refund of your license fee. Tamagui LLC may not be held liable for
-        any consequential damages related to your use of the Takeout stack. The ownership
-        of the Takeout stack remains with the Tamagui LLC development team. You are
-        required to abide by the licensing terms to avoid termination in case of
-        non-compliance with the agreed terms.
-      </Paragraph>
-
-      <H3>Refund Policy</H3>
-
-      <Paragraph>
-        If something isn't living up to your standards, get in touch within the first 48
-        hours of using Takeout. Tamagui LLC does not guarantee any refund, but there are
-        valid exceptions we will consider.
+        limited to a refund of your license fee. See https://tamagui.dev/takeout-policy
+        for our fulfillment policies. Tamagui LLC may not be held liable for any
+        consequential damages related to your use of the Takeout stack. The ownership of
+        the Takeout stack remains with the Tamagui LLC development team. You are required
+        to abide by the licensing terms to avoid termination in case of non-compliance
+        with the agreed terms.
       </Paragraph>
 
       <Paragraph>
