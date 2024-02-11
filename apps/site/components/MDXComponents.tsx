@@ -619,7 +619,7 @@ export const components = {
     const clipBoard = useClipboard(`npm create tamagui@latest`)
 
     return (
-      <XStack gap="$4" f={1} fw="wrap" my="$5">
+      <XStack gap="$4" f={1} fw="wrap" pt="$3" my="$5">
         <ThemeTintAlt>
           <Card f={1}>
             <Card.Header gap="$2">

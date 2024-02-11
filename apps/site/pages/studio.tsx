@@ -33,7 +33,6 @@ export default function StudioSplashPage() {
 
       <ThemeNameEffect />
 
-      {/* biome-ignore lint/a11y/useIframeTitle: <explanation> */}
       {/* <iframe
         onLoad={() => {
           setState({
@@ -151,11 +150,12 @@ export default function StudioSplashPage() {
               <YStack px="$6" maw="50%" $sm={{ maw: '100%', p: '$2' }}>
                 <EnsureFlexed />
                 <Features
+                  soon
                   size="$5"
                   items={[
-                    <span>{soonButton} Animation test environment and visualizer.</span>,
-                    <span>{soonButton} Advanced theme editor.</span>,
-                    <span>{soonButton} Figma and local integrations.</span>,
+                    <span>Animation test environment and visualizer.</span>,
+                    <span>Advanced theme editor.</span>,
+                    <span>Figma and local integrations.</span>,
                   ]}
                 />
               </YStack>
@@ -169,11 +169,5 @@ export default function StudioSplashPage() {
     </>
   )
 }
-
-const soonButton = (
-  <Button size="$2" theme="green" br="$9" pe="none" mr="$1" y={-2} display="inline-flex">
-    Soon
-  </Button>
-)
 
 StudioSplashPage.getLayout = getDefaultLayout

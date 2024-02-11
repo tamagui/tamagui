@@ -7,6 +7,7 @@ import {
   Separator,
   SizableText,
   Text,
+  Theme,
   TooltipSimple,
   XStack,
   YStack,
@@ -17,6 +18,7 @@ import {
 import { GithubIcon } from './GithubIcon'
 import type { HeaderProps } from './HeaderProps'
 import { NextLink } from './NextLink'
+import { Figma } from '@tamagui/lucide-icons'
 
 const HeadAnchor = styled(Paragraph, {
   tag: 'a',
@@ -83,6 +85,12 @@ export const HeaderLinks = (props: HeaderProps) => {
       </NextLink>
 
       {forceShowAllLinks && (
+        <NextLink passHref prefetch={false} href="/community">
+          <HeadAnchor grid={forceShowAllLinks}>Community</HeadAnchor>
+        </NextLink>
+      )}
+
+      {forceShowAllLinks && (
         <NextLink legacyBehavior={false} prefetch={false} href="/takeout">
           <HeadAnchor
             grid={forceShowAllLinks}
@@ -102,17 +110,6 @@ export const HeaderLinks = (props: HeaderProps) => {
         <BentoHeaderLink {...props} />
       )}
 
-      {forceShowAllLinks && (
-        <NextLink
-          passHref
-          prefetch={false}
-          target="_blank"
-          href="https://www.figma.com/community/file/1326593766534421119/tamagui-v1-2-1"
-        >
-          <HeadAnchor grid={forceShowAllLinks}>Figma</HeadAnchor>
-        </NextLink>
-      )}
-
       <NextLink passHref prefetch={false} href="/studio">
         <HeadAnchor
           grid={forceShowAllLinks}
@@ -124,15 +121,19 @@ export const HeaderLinks = (props: HeaderProps) => {
         </HeadAnchor>
       </NextLink>
 
-      {forceShowAllLinks && (
-        <NextLink passHref prefetch={false} href="/community">
-          <HeadAnchor grid={forceShowAllLinks}>Community</HeadAnchor>
-        </NextLink>
-      )}
-
       {showExtra && (
         <NextLink passHref prefetch={false} href="/studio">
           <HeadAnchor grid={forceShowAllLinks}>Studio</HeadAnchor>
+        </NextLink>
+      )}
+
+      {forceShowAllLinks && (
+        <NextLink
+          legacyBehavior={false}
+          target="_blank"
+          href="https://github.com/sponsors/natew"
+        >
+          <HeadAnchor grid={forceShowAllLinks}>Sponsor</HeadAnchor>
         </NextLink>
       )}
 
@@ -152,7 +153,23 @@ export const HeaderLinks = (props: HeaderProps) => {
                 <HeadAnchor half grid={forceShowAllLinks} tag="span">
                   Github{' '}
                   <YStack dsp={'inline-block' as any} y={10} my={-20} o={0.8}>
-                    <GithubIcon width={16} />
+                    <GithubIcon width={14} />
+                  </YStack>
+                </HeadAnchor>
+              </NextLink>
+            )}
+
+            {forceShowAllLinks && (
+              <NextLink
+                prefetch={false}
+                passHref
+                target="_blank"
+                href="https://www.figma.com/community/file/1326593766534421119/tamagui-v1-2-1"
+              >
+                <HeadAnchor half grid={forceShowAllLinks} tag="span">
+                  Figma{' '}
+                  <YStack dsp={'inline-block' as any} y={2} my={-20} o={0.8}>
+                    <Figma size={14} />
                   </YStack>
                 </HeadAnchor>
               </NextLink>
@@ -161,16 +178,6 @@ export const HeaderLinks = (props: HeaderProps) => {
             <NextLink passHref prefetch={false} href="/blog">
               <HeadAnchor half grid={forceShowAllLinks}>
                 Blog
-              </HeadAnchor>
-            </NextLink>
-
-            <NextLink
-              legacyBehavior={false}
-              target="_blank"
-              href="https://github.com/sponsors/natew"
-            >
-              <HeadAnchor half grid={forceShowAllLinks} tag="span">
-                Sponsor
               </HeadAnchor>
             </NextLink>
 
@@ -475,12 +482,14 @@ const TakeoutHeaderLink = ({ forceShowAllLinks }: HeaderProps) => {
 
 const TooltipLabelLarge = ({ title, subtitle }: { title: string; subtitle: string }) => {
   return (
-    <YStack ai="center">
-      <Paragraph fow="600">{title}</Paragraph>
-      <Paragraph size="$2" theme="alt1" mt="$-1">
-        {subtitle}
-      </Paragraph>
-    </YStack>
+    <Theme name="gray">
+      <YStack ai="center">
+        <Paragraph fow="600">{title}</Paragraph>
+        <Paragraph size="$2" o={0.8} mt="$-1">
+          {subtitle}
+        </Paragraph>
+      </YStack>
+    </Theme>
   )
 }
 
