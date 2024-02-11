@@ -6,8 +6,9 @@
   "scripts": {
     "dev": "./scripts/dev.sh",
     "studio": "./scripts/kill-existing.sh && PORT=5005 next dev",
+    "build:bento": "node ./scripts/build-bento.js",
     "clean:build": "tamagui-build clean:build",
-    "ci:build": "yarn next:build",
+    "ci:build": "yarn next:build && yarn build:bento",
     "ci:build:no-extract": "DISABLE_EXTRACTION=true yarn ci:build",
     "ci:build:debug": "DEBUG=tamagui yarn ci:build",
     "dev:analyze": "ANALYZE=true yarn dev",
