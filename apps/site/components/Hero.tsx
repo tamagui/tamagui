@@ -100,8 +100,8 @@ const HeroContents = memo(function HeroContents() {
                 elevation="$1"
                 fontFamily="$silkscreen"
               >
-                Introducing Takeout 🥡
-                <Text ff="$body" fontSize="$3" color="$color10" $sm={{ dsp: 'none' }}>
+                Takeout 🥡
+                <Text ff="$body" fontSize="$4" color="$color10" $sm={{ dsp: 'none' }}>
                   starter kit++
                 </Text>
               </Button>
