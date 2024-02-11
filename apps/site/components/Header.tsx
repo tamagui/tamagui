@@ -1,5 +1,5 @@
 import { ThemeToggle } from '@components/ThemeToggle'
-import { LogoWords, TamaguiLogo, ThemeTint } from '@tamagui/logo'
+import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
 // import { useUser } from 'hooks/useUser'
 import { useRouter } from 'next/router'
 import * as React from 'react'
@@ -134,6 +134,7 @@ const tooltipDelay = { open: 0, close: 150 }
 export const HeaderContents = React.memo((props: HeaderProps) => {
   const router = useRouter()
   const isHome = router.pathname === '/'
+  const tint = useTint()
   // const isTakeout = router.pathname === '/takeout'
 
   return (
@@ -148,13 +149,22 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
     >
       {!props.minimal && (
         <XStack ai="center" gap="$4">
-          {isHome ? null : (
-            <NextLink href="/">
-              <YStack tag="a" px="$3" cur="pointer" my={-20}>
-                <TamaguiLogo downscale={props.floating ? 2 : 1.5} />
-              </YStack>
-            </NextLink>
-          )}
+          <NextLink href="/">
+            <YStack
+              tag="a"
+              px="$3"
+              cur="pointer"
+              my={-20}
+              {...(isHome && {
+                onPress(e) {
+                  e.preventDefault()
+                  tint.setNextTint()
+                },
+              })}
+            >
+              <TamaguiLogo downscale={props.floating ? 2 : 1.5} />
+            </YStack>
+          </NextLink>
 
           <TooltipGroup delay={tooltipDelay}>
             <XGroup mah={32} bc="transparent" ai="center" size="$4">

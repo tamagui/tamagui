@@ -815,7 +815,6 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
 }
 
 const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
-  const disableMotion = useDisableMotion()
   const enable3d = useClientValue(
     () => !isSafariMobile && !window.location.search?.includes('disable-3d')
   )
@@ -876,54 +875,8 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
         </ThemeTintAlt>
       </YStack> */}
 
-      <YStack
-        pos="absolute"
-        style={{
-          clipPath: `polygon(0% 0%, 0% 0%, 100% 100%, 100% 0%, 100% 0, 0% 100%)`,
-        }}
-      >
-        <ThemeTint>
-          <TAKEOUT className="text-3d" zi={1000} color="$color10" />
-        </ThemeTint>
-      </YStack>
+      <TakeoutLogo />
 
-      <YStack
-        mt={0}
-        zi={0}
-        className="mix-blend"
-        style={{
-          clipPath: `polygon(0% 0%, 0% 100%, 100% 100%, 0% 0%, 100% 0, 0% 100%)`,
-        }}
-      >
-        <ThemeTintAlt>
-          <TAKEOUT className="font-outlined" zi={1000} color="var(--color8)" />
-        </ThemeTintAlt>
-
-        {!disableMotion && (
-          <>
-            <ThemeTint>
-              {/* main color slices */}
-              <TAKEOUT
-                color="$color7"
-                className="clip-slice mix-blend"
-                pos="absolute"
-                o={1}
-                zi={1001}
-              />
-            </ThemeTint>
-            {/* alt color slices */}
-            <ThemeTintAlt>
-              <TAKEOUT
-                color="$color7"
-                className="clip-slice mix-blend slice-alt"
-                pos="absolute"
-                o={1}
-                zi={1002}
-              />
-            </ThemeTintAlt>
-          </>
-        )}
-      </YStack>
       <YStack
         position="absolute"
         pe="none"
@@ -1001,6 +954,63 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
         />
       </XStack>
     </YStack>
+  )
+}
+
+const TakeoutLogo = () => {
+  const disableMotion = useDisableMotion()
+
+  return (
+    <>
+      <YStack
+        pos="absolute"
+        style={{
+          clipPath: `polygon(0% 0%, 0% 0%, 100% 100%, 100% 0%, 100% 0, 0% 100%)`,
+        }}
+      >
+        <ThemeTint>
+          <TAKEOUT className="text-3d" zi={1000} color="$color10" />
+        </ThemeTint>
+      </YStack>
+
+      <YStack
+        mt={0}
+        zi={0}
+        className="mix-blend"
+        style={{
+          clipPath: `polygon(0% 0%, 0% 100%, 100% 100%, 0% 0%, 100% 0, 0% 100%)`,
+        }}
+      >
+        <ThemeTintAlt>
+          <TAKEOUT className="font-outlined" zi={1000} color="var(--color8)" />
+        </ThemeTintAlt>
+
+        {!disableMotion && (
+          <>
+            <ThemeTint>
+              {/* main color slices */}
+              <TAKEOUT
+                color="$color7"
+                className="clip-slice mix-blend"
+                pos="absolute"
+                o={1}
+                zi={1001}
+              />
+            </ThemeTint>
+            {/* alt color slices */}
+            <ThemeTintAlt>
+              <TAKEOUT
+                color="$color7"
+                className="clip-slice mix-blend slice-alt"
+                pos="absolute"
+                o={1}
+                zi={1002}
+              />
+            </ThemeTintAlt>
+          </>
+        )}
+      </YStack>
+    </>
   )
 }
 
@@ -1139,6 +1149,10 @@ const PurchaseModal = ({
 
   const noProductSelected = selectedProductsIds.length === 0
   const showTeamSelect = selectedProductsIds.includes(starter?.id || '')
+
+  const enable3d = useClientValue(
+    () => !isSafariMobile && !window.location.search?.includes('disable-3d')
+  )
 
   return (
     <Dialog
@@ -1567,7 +1581,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
         </SizableText>
       )}
 
-      <ThemeTint>
+      <ThemeTintAlt offset={6}>
         <TakeoutCardFrame
           className="blur-medium"
           zi={100_000}
@@ -1706,7 +1720,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
             </YStack>
           </ScrollView>
         </TakeoutCardFrame>
-      </ThemeTint>
+      </ThemeTintAlt>
     </div>
   )
 })

@@ -213,21 +213,21 @@ const Hero = () => {
               <Spacer />
               <Theme name="green">
                 <Button
-                  icon={<ShoppingCart size={16} />}
-                  iconAfter={
-                    <YStack
-                      zi={100}
-                      bg="red"
-                      style={{
-                        background: `url(/bento/bentoicon.svg)`,
-                        backgroundSize: 'contain',
-                      }}
-                      w={42}
-                      h={42}
-                      ml={-10}
-                      mr={-15}
-                    />
-                  }
+                  iconAfter={ShoppingCart}
+                  // iconAfter={
+                  //   <YStack
+                  //     zi={100}
+                  //     bg="red"
+                  //     style={{
+                  //       background: `url(/bento/bentoicon.svg)`,
+                  //       backgroundSize: 'contain',
+                  //     }}
+                  //     w={42}
+                  //     h={42}
+                  //     ml={-10}
+                  //     mr={-15}
+                  //   />
+                  // }
                   className="box-3d"
                   fontFamily="$mono"
                   size="$5"

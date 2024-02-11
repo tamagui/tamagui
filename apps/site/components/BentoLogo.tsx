@@ -1,7 +1,7 @@
 import { ThemeTintAlt, ThemeTint } from '@tamagui/logo'
 import { H1, YStack } from 'tamagui'
 
-export const BentoLogo = () => (
+export const BentoLogo = ({ children = 'BENTO' }: { children?: string }) => (
   <YStack
     h={200}
     w={600}
@@ -32,7 +32,7 @@ export const BentoLogo = () => (
       className="bento-shadow"
       // o={0}
     >
-      BENTO&nbsp;
+      {children}&nbsp;
     </H1>
 
     <ThemeTintAlt>
@@ -59,7 +59,7 @@ export const BentoLogo = () => (
           backgroundImage: 'linear-gradient(var(--color2), var(--color10))',
         }}
       >
-        BENTO&nbsp;
+        {children}&nbsp;
       </H1>
     </ThemeTintAlt>
 
@@ -90,7 +90,7 @@ export const BentoLogo = () => (
           // mixBlendMode: 'hard-light',
         }}
       >
-        BENTO&nbsp;
+        {children}&nbsp;
       </H1>
     </ThemeTint>
 
@@ -118,7 +118,7 @@ export const BentoLogo = () => (
           mixBlendMode: 'hue',
         }}
       >
-        BENTO&nbsp;
+        {children}&nbsp;
       </H1>
     </ThemeTintAlt>
   </YStack>

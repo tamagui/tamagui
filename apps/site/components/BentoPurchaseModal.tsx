@@ -35,6 +35,7 @@ import {
   SizableText,
   Unspaced,
 } from 'tamagui'
+import { BentoLogo } from './BentoLogo'
 
 const checkCircle = <CheckCircle color="$green9" />
 const xCircle = <XCircle size={28} color="$red9" />
@@ -147,13 +148,15 @@ export const PurchaseModal = ({
                 <XStack ai="center" jc="center" gap="$6" mx="$8">
                   <Dialog.Title
                     ff="$silkscreen"
-                    size="$8"
+                    size="$6"
                     ls={4}
                     $sm={{ size: '$7' }}
-                    mb="$4"
+                    mb="$6"
+                    o={0.5}
                     als="center"
                   >
-                    Purchase
+                    <BentoLogo>BENTO</BentoLogo>
+                    Checkout
                   </Dialog.Title>
                 </XStack>
 
@@ -433,7 +436,7 @@ const PromotionInput = () => {
           animation="100ms"
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
-          opacity={1}
+          opacity={0}
           ta="right"
           textDecorationLine="underline"
           cursor="pointer"
@@ -443,7 +446,7 @@ const PromotionInput = () => {
             store.promoInputIsOpen = true
           }}
         >
-          Have a coupon code?
+          Coupon
         </Paragraph>
       )}
     </AnimatePresence>
@@ -473,10 +476,10 @@ export function BentoTable({
       <XStack px="$4" py="$4" gap="$3">
         <YStack width="80%">
           <Paragraph size="$6" fow="bold">
-            Lifetime access + 1 year of updates
+            Lifetime rights and updates
           </Paragraph>
           <Paragraph size="$3" theme="alt1">
-            You own the code for life, with updates for a year
+            You own the code, get updates for life
           </Paragraph>
         </YStack>
         <XStack f={1} ai="center" gap="$2" jc="center">
@@ -494,42 +497,6 @@ export function BentoTable({
           <Paragraph size="$8">{takeoutPriceInfo.licenseSeats}</Paragraph>
         </XStack>
       </XStack>
-
-      <XStack px="$4" py="$4" gap="$3">
-        <YStack width="80%">
-          <Paragraph size="$6">Discord Seats</Paragraph>
-          <Paragraph size="$3" theme="alt1">
-            Access to the Bento channel
-          </Paragraph>
-        </YStack>
-        <XStack f={1} ai="center" gap="$2" jc="center">
-          <Paragraph size="$8">{takeoutPriceInfo.discordSeats}</Paragraph>
-        </XStack>
-      </XStack>
-      <XStack px="$4" py="$4" gap="$3">
-        <YStack width="80%">
-          <Paragraph size="$6">Discord #bento-general channel</Paragraph>
-          <Paragraph size="$3" theme="alt1">
-            Private group chat for all Bento purchasers
-          </Paragraph>
-        </YStack>
-        <XStack f={1} ai="center" gap="$2" jc="center">
-          <Paragraph size="$8">{checkCircle}</Paragraph>
-        </XStack>
-      </XStack>
-      <XStack px="$4" py="$4" gap="$3">
-        <YStack width="80%">
-          <Paragraph size="$6">Discord Private Channel</Paragraph>
-          <Paragraph size="$3" theme="alt1">
-            Private chat for your team only
-          </Paragraph>
-        </YStack>
-        <XStack f={1} ai="center" gap="$2" jc="center">
-          <Paragraph size="$8">
-            {takeoutPriceInfo.hasDiscordPrivateChannels ? checkCircle : xCircle}
-          </Paragraph>
-        </XStack>
-      </XStack>
     </YStack>
   )
 }
@@ -540,7 +507,7 @@ function PurchaseButton(props: ButtonProps) {
       <Button
         size="$6"
         backgroundColor="$color8"
-        borderWidth={2}
+        borderWidth={0}
         borderColor="$color10"
         hoverStyle={{
           backgroundColor: '$color9',

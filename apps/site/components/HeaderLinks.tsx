@@ -102,6 +102,17 @@ export const HeaderLinks = (props: HeaderProps) => {
         <BentoHeaderLink {...props} />
       )}
 
+      {forceShowAllLinks && (
+        <NextLink
+          passHref
+          prefetch={false}
+          target="_blank"
+          href="https://www.figma.com/community/file/1326593766534421119/tamagui-v1-2-1"
+        >
+          <HeadAnchor grid={forceShowAllLinks}>Figma</HeadAnchor>
+        </NextLink>
+      )}
+
       <NextLink passHref prefetch={false} href="/studio">
         <HeadAnchor
           grid={forceShowAllLinks}
