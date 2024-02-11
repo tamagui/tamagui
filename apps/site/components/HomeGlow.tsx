@@ -1,4 +1,4 @@
-import { useTint, useTintAlt } from '@tamagui/logo'
+import { useTint } from '@tamagui/logo'
 import { memo, useMemo, useState } from 'react'
 import type { ThemeName } from 'tamagui'
 import { YStack, isClient, useDebounce } from 'tamagui'
@@ -13,8 +13,7 @@ const positions = new Array(15).fill(0).map(() => {
 })
 
 export const HomeGlow = memo(() => {
-  const { tints, tint, tintIndex } = useTint()
-  const altTint = useTintAlt()
+  const { tints, tint, tintAlt, tintIndex } = useTint()
   const isHeroBelowColor = tint === 'blue' || tint === 'green' || tint === 'purple'
   const [index, setIndex] = useState(0)
   const isAtTop = index <= 1
@@ -37,7 +36,7 @@ export const HomeGlow = memo(() => {
   const glows = useMemo(() => {
     return (
       <>
-        {[tint, altTint].map((cur, i) => {
+        {[tint, tintAlt].map((cur, i) => {
           const isOpposing = tintIndex % 2 === 0
           const xScale = isOpposing ? 0 : 1
           const active = isDouble ? i == 0 || i == 1 : cur === tint
@@ -75,7 +74,7 @@ export const HomeGlow = memo(() => {
       pe="none"
       animation="quicker"
       key={0}
-      zi={-1}
+      zi={1}
       x={0}
       // o={isOnHeroBelow ? 0.5 : 1}
       y={scrollTop}

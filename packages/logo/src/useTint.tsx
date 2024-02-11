@@ -33,7 +33,7 @@ export const setTintIndex = (next: number) => {
   })
 }
 
-export const useTint = () => {
+export const useTint = (altOffset = 1) => {
   const index = useSyncExternalStore(
     onTintChange,
     () => current,
@@ -41,12 +41,15 @@ export const useTint = () => {
   )
   const tintsContext = useTints()
   const { tints } = tintsContext
+  const tintAltIndex = Math.abs((index + altOffset) % tints.length)
 
   return {
     ...tintsContext,
     tints: tintsContext.tints as ThemeName[],
     tintIndex: index,
+    tintAltIndex,
     tint: tints[index] as ThemeName,
+    tintAlt: tints[tintAltIndex] as ThemeName,
     setTintIndex,
     setNextTintFamily,
     setNextTint: () => {
@@ -68,11 +71,6 @@ export const ThemeTint = ({
   )
 }
 
-export const useTintAlt = (offset = 1) => {
-  const tint = useTint()
-  return tint.tints[Math.abs((tint.tintIndex + offset) % tint.tints.length)]
-}
-
 export const ThemeTintAlt = ({
   children,
   disable,
@@ -82,7 +80,7 @@ export const ThemeTintAlt = ({
   disable?: boolean
   offset?: number
 }) => {
-  const curTint = useTintAlt(offset)
+  const curTint = useTint(offset).tintAlt
   const name = disable ? null : curTint
   return (
     <Theme name={name} {...rest}>

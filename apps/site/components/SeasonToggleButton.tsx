@@ -6,6 +6,7 @@ export const seasons = {
   tamagui: <TamaguiLogo downscale={2} />,
   easter: '🐣',
   xmas: '🎅🏻',
+  lunar: '🧧',
   halloween: '🎃',
 }
 

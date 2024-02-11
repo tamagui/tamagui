@@ -65,7 +65,7 @@ const HeroSubTitle = memo(() => {
 })
 
 const HeroContents = memo(function HeroContents() {
-  const { name } = useTint()
+  const { name, tint, tintAlt } = useTint()
 
   return (
     <ContainerLarge contain="layout" pos="relative">
@@ -140,7 +140,18 @@ const HeroContents = memo(function HeroContents() {
               h: 310,
             }}
           >
-            <Text>Write less</Text>
+            <Text
+              className="clip-text"
+              style={{
+                backgroundImage: `-webkit-linear-gradient(
+                  -90deg,
+                  var(--${tintAlt}9),
+                  var(--${tint}9) 70%
+                )`,
+              }}
+            >
+              Write less
+            </Text>
             {/* add gradient to other colors: */}
             <br />
             <span style={{ position: 'relative' }}>

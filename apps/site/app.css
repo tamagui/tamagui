@@ -10,12 +10,8 @@ body {
   background: var(--background) !important;
 }
 
-body:has(.strong-background) {
-  background: var(--color1) !important;
-}
-
-html.t_dark body:has(.strong-background) {
-  background: linear-gradient(var(--color1), var(--color2) 300px) !important;
+.home-bg {
+  background: linear-gradient(var(--color1), var(--color6));
 }
 
 .bento-fade {

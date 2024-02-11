@@ -10,6 +10,7 @@ const familiesValues = {
   xmas: ['red', 'green', 'red', 'green', 'red', 'green', 'red'],
   easter: ['yellow', 'pink', 'yellow', 'pink', 'yellow', 'pink', 'yellow'],
   halloween: ['orange', 'gray', 'orange', 'gray', 'orange', 'gray', 'orange'],
+  lunar: ['yellow', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow'],
 }
 
 type Family = keyof typeof familiesValues
@@ -41,6 +42,8 @@ let fam: TintFamily = DEFAULT_FAMILY
 //     return 'easter'
 //   }
 // })()
+
+setTintFamily('lunar')
 
 // if (seasonalTheme) {
 //   setTintFamily(seasonalTheme)
