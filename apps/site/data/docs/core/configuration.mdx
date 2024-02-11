@@ -270,22 +270,22 @@ TamaguiProvider takes a few optional properties:
 <PropsTable
   data={[
     {
-      name: 'defaultTheme',
+      name: "defaultTheme",
       required: true,
-      type: 'string',
+      type: "string",
       description: `The initial top level theme.`,
     },
     {
-      name: 'disableRootThemeClass',
+      name: "disableRootThemeClass",
       required: false,
-      type: 'boolean',
+      type: "boolean",
       description:
-        'Disable inserting a theme class in the DOM or context, allowing you to manually place it higher. For custom use cases like integration with next-theme.',
+        "Disable inserting a theme class in the DOM or context, allowing you to manually place it higher. For custom use cases like integration with next-theme.",
     },
     {
-      name: 'disableInjectCSS',
+      name: "disableInjectCSS",
       required: false,
-      type: 'boolean',
+      type: "boolean",
       description: `By default Tamagui inserts CSS with a useLayoutEffect on load. But if you're setting up SSR you'll want to use getCSS() on the server instead and then turn on this setting.`,
     },
   ]}
@@ -585,7 +585,7 @@ For more full docs on media queries, see the
 
 Choose one of `@tamagui/animations-css` for CSS transition based animations,
 `@tamagui/animations-react-native` for React Native Animated based animations,
-or `@tamagui/animations-moti` for Reaniamted animations. You can swap them out
+or `@tamagui/animations-moti` for Reanimated animations. You can swap them out
 per-platform as well, so long as you match the keys of the animations you pass
 in for each driver.
 
@@ -659,56 +659,56 @@ Where `br` expands into `borderRadius`. For a full shorthands setup, see
       type: `Map it to the regular key of the font given to createTamgui, so "body" or "heading" make sense as valiues here. This will ensure this font is the fallback for any views that don't define it.`,
     },
     {
-      name: 'mediaQueryDefaultActive',
+      name: "mediaQueryDefaultActive",
       required: false,
-      type: 'Record<string, boolean>',
+      type: "Record<string, boolean>",
       description: `For the first render, determines which media queries are true (useful for SSR).`,
     },
     {
-      name: 'cssStyleSeparator',
+      name: "cssStyleSeparator",
       required: false,
-      type: 'string',
+      type: "string",
       description: `What's between each generated CSS style rule. Set as newline to more easily debug outputted CSS.`,
     },
     {
-      name: 'themeClassNameOnRoot',
+      name: "themeClassNameOnRoot",
       required: false,
-      type: 'boolean',
+      type: "boolean",
       default: false,
       description: `When using next-themes or anything that does SSR and attaches the theme class to the HTML tag, set this to true to have the proper CSS theme selectors generate`,
     },
     {
-      name: 'shouldAddPrefersColorThemes',
+      name: "shouldAddPrefersColorThemes",
       required: false,
-      type: 'boolean',
+      type: "boolean",
       default: true,
       description: `Generates @media queries based on prefers-color-scheme for you if you have light/dark themes.`,
     },
     {
-      name: 'maxDarkLightNesting',
+      name: "maxDarkLightNesting",
       required: false,
-      type: 'number',
+      type: "number",
       default: 3,
       description: `(Advanced) On the web, tamagui treats "dark" and "light" themes as special and generates extra CSS to avoid having to re-render the entire page. This CSS relies on specificity hacks that multiply by your sub-themes. This prop sets the maximum number of nested dark/light themes you can do. Defaults to 3 for a balance, but can be higher if you nest them deeply.`,
     },
     {
-      name: 'onlyAllowShorthands',
+      name: "onlyAllowShorthands",
       required: false,
-      type: 'boolean',
+      type: "boolean",
       default: false,
       description: `Will remove the type for the long-form versions of any shorthands you define.`,
     },
     {
-      name: 'selectionStyles',
+      name: "selectionStyles",
       required: false,
-      type: '(theme) => ({ backgroundColor: Variable | string; color: Variable | string })',
+      type: "(theme) => ({ backgroundColor: Variable | string; color: Variable | string })",
       default: false,
       description: `On the web, will generate ::selection styles for text selection.`,
     },
     {
-      name: 'settings',
+      name: "settings",
       required: false,
-      type: 'TamaguiSettings',
+      type: "TamaguiSettings",
       description: `See Settings section below.`,
     },
   ]}
@@ -721,7 +721,7 @@ Where `br` expands into `borderRadius`. For a full shorthands setup, see
     {
       name: `allowedStyleValues`,
       required: false,
-      type: 'AllowedStyleValuesSetting',
+      type: "AllowedStyleValuesSetting",
       description: `Set up allowed values on style props, this is only a type-level validation (see below).`,
     },
     {
@@ -731,16 +731,16 @@ Where `br` expands into `borderRadius`. For a full shorthands setup, see
       description: `Set up if "specific tokens" ($color.name) are added to the types where tokens are allowed (see below).`,
     },
     {
-      name: 'mediaPropOrder',
+      name: "mediaPropOrder",
       required: false,
-      type: 'boolean',
+      type: "boolean",
       default: false,
       description: `(beta) Will change the behavior of media styles. By default they have a fixed specificity: they always override any $theme- or $platform- styles. With this enabled, media styles will have the same precedence as the theme and platform styles, meaning that the order of the props determines if they override.`,
     },
     {
-      name: 'fastSchemeChange',
+      name: "fastSchemeChange",
       required: false,
-      type: 'boolean',
+      type: "boolean",
       default: false,
       description: `(beta) On iOS, this enables a mode where Tamagui returns color values using DynamicColorIOS significantly speeding up dark/light re-renders. If you use theme inverse or manually change from light to dark without also changing the native color scheme, this will break. We're working on accounting for these last edge cases before removing the beta tag.`,
     },
