@@ -71,23 +71,21 @@ import {
   isClient,
   styled,
   useMedia,
-  useTheme,
   useThemeName,
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 
+import { BentoTable } from '@components/BentoPurchaseModal'
 import { ContainerXL } from '../components/Container'
 import { FaqModal } from '../components/FaqModal'
+import { Footer } from '../components/Footer'
 import { useHoverGlow } from '../components/HoverGlow'
 import { LoadCherryBomb, LoadMunro } from '../components/LoadFont'
 import { NextLink } from '../components/NextLink'
 import { seasons } from '../components/SeasonToggleButton'
 import { TakeoutLicense } from '../components/TakeoutLicense'
-import { useTakeoutStore } from '../hooks/useTakeoutStore'
-import { Footer } from '../components/Footer'
-import { PropsTable } from '@components/PropsTable'
-import { BentoTable } from '@components/BentoPurchaseModal'
 import { ThemeNameEffect } from '../components/ThemeNameEffect'
+import { useTakeoutStore } from '../hooks/useTakeoutStore'
 
 export default function TakeoutPage({
   starter,
@@ -120,7 +118,7 @@ export default function TakeoutPage({
           t={-100}
           b={0}
           style={{
-            background: 'linear-gradient(10deg, var(--color6), var(--color4))',
+            background: 'linear-gradient(10deg, var(--color10), var(--color4))',
           }}
           zi={-3}
         />
@@ -227,7 +225,7 @@ export default function TakeoutPage({
       <YStack>
         <ContainerXL>
           <YStack h={0} mah={0}>
-            <YStack position="absolute" t={20} r="5%">
+            <YStack position="absolute" t={30} r="10%">
               <PurchaseButton
                 onPress={() => {
                   store.showPurchase = true
@@ -592,7 +590,7 @@ export default function TakeoutPage({
 
                 <Spacer />
 
-                <YStack br="$12" elevation="$4" bg="#000" p="$7" gap="$3">
+                <YStack br="$12" elevation="$4" bg="rgba(0,0,0,0.8)" p="$7" gap="$3">
                   <ThemeTint>
                     <Paragraph als="center" col="#fff" fontFamily="$munro" size="$10">
                       Gallery
