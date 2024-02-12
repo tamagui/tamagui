@@ -246,11 +246,11 @@ export const PopoverContent: PopoverContentType = PopperContentFrame.extractable
       if (content) return hideOthers(content)
     }, [context.open])
 
-     if (!context.keepChildrenMounted) {
+    if (!context.keepChildrenMounted) {
       if (isFullyHidden) {
         return null
       }
-     }
+    }
 
     return (
       <PopoverContentPortal __scopePopover={__scopePopover} zIndex={props.zIndex}>
