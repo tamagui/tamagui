@@ -1,13 +1,13 @@
 import * as sections from '@tamagui/bento'
 
-import { Anchor, H1, Spacer, Theme, XStack, YStack } from 'tamagui'
+import { Anchor, H1, Theme, XStack, YStack } from 'tamagui'
 import { BentoPageFrame } from '../../../components/BentoPageFrame'
 
 import type { GetStaticPaths } from 'next'
 import { useRouter } from 'next/router'
 
 import { BentoLogo } from '../../../components/BentoLogo'
-import { ContainerLarge } from '../../../components/Container'
+import { ContainerBento } from '../../../components/Container'
 import { getDefaultLayout } from '../../../lib/getDefaultLayout'
 
 export default function page() {
@@ -18,11 +18,11 @@ export default function page() {
   return (
     <>
       <BentoPageFrame>
-        <ContainerLarge>
+        <ContainerBento>
           <DetailHeader>
             {`${params.section[0].toUpperCase()}${params.section.slice(1)}`}
           </DetailHeader>
-        </ContainerLarge>
+        </ContainerBento>
       </BentoPageFrame>
 
       <YStack
@@ -36,9 +36,9 @@ export default function page() {
         }}
       />
 
-      <ContainerLarge mt={-100}>
+      <ContainerBento mt={-100}>
         <Comp />
-      </ContainerLarge>
+      </ContainerBento>
     </>
   )
 }
