@@ -73,9 +73,9 @@ export default function Home({ animationCode, compilationExamples }) {
           <YStack fullscreen className="bg-grid mask-gradient-up" />
           <HeroExampleAnimations animationCode={animationCode} />
         </TintSection>
-        <TintSection index={7} zi={-1}>
+        <TintSection index={7} zi={1}>
           <FeaturesGrid />
-          <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-up" />
+          <YStack pe="none" zi={2} fullscreen className="bg-dot-grid mask-gradient-up" />
         </TintSection>
         <TintSection index={8} my="$-4" p={0} zIndex={100}>
           <SectionTinted zi={1000} bubble gradient>
