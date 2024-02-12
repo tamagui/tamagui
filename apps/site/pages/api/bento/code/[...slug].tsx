@@ -28,15 +28,13 @@ const handler = apiRoute(async (req, res) => {
       ? [req.query.slug]
       : []
   const codePath = slugsArray.join('/')
-  const filePath = path.join(CWD, CODE_ASSETS_DIR, codePath)
+  const filePath = path.join(CODE_ASSETS_DIR, codePath)
   // temporary log for debugging prod
   console.info({
     CODE_ASSETS_DIR,
     CWD,
     codePath,
-    ls1: fs.readdirSync(path.join(CWD, '../..')),
-    ls2: fs.readdirSync(CWD),
-    ls3: fs.readdirSync(path.join(CWD, '.next')),
+    cwdDir: fs.readdirSync(path.join(CWD)),
   })
 
   if (!filePath.startsWith(path.resolve(CODE_ASSETS_DIR))) {
