@@ -53,7 +53,7 @@ export * from './helpers/pseudoDescriptors'
 export * from './helpers/themeable'
 export * from './helpers/themes'
 export * from './helpers/transformsToString'
-export * from './internalWithTheme'
+export * from './_withStableStyle'
 
 export {
   configureMedia,
