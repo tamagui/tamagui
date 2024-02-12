@@ -4,9 +4,6 @@ import { protectApiRoute } from '@lib/protectApiRoute'
 import fs from 'fs'
 import path from 'path'
 
-const CWD = process.cwd()
-const CODE_ASSETS_DIR = './bento-output'
-
 const handler = apiRoute(async (req, res) => {
   if (process.env.NODE_ENV === 'production') {
     const { supabase } = await protectApiRoute({ req, res })
@@ -27,19 +24,13 @@ const handler = apiRoute(async (req, res) => {
       ? [req.query.slug]
       : []
   const codePath = slugsArray.join('/')
-  const filePath = path.join(CODE_ASSETS_DIR, codePath)
+  const filePath = path.resolve('./bento-output', codePath)
   // temporary log for debugging prod
   console.info({
-    CODE_ASSETS_DIR,
-    CWD,
     codePath,
-    cwdDir: fs.readdirSync(path.join(CWD)),
-    dotNextDir: fs.readdirSync(path.join(CWD, '.next')),
+    cwdDir: fs.readdirSync(path.join(process.cwd())),
   })
 
-  // if (!filePath.startsWith(path.resolve(CODE_ASSETS_DIR))) {
-  //   res.status(404).json({ error: 'Not found' })
-  // }
   const fileBuffer = fs.readFileSync(filePath + '.txt')
   res.setHeader('Content-Type', 'text/plain')
   return res.send(fileBuffer)
