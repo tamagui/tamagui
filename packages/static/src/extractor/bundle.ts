@@ -32,6 +32,14 @@ export const esbuildLoaderConfig = {
   '.flac': 'file',
 } as const
 
+const dataExtensions = Object.keys(esbuildLoaderConfig)
+  .filter(
+    (k) => esbuildLoaderConfig[k] === 'file' || esbuildLoaderConfig[k] === 'dataurl'
+  )
+  .map((k) => k.slice(1))
+
+export const esbuildIgnoreFilesRegex = new RegExp(`\.(${dataExtensions.join('|')})$`, 'i')
+
 /**
  * For internal loading of new files
  */
