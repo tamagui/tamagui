@@ -6,13 +6,19 @@ const placeHolderTextColors = {
   placeholderTextColor: true,
 }
 
+const selectionColors = {
+  selectionColor: true,
+}
+
 export const validStylesOnBaseProps = {
   ...placeHolderTextColors,
+  ...selectionColors,
 }
 
 const textColors = {
   color: true,
   ...placeHolderTextColors,
+  ...selectionColors,
   textDecorationColor: true,
   textShadowColor: true,
 }
