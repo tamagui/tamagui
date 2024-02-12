@@ -5,10 +5,7 @@ import fs from 'fs'
 import path from 'path'
 
 function getFilePath(codePath: string) {
-  if (process.env.NODE_ENV === 'development' && process.env.IS_TAMAGUI_DEV === '1') {
-    return path.join(process.cwd(), '.next/bento', codePath + '.txt')
-  }
-  return path.join(process.cwd(), '../bento/src/components', codePath + '.tsx')
+  return path.join(process.cwd(), '.next/bento', codePath + '.txt')
 }
 
 const handler = apiRoute(async (req, res) => {
