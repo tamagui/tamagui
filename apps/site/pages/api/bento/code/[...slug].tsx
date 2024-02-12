@@ -25,8 +25,9 @@ const handler = apiRoute(async (req, res) => {
 
   const codePath = slugsArray.join('/')
 
-  const fileResult = await supabaseAdmin.storage.from('bento').download(codePath)
+  const fileResult = await supabaseAdmin.storage.from('bento').download(`${codePath}.txt`)
   if (fileResult.error) {
+    console.error(fileResult.error)
     res.status(404).json({ message: 'Not found' })
     throw new HandledResponseTermination(`File ${codePath} not found`)
   }
