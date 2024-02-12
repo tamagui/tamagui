@@ -116,8 +116,8 @@ function processFile(filePath, visitedFiles = new Set()) {
   return appendedContent
 }
 
-const rootDirectory = path.resolve(__dirname, '../../../apps/bento/src/components')
-const outputDir = path.resolve(__dirname, '../.next/bento')
+const rootDirectory = path.resolve(process.cwd(), '../bento/src/components')
+const outputDir = path.resolve(process.cwd(), '.next/bento-output')
 
 if (!fs.existsSync(outputDir)) {
   fs.mkdirSync(outputDir)
