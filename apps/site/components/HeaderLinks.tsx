@@ -162,6 +162,7 @@ export const HeaderLinks = (props: HeaderProps) => {
             {forceShowAllLinks && (
               <NextLink
                 prefetch={false}
+                legacyBehavior={true}
                 passHref
                 target="_blank"
                 href="https://www.figma.com/community/file/1326593766534421119/tamagui-v1-2-1"

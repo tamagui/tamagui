@@ -14,10 +14,9 @@ const positions = new Array(15).fill(0).map(() => {
 
 export const HomeGlow = memo(() => {
   const { tints, tint, tintAlt, tintIndex } = useTint()
-  const isHeroBelowColor = tint === 'blue' || tint === 'green' || tint === 'purple'
   const [index, setIndex] = useState(0)
   const isAtTop = index <= 1
-  const isOnHeroBelow = isAtTop && isHeroBelowColor
+  const isOnHeroBelow = isAtTop
   const [scrollTop, setScrollTopRaw] = useState(0)
   const setScrollTop = useDebounce(setScrollTopRaw, 200)
   const xs = 400
@@ -65,6 +64,8 @@ export const HomeGlow = memo(() => {
     )
   }, [scale, tint, tints])
 
+  console.log('wtf', isOnHeroBelow)
+
   return (
     <YStack
       pos="absolute"
@@ -74,7 +75,7 @@ export const HomeGlow = memo(() => {
       pe="none"
       animation="quicker"
       key={0}
-      zi={1}
+      zi={0}
       x={0}
       // o={isOnHeroBelow ? 0.5 : 1}
       y={scrollTop}
