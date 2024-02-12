@@ -2,7 +2,7 @@ import { useTheme } from './hooks/useTheme'
 
 /** internal: this is for tamagui babel plugin usage only */
 
-export const internalWithTheme =
+export const _withStableStyle =
   (Component: any, styleProvider: (theme: any, expressions: any[]) => Object) =>
   (props: any) => {
     const { _expressions = [], ...rest } = props

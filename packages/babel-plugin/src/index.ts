@@ -22,8 +22,8 @@ const importStyleSheet = template(`
 const __ReactNativeStyleSheet = require('react-native').StyleSheet;
 `)
 
-const importWithTheme = template(`
-const __internalWithTheme = require('@tamagui/core').internalWithTheme;
+const importWithStyle = template(`
+const __withStableStyle = require('@tamagui/core')._withStableStyle;
 `)
 
 const extractor = createExtractor({ platform: 'native' })
@@ -198,6 +198,8 @@ export default declare(function snackBabelPlugin(
                   return themedStylesAst
                 }
 
+                let hadDynamicStyle = false
+
                 for (const attr of props.attrs) {
                   switch (attr.type) {
                     case 'style': {
@@ -233,6 +235,7 @@ export default declare(function snackBabelPlugin(
                     }
 
                     case 'dynamic-style': {
+                      hadDynamicStyle = true
                       expressions.push(attr.value as t.Expression)
                       addStyleExpression(
                         t.objectExpression([
@@ -262,9 +265,9 @@ export default declare(function snackBabelPlugin(
                 props.node.attributes = finalAttrs
 
                 if (props.isFlattened) {
-                  if (themeKeysUsed.size) {
+                  if (themeKeysUsed.size || hadDynamicStyle) {
                     if (!hasImportedViewWrapper) {
-                      root.unshiftContainer('body', importWithTheme())
+                      root.unshiftContainer('body', importWithStyle())
                       hasImportedViewWrapper = true
                     }
 
@@ -278,7 +281,7 @@ export default declare(function snackBabelPlugin(
                       t.variableDeclaration('const', [
                         t.variableDeclarator(
                           WrapperIdentifier,
-                          t.callExpression(t.identifier('__internalWithTheme'), [
+                          t.callExpression(t.identifier('__withStableStyle'), [
                             t.identifier(name),
                             t.arrowFunctionExpression(
                               [t.identifier('theme'), t.identifier('_expressions')],

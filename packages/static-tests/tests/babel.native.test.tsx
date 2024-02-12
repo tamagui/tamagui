@@ -118,3 +118,56 @@ test(`normalize ternaries flips the conditional properly`, async () => {
   expect(outCode).toContain(`props === 123 ? _sheet["0"] : _sheet["1"]`)
   expect(outCode).toMatchSnapshot()
 })
+
+test('normalize dynamic values with no theme access', async () => {
+  const output = await extractForNative(`
+    import { YStack } from 'tamagui'
+    const height = 200
+    export function Test(props) {
+      return (
+        <YStack height={height} width={props.width}/>
+      )
+    }
+  `)
+  const code = output?.code ?? ''
+  expect(code).toMatchSnapshot()
+})
+
+test('normalize dynamic values with theme access only', async () => {
+  const output = await extractForNative(`
+    import { YStack } from 'tamagui'
+    export function Test(props) {
+      return (
+        <YStack bg='$color'/>
+      )
+    }
+  `)
+  const code = output?.code ?? ''
+  expect(code).toMatchSnapshot()
+})
+
+test('normalize dynamic values with theme access and dynamic values', async () => {
+  const output = await extractForNative(`
+    import { YStack } from 'tamagui'
+    export function Test(props) {
+      return (
+        <YStack bg='$color' height={props.height}/>
+      )
+    }
+  `)
+  const code = output?.code ?? ''
+  expect(code).toMatchSnapshot()
+})
+
+test('normalize dynamic values with theme access and dynamic values and conditional', async () => {
+  const output = await extractForNative(`
+    import { YStack } from 'tamagui'
+    export function Test(props) {
+      return (
+        <YStack bg={props.isLoading ? '$color' : 'red'} height={props.height}/>
+      )
+    }
+  `)
+  const code = output?.code ?? ''
+  expect(code).toMatchSnapshot()
+})
