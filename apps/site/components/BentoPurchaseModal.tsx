@@ -436,7 +436,7 @@ const PromotionInput = () => {
           animation="100ms"
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
-          opacity={0}
+          opacity={1}
           ta="right"
           textDecorationLine="underline"
           cursor="pointer"
