@@ -72,9 +72,7 @@ export function useFocusScope(
       if (container.contains(target)) {
         // Set container as lastFocusedElement to prevent inputs
         // to be refocused on blur events
-        target?.addEventListener('blur', () => {
-          lastFocusedElementRef.current = container
-        })
+        target?.addEventListener('blur', handleBlur, { once: true })
         lastFocusedElementRef.current = target
       } else {
         focus(lastFocusedElementRef.current, { select: true })
@@ -86,6 +84,10 @@ export function useFocusScope(
       if (!container.contains(event.relatedTarget as HTMLElement | null)) {
         focus(lastFocusedElementRef.current, { select: true })
       }
+    }
+
+    function handleBlur() {
+      lastFocusedElementRef.current = container
     }
 
     document.addEventListener('focusin', handleFocusIn)
