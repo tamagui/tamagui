@@ -100,6 +100,11 @@ export function useInputProps(props: InputProps, ref: any) {
     placeholderColorProp ??
     theme.placeholderColor?.get()
 
+  const selectionColorProp = props.selectionColor
+  const selectionColor = 
+    theme[selectionColorProp as any]?.get() ??
+    selectionColorProp
+
   return {
     ref: combinedRef,
     readOnly: props.disabled,
