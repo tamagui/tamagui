@@ -5,7 +5,7 @@ import fs from 'fs'
 import path from 'path'
 
 const CWD = process.cwd()
-const CODE_ASSETS_DIR = './.next/bento-output'
+const CODE_ASSETS_DIR = './bento-output'
 
 const handler = apiRoute(async (req, res) => {
   if (process.env.NODE_ENV === 'production') {
@@ -37,9 +37,9 @@ const handler = apiRoute(async (req, res) => {
     dotNextDir: fs.readdirSync(path.join(CWD, '.next')),
   })
 
-  if (!filePath.startsWith(path.resolve(CODE_ASSETS_DIR))) {
-    res.status(404).json({ error: 'Not found' })
-  }
+  // if (!filePath.startsWith(path.resolve(CODE_ASSETS_DIR))) {
+  //   res.status(404).json({ error: 'Not found' })
+  // }
   const fileBuffer = fs.readFileSync(filePath + '.txt')
   res.setHeader('Content-Type', 'text/plain')
   return res.send(fileBuffer)
