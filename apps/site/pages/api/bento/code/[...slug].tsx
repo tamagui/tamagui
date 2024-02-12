@@ -5,7 +5,7 @@ import fs from 'fs'
 import path from 'path'
 
 const CWD = process.cwd()
-const CODE_ASSETS_DIR = './.next/server/bento'
+const CODE_ASSETS_DIR = './.next/bento'
 
 const handler = apiRoute(async (req, res) => {
   if (process.env.NODE_ENV === 'production') {
