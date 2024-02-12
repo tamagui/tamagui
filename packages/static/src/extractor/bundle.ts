@@ -7,6 +7,31 @@ import type { TamaguiPlatform } from '../types'
 import { esbuildAliasPlugin } from './esbuildAliasPlugin'
 import { resolveWebOrNativeSpecificEntry } from './loadTamagui'
 
+export const esbuildLoaderConfig = {
+  '.js': 'jsx',
+  '.png': 'dataurl',
+  '.jpg': 'dataurl',
+  '.jpeg': 'dataurl',
+  '.svg': 'dataurl',
+  '.gif': 'dataurl',
+  '.webp': 'dataurl',
+  '.woff2': 'dataurl',
+  '.woff': 'dataurl',
+  '.eot': 'dataurl',
+  '.otf': 'dataurl',
+  '.ttf': 'dataurl',
+  '.mp4': 'file',
+  '.mpeg4': 'file',
+  '.mov': 'file',
+  '.avif': 'file',
+  '.wmv': 'file',
+  '.webm': 'file',
+  '.wav': 'file',
+  '.aac': 'file',
+  '.ogg': 'file',
+  '.flac': 'file',
+} as const
+
 /**
  * For internal loading of new files
  */
@@ -51,20 +76,7 @@ function getESBuildConfig(
     ],
     platform: 'node',
     tsconfig,
-    loader: {
-      '.js': 'jsx',
-      '.png': 'dataurl',
-      '.jpg': 'dataurl',
-      '.jpeg': 'dataurl',
-      '.svg': 'dataurl',
-      '.gif': 'dataurl',
-      '.webp': 'dataurl',
-      '.woff2': 'dataurl',
-      '.woff': 'dataurl',
-      '.eot': 'dataurl',
-      '.otf': 'dataurl',
-      '.ttf': 'dataurl',
-    },
+    loader: esbuildLoaderConfig,
     logLevel: 'warning',
     plugins: [
       {
