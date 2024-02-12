@@ -33,11 +33,11 @@ const handler = apiRoute(async (req, res) => {
     CODE_ASSETS_DIR,
     CWD,
     codePath,
-    ls: fs.readdirSync(CWD),
+    ls1: fs.readdirSync(path.join(CWD, '../..')),
+    ls2: fs.readdirSync(CWD),
+    ls3: fs.readdirSync(path.join(CWD, '.next')),
   })
-  console.info({
-    ls2: fs.readdirSync(path.join(CWD, CODE_ASSETS_DIR)),
-  })
+
   if (!filePath.startsWith(path.resolve(CODE_ASSETS_DIR))) {
     res.status(404).json({ error: 'Not found' })
   }
