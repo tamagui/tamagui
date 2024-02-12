@@ -4,6 +4,7 @@ import { protectApiRoute } from '@lib/protectApiRoute'
 import fs from 'fs'
 import path from 'path'
 
+const CWD = process.cwd()
 const CODE_ASSETS_DIR =
   process.env.NODE_ENV === 'development' && process.env.IS_TAMAGUI_DEV === '1'
     ? './.next/bento'
@@ -29,7 +30,17 @@ const handler = apiRoute(async (req, res) => {
       ? [req.query.slug]
       : []
   const codePath = slugsArray.join('/')
-  const filePath = path.join(CODE_ASSETS_DIR, codePath)
+  const filePath = path.join(CWD, CODE_ASSETS_DIR, codePath)
+  // temporary log for debugging prod
+  console.info({
+    CODE_ASSETS_DIR,
+    CWD,
+    codePath,
+    ls: fs.readdirSync(CWD),
+  })
+  console.info({
+    ls2: fs.readdirSync(path.join(CWD, CODE_ASSETS_DIR)),
+  })
   if (!filePath.startsWith(path.resolve(CODE_ASSETS_DIR))) {
     res.status(404).json({ error: 'Not found' })
   }
