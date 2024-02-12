@@ -4,10 +4,12 @@ import { protectApiRoute } from '@lib/protectApiRoute'
 import fs from 'fs'
 import path from 'path'
 
-const CODE_ASSETS_DIR =
-  process.env.NODE_ENV === 'development' && process.env.IS_TAMAGUI_DEV === '1'
-    ? './.next/bento'
-    : './bento'
+function getFilePath(codePath: string) {
+  if (process.env.NODE_ENV === 'development' && process.env.IS_TAMAGUI_DEV === '1') {
+    return path.join(process.cwd(), '.next/bento', codePath + '.txt')
+  }
+  return path.join(process.cwd(), '../bento/src/components', codePath + '.tsx')
+}
 
 const handler = apiRoute(async (req, res) => {
   if (process.env.NODE_ENV === 'production') {
@@ -29,13 +31,17 @@ const handler = apiRoute(async (req, res) => {
       ? [req.query.slug]
       : []
   const codePath = slugsArray.join('/')
-  const filePath = path.join(process.cwd(), CODE_ASSETS_DIR, codePath)
-  if (!filePath.startsWith(path.resolve(CODE_ASSETS_DIR))) {
+  const filePath = getFilePath(codePath)
+
+  try {
+    const fileBuffer = fs.readFileSync(filePath)
+    res.setHeader('Content-Type', 'text/plain')
+    return res.send(fileBuffer)
+  } catch (error) {
+    console.error(error)
     res.status(404).json({ error: 'Not found' })
+    return
   }
-  const fileBuffer = fs.readFileSync(filePath + '.txt')
-  res.setHeader('Content-Type', 'text/plain')
-  return res.send(fileBuffer)
 })
 
 export default handler
