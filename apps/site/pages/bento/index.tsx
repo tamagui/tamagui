@@ -108,7 +108,7 @@ const IntermediateCard = ({
       f={1}
       gap="$5"
       br="$9"
-      shac="$background025"
+      shac="$shadowColor"
       shof={{ height: 5, width: 0 }}
       shar="$6"
       px="$5"
@@ -256,7 +256,7 @@ const Hero = () => {
                     store.showPurchase = true
                   }}
                 >
-                  $200
+                  $199
                   <YStack
                     zi={100}
                     pos="absolute"
@@ -460,16 +460,13 @@ function SectionCard({
         animation="quickest"
         // elevation="$6"
         bg="$color2"
-        w={220}
-        h={220}
+        w={250}
+        h={250}
         br="$9"
         cursor="pointer"
         pos="relative"
-        shac="$background05"
-        shar="$2"
-        shof={{ width: -10, height: 10 }}
         hoverStyle={{
-          y: -4,
+          y: -2,
           bg: '$color3',
           // outlineWidth: 3,
           // outlineStyle: 'solid',
@@ -483,6 +480,13 @@ function SectionCard({
           y: 3,
         }}
       >
+        <YStack
+          pos="absolute"
+          inset={-50}
+          className="bg-grid mask-gradient-up"
+          o={0.05}
+          rotate="-45deg"
+        />
         {/* <YStack
           fullscreen
           ai="center"
@@ -578,15 +582,3 @@ const getTakeoutProducts = async (): Promise<ProComponentsProps> => {
     coupon,
   }
 }
-
-const BentoCard = styled(ThemeableStack, {
-  elevation: '$4',
-  bg: '$background',
-  ai: 'center',
-  jc: 'center',
-  maw: 'calc(50% - 40px)',
-  w: '100%',
-  h: 500,
-  ov: 'hidden',
-  br: '$4',
-})
