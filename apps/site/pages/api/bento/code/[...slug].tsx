@@ -5,7 +5,8 @@ import fs from 'fs'
 import path from 'path'
 
 const CWD = process.cwd()
-const CODE_ASSETS_DIR = './.next/bento'
+
+const CODE_ASSETS_DIR = path.join(CWD, './.bento-components')
 
 const handler = apiRoute(async (req, res) => {
   if (process.env.NODE_ENV === 'production') {
