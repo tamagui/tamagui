@@ -1,8 +1,7 @@
-import { apiRoute } from '@lib/apiRoute'
+import { HandledResponseTermination, apiRoute } from '@lib/apiRoute'
 import { authorizeUserAccess } from '@lib/authorizeUserAccess'
 import { protectApiRoute } from '@lib/protectApiRoute'
-import fs from 'fs'
-import path from 'path'
+import { supabaseAdmin } from '@lib/supabaseAdmin'
 
 const handler = apiRoute(async (req, res) => {
   if (process.env.NODE_ENV === 'production') {
@@ -23,17 +22,17 @@ const handler = apiRoute(async (req, res) => {
     : typeof req.query.slug === 'string'
       ? [req.query.slug]
       : []
-  const codePath = slugsArray.join('/')
-  const filePath = path.resolve('./bento-output', codePath)
-  // temporary log for debugging prod
-  console.info({
-    codePath,
-    cwdDir: fs.readdirSync(path.join(process.cwd())),
-  })
 
-  const fileBuffer = fs.readFileSync(filePath + '.txt')
+  const codePath = slugsArray.join('/')
+
+  const fileResult = await supabaseAdmin.storage.from('bento').download(codePath)
+  if (fileResult.error) {
+    res.status(404).json({ message: 'Not found' })
+    throw new HandledResponseTermination(`File ${codePath} not found`)
+  }
+
   res.setHeader('Content-Type', 'text/plain')
-  return res.send(fileBuffer)
+  return res.send(await fileResult.data.text())
 })
 
 export default handler
