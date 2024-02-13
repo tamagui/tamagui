@@ -49,7 +49,7 @@ function readDirectoryRecursively(directoryPath, outputDirectory) {
       )
       fs.mkdirSync(path.dirname(outputFilePath), { recursive: true })
       const outputContent = shake(processFile(`${modulePath}.tsx`))
-      fs.writeFileSync(`${outputFilePath}.txt`, outputContent)
+      fs.writeFileSync(`${outputFilePath}.tsx`, outputContent)
     })
   } else {
     const files = fs.readdirSync(directoryPath)
