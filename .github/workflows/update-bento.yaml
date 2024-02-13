@@ -2,8 +2,8 @@ name: Checks
 
 on:
   push:
-    # paths:
-    #   - "apps/bento/**"
+    paths:
+      - "apps/bento/**"
     branches:
       - master
 
