@@ -35,6 +35,9 @@ if (process.env.TAMAGUI_TARGET === 'native') {
     outlineOffset: 1,
     outlineWidth: 1,
     outlineColor: 1,
+    filter: 1,
+    backdropFilter: 1,
+    mixBlendMode: 1,
   })
 } else {
   if (process.env.NODE_ENV !== 'production') {

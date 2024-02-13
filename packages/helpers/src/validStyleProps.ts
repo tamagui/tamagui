@@ -149,6 +149,11 @@ export const stylePropsView = {
   justifyContent: true,
   left: true,
   margin: true,
+  ...(isWeb && {
+    filter: true,
+    backdropFilter: true,
+    mixBlendMode: true,
+  }),
   marginBlockEnd: true,
   marginBlockStart: true,
   marginInlineEnd: true,
