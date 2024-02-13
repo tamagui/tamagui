@@ -198,7 +198,7 @@ export default declare(function snackBabelPlugin(
                   return themedStylesAst
                 }
 
-                let hadDynamicStyle = false
+                let shouldUseStableStyleHoc = false
 
                 for (const attr of props.attrs) {
                   switch (attr.type) {
@@ -214,8 +214,9 @@ export default declare(function snackBabelPlugin(
                       const altExpr = getStyleExpression(alternate)
 
                       const willFlattenTheme =
-                        options.experimentalFlattenThemesOnNative && themeKeysUsed.size
+                        options.experimentalFlattenThemesOnNative
                       if (willFlattenTheme) {
+                        shouldUseStableStyleHoc = true
                         expressions.push(attr.value.test)
                       }
 
@@ -235,7 +236,7 @@ export default declare(function snackBabelPlugin(
                     }
 
                     case 'dynamic-style': {
-                      hadDynamicStyle = true
+                      shouldUseStableStyleHoc = true
                       expressions.push(attr.value as t.Expression)
                       addStyleExpression(
                         t.objectExpression([
@@ -265,7 +266,7 @@ export default declare(function snackBabelPlugin(
                 props.node.attributes = finalAttrs
 
                 if (props.isFlattened) {
-                  if (themeKeysUsed.size || hadDynamicStyle) {
+                  if (themeKeysUsed.size || shouldUseStableStyleHoc) {
                     if (!hasImportedViewWrapper) {
                       root.unshiftContainer('body', importWithStyle())
                       hasImportedViewWrapper = true

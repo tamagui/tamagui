@@ -20,15 +20,26 @@ const _sheet = __ReactNativeStyleSheet.create({
   },
   \\"5\\": {}
 });
+const __withStableStyle = require('@tamagui/core')._withStableStyle;
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { YStack } from 'tamagui';
 export function Test() {
   return <>
-          <__ReactNativeView style={[_sheet[\\"0\\"], x ? _sheet[\\"1\\"] : _sheet[\\"2\\"]]} />
-          <__ReactNativeView style={[_sheet[\\"3\\"], x ? _sheet[\\"4\\"] : _sheet[\\"5\\"]]} />
+          <_ReactNativeViewWrapper expressions={[x]} />
+          <_ReactNativeViewWrapper2 expressions={[x]} />
         </>;
-}"
+}
+const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
+  return React.useMemo(() => {
+    return Object.assign({}, _sheet[\\"0\\"], _expressions[0] ? _sheet[\\"1\\"] : _sheet[\\"2\\"]);
+  }, [..._expressions]);
+});
+const _ReactNativeViewWrapper2 = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
+  return React.useMemo(() => {
+    return Object.assign({}, _sheet[\\"3\\"], _expressions[0] ? _sheet[\\"4\\"] : _sheet[\\"5\\"]);
+  }, [..._expressions]);
+});"
 `;
 
 exports[`basic extraction 1`] = `
@@ -73,12 +84,18 @@ const _sheet = __ReactNativeStyleSheet.create({
     }]
   }
 });
+const __withStableStyle = require('@tamagui/core')._withStableStyle;
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { YStack } from 'tamagui';
 export function Test(isLoading) {
-  return <__ReactNativeView style={[_sheet[\\"0\\"], isLoading ? _sheet[\\"1\\"] : _sheet[\\"2\\"], _sheet[\\"3\\"]]} />;
-}"
+  return <_ReactNativeViewWrapper expressions={[isLoading]} />;
+}
+const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
+  return React.useMemo(() => {
+    return Object.assign({}, _sheet[\\"0\\"], _expressions[0] ? _sheet[\\"1\\"] : _sheet[\\"2\\"], _sheet[\\"3\\"]);
+  }, [..._expressions]);
+});"
 `;
 
 exports[`handles style order merge properly 1`] = `
@@ -190,12 +207,18 @@ const _sheet = __ReactNativeStyleSheet.create({
     \\"marginBottom\\": 12
   }
 });
+const __withStableStyle = require('@tamagui/core')._withStableStyle;
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { Stack } from 'tamagui';
 export function Test(props) {
-  return <__ReactNativeView style={props === 123 ? _sheet[\\"0\\"] : _sheet[\\"1\\"]} />;
-}"
+  return <_ReactNativeViewWrapper expressions={[props === 123]} />;
+}
+const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
+  return React.useMemo(() => {
+    return Object.assign({}, _expressions[0] ? _sheet[\\"0\\"] : _sheet[\\"1\\"]);
+  }, [..._expressions]);
+});"
 `;
 
 exports[`theme value extraction should NOT work when theme variables used 1`] = `
