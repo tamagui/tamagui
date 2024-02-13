@@ -476,10 +476,10 @@ export function BentoTable({
       <XStack px="$4" py="$4" gap="$3">
         <YStack width="80%">
           <Paragraph size="$6" fow="bold">
-            Lifetime rights and updates
+            Lifetime rights and&nbsp;updates
           </Paragraph>
           <Paragraph size="$3" theme="alt1">
-            You own the code, get updates for life
+            You own the code, get updates&nbsp;for&nbsp;life
           </Paragraph>
         </YStack>
         <XStack f={1} ai="center" gap="$2" jc="center">
@@ -490,7 +490,7 @@ export function BentoTable({
         <YStack width="80%">
           <Paragraph size="$6">License Seats</Paragraph>
           <Paragraph size="$3" theme="alt1">
-            Number of people that are allowed to develop on it
+            Number of people that are allowed to develop&nbsp;on&nbsp;it
           </Paragraph>
         </YStack>
         <XStack f={1} ai="center" gap="$2" jc="center">

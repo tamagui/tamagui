@@ -64,8 +64,6 @@ export const HomeGlow = memo(() => {
     )
   }, [scale, tint, tints])
 
-  console.log('wtf', isOnHeroBelow)
-
   return (
     <YStack
       pos="absolute"

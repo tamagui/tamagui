@@ -87,6 +87,7 @@ import { TakeoutLicense } from '../components/TakeoutLicense'
 import { ThemeNameEffect } from '../components/ThemeNameEffect'
 import { useTakeoutStore } from '../hooks/useTakeoutStore'
 import { TakeoutPolicy } from '../components/TakeoutPolicy'
+import { BentoLogo } from '../components/BentoLogo'
 
 export default function TakeoutPage({
   starter,
@@ -1222,55 +1223,54 @@ const PurchaseModal = ({
               </XStack>
 
               {process.env.NEXT_PUBLIC_IS_TAMAGUI_DEV && (
-                <YStack my="$2">
+                <YStack>
                   <YStack gap="$4" $gtSm={{ fd: 'row' }} flexWrap="wrap">
-                    <CheckboxGroupItem
-                      disabled
-                      onCheckedChange={() => {
-                        if (!starter) return
-                        const active = selectedProductsIds.includes(starter.id)
-                        setSelectedProductsIds(
-                          active
-                            ? selectedProductsIds.filter((id) => id !== starter.id)
-                            : [...selectedProductsIds, starter.id]
-                        )
-                      }}
-                      id={'takeout-starter'}
-                      checked={starter && selectedProductsIds.includes(starter.id)}
-                    >
-                      <H3 lh="$6">{starter?.name}</H3>
-                      <Paragraph size="$3" lh="$1" theme="alt2">
-                        {starter?.description}
-                      </Paragraph>
-                    </CheckboxGroupItem>
-                    <CheckboxGroupItem
-                      onCheckedChange={() => {
-                        if (!bento) return
-                        const active = selectedProductsIds.includes(bento.id)
-                        setSelectedProductsIds(
-                          active
-                            ? selectedProductsIds.filter((id) => id !== bento.id)
-                            : [...selectedProductsIds, bento.id]
-                        )
-                      }}
-                      id={'takeout-bento'}
-                      checked={bento && selectedProductsIds.includes(bento.id)}
-                    >
-                      <H3 lh="$6">{bento?.name}</H3>
-                      <Paragraph size="$3" lh="$1" theme="alt2">
-                        {bento?.description}
-                      </Paragraph>
-                    </CheckboxGroupItem>
+                    <ThemeTint disable={selectedProductsIds.includes(starter?.id || '')}>
+                      <CheckboxGroupItem
+                        disabled
+                        onCheckedChange={() => {
+                          if (!starter) return
+                          const active = selectedProductsIds.includes(starter.id)
+                          setSelectedProductsIds(
+                            active
+                              ? selectedProductsIds.filter((id) => id !== starter.id)
+                              : [...selectedProductsIds, starter.id]
+                          )
+                        }}
+                        id={'takeout-starter'}
+                        checked={selectedProductsIds.includes(starter?.id || '')}
+                      >
+                        <H3 lh="$6">{starter?.name}</H3>
+                        <Paragraph size="$3" lh="$1" theme="alt2">
+                          {starter?.description}
+                        </Paragraph>
+                      </CheckboxGroupItem>
+                    </ThemeTint>
+                    <Theme name="tan">
+                      <CheckboxGroupItem
+                        onCheckedChange={() => {
+                          if (!bento) return
+                          const active = selectedProductsIds.includes(bento.id)
+                          setSelectedProductsIds(
+                            active
+                              ? selectedProductsIds.filter((id) => id !== bento.id)
+                              : [...selectedProductsIds, bento.id]
+                          )
+                        }}
+                        id={'takeout-bento'}
+                        checked={bento && selectedProductsIds.includes(bento.id)}
+                      >
+                        <BentoLogo scale={0.25} />
+                        <Paragraph size="$3" lh="$1" theme="alt2">
+                          {bento?.description}
+                        </Paragraph>
+                      </CheckboxGroupItem>
+                    </Theme>
                   </YStack>
                 </YStack>
               )}
 
-              <XStack
-                f={1}
-                space
-                separator={<Separator vertical />}
-                $group-takeoutBody-sm={{ fd: 'column-reverse' }}
-              >
+              <XStack f={1} gap="$4" $group-takeoutBody-sm={{ fd: 'column-reverse' }}>
                 <YStack
                   f={1}
                   maw="50%"
@@ -1283,6 +1283,7 @@ const PurchaseModal = ({
                   <YStack gap="$4">
                     <YStack gap="$2">
                       <H6
+                        theme="alt2"
                         o={bento && selectedProductsIds.includes(bento.id) ? 1 : 0}
                         animation="100ms"
                       >
@@ -1314,7 +1315,7 @@ const PurchaseModal = ({
                         enterStyle={{ o: 0 }}
                         exitStyle={{ o: 0 }}
                       >
-                        <H6>{bento?.name}</H6>
+                        <H6 theme="alt2">{bento?.name}</H6>
 
                         <BentoTable product={bento} selectedPriceId={bentoPriceId} />
                       </YStack>
@@ -1328,16 +1329,19 @@ const PurchaseModal = ({
                   </YStack>
                 </YStack>
 
+                <Separator vertical />
+
                 <YStack f={2} space="$4">
                   <YStack
                     opacity={showTeamSelect ? 1 : 0.25}
                     pointerEvents={showTeamSelect ? 'auto' : 'none'}
-                    gap="$3"
+                    gap="$4"
                   >
                     <YStack gap="$2">
                       <H6
                         o={bento && selectedProductsIds.includes(bento.id) ? 1 : 0}
                         animation="100ms"
+                        theme="alt2"
                       >
                         {starter?.name}
                       </H6>
@@ -1372,6 +1376,9 @@ const PurchaseModal = ({
                         })}
                       </RadioGroup>
                     </YStack>
+
+                    <Separator />
+
                     <AnimatePresence>
                       {bento && selectedProductsIds.includes(bento.id) && (
                         <YStack
@@ -1381,7 +1388,7 @@ const PurchaseModal = ({
                           exitStyle={{ o: 0 }}
                           animation="100ms"
                         >
-                          <H6>{bento.name}</H6>
+                          <H6 theme="alt2">{bento.name}</H6>
 
                           <RadioGroup
                             gap="$2"
@@ -1652,7 +1659,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
               </MunroP>
 
               <ThemeTintAlt>
-                <MunroP color="$color10" size="$11" ls={2}>
+                <MunroP color="$color11" size="$11" ls={2}>
                   The Stack
                 </MunroP>
               </ThemeTintAlt>
@@ -2625,41 +2632,50 @@ const Lazy = (props: { children: any }) => {
 
 const CheckboxGroupItem = ({ children, ...props }: CheckboxProps) => {
   return (
-    <ThemeTint disable={!props.checked}>
-      <Label
-        f={1}
-        htmlFor={props.id}
-        p="$4"
-        height="unset"
-        display="flex"
-        borderWidth="$0.25"
-        backgroundColor={props.checked ? '$color7' : '$color5'}
-        borderColor={props.checked ? '$color8' : '$color7'}
-        borderRadius="$4"
-        space="$4"
-        ai="center"
-        opacity={props.disabled ? 0.75 : 1}
-        cursor={props.disabled ? 'not-allowed' : 'default'}
-        $gtSm={{
-          maw: 'calc(50% - 8px)',
-        }}
+    <Label
+      f={1}
+      htmlFor={props.id}
+      p="$4"
+      className="3d"
+      height="unset"
+      display="flex"
+      borderWidth="$0.25"
+      backgroundColor={props.checked ? '$color2' : '$color1'}
+      borderColor={props.checked ? '$color5' : '$color2'}
+      borderRadius="$4"
+      gap="$4"
+      ai="center"
+      opacity={props.disabled ? 0.75 : 1}
+      cursor={props.disabled ? 'not-allowed' : 'default'}
+      $gtSm={{
+        maw: 'calc(50% - 8px)',
+      }}
+      hoverStyle={{
+        borderColor: props.checked ? '$color7' : '$color7',
+      }}
+    >
+      <Checkbox
+        bg="$color3"
+        bc="$color5"
         hoverStyle={{
-          borderColor: props.checked ? '$color10' : '$color7',
+          bg: '$color4',
+          bc: '$color6',
         }}
+        checked={props.checked}
+        size="$6"
+        {...props}
       >
-        <Checkbox checked={props.checked} size="$6" {...props}>
-          <Checkbox.Indicator
-          // backgroundColor={props.checked ? '$color8' : '$color1'}
-          >
-            <Check />
-          </Checkbox.Indicator>
-        </Checkbox>
+        <Checkbox.Indicator
+        // backgroundColor={props.checked ? '$color8' : '$color1'}
+        >
+          <Check />
+        </Checkbox.Indicator>
+      </Checkbox>
 
-        <YStack gap="$1" f={1}>
-          {children}
-        </YStack>
-      </Label>
-    </ThemeTint>
+      <YStack gap="$1" f={1}>
+        {children}
+      </YStack>
+    </Label>
   )
 }
 
@@ -2851,6 +2867,7 @@ const getTakeoutProducts = async (): Promise<TakeoutPageProps> => {
   return {
     starter: {
       ...products[0].data!,
+      name: `Takeout`,
       prices: getArray(products[0].data!.prices!).filter(
         (p) => p.active && !(p.metadata as Record<string, any>).hide_from_lists
       ),
