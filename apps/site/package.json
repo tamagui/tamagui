@@ -7,6 +7,7 @@
     "dev": "./scripts/dev.sh",
     "studio": "./scripts/kill-existing.sh && PORT=5005 next dev",
     "build:bento": "node ./scripts/build-bento.js",
+    "upload-bento": "node ./scripts/upload-bento",
     "clean:build": "tamagui-build clean:build",
     "ci:build": "yarn next:build && yarn build:bento",
     "ci:build:no-extract": "DISABLE_EXTRACTION=true yarn ci:build",
