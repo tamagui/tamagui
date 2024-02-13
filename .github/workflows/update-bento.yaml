@@ -30,7 +30,7 @@ jobs:
         run: cd apps/site && vercel link --project site --scope=tamagui --yes --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Pull Vercel Environment Information
-        run: cd apps/site && vercel env pull .env.local --scope=tamagui --yes --token=${{ secrets.VERCEL_TOKEN }}
+        run: cd apps/site && vercel env pull .env.local --environment production --scope=tamagui --yes --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Build Bento Components
         run: cd apps/site && yarn build:bento
