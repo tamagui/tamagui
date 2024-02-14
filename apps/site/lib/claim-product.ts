@@ -115,6 +115,10 @@ const claimRepositoryAccess: ClaimFunction = async ({ user, metadata }) => {
       message: 'Check your email for an invitation to the repository.',
     }
   } catch (error) {
+    console.error(
+      `Failed to invite ${githubUser.login} with ${permission} permission, error: ${error.message}`,
+      error
+    )
     throw new ClaimError(
       'Invitation failed. It could be that you are already invited. Check your email or GitHub notifications for the invite. Otherwise, contact support@tamagui.dev or get help on Discord.'
     )
