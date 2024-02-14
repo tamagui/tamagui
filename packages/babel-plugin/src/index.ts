@@ -171,7 +171,7 @@ export default declare(function snackBabelPlugin(
                     }
 
                     // make a sub-array
-                    themeExpr = addThemedStyleExpression(themed)
+                    themeExpr = getThemedStyleExpression(themed)
                   }
                   const ident = addSheetStyle(plain, props.node)
                   if (themeExpr) {
@@ -191,7 +191,7 @@ export default declare(function snackBabelPlugin(
                   }
                 }
 
-                function addThemedStyleExpression(styles: Object) {
+                function getThemedStyleExpression(styles: Object) {
                   const themedStylesAst = literalToAst(styles) as t.ObjectExpression
                   themedStylesAst.properties.forEach((_) => {
                     const prop = _ as t.ObjectProperty
