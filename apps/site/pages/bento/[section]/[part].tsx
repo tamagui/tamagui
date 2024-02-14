@@ -98,7 +98,7 @@ export const DetailHeader = (props: { children: string }) => {
           </Anchor>
 
           <Link href={`/bento/${subCategory}`}>
-            <Anchor textTransform="capitalize">{subCategory}</Anchor>
+            <Anchor textTransform="capitalize">{subCategory.replace('_', ' ')}</Anchor>
           </Link>
         </XStack>
       </YStack>
