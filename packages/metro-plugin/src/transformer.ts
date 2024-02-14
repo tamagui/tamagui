@@ -5,7 +5,7 @@ import type {
 } from 'metro-transform-worker'
 import worker from 'metro-transform-worker'
 import { join } from 'path'
-import { writeFile, mkdir } from 'fs/promises'
+import { outputFile } from 'fs-extra'
 
 import type { TamaguiOptions } from '@tamagui/static'
 import { createExtractor, extractToClassNames } from '@tamagui/static'
@@ -36,14 +36,12 @@ export async function transform(
     return transformer(config, projectRoot, filename, data, options)
   }
 
-  if (filename.endsWith('.tsx') || filename.endsWith('.jsx')) {
-    const tmpDir = join(projectRoot, '.tamagui', 'css')
-    try {
-      await mkdir(tmpDir, {
-        recursive: true,
-      })
-    } catch {}
-
+  if (
+    // could by a styled() call:
+    filename.endsWith('.ts') ||
+    filename.endsWith('.tsx') ||
+    filename.endsWith('.jsx')
+  ) {
     const sourcePath = join(projectRoot, filename)
 
     // extract css
@@ -64,12 +62,17 @@ export async function transform(
 
     // just write it out to our tmp dir and require it for metro to do the rest of the css work
     if (out?.styles) {
+      const tmpDir = join(projectRoot, '.tamagui', 'css')
       const outStylePath = join(
         tmpDir,
         `${filename}`.replace(/[^a-zA-Z0-9]/gi, '') + '.css'
       )
-      console.info(' 🥚', outStylePath)
-      await writeFile(outStylePath, out.styles, 'utf-8')
+      if (process.env.DEBUG?.includes('tamagui')) {
+        console.info(' Outputting CSS file:', outStylePath)
+      }
+      await outputFile(outStylePath, out.styles, 'utf-8')
+      // attempt temp bugfix for metro not finding file right away for some reason
+      await new Promise((res) => setTimeout(res, 25))
       return transformer(
         config,
         projectRoot,

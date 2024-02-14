@@ -32,13 +32,13 @@ export function withTamagui(
       ignorePropertyWarningRegex: ['^--'],
       // grouping: ['^group(/.*)?'],
     })
+  } else {
+    // done in css interop
+    metroConfig.resolver = {
+      ...metroConfig.resolver,
+      sourceExts: [...metroConfig.resolver.sourceExts, 'css'],
+    }
   }
-
-  // done in css interop
-  // metroConfig.resolver = {
-  //   ...metroConfig.resolver,
-  //   sourceExts: [...metroConfig.resolver.sourceExts, 'css'],
-  // }
 
   metroConfig.transformerPath = require.resolve('./transformer')
   metroConfig.transformer = {

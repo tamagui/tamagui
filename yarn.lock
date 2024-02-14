@@ -6854,6 +6854,7 @@ __metadata:
   dependencies:
     "@tamagui/build": "npm:1.89.21-1707774440646"
     "@tamagui/static": "npm:1.89.21-1707774440646"
+    fs-extra: "npm:^11.2.0"
     metro-config: "npm:^0.80.4"
     metro-transform-worker: "npm:^0.80.4"
     react-native-css-interop: "npm:~0.0.21"
