@@ -20,7 +20,10 @@ function analyzeIndexFile(filePath) {
 }
 
 function shake(content) {
-  return content.replaceAll('$group-window-sm', '$sm').replaceAll('$group-window-md', '$md').replaceAll(/([a-zA-Z0-9_]+\.fileName\s*=\s*)'([^']*)'/g, '')
+  return content
+    .replaceAll('$group-window-sm', '$sm')
+    .replaceAll('$group-window-md', '$md')
+    .replaceAll(/([a-zA-Z0-9_]+\.fileName\s*=\s*)'([^']*)'/g, '')
 }
 
 function readDirectoryRecursively(directoryPath, outputDirectory) {
@@ -39,8 +42,7 @@ function readDirectoryRecursively(directoryPath, outputDirectory) {
         directoryPath.replace(rootDirectory, ''),
         exportedModule
       )
-      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-      console.log(outputPath)
+      // console.info(outputPath)
 
       const outputFilePath = path.join(
         outputDirectory,
@@ -75,7 +77,21 @@ function processFile(filePath, visitedFiles = new Set()) {
 
   visitedFiles.add(filePath)
 
-  const fileContent = fs.readFileSync(filePath, 'utf8')
+  let fileContent = fs.readFileSync(filePath, 'utf8')
+
+  // here we change custom hooks to hooks to be used in consumer applications
+  // change useGroupMedia to useMedia
+  fileContent = fileContent.replace(
+    /import {.*useGroupMedia.*} from.*/g,
+    `import { useMedia } from 'tamagui'`
+  )
+  fileContent = fileContent.replace(/useGroupMedia\(.*\)/g, `useMedia()`)
+  // change useContainerDim to useWindowDimensions
+  fileContent = fileContent.replace(
+    /import {.*useContainerDim.*} from.*/g,
+    `import { useWindowDimensions } from 'tamagui'`
+  )
+  fileContent = fileContent.replace(/useContainerDim\(.*\)/g, `useWindowDimensions()`)
 
   const importStatements = Array.from(fileContent.matchAll(mathImportsRegex), (m) => m[0])
 
