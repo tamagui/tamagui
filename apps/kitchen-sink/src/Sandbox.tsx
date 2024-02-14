@@ -17,20 +17,29 @@ import { SwitchDemo } from '@tamagui/demos'
 
 const TestThing = (props) => {
   const [p2, style] = usePropsAndStyle(props)
-  console.log('ta', p2, style)
 
   return null
 }
 
 export const Sandbox = () => {
-  return (
-    <View style={{ width: '100%', height: '100%', padding: 50 }}>
-      <SwitchUnstyledDemo />
-    </View>
-  )
+  return <View style={{ width: '100%', height: '100%', padding: 50 }}></View>
 }
 
-import { styled } from '@tamagui/core'
+// animationKeyframes: {
+//   from: {
+//     opacity: 0,
+//     transform: [{ translateY: 50 }],
+//   },
+//   to: {
+//     opacity: 1,
+//     transform: [{ translateY: 0 }],
+//   },
+// },
+// animationDuration: '0.8s',
+// animationFillMode: 'both',
+// animationDelay: '800ms',
+
+import { styled, useTheme } from '@tamagui/core'
 
 import { SwitchStyledContext, createSwitch } from '@tamagui/switch'
 

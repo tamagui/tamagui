@@ -993,15 +993,18 @@ export type RadiusTokens =
   | GetTokenString<keyof Tokens['radius']>
   | number
 
-export type Token =
-  | (TamaguiSettings extends { autocompleteSpecificTokens: false }
-      ? never
-      : SpecificTokens)
+export type NonSpecificTokens =
   | GetTokenString<keyof Tokens['radius']>
   | GetTokenString<keyof Tokens['zIndex']>
   | GetTokenString<keyof Tokens['color']>
   | GetTokenString<keyof Tokens['space']>
   | GetTokenString<keyof Tokens['size']>
+
+export type Token =
+  | NonSpecificTokens
+  | (TamaguiSettings extends { autocompleteSpecificTokens: false }
+      ? never
+      : SpecificTokens)
 
 export type ColorStyleProp = ThemeValueFallbackColor | ColorTokens
 

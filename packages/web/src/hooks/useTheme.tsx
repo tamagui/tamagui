@@ -4,12 +4,13 @@ import { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { getConfig } from '../config'
 import type { Variable } from '../createVariable'
 import { getVariable } from '../createVariable'
-import { isEqualShallow } from '../helpers/createShallowSetState'
 import type { ThemeManagerState } from '../helpers/ThemeManager'
 import { ThemeManager, getHasThemeUpdatingProps } from '../helpers/ThemeManager'
 import { ThemeManagerIDContext } from '../helpers/ThemeManagerContext'
+import { isEqualShallow } from '../helpers/createShallowSetState'
 import type {
   DebugProp,
+  NonSpecificTokens,
   ThemeParsed,
   ThemeProps,
   UseThemeWithStateProps,
@@ -63,8 +64,14 @@ export type ThemeGettable<Val> = Val & {
           : unknown)
 }
 
+type SimpleTokens = NonSpecificTokens extends `$${infer Token}` ? Token : never
+
 export type UseThemeResult = {
-  [Key in keyof ThemeParsed]: ThemeGettable<ThemeParsed[Key]>
+  [Key in keyof ThemeParsed | SimpleTokens]: ThemeGettable<
+    Key extends keyof ThemeParsed
+      ? ThemeParsed[Key]
+      : VariableValGeneric | string | number
+  >
 }
 
 export const useTheme = (props: ThemeProps = emptyProps) => {
