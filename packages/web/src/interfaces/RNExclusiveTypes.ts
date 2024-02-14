@@ -2,11 +2,6 @@ import type { GestureResponderHandlers, LayoutChangeEvent } from 'react-native'
 
 type OnLayout = ((event: LayoutChangeEvent) => void) | undefined
 
-export interface WebOnlyProps {
-  filter?: React.CSSProperties['filter']
-  backdropFilter?: React.CSSProperties['backdropFilter']
-  mixBlendMode?: React.CSSProperties['mixBlendMode']
-}
 export interface RNExtraProps {
   focusable?: boolean
   dataSet?: Record<string, string | number | undefined | null>
@@ -24,15 +19,12 @@ export interface RNExtraProps {
   elevationAndroid?: number | string
 }
 
-export interface RNViewProps
-  extends GestureResponderHandlers,
-    RNExtraProps,
-    WebOnlyProps {
+export interface RNViewProps extends GestureResponderHandlers, RNExtraProps {
   rel?: any
   download?: any
 }
 
-export interface RNTextProps extends RNExtraProps, WebOnlyProps {
+export interface RNTextProps extends RNExtraProps {
   dir?: 'ltr' | 'rtl' | 'auto'
 }
 

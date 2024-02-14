@@ -1307,6 +1307,9 @@ interface ExtraStyleProps {
     | 'bottom'
     | TwoValueTransformOrigin
     | `${TwoValueTransformOrigin} ${Px}`
+  filter?: React.CSSProperties['filter']
+  backdropFilter?: React.CSSProperties['backdropFilter']
+  mixBlendMode?: React.CSSProperties['mixBlendMode']
 }
 
 export interface ExtendBaseStackProps {}
