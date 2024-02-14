@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/popper",
-  "version": "1.89.21-1707774440646",
+  "version": "1.89.22",
   "sideEffects": [
     "*.css"
   ],
@@ -32,20 +32,20 @@
     }
   },
   "dependencies": {
-    "@tamagui/compose-refs": "1.89.21-1707774440646",
-    "@tamagui/constants": "1.89.21-1707774440646",
-    "@tamagui/core": "1.89.21-1707774440646",
-    "@tamagui/floating": "1.89.21-1707774440646",
-    "@tamagui/get-token": "1.89.21-1707774440646",
-    "@tamagui/stacks": "1.89.21-1707774440646",
-    "@tamagui/use-controllable-state": "1.89.21-1707774440646"
+    "@tamagui/compose-refs": "1.89.22",
+    "@tamagui/constants": "1.89.22",
+    "@tamagui/core": "1.89.22",
+    "@tamagui/floating": "1.89.22",
+    "@tamagui/get-token": "1.89.22",
+    "@tamagui/stacks": "1.89.22",
+    "@tamagui/use-controllable-state": "1.89.22"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.89.21-1707774440646",
+    "@tamagui/build": "1.89.22",
     "react": "^18.2.0",
     "react-native": "^0.72.6"
   },
