@@ -41,7 +41,8 @@ export declare const defaultStyles: {
     readonly color: "$color";
 };
 export declare const InputFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TextInput, import("@tamagui/web/types/interfaces/TamaguiComponentPropsBaseBase").TamaguiComponentPropsBaseBase & import("react-native").TextInputProps, import("@tamagui/core").TextStylePropsBase & {
-    readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
+    readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor | undefined;
+    readonly selectionColor?: import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor | undefined;
 }, {
     size?: import("@tamagui/core").SizeTokens | undefined;
     disabled?: boolean | undefined;
@@ -50,6 +51,7 @@ export declare const InputFrame: import("@tamagui/core").TamaguiComponent<import
     isInput: true;
     acceptTokens: {
         readonly placeholderTextColor: "color";
+        readonly selectionColor: "color";
     };
 }>;
 export type Input = TextInput;
@@ -59,13 +61,15 @@ export type InputExtraProps = {
 };
 export type InputProps = InputFrameProps & InputExtraProps;
 export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/web/types/interfaces/TamaguiComponentPropsBaseBase").TamaguiComponentPropsBaseBase & import("react-native").TextInputProps, import("@tamagui/core").TextStylePropsBase & {
-    readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
+    readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor | undefined;
+    readonly selectionColor?: import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor | undefined;
 }, {
     size?: import("@tamagui/core").SizeTokens | undefined;
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
 }>, "rows"> & InputExtraProps, TextInput, import("@tamagui/web/types/interfaces/TamaguiComponentPropsBaseBase").TamaguiComponentPropsBaseBase & import("react-native").TextInputProps & InputExtraProps, import("@tamagui/core").TextStylePropsBase & {
-    readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
+    readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor | undefined;
+    readonly selectionColor?: import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor | undefined;
 }, {
     size?: import("@tamagui/core").SizeTokens | undefined;
     disabled?: boolean | undefined;
@@ -74,6 +78,7 @@ export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import
     isInput: true;
     acceptTokens: {
         readonly placeholderTextColor: "color";
+        readonly selectionColor: "color";
     };
 }>;
 export declare function useInputProps(props: InputProps, ref: any): {
@@ -107,7 +112,6 @@ export declare function useInputProps(props: InputProps, ref: any): {
     nativeID?: string | undefined;
     maxFontSizeMultiplier?: number | null | undefined;
     lineBreakStrategyIOS?: "none" | "standard" | "hangul-word" | "push-out" | undefined;
-    selectionColor?: import("react-native").ColorValue | undefined;
     textBreakStrategy?: "simple" | "highQuality" | "balanced" | undefined;
     accessible?: boolean | undefined;
     accessibilityActions?: readonly Readonly<{
@@ -396,53 +400,64 @@ export declare function useInputProps(props: InputProps, ref: any): {
     animateOnly?: "unset" | string[] | undefined;
     transformOrigin?: "unset" | "center" | "left" | "right" | "bottom" | "top" | (`${number}%` | `${string}%` | `${string}px` | `${number}px`) | "center center" | "center bottom" | "center top" | `center ${number}%` | `center ${string}%` | `center ${string}px` | `center ${number}px` | "left center" | "left bottom" | "left top" | `left ${number}%` | `left ${string}%` | `left ${string}px` | `left ${number}px` | "right center" | "right bottom" | "right top" | `right ${number}%` | `right ${string}%` | `right ${string}px` | `right ${number}px` | `${number}% center` | `${number}% bottom` | `${number}% top` | `${number}% ${number}%` | `${number}% ${string}%` | `${number}% ${string}px` | `${number}% ${number}px` | `${string}% center` | `${string}% bottom` | `${string}% top` | `${string}% ${number}%` | `${string}% ${string}%` | `${string}% ${string}px` | `${string}% ${number}px` | `${string}px center` | `${string}px bottom` | `${string}px top` | `${string}px ${number}%` | `${string}px ${string}%` | `${string}px ${string}px` | `${string}px ${number}px` | `${number}px center` | `${number}px bottom` | `${number}px top` | `${number}px ${number}%` | `${number}px ${string}%` | `${number}px ${string}px` | `${number}px ${number}px` | `center center ${string}px` | `center center ${number}px` | `center bottom ${string}px` | `center bottom ${number}px` | `center top ${string}px` | `center top ${number}px` | `center ${number}% ${string}px` | `center ${number}% ${number}px` | `center ${string}% ${string}px` | `center ${string}% ${number}px` | `center ${string}px ${string}px` | `center ${string}px ${number}px` | `center ${number}px ${string}px` | `center ${number}px ${number}px` | `left center ${string}px` | `left center ${number}px` | `left bottom ${string}px` | `left bottom ${number}px` | `left top ${string}px` | `left top ${number}px` | `left ${number}% ${string}px` | `left ${number}% ${number}px` | `left ${string}% ${string}px` | `left ${string}% ${number}px` | `left ${string}px ${string}px` | `left ${string}px ${number}px` | `left ${number}px ${string}px` | `left ${number}px ${number}px` | `right center ${string}px` | `right center ${number}px` | `right bottom ${string}px` | `right bottom ${number}px` | `right top ${string}px` | `right top ${number}px` | `right ${number}% ${string}px` | `right ${number}% ${number}px` | `right ${string}% ${string}px` | `right ${string}% ${number}px` | `right ${string}px ${string}px` | `right ${string}px ${number}px` | `right ${number}px ${string}px` | `right ${number}px ${number}px` | `${number}% center ${string}px` | `${number}% center ${number}px` | `${number}% bottom ${string}px` | `${number}% bottom ${number}px` | `${number}% top ${string}px` | `${number}% top ${number}px` | `${number}% ${number}% ${string}px` | `${number}% ${number}% ${number}px` | `${number}% ${string}% ${string}px` | `${number}% ${string}% ${number}px` | `${number}% ${string}px ${string}px` | `${number}% ${string}px ${number}px` | `${number}% ${number}px ${string}px` | `${number}% ${number}px ${number}px` | `${string}% center ${string}px` | `${string}% center ${number}px` | `${string}% bottom ${string}px` | `${string}% bottom ${number}px` | `${string}% top ${string}px` | `${string}% top ${number}px` | `${string}% ${number}% ${string}px` | `${string}% ${number}% ${number}px` | `${string}% ${string}% ${string}px` | `${string}% ${string}% ${number}px` | `${string}% ${string}px ${string}px` | `${string}% ${string}px ${number}px` | `${string}% ${number}px ${string}px` | `${string}% ${number}px ${number}px` | `${string}px center ${string}px` | `${string}px center ${number}px` | `${string}px bottom ${string}px` | `${string}px bottom ${number}px` | `${string}px top ${string}px` | `${string}px top ${number}px` | `${string}px ${number}% ${string}px` | `${string}px ${number}% ${number}px` | `${string}px ${string}% ${string}px` | `${string}px ${string}% ${number}px` | `${string}px ${string}px ${string}px` | `${string}px ${string}px ${number}px` | `${string}px ${number}px ${string}px` | `${string}px ${number}px ${number}px` | `${number}px center ${string}px` | `${number}px center ${number}px` | `${number}px bottom ${string}px` | `${number}px bottom ${number}px` | `${number}px top ${string}px` | `${number}px top ${number}px` | `${number}px ${number}% ${string}px` | `${number}px ${number}% ${number}px` | `${number}px ${string}% ${string}px` | `${number}px ${string}% ${number}px` | `${number}px ${string}px ${string}px` | `${number}px ${string}px ${number}px` | `${number}px ${number}px ${string}px` | `${number}px ${number}px ${number}px` | undefined;
     display?: "unset" | "inherit" | "flex" | "none" | "inline" | "block" | "contents" | "inline-flex" | undefined;
+    selectionColor?: "unset" | import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
     hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
-        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
+        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor | undefined;
+        readonly selectionColor?: import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor | undefined;
     }> & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
     } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
-        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
+        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor | undefined;
+        readonly selectionColor?: import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor | undefined;
     }>>) | null | undefined;
     pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
-        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
+        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor | undefined;
+        readonly selectionColor?: import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor | undefined;
     }> & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
     } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
-        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
+        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor | undefined;
+        readonly selectionColor?: import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor | undefined;
     }>>) | null | undefined;
     focusStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
-        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
+        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor | undefined;
+        readonly selectionColor?: import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor | undefined;
     }> & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
     } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
-        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
+        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor | undefined;
+        readonly selectionColor?: import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor | undefined;
     }>>) | null | undefined;
     exitStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
-        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
+        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor | undefined;
+        readonly selectionColor?: import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor | undefined;
     }> & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
     } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
-        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
+        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor | undefined;
+        readonly selectionColor?: import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor | undefined;
     }>>) | null | undefined;
     enterStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
-        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
+        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor | undefined;
+        readonly selectionColor?: import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor | undefined;
     }> & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
     } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
-        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
+        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor | undefined;
+        readonly selectionColor?: import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor | undefined;
     }>>) | null | undefined;
     rows?: number | undefined;
     ref: (node: any) => void;

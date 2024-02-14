@@ -66,9 +66,12 @@ export const InputFrame = styled(
     isInput: true,
     acceptTokens: {
       placeholderTextColor: 'color',
+      selectionColor: 'color',
     } as const,
   }
 )
+
+// const x = <InputFrame selectionColor="" />
 
 export type Input = TextInput
 

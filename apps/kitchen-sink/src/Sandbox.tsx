@@ -2,9 +2,10 @@
 // import './wdyr'
 
 import { useState } from 'react'
-import { View } from 'react-native'
+import { View, TextInput } from 'react-native'
 import {
   Button,
+  Input,
   Square,
   Stack,
   XStack,
@@ -22,7 +23,12 @@ const TestThing = (props) => {
 }
 
 export const Sandbox = () => {
-  return <View style={{ width: '100%', height: '100%', padding: 50 }}></View>
+  return (
+    <View style={{ width: '100%', height: '100%', padding: 50 }}>
+      <TextInput style={{ width: 200, height: 100 }} selectionColor="#fff" />
+      {/* <Input selectionColor="$" /> */}
+    </View>
+  )
 }
 
 // animationKeyframes: {
