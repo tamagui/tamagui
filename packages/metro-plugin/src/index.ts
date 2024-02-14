@@ -40,9 +40,11 @@ export function withTamagui(
     }
   }
 
+  const ogTransformPath = metroConfig.transformerPath
   metroConfig.transformerPath = require.resolve('./transformer')
   metroConfig.transformer = {
     ...metroConfig.transformer,
+    ogTransformPath,
     tamagui: {
       ...options,
       disableInitialBuild: true,

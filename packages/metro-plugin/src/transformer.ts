@@ -1,3 +1,4 @@
+import { outputFile } from 'fs-extra'
 import type {
   JsTransformerConfig,
   JsTransformOptions,
@@ -5,7 +6,6 @@ import type {
 } from 'metro-transform-worker'
 import worker from 'metro-transform-worker'
 import { join } from 'path'
-import { outputFile } from 'fs-extra'
 
 import type { TamaguiOptions } from '@tamagui/static'
 import { createExtractor, extractToClassNames } from '@tamagui/static'
@@ -24,13 +24,13 @@ export async function transform(
   data: Buffer,
   options: JsTransformOptions
 ): Promise<TransformResponse> {
-  const transformer = config.transformerPath
-    ? require(config.transformerPath).transform
-    : worker.transform
+  const ogPath = config['ogTransformPath'] || config.transformerPath
+  const transformer = ogPath ? require(ogPath).transform : worker.transform
 
   if (
     config.tamagui.disable ||
     options.platform !== 'web' ||
+    options.type === 'asset' ||
     filename.includes('node_modules')
   ) {
     return transformer(config, projectRoot, filename, data, options)
@@ -71,8 +71,7 @@ export async function transform(
         console.info(' Outputting CSS file:', outStylePath)
       }
       await outputFile(outStylePath, out.styles, 'utf-8')
-      // attempt temp bugfix for metro not finding file right away for some reason
-      await new Promise((res) => setTimeout(res, 25))
+
       return transformer(
         config,
         projectRoot,

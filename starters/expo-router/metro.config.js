@@ -17,6 +17,7 @@ config = withTamagui(config, {
 
 // REMOVE THIS (just for tamagui internal devs):
 if (process.env.IS_TAMAGUI_DEV) {
+  console.info(`Welcome tamagui dev, you need to yarn link ~/tamagui --all first!`)
   // just have to run first:
   // yarn link ~/tamagui --all
   const fs = require('fs')
