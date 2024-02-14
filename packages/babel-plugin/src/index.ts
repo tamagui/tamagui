@@ -123,7 +123,7 @@ export default declare(function snackBabelPlugin(
               // for now just turn it off entirely at a small perf loss
               disableExtractInlineMedia: true,
               // disable extracting variables as no native concept of them (only theme values)
-              disableExtractVariables: options.experimentalAdvanceNativeFlattening
+              disableExtractVariables: options.experimentalFlattenThemesOnNative
                 ? false
                 : 'theme',
               sourcePath,
@@ -165,7 +165,7 @@ export default declare(function snackBabelPlugin(
 
                   // TODO: themed is not a good name, because it's not just theme it also includes tokens
                   let themeExpr: t.ObjectExpression | null = null
-                  if (themed && options.experimentalAdvanceNativeFlattening) {
+                  if (themed && options.experimentalFlattenThemesOnNative) {
                     for (const key in themed) {
                       themeKeysUsed.add(themed[key].split('$')[1])
                     }
@@ -220,7 +220,7 @@ export default declare(function snackBabelPlugin(
                       const consExpr = getStyleExpression(consequent)
                       const altExpr = getStyleExpression(alternate)
 
-                      if (options.experimentalAdvanceNativeFlattening) {
+                      if (options.experimentalFlattenThemesOnNative) {
                         expressions.push(attr.value.test)
                         addStyleExpression(
                           t.conditionalExpression(

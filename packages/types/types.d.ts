@@ -131,7 +131,7 @@ export interface TamaguiBuildOptions {
   /**
    * (Experimental) Will flatten theme and other dynamic values on native
    */
-  experimentalAdvanceNativeFlattening?: boolean
+  experimentalFlattenThemesOnNative?: boolean
   /**
    * combine all css files into one file
    */

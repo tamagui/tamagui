@@ -1293,7 +1293,7 @@ export function createExtractor(
             }
 
             // Disabling: this probably doesn't optimize much and needs to be done a bit differently
-            if (options.experimentalAdvanceNativeFlattening) {
+            if (options.experimentalFlattenThemesOnNative) {
               if (isValidStyleKey(name, staticConfig)) {
                 return {
                   type: 'dynamic-style',
@@ -1570,7 +1570,7 @@ export function createExtractor(
           const usedThemeKeys = new Set<string>()
           // if it accesses any theme values during evaluation
           themeAccessListeners.add((key) => {
-            if (options.experimentalAdvanceNativeFlattening) {
+            if (options.experimentalFlattenThemesOnNative) {
               usedThemeKeys.add(key)
             }
             if (disableExtractVariables) {
@@ -2020,7 +2020,7 @@ export function createExtractor(
                 }
               }
 
-              if (options.experimentalAdvanceNativeFlattening) {
+              if (options.experimentalFlattenThemesOnNative) {
                 if (beforeProcessUsedThemeKeys < usedThemeKeys.size) {
                   // we used a theme key
                   Object.entries(props).forEach(([key, value]) => {
@@ -2260,7 +2260,7 @@ export function createExtractor(
             }
           }
 
-          if (options.experimentalAdvanceNativeFlattening) {
+          if (options.experimentalFlattenThemesOnNative) {
             attrs = attrs.filter(Boolean)
           }
 

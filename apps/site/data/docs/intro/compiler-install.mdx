@@ -233,7 +233,7 @@ Currently the native compiler doesn't optimize as much as it could. It bails out
 if it encounters any theme usage, like `<View backgroundColor="$background" />`.
 If you are on version `1.75` or greater, you can test enabling this experimental
 optimization by adding a new property with the key
-`experimentalAdvanceNativeFlattening` set to true in the above config object and
+`experimentalFlattenThemesOnNative` set to true in the above config object and
 that will make the compiler to flat and extract any theme usage or dynamic
 values.
 
@@ -330,7 +330,7 @@ All compiler plugins accept the same options:
         "(Experimental) Enables further extracting of any styled component, even if not in your components. See below for more information.",
     },
     {
-      name: "experimentalAdvanceNativeFlattening",
+      name: "experimentalFlattenThemesOnNative",
       required: false,
       type: "boolean",
       typeSimple: "enum",

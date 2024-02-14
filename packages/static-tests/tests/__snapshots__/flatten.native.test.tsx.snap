@@ -42,7 +42,7 @@ export function Test(isLoading) {
 }"
 `;
 
-exports[`flatten-tests > work with experimentalAdvanceNativeFlattening + ternary 1`] = `
+exports[`flatten-tests > work with experimentalFlattenThemesOnNative + ternary 1`] = `
 "const __withStableStyle = require('@tamagui/core')._withStableStyle;
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
@@ -62,7 +62,7 @@ const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _ex
 });"
 `;
 
-exports[`flatten-tests > work with experimentalAdvanceNativeFlattening 1`] = `
+exports[`flatten-tests > work with experimentalFlattenThemesOnNative 1`] = `
 "const __withStableStyle = require('@tamagui/core')._withStableStyle;
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
