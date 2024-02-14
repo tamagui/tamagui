@@ -26,7 +26,8 @@ export const Sandbox = () => {
   return (
     <View style={{ width: '100%', height: '100%', padding: 50 }}>
       <TextInput style={{ width: 200, height: 100 }} selectionColor="#fff" />
-      {/* <Input selectionColor="$" /> */}
+      <Input width={200} />
+      <Input width={200} selectionColor="$green5" />
     </View>
   )
 }

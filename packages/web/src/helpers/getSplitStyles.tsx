@@ -11,12 +11,10 @@ import {
   stylePropsTransform,
   validPseudoKeys,
   validStyles,
-  validStylesOnBaseProps,
 } from '@tamagui/helpers'
 import { useInsertionEffect } from 'react'
 
 import { getConfig, getFont } from '../config'
-import { skipProps } from './skipProps'
 import {
   accessibilityDirectMap,
   accessibilityWebRoleToNativeRole,
@@ -34,6 +32,7 @@ import {
   mediaQueryConfig,
   mergeMediaByImportance,
 } from '../hooks/useMedia'
+import type { TamaguiComponentState } from '../interfaces/TamaguiComponentState'
 import type {
   ClassNamesObject,
   ComponentContextI,
@@ -54,12 +53,10 @@ import type {
   ThemeParsed,
   ViewStyleWithPseudos,
 } from '../types'
-import type { TamaguiComponentState } from '../interfaces/TamaguiComponentState'
 import { createMediaStyle } from './createMediaStyle'
 import { fixStyles } from './expandStyles'
 import { getGroupPropParts } from './getGroupPropParts'
 import { generateAtomicStyles, getStylesAtomic, styleToCSS } from './getStylesAtomic'
-import { transformsToString } from './transformsToString'
 import {
   insertStyleRules,
   insertedTransforms,
@@ -67,6 +64,7 @@ import {
   shouldInsertStyleRules,
   updateRules,
 } from './insertStyleRule'
+import { isObj } from './isObj'
 import { log } from './log'
 import {
   normalizeValueWithProperty,
@@ -74,7 +72,8 @@ import {
 } from './normalizeValueWithProperty'
 import { getPropMappedFontFamily, propMapper } from './propMapper'
 import { pseudoDescriptors, pseudoPriorities } from './pseudoDescriptors'
-import { isObj } from './isObj'
+import { skipProps } from './skipProps'
+import { transformsToString } from './transformsToString'
 
 // bugfix for some reason it gets reset
 const IS_STATIC = process.env.IS_STATIC === 'is_static'
@@ -1437,7 +1436,7 @@ function mergeStyle(
   val: any,
   disableNormalize = false
 ) {
-  const { classNames, viewProps, usedKeys, styleProps } = styleState
+  const { classNames, viewProps, usedKeys, styleProps, staticConfig } = styleState
   if (isWeb && val?.[0] === '_') {
     classNames[key] = val
     usedKeys[key] ||= 1
@@ -1447,7 +1446,11 @@ function mergeStyle(
   } else {
     const shouldNormalize = isWeb && !disableNormalize && !styleProps.noNormalize
     const out = shouldNormalize ? normalizeValueWithProperty(val, key) : val
-    if (key in validStylesOnBaseProps) {
+    if (
+      // acceptTokens are for props not styles
+      staticConfig.acceptTokens &&
+      key in staticConfig.acceptTokens
+    ) {
       viewProps[key] = out
     } else {
       styleState.style ||= {}
