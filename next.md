@@ -1,3 +1,5 @@
+- themes v4 needs surface hovers to lighten in light mode
+
 - ./LinearGradient.shared isnt being fully specified tripping up webpack:
 
 ```
