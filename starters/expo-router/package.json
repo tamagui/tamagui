@@ -16,8 +16,8 @@
   "dependencies": {
     "@expo/metro-runtime": "3.1.1",
     "@react-navigation/native": "^6.0.2",
-    "@tamagui/config": "^1.89.22",
-    "@tamagui/metro-plugin": "^1.89.22",
+    "@tamagui/config": "^1.89.23",
+    "@tamagui/metro-plugin": "^1.89.23",
     "babel-preset-expo": "^10.0.1",
     "expo": "50.0.2",
     "expo-font": "~11.10.2",
@@ -34,7 +34,7 @@
     "react-native-safe-area-context": "4.8.2",
     "react-native-screens": "~3.29.0",
     "react-native-web": "^0.19.9",
-    "tamagui": "^1.89.22"
+    "tamagui": "^1.89.23"
   },
   "devDependencies": {
     "@babel/core": "^7.23.3",
