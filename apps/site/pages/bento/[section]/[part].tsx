@@ -9,6 +9,7 @@ import { useRouter } from 'next/router'
 import { BentoLogo } from '../../../components/BentoLogo'
 import { ContainerBento } from '../../../components/Container'
 import { getDefaultLayout } from '../../../lib/getDefaultLayout'
+import Link from 'next/link'
 
 export default function page() {
   const router = useRouter()
@@ -63,6 +64,9 @@ export const getStaticProps = (ctx) => {
 }
 
 export const DetailHeader = (props: { children: string }) => {
+  const { asPath } = useRouter()
+  const [category, subCategory] = asPath.split('bento/')[1].split('/')
+
   return (
     <YStack pt="$12" pb="$6" gap="$4">
       <YStack gap="$4">
@@ -77,9 +81,25 @@ export const DetailHeader = (props: { children: string }) => {
         </XStack>
 
         <XStack p={0.5} ai="center" gap="$2">
-          <Anchor>Section</Anchor>
-          <Anchor size="$2">{'>'}</Anchor>
-          <Anchor>Inputs</Anchor>
+          <Link href="/bento/">
+            <Anchor textTransform="capitalize">Bento</Anchor>
+          </Link>
+
+          <Anchor selectable={false} size="$2">
+            {'>'}
+          </Anchor>
+
+          <Link href={`/bento#${category}`}>
+            <Anchor textTransform="capitalize">{category}</Anchor>
+          </Link>
+
+          <Anchor selectable={false} size="$2">
+            {'>'}
+          </Anchor>
+
+          <Link href={`/bento/${subCategory}`}>
+            <Anchor textTransform="capitalize">{subCategory}</Anchor>
+          </Link>
         </XStack>
       </YStack>
     </YStack>
