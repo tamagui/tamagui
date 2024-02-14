@@ -7,24 +7,18 @@ const _sheet = __ReactNativeStyleSheet.create({
     \\"flexDirection\\": \\"column\\"
   },
   \\"1\\": {
-    \\"flexDirection\\": \\"column\\"
+    \\"backgroundColor\\": \\"red\\"
   },
   \\"2\\": {
-    \\"backgroundColor\\": \\"red\\"
-  },
-  \\"3\\": {
     \\"backgroundColor\\": \\"blue\\"
   },
+  \\"3\\": {
+    \\"flexDirection\\": \\"column\\"
+  },
   \\"4\\": {
-    \\"flexDirection\\": \\"column\\"
-  },
-  \\"5\\": {
-    \\"flexDirection\\": \\"column\\"
-  },
-  \\"6\\": {
     \\"backgroundColor\\": \\"red\\"
   },
-  \\"7\\": {}
+  \\"5\\": {}
 });
 const __withStableStyle = require('@tamagui/core')._withStableStyle;
 const __ReactNativeView = require('react-native').View;
@@ -39,12 +33,12 @@ export function Test() {
 }
 const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
   return React.useMemo(() => {
-    return Object.assign({}, _sheet[\\"1\\"], _expressions[0] ? _sheet[\\"2\\"] : _sheet[\\"3\\"]);
+    return Object.assign({}, _sheet[\\"0\\"], _expressions[0] ? _sheet[\\"1\\"] : _sheet[\\"2\\"]);
   }, [..._expressions]);
 });
 const _ReactNativeViewWrapper2 = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
   return React.useMemo(() => {
-    return Object.assign({}, _sheet[\\"5\\"], _expressions[0] ? _sheet[\\"6\\"] : _sheet[\\"7\\"]);
+    return Object.assign({}, _sheet[\\"3\\"], _expressions[0] ? _sheet[\\"4\\"] : _sheet[\\"5\\"]);
   }, [..._expressions]);
 });"
 `;
@@ -53,10 +47,6 @@ exports[`basic extraction 1`] = `
 "const __ReactNativeStyleSheet = require('react-native').StyleSheet;
 const _sheet = __ReactNativeStyleSheet.create({
   \\"0\\": {
-    \\"flexDirection\\": \\"column\\",
-    \\"backgroundColor\\": \\"red\\"
-  },
-  \\"1\\": {
     \\"flexDirection\\": \\"column\\",
     \\"backgroundColor\\": \\"red\\"
   }
@@ -76,28 +66,16 @@ const _sheet = __ReactNativeStyleSheet.create({
     \\"flexDirection\\": \\"column\\"
   },
   \\"1\\": {
-    \\"flexDirection\\": \\"column\\"
-  },
-  \\"2\\": {
     \\"transform\\": [{
       \\"scale\\": 1
     }]
   },
-  \\"3\\": {
+  \\"2\\": {
     \\"transform\\": [{
       \\"scale\\": 2
     }]
   },
-  \\"4\\": {
-    \\"transform\\": [{
-      \\"translateY\\": 20
-    }, {
-      \\"translateX\\": 10
-    }, {
-      \\"rotate\\": \\"10deg\\"
-    }]
-  },
-  \\"5\\": {
+  \\"3\\": {
     \\"transform\\": [{
       \\"translateY\\": 20
     }, {
@@ -116,7 +94,7 @@ export function Test(isLoading) {
 }
 const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
   return React.useMemo(() => {
-    return Object.assign({}, _sheet[\\"1\\"], _expressions[0] ? _sheet[\\"2\\"] : _sheet[\\"3\\"], _sheet[\\"5\\"]);
+    return Object.assign({}, _sheet[\\"0\\"], _expressions[0] ? _sheet[\\"1\\"] : _sheet[\\"2\\"], _sheet[\\"3\\"]);
   }, [..._expressions]);
 });"
 `;
@@ -135,9 +113,6 @@ exports[`normalize dynamic values with no theme access 1`] = `
 const _sheet = __ReactNativeStyleSheet.create({
   \\"0\\": {
     \\"flexDirection\\": \\"column\\"
-  },
-  \\"1\\": {
-    \\"flexDirection\\": \\"column\\"
   }
 });
 const __withStableStyle = require('@tamagui/core')._withStableStyle;
@@ -150,7 +125,7 @@ export function Test(props) {
 }
 const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
   return React.useMemo(() => {
-    return Object.assign({}, _sheet[\\"1\\"], {
+    return Object.assign({}, _sheet[\\"0\\"], {
       height: _expressions[0]
     }, {
       width: _expressions[1]
@@ -164,9 +139,6 @@ exports[`normalize dynamic values with theme access and dynamic values 1`] = `
 const _sheet = __ReactNativeStyleSheet.create({
   \\"0\\": {
     \\"flexDirection\\": \\"column\\"
-  },
-  \\"1\\": {
-    \\"flexDirection\\": \\"column\\"
   }
 });
 const __withStableStyle = require('@tamagui/core')._withStableStyle;
@@ -178,7 +150,7 @@ export function Test(props) {
 }
 const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
   return React.useMemo(() => {
-    return Object.assign({}, _sheet[\\"0\\"], _sheet[\\"1\\"], {
+    return Object.assign({}, _sheet[\\"0\\"], {
       \\"backgroundColor\\": theme.color
     }, {
       height: _expressions[0]
@@ -194,12 +166,9 @@ const _sheet = __ReactNativeStyleSheet.create({
     \\"flexDirection\\": \\"column\\"
   },
   \\"1\\": {
-    \\"flexDirection\\": \\"column\\"
-  },
-  \\"2\\": {
     \\"backgroundColor\\": \\"#fff\\"
   },
-  \\"3\\": {
+  \\"2\\": {
     \\"backgroundColor\\": \\"red\\"
   }
 });
@@ -212,9 +181,9 @@ export function Test(props) {
 }
 const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
   return React.useMemo(() => {
-    return Object.assign({}, _sheet[\\"1\\"], _sheet[\\"2\\"], _expressions[0] ? {
+    return Object.assign({}, _sheet[\\"0\\"], _sheet[\\"1\\"], _expressions[0] ? {
       \\"bg\\": theme.color
-    } : _sheet[\\"3\\"], {
+    } : _sheet[\\"2\\"], {
       height: _expressions[1]
     });
   }, [theme.color, ..._expressions]);
@@ -225,9 +194,6 @@ exports[`normalize dynamic values with theme access only 1`] = `
 "const __ReactNativeStyleSheet = require('react-native').StyleSheet;
 const _sheet = __ReactNativeStyleSheet.create({
   \\"0\\": {
-    \\"flexDirection\\": \\"column\\"
-  },
-  \\"1\\": {
     \\"flexDirection\\": \\"column\\"
   }
 });
@@ -240,7 +206,7 @@ export function Test(props) {
 }
 const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
   return React.useMemo(() => {
-    return Object.assign({}, _sheet[\\"0\\"], _sheet[\\"1\\"], {
+    return Object.assign({}, _sheet[\\"0\\"], {
       \\"backgroundColor\\": theme.color
     });
   }, [theme.color, ..._expressions]);
@@ -254,12 +220,9 @@ const _sheet = __ReactNativeStyleSheet.create({
     \\"flexDirection\\": \\"column\\"
   },
   \\"1\\": {
-    \\"flexDirection\\": \\"column\\"
-  },
-  \\"2\\": {
     \\"backgroundColor\\": \\"#fff\\"
   },
-  \\"3\\": {
+  \\"2\\": {
     \\"backgroundColor\\": \\"red\\"
   }
 });
@@ -272,9 +235,9 @@ export function Test(props) {
 }
 const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
   return React.useMemo(() => {
-    return Object.assign({}, _sheet[\\"1\\"], _sheet[\\"2\\"], _expressions[0] ? {
+    return Object.assign({}, _sheet[\\"0\\"], _sheet[\\"1\\"], _expressions[0] ? {
       \\"bg\\": theme.color
-    } : _sheet[\\"3\\"], {
+    } : _sheet[\\"2\\"], {
       height: _expressions[1]
     }, {
       width: _expressions[2]
@@ -327,13 +290,6 @@ const _sheet = __ReactNativeStyleSheet.create({
     \\"letterSpacing\\": 0,
     \\"fontSize\\": 14,
     \\"lineHeight\\": 23
-  },
-  \\"1\\": {
-    \\"color\\": \\"red\\",
-    \\"fontFamily\\": \\"Inter\\",
-    \\"letterSpacing\\": 0,
-    \\"fontSize\\": 14,
-    \\"lineHeight\\": 23
   }
 });
 const __ReactNativeView = require('react-native').View;
@@ -352,12 +308,6 @@ const _sheet = __ReactNativeStyleSheet.create({
     \\"letterSpacing\\": 0,
     \\"fontSize\\": 14,
     \\"lineHeight\\": 23
-  },
-  \\"1\\": {
-    \\"fontFamily\\": \\"Inter\\",
-    \\"letterSpacing\\": 0,
-    \\"fontSize\\": 14,
-    \\"lineHeight\\": 23
   }
 });
 const __withStableStyle = require('@tamagui/core')._withStableStyle;
@@ -369,7 +319,7 @@ export function Test() {
 }
 const _ReactNativeTextWrapper = __withStableStyle(__ReactNativeText, (theme, _expressions) => {
   return React.useMemo(() => {
-    return Object.assign({}, _sheet[\\"0\\"], _sheet[\\"1\\"], {
+    return Object.assign({}, _sheet[\\"0\\"], {
       \\"color\\": theme.color
     });
   }, [theme.color, ..._expressions]);

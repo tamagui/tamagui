@@ -210,9 +210,10 @@ export default declare(function snackBabelPlugin(
                 for (const attr of props.attrs) {
                   switch (attr.type) {
                     case 'style': {
-                      addStyleExpression(getStyleExpression(attr.value))
+                      let styleExpr = getStyleExpression(attr.value)
+                      addStyleExpression(styleExpr)
                       if (options.experimentalFlattenThemesOnNative) {
-                        addStyleExpression(getStyleExpression(attr.value), true)
+                        addStyleExpression(styleExpr, true)
                       }
                       break
                     }
