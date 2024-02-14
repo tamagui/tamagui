@@ -1,3 +1,5 @@
+import { octokit } from '@lib/octokit'
+
 export type GithubSponsorshipStatus =
   | {
       hasSponsorAccess: false
@@ -370,22 +372,15 @@ export const inviteCollaboratorToRepo = async (
   )
 
   try {
-    const res = await fetch(
-      `https://api.github.com/repos/tamagui/${repoName}/collaborators/${userLogin}`,
-      {
-        body: JSON.stringify({
-          permission,
-        }),
-        method: 'PUT',
-        headers: {
-          'X-GitHub-Api-Version': '2022-11-28',
-          Authorization: `Bearer ${GITHUB_ADMIN_TOKEN}`,
-        },
-      }
-    )
+    const res = await octokit.rest.repos.addCollaborator({
+      owner: 'tamagui',
+      repo: repoName,
+      username: userLogin,
+      permission,
+    })
 
     console.info(
-      `Claim: inviteCollaboratorToRepo response ${res.status} ${res.statusText}`
+      `Claim: inviteCollaboratorToRepo response ${res.status} - ${res.data.permissions}`
     )
   } catch (err) {
     console.error(`Claim: inviteCollaboratorToRepo Error: ${err}`)

@@ -67,8 +67,6 @@ type ClaimFunction = (
 }>
 
 const claimRepositoryAccess: ClaimFunction = async ({ user, metadata }) => {
-  const permission = 'pull'
-
   console.info(`Claim: checking private users`)
 
   const userPrivateRes = await supabaseAdmin
@@ -101,7 +99,7 @@ const claimRepositoryAccess: ClaimFunction = async ({ user, metadata }) => {
   console.info(`Claim: inviting collaborator`)
 
   try {
-    await inviteCollaboratorToRepo(repoName, githubUser.login, permission)
+    await inviteCollaboratorToRepo(repoName, githubUser.login, 'pull')
 
     return {
       data: {
