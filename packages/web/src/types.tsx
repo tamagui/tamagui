@@ -945,7 +945,7 @@ export type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string
 export type GetTokenPropsFromAcceptedTokens<AcceptedTokens> =
   AcceptedTokens extends Record<string, any>
     ? {
-        [Key in keyof AcceptedTokens]?: ThemeValueByCategory<AcceptedTokens[Key]>
+        [Key in keyof AcceptedTokens]?: ThemeValueGet<AcceptedTokens[Key]>
       }
     : {}
 

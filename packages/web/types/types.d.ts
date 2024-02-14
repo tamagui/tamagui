@@ -557,7 +557,7 @@ export type ThemeValueFallbackRadius = ThemeValueFallback | GetThemeValueFallbac
 export type ThemeValueFallbackZIndex = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingZIndex, never, UnionableNumber, UnionableNumber, WebStyleValueUniversal>;
 export type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`;
 export type GetTokenPropsFromAcceptedTokens<AcceptedTokens> = AcceptedTokens extends Record<string, any> ? {
-    [Key in keyof AcceptedTokens]?: ThemeValueByCategory<AcceptedTokens[Key]>;
+    [Key in keyof AcceptedTokens]?: ThemeValueGet<AcceptedTokens[Key]>;
 } : {};
 export type SpecificTokens<Record = Tokens, RK extends keyof Record = keyof Record> = RK extends string ? `$${RK}.${keyof Record[RK] extends string | number ? keyof Record[RK] : never}` : never;
 export type SpecificTokensSpecial = TamaguiSettings extends {
