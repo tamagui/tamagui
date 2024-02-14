@@ -372,16 +372,14 @@ export const inviteCollaboratorToRepo = async (
   )
 
   try {
-    const res = await octokit.rest.repos.addCollaborator({
+    await octokit.rest.repos.addCollaborator({
       owner: 'tamagui',
       repo: repoName,
       username: userLogin,
       permission,
     })
 
-    console.info(
-      `Claim: inviteCollaboratorToRepo response ${res.status} - ${res.data.permissions}`
-    )
+    console.info(`Claim: inviteCollaboratorToRepo succeeded`)
   } catch (err) {
     console.error(`Claim: inviteCollaboratorToRepo Error: ${err}`)
     throw err

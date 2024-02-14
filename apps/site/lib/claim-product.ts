@@ -99,6 +99,12 @@ const claimRepositoryAccess: ClaimFunction = async ({ user, metadata }) => {
   console.info(`Claim: inviting collaborator`)
 
   const permission = 'pull'
+
+  if (!githubUser.login) {
+    throw new ClaimError(
+      "We weren't able to find your GitHub username. Please logout of your account, login and try again. If this kept occurring, contact support@tamagui.dev or get help on Discord."
+    )
+  }
   try {
     await inviteCollaboratorToRepo(repoName, githubUser.login, permission)
 
