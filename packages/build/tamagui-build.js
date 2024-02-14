@@ -574,7 +574,7 @@ async function esbuildWriteIfChanged(
                     [
                       require.resolve('babel-plugin-fully-specified'),
                       {
-                        ensureFileExists: false,
+                        ensureFileExists: true,
                         esExtensionDefault: '.mjs',
                         tryExtensions: ['.mjs', '.js'],
                         esExtensions: ['.mjs', '.js'],
