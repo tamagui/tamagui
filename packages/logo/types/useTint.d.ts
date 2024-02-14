@@ -12,12 +12,13 @@ export declare const useTint: (altOffset?: number) => {
     readonly setTintIndex: (next: number) => void;
     readonly setNextTintFamily: () => void;
     readonly setNextTint: () => void;
-    readonly name: "tamagui" | "xmas" | "easter" | "halloween" | "lunar";
+    readonly name: "tamagui" | "xmas" | "easter" | "halloween" | "valentine" | "lunar";
     readonly families: {
         tamagui: string[];
         xmas: string[];
         easter: string[];
         halloween: string[];
+        valentine: string[];
         lunar: string[];
     };
 };

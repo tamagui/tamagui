@@ -883,14 +883,14 @@ textarea {
 
 .home-glow {
   background: radial-gradient(var(--color6) 0%, transparent 64%);
-  transition: all ease-in 10000ms;
+  transition: all ease-in 5000ms;
 }
 
 .t_dark .home-glow.active {
   opacity: 0.3;
 }
 .home-glow.active {
-  opacity: 1;
+  opacity: 0.2;
 }
 
 .bento-up-text {

@@ -7,6 +7,7 @@ export const seasons = {
   easter: '🐣',
   xmas: '🎅🏻',
   lunar: '🧧',
+  valentine: '💘',
   halloween: '🎃',
 }
 
