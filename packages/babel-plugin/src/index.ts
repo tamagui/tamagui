@@ -211,7 +211,9 @@ export default declare(function snackBabelPlugin(
                   switch (attr.type) {
                     case 'style': {
                       addStyleExpression(getStyleExpression(attr.value))
-                      addStyleExpression(getStyleExpression(attr.value), true)
+                      if (options.experimentalFlattenThemesOnNative) {
+                        addStyleExpression(getStyleExpression(attr.value), true)
+                      }
                       break
                     }
 
@@ -289,9 +291,10 @@ export default declare(function snackBabelPlugin(
 
                 if (props.isFlattened) {
                   if (
-                    themeKeysUsed.size ||
-                    hocStylesExpr.elements.length > 1 ||
-                    hasDynamicStyle
+                    options.experimentalFlattenThemesOnNative &&
+                    (themeKeysUsed.size ||
+                      hocStylesExpr.elements.length > 1 ||
+                      hasDynamicStyle)
                   ) {
                     if (!hasImportedViewWrapper) {
                       root.unshiftContainer('body', importWithStyle())
