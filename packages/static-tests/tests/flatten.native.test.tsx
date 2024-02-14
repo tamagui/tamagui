@@ -99,7 +99,7 @@ describe('flatten-tests', () => {
     })
   })
 
-  test(`work with experimentalFlattenThemesOnNative`, async () => {
+  test(`work with experimentalAdvanceNativeFlattening`, async () => {
     const output = await extractForNative(`
       import { YStack } from 'tamagui/src/YStack'
   
@@ -118,7 +118,7 @@ describe('flatten-tests', () => {
     expect(output?.code).toMatchSnapshot()
   })
 
-  test(`work with experimentalFlattenThemesOnNative + ternary`, async () => {
+  test(`work with experimentalAdvanceNativeFlattening + ternary`, async () => {
     const output = await extractForNative(`// debug
       import { View } from 'tamagui'
   

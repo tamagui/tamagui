@@ -9,7 +9,7 @@ module.exports = (api) => {
           platform: 'native',
           components: ['tamagui', '@tamagui/sandbox-ui'],
           config: './src/tamagui.config.ts',
-          experimentalFlattenThemesOnNative: true,
+          experimentalAdvanceNativeFlattening: true,
           // disable: true,
           // disableExtraction: true,
         },
