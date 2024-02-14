@@ -152,6 +152,7 @@ export default declare(function snackBabelPlugin(
 
                 assertValidTag(props.node)
                 const stylesExpr = t.arrayExpression([])
+                const hocStylesExpr = t.arrayExpression([])
                 const expressions: t.Expression[] = []
                 const finalAttrs: (t.JSXAttribute | t.JSXSpreadAttribute)[] = []
                 const themeKeysUsed = new Set<string>()
@@ -163,28 +164,34 @@ export default declare(function snackBabelPlugin(
                   const { plain, themed } = splitThemeStyles(style)
 
                   // TODO: themed is not a good name, because it's not just theme it also includes tokens
+                  let themeExpr: t.ObjectExpression | null = null
                   if (themed && options.experimentalFlattenThemesOnNative) {
                     for (const key in themed) {
                       themeKeysUsed.add(themed[key].split('$')[1])
                     }
 
                     // make a sub-array
-                    return addThemedStyleExpression(themed)
+                    themeExpr = getThemedStyleExpression(themed)
                   }
                   const ident = addSheetStyle(plain, props.node)
+                  if (themeExpr) {
+                    addStyleExpression(ident)
+                    addStyleExpression(ident, true)
+                    return themeExpr
+                  }
                   // since we only do flattened disabling this path
                   return ident
                 }
 
-                function addStyleExpression(expr: any) {
+                function addStyleExpression(expr: any, HOC = false) {
                   if (Array.isArray(expr)) {
-                    stylesExpr.elements.push(...expr)
+                    ;(HOC ? hocStylesExpr : stylesExpr).elements.push(...expr)
                   } else {
-                    stylesExpr.elements.push(expr)
+                    ;(HOC ? hocStylesExpr : stylesExpr).elements.push(expr)
                   }
                 }
 
-                function addThemedStyleExpression(styles: Object) {
+                function getThemedStyleExpression(styles: Object) {
                   const themedStylesAst = literalToAst(styles) as t.ObjectExpression
                   themedStylesAst.properties.forEach((_) => {
                     const prop = _ as t.ObjectProperty
@@ -198,31 +205,35 @@ export default declare(function snackBabelPlugin(
                   return themedStylesAst
                 }
 
-                let hadDynamicStyle = false
+                let hasDynamicStyle = false
 
                 for (const attr of props.attrs) {
                   switch (attr.type) {
                     case 'style': {
                       addStyleExpression(getStyleExpression(attr.value))
+                      addStyleExpression(getStyleExpression(attr.value), true)
                       break
                     }
 
                     case 'ternary': {
                       const { consequent, alternate } = attr.value
-
                       const consExpr = getStyleExpression(consequent)
                       const altExpr = getStyleExpression(alternate)
 
-                      const willFlattenTheme =
-                        options.experimentalFlattenThemesOnNative && themeKeysUsed.size
-                      if (willFlattenTheme) {
+                      if (options.experimentalFlattenThemesOnNative) {
                         expressions.push(attr.value.test)
+                        addStyleExpression(
+                          t.conditionalExpression(
+                            t.identifier(`_expressions[${expressions.length - 1}]`),
+                            consExpr || t.nullLiteral(),
+                            altExpr || t.nullLiteral()
+                          ),
+                          true
+                        )
                       }
 
                       const styleExpr = t.conditionalExpression(
-                        willFlattenTheme
-                          ? t.identifier(`_expressions[${expressions.length - 1}]`)
-                          : attr.value.test,
+                        attr.value.test,
                         consExpr || t.nullLiteral(),
                         altExpr || t.nullLiteral()
                       )
@@ -235,13 +246,22 @@ export default declare(function snackBabelPlugin(
                     }
 
                     case 'dynamic-style': {
-                      hadDynamicStyle = true
+                      hasDynamicStyle = true
                       expressions.push(attr.value as t.Expression)
                       addStyleExpression(
                         t.objectExpression([
                           t.objectProperty(
                             t.identifier(attr.name as string),
                             t.identifier(`_expressions[${expressions.length - 1}]`)
+                          ),
+                        ]),
+                        true
+                      )
+                      addStyleExpression(
+                        t.objectExpression([
+                          t.objectProperty(
+                            t.identifier(attr.name as string),
+                            attr.value as t.Expression
                           ),
                         ])
                       )
@@ -252,6 +272,9 @@ export default declare(function snackBabelPlugin(
                       if (t.isJSXSpreadAttribute(attr.value)) {
                         if (isSimpleSpread(attr.value)) {
                           stylesExpr.elements.push(
+                            t.memberExpression(attr.value.argument, t.identifier('style'))
+                          )
+                          hocStylesExpr.elements.push(
                             t.memberExpression(attr.value.argument, t.identifier('style'))
                           )
                         }
@@ -265,7 +288,11 @@ export default declare(function snackBabelPlugin(
                 props.node.attributes = finalAttrs
 
                 if (props.isFlattened) {
-                  if (themeKeysUsed.size || hadDynamicStyle) {
+                  if (
+                    themeKeysUsed.size ||
+                    hocStylesExpr.elements.length > 1 ||
+                    hasDynamicStyle
+                  ) {
                     if (!hasImportedViewWrapper) {
                       root.unshiftContainer('body', importWithStyle())
                       hasImportedViewWrapper = true
@@ -304,7 +331,7 @@ export default declare(function snackBabelPlugin(
                                               ),
                                               [
                                                 t.objectExpression([]),
-                                                ...stylesExpr.elements,
+                                                ...hocStylesExpr.elements,
                                                 ...[],
                                               ] as any[]
                                             )

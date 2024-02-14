@@ -129,7 +129,7 @@ export interface TamaguiBuildOptions {
   forceExtractStyleDefinitions?: boolean
 
   /**
-   * (Experimental) Will flatten theme value usages on native as well
+   * (Experimental) Will flatten theme and other dynamic values on native
    */
   experimentalFlattenThemesOnNative?: boolean
   /**
