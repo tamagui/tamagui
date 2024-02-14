@@ -135,6 +135,6 @@ export async function getProductAccessInfo(supabase: SupabaseClient<Database>) {
 
   return {
     bento: checkAccessToProduct('bento', subscriptions, ownedProducts),
-    takeout: checkAccessToProduct('takeout', subscriptions, ownedProducts),
+    takeout: checkAccessToProduct('universal-starter', subscriptions, ownedProducts),
   }
 }
