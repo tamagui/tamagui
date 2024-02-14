@@ -98,8 +98,9 @@ const claimRepositoryAccess: ClaimFunction = async ({ user, metadata }) => {
 
   console.info(`Claim: inviting collaborator`)
 
+  const permission = 'pull'
   try {
-    await inviteCollaboratorToRepo(repoName, githubUser.login, 'pull')
+    await inviteCollaboratorToRepo(repoName, githubUser.login, permission)
 
     return {
       data: {
