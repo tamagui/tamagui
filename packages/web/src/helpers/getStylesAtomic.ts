@@ -17,62 +17,67 @@ import { transformsToString } from './transformsToString'
 
 // refactor this file away next...
 
-export function getStylesAtomic(stylesIn: ViewStyleWithPseudos, debug?: DebugProp) {
-  const res: StyleObject[] = []
-  for (const pseudoName in pseudoDescriptorsBase) {
-    const pseudoStyle = stylesIn[pseudoName]
-    if (pseudoStyle) {
-      res.push(...generateAtomicStyles(pseudoStyle, pseudoDescriptorsBase[pseudoName]))
+export function getStylesAtomic(style: ViewStyleWithPseudos) {
+  styleToCSS(style)
+  const out: StyleObject[] = []
+  for (const key in style) {
+    const val = style[key]
+    if (key in pseudoDescriptors) {
+      if (val) {
+        out.push(...getStyleAtomic(val, pseudoDescriptors[key]))
+      }
+    } else {
+      const so = getStyleObject(style, key)
+      if (so) {
+        out.push(so)
+      }
     }
   }
-  res.push(...generateAtomicStyles(stylesIn))
+  return out
+}
 
-  if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-    console.info(` 🪮 getStylesAtomic`, { stylesIn, res })
+export const getStyleAtomic = (
+  style: ViewStyleWithPseudos,
+  pseudo?: PseudoDescriptor
+): StyleObject[] => {
+  styleToCSS(style)
+  const out: StyleObject[] = []
+  for (const key in style) {
+    const so = getStyleObject(style, key, pseudo)
+    if (so) {
+      out.push(so)
+    }
   }
-  return res
+  return out
 }
 
 let conf: TamaguiInternalConfig
 
-export const generateAtomicStyles = (
+const getStyleObject = (
   style: ViewStyleWithPseudos,
+  key: string,
   pseudo?: PseudoDescriptor
-): StyleObject[] => {
-  if (!style) return []
-
-  conf = conf || getConfig()
-
-  styleToCSS(style)
-
-  const out: StyleObject[] = []
-  for (const key in style) {
-    if (key in pseudoDescriptors) continue
-    let val = style[key]
-    if (val == null) continue
-
-    // transform
-    if (key === 'transform' && Array.isArray(style.transform)) {
-      val = transformsToString(val)
-    }
-
-    const value = normalizeValueWithProperty(val, key)
-    const hash = simpleHash(`${value}`)
-    const pseudoPrefix = pseudo ? `0${pseudo.name}-` : ''
-    const shortProp = conf.inverseShorthands[key] || key
-    const identifier = `_${shortProp}-${pseudoPrefix}${hash}`
-    const rules = createAtomicRules(identifier, key, value, pseudo)
-    const styleObject: StyleObject = {
-      property: key,
-      pseudo: pseudo?.name as any,
-      identifier,
-      rules,
-      value,
-    }
-    out.push(styleObject)
+): StyleObject | undefined => {
+  let val = style[key]
+  if (val == null) return
+  // transform
+  if (key === 'transform' && Array.isArray(style.transform)) {
+    val = transformsToString(val)
   }
-
-  return out
+  const value = normalizeValueWithProperty(val, key)
+  const hash = simpleHash(`${value}`)
+  const pseudoPrefix = pseudo ? `0${pseudo.name}-` : ''
+  conf ||= getConfig()
+  const shortProp = conf.inverseShorthands[key] || key
+  const identifier = `_${shortProp}-${pseudoPrefix}${hash}`
+  const rules = createAtomicRules(identifier, key, value, pseudo)
+  return {
+    property: key,
+    pseudo: pseudo?.name as any,
+    identifier,
+    rules,
+    value,
+  }
 }
 
 export function styleToCSS(style: Record<string, any>) {
@@ -216,7 +221,7 @@ function createAtomicRules(
   // WEIRD SYNTAX, SEE:
   //   https://stackoverflow.com/questions/40532204/media-query-for-devices-supporting-hover
   if (pseudo?.name === 'hover') {
-    rules = rules.map((r) => `@media (hover) { ${r} }`)
+    rules = rules.map((r) => `@media (hover) {${r}}`)
   }
 
   return rules
