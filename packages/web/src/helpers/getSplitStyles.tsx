@@ -56,7 +56,7 @@ import type {
 import { createMediaStyle } from './createMediaStyle'
 import { fixStyles } from './expandStyles'
 import { getGroupPropParts } from './getGroupPropParts'
-import { generateAtomicStyles, getStylesAtomic, styleToCSS } from './getStylesAtomic'
+import { getStyleAtomic, getStylesAtomic, styleToCSS } from './getStylesAtomic'
 import {
   insertStyleRules,
   insertedTransforms,
@@ -726,7 +726,7 @@ export const getSplitStyles: StyleSplitter = (
 
         // on server only generate classes for enterStyle
         if (shouldDoClasses && !isExit) {
-          const pseudoStyles = generateAtomicStyles(pseudoStyleObject, descriptor)
+          const pseudoStyles = getStyleAtomic(pseudoStyleObject, descriptor)
 
           if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
             // prettier-ignore
@@ -904,7 +904,7 @@ export const getSplitStyles: StyleSplitter = (
             }
           }
 
-          const mediaStyles = getStylesAtomic(mediaStyle, debug)
+          const mediaStyles = getStylesAtomic(mediaStyle)
           const priority = mediaStylesSeen
           mediaStylesSeen += 1
 
@@ -1152,7 +1152,7 @@ export const getSplitStyles: StyleSplitter = (
       if (styleState.style['$$css']) {
         // avoid re-processing for rnw
       } else {
-        const atomic = getStylesAtomic(styleState.style, debug)
+        const atomic = getStylesAtomic(styleState.style)
 
         for (const atomicStyle of atomic) {
           const key = atomicStyle.property
