@@ -44,7 +44,7 @@ let fam: TintFamily = DEFAULT_FAMILY
 //   }
 // })()
 
-setTintFamily('valentine')
+// setTintFamily('valentine')
 
 // if (seasonalTheme) {
 //   setTintFamily(seasonalTheme)
