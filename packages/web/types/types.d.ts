@@ -730,9 +730,9 @@ interface ExtraStyleProps {
      * The point at which transforms originate from.
      */
     transformOrigin?: PxOrPct | 'left' | 'center' | 'right' | 'top' | 'bottom' | TwoValueTransformOrigin | `${TwoValueTransformOrigin} ${Px}`;
-    filter?: React.CSSProperties['filter'];
-    backdropFilter?: React.CSSProperties['backdropFilter'];
-    mixBlendMode?: React.CSSProperties['mixBlendMode'];
+    filter?: Properties['filter'];
+    backdropFilter?: Properties['backdropFilter'];
+    mixBlendMode?: Properties['mixBlendMode'];
 }
 export interface ExtendBaseStackProps {
 }
