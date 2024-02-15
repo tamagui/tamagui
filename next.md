@@ -1,3 +1,4 @@
+- i think acceptTokens + compiler not working (see selectionColor)
 - themes v3 needs to add $accent
 - themes v4 needs surface hovers to lighten in light mode
 
