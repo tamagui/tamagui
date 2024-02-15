@@ -351,8 +351,6 @@ export default function TakeoutPage({
                   </Paragraph>
                 </ThemeTintAlt>
 
-                <Spacer size="$4" />
-
                 <XStack fw="wrap" gap="$3" mx="$-10" ai="center" jc="center">
                   <TakeoutCard
                     theme="orange"
@@ -460,38 +458,271 @@ export default function TakeoutPage({
 
                 <Spacer />
 
-                <YStack
-                  className="phone-preview"
-                  marginTop={-580}
-                  marginBottom={-530}
-                  x={700}
-                  zi={-1}
-                  style={{
-                    mixBlendMode: 'lighten',
-                  }}
-                >
+                <YStack marginTop={-430} marginBottom={-330} x={800} zi={-1}>
                   <div
                     style={{
                       transform: 'rotateX(41deg) rotateZ(33deg)',
                       transformStyle: 'preserve-3d',
-                      width: 715 * 0.75,
+                      width: 715 * 0.5,
                       borderRadius: 78,
-                      boxShadow: '0 0 30px 40px rgba(0,0,0,0.2)',
+                      boxShadow: '0 50px 50px 0px var(--shadowColor)',
                     }}
                   >
-                    <Image
-                      alt="iPhone screenshot of Tamagui"
-                      src="/tama-phone.svg"
-                      width={715 * 0.75}
-                      height={1467 * 0.75}
-                    />
+                    <svg width={715 * 0.5} height={1467 * 0.5} viewBox="0 0 715 1467">
+                      <path
+                        d="M0 166.4C0 108.155 0 79.0318 11.3353 56.785C21.3062 37.2161 37.2161 21.3062 56.785 11.3353C79.0318 0 108.155 0 166.4 0H548.6C606.845 0 635.968 0 658.215 11.3353C677.784 21.3062 693.694 37.2161 703.665 56.785C715 79.0318 715 108.155 715 166.4V1300.6C715 1358.85 715 1387.97 703.665 1410.21C693.694 1429.78 677.784 1445.69 658.215 1455.66C635.968 1467 606.845 1467 548.6 1467H166.4C108.155 1467 79.0318 1467 56.785 1455.66C37.2161 1445.69 21.3062 1429.78 11.3353 1410.21C0 1387.97 0 1358.85 0 1300.6V166.4Z"
+                        fill="var(--color2)"
+                        style={{
+                          outline: `0 0 10px #000`,
+                        }}
+                      />
+                      <mask
+                        id="mask0_2_131"
+                        style={{ maskType: 'alpha' }}
+                        maskUnits="userSpaceOnUse"
+                        x="35"
+                        y="36"
+                        width="645"
+                        height="1395"
+                      >
+                        <path
+                          d="M42.4116 73.1286C35 87.6746 35 106.716 35 144.8V1322.2C35 1360.28 35 1379.33 42.4116 1393.87C48.9309 1406.67 59.3336 1417.07 72.1286 1423.59C86.6746 1431 105.716 1431 143.8 1431H571.2C609.284 1431 628.325 1431 642.871 1423.59C655.666 1417.07 666.069 1406.67 672.588 1393.87C680 1379.33 680 1360.28 680 1322.2V144.8C680 106.716 680 87.6746 672.588 73.1286C666.069 60.3336 655.666 49.9309 642.871 43.4116C628.325 36 609.284 36 571.2 36H537.778C536.122 36 535.295 36 534.632 36.2412C533.521 36.6456 532.646 37.5209 532.241 38.6319C532 39.2947 532 40.1224 532 41.7778C532 55.0209 532 61.6425 530.07 66.9446C526.835 75.8332 519.833 82.835 510.945 86.0702C505.642 88 499.021 88 485.778 88H229.222C215.979 88 209.358 88 204.055 86.0702C195.167 82.835 188.165 75.8332 184.93 66.9446C183 61.6425 183 55.0209 183 41.7778C183 40.1224 183 39.2947 182.759 38.6319C182.354 37.5209 181.479 36.6456 180.368 36.2412C179.705 36 178.878 36 177.222 36H143.8C105.716 36 86.6746 36 72.1286 43.4116C59.3336 49.9309 48.9309 60.3336 42.4116 73.1286Z"
+                          fill="var(--color)"
+                        />
+                      </mask>
+                      <g mask="url(#mask0_2_131)">
+                        <path d="M25 22H702V1489H25V22Z" fill="var(--background)" />
+                        <g clip-path="url(#clip0_2_131)">
+                          <path
+                            d="M379.351 710.63H385.629V716.909H379.351V710.63Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M370.311 710.63H376.589V716.909H370.311V710.63Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M361.271 710.63H367.549V716.909H361.271V710.63Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M352.231 710.63H358.509V716.909H352.231V710.63Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M343.191 710.63H349.469V716.909H343.191V710.63Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M334.151 710.63H340.429V716.909H334.151V710.63Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M325.111 719.644H331.389V725.923H325.111V719.644Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M316.071 728.658H322.349V734.937H316.071V728.658Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M307.031 737.673H313.309V743.951H307.031V737.673Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M307.031 746.687H313.309V752.965H307.031V746.687Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M307.031 755.701H313.309V761.979H307.031V755.701Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M307.031 764.715H313.309V770.993H307.031V764.715Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M297.991 773.729H304.269V780.007H297.991V773.729Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M297.991 782.743H304.269V789.022H297.991V782.743Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M297.991 791.757H304.269V798.036H297.991V791.757Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M307.031 800.771H313.309V807.05H307.031V800.771Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M316.071 809.785H322.349V816.064H316.071V809.785Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M325.111 818.799H331.389V825.078H325.111V818.799Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M334.151 827.814H340.429V834.092H334.151V827.814Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M343.191 827.814H349.469V834.092H343.191V827.814Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M352.231 818.799H358.509V825.078H352.231V818.799Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M361.271 818.799H367.549V825.078H361.271V818.799Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M361.271 827.814H367.549V834.092H361.271V827.814Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M370.311 827.814H376.589V834.092H370.311V827.814Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M379.351 818.799H385.629V825.078H379.351V818.799Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M379.351 809.785H385.629V816.064H379.351V809.785Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M388.391 800.771H394.669V807.05H388.391V800.771Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M397.431 782.743H403.709V789.022H397.431V782.743Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M397.431 791.757H403.709V798.036H397.431V791.757Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M397.431 773.729H403.709V780.007H397.431V773.729Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M406.471 764.715H412.749V770.993H406.471V764.715Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M415.511 764.715H421.789V770.993H415.511V764.715Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M424.551 755.701H430.829V761.979H424.551V755.701Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M415.511 746.687H421.789V752.965H415.511V746.687Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M406.471 746.687H412.749V752.965H406.471V746.687Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M397.431 746.687H403.709V752.965H397.431V746.687Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M424.551 737.673H430.829V743.951H424.551V737.673Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M424.551 746.687H430.829V752.965H424.551V746.687Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M415.511 728.658H421.789V734.937H415.511V728.658Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M415.511 728.658H421.789V734.937H415.511V728.658Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M406.471 728.658H412.749V734.937H406.471V728.658Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M388.391 719.644H394.669V725.923H388.391V719.644Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M379.351 728.658H385.629V734.937H379.351V728.658Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M352.231 737.673H358.509V743.951H352.231V737.673Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M352.231 773.729H358.509V780.007H352.231V773.729Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M352.231 782.743H358.509V789.022H352.231V782.743Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M343.191 791.757H349.469V798.036H343.191V791.757Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M334.151 782.743H340.429V789.022H334.151V782.743Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M334.151 773.729H340.429V780.007H334.151V773.729Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M397.431 728.658H403.709V734.937H397.431V728.658Z"
+                            fill="var(--color)"
+                          />
+                        </g>
+                      </g>
+                      <path
+                        d="M319 55C319 51.134 322.134 48 326 48H390C393.866 48 397 51.134 397 55C397 58.866 393.866 62 390 62H326C322.134 62 319 58.866 319 55Z"
+                        fill="var(--color6)"
+                      />
+                      <path
+                        d="M413 55C413 47.268 419.268 41 427 41C434.732 41 441 47.268 441 55C441 62.732 434.732 69 427 69C419.268 69 413 62.732 413 55Z"
+                        fill="var(--color6)"
+                      />
+                      <defs>
+                        <clipPath id="clip0_2_131">
+                          <rect
+                            width="133.664"
+                            height="124.999"
+                            fill="var(--color)"
+                            transform="translate(297.536 709.493)"
+                          />
+                        </clipPath>
+                      </defs>
+                    </svg>
                   </div>
                 </YStack>
+
                 <ThemeTint>
                   <YStack
                     p="$6"
-                    className="blur-medium"
                     px="$8"
+                    className="blur-8"
+                    elevation="$10"
                     py="$8"
                     gap="$5"
                     br="$10"
@@ -571,19 +802,15 @@ export default function TakeoutPage({
                         <Bullet status="building">Tamagui CLI: Doctor</Bullet>
                         <Bullet status="building">Tamagui CLI: Upgrade</Bullet>
                         <Bullet>Playwright integration tests</Bullet>
-                        <Bullet>Alternative deployment targets</Bullet>
-                        <Bullet>Premium font add-ons</Bullet>
                         <Bullet>Unified RN and web testing tools</Bullet>
                         <Bullet>Improved CI/CD and caching</Bullet>
                         <Bullet>Generator for MDX support</Bullet>
                         <Bullet>Generator for Replicache support</Bullet>
-                        <Bullet>Generator for other databases</Bullet>
                         <Bullet>Generators for Expo Deep links</Bullet>
                         <Bullet>Generator for native modules</Bullet>
                         <Bullet>Million.js opt-in and configuration</Bullet>
                         <Bullet>Virtual lists, swipeable + sorting</Bullet>
-                        <Bullet>Native menus with Zeego</Bullet>
-                        <Bullet>Much more (suggest in the #takeout channel)</Bullet>
+                        <Bullet>Suggest more in the #takeout channel</Bullet>
                       </XStack>
                     </ThemeTintAlt>
 
@@ -715,7 +942,7 @@ const TakeoutCard2Frame = styled(YStack, {
   maxWidth: 282,
   minHeight: 312,
   maxHeight: 312,
-  elevation: '$1',
+  elevation: '$0.5',
   overflow: 'hidden',
   borderRadius: '$10',
 
@@ -752,7 +979,7 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
     blurPct: 60,
     // inverse: true,
     color: isDark ? 'var(--color9)' : 'var(--color4)',
-    opacity: isDark ? 0.18 : 1,
+    opacity: isDark ? 0.18 : 0.35,
     background: 'transparent',
     style: {
       transition: `all ease-out 300ms`,
@@ -799,7 +1026,16 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
         </YStack> */}
 
         <YStack f={1} space zi={100}>
-          <H2 color="$color10" fontFamily="$munro" size="$10" my={-8}>
+          <H2
+            fontFamily="$munro"
+            size="$10"
+            als="center"
+            my={-8}
+            color="$color10"
+            $theme-light={{
+              color: '$color11',
+            }}
+          >
             {title}
           </H2>
           {children}
@@ -1293,7 +1529,7 @@ const PurchaseModal = ({
                       <XStack
                         mt="$2"
                         theme="green"
-                        bg="$background"
+                        bg="$color3"
                         p="$4"
                         bw={1}
                         bc="$color5"
@@ -1750,9 +1986,11 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
 function PurchaseButton(props: ButtonProps) {
   return (
     <ThemeTintAlt>
-      <Button size="$6" borderWidth={2} bc="$color8" {...props}>
-        <Button.Text ff="$silkscreen">{props.children} 🥡</Button.Text>
-      </Button>
+      <Theme name="surface4">
+        <Button size="$6" borderWidth={2} {...props}>
+          <Button.Text ff="$silkscreen">{props.children} 🥡</Button.Text>
+        </Button>
+      </Theme>
     </ThemeTintAlt>
   )
 }

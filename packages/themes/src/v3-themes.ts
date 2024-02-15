@@ -132,6 +132,11 @@ export const palettes = (() => {
     ]
   }
 
+  // const brandColor = {
+  //   light: color.blue8Light,
+  //   dark: color.blue8Dark
+  // }
+
   const lightPalette = [
     color.white0,
     color.white025,
