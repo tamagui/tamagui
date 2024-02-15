@@ -1202,7 +1202,11 @@ export function createExtractor(
               // weird logic whats going on here
               if (didInline) {
                 if (shouldPrintDebug) {
-                  logger.info(`  bailing flattening due to attributes ${attributes}`)
+                  logger.info(
+                    `  bailing flattening due to attributes ${attributes.map((x) =>
+                      x.toString()
+                    )}`
+                  )
                 }
                 // bail
                 return attr
