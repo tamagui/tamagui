@@ -251,23 +251,26 @@ export default declare(function snackBabelPlugin(
                     case 'dynamic-style': {
                       hasDynamicStyle = true
                       expressions.push(attr.value as t.Expression)
-                      addStyleExpression(
-                        t.objectExpression([
-                          t.objectProperty(
-                            t.identifier(attr.name as string),
-                            t.identifier(`_expressions[${expressions.length - 1}]`)
-                          ),
-                        ]),
-                        true
-                      )
-                      addStyleExpression(
-                        t.objectExpression([
-                          t.objectProperty(
-                            t.identifier(attr.name as string),
-                            attr.value as t.Expression
-                          ),
-                        ])
-                      )
+                      if (options.experimentalFlattenThemesOnNative) {
+                        addStyleExpression(
+                          t.objectExpression([
+                            t.objectProperty(
+                              t.identifier(attr.name as string),
+                              t.identifier(`_expressions[${expressions.length - 1}]`)
+                            ),
+                          ]),
+                          true
+                        )
+                      } else {
+                        addStyleExpression(
+                          t.objectExpression([
+                            t.objectProperty(
+                              t.identifier(attr.name as string),
+                              attr.value as t.Expression
+                            ),
+                          ])
+                        )
+                      }
                       break
                     }
 
@@ -277,9 +280,14 @@ export default declare(function snackBabelPlugin(
                           stylesExpr.elements.push(
                             t.memberExpression(attr.value.argument, t.identifier('style'))
                           )
-                          hocStylesExpr.elements.push(
-                            t.memberExpression(attr.value.argument, t.identifier('style'))
-                          )
+                          if (options.experimentalFlattenThemesOnNative) {
+                            hocStylesExpr.elements.push(
+                              t.memberExpression(
+                                attr.value.argument,
+                                t.identifier('style')
+                              )
+                            )
+                          }
                         }
                       }
                       finalAttrs.push(attr.value)

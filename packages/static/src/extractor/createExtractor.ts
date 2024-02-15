@@ -1302,7 +1302,7 @@ export function createExtractor(
                 return {
                   type: 'dynamic-style',
                   value,
-                  name,
+                  name: tamaguiConfig?.shorthands[name] || name,
                 }
               }
             }
