@@ -9,7 +9,7 @@ let config = getDefaultConfig(__dirname, {
 
 // 2. Enable Tamagui
 const { withTamagui } = require('@tamagui/metro-plugin')
-config = withTamagui(config, {
+module.exports = withTamagui(config, {
   components: ['tamagui'],
   config: './tamagui.config.ts',
   outputCSS: './tamagui-web.css',
@@ -43,5 +43,3 @@ if (process.env.IS_TAMAGUI_DEV) {
     })
   } catch {}
 }
-
-module.exports = config
