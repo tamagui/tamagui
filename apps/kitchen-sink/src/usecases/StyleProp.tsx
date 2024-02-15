@@ -12,7 +12,7 @@ export function StyleProp(test) {
       <Stack
         testID="class-name"
         className="test-bg"
-        pe={!test ? 'none' : 'auto'}
+        pointerEvents={!test ? 'none' : 'auto'}
         cursor="pointer"
         onPress={() => {}}
         w={100}

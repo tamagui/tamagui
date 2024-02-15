@@ -12,11 +12,15 @@ export function getThemeCSSRules(props: {
   theme: ThemeParsed
   names: string[]
   hasDarkLight?: boolean
+  themesNamesToIndexes: Record<string, number>
 }) {
-  const cssRuleSets: string[] = []
+  const result = {
+    themes: [] as string[],
+    selection: [] as [string, string] | [],
+  }
 
   if (process.env.TAMAGUI_TARGET === 'native') {
-    return cssRuleSets
+    return result
   }
   if (
     !process.env.TAMAGUI_DOES_SSR_CSS ||
@@ -35,6 +39,7 @@ export function getThemeCSSRules(props: {
 
     // themeToVariableToValueMap.set(theme, {})
     // const varToValMap = themeToVariableToValueMap.get(theme)
+
     for (const themeKey in theme) {
       const variable = theme[themeKey] as Variable
       let value: any = null
@@ -50,7 +55,9 @@ export function getThemeCSSRules(props: {
 
     const isDarkBase = themeName === 'dark'
     const isLightBase = themeName === 'light'
-    const baseSelectors = names.map((name) => `${CNP}${name}`)
+    const baseSelectors = names.map((name) => {
+      return `${CNP}${props.themesNamesToIndexes[name] || name}`
+    })
     const selectorsSet = new Set(isDarkBase || isLightBase ? baseSelectors : [])
 
     // since we dont specify dark/light in classnames we have to do an awkward specificity war
@@ -65,11 +72,11 @@ export function getThemeCSSRules(props: {
         if (!(isDark || isLight)) {
           // neither light nor dark subtheme, just generate one selector with :root:root which
           // will override all :root light/dark selectors generated below
-          selectorsSet.add(`${CNP}${subName}`)
+          selectorsSet.add(`${CNP}${props.themesNamesToIndexes[subName] || subName}`)
           continue
         }
 
-        const childSelector = `${CNP}${subName.replace(/^(dark|light)_/, '')}`
+        const childSelector = `${subName.replace(/^(dark|light)_/, '')}`
         const order = isDark ? ['dark', 'light'] : ['light', 'dark']
         const [stronger, weaker] = order
         const numSelectors = Math.round(maxDepth * 1.5)
@@ -83,7 +90,7 @@ export function getThemeCSSRules(props: {
           }
 
           const parents = new Array(depth + 1).fill(0).map((_, idx) => {
-            return `${CNP}${idx % 2 === 0 ? stronger : weaker}`
+            return `${idx % 2 === 0 ? stronger : weaker}`
           })
 
           let parentSelectors = parents.length > 1 ? parents.slice(1) : parents
@@ -97,8 +104,19 @@ export function getThemeCSSRules(props: {
           const nextChildSelector =
             childSelector === lastParentSelector ? '' : childSelector
 
+          let nextChildShorname = ''
+          if (nextChildSelector) {
+            nextChildShorname = `${CNP}${
+              props.themesNamesToIndexes[nextChildSelector] ||
+              props.themesNamesToIndexes['light_' + nextChildSelector] ||
+              props.themesNamesToIndexes['dark_' + nextChildSelector]
+            }`.trim()
+          }
+          // TODO: make sure to add CNP to childSelector and parentSelectors
+          parentSelectors = parentSelectors.map((x) => `${CNP}${x}`)
+
+          selectorsSet.add(`${parentSelectors.join(' ')} ${nextChildShorname}`.trim())
           // for light/dark/light:
-          selectorsSet.add(`${parentSelectors.join(' ')} ${nextChildSelector}`.trim())
           // selectorsSet.add(
           //   `${parentSelectors.join(' ')} ${nextChildSelector}.is_inversed`.trim()
           // )
@@ -118,15 +136,9 @@ export function getThemeCSSRules(props: {
       .join(', ')
 
     const css = `${selectorsString} {${vars}}`
-    cssRuleSets.push(css)
+    result.themes.push(css)
 
     if (config.shouldAddPrefersColorThemes) {
-      const bgString = theme.background
-        ? `background:${variableToString(theme.background)};`
-        : ''
-      const fgString = theme.color ? `color:${variableToString(theme.color)}` : ''
-
-      const bodyRules = `body{${bgString}${fgString}}`
       const isDark = themeName.startsWith('dark')
       const baseName = isDark ? 'dark' : 'light'
       const lessSpecificSelectors = selectors
@@ -145,16 +157,16 @@ export function getThemeCSSRules(props: {
 
       const themeRules = `${lessSpecificSelectors} {${vars}}`
       const prefersMediaSelectors = `@media(prefers-color-scheme:${baseName}){
-    ${bodyRules}
     ${themeRules}
   }`
-      cssRuleSets.push(prefersMediaSelectors)
+      result.themes.push(prefersMediaSelectors)
     }
 
+    // styles => selector to de-dupe
     if (config.selectionStyles) {
-      const selectionSelectors = baseSelectors.map((s) => `${s} ::selection`).join(', ')
       const rules = config.selectionStyles(theme as any)
       if (rules) {
+        const selector = baseSelectors.map((s) => `${s} ::selection`).join(', ')
         const styles = Object.entries(rules)
           .flatMap(([k, v]) =>
             v
@@ -162,13 +174,12 @@ export function getThemeCSSRules(props: {
               : []
           )
           .join(';')
-        const css = `${selectionSelectors} {${styles}}`
-        cssRuleSets.push(css)
+        result.selection = [selector, styles]
       }
     }
   }
 
-  return cssRuleSets
+  return result
 }
 
 const darkSelector = '.t_dark'

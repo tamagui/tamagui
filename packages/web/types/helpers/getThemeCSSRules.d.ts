@@ -5,5 +5,9 @@ export declare function getThemeCSSRules(props: {
     theme: ThemeParsed;
     names: string[];
     hasDarkLight?: boolean;
-}): string[];
+    themesNamesToIndexes: Record<string, number>;
+}): {
+    themes: string[];
+    selection: [] | [string, string];
+};
 //# sourceMappingURL=getThemeCSSRules.d.ts.map

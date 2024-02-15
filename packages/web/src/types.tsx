@@ -591,7 +591,6 @@ export type CreateTamaguiProps = {
       [key: string]: string | number | Variable
     }
   }
-
   settings?: Partial<GenericTamaguiSettings>
 
   /**
@@ -697,6 +696,12 @@ export type TamaguiInternalConfig<
     fontSizeTokens: Set<string>
     specificTokens: Record<string, Variable>
     settings: Omit<GenericTamaguiSettings, keyof I> & I
+    themesNamesToIndexes: {
+      [key: string]: number
+    }
+    themesIndexesToNames: {
+      [key: number]: string
+    }
   }
 
 export type GetAnimationKeys<A extends GenericTamaguiConfig> = keyof A['animations']

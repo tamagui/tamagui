@@ -1,8 +1,6 @@
 import { getSize, getSpace } from '@tamagui/get-token'
 import { Moon } from '@tamagui/lucide-icons'
-import type {
-  GetProps,
-  SizeTokens} from '@tamagui/web';
+import type { GetProps, SizeTokens } from '@tamagui/web'
 import {
   Stack,
   Text,

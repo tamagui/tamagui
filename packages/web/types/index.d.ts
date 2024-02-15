@@ -14,7 +14,7 @@ export type { TamaguiBuildOptions } from '@tamagui/types';
 export type * from './types';
 export type * from './interfaces/RNExclusiveTypes';
 export * from './interfaces/GetRef';
-export { setupDev, getConfig, getThemes, getTokens, updateConfig, getToken, getTokenValue, } from './config';
+export { setupDev, getConfig, getThemes, getTokens, updateConfig, getToken, getTokenValue, getThemesIndexes, getThemesNames, } from './config';
 export * from './constants/constants';
 export * from './contexts/ComponentContext';
 export * from './helpers/createMediaStyle';

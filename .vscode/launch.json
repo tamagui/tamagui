@@ -5,6 +5,20 @@
       "name": "Studio",
       "request": "launch",
       "url": "http://localhost:1421/"
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "debug site on client",
+      "url": "http://localhost:5005",
+      "webRoot": "${workspaceFolder}/apps/site"
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "debug kitchen-sink on client",
+      "url": "http://localhost:9000",
+      "webRoot": "${workspaceFolder}/apps/kitchen-sink"
     }
   ]
 }

@@ -43,6 +43,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   // ensure variables
   const tokensParsed: TokensParsed = {} as any
   const tokens = createVariables(configIn.tokens || {})
+  const areThemesJustNames = Array.isArray(configIn.themes)
 
   if (configIn.tokens) {
     // faster lookups
@@ -63,9 +64,28 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   }
 
   let foundThemes: DedupedThemes | undefined
+
+  const sortedThemeKeys = (
+    areThemesJustNames
+      ? (configIn.themes as unknown as string[])
+      : Object.keys(configIn.themes!)
+  ).sort((a, b) => a.localeCompare(b))
+
+  // { orange: 1, blue: 2}
+  const themesNamesToIndexes = {}
+  // { 1: orange, 2: orange}
+  const themesIndexesToNames = {}
+  sortedThemeKeys.forEach((name, index) => {
+    themesNamesToIndexes[name] = index + 1
+    themesIndexesToNames[index + 1] = name
+  })
+
+  delete themesNamesToIndexes['dark']
+  delete themesNamesToIndexes['light']
+
   if (configIn.themes) {
-    const noThemes = Object.keys(configIn.themes).length === 0
-    foundThemes = scanAllSheets(noThemes, tokensParsed)
+    const noThemes = areThemesJustNames ? true : Object.keys(configIn.themes).length === 0
+    foundThemes = scanAllSheets(noThemes, tokensParsed, themesIndexesToNames)
   }
 
   listenForSheetChanges()
@@ -179,14 +199,26 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
         let themeRuleSets: string[] = []
 
         if (isWeb) {
+          let selectionStyle = ''
+          const selectionSelectors = new Set<string>()
           for (const { names, theme } of dedupedThemes) {
-            const nextRules = getThemeCSSRules({
+            const { themes, selection } = getThemeCSSRules({
               config: configIn,
               themeName: names[0],
               names,
               theme,
+              themesNamesToIndexes,
             })
-            themeRuleSets = [...themeRuleSets, ...nextRules]
+            if (selection[0] && selection[1]) {
+              selectionSelectors.add(selection[0])
+              selectionStyle ||= selection[1]
+            }
+            themeRuleSets = [...themeRuleSets, ...themes]
+          }
+          if (selectionStyle) {
+            themeRuleSets.push(
+              `${[...selectionSelectors].join(', ')} {${selectionStyle}}`
+            )
           }
         }
 
@@ -194,6 +226,8 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       },
     }
   })()
+
+  // we checked till here
 
   const shorthands = configIn.shorthands || {}
 
@@ -270,6 +304,8 @@ ${runtimeStyles}`
     themes: themeConfig.themes as any,
     fontsParsed: fontsParsed || {},
     themeConfig,
+    themesNamesToIndexes,
+    themesIndexesToNames,
     tokensParsed: tokensParsed as any,
     parsed: true,
     getNewCSS,
