@@ -149,11 +149,6 @@ export const stylePropsView = {
   justifyContent: true,
   left: true,
   margin: true,
-  ...(isWeb && {
-    filter: true,
-    backdropFilter: true,
-    mixBlendMode: true,
-  }),
   marginBlockEnd: true,
   marginBlockStart: true,
   marginInlineEnd: true,
@@ -218,6 +213,9 @@ export const stylePropsView = {
     outlineOffset: true,
     outlineWidth: true,
     touchAction: true,
+    filter: true,
+    backdropFilter: true,
+    mixBlendMode: true,
   }),
   ...(isAndroid ? { elevationAndroid: true } : {}),
 }
