@@ -68,7 +68,7 @@ function readDirectoryRecursively(directoryPath, outputDirectory) {
 }
 
 const mathImportsRegex =
-  /import\s+(?:\w+\s*)?\{\s*\w+\s*\}\s+from\s+'(\.\/|\.\.\/)[^']+'/g
+  /import\s+(?:\w+\s*)?\{\s*(?:\w+\s*,\s*)*\w+\s*\}\s+from\s+'(\.\/|\.\.\/)[^']+'/g
 
 function processFile(filePath, visitedFiles = new Set()) {
   if (visitedFiles.has(filePath)) {
