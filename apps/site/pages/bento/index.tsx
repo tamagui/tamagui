@@ -1,6 +1,6 @@
 import { NextLink } from '@components/NextLink'
 import * as Sections from '@tamagui/bento'
-import { ThemeTintAlt } from '@tamagui/logo'
+import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { Check, Globe, Leaf, Puzzle, ShoppingCart } from '@tamagui/lucide-icons'
 import { useBentoStore } from 'hooks/useBentoStore'
 import type Stripe from 'stripe'
@@ -19,10 +19,8 @@ import {
   Spacer,
   Stack,
   Theme,
-  ThemeableStack,
   XStack,
   YStack,
-  styled,
 } from 'tamagui'
 
 import { PurchaseModal } from '@components/BentoPurchaseModal'
@@ -65,9 +63,11 @@ BentoPage.getLayout = getDefaultLayout
 
 const Intermediate = () => {
   return (
-    <YStack zi={1} w="100%" className="blur-8">
-      <YStack o={0.5} btw={0.5} bc="$color025" />
-      <YStack fullscreen bg="$color3" o={0.5} />
+    <YStack zi={1} w="100%" className="blur-8" mt={-30}>
+      <YStack fullscreen elevation="$4" o={0.15} />
+      <YStack pos="absolute" t={0} l={0} r={0} o={0.25} btw={0.5} bc="$color025" />
+      <YStack pos="absolute" b={0} l={0} r={0} o={0.25} btw={0.5} bc="$color025" />
+      {/* <YStack fullscreen bg="$color3" o={0.5} /> */}
       <ContainerLarge>
         <XStack
           gap="$4"
@@ -109,14 +109,14 @@ const IntermediateCard = ({
       gap="$5"
       br="$9"
       shac="$shadowColor"
-      shof={{ height: 5, width: 0 }}
-      shar="$6"
+      shof={{ height: 1, width: 0 }}
       px="$5"
       py="$4"
     >
       <YStack fullscreen br="$9" bc="$color025" bw={0.25} bs="solid" o={0.5} />
+      <YStack fullscreen bg="$background025" />
       <YStack f={1} gap="$2">
-        <H4 color="$color11" size="$4">
+        <H4 o={0.75} color="$color10" size="$4">
           {title}
         </H4>
         <Paragraph color="$color12" lh="$3">
@@ -301,7 +301,11 @@ const Hero = () => {
                 }}
               >
                 <YStack br="$4" shac="rgba(0,0,0,0.2)" shar="$8">
-                  <Sections.Preferences.LocationNotification />
+                  <ThemeTintAlt>
+                    <Theme name="surface4">
+                      <Sections.Preferences.LocationNotification />
+                    </Theme>
+                  </ThemeTintAlt>
                 </YStack>
 
                 <YStack
@@ -309,12 +313,40 @@ const Hero = () => {
                   zi={1}
                   l={0}
                   style={{
-                    clipPath: `polygon(0% 0%, 60% 0%, 40% 100%, 0% 100%)`,
+                    clipPath: `polygon(0% 0%, 105% 0%, 65% 100%, 0% 100%)`,
                   }}
                 >
-                  <Theme inverse>
-                    <Sections.Preferences.LocationNotification />
-                  </Theme>
+                  <ThemeTintAlt>
+                    <Theme name="surface3">
+                      <Sections.Preferences.LocationNotification />
+                    </Theme>
+                  </ThemeTintAlt>
+                </YStack>
+
+                <YStack
+                  pos="absolute"
+                  zi={1}
+                  l={0}
+                  style={{
+                    clipPath: `polygon(0% 0%, 75% 0%, 30% 100%, 0% 100%)`,
+                  }}
+                >
+                  <ThemeTintAlt>
+                    <Theme name="surface2">
+                      <Sections.Preferences.LocationNotification />
+                    </Theme>
+                  </ThemeTintAlt>
+                </YStack>
+
+                <YStack
+                  pos="absolute"
+                  zi={1}
+                  l={0}
+                  style={{
+                    clipPath: `polygon(0% 0%, 45% 0%, 0% 100%, 0% 100%)`,
+                  }}
+                >
+                  <Sections.Preferences.LocationNotification />
                 </YStack>
 
                 <YStack
@@ -327,7 +359,11 @@ const Hero = () => {
                   shac="rgba(0,0,0,0.2)"
                   shar="$8"
                 >
-                  <Sections.Preferences.LocationNotification />
+                  <ThemeTint>
+                    <Theme name="surface3">
+                      <Sections.Preferences.LocationNotification />
+                    </Theme>
+                  </ThemeTint>
                 </YStack>
               </XStack>
             </Theme>
@@ -344,7 +380,7 @@ const Body = () => {
       pos="relative"
       py="$8"
       mb="$-10"
-      bg="$background"
+      // bg="$background"
       style={{
         backdropFilter: 'blur(4px)',
         WebkitBackdropFilter: 'blur(4px)',
@@ -360,17 +396,6 @@ const Body = () => {
         style={{ mixBlendMode: 'multiply' }}
       />
 
-      <YStack
-        className="grain"
-        pe="none"
-        fullscreen
-        o={0.4}
-        zi={0}
-        $theme-light={{
-          o: 1,
-        }}
-      />
-
       <YStack gap="$11" px="$6">
         {Sections.listingData.sections.map(({ sectionName, parts }) => {
           return (
@@ -378,22 +403,16 @@ const Body = () => {
               <ContainerLarge>
                 <Theme name="tan">
                   <YStack pos="relative">
-                    <H3
-                      ff="$munro"
-                      size="$8"
-                      ls={4}
-                      tt="uppercase"
-                      color="$color9"
-                      f={2}
-                      my="$2"
-                    >
+                    <H3 ff="$munro" size="$8" ls={4} tt="uppercase" color="$color9" f={2}>
                       {`${sectionName[0].toUpperCase()}${sectionName.slice(1)}`}
                     </H3>
                   </YStack>
                 </Theme>
               </ContainerLarge>
+
               <ScrollView
                 horizontal
+                className="mask-gradient-right"
                 showsHorizontalScrollIndicator={false}
                 p="$10"
                 m="$-10"
@@ -458,16 +477,20 @@ function SectionCard({
         tag="a"
         ov="hidden"
         animation="quickest"
+        style={{
+          transition: `box-shadow ease-out 100ms`,
+        }}
         // elevation="$6"
-        bg="$color2"
+        bg="$background025"
         w={250}
-        h={250}
+        h={140}
         br="$9"
         cursor="pointer"
         pos="relative"
         hoverStyle={{
           y: -2,
-          bg: '$color3',
+          bg: '$background05',
+          elevation: '$0.5',
           // outlineWidth: 3,
           // outlineStyle: 'solid',
           // outlineColor: '$color025',

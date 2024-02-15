@@ -116,7 +116,7 @@ export const BentoFrond = () => (
     className="shadow-breeze"
     zi={2}
     pe="none"
-    o={0.15}
+    o={0.045}
     $theme-dark={{
       o: 0.15,
     }}

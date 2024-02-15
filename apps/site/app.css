@@ -904,3 +904,11 @@ textarea {
   mix-blend-mode: color-dodge;
   background-image: linear-gradient(var(--background025), var(--color8));
 }
+
+.glow-shadow {
+  text-shadow: 0 20px 20px var(--background075), 0 30px 30px var(--background025);
+}
+
+.t_dark .glow-shadow {
+  text-shadow: 0 20px 20px var(--color05), 0 30px 30px var(--color025);
+}

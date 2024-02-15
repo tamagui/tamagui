@@ -152,11 +152,9 @@ export const PurchaseModal = ({
                     ls={4}
                     $sm={{ size: '$7' }}
                     mb="$6"
-                    o={0.5}
                     als="center"
                   >
-                    <BentoLogo>BENTO</BentoLogo>
-                    Checkout
+                    <BentoLogo scale={0.5}>BENTO</BentoLogo>
                   </Dialog.Title>
                 </XStack>
 

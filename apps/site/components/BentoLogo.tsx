@@ -61,7 +61,7 @@ export const BentoLogo = ({
         pe="none"
         className="clip-text mask-gradient-up"
         style={{
-          mixBlendMode: 'color',
+          mixBlendMode: 'hard-light',
           backgroundImage: 'linear-gradient(var(--color2), var(--color10))',
         }}
       >
@@ -102,7 +102,7 @@ export const BentoLogo = ({
 
     <ThemeTintAlt>
       <H1
-        o={0.5}
+        className="glow-shadow"
         pos="absolute"
         t={0}
         l={0}
