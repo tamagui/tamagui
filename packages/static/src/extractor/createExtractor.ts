@@ -1297,12 +1297,12 @@ export function createExtractor(
             }
 
             // Disabling: this probably doesn't optimize much and needs to be done a bit differently
-            if (options.experimentalFlattenThemesOnNative) {
+            if (options.experimentalFlattenDynamicValues) {
               if (isValidStyleKey(name, staticConfig)) {
                 return {
                   type: 'dynamic-style',
                   value,
-                  name,
+                  name: tamaguiConfig?.shorthands[name] || name,
                 }
               }
             }
