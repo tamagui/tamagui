@@ -68,7 +68,7 @@ function readDirectoryRecursively(directoryPath, outputDirectory) {
 }
 
 const mathImportsRegex =
-  /import\s+(?:\w+\s*)?\{\s*\w+\s*\}\s+from\s+'(\.\/|\.\.\/)[^']+'/g
+  /import\s+(?:\w+\s*)?\{\s*(?:\w+\s*,\s*)*\w+\s*\}\s+from\s+'(\.\/|\.\.\/)[^']+'/g
 
 function processFile(filePath, visitedFiles = new Set()) {
   if (visitedFiles.has(filePath)) {
@@ -132,7 +132,7 @@ function processFile(filePath, visitedFiles = new Set()) {
   return appendedContent
 }
 
-const rootDirectory = path.resolve(process.cwd(), '../bento/src/components')
+const rootDirectory = path.resolve(process.cwd(), '../../bento/src/components')
 const outputDir = path.resolve(process.cwd(), './bento-output')
 
 if (!fs.existsSync(outputDir)) {
