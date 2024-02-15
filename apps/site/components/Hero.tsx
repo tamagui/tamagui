@@ -9,7 +9,6 @@ import {
   SizableText,
   Spacer,
   Text,
-  Theme,
   TooltipSimple,
   VisuallyHidden,
   XStack,
@@ -19,12 +18,11 @@ import {
 
 import { ContainerLarge } from './Container'
 import { DiscordIcon } from './DiscordIcon'
-import { useHeroHovered } from './heroState'
+import { FigmaButton } from './FigmaButton'
 import { InstallInput } from './InstallInput'
 import { seasons } from './SeasonToggleButton'
 import { TwitterIcon } from './TwitterIcon'
-import { Figma } from '@tamagui/lucide-icons'
-import { FigmaButton } from './FigmaButton'
+import { useHeroHovered } from './heroState'
 
 export function Hero() {
   const { name } = useTint()
