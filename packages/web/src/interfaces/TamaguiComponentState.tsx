@@ -5,6 +5,7 @@ export type TamaguiComponentState = {
   press: boolean
   pressIn: boolean
   focus: boolean
+  focusVisible: boolean
   unmounted: boolean | 'should-enter'
   animation?: null | {
     style?: any

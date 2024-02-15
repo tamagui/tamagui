@@ -11,9 +11,13 @@ export const pseudoDescriptorsBase = {
     stateKey: 'press',
     priority: 2,
   },
+  focusVisibleStyle: {
+    name: 'focus-visible',
+    priority: 3,
+  },
   focusStyle: {
     name: 'focus',
-    priority: 3,
+    priority: 4,
   },
 } as const
 
@@ -24,7 +28,12 @@ export const pseudoPriorities = {
 }
 
 export const pseudoDescriptors: Record<
-  'hoverStyle' | 'pressStyle' | 'focusStyle' | 'enterStyle' | 'exitStyle',
+  | 'hoverStyle'
+  | 'pressStyle'
+  | 'focusStyle'
+  | 'focusVisibleStyle'
+  | 'enterStyle'
+  | 'exitStyle',
   PseudoDescriptor
 > = {
   ...pseudoDescriptorsBase,

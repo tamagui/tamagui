@@ -8,9 +8,13 @@ export declare const pseudoDescriptorsBase: {
         readonly stateKey: "press";
         readonly priority: 2;
     };
+    readonly focusVisibleStyle: {
+        readonly name: "focus-visible";
+        readonly priority: 3;
+    };
     readonly focusStyle: {
         readonly name: "focus";
-        readonly priority: 3;
+        readonly priority: 4;
     };
 };
 export declare const pseudoPriorities: {
@@ -18,7 +22,7 @@ export declare const pseudoPriorities: {
     press: number;
     focus: number;
 };
-export declare const pseudoDescriptors: Record<'hoverStyle' | 'pressStyle' | 'focusStyle' | 'enterStyle' | 'exitStyle', PseudoDescriptor>;
+export declare const pseudoDescriptors: Record<'hoverStyle' | 'pressStyle' | 'focusStyle' | 'focusVisibleStyle' | 'enterStyle' | 'exitStyle', PseudoDescriptor>;
 export type PseudoDescriptor = {
     name: string;
     priority: number;
