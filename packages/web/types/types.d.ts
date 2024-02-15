@@ -730,8 +730,17 @@ interface ExtraStyleProps {
      * The point at which transforms originate from.
      */
     transformOrigin?: PxOrPct | 'left' | 'center' | 'right' | 'top' | 'bottom' | TwoValueTransformOrigin | `${TwoValueTransformOrigin} ${Px}`;
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
     filter?: Properties['filter'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
     backdropFilter?: Properties['backdropFilter'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
     mixBlendMode?: Properties['mixBlendMode'];
 }
 export interface ExtendBaseStackProps {

@@ -1307,8 +1307,17 @@ interface ExtraStyleProps {
     | 'bottom'
     | TwoValueTransformOrigin
     | `${TwoValueTransformOrigin} ${Px}`
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
   filter?: Properties['filter']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
   backdropFilter?: Properties['backdropFilter']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
   mixBlendMode?: Properties['mixBlendMode']
 }
 
