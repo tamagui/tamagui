@@ -124,14 +124,13 @@ test(`normalize ternaries with the conditional dynamic values`, async () => {
   import { Stack } from 'tamagui'
   export function Test(props) {
     return (
-      <Stack  marginBottom={props !== 123 ? 12 : props.mb} />
+      <Stack marginBottom={props !== 123 ? 12 : props.mb} />
     )
   }
 `
   const output = await extractForNative(inputCode)
   const outCode = output?.code ?? ''
-  expect(outCode).toContain(`marginBottom: _expressions[0]`)
-  expect(outCode).toContain(`expressions={[props !== 123 ? 12 : props.mb]`)
+  expect(outCode).toContain(`props !== 123 ? 12 : props.mb`)
   expect(outCode).toMatchSnapshot()
 })
 
@@ -162,7 +161,7 @@ test('normalize dynamic values with theme access only', async () => {
   expect(code).toMatchSnapshot()
 })
 
-test('normalize dynamic values with theme access and dynamic values', async () => {
+test('do NOT flatten dynamic values with theme access', async () => {
   const output = await extractForNative(`
     import { YStack } from 'tamagui'
     export function Test(props) {
@@ -175,7 +174,7 @@ test('normalize dynamic values with theme access and dynamic values', async () =
   expect(code).toMatchSnapshot()
 })
 
-test('normalize dynamic values with theme access and dynamic values and conditional', async () => {
+test('do NOT flatten dynamic values with theme access, dynamic values, and conditional', async () => {
   const output = await extractForNative(`
     import { YStack } from 'tamagui'
     export function Test(props) {
@@ -187,7 +186,8 @@ test('normalize dynamic values with theme access and dynamic values and conditio
   const code = output?.code ?? ''
   expect(code).toMatchSnapshot()
 })
-test('normalize multiple dynamic values with theme access and conditional', async () => {
+
+test('do NOT flatten multiple dynamic values with theme access and conditional', async () => {
   const output = await extractForNative(`
     import { YStack } from 'tamagui'
     export function Test(props) {

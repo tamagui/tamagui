@@ -251,7 +251,7 @@ export default declare(function snackBabelPlugin(
                     case 'dynamic-style': {
                       hasDynamicStyle = true
                       expressions.push(attr.value as t.Expression)
-                      if (options.experimentalFlattenThemesOnNative) {
+                      if (options.experimentalFlattenDynamicValues) {
                         addStyleExpression(
                           t.objectExpression([
                             t.objectProperty(
