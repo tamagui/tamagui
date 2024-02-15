@@ -162,7 +162,7 @@ export function getThemeCSSRules(props: {
               : []
           )
           .join(';')
-        const css = `${selectionSelectors} {${styles}}`
+        const css = `${selectionSelectors}{${styles}}`
         cssRuleSets.push(css)
       }
     }
