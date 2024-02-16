@@ -1,7 +1,15 @@
 import { NextLink } from '@components/NextLink'
 import * as Sections from '@tamagui/bento'
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
-import { Check, Globe, Leaf, Puzzle, ShoppingCart } from '@tamagui/lucide-icons'
+import {
+  Check,
+  ChevronDown,
+  ChevronUp,
+  Globe,
+  Leaf,
+  Puzzle,
+  ShoppingCart,
+} from '@tamagui/lucide-icons'
 import { useBentoStore } from 'hooks/useBentoStore'
 import type Stripe from 'stripe'
 
@@ -34,6 +42,7 @@ import { BentoPageFrame } from '../../components/BentoPageFrame'
 import { ContainerLarge } from '../../components/Container'
 import { ThemeNameEffect } from '../../components/ThemeNameEffect'
 import { getDefaultLayout } from '../../lib/getDefaultLayout'
+import { useState } from 'react'
 
 export type ProComponentsProps = {
   proComponents?: Database['public']['Tables']['products']['Row'] & {
@@ -43,14 +52,29 @@ export type ProComponentsProps = {
 }
 
 export default function BentoPage(props: ProComponentsProps) {
+  const [heroVisible, setHeroVisible] = useState(true)
+
   return (
     <BentoPageFrame>
       <Theme name="tan">
         <ThemeNameEffect colorKey="$color6" />
+        <ContainerLarge zi={100000000} h={0}>
+          <Button
+            pos="absolute"
+            t="$-8"
+            r="$4"
+            size="$2"
+            scaleIcon={1.5}
+            circular
+            icon={heroVisible ? ChevronUp : ChevronDown}
+            onPress={() => setHeroVisible(!heroVisible)}
+            bg="$background025"
+          ></Button>
+        </ContainerLarge>
         <Hero />
         <Intermediate />
         <Theme name="gray">
-          <Body />
+          <Body heroVisible={heroVisible} />
         </Theme>
         <PurchaseModal coupon={props.coupon} mainProduct={props.proComponents} />
         <Spacer size="$10" />
@@ -360,17 +384,20 @@ const Hero = () => {
   )
 }
 
-const Body = () => {
+const Body = ({ heroVisible }: { heroVisible: boolean }) => {
   return (
     <YStack
       pos="relative"
+      className="all ease-out ms300"
       py="$8"
       mb="$-10"
       // bg="$background"
       style={{
-        backdropFilter: 'blur(4px)',
-        WebkitBackdropFilter: 'blur(4px)',
+        backdropFilter: `blur(${heroVisible ? 4 : 90}px)`,
+        WebkitBackdropFilter: `blur(${heroVisible ? 4 : 10}px)`,
       }}
+      y={heroVisible ? 0 : -800}
+      zi={10000}
     >
       <Separator
         bc="$color"
