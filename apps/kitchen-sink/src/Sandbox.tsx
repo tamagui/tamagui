@@ -1,20 +1,8 @@
 // debug-verbose
 // import './wdyr'
 
-import { useState } from 'react'
-import { View, TextInput } from 'react-native'
-import {
-  Button,
-  Input,
-  Square,
-  Stack,
-  XStack,
-  YStack,
-  useProps,
-  usePropsAndStyle,
-} from 'tamagui'
-import { TimedRender } from './components/TimedRender'
-import { SwitchDemo } from '@tamagui/demos'
+import { TextInput, View } from 'react-native'
+import { Input, Stack, XStack, YStack, usePropsAndStyle } from 'tamagui'
 
 const TestThing = (props) => {
   const [p2, style] = usePropsAndStyle(props)
@@ -25,9 +13,7 @@ const TestThing = (props) => {
 export const Sandbox = () => {
   return (
     <View style={{ width: '100%', height: '100%', padding: 50 }}>
-      <TextInput style={{ width: 200, height: 100 }} selectionColor="#fff" />
-      <Input width={200} />
-      <Input width={200} selectionColor="$green5" />
+      <Input selectionColor="$color2" />
     </View>
   )
 }
@@ -46,7 +32,7 @@ export const Sandbox = () => {
 // animationFillMode: 'both',
 // animationDelay: '800ms',
 
-import { styled, useTheme } from '@tamagui/core'
+import { styled } from '@tamagui/core'
 
 import { SwitchStyledContext, createSwitch } from '@tamagui/switch'
 

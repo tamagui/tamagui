@@ -4928,22 +4928,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/core@npm:^6.4.9":
-  version: 6.4.9
-  resolution: "@react-navigation/core@npm:6.4.9"
-  dependencies:
-    "@react-navigation/routers": "npm:^6.1.9"
-    escape-string-regexp: "npm:^4.0.0"
-    nanoid: "npm:^3.1.23"
-    query-string: "npm:^7.1.3"
-    react-is: "npm:^16.13.0"
-    use-latest-callback: "npm:^0.1.5"
-  peerDependencies:
-    react: "*"
-  checksum: 10/a6c1e4f1325901fa80aed0f7884278474e4f47cd9ce44edd7f254aaec75d9d6c6d9af395f0e6d5bf87769188622cb7667d98070c94ddf7d05936ab3fd7baa69e
-  languageName: node
-  linkType: hard
-
 "@react-navigation/elements@npm:^1.3.22":
   version: 1.3.22
   resolution: "@react-navigation/elements@npm:1.3.22"
@@ -4984,21 +4968,6 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 10/0d535494424456b62b0c824eae51f185ca896c55190da1f7607bf1bbfafb19302a4c599fe00f4f3d51441349cb12019eabcc23cf66ad7233a80fcac01df91b43
-  languageName: node
-  linkType: hard
-
-"@react-navigation/native@npm:^6.1.7":
-  version: 6.1.7
-  resolution: "@react-navigation/native@npm:6.1.7"
-  dependencies:
-    "@react-navigation/core": "npm:^6.4.9"
-    escape-string-regexp: "npm:^4.0.0"
-    fast-deep-equal: "npm:^3.1.3"
-    nanoid: "npm:^3.1.23"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: 10/13dea83865709de5450e40dd2f7eaf7a6c626a64617e1bf5f477d9e6f4c84fdcec20e0917fccc7a0e60a132ce7106121b1192245c2f56fec8603271255c287c8
   languageName: node
   linkType: hard
 
@@ -7999,7 +7968,7 @@ __metadata:
   dependencies:
     "@gqty/cli": "npm:latest"
     "@gqty/react": "npm:latest"
-    "@react-navigation/native": "npm:^6.1.7"
+    "@react-navigation/native": "npm:^6.1.10"
     "@tamagui/cli": "npm:1.89.26"
     "@tamagui/colors": "npm:1.89.26"
     "@tamagui/config": "npm:1.89.26"
@@ -27903,15 +27872,6 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 10/f9f1b217db60419b033228ba17cee5c521123e7c7f35577258a1abdce6d9623e5880f0bed3a0504eff35fdf6c761a2b2e020337a34218fb86229b8641772654a
-  languageName: node
-  linkType: hard
-
-"use-latest-callback@npm:^0.1.5":
-  version: 0.1.6
-  resolution: "use-latest-callback@npm:0.1.6"
-  peerDependencies:
-    react: ">=16.8"
-  checksum: 10/d94bea5cc5910d5967b12c766355c11812c1f57b5993d4b429dd6e580ac5904087ce732891d4fb3a855e0e56e6a7900b9af2084ede1d86df8e381afe47c2947a
   languageName: node
   linkType: hard
 

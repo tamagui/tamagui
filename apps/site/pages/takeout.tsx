@@ -261,7 +261,7 @@ export default function TakeoutPage({
                 }}
                 zIndex="$5"
               >
-                <DiscountText defaultCoupon={defaultCoupon} />
+                {!!defaultCoupon && <DiscountText defaultCoupon={defaultCoupon} />}
               </YStack>
             )}
 

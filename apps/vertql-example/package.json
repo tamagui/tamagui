@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@gqty/react": "latest",
-    "@react-navigation/native": "^6.1.7",
+    "@react-navigation/native": "^6.1.10",
     "@tamagui/colors": "1.89.26",
     "@tamagui/config": "1.89.26",
     "@tamagui/core": "1.89.26",
