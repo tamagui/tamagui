@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /* eslint-disable no-console */
 
+const { es5Plugin } = require('esbuild-plugin-es5')
 const { transform } = require('@babel/core')
 const exec = require('execa')
 const fs = require('fs-extra')
@@ -439,6 +440,19 @@ async function esbuildWriteIfChanged(
 
     plugins: [
       ...(opts.plugins || []),
+
+      ...(platform === 'native'
+        ? [
+            // class isnt supported by hermes
+            es5Plugin({
+              swc: {
+                jsc: {
+                  externalHelpers: false,
+                },
+              },
+            }),
+          ]
+        : []),
 
       // not workin
       // {
