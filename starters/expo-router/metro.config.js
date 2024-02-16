@@ -4,22 +4,21 @@ const { getDefaultConfig } = require('expo/metro-config')
 /** @type {import('expo/metro-config').MetroConfig} */
 let config = getDefaultConfig(__dirname, {
   // [Web-only]: Enables CSS support in Metro.
-  isCSSEnabled: true,
+  isCSSEnabled: false,
 })
+
+module.exports = config
 
 // 2. Enable Tamagui
-const { withTamagui } = require('@tamagui/metro-plugin')
-module.exports = withTamagui(config, {
-  components: ['tamagui'],
-  config: './tamagui.config.ts',
-  outputCSS: './tamagui-web.css',
-})
+// const { withTamagui } = require('@tamagui/metro-plugin')
+// module.exports = withTamagui(config, {
+//   components: ['tamagui'],
+//   config: './tamagui.config.ts',
+//   outputCSS: './tamagui-web.css',
+// })
 
-// REMOVE THIS (just for tamagui internal devs):
+// REMOVE THIS (just for tamagui internal devs to work in monorepo):
 if (process.env.IS_TAMAGUI_DEV && __dirname.includes('tamagui')) {
-  console.info(`Welcome tamagui dev, you need to yarn link ~/tamagui --all first!`)
-  // just have to run first:
-  // yarn link ~/tamagui --all
   const fs = require('fs')
   const path = require('path')
   const projectRoot = __dirname
@@ -30,6 +29,18 @@ if (process.env.IS_TAMAGUI_DEV && __dirname.includes('tamagui')) {
     path.resolve(monorepoRoot, 'node_modules'),
   ]
   // have to manually de-deupe
+  try {
+    fs.rmSync(path.join(projectRoot, 'node_modules', '@tamagui'), {
+      recursive: true,
+      force: true,
+    })
+  } catch {}
+  try {
+    fs.rmSync(path.join(projectRoot, 'node_modules', 'tamagui'), {
+      recursive: true,
+      force: true,
+    })
+  } catch {}
   try {
     fs.rmSync(path.join(projectRoot, 'node_modules', 'react'), {
       recursive: true,

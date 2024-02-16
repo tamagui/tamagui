@@ -1,4 +1,4 @@
-import { Text, View } from 'tamagui'
+import { Text, View } from '@tamagui/core'
 
 export default function TabOneScreen() {
   return (
