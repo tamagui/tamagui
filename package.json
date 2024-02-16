@@ -85,7 +85,7 @@
     "react-native-svg": "13.9.0",
     "expo-modules-core": "1.7.0",
     "@types/node": "16.11.9",
-    "react-native": "0.72.6",
+    "react-native": "0.73.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native-screens@~3.22.0": "patch:react-native-screens@npm%3A3.22.1#./.yarn/patches/react-native-screens-npm-3.22.1-b3da351834.patch"

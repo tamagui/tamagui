@@ -271,7 +271,6 @@ export const SheetImplementationCustom = themeable(
         { dy }: PanResponderGestureState
       ) => {
         // if dragging handle always allow:
-        // @ts-expect-error
         if (e.target === providerProps.handleRef.current) {
           return true
         }
