@@ -44,7 +44,7 @@ import { BentoPageFrame } from '../../components/BentoPageFrame'
 import { ContainerLarge } from '../../components/Container'
 import { ThemeNameEffect } from '../../components/ThemeNameEffect'
 import { getDefaultLayout } from '../../lib/getDefaultLayout'
-import { useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 
 export type ProComponentsProps = {
   proComponents?: Database['public']['Tables']['products']['Row'] & {
@@ -379,6 +379,24 @@ const Hero = () => {
 
 const Body = ({ heroVisible }: { heroVisible: boolean }) => {
   const inputRef = useRef<HTMLInputElement>()
+  const [filter, setFilter] = useState('')
+
+  const filteredSections = useMemo(() => {
+    if (!filter) return Sections.listingData.sections
+    return Sections.listingData.sections
+      .map(({ sectionName, parts }) => {
+        const filteredParts = parts.filter((part) => {
+          return part.name.toLowerCase().includes(filter.toLowerCase())
+        })
+        return filteredParts.length
+          ? {
+              sectionName,
+              parts: filteredParts,
+            }
+          : undefined
+      })
+      .filter(Boolean)
+  }, [filter])
 
   return (
     <YStack
@@ -418,12 +436,14 @@ const Body = ({ heroVisible }: { heroVisible: boolean }) => {
             w="100%"
             size="$8"
             fow="200"
+            value={filter}
+            onChangeText={setFilter}
             placeholder="Filter..."
             placeholderTextColor="$background025"
           />
         </ContainerLarge>
 
-        {Sections.listingData.sections.map(({ sectionName, parts }) => {
+        {filteredSections.map(({ sectionName, parts }) => {
           return (
             <YStack id={sectionName} key={sectionName} jc={'space-between'}>
               <Theme name="tan">
