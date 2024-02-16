@@ -100,6 +100,34 @@ export const BentoLogo = ({
       </H1>
     </ThemeTint>
 
+    <ThemeTintAlt offset={-1}>
+      <H1
+        // o={0}
+        pos="absolute"
+        t={0}
+        l={0}
+        zi={10}
+        ff="$cherryBomb"
+        px="$3"
+        mx="$-3"
+        whiteSpace="pre"
+        maw="100%"
+        f={1}
+        ls={-21}
+        lh={180}
+        fos={198}
+        ussel="none"
+        pe="none"
+        className="clip-text mask-gradient-right"
+        style={{
+          mixBlendMode: 'screen',
+          backgroundImage: 'linear-gradient(var(--color2), var(--color10))',
+        }}
+      >
+        {children}&nbsp;
+      </H1>
+    </ThemeTintAlt>
+
     <ThemeTintAlt>
       <H1
         className="glow-shadow"

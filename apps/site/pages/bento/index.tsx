@@ -76,21 +76,21 @@ const Intermediate = () => {
             fd: 'column',
           }}
         >
-          {/* <ThemeTintAlt offset={-1}> */}
-          <IntermediateCard Icon={Globe} title="Universal">
-            Components that adapt well to all screen sizes and platforms.
-          </IntermediateCard>
-          {/* </ThemeTintAlt> */}
-          {/* <ThemeTintAlt offset={0}> */}
-          <IntermediateCard Icon={Puzzle} title="Copy & Paste">
-            Designed for easy adoption into your app and easy customization.
-          </IntermediateCard>
-          {/* </ThemeTintAlt> */}
-          {/* <ThemeTintAlt offset={1}> */}
-          <IntermediateCard Icon={Leaf} title="Always Growing">
-            We continuously improve and add to the collection.
-          </IntermediateCard>
-          {/* </ThemeTintAlt> */}
+          <ThemeTintAlt offset={-1}>
+            <IntermediateCard Icon={Globe} title="Universal">
+              Components that adapt well to all screen sizes and platforms.
+            </IntermediateCard>
+          </ThemeTintAlt>
+          <ThemeTintAlt offset={0}>
+            <IntermediateCard Icon={Puzzle} title="Copy & Paste">
+              Designed for easy adoption into your app and easy customization.
+            </IntermediateCard>
+          </ThemeTintAlt>
+          <ThemeTintAlt offset={1}>
+            <IntermediateCard Icon={Leaf} title="Always Growing">
+              We continuously improve and add to the collection.
+            </IntermediateCard>
+          </ThemeTintAlt>
         </XStack>
       </ContainerLarge>
     </YStack>
@@ -107,19 +107,18 @@ const IntermediateCard = ({
       ov="hidden"
       f={1}
       gap="$5"
-      br="$9"
       shac="$shadowColor"
       shof={{ height: 1, width: 0 }}
       px="$5"
       py="$4"
+      bw={0.5}
+      bc="$color025"
     >
-      <YStack fullscreen br="$9" bc="$color025" bw={0.25} bs="solid" o={0.5} />
-      <YStack fullscreen bg="$background025" />
       <YStack f={1} gap="$2">
-        <H4 o={0.75} color="$color10" size="$4">
+        <H4 ff="$silkscreen" color="$color12" o={0.9} size="$5">
           {title}
         </H4>
-        <Paragraph color="$color12" lh="$3">
+        <Paragraph mb={-5} size="$3" color="$color11">
           {children}
         </Paragraph>
         <EnsureFlexed />
@@ -131,9 +130,9 @@ const IntermediateCard = ({
         outlineStyle="solid"
         size="$5"
         elevation="$0.5"
-        bg="$color5"
+        // bg="$color025"
       >
-        <Icon />
+        <Icon color="$color10" />
       </Circle>
     </XStack>
   )
@@ -257,19 +256,6 @@ const Hero = () => {
                   }}
                 >
                   $199
-                  <YStack
-                    zi={100}
-                    pos="absolute"
-                    t={-13}
-                    r={-13}
-                    bg="red"
-                    style={{
-                      background: `url(/leaf.webp)`,
-                      backgroundSize: 'contain',
-                    }}
-                    w={33}
-                    h={33}
-                  />
                 </Button>
               </Theme>
             </XStack>
@@ -294,11 +280,11 @@ const Hero = () => {
               <XStack
                 pe="none"
                 rotate="4deg"
-                t={20}
                 $sm={{
                   mb: -250,
                   l: '10%',
                 }}
+                scale={0.8}
               >
                 <YStack br="$4" shac="rgba(0,0,0,0.2)" shar="$8">
                   <ThemeTintAlt>
@@ -396,19 +382,28 @@ const Body = () => {
         style={{ mixBlendMode: 'multiply' }}
       />
 
-      <YStack gap="$11" px="$6">
+      <YStack px="$6">
         {Sections.listingData.sections.map(({ sectionName, parts }) => {
           return (
-            <YStack id={sectionName} key={sectionName} gap="$4" jc={'space-between'}>
-              <ContainerLarge>
-                <Theme name="tan">
-                  <YStack pos="relative">
-                    <H3 ff="$munro" size="$8" ls={4} tt="uppercase" color="$color9" f={2}>
+            <YStack id={sectionName} key={sectionName} jc={'space-between'}>
+              <Theme name="tan">
+                <ContainerLarge>
+                  <YStack py="$3" pos="relative">
+                    <H3
+                      ff="$munro"
+                      size="$8"
+                      ls={5}
+                      tt="uppercase"
+                      color="$color10"
+                      f={2}
+                    >
                       {`${sectionName[0].toUpperCase()}${sectionName.slice(1)}`}
                     </H3>
                   </YStack>
-                </Theme>
-              </ContainerLarge>
+                </ContainerLarge>
+
+                <Separator o={0.1} />
+              </Theme>
 
               <ScrollView
                 horizontal
@@ -476,21 +471,17 @@ function SectionCard({
       <YStack
         tag="a"
         ov="hidden"
-        animation="quickest"
-        style={{
-          transition: `box-shadow ease-out 100ms`,
-        }}
+        // className="all ease-in ms100"
         // elevation="$6"
-        bg="$background025"
+        // bg="$background025"
         w={250}
         h={140}
-        br="$9"
+        // br="$9"
         cursor="pointer"
         pos="relative"
         hoverStyle={{
-          y: -2,
-          bg: '$background05',
-          elevation: '$0.5',
+          // y: -2,
+          bg: '$background025',
           // outlineWidth: 3,
           // outlineStyle: 'solid',
           // outlineColor: '$color025',
@@ -499,17 +490,17 @@ function SectionCard({
           // shof: { width: -20, height: 20 },
         }}
         pressStyle={{
-          bg: '$color1',
-          y: 3,
+          bg: '$color05',
+          y: 1,
         }}
       >
-        <YStack
+        {/* <YStack
           pos="absolute"
           inset={-50}
           className="bg-grid mask-gradient-up"
           o={0.05}
           rotate="-45deg"
-        />
+        /> */}
         {/* <YStack
           fullscreen
           ai="center"
