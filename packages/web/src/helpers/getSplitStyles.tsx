@@ -1502,7 +1502,7 @@ const useInsertEffectCompat = isWeb
 export const useSplitStyles: StyleSplitter = (a, b, c, d, e, f, g, h, i, j) => {
   const res = getSplitStyles(a, b, c, d, e, f, g, h, i, j)
 
-  if (process.env.TAMAGUI_TARGET !== 'native') {
+  if (process.env.TAMAGUI_TARGET === 'web') {
     useInsertEffectCompat(() => {
       insertStyleRules(res.rulesToInsert)
     }, [res.rulesToInsert])

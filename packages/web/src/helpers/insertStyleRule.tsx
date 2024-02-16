@@ -49,23 +49,23 @@ function addTransform(identifier: string, css: string, rule?: CSSRule) {
 // multiple sheets could have the same ids so we have to count
 
 export function listenForSheetChanges() {
-  if (!isClient) return
-
-  const mo = new MutationObserver((entries) => {
-    for (const entry of entries) {
-      if (
-        (entry instanceof HTMLStyleElement && entry.sheet) ||
-        (entry instanceof HTMLLinkElement && entry.href.endsWith('.css'))
-      ) {
-        scanAllSheets()
-        break
+  if (process.env.TAMAGUI_TARGET === 'web') {
+    const mo = new MutationObserver((entries) => {
+      for (const entry of entries) {
+        if (
+          (entry instanceof HTMLStyleElement && entry.sheet) ||
+          (entry instanceof HTMLLinkElement && entry.href.endsWith('.css'))
+        ) {
+          scanAllSheets()
+          break
+        }
       }
-    }
-  })
+    })
 
-  mo.observe(document.head, {
-    childList: true,
-  })
+    mo.observe(document.head, {
+      childList: true,
+    })
+  }
 }
 
 let lastScannedSheets: Set<CSSStyleSheet> | null = null
@@ -74,35 +74,36 @@ export function scanAllSheets(
   collectThemes = false,
   tokens?: TokensParsed
 ): DedupedThemes | undefined {
-  if (process.env.NODE_ENV === 'test') return
-  if (!isClient) return
+  if (process.env.TAMAGUI_TARGET === 'web') {
+    if (process.env.NODE_ENV === 'test') return
 
-  let themes: DedupedThemes | undefined
+    let themes: DedupedThemes | undefined
 
-  const sheets = document.styleSheets || []
-  const prev = lastScannedSheets
-  const current = new Set(sheets as any as CSSStyleSheet[])
-  if (document.styleSheets) {
-    for (const sheet of current) {
-      if (sheet) {
-        const out = updateSheetStyles(sheet, false, collectThemes, tokens)
-        if (out) {
-          themes = out
+    const sheets = document.styleSheets || []
+    const prev = lastScannedSheets
+    const current = new Set(sheets as any as CSSStyleSheet[])
+    if (document.styleSheets) {
+      for (const sheet of current) {
+        if (sheet) {
+          const out = updateSheetStyles(sheet, false, collectThemes, tokens)
+          if (out) {
+            themes = out
+          }
+        }
+      }
+      lastScannedSheets = current
+    }
+
+    if (prev) {
+      for (const sheet of prev) {
+        if (sheet && !current.has(sheet)) {
+          updateSheetStyles(sheet, true)
         }
       }
     }
-    lastScannedSheets = current
-  }
 
-  if (prev) {
-    for (const sheet of prev) {
-      if (sheet && !current.has(sheet)) {
-        updateSheetStyles(sheet, true)
-      }
-    }
+    return themes
   }
-
-  return themes
 }
 
 function track(id: string, remove = false) {
@@ -334,32 +335,34 @@ export function updateRules(identifier: string, rules: string[]) {
 }
 
 export function insertStyleRules(rulesToInsert: RulesToInsert) {
-  if (!rulesToInsert.length || !sheet) {
-    return
-  }
-
-  for (const { identifier, rules } of rulesToInsert) {
-    if (!shouldInsertStyleRules(identifier)) {
-      continue
+  if (process.env.TAMAGUI_TARGET === 'web') {
+    if (!rulesToInsert.length || !sheet) {
+      return
     }
 
-    allSelectors[identifier] = rules.join('\n')
-    track(identifier)
-    updateRules(identifier, rules)
+    for (const { identifier, rules } of rulesToInsert) {
+      if (!shouldInsertStyleRules(identifier)) {
+        continue
+      }
 
-    for (const rule of rules) {
-      if (process.env.NODE_ENV === 'production') {
-        sheet.insertRule(rule, sheet.cssRules.length)
-      } else {
-        try {
+      allSelectors[identifier] = rules.join('\n')
+      track(identifier)
+      updateRules(identifier, rules)
+
+      for (const rule of rules) {
+        if (process.env.NODE_ENV === 'production') {
           sheet.insertRule(rule, sheet.cssRules.length)
-        } catch (err) {
-          console.groupCollapsed(
-            `Error inserting rule into CSSStyleSheet: ${String(err)}`
-          )
-          console.info({ rule, rulesToInsert })
-          console.trace()
-          console.groupEnd()
+        } else {
+          try {
+            sheet.insertRule(rule, sheet.cssRules.length)
+          } catch (err) {
+            console.groupCollapsed(
+              `Error inserting rule into CSSStyleSheet: ${String(err)}`
+            )
+            console.info({ rule, rulesToInsert })
+            console.trace()
+            console.groupEnd()
+          }
         }
       }
     }
