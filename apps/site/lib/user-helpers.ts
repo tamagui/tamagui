@@ -2,6 +2,7 @@ import type { Database } from '@lib/supabase-types'
 import { getArray, getSingle } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 import type { SupabaseClient } from '@supabase/supabase-js'
+import { whitelistGithubUsernames } from 'protected/_utils/github'
 import { tiersPriority } from 'protected/constants'
 
 export const getUserDetails = async (supabase: SupabaseClient<Database>) => {
@@ -127,14 +128,47 @@ function checkAccessToProduct(
   }
 }
 
-export async function getProductAccessInfo(supabase: SupabaseClient<Database>) {
+async function checkTeamAccess(supabase: SupabaseClient<Database>) {
+  const teamsResult = await supabase.from('teams').select('id, name, is_active')
+  if (teamsResult.error) {
+    throw teamsResult.error
+  }
+  const teams = getArray(teamsResult.data)
+  const teamsWithAccess = teams.filter(
+    (team) =>
+      team.is_active || whitelistGithubUsernames.some((name) => team.name === name)
+  )
+  const hasTeamAccess = teamsWithAccess.length > 0
+  return {
+    access: hasTeamAccess,
+    teamsWithAccess,
+    teams,
+  }
+}
+
+export async function getUserAccessInfo(supabase: SupabaseClient<Database>) {
   const [subscriptions, ownedProducts] = await Promise.all([
     getSubscriptions(supabase),
     getOwnedProducts(supabase),
   ])
 
+  const bentoAccessInfo = checkAccessToProduct('bento', subscriptions, ownedProducts)
+  const takeoutAccessInfo = checkAccessToProduct(
+    'universal-starter',
+    subscriptions,
+    ownedProducts
+  )
+
+  const { access: teamAccess, teamsWithAccess } = await checkTeamAccess(supabase)
+
+  const hasStudioAccess =
+    takeoutAccessInfo.access || // if the user has purchased takeout, we give them studio access
+    teamAccess // if the user is a member of at least one team (this could be a personal team too - so basically a personal sponsorship) with active sponsorship, we give them studio access
+
   return {
-    bento: checkAccessToProduct('bento', subscriptions, ownedProducts),
-    takeout: checkAccessToProduct('universal-starter', subscriptions, ownedProducts),
+    hasBentoAccess: bentoAccessInfo.access,
+    hasTakeoutAccess: takeoutAccessInfo.access,
+    hasStudioAccess,
+    teamsWithAccess,
   }
 }
