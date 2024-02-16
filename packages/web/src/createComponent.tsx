@@ -875,7 +875,8 @@ export function createComponent<
         onMouseDown ||
         onMouseUp ||
         onLongPress ||
-        onClick
+        onClick ||
+        pseudos?.focusVisibleStyle
     )
     const runtimeHoverStyle = !disabled && noClassNames && pseudos?.hoverStyle
     const needsHoverState = runtimeHoverStyle || onHoverIn || onHoverOut
@@ -895,11 +896,14 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`events-setup`
 
+    const isKeyboardEvent = useRef(true)
+
     const events: TamaguiComponentEvents | null =
       shouldAttach && !isDisabled && !props.asChild
         ? {
             onPressOut: attachPress
               ? (e) => {
+                  isKeyboardEvent.current = true
                   unPress()
                   onPressOut?.(e)
                   onMouseUp?.(e)
@@ -939,6 +943,7 @@ export function createComponent<
             }),
             onPressIn: attachPress
               ? (e) => {
+                  isKeyboardEvent.current = false
                   if (runtimePressStyle) {
                     setStateShallow({
                       press: true,
@@ -973,14 +978,26 @@ export function createComponent<
               }),
             ...(attachFocus && {
               onFocus: (e) => {
-                setStateShallow({
-                  focus: true,
-                })
+                if (pseudos?.focusVisibleStyle) {
+                  setTimeout(() => {
+                    setStateShallow({
+                      focus: true,
+                      focusVisible: !!isKeyboardEvent.current,
+                    })
+                  }, 0)
+                } else {
+                  setStateShallow({
+                    focus: true,
+                    focusVisible: false,
+                  })
+                }
                 onFocus?.(e)
               },
               onBlur: (e) => {
+                isKeyboardEvent.current = true
                 setStateShallow({
                   focus: false,
+                  focusVisible: false,
                 })
                 onBlur?.(e)
               },
