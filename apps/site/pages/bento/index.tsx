@@ -8,6 +8,7 @@ import {
   Globe,
   Leaf,
   Puzzle,
+  Search,
   ShoppingCart,
 } from '@tamagui/lucide-icons'
 import { useBentoStore } from 'hooks/useBentoStore'
@@ -21,6 +22,7 @@ import {
   H3,
   H4,
   H5,
+  Input,
   Paragraph,
   ScrollView,
   Separator,
@@ -42,7 +44,7 @@ import { BentoPageFrame } from '../../components/BentoPageFrame'
 import { ContainerLarge } from '../../components/Container'
 import { ThemeNameEffect } from '../../components/ThemeNameEffect'
 import { getDefaultLayout } from '../../lib/getDefaultLayout'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 export type ProComponentsProps = {
   proComponents?: Database['public']['Tables']['products']['Row'] & {
@@ -62,12 +64,13 @@ export default function BentoPage(props: ProComponentsProps) {
           <Button
             pos="absolute"
             t="$-8"
-            r="$4"
+            r="$8"
             size="$2"
-            scaleIcon={1.5}
             circular
-            icon={heroVisible ? ChevronUp : ChevronDown}
-            onPress={() => setHeroVisible(!heroVisible)}
+            icon={heroVisible ? Search : ChevronDown}
+            onPress={() => {
+              setHeroVisible(!heroVisible)
+            }}
             bg="$background025"
           ></Button>
         </ContainerLarge>
@@ -127,17 +130,7 @@ const IntermediateCard = ({
   Icon,
 }: { title?: any; children?: any; Icon?: any }) => {
   return (
-    <XStack
-      ov="hidden"
-      f={1}
-      gap="$5"
-      shac="$shadowColor"
-      shof={{ height: 1, width: 0 }}
-      px="$5"
-      py="$4"
-      bw={0.5}
-      bc="$color025"
-    >
+    <XStack ov="hidden" f={1} gap="$5" px="$5" py="$4" bw={0.5} bc="$color05">
       <YStack f={1} gap="$2">
         <H4 ff="$silkscreen" color="$color12" o={0.9} size="$5">
           {title}
@@ -385,10 +378,18 @@ const Hero = () => {
 }
 
 const Body = ({ heroVisible }: { heroVisible: boolean }) => {
+  const inputRef = useRef<HTMLInputElement>()
+
   return (
     <YStack
       pos="relative"
       className="all ease-out ms300"
+      // @ts-ignore
+      onTransitionEnd={() => {
+        if (!heroVisible) {
+          inputRef.current?.focus()
+        }
+      }}
       py="$8"
       mb="$-10"
       // bg="$background"
@@ -410,6 +411,18 @@ const Body = ({ heroVisible }: { heroVisible: boolean }) => {
       />
 
       <YStack px="$6">
+        <ContainerLarge mt="$-4" mb="$2">
+          <Input
+            unstyled
+            ref={inputRef as any}
+            w="100%"
+            size="$8"
+            fow="200"
+            placeholder="Filter..."
+            placeholderTextColor="$background025"
+          />
+        </ContainerLarge>
+
         {Sections.listingData.sections.map(({ sectionName, parts }) => {
           return (
             <YStack id={sectionName} key={sectionName} jc={'space-between'}>
