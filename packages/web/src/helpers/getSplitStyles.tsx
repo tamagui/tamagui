@@ -1405,7 +1405,7 @@ function mergeClassName(
   isMediaOrPseudo = false,
   isInsertingNow = false
 ) {
-  if (process.env.TAMAGUI_TARGET === 'web' && isClient) {
+  if (process.env.TAMAGUI_TARGET === 'web') {
     // empty classnames passed by compiler sometimes
     if (!val) return
     if (!isInsertingNow && val[0] === '_' && val.startsWith('_transform-')) {
@@ -1502,7 +1502,7 @@ const useInsertEffectCompat = isWeb
 export const useSplitStyles: StyleSplitter = (a, b, c, d, e, f, g, h, i, j) => {
   const res = getSplitStyles(a, b, c, d, e, f, g, h, i, j)
 
-  if (process.env.TAMAGUI_TARGET === 'web') {
+  if (process.env.TAMAGUI_TARGET !== 'native') {
     useInsertEffectCompat(() => {
       insertStyleRules(res.rulesToInsert)
     }, [res.rulesToInsert])
