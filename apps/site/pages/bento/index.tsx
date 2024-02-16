@@ -390,9 +390,9 @@ const Body = () => {
                 <ContainerLarge>
                   <YStack py="$3" pos="relative">
                     <H3
-                      ff="$munro"
-                      size="$8"
-                      ls={5}
+                      ff="$silkscreen"
+                      size="$3"
+                      ls={3}
                       tt="uppercase"
                       color="$color10"
                       f={2}
@@ -475,7 +475,7 @@ function SectionCard({
         // elevation="$6"
         // bg="$background025"
         w={250}
-        h={140}
+        h={125}
         // br="$9"
         cursor="pointer"
         pos="relative"
@@ -517,8 +517,10 @@ function SectionCard({
             <Preview />
           </Theme>
         </YStack> */}
-        <YStack p="$5">
-          <H4 fontSize="$7">{name}</H4>
+        <YStack p="$3">
+          <H4 fontSize="$7" fow="100">
+            {name}
+          </H4>
           <H5 o={0.2} fontSize="$3">
             {numberOfComponents} components
           </H5>

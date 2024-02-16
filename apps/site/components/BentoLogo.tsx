@@ -31,7 +31,8 @@ export const BentoLogo = ({
       maw="100%"
       f={1}
       ls={-21}
-      lh={180}
+      lh={280}
+      my={-45}
       fos={198}
       ussel="none"
       pe="none"
@@ -55,7 +56,8 @@ export const BentoLogo = ({
         maw="100%"
         f={1}
         ls={-21}
-        lh={180}
+        lh={280}
+        my={-45}
         fos={198}
         ussel="none"
         pe="none"
@@ -84,7 +86,8 @@ export const BentoLogo = ({
         maw="100%"
         f={1}
         ls={-21}
-        lh={180}
+        lh={280}
+        my={-45}
         fos={198}
         ussel="none"
         pe="none"
@@ -100,7 +103,7 @@ export const BentoLogo = ({
       </H1>
     </ThemeTint>
 
-    <ThemeTintAlt offset={-1}>
+    <ThemeTintAlt offset={-2}>
       <H1
         // o={0}
         pos="absolute"
@@ -114,15 +117,12 @@ export const BentoLogo = ({
         maw="100%"
         f={1}
         ls={-21}
-        lh={180}
+        lh={280}
+        my={-45}
         fos={198}
         ussel="none"
         pe="none"
-        className="clip-text mask-gradient-right"
-        style={{
-          mixBlendMode: 'screen',
-          backgroundImage: 'linear-gradient(var(--color2), var(--color10))',
-        }}
+        className="clip-text mask-gradient-right bento-text-3"
       >
         {children}&nbsp;
       </H1>
@@ -143,7 +143,8 @@ export const BentoLogo = ({
         maw="100%"
         f={1}
         ls={-21}
-        lh={180}
+        lh={280}
+        my={-45}
         fos={198}
         ussel="none"
         pe="none"

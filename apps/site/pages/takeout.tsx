@@ -2050,6 +2050,7 @@ const TAKEOUT = ({ fontSize = 450, lineHeight = fontSize * 0.64, ...props }) => 
     fontFamily="$cherryBomb"
     fontSize={fontSize}
     lineHeight={lineHeight}
+    letterSpacing={-18}
     whiteSpace="nowrap"
     minWidth={970}
     ta="center"

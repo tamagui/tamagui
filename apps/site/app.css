@@ -912,3 +912,17 @@ textarea {
 .t_dark .glow-shadow {
   text-shadow: 0 20px 20px var(--color05), 0 30px 30px var(--color025);
 }
+
+.bento-text-3 {
+  background-image: linear-gradient(var(--color7), var(--color9));
+  mix-blend-mode: color-dodge;
+  text-shadow: 0 20px 20px var(--color05), 0 30px 30px var(--color025);
+}
+
+.t_dark .bento-text-3 {
+  background-image: linear-gradient(var(--color2), var(--color9));
+  mix-blend-mode: color-dodge;
+  opacity: 0.5;
+  filter: blur(4px);
+  /* mask-image: linear-gradient(rgba(0, 0, 0, 1), #000, rgba(0, 0, 0, 1)); */
+}
