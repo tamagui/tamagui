@@ -6,7 +6,10 @@ import { LoadCherryBomb, LoadMunro } from './LoadFont'
 import { ContainerLarge } from './Container'
 import { ThemeNameEffect } from './ThemeNameEffect'
 
-export const BentoPageFrame = ({ children }: { children: any }) => {
+export const BentoPageFrame = ({
+  children,
+  simpler,
+}: { children: any; simpler?: boolean }) => {
   return (
     <>
       <Head>
@@ -97,9 +100,11 @@ export const BentoPageFrame = ({ children }: { children: any }) => {
           </YStack>
         </Theme>
 
-        <ContainerLarge>
-          <BentoFrond />
-        </ContainerLarge>
+        {!simpler && (
+          <ContainerLarge>
+            <BentoFrond />
+          </ContainerLarge>
+        )}
 
         {children}
       </YStack>

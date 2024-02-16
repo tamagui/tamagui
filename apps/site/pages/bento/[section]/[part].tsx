@@ -18,28 +18,20 @@ export default function page() {
 
   return (
     <>
-      <BentoPageFrame>
-        <ContainerBento>
-          <DetailHeader>
-            {`${params.section[0].toUpperCase()}${params.section.slice(1)}`}
-          </DetailHeader>
+      <YStack pos="relative">
+        <YStack pe="none" fullscreen className="bg-grid" />
+        <BentoPageFrame simpler>
+          <ContainerBento>
+            <DetailHeader>
+              {`${params.section[0].toUpperCase()}${params.section.slice(1)}`}
+            </DetailHeader>
+          </ContainerBento>
+        </BentoPageFrame>
+
+        <ContainerBento mt={-100}>
+          <Comp />
         </ContainerBento>
-      </BentoPageFrame>
-
-      <YStack
-        className="grain"
-        pe="none"
-        fullscreen
-        o={0.2}
-        zi={0}
-        $theme-light={{
-          o: 1,
-        }}
-      />
-
-      <ContainerBento mt={-100}>
-        <Comp />
-      </ContainerBento>
+      </YStack>
     </>
   )
 }
