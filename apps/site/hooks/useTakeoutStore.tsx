@@ -9,6 +9,7 @@ class TakeoutStore {
   promoInputIsOpen = false
   appliedCoupon: Stripe.Coupon | null = null
   appliedPromoCode: string | null = null
+  selectedProductsIds: string[] = []
 }
 
 export const useTakeoutStore = createUseStore(TakeoutStore)

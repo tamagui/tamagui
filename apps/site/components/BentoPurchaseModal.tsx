@@ -35,59 +35,54 @@ import {
   SizableText,
   Unspaced,
 } from 'tamagui'
+import type { ProComponentsProps } from '../pages/bento/index'
 import { BentoLogo } from './BentoLogo'
 
 const checkCircle = <CheckCircle color="$green9" />
 const xCircle = <XCircle size={28} color="$red9" />
 
 export const PurchaseModal = ({
-  mainProduct,
-  coupon,
-}: {
-  mainProduct?: Database['public']['Tables']['products']['Row'] & {
-    prices: Database['public']['Tables']['prices']['Row'][]
-  }
-  coupon?: Stripe.Coupon | null
-}) => {
-  const products = [mainProduct]
+  proComponents,
+  defaultCoupon,
+}: Omit<ProComponentsProps, 'takeoutPlusBentoCoupon'>) => {
+  const products = [proComponents]
   const store = useBentoStore()
   const [selectedProductsIds, setSelectedProductsIds] = useState<string[]>(
     products.filter(Boolean).map((p) => p!.id)
   )
-  const sortedPrices = (mainProduct?.prices ?? []).sort(
+  const sortedPrices = (proComponents?.prices ?? []).sort(
     (a, b) => a.unit_amount! - b.unit_amount!
   )
 
   const [selectedPriceId, setPriceId] = useState(sortedPrices[0]?.id)
 
   const sum = useMemo(() => {
-    if (!mainProduct) {
+    if (!proComponents) {
       return 0
     }
     let final = 0
-    if (selectedProductsIds.includes(mainProduct.id)) {
+    if (selectedProductsIds.includes(proComponents.id)) {
       final += selectedPriceId
-        ? mainProduct.prices.find((p) => p.id === selectedPriceId)?.unit_amount ?? 0
+        ? proComponents.prices.find((p) => p.id === selectedPriceId)?.unit_amount ?? 0
         : 0
     }
     return final
-  }, [selectedProductsIds, selectedPriceId, mainProduct])
+  }, [selectedProductsIds, selectedPriceId, proComponents])
 
+  const finalCoupon = store.appliedCoupon ?? defaultCoupon
   // with discount applied
   const finalPrice = useMemo(() => {
-    const appliedCoupon = store.appliedCoupon ?? coupon
-    if (appliedCoupon) {
-      if (appliedCoupon.amount_off) return sum - appliedCoupon.amount_off
-      if (appliedCoupon.percent_off)
-        return (sum * (100 - appliedCoupon.percent_off)) / 100
+    if (finalCoupon) {
+      if (finalCoupon.amount_off) return sum - finalCoupon.amount_off
+      if (finalCoupon.percent_off) return (sum * (100 - finalCoupon.percent_off)) / 100
     }
 
     return sum
-  }, [sum, store.appliedCoupon, coupon])
+  }, [sum, finalCoupon])
   const hasDiscountApplied = finalPrice !== sum
 
   const noProductSelected = selectedProductsIds.length === 0
-  const showTeamSelect = selectedProductsIds.includes(mainProduct?.id || '')
+  const showTeamSelect = selectedProductsIds.includes(proComponents?.id || '')
 
   return (
     <Theme name="gray">
@@ -165,7 +160,10 @@ export const PurchaseModal = ({
                   $sm={{ fd: 'column-reverse' }}
                 >
                   <YStack maxWidth={450}>
-                    <BentoTable selectedPriceId={selectedPriceId} product={mainProduct} />
+                    <BentoTable
+                      selectedPriceId={selectedPriceId}
+                      product={proComponents}
+                    />
                   </YStack>
 
                   <YStack f={2} gap="$4">
@@ -235,7 +233,12 @@ export const PurchaseModal = ({
                         )}
                       </XStack>
                       <Unspaced>
-                        <YStack mt="$2">
+                        <YStack mt="$2" gap="$1">
+                          {finalCoupon ? (
+                            <SizableText textAlign="right" size="$3">
+                              Coupon "{finalCoupon.name}" is applied.
+                            </SizableText>
+                          ) : null}
                           <PromotionInput />
                         </YStack>
                       </Unspaced>
@@ -253,13 +256,13 @@ export const PurchaseModal = ({
                             for (const productId of selectedProductsIds) {
                               params.append('product_id', productId)
                             }
-                            params.append(`price-${mainProduct?.id}`, selectedPriceId)
+                            params.append(`price-${proComponents?.id}`, selectedPriceId)
                             if (store.appliedPromoCode) {
                               // the coupon user applied
                               params.append(`promotion_code`, store.appliedPromoCode)
-                            } else if (coupon) {
+                            } else if (defaultCoupon) {
                               // the coupon that's applied by default (special event, etc.)
-                              params.append(`coupon_id`, coupon.id)
+                              params.append(`coupon_id`, defaultCoupon.id)
                             }
 
                             return params.toString()

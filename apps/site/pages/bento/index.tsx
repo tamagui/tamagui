@@ -4,7 +4,6 @@ import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import {
   Check,
   ChevronDown,
-  ChevronUp,
   Globe,
   Leaf,
   Puzzle,
@@ -39,22 +38,29 @@ import type { Database } from '@lib/supabase-types'
 import { getArray } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 import type { GetStaticProps } from 'next'
+import { useMemo, useRef, useState } from 'react'
 import { BentoLogo } from '../../components/BentoLogo'
 import { BentoPageFrame } from '../../components/BentoPageFrame'
 import { ContainerLarge } from '../../components/Container'
 import { ThemeNameEffect } from '../../components/ThemeNameEffect'
 import { getDefaultLayout } from '../../lib/getDefaultLayout'
-import { useMemo, useRef, useState } from 'react'
+import { useUser } from 'hooks/useUser'
 
 export type ProComponentsProps = {
   proComponents?: Database['public']['Tables']['products']['Row'] & {
     prices: Database['public']['Tables']['prices']['Row'][]
   }
-  coupon?: Stripe.Coupon | null
+  defaultCoupon?: Stripe.Coupon | null
+  takeoutPlusBentoCoupon?: Stripe.Coupon | null
 }
 
 export default function BentoPage(props: ProComponentsProps) {
   const [heroVisible, setHeroVisible] = useState(true)
+
+  const user = useUser()
+  const coupon = user.data?.accessInfo.hasTakeoutAccess
+    ? props.takeoutPlusBentoCoupon
+    : props.defaultCoupon
 
   return (
     <BentoPageFrame>
@@ -79,7 +85,7 @@ export default function BentoPage(props: ProComponentsProps) {
         <Theme name="gray">
           <Body heroVisible={heroVisible} />
         </Theme>
-        <PurchaseModal coupon={props.coupon} mainProduct={props.proComponents} />
+        <PurchaseModal defaultCoupon={coupon} proComponents={props.proComponents} />
         <Spacer size="$10" />
       </Theme>
     </BentoPageFrame>
@@ -619,8 +625,13 @@ export const getStaticProps: GetStaticProps<ProComponentsProps | any> = async ()
 }
 
 const getTakeoutProducts = async (): Promise<ProComponentsProps> => {
-  const promoListPromise = stripe.promotionCodes.list({
+  const defaultPromoListPromise = stripe.promotionCodes.list({
     code: 'SITE-PRO-COMPONENTS', // ones with code SITE-PRO-COMPONENTS are considered public and will be shown here
+    active: true,
+    expand: ['data.coupon'],
+  })
+  const takeoutPlusBentoPromotionCodePromise = stripe.promotionCodes.list({
+    code: 'TAKEOUTPLUSBENTO', // ones with code TAKEOUTPLUSBENTO are considered public and will be shown here
     active: true,
     expand: ['data.coupon'],
   })
@@ -631,16 +642,29 @@ const getTakeoutProducts = async (): Promise<ProComponentsProps> => {
       .eq('metadata->>slug', 'bento')
       .single(),
   ]
-  const promises = [promoListPromise, ...productPromises]
+  const promises = [
+    defaultPromoListPromise,
+    takeoutPlusBentoPromotionCodePromise,
+    ...productPromises,
+  ]
   const queries = await Promise.all(promises)
 
-  const products = queries.slice(1) as Awaited<(typeof productPromises)[number]>[]
-  const couponsList = queries[0] as Awaited<typeof promoListPromise>
+  // slice(2) because the first two are coupon info
+  const products = queries.slice(2) as Awaited<(typeof productPromises)[number]>[]
+  const defaultCouponList = queries[0] as Awaited<typeof defaultPromoListPromise>
+  const takeoutPlusBentoCouponList = queries[1] as Awaited<
+    typeof takeoutPlusBentoPromotionCodePromise
+  >
+  let defaultCoupon: Stripe.Coupon | null = null
 
-  let coupon: Stripe.Coupon | null = null
+  if (defaultCouponList.data.length > 0) {
+    defaultCoupon = defaultCouponList.data[0].coupon
+  }
 
-  if (couponsList.data.length > 0) {
-    coupon = couponsList.data[0].coupon
+  let takeoutPlusBentoCoupon: Stripe.Coupon | null = null
+
+  if (takeoutPlusBentoCouponList.data.length > 0) {
+    takeoutPlusBentoCoupon = takeoutPlusBentoCouponList.data[0].coupon
   }
 
   if (!products.length) {
@@ -665,6 +689,7 @@ const getTakeoutProducts = async (): Promise<ProComponentsProps> => {
         (p) => p.active && !(p.metadata as Record<string, any>).hide_from_lists
       ),
     },
-    coupon,
+    defaultCoupon,
+    takeoutPlusBentoCoupon,
   }
 }
