@@ -1405,7 +1405,7 @@ function mergeClassName(
   isMediaOrPseudo = false,
   isInsertingNow = false
 ) {
-  if (process.env.TAMAGUI_TARGET === 'web') {
+  if (process.env.TAMAGUI_TARGET === 'web' && isClient) {
     // empty classnames passed by compiler sometimes
     if (!val) return
     if (!isInsertingNow && val[0] === '_' && val.startsWith('_transform-')) {

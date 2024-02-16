@@ -1,9 +1,49 @@
+import { createFont, createTokens } from '@tamagui/core'
 import { shorthands } from '@tamagui/shorthands'
 // import { animations } from './animations'
 // import { animations as animationsNative } from './animations.native'
 
 // basic fallback theme just to have compiler load in decent tate
 export function getDefaultTamaguiConfig(platform: 'native' | 'web' = 'web') {
+  const headingFont = createFont({
+    family: 'Heading',
+    size: {
+      1: 15,
+    },
+    lineHeight: {
+      1: 15,
+    },
+    transform: {},
+    weight: {
+      1: '400',
+    },
+    color: {
+      1: '$color',
+    },
+    letterSpacing: {
+      1: 0,
+    },
+  })
+  const font = createFont({
+    family: 'System',
+    size: {
+      1: 15,
+    },
+    lineHeight: {
+      1: 15,
+    },
+    transform: {},
+    weight: {
+      1: '400',
+    },
+    color: {
+      1: '$color',
+    },
+    letterSpacing: {
+      1: 0,
+    },
+  })
+
   const size = {
     0: 0,
     0.25: 2,
@@ -81,7 +121,7 @@ export function getDefaultTamaguiConfig(platform: 'native' | 'web' = 'web') {
     12: 50,
   }
 
-  const tokens = {
+  const tokens = createTokens({
     color: {
       white: '#fff',
       black: '#000',
@@ -90,7 +130,7 @@ export function getDefaultTamaguiConfig(platform: 'native' | 'web' = 'web') {
     zIndex,
     space,
     size,
-  }
+  })
 
   const themes = {
     light: {
@@ -152,6 +192,11 @@ export function getDefaultTamaguiConfig(platform: 'native' | 'web' = 'web') {
     },
   }
 
+  const fonts = {
+    heading: headingFont,
+    body: font,
+  }
+
   const media = {
     xs: { maxWidth: 660 },
     sm: { maxWidth: 800 },
@@ -174,6 +219,7 @@ export function getDefaultTamaguiConfig(platform: 'native' | 'web' = 'web') {
     themeClassNameOnRoot: true,
     // animations: platform === 'web' ? animations : animationsNative,
     shorthands,
+    fonts,
     themes,
     tokens,
     media,

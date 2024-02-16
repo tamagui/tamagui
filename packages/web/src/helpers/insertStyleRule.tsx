@@ -49,7 +49,7 @@ function addTransform(identifier: string, css: string, rule?: CSSRule) {
 // multiple sheets could have the same ids so we have to count
 
 export function listenForSheetChanges() {
-  if (process.env.TAMAGUI_TARGET === 'web') {
+  if (process.env.TAMAGUI_TARGET === 'web' && isClient) {
     const mo = new MutationObserver((entries) => {
       for (const entry of entries) {
         if (
@@ -74,7 +74,7 @@ export function scanAllSheets(
   collectThemes = false,
   tokens?: TokensParsed
 ): DedupedThemes | undefined {
-  if (process.env.TAMAGUI_TARGET === 'web') {
+  if (process.env.TAMAGUI_TARGET === 'web' && isClient) {
     if (process.env.NODE_ENV === 'test') return
 
     let themes: DedupedThemes | undefined
@@ -319,9 +319,10 @@ const getIdentifierFromTamaguiSelector = (selector: string) => {
   return res
 }
 
-const sheet = isClient
-  ? document.head.appendChild(document.createElement('style')).sheet
-  : null
+const sheet =
+  process.env.TAMAGUI_TARGET === 'web' && isClient
+    ? document.head.appendChild(document.createElement('style')).sheet
+    : null
 
 export function updateRules(identifier: string, rules: string[]) {
   if (identifier in allRules) {

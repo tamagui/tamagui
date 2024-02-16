@@ -16,9 +16,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.tamagui.tamaguikitchensink"
@@ -38,9 +36,6 @@
         "projectId": "5c027280-f9c1-4bba-9c75-762ba6efcecc"
       }
     },
-    "plugins": [
-      "expo-build-properties",
-      "expo-font"
-    ]
+    "plugins": ["expo-font"]
   }
 }

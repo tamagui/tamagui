@@ -1,6 +1,6 @@
 import { Link, Tabs } from 'expo-router'
 import { Pressable } from 'react-native'
-import { Text } from '@tamagui/core'
+import { Text } from 'tamagui'
 
 export default function TabLayout() {
   return (
