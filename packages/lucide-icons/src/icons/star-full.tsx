@@ -10,7 +10,7 @@ const Icon = (props) => {
       width={size}
       height={size}
       viewBox="0 0 24 24"
-      fill="currentColor"
+      fill={color}
       stroke={color}
       strokeWidth="2"
       strokeLinecap="round"
