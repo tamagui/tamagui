@@ -74,7 +74,7 @@ export default function BentoPage(props: ProComponentsProps) {
             bg="$background025"
           ></Button>
         </ContainerLarge>
-        <Hero />
+        <Hero mainProduct={props.proComponents} />
         <Intermediate />
         <Theme name="gray">
           <Body heroVisible={heroVisible} />
@@ -155,7 +155,7 @@ const IntermediateCard = ({
   )
 }
 
-const Hero = () => {
+const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'] }) => {
   const store = useBentoStore()
 
   return (
@@ -272,7 +272,17 @@ const Hero = () => {
                     store.showPurchase = true
                   }}
                 >
-                  $199
+                  <Button.Text
+                    fontFamily="$mono"
+                    size="$5"
+                    fontSize={22}
+                    fontWeight="600"
+                  >
+                    $
+                    {(mainProduct?.prices.sort(
+                      (a, b) => (a.unit_amount || Infinity) - (b.unit_amount || Infinity)
+                    )[0].unit_amount || 0) / 100}
+                  </Button.Text>
                 </Button>
               </Theme>
             </XStack>
