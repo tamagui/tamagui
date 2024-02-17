@@ -5,19 +5,6 @@
   "main": "dist/cjs",
   "module": "dist/esm",
   "sideEffects": false,
-  "files": [
-    "v3.js",
-    "v3.d.ts",
-    "v2.js",
-    "v2.d.ts",
-    "v2-reanimated.js",
-    "v2-reanimated.d.ts",
-    "v2-native.js",
-    "v2-native.d.ts",
-    "src",
-    "types",
-    "dist"
-  ],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
