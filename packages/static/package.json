@@ -47,6 +47,7 @@
     "@tamagui/types": "1.89.29",
     "babel-literal-to-ast": "^2.1.0",
     "browserslist": "^4.22.2",
+    "check-dependency-version-consistency": "^4.1.0",
     "esbuild": "^0.19.11",
     "esbuild-register": "^3.4.2",
     "find-cache-dir": "^3.3.2",
