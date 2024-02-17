@@ -448,7 +448,6 @@ async function esbuildWriteIfChanged(
               swc: {
                 jsc: {
                   preserveAllComments: true,
-                  loose: true,
                   externalHelpers: false,
                   transform: {
                     react: {
