@@ -2,7 +2,7 @@ import uFuzzy from '@leeoniya/ufuzzy'
 import { docsRoutes } from '@lib/docsRoutes'
 import { useStore } from '@tamagui/use-store'
 import * as React from 'react'
-import { Input, Paragraph, Separator, Spacer, XStack, YStack } from 'tamagui'
+import { Input, Paragraph, Separator, Spacer, Theme, XStack, YStack } from 'tamagui'
 
 import { useRouter } from 'next/router'
 import { DocsItemsStore, DocsRouteNavItem } from './DocsRouteNavItem'
@@ -143,9 +143,19 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
                         <NavHeading inMenu={!!inMenu}>{section.label}</NavHeading>
                       ) : null}
                       {section.title && (
-                        <XStack py="$2" px="$4" ai="center" gap="$3">
-                          <Paragraph size="$4">{section.title}</Paragraph>
+                        <XStack
+                          fd={inMenu ? 'row-reverse' : 'row'}
+                          py="$2"
+                          px="$4"
+                          ai="center"
+                          gap="$3"
+                        >
                           <Separator o={0.5} />
+                          <Theme name="gray">
+                            <Paragraph size="$4" fow="600" color="$color10">
+                              {section.title}
+                            </Paragraph>
+                          </Theme>
                         </XStack>
                       )}
                       {contents}

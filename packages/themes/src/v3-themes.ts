@@ -242,7 +242,7 @@ export const getTemplates = (scheme: 'dark' | 'light') => {
 
   // light themes will start with a slightly stronger bg, and then lighten on hover
   // whereas dark themes start with a less strong bg, but lighten on hover as well
-  const bgBaseOffset = isLight ? 2 : 1
+  const bgBaseOffset = 1
 
   const lighten = isLight ? -1 : 1
   const darken = -lighten
