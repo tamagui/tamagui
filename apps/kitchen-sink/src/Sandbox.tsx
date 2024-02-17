@@ -1,7 +1,7 @@
 // debug-verbose
 // import './wdyr'
 
-import { TextInput, View } from 'react-native'
+import { View } from 'react-native'
 import { Input, Stack, XStack, YStack, usePropsAndStyle } from 'tamagui'
 
 const TestThing = (props) => {
