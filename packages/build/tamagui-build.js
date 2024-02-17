@@ -447,7 +447,15 @@ async function esbuildWriteIfChanged(
             es5Plugin({
               swc: {
                 jsc: {
+                  preserveAllComments: true,
+                  loose: true,
                   externalHelpers: false,
+                  transform: {
+                    react: {
+                      runtime: 'automatic',
+                      development: false,
+                    },
+                  },
                 },
               },
             }),
