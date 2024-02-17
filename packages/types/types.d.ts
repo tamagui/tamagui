@@ -173,6 +173,7 @@ export type CLIResolvedOptions = {
     exports?: Record<string, Record<string, string>>
   }
   paths: {
+    root: string
     dotDir: string
     conf: string
     types: string
