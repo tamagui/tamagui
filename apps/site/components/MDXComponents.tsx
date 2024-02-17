@@ -626,14 +626,14 @@ export const components = {
               <H4 size="$4" color="$color9">
                 Quick start
               </H4>
-              <Paragraph size="$6" color="$color11">
+              <Paragraph size="$4" color="$color11">
                 Choose from a few starters:
               </Paragraph>
             </Card.Header>
 
             <Card.Footer p="$6" pt={0}>
               <XStack gap="$4" f={1}>
-                <Code f={1} bg="$color4" p="$3" br="$4" size="$6">
+                <Code f={1} bg="$color4" p="$3" br="$4" size="$5">
                   npm create tamagui@latest
                 </Code>
                 <Button
