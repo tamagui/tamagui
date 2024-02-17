@@ -26,7 +26,7 @@ const HeadAnchor = styled(Paragraph, {
   px: '$3',
   py: '$3',
   cursor: 'pointer',
-  size: '$3',
+  size: '$2',
   color: '$color11',
   tabIndex: -1,
 
@@ -43,7 +43,6 @@ const HeadAnchor = styled(Paragraph, {
     grid: {
       true: {
         fow: '200',
-        size: '$4',
         ls: 1,
         textTransform: 'unset',
         w: '100%',
