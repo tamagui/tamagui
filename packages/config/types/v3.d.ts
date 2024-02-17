@@ -1,7 +1,4 @@
 export { animations } from './animations';
-export { animationsReanimated } from './animationsReanimated';
-export { animationsReactNative } from './animationsReactNative';
-export { animationsCSS } from './animationsCSS';
 export { tokens, themes } from '@tamagui/themes/v3-themes';
 export { shorthands } from '@tamagui/shorthands/v2';
 export { fonts } from './fonts';
@@ -12,38 +9,18 @@ export declare const selectionStyles: (theme: any) => {
 } | null;
 export declare const config: {
     animations: import("@tamagui/web").AnimationDriver<{
-        '100ms': {
-            type: "timing";
-            duration: number;
-        };
-        bouncy: {
-            damping: number;
-            mass: number;
-            stiffness: number;
-        };
-        lazy: {
-            damping: number;
-            stiffness: number;
-        };
-        medium: {
-            damping: number;
-            stiffness: number;
-            mass: number;
-        };
-        slow: {
-            damping: number;
-            stiffness: number;
-        };
-        quick: {
-            damping: number;
-            mass: number;
-            stiffness: number;
-        };
-        tooltip: {
-            damping: number;
-            mass: number;
-            stiffness: number;
-        };
+        '75ms': string;
+        '100ms': string;
+        '200ms': string;
+        bouncy: string;
+        superBouncy: string;
+        lazy: string;
+        medium: string;
+        slow: string;
+        quick: string;
+        quicker: string;
+        quickest: string;
+        tooltip: string;
     }>;
     defaultFont: string;
     shouldAddPrefersColorThemes: true;
