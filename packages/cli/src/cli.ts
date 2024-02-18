@@ -4,7 +4,7 @@ import chalk from 'chalk'
 
 import { generatedPackageTypes } from './add.js'
 import { disposeAll, getOptions } from './utils'
-import { loadTamagui } from '@tamagui/static'
+import { loadTamagui, checkDeps } from '@tamagui/static'
 
 // exit handlers
 ;['exit', 'SIGINT'].forEach((_) => {
@@ -15,6 +15,51 @@ import { loadTamagui } from '@tamagui/static'
 })
 
 const COMMAND_MAP = {
+  check: {
+    description: `Checks your dependencies for inconsistent versions.`,
+    shorthands: [],
+    flags: {
+      '--help': Boolean,
+      '--debug': Boolean,
+      '--verbose': Boolean,
+    },
+    async run() {
+      const { _, ...flags } = arg(this.flags)
+      const options = await getOptions({
+        debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
+        loadTamaguiOptions: true,
+      })
+
+      const instance = await checkDeps(options.paths.root, {
+        depType: ['dependencies', 'devDependencies'],
+      })
+
+      const isNonTamaguiNamedDep = {
+        'react-native-web-lite': true,
+        'react-native-web-internals': true,
+      }
+
+      for (const dep of instance.getDependencies()) {
+        if (!dep.name.includes('tamagui') && !isNonTamaguiNamedDep[dep.name]) continue
+        if (!dep.isMismatching) continue
+        console.warn(
+          `-------------------------------------------------------------------------------------------------
+
+⚠️  [tamagui] Mis-matching dependency version found in: ${dep.name}
+
+      This will cause errors in your app. To fix, make sure all tamagui dependencies
+      in your repo are on on the same version.
+          
+      Other versions used in the repo: ${dep.versions
+        .map((version) => version.version)
+        .join(', ')}
+
+-------------------------------------------------------------------------------------------------`
+        )
+      }
+    },
+  },
+
   generate: {
     description: `Builds your entire tamagui configuration and outputs any CSS.`,
     shorthands: [],
@@ -109,6 +154,7 @@ const COMMAND_MAP = {
   //     await build(options)
   //   },
   // },
+
   // update: {
   //   shorthands: [],
   //   description: `Update all tamagui packages within a monorepo`,

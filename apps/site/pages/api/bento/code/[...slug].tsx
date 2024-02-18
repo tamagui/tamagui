@@ -1,14 +1,9 @@
+import { HandledResponseTermination, apiRoute } from '@lib/apiRoute'
 import { authorizeUserAccess } from '@lib/authorizeUserAccess'
 import { protectApiRoute } from '@lib/protectApiRoute'
-import fs from 'fs'
-import path from 'path'
+import { supabaseAdmin } from '@lib/supabaseAdmin'
 
-const CODE_ASSETS_DIR =
-  process.env.NODE_ENV === 'development' && process.env.IS_TAMAGUI_DEV === '1'
-    ? './.next/bento'
-    : './bento'
-
-const handler = async (req, res) => {
+const handler = apiRoute(async (req, res) => {
   if (process.env.NODE_ENV === 'production') {
     const { supabase } = await protectApiRoute({ req, res })
     await authorizeUserAccess(
@@ -22,14 +17,25 @@ const handler = async (req, res) => {
       }
     )
   }
-  const codePath = req.query.slug?.join('/')
-  const filePath = path.join(process.cwd(), CODE_ASSETS_DIR, codePath)
-  if (!filePath.startsWith(path.resolve(CODE_ASSETS_DIR))) {
-    res.status(404).json({ error: 'Not found' })
+  const slugsArray = Array.isArray(req.query.slug)
+    ? req.query.slug
+    : typeof req.query.slug === 'string'
+      ? [req.query.slug]
+      : []
+
+  const codePath = slugsArray.join('/')
+
+  const fileResult = await supabaseAdmin.storage
+    .from('bento')
+    .download(`components/${codePath}.tsx`)
+  if (fileResult.error) {
+    console.error(fileResult.error)
+    res.status(404).json({ message: 'Not found' })
+    throw new HandledResponseTermination(`File ${codePath} not found`)
   }
-  const fileBuffer = fs.readFileSync(filePath + '.txt')
+
   res.setHeader('Content-Type', 'text/plain')
-  return res.send(fileBuffer)
-}
+  return res.send(await fileResult.data.text())
+})
 
 export default handler

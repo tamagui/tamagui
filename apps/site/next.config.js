@@ -67,6 +67,7 @@ module.exports = (name, { defaultConfig }) => {
   let config = {
     // output: 'export',
     // runtime: 'experimental-edge',
+    outputFileTracing: true,
     productionBrowserSourceMaps: process.env.ANALYZE === 'true',
     swcMinify: true,
     // must set to false if using reanimated

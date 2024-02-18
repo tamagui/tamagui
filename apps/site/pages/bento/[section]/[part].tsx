@@ -1,48 +1,40 @@
 import * as sections from '@tamagui/bento'
 
-import { Anchor, H1, Spacer, Theme, XStack, YStack } from 'tamagui'
+import { Anchor, H1, Theme, XStack, YStack } from 'tamagui'
 import { BentoPageFrame } from '../../../components/BentoPageFrame'
 
 import type { GetStaticPaths } from 'next'
 import { useRouter } from 'next/router'
 
 import { BentoLogo } from '../../../components/BentoLogo'
-import { ContainerLarge } from '../../../components/Container'
+import { ContainerBento } from '../../../components/Container'
 import { getDefaultLayout } from '../../../lib/getDefaultLayout'
+import Link from 'next/link'
+import { Footer } from '../../../components/Footer'
 
 export default function page() {
-  if (!process.env.NEXT_PUBLIC_IS_TAMAGUI_DEV) {
-    return null
-  }
-
   const router = useRouter()
   const params = router.query as { section: string; part: string }
   const Comp = sections[params.section][params.part]
 
   return (
     <>
-      <BentoPageFrame>
-        <ContainerLarge>
+      <BentoPageFrame simpler>
+        <ContainerBento>
           <DetailHeader>
             {`${params.section[0].toUpperCase()}${params.section.slice(1)}`}
           </DetailHeader>
-        </ContainerLarge>
+        </ContainerBento>
       </BentoPageFrame>
 
-      <YStack
-        className="grain"
-        pe="none"
-        fullscreen
-        o={0.2}
-        zi={0}
-        $theme-light={{
-          o: 1,
-        }}
-      />
+      <YStack>
+        <YStack pe="none" fullscreen className="bg-grid" />
+        <ContainerBento>
+          <Comp />
+        </ContainerBento>
+      </YStack>
 
-      <ContainerLarge mt={-100}>
-        <Comp />
-      </ContainerLarge>
+      <Footer />
     </>
   )
 }
@@ -67,23 +59,48 @@ export const getStaticProps = (ctx) => {
 }
 
 export const DetailHeader = (props: { children: string }) => {
+  const { asPath } = useRouter()
+  const [category, subCategory] = asPath.split('bento/')[1].split('/')
+
   return (
-    <YStack pt="$12" pb="$6" gap="$4">
+    <YStack pb="$6" gap="$4">
       <YStack gap="$4">
         <XStack ai="center" jc="space-between">
-          <Theme reset>
+          <Theme name="gray">
             <H1 size="$12">{props.children}</H1>
           </Theme>
 
-          <YStack scale={0.5} m={-150}>
+          <YStack scale={0.25} m={-150}>
             <BentoLogo />
           </YStack>
         </XStack>
 
         <XStack p={0.5} ai="center" gap="$2">
-          <Anchor>Section</Anchor>
-          <Anchor size="$2">{'>'}</Anchor>
-          <Anchor>Inputs</Anchor>
+          <Link href="/bento/">
+            <Anchor tag="span" textTransform="capitalize">
+              Bento
+            </Anchor>
+          </Link>
+
+          <Anchor tag="span" selectable={false} size="$2">
+            {'>'}
+          </Anchor>
+
+          <Link href={`/bento#${category}`}>
+            <Anchor tag="span" textTransform="capitalize">
+              {category}
+            </Anchor>
+          </Link>
+
+          <Anchor tag="span" selectable={false} size="$2">
+            {'>'}
+          </Anchor>
+
+          <Link href={`/bento/${subCategory}`}>
+            <Anchor tag="span" textTransform="capitalize">
+              {subCategory.replace('_', ' ')}
+            </Anchor>
+          </Link>
         </XStack>
       </YStack>
     </YStack>

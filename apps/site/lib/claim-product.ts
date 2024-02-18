@@ -67,8 +67,6 @@ type ClaimFunction = (
 }>
 
 const claimRepositoryAccess: ClaimFunction = async ({ user, metadata }) => {
-  const permission = 'pull'
-
   console.info(`Claim: checking private users`)
 
   const userPrivateRes = await supabaseAdmin
@@ -100,6 +98,13 @@ const claimRepositoryAccess: ClaimFunction = async ({ user, metadata }) => {
 
   console.info(`Claim: inviting collaborator`)
 
+  const permission = 'pull'
+
+  if (!githubUser.login) {
+    throw new ClaimError(
+      "We weren't able to find your GitHub username. Please logout of your account, login and try again. If this kept occurring, contact support@tamagui.dev or get help on Discord."
+    )
+  }
   try {
     await inviteCollaboratorToRepo(repoName, githubUser.login, permission)
 
@@ -116,6 +121,10 @@ const claimRepositoryAccess: ClaimFunction = async ({ user, metadata }) => {
       message: 'Check your email for an invitation to the repository.',
     }
   } catch (error) {
+    console.error(
+      `Failed to invite ${githubUser.login} with ${permission} permission, error: ${error.message}`,
+      error
+    )
     throw new ClaimError(
       'Invitation failed. It could be that you are already invited. Check your email or GitHub notifications for the invite. Otherwise, contact support@tamagui.dev or get help on Discord.'
     )

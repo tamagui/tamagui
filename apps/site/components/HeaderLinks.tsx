@@ -7,6 +7,7 @@ import {
   Separator,
   SizableText,
   Text,
+  Theme,
   TooltipSimple,
   XStack,
   YStack,
@@ -17,6 +18,7 @@ import {
 import { GithubIcon } from './GithubIcon'
 import type { HeaderProps } from './HeaderProps'
 import { NextLink } from './NextLink'
+import { Figma } from '@tamagui/lucide-icons'
 
 const HeadAnchor = styled(Paragraph, {
   tag: 'a',
@@ -24,7 +26,7 @@ const HeadAnchor = styled(Paragraph, {
   px: '$3',
   py: '$3',
   cursor: 'pointer',
-  size: '$3',
+  size: '$2',
   color: '$color11',
   tabIndex: -1,
 
@@ -41,7 +43,6 @@ const HeadAnchor = styled(Paragraph, {
     grid: {
       true: {
         fow: '200',
-        size: '$4',
         ls: 1,
         textTransform: 'unset',
         w: '100%',
@@ -83,6 +84,12 @@ export const HeaderLinks = (props: HeaderProps) => {
       </NextLink>
 
       {forceShowAllLinks && (
+        <NextLink passHref prefetch={false} href="/community">
+          <HeadAnchor grid={forceShowAllLinks}>Community</HeadAnchor>
+        </NextLink>
+      )}
+
+      {forceShowAllLinks && (
         <NextLink legacyBehavior={false} prefetch={false} href="/takeout">
           <HeadAnchor
             grid={forceShowAllLinks}
@@ -113,12 +120,6 @@ export const HeaderLinks = (props: HeaderProps) => {
         </HeadAnchor>
       </NextLink>
 
-      {forceShowAllLinks && (
-        <NextLink passHref prefetch={false} href="/community">
-          <HeadAnchor grid={forceShowAllLinks}>Community</HeadAnchor>
-        </NextLink>
-      )}
-
       {showExtra && (
         <NextLink passHref prefetch={false} href="/studio">
           <HeadAnchor grid={forceShowAllLinks}>Studio</HeadAnchor>
@@ -126,8 +127,14 @@ export const HeaderLinks = (props: HeaderProps) => {
       )}
 
       {forceShowAllLinks && (
+        <NextLink target="_blank" href="https://github.com/sponsors/natew">
+          <HeadAnchor grid={forceShowAllLinks}>Sponsor</HeadAnchor>
+        </NextLink>
+      )}
+
+      {forceShowAllLinks && (
         <>
-          <Separator my="$2" />
+          <Separator bc="$color025" o={0.25} my="$2" />
 
           <XStack fw="wrap" f={1} gap="$2" w="100%">
             {forceShowAllLinks && (
@@ -141,7 +148,24 @@ export const HeaderLinks = (props: HeaderProps) => {
                 <HeadAnchor half grid={forceShowAllLinks} tag="span">
                   Github{' '}
                   <YStack dsp={'inline-block' as any} y={10} my={-20} o={0.8}>
-                    <GithubIcon width={16} />
+                    <GithubIcon width={14} />
+                  </YStack>
+                </HeadAnchor>
+              </NextLink>
+            )}
+
+            {forceShowAllLinks && (
+              <NextLink
+                prefetch={false}
+                legacyBehavior={true}
+                passHref
+                target="_blank"
+                href="https://www.figma.com/community/file/1326593766534421119/tamagui-v1-2-1"
+              >
+                <HeadAnchor half grid={forceShowAllLinks} tag="span">
+                  Figma{' '}
+                  <YStack dsp={'inline-block' as any} y={2} my={-20} o={0.8}>
+                    <Figma size={14} />
                   </YStack>
                 </HeadAnchor>
               </NextLink>
@@ -150,16 +174,6 @@ export const HeaderLinks = (props: HeaderProps) => {
             <NextLink passHref prefetch={false} href="/blog">
               <HeadAnchor half grid={forceShowAllLinks}>
                 Blog
-              </HeadAnchor>
-            </NextLink>
-
-            <NextLink
-              legacyBehavior={false}
-              target="_blank"
-              href="https://github.com/sponsors/natew"
-            >
-              <HeadAnchor half grid={forceShowAllLinks} tag="span">
-                Sponsor
               </HeadAnchor>
             </NextLink>
 
@@ -185,9 +199,43 @@ export const HeaderLinks = (props: HeaderProps) => {
   )
 }
 
+const BentoIcon = React.forwardRef((props, ref) => (
+  <YStack {...props} ref={ref as any} p="$4" m="$-4">
+    <svg width={20} height={20} viewBox="0 0 503 503" aria-label="Bento icon">
+      <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+        <g transform="translate(21.000000, 23.000000)" fill="var(--color)">
+          <path
+            d="M104.11965,-1.60669371e-15 L116.88035,2.41004057e-15 C142.399901,-2.27782481e-15 159.61685,4.22356531 174.44648,12.154538 C189.276109,20.0855107 200.914489,31.7238909 208.845462,46.5535205 C216.776435,61.3831501 221,78.6000993 221,104.11965 L221,116.88035 C221,142.399901 216.776435,159.61685 208.845462,174.44648 C200.914489,189.276109 189.276109,200.914489 174.44648,208.845462 C159.61685,216.776435 142.399901,221 116.88035,221 L104.11965,221 C78.6000993,221 61.3831501,216.776435 46.5535205,208.845462 C31.7238909,200.914489 20.0855107,189.276109 12.154538,174.44648 C4.22356531,159.61685 7.59274935e-16,142.399901 -8.03346857e-16,116.88035 L1.60669371e-15,104.11965 C-1.51854987e-15,78.6000993 4.22356531,61.3831501 12.154538,46.5535205 C20.0855107,31.7238909 31.7238909,20.0855107 46.5535205,12.154538 C61.3831501,4.22356531 78.6000993,1.51854987e-15 104.11965,-1.60669371e-15 Z"
+            id="Rectangle"
+          ></path>
+          <path
+            d="M344.11965,-1.60669371e-15 L356.88035,2.41004057e-15 C382.399901,-2.27782481e-15 399.61685,4.22356531 414.44648,12.154538 C429.276109,20.0855107 440.914489,31.7238909 448.845462,46.5535205 C456.776435,61.3831501 461,78.6000993 461,104.11965 L461,116.88035 C461,142.399901 456.776435,159.61685 448.845462,174.44648 C440.914489,189.276109 429.276109,200.914489 414.44648,208.845462 C399.61685,216.776435 382.399901,221 356.88035,221 L344.11965,221 C318.600099,221 301.38315,216.776435 286.55352,208.845462 C271.723891,200.914489 260.085511,189.276109 252.154538,174.44648 C244.223565,159.61685 240,142.399901 240,116.88035 L240,104.11965 C240,78.6000993 244.223565,61.3831501 252.154538,46.5535205 C260.085511,31.7238909 271.723891,20.0855107 286.55352,12.154538 C301.38315,4.22356531 318.600099,1.51854987e-15 344.11965,-1.60669371e-15 Z"
+            id="Rectangle-Copy"
+          ></path>
+        </g>
+        <g transform="translate(21.000000, 261.000000)" fill="var(--color)">
+          <path
+            d="M104.11965,-1.60669371e-15 L116.88035,2.41004057e-15 C142.399901,-2.27782481e-15 159.61685,4.22356531 174.44648,12.154538 C189.276109,20.0855107 200.914489,31.7238909 208.845462,46.5535205 C216.776435,61.3831501 221,78.6000993 221,104.11965 L221,116.88035 C221,142.399901 216.776435,159.61685 208.845462,174.44648 C200.914489,189.276109 189.276109,200.914489 174.44648,208.845462 C159.61685,216.776435 142.399901,221 116.88035,221 L104.11965,221 C78.6000993,221 61.3831501,216.776435 46.5535205,208.845462 C31.7238909,200.914489 20.0855107,189.276109 12.154538,174.44648 C4.22356531,159.61685 7.59274935e-16,142.399901 -8.03346857e-16,116.88035 L1.60669371e-15,104.11965 C-1.51854987e-15,78.6000993 4.22356531,61.3831501 12.154538,46.5535205 C20.0855107,31.7238909 31.7238909,20.0855107 46.5535205,12.154538 C61.3831501,4.22356531 78.6000993,1.51854987e-15 104.11965,-1.60669371e-15 Z"
+            id="Rectangle"
+          ></path>
+          <path
+            d="M344.11965,-1.60669371e-15 L356.88035,2.41004057e-15 C382.399901,-2.27782481e-15 399.61685,4.22356531 414.44648,12.154538 C429.276109,20.0855107 440.914489,31.7238909 448.845462,46.5535205 C456.776435,61.3831501 461,78.6000993 461,104.11965 L461,116.88035 C461,142.399901 456.776435,159.61685 448.845462,174.44648 C440.914489,189.276109 429.276109,200.914489 414.44648,208.845462 C399.61685,216.776435 382.399901,221 356.88035,221 L344.11965,221 C318.600099,221 301.38315,216.776435 286.55352,208.845462 C271.723891,200.914489 260.085511,189.276109 252.154538,174.44648 C244.223565,159.61685 240,142.399901 240,116.88035 L240,104.11965 C240,78.6000993 244.223565,61.3831501 252.154538,46.5535205 C260.085511,31.7238909 271.723891,20.0855107 286.55352,12.154538 C301.38315,4.22356531 318.600099,1.51854987e-15 344.11965,-1.60669371e-15 Z"
+            id="Rectangle-Copy"
+          ></path>
+        </g>
+      </g>
+    </svg>
+  </YStack>
+))
+
 const TakeoutIcon = React.forwardRef((props, ref) => (
-  <YStack {...props} ref={ref as any}>
-    <svg width="24px" height="24px" viewBox="0 0 128 128">
+  <YStack {...props} ref={ref as any} p="$4" m="$-4">
+    <svg
+      width="24px"
+      height="24px"
+      viewBox="0 0 128 128"
+      aria-label="Chinese takeout box icon"
+    >
       <defs>
         <linearGradient
           x1="67.1763271%"
@@ -375,7 +423,9 @@ const TakeoutHeaderLink = ({ forceShowAllLinks }: HeaderProps) => {
               display: 'none',
             }}
           >
-            <TooltipSimple label="Starter kit">
+            <TooltipSimple
+              label={<TooltipLabelLarge title="Takeout" subtitle="Starter kit" />}
+            >
               <TakeoutIcon />
             </TooltipSimple>
           </HeadAnchor>
@@ -426,19 +476,35 @@ const TakeoutHeaderLink = ({ forceShowAllLinks }: HeaderProps) => {
   )
 }
 
+const TooltipLabelLarge = ({ title, subtitle }: { title: string; subtitle: string }) => {
+  return (
+    <Theme name="gray">
+      <YStack ai="center">
+        <Paragraph fow="600">{title}</Paragraph>
+        <Paragraph size="$2" o={0.8} mt="$-1">
+          {subtitle}
+        </Paragraph>
+      </YStack>
+    </Theme>
+  )
+}
+
 const BentoHeaderLink = ({ forceShowAllLinks }: HeaderProps) => {
   return (
     <NextLink legacyBehavior={false} prefetch={false} href="/bento">
       <HeadAnchor
         grid={forceShowAllLinks}
         tag="span"
+        aria-label="Bento: Components + Screens"
         fontSize={24}
         $sm={{
           display: 'none',
         }}
       >
-        <TooltipSimple label="Pro Components & Screens">
-          <Text>🍱</Text>
+        <TooltipSimple
+          label={<TooltipLabelLarge title="Bento" subtitle="Components + Screens" />}
+        >
+          <BentoIcon />
         </TooltipSimple>
       </HeadAnchor>
     </NextLink>

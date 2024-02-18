@@ -6,6 +6,12 @@ export declare const SliderFrame: import("@tamagui/core").TamaguiComponent<impor
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     size?: any;
     fullscreen?: boolean | undefined;
+    inset?: number | import("@tamagui/core").SizeTokens | {
+        top?: number | undefined;
+        bottom?: number | undefined;
+        left?: number | undefined;
+        right?: number | undefined;
+    } | undefined;
     orientation?: "horizontal" | "vertical" | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 export declare const SliderImpl: React.ForwardRefExoticComponent<SliderImplProps & React.RefAttributes<View>>;

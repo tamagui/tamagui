@@ -4,7 +4,7 @@ import { join } from 'path'
 import { expect, test } from '@playwright/test'
 import { readFile } from 'fs-extra'
 import waitPort from 'wait-port'
-import type { ProcessPromise} from 'zx';
+import type { ProcessPromise } from 'zx'
 import { $, cd, fetch, fs, sleep } from 'zx'
 
 let server: ProcessPromise | null = null
@@ -20,13 +20,14 @@ const isLocalDev = platform() === 'darwin'
 const dir = isLocalDev ? `/tmp/test` : join(tmpdir(), `cta-test-${Date.now()}`)
 
 const oneMinute = 1000 * 60
+const fifteenMinute = oneMinute * 15
 
 let didFailInBeforeAll = false
 
 test.beforeAll(async () => {
   try {
     // 15 m
-    test.setTimeout(oneMinute * 15)
+    test.setTimeout(fifteenMinute)
 
     const tamaguiBin = join(PACKAGE_ROOT, `dist`, `index.js`)
 
@@ -91,7 +92,9 @@ test.afterAll(async () => {
 // TODO run these tests in prod and dev
 
 test(`Loads home screen that opens drawer`, async ({ page }) => {
-  await page.goto('http://localhost:3000/')
+  await page.goto('http://localhost:3000/', {
+    timeout: 15_000,
+  })
   await expect(page.locator('text=Welcome to Tamagui.')).toBeVisible()
 
   // open drawer (TODO make attr for better selector)
@@ -103,7 +106,10 @@ test(`Loads home screen that opens drawer`, async ({ page }) => {
 })
 
 test(`Navigates to user page`, async ({ page }) => {
-  await page.goto('http://localhost:3000/')
+  test.setTimeout(fifteenMinute)
+  await page.goto('http://localhost:3000/', {
+    timeout: 15_000,
+  })
   await expect(page.locator('a[role="link"]:has-text("Link to user")')).toBeVisible()
   await page.locator('a[role="link"]:has-text("Link to user")').click()
   await expect(page.locator('text=User ID: nate')).toBeVisible()

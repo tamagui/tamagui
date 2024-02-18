@@ -42,12 +42,14 @@ export const installGeneratedPackage = async (type: string, packagesPath?: strin
   try {
     process.chdir(tamaguiDir)
     try {
+      console.info('Attempting to clone with SSH')
       execSync(
-        `git clone -n --depth=1 --branch generated --filter=tree:0 https://github.com/tamagui/${repoName}`
+        `git clone -n --depth=1  --branch generated --filter=tree:0 git@github.com:tamagui/${repoName}.git`
       )
     } catch (error) {
+      console.info('SSH failed - Attempting to c  lone with HTTPS')
       execSync(
-        `git clone -n --depth=1 --branch generated --filter=tree:0 ssh://github.com/tamagui/${repoName}`
+        `git clone -n --depth=1 --branch generated --filter=tree:0 https://github.com/tamagui/${repoName}`
       )
     }
 
@@ -88,8 +90,8 @@ export const installGeneratedPackage = async (type: string, packagesPath?: strin
       type === 'icon'
         ? `Pick an icon pack:`
         : type === 'font'
-        ? `Pick a font:`
-        : `Pick one:`,
+          ? `Pick a font:`
+          : `Pick one:`,
     choices: Object.entries<any>(meta).map(([slug, data]) => ({
       title:
         type === 'font'

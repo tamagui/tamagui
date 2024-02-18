@@ -7,7 +7,7 @@ import { whitelistGithubUsernames } from '../protected/_utils/github'
 import { HandledResponseTermination } from './apiRoute'
 import type { Database } from './supabase-types'
 import { getArray } from './supabase-utils'
-import { getProductAccessInfo } from './user-helpers'
+import { getUserAccessInfo } from './user-helpers'
 
 const JWT_NAME = 'tamagui_authorization'
 const JWT_SECRET = process.env.STUDIO_JWT_SECRET!
@@ -60,20 +60,8 @@ export async function authorizeUserAccess(
   if (teamsResult.error) {
     throw teamsResult.error
   }
-  const productsAccess = await getProductAccessInfo(supabase)
-  const teams = getArray(teamsResult.data)
-  const teamsWithAccess = teams.filter(
-    (team) =>
-      team.is_active || whitelistGithubUsernames.some((name) => team.name === name)
-  )
-  const hasTeamAccess = teamsWithAccess.length > 0
-
-  const hasTakeoutAccess = productsAccess.takeout.access
-  const hasBentoAccess = productsAccess.bento.access
-
-  const hasStudioAccess =
-    hasTakeoutAccess || // if the user has purchased takeout, we give them studio access
-    hasTeamAccess // if the user is a member of at least one team (this could be a personal team too - so basically a personal sponsorship) with active sponsorship, we give them studio access
+  const { hasBentoAccess, hasStudioAccess, hasTakeoutAccess, teamsWithAccess } =
+    await getUserAccessInfo(supabase)
 
   const payload: PayloadShape = {
     hasStudioAccess,

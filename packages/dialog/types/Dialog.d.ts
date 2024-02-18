@@ -52,6 +52,12 @@ type DialogPortalProps = Omit<PortalItemProps, 'asChild'> & YStackProps & {
 };
 export declare const DialogPortalFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    inset?: number | import("@tamagui/core").SizeTokens | {
+        top?: number | undefined;
+        bottom?: number | undefined;
+        left?: number | undefined;
+        right?: number | undefined;
+    } | undefined;
     fullscreen?: boolean | undefined;
     unstyled?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
@@ -62,6 +68,12 @@ declare const DialogPortal: React.FC<DialogPortalProps>;
 export declare const DialogOverlayFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
+    inset?: number | import("@tamagui/core").SizeTokens | {
+        top?: number | undefined;
+        bottom?: number | undefined;
+        left?: number | undefined;
+        right?: number | undefined;
+    } | undefined;
     open?: boolean | undefined;
     transparent?: boolean | undefined;
     circular?: boolean | undefined;
@@ -74,6 +86,9 @@ export declare const DialogOverlayFrame: import("@tamagui/core").TamaguiComponen
     bordered?: number | boolean | undefined;
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
+    /**
+     * Used to disable the remove scroll functionality when open
+     */
     chromeless?: boolean | "all" | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 interface DialogOverlayProps extends YStackProps {
@@ -89,6 +104,12 @@ declare const DialogContentFrame: import("@tamagui/core").TamaguiComponent<impor
     size?: import("@tamagui/core").SizeTokens | undefined;
     transparent?: boolean | undefined;
     circular?: boolean | undefined;
+    inset?: number | import("@tamagui/core").SizeTokens | {
+        top?: number | undefined;
+        bottom?: number | undefined;
+        left?: number | undefined;
+        right?: number | undefined;
+    } | undefined;
     fullscreen?: boolean | undefined;
     unstyled?: boolean | undefined;
     backgrounded?: boolean | undefined;
@@ -198,17 +219,38 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
     }, import("@tamagui/core").StaticConfigPublic>;
     Close: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, "displayWhenAdapted"> & DialogCloseExtraProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & DialogCloseExtraProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
     Sheet: React.FunctionComponent<Omit<import("@tamagui/sheet").SheetProps, "open" | "onOpenChange"> & React.RefAttributes<import("react-native").View>> & {
-        Frame: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "unstyled"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
-            elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+        Frame: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "inset" | "fullscreen" | "unstyled"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+            elevation?: number | import("@tamagui/core").SizeTokens | undefined; /**
+             * Used to force mounting when more control is needed. Useful when
+             * controlling animation with React animation libraries.
+             */
             fullscreen?: boolean | undefined;
+            inset?: number | import("@tamagui/core").SizeTokens | {
+                top?: number | undefined;
+                bottom?: number | undefined;
+                left?: number | undefined;
+                right?: number | undefined;
+            } | undefined;
             unstyled?: boolean | undefined;
         } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;
             fullscreen?: boolean | undefined;
+            inset?: number | import("@tamagui/core").SizeTokens | {
+                top?: number | undefined;
+                bottom?: number | undefined;
+                left?: number | undefined;
+                right?: number | undefined;
+            } | undefined;
             unstyled?: boolean | undefined;
         } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;
             fullscreen?: boolean | undefined;
+            inset?: number | import("@tamagui/core").SizeTokens | {
+                top?: number | undefined;
+                bottom?: number | undefined;
+                left?: number | undefined;
+                right?: number | undefined;
+            } | undefined;
             unstyled?: boolean | undefined;
         }>> & {
             disableHideBottomOverflow?: boolean | undefined;
@@ -219,6 +261,12 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
         Overlay: React.MemoExoticComponent<(propsIn: import("@tamagui/sheet").SheetScopedProps<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;
             fullscreen?: boolean | undefined;
+            inset?: number | import("@tamagui/core").SizeTokens | {
+                top?: number | undefined;
+                bottom?: number | undefined;
+                left?: number | undefined;
+                right?: number | undefined;
+            } | undefined;
             open?: boolean | undefined;
             transparent?: boolean | undefined;
             circular?: boolean | undefined;

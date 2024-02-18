@@ -23,7 +23,7 @@ export default apiRoute(async (req, res) => {
     .eq('id', subId)
     .single()
   if (error) {
-    console.log(error)
+    console.error(error)
     res
       .status(404)
       .json({ message: 'no subscription found with the provided id that belongs to you' })

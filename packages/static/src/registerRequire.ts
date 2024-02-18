@@ -2,6 +2,7 @@ import { register } from 'esbuild-register/dist/node'
 
 import { requireTamaguiCore } from './helpers/requireTamaguiCore'
 import type { TamaguiPlatform } from './types'
+import { esbuildIgnoreFilesRegex } from './extractor/bundle'
 
 const nameToPaths = {}
 const Module = require('module')
@@ -65,7 +66,7 @@ export function registerRequire(
       return compiled[path]
     }
 
-    if (/\.(gif|jpe?g|png|svg|ttf|otf|woff2?|bmp|webp)$/i.test(path)) {
+    if (esbuildIgnoreFilesRegex.test(path)) {
       return {}
     }
 

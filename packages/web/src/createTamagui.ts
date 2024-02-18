@@ -143,9 +143,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
         }
       }
 
-      const sep =
-        process.env.NODE_ENV === 'development' ? configIn.cssStyleSeparator || ' ' : ''
-
+      const sep = configIn.cssStyleSeparator || ''
       function declarationsToRuleSet(decs: string[], selector = '') {
         return `:root${selector} {${sep}${[...decs].join(`;${sep}`)}${sep}}`
       }

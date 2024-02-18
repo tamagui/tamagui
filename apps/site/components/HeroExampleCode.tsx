@@ -24,7 +24,7 @@ export const HeroExampleCode = memo(
         <YStack zi={1} space="$6" mb="$4">
           {!onlyDemo && (
             <YStack ai="center" space="$3">
-              <HomeH2>A better style system</HomeH2>
+              <HomeH2>A powerful style system</HomeH2>
               <HomeH3 ai="center" jc="center">
                 A multi-faceted optimizing compiler enables
                 <br />
@@ -66,6 +66,7 @@ export const HeroExampleCode = memo(
           </ThemeTint>
 
           <XStack
+            theme="surface1"
             pos="relative"
             jc="space-between"
             $sm={{ fd: 'column' }}

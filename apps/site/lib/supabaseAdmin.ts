@@ -231,10 +231,21 @@ export const manageSubscriptionStatusChange = async (
       throw userModel.error
     }
 
-    await sendTakeoutWelcomeEmail(email, {
-      name: userModel.data.full_name ?? email.split('@').shift()!,
-    })
-    console.info(`Welcome email request sent to Postmark for ${email}`)
+    const subscribedProducts = await Promise.all(
+      subscription.items.data.map((item) =>
+        stripe.products.retrieve(item.price.product as string)
+      )
+    )
+    const includesTakeoutStarter = subscribedProducts.some(
+      (product) => product.metadata.slug === 'universal-starter'
+    )
+    if (includesTakeoutStarter) {
+      await sendTakeoutWelcomeEmail(email, {
+        name: userModel.data.full_name ?? email.split('@').shift()!,
+      })
+      console.info(`Welcome email request sent to Postmark for ${email}`)
+    }
+    // TODO: add a welcome email for bento (just like the one above) here:
   }
 }
 

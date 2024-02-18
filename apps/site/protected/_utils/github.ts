@@ -1,3 +1,5 @@
+import { octokit } from '@lib/octokit'
+
 export type GithubSponsorshipStatus =
   | {
       hasSponsorAccess: false
@@ -36,6 +38,7 @@ const GITHUB_TOKEN = process.env.GITHUB_TOKEN
 // whitelisting uniswap org for feedback
 const whitelistOrgs = {
   uniswap: true,
+  codingscape: true,
 }
 
 export function checkOrgSponsor(orgLogin: string) {
@@ -145,6 +148,8 @@ const uniswapGithubUsers = [
   'brianmcmichael',
 ]
 
+const codinscapeusers = ['NathanBeesley']
+
 export const whitelistGithubUsernames = [
   'natew',
   // 'alitnk', // commented out to test `takeout -> studio` access
@@ -153,6 +158,12 @@ export const whitelistGithubUsernames = [
 
   // gather team member - https://discord.com/channels/909986013848412191/1125830682661363794/1156983395566497834
   'pkretzschmar',
+
+  // cooking
+  'natalie-zamani',
+
+  // codingscape
+  ...codinscapeusers,
 
   // uniswap:
   ...uniswapGithubUsers,
@@ -364,23 +375,14 @@ export const inviteCollaboratorToRepo = async (
   )
 
   try {
-    const res = await fetch(
-      `https://api.github.com/repos/tamagui/${repoName}/collaborators/${userLogin}`,
-      {
-        body: JSON.stringify({
-          permission,
-        }),
-        method: 'PUT',
-        headers: {
-          'X-GitHub-Api-Version': '2022-11-28',
-          Authorization: `Bearer ${GITHUB_ADMIN_TOKEN}`,
-        },
-      }
-    )
+    await octokit.rest.repos.addCollaborator({
+      owner: 'tamagui',
+      repo: repoName,
+      username: userLogin,
+      permission,
+    })
 
-    console.info(
-      `Claim: inviteCollaboratorToRepo response ${res.status} ${res.statusText}`
-    )
+    console.info(`Claim: inviteCollaboratorToRepo succeeded`)
   } catch (err) {
     console.error(`Claim: inviteCollaboratorToRepo Error: ${err}`)
     throw err

@@ -152,9 +152,9 @@ export function getThemeCSSRules(props: {
     }
 
     if (config.selectionStyles) {
-      const selectionSelectors = baseSelectors.map((s) => `${s} ::selection`).join(', ')
       const rules = config.selectionStyles(theme as any)
       if (rules) {
+        const selectionSelectors = baseSelectors.map((s) => `${s} ::selection`).join(', ')
         const styles = Object.entries(rules)
           .flatMap(([k, v]) =>
             v
@@ -162,8 +162,10 @@ export function getThemeCSSRules(props: {
               : []
           )
           .join(';')
-        const css = `${selectionSelectors} {${styles}}`
-        cssRuleSets.push(css)
+        if (styles) {
+          const css = `${selectionSelectors}{${styles}}`
+          cssRuleSets.push(css)
+        }
       }
     }
   }

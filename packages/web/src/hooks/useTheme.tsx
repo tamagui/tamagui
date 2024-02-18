@@ -4,14 +4,16 @@ import { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { getConfig } from '../config'
 import type { Variable } from '../createVariable'
 import { getVariable } from '../createVariable'
-import { isEqualShallow } from '../helpers/createShallowSetState'
 import type { ThemeManagerState } from '../helpers/ThemeManager'
 import { ThemeManager, getHasThemeUpdatingProps } from '../helpers/ThemeManager'
 import { ThemeManagerIDContext } from '../helpers/ThemeManagerContext'
+import { isEqualShallow } from '../helpers/createShallowSetState'
 import type {
   DebugProp,
+  NonSpecificTokens,
   ThemeParsed,
   ThemeProps,
+  ThemeValueGet,
   UseThemeWithStateProps,
   VariableVal,
   VariableValGeneric,
@@ -64,8 +66,20 @@ export type ThemeGettable<Val> = Val & {
 }
 
 export type UseThemeResult = {
-  [Key in keyof ThemeParsed]: ThemeGettable<ThemeParsed[Key]>
+  [Key in keyof ThemeParsed | (string & {})]: ThemeGettable<
+    Key extends keyof ThemeParsed ? ThemeParsed[Key] : Variable<any>
+  >
 }
+
+// not used by anything but its technically more correct type, but its annoying to have in intellisense so leaving it
+// type SimpleTokens = NonSpecificTokens extends `$${infer Token}` ? Token : never
+// export type UseThemeWithTokens = {
+//   [Key in keyof ThemeParsed | keyof SimpleTokens]: ThemeGettable<
+//     Key extends keyof ThemeParsed
+//       ? ThemeParsed[Key]
+//       : Variable<ThemeValueGet<`$${Key}`> extends never ? any : ThemeValueGet<`$${Key}`>>
+//   >
+// }
 
 export const useTheme = (props: ThemeProps = emptyProps) => {
   const [_, theme] = useThemeWithState(props)

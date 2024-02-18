@@ -11,12 +11,10 @@ import {
   stylePropsTransform,
   validPseudoKeys,
   validStyles,
-  validStylesOnBaseProps,
 } from '@tamagui/helpers'
 import { useInsertionEffect } from 'react'
 
 import { getConfig, getFont } from '../config'
-import { skipProps } from './skipProps'
 import {
   accessibilityDirectMap,
   accessibilityWebRoleToNativeRole,
@@ -34,6 +32,7 @@ import {
   mediaQueryConfig,
   mergeMediaByImportance,
 } from '../hooks/useMedia'
+import type { TamaguiComponentState } from '../interfaces/TamaguiComponentState'
 import type {
   ClassNamesObject,
   ComponentContextI,
@@ -54,12 +53,10 @@ import type {
   ThemeParsed,
   ViewStyleWithPseudos,
 } from '../types'
-import type { TamaguiComponentState } from '../interfaces/TamaguiComponentState'
 import { createMediaStyle } from './createMediaStyle'
 import { fixStyles } from './expandStyles'
 import { getGroupPropParts } from './getGroupPropParts'
-import { generateAtomicStyles, getStylesAtomic, styleToCSS } from './getStylesAtomic'
-import { transformsToString } from './transformsToString'
+import { getStyleAtomic, getStylesAtomic, styleToCSS } from './getStylesAtomic'
 import {
   insertStyleRules,
   insertedTransforms,
@@ -67,6 +64,7 @@ import {
   shouldInsertStyleRules,
   updateRules,
 } from './insertStyleRule'
+import { isObj } from './isObj'
 import { log } from './log'
 import {
   normalizeValueWithProperty,
@@ -74,7 +72,8 @@ import {
 } from './normalizeValueWithProperty'
 import { getPropMappedFontFamily, propMapper } from './propMapper'
 import { pseudoDescriptors, pseudoPriorities } from './pseudoDescriptors'
-import { isObj } from './isObj'
+import { skipProps } from './skipProps'
+import { transformsToString } from './transformsToString'
 
 // bugfix for some reason it gets reset
 const IS_STATIC = process.env.IS_STATIC === 'is_static'
@@ -604,19 +603,6 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
-    // micro bench optimize
-    if (
-      process.env.TAMAGUI_TARGET === 'native' &&
-      isValidStyleKeyInit &&
-      !variants &&
-      valInit !== 'unset' &&
-      (valInitType === 'number' || (valInitType === 'string' && valInit[0] !== '$'))
-    ) {
-      styleState.style ||= {}
-      styleState.style[keyInit] = valInit
-      continue
-    }
-
     const avoidPropMap = isMediaOrPseudo || (!isVariant && !isValidStyleKeyInit)
     const expanded = avoidPropMap ? null : propMapper(keyInit, valInit, styleState)
 
@@ -727,7 +713,7 @@ export const getSplitStyles: StyleSplitter = (
 
         // on server only generate classes for enterStyle
         if (shouldDoClasses && !isExit) {
-          const pseudoStyles = generateAtomicStyles(pseudoStyleObject, descriptor)
+          const pseudoStyles = getStyleAtomic(pseudoStyleObject, descriptor)
 
           if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
             // prettier-ignore
@@ -905,7 +891,7 @@ export const getSplitStyles: StyleSplitter = (
             }
           }
 
-          const mediaStyles = getStylesAtomic(mediaStyle, debug)
+          const mediaStyles = getStylesAtomic(mediaStyle)
           const priority = mediaStylesSeen
           mediaStylesSeen += 1
 
@@ -921,7 +907,9 @@ export const getSplitStyles: StyleSplitter = (
             if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
               log(`📺 media style:`, out)
             }
-            const fullKey = `${style.property}${PROP_SPLIT}${mediaKeyShort}`
+            const fullKey = `${style.property}${PROP_SPLIT}${mediaKeyShort}${
+              style.pseudo || ''
+            }`
             if (fullKey in usedKeys) continue
             addStyleToInsertRules(rulesToInsert, out as any)
             mergeClassName(transforms, classNames, fullKey, out.identifier, true, true)
@@ -1435,7 +1423,7 @@ function mergeStyle(
   val: any,
   disableNormalize = false
 ) {
-  const { classNames, viewProps, usedKeys, styleProps } = styleState
+  const { classNames, viewProps, usedKeys, styleProps, staticConfig } = styleState
   if (isWeb && val?.[0] === '_') {
     classNames[key] = val
     usedKeys[key] ||= 1
@@ -1445,7 +1433,11 @@ function mergeStyle(
   } else {
     const shouldNormalize = isWeb && !disableNormalize && !styleProps.noNormalize
     const out = shouldNormalize ? normalizeValueWithProperty(val, key) : val
-    if (key in validStylesOnBaseProps) {
+    if (
+      // acceptTokens are for props not styles
+      staticConfig.acceptTokens &&
+      key in staticConfig.acceptTokens
+    ) {
       viewProps[key] = out
     } else {
       styleState.style ||= {}
@@ -1528,6 +1520,7 @@ const animatableDefaults = {
   rotateX: '0deg',
   x: 0,
   y: 0,
+  borderRadius: 0,
 }
 
 const lowercaseHyphenate = (match: string) => `-${match.toLowerCase()}`

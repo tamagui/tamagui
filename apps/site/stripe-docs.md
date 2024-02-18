@@ -39,9 +39,12 @@ If present, after the product is purchased, we automatically create a subscripti
 
 #### `claim_type`
 
+If this metadata is not present, we assume the product doesn't have a claiming mechanism and not show the claim link.
+
 How the product can be claimed. could be one of the following values:
 
 - `repo_access` - should be used with [`repository_name`](#repository_name)
+- `send_to_link` - should be used with [`usage_link`](#usage_link)
 
 #### `claim_label`
 
@@ -50,6 +53,10 @@ The text on the claim button.
 #### `repository_name`
 
 Will be used to invite user to the repository if [`claim_type`](#claim_type) is set to `repo_access`.
+
+#### `usage_link`
+
+Will send the user to the link when the user clicks on the Claim button if [`claim_type`](#claim_type) is set to `usage_link`.
 
 #### `install_instructions`
 

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/site-config",
-  "version": "1.89.19",
+  "version": "1.89.30",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -35,22 +35,22 @@
     }
   },
   "dependencies": {
-    "@tamagui/animations-react-native": "1.89.19",
-    "@tamagui/animations-reanimated": "1.89.19",
-    "@tamagui/colors": "1.89.19",
-    "@tamagui/font-cherry-bomb": "1.89.19",
-    "@tamagui/font-dm-sans": "1.89.19",
-    "@tamagui/font-dm-serif-display": "1.89.19",
-    "@tamagui/font-glusp": "1.89.19",
-    "@tamagui/font-inter": "1.89.19",
-    "@tamagui/font-silkscreen": "1.89.19",
-    "@tamagui/react-native-media-driver": "1.89.19",
-    "@tamagui/shorthands": "1.89.19",
-    "@tamagui/themes": "1.89.19",
-    "@tamagui/web": "1.89.19"
+    "@tamagui/animations-react-native": "1.89.30",
+    "@tamagui/animations-reanimated": "1.89.30",
+    "@tamagui/colors": "1.89.30",
+    "@tamagui/font-cherry-bomb": "1.89.30",
+    "@tamagui/font-dm-sans": "1.89.30",
+    "@tamagui/font-dm-serif-display": "1.89.30",
+    "@tamagui/font-glusp": "1.89.30",
+    "@tamagui/font-inter": "1.89.30",
+    "@tamagui/font-silkscreen": "1.89.30",
+    "@tamagui/react-native-media-driver": "1.89.30",
+    "@tamagui/shorthands": "1.89.30",
+    "@tamagui/themes": "1.89.30",
+    "@tamagui/web": "1.89.30"
   },
   "devDependencies": {
-    "@tamagui/build": "1.89.19"
+    "@tamagui/build": "1.89.30"
   },
   "publishConfig": {
     "access": "public"

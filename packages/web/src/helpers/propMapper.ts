@@ -42,7 +42,6 @@ export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => 
   // fallbackProps is awkward thanks to static
   // also we need to override the props here because subStyles pass in a sub-style props object
   const subProps = styleStateIn.styleProps.fallbackProps || subPropsIn
-
   const styleState = subProps
     ? new Proxy(styleStateIn, {
         get(_, k) {
@@ -54,14 +53,12 @@ export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => 
   const { conf, styleProps, fontFamily, staticConfig } = styleState
   const { variants } = staticConfig
 
-  // prettier-ignore
   if (
     process.env.NODE_ENV === 'development' &&
     fontFamily &&
     fontFamily[0] === '$' &&
     !(fontFamily in conf.fontsParsed)
   ) {
-    // prettier-ignore
     console.warn(
       `Warning: no fontFamily "${fontFamily}" found in config: ${Object.keys(
         conf.fontsParsed
@@ -80,12 +77,9 @@ export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => 
     }
   }
 
-  let shouldReturn = false
-
   // handle shorthands
   if (!styleProps.disableExpandShorthands) {
     if (key in conf.shorthands) {
-      shouldReturn = true
       key = conf.shorthands[key]
     }
   }
@@ -98,15 +92,13 @@ export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => 
     }
   }
 
-  if (shouldReturn || value != null) {
+  if (value != null) {
     const result = (styleProps.noExpand ? null : expandStyle(key, value)) || [
       [key, value],
     ]
-
     if (key === 'fontFamily' && lastFontFamilyToken) {
       fontFamilyCache.set(result, lastFontFamilyToken)
     }
-
     return result
   }
 }

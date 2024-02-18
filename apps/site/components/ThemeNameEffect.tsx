@@ -11,17 +11,19 @@ export const ThemeNameEffect = memo(
     useEffect(() => {
       if (!isActive) return
       document.querySelector('#theme-color')?.setAttribute('content', color)
-      document.body.style.backgroundColor = color
+      document.body.style.setProperty('background-color', color, 'important')
     }, [isActive, color])
 
     return (
-      <Stack
-        onLayout={() => {
-          startTransition(() => {
-            setIsActive(true)
-          })
-        }}
-      />
+      <>
+        <Stack
+          onLayout={() => {
+            startTransition(() => {
+              setIsActive(true)
+            })
+          }}
+        />
+      </>
     )
   }
 )

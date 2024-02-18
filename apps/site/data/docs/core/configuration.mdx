@@ -3,8 +3,8 @@ title: Configuration
 description: Custom themes, tokens, shorthands, and media queries.
 ---
 
-Note that you don't have set up a design system with `createTamagui` at all, and
-that we have a variety of helpful presets if you'd like some of the upsides
+Note that you don't have to set up a design system with `createTamagui` at all,
+and that we have a variety of helpful presets if you'd like some of the upsides
 without having to set it up yourself.
 
 To start, create a `tamagui.config.ts` in the root of your app. It should only
@@ -47,7 +47,7 @@ package - whether it's `@tamagui/core` or `tamagui` or it's your custom one.
 
 You may fork from the built in themes (which in fairness are specific to the
 Tamagui website) by
-[copy and pasting this gist](https://gist.github.com/natew/3be503cc5990a1142d17ffadf86a134f)
+[copying and pasting this gist](https://gist.github.com/natew/3be503cc5990a1142d17ffadf86a134f)
 into a `themes.ts` file next to your `tamagui.config.ts`.
 
 ## From scratch
@@ -213,7 +213,7 @@ The `createTamagui` function receives a configuration object:
 
 <Notice>
   On Android you need to set the `face` option in `createFont` or else fonts
-  wont pick up different weights, due to a React Native restriction.
+  won't pick up different weights, due to a React Native restriction.
 </Notice>
 
 Note, for `tamagui` (not core), it expects you to define a `true` token that
@@ -585,9 +585,9 @@ For more full docs on media queries, see the
 
 Choose one of `@tamagui/animations-css` for CSS transition based animations,
 `@tamagui/animations-react-native` for React Native Animated based animations,
-or `@tamagui/animations-moti` for Reaniamted animations. You can swap them out
-per-platform as well, so long as you match the keys of the animations you pass
-in for each driver.
+or `@tamagui/animations-moti` for [Moti](https://moti.fyi) animations. You can
+swap them out per-platform as well, so long as you match the keys of the
+animations you pass in for each driver.
 
 Add `animations` to `createTamagui`:
 
