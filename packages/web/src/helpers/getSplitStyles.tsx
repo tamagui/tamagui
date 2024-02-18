@@ -603,19 +603,6 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
-    // micro bench optimize
-    if (
-      process.env.TAMAGUI_TARGET === 'native' &&
-      isValidStyleKeyInit &&
-      !variants &&
-      valInit !== 'unset' &&
-      (valInitType === 'number' || (valInitType === 'string' && valInit[0] !== '$'))
-    ) {
-      styleState.style ||= {}
-      styleState.style[keyInit] = valInit
-      continue
-    }
-
     const avoidPropMap = isMediaOrPseudo || (!isVariant && !isValidStyleKeyInit)
     const expanded = avoidPropMap ? null : propMapper(keyInit, valInit, styleState)
 
@@ -1533,6 +1520,7 @@ const animatableDefaults = {
   rotateX: '0deg',
   x: 0,
   y: 0,
+  borderRadius: 0,
 }
 
 const lowercaseHyphenate = (match: string) => `-${match.toLowerCase()}`
