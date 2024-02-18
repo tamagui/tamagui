@@ -53,7 +53,6 @@ body {
 :is(#__next, body, html):not(:has(.is-sticky)) {
   max-width: 100vw;
   overflow-x: hidden;
-  overflow-y: auto;
 }
 
 body .preview {

@@ -21,7 +21,7 @@ export const BentoPageFrame = ({
 
       <YStack pt={100} pb={100}>
         <Theme name="tan">
-          <YStack pe="none" fullscreen bg="$color6" y={-100}>
+          <YStack pe="none" ov="hidden" fullscreen bg="$color6" y={-100}>
             <YStack
               className="grain"
               fullscreen
@@ -101,9 +101,11 @@ export const BentoPageFrame = ({
         </Theme>
 
         {!simpler && (
-          <ContainerLarge>
-            <BentoFrond />
-          </ContainerLarge>
+          <YStack fullscreen ov="hidden" y={-100}>
+            <ContainerLarge>
+              <BentoFrond />
+            </ContainerLarge>
+          </YStack>
         )}
 
         {children}

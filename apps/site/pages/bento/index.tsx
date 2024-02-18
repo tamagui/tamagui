@@ -69,7 +69,7 @@ export default function BentoPage(props: ProComponentsProps) {
         <ContainerLarge zi={100000000} h={0}>
           <Button
             pos="absolute"
-            t="$-8"
+            t="$-10"
             r="$8"
             size="$2"
             circular
@@ -86,7 +86,6 @@ export default function BentoPage(props: ProComponentsProps) {
           <Body heroVisible={heroVisible} />
         </Theme>
         <PurchaseModal defaultCoupon={coupon} proComponents={props.proComponents} />
-        <Spacer size="$10" />
       </Theme>
     </BentoPageFrame>
   )
@@ -96,7 +95,7 @@ BentoPage.getLayout = getDefaultLayout
 
 const Intermediate = () => {
   return (
-    <YStack zi={1} w="100%" className="blur-8" mt={-30}>
+    <YStack zi={1} w="100%" mt={-30}>
       <YStack fullscreen elevation="$4" o={0.15} />
       <YStack pos="absolute" t={0} l={0} r={0} o={0.25} btw={0.5} bc="$color025" />
       <YStack pos="absolute" b={0} l={0} r={0} o={0.25} btw={0.5} bc="$color025" />
@@ -136,7 +135,16 @@ const IntermediateCard = ({
   Icon,
 }: { title?: any; children?: any; Icon?: any }) => {
   return (
-    <XStack ov="hidden" f={1} gap="$5" px="$5" py="$4" bw={0.5} bc="$color05">
+    <XStack
+      className="blur-8"
+      ov="hidden"
+      f={1}
+      gap="$5"
+      px="$5"
+      py="$4"
+      bw={0.5}
+      bc="$color05"
+    >
       <YStack f={1} gap="$2">
         <H4 ff="$silkscreen" color="$color12" o={0.9} size="$5">
           {title}
@@ -207,11 +215,44 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
               maw: '100%',
             }}
           >
-            <BentoLogo />
-            <YStack gap="$6" $sm={{ px: '$4' }}>
+            <YStack
+              $xxs={{
+                scale: 0.4,
+              }}
+              $xs={{
+                scale: 0.5,
+              }}
+              $sm={{
+                als: 'center',
+                scale: 0.6,
+                mb: -100,
+                transformOrigin: 'center top',
+              }}
+              $md={{ mb: -140, scale: 0.72, transformOrigin: 'left top' }}
+            >
+              <BentoLogo />
+            </YStack>
+            <YStack
+              // account for the left bar visual offset
+              ml={-20}
+              als="center"
+              maw={550}
+              gap="$6"
+              $sm={{ px: '$4', maw: 400 }}
+            >
               <XStack gap="$6">
                 <Stack bg="$color7" w={8} br="$2" my={18} $sm={{ dsp: 'none' }} />
-                <Paragraph ff="$munro" size="$9" fos={32} lh={50} color="$color11" ls={1}>
+                <Paragraph
+                  className="pixelate"
+                  ff="$munro"
+                  fos={28}
+                  lh={50}
+                  color="$color11"
+                  ls={1}
+                  $md={{
+                    size: '$7',
+                  }}
+                >
                   Boost your React Native development with a suite of copy-paste
                   primitives.
                 </Paragraph>
@@ -250,7 +291,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
                   //     mr={-15}
                   //   />
                   // }
-                  className="box-3d"
+                  className="box-3d all ease-in-out ms100"
                   fontFamily="$mono"
                   size="$5"
                   fontSize={22}
@@ -306,7 +347,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
             mb={-300}
             y={-20}
             style={{
-              maskImage: `linear-gradient(rgba(0, 0, 0, 1) 60%, transparent)`,
+              maskImage: `linear-gradient(rgba(0, 0, 0, 1) 50%, transparent 85%)`,
             }}
           >
             <Theme name="gray">
@@ -414,6 +455,8 @@ const Body = ({ heroVisible }: { heroVisible: boolean }) => {
       .filter(Boolean)
   }, [filter])
 
+  const [distanceToTop, setDistanceToTop] = useState(400)
+
   return (
     <YStack
       pos="relative"
@@ -424,38 +467,39 @@ const Body = ({ heroVisible }: { heroVisible: boolean }) => {
           inputRef.current?.focus()
         }
       }}
-      py="$8"
-      mb="$-10"
+      pb="$8"
       // bg="$background"
       style={{
         backdropFilter: `blur(${heroVisible ? 4 : 90}px)`,
         WebkitBackdropFilter: `blur(${heroVisible ? 4 : 10}px)`,
       }}
-      y={heroVisible ? 0 : -800}
+      y={0}
+      minHeight={800}
+      {...(!heroVisible && {
+        y: -distanceToTop - 500,
+      })}
       zi={10000}
+      onLayout={(e) => {
+        if (!heroVisible) {
+          setDistanceToTop(e.nativeEvent.layout.y)
+        }
+      }}
     >
-      <Separator
-        bc="$color"
-        pos="absolute"
-        t={0}
-        l={0}
-        r={0}
-        o={0.125}
-        style={{ mixBlendMode: 'multiply' }}
-      />
+      <Separator bc="$color" pos="absolute" t={0} l={0} r={0} o={0.05} />
 
-      <YStack px="$6">
-        <ContainerLarge mt="$-4" mb="$2">
+      <YStack>
+        <ContainerLarge>
           <Input
             unstyled
             ref={inputRef as any}
             w="100%"
             size="$8"
+            px={0}
             fow="200"
             value={filter}
             onChangeText={setFilter}
             placeholder="Filter..."
-            placeholderTextColor="$background025"
+            placeholderTextColor="$background075"
           />
         </ContainerLarge>
 
@@ -463,20 +507,24 @@ const Body = ({ heroVisible }: { heroVisible: boolean }) => {
           return (
             <YStack id={sectionName} key={sectionName} jc={'space-between'}>
               <Theme name="tan">
-                <ContainerLarge>
-                  <YStack py="$3" pos="relative">
-                    <H3
-                      ff="$silkscreen"
-                      size="$3"
-                      ls={3}
-                      tt="uppercase"
-                      color="$color10"
-                      f={2}
-                    >
-                      {`${sectionName[0].toUpperCase()}${sectionName.slice(1)}`}
-                    </H3>
-                  </YStack>
-                </ContainerLarge>
+                <YStack pos="relative">
+                  <YStack fullscreen bg="$background025" o={0.24} />
+                  <ContainerLarge>
+                    <YStack py="$2" pos="relative">
+                      <H3
+                        ff="$silkscreen"
+                        size="$3"
+                        fos={12}
+                        ls={3}
+                        tt="uppercase"
+                        color="$color10"
+                        f={2}
+                      >
+                        {`${sectionName[0].toUpperCase()}${sectionName.slice(1)}`}
+                      </H3>
+                    </YStack>
+                  </ContainerLarge>
+                </YStack>
 
                 <Separator o={0.1} />
               </Theme>
@@ -492,23 +540,23 @@ const Body = ({ heroVisible }: { heroVisible: boolean }) => {
                 }}
               >
                 <ContainerLarge>
-                  {/* <Theme name="gray"> */}
-                  <XStack gap="$5" f={4} fs={1}>
-                    {parts.map(
-                      ({ name: partsName, numberOfComponents, route, preview }) => (
-                        <SectionCard
-                          key={route + partsName + numberOfComponents.toString()}
-                          path={route}
-                          name={partsName}
-                          numberOfComponents={numberOfComponents}
-                          preview={preview}
-                        />
-                      )
-                    )}
-                    {/* @ts-ignore */}
-                    <Spacer width="calc(50vw - 400px)" />
-                  </XStack>
-                  {/* </Theme> */}
+                  <Theme name="tan">
+                    <XStack gap="$5" f={4} fs={1}>
+                      {parts.map(
+                        ({ name: partsName, numberOfComponents, route, preview }) => (
+                          <SectionCard
+                            key={route + partsName + numberOfComponents.toString()}
+                            path={route}
+                            name={partsName}
+                            numberOfComponents={numberOfComponents}
+                            preview={preview}
+                          />
+                        )
+                      )}
+                      {/* @ts-ignore */}
+                      <Spacer width="calc(50vw - 300px)" />
+                    </XStack>
+                  </Theme>
                 </ContainerLarge>
               </ScrollView>
             </YStack>
@@ -557,7 +605,7 @@ function SectionCard({
         pos="relative"
         hoverStyle={{
           // y: -2,
-          bg: '$background025',
+          bg: '$color025',
           // outlineWidth: 3,
           // outlineStyle: 'solid',
           // outlineColor: '$color025',
@@ -594,10 +642,10 @@ function SectionCard({
           </Theme>
         </YStack> */}
         <YStack p="$3">
-          <H4 fontSize="$7" fow="100">
+          <H4 ff="$body" size="$5" fow="600" color="$color12">
             {name}
           </H4>
-          <H5 o={0.2} fontSize="$3">
+          <H5 o={0.2} size="$1" ls={1}>
             {numberOfComponents} components
           </H5>
         </YStack>
