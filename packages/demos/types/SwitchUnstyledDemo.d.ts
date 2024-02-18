@@ -149,5 +149,5 @@ export declare const Switch: import("react").ForwardRefExoticComponent<Omit<impo
         chromeless?: boolean | "all" | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
 };
-export declare function SwitchUnstyledDemo(): JSX.Element;
+export declare function SwitchUnstyledDemo(): import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=SwitchUnstyledDemo.d.ts.map

@@ -1,9 +1,8 @@
-/// <reference types="react" />
 import type { SizeTokens } from 'tamagui';
-export declare function RadioGroupDemo(): JSX.Element;
+export declare function RadioGroupDemo(): import("react/jsx-runtime").JSX.Element;
 export declare function RadioGroupItemWithLabel(props: {
     size: SizeTokens;
     value: string;
     label: string;
-}): JSX.Element;
+}): import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=RadioGroupDemo.d.ts.map

@@ -22,7 +22,7 @@ export declare const useAdaptParent: ({ Contents, }: {
 }) => {
     AdaptProvider: (props: {
         children?: any;
-    }) => JSX.Element;
+    }) => import("react/jsx-runtime").JSX.Element;
     when: When;
 };
 export declare const Adapt: (({ platform, when, children }: AdaptProps) => any) & {

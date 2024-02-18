@@ -23,7 +23,7 @@ export declare function useCheckbox<R extends View, P extends CheckboxProps>(pro
     CheckedState,
     React.Dispatch<React.SetStateAction<CheckedState>>
 ], ref: React.Ref<R>): {
-    bubbleInput: JSX.Element | null;
+    bubbleInput: import("react/jsx-runtime").JSX.Element | null;
     checkboxRef: (node: R) => void;
     checkboxProps: {
         role: "checkbox";

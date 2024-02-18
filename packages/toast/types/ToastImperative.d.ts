@@ -95,6 +95,6 @@ interface ToastImperativeProviderProps {
      */
     options: ToastImperativeOptions;
 }
-export declare const ToastImperativeProvider: ({ children, options, }: ToastImperativeProviderProps) => JSX.Element;
+export declare const ToastImperativeProvider: ({ children, options, }: ToastImperativeProviderProps) => import("react/jsx-runtime").JSX.Element;
 export type { ToastImperativeProviderProps, NativePlatform, NativeValue };
 //# sourceMappingURL=ToastImperative.d.ts.map

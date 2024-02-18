@@ -29,7 +29,7 @@ export type SelectLabelProps = ListItemProps;
 export declare const SelectSeparator: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     vertical?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
-export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) & {
+export declare const Select: ((props: ScopedProps<SelectProps>) => import("react/jsx-runtime").JSX.Element) & {
     Adapt: (({ platform, when, children }: import("@tamagui/adapt").AdaptProps) => any) & {
         Contents: {
             (props: any): React.FunctionComponentElement<any>;
@@ -41,7 +41,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         zIndex?: number | undefined;
     } & {
         __scopeSelect?: import("@tamagui/create-context").Scope;
-    } & import("@tamagui/focus-scope").FocusScopeProps) => JSX.Element | null;
+    } & import("@tamagui/focus-scope").FocusScopeProps) => import("react/jsx-runtime").JSX.Element | null;
     Group: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "inset"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         fullscreen?: boolean | undefined;

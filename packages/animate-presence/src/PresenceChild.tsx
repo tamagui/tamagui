@@ -63,7 +63,7 @@ export const PresenceChild = ({
      * so they can detect that layout change.
      */
 
-    presenceAffectsLayout ? undefined : [isPresent, exitVariant, enterVariant]
+    presenceAffectsLayout ? [] : [isPresent, exitVariant, enterVariant]
   )
 
   React.useMemo(() => {

@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import type { ThemeProps } from 'tamagui';
 export declare const initialTint = 3;
 export declare const onTintChange: (listener: (cur: number) => void) => () => void;
@@ -24,9 +23,9 @@ export declare const useTint: (altOffset?: number) => {
 };
 export declare const ThemeTint: ({ disable, children, ...rest }: ThemeProps & {
     disable?: boolean | undefined;
-}) => JSX.Element;
+}) => import("react/jsx-runtime").JSX.Element;
 export declare const ThemeTintAlt: ({ children, disable, offset, ...rest }: ThemeProps & {
     disable?: boolean | undefined;
     offset?: number | undefined;
-}) => JSX.Element;
+}) => import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=useTint.d.ts.map

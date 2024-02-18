@@ -29,7 +29,7 @@ export declare function useSwitch<R extends View, P extends SwitchProps>(props: 
     /**
      * insert as a sibling of your switch (should not be inside the switch)
      */
-    bubbleInput: JSX.Element | null;
+    bubbleInput: import("react/jsx-runtime").JSX.Element | null;
 };
 export {};
 //# sourceMappingURL=useSwitch.d.ts.map

@@ -210,5 +210,5 @@ export declare const Checkbox: import("react").ForwardRefExoticComponent<Omit<im
         chromeless?: boolean | "all" | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
 };
-export declare function CheckboxUnstyledDemo(): JSX.Element;
+export declare function CheckboxUnstyledDemo(): import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=CheckboxUnstyledDemo.d.ts.map

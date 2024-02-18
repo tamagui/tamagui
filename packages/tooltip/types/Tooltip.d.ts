@@ -26,7 +26,7 @@ type Delay = number | Partial<{
 export declare const TooltipGroup: ({ children, delay }: {
     children?: any;
     delay: Delay;
-}) => JSX.Element;
+}) => import("react/jsx-runtime").JSX.Element;
 export declare const Tooltip: React.ForwardRefExoticComponent<PopperProps & {
     open?: boolean | undefined;
     unstyled?: boolean | undefined;
