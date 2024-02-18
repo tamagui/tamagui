@@ -10,6 +10,7 @@ import { BentoLogo } from '../../../components/BentoLogo'
 import { ContainerBento } from '../../../components/Container'
 import { getDefaultLayout } from '../../../lib/getDefaultLayout'
 import Link from 'next/link'
+import { Footer } from '../../../components/Footer'
 
 export default function page() {
   const router = useRouter()
@@ -18,22 +19,22 @@ export default function page() {
 
   return (
     <>
-      <YStack mt={-50} pt={50} pos="relative">
-        <BentoPageFrame simpler>
-          <ContainerBento>
-            <DetailHeader>
-              {`${params.section[0].toUpperCase()}${params.section.slice(1)}`}
-            </DetailHeader>
-          </ContainerBento>
-        </BentoPageFrame>
+      <BentoPageFrame simpler>
+        <ContainerBento>
+          <DetailHeader>
+            {`${params.section[0].toUpperCase()}${params.section.slice(1)}`}
+          </DetailHeader>
+        </ContainerBento>
+      </BentoPageFrame>
 
-        <YStack>
-          <YStack pe="none" fullscreen className="bg-grid" />
-          <ContainerBento mt={-100}>
-            <Comp />
-          </ContainerBento>
-        </YStack>
+      <YStack>
+        <YStack pe="none" fullscreen className="bg-grid" />
+        <ContainerBento>
+          <Comp />
+        </ContainerBento>
       </YStack>
+
+      <Footer />
     </>
   )
 }

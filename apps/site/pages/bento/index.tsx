@@ -64,29 +64,27 @@ export default function BentoPage(props: ProComponentsProps) {
 
   return (
     <BentoPageFrame>
-      <Theme name="tan">
-        <ThemeNameEffect colorKey="$color6" />
-        <ContainerLarge zi={100000000} h={0}>
-          <Button
-            pos="absolute"
-            t="$-10"
-            r="$8"
-            size="$2"
-            circular
-            icon={heroVisible ? Search : ChevronDown}
-            onPress={() => {
-              setHeroVisible(!heroVisible)
-            }}
-            bg="$background025"
-          ></Button>
-        </ContainerLarge>
-        <Hero mainProduct={props.proComponents} />
-        <Intermediate />
-        <Theme name="gray">
-          <Body heroVisible={heroVisible} />
-        </Theme>
-        <PurchaseModal defaultCoupon={coupon} proComponents={props.proComponents} />
+      <ThemeNameEffect colorKey="$color6" />
+      <ContainerLarge zi={100000000} h={0}>
+        <Button
+          pos="absolute"
+          t="$-10"
+          r="$8"
+          size="$2"
+          circular
+          icon={heroVisible ? Search : ChevronDown}
+          onPress={() => {
+            setHeroVisible(!heroVisible)
+          }}
+          bg="$background025"
+        ></Button>
+      </ContainerLarge>
+      <Hero mainProduct={props.proComponents} />
+      <Intermediate />
+      <Theme name="gray">
+        <Body heroVisible={heroVisible} />
       </Theme>
+      <PurchaseModal defaultCoupon={coupon} proComponents={props.proComponents} />
     </BentoPageFrame>
   )
 }
