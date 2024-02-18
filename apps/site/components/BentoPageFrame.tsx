@@ -18,7 +18,6 @@ export const BentoPageFrame = ({
         <LoadMunro />
       </Head>
 
-      <ThemeNameEffect colorKey="$color5" />
       {/* <YStack className="strong-background" /> */}
 
       <YStack pt={85}>

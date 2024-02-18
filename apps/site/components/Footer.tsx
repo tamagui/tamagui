@@ -11,16 +11,15 @@ export const Footer = memo(() => {
   return (
     <YStack tag="footer" pos="relative" mb="$10">
       <ContainerLarge>
-        <XStack x={40} py="$7" $sm={{ flexDirection: 'column', ai: 'center' }}>
+        <XStack py="$7" $sm={{ flexDirection: 'column', ai: 'center' }}>
           <YStack
             ai="flex-start"
             $sm={{ ai: 'center' }}
             py="$5"
             flex={2}
-            mt="$-1"
             mb="$2"
-            px="$4"
-            space="$4"
+            px="$6"
+            gap="$4"
           >
             <Text
               className="clip-invisible"
@@ -45,7 +44,7 @@ export const Footer = memo(() => {
             px="$4"
             py="$5"
             flex={1.5}
-            space="$3"
+            gap="$3"
           >
             <H4 mb="$3" fontFamily="$silkscreen" fontSize={12} ls={0.5} o={0.5}>
               Overview
@@ -64,7 +63,7 @@ export const Footer = memo(() => {
             px="$4"
             py="$5"
             flex={1.5}
-            space="$3"
+            gap="$3"
           >
             <H4 mb="$3" fontFamily="$silkscreen" fontSize={12} ls={0.5} o={0.5}>
               Docs
@@ -82,30 +81,30 @@ export const Footer = memo(() => {
             px="$4"
             py="$5"
             flex={1.5}
-            space="$3"
+            gap="$3"
           >
             <H4 mb="$3" fontFamily="$silkscreen" fontSize={12} ls={0.5} o={0.5}>
               Community
             </H4>
-            <XStack space="$1" ai="center">
+            <XStack gap="$1" ai="center">
               <ParagraphLink href="/community">Community</ParagraphLink>
             </XStack>
-            <XStack space="$1" ai="center">
+            <XStack gap="$1" ai="center">
               <ParagraphLink href="/blog">Blog</ParagraphLink>
             </XStack>
-            <XStack space="$1" ai="center">
+            <XStack gap="$1" ai="center">
               <ParagraphLink href="https://github.com/tamagui/tamagui" target="_blank">
                 GitHub
               </ParagraphLink>
               <ExternalIcon />
             </XStack>
-            <XStack space="$1" ai="center">
+            <XStack gap="$1" ai="center">
               <ParagraphLink href="https://twitter.com/tamagui_js" target="_blank">
                 Twitter
               </ParagraphLink>
               <ExternalIcon />
             </XStack>
-            <XStack space="$1" ai="center">
+            <XStack gap="$1" ai="center">
               <ParagraphLink href="https://discord.gg/4qh6tdcVDa" target="_blank">
                 Discord
               </ParagraphLink>

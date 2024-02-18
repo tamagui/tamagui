@@ -66,8 +66,11 @@ export default function BentoPage(props: ProComponentsProps) {
     setTintIndex(2)
   }, [])
 
+  const [heroHeight, setHeroHeight] = useState(800)
+
   return (
     <Theme name="tan">
+      <ThemeNameEffect colorKey="$color5" />
       <BentoPageFrame>
         <ThemeNameEffect colorKey="$color6" />
         <ContainerLarge zi={100000000} h={0}>
@@ -84,12 +87,18 @@ export default function BentoPage(props: ProComponentsProps) {
             bg="$background025"
           ></Button>
         </ContainerLarge>
-        <Hero mainProduct={props.proComponents} />
-        <Intermediate />
+        <YStack
+          onLayout={(e) => {
+            setHeroHeight(e.nativeEvent.layout.height)
+          }}
+        >
+          <Hero mainProduct={props.proComponents} />
+          <Intermediate />
+        </YStack>
+        <Body distanceToTop={heroHeight} heroVisible={heroVisible} />
         <Theme name="gray">
-          <Body heroVisible={heroVisible} />
+          <PurchaseModal defaultCoupon={coupon} proComponents={props.proComponents} />
         </Theme>
-        <PurchaseModal defaultCoupon={coupon} proComponents={props.proComponents} />
       </BentoPageFrame>
     </Theme>
   )
@@ -179,23 +188,6 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
   return (
     <YStack pos="relative" pb="$9" zi={0}>
       <ContainerLarge>
-        {/* <YStack
-          pos="absolute"
-          y="-50%"
-          scaleY={-1}
-          t={-206}
-          l="50%"
-          h={400}
-          w={50}
-          rotate="-90deg"
-          style={{
-            background: 'url(/bento/foilage2.png) repeat-y',
-            backgroundSize: '100%',
-            backgroundPosition: 'top left',
-            maskImage: `linear-gradient(120deg, rgba(0, 0, 0, 1) 70%, transparent 75%)`,
-          }}
-        /> */}
-
         <XStack
           gap="$6"
           py="$3"
@@ -220,6 +212,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
             }}
           >
             <YStack
+              className="ms300 ease-in all"
               $xxs={{
                 scale: 0.4,
               }}
@@ -232,7 +225,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
                 mb: -100,
                 transformOrigin: 'center top',
               }}
-              $md={{ mb: -140, scale: 0.72, transformOrigin: 'left top' }}
+              $md={{ mb: -100, scale: 0.72, transformOrigin: 'left top' }}
             >
               <BentoLogo />
             </YStack>
@@ -254,7 +247,8 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
                   color="$color11"
                   ls={1}
                   $md={{
-                    size: '$7',
+                    fos: 22,
+                    lh: 38,
                   }}
                 >
                   Boost your React Native development with a suite of copy-paste
@@ -297,7 +291,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
                   // }
                   className="box-3d all ease-in-out ms100"
                   fontFamily="$mono"
-                  size="$5"
+                  size="$4"
                   fontSize={22}
                   fontWeight="600"
                   scaleSpace={0.5}
@@ -323,12 +317,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
                     store.showPurchase = true
                   }}
                 >
-                  <Button.Text
-                    fontFamily="$mono"
-                    size="$5"
-                    fontSize={22}
-                    fontWeight="600"
-                  >
+                  <Button.Text fontFamily="$mono" fontSize={20} fontWeight="600">
                     $
                     {(mainProduct?.prices.sort(
                       (a, b) => (a.unit_amount || Infinity) - (b.unit_amount || Infinity)
@@ -340,7 +329,8 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
           </YStack>
 
           <YStack
-            mr={-360}
+            className="ms300 ease-in all"
+            mr={-300}
             ml={-150}
             maw={1000}
             mt={-100}
@@ -352,6 +342,11 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
             y={-20}
             style={{
               maskImage: `linear-gradient(rgba(0, 0, 0, 1) 50%, transparent 85%)`,
+            }}
+            $md={{
+              mr: -400,
+              mt: -150,
+              scale: 0.9,
             }}
           >
             <Theme name="gray">
@@ -438,7 +433,10 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
   )
 }
 
-const Body = ({ heroVisible }: { heroVisible: boolean }) => {
+const Body = ({
+  heroVisible,
+  distanceToTop = 800,
+}: { heroVisible: boolean; distanceToTop?: number }) => {
   const inputRef = useRef<HTMLInputElement>()
   const [filter, setFilter] = useState('')
 
@@ -459,8 +457,6 @@ const Body = ({ heroVisible }: { heroVisible: boolean }) => {
       .filter(Boolean)
   }, [filter])
 
-  const [distanceToTop, setDistanceToTop] = useState(400)
-
   return (
     <YStack
       pos="relative"
@@ -480,14 +476,9 @@ const Body = ({ heroVisible }: { heroVisible: boolean }) => {
       y={0}
       minHeight={800}
       {...(!heroVisible && {
-        y: -distanceToTop - 500,
+        y: -distanceToTop,
       })}
       zi={10000}
-      onLayout={(e) => {
-        if (!heroVisible) {
-          setDistanceToTop(e.nativeEvent.layout.y)
-        }
-      }}
     >
       {/* <Separator bc="$color" pos="absolute" t={0} l={0} r={0} o={0.05} /> */}
 
@@ -497,13 +488,14 @@ const Body = ({ heroVisible }: { heroVisible: boolean }) => {
             unstyled
             ref={inputRef as any}
             w="100%"
-            size="$8"
-            px={0}
+            size="$5"
+            px="$3"
             fow="200"
             value={filter}
             onChangeText={setFilter}
             placeholder="Filter..."
-            placeholderTextColor="$background05"
+            placeholderTextColor="rgba(0,0,0,0.3)"
+            zi={100}
           />
         </ContainerLarge>
 
@@ -514,7 +506,7 @@ const Body = ({ heroVisible }: { heroVisible: boolean }) => {
                 <YStack pos="relative">
                   <YStack fullscreen bg="$background025" o={0.24} />
                   <ContainerLarge>
-                    <YStack py="$2" pos="relative">
+                    <YStack py="$2" px="$3" pos="relative">
                       <H3
                         ff="$silkscreen"
                         size="$3"
@@ -608,48 +600,20 @@ function SectionCard({
         cursor="pointer"
         pos="relative"
         hoverStyle={{
-          // y: -2,
-          bg: '$color025',
-          // outlineWidth: 3,
-          // outlineStyle: 'solid',
-          // outlineColor: '$color025',
-          // shac: '$background075',
-          // shar: '$0',
-          // shof: { width: -20, height: 20 },
+          bg: `rgba(255,255,255,0.025)`,
         }}
         pressStyle={{
-          bg: '$color05',
+          bg: 'rgba(255,255,255,0.05)',
           y: 1,
         }}
       >
-        {/* <YStack
-          pos="absolute"
-          inset={-50}
-          className="bg-grid mask-gradient-up"
-          o={0.05}
-          rotate="-45deg"
-        /> */}
-        {/* <YStack
-          fullscreen
-          ai="center"
-          jc="center"
-          y="20%"
-          x="30%"
-          scale={6}
-          o={0.5}
-          rotateY="10deg"
-          rotateX="-20deg"
-          rotateZ="-10deg"
-        >
-          <Theme name="tan">
-            <Preview />
-          </Theme>
-        </YStack> */}
         <YStack p="$3">
-          <H4 ff="$body" size="$5" fow="600" color="$color12">
-            {name}
-          </H4>
-          <H5 o={0.2} size="$1" ls={1}>
+          <Theme name="gray">
+            <H4 ff="$body" size="$5" fow="600" color="$color12">
+              {name}
+            </H4>
+          </Theme>
+          <H5 theme="alt1" size="$1" ls={1}>
             {numberOfComponents} components
           </H5>
         </YStack>

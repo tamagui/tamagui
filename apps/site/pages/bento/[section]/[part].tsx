@@ -11,6 +11,7 @@ import { ContainerBento } from '../../../components/Container'
 import { getDefaultLayout } from '../../../lib/getDefaultLayout'
 import Link from 'next/link'
 import { Footer } from '../../../components/Footer'
+import { ThemeNameEffect } from '../../../components/ThemeNameEffect'
 
 export default function page() {
   const router = useRouter()
@@ -19,6 +20,8 @@ export default function page() {
 
   return (
     <>
+      <ThemeNameEffect colorKey="$color1" />
+
       <BentoPageFrame simpler>
         <ContainerBento>
           <DetailHeader>
