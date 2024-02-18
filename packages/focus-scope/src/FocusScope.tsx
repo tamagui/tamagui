@@ -66,7 +66,7 @@ export function useFocusScope(
   React.useEffect(() => {
     if (!enabled) return
     if (!trapped) return
-    const controller = new AbortController;
+    const controller = new AbortController()
 
     function handleFocusIn(event: FocusEvent) {
       if (focusScope.paused || !container) return
