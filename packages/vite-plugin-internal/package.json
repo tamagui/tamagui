@@ -22,7 +22,7 @@
     "@tamagui/build": "1.89.30",
     "@tamagui/config-default": "1.89.30",
     "@tamagui/vite-plugin": "1.89.30",
-    "@vitejs/plugin-react-swc": "^3.4.0",
+    "@vitejs/plugin-react-swc": "^3.6.0",
     "happy-dom": "^10.11.2",
     "vitest": "^0.34.3",
     "vitest-axe": "^0.1.0",

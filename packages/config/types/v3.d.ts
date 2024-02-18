@@ -1,7 +1,6 @@
-export { animations } from './animations';
-export { animationsReanimated } from './animationsReanimated';
 export { animationsReactNative } from './animationsReactNative';
 export { animationsCSS } from './animationsCSS';
+export { animations } from './animations';
 export { tokens, themes } from '@tamagui/themes/v3-themes';
 export { shorthands } from '@tamagui/shorthands/v2';
 export { fonts } from './fonts';
