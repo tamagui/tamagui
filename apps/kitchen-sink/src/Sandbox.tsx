@@ -2,7 +2,7 @@
 // import './wdyr'
 
 import { View as RNView } from 'react-native'
-import { View, Stack, XStack, YStack, usePropsAndStyle } from 'tamagui'
+import { View, usePropsAndStyle } from 'tamagui'
 
 const TestThing = (props) => {
   const [p2, style] = usePropsAndStyle(props)
@@ -47,80 +47,3 @@ const Demo = () => (
 // animationDuration: '0.8s',
 // animationFillMode: 'both',
 // animationDelay: '800ms',
-
-import { styled } from '@tamagui/core'
-
-import { SwitchStyledContext, createSwitch } from '@tamagui/switch'
-
-import { Label } from 'tamagui'
-const Frame = styled(Stack, {
-  context: SwitchStyledContext,
-
-  width: 40,
-
-  height: 20,
-
-  borderRadius: 20,
-
-  variants: {
-    checked: {
-      true: {
-        backgroundColor: 'lightblue',
-      },
-
-      false: {
-        backgroundColor: 'silver',
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    checked: false,
-  },
-})
-const Thumb = styled(Stack, {
-  context: SwitchStyledContext,
-
-  width: 20,
-
-  height: 20,
-
-  backgroundColor: 'black',
-
-  borderRadius: 20,
-  variants: {
-    checked: {
-      true: {
-        opacity: 0.8,
-      },
-
-      false: {
-        opacity: 0.5,
-      },
-    },
-  } as const,
-})
-// TODO: remove ts-ignores
-
-export const Switch = createSwitch({
-  // @ts-ignore
-
-  Frame,
-
-  // @ts-ignore
-
-  Thumb,
-})
-export function SwitchUnstyledDemo() {
-  return (
-    <YStack width={200} alignItems="center" space="$3">
-      <XStack space="$3" alignItems="center">
-        <Label htmlFor="unstyled-switch">Unstyled</Label>
-
-        <Switch defaultChecked id="unstyled-switch">
-          <Switch.Thumb animation="quick" />
-        </Switch>
-      </XStack>
-    </YStack>
-  )
-}
