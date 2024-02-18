@@ -1,12 +1,6 @@
-IF NOT exists (
-  select
-    constraint_name
-  from
-    information_schema.table_constraints
-  where
-    table_name = 'studio_themes'
-    and constraint_type = 'PRIMARY KEY'
-) then
+
+alter table studio_themes drop constraint if exists studio_themes_pkey;
+
 
 alter table
   studio_themes
