@@ -5,6 +5,7 @@ import Head from 'next/head'
 import { LoadCherryBomb, LoadMunro } from './LoadFont'
 import { ContainerLarge } from './Container'
 import { ThemeNameEffect } from './ThemeNameEffect'
+import { Footer } from './Footer'
 
 export const BentoPageFrame = ({
   children,
@@ -18,10 +19,29 @@ export const BentoPageFrame = ({
       </Head>
 
       <ThemeNameEffect colorKey="$color5" />
+      {/* <YStack className="strong-background" /> */}
 
-      <YStack pt={100} pb={100}>
+      <YStack pt={85}>
         <Theme name="tan">
-          <YStack pe="none" fullscreen bg="$color6" y={-100}>
+          <YStack
+            className={simpler ? `mask-gradient-down` : ``}
+            pe="none"
+            ov="hidden"
+            fullscreen
+            y={-100}
+            b={-100}
+          >
+            <YStack fullscreen bg="$color6" />
+
+            {/* {simpler && (
+              <YStack
+                fullscreen
+                style={{
+                  background: `linear-gradient(var(--color10), var(--background0))`,
+                }}
+              />
+            )} */}
+
             <YStack
               className="grain"
               fullscreen
@@ -73,6 +93,7 @@ export const BentoPageFrame = ({
                   width={3000}
                   height={3000}
                   src="/takeout/geometric.svg"
+                  priority
                 />
               </YStack>
 
@@ -101,12 +122,16 @@ export const BentoPageFrame = ({
         </Theme>
 
         {!simpler && (
-          <ContainerLarge>
-            <BentoFrond />
-          </ContainerLarge>
+          <YStack fullscreen ov="hidden" y={-100}>
+            <ContainerLarge>
+              <BentoFrond />
+            </ContainerLarge>
+          </YStack>
         )}
 
         {children}
+
+        {!simpler && <Footer />}
       </YStack>
     </>
   )

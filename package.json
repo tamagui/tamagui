@@ -103,7 +103,7 @@
     "@typescript-eslint/eslint-plugin": "^6.19.1",
     "@typescript-eslint/parser": "^6.19.1",
     "@vercel/og": "^0.5.8",
-    "check-dependency-version-consistency": "^3.0.3",
+    "check-dependency-version-consistency": "^4.1.0",
     "eslint": "^8.56.0",
     "eslint-parallel": "^1.2.1",
     "fs-extra": "^11.2.0",

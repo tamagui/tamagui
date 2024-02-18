@@ -319,6 +319,7 @@ export async function getOptions({
       config: await getDefaultTamaguiConfigPath(root, tamaguiOptions?.config),
     },
     paths: {
+      root,
       dotDir,
       conf: join(dotDir, 'tamagui.config.json'),
       types: join(dotDir, 'types.json'),

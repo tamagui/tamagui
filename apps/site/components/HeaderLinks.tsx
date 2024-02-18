@@ -26,7 +26,7 @@ const HeadAnchor = styled(Paragraph, {
   px: '$3',
   py: '$3',
   cursor: 'pointer',
-  size: '$3',
+  size: '$2',
   color: '$color11',
   tabIndex: -1,
 
@@ -43,7 +43,6 @@ const HeadAnchor = styled(Paragraph, {
     grid: {
       true: {
         fow: '200',
-        size: '$4',
         ls: 1,
         textTransform: 'unset',
         w: '100%',
@@ -128,18 +127,14 @@ export const HeaderLinks = (props: HeaderProps) => {
       )}
 
       {forceShowAllLinks && (
-        <NextLink
-          legacyBehavior={false}
-          target="_blank"
-          href="https://github.com/sponsors/natew"
-        >
+        <NextLink target="_blank" href="https://github.com/sponsors/natew">
           <HeadAnchor grid={forceShowAllLinks}>Sponsor</HeadAnchor>
         </NextLink>
       )}
 
       {forceShowAllLinks && (
         <>
-          <Separator o={0.5} my="$2" />
+          <Separator bc="$color025" o={0.25} my="$2" />
 
           <XStack fw="wrap" f={1} gap="$2" w="100%">
             {forceShowAllLinks && (

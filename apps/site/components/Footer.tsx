@@ -36,7 +36,7 @@ export const Footer = memo(() => {
             <NextLink href="/" aria-label="Homepage">
               <TamaguiLogo showWords downscale={1} />
             </NextLink>
-            <Paragraph size="$3">built with Tamagui</Paragraph>
+            <Paragraph size="$3">built with Tamagui, of course.</Paragraph>
           </YStack>
 
           <YStack
@@ -47,12 +47,13 @@ export const Footer = memo(() => {
             flex={1.5}
             space="$3"
           >
-            <H4 mb="$3" size="$4" fontFamily="$silkscreen">
+            <H4 mb="$3" fontFamily="$silkscreen" fontSize={12} ls={0.5} o={0.5}>
               Overview
             </H4>
             <ParagraphLink href="/docs/intro/introduction">Introduction</ParagraphLink>
             <ParagraphLink href="/docs/core/configuration">Configuration</ParagraphLink>
             <ParagraphLink href="/privacy">Privacy Policy</ParagraphLink>
+            <ParagraphLink href="/takeout-policy">Fulfillment Policy</ParagraphLink>
             {/* <ParagraphLink href="/docs/api">API</ParagraphLink>
           <ParagraphLink href="/docs/frequently-asked-questions">FAQ</ParagraphLink> */}
           </YStack>
@@ -65,12 +66,14 @@ export const Footer = memo(() => {
             flex={1.5}
             space="$3"
           >
-            <H4 mb="$3" size="$4" fontFamily="$silkscreen">
+            <H4 mb="$3" fontFamily="$silkscreen" fontSize={12} ls={0.5} o={0.5}>
               Docs
             </H4>
+            <ParagraphLink href="/docs/intro/introduction">Introduction</ParagraphLink>
             <ParagraphLink href="/docs/intro/installation">Installation</ParagraphLink>
-            <ParagraphLink href="/docs/intro/themes">Themes</ParagraphLink>
-            <ParagraphLink href="/docs/core/styled">Variants</ParagraphLink>
+            <ParagraphLink href="/docs/core/introduction">Core</ParagraphLink>
+            <ParagraphLink href="/docs/core/styled">styled()</ParagraphLink>
+            <ParagraphLink href="/docs/intro/why-a-compiler">Compiler</ParagraphLink>
           </YStack>
 
           <YStack
@@ -81,7 +84,7 @@ export const Footer = memo(() => {
             flex={1.5}
             space="$3"
           >
-            <H4 mb="$3" size="$4" fontFamily="$silkscreen">
+            <H4 mb="$3" fontFamily="$silkscreen" fontSize={12} ls={0.5} o={0.5}>
               Community
             </H4>
             <XStack space="$1" ai="center">

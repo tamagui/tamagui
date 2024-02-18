@@ -27,7 +27,7 @@ export const Features = ({ items, size, large, soon, ...props }: any) => {
             )}
           </YStack>
           <YStack f={1}>
-            <Paragraph size={size ?? (large ? '$6' : '$4')} color="$gray11">
+            <Paragraph size={size ?? (large ? '$5' : '$4')} color="$gray11">
               {feature}
             </Paragraph>
             {soon && (
