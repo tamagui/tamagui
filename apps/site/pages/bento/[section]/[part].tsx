@@ -77,23 +77,29 @@ export const DetailHeader = (props: { children: string }) => {
 
         <XStack p={0.5} ai="center" gap="$2">
           <Link href="/bento/">
-            <Anchor textTransform="capitalize">Bento</Anchor>
+            <Anchor tag="span" textTransform="capitalize">
+              Bento
+            </Anchor>
           </Link>
 
-          <Anchor selectable={false} size="$2">
+          <Anchor tag="span" selectable={false} size="$2">
             {'>'}
           </Anchor>
 
           <Link href={`/bento#${category}`}>
-            <Anchor textTransform="capitalize">{category}</Anchor>
+            <Anchor tag="span" textTransform="capitalize">
+              {category}
+            </Anchor>
           </Link>
 
-          <Anchor selectable={false} size="$2">
+          <Anchor tag="span" selectable={false} size="$2">
             {'>'}
           </Anchor>
 
           <Link href={`/bento/${subCategory}`}>
-            <Anchor textTransform="capitalize">{subCategory.replace('_', ' ')}</Anchor>
+            <Anchor tag="span" textTransform="capitalize">
+              {subCategory.replace('_', ' ')}
+            </Anchor>
           </Link>
         </XStack>
       </YStack>

@@ -93,6 +93,7 @@ export const BentoPageFrame = ({
                   width={3000}
                   height={3000}
                   src="/takeout/geometric.svg"
+                  priority
                 />
               </YStack>
 

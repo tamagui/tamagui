@@ -127,11 +127,7 @@ export const HeaderLinks = (props: HeaderProps) => {
       )}
 
       {forceShowAllLinks && (
-        <NextLink
-          legacyBehavior={false}
-          target="_blank"
-          href="https://github.com/sponsors/natew"
-        >
+        <NextLink target="_blank" href="https://github.com/sponsors/natew">
           <HeadAnchor grid={forceShowAllLinks}>Sponsor</HeadAnchor>
         </NextLink>
       )}
