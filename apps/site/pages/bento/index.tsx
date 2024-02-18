@@ -1,6 +1,6 @@
 import { NextLink } from '@components/NextLink'
 import * as Sections from '@tamagui/bento'
-import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
+import { ThemeTint, ThemeTintAlt, setTintIndex } from '@tamagui/logo'
 import {
   Check,
   ChevronDown,
@@ -38,7 +38,7 @@ import type { Database } from '@lib/supabase-types'
 import { getArray } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 import type { GetStaticProps } from 'next'
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { BentoLogo } from '../../components/BentoLogo'
 import { BentoPageFrame } from '../../components/BentoPageFrame'
 import { ContainerLarge } from '../../components/Container'
@@ -61,6 +61,10 @@ export default function BentoPage(props: ProComponentsProps) {
   const coupon = user.data?.accessInfo.hasTakeoutAccess
     ? props.takeoutPlusBentoCoupon
     : props.defaultCoupon
+
+  useEffect(() => {
+    setTintIndex(2)
+  }, [])
 
   return (
     <Theme name="tan">
@@ -163,7 +167,7 @@ const IntermediateCard = ({
         elevation="$0.5"
         // bg="$color025"
       >
-        <Icon color="$color10" />
+        <Icon color="$color11" o={0.85} />
       </Circle>
     </XStack>
   )
