@@ -1,4 +1,6 @@
 type Theme = {
+    accentBackground: string;
+    accentColor: string;
     background0: string;
     background025: string;
     background05: string;
@@ -25,8 +27,8 @@ type Theme = {
     backgroundFocus: string;
     borderColor: string;
     borderColorHover: string;
-    borderColorFocus: string;
     borderColorPress: string;
+    borderColorFocus: string;
     color: string;
     colorHover: string;
     colorPress: string;

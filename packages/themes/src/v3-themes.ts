@@ -238,17 +238,10 @@ export const getTemplates = (scheme: 'dark' | 'light') => {
 
   // our palettes have 4 things padding each end until you get to bg/color:
   // [accentBg, transparent1, transparent2, transparent3, transparent4, background, ...]
-  const bgIndex = 4
-
-  // light themes will start with a slightly stronger bg, and then lighten on hover
-  // whereas dark themes start with a less strong bg, but lighten on hover as well
-  const bgBaseOffset = 1
-
+  const bgIndex = 5
   const lighten = isLight ? -1 : 1
   const darken = -lighten
-
-  const background = bgIndex + bgBaseOffset
-  const borderColor = background + 3
+  const borderColor = bgIndex + 3
 
   // templates use the palette and specify index
   // negative goes backwards from end so -1 is the last item
@@ -272,29 +265,29 @@ export const getTemplates = (scheme: 'dark' | 'light') => {
     color10: bgIndex + 10,
     color11: bgIndex + 11,
     color12: bgIndex + 12,
-    color0: -0,
-    color025: -1,
-    color05: -2,
-    color075: -3,
+    color0: -1,
+    color025: -2,
+    color05: -3,
+    color075: -4,
     // the background, color, etc keys here work like generics - they make it so you
     // can publish components for others to use without mandating a specific color scale
     // the @tamagui/button Button component looks for `$background`, so you set the
     // dark_red_Button theme to have a stronger background than the dark_red theme.
-    background,
-    backgroundHover: background + lighten, // always lighten on hover no matter the scheme
-    backgroundPress: background + darken, // always darken on press no matter the theme
-    backgroundFocus: background + darken,
+    background: bgIndex,
+    backgroundHover: bgIndex + lighten, // always lighten on hover no matter the scheme
+    backgroundPress: bgIndex + darken, // always darken on press no matter the theme
+    backgroundFocus: bgIndex + darken,
     borderColor,
     borderColorHover: borderColor + lighten,
     borderColorPress: borderColor + darken,
     borderColorFocus: borderColor,
-    color: -bgIndex - 1,
-    colorHover: -bgIndex - 2,
-    colorPress: -bgIndex - 1,
-    colorFocus: -bgIndex - 2,
-    colorTransparent: -0,
-    placeholderColor: -bgIndex - 4,
-    outlineColor: -1,
+    color: -bgIndex,
+    colorHover: -bgIndex - 1,
+    colorPress: -bgIndex,
+    colorFocus: -bgIndex - 1,
+    colorTransparent: -1,
+    placeholderColor: -bgIndex - 3,
+    outlineColor: -2,
   }
 
   const surface1 = {
