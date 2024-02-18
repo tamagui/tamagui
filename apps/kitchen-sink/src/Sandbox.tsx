@@ -1,8 +1,8 @@
 // debug-verbose
 // import './wdyr'
 
-import { View } from 'react-native'
-import { Input, Stack, XStack, YStack, usePropsAndStyle } from 'tamagui'
+import { View as RNView } from 'react-native'
+import { View, Stack, XStack, YStack, usePropsAndStyle } from 'tamagui'
 
 const TestThing = (props) => {
   const [p2, style] = usePropsAndStyle(props)
@@ -12,11 +12,27 @@ const TestThing = (props) => {
 
 export const Sandbox = () => {
   return (
-    <View style={{ width: '100%', height: '100%', padding: 50 }}>
-      <Input selectionColor="$color2" />
-    </View>
+    <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
+      <Demo />
+    </RNView>
   )
 }
+
+const Demo = () => (
+  <View f={1} ai="center" jc="center">
+    <View
+      bg="$green7"
+      h={200}
+      w={200}
+      br={0}
+      animation="lazy"
+      pressStyle={{
+        scale: 0.75,
+        br: '$10',
+      }}
+    />
+  </View>
+)
 
 // animationKeyframes: {
 //   from: {
