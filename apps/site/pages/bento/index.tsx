@@ -95,7 +95,7 @@ BentoPage.getLayout = getDefaultLayout
 
 const Intermediate = () => {
   return (
-    <YStack zi={1} w="100%" mt={-30}>
+    <YStack zi={1} w="100%" mt={-80}>
       <YStack fullscreen elevation="$4" o={0.15} />
       <YStack pos="absolute" t={0} l={0} r={0} o={0.25} btw={0.5} bc="$color025" />
       <YStack pos="absolute" b={0} l={0} r={0} o={0.25} btw={0.5} bc="$color025" />
@@ -470,8 +470,8 @@ const Body = ({ heroVisible }: { heroVisible: boolean }) => {
       pb="$8"
       // bg="$background"
       style={{
-        backdropFilter: `blur(${heroVisible ? 4 : 90}px)`,
-        WebkitBackdropFilter: `blur(${heroVisible ? 4 : 10}px)`,
+        backdropFilter: `blur(${heroVisible ? 0 : 90}px)`,
+        WebkitBackdropFilter: `blur(${heroVisible ? 0 : 10}px)`,
       }}
       y={0}
       minHeight={800}
@@ -485,7 +485,7 @@ const Body = ({ heroVisible }: { heroVisible: boolean }) => {
         }
       }}
     >
-      <Separator bc="$color" pos="absolute" t={0} l={0} r={0} o={0.05} />
+      {/* <Separator bc="$color" pos="absolute" t={0} l={0} r={0} o={0.05} /> */}
 
       <YStack>
         <ContainerLarge>
@@ -499,7 +499,7 @@ const Body = ({ heroVisible }: { heroVisible: boolean }) => {
             value={filter}
             onChangeText={setFilter}
             placeholder="Filter..."
-            placeholderTextColor="$background075"
+            placeholderTextColor="$background05"
           />
         </ContainerLarge>
 
