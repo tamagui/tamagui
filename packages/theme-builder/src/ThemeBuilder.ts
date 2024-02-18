@@ -352,7 +352,7 @@ export class ThemeBuilder<
       let maskFunction = this.state.masks?.[maskName]
 
       if (!maskFunction) {
-        throw new Error(`No mask ${maskFunction}`)
+        throw new Error(`No mask ${maskName}`)
       }
 
       const parentTheme = this.state.themes[parentName]
