@@ -10,6 +10,7 @@ import { BentoLogo } from '../../../components/BentoLogo'
 import { ContainerBento } from '../../../components/Container'
 import { getDefaultLayout } from '../../../lib/getDefaultLayout'
 import Link from 'next/link'
+import { Footer } from '../../../components/Footer'
 
 export default function page() {
   const router = useRouter()
@@ -18,20 +19,22 @@ export default function page() {
 
   return (
     <>
-      <YStack pos="relative">
-        <YStack pe="none" fullscreen className="bg-grid" />
-        <BentoPageFrame simpler>
-          <ContainerBento>
-            <DetailHeader>
-              {`${params.section[0].toUpperCase()}${params.section.slice(1)}`}
-            </DetailHeader>
-          </ContainerBento>
-        </BentoPageFrame>
+      <BentoPageFrame simpler>
+        <ContainerBento>
+          <DetailHeader>
+            {`${params.section[0].toUpperCase()}${params.section.slice(1)}`}
+          </DetailHeader>
+        </ContainerBento>
+      </BentoPageFrame>
 
-        <ContainerBento mt={-100}>
+      <YStack>
+        <YStack pe="none" fullscreen className="bg-grid" />
+        <ContainerBento>
           <Comp />
         </ContainerBento>
       </YStack>
+
+      <Footer />
     </>
   )
 }
@@ -60,37 +63,43 @@ export const DetailHeader = (props: { children: string }) => {
   const [category, subCategory] = asPath.split('bento/')[1].split('/')
 
   return (
-    <YStack pt="$12" pb="$6" gap="$4">
+    <YStack pb="$6" gap="$4">
       <YStack gap="$4">
         <XStack ai="center" jc="space-between">
-          <Theme reset>
+          <Theme name="gray">
             <H1 size="$12">{props.children}</H1>
           </Theme>
 
-          <YStack scale={0.5} m={-150}>
+          <YStack scale={0.25} m={-150}>
             <BentoLogo />
           </YStack>
         </XStack>
 
         <XStack p={0.5} ai="center" gap="$2">
           <Link href="/bento/">
-            <Anchor textTransform="capitalize">Bento</Anchor>
+            <Anchor tag="span" textTransform="capitalize">
+              Bento
+            </Anchor>
           </Link>
 
-          <Anchor selectable={false} size="$2">
+          <Anchor tag="span" selectable={false} size="$2">
             {'>'}
           </Anchor>
 
           <Link href={`/bento#${category}`}>
-            <Anchor textTransform="capitalize">{category}</Anchor>
+            <Anchor tag="span" textTransform="capitalize">
+              {category}
+            </Anchor>
           </Link>
 
-          <Anchor selectable={false} size="$2">
+          <Anchor tag="span" selectable={false} size="$2">
             {'>'}
           </Anchor>
 
           <Link href={`/bento/${subCategory}`}>
-            <Anchor textTransform="capitalize">{subCategory.replace('_', ' ')}</Anchor>
+            <Anchor tag="span" textTransform="capitalize">
+              {subCategory.replace('_', ' ')}
+            </Anchor>
           </Link>
         </XStack>
       </YStack>

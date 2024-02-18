@@ -1,52 +1,19 @@
-const { makeMetroConfig } = require('@rnx-kit/metro-config')
-const MetroSymlinksResolver = require('@rnx-kit/metro-resolver-symlinks')
+const { getDefaultConfig } = require('expo/metro-config')
+const path = require('path')
 
-module.exports = makeMetroConfig({
-  projectRoot: __dirname,
-  resolver: {
-    resolveRequest: MetroSymlinksResolver(),
-  },
-})
+// Find the project and workspace directories
+const projectRoot = __dirname
+// This can be replaced with `find-yarn-workspace-root`
+const monorepoRoot = path.resolve(projectRoot, '../..')
 
-// // Learn more https://docs.expo.io/guides/customizing-metro
-// /**
-//  * @type {import('expo/metro-config')}
-//  */
-//
-// const path = require('path')
+const config = getDefaultConfig(projectRoot)
 
-// const projectRoot = __dirname
-// const workspaceRoot = path.resolve(__dirname, '..')
+// 1. Watch all files within the monorepo
+config.watchFolders = [monorepoRoot]
+// 2. Let Metro know where to resolve packages and in what order
+config.resolver.nodeModulesPaths = [
+  path.resolve(projectRoot, 'node_modules'),
+  path.resolve(monorepoRoot, 'node_modules'),
+]
 
-// const config = getDefaultConfig(projectRoot)
-
-// config.watchFolders = [workspaceRoot]
-// config.resolver.nodeModulesPaths = [
-//   path.resolve(projectRoot, 'node_modules'),
-//   path.resolve(workspaceRoot, 'node_modules'),
-// ]
-
-// config.resolver.extraNodeModules = {
-//   modules: workspaceRoot,
-// }
-
-// console.log('config', config)
-
-// module.exports = config
-
-// // const defaultSourceExts =
-// //   require('metro-config/src/defaults/defaults').sourceExts
-
-// // module.exports = {
-// //   transformer: {
-// //     getTransformOptions: () => ({
-// //       transform: {
-// //         experimentalImportSupport: true,
-// //         inlineRequires: true,
-// //       },
-// //     }),
-// //   },
-// //   resolver: {
-// //     sourceExts: [...defaultSourceExts, 'cjs'],
-// //   },
-// // }
+module.exports = config

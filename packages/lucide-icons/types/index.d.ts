@@ -1249,6 +1249,7 @@ export { Squirrel } from './icons/squirrel';
 export { Stamp } from './icons/stamp';
 export { StarHalf } from './icons/star-half';
 export { StarOff } from './icons/star-off';
+export { StarFull } from './icons/star-full';
 export { Star } from './icons/star';
 export { StepBack } from './icons/step-back';
 export { StepForward } from './icons/step-forward';

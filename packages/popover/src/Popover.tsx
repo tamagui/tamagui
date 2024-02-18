@@ -20,6 +20,7 @@ import {
   Theme,
   View,
   createStyledContext,
+  styled,
   useEvent,
   useGet,
   useMedia,
@@ -207,13 +208,7 @@ export interface PopoverContentTypeProps
   enableAnimationForPositionChange?: boolean
 }
 
-type PopoverContentType = TamaguiComponent<
-  ScopedPopoverProps<PopoverContentTypeProps>,
-  PopoverContentTypeElement
->
-
-// @ts-expect-error
-export const PopoverContent: PopoverContentType = PopperContentFrame.extractable(
+export const PopoverContent = PopperContentFrame.extractable(
   React.forwardRef<
     PopoverContentTypeElement,
     ScopedPopoverProps<PopoverContentTypeProps>

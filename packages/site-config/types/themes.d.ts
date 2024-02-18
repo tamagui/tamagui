@@ -103,6 +103,12 @@ export declare const themes: {
     dark_gray_alt1: import("@tamagui/themes/v3-themes").Theme;
     dark_gray_alt2: import("@tamagui/themes/v3-themes").Theme;
     dark_gray_active: import("@tamagui/themes/v3-themes").Theme;
+    light_surface1: import("@tamagui/themes/v3-themes").Theme;
+    light_surface2: import("@tamagui/themes/v3-themes").Theme;
+    light_surface3: import("@tamagui/themes/v3-themes").Theme;
+    dark_surface1: import("@tamagui/themes/v3-themes").Theme;
+    dark_surface2: import("@tamagui/themes/v3-themes").Theme;
+    dark_surface3: import("@tamagui/themes/v3-themes").Theme;
     light_blue_surface1: import("@tamagui/themes/v3-themes").Theme;
     light_blue_surface2: import("@tamagui/themes/v3-themes").Theme;
     light_blue_surface3: import("@tamagui/themes/v3-themes").Theme;
@@ -167,13 +173,7 @@ export declare const themes: {
     dark_yellow_surface2: import("@tamagui/themes/v3-themes").Theme;
     dark_yellow_surface3: import("@tamagui/themes/v3-themes").Theme;
     dark_yellow_surface4: import("@tamagui/themes/v3-themes").Theme;
-    light_surface1: import("@tamagui/themes/v3-themes").Theme;
-    light_surface2: import("@tamagui/themes/v3-themes").Theme;
-    light_surface3: import("@tamagui/themes/v3-themes").Theme;
     light_surface4: import("@tamagui/themes/v3-themes").Theme;
-    dark_surface1: import("@tamagui/themes/v3-themes").Theme;
-    dark_surface2: import("@tamagui/themes/v3-themes").Theme;
-    dark_surface3: import("@tamagui/themes/v3-themes").Theme;
     dark_surface4: import("@tamagui/themes/v3-themes").Theme;
 };
 //# sourceMappingURL=themes.d.ts.map

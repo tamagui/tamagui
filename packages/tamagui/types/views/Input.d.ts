@@ -109,6 +109,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     allowFontScaling?: boolean | undefined;
     id?: string | undefined;
     numberOfLines?: number | undefined;
+    testID?: string | undefined;
     nativeID?: string | undefined;
     maxFontSizeMultiplier?: number | null | undefined;
     lineBreakStrategyIOS?: "none" | "standard" | "hangul-word" | "push-out" | undefined;
@@ -196,7 +197,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     onPointerUp?: ((event: import("react-native").PointerEvent) => void) | undefined;
     onPointerUpCapture?: ((event: import("react-native").PointerEvent) => void) | undefined;
     autoCapitalize?: "none" | "sentences" | "words" | "characters" | undefined;
-    autoComplete?: "email" | "password" | "tel" | "url" | "off" | "name" | "additional-name" | "address-line1" | "address-line2" | "birthdate-day" | "birthdate-full" | "birthdate-month" | "birthdate-year" | "cc-csc" | "cc-exp" | "cc-exp-day" | "cc-exp-month" | "cc-exp-year" | "cc-number" | "country" | "current-password" | "family-name" | "gender" | "given-name" | "honorific-prefix" | "honorific-suffix" | "name-family" | "name-given" | "name-middle" | "name-middle-initial" | "name-prefix" | "name-suffix" | "new-password" | "nickname" | "one-time-code" | "organization" | "organization-title" | "password-new" | "postal-address" | "postal-address-country" | "postal-address-extended" | "postal-address-extended-postal-code" | "postal-address-locality" | "postal-address-region" | "postal-code" | "street-address" | "sms-otp" | "tel-country-code" | "tel-national" | "tel-device" | "username" | "username-new" | undefined;
+    autoComplete?: "email" | "password" | "tel" | "url" | "off" | "name" | "additional-name" | "address-line1" | "address-line2" | "birthdate-day" | "birthdate-full" | "birthdate-month" | "birthdate-year" | "cc-csc" | "cc-exp" | "cc-exp-day" | "cc-exp-month" | "cc-exp-year" | "cc-number" | "cc-name" | "cc-given-name" | "cc-middle-name" | "cc-family-name" | "cc-type" | "country" | "current-password" | "family-name" | "gender" | "given-name" | "honorific-prefix" | "honorific-suffix" | "name-family" | "name-given" | "name-middle" | "name-middle-initial" | "name-prefix" | "name-suffix" | "new-password" | "nickname" | "one-time-code" | "organization" | "organization-title" | "password-new" | "postal-address" | "postal-address-country" | "postal-address-extended" | "postal-address-extended-postal-code" | "postal-address-locality" | "postal-address-region" | "postal-code" | "street-address" | "sms-otp" | "tel-country-code" | "tel-national" | "tel-device" | "username" | "username-new" | undefined;
     autoCorrect?: boolean | undefined;
     autoFocus?: boolean | undefined;
     blurOnSubmit?: boolean | undefined;
@@ -217,6 +218,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     onScroll?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").TextInputScrollEventData>) => void) | undefined;
     onKeyPress?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").TextInputKeyPressEventData>) => void) | undefined;
     placeholder?: string | undefined;
+    readOnly: boolean | undefined;
     returnKeyType?: import("react-native").ReturnKeyTypeOptions | undefined;
     enterKeyHint?: import("react-native").EnterKeyHintTypeOptions | undefined;
     secureTextEntry?: boolean | undefined;
@@ -236,8 +238,9 @@ export declare function useInputProps(props: InputProps, ref: any): {
     rejectResponderTermination?: boolean | null | undefined;
     selectionState?: import("react-native").DocumentSelectionState | undefined;
     spellCheck?: boolean | undefined;
-    textContentType?: "none" | "password" | "name" | "nickname" | "username" | "URL" | "addressCity" | "addressCityAndState" | "addressState" | "countryName" | "creditCardNumber" | "emailAddress" | "familyName" | "fullStreetAddress" | "givenName" | "jobTitle" | "location" | "middleName" | "namePrefix" | "nameSuffix" | "organizationName" | "postalCode" | "streetAddressLine1" | "streetAddressLine2" | "sublocality" | "telephoneNumber" | "newPassword" | "oneTimeCode" | undefined;
+    textContentType?: "none" | "password" | "name" | "nickname" | "username" | "URL" | "addressCity" | "addressCityAndState" | "addressState" | "countryName" | "creditCardNumber" | "creditCardExpiration" | "creditCardExpirationMonth" | "creditCardExpirationYear" | "creditCardSecurityCode" | "creditCardType" | "creditCardName" | "creditCardGivenName" | "creditCardMiddleName" | "creditCardFamilyName" | "emailAddress" | "familyName" | "fullStreetAddress" | "givenName" | "jobTitle" | "location" | "middleName" | "namePrefix" | "nameSuffix" | "organizationName" | "postalCode" | "streetAddressLine1" | "streetAddressLine2" | "sublocality" | "telephoneNumber" | "newPassword" | "oneTimeCode" | "birthdate" | "birthdateDay" | "birthdateMonth" | "birthdateYear" | undefined;
     scrollEnabled?: boolean | undefined;
+    smartInsertDelete?: boolean | undefined;
     cursorColor?: import("react-native").ColorValue | null | undefined;
     importantForAutofill?: "auto" | "no" | "yes" | "noExcludeDescendants" | "yesExcludeDescendants" | undefined;
     disableFullscreenUI?: boolean | undefined;
@@ -292,7 +295,6 @@ export declare function useInputProps(props: InputProps, ref: any): {
     right?: number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"right"> | null | undefined;
     fontSize?: "unset" | import("@tamagui/core").GetThemeValueForKey<"fontSize"> | undefined;
     lineHeight?: "unset" | import("@tamagui/core").GetThemeValueForKey<"lineHeight"> | undefined;
-    testID?: string | undefined;
     fontFamily?: "unset" | import("@tamagui/core").GetThemeValueForKey<"fontFamily"> | undefined;
     fontStyle?: "unset" | "normal" | "italic" | undefined;
     fontWeight?: "unset" | import("@tamagui/core").GetThemeValueForKey<"fontWeight"> | undefined;
@@ -363,7 +365,202 @@ export declare function useInputProps(props: InputProps, ref: any): {
     }> | undefined;
     shadowOpacity?: "unset" | import("react-native").AnimatableNumericValue | undefined;
     shadowRadius?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"shadowRadius"> | undefined;
-    transform?: string | (import("react-native").PerpectiveTransform | import("react-native").RotateTransform | import("react-native").RotateXTransform | import("react-native").RotateYTransform | import("react-native").RotateZTransform | import("react-native").ScaleTransform | import("react-native").ScaleXTransform | import("react-native").ScaleYTransform | import("react-native").TranslateXTransform | import("react-native").TranslateYTransform | import("react-native").SkewXTransform | import("react-native").SkewYTransform | import("react-native").MatrixTransform)[] | undefined;
+    transform?: string | (({
+        perspective: import("react-native").AnimatableNumericValue;
+    } & {
+        scale?: undefined;
+        scaleX?: undefined;
+        scaleY?: undefined;
+        skewX?: undefined;
+        skewY?: undefined;
+        matrix?: undefined;
+        rotate?: undefined;
+        rotateY?: undefined;
+        rotateX?: undefined;
+        rotateZ?: undefined;
+        translateX?: undefined;
+        translateY?: undefined;
+    }) | ({
+        scale: import("react-native").AnimatableNumericValue;
+    } & {
+        perspective?: undefined;
+        scaleX?: undefined;
+        scaleY?: undefined;
+        skewX?: undefined;
+        skewY?: undefined;
+        matrix?: undefined;
+        rotate?: undefined;
+        rotateY?: undefined;
+        rotateX?: undefined;
+        rotateZ?: undefined;
+        translateX?: undefined;
+        translateY?: undefined;
+    }) | ({
+        scaleX: import("react-native").AnimatableNumericValue;
+    } & {
+        perspective?: undefined;
+        scale?: undefined;
+        scaleY?: undefined;
+        skewX?: undefined;
+        skewY?: undefined;
+        matrix?: undefined;
+        rotate?: undefined;
+        rotateY?: undefined;
+        rotateX?: undefined;
+        rotateZ?: undefined;
+        translateX?: undefined;
+        translateY?: undefined;
+    }) | ({
+        scaleY: import("react-native").AnimatableNumericValue;
+    } & {
+        perspective?: undefined;
+        scale?: undefined;
+        scaleX?: undefined;
+        skewX?: undefined;
+        skewY?: undefined;
+        matrix?: undefined;
+        rotate?: undefined;
+        rotateY?: undefined;
+        rotateX?: undefined;
+        rotateZ?: undefined;
+        translateX?: undefined;
+        translateY?: undefined;
+    }) | ({
+        skewX: import("react-native").AnimatableStringValue;
+    } & {
+        perspective?: undefined;
+        scale?: undefined;
+        scaleX?: undefined;
+        scaleY?: undefined;
+        skewY?: undefined;
+        matrix?: undefined;
+        rotate?: undefined;
+        rotateY?: undefined;
+        rotateX?: undefined;
+        rotateZ?: undefined;
+        translateX?: undefined;
+        translateY?: undefined;
+    }) | ({
+        skewY: import("react-native").AnimatableStringValue;
+    } & {
+        perspective?: undefined;
+        scale?: undefined;
+        scaleX?: undefined;
+        scaleY?: undefined;
+        skewX?: undefined;
+        matrix?: undefined;
+        rotate?: undefined;
+        rotateY?: undefined;
+        rotateX?: undefined;
+        rotateZ?: undefined;
+        translateX?: undefined;
+        translateY?: undefined;
+    }) | ({
+        matrix: import("react-native").AnimatableNumericValue[];
+    } & {
+        perspective?: undefined;
+        scale?: undefined;
+        scaleX?: undefined;
+        scaleY?: undefined;
+        skewX?: undefined;
+        skewY?: undefined;
+        rotate?: undefined;
+        rotateY?: undefined;
+        rotateX?: undefined;
+        rotateZ?: undefined;
+        translateX?: undefined;
+        translateY?: undefined;
+    }) | ({
+        rotate: import("react-native").AnimatableStringValue;
+    } & {
+        perspective?: undefined;
+        scale?: undefined;
+        scaleX?: undefined;
+        scaleY?: undefined;
+        skewX?: undefined;
+        skewY?: undefined;
+        matrix?: undefined;
+        rotateY?: undefined;
+        rotateX?: undefined;
+        rotateZ?: undefined;
+        translateX?: undefined;
+        translateY?: undefined;
+    }) | ({
+        rotateY: import("react-native").AnimatableStringValue;
+    } & {
+        perspective?: undefined;
+        scale?: undefined;
+        scaleX?: undefined;
+        scaleY?: undefined;
+        skewX?: undefined;
+        skewY?: undefined;
+        matrix?: undefined;
+        rotate?: undefined;
+        rotateX?: undefined;
+        rotateZ?: undefined;
+        translateX?: undefined;
+        translateY?: undefined;
+    }) | ({
+        rotateX: import("react-native").AnimatableStringValue;
+    } & {
+        perspective?: undefined;
+        scale?: undefined;
+        scaleX?: undefined;
+        scaleY?: undefined;
+        skewX?: undefined;
+        skewY?: undefined;
+        matrix?: undefined;
+        rotate?: undefined;
+        rotateY?: undefined;
+        rotateZ?: undefined;
+        translateX?: undefined;
+        translateY?: undefined;
+    }) | ({
+        rotateZ: import("react-native").AnimatableStringValue;
+    } & {
+        perspective?: undefined;
+        scale?: undefined;
+        scaleX?: undefined;
+        scaleY?: undefined;
+        skewX?: undefined;
+        skewY?: undefined;
+        matrix?: undefined;
+        rotate?: undefined;
+        rotateY?: undefined;
+        rotateX?: undefined;
+        translateX?: undefined;
+        translateY?: undefined;
+    }) | ({
+        translateX: import("react-native").AnimatableNumericValue;
+    } & {
+        perspective?: undefined;
+        scale?: undefined;
+        scaleX?: undefined;
+        scaleY?: undefined;
+        skewX?: undefined;
+        skewY?: undefined;
+        matrix?: undefined;
+        rotate?: undefined;
+        rotateY?: undefined;
+        rotateX?: undefined;
+        rotateZ?: undefined;
+        translateY?: undefined;
+    }) | ({
+        translateY: import("react-native").AnimatableNumericValue;
+    } & {
+        perspective?: undefined;
+        scale?: undefined;
+        scaleX?: undefined;
+        scaleY?: undefined;
+        skewX?: undefined;
+        skewY?: undefined;
+        matrix?: undefined;
+        rotate?: undefined;
+        rotateY?: undefined;
+        rotateX?: undefined;
+        rotateZ?: undefined;
+        translateX?: undefined;
+    }))[] | undefined;
     transformMatrix?: "unset" | number[] | undefined;
     rotation?: "unset" | import("react-native").AnimatableNumericValue | undefined;
     translateX?: "unset" | import("react-native").AnimatableNumericValue | undefined;
@@ -461,6 +658,5 @@ export declare function useInputProps(props: InputProps, ref: any): {
     }>>) | null | undefined;
     rows?: number | undefined;
     ref: (node: any) => void;
-    readOnly: boolean | undefined;
 };
 //# sourceMappingURL=Input.d.ts.map

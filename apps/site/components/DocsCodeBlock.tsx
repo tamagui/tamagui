@@ -93,6 +93,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               accessibilityLabel="Show or hide code"
               icon={Code2}
               size="$3"
+              zi={10}
               onPress={() => setIsCollapsed(!isCollapsed)}
             >
               {isCollapsed ? 'Show code' : 'Hide code'}
@@ -102,6 +103,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                 accessibilityLabel="Toggle tint on/off"
                 size="$3"
                 onPress={toggleTinted}
+                zi={10}
                 icon={Paintbrush}
               />
             </TooltipSimple>

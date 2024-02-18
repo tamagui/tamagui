@@ -20,7 +20,7 @@ export declare const SwitchContext: React.Context<{
     disabled?: boolean | undefined;
 }>;
 type SwitchComponent = (props: SwitchSharedProps & SwitchExtraProps) => any;
-type SwitchThumbComponent = (props: SwitchSharedProps) => any;
+type SwitchThumbComponent = (props: any) => any;
 export declare function createSwitch<F extends SwitchComponent, T extends SwitchThumbComponent>(createProps: {
     disableActiveTheme?: boolean;
     Frame?: F;

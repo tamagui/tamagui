@@ -98,8 +98,9 @@ const HeroContents = memo(function HeroContents() {
                 bc="$color6"
                 size="$3"
                 br="$10"
-                elevation="$1"
+                elevation="$0.5"
                 fontFamily="$silkscreen"
+                fontSize={12}
               >
                 Takeout 🥡
                 <Text ff="$body" fontSize="$4" color="$color10" $sm={{ dsp: 'none' }}>

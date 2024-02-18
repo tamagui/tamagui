@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/build",
-  "version": "1.89.26",
+  "version": "1.89.30",
   "bin": {
     "tamagui-build": "tamagui-build.js"
   },
@@ -17,6 +17,7 @@
     "babel-plugin-fully-specified": "*",
     "chokidar": "^3.5.2",
     "esbuild": "^0.19.11",
+    "esbuild-plugin-es5": "^2.1.0",
     "execa": "^5.0.0",
     "fast-glob": "^3.2.11",
     "fs-extra": "^11.2.0",

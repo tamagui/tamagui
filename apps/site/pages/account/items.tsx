@@ -113,6 +113,7 @@ const Items = () => {
 
 type SubscriptionDetailProps = {
   subscription: Exclude<
+    // @ts-ignore
     Exclude<ReturnType<typeof useUser>['data'], undefined>['subscriptions'],
     null | undefined
   >[number]

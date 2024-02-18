@@ -76,6 +76,7 @@ import {
 import { LinearGradient } from 'tamagui/linear-gradient'
 
 import { BentoTable } from '@components/BentoPurchaseModal'
+import { BentoLogo } from '../components/BentoLogo'
 import { ContainerXL } from '../components/Container'
 import { FaqModal } from '../components/FaqModal'
 import { Footer } from '../components/Footer'
@@ -84,19 +85,24 @@ import { LoadCherryBomb, LoadMunro } from '../components/LoadFont'
 import { NextLink } from '../components/NextLink'
 import { seasons } from '../components/SeasonToggleButton'
 import { TakeoutLicense } from '../components/TakeoutLicense'
+import { TakeoutPolicy } from '../components/TakeoutPolicy'
 import { ThemeNameEffect } from '../components/ThemeNameEffect'
 import { useTakeoutStore } from '../hooks/useTakeoutStore'
-import { TakeoutPolicy } from '../components/TakeoutPolicy'
-import { BentoLogo } from '../components/BentoLogo'
 
 export default function TakeoutPage({
   starter,
   fontsPack,
   iconsPack,
   bento,
-  coupon,
+  defaultCoupon,
+  takeoutPlusBentoCoupon,
 }: TakeoutPageProps) {
   const store = useTakeoutStore()
+  const user = useUser()
+  const coupon =
+    bento && store.selectedProductsIds.includes(bento.id)
+      ? takeoutPlusBentoCoupon
+      : defaultCoupon
 
   return (
     <YStack maw="100%">
@@ -204,7 +210,7 @@ export default function TakeoutPage({
       {/* <Glow /> */}
 
       <PurchaseModal
-        coupon={coupon}
+        defaultCoupon={coupon}
         starter={starter}
         iconsPack={iconsPack}
         fontsPack={fontsPack}
@@ -255,13 +261,13 @@ export default function TakeoutPage({
                 }}
                 zIndex="$5"
               >
-                <DiscountText coupon={coupon} />
+                {!!defaultCoupon && <DiscountText defaultCoupon={defaultCoupon} />}
               </YStack>
             )}
 
             {/* <PromoVideo /> */}
 
-            <TakeoutHero coupon={coupon} />
+            <TakeoutHero defaultCoupon={defaultCoupon} />
           </YStack>
 
           <XStack
@@ -933,7 +939,8 @@ type TakeoutPageProps = {
   bento?: Database['public']['Tables']['products']['Row'] & {
     prices: Database['public']['Tables']['prices']['Row'][]
   }
-  coupon?: Stripe.Coupon | null
+  defaultCoupon?: Stripe.Coupon | null
+  takeoutPlusBentoCoupon?: Stripe.Coupon | null
 }
 
 const TakeoutCard2Frame = styled(YStack, {
@@ -1051,7 +1058,7 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
   )
 }
 
-const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
+const TakeoutHero = ({ defaultCoupon }: Pick<TakeoutPageProps, 'defaultCoupon'>) => {
   const enable3d = useClientValue(
     () => !isSafariMobile && !window.location.search?.includes('disable-3d')
   )
@@ -1315,15 +1322,22 @@ const PurchaseModal = ({
   iconsPack,
   fontsPack,
   bento,
-  coupon,
-}: TakeoutPageProps) => {
+  defaultCoupon,
+}: Omit<TakeoutPageProps, 'takeoutPlusBentoCoupon'>) => {
   const products = [starter, iconsPack, fontsPack]
-  // const prices = products.prices
   const store = useTakeoutStore()
+  const { selectedProductsIds } = store
+
+  useEffect(() => {
+    if (store.selectedProductsIds.length === 0) {
+      store.selectedProductsIds = products.map((p) => p!.id)
+    }
+  }, [store.selectedProductsIds])
+  // const prices = products.prices
   // const [selectedPriceId, setSelectedPriceId] = useState(prices[prices.length - 1].id)
-  const [selectedProductsIds, setSelectedProductsIds] = useState<string[]>(
-    products.filter(Boolean).map((p) => p!.id)
-  )
+  function setSelectedProductsIds(newSelectedProductIds: string[]) {
+    store.selectedProductsIds = newSelectedProductIds
+  }
   const sortedStarterPrices = (starter?.prices ?? []).sort(
     (a, b) => a.unit_amount! - b.unit_amount!
   )
@@ -1371,17 +1385,16 @@ const PurchaseModal = ({
     return final
   }, [selectedProductsIds, starterPriceId, bentoPriceId, starter, iconsPack, fontsPack])
 
+  const finalCoupon = store.appliedCoupon || defaultCoupon
   // with discount applied
   const finalPrice = useMemo(() => {
-    const appliedCoupon = store.appliedCoupon ?? coupon
-    if (appliedCoupon) {
-      if (appliedCoupon.amount_off) return sum - appliedCoupon.amount_off
-      if (appliedCoupon.percent_off)
-        return (sum * (100 - appliedCoupon.percent_off)) / 100
+    if (finalCoupon) {
+      if (finalCoupon.amount_off) return sum - finalCoupon.amount_off
+      if (finalCoupon.percent_off) return (sum * (100 - finalCoupon.percent_off)) / 100
     }
 
     return sum
-  }, [sum, store.appliedCoupon, coupon])
+  }, [sum, finalCoupon])
   const hasDiscountApplied = finalPrice !== sum
 
   const noProductSelected = selectedProductsIds.length === 0
@@ -1560,7 +1573,7 @@ const PurchaseModal = ({
 
                   <YStack mt="$6" space="$4" ai="center">
                     <Paragraph size="$3" theme="alt1">
-                      Instant one-click cancel your subscription from /account
+                      Instant one-click cancel your subscription from /account/items
                     </Paragraph>
                   </YStack>
                 </YStack>
@@ -1677,7 +1690,12 @@ const PurchaseModal = ({
                     </XStack>
 
                     <Unspaced>
-                      <YStack mt="$2">
+                      <YStack mt="$2" gap="$1">
+                        {finalCoupon ? (
+                          <SizableText textAlign="right" size="$3">
+                            Coupon "{finalCoupon.name}" is applied.
+                          </SizableText>
+                        ) : null}
                         <PromotionInput />
                       </YStack>
                     </Unspaced>
@@ -1697,9 +1715,9 @@ const PurchaseModal = ({
                           if (store.appliedPromoCode) {
                             // the coupon user applied
                             params.append(`promotion_code`, store.appliedPromoCode)
-                          } else if (coupon) {
+                          } else if (defaultCoupon) {
                             // the coupon that's applied by default (special event, etc.)
-                            params.append(`coupon_id`, coupon.id)
+                            params.append(`coupon_id`, defaultCoupon.id)
                           }
 
                           return params.toString()
@@ -2455,14 +2473,14 @@ const PoliciesModal = () => {
 }
 
 const DiscountText = ({
-  coupon,
+  defaultCoupon,
 }: {
-  coupon: NonNullable<TakeoutPageProps['coupon']>
+  defaultCoupon: NonNullable<TakeoutPageProps['defaultCoupon']>
 }) => {
-  const text = coupon.amount_off
-    ? `${formatPrice(coupon.amount_off, 'usd')} ${coupon.name}`
-    : coupon.percent_off
-      ? `${coupon.percent_off}% ${coupon.name}`
+  const text = defaultCoupon.amount_off
+    ? `${defaultCoupon.name} (${formatPrice(defaultCoupon.amount_off / 100, 'usd')})`
+    : defaultCoupon.percent_off
+      ? `${defaultCoupon.name} (${defaultCoupon.percent_off}%)`
       : ''
   return (
     <ThemeTintAlt offset={6}>
@@ -3049,8 +3067,13 @@ export const getStaticProps: GetStaticProps<TakeoutPageProps | any> = async () =
 }
 
 const getTakeoutProducts = async (): Promise<TakeoutPageProps> => {
-  const promoListPromise = stripe.promotionCodes.list({
-    code: 'SITE', // ones with code site are considered public and will be shown here
+  const defaultSitePromotionCodePromise = stripe.promotionCodes.list({
+    code: 'SITE', // ones with code SITE are considered public and will be shown here
+    active: true,
+    expand: ['data.coupon'],
+  })
+  const takeoutPlusBentoPromotionCodePromise = stripe.promotionCodes.list({
+    code: 'TAKEOUTPLUSBENTO', // ones with code TAKEOUTPLUSBENTO are considered public and will be shown here
     active: true,
     expand: ['data.coupon'],
   })
@@ -3076,16 +3099,30 @@ const getTakeoutProducts = async (): Promise<TakeoutPageProps> => {
       .eq('metadata->>slug', 'bento')
       .single(),
   ]
-  const promises = [promoListPromise, ...productPromises]
+  const promises = [
+    defaultSitePromotionCodePromise,
+    takeoutPlusBentoPromotionCodePromise,
+    ...productPromises,
+  ]
   const queries = await Promise.all(promises)
 
-  const products = queries.slice(1) as Awaited<(typeof productPromises)[number]>[]
-  const couponsList = queries[0] as Awaited<typeof promoListPromise>
+  // slice(2) because the first two are coupon info
+  const products = queries.slice(2) as Awaited<(typeof productPromises)[number]>[]
+  const defaultCouponList = queries[0] as Awaited<typeof defaultSitePromotionCodePromise>
+  const takeoutPlusBentoCouponList = queries[1] as Awaited<
+    typeof takeoutPlusBentoPromotionCodePromise
+  >
 
-  let coupon: Stripe.Coupon | null = null
+  let defaultCoupon: Stripe.Coupon | null = null
 
-  if (couponsList.data.length > 0) {
-    coupon = couponsList.data[0].coupon
+  if (defaultCouponList.data.length > 0) {
+    defaultCoupon = defaultCouponList.data[0].coupon
+  }
+
+  let takeoutPlusBentoCoupon: Stripe.Coupon | null = null
+
+  if (takeoutPlusBentoCouponList.data.length > 0) {
+    takeoutPlusBentoCoupon = takeoutPlusBentoCouponList.data[0].coupon
   }
 
   if (!products.length) {
@@ -3129,6 +3166,7 @@ const getTakeoutProducts = async (): Promise<TakeoutPageProps> => {
         (p) => p.active && !(p.metadata as Record<string, any>).hide_from_lists
       ),
     },
-    coupon,
+    defaultCoupon,
+    takeoutPlusBentoCoupon,
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/popover",
-  "version": "1.89.26",
+  "version": "1.89.30",
   "sideEffects": [
     "*.css"
   ],
@@ -33,24 +33,24 @@
   },
   "dependencies": {
     "@floating-ui/react": "^0.26.6",
-    "@tamagui/adapt": "1.89.26",
-    "@tamagui/animate": "1.89.26",
-    "@tamagui/aria-hidden": "1.89.26",
-    "@tamagui/compose-refs": "1.89.26",
-    "@tamagui/constants": "1.89.26",
-    "@tamagui/core": "1.89.26",
-    "@tamagui/dismissable": "1.89.26",
-    "@tamagui/floating": "1.89.26",
-    "@tamagui/focus-scope": "1.89.26",
-    "@tamagui/helpers": "1.89.26",
-    "@tamagui/polyfill-dev": "1.89.26",
-    "@tamagui/popper": "1.89.26",
-    "@tamagui/portal": "1.89.26",
-    "@tamagui/remove-scroll": "1.89.26",
-    "@tamagui/scroll-view": "1.89.26",
-    "@tamagui/sheet": "1.89.26",
-    "@tamagui/stacks": "1.89.26",
-    "@tamagui/use-controllable-state": "1.89.26",
+    "@tamagui/adapt": "1.89.30",
+    "@tamagui/animate": "1.89.30",
+    "@tamagui/aria-hidden": "1.89.30",
+    "@tamagui/compose-refs": "1.89.30",
+    "@tamagui/constants": "1.89.30",
+    "@tamagui/core": "1.89.30",
+    "@tamagui/dismissable": "1.89.30",
+    "@tamagui/floating": "1.89.30",
+    "@tamagui/focus-scope": "1.89.30",
+    "@tamagui/helpers": "1.89.30",
+    "@tamagui/polyfill-dev": "1.89.30",
+    "@tamagui/popper": "1.89.30",
+    "@tamagui/portal": "1.89.30",
+    "@tamagui/remove-scroll": "1.89.30",
+    "@tamagui/scroll-view": "1.89.30",
+    "@tamagui/sheet": "1.89.30",
+    "@tamagui/stacks": "1.89.30",
+    "@tamagui/use-controllable-state": "1.89.30",
     "react-freeze": "^1.0.3"
   },
   "peerDependencies": {
@@ -58,9 +58,9 @@
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.89.26",
+    "@tamagui/build": "1.89.30",
     "react": "^18.2.0",
-    "react-native": "^0.72.6"
+    "react-native": "^0.73.4"
   },
   "publishConfig": {
     "access": "public"

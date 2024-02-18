@@ -13,9 +13,10 @@ export const FigmaButton = () => (
         bc="$color6"
         size="$3"
         br="$10"
-        elevation="$1"
+        elevation="$0.5"
         icon={Figma}
         fontFamily="$silkscreen"
+        fontSize={12}
       >
         Figma
       </Button>
