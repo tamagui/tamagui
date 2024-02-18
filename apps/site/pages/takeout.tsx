@@ -287,7 +287,7 @@ export default function TakeoutPage({
               $sm={{
                 px: '$4',
               }}
-              $xxs={{
+              $xs={{
                 px: '$2',
               }}
             >
@@ -1090,7 +1090,7 @@ const TakeoutHero = ({ defaultCoupon }: Pick<TakeoutPageProps, 'defaultCoupon'>)
       pe="none"
       pos="relative"
       scale={1}
-      $xxs={{
+      $xs={{
         scale: 0.35,
       }}
       $xs={{

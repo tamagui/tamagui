@@ -88,7 +88,7 @@ export function HeroContainer({
             justifyContent="space-between"
             top={16}
             l="$3"
-            $xxs={{ display: 'none' }}
+            $xs={{ display: 'none' }}
             $gtMd={{
               l: '$4',
             }}

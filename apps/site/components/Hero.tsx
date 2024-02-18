@@ -217,7 +217,7 @@ const HeroContents = memo(function HeroContents() {
           ai="center"
           jc="center"
           gap="$2"
-          $xxs={{ ai: 'center', fw: 'wrap', gap: 0 }}
+          $xs={{ ai: 'center', fw: 'wrap', gap: 0 }}
         >
           <NextLink
             target="_blank"

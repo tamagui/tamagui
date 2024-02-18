@@ -31,7 +31,7 @@ export function ProgressDemo() {
         position="absolute"
         bottom="$3"
         left="$4"
-        $xxs={{ display: 'none' }}
+        $xs={{ display: 'none' }}
       >
         <Slider
           size="$2"

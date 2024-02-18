@@ -220,7 +220,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
             }}
           >
             <YStack
-              $xxs={{
+              $xs={{
                 scale: 0.4,
               }}
               $xs={{
