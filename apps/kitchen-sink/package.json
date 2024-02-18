@@ -68,6 +68,7 @@
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
     "@tamagui/babel-plugin": "1.89.30",
     "@welldone-software/why-did-you-render": "^7.0.1",
+    "expo-build-properties": "^0.11.1",
     "html-webpack-plugin": "^5.5.0",
     "metro-runtime": "*",
     "mini-css-extract-plugin": "^2.7.6",
