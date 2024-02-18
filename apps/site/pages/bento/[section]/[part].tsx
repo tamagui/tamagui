@@ -18,8 +18,7 @@ export default function page() {
 
   return (
     <>
-      <YStack pos="relative">
-        <YStack pe="none" fullscreen className="bg-grid" />
+      <YStack mt={-50} pt={50} pos="relative">
         <BentoPageFrame simpler>
           <ContainerBento>
             <DetailHeader>
@@ -28,9 +27,12 @@ export default function page() {
           </ContainerBento>
         </BentoPageFrame>
 
-        <ContainerBento mt={-100}>
-          <Comp />
-        </ContainerBento>
+        <YStack>
+          <YStack pe="none" fullscreen className="bg-grid" />
+          <ContainerBento mt={-100}>
+            <Comp />
+          </ContainerBento>
+        </YStack>
       </YStack>
     </>
   )
@@ -60,14 +62,14 @@ export const DetailHeader = (props: { children: string }) => {
   const [category, subCategory] = asPath.split('bento/')[1].split('/')
 
   return (
-    <YStack pt="$12" pb="$6" gap="$4">
+    <YStack pb="$6" gap="$4">
       <YStack gap="$4">
         <XStack ai="center" jc="space-between">
-          <Theme reset>
+          <Theme name="gray">
             <H1 size="$12">{props.children}</H1>
           </Theme>
 
-          <YStack scale={0.5} m={-150}>
+          <YStack scale={0.25} m={-150}>
             <BentoLogo />
           </YStack>
         </XStack>

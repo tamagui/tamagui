@@ -18,10 +18,28 @@ export const BentoPageFrame = ({
       </Head>
 
       <ThemeNameEffect colorKey="$color5" />
+      {/* <YStack className="strong-background" /> */}
 
       <YStack pt={100} pb={100}>
         <Theme name="tan">
-          <YStack pe="none" ov="hidden" fullscreen bg="$color6" y={-100}>
+          <YStack
+            className={simpler ? `mask-gradient-down` : ``}
+            pe="none"
+            ov="hidden"
+            fullscreen
+            y={-100}
+          >
+            <YStack fullscreen bg="$color6" />
+
+            {/* {simpler && (
+              <YStack
+                fullscreen
+                style={{
+                  background: `linear-gradient(var(--color10), var(--background0))`,
+                }}
+              />
+            )} */}
+
             <YStack
               className="grain"
               fullscreen
