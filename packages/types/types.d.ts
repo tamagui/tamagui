@@ -129,9 +129,13 @@ export interface TamaguiBuildOptions {
   forceExtractStyleDefinitions?: boolean
 
   /**
-   * (Experimental) Will flatten theme value usages on native as well
+   * (Experimental) Will flatten theme and other dynamic values on native
    */
   experimentalFlattenThemesOnNative?: boolean
+  /**
+   * (Experimental) flatten dynamic values on native ( like <YStack width={props.width} /> )
+   */
+  experimentalFlattenDynamicValues?: boolean
   /**
    * combine all css files into one file
    */
@@ -169,6 +173,7 @@ export type CLIResolvedOptions = {
     exports?: Record<string, Record<string, string>>
   }
   paths: {
+    root: string
     dotDir: string
     conf: string
     types: string

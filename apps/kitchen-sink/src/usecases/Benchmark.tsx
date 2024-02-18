@@ -1,7 +1,12 @@
-import { ThemeProvider, createBox } from '@shopify/restyle'
 import { useMemo, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Button, Stack, Text, styled } from 'tamagui'
+
+// disabling to avoid dep
+// import { ThemeProvider, createBox } from '@shopify/restyle'
+// const Box = createBox<any>()
+const ThemeProvider = Stack as any
+const Box = Stack as any
 
 import { TimedRender } from '../components/TimedRender'
 
@@ -54,8 +59,6 @@ const theme = {
     },
   },
 }
-
-const Box = createBox<any>()
 
 const StyledStack = styled(Stack, {
   borderColor: 'red',

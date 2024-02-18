@@ -4,3 +4,4 @@
 .turbo
 out
 .env*.local
+bento-output

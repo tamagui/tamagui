@@ -12,7 +12,7 @@ import { ensureDir, removeSync, writeFileSync } from 'fs-extra'
 import { registerRequire, setRequireResult } from '../registerRequire'
 import type { TamaguiOptions } from '../types'
 import { babelParse } from './babelParse'
-import { bundle } from './bundle'
+import { bundle, esbuildLoaderConfig } from './bundle'
 import { getTamaguiConfigPathFromOptionsConfig } from './getTamaguiConfigPathFromOptionsConfig'
 
 type NameToPaths = {
@@ -318,12 +318,7 @@ export function loadComponentsInner(
             allowOverwrite: true,
             // logLevel: 'silent',
             sourcemap: false,
-            loader: {
-              '.png': 'dataurl',
-              '.jpg': 'dataurl',
-              '.jpeg': 'dataurl',
-              '.gif': 'dataurl',
-            },
+            loader: esbuildLoaderConfig,
           })
         }
 

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/vite-plugin",
-  "version": "1.89.17",
+  "version": "1.89.30",
   "types": "./types/index.d.ts",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
@@ -26,16 +26,16 @@
     }
   },
   "dependencies": {
-    "@tamagui/fake-react-native": "1.89.17",
-    "@tamagui/proxy-worm": "1.89.17",
-    "@tamagui/react-native-svg": "1.89.17",
-    "@tamagui/static": "1.89.17",
+    "@tamagui/fake-react-native": "1.89.30",
+    "@tamagui/proxy-worm": "1.89.30",
+    "@tamagui/react-native-svg": "1.89.30",
+    "@tamagui/static": "1.89.30",
     "esm-resolve": "^1.0.8",
     "fs-extra": "^11.2.0",
     "outdent": "^0.8.0"
   },
   "devDependencies": {
-    "@tamagui/build": "1.89.17"
+    "@tamagui/build": "1.89.30"
   },
   "publishConfig": {
     "access": "public"

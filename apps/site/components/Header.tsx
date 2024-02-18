@@ -1,5 +1,5 @@
 import { ThemeToggle } from '@components/ThemeToggle'
-import { LogoWords, TamaguiLogo, ThemeTint } from '@tamagui/logo'
+import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
 // import { useUser } from 'hooks/useUser'
 import { useRouter } from 'next/router'
 import * as React from 'react'
@@ -60,12 +60,9 @@ export function Header(props: HeaderProps) {
       >
         <XStack pe="auto" width="100%" maw={1120} pos="relative">
           <XStack
-            className={`ease-out all ms200 ${
-              isScrolled ? 'blur-medium hover-highlights ' : ''
-            }`}
-            bbc="$borderColor"
-            py="$1"
-            y={3}
+            className={`ease-out all ms300`}
+            py="$1.5"
+            y={0}
             ov="hidden"
             contain="paint"
             width="100%"
@@ -79,13 +76,31 @@ export function Header(props: HeaderProps) {
             }}
             {...(isScrolled && {
               $gtSm: {
-                py: '$2',
-                y: 5,
+                y: 6,
                 bc: '$borderColor',
               },
             })}
           >
-            <YStack o={isScrolled ? 0.5 : 0} fullscreen bg="$background" />
+            <YStack
+              pos="absolute"
+              inset={0}
+              className={'ease-out all ms100'}
+              style={{
+                ...(isScrolled && {
+                  backdropFilter: `blur(16px)`,
+                  WebkitBackdropFilter: `blur(16px)`,
+                }),
+              }}
+            />
+            <YStack
+              o={isScrolled ? 0.6 : 0}
+              className={`ease-out all ms300`}
+              fullscreen
+              bg="$color2"
+              $theme-dark={{
+                bg: '$color7',
+              }}
+            />
             <ContainerLarge>
               <ThemeTint>
                 <HeaderContents floating {...props} />
@@ -119,6 +134,7 @@ const tooltipDelay = { open: 0, close: 150 }
 export const HeaderContents = React.memo((props: HeaderProps) => {
   const router = useRouter()
   const isHome = router.pathname === '/'
+  const tint = useTint()
   // const isTakeout = router.pathname === '/takeout'
 
   return (
@@ -133,13 +149,22 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
     >
       {!props.minimal && (
         <XStack ai="center" gap="$4">
-          {isHome ? null : (
-            <NextLink href="/">
-              <YStack tag="a" px="$3" cur="pointer" my={-20}>
-                <TamaguiLogo downscale={props.floating ? 2 : 1.5} />
-              </YStack>
-            </NextLink>
-          )}
+          <NextLink href="/">
+            <YStack
+              tag="a"
+              px="$3"
+              cur="pointer"
+              my={-20}
+              {...(isHome && {
+                onPress(e) {
+                  e.preventDefault()
+                  tint.setNextTint()
+                },
+              })}
+            >
+              <TamaguiLogo downscale={props.floating ? 2 : 1.5} />
+            </YStack>
+          </NextLink>
 
           <TooltipGroup delay={tooltipDelay}>
             <XGroup mah={32} bc="transparent" ai="center" size="$4">

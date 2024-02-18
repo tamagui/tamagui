@@ -1,34 +1,52 @@
 // debug-verbose
 // import './wdyr'
 
-import { useState } from 'react'
-import { View } from 'react-native'
-import {
-  Button,
-  Square,
-  Stack,
-  XStack,
-  YStack,
-  useProps,
-  usePropsAndStyle,
-} from 'tamagui'
-import { TimedRender } from './components/TimedRender'
-import { SwitchDemo } from '@tamagui/demos'
+import { View as RNView } from 'react-native'
+import { View, Stack, XStack, YStack, usePropsAndStyle } from 'tamagui'
 
 const TestThing = (props) => {
   const [p2, style] = usePropsAndStyle(props)
-  console.log('ta', p2, style)
 
   return null
 }
 
 export const Sandbox = () => {
   return (
-    <View style={{ width: '100%', height: '100%', padding: 50 }}>
-      <SwitchUnstyledDemo />
-    </View>
+    <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
+      <Demo />
+    </RNView>
   )
 }
+
+const Demo = () => (
+  <View f={1} ai="center" jc="center">
+    <View
+      bg="$green7"
+      h={200}
+      w={200}
+      br={0}
+      animation="lazy"
+      pressStyle={{
+        scale: 0.75,
+        br: '$10',
+      }}
+    />
+  </View>
+)
+
+// animationKeyframes: {
+//   from: {
+//     opacity: 0,
+//     transform: [{ translateY: 50 }],
+//   },
+//   to: {
+//     opacity: 1,
+//     transform: [{ translateY: 0 }],
+//   },
+// },
+// animationDuration: '0.8s',
+// animationFillMode: 'both',
+// animationDelay: '800ms',
 
 import { styled } from '@tamagui/core'
 

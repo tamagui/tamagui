@@ -120,6 +120,7 @@ export class TamaguiPlugin {
         ['@gorhom/bottom-sheet$', '@gorhom/bottom-sheet'],
         // fix reanimated 3
         ['react-native/Libraries/Renderer/shims/ReactFabric', '@tamagui/proxy-worm'],
+
         // @ts-expect-error deprecated
         ...(this.options.useReactNativeWebLite
           ? [
@@ -260,6 +261,9 @@ export class TamaguiPlugin {
         ...(compiler.options.resolve.extensions || []),
       ]),
     ]
+
+    compiler.options.resolve.fallback ||= {}
+    compiler.options.resolve.fallback['crypto'] ||= false
 
     // look for compiled js with jsx intact as specified by module:jsx
     const mainFields = compiler.options.resolve.mainFields

@@ -1,1 +1,1 @@
-export * from './LinearGradient.shared'
+export * from './LinearGradient-shared'

@@ -1,6 +1,3 @@
-export declare const validStylesOnBaseProps: {
-    placeholderTextColor: boolean;
-};
 export declare const tokenCategories: {
     radius: {
         borderRadius: boolean;
@@ -26,10 +23,9 @@ export declare const tokenCategories: {
     };
     color: {
         outlineColor?: boolean | undefined;
+        color: boolean;
         textDecorationColor: boolean;
         textShadowColor: boolean;
-        placeholderTextColor: boolean;
-        color: boolean;
         backgroundColor: boolean;
         borderColor: boolean;
         borderBlockStartColor: boolean;
@@ -159,7 +155,6 @@ export declare const stylePropsView: {
     rotateY: boolean;
     rotateX: boolean;
     rotateZ: boolean;
-    placeholderTextColor: boolean;
     borderRadius: boolean;
     borderTopLeftRadius: boolean;
     borderTopRightRadius: boolean;
@@ -176,9 +171,9 @@ export declare const stylePropsView: {
     maxWidth: boolean;
     maxHeight: boolean;
     outlineColor?: boolean | undefined;
+    color: boolean;
     textDecorationColor: boolean;
     textShadowColor: boolean;
-    color: boolean;
     backgroundColor: boolean;
     borderColor: boolean;
     borderBlockStartColor: boolean;
@@ -278,10 +273,9 @@ export declare const stylePropsTextOnly: {
     WebkitBoxOrient?: boolean | undefined;
     textShadowOffset: boolean;
     textShadowRadius: boolean;
+    color: boolean;
     textDecorationColor: boolean;
     textShadowColor: boolean;
-    placeholderTextColor: boolean;
-    color: boolean;
     textAlign: boolean;
     textDecorationLine: boolean;
     textDecorationStyle: boolean;
@@ -305,10 +299,9 @@ export declare const stylePropsText: {
     WebkitBoxOrient?: boolean | undefined;
     textShadowOffset: boolean;
     textShadowRadius: boolean;
+    color: boolean;
     textDecorationColor: boolean;
     textShadowColor: boolean;
-    placeholderTextColor: boolean;
-    color: boolean;
     textAlign: boolean;
     textDecorationLine: boolean;
     textDecorationStyle: boolean;
@@ -483,10 +476,9 @@ export declare const stylePropsAll: {
     WebkitBoxOrient?: boolean | undefined;
     textShadowOffset: boolean;
     textShadowRadius: boolean;
+    color: boolean;
     textDecorationColor: boolean;
     textShadowColor: boolean;
-    placeholderTextColor: boolean;
-    color: boolean;
     textAlign: boolean;
     textDecorationLine: boolean;
     textDecorationStyle: boolean;
@@ -719,7 +711,6 @@ export declare const validStyles: {
     rotateY: boolean;
     rotateX: boolean;
     rotateZ: boolean;
-    placeholderTextColor: boolean;
     borderRadius: boolean;
     borderTopLeftRadius: boolean;
     borderTopRightRadius: boolean;
@@ -736,9 +727,9 @@ export declare const validStyles: {
     maxWidth: boolean;
     maxHeight: boolean;
     outlineColor?: boolean | undefined;
+    color: boolean;
     textDecorationColor: boolean;
     textShadowColor: boolean;
-    color: boolean;
     backgroundColor: boolean;
     borderColor: boolean;
     borderBlockStartColor: boolean;

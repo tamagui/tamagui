@@ -113,6 +113,7 @@ const Items = () => {
 
 type SubscriptionDetailProps = {
   subscription: Exclude<
+    // @ts-ignore
     Exclude<ReturnType<typeof useUser>['data'], undefined>['subscriptions'],
     null | undefined
   >[number]
@@ -291,6 +292,7 @@ const ItemDetails = (
   )
 ) => {
   const { item } = props
+  const router = useRouter()
 
   const hasDiscordInvites =
     (item.price.product?.metadata as Record<string, any>).slug === 'universal-starter'
@@ -338,24 +340,30 @@ const ItemDetails = (
   async function handleGrantAccess() {
     setIsLoading(true)
     try {
-      const res = await fetch(`/api/claim`, {
-        body: JSON.stringify({
-          subscription_id: 'subscriptionId' in props ? props.subscriptionId : undefined,
-          product_ownership_id: props.type === 'owned_item' ? props.item.id : undefined,
-          product_id: product!.id,
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        method: 'POST',
-      })
+      if (product?.metadata?.['claim_type'] === 'send_to_link') {
+        // we just do client-side redirection
+        router.push(product.metadata['usage_link'])
+      } else {
+        // send a request to the backend to claim
+        const res = await fetch(`/api/claim`, {
+          body: JSON.stringify({
+            subscription_id: 'subscriptionId' in props ? props.subscriptionId : undefined,
+            product_ownership_id: props.type === 'owned_item' ? props.item.id : undefined,
+            product_id: product!.id,
+          }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+        })
 
-      const data = await res.json()
+        const data = await res.json()
 
-      if (!res.ok) {
-        alert(data?.error || `Error, response ${res.status} ${res.statusText}`)
-      } else if (data.message) {
-        alert(data.message)
+        if (!res.ok) {
+          alert(data?.error || `Error, response ${res.status} ${res.statusText}`)
+        } else if (data.message) {
+          alert(data.message)
+        }
       }
     } finally {
       setIsLoading(false)

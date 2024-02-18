@@ -18,10 +18,11 @@ import {
 
 import { ContainerLarge } from './Container'
 import { DiscordIcon } from './DiscordIcon'
-import { useHeroHovered } from './heroState'
+import { FigmaButton } from './FigmaButton'
 import { InstallInput } from './InstallInput'
 import { seasons } from './SeasonToggleButton'
 import { TwitterIcon } from './TwitterIcon'
+import { useHeroHovered } from './heroState'
 
 export function Hero() {
   const { name } = useTint()
@@ -62,7 +63,7 @@ const HeroSubTitle = memo(() => {
 })
 
 const HeroContents = memo(function HeroContents() {
-  const { name } = useTint()
+  const { name, tint, tintAlt } = useTint()
 
   return (
     <ContainerLarge contain="layout" pos="relative">
@@ -91,21 +92,23 @@ const HeroContents = memo(function HeroContents() {
         }}
       >
         <>
-          <XStack pos="absolute" als="center" y={-80}>
+          <XStack pos="absolute" als="center" y={-80} gap="$4">
             <Link prefetch={false} href="/takeout">
               <Button
                 bc="$color6"
                 size="$3"
                 br="$10"
-                elevation="$1"
+                elevation="$0.5"
                 fontFamily="$silkscreen"
+                fontSize={12}
               >
-                Introducing Takeout 🥡
-                <Text ff="$body" fontSize="$3" color="$color10" $sm={{ dsp: 'none' }}>
+                Takeout 🥡
+                <Text ff="$body" fontSize="$4" color="$color10" $sm={{ dsp: 'none' }}>
                   starter kit++
                 </Text>
               </Button>
             </Link>
+            <FigmaButton />
           </XStack>
         </>
 
@@ -136,7 +139,18 @@ const HeroContents = memo(function HeroContents() {
               h: 310,
             }}
           >
-            <Text>Write less</Text>
+            <Text
+              className="clip-text"
+              style={{
+                backgroundImage: `-webkit-linear-gradient(
+                  -90deg,
+                  var(--${tintAlt}9),
+                  var(--${tint}9) 70%
+                )`,
+              }}
+            >
+              Write less
+            </Text>
             {/* add gradient to other colors: */}
             <br />
             <span style={{ position: 'relative' }}>

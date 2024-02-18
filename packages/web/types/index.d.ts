@@ -39,7 +39,7 @@ export * from './helpers/pseudoDescriptors';
 export * from './helpers/themeable';
 export * from './helpers/themes';
 export * from './helpers/transformsToString';
-export * from './internalWithTheme';
+export * from './_withStableStyle';
 export { configureMedia, mediaState, mediaKeyMatch, useMedia, getMedia, mediaObjectToString, mediaQueryConfig, } from './hooks/useMedia';
 export * from './hooks/useTheme';
 export * from './hooks/useThemeName';

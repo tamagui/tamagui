@@ -1,7 +1,15 @@
 import { NextLink } from '@components/NextLink'
 import * as Sections from '@tamagui/bento'
-import { ThemeTintAlt } from '@tamagui/logo'
-import { Check, Globe, Leaf, Puzzle, ShoppingCart } from '@tamagui/lucide-icons'
+import { ThemeTint, ThemeTintAlt, setTintIndex } from '@tamagui/logo'
+import {
+  Check,
+  ChevronDown,
+  Globe,
+  Leaf,
+  Puzzle,
+  Search,
+  ShoppingCart,
+} from '@tamagui/lucide-icons'
 import { useBentoStore } from 'hooks/useBentoStore'
 import type Stripe from 'stripe'
 
@@ -13,16 +21,15 @@ import {
   H3,
   H4,
   H5,
+  Input,
   Paragraph,
   ScrollView,
   Separator,
   Spacer,
   Stack,
   Theme,
-  ThemeableStack,
   XStack,
   YStack,
-  styled,
 } from 'tamagui'
 
 import { PurchaseModal } from '@components/BentoPurchaseModal'
@@ -31,41 +38,60 @@ import type { Database } from '@lib/supabase-types'
 import { getArray } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 import type { GetStaticProps } from 'next'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { BentoLogo } from '../../components/BentoLogo'
 import { BentoPageFrame } from '../../components/BentoPageFrame'
 import { ContainerLarge } from '../../components/Container'
 import { ThemeNameEffect } from '../../components/ThemeNameEffect'
 import { getDefaultLayout } from '../../lib/getDefaultLayout'
+import { useUser } from 'hooks/useUser'
 
 export type ProComponentsProps = {
   proComponents?: Database['public']['Tables']['products']['Row'] & {
     prices: Database['public']['Tables']['prices']['Row'][]
   }
-  coupon?: Stripe.Coupon | null
+  defaultCoupon?: Stripe.Coupon | null
+  takeoutPlusBentoCoupon?: Stripe.Coupon | null
 }
 
 export default function BentoPage(props: ProComponentsProps) {
-  if (!process.env.NEXT_PUBLIC_IS_TAMAGUI_DEV) {
-    return null
-  }
+  const [heroVisible, setHeroVisible] = useState(true)
+
+  const user = useUser()
+  const coupon = user.data?.accessInfo.hasTakeoutAccess
+    ? props.takeoutPlusBentoCoupon
+    : props.defaultCoupon
+
+  useEffect(() => {
+    setTintIndex(2)
+  }, [])
 
   return (
-    <BentoPageFrame>
-      <Theme name="tan">
+    <Theme name="tan">
+      <BentoPageFrame>
         <ThemeNameEffect colorKey="$color6" />
-        <YStack pe="none" fullscreen zi={100} rotateZ="20deg">
-          {/* <StudioPreviewComponents /> */}
-        </YStack>
-
-        <Hero />
+        <ContainerLarge zi={100000000} h={0}>
+          <Button
+            pos="absolute"
+            t="$-10"
+            r="$8"
+            size="$2"
+            circular
+            icon={heroVisible ? Search : ChevronDown}
+            onPress={() => {
+              setHeroVisible(!heroVisible)
+            }}
+            bg="$background025"
+          ></Button>
+        </ContainerLarge>
+        <Hero mainProduct={props.proComponents} />
         <Intermediate />
         <Theme name="gray">
-          <Body />
+          <Body heroVisible={heroVisible} />
         </Theme>
-        <PurchaseModal coupon={props.coupon} mainProduct={props.proComponents} />
-        <Spacer size="$10" />
-      </Theme>
-    </BentoPageFrame>
+        <PurchaseModal defaultCoupon={coupon} proComponents={props.proComponents} />
+      </BentoPageFrame>
+    </Theme>
   )
 }
 
@@ -73,27 +99,34 @@ BentoPage.getLayout = getDefaultLayout
 
 const Intermediate = () => {
   return (
-    <YStack zi={1} w="100%" className="blur-8">
-      <YStack btw={0.5} bc="$color025" />
-      <YStack fullscreen bg="$background" o={0.24} />
-      <YStack
-        className="grain"
-        fullscreen
-        o={0.5}
-        zi={0}
-        style={{ mixBlendMode: 'color-dodge' }}
-      />
+    <YStack zi={1} w="100%" mt={-80}>
+      <YStack fullscreen elevation="$4" o={0.15} />
+      <YStack pos="absolute" t={0} l={0} r={0} o={0.25} btw={0.5} bc="$color025" />
+      <YStack pos="absolute" b={0} l={0} r={0} o={0.25} btw={0.5} bc="$color025" />
+      {/* <YStack fullscreen bg="$color3" o={0.5} /> */}
       <ContainerLarge>
-        <XStack gap="$4" py="$6">
-          <IntermediateCard Icon={Globe} title="Universal">
-            Components that adapt well to all screen sizes and platforms.
-          </IntermediateCard>
-          <IntermediateCard Icon={Puzzle} title="Copy & Paste">
-            Designed for easy adoption into your app and easy customization.
-          </IntermediateCard>
-          <IntermediateCard Icon={Leaf} title="Always Growing">
-            We continuously improve and add to the collection.
-          </IntermediateCard>
+        <XStack
+          gap="$4"
+          py="$6"
+          $sm={{
+            fd: 'column',
+          }}
+        >
+          <ThemeTintAlt offset={-1}>
+            <IntermediateCard Icon={Globe} title="Universal">
+              Components that adapt well to all screen sizes and platforms.
+            </IntermediateCard>
+          </ThemeTintAlt>
+          <ThemeTintAlt offset={0}>
+            <IntermediateCard Icon={Puzzle} title="Copy & Paste">
+              Designed for easy adoption into your app and easy customization.
+            </IntermediateCard>
+          </ThemeTintAlt>
+          <ThemeTintAlt offset={1}>
+            <IntermediateCard Icon={Leaf} title="Always Growing">
+              We continuously improve and add to the collection.
+            </IntermediateCard>
+          </ThemeTintAlt>
         </XStack>
       </ContainerLarge>
     </YStack>
@@ -107,28 +140,20 @@ const IntermediateCard = ({
 }: { title?: any; children?: any; Icon?: any }) => {
   return (
     <XStack
+      className="blur-8"
       ov="hidden"
       f={1}
-      br="$9"
+      gap="$5"
       px="$5"
       py="$4"
-      bc="$color025"
-      bw={0.25}
-      bs="solid"
-      gap="$5"
-      shac="$background025"
-      shof={{ height: 5, width: 0 }}
-      shar="$6"
-      // style={{
-      //   backdropFilter: 'blur(80px)',
-      //   WebkitBackdropFilter: 'blur(80px)',
-      // }}
+      bw={0.5}
+      bc="$color05"
     >
       <YStack f={1} gap="$2">
-        <H4 o={0.35} size="$4">
+        <H4 ff="$silkscreen" color="$color12" o={0.9} size="$5">
           {title}
         </H4>
-        <Paragraph color="$color10" lh="$3">
+        <Paragraph mb={-5} size="$3" color="$color11">
           {children}
         </Paragraph>
         <EnsureFlexed />
@@ -140,21 +165,21 @@ const IntermediateCard = ({
         outlineStyle="solid"
         size="$5"
         elevation="$0.5"
-        bg="$color5"
+        // bg="$color025"
       >
-        <Icon />
+        <Icon color="$color11" o={0.85} />
       </Circle>
     </XStack>
   )
 }
 
-const Hero = () => {
+const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'] }) => {
   const store = useBentoStore()
 
   return (
     <YStack pos="relative" pb="$9" zi={0}>
       <ContainerLarge>
-        <YStack
+        {/* <YStack
           pos="absolute"
           y="-50%"
           scaleY={-1}
@@ -168,12 +193,19 @@ const Hero = () => {
             backgroundSize: '100%',
             backgroundPosition: 'top left',
             maskImage: `linear-gradient(120deg, rgba(0, 0, 0, 1) 70%, transparent 75%)`,
-            // mixBlendMode: 'color-dodge',
-            // clipPath: `polygon(0% 0%, 0% 100%, 5% 96%, 10% 92%, 15% 92%, 25% 88%, 30% 85%, 50% 65%, 58% 50%, 65% 44%, 72% 35%, 79% 22%, 85% 18%, 92% 11%, 100% 0%)`,
           }}
-        />
+        /> */}
 
-        <XStack gap="$6" py="$3" bc="transparent" jc="space-between" w={'100%'}>
+        <XStack
+          gap="$6"
+          py="$3"
+          bc="transparent"
+          jc="space-between"
+          w={'100%'}
+          $sm={{
+            fd: 'column',
+          }}
+        >
           <YStack
             mt={-20}
             mb={30}
@@ -183,17 +215,53 @@ const Hero = () => {
             f={10}
             ai="flex-start"
             gap="$6"
+            $sm={{
+              maw: '100%',
+            }}
           >
-            <BentoLogo />
-            <YStack gap="$6">
+            <YStack
+              $xxs={{
+                scale: 0.4,
+              }}
+              $xs={{
+                scale: 0.5,
+              }}
+              $sm={{
+                als: 'center',
+                scale: 0.6,
+                mb: -100,
+                transformOrigin: 'center top',
+              }}
+              $md={{ mb: -140, scale: 0.72, transformOrigin: 'left top' }}
+            >
+              <BentoLogo />
+            </YStack>
+            <YStack
+              // account for the left bar visual offset
+              ml={-20}
+              als="center"
+              maw={550}
+              gap="$6"
+              $sm={{ px: '$4', maw: 400 }}
+            >
               <XStack gap="$6">
-                <Stack bg="$color7" w={10} br="$10" my={10} />
-                <Paragraph ff="$munro" size="$9" fos={32} lh={50} color="$color12">
+                <Stack bg="$color7" w={8} br="$2" my={18} $sm={{ dsp: 'none' }} />
+                <Paragraph
+                  className="pixelate"
+                  ff="$munro"
+                  fos={28}
+                  lh={50}
+                  color="$color11"
+                  ls={1}
+                  $md={{
+                    size: '$7',
+                  }}
+                >
                   Boost your React Native development with a suite of copy-paste
                   primitives.
                 </Paragraph>
               </XStack>
-              <XStack jc="space-between" ai="center" ml="$8" mr="$4">
+              <XStack jc="space-between" ai="center" ml="$8" mr="$4" $sm={{ mx: 0 }}>
                 <Paragraph color="$color10" size="$5">
                   One-time Purchase
                 </Paragraph>
@@ -208,180 +276,161 @@ const Hero = () => {
               </XStack>
             </YStack>
 
-            <Theme name="green">
-              <Button
-                iconAfter={ShoppingCart}
-                className="box-3d"
-                fontFamily="$mono"
-                size="$5"
-                fontSize={22}
-                fontWeight="600"
-                scaleSpace={0.5}
-                scaleIcon={1.6}
-                als="flex-end"
-                mr="$4"
-                color="$color1"
-                bg="$color9"
-                outlineColor="$background025"
-                outlineOffset={2}
-                outlineWidth={3}
-                outlineStyle="solid"
-                hoverStyle={{
-                  bg: '$color10',
-                  outlineColor: '$background05',
-                  bc: '$color11',
-                }}
-                pressStyle={{
-                  bg: '$color9',
-                  outlineColor: '$background075',
-                }}
-                onPress={() => {
-                  store.showPurchase = true
-                }}
-              >
-                $200
-                <YStack
-                  zi={100}
-                  pos="absolute"
-                  t={-13}
-                  r={-13}
-                  bg="red"
-                  style={{
-                    background: `url(/leaf.webp)`,
-                    backgroundSize: 'contain',
+            <XStack ai="center" w="100%" jc="space-between">
+              <Spacer />
+              <Theme name="green">
+                <Button
+                  iconAfter={ShoppingCart}
+                  // iconAfter={
+                  //   <YStack
+                  //     zi={100}
+                  //     bg="red"
+                  //     style={{
+                  //       background: `url(/bento/bentoicon.svg)`,
+                  //       backgroundSize: 'contain',
+                  //     }}
+                  //     w={42}
+                  //     h={42}
+                  //     ml={-10}
+                  //     mr={-15}
+                  //   />
+                  // }
+                  className="box-3d all ease-in-out ms100"
+                  fontFamily="$mono"
+                  size="$5"
+                  fontSize={22}
+                  fontWeight="600"
+                  scaleSpace={0.5}
+                  scaleIcon={1.6}
+                  als="flex-end"
+                  mr="$4"
+                  color="$color1"
+                  bg="$color9"
+                  outlineColor="$background025"
+                  outlineOffset={2}
+                  outlineWidth={3}
+                  outlineStyle="solid"
+                  hoverStyle={{
+                    bg: '$color10',
+                    outlineColor: '$background05',
+                    bc: '$color11',
                   }}
-                  w={33}
-                  h={33}
-                />
-              </Button>
-            </Theme>
+                  pressStyle={{
+                    bg: '$color9',
+                    outlineColor: '$background075',
+                  }}
+                  onPress={() => {
+                    store.showPurchase = true
+                  }}
+                >
+                  <Button.Text
+                    fontFamily="$mono"
+                    size="$5"
+                    fontSize={22}
+                    fontWeight="600"
+                  >
+                    $
+                    {(mainProduct?.prices.sort(
+                      (a, b) => (a.unit_amount || Infinity) - (b.unit_amount || Infinity)
+                    )[0].unit_amount || 0) / 100}
+                  </Button.Text>
+                </Button>
+              </Theme>
+            </XStack>
           </YStack>
 
           <YStack
-            mr={-250}
+            mr={-360}
             ml={-150}
             maw={1000}
-            mt={0}
+            mt={-100}
             pl={100}
-            pr={200}
+            pr={300}
+            pt={100}
             x={20}
             mb={-300}
             y={-20}
             style={{
-              maskImage: `linear-gradient(rgba(0, 0, 0, 1) 60%, transparent)`,
+              maskImage: `linear-gradient(rgba(0, 0, 0, 1) 50%, transparent 85%)`,
             }}
-            // mr={-600}
-            // maw={1000}
-            // mt={0}
-            // pl="$4"
-            // x={20}
-            // mb={-300}
-            // y={-20}
-            // style={{
-            //   maskImage: `linear-gradient(rgba(0, 0, 0, 1) 40%, transparent)`,
-            // }}
           >
             <Theme name="gray">
-              <XStack pe="none" rotate="4deg" t={20}>
-                {/* <YStack pos="absolute" zi={-1} l="-15%" scale={0.9} rotate="-5deg">
-                  <Theme inverse>
-                    <Sections.Preferences.LocationNotification />
-                  </Theme>
-                </YStack> */}
-
-                <Sections.Preferences.LocationNotification />
+              <XStack
+                pe="none"
+                rotate="4deg"
+                $sm={{
+                  mb: -250,
+                  l: '10%',
+                }}
+                scale={0.8}
+              >
+                <YStack br="$4" shac="rgba(0,0,0,0.2)" shar="$8">
+                  <ThemeTintAlt>
+                    <Theme name="surface4">
+                      <Sections.Preferences.LocationNotification />
+                    </Theme>
+                  </ThemeTintAlt>
+                </YStack>
 
                 <YStack
                   pos="absolute"
                   zi={1}
                   l={0}
                   style={{
-                    clipPath: `polygon(0% 0%, 60% 0%, 40% 100%, 0% 100%)`,
+                    clipPath: `polygon(0% 0%, 105% 0%, 65% 100%, 0% 100%)`,
                   }}
                 >
-                  <Theme inverse>
-                    <Sections.Preferences.LocationNotification />
-                  </Theme>
+                  <ThemeTintAlt>
+                    <Theme name="surface3">
+                      <Sections.Preferences.LocationNotification />
+                    </Theme>
+                  </ThemeTintAlt>
                 </YStack>
 
-                <YStack pos="absolute" zi={-1} l="15%" scale={0.9} rotate="5deg">
+                <YStack
+                  pos="absolute"
+                  zi={1}
+                  l={0}
+                  style={{
+                    clipPath: `polygon(0% 0%, 75% 0%, 30% 100%, 0% 100%)`,
+                  }}
+                >
+                  <ThemeTintAlt>
+                    <Theme name="surface2">
+                      <Sections.Preferences.LocationNotification />
+                    </Theme>
+                  </ThemeTintAlt>
+                </YStack>
+
+                <YStack
+                  pos="absolute"
+                  zi={1}
+                  l={0}
+                  style={{
+                    clipPath: `polygon(0% 0%, 45% 0%, 0% 100%, 0% 100%)`,
+                  }}
+                >
                   <Sections.Preferences.LocationNotification />
+                </YStack>
+
+                <YStack
+                  pos="absolute"
+                  zi={-1}
+                  l="15%"
+                  scale={0.9}
+                  rotate="5deg"
+                  br="$4"
+                  shac="rgba(0,0,0,0.2)"
+                  shar="$8"
+                >
+                  <ThemeTint>
+                    <Theme name="surface3">
+                      <Sections.Preferences.LocationNotification />
+                    </Theme>
+                  </ThemeTint>
                 </YStack>
               </XStack>
             </Theme>
-            {/* <XStack
-              fw="wrap"
-              zi={1}
-              gap="$6"
-              mah={300}
-              transformOrigin="left top"
-              als="center"
-              scale={0.6}
-            >
-              <ThemeTint>
-                <BentoCard elevate>
-                  <YStack transformOrigin="center" scale={0.7}>
-                    <Sections.Preferences.LocationNotification />
-                  </YStack>
-                </BentoCard>
-              </ThemeTint>
-              <ThemeTintAlt>
-                <BentoCard elevate>
-                  <YStack scale={0.8} mx={-30}>
-                    <Sections.Textareas.AvatarNameContentAction />
-                  </YStack>
-                </BentoCard>
-              </ThemeTintAlt>
-              <ThemeTintAlt offset={2}>
-                <BentoCard elevate>
-                  <YStack scale={0.8} mx={-30}>
-                    <Sections.Radiogroups.VerticalWithDescription />
-                  </YStack>
-                </BentoCard>
-              </ThemeTintAlt>
-              <ThemeTintAlt offset={3}>
-                <BentoCard elevate>
-                  <YStack scale={0.8} mx={-30}>
-                    <Sections.Checkboxes.CheckboxCards />
-                  </YStack>
-                </BentoCard>
-              </ThemeTintAlt>
-              <ThemeTintAlt offset={4}>
-                <BentoCard elevate>
-                  <YStack scale={0.5} w={900} mx={-220} my={-146}>
-                    <Sections.Layouts.SignInRightImage />
-                  </YStack>
-                </BentoCard>
-              </ThemeTintAlt>
-              <ThemeTintAlt offset={5}>
-                <BentoCard elevate>
-                  <YStack scale={0.8} mx={-30}>
-                    <Sections.Textareas.AvatarNameContentAction />
-                  </YStack>
-                </BentoCard>
-              </ThemeTintAlt>
-              <ThemeTint>
-                <BentoCard elevate>
-                  <YStack scale={0.8} mx={-30}>
-                    <Sections.Checkboxes.CheckboxCards />
-                  </YStack>
-                </BentoCard>
-              </ThemeTint>
-              <ThemeTintAlt>
-                <BentoCard elevate>
-                  <YStack scale={0.8} mx={-30}>
-                    <Sections.Textareas.AvatarNameContentAction />
-                  </YStack>
-                </BentoCard>
-              </ThemeTintAlt>
-              <ThemeTintAlt>
-                <BentoCard elevate>
-                  <YStack scale={0.8} mx={-30}>
-                    <Sections.Textareas.AvatarNameContentAction />
-                  </YStack>
-                </BentoCard>
-              </ThemeTintAlt>
-            </XStack> */}
           </YStack>
         </XStack>
       </ContainerLarge>
@@ -389,65 +438,104 @@ const Hero = () => {
   )
 }
 
-const Body = () => {
+const Body = ({ heroVisible }: { heroVisible: boolean }) => {
+  const inputRef = useRef<HTMLInputElement>()
+  const [filter, setFilter] = useState('')
+
+  const filteredSections = useMemo(() => {
+    if (!filter) return Sections.listingData.sections
+    return Sections.listingData.sections
+      .map(({ sectionName, parts }) => {
+        const filteredParts = parts.filter((part) => {
+          return part.name.toLowerCase().includes(filter.toLowerCase())
+        })
+        return filteredParts.length
+          ? {
+              sectionName,
+              parts: filteredParts,
+            }
+          : undefined
+      })
+      .filter(Boolean)
+  }, [filter])
+
+  const [distanceToTop, setDistanceToTop] = useState(400)
+
   return (
     <YStack
       pos="relative"
-      py="$8"
-      mb="$-10"
-      bg="$background"
-      // shadowColor="$shadowColor"
-      // shadowRadius={20}
-      style={{
-        backdropFilter: 'blur(4px)',
-        WebkitBackdropFilter: 'blur(4px)',
-        // boxShadow: `0 0 200px rgba(0,0,0,0.2), 0 0 100px rgba(0,0,0,0.2), 0 0 20px rgba(0,0,0,0.125), 0 0 10px rgba(0,0,0,0.125)`,
+      className="all ease-out ms300"
+      // @ts-ignore
+      onTransitionEnd={() => {
+        if (!heroVisible) {
+          inputRef.current?.focus()
+        }
       }}
-      // py="$10"
+      pb="$8"
+      // bg="$background"
+      style={{
+        backdropFilter: `blur(${heroVisible ? 0 : 90}px)`,
+        WebkitBackdropFilter: `blur(${heroVisible ? 0 : 10}px)`,
+      }}
+      y={0}
+      minHeight={800}
+      {...(!heroVisible && {
+        y: -distanceToTop - 500,
+      })}
+      zi={10000}
+      onLayout={(e) => {
+        if (!heroVisible) {
+          setDistanceToTop(e.nativeEvent.layout.y)
+        }
+      }}
     >
-      <Separator
-        bc="$color"
-        pos="absolute"
-        t={0}
-        l={0}
-        r={0}
-        o={0.125}
-        style={{ mixBlendMode: 'multiply' }}
-      />
+      {/* <Separator bc="$color" pos="absolute" t={0} l={0} r={0} o={0.05} /> */}
 
-      <YStack
-        className="grain"
-        fullscreen
-        o={0.2}
-        zi={0}
-        $theme-light={{
-          o: 1,
-        }}
-      />
+      <YStack>
+        <ContainerLarge>
+          <Input
+            unstyled
+            ref={inputRef as any}
+            w="100%"
+            size="$8"
+            px={0}
+            fow="200"
+            value={filter}
+            onChangeText={setFilter}
+            placeholder="Filter..."
+            placeholderTextColor="$background05"
+          />
+        </ContainerLarge>
 
-      {/* <H2>Sections</H2>
-      <Paragraph size="$6" color={'$gray11'}>
-        Components are divided into sections and each section has multiple groups of
-        related components.
-      </Paragraph>
-
-      <Spacer size="$8" /> */}
-
-      <YStack gap="$12" px="$6">
-        {Sections.listingData.sections.map(({ sectionName, parts }) => {
+        {filteredSections.map(({ sectionName, parts }) => {
           return (
-            <YStack key={sectionName} gap="$6" jc={'space-between'}>
-              <ContainerLarge>
-                <ThemeTintAlt>
-                  <YStack pos="relative">
-                    <H3 ff="$munro" size="$10" color="$color12" f={2} my="$2">
-                      {`${sectionName[0].toUpperCase()}${sectionName.slice(1)}`}
-                    </H3>
-                  </YStack>
-                </ThemeTintAlt>
-              </ContainerLarge>
+            <YStack id={sectionName} key={sectionName} jc={'space-between'}>
+              <Theme name="tan">
+                <YStack pos="relative">
+                  <YStack fullscreen bg="$background025" o={0.24} />
+                  <ContainerLarge>
+                    <YStack py="$2" pos="relative">
+                      <H3
+                        ff="$silkscreen"
+                        size="$3"
+                        fos={12}
+                        ls={3}
+                        tt="uppercase"
+                        color="$color10"
+                        f={2}
+                      >
+                        {`${sectionName[0].toUpperCase()}${sectionName.slice(1)}`}
+                      </H3>
+                    </YStack>
+                  </ContainerLarge>
+                </YStack>
+
+                <Separator o={0.1} />
+              </Theme>
+
               <ScrollView
                 horizontal
+                className="mask-gradient-right"
                 showsHorizontalScrollIndicator={false}
                 p="$10"
                 m="$-10"
@@ -456,23 +544,23 @@ const Body = () => {
                 }}
               >
                 <ContainerLarge>
-                  {/* <Theme name="gray"> */}
-                  <XStack gap="$6" f={4} fs={1}>
-                    {parts.map(
-                      ({ name: partsName, numberOfComponents, route, preview }) => (
-                        <SectionCard
-                          key={route + partsName + numberOfComponents.toString()}
-                          path={route}
-                          name={partsName}
-                          numberOfComponents={numberOfComponents}
-                          preview={preview}
-                        />
-                      )
-                    )}
-                    {/* @ts-ignore */}
-                    <Spacer width="calc(50vw - 400px)" />
-                  </XStack>
-                  {/* </Theme> */}
+                  <Theme name="tan">
+                    <XStack gap="$5" f={4} fs={1}>
+                      {parts.map(
+                        ({ name: partsName, numberOfComponents, route, preview }) => (
+                          <SectionCard
+                            key={route + partsName + numberOfComponents.toString()}
+                            path={route}
+                            name={partsName}
+                            numberOfComponents={numberOfComponents}
+                            preview={preview}
+                          />
+                        )
+                      )}
+                      {/* @ts-ignore */}
+                      <Spacer width="calc(50vw - 300px)" />
+                    </XStack>
+                  </Theme>
                 </ContainerLarge>
               </ScrollView>
             </YStack>
@@ -510,21 +598,18 @@ function SectionCard({
     <NextLink href={BASE_PATH + path} passHref>
       <YStack
         tag="a"
-        maw={300}
         ov="hidden"
-        className="all ease-in ms300"
+        // className="all ease-in ms100"
         // elevation="$6"
-        bg="$color2"
-        mih={300}
-        br="$9"
+        // bg="$background025"
+        w={250}
+        h={125}
+        // br="$9"
         cursor="pointer"
         pos="relative"
-        shac="$background075"
-        shar="$0"
-        shof={{ width: -10, height: 10 }}
         hoverStyle={{
           // y: -2,
-          bg: '$color2',
+          bg: '$color025',
           // outlineWidth: 3,
           // outlineStyle: 'solid',
           // outlineColor: '$color025',
@@ -533,19 +618,18 @@ function SectionCard({
           // shof: { width: -20, height: 20 },
         }}
         pressStyle={{
-          bg: '$color1',
-          y: 3,
+          bg: '$color05',
+          y: 1,
         }}
       >
-        <EnsureFlexed />
         {/* <YStack
-          fullscreen
-          className="bg-grid mask-gradient-down"
-          style={{ backgroundPosition: 'top left' }}
-          o={0.085}
-          y={-1}
+          pos="absolute"
+          inset={-50}
+          className="bg-grid mask-gradient-up"
+          o={0.05}
+          rotate="-45deg"
         /> */}
-        <YStack
+        {/* <YStack
           fullscreen
           ai="center"
           jc="center"
@@ -560,10 +644,12 @@ function SectionCard({
           <Theme name="tan">
             <Preview />
           </Theme>
-        </YStack>
-        <YStack p="$5">
-          <H4 fontSize="$7">{name}</H4>
-          <H5 o={0.5} fontSize="$3">
+        </YStack> */}
+        <YStack p="$3">
+          <H4 ff="$body" size="$5" fow="600" color="$color12">
+            {name}
+          </H4>
+          <H5 o={0.2} size="$1" ls={1}>
             {numberOfComponents} components
           </H5>
         </YStack>
@@ -591,8 +677,13 @@ export const getStaticProps: GetStaticProps<ProComponentsProps | any> = async ()
 }
 
 const getTakeoutProducts = async (): Promise<ProComponentsProps> => {
-  const promoListPromise = stripe.promotionCodes.list({
+  const defaultPromoListPromise = stripe.promotionCodes.list({
     code: 'SITE-PRO-COMPONENTS', // ones with code SITE-PRO-COMPONENTS are considered public and will be shown here
+    active: true,
+    expand: ['data.coupon'],
+  })
+  const takeoutPlusBentoPromotionCodePromise = stripe.promotionCodes.list({
+    code: 'TAKEOUTPLUSBENTO', // ones with code TAKEOUTPLUSBENTO are considered public and will be shown here
     active: true,
     expand: ['data.coupon'],
   })
@@ -603,16 +694,29 @@ const getTakeoutProducts = async (): Promise<ProComponentsProps> => {
       .eq('metadata->>slug', 'bento')
       .single(),
   ]
-  const promises = [promoListPromise, ...productPromises]
+  const promises = [
+    defaultPromoListPromise,
+    takeoutPlusBentoPromotionCodePromise,
+    ...productPromises,
+  ]
   const queries = await Promise.all(promises)
 
-  const products = queries.slice(1) as Awaited<(typeof productPromises)[number]>[]
-  const couponsList = queries[0] as Awaited<typeof promoListPromise>
+  // slice(2) because the first two are coupon info
+  const products = queries.slice(2) as Awaited<(typeof productPromises)[number]>[]
+  const defaultCouponList = queries[0] as Awaited<typeof defaultPromoListPromise>
+  const takeoutPlusBentoCouponList = queries[1] as Awaited<
+    typeof takeoutPlusBentoPromotionCodePromise
+  >
+  let defaultCoupon: Stripe.Coupon | null = null
 
-  let coupon: Stripe.Coupon | null = null
+  if (defaultCouponList.data.length > 0) {
+    defaultCoupon = defaultCouponList.data[0].coupon
+  }
 
-  if (couponsList.data.length > 0) {
-    coupon = couponsList.data[0].coupon
+  let takeoutPlusBentoCoupon: Stripe.Coupon | null = null
+
+  if (takeoutPlusBentoCouponList.data.length > 0) {
+    takeoutPlusBentoCoupon = takeoutPlusBentoCouponList.data[0].coupon
   }
 
   if (!products.length) {
@@ -637,18 +741,7 @@ const getTakeoutProducts = async (): Promise<ProComponentsProps> => {
         (p) => p.active && !(p.metadata as Record<string, any>).hide_from_lists
       ),
     },
-    coupon,
+    defaultCoupon,
+    takeoutPlusBentoCoupon,
   }
 }
-
-const BentoCard = styled(ThemeableStack, {
-  elevation: '$4',
-  bg: '$background',
-  ai: 'center',
-  jc: 'center',
-  maw: 'calc(50% - 40px)',
-  w: '100%',
-  h: 500,
-  ov: 'hidden',
-  br: '$4',
-})

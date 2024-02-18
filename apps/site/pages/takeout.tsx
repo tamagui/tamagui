@@ -71,32 +71,38 @@ import {
   isClient,
   styled,
   useMedia,
-  useTheme,
   useThemeName,
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 
+import { BentoTable } from '@components/BentoPurchaseModal'
+import { BentoLogo } from '../components/BentoLogo'
 import { ContainerXL } from '../components/Container'
 import { FaqModal } from '../components/FaqModal'
+import { Footer } from '../components/Footer'
 import { useHoverGlow } from '../components/HoverGlow'
 import { LoadCherryBomb, LoadMunro } from '../components/LoadFont'
 import { NextLink } from '../components/NextLink'
 import { seasons } from '../components/SeasonToggleButton'
 import { TakeoutLicense } from '../components/TakeoutLicense'
-import { useTakeoutStore } from '../hooks/useTakeoutStore'
-import { Footer } from '../components/Footer'
-import { PropsTable } from '@components/PropsTable'
-import { BentoTable } from '@components/BentoPurchaseModal'
+import { TakeoutPolicy } from '../components/TakeoutPolicy'
 import { ThemeNameEffect } from '../components/ThemeNameEffect'
+import { useTakeoutStore } from '../hooks/useTakeoutStore'
 
 export default function TakeoutPage({
   starter,
   fontsPack,
   iconsPack,
   bento,
-  coupon,
+  defaultCoupon,
+  takeoutPlusBentoCoupon,
 }: TakeoutPageProps) {
   const store = useTakeoutStore()
+  const user = useUser()
+  const coupon =
+    bento && store.selectedProductsIds.includes(bento.id)
+      ? takeoutPlusBentoCoupon
+      : defaultCoupon
 
   return (
     <YStack maw="100%">
@@ -120,7 +126,7 @@ export default function TakeoutPage({
           t={-100}
           b={0}
           style={{
-            background: 'linear-gradient(10deg, var(--color6), var(--color4))',
+            background: 'linear-gradient(10deg, var(--color10), var(--color4))',
           }}
           zi={-3}
         />
@@ -204,7 +210,7 @@ export default function TakeoutPage({
       {/* <Glow /> */}
 
       <PurchaseModal
-        coupon={coupon}
+        defaultCoupon={coupon}
         starter={starter}
         iconsPack={iconsPack}
         fontsPack={fontsPack}
@@ -212,6 +218,7 @@ export default function TakeoutPage({
       />
       <FaqModal />
       <AgreementModal />
+      <PoliciesModal />
 
       {/* gradient on the end of the page */}
       <ThemeTint>
@@ -227,7 +234,7 @@ export default function TakeoutPage({
       <YStack>
         <ContainerXL>
           <YStack h={0} mah={0}>
-            <YStack position="absolute" t={20} r="5%">
+            <YStack position="absolute" t={30} r="10%">
               <PurchaseButton
                 onPress={() => {
                   store.showPurchase = true
@@ -254,13 +261,13 @@ export default function TakeoutPage({
                 }}
                 zIndex="$5"
               >
-                <DiscountText coupon={coupon} />
+                {!!defaultCoupon && <DiscountText defaultCoupon={defaultCoupon} />}
               </YStack>
             )}
 
             {/* <PromoVideo /> */}
 
-            <TakeoutHero coupon={coupon} />
+            <TakeoutHero defaultCoupon={defaultCoupon} />
           </YStack>
 
           <XStack
@@ -349,8 +356,6 @@ export default function TakeoutPage({
                     icon packs to your app as typed, Tamagui-styled components.
                   </Paragraph>
                 </ThemeTintAlt>
-
-                <Spacer size="$4" />
 
                 <XStack fw="wrap" gap="$3" mx="$-10" ai="center" jc="center">
                   <TakeoutCard
@@ -459,38 +464,271 @@ export default function TakeoutPage({
 
                 <Spacer />
 
-                <YStack
-                  className="phone-preview"
-                  marginTop={-580}
-                  marginBottom={-530}
-                  x={700}
-                  zi={-1}
-                  style={{
-                    mixBlendMode: 'lighten',
-                  }}
-                >
+                <YStack marginTop={-430} marginBottom={-330} x={800} zi={-1}>
                   <div
                     style={{
                       transform: 'rotateX(41deg) rotateZ(33deg)',
                       transformStyle: 'preserve-3d',
-                      width: 715 * 0.75,
+                      width: 715 * 0.5,
                       borderRadius: 78,
-                      boxShadow: '0 0 30px 40px rgba(0,0,0,0.2)',
+                      boxShadow: '0 50px 50px 0px var(--shadowColor)',
                     }}
                   >
-                    <Image
-                      alt="iPhone screenshot of Tamagui"
-                      src="/tama-phone.svg"
-                      width={715 * 0.75}
-                      height={1467 * 0.75}
-                    />
+                    <svg width={715 * 0.5} height={1467 * 0.5} viewBox="0 0 715 1467">
+                      <path
+                        d="M0 166.4C0 108.155 0 79.0318 11.3353 56.785C21.3062 37.2161 37.2161 21.3062 56.785 11.3353C79.0318 0 108.155 0 166.4 0H548.6C606.845 0 635.968 0 658.215 11.3353C677.784 21.3062 693.694 37.2161 703.665 56.785C715 79.0318 715 108.155 715 166.4V1300.6C715 1358.85 715 1387.97 703.665 1410.21C693.694 1429.78 677.784 1445.69 658.215 1455.66C635.968 1467 606.845 1467 548.6 1467H166.4C108.155 1467 79.0318 1467 56.785 1455.66C37.2161 1445.69 21.3062 1429.78 11.3353 1410.21C0 1387.97 0 1358.85 0 1300.6V166.4Z"
+                        fill="var(--color2)"
+                        style={{
+                          outline: `0 0 10px #000`,
+                        }}
+                      />
+                      <mask
+                        id="mask0_2_131"
+                        style={{ maskType: 'alpha' }}
+                        maskUnits="userSpaceOnUse"
+                        x="35"
+                        y="36"
+                        width="645"
+                        height="1395"
+                      >
+                        <path
+                          d="M42.4116 73.1286C35 87.6746 35 106.716 35 144.8V1322.2C35 1360.28 35 1379.33 42.4116 1393.87C48.9309 1406.67 59.3336 1417.07 72.1286 1423.59C86.6746 1431 105.716 1431 143.8 1431H571.2C609.284 1431 628.325 1431 642.871 1423.59C655.666 1417.07 666.069 1406.67 672.588 1393.87C680 1379.33 680 1360.28 680 1322.2V144.8C680 106.716 680 87.6746 672.588 73.1286C666.069 60.3336 655.666 49.9309 642.871 43.4116C628.325 36 609.284 36 571.2 36H537.778C536.122 36 535.295 36 534.632 36.2412C533.521 36.6456 532.646 37.5209 532.241 38.6319C532 39.2947 532 40.1224 532 41.7778C532 55.0209 532 61.6425 530.07 66.9446C526.835 75.8332 519.833 82.835 510.945 86.0702C505.642 88 499.021 88 485.778 88H229.222C215.979 88 209.358 88 204.055 86.0702C195.167 82.835 188.165 75.8332 184.93 66.9446C183 61.6425 183 55.0209 183 41.7778C183 40.1224 183 39.2947 182.759 38.6319C182.354 37.5209 181.479 36.6456 180.368 36.2412C179.705 36 178.878 36 177.222 36H143.8C105.716 36 86.6746 36 72.1286 43.4116C59.3336 49.9309 48.9309 60.3336 42.4116 73.1286Z"
+                          fill="var(--color)"
+                        />
+                      </mask>
+                      <g mask="url(#mask0_2_131)">
+                        <path d="M25 22H702V1489H25V22Z" fill="var(--background)" />
+                        <g clip-path="url(#clip0_2_131)">
+                          <path
+                            d="M379.351 710.63H385.629V716.909H379.351V710.63Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M370.311 710.63H376.589V716.909H370.311V710.63Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M361.271 710.63H367.549V716.909H361.271V710.63Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M352.231 710.63H358.509V716.909H352.231V710.63Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M343.191 710.63H349.469V716.909H343.191V710.63Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M334.151 710.63H340.429V716.909H334.151V710.63Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M325.111 719.644H331.389V725.923H325.111V719.644Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M316.071 728.658H322.349V734.937H316.071V728.658Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M307.031 737.673H313.309V743.951H307.031V737.673Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M307.031 746.687H313.309V752.965H307.031V746.687Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M307.031 755.701H313.309V761.979H307.031V755.701Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M307.031 764.715H313.309V770.993H307.031V764.715Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M297.991 773.729H304.269V780.007H297.991V773.729Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M297.991 782.743H304.269V789.022H297.991V782.743Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M297.991 791.757H304.269V798.036H297.991V791.757Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M307.031 800.771H313.309V807.05H307.031V800.771Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M316.071 809.785H322.349V816.064H316.071V809.785Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M325.111 818.799H331.389V825.078H325.111V818.799Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M334.151 827.814H340.429V834.092H334.151V827.814Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M343.191 827.814H349.469V834.092H343.191V827.814Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M352.231 818.799H358.509V825.078H352.231V818.799Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M361.271 818.799H367.549V825.078H361.271V818.799Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M361.271 827.814H367.549V834.092H361.271V827.814Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M370.311 827.814H376.589V834.092H370.311V827.814Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M379.351 818.799H385.629V825.078H379.351V818.799Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M379.351 809.785H385.629V816.064H379.351V809.785Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M388.391 800.771H394.669V807.05H388.391V800.771Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M397.431 782.743H403.709V789.022H397.431V782.743Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M397.431 791.757H403.709V798.036H397.431V791.757Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M397.431 773.729H403.709V780.007H397.431V773.729Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M406.471 764.715H412.749V770.993H406.471V764.715Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M415.511 764.715H421.789V770.993H415.511V764.715Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M424.551 755.701H430.829V761.979H424.551V755.701Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M415.511 746.687H421.789V752.965H415.511V746.687Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M406.471 746.687H412.749V752.965H406.471V746.687Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M397.431 746.687H403.709V752.965H397.431V746.687Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M424.551 737.673H430.829V743.951H424.551V737.673Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M424.551 746.687H430.829V752.965H424.551V746.687Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M415.511 728.658H421.789V734.937H415.511V728.658Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M415.511 728.658H421.789V734.937H415.511V728.658Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M406.471 728.658H412.749V734.937H406.471V728.658Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M388.391 719.644H394.669V725.923H388.391V719.644Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M379.351 728.658H385.629V734.937H379.351V728.658Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M352.231 737.673H358.509V743.951H352.231V737.673Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M352.231 773.729H358.509V780.007H352.231V773.729Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M352.231 782.743H358.509V789.022H352.231V782.743Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M343.191 791.757H349.469V798.036H343.191V791.757Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M334.151 782.743H340.429V789.022H334.151V782.743Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M334.151 773.729H340.429V780.007H334.151V773.729Z"
+                            fill="var(--color)"
+                          />
+                          <path
+                            d="M397.431 728.658H403.709V734.937H397.431V728.658Z"
+                            fill="var(--color)"
+                          />
+                        </g>
+                      </g>
+                      <path
+                        d="M319 55C319 51.134 322.134 48 326 48H390C393.866 48 397 51.134 397 55C397 58.866 393.866 62 390 62H326C322.134 62 319 58.866 319 55Z"
+                        fill="var(--color6)"
+                      />
+                      <path
+                        d="M413 55C413 47.268 419.268 41 427 41C434.732 41 441 47.268 441 55C441 62.732 434.732 69 427 69C419.268 69 413 62.732 413 55Z"
+                        fill="var(--color6)"
+                      />
+                      <defs>
+                        <clipPath id="clip0_2_131">
+                          <rect
+                            width="133.664"
+                            height="124.999"
+                            fill="var(--color)"
+                            transform="translate(297.536 709.493)"
+                          />
+                        </clipPath>
+                      </defs>
+                    </svg>
                   </div>
                 </YStack>
+
                 <ThemeTint>
                   <YStack
                     p="$6"
-                    className="blur-medium"
                     px="$8"
+                    className="blur-8"
+                    elevation="$10"
                     py="$8"
                     gap="$5"
                     br="$10"
@@ -570,19 +808,15 @@ export default function TakeoutPage({
                         <Bullet status="building">Tamagui CLI: Doctor</Bullet>
                         <Bullet status="building">Tamagui CLI: Upgrade</Bullet>
                         <Bullet>Playwright integration tests</Bullet>
-                        <Bullet>Alternative deployment targets</Bullet>
-                        <Bullet>Premium font add-ons</Bullet>
                         <Bullet>Unified RN and web testing tools</Bullet>
                         <Bullet>Improved CI/CD and caching</Bullet>
                         <Bullet>Generator for MDX support</Bullet>
                         <Bullet>Generator for Replicache support</Bullet>
-                        <Bullet>Generator for other databases</Bullet>
                         <Bullet>Generators for Expo Deep links</Bullet>
                         <Bullet>Generator for native modules</Bullet>
                         <Bullet>Million.js opt-in and configuration</Bullet>
                         <Bullet>Virtual lists, swipeable + sorting</Bullet>
-                        <Bullet>Native menus with Zeego</Bullet>
-                        <Bullet>Much more (suggest in the #takeout channel)</Bullet>
+                        <Bullet>Suggest more in the #takeout channel</Bullet>
                       </XStack>
                     </ThemeTintAlt>
 
@@ -592,7 +826,7 @@ export default function TakeoutPage({
 
                 <Spacer />
 
-                <YStack br="$12" elevation="$4" bg="#000" p="$7" gap="$3">
+                <YStack br="$12" elevation="$4" bg="rgba(0,0,0,0.8)" p="$7" gap="$3">
                   <ThemeTint>
                     <Paragraph als="center" col="#fff" fontFamily="$munro" size="$10">
                       Gallery
@@ -705,7 +939,8 @@ type TakeoutPageProps = {
   bento?: Database['public']['Tables']['products']['Row'] & {
     prices: Database['public']['Tables']['prices']['Row'][]
   }
-  coupon?: Stripe.Coupon | null
+  defaultCoupon?: Stripe.Coupon | null
+  takeoutPlusBentoCoupon?: Stripe.Coupon | null
 }
 
 const TakeoutCard2Frame = styled(YStack, {
@@ -714,7 +949,7 @@ const TakeoutCard2Frame = styled(YStack, {
   maxWidth: 282,
   minHeight: 312,
   maxHeight: 312,
-  elevation: '$1',
+  elevation: '$0.5',
   overflow: 'hidden',
   borderRadius: '$10',
 
@@ -751,7 +986,7 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
     blurPct: 60,
     // inverse: true,
     color: isDark ? 'var(--color9)' : 'var(--color4)',
-    opacity: isDark ? 0.18 : 1,
+    opacity: isDark ? 0.18 : 0.35,
     background: 'transparent',
     style: {
       transition: `all ease-out 300ms`,
@@ -798,7 +1033,16 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
         </YStack> */}
 
         <YStack f={1} space zi={100}>
-          <H2 color="$color10" fontFamily="$munro" size="$10" my={-8}>
+          <H2
+            fontFamily="$munro"
+            size="$10"
+            als="center"
+            my={-8}
+            color="$color10"
+            $theme-light={{
+              color: '$color11',
+            }}
+          >
             {title}
           </H2>
           {children}
@@ -814,8 +1058,7 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
   )
 }
 
-const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
-  const disableMotion = useDisableMotion()
+const TakeoutHero = ({ defaultCoupon }: Pick<TakeoutPageProps, 'defaultCoupon'>) => {
   const enable3d = useClientValue(
     () => !isSafariMobile && !window.location.search?.includes('disable-3d')
   )
@@ -876,54 +1119,8 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
         </ThemeTintAlt>
       </YStack> */}
 
-      <YStack
-        pos="absolute"
-        style={{
-          clipPath: `polygon(0% 0%, 0% 0%, 100% 100%, 100% 0%, 100% 0, 0% 100%)`,
-        }}
-      >
-        <ThemeTint>
-          <TAKEOUT className="text-3d" zi={1000} color="$color10" />
-        </ThemeTint>
-      </YStack>
+      <TakeoutLogo />
 
-      <YStack
-        mt={0}
-        zi={0}
-        className="mix-blend"
-        style={{
-          clipPath: `polygon(0% 0%, 0% 100%, 100% 100%, 0% 0%, 100% 0, 0% 100%)`,
-        }}
-      >
-        <ThemeTintAlt>
-          <TAKEOUT className="font-outlined" zi={1000} color="var(--color8)" />
-        </ThemeTintAlt>
-
-        {!disableMotion && (
-          <>
-            <ThemeTint>
-              {/* main color slices */}
-              <TAKEOUT
-                color="$color7"
-                className="clip-slice mix-blend"
-                pos="absolute"
-                o={1}
-                zi={1001}
-              />
-            </ThemeTint>
-            {/* alt color slices */}
-            <ThemeTintAlt>
-              <TAKEOUT
-                color="$color7"
-                className="clip-slice mix-blend slice-alt"
-                pos="absolute"
-                o={1}
-                zi={1002}
-              />
-            </ThemeTintAlt>
-          </>
-        )}
-      </YStack>
       <YStack
         position="absolute"
         pe="none"
@@ -1004,6 +1201,63 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
   )
 }
 
+const TakeoutLogo = () => {
+  const disableMotion = useDisableMotion()
+
+  return (
+    <>
+      <YStack
+        pos="absolute"
+        style={{
+          clipPath: `polygon(0% 0%, 0% 0%, 100% 100%, 100% 0%, 100% 0, 0% 100%)`,
+        }}
+      >
+        <ThemeTint>
+          <TAKEOUT className="text-3d" zi={1000} color="$color10" />
+        </ThemeTint>
+      </YStack>
+
+      <YStack
+        mt={0}
+        zi={0}
+        className="mix-blend"
+        style={{
+          clipPath: `polygon(0% 0%, 0% 100%, 100% 100%, 0% 0%, 100% 0, 0% 100%)`,
+        }}
+      >
+        <ThemeTintAlt>
+          <TAKEOUT className="font-outlined" zi={1000} color="var(--color8)" />
+        </ThemeTintAlt>
+
+        {!disableMotion && (
+          <>
+            <ThemeTint>
+              {/* main color slices */}
+              <TAKEOUT
+                color="$color7"
+                className="clip-slice mix-blend"
+                pos="absolute"
+                o={1}
+                zi={1001}
+              />
+            </ThemeTint>
+            {/* alt color slices */}
+            <ThemeTintAlt>
+              <TAKEOUT
+                color="$color7"
+                className="clip-slice mix-blend slice-alt"
+                pos="absolute"
+                o={1}
+                zi={1002}
+              />
+            </ThemeTintAlt>
+          </>
+        )}
+      </YStack>
+    </>
+  )
+}
+
 const useDisableMotion = () => {
   return useClientValue(
     isClient &&
@@ -1068,15 +1322,22 @@ const PurchaseModal = ({
   iconsPack,
   fontsPack,
   bento,
-  coupon,
-}: TakeoutPageProps) => {
+  defaultCoupon,
+}: Omit<TakeoutPageProps, 'takeoutPlusBentoCoupon'>) => {
   const products = [starter, iconsPack, fontsPack]
-  // const prices = products.prices
   const store = useTakeoutStore()
+  const { selectedProductsIds } = store
+
+  useEffect(() => {
+    if (store.selectedProductsIds.length === 0) {
+      store.selectedProductsIds = products.map((p) => p!.id)
+    }
+  }, [store.selectedProductsIds])
+  // const prices = products.prices
   // const [selectedPriceId, setSelectedPriceId] = useState(prices[prices.length - 1].id)
-  const [selectedProductsIds, setSelectedProductsIds] = useState<string[]>(
-    products.filter(Boolean).map((p) => p!.id)
-  )
+  function setSelectedProductsIds(newSelectedProductIds: string[]) {
+    store.selectedProductsIds = newSelectedProductIds
+  }
   const sortedStarterPrices = (starter?.prices ?? []).sort(
     (a, b) => a.unit_amount! - b.unit_amount!
   )
@@ -1124,21 +1385,24 @@ const PurchaseModal = ({
     return final
   }, [selectedProductsIds, starterPriceId, bentoPriceId, starter, iconsPack, fontsPack])
 
+  const finalCoupon = store.appliedCoupon || defaultCoupon
   // with discount applied
   const finalPrice = useMemo(() => {
-    const appliedCoupon = store.appliedCoupon ?? coupon
-    if (appliedCoupon) {
-      if (appliedCoupon.amount_off) return sum - appliedCoupon.amount_off
-      if (appliedCoupon.percent_off)
-        return (sum * (100 - appliedCoupon.percent_off)) / 100
+    if (finalCoupon) {
+      if (finalCoupon.amount_off) return sum - finalCoupon.amount_off
+      if (finalCoupon.percent_off) return (sum * (100 - finalCoupon.percent_off)) / 100
     }
 
     return sum
-  }, [sum, store.appliedCoupon, coupon])
+  }, [sum, finalCoupon])
   const hasDiscountApplied = finalPrice !== sum
 
   const noProductSelected = selectedProductsIds.length === 0
   const showTeamSelect = selectedProductsIds.includes(starter?.id || '')
+
+  const enable3d = useClientValue(
+    () => !isSafariMobile && !window.location.search?.includes('disable-3d')
+  )
 
   return (
     <Dialog
@@ -1173,6 +1437,7 @@ const PurchaseModal = ({
         />
 
         <Dialog.Content
+          theme="surface1"
           bordered
           elevate
           key="content"
@@ -1207,55 +1472,54 @@ const PurchaseModal = ({
               </XStack>
 
               {process.env.NEXT_PUBLIC_IS_TAMAGUI_DEV && (
-                <YStack my="$2">
+                <YStack>
                   <YStack gap="$4" $gtSm={{ fd: 'row' }} flexWrap="wrap">
-                    <CheckboxGroupItem
-                      disabled
-                      onCheckedChange={() => {
-                        if (!starter) return
-                        const active = selectedProductsIds.includes(starter.id)
-                        setSelectedProductsIds(
-                          active
-                            ? selectedProductsIds.filter((id) => id !== starter.id)
-                            : [...selectedProductsIds, starter.id]
-                        )
-                      }}
-                      id={'takeout-starter'}
-                      checked={starter && selectedProductsIds.includes(starter.id)}
-                    >
-                      <H3 lh="$6">{starter?.name}</H3>
-                      <Paragraph size="$3" lh="$1" theme="alt2">
-                        {starter?.description}
-                      </Paragraph>
-                    </CheckboxGroupItem>
-                    <CheckboxGroupItem
-                      onCheckedChange={() => {
-                        if (!bento) return
-                        const active = selectedProductsIds.includes(bento.id)
-                        setSelectedProductsIds(
-                          active
-                            ? selectedProductsIds.filter((id) => id !== bento.id)
-                            : [...selectedProductsIds, bento.id]
-                        )
-                      }}
-                      id={'takeout-bento'}
-                      checked={bento && selectedProductsIds.includes(bento.id)}
-                    >
-                      <H3 lh="$6">{bento?.name}</H3>
-                      <Paragraph size="$3" lh="$1" theme="alt2">
-                        {bento?.description}
-                      </Paragraph>
-                    </CheckboxGroupItem>
+                    <ThemeTint disable={selectedProductsIds.includes(starter?.id || '')}>
+                      <CheckboxGroupItem
+                        disabled
+                        onCheckedChange={() => {
+                          if (!starter) return
+                          const active = selectedProductsIds.includes(starter.id)
+                          setSelectedProductsIds(
+                            active
+                              ? selectedProductsIds.filter((id) => id !== starter.id)
+                              : [...selectedProductsIds, starter.id]
+                          )
+                        }}
+                        id={'takeout-starter'}
+                        checked={selectedProductsIds.includes(starter?.id || '')}
+                      >
+                        <H3 lh="$6">{starter?.name}</H3>
+                        <Paragraph size="$3" lh="$1" theme="alt2">
+                          {starter?.description}
+                        </Paragraph>
+                      </CheckboxGroupItem>
+                    </ThemeTint>
+                    <Theme name="tan">
+                      <CheckboxGroupItem
+                        onCheckedChange={() => {
+                          if (!bento) return
+                          const active = selectedProductsIds.includes(bento.id)
+                          setSelectedProductsIds(
+                            active
+                              ? selectedProductsIds.filter((id) => id !== bento.id)
+                              : [...selectedProductsIds, bento.id]
+                          )
+                        }}
+                        id={'takeout-bento'}
+                        checked={bento && selectedProductsIds.includes(bento.id)}
+                      >
+                        <BentoLogo scale={0.25} />
+                        <Paragraph size="$3" lh="$1" theme="alt2">
+                          {bento?.description}
+                        </Paragraph>
+                      </CheckboxGroupItem>
+                    </Theme>
                   </YStack>
                 </YStack>
               )}
 
-              <XStack
-                f={1}
-                space
-                separator={<Separator vertical />}
-                $group-takeoutBody-sm={{ fd: 'column-reverse' }}
-              >
+              <XStack f={1} gap="$4" $group-takeoutBody-sm={{ fd: 'column-reverse' }}>
                 <YStack
                   f={1}
                   maw="50%"
@@ -1268,6 +1532,7 @@ const PurchaseModal = ({
                   <YStack gap="$4">
                     <YStack gap="$2">
                       <H6
+                        theme="alt2"
                         o={bento && selectedProductsIds.includes(bento.id) ? 1 : 0}
                         animation="100ms"
                       >
@@ -1277,7 +1542,7 @@ const PurchaseModal = ({
                       <XStack
                         mt="$2"
                         theme="green"
-                        bg="$background"
+                        bg="$color3"
                         p="$4"
                         bw={1}
                         bc="$color5"
@@ -1299,7 +1564,7 @@ const PurchaseModal = ({
                         enterStyle={{ o: 0 }}
                         exitStyle={{ o: 0 }}
                       >
-                        <H6>{bento?.name}</H6>
+                        <H6 theme="alt2">{bento?.name}</H6>
 
                         <BentoTable product={bento} selectedPriceId={bentoPriceId} />
                       </YStack>
@@ -1308,21 +1573,24 @@ const PurchaseModal = ({
 
                   <YStack mt="$6" space="$4" ai="center">
                     <Paragraph size="$3" theme="alt1">
-                      Instant one-click cancel your subscription from /account
+                      Instant one-click cancel your subscription from /account/items
                     </Paragraph>
                   </YStack>
                 </YStack>
+
+                <Separator vertical />
 
                 <YStack f={2} space="$4">
                   <YStack
                     opacity={showTeamSelect ? 1 : 0.25}
                     pointerEvents={showTeamSelect ? 'auto' : 'none'}
-                    gap="$3"
+                    gap="$4"
                   >
                     <YStack gap="$2">
                       <H6
                         o={bento && selectedProductsIds.includes(bento.id) ? 1 : 0}
                         animation="100ms"
+                        theme="alt2"
                       >
                         {starter?.name}
                       </H6>
@@ -1357,6 +1625,9 @@ const PurchaseModal = ({
                         })}
                       </RadioGroup>
                     </YStack>
+
+                    <Separator />
+
                     <AnimatePresence>
                       {bento && selectedProductsIds.includes(bento.id) && (
                         <YStack
@@ -1366,7 +1637,7 @@ const PurchaseModal = ({
                           exitStyle={{ o: 0 }}
                           animation="100ms"
                         >
-                          <H6>{bento.name}</H6>
+                          <H6 theme="alt2">{bento.name}</H6>
 
                           <RadioGroup
                             gap="$2"
@@ -1419,7 +1690,12 @@ const PurchaseModal = ({
                     </XStack>
 
                     <Unspaced>
-                      <YStack mt="$2">
+                      <YStack mt="$2" gap="$1">
+                        {finalCoupon ? (
+                          <SizableText textAlign="right" size="$3">
+                            Coupon "{finalCoupon.name}" is applied.
+                          </SizableText>
+                        ) : null}
                         <PromotionInput />
                       </YStack>
                     </Unspaced>
@@ -1439,9 +1715,9 @@ const PurchaseModal = ({
                           if (store.appliedPromoCode) {
                             // the coupon user applied
                             params.append(`promotion_code`, store.appliedPromoCode)
-                          } else if (coupon) {
+                          } else if (defaultCoupon) {
                             // the coupon that's applied by default (special event, etc.)
-                            params.append(`coupon_id`, coupon.id)
+                            params.append(`coupon_id`, defaultCoupon.id)
                           }
 
                           return params.toString()
@@ -1487,7 +1763,22 @@ const PurchaseModal = ({
                             }}
                             size="$2"
                           >
-                            License Agreement
+                            License
+                          </SizableText>
+
+                          <SizableText
+                            theme="alt1"
+                            cursor="pointer"
+                            onPress={() => {
+                              store.showPolicies = true
+                            }}
+                            style={{ textDecorationLine: 'underline' }}
+                            hoverStyle={{
+                              color: '$color11',
+                            }}
+                            size="$2"
+                          >
+                            Policies
                           </SizableText>
                         </XStack>
                         <Theme name="alt1">
@@ -1566,7 +1857,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
         </SizableText>
       )}
 
-      <ThemeTint>
+      <ThemeTintAlt offset={6}>
         <TakeoutCardFrame
           className="blur-medium"
           zi={100_000}
@@ -1622,7 +1913,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
               </MunroP>
 
               <ThemeTintAlt>
-                <MunroP color="$color10" size="$11" ls={2}>
+                <MunroP color="$color11" size="$11" ls={2}>
                   The Stack
                 </MunroP>
               </ThemeTintAlt>
@@ -1705,7 +1996,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
             </YStack>
           </ScrollView>
         </TakeoutCardFrame>
-      </ThemeTint>
+      </ThemeTintAlt>
     </div>
   )
 })
@@ -1713,9 +2004,11 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
 function PurchaseButton(props: ButtonProps) {
   return (
     <ThemeTintAlt>
-      <Button size="$6" borderWidth={2} bc="$color8" {...props}>
-        <Button.Text ff="$silkscreen">{props.children} 🥡</Button.Text>
-      </Button>
+      <Theme name="surface4">
+        <Button size="$6" borderWidth={2} {...props}>
+          <Button.Text ff="$silkscreen">{props.children} 🥡</Button.Text>
+        </Button>
+      </Theme>
     </ThemeTintAlt>
   )
 }
@@ -1775,6 +2068,7 @@ const TAKEOUT = ({ fontSize = 450, lineHeight = fontSize * 0.64, ...props }) => 
     fontFamily="$cherryBomb"
     fontSize={fontSize}
     lineHeight={lineHeight}
+    letterSpacing={-18}
     whiteSpace="nowrap"
     minWidth={970}
     ta="center"
@@ -2100,15 +2394,93 @@ const AgreementModal = () => {
   )
 }
 
+const PoliciesModal = () => {
+  const store = useTakeoutStore()
+  return (
+    <Dialog
+      modal
+      open={store.showPolicies}
+      onOpenChange={(val) => {
+        store.showPolicies = val
+      }}
+    >
+      <Dialog.Adapt when="sm">
+        <Sheet zIndex={200000} modal dismissOnSnapToBottom>
+          <Sheet.Frame padding="$4" space>
+            <Sheet.ScrollView>
+              <Dialog.Adapt.Contents />
+            </Sheet.ScrollView>
+          </Sheet.Frame>
+          <Sheet.Overlay
+            animation="lazy"
+            enterStyle={{ opacity: 0 }}
+            exitStyle={{ opacity: 0 }}
+          />
+        </Sheet>
+      </Dialog.Adapt>
+
+      <Dialog.Portal>
+        <Dialog.Overlay
+          key="overlay"
+          animation="medium"
+          className="blur-medium"
+          enterStyle={{ opacity: 0 }}
+          exitStyle={{ opacity: 0 }}
+        />
+
+        <Dialog.Content
+          bordered
+          elevate
+          key="content"
+          animation={[
+            'quick',
+            {
+              opacity: {
+                overshootClamping: true,
+              },
+            },
+          ]}
+          enterStyle={{ y: -10, opacity: 0, scale: 0.975 }}
+          exitStyle={{ y: 10, opacity: 0, scale: 0.975 }}
+          w="90%"
+          maw={900}
+        >
+          <ScrollView>
+            <YStack $gtSm={{ maxHeight: '90vh' }} space>
+              <Paragraph>
+                <Link href="/takeout-policy">Permalink to policies</Link>.
+              </Paragraph>
+
+              <TakeoutPolicy />
+            </YStack>
+          </ScrollView>
+          <Unspaced>
+            <Dialog.Close asChild>
+              <Button
+                position="absolute"
+                top="$2"
+                right="$2"
+                size="$2"
+                circular
+                icon={X}
+              />
+            </Dialog.Close>
+          </Unspaced>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog>
+  )
+}
+
 const DiscountText = ({
-  coupon,
+  defaultCoupon,
 }: {
-  coupon: NonNullable<TakeoutPageProps['coupon']>
+  defaultCoupon: NonNullable<TakeoutPageProps['defaultCoupon']>
 }) => {
-  const text = coupon.amount_off
-    ? `${formatPrice(coupon.amount_off, 'usd')} ${coupon.name}`
-    : coupon.percent_off
-      ? `${coupon.percent_off}% ${coupon.name}`
+  const text = defaultCoupon.amount_off
+    ? `${defaultCoupon.name} (${formatPrice(defaultCoupon.amount_off / 100, 'usd')})`
+    : defaultCoupon.percent_off
+      ? `${defaultCoupon.name} (${defaultCoupon.percent_off}%)`
       : ''
   return (
     <ThemeTintAlt offset={6}>
@@ -2517,41 +2889,50 @@ const Lazy = (props: { children: any }) => {
 
 const CheckboxGroupItem = ({ children, ...props }: CheckboxProps) => {
   return (
-    <ThemeTint disable={!props.checked}>
-      <Label
-        f={1}
-        htmlFor={props.id}
-        p="$4"
-        height="unset"
-        display="flex"
-        borderWidth="$0.25"
-        backgroundColor={props.checked ? '$color7' : '$color5'}
-        borderColor={props.checked ? '$color8' : '$color7'}
-        borderRadius="$4"
-        space="$4"
-        ai="center"
-        opacity={props.disabled ? 0.75 : 1}
-        cursor={props.disabled ? 'not-allowed' : 'default'}
-        $gtSm={{
-          maw: 'calc(50% - 8px)',
-        }}
+    <Label
+      f={1}
+      htmlFor={props.id}
+      p="$4"
+      className="3d"
+      height="unset"
+      display="flex"
+      borderWidth="$0.25"
+      backgroundColor={props.checked ? '$color2' : '$color1'}
+      borderColor={props.checked ? '$color5' : '$color2'}
+      borderRadius="$4"
+      gap="$4"
+      ai="center"
+      opacity={props.disabled ? 0.75 : 1}
+      cursor={props.disabled ? 'not-allowed' : 'default'}
+      $gtSm={{
+        maw: 'calc(50% - 8px)',
+      }}
+      hoverStyle={{
+        borderColor: props.checked ? '$color7' : '$color7',
+      }}
+    >
+      <Checkbox
+        bg="$color3"
+        bc="$color5"
         hoverStyle={{
-          borderColor: props.checked ? '$color10' : '$color7',
+          bg: '$color4',
+          bc: '$color6',
         }}
+        checked={props.checked}
+        size="$6"
+        {...props}
       >
-        <Checkbox checked={props.checked} size="$6" {...props}>
-          <Checkbox.Indicator
-          // backgroundColor={props.checked ? '$color8' : '$color1'}
-          >
-            <Check />
-          </Checkbox.Indicator>
-        </Checkbox>
+        <Checkbox.Indicator
+        // backgroundColor={props.checked ? '$color8' : '$color1'}
+        >
+          <Check />
+        </Checkbox.Indicator>
+      </Checkbox>
 
-        <YStack gap="$1" f={1}>
-          {children}
-        </YStack>
-      </Label>
-    </ThemeTint>
+      <YStack gap="$1" f={1}>
+        {children}
+      </YStack>
+    </Label>
   )
 }
 
@@ -2686,8 +3067,13 @@ export const getStaticProps: GetStaticProps<TakeoutPageProps | any> = async () =
 }
 
 const getTakeoutProducts = async (): Promise<TakeoutPageProps> => {
-  const promoListPromise = stripe.promotionCodes.list({
-    code: 'SITE', // ones with code site are considered public and will be shown here
+  const defaultSitePromotionCodePromise = stripe.promotionCodes.list({
+    code: 'SITE', // ones with code SITE are considered public and will be shown here
+    active: true,
+    expand: ['data.coupon'],
+  })
+  const takeoutPlusBentoPromotionCodePromise = stripe.promotionCodes.list({
+    code: 'TAKEOUTPLUSBENTO', // ones with code TAKEOUTPLUSBENTO are considered public and will be shown here
     active: true,
     expand: ['data.coupon'],
   })
@@ -2713,16 +3099,30 @@ const getTakeoutProducts = async (): Promise<TakeoutPageProps> => {
       .eq('metadata->>slug', 'bento')
       .single(),
   ]
-  const promises = [promoListPromise, ...productPromises]
+  const promises = [
+    defaultSitePromotionCodePromise,
+    takeoutPlusBentoPromotionCodePromise,
+    ...productPromises,
+  ]
   const queries = await Promise.all(promises)
 
-  const products = queries.slice(1) as Awaited<(typeof productPromises)[number]>[]
-  const couponsList = queries[0] as Awaited<typeof promoListPromise>
+  // slice(2) because the first two are coupon info
+  const products = queries.slice(2) as Awaited<(typeof productPromises)[number]>[]
+  const defaultCouponList = queries[0] as Awaited<typeof defaultSitePromotionCodePromise>
+  const takeoutPlusBentoCouponList = queries[1] as Awaited<
+    typeof takeoutPlusBentoPromotionCodePromise
+  >
 
-  let coupon: Stripe.Coupon | null = null
+  let defaultCoupon: Stripe.Coupon | null = null
 
-  if (couponsList.data.length > 0) {
-    coupon = couponsList.data[0].coupon
+  if (defaultCouponList.data.length > 0) {
+    defaultCoupon = defaultCouponList.data[0].coupon
+  }
+
+  let takeoutPlusBentoCoupon: Stripe.Coupon | null = null
+
+  if (takeoutPlusBentoCouponList.data.length > 0) {
+    takeoutPlusBentoCoupon = takeoutPlusBentoCouponList.data[0].coupon
   }
 
   if (!products.length) {
@@ -2743,6 +3143,7 @@ const getTakeoutProducts = async (): Promise<TakeoutPageProps> => {
   return {
     starter: {
       ...products[0].data!,
+      name: `Takeout`,
       prices: getArray(products[0].data!.prices!).filter(
         (p) => p.active && !(p.metadata as Record<string, any>).hide_from_lists
       ),
@@ -2765,6 +3166,7 @@ const getTakeoutProducts = async (): Promise<TakeoutPageProps> => {
         (p) => p.active && !(p.metadata as Record<string, any>).hide_from_lists
       ),
     },
-    coupon,
+    defaultCoupon,
+    takeoutPlusBentoCoupon,
   }
 }

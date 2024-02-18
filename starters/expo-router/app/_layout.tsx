@@ -1,9 +1,9 @@
-import '../tamagui-web.css'
-
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native'
 import { SplashScreen, Stack } from 'expo-router'
 import { useColorScheme } from 'react-native'
 import { TamaguiProvider } from 'tamagui'
+
+import '../tamagui-web.css'
 
 import { config } from '../tamagui.config'
 import { useFonts } from 'expo-font'

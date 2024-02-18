@@ -20,6 +20,7 @@ export default (props) => (
     style={{
       width: 600,
       height: 600,
+      ...props.style,
     }}
     gl={{ preserveDrawingBuffer: true }}
     dpr={[1, 1]}

@@ -25,7 +25,8 @@ export default {
     'Picker',
     'CheckBox',
     'Touchable',
-    'FlatList',
+    // need this for bento /lists
+    // 'FlatList',
     'Modal',
   ],
 } satisfies TamaguiBuildOptions

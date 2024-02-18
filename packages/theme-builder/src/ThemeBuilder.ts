@@ -320,7 +320,11 @@ export class ThemeBuilder<
           throw new Error(`No palette for theme${msg}`)
         }
 
-        const template = this.state.templates?.[templateName]
+        const template =
+          this.state.templates?.[templateName] ??
+          // fall back to finding the scheme specific on if it exists
+          this.state.templates?.[`${nameParts[0]}_${templateName}`]
+
         if (!template) {
           throw new Error(`No template for theme ${themeName}: ${templateName}`)
         }

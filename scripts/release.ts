@@ -23,6 +23,7 @@ const confirmFinalPublish = process.argv.includes('--confirm-final-publish')
 const reRun = process.argv.includes('--rerun')
 const rePublish = reRun || process.argv.includes('--republish')
 const finish = process.argv.includes('--finish')
+const skipFinish = process.argv.includes('--skip-finish')
 
 const skipStarters = process.argv.includes('--skip-starters')
 const canary = process.argv.includes('--canary')
@@ -361,62 +362,64 @@ async function run() {
       console.info(`✅ Published\n`)
     }
 
-    // then git tag, commit, push
-    if (!finish) {
-      await spawnify(`yarn install`)
-    }
-
-    const tagPrefix = canary ? 'canary' : 'v'
-    const gitTag = `${tagPrefix}${version}`
-
-    if (!finish) {
-      await sleep(4 * 1000)
-    }
-
-    if (!canary && !skipStarters) {
-      await spawnify(`yarn upgrade:starters`)
-      const starterFreeDir = join(process.cwd(), '../starter-free')
-      await finishAndCommit(starterFreeDir)
-    }
-
-    await finishAndCommit()
-
-    async function finishAndCommit(cwd = process.cwd()) {
-      if (!rePublish || reRun || finish) {
-        await spawnify(`git add -A`, { cwd })
-        await spawnify(`git commit -m ${gitTag}`, { cwd })
-        if (!canary) {
-          await spawnify(`git tag ${gitTag}`, { cwd })
-        }
-
-        if (!dirty) {
-          // pull once more before pushing so if there was a push in interim we get it
-          await spawnify(`git pull --rebase origin HEAD`, { cwd })
-        }
-
-        await spawnify(`git push origin head`, { cwd })
-        if (!canary) {
-          await spawnify(`git push origin ${gitTag}`, { cwd })
-        }
-
-        console.info(`✅ Pushed and versioned\n`)
+    if (!skipFinish) {
+      // then git tag, commit, push
+      if (!finish) {
+        await spawnify(`yarn install`)
       }
-    }
 
-    // console.info(`All done, cleanup up in...`)
-    // await sleep(2 * 1000)
-    // // then remove old prepub tag
-    // await pMap(
-    //   packageJsons,
-    //   async ({ name, cwd }) => {
-    //     await spawnify(`npm dist-tag remove ${name}@${version} prepub`, {
-    //       cwd,
-    //     }).catch((err) => console.error(err))
-    //   },
-    //   {
-    //     concurrency: 20,
-    //   }
-    // )
+      const tagPrefix = canary ? 'canary' : 'v'
+      const gitTag = `${tagPrefix}${version}`
+
+      if (!finish) {
+        await sleep(4 * 1000)
+      }
+
+      if (!canary && !skipStarters) {
+        await spawnify(`yarn upgrade:starters`)
+        const starterFreeDir = join(process.cwd(), '../starter-free')
+        await finishAndCommit(starterFreeDir)
+      }
+
+      await finishAndCommit()
+
+      async function finishAndCommit(cwd = process.cwd()) {
+        if (!rePublish || reRun || finish) {
+          await spawnify(`git add -A`, { cwd })
+          await spawnify(`git commit -m ${gitTag}`, { cwd })
+          if (!canary) {
+            await spawnify(`git tag ${gitTag}`, { cwd })
+          }
+
+          if (!dirty) {
+            // pull once more before pushing so if there was a push in interim we get it
+            await spawnify(`git pull --rebase origin HEAD`, { cwd })
+          }
+
+          await spawnify(`git push origin head`, { cwd })
+          if (!canary) {
+            await spawnify(`git push origin ${gitTag}`, { cwd })
+          }
+
+          console.info(`✅ Pushed and versioned\n`)
+        }
+      }
+
+      // console.info(`All done, cleanup up in...`)
+      // await sleep(2 * 1000)
+      // // then remove old prepub tag
+      // await pMap(
+      //   packageJsons,
+      //   async ({ name, cwd }) => {
+      //     await spawnify(`npm dist-tag remove ${name}@${version} prepub`, {
+      //       cwd,
+      //     }).catch((err) => console.error(err))
+      //   },
+      //   {
+      //     concurrency: 20,
+      //   }
+      // )
+    }
 
     console.info(`✅ Done\n`)
   } catch (err) {

@@ -109,7 +109,7 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
       if (isHydrating) {
         dontAnimate = style
       } else {
-        const animateOnly = props.animateOnly || ['transform', 'opacity']
+        const animateOnly = props.animateOnly
         if (animateOnly) {
           dontAnimate = { ...style }
           for (const key of animateOnly) {

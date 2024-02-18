@@ -5,7 +5,7 @@ import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { Header } from '@tamagui/site/components/Header'
 import { SearchProvider } from '@tamagui/site/components/Search'
 import { useState } from 'react'
-import { AnimatePresence, Button, View, Text, YStack, styled } from 'tamagui'
+import { AnimatePresence, Button, View, Text, YStack, styled, Square } from 'tamagui'
 
 // debugger
 global.shouldDebugMoti = true
@@ -29,9 +29,24 @@ function TestPage() {
         flex: 1,
       }}
     >
-      <Button debug="verbose" mr="$-10">
+      {/* <Button debug="verbose" mr="$-10">
         ok
-      </Button>
+      </Button> */}
+
+      <Square
+        debug="verbose"
+        backgroundColor="yellow"
+        size={200}
+        hoverStyle={{
+          backgroundColor: 'black',
+        }}
+        $gtSm={{
+          backgroundColor: 'green',
+          hoverStyle: {
+            backgroundColor: 'red',
+          },
+        }}
+      />
       {/* <Stack
         // hitSlop={5}
         importantForAccessibility="no"

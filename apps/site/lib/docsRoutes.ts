@@ -1,3 +1,5 @@
+import { Figma } from '@tamagui/lucide-icons'
+
 export const docsRoutes = [
   {
     pages: [
@@ -5,6 +7,11 @@ export const docsRoutes = [
       { title: 'Installation', route: '/docs/intro/installation' },
       // { title: 'Thinking in Tamagui', route: '/docs/intro/thinking-in-tamagui' },
       // { title: 'Comparison', route: '/docs/intro/comparison' },
+      {
+        title: 'Figma',
+        icon: Figma,
+        route: 'https://www.figma.com/community/file/1326593766534421119/tamagui-v1-2-1',
+      },
       {
         title: 'Releases',
         route: 'https://github.com/tamagui/tamagui/releases',

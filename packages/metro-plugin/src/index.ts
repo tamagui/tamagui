@@ -32,17 +32,19 @@ export function withTamagui(
       ignorePropertyWarningRegex: ['^--'],
       // grouping: ['^group(/.*)?'],
     })
+  } else {
+    // done in css interop
+    metroConfig.resolver = {
+      ...metroConfig.resolver,
+      sourceExts: [...metroConfig.resolver.sourceExts, 'css'],
+    }
   }
 
-  // done in css interop
-  // metroConfig.resolver = {
-  //   ...metroConfig.resolver,
-  //   sourceExts: [...metroConfig.resolver.sourceExts, 'css'],
-  // }
-
+  const ogTransformPath = metroConfig.transformerPath
   metroConfig.transformerPath = require.resolve('./transformer')
   metroConfig.transformer = {
     ...metroConfig.transformer,
+    ogTransformPath,
     tamagui: {
       ...options,
       disableInitialBuild: true,

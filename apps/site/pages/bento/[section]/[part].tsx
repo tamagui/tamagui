@@ -1,39 +1,41 @@
 import * as sections from '@tamagui/bento'
 
-import { Anchor, H1, Spacer, Theme, XStack, YStack } from 'tamagui'
+import { Anchor, H1, Theme, XStack, YStack } from 'tamagui'
 import { BentoPageFrame } from '../../../components/BentoPageFrame'
 
 import type { GetStaticPaths } from 'next'
 import { useRouter } from 'next/router'
 
 import { BentoLogo } from '../../../components/BentoLogo'
-import { ContainerXL } from '../../../components/Container'
+import { ContainerBento } from '../../../components/Container'
 import { getDefaultLayout } from '../../../lib/getDefaultLayout'
+import Link from 'next/link'
+import { Footer } from '../../../components/Footer'
 
-export default function page({ codes }) {
-  if (!process.env.NEXT_PUBLIC_IS_TAMAGUI_DEV) {
-    return null
-  }
-
+export default function page() {
   const router = useRouter()
   const params = router.query as { section: string; part: string }
   const Comp = sections[params.section][params.part]
 
   return (
-    <BentoPageFrame>
-      <ContainerXL>
-        <YStack px="$8">
+    <>
+      <BentoPageFrame simpler>
+        <ContainerBento>
           <DetailHeader>
             {`${params.section[0].toUpperCase()}${params.section.slice(1)}`}
           </DetailHeader>
-          <Spacer />
-          <Spacer />
-          <YStack>
-            <Comp codes={codes} />
-          </YStack>
-        </YStack>
-      </ContainerXL>
-    </BentoPageFrame>
+        </ContainerBento>
+      </BentoPageFrame>
+
+      <YStack>
+        <YStack pe="none" fullscreen className="bg-grid" />
+        <ContainerBento>
+          <Comp />
+        </ContainerBento>
+      </YStack>
+
+      <Footer />
+    </>
   )
 }
 
@@ -47,34 +49,58 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths
 
 export const getStaticProps = (ctx) => {
-  const { section, part } = ctx.params as { section: string; part: string }
-  const getCodes = sections[section][`${part}GetComponentCodes`]
+  // const { section, part } = ctx.params as { section: string; part: string }
+  // const getCodes = sections[section][`${part}GetComponentCodes`]
 
   return {
-    props: getCodes(),
+    // props: getCodes(),
+    props: {},
   }
 }
 
 export const DetailHeader = (props: { children: string }) => {
+  const { asPath } = useRouter()
+  const [category, subCategory] = asPath.split('bento/')[1].split('/')
+
   return (
-    <YStack pt="$10" gap="$4">
+    <YStack pb="$6" gap="$4">
       <YStack gap="$4">
         <XStack ai="center" jc="space-between">
-          <Theme reset>
-            <H1 size="$12" color="$color1">
-              {props.children}
-            </H1>
+          <Theme name="gray">
+            <H1 size="$12">{props.children}</H1>
           </Theme>
 
-          <YStack scale={0.5} m={-150}>
+          <YStack scale={0.25} m={-150}>
             <BentoLogo />
           </YStack>
         </XStack>
 
-        <XStack p="$3" ai="center" gap="$2">
-          <Anchor>Section</Anchor>
-          <Anchor size="$2">{'>'}</Anchor>
-          <Anchor>Inputs</Anchor>
+        <XStack p={0.5} ai="center" gap="$2">
+          <Link href="/bento/">
+            <Anchor tag="span" textTransform="capitalize">
+              Bento
+            </Anchor>
+          </Link>
+
+          <Anchor tag="span" selectable={false} size="$2">
+            {'>'}
+          </Anchor>
+
+          <Link href={`/bento#${category}`}>
+            <Anchor tag="span" textTransform="capitalize">
+              {category}
+            </Anchor>
+          </Link>
+
+          <Anchor tag="span" selectable={false} size="$2">
+            {'>'}
+          </Anchor>
+
+          <Link href={`/bento/${subCategory}`}>
+            <Anchor tag="span" textTransform="capitalize">
+              {subCategory.replace('_', ' ')}
+            </Anchor>
+          </Link>
         </XStack>
       </YStack>
     </YStack>

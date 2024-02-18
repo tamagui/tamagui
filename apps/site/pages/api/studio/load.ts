@@ -1,8 +1,8 @@
+import { apiRoute } from '@lib/apiRoute'
 import { authorizeUserAccess } from '@lib/authorizeUserAccess'
 import { protectApiRoute } from '@lib/protectApiRoute'
-import type { NextApiHandler } from 'next'
 
-const handler: NextApiHandler = async (req, res) => {
+const handler = apiRoute(async (req, res) => {
   const { supabase, user } = await protectApiRoute({ req, res })
   const { teamId } = await authorizeUserAccess(
     {
@@ -45,6 +45,6 @@ const handler: NextApiHandler = async (req, res) => {
   console.info(`Sending themeSuites for ids: ${results.data.map((x) => x.id).join(', ')}`)
 
   res.json(response)
-}
+})
 
 export default handler
