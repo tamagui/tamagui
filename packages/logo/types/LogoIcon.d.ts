@@ -1,3 +1,2 @@
-/// <reference types="react" />
-export declare const LogoIcon: ({ downscale }: any) => JSX.Element;
+export declare const LogoIcon: ({ downscale }: any) => import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=LogoIcon.d.ts.map

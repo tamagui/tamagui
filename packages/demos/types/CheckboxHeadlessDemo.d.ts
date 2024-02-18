@@ -1,3 +1,2 @@
-/// <reference types="react" />
-export declare function CheckboxHeadlessDemo(): JSX.Element;
+export declare function CheckboxHeadlessDemo(): import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=CheckboxHeadlessDemo.d.ts.map

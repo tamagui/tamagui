@@ -86,8 +86,6 @@ export declare function useInputProps(props: InputProps, ref: any): {
     onChangeText: (value: any) => void;
     children?: any;
     className?: string | undefined;
-    style?: import("react-native").StyleProp<import("react-native").TextStyle>;
-    group?: undefined;
     onPressIn?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").NativeTouchEvent>) => void) | undefined;
     onPressOut?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").NativeTouchEvent>) => void) | undefined;
     onFocus?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").TextInputFocusEventData>) => void) | undefined;
@@ -106,6 +104,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     onResponderTerminate?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onStartShouldSetResponderCapture?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponderCapture?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
+    style?: import("react-native").StyleProp<import("react-native").TextStyle>;
     allowFontScaling?: boolean | undefined;
     id?: string | undefined;
     numberOfLines?: number | undefined;
@@ -136,11 +135,11 @@ export declare function useInputProps(props: InputProps, ref: any): {
     'aria-valuenow'?: number | undefined;
     'aria-valuetext'?: string | undefined;
     onAccessibilityAction?: ((event: import("react-native").AccessibilityActionEvent) => void) | undefined;
-    importantForAccessibility?: "auto" | "no" | "yes" | "no-hide-descendants" | undefined;
+    importantForAccessibility?: "auto" | "yes" | "no" | "no-hide-descendants" | undefined;
     'aria-hidden'?: boolean | undefined;
-    'aria-live'?: "off" | "polite" | "assertive" | undefined;
+    'aria-live'?: "polite" | "assertive" | "off" | undefined;
     'aria-modal'?: boolean | undefined;
-    role?: "row" | "none" | "link" | "article" | "button" | "dialog" | "figure" | "form" | "img" | "main" | "menu" | "menuitem" | "meter" | "option" | "summary" | "table" | "switch" | "checkbox" | "radio" | "alert" | "alertdialog" | "application" | "banner" | "cell" | "columnheader" | "combobox" | "complementary" | "contentinfo" | "definition" | "directory" | "document" | "feed" | "grid" | "group" | "heading" | "list" | "listitem" | "log" | "marquee" | "math" | "menubar" | "navigation" | "note" | "presentation" | "progressbar" | "radiogroup" | "region" | "rowgroup" | "rowheader" | "scrollbar" | "searchbox" | "separator" | "slider" | "spinbutton" | "status" | "tab" | "tablist" | "tabpanel" | "term" | "timer" | "toolbar" | "tooltip" | "tree" | "treegrid" | "treeitem" | undefined;
+    role?: "row" | "none" | "link" | "group" | "separator" | "article" | "main" | "figure" | "img" | "table" | "button" | "form" | "meter" | "option" | "dialog" | "menu" | "summary" | "alert" | "checkbox" | "combobox" | "menubar" | "menuitem" | "progressbar" | "radio" | "radiogroup" | "scrollbar" | "spinbutton" | "switch" | "tab" | "tablist" | "timer" | "list" | "toolbar" | "alertdialog" | "application" | "banner" | "cell" | "columnheader" | "complementary" | "contentinfo" | "definition" | "directory" | "document" | "feed" | "grid" | "heading" | "listitem" | "log" | "marquee" | "math" | "navigation" | "note" | "presentation" | "region" | "rowgroup" | "rowheader" | "searchbox" | "slider" | "status" | "tabpanel" | "term" | "tooltip" | "tree" | "treegrid" | "treeitem" | undefined;
     accessibilityLiveRegion?: "none" | "polite" | "assertive" | undefined;
     accessibilityLabelledBy?: string | string[] | undefined;
     accessibilityElementsHidden?: boolean | undefined;
@@ -158,8 +157,9 @@ export declare function useInputProps(props: InputProps, ref: any): {
     debug?: import("@tamagui/core").DebugProp | undefined;
     themeShallow?: boolean | undefined;
     themeInverse?: boolean | undefined;
-    tag?: "object" | "search" | "small" | "sub" | "sup" | "a" | "abbr" | "address" | "area" | "article" | "aside" | "audio" | "b" | "bdi" | "bdo" | "blockquote" | "br" | "button" | "canvas" | "caption" | "cite" | "code" | "col" | "colgroup" | "data" | "datalist" | "dd" | "del" | "details" | "dfn" | "dialog" | "div" | "dl" | "dt" | "em" | "embed" | "fieldset" | "figcaption" | "figure" | "footer" | "form" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "header" | "hr" | "i" | "img" | "input" | "ins" | "kbd" | "label" | "legend" | "li" | "main" | "map" | "mark" | "menu" | "meter" | "nav" | "noscript" | "ol" | "optgroup" | "option" | "output" | "p" | "param" | "picture" | "pre" | "progress" | "q" | "rp" | "rt" | "ruby" | "s" | "samp" | "script" | "section" | "select" | "source" | "span" | "strong" | "summary" | "table" | "template" | "tbody" | "td" | "textarea" | "th" | "thead" | "time" | "tr" | "track" | "u" | "ul" | "var" | "video" | "wbr" | (string & {}) | "rtc" | undefined;
+    tag?: "object" | "search" | "small" | "sub" | "sup" | "a" | (string & {}) | "address" | "article" | "aside" | "footer" | "header" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "main" | "nav" | "section" | "blockquote" | "dd" | "div" | "dl" | "dt" | "figcaption" | "figure" | "hr" | "li" | "ol" | "ul" | "p" | "pre" | "abbr" | "b" | "bdi" | "bdo" | "br" | "cite" | "code" | "data" | "dfn" | "em" | "i" | "kbd" | "mark" | "q" | "rp" | "rt" | "rtc" | "ruby" | "s" | "samp" | "span" | "strong" | "time" | "u" | "var" | "wbr" | "area" | "audio" | "img" | "map" | "track" | "video" | "embed" | "param" | "picture" | "source" | "canvas" | "noscript" | "script" | "del" | "ins" | "caption" | "col" | "colgroup" | "table" | "thead" | "tbody" | "td" | "th" | "tr" | "button" | "datalist" | "fieldset" | "form" | "input" | "label" | "legend" | "meter" | "optgroup" | "option" | "output" | "progress" | "select" | "textarea" | "details" | "dialog" | "menu" | "summary" | "template" | undefined;
     theme?: string | null | undefined;
+    group?: undefined;
     untilMeasured?: "hide" | "show" | undefined;
     componentName?: string | undefined;
     tabIndex?: string | number | undefined;
@@ -197,7 +197,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     onPointerUp?: ((event: import("react-native").PointerEvent) => void) | undefined;
     onPointerUpCapture?: ((event: import("react-native").PointerEvent) => void) | undefined;
     autoCapitalize?: "none" | "sentences" | "words" | "characters" | undefined;
-    autoComplete?: "email" | "password" | "tel" | "url" | "off" | "name" | "additional-name" | "address-line1" | "address-line2" | "birthdate-day" | "birthdate-full" | "birthdate-month" | "birthdate-year" | "cc-csc" | "cc-exp" | "cc-exp-day" | "cc-exp-month" | "cc-exp-year" | "cc-number" | "cc-name" | "cc-given-name" | "cc-middle-name" | "cc-family-name" | "cc-type" | "country" | "current-password" | "family-name" | "gender" | "given-name" | "honorific-prefix" | "honorific-suffix" | "name-family" | "name-given" | "name-middle" | "name-middle-initial" | "name-prefix" | "name-suffix" | "new-password" | "nickname" | "one-time-code" | "organization" | "organization-title" | "password-new" | "postal-address" | "postal-address-country" | "postal-address-extended" | "postal-address-extended-postal-code" | "postal-address-locality" | "postal-address-region" | "postal-code" | "street-address" | "sms-otp" | "tel-country-code" | "tel-national" | "tel-device" | "username" | "username-new" | undefined;
+    autoComplete?: "name" | "email" | "off" | "additional-name" | "address-line1" | "address-line2" | "birthdate-day" | "birthdate-full" | "birthdate-month" | "birthdate-year" | "cc-csc" | "cc-exp" | "cc-exp-day" | "cc-exp-month" | "cc-exp-year" | "cc-number" | "cc-name" | "cc-given-name" | "cc-middle-name" | "cc-family-name" | "cc-type" | "country" | "current-password" | "family-name" | "gender" | "given-name" | "honorific-prefix" | "honorific-suffix" | "name-family" | "name-given" | "name-middle" | "name-middle-initial" | "name-prefix" | "name-suffix" | "new-password" | "nickname" | "one-time-code" | "organization" | "organization-title" | "password" | "password-new" | "postal-address" | "postal-address-country" | "postal-address-extended" | "postal-address-extended-postal-code" | "postal-address-locality" | "postal-address-region" | "postal-code" | "street-address" | "sms-otp" | "tel" | "tel-country-code" | "tel-national" | "tel-device" | "url" | "username" | "username-new" | undefined;
     autoCorrect?: boolean | undefined;
     autoFocus?: boolean | undefined;
     blurOnSubmit?: boolean | undefined;
@@ -238,11 +238,11 @@ export declare function useInputProps(props: InputProps, ref: any): {
     rejectResponderTermination?: boolean | null | undefined;
     selectionState?: import("react-native").DocumentSelectionState | undefined;
     spellCheck?: boolean | undefined;
-    textContentType?: "none" | "password" | "name" | "nickname" | "username" | "URL" | "addressCity" | "addressCityAndState" | "addressState" | "countryName" | "creditCardNumber" | "creditCardExpiration" | "creditCardExpirationMonth" | "creditCardExpirationYear" | "creditCardSecurityCode" | "creditCardType" | "creditCardName" | "creditCardGivenName" | "creditCardMiddleName" | "creditCardFamilyName" | "emailAddress" | "familyName" | "fullStreetAddress" | "givenName" | "jobTitle" | "location" | "middleName" | "namePrefix" | "nameSuffix" | "organizationName" | "postalCode" | "streetAddressLine1" | "streetAddressLine2" | "sublocality" | "telephoneNumber" | "newPassword" | "oneTimeCode" | "birthdate" | "birthdateDay" | "birthdateMonth" | "birthdateYear" | undefined;
+    textContentType?: "none" | "name" | "nickname" | "password" | "username" | "URL" | "addressCity" | "addressCityAndState" | "addressState" | "countryName" | "creditCardNumber" | "creditCardExpiration" | "creditCardExpirationMonth" | "creditCardExpirationYear" | "creditCardSecurityCode" | "creditCardType" | "creditCardName" | "creditCardGivenName" | "creditCardMiddleName" | "creditCardFamilyName" | "emailAddress" | "familyName" | "fullStreetAddress" | "givenName" | "jobTitle" | "location" | "middleName" | "namePrefix" | "nameSuffix" | "organizationName" | "postalCode" | "streetAddressLine1" | "streetAddressLine2" | "sublocality" | "telephoneNumber" | "newPassword" | "oneTimeCode" | "birthdate" | "birthdateDay" | "birthdateMonth" | "birthdateYear" | undefined;
     scrollEnabled?: boolean | undefined;
     smartInsertDelete?: boolean | undefined;
     cursorColor?: import("react-native").ColorValue | null | undefined;
-    importantForAutofill?: "auto" | "no" | "yes" | "noExcludeDescendants" | "yesExcludeDescendants" | undefined;
+    importantForAutofill?: "auto" | "yes" | "no" | "noExcludeDescendants" | "yesExcludeDescendants" | undefined;
     disableFullscreenUI?: boolean | undefined;
     inlineImageLeft?: string | undefined;
     inlineImagePadding?: number | undefined;
@@ -311,7 +311,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     textTransform?: "unset" | "none" | "capitalize" | "uppercase" | "lowercase" | undefined;
     fontVariant?: "unset" | import("react-native").FontVariant[] | undefined;
     writingDirection?: "unset" | "auto" | "ltr" | "rtl" | undefined;
-    backfaceVisibility?: "unset" | "hidden" | "visible" | undefined;
+    backfaceVisibility?: "unset" | "visible" | "hidden" | undefined;
     borderBlockColor?: "unset" | import("react-native").OpaqueColorValue | import("@tamagui/core").GetThemeValueForKey<"borderBlockColor"> | undefined;
     borderBlockEndColor?: "unset" | import("react-native").OpaqueColorValue | import("@tamagui/core").GetThemeValueForKey<"borderBlockEndColor"> | undefined;
     borderBlockStartColor?: "unset" | import("react-native").OpaqueColorValue | import("@tamagui/core").GetThemeValueForKey<"borderBlockStartColor"> | undefined;
@@ -352,7 +352,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     maxWidth?: number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"maxWidth"> | null | undefined;
     minHeight?: number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"minHeight"> | null | undefined;
     minWidth?: number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"minWidth"> | null | undefined;
-    overflow?: "unset" | "hidden" | "visible" | "scroll" | undefined;
+    overflow?: "unset" | "visible" | "hidden" | "scroll" | undefined;
     paddingEnd?: number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"paddingEnd"> | null | undefined;
     paddingStart?: number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"paddingStart"> | null | undefined;
     position?: "unset" | "absolute" | "relative" | undefined;
@@ -566,7 +566,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     translateX?: "unset" | import("react-native").AnimatableNumericValue | undefined;
     translateY?: "unset" | import("react-native").AnimatableNumericValue | undefined;
     textAlignVertical?: "unset" | "auto" | "center" | "bottom" | "top" | undefined;
-    verticalAlign?: "unset" | "auto" | "middle" | "bottom" | "top" | undefined;
+    verticalAlign?: "unset" | "auto" | "bottom" | "top" | "middle" | undefined;
     includeFontPadding?: boolean | "unset" | undefined;
     x?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"x"> | undefined;
     y?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"y"> | undefined;

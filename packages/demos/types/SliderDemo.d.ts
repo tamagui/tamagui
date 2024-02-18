@@ -1,3 +1,2 @@
-/// <reference types="react" />
-export declare function SliderDemo(): JSX.Element;
+export declare function SliderDemo(): import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=SliderDemo.d.ts.map

@@ -1,3 +1,2 @@
-/// <reference types="react" />
-export declare function ThemeInverseDemo(): JSX.Element;
+export declare function ThemeInverseDemo(): import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=ThemeInverseDemo.d.ts.map

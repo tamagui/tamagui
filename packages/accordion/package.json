@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/accordion",
-  "version": "1.89.30",
+  "version": "1.90.0",
   "sideEffects": [
     "*.css"
   ],
@@ -22,21 +22,21 @@
     "lint:fix": "../../node_modules/.bin/biome check --apply-unsafe src"
   },
   "dependencies": {
-    "@tamagui/collapsible": "1.89.30",
-    "@tamagui/collection": "1.89.30",
-    "@tamagui/compose-refs": "1.89.30",
-    "@tamagui/constants": "1.89.30",
-    "@tamagui/core": "1.89.30",
-    "@tamagui/create-context": "1.89.30",
-    "@tamagui/polyfill-dev": "1.89.30",
-    "@tamagui/stacks": "1.89.30",
-    "@tamagui/use-controllable-state": "1.89.30"
+    "@tamagui/collapsible": "1.90.0",
+    "@tamagui/collection": "1.90.0",
+    "@tamagui/compose-refs": "1.90.0",
+    "@tamagui/constants": "1.90.0",
+    "@tamagui/core": "1.90.0",
+    "@tamagui/create-context": "1.90.0",
+    "@tamagui/polyfill-dev": "1.90.0",
+    "@tamagui/stacks": "1.90.0",
+    "@tamagui/use-controllable-state": "1.90.0"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.89.30",
+    "@tamagui/build": "1.90.0",
     "react": "^18.2.0"
   },
   "publishConfig": {

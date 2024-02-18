@@ -12,7 +12,7 @@ export declare const FormProvider: {
     (props: FormContextValue & {
         scope: Scope<FormContextValue>;
         children: import("react").ReactNode;
-    }): JSX.Element;
+    }): import("react/jsx-runtime").JSX.Element;
     displayName: string;
 }, useFormContext: (consumerName: string, scope: Scope<FormContextValue | undefined>, options?: {
     warn?: boolean | undefined;
@@ -24,7 +24,7 @@ export type FormProps = StackProps & {
 export interface FormTriggerProps extends StackProps {
 }
 export declare const FormTrigger: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & void, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
-export declare const Form: (({ onSubmit, ...props }: ScopedProps<FormProps>) => JSX.Element) & {
+export declare const Form: (({ onSubmit, ...props }: ScopedProps<FormProps>) => import("react/jsx-runtime").JSX.Element) & {
     Trigger: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & void, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
 };
 export {};

@@ -31,7 +31,7 @@ export type PopperProps = {
     offset?: OffsetOptions;
 };
 type ScopedPopperProps<P> = ScopedProps<P, 'Popper'>;
-export declare function Popper(props: ScopedPopperProps<PopperProps>): JSX.Element;
+export declare function Popper(props: ScopedPopperProps<PopperProps>): import("react/jsx-runtime").JSX.Element;
 type PopperAnchorRef = HTMLElement | View;
 export type PopperAnchorProps = YStackProps & {
     virtualRef?: React.RefObject<any>;

@@ -9,7 +9,7 @@ export declare const SelectItemContextProvider: {
     (props: SelectItemContextValue & {
         scope: import("@tamagui/create-context").Scope<SelectItemContextValue>;
         children: React.ReactNode;
-    }): JSX.Element;
+    }): import("react/jsx-runtime").JSX.Element;
     displayName: string;
 }, useSelectItemContext: (consumerName: string, scope: import("@tamagui/create-context").Scope<SelectItemContextValue | undefined>, options?: {
     warn?: boolean | undefined;

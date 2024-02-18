@@ -190,7 +190,7 @@ declare const DialogWarningProvider: {
         docsSlug: string;
     } & {
         children: React.ReactNode;
-    }): JSX.Element;
+    }): import("react/jsx-runtime").JSX.Element;
     displayName: string;
 };
 export type DialogHandle = {
@@ -313,7 +313,7 @@ export declare const DialogSheetContents: {
     ({ name, ...props }: {
         name: string;
         context: Omit<DialogContextValue, 'sheetBreakpoint'>;
-    }): JSX.Element;
+    }): import("react/jsx-runtime").JSX.Element;
     displayName: string;
 };
 export { createDialogScope, Dialog, DialogTrigger, DialogPortal, DialogOverlay, DialogContent, DialogTitle, DialogDescription, DialogClose, DialogWarningProvider, };
