@@ -26,7 +26,7 @@ export const shorthands = {
   ai: 'alignItems',
   als: 'alignSelf',
   b: 'bottom',
-  bc: 'backgroundColor',
+  bc: 'borderColor',
   bg: 'backgroundColor',
   bbc: 'borderBottomColor',
   bblr: 'borderBottomLeftRadius',
