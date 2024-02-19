@@ -822,6 +822,7 @@ export function createComponent<
           pseudo: {},
           media: {},
         } satisfies GroupState
+
         disposeGroupsListener = componentContext.groups.subscribe(
           (name, { layout, pseudo }) => {
             if (pseudo && pseudoGroups?.has(name)) {
@@ -837,12 +838,13 @@ export function createComponent<
               }
             }
             function persist() {
+              // force it to be referentially different so it always updates
+              const group = {
+                ...state.group,
+                [name]: current,
+              }
               setStateShallow({
-                // force it to be referentially different so it always updates
-                group: {
-                  ...state.group,
-                  [name]: current,
-                },
+                group,
               })
             }
           }
@@ -878,8 +880,10 @@ export function createComponent<
         onClick
     )
     const runtimeHoverStyle = !disabled && noClassNames && pseudos?.hoverStyle
-    const needsHoverState = runtimeHoverStyle || onHoverIn || onHoverOut
-    const isHoverable =
+    const needsHoverState = Boolean(
+      groupName || runtimeHoverStyle || onHoverIn || onHoverOut
+    )
+    const attachHover =
       isWeb && !!(groupName || needsHoverState || onMouseEnter || onMouseLeave)
 
     // check presence rather than value to prevent reparenting bugs
@@ -887,11 +891,12 @@ export function createComponent<
     const shouldAttach = Boolean(
       attachFocus ||
         attachPress ||
-        isHoverable ||
+        attachHover ||
         runtimePressStyle ||
         runtimeHoverStyle ||
         runtimeFocusStyle
     )
+    const needsPressState = Boolean(groupName || runtimeHoverStyle)
 
     if (process.env.NODE_ENV === 'development' && time) time`events-setup`
 
@@ -905,13 +910,13 @@ export function createComponent<
                   onMouseUp?.(e)
                 }
               : undefined,
-            ...((isHoverable || attachPress) && {
+            ...((attachHover || attachPress) && {
               onMouseEnter: (e) => {
                 const next: Partial<typeof state> = {}
                 if (needsHoverState) {
                   next.hover = true
                 }
-                if (runtimePressStyle) {
+                if (needsPressState) {
                   if (state.pressIn) {
                     next.press = true
                   }
@@ -926,7 +931,7 @@ export function createComponent<
                 if (needsHoverState) {
                   next.hover = false
                 }
-                if (runtimePressStyle) {
+                if (needsPressState) {
                   if (state.pressIn) {
                     next.press = false
                     next.pressIn = false
@@ -1009,7 +1014,7 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development' && time) time`events`
 
     if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
-      log(`events`, { events, isHoverable, attachPress })
+      log(`events`, { events, attachHover, attachPress })
     }
 
     // EVENTS native
@@ -1042,8 +1047,6 @@ export function createComponent<
             onLongPress,
             onPressIn,
             onPressOut,
-            onHoverIn,
-            onHoverOut,
             onMouseUp,
             onMouseDown,
             onMouseEnter,
@@ -1323,8 +1326,8 @@ type EventLikeObject = {
 
 function getWebEvents<E extends EventLikeObject>(events: E, webStyle = true) {
   return {
-    onMouseEnter: events.onHoverIn ?? events.onMouseEnter,
-    onMouseLeave: events.onHoverOut ?? events.onMouseLeave,
+    onMouseEnter: events.onMouseEnter,
+    onMouseLeave: events.onMouseLeave,
     [webStyle ? 'onClick' : 'onPress']: events.onPress,
     onMouseDown: events.onPressIn,
     onMouseUp: events.onPressOut,
