@@ -177,38 +177,37 @@ export const PurchaseModal = ({
                         const active = selectedPriceId === price.id
                         const htmlId = `price-${price.id}`
                         return (
-                          <>
-                            <Label
-                              f={1}
-                              htmlFor={htmlId}
-                              p="$4"
-                              height="unset"
-                              display="flex"
-                              borderWidth="$0.25"
-                              borderColor={active ? '$color8' : '$color5'}
-                              borderRadius="$4"
-                              gap="$4"
-                              ai="center"
-                              hoverStyle={{
-                                borderColor: active ? '$color10' : '$color7',
-                              }}
-                            >
-                              <RadioGroup.Item id={htmlId} size="$6" value={price.id}>
-                                <RadioGroup.Indicator />
-                              </RadioGroup.Item>
+                          <Label
+                            key={htmlId}
+                            f={1}
+                            htmlFor={htmlId}
+                            p="$4"
+                            height="unset"
+                            display="flex"
+                            borderWidth="$0.25"
+                            borderColor={active ? '$color8' : '$color5'}
+                            borderRadius="$4"
+                            gap="$4"
+                            ai="center"
+                            hoverStyle={{
+                              borderColor: active ? '$color10' : '$color7',
+                            }}
+                          >
+                            <RadioGroup.Item id={htmlId} size="$6" value={price.id}>
+                              <RadioGroup.Indicator />
+                            </RadioGroup.Item>
 
-                              <YStack gap="$0" f={1}>
-                                <H4 mt="$-1">{price.description}</H4>
+                            <YStack gap="$0" f={1}>
+                              <H4 mt="$-1">{price.description}</H4>
 
-                                <Paragraph theme="alt1">
-                                  {formatPrice(price.unit_amount! / 100, 'usd')}{' '}
-                                  {(price.metadata as Record<any, any>).is_lifetime
-                                    ? 'lifetime access'
-                                    : `base`}
-                                </Paragraph>
-                              </YStack>
-                            </Label>
-                          </>
+                              <Paragraph theme="alt1">
+                                {formatPrice(price.unit_amount! / 100, 'usd')}{' '}
+                                {(price.metadata as Record<any, any>).is_lifetime
+                                  ? 'lifetime access'
+                                  : `base`}
+                              </Paragraph>
+                            </YStack>
+                          </Label>
                         )
                       })}
                     </RadioGroup>

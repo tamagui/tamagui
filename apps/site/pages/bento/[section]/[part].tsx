@@ -22,22 +22,21 @@ export default function page() {
     <>
       <ThemeNameEffect colorKey="$color1" />
 
-      <BentoPageFrame simpler>
+      <BentoPageFrame>
         <ContainerBento>
           <DetailHeader>
             {`${params.section[0].toUpperCase()}${params.section.slice(1)}`}
           </DetailHeader>
         </ContainerBento>
+        <YStack>
+          <YStack pe="none" fullscreen className="bg-grid" o={0.033} />
+          <ContainerBento>
+            <Comp />
+          </ContainerBento>
+        </YStack>
+
+        <YStack h={200} />
       </BentoPageFrame>
-
-      <YStack>
-        <YStack pe="none" fullscreen className="bg-grid" o={0.033} />
-        <ContainerBento>
-          <Comp />
-        </ContainerBento>
-      </YStack>
-
-      <Footer />
     </>
   )
 }
