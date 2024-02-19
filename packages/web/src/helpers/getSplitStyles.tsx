@@ -203,7 +203,6 @@ export const getSplitStyles: StyleSplitter = (
     viewProps,
     context,
     debug,
-    flatTransforms: {},
   }
 
   if (

@@ -818,7 +818,6 @@ export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>>
     children?: ReactNode;
 };
 export type PropMappedValue = [string, any][] | undefined;
-type FlatTransforms = Record<string, any>;
 export type GetStyleState = {
     style: TextStyleProps | null;
     usedKeys: Record<string, number>;
@@ -835,7 +834,7 @@ export type GetStyleState = {
     avoidMergeTransform?: boolean;
     fontFamily?: string;
     debug?: DebugProp;
-    transforms?: FlatTransforms;
+    flatTransforms?: Record<string, any>;
 };
 export type StyleResolver<Response = PropMappedValue> = (key: string, value: any, props: SplitStyleProps, state: GetStyleState, parentVariantKey: string) => Response;
 export type PropMapper = (key: string, value: any, state: GetStyleState, subProps?: Record<string, any>) => PropMappedValue;

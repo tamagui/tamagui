@@ -1,6 +1,6 @@
 import * as sections from '@tamagui/bento'
 
-import { Anchor, H1, Theme, XStack, YStack } from 'tamagui'
+import { Anchor, H1, SizableText, Theme, XStack, YStack } from 'tamagui'
 import { BentoPageFrame } from '../../../components/BentoPageFrame'
 
 import type { GetStaticPaths } from 'next'
@@ -31,7 +31,7 @@ export default function page() {
       </BentoPageFrame>
 
       <YStack>
-        <YStack pe="none" fullscreen className="bg-grid" />
+        <YStack pe="none" fullscreen className="bg-grid" o={0.033} />
         <ContainerBento>
           <Comp />
         </ContainerBento>
@@ -85,9 +85,9 @@ export const DetailHeader = (props: { children: string }) => {
             </Anchor>
           </Link>
 
-          <Anchor tag="span" selectable={false} size="$2">
+          <SizableText theme="alt2" tag="span" selectable={false} size="$2">
             {'>'}
-          </Anchor>
+          </SizableText>
 
           <Link href={`/bento#${category}`}>
             <Anchor tag="span" textTransform="capitalize">
@@ -95,9 +95,9 @@ export const DetailHeader = (props: { children: string }) => {
             </Anchor>
           </Link>
 
-          <Anchor tag="span" selectable={false} size="$2">
+          <SizableText theme="alt2" tag="span" selectable={false} size="$2">
             {'>'}
-          </Anchor>
+          </SizableText>
 
           <Link href={`/bento/${subCategory}`}>
             <Anchor tag="span" textTransform="capitalize">

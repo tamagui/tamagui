@@ -20,7 +20,13 @@ export const BentoPageFrame = ({
 
       {/* <YStack className="strong-background" /> */}
 
-      <YStack pt={85}>
+      <YStack
+        pt={85}
+        {...(simpler && {
+          mb: -500,
+          pb: 500,
+        })}
+      >
         <Theme name="tan">
           <YStack
             className={simpler ? `mask-gradient-down` : ``}
