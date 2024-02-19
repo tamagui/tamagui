@@ -177,7 +177,7 @@ export const PurchaseModal = ({
                         const active = selectedPriceId === price.id
                         const htmlId = `price-${price.id}`
                         return (
-                          <Theme name="gray">
+                          <>
                             <Label
                               f={1}
                               htmlFor={htmlId}
@@ -208,7 +208,7 @@ export const PurchaseModal = ({
                                 </Paragraph>
                               </YStack>
                             </Label>
-                          </Theme>
+                          </>
                         )
                       })}
                     </RadioGroup>

@@ -689,14 +689,8 @@ textarea {
   opacity: 0.3;
 }
 
-.callout {
-  text-shadow: 1px 1px 0 var(--orange9), 2px 2px 0 var(--yellow9),
-    3px 3px 0 var(--green9), 4px 4px 0 var(--blue9), 5px 5px 0 var(--purple9),
-    6px 6px 0 var(--pink9), 7px 7px 0 var(--red9), 0 0 50px rgba(0, 0, 0, 1);
-}
-
 .text-glow {
-  text-shadow: 4px 4px 0 var(--background);
+  text-shadow: 4px 4px 5px var(--background025);
 }
 
 .rotate-slow-right {

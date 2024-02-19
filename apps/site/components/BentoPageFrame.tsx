@@ -152,7 +152,7 @@ export const BentoFrond = () => (
     pe="none"
     o={0.045}
     $theme-dark={{
-      o: 0.1,
+      o: 0.05,
     }}
     style={{
       filter: 'blur(3px)',

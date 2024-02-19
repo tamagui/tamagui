@@ -92,7 +92,7 @@ export default function BentoPage(props: ProComponentsProps) {
           <Intermediate />
         </YStack>
         <Body distanceToTop={heroHeight} heroVisible={heroVisible} />
-        <Theme name="gray">
+        <Theme name="orange">
           <PurchaseModal defaultCoupon={coupon} proComponents={props.proComponents} />
         </Theme>
       </BentoPageFrame>
@@ -104,7 +104,7 @@ BentoPage.getLayout = getDefaultLayout
 
 const Intermediate = () => {
   return (
-    <YStack zi={1} w="100%" mt={-80}>
+    <YStack zi={1} w="100%">
       <YStack fullscreen elevation="$4" o={0.15} />
       <YStack pos="absolute" t={0} l={0} r={0} o={0.25} btw={0.5} bc="$color025" />
       <YStack pos="absolute" b={0} l={0} r={0} o={0.25} btw={0.5} bc="$color025" />
@@ -144,21 +144,12 @@ const IntermediateCard = ({
   Icon,
 }: { title?: any; children?: any; Icon?: any }) => {
   return (
-    <XStack
-      className="blur-8"
-      ov="hidden"
-      f={1}
-      gap="$5"
-      px="$5"
-      py="$4"
-      bw={0.5}
-      bc="$color05"
-    >
+    <XStack className="blur-8" ov="hidden" f={1} gap="$5" px="$5" py="$4">
       <YStack f={1} gap="$2">
-        <H4 ff="$silkscreen" color="$color12" o={0.9} size="$5">
+        <H4 ff="$silkscreen" color="$color11" className="text-glow" size="$2">
           {title}
         </H4>
-        <Paragraph mb={-5} size="$3" color="$color11">
+        <Paragraph mb={-5} size="$3" color="$color12">
           {children}
         </Paragraph>
         <EnsureFlexed />
@@ -182,7 +173,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
   const store = useBentoStore()
 
   return (
-    <YStack pos="relative" pb="$9" zi={0}>
+    <YStack pos="relative" zi={0}>
       <ContainerLarge>
         <XStack
           gap="$6"
@@ -257,7 +248,61 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
                 </Paragraph>
 
                 <Circle size={4} bg="$color10" />
-                <Circle size={4} bg="$color10" />
+
+                <XStack ai="center" jc="space-between">
+                  <Spacer />
+                  <Theme name="green">
+                    <Button
+                      iconAfter={ShoppingCart}
+                      // iconAfter={
+                      //   <YStack
+                      //     zi={100}
+                      //     bg="red"
+                      //     style={{
+                      //       background: `url(/bento/bentoicon.svg)`,
+                      //       backgroundSize: 'contain',
+                      //     }}
+                      //     w={42}
+                      //     h={42}
+                      //     ml={-10}
+                      //     mr={-15}
+                      //   />
+                      // }
+                      className="box-3d all ease-in-out ms100"
+                      size="$2"
+                      scaleSpace={0.5}
+                      als="flex-end"
+                      mr="$4"
+                      color="$color1"
+                      bg="$color9"
+                      outlineColor="$background025"
+                      outlineOffset={2}
+                      outlineWidth={3}
+                      outlineStyle="solid"
+                      hoverStyle={{
+                        bg: '$color10',
+                        outlineColor: '$background05',
+                        bc: '$color11',
+                      }}
+                      pressStyle={{
+                        bg: '$color9',
+                        outlineColor: '$background075',
+                      }}
+                      onPress={() => {
+                        store.showPurchase = true
+                      }}
+                    >
+                      <Button.Text fontFamily="$mono" size="$2">
+                        $
+                        {(mainProduct?.prices.sort(
+                          (a, b) =>
+                            (a.unit_amount || Infinity) - (b.unit_amount || Infinity)
+                        )[0].unit_amount || 0) / 100}
+                      </Button.Text>
+                    </Button>
+                  </Theme>
+                </XStack>
+
                 <Circle size={4} bg="$color10" />
 
                 <Paragraph color="$color10" size="$5">
@@ -265,63 +310,6 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
                 </Paragraph>
               </XStack>
             </YStack>
-
-            <XStack ai="center" w="100%" jc="space-between">
-              <Spacer />
-              <Theme name="green">
-                <Button
-                  iconAfter={ShoppingCart}
-                  // iconAfter={
-                  //   <YStack
-                  //     zi={100}
-                  //     bg="red"
-                  //     style={{
-                  //       background: `url(/bento/bentoicon.svg)`,
-                  //       backgroundSize: 'contain',
-                  //     }}
-                  //     w={42}
-                  //     h={42}
-                  //     ml={-10}
-                  //     mr={-15}
-                  //   />
-                  // }
-                  className="box-3d all ease-in-out ms100"
-                  fontFamily="$mono"
-                  size="$4"
-                  fontSize={22}
-                  fontWeight="600"
-                  scaleSpace={0.5}
-                  scaleIcon={1.6}
-                  als="flex-end"
-                  mr="$4"
-                  color="$color1"
-                  bg="$color9"
-                  outlineColor="$background025"
-                  outlineOffset={2}
-                  outlineWidth={3}
-                  outlineStyle="solid"
-                  hoverStyle={{
-                    bg: '$color10',
-                    outlineColor: '$background05',
-                    bc: '$color11',
-                  }}
-                  pressStyle={{
-                    bg: '$color9',
-                    outlineColor: '$background075',
-                  }}
-                  onPress={() => {
-                    store.showPurchase = true
-                  }}
-                >
-                  <Button.Text fontFamily="$mono" fontSize={20} fontWeight="600">
-                    $
-                    {(mainProduct?.prices.sort(
-                      (a, b) => (a.unit_amount || Infinity) - (b.unit_amount || Infinity)
-                    )[0].unit_amount || 0) / 100}
-                  </Button.Text>
-                </Button>
-              </Theme>
-            </XStack>
           </YStack>
 
           <YStack
@@ -329,15 +317,15 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
             mr={-300}
             ml={-150}
             maw={1000}
-            mt={-100}
+            mt={-125}
             pl={100}
             pr={300}
             pt={100}
             x={20}
-            mb={-300}
+            mb={-500}
             y={-20}
             style={{
-              maskImage: `linear-gradient(rgba(0, 0, 0, 1) 50%, transparent 85%)`,
+              maskImage: `linear-gradient(rgba(0, 0, 0, 1) 40%, transparent 65%)`,
             }}
             $md={{
               mr: -400,
