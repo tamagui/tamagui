@@ -62,10 +62,6 @@ export default function BentoPage(props: ProComponentsProps) {
     ? props.takeoutPlusBentoCoupon
     : props.defaultCoupon
 
-  useEffect(() => {
-    setTintIndex(2)
-  }, [])
-
   const [heroHeight, setHeroHeight] = useState(800)
 
   return (
