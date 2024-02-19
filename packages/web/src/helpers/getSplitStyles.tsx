@@ -839,14 +839,12 @@ export const getSplitStyles: StyleSplitter = (
 
         hasMedia ||= true
 
-        const mediaStyle = getSubStyle(styleState, key, val, true)
         const mediaKeyShort = key.slice(1)
 
         if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
           log(`  📺 ${key}`, {
             key,
             val,
-            mediaStyle,
             props,
             shouldDoClasses,
             acceptsClassName,
@@ -865,6 +863,8 @@ export const getSplitStyles: StyleSplitter = (
         }
 
         if (shouldDoClasses) {
+          const mediaStyle = getSubStyle(styleState, key, val, false)
+
           if (hasSpace) {
             delete mediaStyle['space']
             // TODO group/theme/platform + space support (or just make it official not supported in favor of gap)
@@ -911,6 +911,7 @@ export const getSplitStyles: StyleSplitter = (
             mergeClassName(transforms, classNames, fullKey, out.identifier, true, true)
           }
         } else {
+          const mediaStyle = getSubStyle(styleState, key, val, true)
           const isThemeMedia = isMedia === 'theme'
           const isGroupMedia = isMedia === 'group'
           const isPlatformMedia = isMedia === 'platform'
