@@ -79,7 +79,7 @@ export type GroupProps = GetProps<typeof GroupFrame> & {
 
 function createGroup(verticalDefault: boolean) {
   return withStaticProperties(
-    forwardRef<TamaguiElement, ScopedProps<GroupProps>>((props, ref) => {
+    GroupFrame.styleable<ScopedProps<GroupProps>>((props, ref) => {
       const activeProps = useProps(props)
 
       const {
