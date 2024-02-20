@@ -19,7 +19,7 @@ export const TamaguiLogo = forwardRef<any, LogoProps>(
         ref={ref}
         alignItems="center"
         justifyContent="center"
-        space="$5"
+        gap="$5"
         {...props}
       >
         <LogoIcon downscale={(downscale ?? 1) * (showWords ? 2 : 1.5)} />
