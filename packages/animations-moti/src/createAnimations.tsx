@@ -5,6 +5,7 @@ import {
   webViewFlexCompatStyles,
   type AnimationDriver,
   type UniversalAnimatedNumber,
+  usePropsAndStyle,
 } from '@tamagui/web'
 import type { MotiTransition } from 'moti'
 import { useMotify } from 'moti/author'
@@ -25,12 +26,13 @@ type ReanimatedAnimatedNumber = SharedValue<number>
 
 function createTamaguiAnimatedComponent(tag = 'div') {
   const Component = Animated.createAnimatedComponent(
-    forwardRef(({ forwardedRef, style, ...props }: any, ref) => {
+    forwardRef(({ forwardedRef, ...props }: any, ref) => {
       const composedRefs = useComposedRefs(forwardedRef, ref)
       const Element = props.tag || tag
+      const [finalProps, style] = usePropsAndStyle(props)
       return (
         <Element
-          {...props}
+          {...finalProps}
           style={{
             ...webViewFlexCompatStyles,
             ...style,
@@ -56,6 +58,12 @@ const neverAnimate = {
   flexShrink: true,
   justifyContent: true,
   position: true,
+  maxWidth: true,
+  maxHeight: true,
+  backdropFilter: true,
+  borderStyle: true,
+  contain: true,
+  shadowColor: true,
 }
 
 export function createAnimations<A extends Record<string, MotiTransition>>(
