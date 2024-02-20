@@ -1094,18 +1094,6 @@ export const getSplitStyles: StyleSplitter = (
         })
     }
 
-    // Button for example uses disableClassName: true but renders to a 'button' element, so needs this
-    if (process.env.TAMAGUI_TARGET === 'web') {
-      if (
-        !staticConfig.isReactNative &&
-        !staticConfig.isHOC &&
-        (styleProps.isAnimated && !conf.animations.supportsCSSVars ? false : true) &&
-        Array.isArray(styleState.style?.transform)
-      ) {
-        styleState.style.transform = transformsToString(styleState.style.transform) as any
-      }
-    }
-
     // add in defaults if not set:
     if (parentSplitStyles) {
       if (process.env.TAMAGUI_TARGET === 'web') {
@@ -1125,6 +1113,19 @@ export const getSplitStyles: StyleSplitter = (
           styleState.style[key] = parentSplitStyles.style[key]
         }
       }
+    }
+  }
+
+  // Button for example uses disableClassName: true but renders to a 'button' element, so needs this
+  if (process.env.TAMAGUI_TARGET === 'web') {
+    const shouldStringifyTransforms =
+      !staticConfig.isReactNative &&
+      !staticConfig.isHOC &&
+      (styleProps.isAnimated && !conf.animations.supportsCSSVars ? false : true) &&
+      Array.isArray(styleState.style?.transform)
+
+    if (shouldStringifyTransforms) {
+      styleState.style!.transform = transformsToString(styleState.style!.transform) as any
     }
   }
 
