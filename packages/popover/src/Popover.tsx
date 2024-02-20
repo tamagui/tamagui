@@ -434,11 +434,9 @@ const PopoverContentImpl = React.forwardRef<
           scope={__scopePopover || POPOVER_SCOPE}
           {...popperContext}
         >
-          <ResetPresence>{childrenWithoutScrollView}</ResetPresence>
+          {childrenWithoutScrollView}
         </PopperContext.Provider>
       )
-    } else {
-      content = <ResetPresence>{content}</ResetPresence>
     }
 
     // doesn't show as popover yet on native, must use as sheet
@@ -640,10 +638,10 @@ export const Popover = withStaticProperties(
         triggerRef,
         open,
         breakpointActive: sheetActive,
-        onOpenChange: (val, via) => {
+        onOpenChange: useEvent((val, via) => {
           viaRef.current = via
           setOpen(val)
-        },
+        }),
         onOpenToggle: useEvent(() => {
           if (open && sheetActive) {
             return

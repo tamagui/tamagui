@@ -1,11 +1,9 @@
 import { PresenceContext, ResetPresence, usePresence } from '@tamagui/use-presence'
 import {
-  isWeb,
+  transformsToString,
   useComposedRefs,
-  webViewFlexCompatStyles,
   type AnimationDriver,
   type UniversalAnimatedNumber,
-  usePropsAndStyle,
 } from '@tamagui/web'
 import type { MotiTransition } from 'moti'
 import { useMotify } from 'moti/author'
@@ -26,11 +24,14 @@ type ReanimatedAnimatedNumber = SharedValue<number>
 
 function createTamaguiAnimatedComponent(tag = 'div') {
   const Component = Animated.createAnimatedComponent(
-    forwardRef(({ forwardedRef, ...props }: any, ref) => {
+    forwardRef(({ forwardedRef, style, ...props }: any, ref) => {
       const composedRefs = useComposedRefs(forwardedRef, ref)
       const Element = props.tag || tag
-      const [finalProps, style] = usePropsAndStyle(props)
-      return <Element {...finalProps} style={style} ref={composedRefs} />
+      // we can probably just use stringifyTransforms? it seems almost fully normalized
+      if (style && Array.isArray(style.transform)) {
+        style.transform = transformsToString(style.transform)
+      }
+      return <Element {...props} style={style} ref={composedRefs} />
     })
   )
   Component['acceptTagProp'] = true
@@ -70,8 +71,10 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
   animations: A
 ): AnimationDriver<A> {
   return {
-    View: isWeb ? AnimatedView : Animated.View,
-    Text: isWeb ? AnimatedText : Animated.Text,
+    // View: isWeb ? AnimatedView : Animated.View,
+    // Text: isWeb ? AnimatedText : Animated.Text,
+    View: Animated.View,
+    Text: Animated.Text,
     isReactNative: true,
     animations,
     usePresence,
@@ -160,10 +163,9 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
       } else {
         const animateOnly = props.animateOnly as string[]
         for (const key in style) {
-          if (neverAnimate[key]) {
+          if (neverAnimate[key] || (animateOnly && !animateOnly.includes(key))) {
             dontAnimate[key] = style[key]
-          }
-          if (!animateOnly || animateOnly.includes(key)) {
+          } else {
             animate[key] = style[key]
           }
         }
