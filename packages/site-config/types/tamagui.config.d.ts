@@ -12,31 +12,31 @@ export declare const config: {
     themeClassNameOnRoot: true;
     animations: import("@tamagui/web").AnimationDriver<{
         '75ms': {
-            type: "timing";
+            type: string;
             duration: number;
         };
         '100ms': {
-            type: "timing";
+            type: string;
             duration: number;
         };
         '200ms': {
-            type: "timing";
+            type: string;
             duration: number;
         };
         superBouncy: {
-            type: "spring";
+            type: string;
             damping: number;
             mass: number;
             stiffness: number;
         };
         bouncy: {
-            type: "spring";
+            type: string;
             damping: number;
             mass: number;
             stiffness: number;
         };
         lazy: {
-            type: "spring";
+            type: string;
             damping: number;
             stiffness: number;
         };
@@ -46,29 +46,29 @@ export declare const config: {
             mass: number;
         };
         slowest: {
-            type: "spring";
+            type: string;
             damping: number;
             stiffness: number;
         };
         slow: {
-            type: "spring";
+            type: string;
             damping: number;
             stiffness: number;
         };
         quick: {
-            type: "spring";
+            type: string;
             damping: number;
             mass: number;
             stiffness: number;
         };
         tooltip: {
-            type: "spring";
+            type: string;
             damping: number;
             mass: number;
             stiffness: number;
         };
         quicker: {
-            type: "spring";
+            type: string;
             damping: number;
             mass: number;
             stiffness: number;
@@ -878,7 +878,7 @@ export declare const config: {
             19: import("@tamagui/web").Variable<number>;
             20: import("@tamagui/web").Variable<number>;
         };
-    }, "zIndex" | "color" | "size" | "space" | "radius">;
+    }, "size" | "color" | "space" | "radius" | "zIndex">;
     mediaQueryDefaultActive: {
         xl: boolean;
         lg: boolean;

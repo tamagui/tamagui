@@ -161,6 +161,7 @@ export const AnimatePresence: React.FunctionComponent<
         (presentChild) => presentChild.key === key
       )
       presentChildren.current.splice(removeIndex, 1)
+
       if (!exiting.size) {
         presentChildren.current = filteredChildren
         forceRender()

@@ -44,7 +44,7 @@ export const PresenceChild = React.memo(
           exitVariant,
           enterVariant,
           enterExitVariant,
-          onExitComplete: (id: string) => {
+          onExitComplete: () => {
             presenceChildren.set(id, true)
             for (const isComplete of presenceChildren.values()) {
               if (!isComplete) {
@@ -53,7 +53,7 @@ export const PresenceChild = React.memo(
             }
             onExitComplete?.()
           },
-          register: (id: string) => {
+          register: () => {
             presenceChildren.set(id, false)
             return () => presenceChildren.delete(id)
           },

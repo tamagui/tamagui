@@ -1,14 +1,15 @@
 import { PresenceContext, ResetPresence, usePresence } from '@tamagui/use-presence'
 import {
+  isWeb,
   transformsToString,
   useComposedRefs,
+  stylePropsAll,
   type AnimationDriver,
   type UniversalAnimatedNumber,
-  isWeb,
 } from '@tamagui/web'
 import type { MotiTransition } from 'moti'
 import { useMotify } from 'moti/author'
-import { forwardRef, useCallback, useContext, useMemo } from 'react'
+import { forwardRef, useContext, useMemo } from 'react'
 import type { SharedValue } from 'react-native-reanimated'
 import Animated, {
   cancelAnimation,
@@ -45,7 +46,11 @@ const AnimatedText = createTamaguiAnimatedComponent('span')
 const neverAnimate = {
   alignItems: true,
   backdropFilter: true,
+  borderBottomStyle: true,
+  borderLeftStyle: true,
+  borderRightStyle: true,
   borderStyle: true,
+  borderTopStyle: true,
   boxSizing: true,
   contain: true,
   cursor: true,
@@ -56,9 +61,13 @@ const neverAnimate = {
   justifyContent: true,
   maxHeight: true,
   maxWidth: true,
+  minHeight: true,
+  minWidth: true,
+  outlineStyle: true,
   overflow: true,
   overflowX: true,
   overflowY: true,
+  pointerEvents: true,
   position: true,
   shadowColor: true,
   textAlign: true,
@@ -162,7 +171,11 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
       } else {
         const animateOnly = props.animateOnly as string[]
         for (const key in style) {
-          if (neverAnimate[key] || (animateOnly && !animateOnly.includes(key))) {
+          if (
+            !stylePropsAll[key] ||
+            neverAnimate[key] ||
+            (animateOnly && !animateOnly.includes(key))
+          ) {
             dontAnimate[key] = style[key]
           } else {
             animate[key] = style[key]
@@ -176,26 +189,16 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
       const styles = useMemo(() => JSON.parse(animateStr), [animateStr])
 
       const isExiting = Boolean(presence?.[1])
-      const sendExitComplete = presence?.[1]
-
-      const onDidAnimateCombined = useCallback(() => {
-        onDidAnimate?.()
-        sendExitComplete?.()
-      }, [])
+      const presenceContext = useContext(PresenceContext)
+      const usePresenceValue = (presence || undefined) as any
 
       type UseMotiProps = Parameters<typeof useMotify>[0]
 
       const motiProps = {
         animate: isExiting || isHydrating ? {} : styles,
         transition: animations[animationKey as keyof typeof animations],
-        // isHydrating
-        //   ? ({ type: 'timing', duration: 0 } as const)
-        //   : componentState.unmounted
-        //     ? { type: 'timing', duration: 0 }
-        //     : animations[animationKey as keyof typeof animations]
-        onDidAnimate: onDidAnimateCombined,
-        usePresenceValue: presence as any,
-        presenceContext: useContext(PresenceContext),
+        usePresenceValue,
+        presenceContext,
         exit: isExiting ? styles : undefined,
       } satisfies UseMotiProps
 

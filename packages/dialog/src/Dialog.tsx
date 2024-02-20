@@ -140,6 +140,8 @@ type DialogPortalProps = Omit<PortalItemProps, 'asChild'> &
   }
 
 export const DialogPortalFrame = styled(YStack, {
+  pointerEvents: 'none',
+
   variants: {
     unstyled: {
       false: {

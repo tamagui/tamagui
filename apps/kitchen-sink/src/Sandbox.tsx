@@ -1,6 +1,7 @@
 // debug-verbose
 // import './wdyr'
 
+import { DialogDemo } from '@tamagui/demos'
 import { View as RNView } from 'react-native'
 import { View, usePropsAndStyle } from 'tamagui'
 
@@ -13,9 +14,9 @@ const TestThing = (props) => {
 export const Sandbox = () => {
   return (
     <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
+      <DialogDemo />
       {/* <Demo /> */}
-
-      <View tag="span" animation="bouncy" w={200} h={200} bg="red" />
+      {/* <View tag="span" animation="bouncy" w={200} h={200} bg="red" /> */}
     </RNView>
   )
 }
