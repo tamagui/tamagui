@@ -4,6 +4,7 @@ import {
   useComposedRefs,
   type AnimationDriver,
   type UniversalAnimatedNumber,
+  isWeb,
 } from '@tamagui/web'
 import type { MotiTransition } from 'moti'
 import { useMotify } from 'moti/author'
@@ -71,10 +72,8 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
   animations: A
 ): AnimationDriver<A> {
   return {
-    // View: isWeb ? AnimatedView : Animated.View,
-    // Text: isWeb ? AnimatedText : Animated.Text,
-    View: Animated.View,
-    Text: Animated.Text,
+    View: isWeb ? AnimatedView : Animated.View,
+    Text: isWeb ? AnimatedText : Animated.Text,
     isReactNative: true,
     animations,
     usePresence,
