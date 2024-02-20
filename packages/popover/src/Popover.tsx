@@ -411,7 +411,7 @@ const PopoverContentImpl = React.forwardRef<
   const popperContext = usePopperContext(__scopePopover || POPOVER_SCOPE)
 
   const contents = React.useMemo(() => {
-    return isWeb ? <div style={{ display: 'contents' }}>{children}</div> : children
+    return isWeb ? <div style={dspContentsStyle}>{children}</div> : children
   }, [children])
 
   if (context.breakpointActive) {
@@ -459,14 +459,32 @@ const PopoverContentImpl = React.forwardRef<
 
   // const freeze = Boolean(isFullyHidden && freezeContentsWhenHidden)
 
+  const innerContent = React.useMemo(() => {
+    return (
+      <ResetPresence>
+        <FocusScope
+          loop
+          enabled={disableFocusScope ? false : open}
+          trapped={trapFocus}
+          onMountAutoFocus={onOpenAutoFocus}
+          onUnmountAutoFocus={onCloseAutoFocus}
+        >
+          {contents}
+        </FocusScope>
+      </ResetPresence>
+    )
+  }, [trapFocus, disableFocusScope, onOpenAutoFocus, onCloseAutoFocus, contents])
+
+  const handleExitComplete = React.useCallback(() => {
+    setIsFullyHidden?.(true)
+  }, [setIsFullyHidden])
+
   return (
     <Animate
       type="presence"
       present={Boolean(open)}
       keepChildrenMounted={keepChildrenMounted}
-      onExitComplete={() => {
-        setIsFullyHidden && setIsFullyHidden(true)
-      }}
+      onExitComplete={handleExitComplete}
     >
       <PopperContent
         __scopePopper={__scopePopover || POPOVER_SCOPE}
@@ -481,26 +499,18 @@ const PopoverContentImpl = React.forwardRef<
           allowPinchZoom
           // causes lots of bugs on touch web on site
           removeScrollBar={false}
-          style={{
-            display: 'contents',
-          }}
+          style={dspContentsStyle}
         >
-          <ResetPresence>
-            <FocusScope
-              loop
-              enabled={disableFocusScope ? false : open}
-              trapped={trapFocus}
-              onMountAutoFocus={onOpenAutoFocus}
-              onUnmountAutoFocus={onCloseAutoFocus}
-            >
-              {contents}
-            </FocusScope>
-          </ResetPresence>
+          {innerContent}
         </RemoveScroll>
       </PopperContent>
     </Animate>
   )
 })
+
+const dspContentsStyle = {
+  display: 'contents',
+}
 
 /* -------------------------------------------------------------------------------------------------
  * PopoverClose
