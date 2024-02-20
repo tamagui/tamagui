@@ -1121,11 +1121,9 @@ export const getSplitStyles: StyleSplitter = (
     const shouldStringifyTransforms =
       !staticConfig.isReactNative &&
       !staticConfig.isHOC &&
-      (styleProps.isAnimated && !conf.animations.supportsCSSVars ? false : true) &&
-      Array.isArray(styleState.style?.transform)
-
-    if (shouldStringifyTransforms) {
-      styleState.style!.transform = transformsToString(styleState.style!.transform) as any
+      (styleProps.isAnimated && !conf.animations.supportsCSSVars ? false : true)
+    if (shouldStringifyTransforms && Array.isArray(styleState.style?.transform)) {
+      styleState.style.transform = transformsToString(styleState.style!.transform) as any
     }
   }
 
