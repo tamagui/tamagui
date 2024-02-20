@@ -67,7 +67,6 @@ export const LogoWords = memo(
           <Circle
             animation="quicker"
             position="absolute"
-            // debug
             top={0}
             left={0}
             y={mounted === 'start' ? -30 : -3}

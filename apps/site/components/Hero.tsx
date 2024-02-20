@@ -57,7 +57,7 @@ const HeroSubTitle = memo(() => {
           UI&nbsp;kit
         </Tag>
       </NextLink>{' '}
-      for&nbsp;React · every platform
+      for&nbsp;React&nbsp;·&nbsp;every&nbsp;platform
     </Subtitle>
   )
 })
@@ -311,7 +311,7 @@ const Subtitle = styled(Paragraph, {
 
   $gtSm: {
     ta: 'center',
-    size: '$7',
+    size: '$8',
     ls: -1,
   },
 
