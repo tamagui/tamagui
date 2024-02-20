@@ -21,8 +21,7 @@ function analyzeIndexFile(filePath) {
 
 function shake(content) {
   return content
-    .replaceAll('$group-window-sm', '$sm')
-    .replaceAll('$group-window-md', '$md')
+    .replaceAll(/\$group-window-(\w+)/g, (match, group) => `$${group}`)
     .replaceAll(/([a-zA-Z0-9_]+\.fileName\s*=\s*)'([^']*)'/g, '')
 }
 
