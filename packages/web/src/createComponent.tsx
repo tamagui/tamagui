@@ -491,8 +491,9 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development' && time) time`use-context`
 
     const isTaggable = !Component || typeof Component === 'string'
+    const tagProp = props.tag
     // default to tag, fallback to component (when both strings)
-    const element = isWeb ? (isTaggable ? props.tag || Component : Component) : Component
+    const element = isWeb ? (isTaggable ? tagProp || Component : Component) : Component
 
     const BaseTextComponent = BaseText || element || 'span'
     const BaseViewComponent = BaseView || element || (hasTextAncestor ? 'span' : 'div')
@@ -699,6 +700,10 @@ export function createComponent<
       viewProps.theme = _themeProp
     }
 
+    if (elementType['acceptTagProp']) {
+      viewProps.tag = tagProp
+    }
+
     // once you set animation prop don't remove it, you can set to undefined/false
     // reason is animations are heavy - no way around it, and must be run inline here (🙅 loading as a sub-component)
     let animationStyles: any
@@ -768,7 +773,7 @@ export function createComponent<
         nonTamaguiProps,
         stateRef,
         curState.willHydrate
-      ) ?? nonTamaguiProps
+      ) || nonTamaguiProps
 
     // HOOK (1 more):
     if (!curState.composedRef) {
@@ -1148,14 +1153,8 @@ export function createComponent<
       if (isReactNative && !asChild) {
         content = (
           <span
-            {...(!isHydrated
-              ? {
-                  className: `_dsp_contents`,
-                }
-              : {
-                  className: `_dsp_contents`,
-                  ...(events && getWebEvents(events)),
-                })}
+            className="_dsp_contents"
+            {...(isHydrated && events && getWebEvents(events))}
           >
             {content}
           </span>
