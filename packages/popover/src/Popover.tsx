@@ -410,9 +410,7 @@ const PopoverContentImpl = React.forwardRef<
   const { open, keepChildrenMounted } = context
   const popperContext = usePopperContext(__scopePopover || POPOVER_SCOPE)
 
-  const contents = React.useMemo(() => {
-    return isWeb ? <div style={dspContentsStyle}>{children}</div> : children
-  }, [children])
+  const contents = isWeb ? <div style={dspContentsStyle}>{children}</div> : children
 
   if (context.breakpointActive) {
     // unwrap the PopoverScrollView if used, as it will use the SheetScrollView if that exists
@@ -426,7 +424,7 @@ const PopoverContentImpl = React.forwardRef<
       return child
     })
 
-    let content = childrenWithoutScrollView as any
+    let content = <ResetPresence>{childrenWithoutScrollView}</ResetPresence>
 
     if (Platform.OS === 'android' || Platform.OS === 'ios') {
       content = (
@@ -457,22 +455,6 @@ const PopoverContentImpl = React.forwardRef<
 
   // const freeze = Boolean(isFullyHidden && freezeContentsWhenHidden)
 
-  const innerContent = React.useMemo(() => {
-    return (
-      <ResetPresence>
-        <FocusScope
-          loop
-          enabled={disableFocusScope ? false : open}
-          trapped={trapFocus}
-          onMountAutoFocus={onOpenAutoFocus}
-          onUnmountAutoFocus={onCloseAutoFocus}
-        >
-          {contents}
-        </FocusScope>
-      </ResetPresence>
-    )
-  }, [trapFocus, disableFocusScope, onOpenAutoFocus, onCloseAutoFocus, contents])
-
   const handleExitComplete = React.useCallback(() => {
     setIsFullyHidden?.(true)
   }, [setIsFullyHidden])
@@ -499,7 +481,17 @@ const PopoverContentImpl = React.forwardRef<
           removeScrollBar={false}
           style={dspContentsStyle}
         >
-          {innerContent}
+          <ResetPresence>
+            <FocusScope
+              loop
+              enabled={disableFocusScope ? false : open}
+              trapped={trapFocus}
+              onMountAutoFocus={onOpenAutoFocus}
+              onUnmountAutoFocus={onCloseAutoFocus}
+            >
+              {contents}
+            </FocusScope>
+          </ResetPresence>
         </RemoveScroll>
       </PopperContent>
     </Animate>
@@ -607,14 +599,16 @@ export const Popover = withStaticProperties(
         },
       })
 
+      const handleOpenChange = useEvent((val, via) => {
+        viaRef.current = via
+        setOpen(val)
+      })
+
       const sheetActive = useSheetBreakpointActive(sheetBreakpoint)
 
       const floatingContext = useFloatingContext({
         open,
-        setOpen: (val, via) => {
-          viaRef.current = via
-          setOpen(val)
-        },
+        setOpen: handleOpenChange,
         disable: sheetActive,
         hoverable,
         disableFocus: disableFocus,
@@ -631,6 +625,7 @@ export const Popover = withStaticProperties(
         anchorTo: setAnchorTo,
       }))
 
+      // needs to be entirely memoized!
       const popoverContext = {
         id,
         sheetBreakpoint,
@@ -638,10 +633,7 @@ export const Popover = withStaticProperties(
         triggerRef,
         open,
         breakpointActive: sheetActive,
-        onOpenChange: useEvent((val, via) => {
-          viaRef.current = via
-          setOpen(val)
-        }),
+        onOpenChange: handleOpenChange,
         onOpenToggle: useEvent(() => {
           if (open && sheetActive) {
             return

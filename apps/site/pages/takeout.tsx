@@ -17,7 +17,7 @@ import {
   X,
   XCircle,
 } from '@tamagui/lucide-icons'
-import { useClientValue } from '@tamagui/use-did-finish-ssr'
+import { useClientValue, useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import { useUser } from 'hooks/useUser'
 import type { GetStaticProps } from 'next'
 import { NextSeo } from 'next-seo'
@@ -499,7 +499,7 @@ export default function TakeoutPage({
                       </mask>
                       <g mask="url(#mask0_2_131)">
                         <path d="M25 22H702V1489H25V22Z" fill="var(--background)" />
-                        <g clip-path="url(#clip0_2_131)">
+                        <g clipPath="url(#clip0_2_131)">
                           <path
                             d="M379.351 710.63H385.629V716.909H379.351V710.63Z"
                             fill="var(--color)"
@@ -980,6 +980,7 @@ type TakeoutCardFrameProps = GetProps<typeof TakeoutCard2Frame> & {
 
 const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps) => {
   const isDark = useThemeName().startsWith('dark')
+  const isHydrated = useDidFinishSSR()
   const innerGlow = useHoverGlow({
     resist: 30,
     size: 300,
@@ -1023,7 +1024,7 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
           </defs>
         </svg> */}
 
-        <innerGlow.Component />
+        {isHydrated && <innerGlow.Component />}
         {/* <YStack
           fullscreen
           style={{
@@ -1604,7 +1605,12 @@ const PurchaseModal = ({
                           const active = starterPriceId === price.id
                           const htmlId = `price-${price.id}`
                           return (
-                            <RadioGroupItem active={active} value={price.id} id={htmlId}>
+                            <RadioGroupItem
+                              key={htmlId}
+                              active={active}
+                              value={price.id}
+                              id={htmlId}
+                            >
                               <H4 mt="$-1">
                                 {price.description === 'Unlimited (+9 seats)'
                                   ? 'Pro'
