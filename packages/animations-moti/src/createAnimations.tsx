@@ -30,16 +30,7 @@ function createTamaguiAnimatedComponent(tag = 'div') {
       const composedRefs = useComposedRefs(forwardedRef, ref)
       const Element = props.tag || tag
       const [finalProps, style] = usePropsAndStyle(props)
-      return (
-        <Element
-          {...finalProps}
-          style={{
-            ...webViewFlexCompatStyles,
-            ...style,
-          }}
-          ref={composedRefs}
-        />
-      )
+      return <Element {...finalProps} style={style} ref={composedRefs} />
     })
   )
   Component['acceptTagProp'] = true
@@ -51,19 +42,28 @@ const AnimatedText = createTamaguiAnimatedComponent('span')
 
 const neverAnimate = {
   alignItems: true,
+  backdropFilter: true,
+  borderStyle: true,
   boxSizing: true,
+  contain: true,
+  cursor: true,
   display: true,
   flexBasis: true,
   flexDirection: true,
   flexShrink: true,
   justifyContent: true,
-  position: true,
-  maxWidth: true,
   maxHeight: true,
-  backdropFilter: true,
-  borderStyle: true,
-  contain: true,
+  maxWidth: true,
+  overflow: true,
+  overflowX: true,
+  overflowY: true,
+  position: true,
   shadowColor: true,
+  textAlign: true,
+  textOverflow: true,
+  whiteSpace: true,
+  wordWrap: true,
+  zIndex: true,
 }
 
 export function createAnimations<A extends Record<string, MotiTransition>>(
