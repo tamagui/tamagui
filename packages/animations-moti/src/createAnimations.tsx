@@ -1,8 +1,8 @@
 import { PresenceContext, ResetPresence, usePresence } from '@tamagui/use-presence'
-import type { AnimationDriver, UniversalAnimatedNumber } from '@tamagui/web'
+import { isWeb, type AnimationDriver, type UniversalAnimatedNumber } from '@tamagui/web'
 import type { MotiTransition } from 'moti'
 import { useMotify } from 'moti/author'
-import { useCallback, useContext, useMemo } from 'react'
+import { forwardRef, useCallback, useContext, useMemo } from 'react'
 import type { SharedValue } from 'react-native-reanimated'
 import Animated, {
   cancelAnimation,
@@ -17,12 +17,29 @@ import Animated, {
 
 type ReanimatedAnimatedNumber = SharedValue<number>
 
+const AnimatedView = Animated.createAnimatedComponent(
+  forwardRef((props: any, ref) => {
+    const Element = props.tag || 'div'
+    console.log('HIUH', props)
+    return <Element {...props} ref={ref} />
+  })
+)
+AnimatedView['acceptTagProp'] = true
+
+const AnimatedText = Animated.createAnimatedComponent(
+  forwardRef((props: any, ref) => {
+    const Element = props.tag || 'span'
+    return <Element {...props} ref={ref} />
+  })
+)
+AnimatedText['acceptTagProp'] = true
+
 export function createAnimations<A extends Record<string, MotiTransition>>(
   animations: A
 ): AnimationDriver<A> {
   return {
-    View: Animated.View,
-    Text: Animated.Text,
+    View: isWeb ? AnimatedView : Animated.View,
+    Text: isWeb ? AnimatedText : Animated.Text,
     isReactNative: true,
     animations,
     usePresence,

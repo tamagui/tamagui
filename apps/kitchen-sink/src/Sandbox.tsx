@@ -13,7 +13,9 @@ const TestThing = (props) => {
 export const Sandbox = () => {
   return (
     <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
-      <Demo />
+      {/* <Demo /> */}
+
+      <View debug="verbose" tag="span" animation="bouncy" w={200} h={200} bg="red" />
     </RNView>
   )
 }

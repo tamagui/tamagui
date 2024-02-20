@@ -45,19 +45,19 @@ const HeroSubTitle = memo(() => {
           styles
         </Tag>
       </NextLink>{' '}
-      +{' '}
+      ·{' '}
       <NextLink prefetch={false} href="/docs/intro/why-a-compiler">
         <Tag theme="blue" onHoverIn={() => setHovered(1)} active={hovered === 1}>
           optimizing compiler
         </Tag>
       </NextLink>{' '}
-      +{' '}
+      ·{' '}
       <NextLink prefetch={false} href="/docs/components/stacks">
         <Tag theme="purple" onHoverIn={() => setHovered(2)} active={hovered === 2}>
           UI&nbsp;kit
         </Tag>
       </NextLink>{' '}
-      that&nbsp;unify&nbsp;React Native & Web
+      for&nbsp;React · every platform
     </Subtitle>
   )
 })
