@@ -1,5 +1,11 @@
 import { PresenceContext, ResetPresence, usePresence } from '@tamagui/use-presence'
-import { isWeb, type AnimationDriver, type UniversalAnimatedNumber } from '@tamagui/web'
+import {
+  isWeb,
+  useComposedRefs,
+  webViewFlexCompatStyles,
+  type AnimationDriver,
+  type UniversalAnimatedNumber,
+} from '@tamagui/web'
 import type { MotiTransition } from 'moti'
 import { useMotify } from 'moti/author'
 import { forwardRef, useCallback, useContext, useMemo } from 'react'
@@ -17,22 +23,40 @@ import Animated, {
 
 type ReanimatedAnimatedNumber = SharedValue<number>
 
-const AnimatedView = Animated.createAnimatedComponent(
-  forwardRef((props: any, ref) => {
-    const Element = props.tag || 'div'
-    console.log('HIUH', props)
-    return <Element {...props} ref={ref} />
-  })
-)
-AnimatedView['acceptTagProp'] = true
+function createTamaguiAnimatedComponent(tag = 'div') {
+  const Component = Animated.createAnimatedComponent(
+    forwardRef(({ forwardedRef, style, ...props }: any, ref) => {
+      const composedRefs = useComposedRefs(forwardedRef, ref)
+      const Element = props.tag || tag
+      return (
+        <Element
+          {...props}
+          style={{
+            ...webViewFlexCompatStyles,
+            ...style,
+          }}
+          ref={composedRefs}
+        />
+      )
+    })
+  )
+  Component['acceptTagProp'] = true
+  return Component
+}
 
-const AnimatedText = Animated.createAnimatedComponent(
-  forwardRef((props: any, ref) => {
-    const Element = props.tag || 'span'
-    return <Element {...props} ref={ref} />
-  })
-)
-AnimatedText['acceptTagProp'] = true
+const AnimatedView = createTamaguiAnimatedComponent('div')
+const AnimatedText = createTamaguiAnimatedComponent('span')
+
+const neverAnimate = {
+  alignItems: true,
+  boxSizing: true,
+  display: true,
+  flexBasis: true,
+  flexDirection: true,
+  flexShrink: true,
+  justifyContent: true,
+  position: true,
+}
 
 export function createAnimations<A extends Record<string, MotiTransition>>(
   animations: A
@@ -126,17 +150,14 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
       if (isHydrating) {
         dontAnimate = style
       } else {
-        const animateOnly = props.animateOnly
-        if (animateOnly) {
-          dontAnimate = { ...style }
-          for (const key of animateOnly) {
-            if (key in style) {
-              animate[key] = style[key]
-              delete dontAnimate[key]
-            }
+        const animateOnly = props.animateOnly as string[]
+        for (const key in style) {
+          if (neverAnimate[key]) {
+            dontAnimate[key] = style[key]
           }
-        } else {
-          animate = style
+          if (!animateOnly || animateOnly.includes(key)) {
+            animate[key] = style[key]
+          }
         }
       }
 
