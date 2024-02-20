@@ -1,14 +1,6 @@
-import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useForceUpdate } from '@tamagui/use-force-update'
 import type { ReactElement, ReactNode } from 'react'
-import React, {
-  Children,
-  cloneElement,
-  isValidElement,
-  useContext,
-  useEffect,
-  useRef,
-} from 'react'
+import React, { Children, cloneElement, isValidElement, useContext, useRef } from 'react'
 
 import { LayoutGroupContext } from './LayoutGroupContext'
 import { PresenceChild } from './PresenceChild'

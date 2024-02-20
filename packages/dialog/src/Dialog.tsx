@@ -221,12 +221,12 @@ const DialogPortal: React.FC<DialogPortalProps> = (
     setIsFullyHidden(false)
   }
 
+  const handleExitComplete = React.useCallback(() => {
+    setIsFullyHidden(true)
+  }, [])
+
   const contents = (
-    <AnimatePresence
-      onExitComplete={() => {
-        setIsFullyHidden(true)
-      }}
-    >
+    <AnimatePresence onExitComplete={handleExitComplete}>
       {isShowing ? children : null}
     </AnimatePresence>
   )
