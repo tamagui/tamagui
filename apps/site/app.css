@@ -213,6 +213,9 @@ pre {
 .ms300 {
   transition-duration: 300ms;
 }
+.ms500 {
+  transition-duration: 500ms;
+}
 .s1,
 .ms1000 {
   transition-duration: 1s;

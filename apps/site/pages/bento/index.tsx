@@ -45,6 +45,7 @@ import { ContainerLarge } from '../../components/Container'
 import { ThemeNameEffect } from '../../components/ThemeNameEffect'
 import { getDefaultLayout } from '../../lib/getDefaultLayout'
 import { useUser } from 'hooks/useUser'
+import { useStore } from '@tamagui/use-store'
 
 export type ProComponentsProps = {
   proComponents?: Database['public']['Tables']['products']['Row'] & {
@@ -54,15 +55,18 @@ export type ProComponentsProps = {
   takeoutPlusBentoCoupon?: Stripe.Coupon | null
 }
 
+class BentoStore {
+  heroVisible = true
+  heroHeight = 800
+}
+
 export default function BentoPage(props: ProComponentsProps) {
-  const [heroVisible, setHeroVisible] = useState(true)
+  const store = useStore(BentoStore)
 
   const user = useUser()
   const coupon = user.data?.accessInfo.hasTakeoutAccess
     ? props.takeoutPlusBentoCoupon
     : props.defaultCoupon
-
-  const [heroHeight, setHeroHeight] = useState(800)
 
   return (
     <Theme name="tan">
@@ -76,22 +80,22 @@ export default function BentoPage(props: ProComponentsProps) {
             r="$8"
             size="$2"
             circular
-            icon={heroVisible ? Search : ChevronDown}
+            icon={store.heroVisible ? Search : ChevronDown}
             onPress={() => {
-              setHeroVisible(!heroVisible)
+              store.heroVisible = !store.heroVisible
             }}
             bg="$background025"
           ></Button>
         </ContainerLarge>
         <YStack
           onLayout={(e) => {
-            setHeroHeight(e.nativeEvent.layout.height)
+            store.heroHeight = e.nativeEvent.layout.height
           }}
         >
           <Hero mainProduct={props.proComponents} />
           <Intermediate />
         </YStack>
-        <Body distanceToTop={heroHeight} heroVisible={heroVisible} />
+        <Body />
         <Theme name="orange">
           <PurchaseModal defaultCoupon={coupon} proComponents={props.proComponents} />
         </Theme>
@@ -104,11 +108,13 @@ BentoPage.getLayout = getDefaultLayout
 
 const Intermediate = () => {
   return (
-    <YStack zi={1} w="100%">
-      <YStack fullscreen elevation="$4" o={0.15} />
+    <YStack className="blur-8" zi={1} w="100%">
+      {/* <YStack fullscreen elevation="$4" o={0.15} /> */}
       <YStack pos="absolute" t={0} l={0} r={0} o={0.25} btw={0.5} bc="$color025" />
       <YStack pos="absolute" b={0} l={0} r={0} o={0.25} btw={0.5} bc="$color025" />
-      {/* <YStack fullscreen bg="$color3" o={0.5} /> */}
+      <ThemeTintAlt offset={-1}>
+        <YStack fullscreen bg="$color9" o={0.08} />
+      </ThemeTintAlt>
       <ContainerLarge>
         <XStack
           gap="$4"
@@ -144,7 +150,7 @@ const IntermediateCard = ({
   Icon,
 }: { title?: any; children?: any; Icon?: any }) => {
   return (
-    <XStack className="blur-8" ov="hidden" f={1} gap="$5" px="$5" py="$4">
+    <XStack className="" ov="hidden" f={1} gap="$5" px="$5" py="$4">
       <YStack f={1} gap="$2">
         <H4 ff="$silkscreen" color="$color11" className="text-glow" size="$2">
           {title}
@@ -234,6 +240,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
                   color="$color11"
                   ls={1}
                   $md={{
+                    mt: '$6',
                     fos: 22,
                     lh: 38,
                   }}
@@ -242,12 +249,18 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
                   primitives.
                 </Paragraph>
               </XStack>
-              <XStack jc="space-between" ai="center" ml="$8" mr="$4" $sm={{ mx: 0 }}>
-                <Paragraph color="$color10" size="$5">
+              <XStack
+                jc="space-between"
+                ai="center"
+                ml="$8"
+                mr="$4"
+                $md={{ mx: 0, fd: 'column', gap: '$3' }}
+              >
+                <Paragraph color="$color10" size="$5" $md={{ size: '$3' }}>
                   One-time Purchase
                 </Paragraph>
 
-                <Circle size={4} bg="$color10" />
+                <Circle size={4} bg="$color10" $md={{ dsp: 'none' }} />
 
                 <XStack ai="center" jc="space-between">
                   <Spacer />
@@ -269,8 +282,8 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
                       //   />
                       // }
                       className="box-3d all ease-in-out ms100"
-                      size="$2"
-                      scaleSpace={0.5}
+                      size="$3"
+                      scaleSpace={0.75}
                       als="flex-end"
                       mr="$4"
                       color="$color1"
@@ -292,7 +305,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
                         store.showPurchase = true
                       }}
                     >
-                      <Button.Text fontFamily="$mono" size="$2">
+                      <Button.Text fontFamily="$mono" size="$3" fow="bold">
                         $
                         {(mainProduct?.prices.sort(
                           (a, b) =>
@@ -303,9 +316,9 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
                   </Theme>
                 </XStack>
 
-                <Circle size={4} bg="$color10" />
+                <Circle size={4} bg="$color10" $md={{ dsp: 'none' }} />
 
-                <Paragraph color="$color10" size="$5">
+                <Paragraph color="$color10" size="$5" $md={{ size: '$3' }}>
                   Lifetime rights
                 </Paragraph>
               </XStack>
@@ -417,12 +430,10 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
   )
 }
 
-const Body = ({
-  heroVisible,
-  distanceToTop = 800,
-}: { heroVisible: boolean; distanceToTop?: number }) => {
+const Body = () => {
   const inputRef = useRef<HTMLInputElement>()
   const [filter, setFilter] = useState('')
+  const store = useStore(BentoStore)
 
   const filteredSections = useMemo(() => {
     if (!filter) return Sections.listingData.sections
@@ -444,23 +455,25 @@ const Body = ({
   return (
     <YStack
       pos="relative"
-      className="all ease-out ms300"
+      className="all ease-in-out ms300"
       // @ts-ignore
       onTransitionEnd={() => {
-        if (!heroVisible) {
+        if (!store.heroVisible) {
           inputRef.current?.focus()
         }
       }}
       pb="$8"
       // bg="$background"
       style={{
-        backdropFilter: `blur(${heroVisible ? 0 : 90}px)`,
-        WebkitBackdropFilter: `blur(${heroVisible ? 0 : 10}px)`,
+        backdropFilter: `blur(${store.heroVisible ? 0 : 200}px)`,
+        WebkitBackdropFilter: `blur(${store.heroVisible ? 0 : 200}px)`,
       }}
       y={0}
       minHeight={800}
-      {...(!heroVisible && {
-        y: -distanceToTop,
+      {...(!store.heroVisible && {
+        y: -store.heroHeight,
+        shadowColor: '$shadowColor',
+        shadowRadius: 3,
       })}
       zi={10000}
     >
@@ -511,7 +524,6 @@ const Body = ({
 
               <ScrollView
                 horizontal
-                className="mask-gradient-right"
                 showsHorizontalScrollIndicator={false}
                 p="$10"
                 m="$-10"
@@ -584,10 +596,10 @@ function SectionCard({
         cursor="pointer"
         pos="relative"
         hoverStyle={{
-          bg: `rgba(255,255,255,0.025)`,
+          bg: `rgba(255,255,255,0.05)`,
         }}
         pressStyle={{
-          bg: 'rgba(255,255,255,0.05)',
+          bg: 'rgba(255,255,255,0.075)',
           y: 1,
         }}
       >
