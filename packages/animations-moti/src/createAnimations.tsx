@@ -26,31 +26,31 @@ import Animated, {
 
 type ReanimatedAnimatedNumber = SharedValue<number>
 
-function createTamaguiAnimatedComponent(tag = 'div') {
-  const Component = Animated.createAnimatedComponent(
-    forwardRef(({ forwardedRef, style, ...props }: any, ref) => {
-      const composedRefs = useComposedRefs(forwardedRef, ref)
-      const Element = props.tag || tag
+// function createTamaguiAnimatedComponent(tag = 'div') {
+//   const Component = Animated.createAnimatedComponent(
+//     forwardRef(({ forwardedRef, style, ...props }: any, ref) => {
+//       const composedRefs = useComposedRefs(forwardedRef, ref)
+//       const Element = props.tag || tag
 
-      // TODO this block should be exported by web as styleToWebStyle()
-      const webStyle = style
-      styleToCSS(style)
-      if (Array.isArray(webStyle.transform)) {
-        style.transform = transformsToString(style.transform)
-      }
-      for (const key in style) {
-        style[key] = normalizeValueWithProperty(style[key], key)
-      }
+//       // TODO this block should be exported by web as styleToWebStyle()
+//       const webStyle = style
+//       styleToCSS(style)
+//       if (Array.isArray(webStyle.transform)) {
+//         style.transform = transformsToString(style.transform)
+//       }
+//       for (const key in style) {
+//         style[key] = normalizeValueWithProperty(style[key], key)
+//       }
 
-      return <Element {...props} style={style} ref={composedRefs} />
-    })
-  )
-  Component['acceptTagProp'] = true
-  return Component
-}
+//       return <Element {...props} style={style} ref={composedRefs} />
+//     })
+//   )
+//   Component['acceptTagProp'] = true
+//   return Component
+// }
 
-const AnimatedView = createTamaguiAnimatedComponent('div')
-const AnimatedText = createTamaguiAnimatedComponent('span')
+// const AnimatedView = createTamaguiAnimatedComponent('div')
+// const AnimatedText = createTamaguiAnimatedComponent('span')
 
 const neverAnimate = {
   alignItems: true,
@@ -93,8 +93,10 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
   animations: A
 ): AnimationDriver<A> {
   return {
-    View: isWeb ? AnimatedView : Animated.View,
-    Text: isWeb ? AnimatedText : Animated.Text,
+    // View: isWeb ? AnimatedView : Animated.View,
+    // Text: isWeb ? AnimatedText : Animated.Text,
+    View: Animated.View,
+    Text: Animated.Text,
     isReactNative: true,
     animations,
     usePresence,
