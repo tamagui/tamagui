@@ -18,7 +18,8 @@ import {
 import { GithubIcon } from './GithubIcon'
 import type { HeaderProps } from './HeaderProps'
 import { NextLink } from './NextLink'
-import { Figma } from '@tamagui/lucide-icons'
+import { ExternalLink, Figma } from '@tamagui/lucide-icons'
+import { ExternalIcon } from './ExternalIcon'
 
 const HeadAnchor = styled(Paragraph, {
   tag: 'a',
@@ -98,7 +99,10 @@ export const HeaderLinks = (props: HeaderProps) => {
               display: forceShowAllLinks ? 'flex' : 'none',
             }}
           >
-            Starter Kit
+            Starter Kit{' '}
+            <YStack dsp={'inline-block' as any} y={7} my={-20} o={0.8}>
+              <TakeoutIcon scale={0.6} />
+            </YStack>
           </HeadAnchor>
         </NextLink>
       )}
@@ -127,8 +131,13 @@ export const HeaderLinks = (props: HeaderProps) => {
       )}
 
       {forceShowAllLinks && (
-        <NextLink target="_blank" href="https://github.com/sponsors/natew">
-          <HeadAnchor grid={forceShowAllLinks}>Sponsor</HeadAnchor>
+        <NextLink prefetch={false} href="https://github.com/sponsors/natew">
+          <HeadAnchor target="_blank" grid={forceShowAllLinks}>
+            Sponsor
+            <YStack dsp={'inline-block' as any} y={0} my={-20} ml={12} o={0.8}>
+              <ExternalLink size={10} o={0.5} />
+            </YStack>
+          </HeadAnchor>
         </NextLink>
       )}
 
@@ -138,14 +147,8 @@ export const HeaderLinks = (props: HeaderProps) => {
 
           <XStack fw="wrap" f={1} gap="$2" w="100%">
             {forceShowAllLinks && (
-              <NextLink
-                prefetch={false}
-                legacyBehavior={true}
-                passHref
-                target="_blank"
-                href="https://github.com/tamagui/tamagui"
-              >
-                <HeadAnchor half grid={forceShowAllLinks} tag="span">
+              <NextLink href="https://github.com/tamagui/tamagui">
+                <HeadAnchor target="_blank" half grid={forceShowAllLinks}>
                   Github{' '}
                   <YStack dsp={'inline-block' as any} y={10} my={-20} o={0.8}>
                     <GithubIcon width={14} />
@@ -155,14 +158,8 @@ export const HeaderLinks = (props: HeaderProps) => {
             )}
 
             {forceShowAllLinks && (
-              <NextLink
-                prefetch={false}
-                legacyBehavior={true}
-                passHref
-                target="_blank"
-                href="https://www.figma.com/community/file/1326593766534421119/tamagui-v1-2-1"
-              >
-                <HeadAnchor half grid={forceShowAllLinks} tag="span">
+              <NextLink href="https://www.figma.com/community/file/1326593766534421119/tamagui-v1-2-1">
+                <HeadAnchor target="_blank" half grid={forceShowAllLinks}>
                   Figma{' '}
                   <YStack dsp={'inline-block' as any} y={2} my={-20} o={0.8}>
                     <Figma size={14} />
@@ -228,7 +225,7 @@ const BentoIcon = React.forwardRef((props, ref) => (
   </YStack>
 ))
 
-const TakeoutIcon = React.forwardRef((props, ref) => (
+const TakeoutIcon = YStack.styleable((props, ref) => (
   <YStack {...props} ref={ref as any} p="$4" m="$-4">
     <svg
       width="24px"
