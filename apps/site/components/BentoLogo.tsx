@@ -4,7 +4,8 @@ import { H1, YStack } from 'tamagui'
 export const BentoLogo = ({
   children = 'BENTO',
   scale = 1,
-}: { children?: string; scale?: number }) => (
+  noShadow,
+}: { children?: string; scale?: number; noShadow?: boolean }) => (
   <YStack h={200} w={600} my={-(1 - scale) * 100} mx={-(1 - scale) * 270} scale={scale}>
     <ThemeTintAlt offset={-1}>
       <H1
@@ -63,7 +64,6 @@ export const BentoLogo = ({
 
     <ThemeTintAlt offset={-2}>
       <H1
-        // o={0}
         pos="absolute"
         t={0}
         l={0}
@@ -88,7 +88,7 @@ export const BentoLogo = ({
 
     <ThemeTintAlt>
       <H1
-        className="glow-shadow mask-gradient-up"
+        className={`${noShadow ? '' : 'glow-shadow'} mask-gradient-up`}
         pos="absolute"
         t={0}
         l={0}

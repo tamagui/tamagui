@@ -6,6 +6,8 @@ import {
   stylePropsAll,
   type AnimationDriver,
   type UniversalAnimatedNumber,
+  styleToCSS,
+  normalizeValueWithProperty,
 } from '@tamagui/web'
 import type { MotiTransition } from 'moti'
 import { useMotify } from 'moti/author'
@@ -29,10 +31,17 @@ function createTamaguiAnimatedComponent(tag = 'div') {
     forwardRef(({ forwardedRef, style, ...props }: any, ref) => {
       const composedRefs = useComposedRefs(forwardedRef, ref)
       const Element = props.tag || tag
-      // we can probably just use stringifyTransforms? it seems almost fully normalized
-      if (style && Array.isArray(style.transform)) {
+
+      // TODO this block should be exported by web as styleToWebStyle()
+      const webStyle = style
+      styleToCSS(style)
+      if (Array.isArray(webStyle.transform)) {
         style.transform = transformsToString(style.transform)
       }
+      for (const key in style) {
+        style[key] = normalizeValueWithProperty(style[key], key)
+      }
+
       return <Element {...props} style={style} ref={composedRefs} />
     })
   )
@@ -75,6 +84,9 @@ const neverAnimate = {
   whiteSpace: true,
   wordWrap: true,
   zIndex: true,
+
+  fontFamily: true,
+  lineHeight: true,
 }
 
 export function createAnimations<A extends Record<string, MotiTransition>>(

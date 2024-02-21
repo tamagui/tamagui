@@ -1497,26 +1497,24 @@ const PurchaseModal = ({
                         </Paragraph>
                       </CheckboxGroupItem>
                     </ThemeTint>
-                    <Theme name="tan">
-                      <CheckboxGroupItem
-                        onCheckedChange={() => {
-                          if (!bento) return
-                          const active = selectedProductsIds.includes(bento.id)
-                          setSelectedProductsIds(
-                            active
-                              ? selectedProductsIds.filter((id) => id !== bento.id)
-                              : [...selectedProductsIds, bento.id]
-                          )
-                        }}
-                        id={'takeout-bento'}
-                        checked={bento && selectedProductsIds.includes(bento.id)}
-                      >
-                        <BentoLogo scale={0.25} />
-                        <Paragraph size="$3" lh="$1" theme="alt2">
-                          {bento?.description}
-                        </Paragraph>
-                      </CheckboxGroupItem>
-                    </Theme>
+                    <CheckboxGroupItem
+                      onCheckedChange={() => {
+                        if (!bento) return
+                        const active = selectedProductsIds.includes(bento.id)
+                        setSelectedProductsIds(
+                          active
+                            ? selectedProductsIds.filter((id) => id !== bento.id)
+                            : [...selectedProductsIds, bento.id]
+                        )
+                      }}
+                      id={'takeout-bento'}
+                      checked={bento && selectedProductsIds.includes(bento.id)}
+                    >
+                      <BentoLogo noShadow scale={0.25} />
+                      <Paragraph size="$3" lh="$1" theme="alt2">
+                        {bento?.description}
+                      </Paragraph>
+                    </CheckboxGroupItem>
                   </YStack>
                 </YStack>
               )}

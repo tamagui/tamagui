@@ -31,6 +31,7 @@ export * from './constants/constants'
 
 export * from './contexts/ComponentContext'
 
+export * from './_withStableStyle'
 export * from './helpers/createMediaStyle'
 export * from './helpers/createShallowSetState'
 export * from './helpers/createStyledContext'
@@ -46,6 +47,7 @@ export * from './helpers/matchMedia'
 export * from './helpers/mergeProps'
 export * from './helpers/normalizeColor'
 export * from './helpers/normalizeStyle'
+export * from './helpers/normalizeValueWithProperty'
 export * from './helpers/propMapper'
 export * from './helpers/proxyThemeToParents'
 export * from './helpers/proxyThemeVariables'
@@ -53,7 +55,6 @@ export * from './helpers/pseudoDescriptors'
 export * from './helpers/themeable'
 export * from './helpers/themes'
 export * from './helpers/transformsToString'
-export * from './_withStableStyle'
 
 export {
   configureMedia,
