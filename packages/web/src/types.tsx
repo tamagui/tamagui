@@ -942,12 +942,13 @@ export type ThemeValueFallbackZIndex =
 
 export type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`
 
-export type GetTokenPropsFromAcceptedTokens<AcceptedTokens> =
-  AcceptedTokens extends Record<string, any>
-    ? {
-        [Key in keyof AcceptedTokens]?: ThemeValueGet<AcceptedTokens[Key]>
-      }
-    : {}
+export type GetTokenPropsFromAccepted<Accepted> = Accepted extends Record<string, any>
+  ? {
+      [Key in keyof Accepted]?: Accepted[Key] extends 'viewStyles'
+        ? WithThemeAndShorthands<ViewProps, {}> & ViewProps
+        : ThemeValueGet<Accepted[Key]>
+    }
+  : {}
 
 export type SpecificTokens<
   Record = Tokens,
@@ -1640,8 +1641,8 @@ export type StaticConfigPublic = {
   /**
    * Accept Tamagui tokens for these props (key for the prop key, val for the token category)
    */
-  acceptTokens?: {
-    [key: string]: keyof Tokens
+  accept?: {
+    [key: string]: keyof Tokens | 'viewStyles'
   }
 
   /**

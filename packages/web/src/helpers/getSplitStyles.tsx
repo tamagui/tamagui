@@ -126,7 +126,7 @@ function isValidStyleKey(key: string, staticConfig: StaticConfig) {
   const validStyleProps =
     staticConfig.validStyles ||
     (staticConfig.isText || staticConfig.isInput ? stylePropsText : validStyles)
-  return validStyleProps[key] || staticConfig.acceptTokens?.[key]
+  return validStyleProps[key] || staticConfig.accept?.[key]
 }
 
 export const getSplitStyles: StyleSplitter = (
@@ -227,6 +227,21 @@ export const getSplitStyles: StyleSplitter = (
   for (const keyOg in props) {
     let keyInit = keyOg
     let valInit = props[keyOg]
+
+    if (
+      staticConfig.accept &&
+      staticConfig.accept[keyInit] === 'viewStyles' &&
+      typeof valInit === 'object'
+    ) {
+      const styleObject = getSubStyle(
+        styleState,
+        keyInit,
+        valInit,
+        styleProps.noClassNames
+      )
+      viewProps[keyInit] = styleObject
+      continue
+    }
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
       // otherwise things just keep nesting - careful don't leave these around
@@ -1430,9 +1445,9 @@ function mergeStyle(
     const shouldNormalize = isWeb && !disableNormalize && !styleProps.noNormalize
     const out = shouldNormalize ? normalizeValueWithProperty(val, key) : val
     if (
-      // acceptTokens are for props not styles
-      staticConfig.acceptTokens &&
-      key in staticConfig.acceptTokens
+      // accept is for props not styles
+      staticConfig.accept &&
+      key in staticConfig.accept
     ) {
       viewProps[key] = out
     } else {

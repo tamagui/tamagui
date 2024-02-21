@@ -397,7 +397,7 @@ export const getTokenForKey = (
       hasSet = true
       valOrVar = conf.specificTokens[value]
     } else {
-      const customTokenAccept = staticConfig?.acceptTokens?.[key]
+      const customTokenAccept = staticConfig?.accept?.[key]
       if (customTokenAccept) {
         const val = tokensParsed[customTokenAccept][value]
         if (val) {

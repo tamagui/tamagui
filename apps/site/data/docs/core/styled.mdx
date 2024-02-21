@@ -4,8 +4,8 @@ description: Extend and build custom and optimizable components.
 ---
 
 <Notice theme="green">
-  If you're looking for a full list of style properties accepted by Tamagui, see the
-  [Styles page](/docs/intro/styles).
+  If you're looking for a full list of style properties accepted by Tamagui, see
+  the [Styles page](/docs/intro/styles).
 </Notice>
 
 Create a new component by extending an existing one:
@@ -33,8 +33,8 @@ Note, `tamagui` and `@tamagui/core` both export many of the same helpers, like s
 You can pass any prop that is supported by the component you are extending, even variants of the parent component. Tamagui will figure out the style props up-front, turn them into classNames, and then pass the non-style props down to the component as defaultProps.
 
 <Notice>
-  One really important and useful thing to note about Tamagui style properties: the order
-  is important! [Read more below](#order-is-important)
+  One really important and useful thing to note about Tamagui style properties:
+  the order is important! [Read more below](#order-is-important)
 </Notice>
 
 ## Variants
@@ -75,8 +75,8 @@ export const Circle = styled(View, {
 ```
 
 <Notice>
-  Please use `as const` for the variants definition until Typescript gains the ability to
-  infer generics as const .
+  Please use `as const` for the variants definition until Typescript gains the
+  ability to infer generics as const .
 </Notice>
 
 We can use these like so:
@@ -243,25 +243,35 @@ If order wasn't important, how would you expect these two different usages to wo
 
 You can skip this section unless you're building out very rich components that are nested multiple levels and need variants at each level.
 
-### Custom props that accepts tokens with `acceptTokens`
+### Custom props that accepts tokens with `accept`
 
-If you are wrapping something like an SVG, you may want it to accept theme and token values on certain props, for example `fill`. You can do so using `acceptTokens`:
+If you are wrapping something like an SVG, you may want it to accept theme and token values on certain props, for example `fill`. You can do so using `accept`:
 
 ```tsx
 const StyledSVG = styled(SVG, {}, {
-  acceptsTokens: {
+  accept: {
     fill: 'color'
   } as const
 })
 ```
 
-Now your StyledSVG will properly type the `fill` property to accept token and theme values.  It will then map any values it recieves to the style prop with any token or theme values resolved. Note the `as const`, until TypeScript 5 is more fully supported this improves the generated types.
+Now your StyledSVG will properly type the `fill` property to accept token and theme values. It will then map any values it recieves to the style prop with any token or theme values resolved. Note the `as const`, until TypeScript 5 is more fully supported this improves the generated types.
+
+Or you can style some cases like `contentContainerStyle` of `ScrollView` which is a prop for sub styles
+
+```tsx
+const MyScrollView = styled(ScrollView, {}, {
+  accept: {
+    contentContainerStyle: 'viewStyles'
+  }
+})
+```
 
 ### styleable
 
 <Notice>
-  This is an advanced pattern that is only needed if you are building a design system that
-  has complex components.
+  This is an advanced pattern that is only needed if you are building a design
+  system that has complex components.
 </Notice>
 
 Any `styled()` component will have a helper function on it called `.styleable()`.

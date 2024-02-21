@@ -8,7 +8,7 @@ import type {
   GetNonStyledProps,
   GetStaticConfig,
   GetStyledVariants,
-  GetTokenPropsFromAcceptedTokens,
+  GetTokenPropsFromAccepted,
   GetVariantValues,
   InferStyledProps,
   StaticConfig,
@@ -70,8 +70,8 @@ export function styled<
             | (Key extends keyof OurVariantProps ? OurVariantProps[Key] : undefined)
         }
 
-  type AcceptedTokens = StyledStaticConfig['acceptTokens']
-  type CustomTokenProps = GetTokenPropsFromAcceptedTokens<AcceptedTokens>
+  type Accepted = StyledStaticConfig['accept']
+  type CustomTokenProps = GetTokenPropsFromAccepted<Accepted>
 
   /**
    * de-opting a bit of type niceness because were hitting depth issues too soon
@@ -87,7 +87,7 @@ export function styled<
     TamaDefer,
     GetRef<ParentComponent>,
     ParentNonStyledProps,
-    AcceptedTokens extends Record<string, any>
+    Accepted extends Record<string, any>
       ? ParentStylesBase & CustomTokenProps
       : ParentStylesBase,
     MergedVariants,
