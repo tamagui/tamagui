@@ -38,7 +38,7 @@ import type { Database } from '@lib/supabase-types'
 import { getArray } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 import type { GetStaticProps } from 'next'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { forwardRef, useEffect, useMemo, useRef, useState } from 'react'
 import { BentoLogo } from '../../components/BentoLogo'
 import { BentoPageFrame } from '../../components/BentoPageFrame'
 import { ContainerLarge } from '../../components/Container'
@@ -109,6 +109,12 @@ BentoPage.getLayout = getDefaultLayout
 const Intermediate = () => {
   return (
     <YStack className="blur-8" zi={1} w="100%">
+      <ContainerLarge>
+        <YStack pos="absolute" t={-10} r={80}>
+          <BentoIcon />
+        </YStack>
+      </ContainerLarge>
+
       {/* <YStack fullscreen elevation="$4" o={0.15} /> */}
       <YStack pos="absolute" t={0} l={0} r={0} o={0.25} btw={0.5} bc="$color025" />
       <YStack pos="absolute" b={0} l={0} r={0} o={0.25} btw={0.5} bc="$color025" />
@@ -705,3 +711,16 @@ const getTakeoutProducts = async (): Promise<ProComponentsProps> => {
     takeoutPlusBentoCoupon,
   }
 }
+
+const BentoIcon = forwardRef((props, ref) => (
+  <YStack {...props} ref={ref as any} p="$4" m="$-4">
+    <svg width={50} height={50} viewBox="0 0 626 626">
+      <g id="Artboard" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+        <path
+          d="M209.338228,102.876327 C271.066562,78.8127212 316.98642,69.788869 347.097803,75.8047704 C392.264876,84.8286226 577.998184,161.675624 584.224939,211.162553 C590.451694,260.649482 591,346.520335 591,380.359781 C591,414.199227 588.570152,411.629121 568.416463,427.735005 C548.262774,443.840889 460.015487,502.181785 392.264876,533.765268 C324.514266,565.34875 279.347192,549.557009 243.213533,533.765268 C207.079875,517.973527 62.5452392,434.502894 51.2534708,427.735005 C39.9617024,420.967116 36.6786837,413.052771 35.444995,396.151522 C34.6634664,385.444761 35.092158,335.851538 35.3719878,287.135693 C37.6662246,288.968401 40.2572599,290 43,290 C52.3888407,290 60,277.911688 60,263 C60,248.088312 52.3888407,236 43,236 C40.3287362,236 37.8013732,236.978533 35.5522626,238.722216 C35.5563471,228.565119 35.5262744,219.209959 35.444995,211.162553 C35.0794577,174.970972 93.0438688,138.875563 209.338228,102.876327 Z M311,327 C295.536027,327 283,342.222319 283,361 C283,379.777681 295.536027,395 311,395 C326.463973,395 339,379.777681 339,361 C339,342.222319 326.463973,327 311,327 Z M87.4378818,411.476018 L68.874942,364.345471 L93.323553,396.063672 L133.37533,379.089824 L154.271984,425.476492 L203.230585,410.419552 L221.809988,457.361928 L288.483459,447.267826 L217.583057,479.745369 L196.653478,433.735042 L147.71134,448.603811 L127.407346,395.44302 L87.4378818,411.476018 Z"
+          fill="var(--color)"
+        ></path>
+      </g>
+    </svg>
+  </YStack>
+))
