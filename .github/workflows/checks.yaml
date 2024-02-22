@@ -27,9 +27,6 @@ jobs:
       - name: Check
         run: yarn check
 
-      - name: Lint
-        run: yarn lint
-
       - name: Lint fix
         run: yarn lint:fix
 
