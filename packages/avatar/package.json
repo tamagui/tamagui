@@ -36,16 +36,22 @@
     "@tamagui/helpers": "1.90.6",
     "@tamagui/image": "1.90.6",
     "@tamagui/shapes": "1.90.6",
-    "@tamagui/text": "1.90.6"
+    "@tamagui/text": "1.90.6",
+    "@tamagui/create-context": "1.90.2",
+    "@tamagui/stacks": "1.90.2"
   },
   "peerDependencies": {
     "react": "*",
-    "react-native": "*"
+    "react-native": "*",
+    "react-dom": "*"
   },
   "devDependencies": {
     "@tamagui/build": "1.90.6",
     "react": "^18.2.0",
-    "react-native": "^0.73.4"
+    "react-native": "^0.73.4",
+    "react-dom": "^18.2.0",
+    "@types/react": "~18.2.14",
+    "@types/react-dom": "^18.2.19"
   },
   "publishConfig": {
     "access": "public"

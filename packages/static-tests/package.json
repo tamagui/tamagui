@@ -47,9 +47,21 @@
     "style-loader": "^3.3.3",
     "typescript": "^5.3.3",
     "vitest": "^0.34.3",
-    "webpack": "^5.88.2"
+    "webpack": "^5.88.2",
+    "@types/react": "~18.2.14",
+    "@types/react-dom": "^18.2.19"
   },
   "peerDependencies": {
-    "react-native-web": "*"
+    "react-native-web": "*",
+    "react": "*",
+    "react-dom": "*"
+  },
+  "dependencies": {
+    "@expo/match-media": "0.4.0",
+    "@tamagui/core": "1.90.2",
+    "@babel/core": "7.23.9",
+    "@tamagui/static": "1.90.2",
+    "tamagui-loader": "1.90.2",
+    "@tamagui/config": "1.90.2"
   }
 }

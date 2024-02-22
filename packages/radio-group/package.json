@@ -47,11 +47,17 @@
     "@tamagui/use-previous": "1.90.6"
   },
   "peerDependencies": {
-    "react": "*"
+    "react": "*",
+    "react-native": "*",
+    "react-dom": "*"
   },
   "devDependencies": {
     "@tamagui/build": "1.90.6",
-    "react": "^18.2.0"
+    "react": "^18.2.0",
+    "react-native": "^0.73.4",
+    "@types/react": "~18.2.14",
+    "react-dom": "^18.2.0",
+    "@types/react-dom": "^18.2.19"
   },
   "publishConfig": {
     "access": "public"

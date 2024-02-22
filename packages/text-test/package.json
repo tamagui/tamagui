@@ -10,6 +10,14 @@
   },
   "devDependencies": {
     "@tamagui/text": "1.90.6",
-    "vitest": "^0.34.3"
+    "vitest": "^0.34.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "@types/react": "~18.2.14",
+    "@types/react-dom": "^18.2.19"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-dom": "*"
   }
 }

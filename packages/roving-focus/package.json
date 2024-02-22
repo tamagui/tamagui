@@ -43,11 +43,15 @@
     "@tamagui/use-event": "1.90.6"
   },
   "peerDependencies": {
-    "react": "*"
+    "react": "*",
+    "react-dom": "*"
   },
   "devDependencies": {
     "@tamagui/build": "1.90.6",
-    "react": "^18.2.0"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "@types/react": "~18.2.14",
+    "@types/react-dom": "^18.2.19"
   },
   "publishConfig": {
     "access": "public"
