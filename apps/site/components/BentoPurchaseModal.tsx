@@ -484,9 +484,9 @@ export function BentoTable({
       </XStack>
       <XStack px="$4" py="$4" gap="$3">
         <YStack width="80%">
-          <Paragraph size="$6">License Seats</Paragraph>
+          <Paragraph size="$6">Access</Paragraph>
           <Paragraph size="$3" theme="alt1" lh="$2">
-            Number of people that are allowed to develop&nbsp;on&nbsp;it
+            Accounts given access
           </Paragraph>
         </YStack>
         <XStack f={1} ai="center" gap="$2" jc="center">
