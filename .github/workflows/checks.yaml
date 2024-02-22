@@ -27,21 +27,8 @@ jobs:
       - name: Check
         run: yarn check
 
-      - name: Lint fix
-        run: yarn lint:fix
-
-      - name: Check for changes
-        id: git-check
-        run: echo "changes=$(git status --porcelain)" >> $GITHUB_STATE
-
-      - name: Commit and push changes
-        if: env.changes != ''
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add .
-          git commit -m "Auto-commit linted code"
-          git push
+      - name: Lint
+        run: yarn lint
 
   tests:
     runs-on: ubuntu-latest
