@@ -256,10 +256,7 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
   }
 }
 
-// try both combos
 const transformShorthands = {
-  x: 'transform',
-  y: 'transform',
-  translateX: 'transform',
-  translateY: 'transform',
+  x: 'translateX',
+  y: 'translateY',
 }
