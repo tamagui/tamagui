@@ -1,6 +1,6 @@
 import { NextLink } from '@components/NextLink'
 import * as Sections from '@tamagui/bento'
-import { ThemeTint, ThemeTintAlt, setTintIndex } from '@tamagui/logo'
+import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import {
   Check,
   ChevronDown,
@@ -37,15 +37,16 @@ import { stripe } from '@lib/stripe'
 import type { Database } from '@lib/supabase-types'
 import { getArray } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
+import { useStore } from '@tamagui/use-store'
+import { useUser } from 'hooks/useUser'
 import type { GetStaticProps } from 'next'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
+import { BentoIcon } from '../../components/BentoIcon'
 import { BentoLogo } from '../../components/BentoLogo'
 import { BentoPageFrame } from '../../components/BentoPageFrame'
 import { ContainerLarge } from '../../components/Container'
 import { ThemeNameEffect } from '../../components/ThemeNameEffect'
 import { getDefaultLayout } from '../../lib/getDefaultLayout'
-import { useUser } from 'hooks/useUser'
-import { useStore } from '@tamagui/use-store'
 
 export type ProComponentsProps = {
   proComponents?: Database['public']['Tables']['products']['Row'] & {
@@ -93,6 +94,13 @@ export default function BentoPage(props: ProComponentsProps) {
           }}
         >
           <Hero mainProduct={props.proComponents} />
+          <YStack pos="relative" zi={10000}>
+            <ContainerLarge>
+              <YStack pos="absolute" t={-30} r={80}>
+                <BentoIcon scale={2} />
+              </YStack>
+            </ContainerLarge>
+          </YStack>
           <Intermediate />
         </YStack>
         <Body />
@@ -205,7 +213,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
             }}
           >
             <YStack
-              className="ms300 ease-in all"
+              className="ms200 ease-in all"
               $xxs={{
                 scale: 0.4,
               }}
@@ -219,6 +227,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
                 transformOrigin: 'center top',
               }}
               $md={{ mb: -100, scale: 0.72, transformOrigin: 'left top' }}
+              $lg={{ scale: 0.9, y: 10 }}
             >
               <BentoLogo />
             </YStack>
@@ -244,9 +253,11 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
                     fos: 22,
                     lh: 38,
                   }}
+                  $sm={{
+                    ta: 'center',
+                  }}
                 >
-                  Boost your React Native development with a suite of copy-paste
-                  primitives.
+                  Boost your React development with a suite of copy-paste primitives.
                 </Paragraph>
               </XStack>
               <XStack
@@ -351,8 +362,8 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
                 pe="none"
                 rotate="4deg"
                 $sm={{
-                  mb: -250,
-                  l: '10%',
+                  mt: -85,
+                  mb: -60,
                 }}
                 scale={0.8}
               >
@@ -533,7 +544,15 @@ const Body = () => {
               >
                 <ContainerLarge>
                   <Theme name="tan">
-                    <XStack gap="$5" f={4} fs={1}>
+                    <XStack
+                      gap="$5"
+                      f={4}
+                      fs={1}
+                      $gtLg={{
+                        maw: '100%',
+                        fw: store.heroVisible ? 'wrap' : 'nowrap',
+                      }}
+                    >
                       {parts.map(
                         ({ name: partsName, numberOfComponents, route, preview }) => (
                           <SectionCard
@@ -590,7 +609,7 @@ function SectionCard({
         // className="all ease-in ms100"
         // elevation="$6"
         // bg="$background025"
-        w={250}
+        w={220}
         h={125}
         // br="$9"
         cursor="pointer"
@@ -601,6 +620,9 @@ function SectionCard({
         pressStyle={{
           bg: 'rgba(255,255,255,0.075)',
           y: 1,
+        }}
+        $gtMd={{
+          w: 'calc(25% - var(--space-12))',
         }}
       >
         <YStack p="$3">

@@ -3011,7 +3011,7 @@ const TakeoutTable = ({
         <YStack width="80%">
           <Paragraph size="$6">License Seats</Paragraph>
           <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
-            Number of people that are allowed to&nbsp;develop&nbsp;on&nbsp;it
+            Number of people allowed to&nbsp;develop&nbsp;on&nbsp;it
           </Paragraph>
         </YStack>
         <XStack f={1} ai="center" gap="$2" jc="center">
