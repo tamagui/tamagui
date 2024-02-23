@@ -1,7 +1,7 @@
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { RefObject } from 'react'
 import { getBoundingClientRect } from '../helpers/getBoundingClientRect'
-import { getRect } from '../helpers/getRect'
+import { getOffsetRect, getRect } from '../helpers/getRect'
 
 const LayoutHandlers = new WeakMap<Element, Function>()
 const LayoutTimeouts = new WeakMap<Element, any>()
@@ -85,14 +85,14 @@ const getRelativeDimensions = (a: DOMRectReadOnly, b: DOMRectReadOnly) => {
 const getRectAsync = (element: HTMLElement): Promise<DOMRect | undefined> => {
   return new Promise((resolve) => {
     function fallbackToSync() {
-      resolve(getRect(element) as any)
+      resolve(getOffsetRect(element) as any)
     }
     const tm = setTimeout(fallbackToSync, 10)
     const observer = new IntersectionObserver(
       (entries, ob) => {
         clearTimeout(tm)
         ob.disconnect()
-        resolve(getRect(entries[0].target as HTMLElement) as any)
+        resolve(getOffsetRect(entries[0].target as HTMLElement) as any)
       },
       {
         threshold: 0.0001,
