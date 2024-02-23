@@ -45,6 +45,7 @@
     "@tamagui/lucide-icons": "1.90.6",
     "@tamagui/shorthands": "1.90.6",
     "@tamagui/themes": "1.90.6",
+    "@tamagui/use-store": "1.90.6",
     "@tamagui/web": "1.90.6",
     "@tanstack/react-table": "^8.11.2",
     "awesome-phonenumber": "^6.4.0",

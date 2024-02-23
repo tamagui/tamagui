@@ -5924,6 +5924,7 @@ __metadata:
     "@tamagui/lucide-icons": "npm:1.90.6"
     "@tamagui/shorthands": "npm:1.90.6"
     "@tamagui/themes": "npm:1.90.6"
+    "@tamagui/use-store": "npm:1.90.6"
     "@tamagui/web": "npm:1.90.6"
     "@tanstack/react-table": "npm:^8.11.2"
     "@welldone-software/why-did-you-render": "npm:^7.0.1"

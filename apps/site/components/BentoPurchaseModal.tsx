@@ -159,11 +159,11 @@ export const PurchaseModal = ({
                 separator={<Separator vertical />}
                 $sm={{ fd: 'column-reverse' }}
               >
-                <YStack maxWidth={450}>
+                <YStack f={1} maxWidth={450}>
                   <BentoTable selectedPriceId={selectedPriceId} product={proComponents} />
                 </YStack>
 
-                <YStack f={2} gap="$4">
+                <YStack f={1} gap="$4">
                   <YStack
                     opacity={showTeamSelect ? 1 : 0.25}
                     pointerEvents={showTeamSelect ? 'auto' : 'none'}
@@ -472,7 +472,7 @@ export function BentoTable({
       <XStack px="$4" py="$4" gap="$3">
         <YStack width="80%">
           <Paragraph size="$6" fow="bold">
-            Lifetime rights and&nbsp;updates
+            Lifetime access
           </Paragraph>
           <Paragraph size="$3" theme="alt1">
             You own the code, get updates&nbsp;for&nbsp;life
@@ -484,9 +484,11 @@ export function BentoTable({
       </XStack>
       <XStack px="$4" py="$4" gap="$3">
         <YStack width="80%">
-          <Paragraph size="$6">License Seats</Paragraph>
+          <Paragraph size="$6" fow="bold">
+            Seats
+          </Paragraph>
           <Paragraph size="$3" theme="alt1" lh="$2">
-            Number of people that are allowed to develop&nbsp;on&nbsp;it
+            Accounts given access
           </Paragraph>
         </YStack>
         <XStack f={1} ai="center" gap="$2" jc="center">
@@ -499,7 +501,7 @@ export function BentoTable({
 
 function PurchaseButton(props: ButtonProps) {
   return (
-    <Theme name="tan">
+    <Theme name="green">
       <Button
         size="$6"
         backgroundColor="$color8"
