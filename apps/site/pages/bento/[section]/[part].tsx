@@ -6,12 +6,11 @@ import { BentoPageFrame } from '../../../components/BentoPageFrame'
 import type { GetStaticPaths } from 'next'
 import { useRouter } from 'next/router'
 
+import Link from 'next/link'
 import { BentoLogo } from '../../../components/BentoLogo'
 import { ContainerBento } from '../../../components/Container'
-import { getDefaultLayout } from '../../../lib/getDefaultLayout'
-import Link from 'next/link'
-import { Footer } from '../../../components/Footer'
 import { ThemeNameEffect } from '../../../components/ThemeNameEffect'
+import { getDefaultLayout } from '../../../lib/getDefaultLayout'
 
 export default function page() {
   const router = useRouter()

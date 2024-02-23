@@ -621,6 +621,9 @@ function SectionCard({
           bg: 'rgba(255,255,255,0.075)',
           y: 1,
         }}
+        $gtMd={{
+          w: 'calc(25% - var(--space-12))',
+        }}
       >
         <YStack p="$3">
           <Theme name="gray">
