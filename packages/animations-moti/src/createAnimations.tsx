@@ -169,31 +169,24 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
     useAnimations: (animationProps) => {
       const { props, presence, style, onDidAnimate, componentState } = animationProps
       const isAnimationArray = Array.isArray(props.animation)
+
       const animationKey = isAnimationArray ? props.animation[0] : props.animation
 
-      const animationObject = isAnimationArray
+      const transition = isAnimationArray
         ? props.animation
-            .filter((x) => typeof x !== 'string')
-            .reduce((a, b) => ({ ...a, ...b }))
-        : props.animation
-      const normalizedAnimationObject =
-        typeof animationObject === 'string'
+            .filter((x: string) => typeof x !== 'string')
+            .reduce((a, b) => Object.assign(a, b), {})
+        : typeof props.animation === 'string'
           ? {}
-          : Object.keys(animationObject)
-              .map((key) => {
-                const conf = animationObject[key]
-                if (typeof conf === 'string') {
-                  return {
-                    [transformShorthands[key] || key]: {
-                      type: conf,
-                    },
-                  }
-                }
-                return {
-                  [transformShorthands[key] || key]: conf,
-                }
-              })
-              .reduce((a, b) => ({ ...a, ...b }))
+          : props.animation
+
+      for (const key in transition) {
+        const conf = transition[key]
+        transition[transformShorthands[key] || key] =
+          typeof conf === 'string'
+            ? animations[conf]
+            : Object.assign(conf, animations[conf.type] || {})
+      }
 
       const isHydrating = componentState.unmounted === 'should-enter'
       let animate = {}
@@ -231,7 +224,7 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
         animate: isExiting || isHydrating ? {} : styles,
         transition: {
           ...animations[animationKey as keyof typeof animations],
-          ...normalizedAnimationObject,
+          ...transition,
         },
         usePresenceValue,
         presenceContext,
