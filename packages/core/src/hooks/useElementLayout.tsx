@@ -1,6 +1,7 @@
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { RefObject } from 'react'
 import { getBoundingClientRect } from '../helpers/getBoundingClientRect'
+import { getRect } from '../helpers/getRect'
 
 const LayoutHandlers = new WeakMap<Element, Function>()
 const LayoutTimeouts = new WeakMap<Element, any>()
@@ -60,18 +61,17 @@ export const measureLayout = (
   if (relativeNode instanceof HTMLElement) {
     const now = Date.now()
     cache.set(node, now)
-    Promise.all([
-      getBoundingClientRectAsync(node),
-      getBoundingClientRectAsync(relativeNode),
-    ]).then(([nodeDim, relativeNodeDim]) => {
-      if (relativeNodeDim && nodeDim && cache.get(node) === now) {
-        const { x, y, width, height, left, top } = getRelativeDimensions(
-          nodeDim,
-          relativeNodeDim
-        )
-        callback(x, y, width, height, left, top)
+    Promise.all([getRectAsync(node), getRectAsync(relativeNode)]).then(
+      ([nodeDim, relativeNodeDim]) => {
+        if (relativeNodeDim && nodeDim && cache.get(node) === now) {
+          const { x, y, width, height, left, top } = getRelativeDimensions(
+            nodeDim,
+            relativeNodeDim
+          )
+          callback(x, y, width, height, left, top)
+        }
       }
-    })
+    )
   }
 }
 
@@ -82,19 +82,17 @@ const getRelativeDimensions = (a: DOMRectReadOnly, b: DOMRectReadOnly) => {
   return { x, y, width, height, left, top }
 }
 
-const getBoundingClientRectAsync = (
-  element: HTMLElement
-): Promise<DOMRectReadOnly | undefined> => {
+const getRectAsync = (element: HTMLElement): Promise<DOMRect | undefined> => {
   return new Promise((resolve) => {
     function fallbackToSync() {
-      resolve(getBoundingClientRect(element))
+      resolve(getRect(element) as any)
     }
     const tm = setTimeout(fallbackToSync, 10)
     const observer = new IntersectionObserver(
       (entries, ob) => {
         clearTimeout(tm)
         ob.disconnect()
-        resolve(entries[0]?.boundingClientRect)
+        resolve(getRect(entries[0].target as HTMLElement) as any)
       },
       {
         threshold: 0.0001,
