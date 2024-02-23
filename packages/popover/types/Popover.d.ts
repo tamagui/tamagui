@@ -171,7 +171,7 @@ type Rect = {
     width: number;
     height: number;
 };
-export type PopoverRef = {
+export type Popover = {
     anchorTo: (rect: Rect) => void;
 };
 export declare const Popover: React.ForwardRefExoticComponent<PopperProps & {
@@ -189,7 +189,7 @@ export declare const Popover: React.ForwardRefExoticComponent<PopperProps & {
     disableFocus?: boolean | undefined;
 } & {
     __scopePopover?: string | undefined;
-} & React.RefAttributes<PopoverRef>> & {
+} & React.RefAttributes<Popover>> & {
     Anchor: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "inset"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
         elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;
