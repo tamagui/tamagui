@@ -3,6 +3,10 @@ const path = require('path')
 const { parse } = require('acorn')
 const walk = require('acorn-walk')
 
+const skipImports = [
+   '../../general/_Showcase'
+]
+
 function analyzeIndexFile(filePath) {
   const fileContent = fs.readFileSync(filePath, 'utf-8')
   const ast = parse(fileContent, { sourceType: 'module' })
@@ -101,6 +105,10 @@ function processFile(filePath, visitedFiles = new Set()) {
 
   for (const importStatement of importStatements) {
     const importPathMatch = importStatement.match(/from ['"](.*?)['"]/)
+
+    if(skipImports.includes(importPathMatch[1])) {
+      continue
+    }
 
     if (importPathMatch) {
       const importPath = importPathMatch[1]
