@@ -1,17 +1,12 @@
 import { PresenceContext, ResetPresence, usePresence } from '@tamagui/use-presence'
 import {
-  isWeb,
-  transformsToString,
-  useComposedRefs,
   stylePropsAll,
   type AnimationDriver,
   type UniversalAnimatedNumber,
-  styleToCSS,
-  normalizeValueWithProperty,
 } from '@tamagui/web'
 import type { MotiTransition } from 'moti'
 import { useMotify } from 'moti/author'
-import { forwardRef, useContext, useMemo } from 'react'
+import { useContext, useMemo } from 'react'
 import type { SharedValue } from 'react-native-reanimated'
 import Animated, {
   cancelAnimation,
@@ -117,6 +112,7 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
           },
           setValue(next, config = { type: 'spring' }) {
             'worklet'
+            console.info('config is ', config)
             if (config.type === 'direct') {
               sharedValue.value = next
             } else if (config.type === 'spring') {
@@ -172,9 +168,25 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
 
     useAnimations: (animationProps) => {
       const { props, presence, style, onDidAnimate, componentState } = animationProps
-      const animationKey = Array.isArray(props.animation)
-        ? props.animation[0]
-        : props.animation
+      const isAnimationArray = Array.isArray(props.animation)
+
+      const animationKey = isAnimationArray ? props.animation[0] : props.animation
+
+      const transition = isAnimationArray
+        ? props.animation
+            .filter((x: string) => typeof x !== 'string')
+            .reduce((a, b) => Object.assign(a, b), {})
+        : typeof props.animation === 'string'
+          ? {}
+          : props.animation
+
+      for (const key in transition) {
+        const conf = transition[key]
+        transition[transformShorthands[key] || key] =
+          typeof conf === 'string'
+            ? animations[conf]
+            : Object.assign(conf, animations[conf.type] || {})
+      }
 
       const isHydrating = componentState.unmounted === 'should-enter'
       let animate = {}
@@ -210,7 +222,10 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
 
       const motiProps = {
         animate: isExiting || isHydrating ? {} : styles,
-        transition: animations[animationKey as keyof typeof animations],
+        transition: {
+          ...animations[animationKey as keyof typeof animations],
+          ...transition,
+        },
         usePresenceValue,
         presenceContext,
         exit: isExiting ? styles : undefined,
@@ -232,4 +247,9 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
       }
     },
   }
+}
+
+const transformShorthands = {
+  x: 'translateX',
+  y: 'translateY',
 }
