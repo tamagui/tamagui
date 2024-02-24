@@ -129,7 +129,7 @@ export default function TakeoutGallery() {
           alt={takeoutImages[takeoutIosImageIdx].alt}
           style={{ objectFit: 'cover', objectPosition: 'center top' }}
           wrapperProps={{
-            flexGrow: 1,
+            flex: 1,
             position: 'relative',
             height: 300,
 
@@ -148,7 +148,7 @@ export default function TakeoutGallery() {
           alt={takeoutImages[takeoutWebImageIdx].alt}
           style={{ objectFit: 'cover', objectPosition: 'center top' }}
           wrapperProps={{
-            flexGrow: 2,
+            flex: 2,
             position: 'relative',
             height: 300,
 
@@ -167,7 +167,7 @@ export default function TakeoutGallery() {
           alt={takeoutImages[takeoutAndroidImageIdx].alt}
           style={{ objectFit: 'cover', objectPosition: 'center top' }}
           wrapperProps={{
-            flexGrow: 1,
+            flex: 1,
             position: 'relative',
             height: 300,
 
