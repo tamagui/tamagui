@@ -473,7 +473,7 @@ const SlidingPopoverContent = () => {
           mixBlendMode: 'color-dodge',
         }}
       />
-      <YStack w={280} h={240}>
+      <YStack w={280} h={240} br="$4" ov="hidden">
         <AnimatePresence custom={{ going }} initial={false}>
           {context.id === 'takeout' && (
             <Frame key="takeout">
@@ -489,7 +489,7 @@ const SlidingPopoverContent = () => {
               <TooltipLabelLarge
                 icon={<BentoIcon />}
                 title="Bento"
-                subtitle="A suite of nicely design copy-paste components and screens."
+                subtitle="A suite of nicely designed copy-paste components and screens."
               />
             </Frame>
           )}
