@@ -104,7 +104,7 @@ export default function BentoPage(props: ProComponentsProps) {
           <Intermediate />
         </YStack>
         <Body />
-        <Theme name="orange">
+        <Theme name="yellow">
           <PurchaseModal defaultCoupon={coupon} proComponents={props.proComponents} />
         </Theme>
       </BentoPageFrame>

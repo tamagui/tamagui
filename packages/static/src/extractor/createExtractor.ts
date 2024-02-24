@@ -833,6 +833,8 @@ export function createExtractor(
           const deoptProps = new Set([
             // always de-opt animation these
             'animation',
+            'animateOnly',
+            'animatePresence',
             'disableOptimization',
 
             ...(!isTargetingHTML ? ['pressStyle', 'focusStyle'] : []),

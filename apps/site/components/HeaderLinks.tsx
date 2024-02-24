@@ -349,7 +349,7 @@ const BentoHeaderLink = ({ forceShowAllLinks }: HeaderProps) => {
 }
 
 const StudioIcon = () => (
-  <YStack h={24} w={24}>
+  <YStack h={24} w={24} mx={-5}>
     <svg viewBox="0 0 475 475">
       <g>
         <path
