@@ -23,7 +23,10 @@ export const ThemeToggle = (props: ButtonProps) => {
         : themeSetting.resolvedTheme
     const themeColor = theme === 'dark' || systemIsDark ? '#050505' : '#fff'
 
-    document.querySelector('#theme-color')?.setAttribute('content', themeColor)
+    const el = document.querySelector('#theme-color')
+    if (el && !el.getAttribute('content')) {
+      el.setAttribute('content', themeColor)
+    }
 
     setClientTheme(themeSetting.current || 'light')
   }, [themeSetting.current, themeSetting.resolvedTheme])
