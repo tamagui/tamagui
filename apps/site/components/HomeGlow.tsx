@@ -20,7 +20,7 @@ export const HomeGlow = memo(() => {
   const [scrollTop, setScrollTopRaw] = useState(0)
   const setScrollTop = useDebounce(setScrollTopRaw, 200)
   const xs = 400
-  const scale = isOnHeroBelow ? 2 : 1.4
+  const scale = isOnHeroBelow ? 1.2 : 1.4
 
   if (isClient) {
     useTintSectionIndex((index) => {
@@ -50,7 +50,9 @@ export const HomeGlow = memo(() => {
               overflow="hidden"
               h="100vh"
               w={1000}
-              fullscreen
+              pos="absolute"
+              t={0}
+              l={0}
               theme={cur as ThemeName}
               left={`calc(50vw - 500px)`}
               x={x}

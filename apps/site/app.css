@@ -7,11 +7,12 @@ body {
 }
 
 body {
-  background: var(--background) !important;
+  background: var(--color2) !important;
 }
 
 .home-bg {
-  background: linear-gradient(var(--color1), var(--color6));
+  transition: all ease-in-out 1s;
+  /* background: linear-gradient(var(--color1), var(--color3)); */
 }
 
 .bento-fade {
@@ -886,7 +887,7 @@ textarea {
   opacity: 0.3;
 }
 .home-glow.active {
-  opacity: 0.2;
+  opacity: 0.5;
 }
 
 .bento-up-text {
