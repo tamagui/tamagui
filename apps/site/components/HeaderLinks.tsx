@@ -366,24 +366,26 @@ const SlidingPopoverContext = React.createContext({
   id: '',
   setActive(id: string, layout: LayoutRectangle) {},
   setInactive(id: string) {},
+  close() {},
 })
 
 const SlidingPopover = (props: PopoverProps) => {
   const popoverRef = React.useRef<Popover>(null)
   const [active, setActive] = React.useState('')
-  const [layouts, setLayouts] = React.useState({} as Record<string, LayoutRectangle>)
 
   const val = React.useMemo(() => {
     return {
       id: active,
       setActive(id: string, layout: LayoutRectangle) {
-        setLayouts((prev) => ({ ...prev, [id]: layout }))
         setActive(id)
         popoverRef.current?.anchorTo(layout)
       },
+      close: () => {
+        setActive('')
+      },
       setInactive(id: string) {
         setActive((cur) => {
-          if (cur === id) {
+          if (!cur || cur === id) {
             return ''
           }
           return id
@@ -416,6 +418,11 @@ const SlidingPopoverTrigger = YStack.styleable<{ id: string }>(
         }}
         onMouseLeave={() => {
           context.setInactive(id)
+        }}
+        onPress={() => {
+          setTimeout(() => {
+            context.close()
+          }, 400)
         }}
         onLayout={(e) =>
           setLayout({
