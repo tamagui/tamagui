@@ -11,8 +11,7 @@ body {
 }
 
 .home-bg {
-  transition: all ease-in-out 1s;
-  /* background: linear-gradient(var(--color1), var(--color3)); */
+  background: linear-gradient(var(--color1), var(--color3));
 }
 
 .bento-fade {
