@@ -366,7 +366,11 @@ export function createComponent<
     const isHydrated = config?.disableSSR ? true : useDidFinishSSR()
 
     // HOOK
-    const presence = (willBeAnimated && animationsConfig?.usePresence?.()) || null
+    const presence =
+      (willBeAnimated &&
+        props['animatePresence'] !== false &&
+        animationsConfig?.usePresence?.()) ||
+      null
     const presenceState = presence?.[2]
     const isExiting = presenceState?.isPresent === false
     const isEntering =

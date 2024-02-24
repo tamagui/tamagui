@@ -728,6 +728,11 @@ interface ExtraStyleProps {
      */
     animateOnly?: string[];
     /**
+     * If you'd like this component to not attach to the nearest parent AnimatePresence,
+     * set this to `false` and it will pass through to the next animated child.
+     */
+    animatePresence?: boolean;
+    /**
      * The point at which transforms originate from.
      */
     transformOrigin?: PxOrPct | 'left' | 'center' | 'right' | 'top' | 'bottom' | TwoValueTransformOrigin | `${TwoValueTransformOrigin} ${Px}`;
