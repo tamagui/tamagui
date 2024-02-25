@@ -10,7 +10,6 @@ export const ThemeNameEffect = memo(
 
     useLayoutEffect(() => {
       if (!isActive) return
-      console.warn('setting', color)
       document.querySelector('#theme-color')?.setAttribute('content', color)
       document.body.style.setProperty('background-color', color, 'important')
     }, [isActive, color])

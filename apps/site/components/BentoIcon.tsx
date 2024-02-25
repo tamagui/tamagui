@@ -2,7 +2,7 @@ import { YStack } from 'tamagui'
 import { forwardRef } from 'react'
 
 export const BentoIcon = forwardRef(({ scale = 1 }: { scale?: number }, ref) => (
-  <YStack ref={ref as any} p="$4" m="$-4">
+  <YStack tag="span" ref={ref as any} p="$4" m="$-4">
     <svg width={25 * scale} height={25 * scale} viewBox="0 0 128 128">
       <g fill="none" fillRule="evenodd">
         <g

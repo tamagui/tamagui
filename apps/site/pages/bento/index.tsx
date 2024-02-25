@@ -259,7 +259,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
                 >
                   Boost your React development with a suite of copy-paste
                   primitives.&nbsp;
-                  <YStack dsp="inline-flex" y={5} $sm={{ scale: 0.8, y: 7 }}>
+                  <YStack tag="span" dsp="inline-flex" y={5} $sm={{ scale: 0.8, y: 7 }}>
                     <BentoIcon scale={1.2} />
                   </YStack>
                 </Paragraph>
