@@ -3,7 +3,13 @@ import { useThemeSetting } from '@tamagui/next-theme'
 import React from 'react'
 import { useState } from 'react'
 import type { ButtonProps } from 'tamagui'
-import { Button, TooltipSimple, useIsomorphicLayoutEffect } from 'tamagui'
+import {
+  Button,
+  TooltipSimple,
+  getConfig,
+  useIsomorphicLayoutEffect,
+  useTheme,
+} from 'tamagui'
 
 const icons = {
   system: Monitor,
@@ -16,19 +22,29 @@ export const ThemeToggle = (props: ButtonProps) => {
   const [clientTheme, setClientTheme] = useState<string>('light')
 
   useIsomorphicLayoutEffect(() => {
-    const systemIsDark = window.matchMedia(`(prefers-color-scheme: dark)`)?.matches
-    const theme =
-      themeSetting.resolvedTheme === 'system'
-        ? themeSetting.systemTheme
-        : themeSetting.resolvedTheme
-    const themeColor = theme === 'dark' || systemIsDark ? '#050505' : '#fff'
-
-    const el = document.querySelector('#theme-color')
-    if (el && !el.getAttribute('content')) {
-      el.setAttribute('content', themeColor)
-    }
-
     setClientTheme(themeSetting.current || 'light')
+
+    // a bit janky but let it happen after ThemeNameEffect
+    const tm = setTimeout(() => {
+      const theme =
+        themeSetting.resolvedTheme === 'system'
+          ? themeSetting.systemTheme
+          : themeSetting.resolvedTheme
+      const scheme = theme === 'dark' ? 'dark' : 'light'
+      const themeColor = getConfig().themes[scheme].color2?.val
+
+      const hasThemeChangeEffect = document.querySelector('#theme-name-effect')
+      if (hasThemeChangeEffect) {
+        return
+      }
+
+      document.querySelector('#theme-color')?.setAttribute('content', themeColor)
+      document.body.style.setProperty('background-color', themeColor, 'important')
+    })
+
+    return () => {
+      clearTimeout(tm)
+    }
   }, [themeSetting.current, themeSetting.resolvedTheme])
 
   const Icon = icons[clientTheme]
