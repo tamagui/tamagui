@@ -3,8 +3,8 @@ const path = require('path')
 const { parse } = require('acorn')
 const walk = require('acorn-walk')
 const glob = require('glob')
-const { ensureFileSync } = require('fs-extra')
-
+const { ensureFileSync, ensureDirSync, rmdirSync, rmSync } = require('fs-extra')
+const archiver = require('archiver')
 const skipImports = ['../../general/_Showcase']
 
 function analyzeIndexFile(filePath) {
@@ -29,7 +29,7 @@ function shake(content) {
     .replaceAll(/([a-zA-Z0-9_]+\.fileName\s*=\s*)'([^']*)'/g, '')
 }
 
-function copyMergedComponents(directoryPath, outputDirectory) {
+async function copyMergedComponents(directoryPath, outputDirectory) {
   const indexFiles = ['index.js', 'index.tsx', 'index.ts']
 
   const indexPaths = indexFiles.map((indexFile) => path.join(directoryPath, indexFile))
@@ -71,15 +71,19 @@ function copyMergedComponents(directoryPath, outputDirectory) {
 }
 
 function copyUnmergedComponents(directoryPath, outputDirectory) {
-  glob(`${directoryPath}/**/*`, { nodir: true }, (error, matches) => {
-    for (const match of matches) {
-      let fileContent = fs.readFileSync(match, 'utf8')
-      fileContent = replaceInternals(fileContent)
+  return new Promise((resolve) => {
+    glob(`${directoryPath}/**/*`, { nodir: true }, (error, matches) => {
+      for (const match of matches) {
+        let fileContent = fs.readFileSync(match, 'utf8')
+        fileContent = replaceInternals(fileContent)
 
-      const outputFilePath = match.replace(rootDirectory, outputDirectory)
-      ensureFileSync(outputFilePath)
-      fs.writeFileSync(outputFilePath, fileContent)
-    }
+        const outputFilePath = match.replace(rootDirectory, outputDirectory)
+        ensureFileSync(outputFilePath)
+        fs.writeFileSync(outputFilePath, fileContent)
+      }
+
+      resolve()
+    })
   })
 }
 
@@ -156,16 +160,44 @@ function replaceInternals(fileContent) {
   return fileContent
 }
 
+function zipDirectory(sourceDir, outputDir) {
+  return new Promise((resolve, reject) => {
+    const output = fs.createWriteStream(outputDir)
+    const archive = archiver('zip', {
+      // zlib: { level: 9 },
+    })
+    archive.pipe(output)
+    archive.directory(sourceDir, false)
+    output.on('close', () => {
+      console.info(
+        `archived ${outputDir
+          .split('/')
+          .pop()} finalized with ${archive.pointer()} total bytes`
+      )
+      resolve()
+    })
+    archive.on('error', (error) => {
+      console.error('error while archiving: ', error)
+      reject(error)
+    })
+    archive.on('warning', (warning) => console.warn('warning while archiving: ', warning))
+    archive.finalize()
+  })
+}
+
 const rootDirectory = path.resolve(process.cwd(), '../bento/src/components')
-const mergedOutputDir = path.resolve(process.cwd(), './bento-output')
-const unmergedOutputDir = path.resolve(process.cwd(), './bento-unmerged-output')
+const mergedOutputDir = path.resolve(process.cwd(), './bento-output/merged')
+const unmergedOutputDir = path.resolve(process.cwd(), './bento-output/unmerged')
+const zipBundleOutputPath = path.resolve(process.cwd(), 'bento-output/bento-bundle.zip')
 
-if (!fs.existsSync(mergedOutputDir)) {
-  fs.mkdirSync(mergedOutputDir)
-}
-if (!fs.existsSync(unmergedOutputDir)) {
-  fs.mkdirSync(unmergedOutputDir)
+rmSync(path.resolve(process.cwd(), './bento-output'), { force: true, recursive: true })
+ensureDirSync(mergedOutputDir)
+ensureDirSync(unmergedOutputDir)
+
+async function main() {
+  await copyMergedComponents(rootDirectory, mergedOutputDir)
+  await copyUnmergedComponents(rootDirectory, unmergedOutputDir)
+  await zipDirectory(unmergedOutputDir, zipBundleOutputPath)
 }
 
-copyMergedComponents(rootDirectory, mergedOutputDir)
-copyUnmergedComponents(rootDirectory, unmergedOutputDir)
+main()
