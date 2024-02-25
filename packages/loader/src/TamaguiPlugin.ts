@@ -346,7 +346,6 @@ export class TamaguiPlugin {
           use: [
             ...(jsLoader ? [jsLoader] : []),
             ...(existingLoader && nextJsRules ? [].concat(existingLoader.use) : []),
-            ...(!(jsLoader || existingLoader) ? [esbuildLoader] : []),
             tamaguiLoader,
           ],
         })
