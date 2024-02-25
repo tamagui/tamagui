@@ -94,13 +94,13 @@ export default function BentoPage(props: ProComponentsProps) {
           }}
         >
           <Hero mainProduct={props.proComponents} />
-          <YStack pos="relative" zi={10000}>
+          {/* <YStack pos="relative" zi={10000}>
             <ContainerLarge>
-              <YStack pos="absolute" t={-30} r={80}>
-                <BentoIcon scale={2} />
+              <YStack pos="absolute" t={-50} r={80} rotate="-10deg">
+                <BentoIcon scale={3} />
               </YStack>
             </ContainerLarge>
-          </YStack>
+          </YStack> */}
           <Intermediate />
         </YStack>
         <Body />
@@ -257,7 +257,11 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
                     ta: 'center',
                   }}
                 >
-                  Boost your React development with a suite of copy-paste primitives.
+                  Boost your React development with a suite of copy-paste
+                  primitives.&nbsp;
+                  <YStack dsp="inline-flex" y={5} $sm={{ scale: 0.8, y: 7 }}>
+                    <BentoIcon scale={1.2} />
+                  </YStack>
                 </Paragraph>
               </XStack>
               <XStack

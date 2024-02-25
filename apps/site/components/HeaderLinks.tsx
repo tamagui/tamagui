@@ -485,7 +485,7 @@ const SlidingPopoverContent = () => {
           {context.id === 'takeout' && (
             <Frame key="takeout">
               <TooltipLabelLarge
-                icon={<TakeoutIcon x={-4} y={-4} />}
+                icon={<TakeoutIcon />}
                 title="Takeout"
                 subtitle="A paid starter kit with Supabase, user and auth, icons, fonts, and&nbsp;more."
               />
@@ -555,7 +555,7 @@ const TooltipLabelLarge = ({
         {subtitle}
       </Paragraph>
 
-      <YStack pos="absolute" b={6} r={6} scale={2.25} rotate="-10deg">
+      <YStack pos="absolute" b={15} r={17} scale={2.25} rotate="-10deg">
         {icon}
       </YStack>
     </YStack>
