@@ -2,10 +2,10 @@ const fs = require('fs')
 const path = require('path')
 const { parse } = require('acorn')
 const walk = require('acorn-walk')
+const glob = require('glob')
+const { ensureFileSync } = require('fs-extra')
 
-const skipImports = [
-   '../../general/_Showcase'
-]
+const skipImports = ['../../general/_Showcase']
 
 function analyzeIndexFile(filePath) {
   const fileContent = fs.readFileSync(filePath, 'utf-8')
@@ -29,7 +29,7 @@ function shake(content) {
     .replaceAll(/([a-zA-Z0-9_]+\.fileName\s*=\s*)'([^']*)'/g, '')
 }
 
-function readDirectoryRecursively(directoryPath, outputDirectory) {
+function copyMergedComponents(directoryPath, outputDirectory) {
   const indexFiles = ['index.js', 'index.tsx', 'index.ts']
 
   const indexPaths = indexFiles.map((indexFile) => path.join(directoryPath, indexFile))
@@ -64,10 +64,23 @@ function readDirectoryRecursively(directoryPath, outputDirectory) {
       const stats = fs.statSync(filePath)
 
       if (stats.isDirectory()) {
-        readDirectoryRecursively(filePath, outputDirectory)
+        copyMergedComponents(filePath, outputDirectory)
       }
     })
   }
+}
+
+function copyUnmergedComponents(directoryPath, outputDirectory) {
+  glob(`${directoryPath}/**/*`, { nodir: true }, (error, matches) => {
+    for (const match of matches) {
+      let fileContent = fs.readFileSync(match, 'utf8')
+      fileContent = replaceInternals(fileContent)
+
+      const outputFilePath = match.replace(rootDirectory, outputDirectory)
+      ensureFileSync(outputFilePath)
+      fs.writeFileSync(outputFilePath, fileContent)
+    }
+  })
 }
 
 const mathImportsRegex =
@@ -81,20 +94,7 @@ function processFile(filePath, visitedFiles = new Set()) {
   visitedFiles.add(filePath)
 
   let fileContent = fs.readFileSync(filePath, 'utf8')
-
-  // here we change custom hooks to hooks to be used in consumer applications
-  // change useGroupMedia to useMedia
-  fileContent = fileContent.replace(
-    /import {.*useGroupMedia.*} from.*/g,
-    `import { useMedia } from 'tamagui'`
-  )
-  fileContent = fileContent.replace(/useGroupMedia\(.*\)/g, `useMedia()`)
-  // change useContainerDim to useWindowDimensions
-  fileContent = fileContent.replace(
-    /import {.*useContainerDim.*} from.*/g,
-    `import { useWindowDimensions } from 'tamagui'`
-  )
-  fileContent = fileContent.replace(/useContainerDim\(.*\)/g, `useWindowDimensions()`)
+  fileContent = replaceInternals(fileContent)
 
   const importStatements = Array.from(fileContent.matchAll(mathImportsRegex), (m) => m[0])
 
@@ -106,7 +106,7 @@ function processFile(filePath, visitedFiles = new Set()) {
   for (const importStatement of importStatements) {
     const importPathMatch = importStatement.match(/from ['"](.*?)['"]/)
 
-    if(skipImports.includes(importPathMatch[1])) {
+    if (skipImports.includes(importPathMatch[1])) {
       continue
     }
 
@@ -139,11 +139,33 @@ function processFile(filePath, visitedFiles = new Set()) {
   return appendedContent
 }
 
-const rootDirectory = path.resolve(process.cwd(), '../bento/src/components')
-const outputDir = path.resolve(process.cwd(), './bento-output')
-
-if (!fs.existsSync(outputDir)) {
-  fs.mkdirSync(outputDir)
+function replaceInternals(fileContent) {
+  // here we change custom hooks to hooks to be used in consumer applications
+  // change useGroupMedia to useMedia
+  fileContent = fileContent.replace(
+    /import {.*useGroupMedia.*} from.*/g,
+    `import { useMedia } from 'tamagui'`
+  )
+  fileContent = fileContent.replace(/useGroupMedia\(.*\)/g, `useMedia()`)
+  // change useContainerDim to useWindowDimensions
+  fileContent = fileContent.replace(
+    /import {.*useContainerDim.*} from.*/g,
+    `import { useWindowDimensions } from 'tamagui'`
+  )
+  fileContent = fileContent.replace(/useContainerDim\(.*\)/g, `useWindowDimensions()`)
+  return fileContent
 }
 
-readDirectoryRecursively(rootDirectory, outputDir)
+const rootDirectory = path.resolve(process.cwd(), '../bento/src/components')
+const mergedOutputDir = path.resolve(process.cwd(), './bento-output')
+const unmergedOutputDir = path.resolve(process.cwd(), './bento-unmerged-output')
+
+if (!fs.existsSync(mergedOutputDir)) {
+  fs.mkdirSync(mergedOutputDir)
+}
+if (!fs.existsSync(unmergedOutputDir)) {
+  fs.mkdirSync(unmergedOutputDir)
+}
+
+copyMergedComponents(rootDirectory, mergedOutputDir)
+copyUnmergedComponents(rootDirectory, unmergedOutputDir)
