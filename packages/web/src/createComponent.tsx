@@ -182,7 +182,7 @@ export function createComponent<
   }
 
   const component = forwardRef<Ref, ComponentPropTypes>((propsIn, forwardedRef) => {
-    // HOO
+    // HOOK
     const internalID = process.env.NODE_ENV === 'development' ? useId() : ''
 
     if (process.env.NODE_ENV === 'development') {
@@ -212,7 +212,7 @@ export function createComponent<
       }
     }
 
-    // HOO
+    // HOOK
     const componentContext = useContext(ComponentContext)
 
     // set variants through context
@@ -223,7 +223,7 @@ export function createComponent<
     const { context } = staticConfig
 
     if (context) {
-      // HOOK
+      // HOOK 3 (-1 if production)
       contextValue = useContext(context)
       const { inverseShorthands } = getConfig()
       for (const key in context.props) {
@@ -267,7 +267,7 @@ export function createComponent<
     const componentName = props.componentName || staticConfig.componentName
 
     if (process.env.NODE_ENV === 'development' && isClient) {
-      // HOO
+      // HOOK
       useEffect(() => {
         let overlay: HTMLSpanElement | null = null
 
@@ -331,7 +331,7 @@ export function createComponent<
 
     // conditional but if ever true stays true
     // [animated, inversed]
-    // HOO
+    // HOOK
     const stateRef = useRef<TamaguiComponentStateRef>({})
     if (process.env.NODE_ENV === 'development' && time) time`stateref`
 
@@ -362,10 +362,10 @@ export function createComponent<
       curState.hasAnimated = true
     }
 
-    // HOO
+    // HOOK
     const isHydrated = config?.disableSSR ? true : useDidFinishSSR()
 
-    // HOO
+    // HOOK
     const presence =
       (willBeAnimated &&
         props['animatePresence'] !== false &&
@@ -399,7 +399,7 @@ export function createComponent<
         : defaultComponentState
       : defaultComponentStateMounted
 
-    // HOO
+    // HOOK
     const states = useState<TamaguiComponentState>(initialState)
 
     const state = props.forceStyle
@@ -588,7 +588,7 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`pre-theme-media`
 
-    // HOOK
+    // HOOK 10-13 (-1 if no animation, -1 if disableSSR, -1 if no context, -1 if production)
     const [themeState, theme] = useThemeWithState(themeStateProps)
 
     elementType = Component || elementType
@@ -596,7 +596,7 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`theme`
 
-    // HOOK
+    // HOOK 14 (-1 if no animation, -1 if disableSSR, -1 if no context, -1 if production)
     const mediaState = useMedia(stateRef, componentContext)
 
     setDidGetVariableValue(false)
@@ -618,7 +618,7 @@ export function createComponent<
       isAnimated,
     } as const
 
-    // HOOK
+    // HOOK 15 (-1 if no animation, -1 if disableSSR, -1 if no context, -1 if production)
     const splitStyles = useSplitStyles(
       props,
       staticConfig,
@@ -717,10 +717,11 @@ export function createComponent<
       useAnimations &&
       !isHOC
     ) {
+      // HOOK 16... (depends on driver) (-1 if no animation, -1 if disableSSR, -1 if no context, -1 if production)
       const animations = useAnimations({
         props: propsWithAnimation,
-        // non-css animation drivers like moti would get a css-type style object during hydration and error
-        style: !supportsCSSVars ? {} : splitStylesStyle || {},
+        // if hydrating, send empty style
+        style: splitStylesStyle || {},
         presence,
         componentState: state,
         styleProps,
@@ -769,7 +770,7 @@ export function createComponent<
       )
     }
 
-    // HOOK
+    // HOOKS (0-4 more):
     viewProps =
       hooks.usePropsTransform?.(
         elementType,
@@ -778,7 +779,7 @@ export function createComponent<
         curState.willHydrate
       ) || nonTamaguiProps
 
-    // HOOK
+    // HOOK (1 more):
     if (!curState.composedRef) {
       curState.composedRef = composeRefs<TamaguiElement>(
         (x) => (stateRef.current.host = x as TamaguiElement),
