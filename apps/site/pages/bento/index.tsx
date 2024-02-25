@@ -191,7 +191,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
       <ContainerLarge>
         <XStack
           gap="$6"
-          py="$3"
+          pb="$3"
           bc="transparent"
           jc="space-between"
           w={'100%'}
@@ -201,7 +201,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
         >
           <YStack
             mt={-20}
-            mb={30}
+            mb={40}
             maw="55%"
             zi={100}
             jc="space-between"

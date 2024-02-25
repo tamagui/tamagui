@@ -11,6 +11,8 @@ import { BentoLogo } from '../../../components/BentoLogo'
 import { ContainerBento } from '../../../components/Container'
 import { ThemeNameEffect } from '../../../components/ThemeNameEffect'
 import { getDefaultLayout } from '../../../lib/getDefaultLayout'
+import { useEffect } from 'react'
+import { DropTamaguiConfig } from '../../../components/DropTamaguiConfig'
 
 export default function page() {
   const router = useRouter()
@@ -20,6 +22,7 @@ export default function page() {
   return (
     <>
       <ThemeNameEffect colorKey="$color1" />
+      <DropTamaguiConfig />
 
       <BentoPageFrame>
         <ContainerBento>
@@ -71,8 +74,9 @@ export const DetailHeader = (props: { children: string }) => {
             <H1 size="$12">{props.children}</H1>
           </Theme>
 
-          <YStack scale={0.25} m={-150}>
-            <BentoLogo />
+          <YStack zi={100} mb={-50} gap="$6">
+            <BentoLogo scale={0.25} />
+            <DropTamaguiConfig />
           </YStack>
         </XStack>
 

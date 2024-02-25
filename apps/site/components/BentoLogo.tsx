@@ -6,7 +6,14 @@ export const BentoLogo = ({
   scale = 1,
   noShadow,
 }: { children?: string; scale?: number; noShadow?: boolean }) => (
-  <YStack h={200} w={600} my={-(1 - scale) * 100} mx={-(1 - scale) * 270} scale={scale}>
+  <YStack
+    pe="none"
+    h={200}
+    w={600}
+    my={-(1 - scale) * 100}
+    mx={-(1 - scale) * 270}
+    scale={scale}
+  >
     <ThemeTintAlt offset={-1}>
       <H1
         ff="$cherryBomb"

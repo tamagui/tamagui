@@ -730,9 +730,10 @@ const DialogClose = DialogCloseFrame.styleable<DialogCloseExtraProps>(
         tag={isInsideButton ? 'span' : 'button'}
         {...closeProps}
         ref={forwardedRef}
-        onPress={composeEventHandlers(props.onPress as any, () =>
+        onPress={composeEventHandlers(props.onPress as any, () => {
+          console.warn('??')
           context.onOpenChange(false)
-        )}
+        })}
       />
     )
   }

@@ -2,9 +2,18 @@ import type { TamaguiBuildOptions } from '@tamagui/core'
 import { join } from 'path'
 
 export default {
-  emitSingleCSSFile: false,
-  // useReactNativeWebLite: true,
+  /**
+   * these two probably are all you need!
+   **/
   config: './tamagui.config.ts',
+  components: ['tamagui'],
+
+  /**
+   * these are mostly not necessary except for advanced cases:
+   **/
+  outputCSS: './public/tamagui.css',
+  importsWhitelist: ['constants.js', 'colors.js'],
+  disableExtraction: process.env.NODE_ENV === 'development',
   themeBuilder: {
     input: '@tamagui/themes/src/themes-new.ts',
     output: join(
@@ -13,20 +22,12 @@ export default {
       'generated-new.ts'
     ),
   },
-  outputCSS: './public/tamagui.css',
-  components: ['tamagui'],
-  importsWhitelist: ['constants.js', 'colors.js'],
-  logTimings: true,
-  // enableDynamicEvaluation: true,
-  disableExtraction: process.env.NODE_ENV === 'development',
   excludeReactNativeWebExports: [
     'Switch',
     'ProgressBar',
     'Picker',
     'CheckBox',
     'Touchable',
-    // need this for bento /lists
-    // 'FlatList',
     'Modal',
   ],
 } satisfies TamaguiBuildOptions
