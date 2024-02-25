@@ -32,7 +32,8 @@
     "html-webpack-plugin": "^5.5.0",
     "tamagui-loader": "1.90.6",
     "thread-loader": "^4.0.1",
-    "url-loader": "^4.1.1"
+    "url-loader": "^4.1.1",
+    "webpack": "5.90.3"
   },
   "devDependencies": {
     "@tamagui/build": "1.90.6",

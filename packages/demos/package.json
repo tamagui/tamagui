@@ -55,16 +55,27 @@
     "@tamagui/slider": "1.90.6",
     "@tamagui/stacks": "1.90.6",
     "@tamagui/toast": "1.90.6",
-    "tamagui": "1.90.6"
+    "tamagui": "1.90.6",
+    "@tamagui/lucide-icons": "1.90.2",
+    "@tamagui/checkbox-headless": "1.90.2",
+    "@tamagui/switch-headless": "1.90.2",
+    "@tamagui/theme": "1.90.2",
+    "@tamagui/animate-presence": "1.90.2",
+    "@tamagui/switch": "1.90.2",
+    "@tamagui/checkbox": "1.90.2"
   },
   "peerDependencies": {
     "react": "*",
-    "react-dom": "*"
+    "react-dom": "*",
+    "react-native": "*"
   },
   "devDependencies": {
     "@tamagui/build": "1.90.6",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-native": "^0.73.4",
+    "@types/react": "~18.2.14",
+    "@types/react-dom": "^18.2.19"
   },
   "publishConfig": {
     "access": "public"

@@ -13,5 +13,15 @@
   "dependencies": {
     "@reach/auto-id": "^0.18.0",
     "use-sync-external-store": "^1.2.0"
+  },
+  "devDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "@types/react": "~18.2.14",
+    "@types/react-dom": "^18.2.19"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-dom": "*"
   }
 }

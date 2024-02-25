@@ -22,7 +22,10 @@
     "fast-glob": "^3.2.11",
     "fs-extra": "^11.2.0",
     "get-tsconfig": "^4.5.0",
-    "lodash.debounce": "^4.0.8"
+    "lodash.debounce": "^4.0.8",
+    "@tamagui/web": "1.90.2",
+    "@tamagui/fake-react-native": "1.90.2",
+    "@tamagui/proxy-worm": "1.90.2"
   },
   "peerDependencies": {
     "typescript": "*"
