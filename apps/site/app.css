@@ -881,8 +881,9 @@ textarea {
 .t_dark .home-glow.active {
   opacity: 0.3;
 }
+
 .home-glow.active {
-  opacity: 0.5;
+  opacity: 0.25;
 }
 
 .bento-up-text {
