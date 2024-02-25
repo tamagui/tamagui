@@ -23,6 +23,7 @@ import { InstallInput } from './InstallInput'
 import { seasons } from './SeasonToggleButton'
 import { TwitterIcon } from './TwitterIcon'
 import { useHeroHovered } from './heroState'
+import { GithubButton } from './GithubButton'
 
 export function Hero() {
   const { name } = useTint()
@@ -108,7 +109,8 @@ const HeroContents = memo(function HeroContents() {
                 </Text>
               </Button>
             </Link>
-            <FigmaButton />
+            {/* <FigmaButton circular /> */}
+            {/* <GithubButton /> */}
           </XStack>
         </>
 

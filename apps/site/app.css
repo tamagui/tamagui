@@ -10,10 +10,6 @@ body {
   background: var(--color2) !important;
 }
 
-.home-bg {
-  background: linear-gradient(var(--color1), var(--color3));
-}
-
 .bento-fade {
   background: linear-gradient(
     var(--background075),
@@ -878,8 +874,8 @@ textarea {
 }
 
 .home-glow {
-  background: radial-gradient(var(--color6) 0%, transparent 64%);
-  transition: all ease-in 5000ms;
+  background: radial-gradient(var(--color05) 0%, transparent 60%);
+  transition: all ease-in-out 1000ms;
 }
 
 .t_dark .home-glow.active {
