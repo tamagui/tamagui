@@ -1,7 +1,7 @@
 import { Target, Upload, X } from '@tamagui/lucide-icons'
 import { useEffect, useState } from 'react'
 import type { TamaguiConfig } from 'tamagui'
-import { Button, Dialog, H2, Paragraph, TooltipSimple, YStack } from 'tamagui'
+import { Button, Dialog, H2, Paragraph, ScrollView, TooltipSimple, YStack } from 'tamagui'
 import { Code, CodeInline } from './Code'
 import { Features } from './Features'
 import { useStore } from '@tamagui/use-store'
@@ -58,6 +58,9 @@ export const DropTamaguiConfig = () => {
           br="$10"
           onPress={() => setShow(true)}
           size="$3"
+          $sm={{
+            dsp: 'none',
+          }}
           icon={Target}
         >
           Customize
@@ -120,70 +123,73 @@ export const DropTamaguiConfig = () => {
               <H2>Drop it here!</H2>
             </YStack>
 
-            <YStack gap="$4">
-              <Dialog.Title>Customize the Design System</Dialog.Title>
+            <ScrollView mah={`90vh`}>
+              <YStack gap="$4">
+                <Dialog.Title>Customize the Design System</Dialog.Title>
 
-              {store.config && (
-                <>
-                  <Paragraph size="$6">Nice, we've got your config.</Paragraph>
-                  <Paragraph size="$6">
-                    You can now go copy code from an example and it will customize the
-                    tokens to your design system.
-                  </Paragraph>
-                  <Button
-                    als="flex-end"
-                    icon={X}
-                    theme="red_active"
-                    onPress={() => (store.config = null)}
-                  >
-                    Clear config
-                  </Button>
-                </>
-              )}
+                {store.config && (
+                  <>
+                    <Paragraph size="$6">Nice, we've got your config.</Paragraph>
+                    <Paragraph size="$6">
+                      You can now go copy code from an example and it will customize the
+                      tokens to your design system.
+                    </Paragraph>
+                    <Button
+                      als="flex-end"
+                      icon={X}
+                      theme="red_active"
+                      onPress={() => (store.config = null)}
+                    >
+                      Clear config
+                    </Button>
+                  </>
+                )}
 
-              {!store.config && (
-                <>
-                  <Notice>
-                    WIP - we're adding the final piece to replace tokens next.
-                  </Notice>
+                {!store.config && (
+                  <>
+                    <Notice>
+                      WIP - we're adding the final piece to replace tokens next.
+                    </Notice>
 
-                  <Paragraph size="$6">
-                    Drag and drop your{' '}
-                    <CodeInline>.tamagui/tamagui.config.json</CodeInline> here to
-                    customize the code we generate to your design system!
-                  </Paragraph>
-                  <Paragraph size="$6">
-                    Either the Tamagui CLI or compiler plugin will generate this for you.
-                    If you have the compiler plugin set up, there should already be a
-                    .tamagui directory and you can skip to step 3.
-                  </Paragraph>
+                    <Paragraph size="$6">
+                      Drag and drop your{' '}
+                      <CodeInline>.tamagui/tamagui.config.json</CodeInline> here to
+                      customize the code we generate to your design system!
+                    </Paragraph>
+                    <Paragraph size="$6">
+                      Either the Tamagui CLI or compiler plugin will generate this for
+                      you. If you have the compiler plugin set up, there should already be
+                      a .tamagui directory and you can skip to step 3.
+                    </Paragraph>
 
-                  <Features
-                    items={[
-                      <>
-                        Create a <CodeInline>tamagui.build.ts</CodeInline>.{' '}
-                        <a
-                          target="_blank"
-                          href="https://github.com/tamagui/tamagui/blob/a486446b32ea67a22560783fc59660c6361490e5/apps/site/tamagui.build.ts"
-                          rel="noreferrer"
-                        >
-                          See an example here
-                        </a>
-                        . Note the compiler plugins will read this automatically, so if
-                        already set up you can move the config passed into them to here.
-                      </>,
-                      <>
-                        Run the generate command: <Code>npx @tamagui/cli generate</Code>.
-                      </>,
-                      <>
-                        Grab the <Code>.tamagui/tamagui.config.json</Code> file and drop
-                        it here!
-                      </>,
-                    ]}
-                  />
-                </>
-              )}
-            </YStack>
+                    <Features
+                      items={[
+                        <>
+                          Create a <CodeInline>tamagui.build.ts</CodeInline> at the root
+                          of your app and move your build configuration into it as a
+                          default export.{' '}
+                          <a
+                            target="_blank"
+                            href="https://github.com/tamagui/tamagui/blob/a486446b32ea67a22560783fc59660c6361490e5/apps/site/tamagui.build.ts"
+                            rel="noreferrer"
+                          >
+                            See an example here
+                          </a>
+                          . All of the bundler plugins now load from this file on startup.
+                        </>,
+                        <>
+                          Run generate — <Code>npx @tamagui/cli generate</Code>
+                        </>,
+                        <>
+                          Grab the <Code>.tamagui/tamagui.config.json</Code> file and drop
+                          it here!
+                        </>,
+                      ]}
+                    />
+                  </>
+                )}
+              </YStack>
+            </ScrollView>
           </Dialog.Content>
         </Dialog.Portal>
       </Dialog>

@@ -257,7 +257,7 @@ const ImageGallery = () => {
           ]}
           enterStyle={{ x: 0, y: -10, opacity: 0 }}
           exitStyle={{ x: 0, y: 10, opacity: 0 }}
-          space
+          gap="$4"
         >
           <ImagesCarousel />
           <Unspaced>
@@ -326,17 +326,13 @@ const ImagesCarousel = () => {
   return (
     <XStack
       overflow="hidden"
-      backgroundColor="#00000000"
+      backgroundColor="rgba(0,0,0,0.9)"
       position="relative"
       height="100vh"
       width="100vw"
       alignItems="center"
     >
-      <AnimatePresence
-        enterVariant={enterVariant}
-        exitVariant={exitVariant}
-        exitBeforeEnter
-      >
+      <AnimatePresence enterVariant={enterVariant} exitVariant={exitVariant}>
         <YStackEnterable
           key={store.galleryImageIdx}
           animation="100ms"

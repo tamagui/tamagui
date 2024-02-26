@@ -67,15 +67,17 @@ export const DetailHeader = (props: { children: string }) => {
   const [category, subCategory] = asPath.split('bento/')[1].split('/')
 
   return (
-    <YStack pb="$6" gap="$4">
+    <YStack pb="$6" gap="$4" $sm={{ px: '$4' }}>
       <YStack gap="$4">
-        <XStack ai="center" jc="space-between">
+        <XStack ai="center" jc="space-between" $sm={{ fd: 'column-reverse' }}>
           <Theme name="gray">
-            <H1 size="$12">{props.children}</H1>
+            <H1 ff="$silkscreen" size="$10" $sm={{ size: '$6' }}>
+              {props.children}
+            </H1>
           </Theme>
 
-          <YStack zi={100} mb={-50} gap="$6">
-            <BentoLogo scale={0.25} />
+          <YStack zi={100} mb={-50} gap="$6" $sm={{ mb: 40 }}>
+            <BentoLogo scale={0.5} />
             <DropTamaguiConfig />
           </YStack>
         </XStack>

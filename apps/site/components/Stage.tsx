@@ -2,7 +2,8 @@ import type {
   AccumulativeShadowsProps,
   CenterProps,
   ContactShadowsProps,
-  RandomizedLightProps} from '@react-three/drei';
+  RandomizedLightProps,
+} from '@react-three/drei'
 import {
   AccumulativeShadows,
   Bounds,

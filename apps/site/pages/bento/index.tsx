@@ -124,7 +124,7 @@ export default function BentoPage(props: ProComponentsProps) {
           <Intermediate />
         </YStack>
         <Body />
-        <Theme name="yellow">
+        <Theme name="tan">
           <PurchaseModal defaultCoupon={coupon} proComponents={props.proComponents} />
         </Theme>
       </BentoPageFrame>
@@ -346,7 +346,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
                         store.showPurchase = true
                       }}
                     >
-                      <Button.Text fontFamily="$mono" size="$3" fow="bold">
+                      <Button.Text fontFamily="$silkscreen" size="$3" fow="bold">
                         $
                         {(mainProduct?.prices.sort(
                           (a, b) =>

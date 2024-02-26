@@ -95,7 +95,7 @@ export const BentoLogo = ({
 
     <ThemeTintAlt>
       <H1
-        className={`${noShadow ? '' : 'glow-shadow'} mask-gradient-up`}
+        className={`${noShadow ? 'dark-shadow' : 'glow-shadow'} mask-gradient-up`}
         pos="absolute"
         t={0}
         l={0}
@@ -114,7 +114,7 @@ export const BentoLogo = ({
         ussel="none"
         pe="none"
         style={{
-          filter: 'blur(7px)',
+          filter: noShadow ? '' : 'blur(7px)',
         }}
       >
         {children}&nbsp;
