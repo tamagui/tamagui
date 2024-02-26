@@ -1,12 +1,9 @@
 import path from 'path'
 
-import browserslist from 'browserslist'
-import { lazyPostCSS } from 'next/dist/build/webpack/config/blocks/css'
-import { getGlobalCssLoader } from 'next/dist/build/webpack/config/blocks/css/loaders'
+import { loadTamaguiBuildConfigSync } from '@tamagui/static'
 import type { PluginOptions as LoaderPluginOptions } from 'tamagui-loader'
 import { TamaguiPlugin } from 'tamagui-loader'
 import webpack from 'webpack'
-import { loadTamaguiBuildConfigSync } from '@tamagui/static'
 
 export type WithTamaguiProps = LoaderPluginOptions & {
   appDir?: boolean
@@ -41,11 +38,6 @@ export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
         if (typeof globalThis['__DEV__'] === 'undefined') {
           // @ts-ignore
           globalThis['__DEV__'] = dev
-        }
-
-        const isNext12 = typeof options.config?.swcMinify === 'boolean'
-        if (!isNext12) {
-          throw new Error(`Next.js 12 only supported`)
         }
 
         const prefix = `${isServer ? ' ssr ' : ' web '} |`
@@ -192,77 +184,6 @@ export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
           ]
         }
 
-        /**
-         * Non-server support
-         */
-        const cssRules = webpackConfig.module.rules.find(
-          (rule) =>
-            Array.isArray(rule.oneOf) &&
-            rule.oneOf.some(
-              ({ test }) =>
-                typeof test === 'object' &&
-                typeof test.test === 'function' &&
-                test.test('filename.css')
-            )
-        ).oneOf
-
-        /**
-         * Font Support
-         */
-        if (cssRules) {
-          if (tamaguiOptions.enableLegacyFontSupport) {
-            // fonts support
-            cssRules.unshift({
-              test: /\.(woff(2)?|eot|ttf|otf)(\?v=\d+\.\d+\.\d+)?$/,
-              use: [
-                {
-                  loader: require.resolve('url-loader'),
-                  options: {
-                    limit: nextConfig.inlineFontLimit || 1024,
-                    fallback: require.resolve('file-loader'),
-                    publicPath: `${
-                      nextConfig.assetPrefix || ''
-                    }/_next/static/chunks/fonts/`,
-                    outputPath: `${isServer ? '../' : ''}static/chunks/fonts/`,
-                    name: '[name].[ext]',
-                  },
-                },
-              ],
-            })
-          }
-
-          /**
-           * CSS Support
-           */
-          const cssLoader = getGlobalCssLoader(
-            // @ts-ignore
-            {
-              assetPrefix:
-                nextConfig.assetPrefix ||
-                options.config.assetPrefix ||
-                config.assetPrefix,
-              future: nextConfig.future,
-              experimental: nextConfig.experimental || {},
-              isEdgeRuntime: true,
-              isProduction: !dev,
-              targetWeb: true,
-              isClient: !isServer,
-              isServer,
-              isDevelopment: dev,
-            },
-            // @ts-ignore
-            () => lazyPostCSS(dir, getSupportedBrowsers(dir, dev)),
-            []
-          )
-          if (!isAppDir) {
-            cssRules.unshift({
-              test: tamaguiOptions.includeCSSTest ?? /\.tamagui\.css$/,
-              sideEffects: true,
-              use: cssLoader,
-            })
-          }
-        }
-
         webpackConfig.plugins.push(tamaguiPlugin)
 
         if (typeof nextConfig.webpack === 'function') {
@@ -273,17 +194,4 @@ export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
       },
     }
   }
-}
-
-function getSupportedBrowsers(dir, isDevelopment) {
-  let browsers
-  try {
-    browsers = browserslist.loadConfig({
-      path: dir,
-      env: isDevelopment ? 'development' : 'production',
-    })
-  } catch {
-    //
-  }
-  return browsers
 }
