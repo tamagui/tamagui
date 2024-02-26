@@ -18,12 +18,10 @@ import {
 
 import { ContainerLarge } from './Container'
 import { DiscordIcon } from './DiscordIcon'
-import { FigmaButton } from './FigmaButton'
 import { InstallInput } from './InstallInput'
 import { seasons } from './SeasonToggleButton'
 import { TwitterIcon } from './TwitterIcon'
 import { useHeroHovered } from './heroState'
-import { GithubButton } from './GithubButton'
 
 export function Hero() {
   const { name } = useTint()

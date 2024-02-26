@@ -922,3 +922,10 @@ textarea {
 .t_dark .bento-text-3 {
   mix-blend-mode: screen;
 }
+
+.mix-blend-color-burn-dodge {
+  mix-blend-mode: color-burn;
+}
+.t_dark .mix-blend-color-burn-dodge {
+  mix-blend-mode: color-dodge;
+}
