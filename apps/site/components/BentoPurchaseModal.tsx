@@ -149,7 +149,9 @@ export const PurchaseModal = ({
                   mb="$6"
                   als="center"
                 >
-                  <BentoLogo scale={0.5}>BENTO</BentoLogo>
+                  <BentoLogo noShadow scale={0.5}>
+                    BENTO
+                  </BentoLogo>
                 </Dialog.Title>
               </XStack>
 
@@ -449,6 +451,15 @@ const PromotionInput = () => {
   )
 }
 
+const defaults = {
+  price_1OiqquFQGtHoG6xcZxZaVF2B: {
+    seats: 1,
+  },
+  price_1OeBK5FQGtHoG6xcTB6URHYD: {
+    seats: 20,
+  },
+}
+
 export function BentoTable({
   product,
   selectedPriceId,
@@ -458,10 +469,8 @@ export function BentoTable({
   }
   selectedPriceId: string
 }) {
-  // TODO: get bento price info
-  const takeoutPriceInfo = getTakeoutPriceInfo(
-    product?.prices.find((price) => price.id === selectedPriceId)?.description ?? ''
-  )
+  const priceInfo = defaults[selectedPriceId]
+
   return (
     <YStack
       separator={<Separator o={0.35} />}
@@ -492,7 +501,7 @@ export function BentoTable({
           </Paragraph>
         </YStack>
         <XStack f={1} ai="center" gap="$2" jc="center">
-          <Paragraph size="$8">{takeoutPriceInfo.licenseSeats}</Paragraph>
+          <Paragraph size="$8">{priceInfo.seats}</Paragraph>
         </XStack>
       </XStack>
     </YStack>

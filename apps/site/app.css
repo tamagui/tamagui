@@ -7,11 +7,7 @@ body {
 }
 
 body {
-  background: var(--background) !important;
-}
-
-.home-bg {
-  background: linear-gradient(var(--color1), var(--color6));
+  background: var(--color2) !important;
 }
 
 .bento-fade {
@@ -878,15 +874,16 @@ textarea {
 }
 
 .home-glow {
-  background: radial-gradient(var(--color6) 0%, transparent 64%);
-  transition: all ease-in 5000ms;
+  background: radial-gradient(var(--color05) 0%, transparent 60%);
+  transition: all ease-in-out 1000ms;
 }
 
 .t_dark .home-glow.active {
   opacity: 0.3;
 }
+
 .home-glow.active {
-  opacity: 0.2;
+  opacity: 0.25;
 }
 
 .bento-up-text {
@@ -899,6 +896,10 @@ textarea {
 .t_dark .bento-up-text {
   mix-blend-mode: color-dodge;
   background-image: linear-gradient(var(--background025), var(--color8));
+}
+
+.dark-shadow {
+  text-shadow: 0 10px 10px rgba(0,0,0,1);
 }
 
 .glow-shadow {

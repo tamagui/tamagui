@@ -410,8 +410,6 @@ const PopoverContentImpl = React.forwardRef<
   const { open, keepChildrenMounted } = context
   const popperContext = usePopperContext(__scopePopover || POPOVER_SCOPE)
 
-  const contents = isWeb ? <div style={dspContentsStyle}>{children}</div> : children
-
   if (context.breakpointActive) {
     // unwrap the PopoverScrollView if used, as it will use the SheetScrollView if that exists
     // TODO this should be disabled through context
@@ -489,7 +487,7 @@ const PopoverContentImpl = React.forwardRef<
               onMountAutoFocus={onOpenAutoFocus}
               onUnmountAutoFocus={onCloseAutoFocus}
             >
-              {contents}
+              {isWeb ? <div style={dspContentsStyle}>{children}</div> : children}
             </FocusScope>
           </ResetPresence>
         </RemoveScroll>
@@ -561,13 +559,14 @@ type Rect = {
   width: number
   height: number
 }
-export type PopoverRef = {
+
+export type Popover = {
   anchorTo: (rect: Rect) => void
 }
 
 export const Popover = withStaticProperties(
   React.forwardRef(
-    (props: ScopedPopoverProps<PopoverProps>, forwardedRef: React.Ref<PopoverRef>) => {
+    (props: ScopedPopoverProps<PopoverProps>, forwardedRef: React.Ref<Popover>) => {
       const {
         children,
         open: openProp,

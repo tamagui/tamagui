@@ -2,20 +2,40 @@ import { NextLink } from '@components/NextLink'
 import * as Sections from '@tamagui/bento'
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import {
-  Check,
+  BadgeAlert,
+  Banana,
+  BellDot,
+  Calendar,
+  CheckCircle,
+  CheckSquare,
   ChevronDown,
+  CircleUserRound,
+  Cog,
+  FormInput,
   Globe,
+  InspectionPanel,
+  LassoSelect,
+  Layout,
   Leaf,
+  List,
+  MousePointerClick,
+  NotebookTabs,
+  PanelLeft,
+  PanelTop,
   Puzzle,
+  RectangleHorizontal,
   Search,
+  ShoppingBag,
   ShoppingCart,
+  Table,
+  TextCursorInput,
+  ToggleRight,
 } from '@tamagui/lucide-icons'
 import { useBentoStore } from 'hooks/useBentoStore'
 import type Stripe from 'stripe'
 
 import {
   Button,
-  Checkbox,
   Circle,
   EnsureFlexed,
   H3,
@@ -94,17 +114,17 @@ export default function BentoPage(props: ProComponentsProps) {
           }}
         >
           <Hero mainProduct={props.proComponents} />
-          <YStack pos="relative" zi={10000}>
+          {/* <YStack pos="relative" zi={10000}>
             <ContainerLarge>
-              <YStack pos="absolute" t={-30} r={80}>
-                <BentoIcon scale={2} />
+              <YStack pos="absolute" t={-50} r={80} rotate="-10deg">
+                <BentoIcon scale={3} />
               </YStack>
             </ContainerLarge>
-          </YStack>
+          </YStack> */}
           <Intermediate />
         </YStack>
         <Body />
-        <Theme name="orange">
+        <Theme name="tan">
           <PurchaseModal defaultCoupon={coupon} proComponents={props.proComponents} />
         </Theme>
       </BentoPageFrame>
@@ -191,7 +211,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
       <ContainerLarge>
         <XStack
           gap="$6"
-          py="$3"
+          pb="$3"
           bc="transparent"
           jc="space-between"
           w={'100%'}
@@ -201,7 +221,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
         >
           <YStack
             mt={-20}
-            mb={30}
+            mb={40}
             maw="55%"
             zi={100}
             jc="space-between"
@@ -236,8 +256,8 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
               ml={-20}
               als="center"
               maw={550}
-              gap="$6"
-              $sm={{ px: '$4', maw: 400 }}
+              gap="$7"
+              $sm={{ px: '$4', maw: 400, ml: 0 }}
             >
               <XStack gap="$6">
                 <Stack bg="$color7" w={8} br="$2" my={18} $sm={{ dsp: 'none' }} />
@@ -245,7 +265,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
                   className="pixelate"
                   ff="$munro"
                   fos={28}
-                  lh={50}
+                  lh={46}
                   color="$color11"
                   ls={1}
                   $md={{
@@ -257,7 +277,17 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
                     ta: 'center',
                   }}
                 >
-                  Boost your React development with a suite of copy-paste primitives.
+                  Boost your React development with a suite of copy-paste
+                  primitives.&nbsp;
+                  <YStack
+                    my={-20}
+                    tag="span"
+                    dsp="inline-flex"
+                    y={5}
+                    $sm={{ scale: 0.8, y: 7 }}
+                  >
+                    <BentoIcon scale={1.2} />
+                  </YStack>
                 </Paragraph>
               </XStack>
               <XStack
@@ -316,7 +346,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
                         store.showPurchase = true
                       }}
                     >
-                      <Button.Text fontFamily="$mono" size="$3" fow="bold">
+                      <Button.Text fontFamily="$silkscreen" size="$3" fow="bold">
                         $
                         {(mainProduct?.prices.sort(
                           (a, b) =>
@@ -536,8 +566,6 @@ const Body = () => {
               <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={false}
-                p="$10"
-                m="$-10"
                 contentContainerStyle={{
                   minWidth: '100%',
                 }}
@@ -548,9 +576,10 @@ const Body = () => {
                       gap="$5"
                       f={4}
                       fs={1}
-                      $gtLg={{
+                      $gtMd={{
                         maw: '100%',
                         fw: store.heroVisible ? 'wrap' : 'nowrap',
+                        gap: 0,
                       }}
                     >
                       {parts.map(
@@ -564,8 +593,9 @@ const Body = () => {
                           />
                         )
                       )}
+
                       {/* @ts-ignore */}
-                      <Spacer width="calc(50vw - 300px)" />
+                      <Spacer width="calc(50vw - 300px)" $gtMd={{ dsp: 'none' }} />
                     </XStack>
                   </Theme>
                 </ContainerLarge>
@@ -580,13 +610,7 @@ const Body = () => {
   )
 }
 
-const EmptyFn = () => (
-  <Checkbox size="$4" checked>
-    <Checkbox.Indicator>
-      <Check />
-    </Checkbox.Indicator>
-  </Checkbox>
-)
+const Null = () => null
 
 function SectionCard({
   name,
@@ -599,7 +623,7 @@ function SectionCard({
   path: string
   preview?: () => JSX.Element
 }) {
-  const Preview = preview || EmptyFn
+  const Icon = icons[name] ?? Null
 
   return (
     <NextLink href={BASE_PATH + path} passHref>
@@ -610,7 +634,7 @@ function SectionCard({
         // elevation="$6"
         // bg="$background025"
         w={220}
-        h={125}
+        h={130}
         // br="$9"
         cursor="pointer"
         pos="relative"
@@ -622,10 +646,10 @@ function SectionCard({
           y: 1,
         }}
         $gtMd={{
-          w: 'calc(25% - var(--space-12))',
+          w: '25%',
         }}
       >
-        <YStack p="$3">
+        <YStack f={1} p="$4">
           <Theme name="gray">
             <H4 ff="$body" size="$5" fow="600" color="$color12">
               {name}
@@ -634,10 +658,48 @@ function SectionCard({
           <H5 theme="alt1" size="$1" ls={1}>
             {numberOfComponents} components
           </H5>
+
+          <YStack
+            // className="mask-gradient-down"
+            pos="absolute"
+            t="$4"
+            r="$4"
+            rotate="20deg"
+            p="$2"
+            o={0.4}
+          >
+            <Icon size={25} color="$color10" />
+          </YStack>
         </YStack>
       </YStack>
     </NextLink>
   )
+}
+
+const icons = {
+  Inputs: TextCursorInput,
+  Checkboxes: CheckSquare,
+  Layouts: Layout,
+  RadioGroups: CheckCircle,
+  Switches: ToggleRight,
+  TextAreas: FormInput,
+  Pickers: LassoSelect,
+  List: List,
+  Avatars: CircleUserRound,
+  Buttons: RectangleHorizontal,
+  DatePickers: Calendar,
+  Tables: Table,
+  Chips: BadgeAlert,
+  Dialogs: InspectionPanel,
+  Navbar: PanelTop,
+  Sidebar: PanelLeft,
+  Tabbar: NotebookTabs,
+  Microinteractions: MousePointerClick,
+  Slide: Banana,
+  Cart: ShoppingCart,
+  'Product Page': ShoppingBag,
+  Preferences: Cog,
+  'Event Reminders': BellDot,
 }
 
 const BASE_PATH = ' /bento'

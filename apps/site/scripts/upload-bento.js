@@ -9,11 +9,11 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY || ''
 )
 
-async function uploadFile(filePath) {
-  const fileBuffer = fs.readFileSync(path.join(process.cwd(), 'bento-output', filePath))
-  const fullPath = path.join('components', filePath)
-  await supabase.storage.from('bento').upload(fullPath, fileBuffer)
-  console.info(`Uploaded ${fullPath}.`)
+async function uploadFile(relativePath) {
+  const localPath = path.join(process.cwd(), 'bento-output', relativePath)
+  const fileBuffer = fs.readFileSync(localPath)
+  await supabase.storage.from('bento').upload(relativePath, fileBuffer)
+  console.info(`Uploaded ${relativePath}.`)
 }
 
 async function getAllFilesInDirectoryRecursively(dir) {
@@ -37,28 +37,31 @@ async function getAllFilesInDirectoryRecursively(dir) {
   return [...components, ...nestedComponents]
 }
 
-async function cleanUpPrevious() {
-  const filesToDelete = await getAllFilesInDirectoryRecursively('components')
+async function cleanUpPrevious(dir) {
+  const filesToDelete = await getAllFilesInDirectoryRecursively(dir)
   if (filesToDelete.length) {
     const { error } = await supabase.storage.from('bento').remove(filesToDelete)
     if (error) {
       throw error
     }
-    console.info('Successfully deleted the old `components` directory.')
+    console.info(`Successfully deleted the old \`${dir}\` directory.`)
   }
 }
 
 async function main() {
-  const globPattern = path.join(process.cwd(), 'bento-output', '**/*.tsx')
-  await cleanUpPrevious()
+  const globPattern = path.join(process.cwd(), 'bento-output', '**/*')
+  await cleanUpPrevious('') // delete everything in the bucket
   await new Promise((resolve) => {
-    glob(globPattern, async (error, txtFiles) => {
+    glob(globPattern, { nodir: true }, async (error, matches) => {
       if (error) {
         throw error
       }
-      await Promise.all(
-        txtFiles.map((filePath) => uploadFile(filePath.split('/bento-output/')[1]))
-      )
+
+      for (const match of matches) {
+        const relativePath = match.split('/bento-output/')[1]
+        await uploadFile(relativePath)
+      }
+
       resolve()
     })
   })

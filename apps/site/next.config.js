@@ -18,13 +18,6 @@ const plugins = [
       ...config,
       webpack(webpackConfig, options) {
         webpackConfig.resolve.alias ??= {}
-        // webpackConfig.resolve.fallback = {...webpackConfig.resolve.fallback || {}, fs: false };
-        // https://github.com/theKashey/react-remove-scroll/pull/78
-        // react-remove-scroll + getting rid of tslib in general
-        Object.assign(webpackConfig.resolve.alias, {
-          tslib: '@tamagui/proxy-worm',
-        })
-        webpackConfig.resolve.mainFields.unshift('module:es2019')
 
         if (process.env.PROFILE) {
           webpackConfig.resolve.alias['react-dom'] =
@@ -43,9 +36,11 @@ const plugins = [
             })
           )
         }
+
         if (typeof config.webpack === 'function') {
           return config.webpack(webpackConfig, options)
         }
+
         return webpackConfig
       },
     }

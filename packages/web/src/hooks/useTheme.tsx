@@ -117,6 +117,7 @@ export const useThemeWithState = (
                 : ''
             )
           }
+
           return next
         }
       : undefined
@@ -144,7 +145,7 @@ export const useThemeWithState = (
   }, [state?.theme, themeManager, props.deopt, props.debug])
 
   if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
-    console.groupCollapsed('  🔹 useTheme =>', state?.name)
+    console.groupCollapsed(`  🔹 [${themeManager?.id}] useTheme =>`, state?.name)
     console.info('returning state', changedThemeState, 'from props', props)
     console.groupEnd()
   }
@@ -498,7 +499,7 @@ export const useChangeThemeEffect = (
         if (nextState) {
           state = nextState
 
-          if (!prev.isNewTheme) {
+          if (!prev.isNewTheme && !isRoot) {
             themeManager = getNewThemeManager()
           } else {
             themeManager.updateState(nextState)
@@ -562,7 +563,7 @@ export const useChangeThemeEffect = (
     response.state = state
 
     if (process.env.NODE_ENV === 'development' && props['debug'] && isClient) {
-      console.groupCollapsed(` 🔷 ${themeManager.id} useChangeThemeEffect createState`)
+      console.groupCollapsed(`🔷 [${themeManager.id}] useChangeThemeEffect createState`)
       const parentState = { ...parentManager?.state }
       const parentId = parentManager?.id
       const themeManagerState = { ...themeManager.state }

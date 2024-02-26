@@ -121,7 +121,7 @@ export declare const Input: import('@tamagui/core').TamaguiComponent<
   },
   {
     isInput: true
-    accept: {
+    acceptTokens: {
       readonly placeholderTextColor: 'color'
       readonly selectionColor: 'color'
     }
@@ -1533,6 +1533,7 @@ export declare function useInputProps(
   separator?: import('react').ReactNode
   animation?: import('@tamagui/core').AnimationProp | null | undefined
   animateOnly?: 'unset' | string[] | undefined
+  animatePresence?: boolean | 'unset' | undefined
   transformOrigin?:
     | 'unset'
     | 'center'

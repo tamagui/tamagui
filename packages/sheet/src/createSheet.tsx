@@ -114,6 +114,22 @@ export function createSheet<
    * Sheet
    * -----------------------------------------------------------------------------------------------*/
 
+  type ExtraFrameProps = {
+    /**
+     * By default the sheet adds a view below its bottom that extends down another 50%,
+     * this is useful if your Sheet has a spring animation that bounces "past" the top when
+     * opening, preventing it from showing the content underneath.
+     */
+    disableHideBottomOverflow?: boolean
+
+    /**
+     * Adds padding accounting for the currently offscreen content, so if you put a flex element inside
+     * the sheet, it will always flex to the height of the visible amount of the sheet. If this is not
+     * turned on, the inner content is always set to the max height of the sheet.
+     */
+    adjustPaddingForOffscreenContent?: boolean
+  }
+
   const SheetFrame = Frame.extractable(
     forwardRef(
       (
@@ -124,21 +140,7 @@ export function createSheet<
           children,
           ...props
         }: SheetScopedProps<
-          GetProps<typeof Frame> & {
-            /**
-             * By default the sheet adds a view below its bottom that extends down another 50%,
-             * this is useful if your Sheet has a spring animation that bounces "past" the top when
-             * opening, preventing it from showing the content underneath.
-             */
-            disableHideBottomOverflow?: boolean
-
-            /**
-             * Adds padding accounting for the currently offscreen content, so if you put a flex element inside
-             * the sheet, it will always flex to the height of the visible amount of the sheet. If this is not
-             * turned on, the inner content is always set to the max height of the sheet.
-             */
-            adjustPaddingForOffscreenContent?: boolean
-          }
+          Omit<GetProps<typeof Frame>, keyof ExtraFrameProps> & ExtraFrameProps
         >,
         forwardedRef
       ) => {
@@ -186,7 +188,7 @@ export function createSheet<
                 componentName="SheetCover"
                 children={null}
                 position="absolute"
-                bottom="-50%"
+                bottom="-100%"
                 zIndex={-1}
                 height={context.frameSize}
                 left={0}

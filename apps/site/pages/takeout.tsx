@@ -241,7 +241,7 @@ export default function TakeoutPage({
                 }}
                 size="$4"
               >
-                Purchase
+                Checkout
               </PurchaseButton>
             </YStack>
 
@@ -314,7 +314,7 @@ export default function TakeoutPage({
                       pr: '$1',
                     }}
                   >
-                    From idea to shipped in less time than ever.
+                    From idea to shipped in less time&nbsp;than&nbsp;ever.
                   </H2>
                 </ThemeTint>
 
@@ -1732,7 +1732,7 @@ const PurchaseModal = ({
                           disabled={noProductSelected}
                           opacity={noProductSelected ? 0.5 : undefined}
                         >
-                          Purchase
+                          Checkout
                         </PurchaseButton>
                       </NextLink>
                       <XStack jc="space-between" space="$2" ai="center" mb="$2">

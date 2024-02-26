@@ -21,16 +21,16 @@ import { ThemeTint } from '@tamagui/logo'
 
 export default function Home({ animationCode, compilationExamples }) {
   return (
-    <ThemeTint>
-      <YStack className="home-bg" mt={-62} pt={62}>
-        <ThemeNameEffect />
+    <>
+      <ThemeNameEffect colorKey="$color2" />
+      <ThemeTint>
         <HomeGlow />
         <YStack
           fullscreen
           className="grain"
-          o={0.1}
+          o={0.2}
           style={{
-            mixBlendMode: 'color-dodge',
+            mixBlendMode: 'hard-light',
             maskImage: `linear-gradient(transparent, rgba(0, 0, 0, 1) 100px)`,
           }}
           // o={0}
@@ -94,8 +94,8 @@ export default function Home({ animationCode, compilationExamples }) {
         <HomeSection zi={0}>
           <Community />
         </HomeSection>
-      </YStack>
-    </ThemeTint>
+      </ThemeTint>
+    </>
   )
 }
 

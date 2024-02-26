@@ -6,7 +6,14 @@ export const BentoLogo = ({
   scale = 1,
   noShadow,
 }: { children?: string; scale?: number; noShadow?: boolean }) => (
-  <YStack h={200} w={600} my={-(1 - scale) * 100} mx={-(1 - scale) * 270} scale={scale}>
+  <YStack
+    pe="none"
+    h={200}
+    w={600}
+    my={-(1 - scale) * 100}
+    mx={-(1 - scale) * 270}
+    scale={scale}
+  >
     <ThemeTintAlt offset={-1}>
       <H1
         ff="$cherryBomb"
@@ -88,7 +95,7 @@ export const BentoLogo = ({
 
     <ThemeTintAlt>
       <H1
-        className={`${noShadow ? '' : 'glow-shadow'} mask-gradient-up`}
+        className={`${noShadow ? 'dark-shadow' : 'glow-shadow'} mask-gradient-up`}
         pos="absolute"
         t={0}
         l={0}
@@ -107,7 +114,7 @@ export const BentoLogo = ({
         ussel="none"
         pe="none"
         style={{
-          filter: 'blur(7px)',
+          filter: noShadow ? '' : 'blur(7px)',
         }}
       >
         {children}&nbsp;

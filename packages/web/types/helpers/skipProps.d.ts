@@ -14,5 +14,6 @@ export declare const skipProps: {
     style: number;
     group: number;
     themeInverse: number;
+    animatePresence: number;
 };
 //# sourceMappingURL=skipProps.d.ts.map

@@ -1,4 +1,3 @@
-// debug
 // import '../lib/wdyr'
 
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
