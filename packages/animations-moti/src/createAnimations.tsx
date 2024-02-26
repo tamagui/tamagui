@@ -1,17 +1,12 @@
 import { PresenceContext, ResetPresence, usePresence } from '@tamagui/use-presence'
 import {
-  isWeb,
-  transformsToString,
-  useComposedRefs,
   stylePropsAll,
   type AnimationDriver,
   type UniversalAnimatedNumber,
-  styleToCSS,
-  normalizeValueWithProperty,
 } from '@tamagui/web'
 import type { MotiTransition } from 'moti'
 import { useMotify } from 'moti/author'
-import { forwardRef, useContext, useMemo } from 'react'
+import { useContext, useMemo } from 'react'
 import type { SharedValue } from 'react-native-reanimated'
 import Animated, {
   cancelAnimation,
@@ -62,6 +57,11 @@ const neverAnimate = {
   borderTopStyle: true,
   boxSizing: true,
   contain: true,
+  margin: true,
+  marginTop: true,
+  marginLeft: true,
+  marginRight: true,
+  marginBottom: true,
   cursor: true,
   display: true,
   flexBasis: true,
@@ -79,14 +79,16 @@ const neverAnimate = {
   pointerEvents: true,
   position: true,
   shadowColor: true,
+  zIndex: true,
+
+  // text
+  userSelect: true,
+  fontFamily: true,
+  lineHeight: true,
   textAlign: true,
   textOverflow: true,
   whiteSpace: true,
   wordWrap: true,
-  zIndex: true,
-
-  fontFamily: true,
-  lineHeight: true,
 }
 
 export function createAnimations<A extends Record<string, MotiTransition>>(
