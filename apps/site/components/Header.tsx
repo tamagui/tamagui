@@ -1,3 +1,4 @@
+// debug
 import { ThemeToggle } from '@components/ThemeToggle'
 import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
 // import { useUser } from 'hooks/useUser'

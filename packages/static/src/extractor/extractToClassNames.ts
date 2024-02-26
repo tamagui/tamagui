@@ -70,6 +70,7 @@ export async function extractToClassNames({
       '`sourcePath` must be an absolute path to a .js file, got: ' + sourcePath
     )
   }
+
   if (!/.[tj]sx?$/i.test(sourcePath || '')) {
     console.warn(`${sourcePath?.slice(0, 100)} - bad filename.`)
   }

@@ -257,7 +257,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
               als="center"
               maw={550}
               gap="$7"
-              $sm={{ px: '$4', maw: 400 }}
+              $sm={{ px: '$4', maw: 400, ml: 0 }}
             >
               <XStack gap="$6">
                 <Stack bg="$color7" w={8} br="$2" my={18} $sm={{ dsp: 'none' }} />
