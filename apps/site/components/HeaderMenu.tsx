@@ -138,18 +138,7 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
 })
 
 const HeaderMenuTheme = (props: { children: any }) => {
-  const router = useRouter()
-  const isBento = router.pathname.startsWith('/bento')
-
-  return (
-    <ThemeTintAlt
-      {...(isBento && {
-        name: 'tan',
-      })}
-    >
-      {props.children}
-    </ThemeTintAlt>
-  )
+  return <ThemeTintAlt>{props.children}</ThemeTintAlt>
 }
 
 const HeaderMenuContent = React.memo(function HeaderMenuContent() {
