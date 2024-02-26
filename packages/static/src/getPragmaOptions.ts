@@ -20,16 +20,22 @@ export function getPragmaOptions({
   // try and avoid too much parsing but sometimes esbuild adds helpers above..
   const firstLine = source.slice(0, 800)
 
-  if (firstLine.includes('tamagui-ignore')) {
-    shouldDisable = true
-  }
+  const pragma = firstLine
+    .match(/(\/\/|\/\*)\s?(tamagui-ignore|debug|debug-verbose)(\n|\s)/)?.[2]
+    .trim()
 
-  if (firstLine.includes('debug')) {
-    shouldPrintDebug = true
-  }
+  switch (pragma) {
+    case 'tamagui-ignore':
+      shouldDisable = true
+      break
 
-  if (firstLine.includes('debug-verbose')) {
-    shouldPrintDebug = 'verbose'
+    case 'debug':
+      shouldPrintDebug = true
+      break
+
+    case 'debug-verbose':
+      shouldPrintDebug = 'verbose'
+      break
   }
 
   if (process.env.TAMAGUI_DEBUG_FILE) {
