@@ -314,7 +314,7 @@ export default function TakeoutPage({
                       pr: '$1',
                     }}
                   >
-                    From idea to shipped in less time than ever.
+                    From idea to shipped in less time&nbsp;than&nbsp;ever.
                   </H2>
                 </ThemeTint>
 
