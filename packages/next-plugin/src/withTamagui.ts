@@ -1,3 +1,6 @@
+import browserslist from 'browserslist'
+import { lazyPostCSS } from 'next/dist/build/webpack/config/blocks/css'
+import { getGlobalCssLoader } from 'next/dist/build/webpack/config/blocks/css/loaders'
 import path from 'path'
 
 import { loadTamaguiBuildConfigSync } from '@tamagui/static'
@@ -70,6 +73,77 @@ export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
           ...(tamaguiOptions.emitSingleCSSFile && {
             'process.env.TAMAGUI_INSERT_SELECTOR_TRIES': JSON.stringify('1'),
           }),
+        }
+
+        /**
+         * Non-server support
+         */
+        const cssRules = webpackConfig.module.rules.find(
+          (rule) =>
+            Array.isArray(rule.oneOf) &&
+            rule.oneOf.some(
+              ({ test }) =>
+                typeof test === 'object' &&
+                typeof test.test === 'function' &&
+                test.test('filename.css')
+            )
+        ).oneOf
+
+        /**
+         * Font Support
+         */
+        if (cssRules) {
+          if (tamaguiOptions.enableLegacyFontSupport) {
+            // fonts support
+            cssRules.unshift({
+              test: /\.(woff(2)?|eot|ttf|otf)(\?v=\d+\.\d+\.\d+)?$/,
+              use: [
+                {
+                  loader: require.resolve('url-loader'),
+                  options: {
+                    limit: nextConfig.inlineFontLimit || 1024,
+                    fallback: require.resolve('file-loader'),
+                    publicPath: `${
+                      nextConfig.assetPrefix || ''
+                    }/_next/static/chunks/fonts/`,
+                    outputPath: `${isServer ? '../' : ''}static/chunks/fonts/`,
+                    name: '[name].[ext]',
+                  },
+                },
+              ],
+            })
+          }
+
+          /**
+           * CSS Support
+           */
+          const cssLoader = getGlobalCssLoader(
+            // @ts-ignore
+            {
+              assetPrefix:
+                nextConfig.assetPrefix ||
+                options.config.assetPrefix ||
+                config.assetPrefix,
+              future: nextConfig.future,
+              experimental: nextConfig.experimental || {},
+              isEdgeRuntime: true,
+              isProduction: !dev,
+              targetWeb: true,
+              isClient: !isServer,
+              isServer,
+              isDevelopment: dev,
+            },
+            // @ts-ignore
+            () => lazyPostCSS(dir, getSupportedBrowsers(dir, dev)),
+            []
+          )
+          if (!isAppDir) {
+            cssRules.unshift({
+              test: tamaguiOptions.includeCSSTest ?? /\.tamagui\.css$/,
+              sideEffects: true,
+              use: cssLoader,
+            })
+          }
         }
 
         webpackConfig.plugins.push(new webpack.DefinePlugin(defines))
@@ -194,4 +268,17 @@ export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
       },
     }
   }
+}
+
+function getSupportedBrowsers(dir, isDevelopment) {
+  let browsers
+  try {
+    browsers = browserslist.loadConfig({
+      path: dir,
+      env: isDevelopment ? 'development' : 'production',
+    })
+  } catch {
+    //
+  }
+  return browsers
 }

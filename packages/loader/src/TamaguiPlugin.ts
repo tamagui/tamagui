@@ -307,12 +307,23 @@ export class TamaguiPlugin {
       }
     }
 
+    // for dev mode we need to match the data-at attributes else hydration
     if (!didReplaceNextJS) {
-      existing.push({
-        test: this.options.test ?? /\.tsx$/,
-        exclude: this.options.exclude,
-        use: [tamaguiLoader],
-      })
+      if (compiler.options.mode === 'development') {
+        existing.push({
+          test: this.options.test ?? /\.tsx$/,
+          exclude: this.options.exclude,
+          use: [
+            {
+              ...tamaguiLoader,
+              options: {
+                ...tamaguiLoader.options,
+                disableExtraction: true,
+              },
+            },
+          ],
+        })
+      }
     }
   }
 }
