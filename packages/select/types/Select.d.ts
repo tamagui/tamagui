@@ -395,7 +395,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => import("react
         unstyled?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
     Sheet: React.FunctionComponent<Omit<import("@tamagui/sheet").SheetProps, "open" | "onOpenChange"> & React.RefAttributes<import("react-native").View>> & {
-        Frame: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "inset" | "unstyled"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+        Frame: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;
             fullscreen?: boolean | undefined;
             inset?: number | import("@tamagui/core").SizeTokens | {
@@ -405,27 +405,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => import("react
                 right?: number | undefined;
             } | undefined;
             unstyled?: boolean | undefined;
-        } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
-            elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-            fullscreen?: boolean | undefined;
-            inset?: number | import("@tamagui/core").SizeTokens | {
-                top?: number | undefined;
-                bottom?: number | undefined;
-                left?: number | undefined;
-                right?: number | undefined;
-            } | undefined;
-            unstyled?: boolean | undefined;
-        } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
-            elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-            fullscreen?: boolean | undefined;
-            inset?: number | import("@tamagui/core").SizeTokens | {
-                top?: number | undefined;
-                bottom?: number | undefined;
-                left?: number | undefined;
-                right?: number | undefined;
-            } | undefined;
-            unstyled?: boolean | undefined;
-        }>> & {
+        }>, "disableHideBottomOverflow" | "adjustPaddingForOffscreenContent"> & {
             disableHideBottomOverflow?: boolean | undefined;
             adjustPaddingForOffscreenContent?: boolean | undefined;
         } & {
