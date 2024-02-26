@@ -256,7 +256,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
               ml={-20}
               als="center"
               maw={550}
-              gap="$6"
+              gap="$7"
               $sm={{ px: '$4', maw: 400 }}
             >
               <XStack gap="$6">
@@ -265,7 +265,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
                   className="pixelate"
                   ff="$munro"
                   fos={28}
-                  lh={50}
+                  lh={46}
                   color="$color11"
                   ls={1}
                   $md={{
@@ -279,7 +279,13 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
                 >
                   Boost your React development with a suite of copy-paste
                   primitives.&nbsp;
-                  <YStack tag="span" dsp="inline-flex" y={5} $sm={{ scale: 0.8, y: 7 }}>
+                  <YStack
+                    my={-20}
+                    tag="span"
+                    dsp="inline-flex"
+                    y={5}
+                    $sm={{ scale: 0.8, y: 7 }}
+                  >
                     <BentoIcon scale={1.2} />
                   </YStack>
                 </Paragraph>
