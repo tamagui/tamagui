@@ -336,8 +336,6 @@ const BentoHeaderLink = ({ forceShowAllLinks }: HeaderProps) => {
         grid={forceShowAllLinks}
         tag="span"
         aria-label="Bento: Components + Screens"
-        fontSize={24}
-        y={2}
         $sm={{
           display: 'none',
         }}
@@ -349,7 +347,7 @@ const BentoHeaderLink = ({ forceShowAllLinks }: HeaderProps) => {
 }
 
 const StudioIcon = () => (
-  <YStack h={24} w={24} mx={-5}>
+  <YStack h={24} w={24} mx={-4} y={-0.5}>
     <svg viewBox="0 0 475 475">
       <g>
         <path
