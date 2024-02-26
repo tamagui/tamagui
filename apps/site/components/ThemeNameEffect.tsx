@@ -1,6 +1,6 @@
 import { memo, startTransition, useEffect, useLayoutEffect, useState } from 'react'
 import type { ColorTokens } from 'tamagui'
-import { Stack, useDidFinishSSR, useTheme } from 'tamagui'
+import { Stack, isClient, useDidFinishSSR, useTheme } from 'tamagui'
 
 export const ThemeNameEffect = memo(
   ({ colorKey = '$color1' }: { colorKey?: ColorTokens }) => {
@@ -8,11 +8,13 @@ export const ThemeNameEffect = memo(
     const [isActive, setIsActive] = useState(false)
     const color = theme[colorKey].val
 
-    useLayoutEffect(() => {
-      if (!isActive) return
-      document.querySelector('#theme-color')?.setAttribute('content', color)
-      document.body.style.setProperty('background-color', color, 'important')
-    }, [isActive, color])
+    if (isClient) {
+      useLayoutEffect(() => {
+        if (!isActive) return
+        document.querySelector('#theme-color')?.setAttribute('content', color)
+        document.body.style.setProperty('background-color', color, 'important')
+      }, [isActive, color])
+    }
 
     return (
       <>
