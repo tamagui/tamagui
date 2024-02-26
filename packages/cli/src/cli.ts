@@ -184,6 +184,27 @@ const COMMAND_MAP = {
       await studio(options, flags['--remote'], flags['--build'])
     },
   },
+
+  'update-template': {
+    shorthands: ['ut'],
+    description: `Used to update your git repo with the source template. (e.g. Takeout)`,
+    flags: {
+      '--help': Boolean,
+      '--template-repo': String,
+      '--ignored-patterns': String,
+    },
+    async run() {
+      const { _, ...flags } = arg(this.flags)
+      const { updateTemplate } = require('./update-template')
+      if (!flags['--template-repo']) {
+        throw new Error('--template-repo is required')
+      }
+      await updateTemplate(
+        flags['--template-repo'],
+        flags['--ignored-patterns']?.split(' ')
+      )
+    },
+  },
 }
 
 type CommandDefinitions = typeof COMMAND_MAP
