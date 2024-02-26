@@ -942,10 +942,13 @@ export type ThemeValueFallbackZIndex =
 
 export type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`
 
-export type GetTokenPropsFromAccepted<Accepted> = Accepted extends Record<string, any>
+export type GetTokenPropsFromAccepted<Accepted, ViewStyles> = Accepted extends Record<
+  string,
+  any
+>
   ? {
       [Key in keyof Accepted]?: Accepted[Key] extends 'viewStyles'
-        ? WithThemeAndShorthands<ViewProps, {}> & ViewProps
+        ? ViewStyles
         : ThemeValueGet<Accepted[Key]>
     }
   : {}

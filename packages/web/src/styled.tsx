@@ -71,7 +71,10 @@ export function styled<
         }
 
   type Accepted = StyledStaticConfig['accept']
-  type CustomTokenProps = GetTokenPropsFromAccepted<Accepted>
+  type CustomTokenProps = GetTokenPropsFromAccepted<
+    Accepted,
+    Partial<InferStyledProps<ParentComponent, StyledStaticConfig>>
+  >
 
   /**
    * de-opting a bit of type niceness because were hitting depth issues too soon
