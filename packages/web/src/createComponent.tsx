@@ -366,7 +366,11 @@ export function createComponent<
     const isHydrated = config?.disableSSR ? true : useDidFinishSSR()
 
     // HOOK
-    const presence = (willBeAnimated && animationsConfig?.usePresence?.()) || null
+    const presence =
+      (willBeAnimated &&
+        props['animatePresence'] !== false &&
+        animationsConfig?.usePresence?.()) ||
+      null
     const presenceState = presence?.[2]
     const isExiting = presenceState?.isPresent === false
     const isEntering =
@@ -491,8 +495,9 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development' && time) time`use-context`
 
     const isTaggable = !Component || typeof Component === 'string'
+    const tagProp = props.tag
     // default to tag, fallback to component (when both strings)
-    const element = isWeb ? (isTaggable ? props.tag || Component : Component) : Component
+    const element = isWeb ? (isTaggable ? tagProp || Component : Component) : Component
 
     const BaseTextComponent = BaseText || element || 'span'
     const BaseViewComponent = BaseView || element || (hasTextAncestor ? 'span' : 'div')
@@ -699,6 +704,10 @@ export function createComponent<
       viewProps.theme = _themeProp
     }
 
+    if (elementType['acceptTagProp']) {
+      viewProps.tag = tagProp
+    }
+
     // once you set animation prop don't remove it, you can set to undefined/false
     // reason is animations are heavy - no way around it, and must be run inline here (🙅 loading as a sub-component)
     let animationStyles: any
@@ -768,7 +777,7 @@ export function createComponent<
         nonTamaguiProps,
         stateRef,
         curState.willHydrate
-      ) ?? nonTamaguiProps
+      ) || nonTamaguiProps
 
     // HOOK (1 more):
     if (!curState.composedRef) {
@@ -822,6 +831,7 @@ export function createComponent<
           pseudo: {},
           media: {},
         } satisfies GroupState
+
         disposeGroupsListener = componentContext.groups.subscribe(
           (name, { layout, pseudo }) => {
             if (pseudo && pseudoGroups?.has(name)) {
@@ -837,12 +847,13 @@ export function createComponent<
               }
             }
             function persist() {
+              // force it to be referentially different so it always updates
+              const group = {
+                ...state.group,
+                [name]: current,
+              }
               setStateShallow({
-                // force it to be referentially different so it always updates
-                group: {
-                  ...state.group,
-                  [name]: current,
-                },
+                group,
               })
             }
           }
@@ -879,8 +890,10 @@ export function createComponent<
         pseudos?.focusVisibleStyle
     )
     const runtimeHoverStyle = !disabled && noClassNames && pseudos?.hoverStyle
-    const needsHoverState = runtimeHoverStyle || onHoverIn || onHoverOut
-    const isHoverable =
+    const needsHoverState = Boolean(
+      groupName || runtimeHoverStyle || onHoverIn || onHoverOut
+    )
+    const attachHover =
       isWeb && !!(groupName || needsHoverState || onMouseEnter || onMouseLeave)
 
     // check presence rather than value to prevent reparenting bugs
@@ -888,11 +901,12 @@ export function createComponent<
     const shouldAttach = Boolean(
       attachFocus ||
         attachPress ||
-        isHoverable ||
+        attachHover ||
         runtimePressStyle ||
         runtimeHoverStyle ||
         runtimeFocusStyle
     )
+    const needsPressState = Boolean(groupName || runtimeHoverStyle)
 
     if (process.env.NODE_ENV === 'development' && time) time`events-setup`
 
@@ -909,13 +923,13 @@ export function createComponent<
                   onMouseUp?.(e)
                 }
               : undefined,
-            ...((isHoverable || attachPress) && {
+            ...((attachHover || attachPress) && {
               onMouseEnter: (e) => {
                 const next: Partial<typeof state> = {}
                 if (needsHoverState) {
                   next.hover = true
                 }
-                if (runtimePressStyle) {
+                if (needsPressState) {
                   if (state.pressIn) {
                     next.press = true
                   }
@@ -930,7 +944,7 @@ export function createComponent<
                 if (needsHoverState) {
                   next.hover = false
                 }
-                if (runtimePressStyle) {
+                if (needsPressState) {
                   if (state.pressIn) {
                     next.press = false
                     next.pressIn = false
@@ -1026,7 +1040,7 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development' && time) time`events`
 
     if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
-      log(`events`, { events, isHoverable, attachPress })
+      log(`events`, { events, attachHover, attachPress })
     }
 
     // EVENTS native
@@ -1059,8 +1073,6 @@ export function createComponent<
             onLongPress,
             onPressIn,
             onPressOut,
-            onHoverIn,
-            onHoverOut,
             onMouseUp,
             onMouseDown,
             onMouseEnter,
@@ -1162,14 +1174,8 @@ export function createComponent<
       if (isReactNative && !asChild) {
         content = (
           <span
-            {...(!isHydrated
-              ? {
-                  className: `_dsp_contents`,
-                }
-              : {
-                  className: `_dsp_contents`,
-                  ...(events && getWebEvents(events)),
-                })}
+            className="_dsp_contents"
+            {...(isHydrated && events && getWebEvents(events))}
           >
             {content}
           </span>
@@ -1340,8 +1346,8 @@ type EventLikeObject = {
 
 function getWebEvents<E extends EventLikeObject>(events: E, webStyle = true) {
   return {
-    onMouseEnter: events.onHoverIn ?? events.onMouseEnter,
-    onMouseLeave: events.onHoverOut ?? events.onMouseLeave,
+    onMouseEnter: events.onMouseEnter,
+    onMouseLeave: events.onMouseLeave,
     [webStyle ? 'onClick' : 'onPress']: events.onPress,
     onMouseDown: events.onPressIn,
     onMouseUp: events.onPressOut,

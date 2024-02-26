@@ -251,32 +251,6 @@ export const getMediaImportanceIfMoreImportant = (
   return !importancesUsed[key] || importance > importancesUsed[key] ? importance : null
 }
 
-export function mergeMediaByImportance(
-  onto: Record<string, any>,
-  mediaKey: string,
-  key: string,
-  value: any,
-  importancesUsed: Record<string, number>,
-  isSizeMedia: boolean,
-  importanceBump?: number
-) {
-  let importance = getMediaImportanceIfMoreImportant(
-    mediaKey,
-    key,
-    importancesUsed,
-    isSizeMedia
-  )
-  if (importanceBump) {
-    importance = (importance || 0) + importanceBump
-  }
-  if (importance === null) {
-    return false
-  }
-  importancesUsed[key] = importance
-  onto[key] = value
-  return true
-}
-
 function camelToHyphen(str: string) {
   return str.replace(/[A-Z]/g, (m) => `-${m.toLowerCase()}`).toLowerCase()
 }

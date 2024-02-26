@@ -4,6 +4,8 @@ on:
   push:
     paths:
       - "apps/bento/**"
+      - "apps/site/scripts/build-bento.js"
+      - "apps/site/scripts/upload-bento.js"
     branches:
       - master
 

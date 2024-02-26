@@ -1,4 +1,3 @@
-// debug
 // import '../lib/wdyr'
 
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
@@ -34,7 +33,6 @@ function TestPage() {
       </Button> */}
 
       <Square
-        debug="verbose"
         backgroundColor="yellow"
         size={200}
         hoverStyle={{

@@ -1,15 +1,18 @@
 import * as sections from '@tamagui/bento'
 
-import { Anchor, H1, Theme, XStack, YStack } from 'tamagui'
+import { Anchor, H1, SizableText, Theme, XStack, YStack } from 'tamagui'
 import { BentoPageFrame } from '../../../components/BentoPageFrame'
 
 import type { GetStaticPaths } from 'next'
 import { useRouter } from 'next/router'
 
+import Link from 'next/link'
 import { BentoLogo } from '../../../components/BentoLogo'
 import { ContainerBento } from '../../../components/Container'
+import { ThemeNameEffect } from '../../../components/ThemeNameEffect'
 import { getDefaultLayout } from '../../../lib/getDefaultLayout'
-import Link from 'next/link'
+import { useEffect } from 'react'
+import { DropTamaguiConfig } from '../../../components/DropTamaguiConfig'
 
 export default function page() {
   const router = useRouter()
@@ -18,28 +21,24 @@ export default function page() {
 
   return (
     <>
+      <ThemeNameEffect colorKey="$color1" />
+      <DropTamaguiConfig />
+
       <BentoPageFrame>
         <ContainerBento>
           <DetailHeader>
             {`${params.section[0].toUpperCase()}${params.section.slice(1)}`}
           </DetailHeader>
         </ContainerBento>
+        <YStack>
+          <YStack pe="none" fullscreen className="bg-grid" o={0.033} />
+          <ContainerBento>
+            <Comp />
+          </ContainerBento>
+        </YStack>
+
+        <YStack h={200} />
       </BentoPageFrame>
-
-      <YStack
-        className="grain"
-        pe="none"
-        fullscreen
-        o={0.2}
-        zi={0}
-        $theme-light={{
-          o: 1,
-        }}
-      />
-
-      <ContainerBento mt={-100}>
-        <Comp />
-      </ContainerBento>
     </>
   )
 }
@@ -68,37 +67,44 @@ export const DetailHeader = (props: { children: string }) => {
   const [category, subCategory] = asPath.split('bento/')[1].split('/')
 
   return (
-    <YStack pt="$12" pb="$6" gap="$4">
+    <YStack pb="$6" gap="$4">
       <YStack gap="$4">
         <XStack ai="center" jc="space-between">
-          <Theme reset>
+          <Theme name="gray">
             <H1 size="$12">{props.children}</H1>
           </Theme>
 
-          <YStack scale={0.5} m={-150}>
-            <BentoLogo />
+          <YStack zi={100} mb={-50} gap="$6">
+            <BentoLogo scale={0.25} />
+            <DropTamaguiConfig />
           </YStack>
         </XStack>
 
         <XStack p={0.5} ai="center" gap="$2">
           <Link href="/bento/">
-            <Anchor textTransform="capitalize">Bento</Anchor>
+            <Anchor tag="span" textTransform="capitalize">
+              Bento
+            </Anchor>
           </Link>
 
-          <Anchor selectable={false} size="$2">
+          <SizableText theme="alt2" tag="span" selectable={false} size="$2">
             {'>'}
-          </Anchor>
+          </SizableText>
 
           <Link href={`/bento#${category}`}>
-            <Anchor textTransform="capitalize">{category}</Anchor>
+            <Anchor tag="span" textTransform="capitalize">
+              {category}
+            </Anchor>
           </Link>
 
-          <Anchor selectable={false} size="$2">
+          <SizableText theme="alt2" tag="span" selectable={false} size="$2">
             {'>'}
-          </Anchor>
+          </SizableText>
 
           <Link href={`/bento/${subCategory}`}>
-            <Anchor textTransform="capitalize">{subCategory.replace('_', ' ')}</Anchor>
+            <Anchor tag="span" textTransform="capitalize">
+              {subCategory.replace('_', ' ')}
+            </Anchor>
           </Link>
         </XStack>
       </YStack>

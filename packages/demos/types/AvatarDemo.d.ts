@@ -1,3 +1,2 @@
-/// <reference types="react" />
-export declare function AvatarDemo(): JSX.Element;
+export declare function AvatarDemo(): import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=AvatarDemo.d.ts.map

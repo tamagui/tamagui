@@ -1,23 +1,10 @@
 {
   "name": "@tamagui/config",
-  "version": "1.89.24",
+  "version": "1.90.7",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
   "sideEffects": false,
-  "files": [
-    "v3.js",
-    "v3.d.ts",
-    "v2.js",
-    "v2.d.ts",
-    "v2-reanimated.js",
-    "v2-reanimated.d.ts",
-    "v2-native.js",
-    "v2-native.d.ts",
-    "src",
-    "types",
-    "dist"
-  ],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
@@ -66,19 +53,19 @@
     }
   },
   "dependencies": {
-    "@tamagui/animations-css": "1.89.24",
-    "@tamagui/animations-moti": "1.89.24",
-    "@tamagui/animations-react-native": "1.89.24",
-    "@tamagui/colors": "1.89.24",
-    "@tamagui/font-inter": "1.89.24",
-    "@tamagui/font-silkscreen": "1.89.24",
-    "@tamagui/react-native-media-driver": "1.89.24",
-    "@tamagui/shorthands": "1.89.24",
-    "@tamagui/themes": "1.89.24",
-    "@tamagui/web": "1.89.24"
+    "@tamagui/animations-css": "1.90.7",
+    "@tamagui/animations-moti": "1.90.7",
+    "@tamagui/animations-react-native": "1.90.7",
+    "@tamagui/colors": "1.90.7",
+    "@tamagui/font-inter": "1.90.7",
+    "@tamagui/font-silkscreen": "1.90.7",
+    "@tamagui/react-native-media-driver": "1.90.7",
+    "@tamagui/shorthands": "1.90.7",
+    "@tamagui/themes": "1.90.7",
+    "@tamagui/web": "1.90.7"
   },
   "devDependencies": {
-    "@tamagui/build": "1.89.24"
+    "@tamagui/build": "1.90.7"
   },
   "publishConfig": {
     "access": "public"

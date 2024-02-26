@@ -23,6 +23,7 @@ import { InstallInput } from './InstallInput'
 import { seasons } from './SeasonToggleButton'
 import { TwitterIcon } from './TwitterIcon'
 import { useHeroHovered } from './heroState'
+import { GithubButton } from './GithubButton'
 
 export function Hero() {
   const { name } = useTint()
@@ -45,19 +46,19 @@ const HeroSubTitle = memo(() => {
           styles
         </Tag>
       </NextLink>{' '}
-      +{' '}
+      ·{' '}
       <NextLink prefetch={false} href="/docs/intro/why-a-compiler">
         <Tag theme="blue" onHoverIn={() => setHovered(1)} active={hovered === 1}>
           optimizing compiler
         </Tag>
       </NextLink>{' '}
-      +{' '}
+      ·{' '}
       <NextLink prefetch={false} href="/docs/components/stacks">
         <Tag theme="purple" onHoverIn={() => setHovered(2)} active={hovered === 2}>
           UI&nbsp;kit
         </Tag>
       </NextLink>{' '}
-      that&nbsp;unify&nbsp;React Native & Web
+      for&nbsp;React&nbsp;·&nbsp;every&nbsp;platform
     </Subtitle>
   )
 })
@@ -98,8 +99,9 @@ const HeroContents = memo(function HeroContents() {
                 bc="$color6"
                 size="$3"
                 br="$10"
-                elevation="$1"
+                elevation="$0.5"
                 fontFamily="$silkscreen"
+                fontSize={12}
               >
                 Takeout 🥡
                 <Text ff="$body" fontSize="$4" color="$color10" $sm={{ dsp: 'none' }}>
@@ -107,7 +109,8 @@ const HeroContents = memo(function HeroContents() {
                 </Text>
               </Button>
             </Link>
-            <FigmaButton />
+            {/* <FigmaButton circular /> */}
+            {/* <GithubButton /> */}
           </XStack>
         </>
 
@@ -310,7 +313,7 @@ const Subtitle = styled(Paragraph, {
 
   $gtSm: {
     ta: 'center',
-    size: '$7',
+    size: '$8',
     ls: -1,
   },
 

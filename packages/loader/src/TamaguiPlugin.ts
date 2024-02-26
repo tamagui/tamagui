@@ -2,11 +2,10 @@ import { existsSync } from 'fs'
 import path, { dirname, join } from 'path'
 
 import type { TamaguiOptions } from '@tamagui/static'
-import { loadTamagui, minifyCSS, watchTamaguiConfig } from '@tamagui/static'
+import { loadTamagui, watchTamaguiConfig } from '@tamagui/static'
 import buildResolver from 'esm-resolve'
 import type { Compiler, RuleSetRule } from 'webpack'
 import webpack from 'webpack'
-
 import { shouldExclude } from './shouldExclude'
 
 export type PluginOptions = TamaguiOptions & {
@@ -120,6 +119,7 @@ export class TamaguiPlugin {
         ['@gorhom/bottom-sheet$', '@gorhom/bottom-sheet'],
         // fix reanimated 3
         ['react-native/Libraries/Renderer/shims/ReactFabric', '@tamagui/proxy-worm'],
+
         // @ts-expect-error deprecated
         ...(this.options.useReactNativeWebLite
           ? [
@@ -135,6 +135,8 @@ export class TamaguiPlugin {
   }
 
   apply(compiler: Compiler) {
+    const { isServer } = this.options
+
     if (compiler.watchMode && !this.options.disableWatchConfig) {
       void watchTamaguiConfig(this.options).then((watcher) => {
         // yes this is weirdly done promise...
@@ -142,16 +144,6 @@ export class TamaguiPlugin {
           watcher.dispose()
         })
       })
-    }
-
-    if (!this.options.exclude) {
-      // default to running if in component module, otherwise falling back the jsx dir heuristics
-      this.options.exclude = (path) => {
-        if (this.isInComponentModule(path)) {
-          return false
-        }
-        return shouldExclude(path)
-      }
     }
 
     compiler.hooks.beforeRun.tapPromise(this.pluginName, async () => {
@@ -261,6 +253,9 @@ export class TamaguiPlugin {
       ]),
     ]
 
+    compiler.options.resolve.fallback ||= {}
+    compiler.options.resolve.fallback['crypto'] ||= false
+
     // look for compiled js with jsx intact as specified by module:jsx
     const mainFields = compiler.options.resolve.mainFields
     if (mainFields) {
@@ -282,68 +277,50 @@ export class TamaguiPlugin {
       (existing.find((x) => (typeof x === 'object' && 'oneOf' in x ? x : null))
         ?.oneOf as any[]) ?? existing
 
-    const nextJsRules = rules.findIndex(
-      (x) => x?.use && x.use.loader === 'next-swc-loader' && x.issuerLayer !== 'api'
-    )
-
-    const esbuildLoader = {
-      loader: require.resolve('esbuild-loader'),
+    const tamaguiLoader = {
+      loader: require.resolve('tamagui-loader'),
       options: {
-        target: 'es2021',
-        keepNames: true,
-        loader: 'tsx',
-        tsconfigRaw: {
-          module: this.options.isServer ? 'commonjs' : 'esnext',
-          isolatedModules: true,
-          resolveJsonModule: true,
-        },
+        ...this.options,
+        _disableLoadTamagui: true,
       },
     }
 
-    if (!this.options.disable) {
-      const tamaguiLoader = {
-        loader: require.resolve('tamagui-loader'),
-        options: {
-          ...this.options,
-          _disableLoadTamagui: true,
-        },
-      }
+    let didReplaceNextJS = false
 
-      if (nextJsRules === -1) {
-        existing.push({
-          // looks like its in jsx dir (could be better but windows path sep)
-          test: /jsx.*\.m?[jt]sx?$/,
-          exclude: this.options.exclude,
-          resolve: {
-            fullySpecified: false,
-          },
-          use: [esbuildLoader],
-        })
+    for (const [index, rule] of rules.entries()) {
+      const shouldReplaceNextJSRule =
+        rule?.use && rule.use.loader === 'next-swc-loader' && !rule.issuerLayer
 
-        // app dir or not next.js
-        existing.push({
-          test: this.options.test ?? /\.m?[jt]sx?$/,
-          exclude: this.options.exclude,
-          resolve: {
-            fullySpecified: false,
-          },
-          use: [tamaguiLoader],
-        })
-      } else if (!this.options.disableEsbuildLoader) {
-        const startIndex = nextJsRules ? nextJsRules + 1 : 0
-        const existingLoader = nextJsRules ? rules[startIndex] : undefined
+      if (shouldReplaceNextJSRule) {
+        didReplaceNextJS = true
 
-        rules.splice(startIndex, 0, {
-          test: this.options.test ?? /\.m?[jt]sx?$/,
-          exclude: this.options.exclude,
-          resolve: {
-            fullySpecified: false,
-          },
+        rules[index] = {
+          ...rule,
+          test: this.options.test ?? rule.test ?? /\.m?[jt]sx?$/,
+          exclude: this.options.exclude ?? rule.exclude,
           use: [
             ...(jsLoader ? [jsLoader] : []),
-            ...(existingLoader && nextJsRules ? [].concat(existingLoader.use) : []),
-            ...(!(jsLoader || existingLoader) ? [esbuildLoader] : []),
+            ...(rule.use ? [].concat(rule.use) : []),
             tamaguiLoader,
+          ],
+        }
+      }
+    }
+
+    // for dev mode we need to match the data-at attributes else hydration
+    if (!didReplaceNextJS) {
+      if (compiler.options.mode === 'development') {
+        existing.push({
+          test: this.options.test ?? /\.tsx$/,
+          exclude: this.options.exclude,
+          use: [
+            {
+              ...tamaguiLoader,
+              options: {
+                ...tamaguiLoader.options,
+                disableExtraction: true,
+              },
+            },
           ],
         })
       }

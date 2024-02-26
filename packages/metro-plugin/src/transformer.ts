@@ -1,4 +1,4 @@
-import { outputFile } from 'fs-extra'
+import { outputFile, pathExists } from 'fs-extra'
 import type {
   JsTransformerConfig,
   JsTransformOptions,
@@ -70,7 +70,15 @@ export async function transform(
       if (process.env.DEBUG?.includes('tamagui')) {
         console.info(' Outputting CSS file:', outStylePath)
       }
+
+      const existsAlready = await pathExists(outStylePath)
+
       await outputFile(outStylePath, out.styles, 'utf-8')
+
+      if (!existsAlready) {
+        // metro has some sort of bug, expo starter wont build properly first time without this... :(
+        await new Promise((res) => setTimeout(res, 400))
+      }
 
       return transformer(
         config,

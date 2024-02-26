@@ -5,8 +5,12 @@ import Head from 'next/head'
 import { LoadCherryBomb, LoadMunro } from './LoadFont'
 import { ContainerLarge } from './Container'
 import { ThemeNameEffect } from './ThemeNameEffect'
+import { Footer } from './Footer'
 
-export const BentoPageFrame = ({ children }: { children: any }) => {
+export const BentoPageFrame = ({
+  children,
+  simpler,
+}: { children: any; simpler?: boolean }) => {
   return (
     <>
       <Head>
@@ -14,15 +18,39 @@ export const BentoPageFrame = ({ children }: { children: any }) => {
         <LoadMunro />
       </Head>
 
-      <ThemeNameEffect colorKey="$color5" />
+      {/* <YStack className="strong-background" /> */}
 
-      <YStack pt={100} pb={100}>
+      <YStack
+        pt={85}
+        {...(simpler && {
+          mb: -500,
+          pb: 500,
+        })}
+      >
         <Theme name="tan">
-          <YStack pe="none" fullscreen bg="$color6" y={-100}>
+          <YStack
+            className={simpler ? `mask-gradient-down` : ``}
+            pe="none"
+            ov="hidden"
+            fullscreen
+            y={-100}
+            b={-100}
+          >
+            <YStack fullscreen bg="$color6" />
+
+            {/* {simpler && (
+              <YStack
+                fullscreen
+                style={{
+                  background: `linear-gradient(var(--color10), var(--background0))`,
+                }}
+              />
+            )} */}
+
             <YStack
               className="grain"
               fullscreen
-              o={0.35}
+              o={0.95}
               zi={100}
               $theme-light={{
                 o: 1,
@@ -34,6 +62,7 @@ export const BentoPageFrame = ({ children }: { children: any }) => {
 
             <YStack
               fullscreen
+              mah={1500}
               className="mask-gradient-down"
               style={{
                 mixBlendMode: 'hard-light',
@@ -42,24 +71,22 @@ export const BentoPageFrame = ({ children }: { children: any }) => {
               <Theme name="blue">
                 <LinearGradient
                   // colors={[`$color8`, `transparent`]}
-                  colors={[`transparent`, `$color7`]}
+                  colors={[`transparent`, `$color9`]}
                   start={[0, 0.5]}
                   end={[1, 0.5]}
                   fullscreen
                   l="30%"
-                  o={0.45}
-                  $theme-light={{
-                    o: 0.75,
-                  }}
+                  o={0.2}
                 />
               </Theme>
               <YStack
                 pe="none"
                 pos="absolute"
-                t={-1250}
+                rotate="20deg"
+                t={-90}
                 l="50%"
-                x={-850}
-                rotate="120deg"
+                scale={0.85}
+                x={-950}
                 o={0.07}
                 $theme-dark={{
                   o: 0.02,
@@ -71,6 +98,7 @@ export const BentoPageFrame = ({ children }: { children: any }) => {
                   width={3000}
                   height={3000}
                   src="/takeout/geometric.svg"
+                  priority
                 />
               </YStack>
 
@@ -92,17 +120,23 @@ export const BentoPageFrame = ({ children }: { children: any }) => {
                   mask: `linear-gradient(black 80%, transparent)`,
                 }}
               >
-                <Image alt="idk" width={2000} height={2000} src="/takeout/wave.svg" />
+                <Image alt="ocean" width={2000} height={2000} src="/takeout/wave.svg" />
               </YStack>
             </YStack>
           </YStack>
         </Theme>
 
-        <ContainerLarge>
-          <BentoFrond />
-        </ContainerLarge>
+        {!simpler && (
+          <YStack fullscreen ov="hidden" y={-100}>
+            <ContainerLarge>
+              <BentoFrond />
+            </ContainerLarge>
+          </YStack>
+        )}
 
         {children}
+
+        {!simpler && <Footer />}
       </YStack>
     </>
   )
@@ -118,7 +152,7 @@ export const BentoFrond = () => (
     pe="none"
     o={0.045}
     $theme-dark={{
-      o: 0.15,
+      o: 0.05,
     }}
     style={{
       filter: 'blur(3px)',

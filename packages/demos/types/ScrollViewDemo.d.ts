@@ -1,3 +1,2 @@
-/// <reference types="react" />
-export declare function ScrollViewDemo(): JSX.Element;
+export declare function ScrollViewDemo(): import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=ScrollViewDemo.d.ts.map

@@ -7,6 +7,7 @@ import {
   getPersonalTeam,
   getProductOwnerships,
   getSubscriptions,
+  getUserAccessInfo,
   getUserDetails,
   getUserPrivateInfo,
   getUserTeams,
@@ -29,6 +30,7 @@ export type UserContextType = {
     github: boolean
     discord: boolean
   }
+  accessInfo: Awaited<ReturnType<typeof getUserAccessInfo>>
 }
 
 export default apiRoute(async (req, res) => {
@@ -44,14 +46,21 @@ export default apiRoute(async (req, res) => {
     return
   }
 
-  const [userTeams, userDetails, subscriptions, productOwnerships, privateInfo] =
-    await Promise.all([
-      getUserTeams(supabase),
-      getUserDetails(supabase),
-      getSubscriptions(supabase),
-      getProductOwnerships(supabase),
-      getUserPrivateInfo(user.id),
-    ])
+  const [
+    userTeams,
+    userDetails,
+    subscriptions,
+    productOwnerships,
+    privateInfo,
+    accessInfo,
+  ] = await Promise.all([
+    getUserTeams(supabase),
+    getUserDetails(supabase),
+    getSubscriptions(supabase),
+    getProductOwnerships(supabase),
+    getUserPrivateInfo(user.id),
+    getUserAccessInfo(supabase),
+  ])
 
   res.json({
     session,
@@ -69,5 +78,6 @@ export default apiRoute(async (req, res) => {
       discord: !!privateInfo.discord_token,
       github: !!privateInfo.github_token,
     },
+    accessInfo,
   } satisfies UserContextType)
 })

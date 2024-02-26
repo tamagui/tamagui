@@ -7,7 +7,7 @@ export function getPragmaOptions({
   path: string
   disableCommentCheck?: boolean
 }) {
-  if (!disableCommentCheck && !source.startsWith('//') && !source.startsWith('/*')) {
+  if (disableCommentCheck) {
     return {
       shouldPrintDebug: false,
       shouldDisable: false,
@@ -18,7 +18,7 @@ export function getPragmaOptions({
   let shouldDisable = false
 
   // try and avoid too much parsing but sometimes esbuild adds helpers above..
-  const firstLine = source.slice(0, 800).split('\n')[0]
+  const firstLine = source.slice(0, 800)
 
   if (firstLine.includes('tamagui-ignore')) {
     shouldDisable = true

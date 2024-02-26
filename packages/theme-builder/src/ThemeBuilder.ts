@@ -320,7 +320,11 @@ export class ThemeBuilder<
           throw new Error(`No palette for theme${msg}`)
         }
 
-        const template = this.state.templates?.[templateName]
+        const template =
+          this.state.templates?.[templateName] ??
+          // fall back to finding the scheme specific on if it exists
+          this.state.templates?.[`${nameParts[0]}_${templateName}`]
+
         if (!template) {
           throw new Error(`No template for theme ${themeName}: ${templateName}`)
         }
@@ -348,7 +352,7 @@ export class ThemeBuilder<
       let maskFunction = this.state.masks?.[maskName]
 
       if (!maskFunction) {
-        throw new Error(`No mask ${maskFunction}`)
+        throw new Error(`No mask ${maskName}`)
       }
 
       const parentTheme = this.state.themes[parentName]

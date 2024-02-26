@@ -58,7 +58,6 @@ function getESBuildConfig(
   if (process.env.DEBUG?.startsWith('tamagui')) {
     console.info(`Building`, entryPoints)
   }
-  const tsconfig = join(__dirname, '..', '..', '..', 'tamagui.tsconfig.json')
 
   const resolvedEntryPoints = !resolvePlatformSpecificEntries
     ? entryPoints
@@ -83,7 +82,11 @@ function getESBuildConfig(
       '.js',
     ],
     platform: 'node',
-    tsconfig,
+    tsconfigRaw: {
+      compilerOptions: {
+        jsx: 'react-jsx',
+      },
+    },
     loader: esbuildLoaderConfig,
     logLevel: 'warning',
     plugins: [

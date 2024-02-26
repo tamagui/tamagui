@@ -4,8 +4,8 @@ on:
   pull_request:
   push:
     paths-ignore:
-      - 'assets/**'
-      - '.vscode/**'
+      - "assets/**"
+      - ".vscode/**"
     branches:
       - master
 
@@ -60,4 +60,4 @@ jobs:
         with:
           timeout_minutes: 15
           max_attempts: 2
-          command: 'yarn test:ci'
+          command: "yarn test:ci"

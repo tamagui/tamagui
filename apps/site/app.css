@@ -7,11 +7,7 @@ body {
 }
 
 body {
-  background: var(--background) !important;
-}
-
-.home-bg {
-  background: linear-gradient(var(--color1), var(--color6));
+  background: var(--color2) !important;
 }
 
 .bento-fade {
@@ -53,7 +49,6 @@ body {
 :is(#__next, body, html):not(:has(.is-sticky)) {
   max-width: 100vw;
   overflow-x: hidden;
-  overflow-y: auto;
 }
 
 body .preview {
@@ -213,6 +208,9 @@ pre {
 }
 .ms300 {
   transition-duration: 300ms;
+}
+.ms500 {
+  transition-duration: 500ms;
 }
 .s1,
 .ms1000 {
@@ -690,14 +688,8 @@ textarea {
   opacity: 0.3;
 }
 
-.callout {
-  text-shadow: 1px 1px 0 var(--orange9), 2px 2px 0 var(--yellow9),
-    3px 3px 0 var(--green9), 4px 4px 0 var(--blue9), 5px 5px 0 var(--purple9),
-    6px 6px 0 var(--pink9), 7px 7px 0 var(--red9), 0 0 50px rgba(0, 0, 0, 1);
-}
-
 .text-glow {
-  text-shadow: 4px 4px 0 var(--background);
+  text-shadow: 2px 2px 0 var(--background025);
 }
 
 .rotate-slow-right {
@@ -869,7 +861,7 @@ textarea {
     1px 3px 1px var(--color4), 1px 4px 1px var(--color5),
     1px 5px 1px var(--color6), 1px 6px 1px var(--color6),
     1px 7px 1px var(--color7), 1px 8px 1px var(--color7),
-    1px 9px 1px var(--color8), 1px 12px 1px var(--color9),
+    1px 9px 1px var(--color7), 1px 12px 1px var(--color8),
     1px 10px 150px rgba(255, 255, 255, 0.5);
 }
 
@@ -882,15 +874,16 @@ textarea {
 }
 
 .home-glow {
-  background: radial-gradient(var(--color6) 0%, transparent 64%);
-  transition: all ease-in 5000ms;
+  background: radial-gradient(var(--color05) 0%, transparent 60%);
+  transition: all ease-in-out 1000ms;
 }
 
 .t_dark .home-glow.active {
   opacity: 0.3;
 }
+
 .home-glow.active {
-  opacity: 0.2;
+  opacity: 0.25;
 }
 
 .bento-up-text {
@@ -907,8 +900,21 @@ textarea {
 
 .glow-shadow {
   text-shadow: 0 20px 20px var(--background075), 0 30px 30px var(--background025);
+  mix-blend-mode: color-burn;
 }
 
 .t_dark .glow-shadow {
   text-shadow: 0 20px 20px var(--color05), 0 30px 30px var(--color025);
+  mix-blend-mode: screen;
+}
+
+.bento-text-3 {
+  background-image: linear-gradient(var(--color7), var(--color9));
+  mix-blend-mode: hard-light;
+  opacity: 0.65;
+  text-shadow: 0 10px 20px var(--color05), 0 30px 30px var(--color025);
+}
+
+.t_dark .bento-text-3 {
+  mix-blend-mode: screen;
 }

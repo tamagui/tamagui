@@ -32,8 +32,8 @@ if (typeof navigator !== 'undefined') {
 
 export default function App(props: AppProps) {
   const [theme, setTheme] = useRootTheme()
-  const router = useRouter()
-  const themeSetting = useThemeSetting()!
+  // const router = useRouter()
+  // const themeSetting = useThemeSetting()!
 
   // to force takeout to be dark
   // const isTakeout = router.pathname.startsWith('/takeout')

@@ -1,9 +1,8 @@
 import { Stack, styled } from '@tamagui/core'
-import { SwitchStyledContext, createSwitch } from '@tamagui/switch'
+import { createSwitch } from '@tamagui/switch'
 import { Label, XStack, YStack } from 'tamagui'
 
 const Frame = styled(Stack, {
-  context: SwitchStyledContext,
   width: 40,
   height: 20,
   borderRadius: 20,
@@ -23,7 +22,6 @@ const Frame = styled(Stack, {
 })
 
 const Thumb = styled(Stack, {
-  context: SwitchStyledContext,
   width: 20,
   height: 20,
   backgroundColor: 'black',
@@ -41,11 +39,8 @@ const Thumb = styled(Stack, {
   } as const,
 })
 
-// TODO: remove ts-ignores
 export const Switch = createSwitch({
-  // @ts-ignore
   Frame,
-  // @ts-ignore
   Thumb,
 })
 

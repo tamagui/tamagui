@@ -1,3 +1,2 @@
-/// <reference types="react" />
-export declare function HeadingsDemo(): JSX.Element;
+export declare function HeadingsDemo(): import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=HeadingsDemo.d.ts.map

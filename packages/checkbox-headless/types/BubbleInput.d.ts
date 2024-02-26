@@ -6,5 +6,5 @@ export interface BubbleInputProps extends Omit<React.ComponentProps<'input'>, 'c
     bubbles: boolean;
     isHidden?: boolean;
 }
-export declare const BubbleInput: (props: BubbleInputProps) => JSX.Element;
+export declare const BubbleInput: (props: BubbleInputProps) => import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=BubbleInput.d.ts.map

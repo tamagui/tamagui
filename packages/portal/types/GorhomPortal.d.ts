@@ -52,7 +52,7 @@ export interface PortalProviderProps {
     rootHostName?: string;
     children: ReactNode | ReactNode[];
 }
-export declare const PortalProvider: React.MemoExoticComponent<({ rootHostName, shouldAddRootHost, children, }: PortalProviderProps) => JSX.Element>;
+export declare const PortalProvider: React.MemoExoticComponent<({ rootHostName, shouldAddRootHost, children, }: PortalProviderProps) => import("react/jsx-runtime").JSX.Element>;
 export interface PortalHostProps {
     /**
      * Host's key or name to be used as an identifier.

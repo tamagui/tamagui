@@ -30,7 +30,6 @@ import {
   isMediaKey,
   mediaKeyMatch,
   mediaQueryConfig,
-  mergeMediaByImportance,
 } from '../hooks/useMedia'
 import type { TamaguiComponentState } from '../interfaces/TamaguiComponentState'
 import type {
@@ -583,13 +582,21 @@ export const getSplitStyles: StyleSplitter = (
       // which now has it's own unstyled + the child unstyled...
       // so *don't* skip applying the styles if its different from the parent one
       if (!isVariant) {
+        if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+          console.groupEnd()
+        }
         continue
       }
     }
 
     // after shouldPassThrough
     if (!styleProps.noSkip) {
-      if (keyInit in skipProps) continue
+      if (keyInit in skipProps) {
+        if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+          console.groupEnd()
+        }
+        continue
+      }
     }
 
     // we sort of have to update fontFamily all the time: before variants run, after each variant
@@ -601,19 +608,6 @@ export const getSplitStyles: StyleSplitter = (
       ) {
         styleState.fontFamily = valInit
       }
-    }
-
-    // micro bench optimize
-    if (
-      process.env.TAMAGUI_TARGET === 'native' &&
-      isValidStyleKeyInit &&
-      !variants &&
-      valInit !== 'unset' &&
-      (valInitType === 'number' || (valInitType === 'string' && valInit[0] !== '$'))
-    ) {
-      styleState.style ||= {}
-      styleState.style[keyInit] = valInit
-      continue
     }
 
     const avoidPropMap = isMediaOrPseudo || (!isVariant && !isValidStyleKeyInit)
@@ -809,7 +803,6 @@ export const getSplitStyles: StyleSplitter = (
                   curImportance,
                   pkey,
                   val,
-                  transforms: { ...styleState.transforms },
                 })
               }
             }
@@ -846,24 +839,12 @@ export const getSplitStyles: StyleSplitter = (
 
         hasMedia ||= true
 
-        // THIS USED TO PROXY BACK TO REGULAR PROPS BUT THAT IS THE WRONG BEHAVIOR
-        // we avoid passing in default props for media queries because that would confuse things like SizableText.size:
-
-        const mediaStyle = getSubStyle(
-          styleState,
-          key,
-          val,
-          // TODO try true like pseudo
-          false
-        )
-
         const mediaKeyShort = key.slice(1)
 
         if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
           log(`  📺 ${key}`, {
             key,
             val,
-            mediaStyle,
             props,
             shouldDoClasses,
             acceptsClassName,
@@ -882,6 +863,8 @@ export const getSplitStyles: StyleSplitter = (
         }
 
         if (shouldDoClasses) {
+          const mediaStyle = getSubStyle(styleState, key, val, false)
+
           if (hasSpace) {
             delete mediaStyle['space']
             // TODO group/theme/platform + space support (or just make it official not supported in favor of gap)
@@ -928,6 +911,7 @@ export const getSplitStyles: StyleSplitter = (
             mergeClassName(transforms, classNames, fullKey, out.identifier, true, true)
           }
         } else {
+          const mediaStyle = getSubStyle(styleState, key, val, true)
           const isThemeMedia = isMedia === 'theme'
           const isGroupMedia = isMedia === 'group'
           const isPlatformMedia = isMedia === 'platform'
@@ -999,7 +983,7 @@ export const getSplitStyles: StyleSplitter = (
             }
             styleState.style ||= {}
             mergeMediaByImportance(
-              styleState.style,
+              styleState,
               mediaKeyShort,
               subKey,
               mediaStyle[subKey],
@@ -1092,7 +1076,7 @@ export const getSplitStyles: StyleSplitter = (
     // these are only the flat transforms
     // always do this at the very end to preserve the order strictly (animations, origin)
     // and allow proper merging of all pseudos before applying
-    if (styleState.transforms) {
+    if (styleState.flatTransforms) {
       // we need to match the order for animations to work because it needs consistent order
       // was thinking of having something like `state.prevTransformsOrder = ['y', 'x', ...]
       // but if we just handle it here its not a big cost and avoids having stateful things
@@ -1103,23 +1087,11 @@ export const getSplitStyles: StyleSplitter = (
       // this should work for most (all?) of our cases since the order preservation really only needs to apply
       // to the "flat" transform props
       styleState.style ||= {}
-      Object.entries(styleState.transforms)
+      Object.entries(styleState.flatTransforms)
         .sort(([a], [b]) => a.localeCompare(b))
         .forEach(([key, val]) => {
           mergeTransform(styleState.style!, key, val, true)
         })
-    }
-
-    // Button for example uses disableClassName: true but renders to a 'button' element, so needs this
-    if (process.env.TAMAGUI_TARGET === 'web') {
-      if (
-        !staticConfig.isReactNative &&
-        !staticConfig.isHOC &&
-        (styleProps.isAnimated && !conf.animations.supportsCSSVars ? false : true) &&
-        Array.isArray(styleState.style?.transform)
-      ) {
-        styleState.style.transform = transformsToString(styleState.style.transform) as any
-      }
     }
 
     // add in defaults if not set:
@@ -1141,6 +1113,17 @@ export const getSplitStyles: StyleSplitter = (
           styleState.style[key] = parentSplitStyles.style[key]
         }
       }
+    }
+  }
+
+  // Button for example uses disableClassName: true but renders to a 'button' element, so needs this
+  if (process.env.TAMAGUI_TARGET === 'web') {
+    const shouldStringifyTransforms =
+      !staticConfig.isReactNative &&
+      !staticConfig.isHOC &&
+      (!styleProps.isAnimated || conf.animations.supportsCSSVars)
+    if (shouldStringifyTransforms && Array.isArray(styleState.style?.transform)) {
+      styleState.style.transform = transformsToString(styleState.style!.transform) as any
     }
   }
 
@@ -1441,8 +1424,8 @@ function mergeStyle(
     classNames[key] = val
     usedKeys[key] ||= 1
   } else if (key in stylePropsTransform) {
-    styleState.transforms ||= {}
-    styleState.transforms[key] = val
+    styleState.flatTransforms ||= {}
+    styleState.flatTransforms[key] = val
   } else {
     const shouldNormalize = isWeb && !disableNormalize && !styleProps.noNormalize
     const out = shouldNormalize ? normalizeValueWithProperty(val, key) : val
@@ -1533,6 +1516,7 @@ const animatableDefaults = {
   rotateX: '0deg',
   x: 0,
   y: 0,
+  borderRadius: 0,
 }
 
 const lowercaseHyphenate = (match: string) => `-${match.toLowerCase()}`
@@ -1584,4 +1568,30 @@ function passDownProp(
   } else {
     viewProps[key] = val
   }
+}
+
+function mergeMediaByImportance(
+  styleState: GetStyleState,
+  mediaKey: string,
+  key: string,
+  value: any,
+  importancesUsed: Record<string, number>,
+  isSizeMedia: boolean,
+  importanceBump?: number
+) {
+  let importance = getMediaImportanceIfMoreImportant(
+    mediaKey,
+    key,
+    importancesUsed,
+    isSizeMedia
+  )
+  if (importanceBump) {
+    importance = (importance || 0) + importanceBump
+  }
+  if (importance === null) {
+    return false
+  }
+  importancesUsed[key] = importance
+  mergeStyle(styleState, key, value)
+  return true
 }

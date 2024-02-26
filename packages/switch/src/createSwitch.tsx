@@ -49,7 +49,7 @@ export const SwitchContext = React.createContext<{
 })
 
 type SwitchComponent = (props: SwitchSharedProps & SwitchExtraProps) => any
-type SwitchThumbComponent = (props: SwitchSharedProps) => any
+type SwitchThumbComponent = (props: any) => any
 
 export function createSwitch<
   F extends SwitchComponent,
@@ -67,8 +67,12 @@ export function createSwitch<
 
   if (process.env.NODE_ENV === 'development') {
     if (
-      (Frame !== DefaultSwitchFrame && Frame.staticConfig.context) ||
-      (Thumb !== SwitchThumb && Thumb.staticConfig.context)
+      (Frame !== DefaultSwitchFrame &&
+        Frame.staticConfig.context &&
+        Frame.staticConfig.context !== SwitchStyledContext) ||
+      (Thumb !== SwitchThumb &&
+        Thumb.staticConfig.context &&
+        Thumb.staticConfig.context !== SwitchStyledContext)
     ) {
       console.warn(
         `Warning: createSwitch() needs to control context to pass checked state from Frame to Thumb, any custom context passed will be overridden.`

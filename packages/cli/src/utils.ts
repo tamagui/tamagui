@@ -55,6 +55,7 @@ export async function getOptions({
     tsconfigPath,
     tamaguiOptions: finalOptions,
     paths: {
+      root,
       dotDir,
       conf: join(dotDir, 'tamagui.config.json'),
       types: join(dotDir, 'types.json'),

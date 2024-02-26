@@ -1,3 +1,2 @@
-/// <reference types="react" />
-export declare function TooltipDemo(): JSX.Element;
+export declare function TooltipDemo(): import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=TooltipDemo.d.ts.map

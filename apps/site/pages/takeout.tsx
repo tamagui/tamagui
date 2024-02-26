@@ -17,7 +17,7 @@ import {
   X,
   XCircle,
 } from '@tamagui/lucide-icons'
-import { useClientValue } from '@tamagui/use-did-finish-ssr'
+import { useClientValue, useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import { useUser } from 'hooks/useUser'
 import type { GetStaticProps } from 'next'
 import { NextSeo } from 'next-seo'
@@ -76,6 +76,7 @@ import {
 import { LinearGradient } from 'tamagui/linear-gradient'
 
 import { BentoTable } from '@components/BentoPurchaseModal'
+import { BentoLogo } from '../components/BentoLogo'
 import { ContainerXL } from '../components/Container'
 import { FaqModal } from '../components/FaqModal'
 import { Footer } from '../components/Footer'
@@ -84,19 +85,24 @@ import { LoadCherryBomb, LoadMunro } from '../components/LoadFont'
 import { NextLink } from '../components/NextLink'
 import { seasons } from '../components/SeasonToggleButton'
 import { TakeoutLicense } from '../components/TakeoutLicense'
+import { TakeoutPolicy } from '../components/TakeoutPolicy'
 import { ThemeNameEffect } from '../components/ThemeNameEffect'
 import { useTakeoutStore } from '../hooks/useTakeoutStore'
-import { TakeoutPolicy } from '../components/TakeoutPolicy'
-import { BentoLogo } from '../components/BentoLogo'
 
 export default function TakeoutPage({
   starter,
   fontsPack,
   iconsPack,
   bento,
-  coupon,
+  defaultCoupon,
+  takeoutPlusBentoCoupon,
 }: TakeoutPageProps) {
   const store = useTakeoutStore()
+  const user = useUser()
+  const coupon =
+    bento && store.selectedProductsIds.includes(bento.id)
+      ? takeoutPlusBentoCoupon
+      : defaultCoupon
 
   return (
     <YStack maw="100%">
@@ -204,7 +210,7 @@ export default function TakeoutPage({
       {/* <Glow /> */}
 
       <PurchaseModal
-        coupon={coupon}
+        defaultCoupon={coupon}
         starter={starter}
         iconsPack={iconsPack}
         fontsPack={fontsPack}
@@ -255,13 +261,13 @@ export default function TakeoutPage({
                 }}
                 zIndex="$5"
               >
-                <DiscountText coupon={coupon} />
+                {!!defaultCoupon && <DiscountText defaultCoupon={defaultCoupon} />}
               </YStack>
             )}
 
             {/* <PromoVideo /> */}
 
-            <TakeoutHero coupon={coupon} />
+            <TakeoutHero defaultCoupon={defaultCoupon} />
           </YStack>
 
           <XStack
@@ -308,7 +314,7 @@ export default function TakeoutPage({
                       pr: '$1',
                     }}
                   >
-                    From idea to shipped in less time than ever.
+                    From idea to shipped in less time&nbsp;than&nbsp;ever.
                   </H2>
                 </ThemeTint>
 
@@ -468,6 +474,7 @@ export default function TakeoutPage({
                       boxShadow: '0 50px 50px 0px var(--shadowColor)',
                     }}
                   >
+                    {/* phone */}
                     <svg width={715 * 0.5} height={1467 * 0.5} viewBox="0 0 715 1467">
                       <path
                         d="M0 166.4C0 108.155 0 79.0318 11.3353 56.785C21.3062 37.2161 37.2161 21.3062 56.785 11.3353C79.0318 0 108.155 0 166.4 0H548.6C606.845 0 635.968 0 658.215 11.3353C677.784 21.3062 693.694 37.2161 703.665 56.785C715 79.0318 715 108.155 715 166.4V1300.6C715 1358.85 715 1387.97 703.665 1410.21C693.694 1429.78 677.784 1445.69 658.215 1455.66C635.968 1467 606.845 1467 548.6 1467H166.4C108.155 1467 79.0318 1467 56.785 1455.66C37.2161 1445.69 21.3062 1429.78 11.3353 1410.21C0 1387.97 0 1358.85 0 1300.6V166.4Z"
@@ -492,7 +499,7 @@ export default function TakeoutPage({
                       </mask>
                       <g mask="url(#mask0_2_131)">
                         <path d="M25 22H702V1489H25V22Z" fill="var(--background)" />
-                        <g clip-path="url(#clip0_2_131)">
+                        <g clipPath="url(#clip0_2_131)">
                           <path
                             d="M379.351 710.63H385.629V716.909H379.351V710.63Z"
                             fill="var(--color)"
@@ -933,7 +940,8 @@ type TakeoutPageProps = {
   bento?: Database['public']['Tables']['products']['Row'] & {
     prices: Database['public']['Tables']['prices']['Row'][]
   }
-  coupon?: Stripe.Coupon | null
+  defaultCoupon?: Stripe.Coupon | null
+  takeoutPlusBentoCoupon?: Stripe.Coupon | null
 }
 
 const TakeoutCard2Frame = styled(YStack, {
@@ -972,6 +980,7 @@ type TakeoutCardFrameProps = GetProps<typeof TakeoutCard2Frame> & {
 
 const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps) => {
   const isDark = useThemeName().startsWith('dark')
+  const isHydrated = useDidFinishSSR()
   const innerGlow = useHoverGlow({
     resist: 30,
     size: 300,
@@ -1015,7 +1024,7 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
           </defs>
         </svg> */}
 
-        <innerGlow.Component />
+        {isHydrated && <innerGlow.Component />}
         {/* <YStack
           fullscreen
           style={{
@@ -1051,7 +1060,7 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
   )
 }
 
-const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
+const TakeoutHero = ({ defaultCoupon }: Pick<TakeoutPageProps, 'defaultCoupon'>) => {
   const enable3d = useClientValue(
     () => !isSafariMobile && !window.location.search?.includes('disable-3d')
   )
@@ -1315,15 +1324,22 @@ const PurchaseModal = ({
   iconsPack,
   fontsPack,
   bento,
-  coupon,
-}: TakeoutPageProps) => {
+  defaultCoupon,
+}: Omit<TakeoutPageProps, 'takeoutPlusBentoCoupon'>) => {
   const products = [starter, iconsPack, fontsPack]
-  // const prices = products.prices
   const store = useTakeoutStore()
+  const { selectedProductsIds } = store
+
+  useEffect(() => {
+    if (store.selectedProductsIds.length === 0) {
+      store.selectedProductsIds = products.map((p) => p!.id)
+    }
+  }, [store.selectedProductsIds])
+  // const prices = products.prices
   // const [selectedPriceId, setSelectedPriceId] = useState(prices[prices.length - 1].id)
-  const [selectedProductsIds, setSelectedProductsIds] = useState<string[]>(
-    products.filter(Boolean).map((p) => p!.id)
-  )
+  function setSelectedProductsIds(newSelectedProductIds: string[]) {
+    store.selectedProductsIds = newSelectedProductIds
+  }
   const sortedStarterPrices = (starter?.prices ?? []).sort(
     (a, b) => a.unit_amount! - b.unit_amount!
   )
@@ -1371,17 +1387,16 @@ const PurchaseModal = ({
     return final
   }, [selectedProductsIds, starterPriceId, bentoPriceId, starter, iconsPack, fontsPack])
 
+  const finalCoupon = store.appliedCoupon || defaultCoupon
   // with discount applied
   const finalPrice = useMemo(() => {
-    const appliedCoupon = store.appliedCoupon ?? coupon
-    if (appliedCoupon) {
-      if (appliedCoupon.amount_off) return sum - appliedCoupon.amount_off
-      if (appliedCoupon.percent_off)
-        return (sum * (100 - appliedCoupon.percent_off)) / 100
+    if (finalCoupon) {
+      if (finalCoupon.amount_off) return sum - finalCoupon.amount_off
+      if (finalCoupon.percent_off) return (sum * (100 - finalCoupon.percent_off)) / 100
     }
 
     return sum
-  }, [sum, store.appliedCoupon, coupon])
+  }, [sum, finalCoupon])
   const hasDiscountApplied = finalPrice !== sum
 
   const noProductSelected = selectedProductsIds.length === 0
@@ -1482,26 +1497,24 @@ const PurchaseModal = ({
                         </Paragraph>
                       </CheckboxGroupItem>
                     </ThemeTint>
-                    <Theme name="tan">
-                      <CheckboxGroupItem
-                        onCheckedChange={() => {
-                          if (!bento) return
-                          const active = selectedProductsIds.includes(bento.id)
-                          setSelectedProductsIds(
-                            active
-                              ? selectedProductsIds.filter((id) => id !== bento.id)
-                              : [...selectedProductsIds, bento.id]
-                          )
-                        }}
-                        id={'takeout-bento'}
-                        checked={bento && selectedProductsIds.includes(bento.id)}
-                      >
-                        <BentoLogo scale={0.25} />
-                        <Paragraph size="$3" lh="$1" theme="alt2">
-                          {bento?.description}
-                        </Paragraph>
-                      </CheckboxGroupItem>
-                    </Theme>
+                    <CheckboxGroupItem
+                      onCheckedChange={() => {
+                        if (!bento) return
+                        const active = selectedProductsIds.includes(bento.id)
+                        setSelectedProductsIds(
+                          active
+                            ? selectedProductsIds.filter((id) => id !== bento.id)
+                            : [...selectedProductsIds, bento.id]
+                        )
+                      }}
+                      id={'takeout-bento'}
+                      checked={bento && selectedProductsIds.includes(bento.id)}
+                    >
+                      <BentoLogo noShadow scale={0.25} />
+                      <Paragraph size="$3" lh="$1" theme="alt2">
+                        {bento?.description}
+                      </Paragraph>
+                    </CheckboxGroupItem>
                   </YStack>
                 </YStack>
               )}
@@ -1560,7 +1573,7 @@ const PurchaseModal = ({
 
                   <YStack mt="$6" space="$4" ai="center">
                     <Paragraph size="$3" theme="alt1">
-                      Instant one-click cancel your subscription from /account
+                      Instant one-click cancel your subscription from /account/items
                     </Paragraph>
                   </YStack>
                 </YStack>
@@ -1590,7 +1603,12 @@ const PurchaseModal = ({
                           const active = starterPriceId === price.id
                           const htmlId = `price-${price.id}`
                           return (
-                            <RadioGroupItem active={active} value={price.id} id={htmlId}>
+                            <RadioGroupItem
+                              key={htmlId}
+                              active={active}
+                              value={price.id}
+                              id={htmlId}
+                            >
                               <H4 mt="$-1">
                                 {price.description === 'Unlimited (+9 seats)'
                                   ? 'Pro'
@@ -1677,7 +1695,12 @@ const PurchaseModal = ({
                     </XStack>
 
                     <Unspaced>
-                      <YStack mt="$2">
+                      <YStack mt="$2" gap="$1">
+                        {finalCoupon ? (
+                          <SizableText textAlign="right" size="$3">
+                            Coupon "{finalCoupon.name}" is applied.
+                          </SizableText>
+                        ) : null}
                         <PromotionInput />
                       </YStack>
                     </Unspaced>
@@ -1697,9 +1720,9 @@ const PurchaseModal = ({
                           if (store.appliedPromoCode) {
                             // the coupon user applied
                             params.append(`promotion_code`, store.appliedPromoCode)
-                          } else if (coupon) {
+                          } else if (defaultCoupon) {
                             // the coupon that's applied by default (special event, etc.)
-                            params.append(`coupon_id`, coupon.id)
+                            params.append(`coupon_id`, defaultCoupon.id)
                           }
 
                           return params.toString()
@@ -2050,6 +2073,7 @@ const TAKEOUT = ({ fontSize = 450, lineHeight = fontSize * 0.64, ...props }) => 
     fontFamily="$cherryBomb"
     fontSize={fontSize}
     lineHeight={lineHeight}
+    letterSpacing={-18}
     whiteSpace="nowrap"
     minWidth={970}
     ta="center"
@@ -2454,14 +2478,14 @@ const PoliciesModal = () => {
 }
 
 const DiscountText = ({
-  coupon,
+  defaultCoupon,
 }: {
-  coupon: NonNullable<TakeoutPageProps['coupon']>
+  defaultCoupon: NonNullable<TakeoutPageProps['defaultCoupon']>
 }) => {
-  const text = coupon.amount_off
-    ? `${formatPrice(coupon.amount_off, 'usd')} ${coupon.name}`
-    : coupon.percent_off
-      ? `${coupon.percent_off}% ${coupon.name}`
+  const text = defaultCoupon.amount_off
+    ? `${defaultCoupon.name} (${formatPrice(defaultCoupon.amount_off / 100, 'usd')})`
+    : defaultCoupon.percent_off
+      ? `${defaultCoupon.name} (${defaultCoupon.percent_off}%)`
       : ''
   return (
     <ThemeTintAlt offset={6}>
@@ -2987,7 +3011,7 @@ const TakeoutTable = ({
         <YStack width="80%">
           <Paragraph size="$6">License Seats</Paragraph>
           <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
-            Number of people that are allowed to&nbsp;develop&nbsp;on&nbsp;it
+            Number of people allowed to&nbsp;develop&nbsp;on&nbsp;it
           </Paragraph>
         </YStack>
         <XStack f={1} ai="center" gap="$2" jc="center">
@@ -3048,8 +3072,13 @@ export const getStaticProps: GetStaticProps<TakeoutPageProps | any> = async () =
 }
 
 const getTakeoutProducts = async (): Promise<TakeoutPageProps> => {
-  const promoListPromise = stripe.promotionCodes.list({
-    code: 'SITE', // ones with code site are considered public and will be shown here
+  const defaultSitePromotionCodePromise = stripe.promotionCodes.list({
+    code: 'SITE', // ones with code SITE are considered public and will be shown here
+    active: true,
+    expand: ['data.coupon'],
+  })
+  const takeoutPlusBentoPromotionCodePromise = stripe.promotionCodes.list({
+    code: 'TAKEOUTPLUSBENTO', // ones with code TAKEOUTPLUSBENTO are considered public and will be shown here
     active: true,
     expand: ['data.coupon'],
   })
@@ -3075,16 +3104,30 @@ const getTakeoutProducts = async (): Promise<TakeoutPageProps> => {
       .eq('metadata->>slug', 'bento')
       .single(),
   ]
-  const promises = [promoListPromise, ...productPromises]
+  const promises = [
+    defaultSitePromotionCodePromise,
+    takeoutPlusBentoPromotionCodePromise,
+    ...productPromises,
+  ]
   const queries = await Promise.all(promises)
 
-  const products = queries.slice(1) as Awaited<(typeof productPromises)[number]>[]
-  const couponsList = queries[0] as Awaited<typeof promoListPromise>
+  // slice(2) because the first two are coupon info
+  const products = queries.slice(2) as Awaited<(typeof productPromises)[number]>[]
+  const defaultCouponList = queries[0] as Awaited<typeof defaultSitePromotionCodePromise>
+  const takeoutPlusBentoCouponList = queries[1] as Awaited<
+    typeof takeoutPlusBentoPromotionCodePromise
+  >
 
-  let coupon: Stripe.Coupon | null = null
+  let defaultCoupon: Stripe.Coupon | null = null
 
-  if (couponsList.data.length > 0) {
-    coupon = couponsList.data[0].coupon
+  if (defaultCouponList.data.length > 0) {
+    defaultCoupon = defaultCouponList.data[0].coupon
+  }
+
+  let takeoutPlusBentoCoupon: Stripe.Coupon | null = null
+
+  if (takeoutPlusBentoCouponList.data.length > 0) {
+    takeoutPlusBentoCoupon = takeoutPlusBentoCouponList.data[0].coupon
   }
 
   if (!products.length) {
@@ -3128,6 +3171,7 @@ const getTakeoutProducts = async (): Promise<TakeoutPageProps> => {
         (p) => p.active && !(p.metadata as Record<string, any>).hide_from_lists
       ),
     },
-    coupon,
+    defaultCoupon,
+    takeoutPlusBentoCoupon,
   }
 }

@@ -109,7 +109,7 @@ export function Header(props: HeaderProps) {
           </XStack>
           {/* do shadow separate so we can contain paint because its causing perf issues */}
           <XStack
-            className={`ease-out all ms200`}
+            className={`ease-in-out all ms200`}
             zi={-1}
             br="$10"
             fullscreen
@@ -118,7 +118,7 @@ export function Header(props: HeaderProps) {
                 py: '$2',
                 y: 5,
                 // elevation: isStudio ? '$0.5' : '$3',
-                elevation: '$3',
+                elevation: '$10',
               },
             })}
           />
