@@ -556,8 +556,8 @@ export type ThemeValueFallbackColor = ThemeValueFallback | GetThemeValueFallback
 export type ThemeValueFallbackRadius = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingRadius, never, UnionableNumber, UnionableNumber, WebStyleValueUniversal>;
 export type ThemeValueFallbackZIndex = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingZIndex, never, UnionableNumber, UnionableNumber, WebStyleValueUniversal>;
 export type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`;
-export type GetTokenPropsFromAccepted<Accepted, ViewStyles> = Accepted extends Record<string, any> ? {
-    [Key in keyof Accepted]?: Accepted[Key] extends 'viewStyles' ? ViewStyles : ThemeValueGet<Accepted[Key]>;
+export type GetTokenPropsFromAccepted<Accepted, ViewStyles, TextStyles> = Accepted extends Record<string, any> ? {
+    [Key in keyof Accepted]?: Accepted[Key] extends 'viewStyles' ? ViewStyles : Accepted[Key] extends 'textStyles' ? TextStyles : ThemeValueGet<Accepted[Key]>;
 } : {};
 export type SpecificTokens<Record = Tokens, RK extends keyof Record = keyof Record> = RK extends string ? `$${RK}.${keyof Record[RK] extends string | number ? keyof Record[RK] : never}` : never;
 export type SpecificTokensSpecial = TamaguiSettings extends {
@@ -876,7 +876,7 @@ export type StaticConfigPublic = {
      * Accept Tamagui tokens for these props (key for the prop key, val for the token category)
      */
     accept?: {
-        [key: string]: keyof Tokens | 'viewStyles';
+        [key: string]: keyof Tokens | 'viewStyles' | 'textStyles';
     };
     /**
      * (compiler) If these props are encountered, leave them un-extracted.
