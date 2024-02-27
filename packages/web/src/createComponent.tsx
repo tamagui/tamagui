@@ -1187,10 +1187,6 @@ export function createComponent<
       )
     }
 
-    if (viewProps['placeholderTextColor']) {
-      console.warn('it is', internalID, viewProps['placeholderTextColor'], viewProps)
-    }
-
     if (process.env.NODE_ENV === 'development') {
       if (debugProp && debugProp !== 'profile') {
         const element = typeof elementType === 'string' ? elementType : 'Component'
