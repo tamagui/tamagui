@@ -3,20 +3,27 @@
 
 import { DialogDemo } from '@tamagui/demos'
 import { View as RNView } from 'react-native'
-import { View, usePropsAndStyle } from 'tamagui'
+import { View, styled, usePropsAndStyle } from 'tamagui'
 
-const TestThing = (props) => {
-  const [p2, style] = usePropsAndStyle(props)
+import { TextInput } from 'react-native'
+const MyInput = styled(
+  TextInput,
+  {
+    placeholder: 'Test',
+  },
+  {
+    acceptTokens: { placeholderTextColor: 'color' },
+  }
+)
 
-  return null
+function MyInputWrapper() {
+  return <MyInput debug="verbose" placeholderTextColor="$accentBackground" />
 }
 
 export const Sandbox = () => {
   return (
     <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
-      <DialogDemo />
-      {/* <Demo /> */}
-      {/* <View tag="span" animation="bouncy" w={200} h={200} bg="red" /> */}
+      <MyInputWrapper />
     </RNView>
   )
 }
