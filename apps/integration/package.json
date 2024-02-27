@@ -1,5 +1,5 @@
 {
-  "name": "simple",
+  "name": "integration",
   "private": true,
   "scripts": {
     "web": "yarn dev",
