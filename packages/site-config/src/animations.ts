@@ -25,15 +25,21 @@ export const animations = createAnimations({
     mass: 0.9,
     stiffness: 150,
   },
+  kindaBouncy: {
+    type: 'spring',
+    damping: 13,
+    mass: 1,
+    stiffness: 140,
+  },
   lazy: {
     type: 'spring',
     damping: 18,
     stiffness: 50,
   },
   medium: {
-    damping: 15,
+    damping: 16,
     stiffness: 120,
-    mass: 1,
+    mass: 0.8,
   },
   slowest: {
     type: 'spring',
@@ -43,7 +49,7 @@ export const animations = createAnimations({
   slow: {
     type: 'spring',
     damping: 15,
-    stiffness: 40,
+    stiffness: 60,
   },
   quick: {
     type: 'spring',
