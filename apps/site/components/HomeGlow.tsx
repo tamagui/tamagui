@@ -79,10 +79,7 @@ export const HomeGlow = memo(() => {
         animation: 'lazy',
         x: sectionIndex === 2 ? -xs : sectionIndex === 4 ? xs : 0,
         y: -100,
-
-        '$theme-dark': {
-          o: 0.15,
-        },
+        o: 0.15,
       })}
       // display={isResizing ? 'none' : 'flex'}
     >
