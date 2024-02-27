@@ -25435,9 +25435,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"simple@workspace:apps/simple":
+"simple@workspace:apps/integration":
   version: 0.0.0-use.local
-  resolution: "simple@workspace:apps/simple"
+  resolution: "simple@workspace:apps/integration"
   dependencies:
     "@playwright/test": "npm:^1.40.1"
     "@tamagui/animations-css": "npm:1.90.8"
