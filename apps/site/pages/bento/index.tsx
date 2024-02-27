@@ -288,7 +288,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
                     y={3}
                     $sm={{ scale: 0.8, y: 7 }}
                   >
-                    <BentoIcon scale={1} />
+                    <BentoIcon bright scale={1.2} />
                   </YStack>
                 </Paragraph>
               </XStack>
@@ -299,7 +299,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
                 mr="$4"
                 $md={{ mx: 0, fd: 'column', gap: '$3' }}
               >
-                <Paragraph color="$color10" size="$5" $md={{ size: '$3' }}>
+                <Paragraph color="$color10" size="$5" o={0.7} $md={{ size: '$3' }}>
                   One-time Purchase
                 </Paragraph>
 
@@ -370,7 +370,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
 
                 <Circle size={4} bg="$color10" $md={{ dsp: 'none' }} />
 
-                <Paragraph color="$color10" size="$5" $md={{ size: '$3' }}>
+                <Paragraph color="$color10" size="$5" o={0.7} $md={{ size: '$3' }}>
                   Lifetime rights
                 </Paragraph>
               </XStack>
