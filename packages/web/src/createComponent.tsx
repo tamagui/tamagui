@@ -68,6 +68,7 @@ import type { TamaguiComponentEvents } from './interfaces/TamaguiComponentEvents
 import { Slot } from './views/Slot'
 import { getThemedChildren } from './views/Theme'
 import { ThemeDebug } from './views/ThemeDebug'
+import { isDevTools } from './constants/isDevTools'
 
 /**
  * All things that need one-time setup after createTamagui is called
@@ -1192,6 +1193,9 @@ export function createComponent<
         const title = `render <${element} /> (${internalID}) with props`
         if (!isWeb) {
           log(title)
+          if (isDevTools) {
+            log('viewProps', viewProps)
+          }
           log(`final styles:`)
           for (const key in splitStylesStyle) {
             log(key, splitStylesStyle[key])
