@@ -27,7 +27,7 @@ export const animations = createAnimations({
   },
   kindaBouncy: {
     type: 'spring',
-    damping: 13,
+    damping: 16,
     mass: 1,
     stiffness: 140,
   },

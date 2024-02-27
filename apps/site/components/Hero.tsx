@@ -67,16 +67,24 @@ const HeroContents = memo(function HeroContents() {
   return (
     <ContainerLarge contain="layout" pos="relative">
       <YStack
-        className="bg-grid mask-gradient-up"
         fullscreen
-        // @ts-ignore
-        top="auto"
-        height={521}
-        left={-1000}
-        right={-1000}
-        pe="none"
-        o={0.08}
-      />
+        left={-500}
+        right={-500}
+        bottom={-100}
+        style={{
+          maskImage: `linear-gradient(#000 50%, transparent)`,
+        }}
+      >
+        <YStack
+          className="bg-grid"
+          fullscreen
+          pe="none"
+          o={0.125}
+          style={{
+            maskImage: `radial-gradient(ellipse at bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0) 50%)`,
+          }}
+        />
+      </YStack>
       <YStack
         f={1}
         ov="hidden"

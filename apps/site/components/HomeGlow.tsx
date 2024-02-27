@@ -7,8 +7,8 @@ import { useTintSectionIndex } from './TintSection'
 
 const positions = new Array(15).fill(0).map(() => {
   return [
-    Math.random() * 350 * (Math.random() > 0.5 ? 1 : -1),
-    Math.random() * 350 * (Math.random() > 0.5 ? 1 : -1),
+    Math.random() * 300 * (Math.random() > 0.5 ? 1 : -1),
+    Math.random() * 300 * (Math.random() > 0.5 ? 1 : -1),
   ]
 })
 
@@ -53,7 +53,7 @@ export const HomeGlow = memo(() => {
               theme={cur as ThemeName}
               left={`calc(50vw - 500px)`}
               x={x}
-              y={isOnHeroBelow ? 350 : yRand + 350}
+              y={isOnHeroBelow ? 350 : yRand + 250}
               scale={scale}
               className={'wander home-glow ' + (active ? ' active' : '')}
             />
@@ -73,13 +73,13 @@ export const HomeGlow = memo(() => {
       key={0}
       zi={0}
       x={0}
-      // o={isOnHeroBelow ? 0.5 : 1}
       y={scrollTop}
+      o={0.2}
       {...(isOnHeroBelow && {
         animation: 'lazy',
         x: sectionIndex === 2 ? -xs : sectionIndex === 4 ? xs : 0,
         y: -100,
-        o: 0.15,
+        o: 0.1,
       })}
       // display={isResizing ? 'none' : 'flex'}
     >
