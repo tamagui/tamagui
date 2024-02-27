@@ -19,7 +19,7 @@ import type {
   VariantDefinitions,
   VariantSpreadFunction,
 } from './types'
-import { Text } from './views/Text'
+import type { Text } from './views/Text'
 
 type AreVariantsUndefined<Variants> =
   // because we pass in the Generic variants which for some reason has this :)
