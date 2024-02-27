@@ -20,10 +20,20 @@ function MyInputWrapper() {
   return <MyInput debug="verbose" placeholderTextColor="$accentBackground" />
 }
 
+const Test2 = styled(View, {})
+
 export const Sandbox = () => {
   return (
     <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
-      <MyInputWrapper />
+      {/* <MyInputWrapper /> */}
+
+      <Test2
+        debug="verbose"
+        w={100}
+        h={100}
+        bg="red"
+        style={{ transition: 'all ease-in' }}
+      />
     </RNView>
   )
 }

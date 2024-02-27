@@ -368,14 +368,6 @@ export const getSplitStyles: StyleSplitter = (
       continue
     }
 
-    if (!isValidStyleKeyInit) {
-      if (keyInit.startsWith('_style') && isObj(valInit)) {
-        styleState.style ||= {}
-        Object.assign(styleState.style, valInit)
-        continue
-      }
-    }
-
     if (process.env.TAMAGUI_TARGET === 'web') {
       if (!styleProps.noExpand) {
         /**
@@ -1038,28 +1030,6 @@ export const getSplitStyles: StyleSplitter = (
 
   // style prop after:
 
-  // merge after the prop loop - this way pseudos apply and set usedKeys and then this wont clobber them
-  // otherwise styled(styleable(), { bg: 'red', pressStyle: { bg: 'pink' } })
-  // will pass down a style={} + pressStyle={} but pressStyle will go behind style depending on how you pass it
-  // also it makes sense that props.style is basically the last to apply,
-  // at least more sense than "it applies at the position its defined in the prop loop"
-  if (props.style) {
-    if (isHOC) {
-      viewProps.style = props.style
-    } else {
-      for (const style of [].concat(props.style)) {
-        if (style) {
-          if (style['$$css']) {
-            Object.assign(styleState.classNames, style)
-          } else {
-            styleState.style ||= {}
-            Object.assign(styleState.style, style)
-          }
-        }
-      }
-    }
-  }
-
   const avoidNormalize = styleProps.noNormalize === false
 
   if (!avoidNormalize) {
@@ -1172,6 +1142,7 @@ export const getSplitStyles: StyleSplitter = (
         }
 
         if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
+          console.groupEnd() // ensure group ended from loop above
           console.groupCollapsed(`🔹 getSplitStyles final style object`)
           console.info(styleState.style)
           console.groupEnd()
@@ -1201,6 +1172,24 @@ export const getSplitStyles: StyleSplitter = (
             } as StyleObject)
           }
           classNames[namespace] = identifier
+        }
+      }
+    }
+
+    // merge after the prop loop - and always keep it on style dont turn into className
+    if (props.style) {
+      if (isHOC) {
+        viewProps.style = props.style
+      } else {
+        for (const style of [].concat(props.style)) {
+          if (style) {
+            if (style['$$css']) {
+              Object.assign(styleState.classNames, style)
+            } else {
+              styleState.style ||= {}
+              Object.assign(styleState.style, style)
+            }
+          }
         }
       }
     }
