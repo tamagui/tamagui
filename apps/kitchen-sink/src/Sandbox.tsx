@@ -10,6 +10,9 @@ const MyInput = styled(
   TextInput,
   {
     placeholder: 'Test',
+    width: 200,
+    height: 50,
+    backgroundColor: 'red',
   },
   {
     acceptTokens: { placeholderTextColor: 'color' },
@@ -25,15 +28,15 @@ const Test2 = styled(View, {})
 export const Sandbox = () => {
   return (
     <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
-      {/* <MyInputWrapper /> */}
-
+      <MyInputWrapper />
+      {/* 
       <Test2
         debug="verbose"
         w={100}
         h={100}
         bg="red"
         style={{ transition: 'all ease-in' }}
-      />
+      /> */}
     </RNView>
   )
 }
