@@ -835,6 +835,29 @@ textarea {
   text-underline-offset: 6px;
 }
 
+.wanter {
+  animation: wander 15s alternate-reverse infinite forwards;
+}
+
+@keyframes wander {
+  0% {
+    transform: translateX(0) translateY(0) scale(1);
+  }
+
+  25% {
+    transform: translateX(100px) translateY(100px) scale(1.1);
+  }
+
+  50% {
+    transform: translateX(-100px) translateY(-100px) scale(0.9);
+  }
+
+  75% {
+    transform: translateX(100px) translateY(-100px) scale(1);
+  }
+}
+
+
 @keyframes breeze {
   0% {
     transform: translateX(1300px) translateY(-100px) scale(3.5) rotate(90deg)
@@ -874,16 +897,16 @@ textarea {
 }
 
 .home-glow {
-  background: radial-gradient(var(--color05) 0%, transparent 60%);
-  transition: all ease-in-out 1000ms;
+  background: radial-gradient(var(--color075) 0%, var(--color0) 50%);
+  transition: all ease-in-out 300ms;
 }
 
 .t_dark .home-glow.active {
-  opacity: 0.3;
+  opacity: 1;
 }
 
 .home-glow.active {
-  opacity: 0.25;
+  opacity: 1;
 }
 
 .bento-up-text {
@@ -921,4 +944,11 @@ textarea {
 
 .t_dark .bento-text-3 {
   mix-blend-mode: screen;
+}
+
+.mix-blend-color-burn-dodge {
+  mix-blend-mode: color-burn;
+}
+.t_dark .mix-blend-color-burn-dodge {
+  mix-blend-mode: color-dodge;
 }

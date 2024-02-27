@@ -60,7 +60,7 @@ export const BentoLogo = ({
         className="clip-text mask-gradient-down"
         style={{
           backgroundImage: 'linear-gradient(var(--color10), transparent)',
-          textShadow: `0 0 10px var(--color025), 0 0 8px rgba(255,255,255,0.2)`,
+          textShadow: `0 0 10px var(--color025), 0 0 8px rgba(255,255,255,0.44)`,
           maskImage: `linear-gradient(transparent 20%, rgba(0, 0, 0, 1))`,
           // mixBlendMode: 'hard-light',
         }}
@@ -121,17 +121,19 @@ export const BentoLogo = ({
       </H1>
     </ThemeTintAlt>
 
-    {/* <ThemeTintAlt offset={-5}>
+    <ThemeTintAlt offset={-2}>
       <H1
         pos="absolute"
         t={0}
         l={0}
+        o={0.5}
         zi={1100000000}
         ff="$cherryBomb"
         px="$3"
         mx="$-3"
         whiteSpace="pre"
-        color="$color1"
+        color="$color8"
+        className="mix-blend-color-burn-dodge"
         maw="100%"
         f={1}
         ls={-21}
@@ -142,11 +144,10 @@ export const BentoLogo = ({
         pe="none"
         style={{
           maskImage: `linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0) 60%)`,
-          mixBlendMode: 'multiply',
         }}
       >
         {children}&nbsp;
       </H1>
-    </ThemeTintAlt> */}
+    </ThemeTintAlt>
   </YStack>
 )

@@ -48,21 +48,21 @@ export const BentoPageFrame = ({
             )} */}
 
             <YStack
-              className="grain"
+              className="grain mix-blend-color-burn-dodge"
               fullscreen
-              o={0.95}
+              o={0.4}
               zi={100}
               $theme-light={{
-                o: 1,
+                o: 0.6,
               }}
               style={{
-                mixBlendMode: 'screen',
+                imageRendering: 'pixelated',
               }}
             />
 
             <YStack
               fullscreen
-              mah={1500}
+              mah={1000}
               className="mask-gradient-down"
               style={{
                 mixBlendMode: 'hard-light',
@@ -150,12 +150,12 @@ export const BentoFrond = () => (
     className="shadow-breeze"
     zi={2}
     pe="none"
-    o={0.045}
+    o={0.075}
     $theme-dark={{
-      o: 0.05,
+      o: 0.1,
     }}
     style={{
-      filter: 'blur(3px)',
+      filter: 'blur(4px)',
       mask: `linear-gradient(black, transparent 75%)`,
     }}
   >

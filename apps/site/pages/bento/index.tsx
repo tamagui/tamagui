@@ -13,11 +13,13 @@ import {
   Cog,
   FormInput,
   Globe,
+  Image,
   InspectionPanel,
   LassoSelect,
   Layout,
   Leaf,
   List,
+  MessageSquareShare,
   MousePointerClick,
   NotebookTabs,
   PanelLeft,
@@ -136,12 +138,12 @@ BentoPage.getLayout = getDefaultLayout
 
 const Intermediate = () => {
   return (
-    <YStack className="blur-8" zi={1} w="100%">
+    <YStack className="blur-4" zi={1} w="100%">
       {/* <YStack fullscreen elevation="$4" o={0.15} /> */}
       <YStack pos="absolute" t={0} l={0} r={0} o={0.25} btw={0.5} bc="$color025" />
       <YStack pos="absolute" b={0} l={0} r={0} o={0.25} btw={0.5} bc="$color025" />
       <ThemeTintAlt offset={-1}>
-        <YStack fullscreen bg="$color9" o={0.08} />
+        <YStack fullscreen bg="$color9" o={0.048} />
       </ThemeTintAlt>
       <ContainerLarge>
         <XStack
@@ -260,7 +262,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
               $sm={{ px: '$4', maw: 400, ml: 0 }}
             >
               <XStack gap="$6">
-                <Stack bg="$color7" w={8} br="$2" my={18} $sm={{ dsp: 'none' }} />
+                <Stack bg="$color9" w={4} br="$2" my={18} $sm={{ dsp: 'none' }} />
                 <Paragraph
                   className="pixelate"
                   ff="$munro"
@@ -283,10 +285,10 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
                     my={-20}
                     tag="span"
                     dsp="inline-flex"
-                    y={5}
+                    y={3}
                     $sm={{ scale: 0.8, y: 7 }}
                   >
-                    <BentoIcon scale={1.2} />
+                    <BentoIcon bright scale={1.2} />
                   </YStack>
                 </Paragraph>
               </XStack>
@@ -297,7 +299,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
                 mr="$4"
                 $md={{ mx: 0, fd: 'column', gap: '$3' }}
               >
-                <Paragraph color="$color10" size="$5" $md={{ size: '$3' }}>
+                <Paragraph color="$color10" size="$5" o={0.7} $md={{ size: '$3' }}>
                   One-time Purchase
                 </Paragraph>
 
@@ -306,6 +308,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
                 <XStack ai="center" jc="space-between">
                   <Spacer />
                   <Theme name="green">
+                    {/* $199 */}
                     <Button
                       iconAfter={ShoppingCart}
                       // iconAfter={
@@ -346,8 +349,16 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
                         store.showPurchase = true
                       }}
                     >
-                      <Button.Text fontFamily="$silkscreen" size="$3" fow="bold">
-                        $
+                      <Button.Text fontFamily="$silkscreen" size="$6" ls={0}>
+                        <sup
+                          style={{
+                            fontSize: '50%',
+                            display: 'inline-flex',
+                            marginTop: -10,
+                          }}
+                        >
+                          $
+                        </sup>
                         {(mainProduct?.prices.sort(
                           (a, b) =>
                             (a.unit_amount || Infinity) - (b.unit_amount || Infinity)
@@ -359,7 +370,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
 
                 <Circle size={4} bg="$color10" $md={{ dsp: 'none' }} />
 
-                <Paragraph color="$color10" size="$5" $md={{ size: '$3' }}>
+                <Paragraph color="$color10" size="$5" o={0.7} $md={{ size: '$3' }}>
                   Lifetime rights
                 </Paragraph>
               </XStack>
@@ -651,10 +662,11 @@ function SectionCard({
       >
         <YStack f={1} p="$4">
           <Theme name="gray">
-            <H4 ff="$body" size="$5" fow="600" color="$color12">
+            <H4 ff="$body" size="$4" fow="600" color="$color12">
               {name}
             </H4>
           </Theme>
+
           <H5 theme="alt1" size="$1" ls={1}>
             {numberOfComponents} components
           </H5>
@@ -683,14 +695,14 @@ const icons = {
   RadioGroups: CheckCircle,
   Switches: ToggleRight,
   TextAreas: FormInput,
-  Pickers: LassoSelect,
+  'Image Pickers': Image,
   List: List,
   Avatars: CircleUserRound,
   Buttons: RectangleHorizontal,
   DatePickers: Calendar,
   Tables: Table,
   Chips: BadgeAlert,
-  Dialogs: InspectionPanel,
+  Dialogs: MessageSquareShare,
   Navbar: PanelTop,
   Sidebar: PanelLeft,
   Tabbar: NotebookTabs,

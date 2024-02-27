@@ -24,7 +24,6 @@ export const InstallInput = memo(() => {
       <Paragraph
         ta="center"
         size="$5"
-        y={1}
         fontWeight="500"
         fontFamily="$mono"
         $sm={{ size: '$3' }}

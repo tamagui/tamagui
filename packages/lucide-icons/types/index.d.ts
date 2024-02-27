@@ -539,7 +539,7 @@ export { Figma } from './icons/figma';
 export { FileArchive } from './icons/file-archive';
 export { FileAudio2 } from './icons/file-audio-2';
 export { FileAudio } from './icons/file-audio';
-export { FileAxis3d } from './icons/file-axis-3d';
+export { FileAxis3d } from './icons/file-axis-3-d';
 export { FileBadge2 } from './icons/file-badge-2';
 export { FileBadge } from './icons/file-badge';
 export { FileBarChart2 } from './icons/file-bar-chart-2';
