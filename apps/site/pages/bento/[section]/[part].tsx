@@ -89,7 +89,7 @@ export const DetailHeader = (props: { children: string }) => {
             </Anchor>
           </Link>
 
-          <SizableText theme="alt2" tag="span" selectable={false} size="$2">
+          <SizableText theme="alt1" tag="span" selectable={false} size="$2">
             {'>'}
           </SizableText>
 
@@ -99,7 +99,7 @@ export const DetailHeader = (props: { children: string }) => {
             </Anchor>
           </Link>
 
-          <SizableText theme="alt2" tag="span" selectable={false} size="$2">
+          <SizableText theme="alt1" tag="span" selectable={false} size="$2">
             {'>'}
           </SizableText>
 
