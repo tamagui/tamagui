@@ -5,7 +5,9 @@ import { DialogDemo } from '@tamagui/demos'
 import { View as RNView } from 'react-native'
 import { View, styled, usePropsAndStyle } from 'tamagui'
 
+import * as ReactNative from 'react-native'
 import { TextInput } from 'react-native'
+import { Text } from '@tamagui/core'
 const MyInput = styled(
   TextInput,
   {
@@ -43,7 +45,31 @@ export const defaultHitslopInset = {
 export const Sandbox = () => {
   return (
     <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
-      <TestAnimateToUndefinedBg
+      <Text maxWidth={300} numberOfLines={3} ellipsizeMode="middle" debug="verbose">
+        Esse laborum veniam magna sunt nulla nisi proident nisi culpa. Aliquip sit duis
+        tempor officia officia duis. Magna Lorem magna cupidatat consectetur dolor
+        consequat. Nostrud cupidatat tempor consequat fugiat proident ullamco cillum non.
+        Ipsum irure exercitation id enim reprehenderit id do esse fugiat voluptate minim
+        cupidatat aute. Eu non est dolore incididunt esse quis. Esse voluptate eiusmod
+        enim fugiat incididunt consectetur adipisicing ex anim cupidatat aliquip occaecat
+        officia.
+      </Text>
+
+      <ReactNative.Text
+        style={{ maxWidth: 300 }}
+        numberOfLines={3}
+        ellipsizeMode="middle"
+      >
+        Esse laborum veniam magna sunt nulla nisi proident nisi culpa. Aliquip sit duis
+        tempor officia officia duis. Magna Lorem magna cupidatat consectetur dolor
+        consequat. Nostrud cupidatat tempor consequat fugiat proident ullamco cillum non.
+        Ipsum irure exercitation id enim reprehenderit id do esse fugiat voluptate minim
+        cupidatat aute. Eu non est dolore incididunt esse quis. Esse voluptate eiusmod
+        enim fugiat incididunt consectetur adipisicing ex anim cupidatat aliquip occaecat
+        officia.
+      </ReactNative.Text>
+
+      {/* <TestAnimateToUndefinedBg
         cursor="pointer"
         hitSlop={defaultHitslopInset}
         pressStyle={{
@@ -54,7 +80,7 @@ export const Sandbox = () => {
         }}
         onPress={() => {}}
         onPressIn={() => {}}
-      />
+      /> */}
       {/* <MyInputWrapper /> */}
       {/* 
       <Test2
