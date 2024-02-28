@@ -25,6 +25,7 @@ import type { HeaderProps } from './HeaderProps'
 import { NextLink } from './NextLink'
 import { TakeoutIcon } from './TakeoutIcon'
 import { LinearGradient } from 'tamagui/linear-gradient'
+import { ThemeTintAlt } from '@tamagui/logo'
 
 const HeadAnchor = styled(Paragraph, {
   tag: 'a',
@@ -431,6 +432,7 @@ const SlidingPopoverTrigger = YStack.styleable<{ id: string }>(
 )
 
 const order = ['', 'takeout', 'bento', 'studio']
+const offsets = [0, 3, -1, 2]
 
 const SlidingPopoverContent = () => {
   const context = React.useContext(SlidingPopoverContext)
@@ -462,14 +464,17 @@ const SlidingPopoverContent = () => {
       }}
     >
       <Popover.Arrow size="$4" />
-      <YStack
-        fullscreen
-        br="$4"
-        style={{
-          background: `linear-gradient(transparent, rgba(255,255,255,0.15))`,
-          mixBlendMode: 'color-dodge',
-        }}
-      />
+      <ThemeTintAlt offset={offsets[curI]}>
+        <YStack
+          fullscreen
+          br="$4"
+          zi={100}
+          style={{
+            background: `linear-gradient(transparent, var(--color5))`,
+            mixBlendMode: 'screen',
+          }}
+        />
+      </ThemeTintAlt>
       <YStack w={280} h={240} br="$4" ov="hidden">
         <AnimatePresence custom={{ going }} initial={false}>
           {context.id === 'takeout' && (
