@@ -1,17 +1,17 @@
 {
   "name": "@tamagui/vite-app",
   "private": true,
-  "version": "1.90.12",
+  "version": "1.90.13",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "preview": "vite preview"
   },
   "dependencies": {
-    "@tamagui/config": "1.90.12",
+    "@tamagui/config": "1.90.13",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "tamagui": "1.90.12"
+    "tamagui": "1.90.13"
   },
   "devDependencies": {
     "@types/react": "^18.2.55",
