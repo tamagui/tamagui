@@ -1177,25 +1177,7 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
-    // merge after the prop loop - and always keep it on style dont turn into className
-    if (props.style) {
-      if (isHOC) {
-        viewProps.style = props.style
-      } else {
-        for (const style of [].concat(props.style)) {
-          if (style) {
-            if (style['$$css']) {
-              Object.assign(styleState.classNames, style)
-            } else {
-              styleState.style ||= {}
-              Object.assign(styleState.style, style)
-            }
-          }
-        }
-      }
-    }
-
-    if (isWeb && !isReactNative) {
+    if (!isReactNative) {
       if (viewProps.tabIndex == null) {
         const isFocusable = viewProps.focusable ?? viewProps.accessible
 
@@ -1236,6 +1218,24 @@ export const getSplitStyles: StyleSplitter = (
         if (isFocusable) {
           viewProps.tabIndex = '0'
           delete viewProps.focusable
+        }
+      }
+    }
+  }
+
+  // merge after the prop loop - and always keep it on style dont turn into className except if RN gives us
+  if (props.style) {
+    if (isHOC) {
+      viewProps.style = normalizeStyle(props.style)
+    } else {
+      for (const style of [].concat(props.style)) {
+        if (style) {
+          if (style['$$css']) {
+            Object.assign(styleState.classNames, style)
+          } else {
+            styleState.style ||= {}
+            Object.assign(styleState.style, normalizeStyle(style))
+          }
         }
       }
     }
@@ -1588,4 +1588,21 @@ function mergeMediaByImportance(
   importancesUsed[key] = importance
   mergeStyle(styleState, key, value)
   return true
+}
+
+function normalizeStyle(style: any) {
+  const out: Record<string, any> = {}
+  for (const key in style) {
+    const val = style[key]
+    if (key in stylePropsTransform) {
+      mergeTransform(out, key, val)
+    } else {
+      out[key] = normalizeValueWithProperty(val, key)
+    }
+  }
+  if (isWeb && Array.isArray(out.transform)) {
+    out.transform = transformsToString(out.transform)
+  }
+  fixStyles(out)
+  return out
 }

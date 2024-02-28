@@ -45,6 +45,13 @@ export const defaultHitslopInset = {
 export const Sandbox = () => {
   return (
     <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
+      <View
+        style={{ transform: [{ translateX: 100 }] }}
+        width={100}
+        height={100}
+        bg="red"
+      />
+
       <Text maxWidth={300} numberOfLines={3} ellipsizeMode="middle" debug="verbose">
         Esse laborum veniam magna sunt nulla nisi proident nisi culpa. Aliquip sit duis
         tempor officia officia duis. Magna Lorem magna cupidatat consectetur dolor
