@@ -783,16 +783,17 @@ export default function TakeoutPage({
                     <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
                       As you diverge we can't be perfect at sending updates, but we also
                       have an ignorefile you can configure that gives you a lot of
-                      control. Ultimately, if you diverge enough, then turn the automatic
-                      PRs off at no cost.
+                      control. Ultimately, if you diverge enough, you can easily unplug
+                      and use it as a source of ideas and tips.
                     </Paragraph>
 
                     <ThemeTintAlt>
                       <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
-                        It's like having a developer updating dependencies, improving DX
-                        and ensuring everything works before upgrading major versions in
-                        more thoughful PRs than a typical bot. Here's a rough working
-                        roadmap:
+                        It's like having an extra developer dedicated to updating
+                        dependencies, improving fundamental developer tooling, and
+                        ensuring everything works before upgrading major versions in more
+                        thoughful pull requests than a typical bot. Here's our rough
+                        working roadmap:
                       </Paragraph>
                     </ThemeTintAlt>
 
