@@ -23,12 +23,39 @@ function MyInputWrapper() {
   return <MyInput debug="verbose" placeholderTextColor="$accentBackground" />
 }
 
-const Test2 = styled(View, {})
+const TestAnimateToUndefinedBg = styled(View, {
+  w: 100,
+  h: 100,
+  animation: '100ms',
+  hoverStyle: {
+    backgroundColor: 'red',
+  },
+})
+
+export const defaultHitslop = 5
+export const defaultHitslopInset = {
+  top: defaultHitslop,
+  bottom: defaultHitslop,
+  left: defaultHitslop,
+  right: defaultHitslop,
+}
 
 export const Sandbox = () => {
   return (
     <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
-      <MyInputWrapper />
+      <TestAnimateToUndefinedBg
+        cursor="pointer"
+        hitSlop={defaultHitslopInset}
+        pressStyle={{
+          opacity: 0.5,
+        }}
+        hoverStyle={{
+          backgroundColor: 'green',
+        }}
+        onPress={() => {}}
+        onPressIn={() => {}}
+      />
+      {/* <MyInputWrapper /> */}
       {/* 
       <Test2
         debug="verbose"

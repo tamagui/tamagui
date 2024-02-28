@@ -9,6 +9,7 @@ import {
 import {
   stylePropsText,
   stylePropsTransform,
+  tokenCategories,
   validPseudoKeys,
   validStyles,
 } from '@tamagui/helpers'
@@ -1497,7 +1498,11 @@ function processIDRefList(idRefList: string | Array<string>): string {
   return Array.isArray(idRefList) ? idRefList.join(' ') : idRefList
 }
 
+const defaultColor = process.env.TAMAGUI_DEFAULT_COLOR || 'rgba(0,0,0,0)'
 const animatableDefaults = {
+  ...Object.fromEntries(
+    Object.entries(tokenCategories.color).map(([k, v]) => [k, defaultColor])
+  ),
   opacity: 1,
   scale: 1,
   rotate: '0deg',

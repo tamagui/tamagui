@@ -15,6 +15,18 @@ export const animationsCSS = createAnimationsCSS({
 })
 
 export const animationsMoti = createAnimationsMoti({
+  '75ms': {
+    type: 'timing',
+    duration: 75,
+  },
+  '100ms': {
+    type: 'timing',
+    duration: 100,
+  },
+  '200ms': {
+    type: 'timing',
+    duration: 200,
+  },
   bouncy: {
     type: 'spring',
     damping: 9,
@@ -51,6 +63,18 @@ export const animationsMoti = createAnimationsMoti({
 })
 
 export const animationsNative = createAnimationsNative({
+  '75ms': {
+    type: 'timing',
+    duration: 75,
+  },
+  '100ms': {
+    type: 'timing',
+    duration: 100,
+  },
+  '200ms': {
+    type: 'timing',
+    duration: 200,
+  },
   bouncy: {
     type: 'spring',
     damping: 9,
