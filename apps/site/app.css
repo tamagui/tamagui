@@ -898,7 +898,7 @@ textarea {
 
 .home-glow {
   background: radial-gradient(var(--color075) 0%, var(--color0) 50%);
-  transition: all ease-in-out 300ms;
+  transition: all ease-in-out 1000ms;
 }
 
 .t_dark .home-glow.active {
