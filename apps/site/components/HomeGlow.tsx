@@ -74,8 +74,6 @@ export const HomeGlow = memo(() => {
 
   const allGlows = [...glows, ...lastGlows]
 
-  console.log('allGlows', allGlows)
-
   return (
     <YStack
       pos="absolute"
@@ -96,15 +94,7 @@ export const HomeGlow = memo(() => {
       })}
       // display={isResizing ? 'none' : 'flex'}
     >
-      {allGlows?.map((glow, i) => {
-        if (i >= 1) {
-          return glow
-        }
-        // last glow
-        return cloneElement(glow, {
-          o: 0,
-        })
-      })}
+      {glows}
     </YStack>
   )
 })
