@@ -6763,6 +6763,7 @@ __metadata:
     "@tamagui/lucide-icons": "npm:1.90.15"
     "@tamagui/shorthands": "npm:1.90.15"
     "@tamagui/themes": "npm:1.90.15"
+    "@tamagui/toast": "npm:1.90.15"
     "@tamagui/web": "npm:1.90.15"
     "@welldone-software/why-did-you-render": "npm:^7.0.1"
     burnt: "npm:^0.12.2"
