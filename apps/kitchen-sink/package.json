@@ -33,6 +33,7 @@
     "@react-navigation/native": "^6.1.10",
     "@react-navigation/native-stack": "^6.9.18",
     "@tamagui/animations-reanimated": "1.90.15",
+    "@tamagui/toast": "1.90.15",
     "@tamagui/cli": "1.90.15",
     "@tamagui/colors": "1.90.15",
     "@tamagui/config": "1.90.15",

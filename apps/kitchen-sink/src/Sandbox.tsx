@@ -1,13 +1,17 @@
 // debug-verbose
 // import './wdyr'
 
-import { DialogDemo } from '@tamagui/demos'
+import { DialogDemo, ToastDemo } from '@tamagui/demos'
 import { View as RNView } from 'react-native'
-import { View, styled, usePropsAndStyle } from 'tamagui'
+import { Button, View, styled, usePropsAndStyle } from 'tamagui'
 
 import * as ReactNative from 'react-native'
 import { TextInput } from 'react-native'
 import { Text } from '@tamagui/core'
+import { Square } from '@tamagui/lucide-icons'
+import { useState } from 'react'
+import { Toast, ToastProvider, ToastViewport } from '@tamagui/toast'
+
 const MyInput = styled(
   TextInput,
   {
@@ -43,9 +47,32 @@ export const defaultHitslopInset = {
 }
 
 export const Sandbox = () => {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <>
+      <ToastProvider>
+        <ToastViewport zIndex={Number.MAX_SAFE_INTEGER} />
+        <ToastDemo />
+      </ToastProvider>
+
+      <Button onPress={() => setOpen(true)}>Open</Button>
+
+      <ReactNative.Modal
+        visible={open}
+        style={{
+          backgroundColor: 'red',
+        }}
+      >
+        <Square size={100} bg="red" />
+        <Button onPress={() => setOpen(false)}>Close</Button>
+      </ReactNative.Modal>
+    </>
+  )
+
   return (
     <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
-      <View
+      {/* <View
         style={{ transform: [{ translateX: 100 }] }}
         width={100}
         height={100}
@@ -74,7 +101,7 @@ export const Sandbox = () => {
         cupidatat aute. Eu non est dolore incididunt esse quis. Esse voluptate eiusmod
         enim fugiat incididunt consectetur adipisicing ex anim cupidatat aliquip occaecat
         officia.
-      </ReactNative.Text>
+      </ReactNative.Text> */}
 
       {/* <TestAnimateToUndefinedBg
         cursor="pointer"
