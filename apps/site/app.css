@@ -896,19 +896,6 @@ textarea {
     1px 9px 1px var(--color4), 1px 12px 1px var(--color3);
 }
 
-.home-glow {
-  background: radial-gradient(var(--color075) 0%, var(--color0) 50%);
-  transition: all ease-in-out 1000ms;
-}
-
-.t_dark .home-glow.active {
-  opacity: 1;
-}
-
-.home-glow.active {
-  opacity: 1;
-}
-
 .bento-up-text {
   /* mix-blend-mode: luminosity; */
   mask-image: linear-gradient(rgba(0, 0, 0, 1), transparent, rgba(0, 0, 0, 1));
