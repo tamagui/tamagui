@@ -8,6 +8,7 @@
     "studio": "./scripts/kill-existing.sh && PORT=5005 next dev",
     "build:bento": "node ./scripts/build-bento.js",
     "upload-bento": "node ./scripts/upload-bento",
+    "screenshot-bento": "node -r esbuild-register ../../node_modules/.bin/playwright test --config scripts/bento-screenshot/config.js",
     "clean:build": "tamagui-build clean:build",
     "ci:build": "yarn next:build && yarn build:bento",
     "ci:build:no-extract": "DISABLE_EXTRACTION=true yarn ci:build",
