@@ -529,8 +529,6 @@ const Body = () => {
       })}
       zi={10000}
     >
-      {/* <Separator bc="$color" pos="absolute" t={0} l={0} r={0} o={0.05} /> */}
-
       <YStack>
         <ContainerLarge>
           <Input
@@ -616,7 +614,6 @@ const Body = () => {
         })}
       </YStack>
 
-      <Spacer size="$12" />
     </YStack>
   )
 }
