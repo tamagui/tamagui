@@ -49,7 +49,13 @@ export default function DemoComponentsPage(props) {
           __html: `body{background-color: transparent!important}`,
         }}
       />
-      <YStack group="window" f={1} ai="center" jc="center">
+      <YStack
+        // @ts-ignore
+        group="window"
+        f={1}
+        ai="center"
+        jc="center"
+      >
         <Component />
       </YStack>
     </>
