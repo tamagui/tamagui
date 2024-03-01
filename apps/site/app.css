@@ -835,8 +835,9 @@ textarea {
   text-underline-offset: 6px;
 }
 
-.wanter {
-  animation: wander 15s alternate-reverse infinite forwards;
+.wander {
+  animation: wander 25s alternate-reverse infinite forwards;
+  transform-origin: top left;
 }
 
 @keyframes wander {
@@ -845,15 +846,15 @@ textarea {
   }
 
   25% {
-    transform: translateX(100px) translateY(100px) scale(1.1);
+    transform: translateX(10px) translateY(10px) scale(1.06);
   }
 
   50% {
-    transform: translateX(-100px) translateY(-100px) scale(0.9);
+    transform: translateX(-10px) translateY(-10px) scale(1.06);
   }
 
   75% {
-    transform: translateX(100px) translateY(-100px) scale(1);
+    transform: translateX(10px) translateY(-10px) scale(1);
   }
 }
 

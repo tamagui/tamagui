@@ -1,6 +1,6 @@
 import { useTint } from '@tamagui/logo'
 import { memo, useMemo, useState } from 'react'
-import { AnimatePresence, YStack, isClient } from 'tamagui'
+import { AnimatePresence, YStack, isClient, useDidFinishSSR } from 'tamagui'
 
 import { useTintSectionIndex } from './TintSection'
 
@@ -21,6 +21,7 @@ export const HomeGlow = memo(() => {
   const [scrollTop, setScrollTop] = useState(0)
   const xs = 400
   const scale = isOnHeroBelow ? 2 : 3
+  const isHydrated = useDidFinishSSR()
 
   if (isClient) {
     useTintSectionIndex((index) => {
@@ -45,8 +46,9 @@ export const HomeGlow = memo(() => {
         <YStack
           key={`${i}${tint}${tintAlt}`}
           animation="lazy"
+          opacity={!isHydrated ? 0.5 : 1}
           enterStyle={{
-            opacity: 0,
+            opacity: isOnHeroBelow ? 0.5 : 0,
           }}
           exitStyle={{
             opacity: 0,
@@ -75,7 +77,7 @@ export const HomeGlow = memo(() => {
         </YStack>
       )
     })
-  }, [scale, tint, tints])
+  }, [isHydrated, scale, tint, tints])
 
   return (
     <YStack
