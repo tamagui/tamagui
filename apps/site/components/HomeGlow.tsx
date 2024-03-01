@@ -1,7 +1,7 @@
 import { useTint } from '@tamagui/logo'
-import { cloneElement, memo, useEffect, useMemo, useState } from 'react'
+import { memo, useEffect, useMemo, useState } from 'react'
 import type { ThemeName } from 'tamagui'
-import { YStack, isClient } from 'tamagui'
+import { YStack, isClient, useDebounce, useForceUpdate } from 'tamagui'
 
 import { useTintSectionIndex } from './TintSection'
 
@@ -19,7 +19,7 @@ export const HomeGlow = memo(() => {
   const isOnHeroBelow = isAtTop
   const [scrollTop, setScrollTop] = useState(0)
   const xs = 400
-  const scale = isOnHeroBelow ? 2.3 : 4
+  const scale = isOnHeroBelow ? 2.3 : 2
 
   if (isClient) {
     useTintSectionIndex((index) => {
@@ -31,48 +31,37 @@ export const HomeGlow = memo(() => {
 
   const isDouble = true
 
-  const [history, setHistory] = useState<JSX.Element[][]>([])
-
   const glows = useMemo(() => {
-    return [tint, tintAlt].map((cur, i) => {
-      const isOpposing = tintIndex % 2 === 0
-      const isAlt = i === 1
-      const active = isDouble ? i == 0 || i == 1 : cur === tint
-      const xRand = isOnHeroBelow ? 1 : positions[isOpposing ? 1 - i : i][0]
-      const yRand = isOnHeroBelow ? 1 : positions[isOpposing ? 1 - i : i][1]
-      const x = xRand + (isOnHeroBelow ? (isAlt ? -150 : 150) : isAlt ? -300 : 300)
-
-      return (
-        <YStack
-          key={`${i}${history.length}`}
-          overflow="hidden"
-          h="100vh"
-          w={1000}
-          pos="absolute"
-          t={0}
-          l={0}
-          theme={cur as ThemeName}
-          left={`calc(50vw - 500px)`}
-          x={x}
-          y={isOnHeroBelow ? 350 : yRand + 250}
-          scale={scale * (isAlt ? 0.5 : 1)}
-          o={isAlt ? 0 : 1}
-          className={'wander home-glow ' + (active ? ' active' : '')}
-        />
-      )
-    })
+    return (
+      <>
+        {[tint, tintAlt].map((cur, i) => {
+          const isOpposing = tintIndex % 2 === 0
+          const isAlt = i % 2 === 0
+          const active = isDouble ? i == 0 || i == 1 : cur === tint
+          const xRand = isOnHeroBelow ? 1 : positions[i][0]
+          const yRand = isOnHeroBelow ? 1 : positions[i][1]
+          const x = xRand + (isOnHeroBelow ? (isAlt ? -150 : 150) : isAlt ? -300 : 300)
+          return (
+            <YStack
+              key={`${i}`}
+              overflow="hidden"
+              h="100vh"
+              w={1000}
+              pos="absolute"
+              t={0}
+              l={0}
+              theme={cur as ThemeName}
+              left={`calc(50vw - 500px)`}
+              x={x}
+              y={isOnHeroBelow ? 350 : yRand + 250}
+              scale={scale}
+              className={'wander home-glow ' + (active ? ' active' : '')}
+            />
+          )
+        })}
+      </>
+    )
   }, [scale, tint, tints])
-
-  if (history[0] !== glows) {
-    setHistory([glows, ...history])
-  }
-  if (history.length > 50) {
-    setHistory([history[0], history[1]])
-  }
-
-  const lastGlows = history[1] || []
-
-  const allGlows = [...glows, ...lastGlows]
 
   return (
     <YStack
@@ -98,22 +87,3 @@ export const HomeGlow = memo(() => {
     </YStack>
   )
 })
-
-// via radix-ui
-
-import { useRef } from 'react'
-
-export function usePrevious<T>(value: T) {
-  const ref = useRef({ value, previous: value })
-
-  // We compare values before making an update to ensure that
-  // a change has been made. This ensures the previous value is
-  // persisted correctly between renders.
-  return useMemo(() => {
-    if (ref.current.value !== value) {
-      ref.current.previous = ref.current.value
-      ref.current.value = value
-    }
-    return ref.current.previous
-  }, [value])
-}
