@@ -136,6 +136,7 @@ const ButtonFrame = styled(ThemeableStack, {
 
     size: {
       '...size': getButtonSized,
+      ':number': getButtonSized,
     },
 
     disabled: {
