@@ -33,7 +33,7 @@ export const setTintIndex = (next: number) => {
   })
 }
 
-export const useTint = (altOffset = 1) => {
+export const useTint = (altOffset = -1) => {
   const index = useSyncExternalStore(
     onTintChange,
     () => current,
