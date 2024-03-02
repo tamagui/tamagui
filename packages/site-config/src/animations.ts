@@ -31,6 +31,12 @@ export const animations = createAnimations({
     mass: 1,
     stiffness: 25,
   },
+  superLazy: {
+    type: 'spring',
+    damping: 25,
+    mass: 2,
+    stiffness: 25,
+  },
   lazy: {
     type: 'spring',
     damping: 18,

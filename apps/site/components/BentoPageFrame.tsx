@@ -1,10 +1,9 @@
 import Image from 'next/image'
-import { Theme, YStack } from 'tamagui'
+import { Separator, Theme, YStack, XStack } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 import Head from 'next/head'
 import { LoadCherryBomb, LoadMunro } from './LoadFont'
 import { ContainerLarge } from './Container'
-import { ThemeNameEffect } from './ThemeNameEffect'
 import { Footer } from './Footer'
 
 export const BentoPageFrame = ({
@@ -18,15 +17,7 @@ export const BentoPageFrame = ({
         <LoadMunro />
       </Head>
 
-      {/* <YStack className="strong-background" /> */}
-
-      <YStack
-        pt={85}
-        {...(simpler && {
-          mb: -500,
-          pb: 500,
-        })}
-      >
+      <YStack pt={85}>
         <Theme name="tan">
           <YStack
             className={simpler ? `mask-gradient-down` : ``}
@@ -37,15 +28,6 @@ export const BentoPageFrame = ({
             b={-100}
           >
             <YStack fullscreen bg="$color6" />
-
-            {/* {simpler && (
-              <YStack
-                fullscreen
-                style={{
-                  background: `linear-gradient(var(--color10), var(--background0))`,
-                }}
-              />
-            )} */}
 
             <YStack
               className="grain mix-blend-color-burn-dodge"
@@ -70,7 +52,6 @@ export const BentoPageFrame = ({
             >
               <Theme name="blue">
                 <LinearGradient
-                  // colors={[`$color8`, `transparent`]}
                   colors={[`transparent`, `$color9`]}
                   start={[0, 0.5]}
                   end={[1, 0.5]}
@@ -126,17 +107,18 @@ export const BentoPageFrame = ({
           </YStack>
         </Theme>
 
-        {!simpler && (
-          <YStack fullscreen ov="hidden" y={-100}>
-            <ContainerLarge>
-              <BentoFrond />
-            </ContainerLarge>
-          </YStack>
-        )}
-
+        <YStack fullscreen ov="hidden" y={-100}>
+          <ContainerLarge>
+            <BentoFrond />
+          </ContainerLarge>
+        </YStack>
         {children}
-
-        {!simpler && <Footer />}
+        <ContainerLarge>
+          <XStack ai="center" jc="center" width="100%" mt="$5">
+            <Separator bc="$color6" width={'100%'} mb="$5" />
+          </XStack>
+        </ContainerLarge>
+        <Footer />
       </YStack>
     </>
   )

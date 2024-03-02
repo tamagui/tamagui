@@ -270,7 +270,7 @@ export const PurchaseModal = ({
                           disabled={noProductSelected}
                           opacity={noProductSelected ? 0.5 : undefined}
                         >
-                          Purchase
+                          Checkout
                         </PurchaseButton>
                       </NextLink>
                       <XStack jc="space-between" space="$2" ai="center">
@@ -512,7 +512,8 @@ function PurchaseButton(props: ButtonProps) {
   return (
     <Theme name="green">
       <Button
-        size="$6"
+        size="$5"
+        br="$6"
         backgroundColor="$color8"
         borderWidth={0}
         borderColor="$color10"
@@ -524,7 +525,7 @@ function PurchaseButton(props: ButtonProps) {
         }}
         {...props}
       >
-        <Button.Text ff="$munro" size="$9" fontWeight="700" color="#fff">
+        <Button.Text ff="$munro" size="$8" ls={2} fontWeight="700" color="#fff">
           {props.children}
         </Button.Text>
       </Button>
