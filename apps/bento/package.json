@@ -35,6 +35,7 @@
     "prod:web": "NODE_ENV=production webpack --json=dist/compilation-stats.json"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.3.4",
     "@rehookify/datepicker": "^6.5.0",
     "@tamagui/animations-reanimated": "1.90.15",
     "@tamagui/cli": "1.90.15",
@@ -53,11 +54,13 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
+    "react-hook-form": "^7.51.0",
     "react-native": "^0.73.4",
     "react-native-svg": "14.1.0",
     "react-native-web": "^0.19.10",
     "swr": "^2.2.0",
-    "tamagui": "1.90.15"
+    "tamagui": "1.90.15",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@babel/core": "^7.23.3",
