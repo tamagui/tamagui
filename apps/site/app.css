@@ -886,7 +886,7 @@ textarea {
     1px 5px 1px var(--color6), 1px 6px 1px var(--color6),
     1px 7px 1px var(--color7), 1px 8px 1px var(--color7),
     1px 9px 1px var(--color7), 1px 12px 1px var(--color8),
-    1px 10px 150px rgba(255, 255, 255, 0.5);
+    1px 10px 150px rgba(255, 255, 255, 0.3);
 }
 
 .t_dark .bento-shadow {
@@ -894,7 +894,8 @@ textarea {
     1px 3px 1px var(--color7), 1px 4px 1px var(--color7),
     1px 5px 1px var(--color6), 1px 6px 1px var(--color6),
     1px 7px 1px var(--color5), 1px 8px 1px var(--color4),
-    1px 9px 1px var(--color4), 1px 12px 1px var(--color3);
+    1px 9px 1px var(--color4), 1px 11px 1px var(--color3),
+    1px 10px 40px rgba(255,255,255,0.07);
 }
 
 .bento-up-text {
@@ -919,7 +920,7 @@ textarea {
 }
 
 .t_dark .glow-shadow {
-  text-shadow: 0 20px 20px var(--color05), 0 30px 30px var(--color025);
+  text-shadow: 0 20px 20px var(--color075), 0 30px 30px var(--color025);
   mix-blend-mode: screen;
 }
 
@@ -931,7 +932,7 @@ textarea {
 }
 
 .t_dark .bento-text-3 {
-  mix-blend-mode: screen;
+  mix-blend-mode: luminosity;
 }
 
 .mix-blend-color-burn-dodge {

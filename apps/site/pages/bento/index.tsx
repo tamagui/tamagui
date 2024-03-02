@@ -138,10 +138,10 @@ BentoPage.getLayout = getDefaultLayout
 
 const Intermediate = () => {
   return (
-    <YStack className="blur-4" zi={1} w="100%">
+    <YStack className="blur-8" zi={1} w="100%">
       {/* <YStack fullscreen elevation="$4" o={0.15} /> */}
-      <YStack pos="absolute" t={0} l={0} r={0} o={0.25} btw={0.5} bc="$color025" />
-      <YStack pos="absolute" b={0} l={0} r={0} o={0.25} btw={0.5} bc="$color025" />
+      <YStack pos="absolute" t={0} l={0} r={0} o={0.25} btw={0.5} bc="$color05" />
+      <YStack pos="absolute" b={0} l={0} r={0} o={0.25} btw={0.5} bc="$color05" />
       <ThemeTintAlt offset={-1}>
         <YStack fullscreen bg="$color9" o={0.048} />
       </ThemeTintAlt>
@@ -185,7 +185,7 @@ const IntermediateCard = ({
         <H4 ff="$silkscreen" color="$color11" className="text-glow" size="$2">
           {title}
         </H4>
-        <Paragraph mb={-5} size="$3" color="$color12">
+        <Paragraph mb={-5} size="$3" color="$color12" o={0.7}>
           {children}
         </Paragraph>
         <EnsureFlexed />
@@ -262,7 +262,14 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
               $sm={{ px: '$4', maw: 400, ml: 0 }}
             >
               <XStack gap="$6">
-                <Stack bg="$color9" w={4} br="$2" my={18} $sm={{ dsp: 'none' }} />
+                <Stack
+                  pos="relative"
+                  bg="$color9"
+                  w={6}
+                  br="$2"
+                  my={18}
+                  $sm={{ dsp: 'none' }}
+                />
                 <Paragraph
                   className="pixelate"
                   ff="$munro"
@@ -299,7 +306,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
                 mr="$4"
                 $md={{ mx: 0, fd: 'column', gap: '$3' }}
               >
-                <Paragraph color="$color10" size="$5" o={0.7} $md={{ size: '$3' }}>
+                <Paragraph color="$color10" size="$5" $md={{ size: '$3' }}>
                   One-time Purchase
                 </Paragraph>
 
@@ -310,7 +317,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
                   <Theme name="green">
                     {/* $199 */}
                     <Button
-                      iconAfter={ShoppingCart}
+                      iconAfter={<ShoppingCart y={-0.5} x={-1} />}
                       // iconAfter={
                       //   <YStack
                       //     zi={100}
@@ -349,12 +356,20 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
                         store.showPurchase = true
                       }}
                     >
-                      <Button.Text fontFamily="$silkscreen" size="$6" ls={0}>
+                      <Button.Text
+                        fontFamily="$silkscreen"
+                        size="$6"
+                        ls={-2}
+                        y={-0.5}
+                        x={-1}
+                      >
                         <sup
                           style={{
-                            fontSize: '50%',
+                            fontSize: '60%',
                             display: 'inline-flex',
-                            marginTop: -10,
+                            marginTop: -12,
+                            transform: `translateY(2px)`,
+                            marginRight: 5,
                           }}
                         >
                           $
@@ -370,7 +385,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
 
                 <Circle size={4} bg="$color10" $md={{ dsp: 'none' }} />
 
-                <Paragraph color="$color10" size="$5" o={0.7} $md={{ size: '$3' }}>
+                <Paragraph color="$color10" size="$5" $md={{ size: '$3' }}>
                   Lifetime rights
                 </Paragraph>
               </XStack>
@@ -401,12 +416,13 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
             <Theme name="gray">
               <XStack
                 pe="none"
-                rotate="4deg"
+                style={{
+                  transform: `rotate(4deg) scale(0.75)`,
+                }}
                 $sm={{
                   mt: -85,
                   mb: -60,
                 }}
-                scale={0.8}
               >
                 <YStack br="$4" shac="rgba(0,0,0,0.2)" shar="$8">
                   <ThemeTintAlt>
@@ -525,7 +541,7 @@ const Body = () => {
       {...(!store.heroVisible && {
         y: -store.heroHeight,
         shadowColor: '$shadowColor',
-        shadowRadius: 3,
+        shadowRadius: 20,
       })}
       zi={10000}
     >
@@ -551,7 +567,13 @@ const Body = () => {
             <YStack id={sectionName} key={sectionName} jc={'space-between'}>
               <Theme name="tan">
                 <YStack pos="relative">
-                  <YStack fullscreen bg="$background025" o={0.24} />
+                  <YStack
+                    fullscreen
+                    o={0.15}
+                    style={{
+                      background: 'linear-gradient(transparent, var(--background025))',
+                    }}
+                  />
                   <ContainerLarge>
                     <YStack py="$2" px="$3" pos="relative">
                       <H3
@@ -613,7 +635,6 @@ const Body = () => {
           )
         })}
       </YStack>
-
     </YStack>
   )
 }
@@ -654,7 +675,9 @@ function SectionCard({
           y: 1,
         }}
         $gtMd={{
-          w: '25%',
+          w: 'calc(25% - 14px)',
+          br: '$6',
+          m: '$2',
         }}
       >
         <YStack f={1} p="$4">
