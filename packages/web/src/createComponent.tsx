@@ -492,6 +492,10 @@ export function createComponent<
 
     const hasTextAncestor = !!(isWeb && isText ? componentContext.inText : false)
     const isDisabled = props.disabled ?? props.accessibilityState?.disabled
+    if (isDisabled) {
+      state.hover = false
+      state.focus = false
+    }
 
     if (process.env.NODE_ENV === 'development' && time) time`use-context`
 
