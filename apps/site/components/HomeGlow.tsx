@@ -4,10 +4,13 @@ import { AnimatePresence, YStack, isClient, useDidFinishSSR } from 'tamagui'
 
 import { useTintSectionIndex } from './TintSection'
 
-const positions = new Array(15).fill(0).map(() => {
+const positions = new Array(15).fill(0).map((_, i) => {
+  const isOdd = i % 2 === 1
   return [
     // x
-    Math.random() * 400 * (Math.random() > 0.5 ? 1 : -1),
+    Math.random() * 400 * (Math.random() > 0.5 ? 1 : -1) +
+      // ensure they jump back and forth a bit
+      (isOdd ? -200 : 200),
     // y
     Math.random() * 150,
   ]
@@ -16,8 +19,7 @@ const positions = new Array(15).fill(0).map(() => {
 export const HomeGlow = memo(() => {
   const { tints, tint, tintAlt, tintIndex } = useTint()
   const [sectionIndex, setSectionIndex] = useState(0)
-  const isAtTop = sectionIndex <= 1
-  const isOnHeroBelow = isAtTop
+  const isOnHeroBelow = sectionIndex <= 1
   const [scrollTop, setScrollTop] = useState(0)
   const xs = 400
   const scale = isOnHeroBelow ? 2 : 3
@@ -26,6 +28,8 @@ export const HomeGlow = memo(() => {
   if (isClient) {
     useTintSectionIndex((index) => {
       setSectionIndex(index)
+      // const dims = tintSectionDimensions[index]
+      // console.log('index', index, dims)
       const sy = document.documentElement?.scrollTop ?? 0
       setScrollTop(sy + 100)
     })
@@ -45,7 +49,7 @@ export const HomeGlow = memo(() => {
       return (
         <YStack
           key={`${i}${tint}${tintAlt}`}
-          animation="lazy"
+          animation="superLazy"
           opacity={!isHydrated ? 0.5 : 1}
           enterStyle={{
             opacity: isOnHeroBelow ? 0.5 : 0,
@@ -64,7 +68,7 @@ export const HomeGlow = memo(() => {
           x={x}
           y={isOnHeroBelow ? 350 : yRand + 250}
           scale={scale * (isAlt ? 0.5 : 1)}
-          scaleX={1.3}
+          scaleX={isOpposing ? 1 : 1.3}
         >
           <YStack
             fullscreen
@@ -90,16 +94,16 @@ export const HomeGlow = memo(() => {
       zi={0}
       x={0}
       y={scrollTop}
-      o={0.2}
+      o={0.4}
       {...(isOnHeroBelow && {
-        animation: 'lazy',
+        animation: 'superLazy',
         x: sectionIndex === 2 ? -xs : sectionIndex === 4 ? xs : 0,
         y: -100,
-        o: 0.2,
+        o: 0.4,
       })}
       // display={isResizing ? 'none' : 'flex'}
     >
-      <AnimatePresence initial={false}>{glows}</AnimatePresence>
+      <AnimatePresence initial={isHydrated}>{glows}</AnimatePresence>
     </YStack>
   )
 })
