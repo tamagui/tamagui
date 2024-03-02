@@ -149,9 +149,7 @@ export const PurchaseModal = ({
                   mb="$6"
                   als="center"
                 >
-                  <BentoLogo noShadow scale={0.5}>
-                    BENTO
-                  </BentoLogo>
+                  Checkout
                 </Dialog.Title>
               </XStack>
 
@@ -270,7 +268,7 @@ export const PurchaseModal = ({
                           disabled={noProductSelected}
                           opacity={noProductSelected ? 0.5 : undefined}
                         >
-                          Checkout
+                          Purchase
                         </PurchaseButton>
                       </NextLink>
                       <XStack jc="space-between" space="$2" ai="center">

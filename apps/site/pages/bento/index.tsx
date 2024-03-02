@@ -93,9 +93,8 @@ export default function BentoPage(props: ProComponentsProps) {
 
   return (
     <Theme name="tan">
-      <ThemeNameEffect colorKey="$color5" />
+      <ThemeNameEffect colorKey="$color6" />
       <BentoPageFrame>
-        <ThemeNameEffect colorKey="$color6" />
         <ContainerLarge zi={100000000} h={0}>
           <Button
             pos="absolute"
@@ -126,9 +125,7 @@ export default function BentoPage(props: ProComponentsProps) {
           <Intermediate />
         </YStack>
         <Body />
-        <Theme name="tan">
-          <PurchaseModal defaultCoupon={coupon} proComponents={props.proComponents} />
-        </Theme>
+        <PurchaseModal defaultCoupon={coupon} proComponents={props.proComponents} />
       </BentoPageFrame>
     </Theme>
   )
@@ -286,8 +283,8 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
                     ta: 'center',
                   }}
                 >
-                  Boost your React development with a suite of copy-paste
-                  primitives.&nbsp;
+                  Boost your React development with a suite
+                  of&nbsp;copy-paste&nbsp;primitives.&nbsp;
                   <YStack
                     my={-20}
                     tag="span"
