@@ -1,4 +1,4 @@
-import { createElement } from 'react'
+import { createElement, forwardRef } from 'react'
 
 export const Circle = forwardRef((p, ref) => createElement('circle', { ...p, ref }))
 export const ClipPath = forwardRef((p, ref) => createElement('clipPath', { ...p, ref }))
