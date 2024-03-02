@@ -32,30 +32,4 @@ export const TextPath = forwardRef((p, ref) => createElement('clipPath', { ...p,
 export const TSpan = forwardRef((p, ref) => createElement('tSpan', { ...p, ref }))
 export const Use = forwardRef((p, ref) => createElement('use', { ...p, ref }))
 
-export default {
-  Circle,
-  ClipPath,
-  Defs,
-  Ellipse,
-  ForeignObject,
-  G,
-  Image,
-  Line,
-  LinearGradient,
-  Marker,
-  Mask,
-  Path,
-  Pattern,
-  Polygon,
-  Polyline,
-  RadialGradient,
-  Rect,
-  Shape,
-  Stop,
-  Svg,
-  Symbol,
-  Text,
-  TextPath,
-  TSpan,
-  Use,
-}
+export default Svg
