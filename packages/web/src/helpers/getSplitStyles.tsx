@@ -1240,11 +1240,15 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   // merge after the prop loop - and always keep it on style dont turn into className except if RN gives us
-  if (props.style) {
+  const styleProp = props.style
+  if (styleProp) {
     if (isHOC) {
-      viewProps.style = normalizeStyle(props.style)
+      viewProps.style = normalizeStyle(styleProp)
     } else {
-      for (const style of [].concat(props.style)) {
+      const isArray = Array.isArray(styleProp)
+      const len = isArray ? props.length : 1
+      for (let i = 0; i < len; i++) {
+        const style = isArray ? styleProp[i] : styleProp
         if (style) {
           if (style['$$css']) {
             Object.assign(styleState.classNames, style)
