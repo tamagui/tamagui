@@ -1,18 +1,26 @@
-import { TamaguiLogo, setTintFamily, useTint } from '@tamagui/logo'
-import type { ButtonProps } from 'tamagui'
-import { Button, Circle, Popover, SizableText, Square, Text, YStack } from 'tamagui'
+import { TamaguiLogo, setTintFamily, useTint } from "@tamagui/logo";
+import type { ButtonProps } from "tamagui";
+import {
+  Button,
+  Circle,
+  Popover,
+  SizableText,
+  Square,
+  Text,
+  YStack,
+} from "tamagui";
 
 export const seasons = {
   tamagui: <TamaguiLogo downscale={2} />,
-  easter: '🐣',
-  xmas: '🎅🏻',
-  lunar: '🧧',
-  valentine: '💘',
-  halloween: '🎃',
-}
+  easter: "🐣",
+  xmas: "🎅🏻",
+  lunar: "🧧",
+  valentine: "💘",
+  halloween: "🎃",
+};
 
 export const SeasonToggleButton = (props: ButtonProps) => {
-  const { name, tint, setNextTint } = useTint()
+  const { name, tint, setNextTint } = useTint();
 
   return (
     <Popover hoverable>
@@ -21,14 +29,14 @@ export const SeasonToggleButton = (props: ButtonProps) => {
           size="$3"
           w={38}
           onPress={(e) => {
-            setNextTint()
-            e.stopPropagation()
+            setNextTint();
+            e.stopPropagation();
           }}
           {...props}
           aria-label="Toggle theme"
-          ov="hidden"
+          ov="visable"
           hoverStyle={{
-            bg: 'rgba(0,0,0,0.15)',
+            bg: "rgba(0,0,0,0.15)",
           }}
         >
           <Circle
@@ -39,8 +47,14 @@ export const SeasonToggleButton = (props: ButtonProps) => {
             backgroundColor={tint as any}
           />
 
-          {name !== 'tamagui' && (
-            <SizableText size="$8" pos="absolute" b={-10} r={-10} rotate="-10deg">
+          {name !== "tamagui" && (
+            <SizableText
+              size="$8"
+              pos="absolute"
+              b={-10}
+              r={-10}
+              rotate="-10deg"
+            >
               {seasons[name]}
             </SizableText>
           )}
@@ -56,7 +70,7 @@ export const SeasonToggleButton = (props: ButtonProps) => {
         ov="hidden"
         br="$8"
         animation={[
-          'medium',
+          "medium",
           {
             opacity: {
               overshootClamping: true,
@@ -70,31 +84,31 @@ export const SeasonToggleButton = (props: ButtonProps) => {
               <Square
                 key={optionName}
                 size="$4"
-                $sm={{ size: '$5' }}
+                $sm={{ size: "$5" }}
                 hoverStyle={{
-                  bg: '$backgroundHover',
+                  bg: "$backgroundHover",
                 }}
                 pressStyle={{
-                  bg: '$backgroundPress',
+                  bg: "$backgroundPress",
                 }}
                 {...(name === optionName && {
-                  bg: '$color5',
+                  bg: "$color5",
                   hoverStyle: {
-                    bg: '$color5',
+                    bg: "$color5",
                   },
                 })}
                 onPress={() => {
-                  setTintFamily(optionName as any)
+                  setTintFamily(optionName as any);
                 }}
               >
                 <SizableText size="$6" cursor="default">
                   {seasons[optionName]}
                 </SizableText>
               </Square>
-            )
+            );
           })}
         </YStack>
       </Popover.Content>
     </Popover>
-  )
-}
+  );
+};
