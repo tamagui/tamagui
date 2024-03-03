@@ -11,7 +11,7 @@ export declare const TextAreaFrame: import("@tamagui/core").TamaguiComponent<imp
     unstyled?: boolean | undefined;
 }, {
     isInput: true;
-    acceptTokens: {
+    accept: {
         readonly placeholderTextColor: "color";
         readonly selectionColor: "color";
     };
@@ -33,7 +33,7 @@ export declare const TextArea: import("@tamagui/core").TamaguiComponent<Omit<imp
     unstyled?: boolean | undefined;
 }, {
     isInput: true;
-    acceptTokens: {
+    accept: {
         readonly placeholderTextColor: "color";
         readonly selectionColor: "color";
     };

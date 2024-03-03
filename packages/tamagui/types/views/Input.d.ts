@@ -49,7 +49,7 @@ export declare const InputFrame: import("@tamagui/core").TamaguiComponent<import
     unstyled?: boolean | undefined;
 }, {
     isInput: true;
-    acceptTokens: {
+    accept: {
         readonly placeholderTextColor: "color";
         readonly selectionColor: "color";
     };
@@ -76,7 +76,7 @@ export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import
     unstyled?: boolean | undefined;
 }, {
     isInput: true;
-    acceptTokens: {
+    accept: {
         readonly placeholderTextColor: "color";
         readonly selectionColor: "color";
     };
@@ -625,6 +625,17 @@ export declare function useInputProps(props: InputProps, ref: any): {
         readonly selectionColor?: import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor | undefined;
     }>>) | null | undefined;
     focusStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
+        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor | undefined;
+        readonly selectionColor?: import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor | undefined;
+    }> & {
+        size?: import("@tamagui/core").SizeTokens | undefined;
+        disabled?: boolean | undefined;
+        unstyled?: boolean | undefined;
+    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
+        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor | undefined;
+        readonly selectionColor?: import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor | undefined;
+    }>>) | null | undefined;
+    focusVisibleStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
         readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor | undefined;
         readonly selectionColor?: import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor | undefined;
     }> & {

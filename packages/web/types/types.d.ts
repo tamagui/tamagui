@@ -557,9 +557,6 @@ export type ThemeValueFallbackColor = ThemeValueFallback | GetThemeValueFallback
 export type ThemeValueFallbackRadius = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingRadius, never, UnionableNumber, UnionableNumber, WebStyleValueUniversal>;
 export type ThemeValueFallbackZIndex = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingZIndex, never, UnionableNumber, UnionableNumber, WebStyleValueUniversal>;
 export type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`;
-export type GetTokenPropsFromAcceptedTokens<AcceptedTokens> = AcceptedTokens extends Record<string, any> ? {
-    [Key in keyof AcceptedTokens]?: ThemeValueGet<AcceptedTokens[Key]>;
-} : {};
 export type SpecificTokens<Record = Tokens, RK extends keyof Record = keyof Record> = RK extends string ? `$${RK}.${keyof Record[RK] extends string | number ? keyof Record[RK] : never}` : never;
 export type SpecificTokensSpecial = TamaguiSettings extends {
     autocompleteSpecificTokens: infer Val;
@@ -878,8 +875,8 @@ export type StaticConfigPublic = {
     /**
      * Accept Tamagui tokens for these props (key for the prop key, val for the token category)
      */
-    acceptTokens?: {
-        [key: string]: keyof Tokens;
+    accept?: {
+        [key: string]: keyof Tokens | 'style' | 'textStyle';
     };
     /**
      * (compiler) If these props are encountered, leave them un-extracted.

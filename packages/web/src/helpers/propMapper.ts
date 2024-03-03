@@ -387,7 +387,7 @@ export const getTokenForKey = (
   let valOrVar: any
   let hasSet = false
 
-  const customTokenAccept = staticConfig?.acceptTokens?.[key]
+  const customTokenAccept = staticConfig?.accept?.[key]
   if (customTokenAccept) {
     const val = theme?.[value] ?? tokensParsed[customTokenAccept][value]
     if (val != null) {
