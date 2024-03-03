@@ -1,55 +1,35 @@
-import { createElement } from 'react'
+import { createElement, forwardRef } from 'react'
 
-export const Circle = (p) => createElement('circle', p)
-export const ClipPath = (p) => createElement('clipPath', p)
-export const Defs = (p) => createElement('defs', p)
-export const Ellipse = (p) => createElement('ellipse', p)
-export const ForeignObject = (p) => createElement('foreignObject', p)
-export const G = (p) => createElement('g', p)
-export const Image = (p) => createElement('image', p)
-export const Line = (p) => createElement('line', p)
-export const LinearGradient = (p) => createElement('linearGradient', p)
-export const Marker = (p) => createElement('marker', p)
-export const Mask = (p) => createElement('mask', p)
-export const Path = (p) => createElement('path', p)
-export const Pattern = (p) => createElement('pattern', p)
-export const Polygon = (p) => createElement('polygon', p)
-export const Polyline = (p) => createElement('polyline', p)
-export const RadialGradient = (p) => createElement('radialGradient', p)
-export const Rect = (p) => createElement('rect', p)
-export const Shape = (p) => createElement('shape', p)
-export const Stop = (p) => createElement('stop', p)
-export const Svg = (p) => createElement('svg', p)
-export const Symbol = (p) => createElement('symbol', p)
-export const Text = (p) => createElement('text', p)
-export const TextPath = (p) => createElement('clipPath', p)
-export const TSpan = (p) => createElement('tSpan', p)
-export const Use = (p) => createElement('use', p)
+export const Circle = forwardRef((p, ref) => createElement('circle', { ...p, ref }))
+export const ClipPath = forwardRef((p, ref) => createElement('clipPath', { ...p, ref }))
+export const Defs = forwardRef((p, ref) => createElement('defs', { ...p, ref }))
+export const Ellipse = forwardRef((p, ref) => createElement('ellipse', { ...p, ref }))
+export const ForeignObject = forwardRef((p, ref) =>
+  createElement('foreignObject', { ...p, ref })
+)
+export const G = forwardRef((p, ref) => createElement('g', { ...p, ref }))
+export const Image = forwardRef((p, ref) => createElement('image', { ...p, ref }))
+export const Line = forwardRef((p, ref) => createElement('line', { ...p, ref }))
+export const LinearGradient = forwardRef((p, ref) =>
+  createElement('linearGradient', { ...p, ref })
+)
+export const Marker = forwardRef((p, ref) => createElement('marker', { ...p, ref }))
+export const Mask = forwardRef((p, ref) => createElement('mask', { ...p, ref }))
+export const Path = forwardRef((p, ref) => createElement('path', { ...p, ref }))
+export const Pattern = forwardRef((p, ref) => createElement('pattern', { ...p, ref }))
+export const Polygon = forwardRef((p, ref) => createElement('polygon', { ...p, ref }))
+export const Polyline = forwardRef((p, ref) => createElement('polyline', { ...p, ref }))
+export const RadialGradient = forwardRef((p, ref) =>
+  createElement('radialGradient', { ...p, ref })
+)
+export const Rect = forwardRef((p, ref) => createElement('rect', { ...p, ref }))
+export const Shape = forwardRef((p, ref) => createElement('shape', { ...p, ref }))
+export const Stop = forwardRef((p, ref) => createElement('stop', { ...p, ref }))
+export const Svg = forwardRef((p, ref) => createElement('svg', { ...p, ref }))
+export const Symbol = forwardRef((p, ref) => createElement('symbol', { ...p, ref }))
+export const Text = forwardRef((p, ref) => createElement('text', { ...p, ref }))
+export const TextPath = forwardRef((p, ref) => createElement('clipPath', { ...p, ref }))
+export const TSpan = forwardRef((p, ref) => createElement('tSpan', { ...p, ref }))
+export const Use = forwardRef((p, ref) => createElement('use', { ...p, ref }))
 
-export default {
-  Circle,
-  ClipPath,
-  Defs,
-  Ellipse,
-  ForeignObject,
-  G,
-  Image,
-  Line,
-  LinearGradient,
-  Marker,
-  Mask,
-  Path,
-  Pattern,
-  Polygon,
-  Polyline,
-  RadialGradient,
-  Rect,
-  Shape,
-  Stop,
-  Svg,
-  Symbol,
-  Text,
-  TextPath,
-  TSpan,
-  Use,
-}
+export default Svg

@@ -400,6 +400,9 @@ export function createComponent<
         : defaultComponentState
       : defaultComponentStateMounted
 
+    const isDisabled =
+      props.disabled ?? props.accessibilityState?.disabled ?? props['aria-disabled']
+
     // HOOK
     const states = useState<TamaguiComponentState>(initialState)
 
@@ -408,7 +411,7 @@ export function createComponent<
       : states[0]
 
     const setState = states[1]
-    let setStateShallow = createShallowSetState(setState, debugProp)
+    let setStateShallow = createShallowSetState(setState, isDisabled, debugProp)
 
     if (isHydrated && state.unmounted === 'should-enter') {
       state.unmounted = true
@@ -491,7 +494,6 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development' && time) time`use-state`
 
     const hasTextAncestor = !!(isWeb && isText ? componentContext.inText : false)
-    const isDisabled = props.disabled ?? props.accessibilityState?.disabled
 
     if (process.env.NODE_ENV === 'development' && time) time`use-context`
 

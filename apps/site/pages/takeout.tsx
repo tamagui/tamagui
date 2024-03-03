@@ -241,7 +241,7 @@ export default function TakeoutPage({
                 }}
                 size="$4"
               >
-                Checkout
+                Purchase
               </PurchaseButton>
             </YStack>
 
@@ -1733,7 +1733,7 @@ const PurchaseModal = ({
                           disabled={noProductSelected}
                           opacity={noProductSelected ? 0.5 : undefined}
                         >
-                          Checkout
+                          Purchase
                         </PurchaseButton>
                       </NextLink>
                       <XStack jc="space-between" space="$2" ai="center" mb="$2">
@@ -2012,7 +2012,7 @@ function PurchaseButton(props: ButtonProps) {
     <ThemeTintAlt>
       <Theme name="surface4">
         <Button size="$6" borderWidth={2} {...props}>
-          <Button.Text ff="$silkscreen">{props.children} 🥡</Button.Text>
+          <Button.Text ff="$silkscreen">{props.children}</Button.Text>
         </Button>
       </Theme>
     </ThemeTintAlt>

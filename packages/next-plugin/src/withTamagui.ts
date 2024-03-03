@@ -203,15 +203,6 @@ export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
             }
 
             if (
-              // feather icons uses react-native-svg which needs to be aliased
-              // fullPath.includes('/lucide-icons/') ||
-              fullPath.startsWith('react-native-web') ||
-              fullPath.includes(`node_modules${SEP}react-native-web`) ||
-              new RegExp(`^(react-dom|react)${SEP}$`).test(fullPath)
-            ) {
-              return `commonjs ${fullPath}`
-            }
-            if (
               fullPath.startsWith('moti') ||
               fullPath.startsWith('solito') ||
               fullPath === 'tamagui' ||
@@ -223,9 +214,11 @@ export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
             ) {
               return
             }
+
             if (/^@?react-native-/.test(request)) {
               return false
             }
+
             return true
           }
 

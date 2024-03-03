@@ -17,6 +17,9 @@
       "@components/*": [
         "./components/*"
       ],
+      "@interfaces/*": [
+        "./interfaces/*"
+      ],
       "@lib/*": [
         "./lib/*"
       ],
