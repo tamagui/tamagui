@@ -8,7 +8,6 @@ import type {
   GetNonStyledProps,
   GetStaticConfig,
   GetStyledVariants,
-  GetTokenPropsFromAccepted,
   GetVariantValues,
   InferStyledProps,
   StaticConfig,
@@ -16,6 +15,7 @@ import type {
   StylableComponent,
   TamaDefer,
   TamaguiComponent,
+  ThemeValueGet,
   VariantDefinitions,
   VariantSpreadFunction,
 } from './types'
@@ -72,11 +72,17 @@ export function styled<
         }
 
   type Accepted = StyledStaticConfig['accept']
-  type CustomTokenProps = GetTokenPropsFromAccepted<
-    Accepted,
-    Partial<InferStyledProps<ParentComponent, StyledStaticConfig>>,
-    Partial<InferStyledProps<typeof Text, StyledStaticConfig>>
-  >
+  type CustomTokenProps = Accepted extends Record<string, any>
+    ? {
+        [Key in keyof Accepted]?:
+          | (Key extends keyof ParentStylesBase ? ParentStylesBase[Key] : never)
+          | (Accepted[Key] extends 'style'
+              ? Partial<InferStyledProps<ParentComponent, StyledStaticConfig>>
+              : Accepted[Key] extends 'textStyle'
+                ? Partial<InferStyledProps<typeof Text, StyledStaticConfig>>
+                : Omit<ThemeValueGet<Accepted[Key]>, 'unset'>)
+      }
+    : {}
 
   /**
    * de-opting a bit of type niceness because were hitting depth issues too soon

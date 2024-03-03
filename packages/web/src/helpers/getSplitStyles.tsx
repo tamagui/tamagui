@@ -231,8 +231,8 @@ export const getSplitStyles: StyleSplitter = (
 
     if (
       staticConfig.accept &&
-      (staticConfig.accept[keyInit] === 'viewStyles' ||
-        staticConfig.accept[keyInit] === 'textStyles') &&
+      (staticConfig.accept[keyInit] === 'style' ||
+        staticConfig.accept[keyInit] === 'textStyle') &&
       typeof valInit === 'object'
     ) {
       const styleObject = getSubStyle(

@@ -21,7 +21,7 @@ const MyInput = styled(
     backgroundColor: 'red',
   },
   {
-    acceptTokens: { placeholderTextColor: 'color' },
+    accept: { placeholderTextColor: 'color' },
   }
 )
 
