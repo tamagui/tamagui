@@ -332,7 +332,9 @@ export function createComponent<
     // conditional but if ever true stays true
     // [animated, inversed]
     // HOOK
-    const stateRef = useRef<TamaguiComponentStateRef>({})
+    const stateRef = useRef<TamaguiComponentStateRef>({
+      handleFocusVisible: true,
+    })
     if (process.env.NODE_ENV === 'development' && time) time`stateref`
 
     /**
@@ -910,14 +912,12 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`events-setup`
 
-    const isKeyboardEvent = useRef(true)
-
     const events: TamaguiComponentEvents | null =
       shouldAttach && !isDisabled && !props.asChild
         ? {
             onPressOut: attachPress
               ? (e) => {
-                  isKeyboardEvent.current = true
+                  stateRef.current.handleFocusVisible = true
                   unPress()
                   onPressOut?.(e)
                   onMouseUp?.(e)
@@ -957,7 +957,7 @@ export function createComponent<
             }),
             onPressIn: attachPress
               ? (e) => {
-                  isKeyboardEvent.current = false
+                  stateRef.current.handleFocusVisible = false
                   if (runtimePressStyle) {
                     setStateShallow({
                       press: true,
@@ -996,7 +996,7 @@ export function createComponent<
                   setTimeout(() => {
                     setStateShallow({
                       focus: true,
-                      focusVisible: !!isKeyboardEvent.current,
+                      focusVisible: !!stateRef.current.handleFocusVisible,
                     })
                   }, 0)
                 } else {
@@ -1008,7 +1008,7 @@ export function createComponent<
                 onFocus?.(e)
               },
               onBlur: (e) => {
-                isKeyboardEvent.current = true
+                stateRef.current.handleFocusVisible = true
                 setStateShallow({
                   focus: false,
                   focusVisible: false,

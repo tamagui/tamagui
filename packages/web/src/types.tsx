@@ -2028,6 +2028,7 @@ export type TamaguiComponentStateRef = {
   hasAnimated?: boolean
   themeShallow?: boolean
   isListeningToTheme?: boolean
+  handleFocusVisible?: boolean
   unPress?: Function
   group?: {
     listeners: Set<GroupStateListener>
