@@ -106,19 +106,12 @@ export class TamaguiPlugin {
         ['@tamagui/core/reset.css', '@tamagui/core/reset.css'],
         ['@tamagui/core', '@tamagui/core'],
         ['@tamagui/web', '@tamagui/web'],
-        // web specific light react-native-svg, optional, can use svgs but had issues with compat
-        ['react-native-svg', '@tamagui/react-native-svg'],
+
         // fixes https://github.com/kentcdodds/mdx-bundler/issues/143
         ['react/jsx-runtime.js', 'react/jsx-runtime'],
         ['react/jsx-runtime', 'react/jsx-runtime'],
         ['react/jsx-dev-runtime.js', 'react/jsx-dev-runtime'],
         ['react/jsx-dev-runtime', 'react/jsx-dev-runtime'],
-        ['react-native-reanimated', 'react-native-reanimated'],
-
-        ['@testing-library/react-native', '@tamagui/proxy-worm'],
-        ['@gorhom/bottom-sheet$', '@gorhom/bottom-sheet'],
-        // fix reanimated 3
-        ['react-native/Libraries/Renderer/shims/ReactFabric', '@tamagui/proxy-worm'],
 
         // @ts-expect-error deprecated
         ...(this.options.useReactNativeWebLite

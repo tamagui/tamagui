@@ -9,6 +9,7 @@ import {
 import {
   stylePropsText,
   stylePropsTransform,
+  tokenCategories,
   validPseudoKeys,
   validStyles,
 } from '@tamagui/helpers'
@@ -382,14 +383,6 @@ export const getSplitStyles: StyleSplitter = (
         viewProps[`data-${hyphenate(keyInit)}`] = valInit[keyInit]
       }
       continue
-    }
-
-    if (!isValidStyleKeyInit) {
-      if (keyInit.startsWith('_style') && isObj(valInit)) {
-        styleState.style ||= {}
-        Object.assign(styleState.style, valInit)
-        continue
-      }
     }
 
     if (process.env.TAMAGUI_TARGET === 'web') {
@@ -1054,28 +1047,6 @@ export const getSplitStyles: StyleSplitter = (
 
   // style prop after:
 
-  // merge after the prop loop - this way pseudos apply and set usedKeys and then this wont clobber them
-  // otherwise styled(styleable(), { bg: 'red', pressStyle: { bg: 'pink' } })
-  // will pass down a style={} + pressStyle={} but pressStyle will go behind style depending on how you pass it
-  // also it makes sense that props.style is basically the last to apply,
-  // at least more sense than "it applies at the position its defined in the prop loop"
-  if (props.style) {
-    if (isHOC) {
-      viewProps.style = props.style
-    } else {
-      for (const style of [].concat(props.style)) {
-        if (style) {
-          if (style['$$css']) {
-            Object.assign(styleState.classNames, style)
-          } else {
-            styleState.style ||= {}
-            Object.assign(styleState.style, style)
-          }
-        }
-      }
-    }
-  }
-
   const avoidNormalize = styleProps.noNormalize === false
 
   if (!avoidNormalize) {
@@ -1188,6 +1159,7 @@ export const getSplitStyles: StyleSplitter = (
         }
 
         if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
+          console.groupEnd() // ensure group ended from loop above
           console.groupCollapsed(`🔹 getSplitStyles final style object`)
           console.info(styleState.style)
           console.groupEnd()
@@ -1221,7 +1193,7 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
-    if (isWeb && !isReactNative) {
+    if (!isReactNative) {
       if (viewProps.tabIndex == null) {
         const isFocusable = viewProps.focusable ?? viewProps.accessible
 
@@ -1262,6 +1234,24 @@ export const getSplitStyles: StyleSplitter = (
         if (isFocusable) {
           viewProps.tabIndex = '0'
           delete viewProps.focusable
+        }
+      }
+    }
+  }
+
+  // merge after the prop loop - and always keep it on style dont turn into className except if RN gives us
+  if (props.style) {
+    if (isHOC) {
+      viewProps.style = normalizeStyle(props.style)
+    } else {
+      for (const style of [].concat(props.style)) {
+        if (style) {
+          if (style['$$css']) {
+            Object.assign(styleState.classNames, style)
+          } else {
+            styleState.style ||= {}
+            Object.assign(styleState.style, normalizeStyle(style))
+          }
         }
       }
     }
@@ -1524,7 +1514,11 @@ function processIDRefList(idRefList: string | Array<string>): string {
   return Array.isArray(idRefList) ? idRefList.join(' ') : idRefList
 }
 
+const defaultColor = process.env.TAMAGUI_DEFAULT_COLOR || 'rgba(0,0,0,0)'
 const animatableDefaults = {
+  ...Object.fromEntries(
+    Object.entries(tokenCategories.color).map(([k, v]) => [k, defaultColor])
+  ),
   opacity: 1,
   scale: 1,
   rotate: '0deg',
@@ -1610,4 +1604,21 @@ function mergeMediaByImportance(
   importancesUsed[key] = importance
   mergeStyle(styleState, key, value)
   return true
+}
+
+function normalizeStyle(style: any) {
+  const out: Record<string, any> = {}
+  for (const key in style) {
+    const val = style[key]
+    if (key in stylePropsTransform) {
+      mergeTransform(out, key, val)
+    } else {
+      out[key] = normalizeValueWithProperty(val, key)
+    }
+  }
+  if (isWeb && Array.isArray(out.transform)) {
+    out.transform = transformsToString(out.transform)
+  }
+  fixStyles(out)
+  return out
 }

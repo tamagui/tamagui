@@ -835,8 +835,9 @@ textarea {
   text-underline-offset: 6px;
 }
 
-.wanter {
-  animation: wander 15s alternate-reverse infinite forwards;
+.wander {
+  animation: wander 25s alternate-reverse infinite forwards;
+  transform-origin: top left;
 }
 
 @keyframes wander {
@@ -845,19 +846,21 @@ textarea {
   }
 
   25% {
-    transform: translateX(100px) translateY(100px) scale(1.1);
+    transform: translateX(10px) translateY(10px) scale(1.06);
   }
 
   50% {
-    transform: translateX(-100px) translateY(-100px) scale(0.9);
+    transform: translateX(-10px) translateY(-10px) scale(1.06);
   }
 
   75% {
-    transform: translateX(100px) translateY(-100px) scale(1);
+    transform: translateX(10px) translateY(-10px) scale(1);
   }
 }
 
-
+.shadow-breeze {
+  animation: breeze 20s alternate-reverse infinite forwards;
+}
 @keyframes breeze {
   0% {
     transform: translateX(1300px) translateY(-100px) scale(3.5) rotate(90deg)
@@ -870,8 +873,23 @@ textarea {
   }
 }
 
-.shadow-breeze {
-  animation: breeze 20s alternate-reverse infinite forwards;
+
+.shadow-breeze2 {
+  animation: breeze2 30s linear alternate-reverse infinite forwards;
+}
+
+@keyframes breeze2 {
+  0% {
+    transform: translateX(0px) translateY(0px);
+  }
+
+  33% {
+    transform: translateX(15px) translateY(5px) scale(1.025);
+  }
+
+  66% {
+    transform: translateX(-15px) translateY(-15px);
+  }
 }
 
 :root.t_light .phone-preview {
@@ -885,7 +903,7 @@ textarea {
     1px 5px 1px var(--color6), 1px 6px 1px var(--color6),
     1px 7px 1px var(--color7), 1px 8px 1px var(--color7),
     1px 9px 1px var(--color7), 1px 12px 1px var(--color8),
-    1px 10px 150px rgba(255, 255, 255, 0.5);
+    1px 10px 150px rgba(255, 255, 255, 0.3);
 }
 
 .t_dark .bento-shadow {
@@ -893,20 +911,8 @@ textarea {
     1px 3px 1px var(--color7), 1px 4px 1px var(--color7),
     1px 5px 1px var(--color6), 1px 6px 1px var(--color6),
     1px 7px 1px var(--color5), 1px 8px 1px var(--color4),
-    1px 9px 1px var(--color4), 1px 12px 1px var(--color3);
-}
-
-.home-glow {
-  background: radial-gradient(var(--color075) 0%, var(--color0) 50%);
-  transition: all ease-in-out 300ms;
-}
-
-.t_dark .home-glow.active {
-  opacity: 1;
-}
-
-.home-glow.active {
-  opacity: 1;
+    1px 9px 1px var(--color4), 1px 11px 1px var(--color3),
+    1px 10px 40px rgba(255,255,255,0.07);
 }
 
 .bento-up-text {
@@ -931,7 +937,7 @@ textarea {
 }
 
 .t_dark .glow-shadow {
-  text-shadow: 0 20px 20px var(--color05), 0 30px 30px var(--color025);
+  text-shadow: 0 20px 20px var(--color075), 0 30px 30px var(--color025);
   mix-blend-mode: screen;
 }
 
@@ -943,7 +949,7 @@ textarea {
 }
 
 .t_dark .bento-text-3 {
-  mix-blend-mode: screen;
+  mix-blend-mode: luminosity;
 }
 
 .mix-blend-color-burn-dodge {

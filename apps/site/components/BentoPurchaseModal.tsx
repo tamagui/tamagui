@@ -1,5 +1,4 @@
 import { NextLink } from '@components/NextLink'
-import { ThemeTint } from '@tamagui/logo'
 import { CheckCircle, XCircle } from '@tamagui/lucide-icons'
 import { useBentoStore } from 'hooks/useBentoStore'
 import { useState } from 'react'
@@ -20,9 +19,9 @@ import {
 // console.log('SSSSSSSS', S)
 
 import { PoweredByStripeIcon } from '@components/PoweredByStripeIcon'
-import { getTakeoutPriceInfo } from '@lib/getProductInfo'
 import type { Database } from '@lib/supabase-types'
 import { X } from '@tamagui/lucide-icons'
+import type { ProComponentsProps } from '@interfaces/ProComponentsProps'
 import { useMemo } from 'react'
 import {
   Dialog,
@@ -35,13 +34,11 @@ import {
   SizableText,
   Unspaced,
 } from 'tamagui'
-import type { ProComponentsProps } from '../pages/bento/index'
-import { BentoLogo } from './BentoLogo'
 
 const checkCircle = <CheckCircle color="$green9" />
 const xCircle = <XCircle size={28} color="$red9" />
 
-export const PurchaseModal = ({
+export const BentoPurchaseModal = ({
   proComponents,
   defaultCoupon,
 }: Omit<ProComponentsProps, 'takeoutPlusBentoCoupon'>) => {
@@ -149,16 +146,14 @@ export const PurchaseModal = ({
                   mb="$6"
                   als="center"
                 >
-                  <BentoLogo noShadow scale={0.5}>
-                    BENTO
-                  </BentoLogo>
+                  Checkout
                 </Dialog.Title>
               </XStack>
 
               <XStack
                 f={1}
                 space
-                separator={<Separator vertical />}
+                separator={<Separator vertical bc="$color5" />}
                 $sm={{ fd: 'column-reverse' }}
               >
                 <YStack f={1} maxWidth={450}>
@@ -187,12 +182,12 @@ export const PurchaseModal = ({
                             height="unset"
                             display="flex"
                             borderWidth="$0.25"
-                            borderColor={active ? '$color8' : '$color5'}
+                            borderColor={active ? '$color11' : '$color6'}
                             borderRadius="$4"
                             gap="$4"
                             ai="center"
                             hoverStyle={{
-                              borderColor: active ? '$color10' : '$color7',
+                              borderColor: active ? '$color10' : '$color9',
                             }}
                           >
                             <RadioGroup.Item id={htmlId} size="$6" value={price.id}>
@@ -306,7 +301,22 @@ export const PurchaseModal = ({
                             }}
                             size="$2"
                           >
-                            License Agreement
+                            License
+                          </SizableText>
+
+                          <SizableText
+                            theme="alt1"
+                            cursor="pointer"
+                            onPress={() => {
+                              store.showPolicies = true
+                            }}
+                            style={{ textDecorationLine: 'underline' }}
+                            hoverStyle={{
+                              color: '$color11',
+                            }}
+                            size="$2"
+                          >
+                            Policies
                           </SizableText>
                         </XStack>
                         <Theme name="alt1">
@@ -473,10 +483,10 @@ export function BentoTable({
 
   return (
     <YStack
-      separator={<Separator o={0.35} />}
+      separator={<Separator bc="$color5" />}
       borderWidth="$0.5"
       borderRadius="$4"
-      borderColor="$borderColor"
+      bc="$color5"
     >
       <XStack px="$4" py="$4" gap="$3">
         <YStack width="80%">
@@ -512,7 +522,8 @@ function PurchaseButton(props: ButtonProps) {
   return (
     <Theme name="green">
       <Button
-        size="$6"
+        size="$5"
+        br="$6"
         backgroundColor="$color8"
         borderWidth={0}
         borderColor="$color10"
@@ -524,7 +535,7 @@ function PurchaseButton(props: ButtonProps) {
         }}
         {...props}
       >
-        <Button.Text ff="$munro" size="$9" fontWeight="700" color="#fff">
+        <Button.Text ff="$munro" size="$8" ls={2} fontWeight="700" color="#fff">
           {props.children}
         </Button.Text>
       </Button>

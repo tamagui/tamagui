@@ -5,6 +5,7 @@ class BentoStore {
   showPurchase = false
   showFaq = false
   showAgreement = false
+  showPolicies = false
   promoInputIsOpen = false
   appliedCoupon: Stripe.Coupon | null = null
   appliedPromoCode: string | null = null

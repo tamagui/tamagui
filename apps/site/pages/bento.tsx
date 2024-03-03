@@ -14,8 +14,6 @@ import {
   FormInput,
   Globe,
   Image,
-  InspectionPanel,
-  LassoSelect,
   Layout,
   Leaf,
   List,
@@ -32,6 +30,7 @@ import {
   Table,
   TextCursorInput,
   ToggleRight,
+  X,
 } from '@tamagui/lucide-icons'
 import { useBentoStore } from 'hooks/useBentoStore'
 import type Stripe from 'stripe'
@@ -39,6 +38,7 @@ import type Stripe from 'stripe'
 import {
   Button,
   Circle,
+  Dialog,
   EnsureFlexed,
   H3,
   H4,
@@ -47,36 +47,33 @@ import {
   Paragraph,
   ScrollView,
   Separator,
+  Sheet,
   Spacer,
   Stack,
   Theme,
+  Unspaced,
   XStack,
   YStack,
 } from 'tamagui'
 
-import { PurchaseModal } from '@components/BentoPurchaseModal'
+import { BentoIcon } from '@components/BentoIcon'
+import { BentoLogo } from '@components/BentoLogo'
+import { BentoPageFrame } from '@components/BentoPageFrame'
+import { BentoPurchaseModal } from '@components/BentoPurchaseModal'
+import { ContainerLarge } from '@components/Container'
+import { ThemeNameEffect } from '@components/ThemeNameEffect'
+import type { ProComponentsProps } from '@interfaces/ProComponentsProps'
+import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { stripe } from '@lib/stripe'
-import type { Database } from '@lib/supabase-types'
 import { getArray } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { useStore } from '@tamagui/use-store'
 import { useUser } from 'hooks/useUser'
 import type { GetStaticProps } from 'next'
+import Link from 'next/link'
 import { useMemo, useRef, useState } from 'react'
-import { BentoIcon } from '../../components/BentoIcon'
-import { BentoLogo } from '../../components/BentoLogo'
-import { BentoPageFrame } from '../../components/BentoPageFrame'
-import { ContainerLarge } from '../../components/Container'
-import { ThemeNameEffect } from '../../components/ThemeNameEffect'
-import { getDefaultLayout } from '../../lib/getDefaultLayout'
-
-export type ProComponentsProps = {
-  proComponents?: Database['public']['Tables']['products']['Row'] & {
-    prices: Database['public']['Tables']['prices']['Row'][]
-  }
-  defaultCoupon?: Stripe.Coupon | null
-  takeoutPlusBentoCoupon?: Stripe.Coupon | null
-}
+import { BentoLicense } from '../components/BentoLicense'
+import { BentoPoliciesModal } from '../components/BentoPoliciesModal'
 
 class BentoStore {
   heroVisible = true
@@ -93,9 +90,8 @@ export default function BentoPage(props: ProComponentsProps) {
 
   return (
     <Theme name="tan">
-      <ThemeNameEffect colorKey="$color5" />
+      <ThemeNameEffect colorKey="$color6" />
       <BentoPageFrame>
-        <ThemeNameEffect colorKey="$color6" />
         <ContainerLarge zi={100000000} h={0}>
           <Button
             pos="absolute"
@@ -126,9 +122,9 @@ export default function BentoPage(props: ProComponentsProps) {
           <Intermediate />
         </YStack>
         <Body />
-        <Theme name="tan">
-          <PurchaseModal defaultCoupon={coupon} proComponents={props.proComponents} />
-        </Theme>
+        <BentoPurchaseModal defaultCoupon={coupon} proComponents={props.proComponents} />
+        <BentoPoliciesModal />
+        <AgreementModal />
       </BentoPageFrame>
     </Theme>
   )
@@ -138,10 +134,10 @@ BentoPage.getLayout = getDefaultLayout
 
 const Intermediate = () => {
   return (
-    <YStack className="blur-4" zi={1} w="100%">
+    <YStack className="blur-8" zi={1} w="100%">
       {/* <YStack fullscreen elevation="$4" o={0.15} /> */}
-      <YStack pos="absolute" t={0} l={0} r={0} o={0.25} btw={0.5} bc="$color025" />
-      <YStack pos="absolute" b={0} l={0} r={0} o={0.25} btw={0.5} bc="$color025" />
+      <YStack pos="absolute" t={0} l={0} r={0} o={0.25} btw={0.5} bc="$color05" />
+      <YStack pos="absolute" b={0} l={0} r={0} o={0.25} btw={0.5} bc="$color05" />
       <ThemeTintAlt offset={-1}>
         <YStack fullscreen bg="$color9" o={0.048} />
       </ThemeTintAlt>
@@ -185,7 +181,7 @@ const IntermediateCard = ({
         <H4 ff="$silkscreen" color="$color11" className="text-glow" size="$2">
           {title}
         </H4>
-        <Paragraph mb={-5} size="$3" color="$color12">
+        <Paragraph mb={-5} size="$3" color="$color12" o={0.7}>
           {children}
         </Paragraph>
         <EnsureFlexed />
@@ -262,7 +258,14 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
               $sm={{ px: '$4', maw: 400, ml: 0 }}
             >
               <XStack gap="$6">
-                <Stack bg="$color9" w={4} br="$2" my={18} $sm={{ dsp: 'none' }} />
+                <Stack
+                  pos="relative"
+                  bg="$color9"
+                  w={6}
+                  br="$2"
+                  my={18}
+                  $sm={{ dsp: 'none' }}
+                />
                 <Paragraph
                   className="pixelate"
                   ff="$munro"
@@ -279,8 +282,8 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
                     ta: 'center',
                   }}
                 >
-                  Boost your React development with a suite of copy-paste
-                  primitives.&nbsp;
+                  Boost your React development with a suite
+                  of&nbsp;copy-paste&nbsp;primitives.&nbsp;
                   <YStack
                     my={-20}
                     tag="span"
@@ -299,7 +302,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
                 mr="$4"
                 $md={{ mx: 0, fd: 'column', gap: '$3' }}
               >
-                <Paragraph color="$color10" size="$5" o={0.7} $md={{ size: '$3' }}>
+                <Paragraph color="$color10" size="$5" $md={{ size: '$3' }}>
                   One-time Purchase
                 </Paragraph>
 
@@ -310,7 +313,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
                   <Theme name="green">
                     {/* $199 */}
                     <Button
-                      iconAfter={ShoppingCart}
+                      iconAfter={<ShoppingCart y={-0.5} x={-1} />}
                       // iconAfter={
                       //   <YStack
                       //     zi={100}
@@ -349,12 +352,20 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
                         store.showPurchase = true
                       }}
                     >
-                      <Button.Text fontFamily="$silkscreen" size="$6" ls={0}>
+                      <Button.Text
+                        fontFamily="$silkscreen"
+                        size="$6"
+                        ls={-2}
+                        y={-0.5}
+                        x={-1}
+                      >
                         <sup
                           style={{
-                            fontSize: '50%',
+                            fontSize: '60%',
                             display: 'inline-flex',
-                            marginTop: -10,
+                            marginTop: -12,
+                            transform: `translateY(2px)`,
+                            marginRight: 5,
                           }}
                         >
                           $
@@ -370,7 +381,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
 
                 <Circle size={4} bg="$color10" $md={{ dsp: 'none' }} />
 
-                <Paragraph color="$color10" size="$5" o={0.7} $md={{ size: '$3' }}>
+                <Paragraph color="$color10" size="$5" $md={{ size: '$3' }}>
                   Lifetime rights
                 </Paragraph>
               </XStack>
@@ -401,12 +412,13 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
             <Theme name="gray">
               <XStack
                 pe="none"
-                rotate="4deg"
+                style={{
+                  transform: `rotate(4deg) scale(0.75)`,
+                }}
                 $sm={{
                   mt: -85,
                   mb: -60,
                 }}
-                scale={0.8}
               >
                 <YStack br="$4" shac="rgba(0,0,0,0.2)" shar="$8">
                   <ThemeTintAlt>
@@ -525,12 +537,10 @@ const Body = () => {
       {...(!store.heroVisible && {
         y: -store.heroHeight,
         shadowColor: '$shadowColor',
-        shadowRadius: 3,
+        shadowRadius: 20,
       })}
       zi={10000}
     >
-      {/* <Separator bc="$color" pos="absolute" t={0} l={0} r={0} o={0.05} /> */}
-
       <YStack>
         <ContainerLarge>
           <Input
@@ -553,7 +563,13 @@ const Body = () => {
             <YStack id={sectionName} key={sectionName} jc={'space-between'}>
               <Theme name="tan">
                 <YStack pos="relative">
-                  <YStack fullscreen bg="$background025" o={0.24} />
+                  <YStack
+                    fullscreen
+                    o={0.15}
+                    style={{
+                      background: 'linear-gradient(transparent, var(--background025))',
+                    }}
+                  />
                   <ContainerLarge>
                     <YStack py="$2" px="$3" pos="relative">
                       <H3
@@ -615,8 +631,6 @@ const Body = () => {
           )
         })}
       </YStack>
-
-      <Spacer size="$12" />
     </YStack>
   )
 }
@@ -657,7 +671,9 @@ function SectionCard({
           y: 1,
         }}
         $gtMd={{
-          w: '25%',
+          w: 'calc(25% - 14px)',
+          br: '$6',
+          m: '$2',
         }}
       >
         <YStack f={1} p="$4">
@@ -800,4 +816,82 @@ const getTakeoutProducts = async (): Promise<ProComponentsProps> => {
     defaultCoupon,
     takeoutPlusBentoCoupon,
   }
+}
+
+const AgreementModal = () => {
+  const store = useBentoStore()
+  return (
+    <Dialog
+      modal
+      open={store.showAgreement}
+      onOpenChange={(val) => {
+        store.showAgreement = val
+      }}
+    >
+      <Dialog.Adapt when="sm">
+        <Sheet zIndex={200000} modal dismissOnSnapToBottom>
+          <Sheet.Frame padding="$4" space>
+            <Sheet.ScrollView>
+              <Dialog.Adapt.Contents />
+            </Sheet.ScrollView>
+          </Sheet.Frame>
+          <Sheet.Overlay
+            animation="lazy"
+            enterStyle={{ opacity: 0 }}
+            exitStyle={{ opacity: 0 }}
+          />
+        </Sheet>
+      </Dialog.Adapt>
+
+      <Dialog.Portal>
+        <Dialog.Overlay
+          key="overlay"
+          animation="medium"
+          className="blur-medium"
+          enterStyle={{ opacity: 0 }}
+          exitStyle={{ opacity: 0 }}
+        />
+
+        <Dialog.Content
+          bordered
+          elevate
+          key="content"
+          animation={[
+            'quick',
+            {
+              opacity: {
+                overshootClamping: true,
+              },
+            },
+          ]}
+          enterStyle={{ y: -10, opacity: 0, scale: 0.975 }}
+          exitStyle={{ y: 10, opacity: 0, scale: 0.975 }}
+          w="90%"
+          maw={900}
+        >
+          <ScrollView>
+            <YStack $gtSm={{ maxHeight: '90vh' }} space>
+              <Paragraph>
+                <Link href="/bento-license">Permalink to the license</Link>.
+              </Paragraph>
+
+              <BentoLicense />
+            </YStack>
+          </ScrollView>
+          <Unspaced>
+            <Dialog.Close asChild>
+              <Button
+                position="absolute"
+                top="$2"
+                right="$2"
+                size="$2"
+                circular
+                icon={X}
+              />
+            </Dialog.Close>
+          </Unspaced>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog>
+  )
 }

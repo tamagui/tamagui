@@ -64,6 +64,7 @@ export const InputFrame = styled(
   },
   {
     isInput: true,
+
     accept: {
       placeholderTextColor: 'color',
       selectionColor: 'color',

@@ -13,6 +13,7 @@ import { ThemeNameEffect } from '../../../components/ThemeNameEffect'
 import { getDefaultLayout } from '../../../lib/getDefaultLayout'
 import { useEffect } from 'react'
 import { DropTamaguiConfig } from '../../../components/DropTamaguiConfig'
+import { BentoIcon } from '../../../components/BentoIcon'
 
 export default function page() {
   const router = useRouter()
@@ -30,7 +31,7 @@ export default function page() {
             {`${params.section[0].toUpperCase()}${params.section.slice(1)}`}
           </DetailHeader>
         </ContainerBento>
-        <YStack>
+        <YStack mt="$8">
           <YStack pe="none" fullscreen className="bg-grid" o={0.033} />
           <ContainerBento>
             <Comp />
@@ -77,7 +78,9 @@ export const DetailHeader = (props: { children: string }) => {
           </Theme>
 
           <YStack zi={100} mb={-50} gap="$6" $sm={{ mb: 40 }}>
-            <BentoLogo scale={0.5} />
+            <XStack>
+              <BentoLogo scale={0.3} />
+            </XStack>
             <DropTamaguiConfig />
           </YStack>
         </XStack>
@@ -89,7 +92,7 @@ export const DetailHeader = (props: { children: string }) => {
             </Anchor>
           </Link>
 
-          <SizableText theme="alt2" tag="span" selectable={false} size="$2">
+          <SizableText theme="alt1" tag="span" selectable={false} size="$2">
             {'>'}
           </SizableText>
 
@@ -99,7 +102,7 @@ export const DetailHeader = (props: { children: string }) => {
             </Anchor>
           </Link>
 
-          <SizableText theme="alt2" tag="span" selectable={false} size="$2">
+          <SizableText theme="alt1" tag="span" selectable={false} size="$2">
             {'>'}
           </SizableText>
 

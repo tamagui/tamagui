@@ -238,7 +238,7 @@ function getState(
 
     let potentials: string[] = []
 
-    if (prefix && prefix !== baseName) {
+    if (prefix && prefix !== baseName && prefix.includes(nextName)) {
       potentials.push(prefix)
     }
     if (nextName) {

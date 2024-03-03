@@ -68,6 +68,7 @@ import type { TamaguiComponentEvents } from './interfaces/TamaguiComponentEvents
 import { Slot } from './views/Slot'
 import { getThemedChildren } from './views/Theme'
 import { ThemeDebug } from './views/ThemeDebug'
+import { isDevTools } from './constants/isDevTools'
 
 /**
  * All things that need one-time setup after createTamagui is called
@@ -332,7 +333,9 @@ export function createComponent<
     // conditional but if ever true stays true
     // [animated, inversed]
     // HOOK
-    const stateRef = useRef<TamaguiComponentStateRef>({})
+    const stateRef = useRef<TamaguiComponentStateRef>({
+      handleFocusVisible: true,
+    })
     if (process.env.NODE_ENV === 'development' && time) time`stateref`
 
     /**
@@ -399,6 +402,9 @@ export function createComponent<
         : defaultComponentState
       : defaultComponentStateMounted
 
+    const isDisabled =
+      props.disabled ?? props.accessibilityState?.disabled ?? props['aria-disabled']
+
     // HOOK
     const states = useState<TamaguiComponentState>(initialState)
 
@@ -407,7 +413,7 @@ export function createComponent<
       : states[0]
 
     const setState = states[1]
-    let setStateShallow = createShallowSetState(setState, debugProp)
+    let setStateShallow = createShallowSetState(setState, isDisabled, debugProp)
 
     if (isHydrated && state.unmounted === 'should-enter') {
       state.unmounted = true
@@ -490,7 +496,6 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development' && time) time`use-state`
 
     const hasTextAncestor = !!(isWeb && isText ? componentContext.inText : false)
-    const isDisabled = props.disabled ?? props.accessibilityState?.disabled
 
     if (process.env.NODE_ENV === 'development' && time) time`use-context`
 
@@ -886,7 +891,8 @@ export function createComponent<
         onMouseDown ||
         onMouseUp ||
         onLongPress ||
-        onClick
+        onClick ||
+        pseudos?.focusVisibleStyle
     )
     const runtimeHoverStyle = !disabled && noClassNames && pseudos?.hoverStyle
     const needsHoverState = Boolean(
@@ -914,6 +920,7 @@ export function createComponent<
         ? {
             onPressOut: attachPress
               ? (e) => {
+                  stateRef.current.handleFocusVisible = true
                   unPress()
                   onPressOut?.(e)
                   onMouseUp?.(e)
@@ -953,6 +960,7 @@ export function createComponent<
             }),
             onPressIn: attachPress
               ? (e) => {
+                  stateRef.current.handleFocusVisible = false
                   if (runtimePressStyle) {
                     setStateShallow({
                       press: true,
@@ -987,14 +995,26 @@ export function createComponent<
               }),
             ...(attachFocus && {
               onFocus: (e) => {
-                setStateShallow({
-                  focus: true,
-                })
+                if (pseudos?.focusVisibleStyle) {
+                  setTimeout(() => {
+                    setStateShallow({
+                      focus: true,
+                      focusVisible: !!stateRef.current.handleFocusVisible,
+                    })
+                  }, 0)
+                } else {
+                  setStateShallow({
+                    focus: true,
+                    focusVisible: false,
+                  })
+                }
                 onFocus?.(e)
               },
               onBlur: (e) => {
+                stateRef.current.handleFocusVisible = true
                 setStateShallow({
                   focus: false,
+                  focusVisible: false,
                 })
                 onBlur?.(e)
               },
@@ -1192,6 +1212,9 @@ export function createComponent<
         const title = `render <${element} /> (${internalID}) with props`
         if (!isWeb) {
           log(title)
+          if (isDevTools) {
+            log('viewProps', viewProps)
+          }
           log(`final styles:`)
           for (const key in splitStylesStyle) {
             log(key, splitStylesStyle[key])

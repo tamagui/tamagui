@@ -25,6 +25,7 @@ import type { HeaderProps } from './HeaderProps'
 import { NextLink } from './NextLink'
 import { TakeoutIcon } from './TakeoutIcon'
 import { LinearGradient } from 'tamagui/linear-gradient'
+import { ThemeTintAlt } from '@tamagui/logo'
 
 const HeadAnchor = styled(Paragraph, {
   tag: 'a',
@@ -302,6 +303,7 @@ const TakeoutHeaderLink = ({ forceShowAllLinks }: HeaderProps) => {
             tag="a"
             cur="pointer"
             bg="$background"
+            jc="center"
             ai="center"
             py="$2"
             px="$3"
@@ -312,14 +314,7 @@ const TakeoutHeaderLink = ({ forceShowAllLinks }: HeaderProps) => {
             elevation="$0.25"
           >
             <SizableText ff="$silkscreen">Takeout </SizableText>
-            <Text
-              ff="$body"
-              fontSize="$3"
-              color="$color10"
-              $sm={{ dsp: 'none' }}
-              y={0.98}
-              ml={6}
-            >
+            <Text ff="$body" fontSize="$3" color="$color10" $sm={{ dsp: 'none' }} ml={6}>
               starter kit
             </Text>
           </XStack>
@@ -431,6 +426,7 @@ const SlidingPopoverTrigger = YStack.styleable<{ id: string }>(
 )
 
 const order = ['', 'takeout', 'bento', 'studio']
+const offsets = [0, 3, -1, 2]
 
 const SlidingPopoverContent = () => {
   const context = React.useContext(SlidingPopoverContext)
@@ -462,14 +458,17 @@ const SlidingPopoverContent = () => {
       }}
     >
       <Popover.Arrow size="$4" />
-      <YStack
-        fullscreen
-        br="$4"
-        style={{
-          background: `linear-gradient(transparent, rgba(255,255,255,0.15))`,
-          mixBlendMode: 'color-dodge',
-        }}
-      />
+      <ThemeTintAlt offset={offsets[curI]}>
+        <YStack
+          fullscreen
+          br="$4"
+          zi={0}
+          style={{
+            background: `linear-gradient(transparent, var(--color05))`,
+            mixBlendMode: 'color',
+          }}
+        />
+      </ThemeTintAlt>
       <YStack w={280} h={240} br="$4" ov="hidden">
         <AnimatePresence custom={{ going }} initial={false}>
           {context.id === 'takeout' && (

@@ -150,6 +150,8 @@ const uniswapGithubUsers = [
 
 const codinscapeusers = ['NathanBeesley']
 
+const callstackusers = ['troZee']
+
 export const whitelistGithubUsernames = [
   'natew',
   // 'alitnk', // commented out to test `takeout -> studio` access
@@ -167,6 +169,9 @@ export const whitelistGithubUsernames = [
 
   // uniswap:
   ...uniswapGithubUsers,
+
+  // callstack
+  ...callstackusers,
 ]
 
 export const checkForSponsorship = async (

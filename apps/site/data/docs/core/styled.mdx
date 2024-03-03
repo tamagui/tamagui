@@ -255,16 +255,15 @@ const StyledSVG = styled(SVG, {}, {
 })
 ```
 
-Now your StyledSVG will properly type the `fill` property to accept token and theme values. It will then map any values it recieves to the style prop with any token or theme values resolved. Note the `as const`, until TypeScript 5 is more fully supported this improves the generated types.
+Note the `as const`, until we can drop TypeScript 4 support. Now, your StyledSVG will properly type the `fill` property to accept token and theme values and will pass the resolved colors to the SVG component.
 
-Or you can style some cases like `contentContainerStyle` of `ScrollView` which is a prop for sub styles
+You can also use `accept` to take in Tamagui style objects and output React Native style objects. This is useful for things like the `contentContainerStyle` prop on `ScrollView`, which expects a style object:
 
 ```tsx
 const MyScrollView = styled(ScrollView, {}, {
   accept: {
-    // you can pass `viewStyles` or `textStyles`
-    contentContainerStyle: 'viewStyles'
-  }
+    contentContainerStyle: 'style' // or 'textStyle'
+  } as const
 })
 ```
 

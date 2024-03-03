@@ -291,8 +291,17 @@ TamaguiProvider takes a few optional properties:
   ]}
 />
 
-If you use `disableInjectCSS`, you'll need to use this somewhere to insert your
-CSS into head:
+If you use `disableInjectCSS`, you'll need to do something like this from the server:
+
+```tsx
+<head>
+  <style
+    dangerouslySetInnerHTML={{
+      __html: Tamagui.getCSS(),
+    }}
+  />
+</head>
+```
 
 ### Including the reset css
 

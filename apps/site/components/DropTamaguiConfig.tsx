@@ -1,10 +1,10 @@
-import { Target, Upload, X } from '@tamagui/lucide-icons'
+import { Paintbrush, X } from '@tamagui/lucide-icons'
+import { useStore } from '@tamagui/use-store'
 import { useEffect, useState } from 'react'
 import type { TamaguiConfig } from 'tamagui'
 import { Button, Dialog, H2, Paragraph, ScrollView, TooltipSimple, YStack } from 'tamagui'
 import { Code, CodeInline } from './Code'
 import { Features } from './Features'
-import { useStore } from '@tamagui/use-store'
 import { Notice } from './Notice'
 
 type TamaguiConfigBuilt = {
@@ -58,10 +58,11 @@ export const DropTamaguiConfig = () => {
           br="$10"
           onPress={() => setShow(true)}
           size="$3"
+          chromeless
           $sm={{
             dsp: 'none',
           }}
-          icon={Target}
+          icon={Paintbrush}
         >
           Customize
         </Button>
@@ -99,7 +100,7 @@ export const DropTamaguiConfig = () => {
             maw={600}
             p="$6"
           >
-            <Dialog.Close asChild="except-style">
+            <Dialog.Close asChild>
               <Button
                 position="absolute"
                 top="$4"
@@ -125,14 +126,14 @@ export const DropTamaguiConfig = () => {
 
             <ScrollView mah={`90vh`}>
               <YStack gap="$4">
-                <Dialog.Title>Customize the Design System</Dialog.Title>
+                <Dialog.Title>Your Design System</Dialog.Title>
 
                 {store.config && (
                   <>
                     <Paragraph size="$6">Nice, we've got your config.</Paragraph>
                     <Paragraph size="$6">
-                      You can now go copy code from an example and it will customize the
-                      tokens to your design system.
+                      You can now go copy code from an example and we will adapt the
+                      copy-paste code to use your tokens.
                     </Paragraph>
                     <Button
                       als="flex-end"
@@ -147,19 +148,17 @@ export const DropTamaguiConfig = () => {
 
                 {!store.config && (
                   <>
-                    <Notice>
-                      WIP - we're adding the final piece to replace tokens next.
-                    </Notice>
-
                     <Paragraph size="$6">
                       Drag and drop your{' '}
                       <CodeInline>.tamagui/tamagui.config.json</CodeInline> here to
                       customize the code we generate to your design system!
                     </Paragraph>
                     <Paragraph size="$6">
-                      Either the Tamagui CLI or compiler plugin will generate this for
-                      you. If you have the compiler plugin set up, there should already be
-                      a .tamagui directory and you can skip to step 3.
+                      If you have a compiler plugin installed, this is done for your
+                      automatically. If not, use the CLI.
+                    </Paragraph>
+                    <Paragraph size="$6">
+                      But first, set up a <CodeInline>tamagui.build.ts</CodeInline>:
                     </Paragraph>
 
                     <Features
@@ -170,22 +169,28 @@ export const DropTamaguiConfig = () => {
                           default export.{' '}
                           <a
                             target="_blank"
-                            href="https://github.com/tamagui/tamagui/blob/a486446b32ea67a22560783fc59660c6361490e5/apps/site/tamagui.build.ts"
+                            href="https://github.com/tamagui/tamagui/blob/c42cab421edf911f8a30eb8172102f39938c7614/apps/site/tamagui.build.ts#L8-L9"
                             rel="noreferrer"
                           >
                             See an example here
                           </a>
-                          . All of the bundler plugins now load from this file on startup.
+                          . All of the bundler plugins will now load from this file on
+                          startup.
                         </>,
                         <>
-                          Run generate — <Code>npx @tamagui/cli generate</Code>
+                          If not using a compiler plugin, run generate —{' '}
+                          <Code>npx @tamagui/cli generate</Code>
                         </>,
                         <>
-                          Grab the <Code>.tamagui/tamagui.config.json</Code> file and drop
-                          it here!
+                          Drop the generated <Code>.tamagui/tamagui.config.json</Code> on
+                          this window.
                         </>,
                       ]}
                     />
+
+                    <Notice>
+                      WIP - we're adding the final piece to replace tokens next.
+                    </Notice>
                   </>
                 )}
               </YStack>

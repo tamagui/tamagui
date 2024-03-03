@@ -71,7 +71,8 @@ export const getToken = (value: Token, group?: keyof Tokens, useVariable = isWeb
   return useVariable ? token?.variable : token?.val
 }
 
-export const getTokenValue = (value: Token, group?: keyof Tokens) => {
+export const getTokenValue = (value: Token | 'unset' | 'auto', group?: keyof Tokens) => {
+  if (value === 'unset' || value === 'auto') return
   return getToken(value, group, false)
 }
 

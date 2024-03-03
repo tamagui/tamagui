@@ -211,6 +211,8 @@ export function styled<
   const component = createComponent(staticConfigProps || {})
 
   for (const key in ComponentIn) {
+    // dont inherit propTypes
+    if (key === 'propTypes') continue
     if (key in component) continue
     // @ts-expect-error assigning static properties over
     component[key] = ComponentIn[key]
