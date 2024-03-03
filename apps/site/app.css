@@ -858,7 +858,9 @@ textarea {
   }
 }
 
-
+.shadow-breeze {
+  animation: breeze 20s alternate-reverse infinite forwards;
+}
 @keyframes breeze {
   0% {
     transform: translateX(1300px) translateY(-100px) scale(3.5) rotate(90deg)
@@ -871,8 +873,23 @@ textarea {
   }
 }
 
-.shadow-breeze {
-  animation: breeze 20s alternate-reverse infinite forwards;
+
+.shadow-breeze2 {
+  animation: breeze2 30s linear alternate-reverse infinite forwards;
+}
+
+@keyframes breeze2 {
+  0% {
+    transform: translateX(0px) translateY(0px);
+  }
+
+  33% {
+    transform: translateX(15px) translateY(5px) scale(1.025);
+  }
+
+  66% {
+    transform: translateX(-15px) translateY(-15px);
+  }
 }
 
 :root.t_light .phone-preview {
