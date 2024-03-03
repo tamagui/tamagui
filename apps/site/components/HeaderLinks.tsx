@@ -303,6 +303,7 @@ const TakeoutHeaderLink = ({ forceShowAllLinks }: HeaderProps) => {
             tag="a"
             cur="pointer"
             bg="$background"
+            jc="center"
             ai="center"
             py="$2"
             px="$3"
@@ -313,14 +314,7 @@ const TakeoutHeaderLink = ({ forceShowAllLinks }: HeaderProps) => {
             elevation="$0.25"
           >
             <SizableText ff="$silkscreen">Takeout </SizableText>
-            <Text
-              ff="$body"
-              fontSize="$3"
-              color="$color10"
-              $sm={{ dsp: 'none' }}
-              y={0.98}
-              ml={6}
-            >
+            <Text ff="$body" fontSize="$3" color="$color10" $sm={{ dsp: 'none' }} ml={6}>
               starter kit
             </Text>
           </XStack>
@@ -468,10 +462,10 @@ const SlidingPopoverContent = () => {
         <YStack
           fullscreen
           br="$4"
-          zi={100}
+          zi={0}
           style={{
-            background: `linear-gradient(transparent, var(--color5))`,
-            mixBlendMode: 'screen',
+            background: `linear-gradient(transparent, var(--color7))`,
+            mixBlendMode: 'color',
           }}
         />
       </ThemeTintAlt>

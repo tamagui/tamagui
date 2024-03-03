@@ -14,8 +14,6 @@ import {
   FormInput,
   Globe,
   Image,
-  InspectionPanel,
-  LassoSelect,
   Layout,
   Leaf,
   List,
@@ -32,6 +30,7 @@ import {
   Table,
   TextCursorInput,
   ToggleRight,
+  X,
 } from '@tamagui/lucide-icons'
 import { useBentoStore } from 'hooks/useBentoStore'
 import type Stripe from 'stripe'
@@ -39,6 +38,7 @@ import type Stripe from 'stripe'
 import {
   Button,
   Circle,
+  Dialog,
   EnsureFlexed,
   H3,
   H4,
@@ -47,36 +47,33 @@ import {
   Paragraph,
   ScrollView,
   Separator,
+  Sheet,
   Spacer,
   Stack,
   Theme,
+  Unspaced,
   XStack,
   YStack,
 } from 'tamagui'
 
+import { BentoIcon } from '@components/BentoIcon'
+import { BentoLogo } from '@components/BentoLogo'
+import { BentoPageFrame } from '@components/BentoPageFrame'
 import { PurchaseModal } from '@components/BentoPurchaseModal'
+import { ContainerLarge } from '@components/Container'
+import { ThemeNameEffect } from '@components/ThemeNameEffect'
+import type { ProComponentsProps } from '@interfaces/ProComponentsProps'
+import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { stripe } from '@lib/stripe'
-import type { Database } from '@lib/supabase-types'
 import { getArray } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { useStore } from '@tamagui/use-store'
 import { useUser } from 'hooks/useUser'
 import type { GetStaticProps } from 'next'
+import Link from 'next/link'
 import { useMemo, useRef, useState } from 'react'
-import { BentoIcon } from '../../components/BentoIcon'
-import { BentoLogo } from '../../components/BentoLogo'
-import { BentoPageFrame } from '../../components/BentoPageFrame'
-import { ContainerLarge } from '../../components/Container'
-import { ThemeNameEffect } from '../../components/ThemeNameEffect'
-import { getDefaultLayout } from '../../lib/getDefaultLayout'
-
-export type ProComponentsProps = {
-  proComponents?: Database['public']['Tables']['products']['Row'] & {
-    prices: Database['public']['Tables']['prices']['Row'][]
-  }
-  defaultCoupon?: Stripe.Coupon | null
-  takeoutPlusBentoCoupon?: Stripe.Coupon | null
-}
+import { BentoLicense } from '../components/BentoLicense'
+import { BentoPoliciesModal } from '../components/BentoPoliciesModal'
 
 class BentoStore {
   heroVisible = true
@@ -126,6 +123,8 @@ export default function BentoPage(props: ProComponentsProps) {
         </YStack>
         <Body />
         <PurchaseModal defaultCoupon={coupon} proComponents={props.proComponents} />
+        <BentoPoliciesModal />
+        <AgreementModal />
       </BentoPageFrame>
     </Theme>
   )
@@ -817,4 +816,82 @@ const getTakeoutProducts = async (): Promise<ProComponentsProps> => {
     defaultCoupon,
     takeoutPlusBentoCoupon,
   }
+}
+
+const AgreementModal = () => {
+  const store = useBentoStore()
+  return (
+    <Dialog
+      modal
+      open={store.showAgreement}
+      onOpenChange={(val) => {
+        store.showAgreement = val
+      }}
+    >
+      <Dialog.Adapt when="sm">
+        <Sheet zIndex={200000} modal dismissOnSnapToBottom>
+          <Sheet.Frame padding="$4" space>
+            <Sheet.ScrollView>
+              <Dialog.Adapt.Contents />
+            </Sheet.ScrollView>
+          </Sheet.Frame>
+          <Sheet.Overlay
+            animation="lazy"
+            enterStyle={{ opacity: 0 }}
+            exitStyle={{ opacity: 0 }}
+          />
+        </Sheet>
+      </Dialog.Adapt>
+
+      <Dialog.Portal>
+        <Dialog.Overlay
+          key="overlay"
+          animation="medium"
+          className="blur-medium"
+          enterStyle={{ opacity: 0 }}
+          exitStyle={{ opacity: 0 }}
+        />
+
+        <Dialog.Content
+          bordered
+          elevate
+          key="content"
+          animation={[
+            'quick',
+            {
+              opacity: {
+                overshootClamping: true,
+              },
+            },
+          ]}
+          enterStyle={{ y: -10, opacity: 0, scale: 0.975 }}
+          exitStyle={{ y: 10, opacity: 0, scale: 0.975 }}
+          w="90%"
+          maw={900}
+        >
+          <ScrollView>
+            <YStack $gtSm={{ maxHeight: '90vh' }} space>
+              <Paragraph>
+                <Link href="/bento-license">Permalink to the license</Link>.
+              </Paragraph>
+
+              <BentoLicense />
+            </YStack>
+          </ScrollView>
+          <Unspaced>
+            <Dialog.Close asChild>
+              <Button
+                position="absolute"
+                top="$2"
+                right="$2"
+                size="$2"
+                circular
+                icon={X}
+              />
+            </Dialog.Close>
+          </Unspaced>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog>
+  )
 }

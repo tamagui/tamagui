@@ -1,5 +1,4 @@
 import { NextLink } from '@components/NextLink'
-import { ThemeTint } from '@tamagui/logo'
 import { CheckCircle, XCircle } from '@tamagui/lucide-icons'
 import { useBentoStore } from 'hooks/useBentoStore'
 import { useState } from 'react'
@@ -20,9 +19,9 @@ import {
 // console.log('SSSSSSSS', S)
 
 import { PoweredByStripeIcon } from '@components/PoweredByStripeIcon'
-import { getTakeoutPriceInfo } from '@lib/getProductInfo'
 import type { Database } from '@lib/supabase-types'
 import { X } from '@tamagui/lucide-icons'
+import type { ProComponentsProps } from '@interfaces/ProComponentsProps'
 import { useMemo } from 'react'
 import {
   Dialog,
@@ -35,8 +34,6 @@ import {
   SizableText,
   Unspaced,
 } from 'tamagui'
-import type { ProComponentsProps } from '../pages/bento/index'
-import { BentoLogo } from './BentoLogo'
 
 const checkCircle = <CheckCircle color="$green9" />
 const xCircle = <XCircle size={28} color="$red9" />
@@ -304,7 +301,22 @@ export const PurchaseModal = ({
                             }}
                             size="$2"
                           >
-                            License Agreement
+                            License
+                          </SizableText>
+
+                          <SizableText
+                            theme="alt1"
+                            cursor="pointer"
+                            onPress={() => {
+                              store.showPolicies = true
+                            }}
+                            style={{ textDecorationLine: 'underline' }}
+                            hoverStyle={{
+                              color: '$color11',
+                            }}
+                            size="$2"
+                          >
+                            Policies
                           </SizableText>
                         </XStack>
                         <Theme name="alt1">
