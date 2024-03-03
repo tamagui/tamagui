@@ -3,6 +3,7 @@ import { join } from 'path'
 import { test } from '@playwright/test'
 import imagemin from 'imagemin'
 import imageminWebp from 'imagemin-webp'
+import { ensureDir, remove } from 'fs-extra'
 
 const sizes = [
   // {
@@ -38,7 +39,8 @@ test('bento screenshot', async ({ browser }) => {
             await page.screenshot({
               path: join(
                 base,
-                `screenshots${route}`,
+                `screenshots-png`,
+                route,
                 `${component}-${size.width}x${size.height}.png`
               ),
               omitBackground: true,
@@ -51,8 +53,12 @@ test('bento screenshot', async ({ browser }) => {
     }
   }
 
+  await ensureDir(`${base}/screenshots`)
+
   await imagemin([`${base}/**/*.png`], {
-    destination: '.',
+    destination: `${base}/screenshots`,
     plugins: [imageminWebp({ quality: 80 })],
   })
+
+  await remove(join(base, `screenshots-png`))
 })
