@@ -875,7 +875,7 @@ textarea {
 
 
 .shadow-breeze2 {
-  animation: breeze2 30s linear alternate-reverse infinite forwards;
+  animation: breeze2 35s linear alternate-reverse infinite forwards;
 }
 
 @keyframes breeze2 {
