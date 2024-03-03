@@ -464,7 +464,7 @@ const SlidingPopoverContent = () => {
           br="$4"
           zi={0}
           style={{
-            background: `linear-gradient(transparent, var(--color7))`,
+            background: `linear-gradient(transparent, var(--color05))`,
             mixBlendMode: 'color',
           }}
         />

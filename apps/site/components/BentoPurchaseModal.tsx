@@ -38,7 +38,7 @@ import {
 const checkCircle = <CheckCircle color="$green9" />
 const xCircle = <XCircle size={28} color="$red9" />
 
-export const PurchaseModal = ({
+export const BentoPurchaseModal = ({
   proComponents,
   defaultCoupon,
 }: Omit<ProComponentsProps, 'takeoutPlusBentoCoupon'>) => {
@@ -153,7 +153,7 @@ export const PurchaseModal = ({
               <XStack
                 f={1}
                 space
-                separator={<Separator vertical />}
+                separator={<Separator vertical bc="$color5" />}
                 $sm={{ fd: 'column-reverse' }}
               >
                 <YStack f={1} maxWidth={450}>
@@ -182,12 +182,12 @@ export const PurchaseModal = ({
                             height="unset"
                             display="flex"
                             borderWidth="$0.25"
-                            borderColor={active ? '$color8' : '$color5'}
+                            borderColor={active ? '$color11' : '$color6'}
                             borderRadius="$4"
                             gap="$4"
                             ai="center"
                             hoverStyle={{
-                              borderColor: active ? '$color10' : '$color7',
+                              borderColor: active ? '$color10' : '$color9',
                             }}
                           >
                             <RadioGroup.Item id={htmlId} size="$6" value={price.id}>
@@ -483,10 +483,10 @@ export function BentoTable({
 
   return (
     <YStack
-      separator={<Separator o={0.35} />}
+      separator={<Separator bc="$color5" />}
       borderWidth="$0.5"
       borderRadius="$4"
-      borderColor="$borderColor"
+      bc="$color5"
     >
       <XStack px="$4" py="$4" gap="$3">
         <YStack width="80%">

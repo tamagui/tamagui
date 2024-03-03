@@ -59,7 +59,7 @@ import {
 import { BentoIcon } from '@components/BentoIcon'
 import { BentoLogo } from '@components/BentoLogo'
 import { BentoPageFrame } from '@components/BentoPageFrame'
-import { PurchaseModal } from '@components/BentoPurchaseModal'
+import { BentoPurchaseModal } from '@components/BentoPurchaseModal'
 import { ContainerLarge } from '@components/Container'
 import { ThemeNameEffect } from '@components/ThemeNameEffect'
 import type { ProComponentsProps } from '@interfaces/ProComponentsProps'
@@ -122,7 +122,7 @@ export default function BentoPage(props: ProComponentsProps) {
           <Intermediate />
         </YStack>
         <Body />
-        <PurchaseModal defaultCoupon={coupon} proComponents={props.proComponents} />
+        <BentoPurchaseModal defaultCoupon={coupon} proComponents={props.proComponents} />
         <BentoPoliciesModal />
         <AgreementModal />
       </BentoPageFrame>
