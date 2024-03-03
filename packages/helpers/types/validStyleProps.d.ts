@@ -642,6 +642,7 @@ export declare const stylePropsAll: {
     shadowRadius: boolean;
 };
 export declare const validPseudoKeys: {
+    focusVisibleStyle?: boolean | undefined;
     enterStyle: boolean;
     exitStyle: boolean;
     hoverStyle: boolean;
@@ -807,6 +808,7 @@ export declare const validStyles: {
     direction: boolean;
     shadowOffset: boolean;
     shadowRadius: boolean;
+    focusVisibleStyle?: boolean | undefined;
     enterStyle: boolean;
     exitStyle: boolean;
     hoverStyle: boolean;

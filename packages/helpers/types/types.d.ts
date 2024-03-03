@@ -1,6 +1,6 @@
 export type StyleObject = {
     property: string;
-    pseudo?: 'hover' | 'focus' | 'active';
+    pseudo?: 'hover' | 'focus' | 'focus-visible' | 'active';
     identifier: string;
     rules: string[];
     value?: any;

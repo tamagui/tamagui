@@ -95,6 +95,7 @@ export function createExtractor(
 
   const componentState: TamaguiComponentState = {
     focus: false,
+    focusVisible: false,
     hover: false,
     unmounted: true,
     press: false,
@@ -552,6 +553,7 @@ export function createExtractor(
           'fontFamily',
           'name',
           'focusStyle',
+          'focusVisibleStyle',
           'hoverStyle',
           'pressStyle',
         ])
@@ -837,7 +839,9 @@ export function createExtractor(
             'animatePresence',
             'disableOptimization',
 
-            ...(!isTargetingHTML ? ['pressStyle', 'focusStyle'] : []),
+            ...(!isTargetingHTML
+              ? ['pressStyle', 'focusStyle', 'focusVisibleStyle']
+              : []),
 
             // when using a non-CSS driver, de-opt on enterStyle/exitStyle
             ...(tamaguiConfig?.animations.isReactNative
