@@ -1,19 +1,21 @@
 import { join } from 'path'
 
 import { test } from '@playwright/test'
+import imagemin from 'imagemin'
+import imageminWebp from 'imagemin-webp'
 
 const sizes = [
-  {
-    height: 256,
-    width: 256,
-  },
+  // {
+  //   height: 256,
+  //   width: 256,
+  // },
   {
     height: 512,
     width: 512,
   },
   {
-    width: 1470,
-    height: 919,
+    width: 1024,
+    height: 1024,
   },
 ]
 
@@ -21,6 +23,8 @@ test('bento screenshot', async ({ browser }) => {
   const sections = await fetch('http://localhost:5005/api/bento/data.json').then((res) =>
     res.json()
   )
+
+  const base = join(__dirname, `../../public/bento`)
 
   for (const size of sizes) {
     for (const section of sections) {
@@ -33,8 +37,9 @@ test('bento screenshot', async ({ browser }) => {
             await page.goto(url, { waitUntil: 'networkidle' })
             await page.screenshot({
               path: join(
-                __dirname,
-                `../../public/bento/screenshots${route}/${component}-${size.width}x${size.height}.png`
+                base,
+                `screenshots${route}`,
+                `${component}-${size.width}x${size.height}.png`
               ),
               omitBackground: true,
             })
@@ -45,4 +50,9 @@ test('bento screenshot', async ({ browser }) => {
       }
     }
   }
+
+  await imagemin([`${base}/**/*.png`], {
+    destination: '.',
+    plugins: [imageminWebp({ quality: 80 })],
+  })
 })
