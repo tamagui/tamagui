@@ -876,7 +876,7 @@ export type StaticConfigPublic = {
      * Accept Tamagui tokens for these props (key for the prop key, val for the token category)
      */
     accept?: {
-        [key: string]: 'style' | 'textStyle';
+        [key: string]: keyof Tokens | 'style' | 'textStyle';
     };
     /**
      * (compiler) If these props are encountered, leave them un-extracted.

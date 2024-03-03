@@ -1614,8 +1614,6 @@ export type GenericVariantDefinitions = {
   }
 }
 
-type ExcludePlainString<T> = T extends string ? (string extends T ? never : T) : T
-
 export type StaticConfigPublic = {
   defaultProps?: Record<string, any>
 
@@ -1645,7 +1643,7 @@ export type StaticConfigPublic = {
    * Accept Tamagui tokens for these props (key for the prop key, val for the token category)
    */
   accept?: {
-    [key: string]: 'style' | 'textStyle' //ExcludePlainString<keyof Tokens | 'style' | 'textStyle'>
+    [key: string]: keyof Tokens | 'style' | 'textStyle'
   }
 
   /**
