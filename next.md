@@ -1,3 +1,7 @@
+- v2-3 ListItem simplification esp for performance of Select
+
+- Select Virtualization
+
 - style()
 
 - i think acceptTokens + compiler not working (see selectionColor)

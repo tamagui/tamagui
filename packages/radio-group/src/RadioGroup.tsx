@@ -138,6 +138,9 @@ const RadioGroupItemFrame = styled(ThemeableStack, {
         focusStyle: {
           borderColor: '$borderColorHover',
           backgroundColor: '$backgroundHover',
+        },
+
+        focusVisibleStyle: {
           outlineStyle: 'solid',
           outlineWidth: 2,
           outlineColor: '$outlineColor',
@@ -166,7 +169,7 @@ const RadioGroupItemFrame = styled(ThemeableStack, {
           backgroundColor: '$backgroundColor',
         },
 
-        focusStyle: {
+        focusVisibleStyle: {
           outlineWidth: 0,
         },
       },

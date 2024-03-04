@@ -43,7 +43,7 @@ export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps
           hoverTheme: true,
           pressTheme: true,
           focusable: true,
-          focusStyle: {
+          focusVisibleStyle: {
             outlineStyle: 'solid',
             outlineWidth: 2,
             outlineColor: '$outlineColor',

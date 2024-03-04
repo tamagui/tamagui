@@ -32,10 +32,13 @@ export const defaultStyles = {
   },
 
   focusStyle: {
+    borderColor: '$borderColorFocus',
+  },
+
+  focusVisibleStyle: {
     outlineColor: '$outlineColor',
     outlineWidth: 2,
     outlineStyle: 'solid',
-    borderColor: '$borderColorFocus',
   },
 } as const
 

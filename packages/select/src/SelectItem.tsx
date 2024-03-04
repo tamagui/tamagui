@@ -191,7 +191,7 @@ export const SelectItem = ListItemFrame.styleable<SelectItemExtraProps>(
               size,
               outlineOffset: -0.5,
 
-              focusStyle: {
+              focusVisibleStyle: {
                 outlineColor: '$outlineColor',
                 outlineWidth: 1,
                 outlineStyle: 'solid',
