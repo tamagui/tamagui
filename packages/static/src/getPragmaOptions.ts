@@ -24,7 +24,7 @@ export function getPragmaOptions({
   for (const line of firstLines.split('\n')) {
     pragma =
       line
-        .match(/(\/\/|\/\*)\s?\!?\s?(tamagui-ignore|debug|debug-verbose)(\n|\s|$)/)?.[2]
+        .match(/(\/\/|\/\*)\s?\!?\s?(tamagui-ignore|debug|debug-verbose)(\n|\s|$).*/)?.[2]
         .trim() || ''
     if (pragma) {
       pragma = pragma.replace('!', '').trim()

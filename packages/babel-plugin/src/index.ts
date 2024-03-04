@@ -82,6 +82,8 @@ export default declare(function tamaguiBabelPlugin(
             return
           }
 
+          console.log('??', sourcePath, firstComment, shouldPrintDebug)
+
           const finalOptions = {
             // @ts-ignore just in case they leave it out
             platform: 'native',

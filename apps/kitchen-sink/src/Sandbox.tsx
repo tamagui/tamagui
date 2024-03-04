@@ -1,5 +1,4 @@
 //! debug-verbose
-// >>
 // import './wdyr'
 
 import { DialogDemo, ToastDemo } from '@tamagui/demos'
