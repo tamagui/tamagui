@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/avatar",
-  "version": "1.90.16",
+  "version": "1.91.0",
   "sideEffects": [
     "*.css"
   ],
@@ -32,18 +32,18 @@
     }
   },
   "dependencies": {
-    "@tamagui/core": "1.90.16",
-    "@tamagui/helpers": "1.90.16",
-    "@tamagui/image": "1.90.16",
-    "@tamagui/shapes": "1.90.16",
-    "@tamagui/text": "1.90.16"
+    "@tamagui/core": "1.91.0",
+    "@tamagui/helpers": "1.91.0",
+    "@tamagui/image": "1.91.0",
+    "@tamagui/shapes": "1.91.0",
+    "@tamagui/text": "1.91.0"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.90.16",
+    "@tamagui/build": "1.91.0",
     "react": "^18.2.0",
     "react-native": "^0.73.4"
   },

@@ -23,8 +23,6 @@ export function getPragmaOptions({
     }
   }
 
-  console.log('wtf', firstLines, pragma)
-
   switch (pragma) {
     case 'tamagui-ignore':
       shouldDisable = true

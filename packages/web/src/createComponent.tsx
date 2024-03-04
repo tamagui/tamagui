@@ -423,13 +423,8 @@ export function createComponent<
       : states[0]
     const setState = states[1]
 
-    if (props['debug']) {
-      console.log('???', disabled, props.disabled)
-    }
-
     // immediately update disabled state
     if (disabled !== state.disabled) {
-      console.log('setting state to', disabled)
       setState({ ...state, disabled })
     }
 
