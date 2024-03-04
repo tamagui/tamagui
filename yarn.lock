@@ -5955,6 +5955,7 @@ __metadata:
     "@tamagui/use-store": "npm:1.91.1"
     "@tamagui/web": "npm:1.91.1"
     "@tanstack/react-table": "npm:^8.11.2"
+    "@ts-react/form": "npm:^1.8.3"
     "@welldone-software/why-did-you-render": "npm:^7.0.1"
     awesome-phonenumber: "npm:^6.4.0"
     html-webpack-plugin: "npm:^5.5.0"
@@ -8350,6 +8351,18 @@ __metadata:
     mkdirp: "npm:^1.0.4"
     path-browserify: "npm:^1.0.1"
   checksum: 10/f381efb01b92a1a5e6a7cd389102a43c1ab7b38d804d9b8bb12fe7a835c18d01bbf2c77762eaa99d04f8c9f55da77caa65f6e7bbd86def505acc2d58473325f2
+  languageName: node
+  linkType: hard
+
+"@ts-react/form@npm:^1.8.3":
+  version: 1.8.3
+  resolution: "@ts-react/form@npm:1.8.3"
+  peerDependencies:
+    "@hookform/resolvers": ^2.8.0 || ^3.0.0
+    react: ^16.8.0 || ^17 || ^18
+    react-hook-form: ^7.39.0
+    zod: ^3.19.0
+  checksum: 10/7faf42ca0f778337064bed9f80012deae59f6a614cb7a8a8af2b35101bcdc2542468a911dae0835ecba09e5e09587b2758ce942e0d6eaffce0fb75ebee6af833
   languageName: node
   linkType: hard
 
