@@ -19,6 +19,7 @@ import {
   Stack,
   Theme,
   View,
+  createShallowSetState,
   createStyledContext,
   styled,
   useEvent,
@@ -613,12 +614,11 @@ export const Popover = withStaticProperties(
         disableFocus: disableFocus,
       }) as any
 
-      const [anchorTo, setAnchorTo] = React.useState<{
-        x: number
-        y: number
-        width: number
-        height: number
-      }>()
+      const [anchorTo, setAnchorToRaw] = React.useState<Rect>()
+
+      const setAnchorTo = createShallowSetState(
+        setAnchorToRaw as any
+      ) as typeof setAnchorToRaw
 
       React.useImperativeHandle(forwardedRef, () => ({
         anchorTo: setAnchorTo,

@@ -20,6 +20,11 @@ export const pseudoDescriptorsBase = {
     name: 'focus',
     priority: 3,
   },
+  disabledStyle: {
+    name: 'disabled',
+    priority: 4,
+    stateKey: 'disabled',
+  },
 } as const
 
 export const pseudoPriorities = {
@@ -27,6 +32,7 @@ export const pseudoPriorities = {
   press: 2,
   focus: 3,
   focusVisible: 3,
+  disabled: 4,
 }
 
 export const pseudoDescriptors: Record<

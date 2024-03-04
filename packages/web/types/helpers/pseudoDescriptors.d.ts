@@ -17,12 +17,18 @@ export declare const pseudoDescriptorsBase: {
         readonly name: "focus";
         readonly priority: 3;
     };
+    readonly disabledStyle: {
+        readonly name: "disabled";
+        readonly priority: 4;
+        readonly stateKey: "disabled";
+    };
 };
 export declare const pseudoPriorities: {
     hover: number;
     press: number;
     focus: number;
     focusVisible: number;
+    disabled: number;
 };
 export declare const pseudoDescriptors: Record<'hoverStyle' | 'pressStyle' | 'focusStyle' | 'focusVisibleStyle' | 'enterStyle' | 'exitStyle', PseudoDescriptor>;
 export type PseudoDescriptor = {

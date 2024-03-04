@@ -100,6 +100,7 @@ export function createExtractor(
     unmounted: true,
     press: false,
     pressIn: false,
+    disabled: false,
   } as const
 
   const styleProps: SplitStyleProps = {
@@ -554,6 +555,7 @@ export function createExtractor(
           'name',
           'focusStyle',
           'focusVisibleStyle',
+          'disabledStyle',
           'hoverStyle',
           'pressStyle',
         ])
@@ -840,7 +842,7 @@ export function createExtractor(
             'disableOptimization',
 
             ...(!isTargetingHTML
-              ? ['pressStyle', 'focusStyle', 'focusVisibleStyle']
+              ? ['pressStyle', 'focusStyle', 'focusVisibleStyle', 'disabledStyle']
               : []),
 
             // when using a non-CSS driver, de-opt on enterStyle/exitStyle

@@ -648,6 +648,7 @@ export declare const validPseudoKeys: {
     hoverStyle: boolean;
     pressStyle: boolean;
     focusStyle: boolean;
+    disabledStyle: boolean;
 };
 export declare const validStyles: {
     elevationAndroid?: boolean | undefined;
@@ -814,5 +815,6 @@ export declare const validStyles: {
     hoverStyle: boolean;
     pressStyle: boolean;
     focusStyle: boolean;
+    disabledStyle: boolean;
 };
 //# sourceMappingURL=validStyleProps.d.ts.map

@@ -402,8 +402,18 @@ export function createComponent<
         : defaultComponentState
       : defaultComponentStateMounted
 
-    const isDisabled =
-      props.disabled ?? props.accessibilityState?.disabled ?? props['aria-disabled']
+    // will be nice to deprecate half of these:
+    const disabled =
+      props.disabled ||
+      props.accessibilityState?.disabled ||
+      props['aria-disabled'] ||
+      // @ts-expect-error (comes from core)
+      props.accessibilityDisabled ||
+      false
+
+    if (disabled != null) {
+      initialState.disabled = disabled
+    }
 
     // HOOK
     const states = useState<TamaguiComponentState>(initialState)
@@ -411,9 +421,14 @@ export function createComponent<
     const state = props.forceStyle
       ? { ...states[0], [props.forceStyle]: true }
       : states[0]
-
     const setState = states[1]
-    let setStateShallow = createShallowSetState(setState, isDisabled, debugProp)
+
+    // immediately update disabled state
+    if (disabled !== state.disabled) {
+      setState({ ...state, disabled })
+    }
+
+    let setStateShallow = createShallowSetState(setState, disabled, debugProp)
 
     if (isHydrated && state.unmounted === 'should-enter') {
       state.unmounted = true
@@ -752,11 +767,6 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`destructure`
 
-    const disabled =
-      props.accessibilityState?.disabled ||
-      // @ts-expect-error (comes from core)
-      props.accessibilityDisabled
-
     if (groupName) {
       nonTamaguiProps.onLayout = composeEventHandlers(
         nonTamaguiProps.onLayout,
@@ -824,6 +834,10 @@ export function createComponent<
     const shouldEnter = state.unmounted
 
     useEffect(() => {
+      if (disabled) {
+        return
+      }
+
       if (shouldEnter) {
         setStateShallow({ unmounted: false })
         return
@@ -870,6 +884,7 @@ export function createComponent<
         mouseUps.delete(unPress)
       }
     }, [
+      disabled,
       shouldEnter,
       pseudoGroups ? Object.keys([...pseudoGroups]).join('') : 0,
       mediaGroups ? Object.keys([...mediaGroups]).join('') : 0,
@@ -903,130 +918,132 @@ export function createComponent<
 
     // check presence rather than value to prevent reparenting bugs
     // allows for onPress={x ? function : undefined} without re-ordering dom
-    const shouldAttach = Boolean(
-      attachFocus ||
-        attachPress ||
-        attachHover ||
-        runtimePressStyle ||
-        runtimeHoverStyle ||
-        runtimeFocusStyle
-    )
+    const shouldAttach =
+      !disabled &&
+      !props.asChild &&
+      Boolean(
+        attachFocus ||
+          attachPress ||
+          attachHover ||
+          runtimePressStyle ||
+          runtimeHoverStyle ||
+          runtimeFocusStyle
+      )
     const needsPressState = Boolean(groupName || runtimeHoverStyle)
 
     if (process.env.NODE_ENV === 'development' && time) time`events-setup`
 
-    const events: TamaguiComponentEvents | null =
-      shouldAttach && !isDisabled && !props.asChild
-        ? {
-            onPressOut: attachPress
-              ? (e) => {
-                  stateRef.current.handleFocusVisible = true
-                  unPress()
-                  onPressOut?.(e)
-                  onMouseUp?.(e)
+    const events: TamaguiComponentEvents | null = shouldAttach
+      ? {
+          onPressOut: attachPress
+            ? (e) => {
+                stateRef.current.handleFocusVisible = true
+                unPress()
+                onPressOut?.(e)
+                onMouseUp?.(e)
+              }
+            : undefined,
+          ...((attachHover || attachPress) && {
+            onMouseEnter: (e) => {
+              const next: Partial<typeof state> = {}
+              if (needsHoverState) {
+                next.hover = true
+              }
+              if (needsPressState) {
+                if (state.pressIn) {
+                  next.press = true
                 }
-              : undefined,
-            ...((attachHover || attachPress) && {
-              onMouseEnter: (e) => {
-                const next: Partial<typeof state> = {}
-                if (needsHoverState) {
-                  next.hover = true
+              }
+              setStateShallow(next)
+              onHoverIn?.(e)
+              onMouseEnter?.(e)
+            },
+            onMouseLeave: (e) => {
+              const next: Partial<typeof state> = {}
+              mouseUps.add(unPress)
+              if (needsHoverState) {
+                next.hover = false
+              }
+              if (needsPressState) {
+                if (state.pressIn) {
+                  next.press = false
+                  next.pressIn = false
                 }
-                if (needsPressState) {
-                  if (state.pressIn) {
-                    next.press = true
-                  }
-                }
-                setStateShallow(next)
-                onHoverIn?.(e)
-                onMouseEnter?.(e)
-              },
-              onMouseLeave: (e) => {
-                const next: Partial<typeof state> = {}
-                mouseUps.add(unPress)
-                if (needsHoverState) {
-                  next.hover = false
-                }
-                if (needsPressState) {
-                  if (state.pressIn) {
-                    next.press = false
-                    next.pressIn = false
-                  }
-                }
-                setStateShallow(next)
-                onHoverOut?.(e)
-                onMouseLeave?.(e)
-              },
-            }),
-            onPressIn: attachPress
-              ? (e) => {
-                  stateRef.current.handleFocusVisible = false
-                  if (runtimePressStyle) {
-                    setStateShallow({
-                      press: true,
-                      pressIn: true,
-                    })
-                  }
-                  onPressIn?.(e)
-                  onMouseDown?.(e)
-                  if (isWeb) {
-                    mouseUps.add(unPress)
-                  }
-                }
-              : undefined,
-            onPress: attachPress
-              ? (e) => {
-                  unPress()
-                  // @ts-ignore
-                  isWeb && onClick?.(e)
-                  onPress?.(e)
-                  if (process.env.TAMAGUI_TARGET === 'web') {
-                    onLongPress?.(e)
-                  }
-                }
-              : undefined,
-            ...(process.env.TAMAGUI_TARGET === 'native' &&
-              attachPress &&
-              onLongPress && {
-                onLongPress: (e) => {
-                  unPress()
-                  onLongPress?.(e)
-                },
-              }),
-            ...(attachFocus && {
-              onFocus: (e) => {
-                if (pseudos?.focusVisibleStyle) {
-                  setTimeout(() => {
-                    setStateShallow({
-                      focus: true,
-                      focusVisible: !!stateRef.current.handleFocusVisible,
-                    })
-                  }, 0)
-                } else {
+              }
+              setStateShallow(next)
+              onHoverOut?.(e)
+              onMouseLeave?.(e)
+            },
+          }),
+          onPressIn: attachPress
+            ? (e) => {
+                stateRef.current.handleFocusVisible = false
+                if (runtimePressStyle) {
                   setStateShallow({
-                    focus: true,
-                    focusVisible: false,
+                    press: true,
+                    pressIn: true,
                   })
                 }
-                onFocus?.(e)
-              },
-              onBlur: (e) => {
-                stateRef.current.handleFocusVisible = true
-                setStateShallow({
-                  focus: false,
-                  focusVisible: false,
-                })
-                onBlur?.(e)
+                onPressIn?.(e)
+                onMouseDown?.(e)
+                if (isWeb) {
+                  mouseUps.add(unPress)
+                }
+              }
+            : undefined,
+          onPress: attachPress
+            ? (e) => {
+                unPress()
+                // @ts-ignore
+                isWeb && onClick?.(e)
+                onPress?.(e)
+                if (process.env.TAMAGUI_TARGET === 'web') {
+                  onLongPress?.(e)
+                }
+              }
+            : undefined,
+          ...(process.env.TAMAGUI_TARGET === 'native' &&
+            attachPress &&
+            onLongPress && {
+              onLongPress: (e) => {
+                unPress()
+                onLongPress?.(e)
               },
             }),
-          }
-        : null
+          ...(attachFocus && {
+            onFocus: (e) => {
+              if (pseudos?.focusVisibleStyle) {
+                setTimeout(() => {
+                  setStateShallow({
+                    focus: true,
+                    focusVisible: !!stateRef.current.handleFocusVisible,
+                  })
+                }, 0)
+              } else {
+                setStateShallow({
+                  focus: true,
+                  focusVisible: false,
+                })
+              }
+              onFocus?.(e)
+            },
+            onBlur: (e) => {
+              stateRef.current.handleFocusVisible = true
+              setStateShallow({
+                focus: false,
+                focusVisible: false,
+              })
+              onBlur?.(e)
+            },
+          }),
+        }
+      : null
 
     if (process.env.TAMAGUI_TARGET === 'native' && events && !asChild) {
       // replicating TouchableWithoutFeedback
       Object.assign(events, {
         cancelable: !viewProps.rejectResponderTermination,
-        disabled: isDisabled,
+        disabled: disabled,
         hitSlop: viewProps.hitSlop,
         delayLongPress: viewProps.delayLongPress,
         delayPressIn: viewProps.delayPressIn,

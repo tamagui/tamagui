@@ -625,6 +625,7 @@ export type WithPseudoProps<A> = {
     pressStyle?: A | null;
     focusStyle?: A | null;
     focusVisibleStyle?: A | null;
+    disabledStyle?: A | null;
     exitStyle?: A | null;
     enterStyle?: A | null;
 };
@@ -634,6 +635,7 @@ export type PseudoStyles = {
     pressStyle?: ViewStyle;
     focusStyle?: ViewStyle;
     focusVisibleStyle?: ViewStyle;
+    disabledStyle?: ViewStyle;
     enterStyle?: ViewStyle;
     exitStyle?: ViewStyle;
 };
@@ -934,6 +936,7 @@ export type ViewStyleWithPseudos = TextStyleProps | (TextStyleProps & {
     pressStyle?: TextStyleProps;
     focusStyle?: TextStyleProps;
     focusVisibleStyle?: TextStyleProps;
+    disabledStyle?: TextStyleProps;
 });
 /**
  * --------------------------------------------

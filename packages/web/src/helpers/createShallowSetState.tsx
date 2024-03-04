@@ -6,7 +6,7 @@ export function createShallowSetState<State extends Object>(
   isDisabled?: boolean,
   debug?: DebugProp
 ) {
-  return (next: Partial<State>) =>
+  return (next?: Partial<State>) =>
     setter((prev) => mergeIfNotShallowEqual(prev, next, isDisabled, debug))
 }
 
@@ -16,7 +16,7 @@ export function mergeIfNotShallowEqual(
   isDisabled?: boolean,
   debug?: DebugProp
 ) {
-  if (isDisabled || isEqualShallow(prev, next)) {
+  if (isDisabled || !prev || !next || isEqualShallow(prev, next)) {
     return prev
   }
   if (process.env.NODE_ENV === 'development') {

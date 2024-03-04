@@ -7,12 +7,12 @@ import type { StyleObject } from '@tamagui/helpers'
 import { simpleHash } from '@tamagui/helpers'
 
 import { getConfig } from '../config'
-import type { DebugProp, TamaguiInternalConfig, ViewStyleWithPseudos } from '../types'
+import type { TamaguiInternalConfig, ViewStyleWithPseudos } from '../types'
 import { defaultOffset } from './defaultOffset'
+import { normalizeColor } from './normalizeColor'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 import type { PseudoDescriptor } from './pseudoDescriptors'
-import { pseudoDescriptors, pseudoDescriptorsBase } from './pseudoDescriptors'
-import { normalizeColor } from './normalizeColor'
+import { pseudoDescriptors } from './pseudoDescriptors'
 import { transformsToString } from './transformsToString'
 
 // refactor this file away next...
@@ -148,10 +148,15 @@ function createAtomicRules(
   value: any,
   pseudo?: PseudoDescriptor
 ): string[] {
+  const pseudoSelector = pseudo
+    ? pseudo.name === 'disabled'
+      ? `[aria-disabled]`
+      : `:${pseudo.name}`
+    : ''
   const selector = pseudo
     ? pseudo?.selector
       ? `${pseudo?.selector} .${identifier}`
-      : `${selectorPriority[pseudo.name]} .${identifier}:${pseudo.name}`
+      : `${selectorPriority[pseudo.name]} .${identifier}${pseudoSelector}`
     : `:root .${identifier}`
   const important = !!pseudo
 

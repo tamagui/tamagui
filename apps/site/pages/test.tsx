@@ -33,7 +33,21 @@ function TestPage() {
         ok
       </Button> */}
 
-      <Text debug="verbose" maxWidth={300} numberOfLines={3} ellipsizeMode="middle">
+      <Square
+        size={100}
+        // disabled
+        backgroundColor="green"
+        debug="verbose"
+        disableClassName
+        disabledStyle={{
+          backgroundColor: 'gray',
+        }}
+        pressStyle={{
+          bg: 'yellow',
+        }}
+      />
+
+      {/* <Text debug="verbose" maxWidth={300} numberOfLines={3} ellipsizeMode="middle">
         Esse laborum veniam magna sunt nulla nisi proident nisi culpa. Aliquip sit duis
         tempor officia officia duis. Magna Lorem magna cupidatat consectetur dolor
         consequat. Nostrud cupidatat tempor consequat fugiat proident ullamco cillum non.
@@ -69,7 +83,8 @@ function TestPage() {
             backgroundColor: 'red',
           },
         }}
-      />
+      /> */}
+
       {/* <Stack
         // hitSlop={5}
         importantForAccessibility="no"
