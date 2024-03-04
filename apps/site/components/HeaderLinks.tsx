@@ -26,6 +26,7 @@ import { NextLink } from './NextLink'
 import { TakeoutIcon } from './TakeoutIcon'
 import { LinearGradient } from 'tamagui/linear-gradient'
 import { ThemeTintAlt } from '@tamagui/logo'
+import { createShallowSetState } from '@tamagui/core'
 
 const HeadAnchor = styled(Paragraph, {
   tag: 'a',
@@ -392,7 +393,8 @@ const SlidingPopover = (props: PopoverProps) => {
 const SlidingPopoverTrigger = YStack.styleable<{ id: string }>(
   ({ id, ...props }, ref) => {
     const context = React.useContext(SlidingPopoverContext)
-    const [layout, setLayout] = React.useState<LayoutRectangle>()
+    const [layout, setLayout_] = React.useState<LayoutRectangle>()
+    const setLayout = createShallowSetState<LayoutRectangle>(setLayout_)
 
     return (
       <YStack
@@ -409,7 +411,7 @@ const SlidingPopoverTrigger = YStack.styleable<{ id: string }>(
             context.close()
           }, 400)
         }}
-        onLayout={(e) =>
+        onLayout={(e) => {
           setLayout({
             ...e.nativeEvent.layout,
             // @ts-ignore
@@ -417,7 +419,7 @@ const SlidingPopoverTrigger = YStack.styleable<{ id: string }>(
             // @ts-ignore
             y: e.nativeEvent.layout.top,
           })
-        }
+        }}
         ref={ref}
         {...props}
       />
