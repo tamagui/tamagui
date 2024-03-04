@@ -73,7 +73,6 @@ export default declare(function tamaguiBabelPlugin(
           const firstComment = firstCommentContents ? `//${firstCommentContents}` : ''
 
           const { shouldPrintDebug, shouldDisable } = getPragmaOptions({
-            disableCommentCheck: true,
             source: firstComment,
             path: sourcePath,
           })
@@ -81,8 +80,6 @@ export default declare(function tamaguiBabelPlugin(
           if (shouldDisable) {
             return
           }
-
-          console.log('??', sourcePath, firstComment, shouldPrintDebug)
 
           const finalOptions = {
             // @ts-ignore just in case they leave it out

@@ -1,19 +1,10 @@
 export function getPragmaOptions({
   source,
   path,
-  disableCommentCheck,
 }: {
   source: string
   path: string
-  disableCommentCheck?: boolean
 }) {
-  if (disableCommentCheck) {
-    return {
-      shouldPrintDebug: false,
-      shouldDisable: false,
-    }
-  }
-
   let shouldPrintDebug: boolean | 'verbose' = false
   let shouldDisable = false
 
@@ -31,6 +22,8 @@ export function getPragmaOptions({
       break
     }
   }
+
+  console.log('wtf', firstLines, pragma)
 
   switch (pragma) {
     case 'tamagui-ignore':

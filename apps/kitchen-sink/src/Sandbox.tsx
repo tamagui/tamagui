@@ -1,50 +1,11 @@
 //! debug-verbose
 // import './wdyr'
 
-import { DialogDemo, ToastDemo } from '@tamagui/demos'
 import { View as RNView } from 'react-native'
-import { Button, View, styled, usePropsAndStyle } from 'tamagui'
+import { View, styled, Square } from 'tamagui'
 
-import * as ReactNative from 'react-native'
-import { TextInput } from 'react-native'
-import { Text } from '@tamagui/core'
-import { Square } from '@tamagui/lucide-icons'
 import { useState } from 'react'
-import { Toast, ToastProvider, ToastViewport } from '@tamagui/toast'
-
-const MyInput = styled(
-  TextInput,
-  {
-    placeholder: 'Test',
-    width: 200,
-    height: 50,
-    backgroundColor: 'red',
-  },
-  {
-    accept: { placeholderTextColor: 'color' },
-  }
-)
-
-function MyInputWrapper() {
-  return <MyInput debug="verbose" placeholderTextColor="$accentBackground" />
-}
-
-const TestAnimateToUndefinedBg = styled(View, {
-  w: 100,
-  h: 100,
-  animation: '100ms',
-  hoverStyle: {
-    backgroundColor: 'red',
-  },
-})
-
-export const defaultHitslop = 5
-export const defaultHitslopInset = {
-  top: defaultHitslop,
-  bottom: defaultHitslop,
-  left: defaultHitslop,
-  right: defaultHitslop,
-}
+import { TextInput } from 'react-native'
 
 export const Sandbox = () => {
   const [open, setOpen] = useState(false)
@@ -53,7 +14,9 @@ export const Sandbox = () => {
     <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
       <Square
         size={300}
+        // disabled
         bg="red"
+        debug="verbose"
         disabledStyle={{
           bg: 'black',
         }}
@@ -169,3 +132,37 @@ const Demo = () => (
 // animationDuration: '0.8s',
 // animationFillMode: 'both',
 // animationDelay: '800ms',
+
+const MyInput = styled(
+  TextInput,
+  {
+    placeholder: 'Test',
+    width: 200,
+    height: 50,
+    backgroundColor: 'red',
+  },
+  {
+    accept: { placeholderTextColor: 'color' },
+  }
+)
+
+function MyInputWrapper() {
+  return <MyInput debug="verbose" placeholderTextColor="$accentBackground" />
+}
+
+const TestAnimateToUndefinedBg = styled(View, {
+  w: 100,
+  h: 100,
+  animation: '100ms',
+  hoverStyle: {
+    backgroundColor: 'red',
+  },
+})
+
+const defaultHitslop = 5
+const defaultHitslopInset = {
+  top: defaultHitslop,
+  bottom: defaultHitslop,
+  left: defaultHitslop,
+  right: defaultHitslop,
+}
