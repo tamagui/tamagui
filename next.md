@@ -1,3 +1,5 @@
+- Adapt needs public API to support any adaptation
+
 - v2-3 ListItem simplification esp for performance of Select
 
 - Select Virtualization
