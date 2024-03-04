@@ -1,6 +1,6 @@
 import { Adapt, useAdaptParent } from '@tamagui/adapt'
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { isIos, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { FontSizeTokens, GetProps, TamaguiElement } from '@tamagui/core'
 import { getVariableValue, styled, useEvent, useGet } from '@tamagui/core'
 import { getSpace } from '@tamagui/get-token'
@@ -13,9 +13,17 @@ import { Sheet, SheetController } from '@tamagui/sheet'
 import { ThemeableStack, XStack, YStack } from '@tamagui/stacks'
 import { Paragraph, SizableText } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
-import * as React from 'react'
 import { useDebounce } from '@tamagui/use-debounce'
+import * as React from 'react'
 
+import { NativeSelect } from './NativeSelect'
+import { SelectContent } from './SelectContent'
+import { SelectInlineImpl } from './SelectImpl'
+import { SelectItem, useSelectItemContext } from './SelectItem'
+import { ITEM_TEXT_NAME, SelectItemText } from './SelectItemText'
+import { SelectScrollDownButton, SelectScrollUpButton } from './SelectScrollButton'
+import { SelectTrigger } from './SelectTrigger'
+import { SelectViewport } from './SelectViewport'
 import { SELECT_NAME } from './constants'
 import {
   SelectItemParentProvider,
@@ -24,13 +32,6 @@ import {
   useSelectContext,
   useSelectItemParentContext,
 } from './context'
-import { SelectContent } from './SelectContent'
-import { SelectInlineImpl } from './SelectImpl'
-import { SelectItem, useSelectItemContext } from './SelectItem'
-import { ITEM_TEXT_NAME, SelectItemText } from './SelectItemText'
-import { SelectScrollDownButton, SelectScrollUpButton } from './SelectScrollButton'
-import { SelectTrigger } from './SelectTrigger'
-import { SelectViewport } from './SelectViewport'
 import type { ScopedProps, SelectImplProps, SelectProps } from './types'
 import {
   useSelectBreakpointActive,
@@ -439,6 +440,10 @@ export const Select = withStaticProperties(
       {},
       []
     )
+
+    if (props.native && isIos) {
+      return <NativeSelect {...props} />
+    }
 
     return (
       <AdaptProvider>

@@ -4,7 +4,7 @@ import * as React from 'react'
 import { Platform } from 'react-native'
 
 const NativeView: React.ComponentType<any> | null =
-  Platform.OS === 'ios' ? requireNativeViewManager('Progress') : null
+  Platform.OS === 'ios' ? requireNativeViewManager('TamaguiProgress') : null
 
 function ProgressWrapper({ max, ...restProps }: { max?: number }) {
   if (!NativeView) return null

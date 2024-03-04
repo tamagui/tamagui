@@ -28,7 +28,7 @@ export interface SelectProps {
     /**
      * If passed, will render a native component instead of the custom one. Currently only `web` is supported.
      */
-    native?: NativeValue<'web'>;
+    native?: NativeValue<'web' | 'ios'>;
     /**
      * When true, avoids removing the scrollbar from the body when open
      */

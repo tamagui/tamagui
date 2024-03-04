@@ -1,5 +1,5 @@
 Pod::Spec.new do |s|
-  s.name           = 'Progress'
+  s.name           = 'TamaguiProgress'
   s.version        = '1.0.0'
   s.summary        = 'A sample project summary'
   s.description    = 'A sample project description'

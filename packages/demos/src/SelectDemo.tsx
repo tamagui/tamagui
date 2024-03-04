@@ -20,11 +20,20 @@ export function SelectDemo() {
         </Label>
         <SelectDemoItem id="select-demo-2" native />
       </XStack>
+
+      <XStack ai="center" gap="$4">
+        <Label htmlFor="select-demo-2" f={1} miw={80}>
+          Native
+        </Label>
+        <SelectDemoItem id="select-demo-2" native nativeType="wheel" height={200} />
+      </XStack>
     </YStack>
   )
 }
 
-export function SelectDemoItem(props: SelectProps) {
+export function SelectDemoItem(
+  props: SelectProps & { nativeType?: 'menu' | 'wheel'; height?: number }
+) {
   const [val, setVal] = useState('apple')
 
   return (

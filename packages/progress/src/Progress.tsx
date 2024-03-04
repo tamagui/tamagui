@@ -2,16 +2,15 @@
 // https://github.com/radix-ui/primitives/blob/main/packages/react/progress/src/Progress.tsx
 
 import type { GetProps } from '@tamagui/core'
-import { getVariableValue, styled } from '@tamagui/core'
+import { getVariableValue, isIos, styled } from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
 import { getSize } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
 import { ThemeableStack } from '@tamagui/stacks'
 import * as React from 'react'
-import { Platform } from 'react-native'
 
-import { Progress as NativeProgressIOS } from './NativeProgressIOS'
+import { Progress as NativeProgressIOS } from './NativeProgress'
 
 const PROGRESS_NAME = 'Progress'
 
@@ -180,7 +179,7 @@ const Progress = withStaticProperties(
     const valueLabel = isNumber(value) ? getValueLabel(value, max) : undefined
     const [width, setWidth] = React.useState(0)
 
-    if (props.native && Platform.OS === 'ios') {
+    if (props.native && isIos) {
       return <NativeProgressIOS {...props} />
     }
 

@@ -1,5 +1,5 @@
 import type { ContextData, FloatingContext, ReferenceType } from '@floating-ui/react'
-import type { NativePlatform, NativeValue, SizeTokens } from '@tamagui/core'
+import type { NativeValue, SizeTokens } from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
 import type { ThemeableStackProps, YStackProps } from '@tamagui/stacks'
 import type { DispatchWithoutAction, HTMLProps, MutableRefObject, ReactNode } from 'react'
@@ -30,7 +30,7 @@ export interface SelectProps {
   /**
    * If passed, will render a native component instead of the custom one. Currently only `web` is supported.
    */
-  native?: NativeValue<'web'>
+  native?: NativeValue<'web' | 'ios'>
 
   /**
    * When true, avoids removing the scrollbar from the body when open
