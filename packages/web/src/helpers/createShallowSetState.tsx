@@ -17,6 +17,7 @@ export function mergeIfNotShallowEqual(
   debug?: DebugProp
 ) {
   if (isDisabled || !prev || !next || isEqualShallow(prev, next)) {
+    if (!prev) return next
     return prev
   }
   if (process.env.NODE_ENV === 'development') {
