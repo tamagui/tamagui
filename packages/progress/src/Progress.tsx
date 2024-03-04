@@ -10,7 +10,7 @@ import { withStaticProperties } from '@tamagui/helpers'
 import { ThemeableStack } from '@tamagui/stacks'
 import * as React from 'react'
 
-import { Progress as NativeProgressIOS } from './NativeProgress'
+import { NativeProgress } from './NativeProgress'
 
 const PROGRESS_NAME = 'Progress'
 
@@ -180,7 +180,7 @@ const Progress = withStaticProperties(
     const [width, setWidth] = React.useState(0)
 
     if (props.native && isIos) {
-      return <NativeProgressIOS {...props} />
+      return <NativeProgress {...props} />
     }
 
     return (

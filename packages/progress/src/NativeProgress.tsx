@@ -6,12 +6,12 @@ import { Platform } from 'react-native'
 const NativeView: React.ComponentType<any> | null =
   Platform.OS === 'ios' ? requireNativeViewManager('TamaguiProgress') : null
 
-function ProgressWrapper({ max, ...restProps }: { max?: number }) {
+function NativeProgressWrapper({ max, ...restProps }: { max?: number }) {
   if (!NativeView) return null
   return <NativeView max={max ?? 1} {...restProps} />
 }
 
-export const Progress = styled(ProgressWrapper, {})
+export const NativeProgress = styled(NativeProgressWrapper, {})
 
 // @ts-ignore
-Progress.Indicator = (props: any) => null
+NativeProgress.Indicator = (props: any) => null
