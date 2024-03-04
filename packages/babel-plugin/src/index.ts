@@ -11,6 +11,7 @@ import {
   getPragmaOptions,
   isSimpleSpread,
   literalToAst,
+  createLogger,
 } from '@tamagui/static'
 
 const importNativeView = template(`
@@ -28,7 +29,7 @@ const __withStableStyle = require('@tamagui/core')._withStableStyle;
 
 const extractor = createExtractor({ platform: 'native' })
 
-export default declare(function snackBabelPlugin(
+export default declare(function tamaguiBabelPlugin(
   api,
   options: TamaguiOptions
 ): {
@@ -63,11 +64,13 @@ export default declare(function snackBabelPlugin(
           let hasImportedViewWrapper = false
           const sheetStyles = {}
           const sheetIdentifier = root.scope.generateUidIdentifier('sheet')
-          const firstComment =
-            // join because you can join together multiple pragmas
+
+          // babel doesnt append the `//` so we need to
+          const firstCommentContents = // join because you can join together multiple pragmas
             root.node.body[0]?.leadingComments
               ?.map((comment) => comment?.value || ' ')
               .join(' ') ?? ''
+          const firstComment = firstCommentContents ? `//${firstCommentContents}` : ''
 
           const { shouldPrintDebug, shouldDisable } = getPragmaOptions({
             disableCommentCheck: true,
@@ -78,6 +81,15 @@ export default declare(function snackBabelPlugin(
           if (shouldDisable) {
             return
           }
+
+          const finalOptions = {
+            // @ts-ignore just in case they leave it out
+            platform: 'native',
+            shouldPrintDebug,
+            ...options,
+          }
+
+          const printLog = createLogger(sourcePath, finalOptions)
 
           function addSheetStyle(style: any, node: t.JSXOpeningElement) {
             const styleIndex = `${Object.keys(sheetStyles).length}`
@@ -102,11 +114,10 @@ export default declare(function snackBabelPlugin(
             })['expression'] as t.MemberExpression
           }
 
+          let res
+
           try {
-            extractor.parseSync(root, {
-              // @ts-expect-error in case they leave it out
-              platform: 'native',
-              shouldPrintDebug,
+            res = extractor.parseSync(root, {
               importsWhitelist: ['constants.js', 'colors.js'],
               extractStyledDefinitions: options.forceExtractStyleDefinitions,
               excludeProps: new Set([
@@ -117,7 +128,7 @@ export default declare(function snackBabelPlugin(
                 'cursor',
                 'contain',
               ]),
-              ...options,
+              ...finalOptions,
               // disable this extraction for now at least, need to figure out merging theme vs non-theme
               // because theme need to stay in render(), whereas non-theme can be extracted
               // for now just turn it off entirely at a small perf loss
@@ -410,6 +421,7 @@ export default declare(function snackBabelPlugin(
             if (shouldPrintDebug) {
               console.info('END no styles')
             }
+            if (res) printLog(res)
             return
           }
 
@@ -435,6 +447,8 @@ export default declare(function snackBabelPlugin(
                 .join('\n')
             )
           }
+
+          if (res) printLog(res)
         },
       },
     },

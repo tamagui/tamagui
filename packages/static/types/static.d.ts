@@ -5,6 +5,7 @@ export * from './constants';
 export * from './extractor/extractToClassNames';
 export * from './extractor/extractHelpers';
 export * from './extractor/loadTamagui';
+export * from './extractor/createLogger';
 export * from './registerRequire';
 export * from './getPragmaOptions';
 //# sourceMappingURL=static.d.ts.map

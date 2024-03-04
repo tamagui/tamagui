@@ -10,10 +10,9 @@ module.exports = (api) => {
       [
         '@tamagui/babel-plugin',
         {
-          platform: 'native',
           components: ['tamagui', '@tamagui/sandbox-ui'],
           config: './src/tamagui.config.ts',
-          experimentalFlattenThemesOnNative: true,
+          // experimentalFlattenThemesOnNative: true,
           // disable: true,
           // disableExtraction: true,
         },

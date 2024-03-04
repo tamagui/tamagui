@@ -18,11 +18,19 @@ export function getPragmaOptions({
   let shouldDisable = false
 
   // try and avoid too much parsing but sometimes esbuild adds helpers above..
-  const firstLine = source.slice(0, 800)
+  const firstLines = source.slice(0, 800)
 
-  const pragma = firstLine
-    .match(/(\/\/|\/\*)\s?(tamagui-ignore|debug|debug-verbose)(\n|\s)/)?.[2]
-    .trim()
+  let pragma = ''
+  for (const line of firstLines.split('\n')) {
+    pragma =
+      line
+        .match(/(\/\/|\/\*)\s?\!?\s?(tamagui-ignore|debug|debug-verbose)(\n|\s|$)/)?.[2]
+        .trim() || ''
+    if (pragma) {
+      pragma = pragma.replace('!', '').trim()
+      break
+    }
+  }
 
   switch (pragma) {
     case 'tamagui-ignore':

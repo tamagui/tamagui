@@ -1,4 +1,5 @@
-// debug-verbose
+//! debug-verbose
+// >>
 // import './wdyr'
 
 import { DialogDemo, ToastDemo } from '@tamagui/demos'
@@ -50,82 +51,94 @@ export const Sandbox = () => {
   const [open, setOpen] = useState(false)
 
   return (
-    <>
-      <ToastProvider>
-        <ToastViewport zIndex={Number.MAX_SAFE_INTEGER} />
-        <ToastDemo />
-      </ToastProvider>
-
-      <Button onPress={() => setOpen(true)}>Open</Button>
-
-      <ReactNative.Modal
-        visible={open}
-        style={{
-          backgroundColor: 'red',
-        }}
-      >
-        <Square size={100} bg="red" />
-        <Button onPress={() => setOpen(false)}>Close</Button>
-      </ReactNative.Modal>
-    </>
-  )
-
-  return (
     <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
-      {/* <View
-        style={{ transform: [{ translateX: 100 }] }}
-        width={100}
-        height={100}
+      <Square
+        size={300}
         bg="red"
+        disabledStyle={{
+          bg: 'black',
+        }}
       />
-
-      <Text maxWidth={300} numberOfLines={3} ellipsizeMode="middle" debug="verbose">
-        Esse laborum veniam magna sunt nulla nisi proident nisi culpa. Aliquip sit duis
-        tempor officia officia duis. Magna Lorem magna cupidatat consectetur dolor
-        consequat. Nostrud cupidatat tempor consequat fugiat proident ullamco cillum non.
-        Ipsum irure exercitation id enim reprehenderit id do esse fugiat voluptate minim
-        cupidatat aute. Eu non est dolore incididunt esse quis. Esse voluptate eiusmod
-        enim fugiat incididunt consectetur adipisicing ex anim cupidatat aliquip occaecat
-        officia.
-      </Text>
-
-      <ReactNative.Text
-        style={{ maxWidth: 300 }}
-        numberOfLines={3}
-        ellipsizeMode="middle"
-      >
-        Esse laborum veniam magna sunt nulla nisi proident nisi culpa. Aliquip sit duis
-        tempor officia officia duis. Magna Lorem magna cupidatat consectetur dolor
-        consequat. Nostrud cupidatat tempor consequat fugiat proident ullamco cillum non.
-        Ipsum irure exercitation id enim reprehenderit id do esse fugiat voluptate minim
-        cupidatat aute. Eu non est dolore incididunt esse quis. Esse voluptate eiusmod
-        enim fugiat incididunt consectetur adipisicing ex anim cupidatat aliquip occaecat
-        officia.
-      </ReactNative.Text> */}
-
-      {/* <TestAnimateToUndefinedBg
-        cursor="pointer"
-        hitSlop={defaultHitslopInset}
-        pressStyle={{
-          opacity: 0.5,
-        }}
-        hoverStyle={{
-          backgroundColor: 'green',
-        }}
-        onPress={() => {}}
-        onPressIn={() => {}}
-      /> */}
-      {/* <MyInputWrapper /> */}
-      {/* 
-      <Test2
-        debug="verbose"
-        w={100}
-        h={100}
-        bg="red"
-        style={{ transition: 'all ease-in' }}
-      /> */}
     </RNView>
   )
+
+  // return (
+  //   <>
+  //     <ToastProvider>
+  //       <ToastViewport zIndex={Number.MAX_SAFE_INTEGER} />
+  //       <ToastDemo />
+  //     </ToastProvider>
+
+  //     <Button onPress={() => setOpen(true)}>Open</Button>
+
+  //     <ReactNative.Modal
+  //       visible={open}
+  //       style={{
+  //         backgroundColor: 'red',
+  //       }}
+  //     >
+  //       <Square size={100} bg="red" />
+  //       <Button onPress={() => setOpen(false)}>Close</Button>
+  //     </ReactNative.Modal>
+  //   </>
+  // )
+
+  // return (
+  //   <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
+  //     {/* <View
+  //       style={{ transform: [{ translateX: 100 }] }}
+  //       width={100}
+  //       height={100}
+  //       bg="red"
+  //     />
+
+  //     <Text maxWidth={300} numberOfLines={3} ellipsizeMode="middle" debug="verbose">
+  //       Esse laborum veniam magna sunt nulla nisi proident nisi culpa. Aliquip sit duis
+  //       tempor officia officia duis. Magna Lorem magna cupidatat consectetur dolor
+  //       consequat. Nostrud cupidatat tempor consequat fugiat proident ullamco cillum non.
+  //       Ipsum irure exercitation id enim reprehenderit id do esse fugiat voluptate minim
+  //       cupidatat aute. Eu non est dolore incididunt esse quis. Esse voluptate eiusmod
+  //       enim fugiat incididunt consectetur adipisicing ex anim cupidatat aliquip occaecat
+  //       officia.
+  //     </Text>
+
+  //     <ReactNative.Text
+  //       style={{ maxWidth: 300 }}
+  //       numberOfLines={3}
+  //       ellipsizeMode="middle"
+  //     >
+  //       Esse laborum veniam magna sunt nulla nisi proident nisi culpa. Aliquip sit duis
+  //       tempor officia officia duis. Magna Lorem magna cupidatat consectetur dolor
+  //       consequat. Nostrud cupidatat tempor consequat fugiat proident ullamco cillum non.
+  //       Ipsum irure exercitation id enim reprehenderit id do esse fugiat voluptate minim
+  //       cupidatat aute. Eu non est dolore incididunt esse quis. Esse voluptate eiusmod
+  //       enim fugiat incididunt consectetur adipisicing ex anim cupidatat aliquip occaecat
+  //       officia.
+  //     </ReactNative.Text> */}
+
+  //     {/* <TestAnimateToUndefinedBg
+  //       cursor="pointer"
+  //       hitSlop={defaultHitslopInset}
+  //       pressStyle={{
+  //         opacity: 0.5,
+  //       }}
+  //       hoverStyle={{
+  //         backgroundColor: 'green',
+  //       }}
+  //       onPress={() => {}}
+  //       onPressIn={() => {}}
+  //     /> */}
+  //     {/* <MyInputWrapper /> */}
+  //     {/*
+  //     <Test2
+  //       debug="verbose"
+  //       w={100}
+  //       h={100}
+  //       bg="red"
+  //       style={{ transition: 'all ease-in' }}
+  //     /> */}
+  //   </RNView>
+  // )
 }
 
 const Demo = () => (
