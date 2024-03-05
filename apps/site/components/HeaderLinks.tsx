@@ -298,7 +298,7 @@ const CTAHeaderLink = ({
   }, [])
 
   return (
-    <NextLink legacyBehavior={false} prefetch={false} href="/takeout">
+    <NextLink legacyBehavior={false} prefetch={false} href={href}>
       <Popover
         open={open}
         onOpenChange={(open) => {
