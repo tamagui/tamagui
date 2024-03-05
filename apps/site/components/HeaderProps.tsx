@@ -6,4 +6,5 @@ export type HeaderProps = {
   minimal?: boolean
   showAuth?: boolean
   isHeader?: boolean
+  hasBanner?: boolean
 }

@@ -116,11 +116,9 @@ export const HeaderLinks = (props: HeaderProps) => {
             <TakeoutHeaderLink {...props} />
           </SlidingPopoverTrigger>
 
-          {process.env.NEXT_PUBLIC_IS_TAMAGUI_DEV && (
-            <SlidingPopoverTrigger id="bento">
-              <BentoHeaderLink {...props} />
-            </SlidingPopoverTrigger>
-          )}
+          <SlidingPopoverTrigger id="bento">
+            <BentoHeaderLink {...props} />
+          </SlidingPopoverTrigger>
 
           {/* <SlidingPopoverTrigger id="studio">
             <NextLink passHref prefetch={false} href="/studio">

@@ -601,14 +601,11 @@ Themes can completely transform the look and feel, a button could have multiple 
 
 - 3.0 - single forward pass generates the css alongside the style object
 
-- Fix ToggleGroup active style looking really bad only sticking sometimes
   - in general we need a better system for controlling if we apply active theme or not, or letting consumers control the active styling in general on things
     - perhaps we do active theme by default (unless unstyled: true)
     - <ToggleGroup activeItemProps={{ active: true }}>
     - <ToggleGroup.Item /> then would recieve active={true}?
     - defaults to theme: 'active'
-
-- <Image borderWidth="$2" /> not turning into val via psgeorge
 
 - `import { _ } from '@tamagui/core'`
   - `<_.view />` `<_.text />`
@@ -617,5 +614,4 @@ Themes can completely transform the look and feel, a button could have multiple 
     - `<_.p />` `<_.a />` `<.img />` etc
   - can proxy to itself allowing for naming?
     - `<_.view.my-thing />`
-  - or boolean variants?
-    - `<_.view.p-5.m-10 />`
+
