@@ -23,7 +23,7 @@ export default function page() {
   return (
     <>
       <ThemeNameEffect colorKey="$color1" />
-      <DropTamaguiConfig />
+      {/* <DropTamaguiConfig /> */}
 
       <BentoPageFrame>
         <ContainerBento>
