@@ -691,7 +691,6 @@ export function createComponent<
       children,
       themeShallow,
       spaceDirection: _spaceDirection,
-      disabled: disabledProp,
       onPress,
       onLongPress,
       onPressIn,
