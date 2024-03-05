@@ -224,6 +224,7 @@ export const stylePropsView = {
     textEmphasis: true,
     borderImage: true,
     float: true,
+    content: true,
     overflowBlock: true,
     overflowInline: true,
 

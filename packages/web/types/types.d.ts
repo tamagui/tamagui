@@ -825,6 +825,10 @@ interface ExtraStyleProps {
     /**
      * @platform: web
      */
+    content?: Properties['content'];
+    /**
+     * @platform: web
+     */
     overflowBlock?: Properties['overflowBlock'];
     /**
      * @platform: web

@@ -131,6 +131,7 @@ export declare const stylePropsView: {
     textEmphasis?: boolean | undefined;
     borderImage?: boolean | undefined;
     float?: boolean | undefined;
+    content?: boolean | undefined;
     overflowBlock?: boolean | undefined;
     overflowInline?: boolean | undefined;
     maskBorder?: boolean | undefined;
@@ -385,6 +386,7 @@ export declare const stylePropsText: {
     textEmphasis?: boolean | undefined;
     borderImage?: boolean | undefined;
     float?: boolean | undefined;
+    content?: boolean | undefined;
     overflowBlock?: boolean | undefined;
     overflowInline?: boolean | undefined;
     maskBorder?: boolean | undefined;
@@ -599,6 +601,7 @@ export declare const stylePropsAll: {
     textEmphasis?: boolean | undefined;
     borderImage?: boolean | undefined;
     float?: boolean | undefined;
+    content?: boolean | undefined;
     overflowBlock?: boolean | undefined;
     overflowInline?: boolean | undefined;
     maskBorder?: boolean | undefined;
@@ -800,6 +803,7 @@ export declare const validStyles: {
     textEmphasis?: boolean | undefined;
     borderImage?: boolean | undefined;
     float?: boolean | undefined;
+    content?: boolean | undefined;
     overflowBlock?: boolean | undefined;
     overflowInline?: boolean | undefined;
     maskBorder?: boolean | undefined;

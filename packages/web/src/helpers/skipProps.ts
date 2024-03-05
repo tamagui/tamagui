@@ -57,6 +57,7 @@ if (process.env.TAMAGUI_TARGET === 'native') {
     textEmphasis: 1,
     borderImage: 1,
     float: 1,
+    content: 1,
     overflowBlock: 1,
     overflowInline: 1,
 
