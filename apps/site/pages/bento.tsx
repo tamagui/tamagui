@@ -91,8 +91,33 @@ export default function BentoPage(props: ProComponentsProps) {
   return (
     <Theme name="tan">
       <ThemeNameEffect colorKey="$color6" />
+
+      <XStack
+        zi={1000}
+        pos="absolute"
+        t={0}
+        l={0}
+        r={0}
+        theme="yellow"
+        bg="rgba(0,0,0,0.3)"
+      >
+        <ContainerLarge>
+          <YStack ai="center" py="$1.5">
+            <Paragraph size="$3" color="#fff">
+              <b>Early Access!</b> Mobile support is being improved, but you may find it
+              valuable already.
+            </Paragraph>
+          </YStack>
+        </ContainerLarge>
+      </XStack>
+
       <BentoPageFrame>
-        <ContainerLarge zi={100000000} h={0}>
+        <ContainerLarge
+          zi={100000000}
+          h={0}
+          // offset for the banner
+          mt={30}
+        >
           <Button
             pos="absolute"
             t="$-10"
@@ -119,6 +144,7 @@ export default function BentoPage(props: ProComponentsProps) {
               </YStack>
             </ContainerLarge>
           </YStack> */}
+
           <Intermediate />
         </YStack>
         <Body />

@@ -77,7 +77,11 @@ export function Header(props: HeaderProps) {
             {...(isScrolled && {
               $gtSm: {
                 y: 6,
-                bc: '$borderColor',
+              },
+            })}
+            {...(props.hasBanner && {
+              $gtSm: {
+                y: isScrolled ? 6 : 35,
               },
             })}
           >
