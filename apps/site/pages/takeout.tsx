@@ -1474,51 +1474,49 @@ const PurchaseModal = ({
                 </Dialog.Title>
               </XStack>
 
-              {process.env.NEXT_PUBLIC_IS_TAMAGUI_DEV && (
-                <YStack>
-                  <YStack gap="$4" $gtSm={{ fd: 'row' }} flexWrap="wrap">
-                    <ThemeTint disable={selectedProductsIds.includes(starter?.id || '')}>
-                      <CheckboxGroupItem
-                        disabled
-                        onCheckedChange={() => {
-                          if (!starter) return
-                          const active = selectedProductsIds.includes(starter.id)
-                          setSelectedProductsIds(
-                            active
-                              ? selectedProductsIds.filter((id) => id !== starter.id)
-                              : [...selectedProductsIds, starter.id]
-                          )
-                        }}
-                        id={'takeout-starter'}
-                        checked={selectedProductsIds.includes(starter?.id || '')}
-                      >
-                        <H3 lh="$6">{starter?.name}</H3>
-                        <Paragraph size="$3" lh="$1" theme="alt2">
-                          {starter?.description}
-                        </Paragraph>
-                      </CheckboxGroupItem>
-                    </ThemeTint>
+              <YStack>
+                <YStack gap="$4" $gtSm={{ fd: 'row' }} flexWrap="wrap">
+                  <ThemeTint disable={selectedProductsIds.includes(starter?.id || '')}>
                     <CheckboxGroupItem
+                      disabled
                       onCheckedChange={() => {
-                        if (!bento) return
-                        const active = selectedProductsIds.includes(bento.id)
+                        if (!starter) return
+                        const active = selectedProductsIds.includes(starter.id)
                         setSelectedProductsIds(
                           active
-                            ? selectedProductsIds.filter((id) => id !== bento.id)
-                            : [...selectedProductsIds, bento.id]
+                            ? selectedProductsIds.filter((id) => id !== starter.id)
+                            : [...selectedProductsIds, starter.id]
                         )
                       }}
-                      id={'takeout-bento'}
-                      checked={bento && selectedProductsIds.includes(bento.id)}
+                      id={'takeout-starter'}
+                      checked={selectedProductsIds.includes(starter?.id || '')}
                     >
-                      <BentoLogo noShadow scale={0.25} />
+                      <H3 lh="$6">{starter?.name}</H3>
                       <Paragraph size="$3" lh="$1" theme="alt2">
-                        {bento?.description}
+                        {starter?.description}
                       </Paragraph>
                     </CheckboxGroupItem>
-                  </YStack>
+                  </ThemeTint>
+                  <CheckboxGroupItem
+                    onCheckedChange={() => {
+                      if (!bento) return
+                      const active = selectedProductsIds.includes(bento.id)
+                      setSelectedProductsIds(
+                        active
+                          ? selectedProductsIds.filter((id) => id !== bento.id)
+                          : [...selectedProductsIds, bento.id]
+                      )
+                    }}
+                    id={'takeout-bento'}
+                    checked={bento && selectedProductsIds.includes(bento.id)}
+                  >
+                    <BentoLogo noShadow scale={0.25} />
+                    <Paragraph size="$3" lh="$1" theme="alt2">
+                      {bento?.description}
+                    </Paragraph>
+                  </CheckboxGroupItem>
                 </YStack>
-              )}
+              </YStack>
 
               <XStack f={1} gap="$4" $group-takeoutBody-sm={{ fd: 'column-reverse' }}>
                 <YStack
