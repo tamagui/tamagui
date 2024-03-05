@@ -1,3 +1,4 @@
+//! tamagui-ignore
 //! debug-verbose
 // import './wdyr'
 
@@ -7,8 +8,22 @@ import { View, styled, Square } from 'tamagui'
 import { useState } from 'react'
 import { TextInput } from 'react-native'
 
+const StyledAnimatedWithStyleProp = styled(View, {
+  backgroundColor: 'red',
+})
+
 export const Sandbox = () => {
   const [open, setOpen] = useState(false)
+
+  return (
+    <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
+      <StyledAnimatedWithStyleProp
+        animation="bouncy"
+        debug="verbose"
+        style={[{ height: 200, width: 200 }]}
+      />
+    </RNView>
+  )
 
   return (
     <RNView style={{ width: '100%', height: '100%', padding: 50 }}>

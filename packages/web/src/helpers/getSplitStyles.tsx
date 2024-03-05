@@ -1241,12 +1241,13 @@ export const getSplitStyles: StyleSplitter = (
 
   // merge after the prop loop - and always keep it on style dont turn into className except if RN gives us
   const styleProp = props.style
+
   if (styleProp) {
     if (isHOC) {
       viewProps.style = normalizeStyle(styleProp)
     } else {
       const isArray = Array.isArray(styleProp)
-      const len = isArray ? props.length : 1
+      const len = isArray ? styleProp.length : 1
       for (let i = 0; i < len; i++) {
         const style = isArray ? styleProp[i] : styleProp
         if (style) {
@@ -1259,20 +1260,6 @@ export const getSplitStyles: StyleSplitter = (
         }
       }
     }
-  }
-
-  const result: GetStyleResult = {
-    space,
-    hasMedia,
-    fontFamily: styleState.fontFamily,
-    viewProps,
-    style: styleState.style as any,
-    pseudos,
-    classNames,
-    rulesToInsert,
-    dynamicThemeAccess,
-    pseudoGroups,
-    mediaGroups,
   }
 
   // native: swap out the right family based on weight/style
@@ -1295,6 +1282,20 @@ export const getSplitStyles: StyleSplitter = (
         log(`Found fontFamily native: ${style.fontFamily}`, faceInfo)
       }
     }
+  }
+
+  const result: GetStyleResult = {
+    space,
+    hasMedia,
+    fontFamily: styleState.fontFamily,
+    viewProps,
+    style: styleState.style as any,
+    pseudos,
+    classNames,
+    rulesToInsert,
+    dynamicThemeAccess,
+    pseudoGroups,
+    mediaGroups,
   }
 
   const asChild = props.asChild
