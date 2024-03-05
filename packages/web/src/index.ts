@@ -14,6 +14,9 @@ export * from './setupReactNative'
 export type { TamaguiBuildOptions } from '@tamagui/types'
 export type * from './types'
 export type * from './interfaces/RNExclusiveTypes'
+export type * from './interfaces/TamaguiComponentState'
+export type * from './interfaces/TamaguiComponentEvents'
+export type * from './interfaces/TamaguiComponentPropsBaseBase'
 
 export * from './interfaces/GetRef'
 
