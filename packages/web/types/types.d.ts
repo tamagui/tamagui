@@ -739,17 +739,137 @@ interface ExtraStyleProps {
      */
     transformOrigin?: PxOrPct | 'left' | 'center' | 'right' | 'top' | 'bottom' | TwoValueTransformOrigin | `${TwoValueTransformOrigin} ${Px}`;
     /**
-     * Web-only style property. Will be omitted on native.
+     * @platform: web
      */
     filter?: Properties['filter'];
     /**
-     * Web-only style property. Will be omitted on native.
+     * @platform: web
      */
     backdropFilter?: Properties['backdropFilter'];
     /**
-     * Web-only style property. Will be omitted on native.
+     * @platform: web
      */
     mixBlendMode?: Properties['mixBlendMode'];
+    /**
+     * @platform: web
+     */
+    backgroundImage: Properties['backgroundImage'];
+    /**
+     * @platform: web
+     */
+    backgroundOrigin: Properties['backgroundOrigin'];
+    /**
+     * @platform: web
+     */
+    backgroundPosition: Properties['backgroundPosition'];
+    /**
+     * @platform: web
+     */
+    backgroundRepeat: Properties['backgroundRepeat'];
+    /**
+     * @platform: web
+     */
+    backgroundSize: Properties['backgroundSize'];
+    /**
+     * @platform: web
+     */
+    clipPath: Properties['clipPath'];
+    /**
+     * @platform: web
+     */
+    caretColor: Properties['caretColor'];
+    /**
+     * @platform: web
+     */
+    transformStyle?: Properties['transformStyle'];
+    /**
+     * @platform: web
+     */
+    mask: Properties['mask'];
+    /**
+     * @platform: web
+     */
+    maskImage: Properties['maskImage'];
+    /**
+     * @platform: web
+     */
+    textEmphasis: Properties['textEmphasis'];
+    /**
+     * @platform: web
+     */
+    borderImage: Properties['borderImage'];
+    /**
+     * @platform: web
+     */
+    float: Properties['float'];
+    /**
+     * @platform: web
+     */
+    overflowBlock: Properties['overflowBlock'];
+    /**
+     * @platform: web
+     */
+    overflowInline: Properties['overflowInline'];
+    /**
+     * @platform: web
+     */
+    maskBorder: Properties['maskBorder'];
+    /**
+     * @platform: web
+     */
+    maskBorderMode: Properties['maskBorderMode'];
+    /**
+     * @platform: web
+     */
+    maskBorderOutset: Properties['maskBorderOutset'];
+    /**
+     * @platform: web
+     */
+    maskBorderRepeat: Properties['maskBorderRepeat'];
+    /**
+     * @platform: web
+     */
+    maskBorderSlice: Properties['maskBorderSlice'];
+    /**
+     * @platform: web
+     */
+    maskBorderSource: Properties['maskBorderSource'];
+    /**
+     * @platform: web
+     */
+    maskBorderWidth: Properties['maskBorderWidth'];
+    /**
+     * @platform: web
+     */
+    maskClip: Properties['maskClip'];
+    /**
+     * @platform: web
+     */
+    maskComposite: Properties['maskComposite'];
+    /**
+     * @platform: web
+     */
+    maskMode: Properties['maskMode'];
+    /**
+     * @platform: web
+     */
+    maskOrigin: Properties['maskOrigin'];
+    /**
+     * @platform: web
+     */
+    maskPosition: Properties['maskPosition'];
+    /**
+     * @platform: web
+     */
+    maskRepeat: Properties['maskRepeat'];
+    /**
+     * @platform: web
+     */
+    maskSize: Properties['maskSize'];
+    /**
+     * @platform: web
+     */
+    maskType: Properties['maskType'];
 }
 export interface ExtendBaseStackProps {
 }
