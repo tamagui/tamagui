@@ -1329,31 +1329,31 @@ interface ExtraStyleProps {
   /**
    * @platform: web
    */
-  backgroundImage: Properties['backgroundImage']
+  backgroundImage?: Properties['backgroundImage']
   /**
    * @platform: web
    */
-  backgroundOrigin: Properties['backgroundOrigin']
+  backgroundOrigin?: Properties['backgroundOrigin']
   /**
    * @platform: web
    */
-  backgroundPosition: Properties['backgroundPosition']
+  backgroundPosition?: Properties['backgroundPosition']
   /**
    * @platform: web
    */
-  backgroundRepeat: Properties['backgroundRepeat']
+  backgroundRepeat?: Properties['backgroundRepeat']
   /**
    * @platform: web
    */
-  backgroundSize: Properties['backgroundSize']
+  backgroundSize?: Properties['backgroundSize']
   /**
    * @platform: web
    */
-  clipPath: Properties['clipPath']
+  clipPath?: Properties['clipPath']
   /**
    * @platform: web
    */
-  caretColor: Properties['caretColor']
+  caretColor?: Properties['caretColor']
   /**
    * @platform: web
    */
@@ -1361,91 +1361,91 @@ interface ExtraStyleProps {
   /**
    * @platform: web
    */
-  mask: Properties['mask']
+  mask?: Properties['mask']
   /**
    * @platform: web
    */
-  maskImage: Properties['maskImage']
+  maskImage?: Properties['maskImage']
   /**
    * @platform: web
    */
-  textEmphasis: Properties['textEmphasis']
+  textEmphasis?: Properties['textEmphasis']
   /**
    * @platform: web
    */
-  borderImage: Properties['borderImage']
+  borderImage?: Properties['borderImage']
   /**
    * @platform: web
    */
-  float: Properties['float']
+  float?: Properties['float']
   /**
    * @platform: web
    */
-  overflowBlock: Properties['overflowBlock']
+  overflowBlock?: Properties['overflowBlock']
   /**
    * @platform: web
    */
-  overflowInline: Properties['overflowInline']
+  overflowInline?: Properties['overflowInline']
   /**
    * @platform: web
    */
-  maskBorder: Properties['maskBorder']
+  maskBorder?: Properties['maskBorder']
   /**
    * @platform: web
    */
-  maskBorderMode: Properties['maskBorderMode']
+  maskBorderMode?: Properties['maskBorderMode']
   /**
    * @platform: web
    */
-  maskBorderOutset: Properties['maskBorderOutset']
+  maskBorderOutset?: Properties['maskBorderOutset']
   /**
    * @platform: web
    */
-  maskBorderRepeat: Properties['maskBorderRepeat']
+  maskBorderRepeat?: Properties['maskBorderRepeat']
   /**
    * @platform: web
    */
-  maskBorderSlice: Properties['maskBorderSlice']
+  maskBorderSlice?: Properties['maskBorderSlice']
   /**
    * @platform: web
    */
-  maskBorderSource: Properties['maskBorderSource']
+  maskBorderSource?: Properties['maskBorderSource']
   /**
    * @platform: web
    */
-  maskBorderWidth: Properties['maskBorderWidth']
+  maskBorderWidth?: Properties['maskBorderWidth']
   /**
    * @platform: web
    */
-  maskClip: Properties['maskClip']
+  maskClip?: Properties['maskClip']
   /**
    * @platform: web
    */
-  maskComposite: Properties['maskComposite']
+  maskComposite?: Properties['maskComposite']
   /**
    * @platform: web
    */
-  maskMode: Properties['maskMode']
+  maskMode?: Properties['maskMode']
   /**
    * @platform: web
    */
-  maskOrigin: Properties['maskOrigin']
+  maskOrigin?: Properties['maskOrigin']
   /**
    * @platform: web
    */
-  maskPosition: Properties['maskPosition']
+  maskPosition?: Properties['maskPosition']
   /**
    * @platform: web
    */
-  maskRepeat: Properties['maskRepeat']
+  maskRepeat?: Properties['maskRepeat']
   /**
    * @platform: web
    */
-  maskSize: Properties['maskSize']
+  maskSize?: Properties['maskSize']
   /**
    * @platform: web
    */
-  maskType: Properties['maskType']
+  maskType?: Properties['maskType']
 }
 
 export interface ExtendBaseStackProps {}
