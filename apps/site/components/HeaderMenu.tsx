@@ -1,4 +1,4 @@
-import { ThemeTintAlt } from '@tamagui/logo'
+import { ThemeTintAlt, useTint } from '@tamagui/logo'
 import { Menu } from '@tamagui/lucide-icons'
 import * as React from 'react'
 import {
@@ -9,6 +9,8 @@ import {
   Sheet,
   SizableText,
   Spacer,
+  Theme,
+  ThemeName,
   XStack,
   YStack,
   isTouchable,
@@ -29,6 +31,7 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
     viaAt: Date.now(),
   })
   const userSwr = useUser()
+  const isBento = useRouter().pathname.startsWith('/bento')
 
   return (
     <HeaderMenuTheme>
@@ -127,7 +130,10 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
                 <Adapt.Contents />
               </Sheet.ScrollView>
             </Sheet.Frame>
-            <Sheet.Overlay zIndex={100} />
+            <Sheet.Overlay
+              zIndex={100}
+              bg={isBento ? 'rgba(0,0,0,0.3)' : '$background'}
+            />
           </Sheet>
         </Adapt>
 
@@ -138,7 +144,9 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
 })
 
 const HeaderMenuTheme = (props: { children: any }) => {
-  return <ThemeTintAlt>{props.children}</ThemeTintAlt>
+  const isBento = useRouter().pathname.startsWith('/bento')
+  const curTint = useTint(1).tintAlt
+  return <Theme name={isBento ? 'tan' : (curTint as ThemeName)}>{props.children}</Theme>
 }
 
 const HeaderMenuContent = React.memo(function HeaderMenuContent() {

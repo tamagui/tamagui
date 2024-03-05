@@ -100,6 +100,12 @@ export default function BentoPage(props: ProComponentsProps) {
         r={0}
         theme="yellow"
         bg="rgba(0,0,0,0.3)"
+        $sm={{
+          pos: 'relative',
+          m: '$4',
+          br: '$6',
+          py: '$2',
+        }}
       >
         <ContainerLarge>
           <YStack ai="center" py="$1.5">
