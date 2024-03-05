@@ -30,12 +30,12 @@ export const BentoPageFrame = ({
             <YStack fullscreen bg="$color6" />
 
             <YStack
-              className="grain mix-blend-color-burn-dodge"
+              className="grain"
               fullscreen
-              o={0.4}
+              o={0.3}
               zi={100}
               $theme-light={{
-                o: 0.6,
+                o: 0.5,
               }}
               style={{
                 imageRendering: 'pixelated',
