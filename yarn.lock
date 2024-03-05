@@ -7437,6 +7437,7 @@ __metadata:
     react-native: "npm:^0.73.4"
     react-native-reanimated: "npm:react-native-reanimated@3.6.1"
     react-native-web-lite: "npm:1.91.1"
+    react-native-web-swiper: "npm:^2.2.4"
     react-refresh: "npm:^0.14.0"
     reading-time: "npm:1.3.0"
     refractor: "npm:^4.7.0"
@@ -23284,7 +23285,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.6.0, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
+"prop-types@npm:^15.6.0, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -23812,6 +23813,17 @@ __metadata:
     react-dom: "*"
   languageName: unknown
   linkType: soft
+
+"react-native-web-swiper@npm:^2.2.4":
+  version: 2.2.4
+  resolution: "react-native-web-swiper@npm:2.2.4"
+  dependencies:
+    prop-types: "npm:^15.6.2"
+  peerDependencies:
+    react-native: "*"
+  checksum: 10/c5377bd526e001c5178070b59eb01b2cdef1a6a818e8b4364737fb554daee646668535ba60b5fda153eb238549b916f6655db6e4596c351d114e6b97e00d665f
+  languageName: node
+  linkType: hard
 
 "react-native-web@npm:^0.19.10":
   version: 0.19.10
