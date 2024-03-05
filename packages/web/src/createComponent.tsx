@@ -893,8 +893,14 @@ export function createComponent<
 
     const runtimePressStyle = !disabled && noClassNames && pseudos?.pressStyle
     const runtimeFocusStyle = !disabled && noClassNames && pseudos?.focusStyle
+    const runtimeFocusVisibleStyle =
+      !disabled && noClassNames && pseudos?.focusVisibleStyle
     const attachFocus = Boolean(
-      runtimePressStyle || runtimeFocusStyle || onFocus || onBlur
+      runtimePressStyle ||
+        runtimeFocusStyle ||
+        runtimeFocusVisibleStyle ||
+        onFocus ||
+        onBlur
     )
     const attachPress = Boolean(
       groupName ||
