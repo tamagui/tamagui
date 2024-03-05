@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-presence",
-  "version": "1.91.1",
+  "version": "1.91.2",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -27,10 +27,10 @@
     }
   },
   "dependencies": {
-    "@tamagui/web": "1.91.1"
+    "@tamagui/web": "1.91.2"
   },
   "devDependencies": {
-    "@tamagui/build": "1.91.1",
+    "@tamagui/build": "1.91.2",
     "react": "^18.2.0"
   },
   "peerDependencies": {
