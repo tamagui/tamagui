@@ -1,22 +1,37 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-
+import * as sections from '@tamagui/bento'
+import { Sandbox } from './Sandbox'
+import { BentoPartScreen } from './features/bento/part-screen'
+import { BentoScreen } from './features/bento/screen'
 import { DemoScreen } from './features/demos/demo-screen'
 import { HomeScreen } from './features/home/screen'
 import { TestCasesScreen } from './features/testcases/screen'
 import { TestScreen } from './features/testcases/test-screen'
-import { Sandbox } from './Sandbox'
 
-const Stack = createNativeStackNavigator<{
-  home: undefined
-  demo: {
+const bentoScreenNames = sections.listingData.sections.map(
+  ({ sectionName }) => sectionName
+)
+
+type BentoScreens = {
+  [K in (typeof bentoScreenNames)[number]]: {
     id: string
   }
-  tests: undefined
-  test: {
-    id: string
-  }
-  sandbox: undefined
-}>()
+}
+
+const Stack = createNativeStackNavigator<
+  {
+    bento: undefined
+    home: undefined
+    demo: {
+      id: string
+    }
+    tests: undefined
+    test: {
+      id: string
+    }
+    sandbox: undefined
+  } & BentoScreens
+>()
 
 export function Navigation() {
   return (
@@ -56,6 +71,24 @@ export function Navigation() {
           title: 'Test Case',
         }}
       />
+      <Stack.Screen
+        name="bento"
+        component={BentoScreen}
+        options={{
+          title: 'Bento',
+        }}
+      />
+      {bentoScreenNames.map((screenName) => {
+        return (
+          <Stack.Screen
+            name={screenName}
+            component={BentoPartScreen}
+            options={{
+              title: screenName,
+            }}
+          />
+        )
+      })}
     </Stack.Navigator>
   )
 }
