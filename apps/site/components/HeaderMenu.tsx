@@ -1,6 +1,8 @@
 import { ThemeTintAlt, useTint } from '@tamagui/logo'
 import { Menu } from '@tamagui/lucide-icons'
 import * as React from 'react'
+import type {
+  ThemeName} from 'tamagui';
 import {
   Adapt,
   Button,
@@ -10,7 +12,6 @@ import {
   SizableText,
   Spacer,
   Theme,
-  ThemeName,
   XStack,
   YStack,
   isTouchable,
