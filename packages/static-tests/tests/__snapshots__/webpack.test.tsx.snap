@@ -16,7 +16,7 @@ exports[`webpack-tests > 1. extracts to a div for simple views, flat transforms 
       className="  _dsp-flex _ai-stretch _fd-column _bxs-border-box _pos-relative _mih-0px _miw-0px  _fg-1 _fs-1 _fb-auto _btlr-100px _btrr-100px _bbrr-100px _bblr-100px _bg-red _bxsh-469092149 _scale-0hover-2  test1"
     >
       <span
-        className="  _ff-299667014 _dsp-inline _bxs-border-box _ww-break-word _mt-0px _mr-0px _mb-0px _ml-0px _col-675002279 font_body "
+        className="  _ff-299667014 _dsp-inline _bxs-border-box _ww-break-word _whiteSpace-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-675002279 font_body "
       >
         hello world
       </span>
@@ -45,7 +45,7 @@ exports[`webpack-tests > 2. extracts className for complex views but keeps other
       className="_dsp-flex _ai-stretch _fd-row _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _pt-2px _pb-2px _t-0px ease-in-out-top _t--14px _bg-fff35 "
     >
       <span
-        className="  _ff-299667014 _dsp-inline _bxs-border-box _ww-break-word _mt-0px _mr-0px _mb-0px _ml-0px _col-675002279 font_body "
+        className="  _ff-299667014 _dsp-inline _bxs-border-box _ww-break-word _whiteSpace-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-675002279 font_body "
       >
         hello world
       </span>
@@ -74,7 +74,7 @@ exports[`webpack-tests > 2. extracts className for complex views but keeps other
       className="_dsp-flex _ai-stretch _fd-row _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _bg-00035 _pt-2px _pb-2px _t-0px ease-in-out-top "
     >
       <span
-        className="  _ff-299667014 _dsp-inline _bxs-border-box _ww-break-word _mt-0px _mr-0px _mb-0px _ml-0px _col-675002279 font_body "
+        className="  _ff-299667014 _dsp-inline _bxs-border-box _ww-break-word _whiteSpace-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-675002279 font_body "
       >
         hello world
       </span>
@@ -122,7 +122,7 @@ exports[`webpack-tests > 6. spread ternary 1`] = `
       className="_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _ox-hidden _oy-hidden _bg-blue "
     >
       <span
-        className="  _ff-299667014 _dsp-inline _bxs-border-box _ww-break-word _mt-0px _mr-0px _mb-0px _ml-0px _col-675002279 font_body "
+        className="  _ff-299667014 _dsp-inline _bxs-border-box _ww-break-word _whiteSpace-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-675002279 font_body "
       >
         hello world
       </span>
@@ -147,7 +147,7 @@ exports[`webpack-tests > 6. spread ternary 2`] = `
       className="_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _ox-hidden _oy-hidden _bg-red "
     >
       <span
-        className="  _ff-299667014 _dsp-inline _bxs-border-box _ww-break-word _mt-0px _mr-0px _mb-0px _ml-0px _col-675002279 font_body "
+        className="  _ff-299667014 _dsp-inline _bxs-border-box _ww-break-word _whiteSpace-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-675002279 font_body "
       >
         hello world
       </span>
@@ -241,13 +241,13 @@ exports[`webpack-tests > 10. extracts Text 1`] = `
     }
   >
     <span
-      className="  _ff-299667014 _dsp-inline _bxs-border-box _ww-break-word _mt-0px _mr-0px _mb-0px _ml-0px _col-675002279 _fos-10px font_body "
+      className="  _ff-299667014 _dsp-inline _bxs-border-box _ww-break-word _whiteSpace-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-675002279 _fos-10px font_body "
     >
       <span
-        className="  _ff-299667014 _dsp-inline _bxs-border-box _ww-break-word _mt-0px _mr-0px _mb-0px _ml-0px _col-675002279 _ussel-auto font_body "
+        className="  _ff-299667014 _dsp-inline _bxs-border-box _ww-break-word _whiteSpace-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-675002279 _ussel-auto font_body "
       >
         <span
-          className="font_body _ff-299667014 _dsp-inline _bxs-border-box _ww-break-word _mt-0px _mr-0px _mb-0px _ml-0px _col-00035 _fos-15px _fow-600"
+          className="font_body _ff-299667014 _dsp-inline _bxs-border-box _ww-break-word _whiteSpace-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-00035 _fos-15px _fow-600"
           style={{}}
         >
           hello
