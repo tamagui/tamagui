@@ -100,9 +100,20 @@ export const HeaderLinks = (props: HeaderProps) => {
       {forceShowAllLinks && (
         <NextLink legacyBehavior={false} prefetch={false} href="/takeout">
           <HeadAnchor grid tag="span">
-            Starter Kit{' '}
+            Takeout{' '}
             <YStack dsp={'inline-block' as any} y={7} my={-20} o={0.8}>
-              <TakeoutIcon scale={0.6} />
+              <TakeoutIcon scale={0.75} />
+            </YStack>
+          </HeadAnchor>
+        </NextLink>
+      )}
+
+      {forceShowAllLinks && (
+        <NextLink legacyBehavior={false} prefetch={false} href="/takeout">
+          <HeadAnchor grid tag="span">
+            Bento{' '}
+            <YStack ml={3} dsp={'inline-block' as any} y={3} my={-10} o={0.8}>
+              <BentoIcon scale={0.75} />
             </YStack>
           </HeadAnchor>
         </NextLink>

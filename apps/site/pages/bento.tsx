@@ -113,7 +113,7 @@ export default function BentoPage(props: ProComponentsProps) {
 
       <BentoPageFrame>
         <ContainerLarge
-          zi={100000000}
+          zi={10}
           h={0}
           // offset for the banner
           mt={30}
