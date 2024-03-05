@@ -64,6 +64,7 @@ type PseudoGroupState = {
     hover?: boolean;
     press?: boolean;
     focus?: boolean;
+    focusVisible?: boolean;
 };
 export type GroupState = {
     pseudo?: PseudoGroupState;
@@ -491,7 +492,7 @@ export interface TypeOverride {
     groupNames(): 1;
 }
 export type GroupNames = ReturnType<TypeOverride['groupNames']> extends 1 ? never : ReturnType<TypeOverride['groupNames']>;
-type ParentMediaStates = 'hover' | 'press' | 'focus';
+type ParentMediaStates = 'hover' | 'press' | 'focus' | 'focusVisible';
 export type GroupMediaKeys = `$group-${GroupNames}` | `$group-${GroupNames}-${ParentMediaStates}` | `$group-${GroupNames}-${MediaQueryKey}` | `$group-${GroupNames}-${MediaQueryKey}-${ParentMediaStates}`;
 export type WithMediaProps<A> = {
     [Key in MediaPropKeys | GroupMediaKeys | ThemeMediaKeys | PlatformMediaKeys]?: Key extends `$platform-web` ? {
@@ -556,9 +557,6 @@ export type ThemeValueFallbackColor = ThemeValueFallback | GetThemeValueFallback
 export type ThemeValueFallbackRadius = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingRadius, never, UnionableNumber, UnionableNumber, WebStyleValueUniversal>;
 export type ThemeValueFallbackZIndex = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingZIndex, never, UnionableNumber, UnionableNumber, WebStyleValueUniversal>;
 export type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`;
-export type GetTokenPropsFromAcceptedTokens<AcceptedTokens> = AcceptedTokens extends Record<string, any> ? {
-    [Key in keyof AcceptedTokens]?: ThemeValueByCategory<AcceptedTokens[Key]>;
-} : {};
 export type SpecificTokens<Record = Tokens, RK extends keyof Record = keyof Record> = RK extends string ? `$${RK}.${keyof Record[RK] extends string | number ? keyof Record[RK] : never}` : never;
 export type SpecificTokensSpecial = TamaguiSettings extends {
     autocompleteSpecificTokens: infer Val;
@@ -568,9 +566,10 @@ export type SpaceTokens = SpecificTokensSpecial | GetTokenString<keyof Tokens['s
 export type ColorTokens = SpecificTokensSpecial | GetTokenString<keyof Tokens['color']> | GetTokenString<keyof ThemeParsed> | CSSColorNames;
 export type ZIndexTokens = SpecificTokensSpecial | GetTokenString<keyof Tokens['zIndex']> | number;
 export type RadiusTokens = SpecificTokensSpecial | GetTokenString<keyof Tokens['radius']> | number;
-export type Token = (TamaguiSettings extends {
+export type NonSpecificTokens = GetTokenString<keyof Tokens['radius']> | GetTokenString<keyof Tokens['zIndex']> | GetTokenString<keyof Tokens['color']> | GetTokenString<keyof Tokens['space']> | GetTokenString<keyof Tokens['size']>;
+export type Token = NonSpecificTokens | (TamaguiSettings extends {
     autocompleteSpecificTokens: false;
-} ? never : SpecificTokens) | GetTokenString<keyof Tokens['radius']> | GetTokenString<keyof Tokens['zIndex']> | GetTokenString<keyof Tokens['color']> | GetTokenString<keyof Tokens['space']> | GetTokenString<keyof Tokens['size']>;
+} ? never : SpecificTokens);
 export type ColorStyleProp = ThemeValueFallbackColor | ColorTokens;
 type DefaultFont = TamaguiConfig['defaultFont'];
 export type Fonts = DefaultFont extends string ? TamaguiConfig['fonts'][DefaultFont] : never;
@@ -625,6 +624,8 @@ export type WithPseudoProps<A> = {
     hoverStyle?: A | null;
     pressStyle?: A | null;
     focusStyle?: A | null;
+    focusVisibleStyle?: A | null;
+    disabledStyle?: A | null;
     exitStyle?: A | null;
     enterStyle?: A | null;
 };
@@ -633,6 +634,8 @@ export type PseudoStyles = {
     hoverStyle?: ViewStyle;
     pressStyle?: ViewStyle;
     focusStyle?: ViewStyle;
+    focusVisibleStyle?: ViewStyle;
+    disabledStyle?: ViewStyle;
     enterStyle?: ViewStyle;
     exitStyle?: ViewStyle;
 };
@@ -726,6 +729,11 @@ interface ExtraStyleProps {
      * which will be exclusively animated.
      */
     animateOnly?: string[];
+    /**
+     * If you'd like this component to not attach to the nearest parent AnimatePresence,
+     * set this to `false` and it will pass through to the next animated child.
+     */
+    animatePresence?: boolean;
     /**
      * The point at which transforms originate from.
      */
@@ -829,7 +837,6 @@ export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>>
     children?: ReactNode;
 };
 export type PropMappedValue = [string, any][] | undefined;
-type FlatTransforms = Record<string, any>;
 export type GetStyleState = {
     style: TextStyleProps | null;
     usedKeys: Record<string, number>;
@@ -846,7 +853,7 @@ export type GetStyleState = {
     avoidMergeTransform?: boolean;
     fontFamily?: string;
     debug?: DebugProp;
-    transforms?: FlatTransforms;
+    flatTransforms?: Record<string, any>;
 };
 export type StyleResolver<Response = PropMappedValue> = (key: string, value: any, props: SplitStyleProps, state: GetStyleState, parentVariantKey: string) => Response;
 export type PropMapper = (key: string, value: any, state: GetStyleState, subProps?: Record<string, any>) => PropMappedValue;
@@ -882,8 +889,8 @@ export type StaticConfigPublic = {
     /**
      * Accept Tamagui tokens for these props (key for the prop key, val for the token category)
      */
-    acceptTokens?: {
-        [key: string]: keyof Tokens;
+    accept?: {
+        [key: string]: keyof Tokens | 'style' | 'textStyle';
     };
     /**
      * (compiler) If these props are encountered, leave them un-extracted.
@@ -940,6 +947,8 @@ export type ViewStyleWithPseudos = TextStyleProps | (TextStyleProps & {
     hoverStyle?: TextStyleProps;
     pressStyle?: TextStyleProps;
     focusStyle?: TextStyleProps;
+    focusVisibleStyle?: TextStyleProps;
+    disabledStyle?: TextStyleProps;
 });
 /**
  * --------------------------------------------
@@ -1091,6 +1100,7 @@ export type TamaguiComponentStateRef = {
     hasAnimated?: boolean;
     themeShallow?: boolean;
     isListeningToTheme?: boolean;
+    handleFocusVisible?: boolean;
     unPress?: Function;
     group?: {
         listeners: Set<GroupStateListener>;

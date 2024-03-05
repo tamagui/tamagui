@@ -1,6 +1,6 @@
-import { createAnimations as c3 } from '@tamagui/animations-moti'
+import { createAnimations } from '@tamagui/animations-moti'
 
-export const animationsReanimated = c3({
+export const animationsReanimated = createAnimations({
   '75ms': {
     type: 'timing',
     duration: 75,

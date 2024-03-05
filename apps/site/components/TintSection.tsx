@@ -1,13 +1,15 @@
 import { useOnIntersecting } from '@tamagui/demos'
-import { getTints } from '@tamagui/logo'
-import { useTint } from '@tamagui/logo'
+import { getTints, useTint } from '@tamagui/logo'
 import { useEffect, useMemo, useRef } from 'react'
+import type { LayoutRectangle } from 'react-native'
 import type { GetProps } from 'tamagui'
 import { XStack, YStack, styled } from 'tamagui'
 
 type Props = SectionProps & { themed?: boolean; index: number }
 
 const numIntersectingAtSection = getTints().tints.map((_) => 0)
+
+export const tintSectionDimensions: Record<number, LayoutRectangle> = {}
 
 export const TintSection = ({ children, index, themed, zIndex, ...props }: Props) => {
   const top = useRef<HTMLElement>(null)
@@ -47,7 +49,11 @@ export const TintSection = ({ children, index, themed, zIndex, ...props }: Props
   )
 
   return (
-    <YStack zIndex={zIndex} pos="relative">
+    <YStack
+      onLayout={(e) => (tintSectionDimensions[index] = e.nativeEvent.layout)}
+      zIndex={zIndex}
+      pos="relative"
+    >
       {useMemo(() => {
         return (
           <>

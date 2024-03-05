@@ -64,6 +64,13 @@ export default class Document extends NextDocument {
               <LoadMunro />
             </>
           )}
+
+          {this.props.dangerousAsPath === '/bento' && (
+            <>
+              <LoadCherryBomb />
+              <LoadMunro />
+            </>
+          )}
         </Head>
         <body>
           <Main />

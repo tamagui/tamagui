@@ -329,7 +329,7 @@ export const Text = WebText as any as RNTamaguiText
 //   },
 //   {
 //     isText: true,
-//     acceptTokens: {
+//     accept: {
 //       placeholderTextColor: 'color',
 //     },
 //   }

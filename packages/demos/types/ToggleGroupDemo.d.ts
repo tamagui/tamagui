@@ -1,3 +1,2 @@
-/// <reference types="react" />
-export declare function ToggleGroupDemo(): JSX.Element;
+export declare function ToggleGroupDemo(): import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=ToggleGroupDemo.d.ts.map

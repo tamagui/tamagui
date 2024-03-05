@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /* eslint-disable no-console */
 
+const { es5Plugin } = require('esbuild-plugin-es5')
 const { transform } = require('@babel/core')
 const exec = require('execa')
 const fs = require('fs-extra')
@@ -16,6 +17,7 @@ const skipJS = !!(process.env.SKIP_JS || false)
 const shouldSkipTypes = !!(
   process.argv.includes('--skip-types') || process.env.SKIP_TYPES
 )
+const shouldSkipMJS = !!process.argv.includes('--skip-mjs')
 const shouldBundle = !!process.argv.includes('--bundle')
 const shouldBundleNodeModules = !!process.argv.includes('--bundle-modules')
 const shouldClean = !!process.argv.includes('clean')
@@ -35,9 +37,8 @@ const tsProject =
     ? process.argv[tsProjectIndex + 1]
     : null
 
-const exclude = exludeIndex > -1 && process.argv[exludeIndex + 1]
-? process.argv[exludeIndex + 1]
-: null
+const exclude =
+  exludeIndex > -1 && process.argv[exludeIndex + 1] ? process.argv[exludeIndex + 1] : null
 
 const pkg = fs.readJSONSync('./package.json')
 let shouldSkipInitialTypes = !!process.env.SKIP_TYPES_INITIAL
@@ -440,6 +441,26 @@ async function esbuildWriteIfChanged(
     plugins: [
       ...(opts.plugins || []),
 
+      ...(platform === 'native'
+        ? [
+            // class isnt supported by hermes
+            es5Plugin({
+              swc: {
+                jsc: {
+                  preserveAllComments: true,
+                  externalHelpers: false,
+                  transform: {
+                    react: {
+                      runtime: 'automatic',
+                      development: false,
+                    },
+                  },
+                },
+              },
+            }),
+          ]
+        : []),
+
       // not workin
       // {
       //   name: 'no-side-effects',
@@ -561,7 +582,7 @@ async function esbuildWriteIfChanged(
       await Promise.all([
         flush(outString, outPath),
         (async () => {
-          if (isESM && mjs && outPath.endsWith('.js')) {
+          if (!shouldSkipMJS && isESM && mjs && outPath.endsWith('.js')) {
             const mjsOutPath = outPath.replace('.js', '.mjs')
             // if bundling no need to specify as its all internal
             // and babel is bad on huge bundled files
@@ -574,7 +595,7 @@ async function esbuildWriteIfChanged(
                     [
                       require.resolve('babel-plugin-fully-specified'),
                       {
-                        ensureFileExists: false,
+                        ensureFileExists: true,
                         esExtensionDefault: '.mjs',
                         tryExtensions: ['.mjs', '.js'],
                         esExtensions: ['.mjs', '.js'],

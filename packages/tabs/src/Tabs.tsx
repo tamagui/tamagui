@@ -320,7 +320,10 @@ const TabsContent = TabsContentFrame.styleable<TabsContentExtraProps>(
     const triggerId = makeTriggerId(context.baseId, value)
     const contentId = makeContentId(context.baseId, value)
 
-    if (!show) return null
+    if (!show) {
+      return null
+    }
+
     return (
       <TabsContentFrame
         key={value}

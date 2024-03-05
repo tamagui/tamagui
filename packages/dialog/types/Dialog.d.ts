@@ -190,7 +190,7 @@ declare const DialogWarningProvider: {
         docsSlug: string;
     } & {
         children: React.ReactNode;
-    }): JSX.Element;
+    }): import("react/jsx-runtime").JSX.Element;
     displayName: string;
 };
 export type DialogHandle = {
@@ -219,20 +219,7 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
     }, import("@tamagui/core").StaticConfigPublic>;
     Close: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, "displayWhenAdapted"> & DialogCloseExtraProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & DialogCloseExtraProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
     Sheet: React.FunctionComponent<Omit<import("@tamagui/sheet").SheetProps, "open" | "onOpenChange"> & React.RefAttributes<import("react-native").View>> & {
-        Frame: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "inset" | "fullscreen" | "unstyled"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
-            elevation?: number | import("@tamagui/core").SizeTokens | undefined; /**
-             * Used to force mounting when more control is needed. Useful when
-             * controlling animation with React animation libraries.
-             */
-            fullscreen?: boolean | undefined;
-            inset?: number | import("@tamagui/core").SizeTokens | {
-                top?: number | undefined;
-                bottom?: number | undefined;
-                left?: number | undefined;
-                right?: number | undefined;
-            } | undefined;
-            unstyled?: boolean | undefined;
-        } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+        Frame: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;
             fullscreen?: boolean | undefined;
             inset?: number | import("@tamagui/core").SizeTokens | {
@@ -242,17 +229,7 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
                 right?: number | undefined;
             } | undefined;
             unstyled?: boolean | undefined;
-        } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
-            elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-            fullscreen?: boolean | undefined;
-            inset?: number | import("@tamagui/core").SizeTokens | {
-                top?: number | undefined;
-                bottom?: number | undefined;
-                left?: number | undefined;
-                right?: number | undefined;
-            } | undefined;
-            unstyled?: boolean | undefined;
-        }>> & {
+        }>, "disableHideBottomOverflow" | "adjustPaddingForOffscreenContent"> & {
             disableHideBottomOverflow?: boolean | undefined;
             adjustPaddingForOffscreenContent?: boolean | undefined;
         } & {
@@ -294,11 +271,21 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
                 open?: boolean | undefined;
             }, {}];
         };
-        ScrollView: React.ForwardRefExoticComponent<Omit<import("@tamagui/web/types/interfaces/TamaguiComponentPropsBaseBase").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, keyof import("@tamagui/core").StackStyleBase | "fullscreen"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+        ScrollView: React.ForwardRefExoticComponent<Omit<import("@tamagui/web/types/interfaces/TamaguiComponentPropsBaseBase").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "contentContainerStyle"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
+            readonly contentContainerStyle?: Partial<import("@tamagui/core").GetFinalProps<import("react-native").ScrollViewProps, import("@tamagui/core").StackStyleBase, {}>> | undefined;
+        }> & {
             fullscreen?: boolean | undefined;
-        } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+        } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
+            readonly contentContainerStyle?: Partial<import("@tamagui/core").GetFinalProps<import("react-native").ScrollViewProps, import("@tamagui/core").StackStyleBase, {}>> | undefined;
+        }>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
+            readonly contentContainerStyle?: Partial<import("@tamagui/core").GetFinalProps<import("react-native").ScrollViewProps, import("@tamagui/core").StackStyleBase, {}>> | undefined;
+        }> & {
             fullscreen?: boolean | undefined;
-        } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
+        } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
+            readonly contentContainerStyle?: Partial<import("@tamagui/core").GetFinalProps<import("react-native").ScrollViewProps, import("@tamagui/core").StackStyleBase, {}>> | undefined;
+        }>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase & {
+            readonly contentContainerStyle?: Partial<import("@tamagui/core").GetFinalProps<import("react-native").ScrollViewProps, import("@tamagui/core").StackStyleBase, {}>> | undefined;
+        }, {
             fullscreen?: boolean | undefined;
         }>> & React.RefAttributes<import("react-native").ScrollView>>;
     };
@@ -313,7 +300,7 @@ export declare const DialogSheetContents: {
     ({ name, ...props }: {
         name: string;
         context: Omit<DialogContextValue, 'sheetBreakpoint'>;
-    }): JSX.Element;
+    }): import("react/jsx-runtime").JSX.Element;
     displayName: string;
 };
 export { createDialogScope, Dialog, DialogTrigger, DialogPortal, DialogOverlay, DialogContent, DialogTitle, DialogDescription, DialogClose, DialogWarningProvider, };

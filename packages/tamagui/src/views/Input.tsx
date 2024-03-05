@@ -32,10 +32,13 @@ export const defaultStyles = {
   },
 
   focusStyle: {
+    borderColor: '$borderColorFocus',
+  },
+
+  focusVisibleStyle: {
     outlineColor: '$outlineColor',
     outlineWidth: 2,
     outlineStyle: 'solid',
-    borderColor: '$borderColorFocus',
   },
 } as const
 
@@ -64,11 +67,15 @@ export const InputFrame = styled(
   },
   {
     isInput: true,
-    acceptTokens: {
+
+    accept: {
       placeholderTextColor: 'color',
+      selectionColor: 'color',
     } as const,
   }
 )
+
+// const x = <InputFrame selectionColor="" />
 
 export type Input = TextInput
 

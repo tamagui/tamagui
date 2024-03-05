@@ -95,10 +95,12 @@ export function createExtractor(
 
   const componentState: TamaguiComponentState = {
     focus: false,
+    focusVisible: false,
     hover: false,
     unmounted: true,
     press: false,
     pressIn: false,
+    disabled: false,
   } as const
 
   const styleProps: SplitStyleProps = {
@@ -552,6 +554,8 @@ export function createExtractor(
           'fontFamily',
           'name',
           'focusStyle',
+          'focusVisibleStyle',
+          'disabledStyle',
           'hoverStyle',
           'pressStyle',
         ])
@@ -833,9 +837,13 @@ export function createExtractor(
           const deoptProps = new Set([
             // always de-opt animation these
             'animation',
+            'animateOnly',
+            'animatePresence',
             'disableOptimization',
 
-            ...(!isTargetingHTML ? ['pressStyle', 'focusStyle'] : []),
+            ...(!isTargetingHTML
+              ? ['pressStyle', 'focusStyle', 'focusVisibleStyle', 'disabledStyle']
+              : []),
 
             // when using a non-CSS driver, de-opt on enterStyle/exitStyle
             ...(tamaguiConfig?.animations.isReactNative
@@ -1202,7 +1210,11 @@ export function createExtractor(
               // weird logic whats going on here
               if (didInline) {
                 if (shouldPrintDebug) {
-                  logger.info(`  bailing flattening due to attributes ${attributes}`)
+                  logger.info(
+                    `  bailing flattening due to attributes ${attributes.map((x) =>
+                      x.toString()
+                    )}`
+                  )
                 }
                 // bail
                 return attr
@@ -1293,12 +1305,12 @@ export function createExtractor(
             }
 
             // Disabling: this probably doesn't optimize much and needs to be done a bit differently
-            if (options.experimentalFlattenThemesOnNative) {
+            if (options.experimentalFlattenDynamicValues) {
               if (isValidStyleKey(name, staticConfig)) {
                 return {
                   type: 'dynamic-style',
                   value,
-                  name,
+                  name: tamaguiConfig?.shorthands[name] || name,
                 }
               }
             }

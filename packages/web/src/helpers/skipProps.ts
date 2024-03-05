@@ -14,6 +14,7 @@ export const skipProps = {
   style: 1, // handled after loop so pseudos set usedKeys and override it if necessary
   group: 1,
   themeInverse: 1,
+  animatePresence: 1,
 }
 
 if (process.env.NODE_ENV === 'test') {
@@ -44,6 +45,7 @@ if (process.env.TAMAGUI_TARGET === 'native') {
     // native only, not web props
     // we only skip them in dev to avoid warnings, in prod they silently drop
     Object.assign(skipProps, {
+      ellipsizeMode: 1,
       accessibilityElementsHidden: 1,
       accessibilityIgnoresInvertColors: 1,
       accessibilityLanguage: 1,

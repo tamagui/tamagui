@@ -82,10 +82,10 @@ export const ContainerBento = styled(YStack, {
   },
 
   $gtMd: {
-    maxWidth: 1200,
+    maxWidth: 1180,
   },
 
-  $gtLg: {
+  $gtXl: {
     maxWidth: 1400,
   },
 

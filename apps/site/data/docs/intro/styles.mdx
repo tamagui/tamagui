@@ -79,6 +79,8 @@ type WithStates = BaseViewStyle & {
   hoverStyle?: BaseViewStyle
   pressStyle?: BaseViewStyle
   focusStyle?: BaseViewStyle
+  focusVisibleStyle?: BaseViewStyle
+  disabledStyle?: BaseViewStyle
   enterStyle?: BaseViewStyle
   exitStyle?: BaseViewStyle
 }
@@ -182,8 +184,8 @@ Use them like so:
 ### Platform
 
 Platform style props let you style a child based on the platform the app is
-running on. This can be one of `ios`, `android`, `web`, or `native` (ios and
-android).
+running on. This can be one of `ios`, `android`, `web`, or `native` (iOS and
+Android).
 
 Use it like so:
 

@@ -68,6 +68,7 @@ import type { TamaguiComponentEvents } from './interfaces/TamaguiComponentEvents
 import { Slot } from './views/Slot'
 import { getThemedChildren } from './views/Theme'
 import { ThemeDebug } from './views/ThemeDebug'
+import { isDevTools } from './constants/isDevTools'
 
 /**
  * All things that need one-time setup after createTamagui is called
@@ -332,7 +333,9 @@ export function createComponent<
     // conditional but if ever true stays true
     // [animated, inversed]
     // HOOK
-    const stateRef = useRef<TamaguiComponentStateRef>({})
+    const stateRef = useRef<TamaguiComponentStateRef>({
+      handleFocusVisible: true,
+    })
     if (process.env.NODE_ENV === 'development' && time) time`stateref`
 
     /**
@@ -366,7 +369,11 @@ export function createComponent<
     const isHydrated = config?.disableSSR ? true : useDidFinishSSR()
 
     // HOOK
-    const presence = (willBeAnimated && animationsConfig?.usePresence?.()) || null
+    const presence =
+      (willBeAnimated &&
+        props['animatePresence'] !== false &&
+        animationsConfig?.usePresence?.()) ||
+      null
     const presenceState = presence?.[2]
     const isExiting = presenceState?.isPresent === false
     const isEntering =
@@ -395,15 +402,33 @@ export function createComponent<
         : defaultComponentState
       : defaultComponentStateMounted
 
+    // will be nice to deprecate half of these:
+    const disabled =
+      props.disabled ||
+      props.accessibilityState?.disabled ||
+      props['aria-disabled'] ||
+      // @ts-expect-error (comes from core)
+      props.accessibilityDisabled ||
+      false
+
+    if (disabled != null) {
+      initialState.disabled = disabled
+    }
+
     // HOOK
     const states = useState<TamaguiComponentState>(initialState)
 
     const state = props.forceStyle
       ? { ...states[0], [props.forceStyle]: true }
       : states[0]
-
     const setState = states[1]
-    let setStateShallow = createShallowSetState(setState, debugProp)
+
+    // immediately update disabled state
+    if (disabled !== state.disabled) {
+      setState({ ...state, disabled })
+    }
+
+    let setStateShallow = createShallowSetState(setState, disabled, debugProp)
 
     if (isHydrated && state.unmounted === 'should-enter') {
       state.unmounted = true
@@ -486,13 +511,13 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development' && time) time`use-state`
 
     const hasTextAncestor = !!(isWeb && isText ? componentContext.inText : false)
-    const isDisabled = props.disabled ?? props.accessibilityState?.disabled
 
     if (process.env.NODE_ENV === 'development' && time) time`use-context`
 
     const isTaggable = !Component || typeof Component === 'string'
+    const tagProp = props.tag
     // default to tag, fallback to component (when both strings)
-    const element = isWeb ? (isTaggable ? props.tag || Component : Component) : Component
+    const element = isWeb ? (isTaggable ? tagProp || Component : Component) : Component
 
     const BaseTextComponent = BaseText || element || 'span'
     const BaseViewComponent = BaseView || element || (hasTextAncestor ? 'span' : 'div')
@@ -699,6 +724,10 @@ export function createComponent<
       viewProps.theme = _themeProp
     }
 
+    if (elementType['acceptTagProp']) {
+      viewProps.tag = tagProp
+    }
+
     // once you set animation prop don't remove it, you can set to undefined/false
     // reason is animations are heavy - no way around it, and must be run inline here (🙅 loading as a sub-component)
     let animationStyles: any
@@ -738,11 +767,6 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`destructure`
 
-    const disabled =
-      props.accessibilityState?.disabled ||
-      // @ts-expect-error (comes from core)
-      props.accessibilityDisabled
-
     if (groupName) {
       nonTamaguiProps.onLayout = composeEventHandlers(
         nonTamaguiProps.onLayout,
@@ -768,7 +792,7 @@ export function createComponent<
         nonTamaguiProps,
         stateRef,
         curState.willHydrate
-      ) ?? nonTamaguiProps
+      ) || nonTamaguiProps
 
     // HOOK (1 more):
     if (!curState.composedRef) {
@@ -810,6 +834,10 @@ export function createComponent<
     const shouldEnter = state.unmounted
 
     useEffect(() => {
+      if (disabled) {
+        return
+      }
+
       if (shouldEnter) {
         setStateShallow({ unmounted: false })
         return
@@ -822,6 +850,7 @@ export function createComponent<
           pseudo: {},
           media: {},
         } satisfies GroupState
+
         disposeGroupsListener = componentContext.groups.subscribe(
           (name, { layout, pseudo }) => {
             if (pseudo && pseudoGroups?.has(name)) {
@@ -837,12 +866,13 @@ export function createComponent<
               }
             }
             function persist() {
+              // force it to be referentially different so it always updates
+              const group = {
+                ...state.group,
+                [name]: current,
+              }
               setStateShallow({
-                // force it to be referentially different so it always updates
-                group: {
-                  ...state.group,
-                  [name]: current,
-                },
+                group,
               })
             }
           }
@@ -854,6 +884,7 @@ export function createComponent<
         mouseUps.delete(unPress)
       }
     }, [
+      disabled,
       shouldEnter,
       pseudoGroups ? Object.keys([...pseudoGroups]).join('') : 0,
       mediaGroups ? Object.keys([...mediaGroups]).join('') : 0,
@@ -875,124 +906,144 @@ export function createComponent<
         onMouseDown ||
         onMouseUp ||
         onLongPress ||
-        onClick
+        onClick ||
+        pseudos?.focusVisibleStyle
     )
     const runtimeHoverStyle = !disabled && noClassNames && pseudos?.hoverStyle
-    const needsHoverState = runtimeHoverStyle || onHoverIn || onHoverOut
-    const isHoverable =
+    const needsHoverState = Boolean(
+      groupName || runtimeHoverStyle || onHoverIn || onHoverOut
+    )
+    const attachHover =
       isWeb && !!(groupName || needsHoverState || onMouseEnter || onMouseLeave)
 
     // check presence rather than value to prevent reparenting bugs
     // allows for onPress={x ? function : undefined} without re-ordering dom
-    const shouldAttach = Boolean(
-      attachFocus ||
-        attachPress ||
-        isHoverable ||
-        runtimePressStyle ||
-        runtimeHoverStyle ||
-        runtimeFocusStyle
-    )
+    const shouldAttach =
+      !disabled &&
+      !props.asChild &&
+      Boolean(
+        attachFocus ||
+          attachPress ||
+          attachHover ||
+          runtimePressStyle ||
+          runtimeHoverStyle ||
+          runtimeFocusStyle
+      )
+    const needsPressState = Boolean(groupName || runtimeHoverStyle)
 
     if (process.env.NODE_ENV === 'development' && time) time`events-setup`
 
-    const events: TamaguiComponentEvents | null =
-      shouldAttach && !isDisabled && !props.asChild
-        ? {
-            onPressOut: attachPress
-              ? (e) => {
-                  unPress()
-                  onPressOut?.(e)
-                  onMouseUp?.(e)
+    const events: TamaguiComponentEvents | null = shouldAttach
+      ? {
+          onPressOut: attachPress
+            ? (e) => {
+                stateRef.current.handleFocusVisible = true
+                unPress()
+                onPressOut?.(e)
+                onMouseUp?.(e)
+              }
+            : undefined,
+          ...((attachHover || attachPress) && {
+            onMouseEnter: (e) => {
+              const next: Partial<typeof state> = {}
+              if (needsHoverState) {
+                next.hover = true
+              }
+              if (needsPressState) {
+                if (state.pressIn) {
+                  next.press = true
                 }
-              : undefined,
-            ...((isHoverable || attachPress) && {
-              onMouseEnter: (e) => {
-                const next: Partial<typeof state> = {}
-                if (needsHoverState) {
-                  next.hover = true
+              }
+              setStateShallow(next)
+              onHoverIn?.(e)
+              onMouseEnter?.(e)
+            },
+            onMouseLeave: (e) => {
+              const next: Partial<typeof state> = {}
+              mouseUps.add(unPress)
+              if (needsHoverState) {
+                next.hover = false
+              }
+              if (needsPressState) {
+                if (state.pressIn) {
+                  next.press = false
+                  next.pressIn = false
                 }
+              }
+              setStateShallow(next)
+              onHoverOut?.(e)
+              onMouseLeave?.(e)
+            },
+          }),
+          onPressIn: attachPress
+            ? (e) => {
+                stateRef.current.handleFocusVisible = false
                 if (runtimePressStyle) {
-                  if (state.pressIn) {
-                    next.press = true
-                  }
+                  setStateShallow({
+                    press: true,
+                    pressIn: true,
+                  })
                 }
-                setStateShallow(next)
-                onHoverIn?.(e)
-                onMouseEnter?.(e)
-              },
-              onMouseLeave: (e) => {
-                const next: Partial<typeof state> = {}
-                mouseUps.add(unPress)
-                if (needsHoverState) {
-                  next.hover = false
+                onPressIn?.(e)
+                onMouseDown?.(e)
+                if (isWeb) {
+                  mouseUps.add(unPress)
                 }
-                if (runtimePressStyle) {
-                  if (state.pressIn) {
-                    next.press = false
-                    next.pressIn = false
-                  }
+              }
+            : undefined,
+          onPress: attachPress
+            ? (e) => {
+                unPress()
+                // @ts-ignore
+                isWeb && onClick?.(e)
+                onPress?.(e)
+                if (process.env.TAMAGUI_TARGET === 'web') {
+                  onLongPress?.(e)
                 }
-                setStateShallow(next)
-                onHoverOut?.(e)
-                onMouseLeave?.(e)
+              }
+            : undefined,
+          ...(process.env.TAMAGUI_TARGET === 'native' &&
+            attachPress &&
+            onLongPress && {
+              onLongPress: (e) => {
+                unPress()
+                onLongPress?.(e)
               },
             }),
-            onPressIn: attachPress
-              ? (e) => {
-                  if (runtimePressStyle) {
-                    setStateShallow({
-                      press: true,
-                      pressIn: true,
-                    })
-                  }
-                  onPressIn?.(e)
-                  onMouseDown?.(e)
-                  if (isWeb) {
-                    mouseUps.add(unPress)
-                  }
-                }
-              : undefined,
-            onPress: attachPress
-              ? (e) => {
-                  unPress()
-                  // @ts-ignore
-                  isWeb && onClick?.(e)
-                  onPress?.(e)
-                  if (process.env.TAMAGUI_TARGET === 'web') {
-                    onLongPress?.(e)
-                  }
-                }
-              : undefined,
-            ...(process.env.TAMAGUI_TARGET === 'native' &&
-              attachPress &&
-              onLongPress && {
-                onLongPress: (e) => {
-                  unPress()
-                  onLongPress?.(e)
-                },
-              }),
-            ...(attachFocus && {
-              onFocus: (e) => {
+          ...(attachFocus && {
+            onFocus: (e) => {
+              if (pseudos?.focusVisibleStyle) {
+                setTimeout(() => {
+                  setStateShallow({
+                    focus: true,
+                    focusVisible: !!stateRef.current.handleFocusVisible,
+                  })
+                }, 0)
+              } else {
                 setStateShallow({
                   focus: true,
+                  focusVisible: false,
                 })
-                onFocus?.(e)
-              },
-              onBlur: (e) => {
-                setStateShallow({
-                  focus: false,
-                })
-                onBlur?.(e)
-              },
-            }),
-          }
-        : null
+              }
+              onFocus?.(e)
+            },
+            onBlur: (e) => {
+              stateRef.current.handleFocusVisible = true
+              setStateShallow({
+                focus: false,
+                focusVisible: false,
+              })
+              onBlur?.(e)
+            },
+          }),
+        }
+      : null
 
     if (process.env.TAMAGUI_TARGET === 'native' && events && !asChild) {
       // replicating TouchableWithoutFeedback
       Object.assign(events, {
         cancelable: !viewProps.rejectResponderTermination,
-        disabled: isDisabled,
+        disabled: disabled,
         hitSlop: viewProps.hitSlop,
         delayLongPress: viewProps.delayLongPress,
         delayPressIn: viewProps.delayPressIn,
@@ -1009,7 +1060,7 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development' && time) time`events`
 
     if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
-      log(`events`, { events, isHoverable, attachPress })
+      log(`events`, { events, attachHover, attachPress })
     }
 
     // EVENTS native
@@ -1042,8 +1093,6 @@ export function createComponent<
             onLongPress,
             onPressIn,
             onPressOut,
-            onHoverIn,
-            onHoverOut,
             onMouseUp,
             onMouseDown,
             onMouseEnter,
@@ -1145,14 +1194,8 @@ export function createComponent<
       if (isReactNative && !asChild) {
         content = (
           <span
-            {...(!isHydrated
-              ? {
-                  className: `_dsp_contents`,
-                }
-              : {
-                  className: `_dsp_contents`,
-                  ...(events && getWebEvents(events)),
-                })}
+            className="_dsp_contents"
+            {...(isHydrated && events && getWebEvents(events))}
           >
             {content}
           </span>
@@ -1186,6 +1229,9 @@ export function createComponent<
         const title = `render <${element} /> (${internalID}) with props`
         if (!isWeb) {
           log(title)
+          if (isDevTools) {
+            log('viewProps', viewProps)
+          }
           log(`final styles:`)
           for (const key in splitStylesStyle) {
             log(key, splitStylesStyle[key])
@@ -1323,8 +1369,8 @@ type EventLikeObject = {
 
 function getWebEvents<E extends EventLikeObject>(events: E, webStyle = true) {
   return {
-    onMouseEnter: events.onHoverIn ?? events.onMouseEnter,
-    onMouseLeave: events.onHoverOut ?? events.onMouseLeave,
+    onMouseEnter: events.onMouseEnter,
+    onMouseLeave: events.onMouseLeave,
     [webStyle ? 'onClick' : 'onPress']: events.onPress,
     onMouseDown: events.onPressIn,
     onMouseUp: events.onPressOut,

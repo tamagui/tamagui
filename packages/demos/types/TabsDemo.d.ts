@@ -1,3 +1,2 @@
-/// <reference types="react" />
-export declare function TabsDemo(): JSX.Element;
+export declare function TabsDemo(): import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=TabsDemo.d.ts.map

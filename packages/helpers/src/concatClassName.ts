@@ -94,4 +94,6 @@ const pseudoInvert = {
   hover: 'hoverStyle',
   focus: 'focusStyle',
   press: 'pressStyle',
+  focusVisible: 'focusVisibleStyle',
+  disabled: 'disabledStyle',
 }

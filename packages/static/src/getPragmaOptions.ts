@@ -1,35 +1,40 @@
 export function getPragmaOptions({
   source,
   path,
-  disableCommentCheck,
 }: {
   source: string
   path: string
-  disableCommentCheck?: boolean
 }) {
-  if (!disableCommentCheck && !source.startsWith('//') && !source.startsWith('/*')) {
-    return {
-      shouldPrintDebug: false,
-      shouldDisable: false,
-    }
-  }
-
   let shouldPrintDebug: boolean | 'verbose' = false
   let shouldDisable = false
 
   // try and avoid too much parsing but sometimes esbuild adds helpers above..
-  const firstLine = source.slice(0, 800).split('\n')[0]
+  const firstLines = source.slice(0, 800)
 
-  if (firstLine.includes('tamagui-ignore')) {
-    shouldDisable = true
+  let pragma = ''
+  for (const line of firstLines.split('\n')) {
+    pragma =
+      line
+        .match(/(\/\/|\/\*)\s?\!?\s?(tamagui-ignore|debug|debug-verbose)(\n|\s|$).*/)?.[2]
+        .trim() || ''
+    if (pragma) {
+      pragma = pragma.replace('!', '').trim()
+      break
+    }
   }
 
-  if (firstLine.includes('debug')) {
-    shouldPrintDebug = true
-  }
+  switch (pragma) {
+    case 'tamagui-ignore':
+      shouldDisable = true
+      break
 
-  if (firstLine.includes('debug-verbose')) {
-    shouldPrintDebug = 'verbose'
+    case 'debug':
+      shouldPrintDebug = true
+      break
+
+    case 'debug-verbose':
+      shouldPrintDebug = 'verbose'
+      break
   }
 
   if (process.env.TAMAGUI_DEBUG_FILE) {

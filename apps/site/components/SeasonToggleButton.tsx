@@ -7,6 +7,7 @@ export const seasons = {
   easter: '🐣',
   xmas: '🎅🏻',
   lunar: '🧧',
+  valentine: '💘',
   halloween: '🎃',
 }
 
@@ -25,7 +26,7 @@ export const SeasonToggleButton = (props: ButtonProps) => {
           }}
           {...props}
           aria-label="Toggle theme"
-          ov="hidden"
+          ov="visible"
           hoverStyle={{
             bg: 'rgba(0,0,0,0.15)',
           }}

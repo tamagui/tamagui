@@ -31,5 +31,5 @@ export declare const LogoWords: import("react").MemoExoticComponent<({ downscale
     downscale?: number | undefined;
     animated?: boolean | undefined;
     grayscale?: boolean | undefined;
-}) => JSX.Element>;
+}) => import("react/jsx-runtime").JSX.Element>;
 //# sourceMappingURL=LogoWords.d.ts.map

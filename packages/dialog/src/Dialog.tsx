@@ -140,6 +140,8 @@ type DialogPortalProps = Omit<PortalItemProps, 'asChild'> &
   }
 
 export const DialogPortalFrame = styled(YStack, {
+  pointerEvents: 'none',
+
   variants: {
     unstyled: {
       false: {
@@ -221,12 +223,12 @@ const DialogPortal: React.FC<DialogPortalProps> = (
     setIsFullyHidden(false)
   }
 
+  const handleExitComplete = React.useCallback(() => {
+    setIsFullyHidden(true)
+  }, [])
+
   const contents = (
-    <AnimatePresence
-      onExitComplete={() => {
-        setIsFullyHidden(true)
-      }}
-    >
+    <AnimatePresence onExitComplete={handleExitComplete}>
       {isShowing ? children : null}
     </AnimatePresence>
   )
@@ -728,9 +730,10 @@ const DialogClose = DialogCloseFrame.styleable<DialogCloseExtraProps>(
         tag={isInsideButton ? 'span' : 'button'}
         {...closeProps}
         ref={forwardedRef}
-        onPress={composeEventHandlers(props.onPress as any, () =>
+        onPress={composeEventHandlers(props.onPress as any, () => {
+          console.warn('??')
           context.onOpenChange(false)
-        )}
+        })}
       />
     )
   }

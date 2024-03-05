@@ -1,4 +1,4 @@
-import { ThemeTintAlt } from '@tamagui/logo'
+import { ThemeTintAlt, useTint } from '@tamagui/logo'
 import { Menu } from '@tamagui/lucide-icons'
 import * as React from 'react'
 import {
@@ -9,6 +9,8 @@ import {
   Sheet,
   SizableText,
   Spacer,
+  Theme,
+  ThemeName,
   XStack,
   YStack,
   isTouchable,
@@ -29,6 +31,7 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
     viaAt: Date.now(),
   })
   const userSwr = useUser()
+  const isBento = useRouter().pathname.startsWith('/bento')
 
   return (
     <HeaderMenuTheme>
@@ -78,10 +81,12 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
             hoverStyle={{
               bg: 'transparent',
               // @ts-ignore
-              bc: 'color-mix(in srgb, var(--color-10) 30%, transparent 60%)',
+              bc: 'color-mix(in srgb, var(--color10) 30%, transparent 60%)',
             }}
           >
-            <SizableText ff="$silkscreen">Menu</SizableText>
+            <SizableText size="$2" ff="$silkscreen">
+              Menu
+            </SizableText>
 
             <Circle size={28} ai="center" jc="center" ml={-2} mr={-9}>
               {userSwr.data?.userDetails ? (
@@ -125,7 +130,10 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
                 <Adapt.Contents />
               </Sheet.ScrollView>
             </Sheet.Frame>
-            <Sheet.Overlay zIndex={100} />
+            <Sheet.Overlay
+              zIndex={100}
+              bg={isBento ? 'rgba(0,0,0,0.3)' : '$background'}
+            />
           </Sheet>
         </Adapt>
 
@@ -136,18 +144,9 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
 })
 
 const HeaderMenuTheme = (props: { children: any }) => {
-  const router = useRouter()
-  const isBento = router.pathname.startsWith('/bento')
-
-  return (
-    <ThemeTintAlt
-      {...(isBento && {
-        name: 'tan',
-      })}
-    >
-      {props.children}
-    </ThemeTintAlt>
-  )
+  const isBento = useRouter().pathname.startsWith('/bento')
+  const curTint = useTint(1).tintAlt
+  return <Theme name={isBento ? 'tan' : (curTint as ThemeName)}>{props.children}</Theme>
 }
 
 const HeaderMenuContent = React.memo(function HeaderMenuContent() {
@@ -187,7 +186,7 @@ const HeaderMenuContent = React.memo(function HeaderMenuContent() {
       }}
     >
       <Popover.Arrow bg="$color5" size="$4" borderWidth={0} o={0.84} />
-      <YStack fullscreen bg="$color5" zi={0} br="$6" o={0.84} />
+      <YStack fullscreen bg="$color5" zi={0} br="$6" o={0.84} $sm={{ dsp: 'none' }} />
 
       <Popover.ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
         <YStack aria-label="Home menu contents" miw={230} p="$3" ai="flex-end">

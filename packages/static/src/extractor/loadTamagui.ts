@@ -2,7 +2,6 @@ import { readFileSync, writeFileSync } from 'fs'
 import { basename, dirname, extname, join, relative, resolve } from 'path'
 
 import { Color, colorLog } from '@tamagui/cli-color'
-import { getDefaultTamaguiConfig } from '@tamagui/config-default'
 import type { CLIResolvedOptions, CLIUserOptions, TamaguiOptions } from '@tamagui/types'
 import type { TamaguiInternalConfig } from '@tamagui/web'
 import esbuild from 'esbuild'
@@ -277,9 +276,11 @@ export function loadTamaguiSync({
       }
 
       const { createTamagui } = requireTamaguiCore(props.platform)
+      const { getDefaultTamaguiConfig } = require('@tamagui/config-default')
+
       return {
         components: [],
-        tamaguiConfig: createTamagui(getDefaultTamaguiConfig()),
+        tamaguiConfig: createTamagui(getDefaultTamaguiConfig()) as any,
         nameToPaths: {},
       }
     }
@@ -318,6 +319,7 @@ export async function getOptions({
       config: await getDefaultTamaguiConfigPath(root, tamaguiOptions?.config),
     },
     paths: {
+      root,
       dotDir,
       conf: join(dotDir, 'tamagui.config.json'),
       types: join(dotDir, 'types.json'),

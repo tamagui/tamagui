@@ -27,6 +27,6 @@ export type AnimateProps = BaseProps & PresenceProps;
  *
  *
  */
-export declare function Animate({ children, type, ...props }: AnimateProps): JSX.Element;
+export declare function Animate({ children, type, ...props }: AnimateProps): import("react/jsx-runtime").JSX.Element;
 export {};
 //# sourceMappingURL=Animate.d.ts.map

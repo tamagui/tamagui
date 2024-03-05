@@ -9,10 +9,12 @@ export declare const defaultStyles: {
         readonly borderColor: "$borderColorHover";
     };
     readonly focusStyle: {
+        readonly borderColor: "$borderColorFocus";
+    };
+    readonly focusVisibleStyle: {
         readonly outlineColor: "$outlineColor";
         readonly outlineWidth: 2;
         readonly outlineStyle: "solid";
-        readonly borderColor: "$borderColorFocus";
     };
     readonly tabIndex: number;
     readonly size: "$true";
@@ -28,10 +30,12 @@ export declare const defaultStyles: {
         readonly borderColor: "$borderColorHover";
     };
     readonly focusStyle: {
+        readonly borderColor: "$borderColorFocus";
+    };
+    readonly focusVisibleStyle: {
         readonly outlineColor: "$outlineColor";
         readonly outlineWidth: 2;
         readonly outlineStyle: "solid";
-        readonly borderColor: "$borderColorFocus";
     };
     readonly focusable: boolean;
     readonly size: "$true";
@@ -41,15 +45,17 @@ export declare const defaultStyles: {
     readonly color: "$color";
 };
 export declare const InputFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TextInput, import("@tamagui/web/types/interfaces/TamaguiComponentPropsBaseBase").TamaguiComponentPropsBaseBase & import("react-native").TextInputProps, import("@tamagui/core").TextStylePropsBase & {
-    readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
+    readonly placeholderTextColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
+    readonly selectionColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
 }, {
     size?: import("@tamagui/core").SizeTokens | undefined;
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
 }, {
     isInput: true;
-    acceptTokens: {
+    accept: {
         readonly placeholderTextColor: "color";
+        readonly selectionColor: "color";
     };
 }>;
 export type Input = TextInput;
@@ -59,21 +65,24 @@ export type InputExtraProps = {
 };
 export type InputProps = InputFrameProps & InputExtraProps;
 export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/web/types/interfaces/TamaguiComponentPropsBaseBase").TamaguiComponentPropsBaseBase & import("react-native").TextInputProps, import("@tamagui/core").TextStylePropsBase & {
-    readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
+    readonly placeholderTextColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
+    readonly selectionColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
 }, {
     size?: import("@tamagui/core").SizeTokens | undefined;
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
 }>, "rows"> & InputExtraProps, TextInput, import("@tamagui/web/types/interfaces/TamaguiComponentPropsBaseBase").TamaguiComponentPropsBaseBase & import("react-native").TextInputProps & InputExtraProps, import("@tamagui/core").TextStylePropsBase & {
-    readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
+    readonly placeholderTextColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
+    readonly selectionColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
 }, {
     size?: import("@tamagui/core").SizeTokens | undefined;
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
 }, {
     isInput: true;
-    acceptTokens: {
+    accept: {
         readonly placeholderTextColor: "color";
+        readonly selectionColor: "color";
     };
 }>;
 export declare function useInputProps(props: InputProps, ref: any): {
@@ -81,8 +90,6 @@ export declare function useInputProps(props: InputProps, ref: any): {
     onChangeText: (value: any) => void;
     children?: any;
     className?: string | undefined;
-    style?: import("react-native").StyleProp<import("react-native").TextStyle>;
-    group?: undefined;
     onPressIn?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").NativeTouchEvent>) => void) | undefined;
     onPressOut?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").NativeTouchEvent>) => void) | undefined;
     onFocus?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").TextInputFocusEventData>) => void) | undefined;
@@ -101,13 +108,14 @@ export declare function useInputProps(props: InputProps, ref: any): {
     onResponderTerminate?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onStartShouldSetResponderCapture?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onMoveShouldSetResponderCapture?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
+    style?: import("react-native").StyleProp<import("react-native").TextStyle>;
     allowFontScaling?: boolean | undefined;
     id?: string | undefined;
     numberOfLines?: number | undefined;
+    testID?: string | undefined;
     nativeID?: string | undefined;
     maxFontSizeMultiplier?: number | null | undefined;
     lineBreakStrategyIOS?: "none" | "standard" | "hangul-word" | "push-out" | undefined;
-    selectionColor?: import("react-native").ColorValue | undefined;
     textBreakStrategy?: "simple" | "highQuality" | "balanced" | undefined;
     accessible?: boolean | undefined;
     accessibilityActions?: readonly Readonly<{
@@ -131,11 +139,11 @@ export declare function useInputProps(props: InputProps, ref: any): {
     'aria-valuenow'?: number | undefined;
     'aria-valuetext'?: string | undefined;
     onAccessibilityAction?: ((event: import("react-native").AccessibilityActionEvent) => void) | undefined;
-    importantForAccessibility?: "auto" | "no" | "yes" | "no-hide-descendants" | undefined;
+    importantForAccessibility?: "auto" | "yes" | "no" | "no-hide-descendants" | undefined;
     'aria-hidden'?: boolean | undefined;
-    'aria-live'?: "off" | "polite" | "assertive" | undefined;
+    'aria-live'?: "polite" | "assertive" | "off" | undefined;
     'aria-modal'?: boolean | undefined;
-    role?: "row" | "none" | "link" | "article" | "button" | "dialog" | "figure" | "form" | "img" | "main" | "menu" | "menuitem" | "meter" | "option" | "summary" | "table" | "switch" | "checkbox" | "radio" | "alert" | "alertdialog" | "application" | "banner" | "cell" | "columnheader" | "combobox" | "complementary" | "contentinfo" | "definition" | "directory" | "document" | "feed" | "grid" | "group" | "heading" | "list" | "listitem" | "log" | "marquee" | "math" | "menubar" | "navigation" | "note" | "presentation" | "progressbar" | "radiogroup" | "region" | "rowgroup" | "rowheader" | "scrollbar" | "searchbox" | "separator" | "slider" | "spinbutton" | "status" | "tab" | "tablist" | "tabpanel" | "term" | "timer" | "toolbar" | "tooltip" | "tree" | "treegrid" | "treeitem" | undefined;
+    role?: "row" | "none" | "link" | "group" | "separator" | "article" | "main" | "figure" | "img" | "table" | "button" | "form" | "meter" | "option" | "dialog" | "menu" | "summary" | "alert" | "checkbox" | "combobox" | "menubar" | "menuitem" | "progressbar" | "radio" | "radiogroup" | "scrollbar" | "spinbutton" | "switch" | "tab" | "tablist" | "timer" | "list" | "toolbar" | "alertdialog" | "application" | "banner" | "cell" | "columnheader" | "complementary" | "contentinfo" | "definition" | "directory" | "document" | "feed" | "grid" | "heading" | "listitem" | "log" | "marquee" | "math" | "navigation" | "note" | "presentation" | "region" | "rowgroup" | "rowheader" | "searchbox" | "slider" | "status" | "tabpanel" | "term" | "tooltip" | "tree" | "treegrid" | "treeitem" | undefined;
     accessibilityLiveRegion?: "none" | "polite" | "assertive" | undefined;
     accessibilityLabelledBy?: string | string[] | undefined;
     accessibilityElementsHidden?: boolean | undefined;
@@ -153,8 +161,9 @@ export declare function useInputProps(props: InputProps, ref: any): {
     debug?: import("@tamagui/core").DebugProp | undefined;
     themeShallow?: boolean | undefined;
     themeInverse?: boolean | undefined;
-    tag?: "object" | "search" | "small" | "sub" | "sup" | "a" | "abbr" | "address" | "area" | "article" | "aside" | "audio" | "b" | "bdi" | "bdo" | "blockquote" | "br" | "button" | "canvas" | "caption" | "cite" | "code" | "col" | "colgroup" | "data" | "datalist" | "dd" | "del" | "details" | "dfn" | "dialog" | "div" | "dl" | "dt" | "em" | "embed" | "fieldset" | "figcaption" | "figure" | "footer" | "form" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "header" | "hr" | "i" | "img" | "input" | "ins" | "kbd" | "label" | "legend" | "li" | "main" | "map" | "mark" | "menu" | "meter" | "nav" | "noscript" | "ol" | "optgroup" | "option" | "output" | "p" | "param" | "picture" | "pre" | "progress" | "q" | "rp" | "rt" | "ruby" | "s" | "samp" | "script" | "section" | "select" | "source" | "span" | "strong" | "summary" | "table" | "template" | "tbody" | "td" | "textarea" | "th" | "thead" | "time" | "tr" | "track" | "u" | "ul" | "var" | "video" | "wbr" | (string & {}) | "rtc" | undefined;
+    tag?: "object" | "search" | "small" | "sub" | "sup" | "a" | (string & {}) | "address" | "article" | "aside" | "footer" | "header" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "main" | "nav" | "section" | "blockquote" | "dd" | "div" | "dl" | "dt" | "figcaption" | "figure" | "hr" | "li" | "ol" | "ul" | "p" | "pre" | "abbr" | "b" | "bdi" | "bdo" | "br" | "cite" | "code" | "data" | "dfn" | "em" | "i" | "kbd" | "mark" | "q" | "rp" | "rt" | "rtc" | "ruby" | "s" | "samp" | "span" | "strong" | "time" | "u" | "var" | "wbr" | "area" | "audio" | "img" | "map" | "track" | "video" | "embed" | "param" | "picture" | "source" | "canvas" | "noscript" | "script" | "del" | "ins" | "caption" | "col" | "colgroup" | "table" | "thead" | "tbody" | "td" | "th" | "tr" | "button" | "datalist" | "fieldset" | "form" | "input" | "label" | "legend" | "meter" | "optgroup" | "option" | "output" | "progress" | "select" | "textarea" | "details" | "dialog" | "menu" | "summary" | "template" | undefined;
     theme?: string | null | undefined;
+    group?: undefined;
     untilMeasured?: "hide" | "show" | undefined;
     componentName?: string | undefined;
     tabIndex?: string | number | undefined;
@@ -192,7 +201,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     onPointerUp?: ((event: import("react-native").PointerEvent) => void) | undefined;
     onPointerUpCapture?: ((event: import("react-native").PointerEvent) => void) | undefined;
     autoCapitalize?: "none" | "sentences" | "words" | "characters" | undefined;
-    autoComplete?: "email" | "password" | "tel" | "url" | "off" | "name" | "additional-name" | "address-line1" | "address-line2" | "birthdate-day" | "birthdate-full" | "birthdate-month" | "birthdate-year" | "cc-csc" | "cc-exp" | "cc-exp-day" | "cc-exp-month" | "cc-exp-year" | "cc-number" | "country" | "current-password" | "family-name" | "gender" | "given-name" | "honorific-prefix" | "honorific-suffix" | "name-family" | "name-given" | "name-middle" | "name-middle-initial" | "name-prefix" | "name-suffix" | "new-password" | "nickname" | "one-time-code" | "organization" | "organization-title" | "password-new" | "postal-address" | "postal-address-country" | "postal-address-extended" | "postal-address-extended-postal-code" | "postal-address-locality" | "postal-address-region" | "postal-code" | "street-address" | "sms-otp" | "tel-country-code" | "tel-national" | "tel-device" | "username" | "username-new" | undefined;
+    autoComplete?: "name" | "email" | "off" | "additional-name" | "address-line1" | "address-line2" | "birthdate-day" | "birthdate-full" | "birthdate-month" | "birthdate-year" | "cc-csc" | "cc-exp" | "cc-exp-day" | "cc-exp-month" | "cc-exp-year" | "cc-number" | "cc-name" | "cc-given-name" | "cc-middle-name" | "cc-family-name" | "cc-type" | "country" | "current-password" | "family-name" | "gender" | "given-name" | "honorific-prefix" | "honorific-suffix" | "name-family" | "name-given" | "name-middle" | "name-middle-initial" | "name-prefix" | "name-suffix" | "new-password" | "nickname" | "one-time-code" | "organization" | "organization-title" | "password" | "password-new" | "postal-address" | "postal-address-country" | "postal-address-extended" | "postal-address-extended-postal-code" | "postal-address-locality" | "postal-address-region" | "postal-code" | "street-address" | "sms-otp" | "tel" | "tel-country-code" | "tel-national" | "tel-device" | "url" | "username" | "username-new" | undefined;
     autoCorrect?: boolean | undefined;
     autoFocus?: boolean | undefined;
     blurOnSubmit?: boolean | undefined;
@@ -213,6 +222,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     onScroll?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").TextInputScrollEventData>) => void) | undefined;
     onKeyPress?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").TextInputKeyPressEventData>) => void) | undefined;
     placeholder?: string | undefined;
+    readOnly: boolean | undefined;
     returnKeyType?: import("react-native").ReturnKeyTypeOptions | undefined;
     enterKeyHint?: import("react-native").EnterKeyHintTypeOptions | undefined;
     secureTextEntry?: boolean | undefined;
@@ -232,10 +242,11 @@ export declare function useInputProps(props: InputProps, ref: any): {
     rejectResponderTermination?: boolean | null | undefined;
     selectionState?: import("react-native").DocumentSelectionState | undefined;
     spellCheck?: boolean | undefined;
-    textContentType?: "none" | "password" | "name" | "nickname" | "username" | "URL" | "addressCity" | "addressCityAndState" | "addressState" | "countryName" | "creditCardNumber" | "emailAddress" | "familyName" | "fullStreetAddress" | "givenName" | "jobTitle" | "location" | "middleName" | "namePrefix" | "nameSuffix" | "organizationName" | "postalCode" | "streetAddressLine1" | "streetAddressLine2" | "sublocality" | "telephoneNumber" | "newPassword" | "oneTimeCode" | undefined;
+    textContentType?: "none" | "name" | "nickname" | "password" | "username" | "URL" | "addressCity" | "addressCityAndState" | "addressState" | "countryName" | "creditCardNumber" | "creditCardExpiration" | "creditCardExpirationMonth" | "creditCardExpirationYear" | "creditCardSecurityCode" | "creditCardType" | "creditCardName" | "creditCardGivenName" | "creditCardMiddleName" | "creditCardFamilyName" | "emailAddress" | "familyName" | "fullStreetAddress" | "givenName" | "jobTitle" | "location" | "middleName" | "namePrefix" | "nameSuffix" | "organizationName" | "postalCode" | "streetAddressLine1" | "streetAddressLine2" | "sublocality" | "telephoneNumber" | "newPassword" | "oneTimeCode" | "birthdate" | "birthdateDay" | "birthdateMonth" | "birthdateYear" | undefined;
     scrollEnabled?: boolean | undefined;
+    smartInsertDelete?: boolean | undefined;
     cursorColor?: import("react-native").ColorValue | null | undefined;
-    importantForAutofill?: "auto" | "no" | "yes" | "noExcludeDescendants" | "yesExcludeDescendants" | undefined;
+    importantForAutofill?: "auto" | "yes" | "no" | "noExcludeDescendants" | "yesExcludeDescendants" | undefined;
     disableFullscreenUI?: boolean | undefined;
     inlineImageLeft?: string | undefined;
     inlineImagePadding?: number | undefined;
@@ -288,7 +299,6 @@ export declare function useInputProps(props: InputProps, ref: any): {
     right?: number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"right"> | null | undefined;
     fontSize?: "unset" | import("@tamagui/core").GetThemeValueForKey<"fontSize"> | undefined;
     lineHeight?: "unset" | import("@tamagui/core").GetThemeValueForKey<"lineHeight"> | undefined;
-    testID?: string | undefined;
     fontFamily?: "unset" | import("@tamagui/core").GetThemeValueForKey<"fontFamily"> | undefined;
     fontStyle?: "unset" | "normal" | "italic" | undefined;
     fontWeight?: "unset" | import("@tamagui/core").GetThemeValueForKey<"fontWeight"> | undefined;
@@ -305,7 +315,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     textTransform?: "unset" | "none" | "capitalize" | "uppercase" | "lowercase" | undefined;
     fontVariant?: "unset" | import("react-native").FontVariant[] | undefined;
     writingDirection?: "unset" | "auto" | "ltr" | "rtl" | undefined;
-    backfaceVisibility?: "unset" | "hidden" | "visible" | undefined;
+    backfaceVisibility?: "unset" | "visible" | "hidden" | undefined;
     borderBlockColor?: "unset" | import("react-native").OpaqueColorValue | import("@tamagui/core").GetThemeValueForKey<"borderBlockColor"> | undefined;
     borderBlockEndColor?: "unset" | import("react-native").OpaqueColorValue | import("@tamagui/core").GetThemeValueForKey<"borderBlockEndColor"> | undefined;
     borderBlockStartColor?: "unset" | import("react-native").OpaqueColorValue | import("@tamagui/core").GetThemeValueForKey<"borderBlockStartColor"> | undefined;
@@ -346,7 +356,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     maxWidth?: number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"maxWidth"> | null | undefined;
     minHeight?: number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"minHeight"> | null | undefined;
     minWidth?: number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"minWidth"> | null | undefined;
-    overflow?: "unset" | "hidden" | "visible" | "scroll" | undefined;
+    overflow?: "unset" | "visible" | "hidden" | "scroll" | undefined;
     paddingEnd?: number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"paddingEnd"> | null | undefined;
     paddingStart?: number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"paddingStart"> | null | undefined;
     position?: "unset" | "absolute" | "relative" | undefined;
@@ -359,13 +369,208 @@ export declare function useInputProps(props: InputProps, ref: any): {
     }> | undefined;
     shadowOpacity?: "unset" | import("react-native").AnimatableNumericValue | undefined;
     shadowRadius?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"shadowRadius"> | undefined;
-    transform?: string | (import("react-native").PerpectiveTransform | import("react-native").RotateTransform | import("react-native").RotateXTransform | import("react-native").RotateYTransform | import("react-native").RotateZTransform | import("react-native").ScaleTransform | import("react-native").ScaleXTransform | import("react-native").ScaleYTransform | import("react-native").TranslateXTransform | import("react-native").TranslateYTransform | import("react-native").SkewXTransform | import("react-native").SkewYTransform | import("react-native").MatrixTransform)[] | undefined;
+    transform?: string | (({
+        perspective: import("react-native").AnimatableNumericValue;
+    } & {
+        scale?: undefined;
+        scaleX?: undefined;
+        scaleY?: undefined;
+        skewX?: undefined;
+        skewY?: undefined;
+        matrix?: undefined;
+        rotate?: undefined;
+        rotateY?: undefined;
+        rotateX?: undefined;
+        rotateZ?: undefined;
+        translateX?: undefined;
+        translateY?: undefined;
+    }) | ({
+        scale: import("react-native").AnimatableNumericValue;
+    } & {
+        perspective?: undefined;
+        scaleX?: undefined;
+        scaleY?: undefined;
+        skewX?: undefined;
+        skewY?: undefined;
+        matrix?: undefined;
+        rotate?: undefined;
+        rotateY?: undefined;
+        rotateX?: undefined;
+        rotateZ?: undefined;
+        translateX?: undefined;
+        translateY?: undefined;
+    }) | ({
+        scaleX: import("react-native").AnimatableNumericValue;
+    } & {
+        perspective?: undefined;
+        scale?: undefined;
+        scaleY?: undefined;
+        skewX?: undefined;
+        skewY?: undefined;
+        matrix?: undefined;
+        rotate?: undefined;
+        rotateY?: undefined;
+        rotateX?: undefined;
+        rotateZ?: undefined;
+        translateX?: undefined;
+        translateY?: undefined;
+    }) | ({
+        scaleY: import("react-native").AnimatableNumericValue;
+    } & {
+        perspective?: undefined;
+        scale?: undefined;
+        scaleX?: undefined;
+        skewX?: undefined;
+        skewY?: undefined;
+        matrix?: undefined;
+        rotate?: undefined;
+        rotateY?: undefined;
+        rotateX?: undefined;
+        rotateZ?: undefined;
+        translateX?: undefined;
+        translateY?: undefined;
+    }) | ({
+        skewX: import("react-native").AnimatableStringValue;
+    } & {
+        perspective?: undefined;
+        scale?: undefined;
+        scaleX?: undefined;
+        scaleY?: undefined;
+        skewY?: undefined;
+        matrix?: undefined;
+        rotate?: undefined;
+        rotateY?: undefined;
+        rotateX?: undefined;
+        rotateZ?: undefined;
+        translateX?: undefined;
+        translateY?: undefined;
+    }) | ({
+        skewY: import("react-native").AnimatableStringValue;
+    } & {
+        perspective?: undefined;
+        scale?: undefined;
+        scaleX?: undefined;
+        scaleY?: undefined;
+        skewX?: undefined;
+        matrix?: undefined;
+        rotate?: undefined;
+        rotateY?: undefined;
+        rotateX?: undefined;
+        rotateZ?: undefined;
+        translateX?: undefined;
+        translateY?: undefined;
+    }) | ({
+        matrix: import("react-native").AnimatableNumericValue[];
+    } & {
+        perspective?: undefined;
+        scale?: undefined;
+        scaleX?: undefined;
+        scaleY?: undefined;
+        skewX?: undefined;
+        skewY?: undefined;
+        rotate?: undefined;
+        rotateY?: undefined;
+        rotateX?: undefined;
+        rotateZ?: undefined;
+        translateX?: undefined;
+        translateY?: undefined;
+    }) | ({
+        rotate: import("react-native").AnimatableStringValue;
+    } & {
+        perspective?: undefined;
+        scale?: undefined;
+        scaleX?: undefined;
+        scaleY?: undefined;
+        skewX?: undefined;
+        skewY?: undefined;
+        matrix?: undefined;
+        rotateY?: undefined;
+        rotateX?: undefined;
+        rotateZ?: undefined;
+        translateX?: undefined;
+        translateY?: undefined;
+    }) | ({
+        rotateY: import("react-native").AnimatableStringValue;
+    } & {
+        perspective?: undefined;
+        scale?: undefined;
+        scaleX?: undefined;
+        scaleY?: undefined;
+        skewX?: undefined;
+        skewY?: undefined;
+        matrix?: undefined;
+        rotate?: undefined;
+        rotateX?: undefined;
+        rotateZ?: undefined;
+        translateX?: undefined;
+        translateY?: undefined;
+    }) | ({
+        rotateX: import("react-native").AnimatableStringValue;
+    } & {
+        perspective?: undefined;
+        scale?: undefined;
+        scaleX?: undefined;
+        scaleY?: undefined;
+        skewX?: undefined;
+        skewY?: undefined;
+        matrix?: undefined;
+        rotate?: undefined;
+        rotateY?: undefined;
+        rotateZ?: undefined;
+        translateX?: undefined;
+        translateY?: undefined;
+    }) | ({
+        rotateZ: import("react-native").AnimatableStringValue;
+    } & {
+        perspective?: undefined;
+        scale?: undefined;
+        scaleX?: undefined;
+        scaleY?: undefined;
+        skewX?: undefined;
+        skewY?: undefined;
+        matrix?: undefined;
+        rotate?: undefined;
+        rotateY?: undefined;
+        rotateX?: undefined;
+        translateX?: undefined;
+        translateY?: undefined;
+    }) | ({
+        translateX: import("react-native").AnimatableNumericValue;
+    } & {
+        perspective?: undefined;
+        scale?: undefined;
+        scaleX?: undefined;
+        scaleY?: undefined;
+        skewX?: undefined;
+        skewY?: undefined;
+        matrix?: undefined;
+        rotate?: undefined;
+        rotateY?: undefined;
+        rotateX?: undefined;
+        rotateZ?: undefined;
+        translateY?: undefined;
+    }) | ({
+        translateY: import("react-native").AnimatableNumericValue;
+    } & {
+        perspective?: undefined;
+        scale?: undefined;
+        scaleX?: undefined;
+        scaleY?: undefined;
+        skewX?: undefined;
+        skewY?: undefined;
+        matrix?: undefined;
+        rotate?: undefined;
+        rotateY?: undefined;
+        rotateX?: undefined;
+        rotateZ?: undefined;
+        translateX?: undefined;
+    }))[] | undefined;
     transformMatrix?: "unset" | number[] | undefined;
     rotation?: "unset" | import("react-native").AnimatableNumericValue | undefined;
     translateX?: "unset" | import("react-native").AnimatableNumericValue | undefined;
     translateY?: "unset" | import("react-native").AnimatableNumericValue | undefined;
     textAlignVertical?: "unset" | "auto" | "center" | "bottom" | "top" | undefined;
-    verticalAlign?: "unset" | "auto" | "middle" | "bottom" | "top" | undefined;
+    verticalAlign?: "unset" | "auto" | "bottom" | "top" | "middle" | undefined;
     includeFontPadding?: boolean | "unset" | undefined;
     x?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"x"> | undefined;
     y?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"y"> | undefined;
@@ -394,58 +599,91 @@ export declare function useInputProps(props: InputProps, ref: any): {
     separator?: import("react").ReactNode;
     animation?: import("@tamagui/core").AnimationProp | null | undefined;
     animateOnly?: "unset" | string[] | undefined;
+    animatePresence?: boolean | "unset" | undefined;
     transformOrigin?: "unset" | "center" | "left" | "right" | "bottom" | "top" | (`${number}%` | `${string}%` | `${string}px` | `${number}px`) | "center center" | "center bottom" | "center top" | `center ${number}%` | `center ${string}%` | `center ${string}px` | `center ${number}px` | "left center" | "left bottom" | "left top" | `left ${number}%` | `left ${string}%` | `left ${string}px` | `left ${number}px` | "right center" | "right bottom" | "right top" | `right ${number}%` | `right ${string}%` | `right ${string}px` | `right ${number}px` | `${number}% center` | `${number}% bottom` | `${number}% top` | `${number}% ${number}%` | `${number}% ${string}%` | `${number}% ${string}px` | `${number}% ${number}px` | `${string}% center` | `${string}% bottom` | `${string}% top` | `${string}% ${number}%` | `${string}% ${string}%` | `${string}% ${string}px` | `${string}% ${number}px` | `${string}px center` | `${string}px bottom` | `${string}px top` | `${string}px ${number}%` | `${string}px ${string}%` | `${string}px ${string}px` | `${string}px ${number}px` | `${number}px center` | `${number}px bottom` | `${number}px top` | `${number}px ${number}%` | `${number}px ${string}%` | `${number}px ${string}px` | `${number}px ${number}px` | `center center ${string}px` | `center center ${number}px` | `center bottom ${string}px` | `center bottom ${number}px` | `center top ${string}px` | `center top ${number}px` | `center ${number}% ${string}px` | `center ${number}% ${number}px` | `center ${string}% ${string}px` | `center ${string}% ${number}px` | `center ${string}px ${string}px` | `center ${string}px ${number}px` | `center ${number}px ${string}px` | `center ${number}px ${number}px` | `left center ${string}px` | `left center ${number}px` | `left bottom ${string}px` | `left bottom ${number}px` | `left top ${string}px` | `left top ${number}px` | `left ${number}% ${string}px` | `left ${number}% ${number}px` | `left ${string}% ${string}px` | `left ${string}% ${number}px` | `left ${string}px ${string}px` | `left ${string}px ${number}px` | `left ${number}px ${string}px` | `left ${number}px ${number}px` | `right center ${string}px` | `right center ${number}px` | `right bottom ${string}px` | `right bottom ${number}px` | `right top ${string}px` | `right top ${number}px` | `right ${number}% ${string}px` | `right ${number}% ${number}px` | `right ${string}% ${string}px` | `right ${string}% ${number}px` | `right ${string}px ${string}px` | `right ${string}px ${number}px` | `right ${number}px ${string}px` | `right ${number}px ${number}px` | `${number}% center ${string}px` | `${number}% center ${number}px` | `${number}% bottom ${string}px` | `${number}% bottom ${number}px` | `${number}% top ${string}px` | `${number}% top ${number}px` | `${number}% ${number}% ${string}px` | `${number}% ${number}% ${number}px` | `${number}% ${string}% ${string}px` | `${number}% ${string}% ${number}px` | `${number}% ${string}px ${string}px` | `${number}% ${string}px ${number}px` | `${number}% ${number}px ${string}px` | `${number}% ${number}px ${number}px` | `${string}% center ${string}px` | `${string}% center ${number}px` | `${string}% bottom ${string}px` | `${string}% bottom ${number}px` | `${string}% top ${string}px` | `${string}% top ${number}px` | `${string}% ${number}% ${string}px` | `${string}% ${number}% ${number}px` | `${string}% ${string}% ${string}px` | `${string}% ${string}% ${number}px` | `${string}% ${string}px ${string}px` | `${string}% ${string}px ${number}px` | `${string}% ${number}px ${string}px` | `${string}% ${number}px ${number}px` | `${string}px center ${string}px` | `${string}px center ${number}px` | `${string}px bottom ${string}px` | `${string}px bottom ${number}px` | `${string}px top ${string}px` | `${string}px top ${number}px` | `${string}px ${number}% ${string}px` | `${string}px ${number}% ${number}px` | `${string}px ${string}% ${string}px` | `${string}px ${string}% ${number}px` | `${string}px ${string}px ${string}px` | `${string}px ${string}px ${number}px` | `${string}px ${number}px ${string}px` | `${string}px ${number}px ${number}px` | `${number}px center ${string}px` | `${number}px center ${number}px` | `${number}px bottom ${string}px` | `${number}px bottom ${number}px` | `${number}px top ${string}px` | `${number}px top ${number}px` | `${number}px ${number}% ${string}px` | `${number}px ${number}% ${number}px` | `${number}px ${string}% ${string}px` | `${number}px ${string}% ${number}px` | `${number}px ${string}px ${string}px` | `${number}px ${string}px ${number}px` | `${number}px ${number}px ${string}px` | `${number}px ${number}px ${number}px` | undefined;
     display?: "unset" | "inherit" | "flex" | "none" | "inline" | "block" | "contents" | "inline-flex" | undefined;
+    selectionColor?: "unset" | Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
     hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
-        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
+        readonly placeholderTextColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
+        readonly selectionColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
     }> & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
     } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
-        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
+        readonly placeholderTextColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
+        readonly selectionColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
     }>>) | null | undefined;
     pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
-        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
+        readonly placeholderTextColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
+        readonly selectionColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
     }> & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
     } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
-        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
+        readonly placeholderTextColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
+        readonly selectionColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
     }>>) | null | undefined;
     focusStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
-        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
+        readonly placeholderTextColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
+        readonly selectionColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
     }> & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
     } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
-        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
+        readonly placeholderTextColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
+        readonly selectionColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
+    }>>) | null | undefined;
+    focusVisibleStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
+        readonly placeholderTextColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
+        readonly selectionColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
+    }> & {
+        size?: import("@tamagui/core").SizeTokens | undefined;
+        disabled?: boolean | undefined;
+        unstyled?: boolean | undefined;
+    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
+        readonly placeholderTextColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
+        readonly selectionColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
+    }>>) | null | undefined;
+    disabledStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
+        readonly placeholderTextColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
+        readonly selectionColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
+    }> & {
+        size?: import("@tamagui/core").SizeTokens | undefined;
+        disabled?: boolean | undefined;
+        unstyled?: boolean | undefined;
+    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
+        readonly placeholderTextColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
+        readonly selectionColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
     }>>) | null | undefined;
     exitStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
-        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
+        readonly placeholderTextColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
+        readonly selectionColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
     }> & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
     } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
-        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
+        readonly placeholderTextColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
+        readonly selectionColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
     }>>) | null | undefined;
     enterStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
-        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
+        readonly placeholderTextColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
+        readonly selectionColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
     }> & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
     } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
-        readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
+        readonly placeholderTextColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
+        readonly selectionColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
     }>>) | null | undefined;
     rows?: number | undefined;
     ref: (node: any) => void;
-    readOnly: boolean | undefined;
 };
 //# sourceMappingURL=Input.d.ts.map

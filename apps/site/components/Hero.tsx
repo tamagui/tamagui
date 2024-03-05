@@ -9,7 +9,6 @@ import {
   SizableText,
   Spacer,
   Text,
-  Theme,
   TooltipSimple,
   VisuallyHidden,
   XStack,
@@ -19,12 +18,12 @@ import {
 
 import { ContainerLarge } from './Container'
 import { DiscordIcon } from './DiscordIcon'
-import { useHeroHovered } from './heroState'
 import { InstallInput } from './InstallInput'
 import { seasons } from './SeasonToggleButton'
 import { TwitterIcon } from './TwitterIcon'
-import { Figma } from '@tamagui/lucide-icons'
-import { FigmaButton } from './FigmaButton'
+import { useHeroHovered } from './heroState'
+import { TakeoutIcon } from './TakeoutIcon'
+import { BentoIcon } from './BentoIcon'
 
 export function Hero() {
   const { name } = useTint()
@@ -47,19 +46,19 @@ const HeroSubTitle = memo(() => {
           styles
         </Tag>
       </NextLink>{' '}
-      +{' '}
+      ·{' '}
       <NextLink prefetch={false} href="/docs/intro/why-a-compiler">
         <Tag theme="blue" onHoverIn={() => setHovered(1)} active={hovered === 1}>
           optimizing compiler
         </Tag>
       </NextLink>{' '}
-      +{' '}
+      ·{' '}
       <NextLink prefetch={false} href="/docs/components/stacks">
         <Tag theme="purple" onHoverIn={() => setHovered(2)} active={hovered === 2}>
           UI&nbsp;kit
         </Tag>
       </NextLink>{' '}
-      that&nbsp;unify&nbsp;React Native & Web
+      for&nbsp;React&nbsp;·&nbsp;every&nbsp;platform
     </Subtitle>
   )
 })
@@ -70,16 +69,24 @@ const HeroContents = memo(function HeroContents() {
   return (
     <ContainerLarge contain="layout" pos="relative">
       <YStack
-        className="bg-grid mask-gradient-up"
         fullscreen
-        // @ts-ignore
-        top="auto"
-        height={521}
-        left={-1000}
-        right={-1000}
-        pe="none"
-        o={0.08}
-      />
+        left={-500}
+        right={-500}
+        bottom={-100}
+        style={{
+          maskImage: `linear-gradient(#000 50%, transparent)`,
+        }}
+      >
+        <YStack
+          className="bg-grid"
+          fullscreen
+          pe="none"
+          o={0.125}
+          style={{
+            maskImage: `radial-gradient(ellipse at bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0) 50%)`,
+          }}
+        />
+      </YStack>
       <YStack
         f={1}
         ov="hidden"
@@ -95,21 +102,62 @@ const HeroContents = memo(function HeroContents() {
       >
         <>
           <XStack pos="absolute" als="center" y={-80} gap="$4">
-            <Link prefetch={false} href="/takeout">
-              <Button
-                bc="$color6"
-                size="$3"
-                br="$10"
-                elevation="$1"
-                fontFamily="$silkscreen"
-              >
-                Takeout 🥡
-                <Text ff="$body" fontSize="$4" color="$color10" $sm={{ dsp: 'none' }}>
-                  starter kit++
-                </Text>
-              </Button>
-            </Link>
-            <FigmaButton />
+            <ThemeTintAlt offset={-1}>
+              <Link prefetch={false} href="/takeout">
+                <Button
+                  bc="$color6"
+                  size="$3"
+                  br="$10"
+                  elevation="$0.5"
+                  fontFamily="$silkscreen"
+                  fontSize={12}
+                >
+                  Takeout
+                  <YStack y={-1} dsp="inline-flex">
+                    <TakeoutIcon scale={0.75} />
+                  </YStack>
+                  <Text
+                    y={-0.5}
+                    ff="$body"
+                    fontSize="$4"
+                    color="$color10"
+                    $sm={{ dsp: 'none' }}
+                  >
+                    starter kit
+                  </Text>
+                </Button>
+              </Link>
+            </ThemeTintAlt>
+
+            <ThemeTintAlt offset={1}>
+              <Link prefetch={false} href="/takeout">
+                <Button
+                  bc="$color6"
+                  size="$3"
+                  br="$10"
+                  elevation="$0.5"
+                  fontFamily="$silkscreen"
+                  fontSize={12}
+                >
+                  Bento
+                  <YStack y={-1} dsp="inline-flex">
+                    <BentoIcon scale={0.75} />
+                  </YStack>
+                  <Text
+                    y={-0.5}
+                    ff="$body"
+                    fontSize="$4"
+                    color="$color10"
+                    $sm={{ dsp: 'none' }}
+                  >
+                    more ui
+                  </Text>
+                </Button>
+              </Link>
+            </ThemeTintAlt>
+
+            {/* <FigmaButton circular /> */}
+            {/* <GithubButton /> */}
           </XStack>
         </>
 
@@ -312,7 +360,7 @@ const Subtitle = styled(Paragraph, {
 
   $gtSm: {
     ta: 'center',
-    size: '$7',
+    size: '$8',
     ls: -1,
   },
 

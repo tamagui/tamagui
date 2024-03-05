@@ -1,3 +1,2 @@
-/// <reference types="react" />
-export declare function SeparatorDemo(): JSX.Element;
+export declare function SeparatorDemo(): import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=SeparatorDemo.d.ts.map

@@ -1,4 +1,4 @@
-import { CheckCircle, Copy, Paintbrush } from '@tamagui/lucide-icons'
+import { CheckCircle, Code2, Copy, Paintbrush } from '@tamagui/lucide-icons'
 import { useStore } from '@tamagui/use-store'
 import { forwardRef, useEffect, useRef, useState } from 'react'
 import { ScrollView } from 'react-native'
@@ -78,12 +78,12 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
       <ErrorBoundary>
         {isCollapsible && (
           <XStack
-            space="$2"
+            gap="$2"
             position="absolute"
             display="inline-flex"
             alignItems="center"
             justifyContent="flex-end"
-            top={-70}
+            top={-84}
             r="$6"
             $gtMd={{
               r: '$7',
@@ -91,7 +91,9 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
           >
             <Button
               accessibilityLabel="Show or hide code"
-              size="$2"
+              icon={Code2}
+              size="$3"
+              zi={10}
               onPress={() => setIsCollapsed(!isCollapsed)}
             >
               {isCollapsed ? 'Show code' : 'Hide code'}
@@ -99,8 +101,9 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
             <TooltipSimple label="Toggle tint on/off">
               <Button
                 accessibilityLabel="Toggle tint on/off"
-                size="$2"
+                size="$3"
                 onPress={toggleTinted}
+                zi={10}
                 icon={Paintbrush}
               />
             </TooltipSimple>

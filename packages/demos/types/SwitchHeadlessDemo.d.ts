@@ -1,3 +1,2 @@
-/// <reference types="react" />
-export declare function SwitchHeadlessDemo(): JSX.Element;
+export declare function SwitchHeadlessDemo(): import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=SwitchHeadlessDemo.d.ts.map

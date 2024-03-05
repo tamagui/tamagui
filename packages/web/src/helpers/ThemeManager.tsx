@@ -235,9 +235,10 @@ function getState(
     if (props.inverse) {
       prefix = inverseThemeName(prefix)
     }
+
     let potentials: string[] = []
 
-    if (prefix && prefix !== baseName) {
+    if (prefix && prefix !== baseName && prefix.includes(nextName)) {
       potentials.push(prefix)
     }
     if (nextName) {
@@ -282,7 +283,7 @@ function getState(
       typeof props.debug === 'string' &&
       isClient
     ) {
-      console.info(' getState ', {
+      console.info(` 🔷 [${manager?.id}] getState`, {
         props,
         found,
         potentials,

@@ -52,7 +52,7 @@ function TakeoutBox3D(props) {
     const entryEffectFrames = 80
     const justStarting = frameCount < entryEffectFrames
     const entryEffectPercentComplete = frameCount / entryEffectFrames
-    const rotateSpeed = justStarting ? 8 * (1 - entryEffectPercentComplete) + 0.04 : 0.04
+    const rotateSpeed = justStarting ? 6 * (1 - entryEffectPercentComplete) + 0.02 : 0.02
 
     ref.current.rotation.y += delta * rotateSpeed
 
@@ -69,7 +69,7 @@ function TakeoutBox3D(props) {
 
   return (
     <>
-      <Stage scale={1} adjustCamera={1.6} preset="portrait" intensity={2}>
+      <Stage scale={1} adjustCamera={1.6} preset="portrait" intensity={1}>
         <group ref={ref} dispose={null} {...props}>
           <mesh
             castShadow

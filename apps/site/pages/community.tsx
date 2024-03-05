@@ -216,18 +216,37 @@ export default function Community({ frontmatters }) {
 
         <FlatBubbleCard bw={0}>
           <H2 size="$9" ta="center" className="rainbow clip-text">
+            Enterprise Sponsors
+          </H2>
+        </FlatBubbleCard>
+
+        <XStack gap="$4" jc="center" ai="center" flexWrap="wrap">
+          <GoldSponsor
+            name="Uniswap"
+            bg="#FF007A"
+            link="https://uniswap.org"
+            image="/sponsors/uniswap.jpeg"
+            imageWidth={250}
+            imageHeight={250}
+          />
+
+          <GoldSponsor
+            name="Medbill AI"
+            bg="#888"
+            link="https://www.medbill.ai"
+            image="/sponsors/medbill-ai.png"
+            imageWidth={800 * 0.3}
+            imageHeight={173 * 0.3}
+          />
+        </XStack>
+
+        <FlatBubbleCard bw={0}>
+          <H2 size="$9" ta="center" color="$yellow10">
             Gold Sponsors
           </H2>
         </FlatBubbleCard>
 
-        <XStack space spaceDirection="both" flexWrap="wrap">
-          <GoldSponsor
-            name="Uniswap"
-            link="https://uniswap.org"
-            image="/sponsors/uniswap.jpeg"
-            imageWidth={150}
-            imageHeight={150}
-          />
+        <XStack gap="$4" jc="center" ai="center" flexWrap="wrap">
           <GoldSponsor
             name="Appfolio"
             link="https://www.appfolio.com/"
@@ -252,7 +271,7 @@ export default function Community({ frontmatters }) {
           </H2>
         </FlatBubbleCard>
 
-        <XStack space spaceDirection="both" flexWrap="wrap">
+        <XStack gap="$4" jc="center" ai="center" flexWrap="wrap">
           <GoldSponsor
             name="Bounty"
             link="https://bounty.co"
@@ -277,7 +296,7 @@ export default function Community({ frontmatters }) {
           </H2>
         </FlatBubbleCard>
 
-        <XStack space spaceDirection="both" flexWrap="wrap">
+        <XStack gap="$4" jc="center" ai="center" flexWrap="wrap">
           <GoldSponsor
             name="CodingScape"
             link="https://codingscape.com"
@@ -375,9 +394,10 @@ function GoldSponsor(props: {
   image: string
   imageWidth: number
   imageHeight: number
+  bg?: any
 }) {
   return (
-    <FlatBubbleCard mb="$4" flat p={0} fb={0}>
+    <FlatBubbleCard mb="$4" flat p={0} fb={0} bg={props.bg}>
       <NextLink href={props.link} target="_blank">
         <YStack
           ai="center"

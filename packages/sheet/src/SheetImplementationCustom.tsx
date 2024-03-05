@@ -3,9 +3,9 @@ import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import {
+  getConfig,
   Stack,
   Theme,
-  getConfig,
   themeable,
   useConfiguration,
   useEvent,
@@ -271,7 +271,6 @@ export const SheetImplementationCustom = themeable(
         { dy }: PanResponderGestureState
       ) => {
         // if dragging handle always allow:
-        // @ts-expect-error
         if (e.target === providerProps.handleRef.current) {
           return true
         }
@@ -408,7 +407,7 @@ export const SheetImplementationCustom = themeable(
     const forcedContentHeight = hasFit
       ? undefined
       : snapPointsMode === 'percent'
-        ? `${maxSnapPoint}%`
+        ? `${maxSnapPoint}${isWeb ? 'dvh' : '%'}`
         : maxSnapPoint
 
     const contents = (

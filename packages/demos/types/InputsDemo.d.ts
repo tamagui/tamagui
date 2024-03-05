@@ -1,3 +1,2 @@
-/// <reference types="react" />
-export declare function InputsDemo(): JSX.Element;
+export declare function InputsDemo(): import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=InputsDemo.d.ts.map

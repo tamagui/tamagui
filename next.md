@@ -1,22 +1,17 @@
-- ./LinearGradient.shared isnt being fully specified tripping up webpack:
+- Adapt needs public API to support any adaptation
 
-```
-Module not found: Error: Can't resolve './LinearGradient.shared' in '/Users/n8/universe/node_modules/@tamagui/linear-gradient/dist/esm'
-Did you mean 'LinearGradient.shared.mjs'?
-BREAKING CHANGE: The request './LinearGradient.shared' failed to resolve only because it was resolved as fully specified
-(probably because the origin is strict EcmaScript Module, e. g. a module with javascript mimetype, a '*.mjs' file, or a '*.js' file where the package.json contains '"type": "module"').
-```
+- v2-3 ListItem simplification esp for performance of Select
 
-- experimetnalFlattenThemes 
-  - <Flex centered gap={amountAndEquivalentValueGap}>
-  - is leaving _expressions in the render incorrectly
+- Select Virtualization
+
+- style()
+
+- i think acceptTokens + compiler not working (see selectionColor)
 
 - settings page in takeout SSR hydration issue due to useThemeSetting
 
 - animatedStyle showing up in animated component snapshot on native
   - add some native snapshots in ci tests
-
-- expo router ExpoResponse not a constructor issue
 
 - addTheme updateTheme regression needs a test
 
@@ -24,6 +19,7 @@ BREAKING CHANGE: The request './LinearGradient.shared' failed to resolve only be
 
 - add more web-only stlye props:
   - filter, backdropFilter, mixBlendMode are really good for $theme-light/dark
+  - fontSmoothing, clipPath, textShadow, backgroundImage, maskImage, maskSize...
 - Group is not SSR safe because useProps is evaluating to specific media queries
 on the server and then ultimately becomes not-media-css
 
@@ -605,14 +601,11 @@ Themes can completely transform the look and feel, a button could have multiple 
 
 - 3.0 - single forward pass generates the css alongside the style object
 
-- Fix ToggleGroup active style looking really bad only sticking sometimes
   - in general we need a better system for controlling if we apply active theme or not, or letting consumers control the active styling in general on things
     - perhaps we do active theme by default (unless unstyled: true)
     - <ToggleGroup activeItemProps={{ active: true }}>
     - <ToggleGroup.Item /> then would recieve active={true}?
     - defaults to theme: 'active'
-
-- <Image borderWidth="$2" /> not turning into val via psgeorge
 
 - `import { _ } from '@tamagui/core'`
   - `<_.view />` `<_.text />`
@@ -621,5 +614,4 @@ Themes can completely transform the look and feel, a button could have multiple 
     - `<_.p />` `<_.a />` `<.img />` etc
   - can proxy to itself allowing for naming?
     - `<_.view.my-thing />`
-  - or boolean variants?
-    - `<_.view.p-5.m-10 />`
+

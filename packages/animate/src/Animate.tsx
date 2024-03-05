@@ -42,8 +42,11 @@ export function Animate({ children, type, ...props }: AnimateProps) {
           enterVariant={props.enterVariant}
           exitVariant={props.exitVariant}
           enterExitVariant={props.enterExitVariant}
-          presenceAffectsLayout={props.presenceAffectsLayout || true}
+          // BUGFIX: this causes continous re-renders if keepChildrenMounted is true, see HeaderMenu
+          // but since we always re-render this component on open changes this should be fine to leave off?
+          presenceAffectsLayout={false}
           isPresent={props.present}
+          custom={props.custom}
         >
           {children as any}
         </PresenceChild>

@@ -5,7 +5,7 @@ interface ConfigurationProps {
     children: React.ReactNode;
 }
 export declare const Configuration: {
-    (props: ConfigurationProps): JSX.Element;
+    (props: ConfigurationProps): import("react/jsx-runtime").JSX.Element;
     displayName: string;
 };
 export {};

@@ -2,17 +2,8 @@ import { isAndroid, isWeb } from '@tamagui/constants'
 
 // generally organizing this so we don't duplicate things so its a bit weird
 
-const placeHolderTextColors = {
-  placeholderTextColor: true,
-}
-
-export const validStylesOnBaseProps = {
-  ...placeHolderTextColors,
-}
-
 const textColors = {
   color: true,
-  ...placeHolderTextColors,
   textDecorationColor: true,
   textShadowColor: true,
 }
@@ -188,7 +179,6 @@ export const stylePropsView = {
   ...tokenCategories.radius,
   ...tokenCategories.size,
   ...tokenCategories.radius,
-  ...validStylesOnBaseProps,
   ...stylePropsTransform,
   ...stylePropsUnitless,
 
@@ -266,6 +256,12 @@ export const validPseudoKeys = {
   hoverStyle: true,
   pressStyle: true,
   focusStyle: true,
+  disabledStyle: true,
+
+  // allow some web only ones
+  ...(process.env.TAMAGUI_TARGET === 'web' && {
+    focusVisibleStyle: true,
+  }),
 }
 
 export const validStyles = {

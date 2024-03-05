@@ -2,6 +2,10 @@ const fs = require('fs')
 const path = require('path')
 const { parse } = require('acorn')
 const walk = require('acorn-walk')
+const glob = require('glob')
+const { ensureFileSync, ensureDirSync, rmdirSync, rmSync } = require('fs-extra')
+const archiver = require('archiver')
+const skipImports = ['../../general/_Showcase']
 
 function analyzeIndexFile(filePath) {
   const fileContent = fs.readFileSync(filePath, 'utf-8')
@@ -20,10 +24,12 @@ function analyzeIndexFile(filePath) {
 }
 
 function shake(content) {
-  return content.replaceAll('$group-window-sm', '$sm').replaceAll('$group-window-md', '$md').replaceAll(/([a-zA-Z0-9_]+\.fileName\s*=\s*)'([^']*)'/g, '')
+  return content
+    .replaceAll(/\$group-window-(\w+)/g, (match, group) => `$${group}`)
+    .replaceAll(/([a-zA-Z0-9_]+\.fileName\s*=\s*)'([^']*)'/g, '')
 }
 
-function readDirectoryRecursively(directoryPath, outputDirectory) {
+async function copyMergedComponents(directoryPath, outputDirectory) {
   const indexFiles = ['index.js', 'index.tsx', 'index.ts']
 
   const indexPaths = indexFiles.map((indexFile) => path.join(directoryPath, indexFile))
@@ -39,8 +45,7 @@ function readDirectoryRecursively(directoryPath, outputDirectory) {
         directoryPath.replace(rootDirectory, ''),
         exportedModule
       )
-      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-      console.log(outputPath)
+      // console.info(outputPath)
 
       const outputFilePath = path.join(
         outputDirectory,
@@ -59,14 +64,31 @@ function readDirectoryRecursively(directoryPath, outputDirectory) {
       const stats = fs.statSync(filePath)
 
       if (stats.isDirectory()) {
-        readDirectoryRecursively(filePath, outputDirectory)
+        copyMergedComponents(filePath, outputDirectory)
       }
     })
   }
 }
 
+function copyUnmergedComponents(directoryPath, outputDirectory) {
+  return new Promise((resolve) => {
+    glob(`${directoryPath}/**/*`, { nodir: true }, (error, matches) => {
+      for (const match of matches) {
+        let fileContent = fs.readFileSync(match, 'utf8')
+        fileContent = replaceInternals(fileContent)
+
+        const outputFilePath = match.replace(rootDirectory, outputDirectory)
+        ensureFileSync(outputFilePath)
+        fs.writeFileSync(outputFilePath, fileContent)
+      }
+
+      resolve()
+    })
+  })
+}
+
 const mathImportsRegex =
-  /import\s+(?:\w+\s*)?\{\s*\w+\s*\}\s+from\s+'(\.\/|\.\.\/)[^']+'/g
+  /import\s+(?:\w+\s*)?\{\s*(?:\w+\s*,\s*)*\w+\s*\}\s+from\s+'(\.\/|\.\.\/)[^']+'/g
 
 function processFile(filePath, visitedFiles = new Set()) {
   if (visitedFiles.has(filePath)) {
@@ -75,7 +97,8 @@ function processFile(filePath, visitedFiles = new Set()) {
 
   visitedFiles.add(filePath)
 
-  const fileContent = fs.readFileSync(filePath, 'utf8')
+  let fileContent = fs.readFileSync(filePath, 'utf8')
+  fileContent = replaceInternals(fileContent)
 
   const importStatements = Array.from(fileContent.matchAll(mathImportsRegex), (m) => m[0])
 
@@ -86,6 +109,10 @@ function processFile(filePath, visitedFiles = new Set()) {
 
   for (const importStatement of importStatements) {
     const importPathMatch = importStatement.match(/from ['"](.*?)['"]/)
+
+    if (skipImports.includes(importPathMatch[1])) {
+      continue
+    }
 
     if (importPathMatch) {
       const importPath = importPathMatch[1]
@@ -116,11 +143,61 @@ function processFile(filePath, visitedFiles = new Set()) {
   return appendedContent
 }
 
-const rootDirectory = path.resolve(process.cwd(), '../bento/src/components')
-const outputDir = path.resolve(process.cwd(), './bento-output')
-
-if (!fs.existsSync(outputDir)) {
-  fs.mkdirSync(outputDir)
+function replaceInternals(fileContent) {
+  // here we change custom hooks to hooks to be used in consumer applications
+  // change useGroupMedia to useMedia
+  fileContent = fileContent.replace(
+    /import {.*useGroupMedia.*} from.*/g,
+    `import { useMedia } from 'tamagui'`
+  )
+  fileContent = fileContent.replace(/useGroupMedia\(.*\)/g, `useMedia()`)
+  // change useContainerDim to useWindowDimensions
+  fileContent = fileContent.replace(
+    /import {.*useContainerDim.*} from.*/g,
+    `import { useWindowDimensions } from 'tamagui'`
+  )
+  fileContent = fileContent.replace(/useContainerDim\(.*\)/g, `useWindowDimensions()`)
+  return fileContent
 }
 
-readDirectoryRecursively(rootDirectory, outputDir)
+function zipDirectory(sourceDir, outputDir) {
+  return new Promise((resolve, reject) => {
+    const output = fs.createWriteStream(outputDir)
+    const archive = archiver('zip', {
+      // zlib: { level: 9 },
+    })
+    archive.pipe(output)
+    archive.directory(sourceDir, false)
+    output.on('close', () => {
+      console.info(
+        `archived ${outputDir
+          .split('/')
+          .pop()} finalized with ${archive.pointer()} total bytes`
+      )
+      resolve()
+    })
+    archive.on('error', (error) => {
+      console.error('error while archiving: ', error)
+      reject(error)
+    })
+    archive.on('warning', (warning) => console.warn('warning while archiving: ', warning))
+    archive.finalize()
+  })
+}
+
+const rootDirectory = path.resolve(process.cwd(), '../bento/src/components')
+const mergedOutputDir = path.resolve(process.cwd(), './bento-output/merged')
+const unmergedOutputDir = path.resolve(process.cwd(), './bento-output/unmerged')
+const zipBundleOutputPath = path.resolve(process.cwd(), 'bento-output/bento-bundle.zip')
+
+rmSync(path.resolve(process.cwd(), './bento-output'), { force: true, recursive: true })
+ensureDirSync(mergedOutputDir)
+ensureDirSync(unmergedOutputDir)
+
+async function main() {
+  await copyMergedComponents(rootDirectory, mergedOutputDir)
+  await copyUnmergedComponents(rootDirectory, unmergedOutputDir)
+  await zipDirectory(unmergedOutputDir, zipBundleOutputPath)
+}
+
+main()

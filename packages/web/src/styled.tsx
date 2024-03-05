@@ -8,7 +8,6 @@ import type {
   GetNonStyledProps,
   GetStaticConfig,
   GetStyledVariants,
-  GetTokenPropsFromAcceptedTokens,
   GetVariantValues,
   InferStyledProps,
   StaticConfig,
@@ -16,9 +15,11 @@ import type {
   StylableComponent,
   TamaDefer,
   TamaguiComponent,
+  ThemeValueGet,
   VariantDefinitions,
   VariantSpreadFunction,
 } from './types'
+import type { Text } from './views/Text'
 
 type AreVariantsUndefined<Variants> =
   // because we pass in the Generic variants which for some reason has this :)
@@ -70,8 +71,18 @@ export function styled<
             | (Key extends keyof OurVariantProps ? OurVariantProps[Key] : undefined)
         }
 
-  type AcceptedTokens = StyledStaticConfig['acceptTokens']
-  type CustomTokenProps = GetTokenPropsFromAcceptedTokens<AcceptedTokens>
+  type Accepted = StyledStaticConfig['accept']
+  type CustomTokenProps = Accepted extends Record<string, any>
+    ? {
+        [Key in keyof Accepted]?:
+          | (Key extends keyof ParentStylesBase ? ParentStylesBase[Key] : never)
+          | (Accepted[Key] extends 'style'
+              ? Partial<InferStyledProps<ParentComponent, StyledStaticConfig>>
+              : Accepted[Key] extends 'textStyle'
+                ? Partial<InferStyledProps<typeof Text, StyledStaticConfig>>
+                : Omit<ThemeValueGet<Accepted[Key]>, 'unset'>)
+      }
+    : {}
 
   /**
    * de-opting a bit of type niceness because were hitting depth issues too soon
@@ -87,7 +98,7 @@ export function styled<
     TamaDefer,
     GetRef<ParentComponent>,
     ParentNonStyledProps,
-    AcceptedTokens extends Record<string, any>
+    Accepted extends Record<string, any>
       ? ParentStylesBase & CustomTokenProps
       : ParentStylesBase,
     MergedVariants,
@@ -206,6 +217,8 @@ export function styled<
   const component = createComponent(staticConfigProps || {})
 
   for (const key in ComponentIn) {
+    // dont inherit propTypes
+    if (key === 'propTypes') continue
     if (key in component) continue
     // @ts-expect-error assigning static properties over
     component[key] = ComponentIn[key]

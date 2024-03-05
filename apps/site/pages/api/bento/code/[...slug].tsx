@@ -27,7 +27,7 @@ const handler = apiRoute(async (req, res) => {
 
   const fileResult = await supabaseAdmin.storage
     .from('bento')
-    .download(`components/${codePath}.tsx`)
+    .download(`merged/${codePath}.tsx`)
   if (fileResult.error) {
     console.error(fileResult.error)
     res.status(404).json({ message: 'Not found' })

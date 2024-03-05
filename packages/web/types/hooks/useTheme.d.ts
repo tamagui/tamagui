@@ -23,7 +23,7 @@ export type ThemeGettable<Val> = Val & {
     get: (platform?: 'web') => string | (Val extends Variable<infer X> ? X extends VariableValGeneric ? any : Exclude<X, Variable> : Val extends VariableVal ? string | number : unknown);
 };
 export type UseThemeResult = {
-    [Key in keyof ThemeParsed]: ThemeGettable<ThemeParsed[Key]>;
+    [Key in keyof ThemeParsed | (string & {})]: ThemeGettable<Key extends keyof ThemeParsed ? ThemeParsed[Key] : Variable<any>>;
 };
 export declare const useTheme: (props?: ThemeProps) => UseThemeResult;
 export declare const useThemeWithState: (props: UseThemeWithStateProps) => [ChangedThemeResponse, ThemeParsed];

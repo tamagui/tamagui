@@ -116,7 +116,7 @@ async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry 
     } catch (error) {
       if (error instanceof Error) {
         if (template.value === 'takeout-starter') {
-          if ((error as any)?.stderr.includes('Repository not found')) {
+          if ((error as any)?.stderr?.includes('Repository not found')) {
             console.info(
               chalk.yellow(
                 `You don't have access to this starter. Check 🥡 Tamagui Takeout (https://tamagui.dev/takeout) for more info.`

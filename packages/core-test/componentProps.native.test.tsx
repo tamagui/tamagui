@@ -29,7 +29,11 @@ describe('animation props', () => {
       <View
         style={
           {
-            "x": 0,
+            "transform": [
+              {
+                "translateX": 0,
+              },
+            ],
           }
         }
       />

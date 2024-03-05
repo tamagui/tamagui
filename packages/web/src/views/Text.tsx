@@ -69,11 +69,6 @@ export const Text = createComponent<
       },
     }),
 
-    // ??
-    ellipsizeMode: {
-      '...': () => null,
-    },
-
     ...(process.env.TAMAGUI_TARGET === 'web' && {
       selectable: {
         true: {

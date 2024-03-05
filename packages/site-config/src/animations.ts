@@ -1,4 +1,4 @@
-import { createAnimations } from '@tamagui/animations-react-native'
+import { createAnimations } from '@tamagui/animations-moti'
 
 export const animations = createAnimations({
   '75ms': {
@@ -25,15 +25,27 @@ export const animations = createAnimations({
     mass: 0.9,
     stiffness: 150,
   },
+  kindaBouncy: {
+    type: 'spring',
+    damping: 16,
+    mass: 1,
+    stiffness: 25,
+  },
+  superLazy: {
+    type: 'spring',
+    damping: 25,
+    mass: 2,
+    stiffness: 25,
+  },
   lazy: {
     type: 'spring',
     damping: 18,
     stiffness: 50,
   },
   medium: {
-    damping: 15,
+    damping: 16,
     stiffness: 120,
-    mass: 1,
+    mass: 0.8,
   },
   slowest: {
     type: 'spring',
@@ -43,7 +55,7 @@ export const animations = createAnimations({
   slow: {
     type: 'spring',
     damping: 15,
-    stiffness: 40,
+    stiffness: 60,
   },
   quick: {
     type: 'spring',

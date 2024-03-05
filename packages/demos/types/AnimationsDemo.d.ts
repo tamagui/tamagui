@@ -1,5 +1,4 @@
-/// <reference types="react" />
-export declare function AnimationsDemo(props: any): JSX.Element;
+export declare function AnimationsDemo(props: any): import("react/jsx-runtime").JSX.Element;
 export declare const positions: ({
     x: number;
     y: number;

@@ -1,7 +1,6 @@
-export declare function getPragmaOptions({ source, path, disableCommentCheck, }: {
+export declare function getPragmaOptions({ source, path, }: {
     source: string;
     path: string;
-    disableCommentCheck?: boolean;
 }): {
     shouldPrintDebug: boolean | "verbose";
     shouldDisable: boolean;

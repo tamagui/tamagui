@@ -1,4 +1,3 @@
-// debug
 // import '../lib/wdyr'
 
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
@@ -6,6 +5,7 @@ import { Header } from '@tamagui/site/components/Header'
 import { SearchProvider } from '@tamagui/site/components/Search'
 import { useState } from 'react'
 import { AnimatePresence, Button, View, Text, YStack, styled, Square } from 'tamagui'
+import * as ReactNative from 'react-native'
 
 // debugger
 global.shouldDebugMoti = true
@@ -34,7 +34,44 @@ function TestPage() {
       </Button> */}
 
       <Square
+        size={100}
+        // disabled
+        backgroundColor="green"
         debug="verbose"
+        disableClassName
+        disabledStyle={{
+          backgroundColor: 'gray',
+        }}
+        pressStyle={{
+          bg: 'yellow',
+        }}
+      />
+
+      {/* <Text debug="verbose" maxWidth={300} numberOfLines={3} ellipsizeMode="middle">
+        Esse laborum veniam magna sunt nulla nisi proident nisi culpa. Aliquip sit duis
+        tempor officia officia duis. Magna Lorem magna cupidatat consectetur dolor
+        consequat. Nostrud cupidatat tempor consequat fugiat proident ullamco cillum non.
+        Ipsum irure exercitation id enim reprehenderit id do esse fugiat voluptate minim
+        cupidatat aute. Eu non est dolore incididunt esse quis. Esse voluptate eiusmod
+        enim fugiat incididunt consectetur adipisicing ex anim cupidatat aliquip occaecat
+        officia.
+      </Text>
+
+      <ReactNative.Text
+        style={{ maxWidth: 300 }}
+        numberOfLines={3}
+        ellipsizeMode="middle"
+      >
+        Esse laborum veniam magna sunt nulla nisi proident nisi culpa. Aliquip sit duis
+        tempor officia officia duis. Magna Lorem magna cupidatat consectetur dolor
+        consequat. Nostrud cupidatat tempor consequat fugiat proident ullamco cillum non.
+        Ipsum irure exercitation id enim reprehenderit id do esse fugiat voluptate minim
+        cupidatat aute. Eu non est dolore incididunt esse quis. Esse voluptate eiusmod
+        enim fugiat incididunt consectetur adipisicing ex anim cupidatat aliquip occaecat
+        officia.
+      </ReactNative.Text>
+
+      <Square
         backgroundColor="yellow"
         size={200}
         hoverStyle={{
@@ -46,7 +83,8 @@ function TestPage() {
             backgroundColor: 'red',
           },
         }}
-      />
+      /> */}
+
       {/* <Stack
         // hitSlop={5}
         importantForAccessibility="no"

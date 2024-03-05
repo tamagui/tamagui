@@ -21,16 +21,16 @@ import { ThemeTint } from '@tamagui/logo'
 
 export default function Home({ animationCode, compilationExamples }) {
   return (
-    <ThemeTint>
-      <YStack className="home-bg" mt={-62} pt={62}>
-        <ThemeNameEffect />
+    <>
+      <ThemeNameEffect colorKey="$color2" />
+      <ThemeTint>
         <HomeGlow />
         <YStack
           fullscreen
           className="grain"
-          o={0.1}
+          o={0.2}
           style={{
-            mixBlendMode: 'color-dodge',
+            mixBlendMode: 'hard-light',
             maskImage: `linear-gradient(transparent, rgba(0, 0, 0, 1) 100px)`,
           }}
           // o={0}
@@ -48,7 +48,10 @@ export default function Home({ animationCode, compilationExamples }) {
             pe="none"
             zi={0}
             fullscreen
-            className="bg-dot-grid mask-gradient-down"
+            className="bg-dot-grid"
+            style={{
+              maskImage: `linear-gradient(transparent, #000, transparent)`,
+            }}
           />
           <HeroExampleCode examples={compilationExamples} />
         </TintSection>
@@ -57,7 +60,10 @@ export default function Home({ animationCode, compilationExamples }) {
             pe="none"
             zi={0}
             fullscreen
-            className="bg-dot-grid mask-gradient-down"
+            className="bg-dot-grid"
+            style={{
+              maskImage: `linear-gradient(transparent, #000, transparent)`,
+            }}
           />
           <HeroExampleThemes />
         </TintSection>
@@ -70,12 +76,26 @@ export default function Home({ animationCode, compilationExamples }) {
           </SectionTinted>
         </TintSection>
         <TintSection index={6} zi={100}>
-          <YStack fullscreen className="bg-grid mask-gradient-up" />
+          <YStack
+            fullscreen
+            className="bg-grid"
+            style={{
+              maskImage: `linear-gradient(transparent, #000, transparent)`,
+            }}
+          />
           <HeroExampleAnimations animationCode={animationCode} />
         </TintSection>
         <TintSection index={7} zi={1}>
           <FeaturesGrid />
-          <YStack pe="none" zi={2} fullscreen className="bg-dot-grid mask-gradient-up" />
+          <YStack
+            pe="none"
+            zi={2}
+            fullscreen
+            className="bg-dot-grid"
+            style={{
+              maskImage: `linear-gradient(transparent, #000, transparent)`,
+            }}
+          />
         </TintSection>
         <TintSection index={8} my="$-4" p={0} zIndex={100}>
           <SectionTinted zi={1000} bubble gradient>
@@ -87,15 +107,18 @@ export default function Home({ animationCode, compilationExamples }) {
             pe="none"
             zi={0}
             fullscreen
-            className="bg-dot-grid mask-gradient-down"
+            className="bg-dot-grid"
+            style={{
+              maskImage: `linear-gradient(transparent, #000, transparent)`,
+            }}
           />
           <HeroExampleProps />
         </HomeSection>
         <HomeSection zi={0}>
           <Community />
         </HomeSection>
-      </YStack>
-    </ThemeTint>
+      </ThemeTint>
+    </>
   )
 }
 

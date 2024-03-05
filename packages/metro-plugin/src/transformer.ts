@@ -1,3 +1,4 @@
+import { outputFile, pathExists } from 'fs-extra'
 import type {
   JsTransformerConfig,
   JsTransformOptions,
@@ -5,7 +6,6 @@ import type {
 } from 'metro-transform-worker'
 import worker from 'metro-transform-worker'
 import { join } from 'path'
-import { writeFile, mkdir } from 'fs/promises'
 
 import type { TamaguiOptions } from '@tamagui/static'
 import { createExtractor, extractToClassNames } from '@tamagui/static'
@@ -24,26 +24,24 @@ export async function transform(
   data: Buffer,
   options: JsTransformOptions
 ): Promise<TransformResponse> {
-  const transformer = config.transformerPath
-    ? require(config.transformerPath).transform
-    : worker.transform
+  const ogPath = config['ogTransformPath'] || config.transformerPath
+  const transformer = ogPath ? require(ogPath).transform : worker.transform
 
   if (
     config.tamagui.disable ||
     options.platform !== 'web' ||
+    options.type === 'asset' ||
     filename.includes('node_modules')
   ) {
     return transformer(config, projectRoot, filename, data, options)
   }
 
-  if (filename.endsWith('.tsx') || filename.endsWith('.jsx')) {
-    const tmpDir = join(projectRoot, '.tamagui', 'css')
-    try {
-      await mkdir(tmpDir, {
-        recursive: true,
-      })
-    } catch {}
-
+  if (
+    // could by a styled() call:
+    filename.endsWith('.ts') ||
+    filename.endsWith('.tsx') ||
+    filename.endsWith('.jsx')
+  ) {
     const sourcePath = join(projectRoot, filename)
 
     // extract css
@@ -64,12 +62,24 @@ export async function transform(
 
     // just write it out to our tmp dir and require it for metro to do the rest of the css work
     if (out?.styles) {
+      const tmpDir = join(projectRoot, '.tamagui', 'css')
       const outStylePath = join(
         tmpDir,
         `${filename}`.replace(/[^a-zA-Z0-9]/gi, '') + '.css'
       )
-      console.info(' 🥚', outStylePath)
-      await writeFile(outStylePath, out.styles, 'utf-8')
+      if (process.env.DEBUG?.includes('tamagui')) {
+        console.info(' Outputting CSS file:', outStylePath)
+      }
+
+      const existsAlready = await pathExists(outStylePath)
+
+      await outputFile(outStylePath, out.styles, 'utf-8')
+
+      if (!existsAlready) {
+        // metro has some sort of bug, expo starter wont build properly first time without this... :(
+        await new Promise((res) => setTimeout(res, 400))
+      }
+
       return transformer(
         config,
         projectRoot,
