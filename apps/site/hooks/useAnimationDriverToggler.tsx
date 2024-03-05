@@ -60,10 +60,12 @@ export const AnimationDriverTogglerContextProvider = ({
     // if (driverName === 'reanimated') return createAnimationsReanimated({})
   }, [driverName])
 
+  const value = useMemo(() => {
+    return { driverName, nextDriver, setDriverName, driver }
+  }, [driver])
+
   return (
-    <AnimationDriverTogglerContext.Provider
-      value={{ driverName, nextDriver, setDriverName, driver }}
-    >
+    <AnimationDriverTogglerContext.Provider value={value}>
       {children}
     </AnimationDriverTogglerContext.Provider>
   )
