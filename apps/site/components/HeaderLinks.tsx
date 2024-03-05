@@ -124,11 +124,25 @@ export const HeaderLinks = (props: HeaderProps) => {
           <SlidingPopoverContent />
 
           <SlidingPopoverTrigger id="takeout">
-            <TakeoutHeaderLink {...props} />
+            <CTAHeaderLink
+              {...props}
+              excludeRoutes={['/', '/bento', '/takeout']}
+              href="/takeout"
+              name="Takeout"
+              description="starter kit"
+              icon={<TakeoutIcon />}
+            />
           </SlidingPopoverTrigger>
 
           <SlidingPopoverTrigger id="bento">
-            <BentoHeaderLink {...props} />
+            <CTAHeaderLink
+              {...props}
+              excludeRoutes={['*']}
+              href="/bento"
+              name="Bento"
+              description="starter kit"
+              icon={<BentoIcon />}
+            />
           </SlidingPopoverTrigger>
 
           {/* <SlidingPopoverTrigger id="studio">
@@ -231,9 +245,23 @@ export const HeaderLinks = (props: HeaderProps) => {
   )
 }
 
-const TakeoutHeaderLink = ({ forceShowAllLinks }: HeaderProps) => {
+const CTAHeaderLink = ({
+  href,
+  icon,
+  name,
+  excludeRoutes,
+  description,
+  forceShowAllLinks,
+}: HeaderProps & {
+  href: string
+  icon: React.ReactNode
+  name: string
+  description: string
+  excludeRoutes?: string[]
+}) => {
   const router = useRouter()
-  const isDisabledRoute = router.asPath === '/' || router.asPath === '/takeout'
+  const isDisabledRoute =
+    excludeRoutes?.includes('*') || excludeRoutes?.includes(router.asPath)
   const [disabled, setDisabled] = React.useState(isDisabledRoute)
   const [open, setOpen] = React.useState(false)
   const [hasOpenedOnce, setHasOpenedOnce] = React.useState(false)
@@ -291,7 +319,7 @@ const TakeoutHeaderLink = ({ forceShowAllLinks }: HeaderProps) => {
               display: 'none',
             }}
           >
-            <TakeoutIcon />
+            {icon}
           </HeadAnchor>
         </Popover.Trigger>
 
@@ -323,30 +351,13 @@ const TakeoutHeaderLink = ({ forceShowAllLinks }: HeaderProps) => {
             }}
             elevation="$0.25"
           >
-            <SizableText ff="$silkscreen">Takeout </SizableText>
+            <SizableText ff="$silkscreen">{name} </SizableText>
             <Text ff="$body" fontSize="$3" color="$color10" $sm={{ dsp: 'none' }} ml={6}>
-              starter kit
+              {description}
             </Text>
           </XStack>
         </Popover.Content>
       </Popover>
-    </NextLink>
-  )
-}
-
-const BentoHeaderLink = ({ forceShowAllLinks }: HeaderProps) => {
-  return (
-    <NextLink legacyBehavior={false} prefetch={false} href="/bento">
-      <HeadAnchor
-        grid={forceShowAllLinks}
-        tag="span"
-        aria-label="Bento: Components + Screens"
-        $sm={{
-          display: 'none',
-        }}
-      >
-        <BentoIcon />
-      </HeadAnchor>
     </NextLink>
   )
 }

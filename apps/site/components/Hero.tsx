@@ -22,6 +22,8 @@ import { InstallInput } from './InstallInput'
 import { seasons } from './SeasonToggleButton'
 import { TwitterIcon } from './TwitterIcon'
 import { useHeroHovered } from './heroState'
+import { TakeoutIcon } from './TakeoutIcon'
+import { BentoIcon } from './BentoIcon'
 
 export function Hero() {
   const { name } = useTint()
@@ -100,21 +102,60 @@ const HeroContents = memo(function HeroContents() {
       >
         <>
           <XStack pos="absolute" als="center" y={-80} gap="$4">
-            <Link prefetch={false} href="/takeout">
-              <Button
-                bc="$color6"
-                size="$3"
-                br="$10"
-                elevation="$0.5"
-                fontFamily="$silkscreen"
-                fontSize={12}
-              >
-                Takeout 🥡
-                <Text ff="$body" fontSize="$4" color="$color10" $sm={{ dsp: 'none' }}>
-                  starter kit++
-                </Text>
-              </Button>
-            </Link>
+            <ThemeTintAlt offset={-1}>
+              <Link prefetch={false} href="/takeout">
+                <Button
+                  bc="$color6"
+                  size="$3"
+                  br="$10"
+                  elevation="$0.5"
+                  fontFamily="$silkscreen"
+                  fontSize={12}
+                >
+                  Takeout
+                  <YStack y={-1} dsp="inline-flex">
+                    <TakeoutIcon scale={0.75} />
+                  </YStack>
+                  <Text
+                    y={-0.5}
+                    ff="$body"
+                    fontSize="$4"
+                    color="$color10"
+                    $sm={{ dsp: 'none' }}
+                  >
+                    starter kit
+                  </Text>
+                </Button>
+              </Link>
+            </ThemeTintAlt>
+
+            <ThemeTintAlt offset={1}>
+              <Link prefetch={false} href="/takeout">
+                <Button
+                  bc="$color6"
+                  size="$3"
+                  br="$10"
+                  elevation="$0.5"
+                  fontFamily="$silkscreen"
+                  fontSize={12}
+                >
+                  Bento
+                  <YStack y={-1} dsp="inline-flex">
+                    <BentoIcon scale={0.75} />
+                  </YStack>
+                  <Text
+                    y={-0.5}
+                    ff="$body"
+                    fontSize="$4"
+                    color="$color10"
+                    $sm={{ dsp: 'none' }}
+                  >
+                    more ui
+                  </Text>
+                </Button>
+              </Link>
+            </ThemeTintAlt>
+
             {/* <FigmaButton circular /> */}
             {/* <GithubButton /> */}
           </XStack>
