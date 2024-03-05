@@ -773,6 +773,26 @@ interface ExtraStyleProps {
     /**
      * @platform: web
      */
+    backgroundColor?: Properties['backgroundColor'];
+    /**
+     * @platform: web
+     */
+    backgroundClip?: Properties['backgroundClip'];
+    /**
+     * @platform: web
+     */
+    backgroundBlendMode?: Properties['backgroundBlendMode'];
+    /**
+     * @platform: web
+     */
+    backgroundAttachment?: Properties['backgroundAttachment'];
+    /**
+     * @platform: web
+     */
+    background?: Properties['background'];
+    /**
+     * @platform: web
+     */
     clipPath?: Properties['clipPath'];
     /**
      * @platform: web

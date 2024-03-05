@@ -119,6 +119,11 @@ export declare const stylePropsView: {
     backgroundPosition?: boolean | undefined;
     backgroundRepeat?: boolean | undefined;
     backgroundSize?: boolean | undefined;
+    backgroundColor: boolean;
+    backgroundClip?: boolean | undefined;
+    backgroundBlendMode?: boolean | undefined;
+    backgroundAttachment?: boolean | undefined;
+    background?: boolean | undefined;
     clipPath?: boolean | undefined;
     transformStyle?: boolean | undefined;
     mask?: boolean | undefined;
@@ -208,7 +213,6 @@ export declare const stylePropsView: {
     color: boolean;
     textDecorationColor: boolean;
     textShadowColor: boolean;
-    backgroundColor: boolean;
     borderColor: boolean;
     borderBlockStartColor: boolean;
     borderBlockEndColor: boolean;
@@ -369,6 +373,11 @@ export declare const stylePropsText: {
     backgroundPosition?: boolean | undefined;
     backgroundRepeat?: boolean | undefined;
     backgroundSize?: boolean | undefined;
+    backgroundColor: boolean;
+    backgroundClip?: boolean | undefined;
+    backgroundBlendMode?: boolean | undefined;
+    backgroundAttachment?: boolean | undefined;
+    background?: boolean | undefined;
     clipPath?: boolean | undefined;
     transformStyle?: boolean | undefined;
     mask?: boolean | undefined;
@@ -453,7 +462,6 @@ export declare const stylePropsText: {
     maxHeight: boolean;
     outlineColor?: boolean | undefined;
     caretColor?: boolean | undefined;
-    backgroundColor: boolean;
     borderColor: boolean;
     borderBlockStartColor: boolean;
     borderBlockEndColor: boolean;
@@ -579,6 +587,11 @@ export declare const stylePropsAll: {
     backgroundPosition?: boolean | undefined;
     backgroundRepeat?: boolean | undefined;
     backgroundSize?: boolean | undefined;
+    backgroundColor: boolean;
+    backgroundClip?: boolean | undefined;
+    backgroundBlendMode?: boolean | undefined;
+    backgroundAttachment?: boolean | undefined;
+    background?: boolean | undefined;
     clipPath?: boolean | undefined;
     transformStyle?: boolean | undefined;
     mask?: boolean | undefined;
@@ -663,7 +676,6 @@ export declare const stylePropsAll: {
     maxHeight: boolean;
     outlineColor?: boolean | undefined;
     caretColor?: boolean | undefined;
-    backgroundColor: boolean;
     borderColor: boolean;
     borderBlockStartColor: boolean;
     borderBlockEndColor: boolean;
@@ -776,6 +788,11 @@ export declare const validStyles: {
     backgroundPosition?: boolean | undefined;
     backgroundRepeat?: boolean | undefined;
     backgroundSize?: boolean | undefined;
+    backgroundColor: boolean;
+    backgroundClip?: boolean | undefined;
+    backgroundBlendMode?: boolean | undefined;
+    backgroundAttachment?: boolean | undefined;
+    background?: boolean | undefined;
     clipPath?: boolean | undefined;
     transformStyle?: boolean | undefined;
     mask?: boolean | undefined;
@@ -865,7 +882,6 @@ export declare const validStyles: {
     color: boolean;
     textDecorationColor: boolean;
     textShadowColor: boolean;
-    backgroundColor: boolean;
     borderColor: boolean;
     borderBlockStartColor: boolean;
     borderBlockEndColor: boolean;
