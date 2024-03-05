@@ -130,7 +130,7 @@ const HeroContents = memo(function HeroContents() {
             </ThemeTintAlt>
 
             <ThemeTintAlt offset={1}>
-              <Link prefetch={false} href="/takeout">
+              <Link prefetch={false} href="/bento">
                 <Button
                   bc="$color6"
                   size="$3"
