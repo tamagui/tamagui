@@ -94,22 +94,17 @@ export default function BentoPage(props: ProComponentsProps) {
 
       <XStack
         zi={1000}
-        pos="absolute"
-        t={0}
+        // @ts-ignore
+        pos="fixed"
+        b={0}
         l={0}
         r={0}
         theme="yellow"
-        bg="rgba(0,0,0,0.3)"
-        $sm={{
-          pos: 'relative',
-          m: '$4',
-          br: '$6',
-          py: '$2',
-        }}
+        bg="rgba(0,0,0,0.5)"
       >
         <ContainerLarge>
-          <YStack ai="center" py="$1.5">
-            <Paragraph size="$3" color="#fff">
+          <YStack ai="center" py="$2">
+            <Paragraph size="$2" color="#fff">
               <b>Early Access!</b> Mobile support is being improved, but you may find it
               valuable already.
             </Paragraph>

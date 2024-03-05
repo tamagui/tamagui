@@ -55,7 +55,7 @@ export const getDefaultLayout: GetLayout = (page, pageProps, path) => {
 
       <Suspense fallback={null}>
         <ToastProvider swipeDirection="horizontal">
-          <Header hasBanner={isBento} showAuth={showAuth} disableNew={disableNew} />
+          <Header showAuth={showAuth} disableNew={disableNew} />
           {isDocs ? <DocsPage>{page}</DocsPage> : page}
 
           {!hideFooter && <Footer />}

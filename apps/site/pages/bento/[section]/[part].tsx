@@ -81,7 +81,7 @@ export const DetailHeader = (props: { children: string }) => {
             <XStack>
               <BentoLogo scale={0.3} />
             </XStack>
-            <DropTamaguiConfig />
+            {/* <DropTamaguiConfig /> */}
           </YStack>
         </XStack>
 
