@@ -292,7 +292,7 @@ export async function addRenewalSubscription(
         price_id: price.id,
         user_id: userId,
       })
-      return
+      continue
     }
     // else, we need to:
     // 1. get or create a recurring price
