@@ -165,29 +165,22 @@ export default function TakeoutPage({
         <NextSeo
           title="🥡 Tamagui Takeout"
           description="Tamagui Takeout React Native Bootstrap Starter Kit"
+          openGraph={{
+            type: 'website',
+            locale: 'en_US',
+            url: 'https://tamagui.dev/takeout',
+            siteName: 'Tamagui',
+            images: [
+              {
+                url: 'https://tamagui.dev/takeout/social.png',
+              },
+            ],
+          }}
         />
         <Head>
           <LoadCherryBomb />
           <LoadMunro />
           <script src="https://cdn.paritydeals.com/banner.js" />
-          {/* <script
-            async
-            src="https://cdn.tolt.io/tolt.js"
-            data-tolt="df04d39c-a409-4bbf-b68e-2fc0a34cd5a6"
-          />
-          <style
-            dangerouslySetInnerHTML={{
-              __html: `
-.parity-banner {
-    position: fixed!important;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-  }
-`,
-            }}
-          /> */}
         </Head>
       </>
 
