@@ -91,7 +91,7 @@ module.exports = (name, { defaultConfig }) => {
       remotePatterns: [
         {
           protocol: 'https',
-          hostname: 'placekitten.com',
+          hostname: 'picsum.photos',
           port: '',
           pathname: '/**/**',
         },

@@ -3,7 +3,7 @@
 // import './wdyr'
 
 import { View as RNView } from 'react-native'
-import { View, styled, Square } from 'tamagui'
+import { View, styled, Square, Image } from 'tamagui'
 
 import { useState } from 'react'
 import { TextInput } from 'react-native'
@@ -14,6 +14,18 @@ const StyledAnimatedWithStyleProp = styled(View, {
 
 export const Sandbox = () => {
   const [open, setOpen] = useState(false)
+
+  return (
+    <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
+      <Image
+        height="100%"
+        position="absolute"
+        resizeMode="cover"
+        src="https://fastly.picsum.photos/id/526/500/300.jpg?hmac=GilOsrBNJ-eQBCy1R6YtGsHAki8i1VJ7T5N0R-SIFrk"
+        width="100%"
+      />
+    </RNView>
+  )
 
   return (
     <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
