@@ -238,7 +238,7 @@ type TokenPrefixed<A extends {
 }> = {
     [key in Ensure$Prefix<keyof A>]: A[keyof A];
 };
-type Ensure$Prefix<A extends string | number | symbol> = A extends string ? A extends `$${string}` ? A : `$${A}` : never;
+type Ensure$Prefix<A extends string | number | symbol> = A extends `$${string}` ? A : `$${(string | number) & A}`;
 export type TokensMerged = TokensParsed & Tokens;
 export type Shorthands = TamaguiConfig['shorthands'];
 export type Media = TamaguiConfig['media'];
@@ -973,7 +973,9 @@ export type GenericStackVariants = VariantDefinitionFromProps<StackProps, any>;
 export type GenericTextVariants = VariantDefinitionFromProps<StackProps, any>;
 export type VariantSpreadExtras<Props> = {
     fonts: TamaguiConfig['fonts'];
-    tokens: TamaguiConfig['tokens'];
+    tokens: TokensParsed & {
+        [key: ThemeValueFallbackSize]: number;
+    };
     theme: Themes extends {
         [key: string]: infer B;
     } ? B : unknown;
