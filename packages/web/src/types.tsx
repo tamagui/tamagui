@@ -394,14 +394,14 @@ export type TokensParsed = {
 }
 
 type TokenPrefixed<A extends { [key: string]: any }> = {
-  [key in Ensure$Prefix<keyof A>]: A[keyof A]
+  [Key in Ensure$Prefix<keyof A> | keyof A]: A[keyof A]
 }
 
 type Ensure$Prefix<A extends string | number | symbol> = A extends
   | string
   | number
   | boolean
-  ? A extends `$${string}`
+  ? A extends `$${string | number}`
     ? A
     : `$${A}`
   : never
@@ -1844,7 +1844,7 @@ export type GenericTextVariants = VariantDefinitionFromProps<StackProps, any>
 
 export type VariantSpreadExtras<Props> = {
   fonts: TamaguiConfig['fonts']
-  tokens: TamaguiConfig['tokens']
+  tokens: TokensParsed
   theme: Themes extends { [key: string]: infer B } ? B : unknown
   props: Props
   fontFamily?: FontFamilyTokens

@@ -139,7 +139,7 @@ interface ToggleGroupImplMultipleProps extends ToggleGroupImplProps {
     onValueChange?(value: string[]): void;
 }
 type RovingFocusGroupProps = React.ComponentPropsWithoutRef<typeof RovingFocusGroup>;
-declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "unstyled" | "pressTheme" | "elevation" | keyof import("@tamagui/web").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless" | "size"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "unstyled" | "pressTheme" | "size" | "elevation" | keyof import("@tamagui/web").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
     unstyled?: boolean | undefined;
     size?: any;
     elevation?: number | SizeTokens | undefined;
@@ -219,6 +219,7 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     unstyled?: boolean | undefined;
     pressTheme?: boolean | undefined;
     orientation?: "horizontal" | "vertical" | undefined;
+    size?: any;
     elevation?: number | SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
@@ -237,7 +238,6 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-    size?: any;
 }, import("@tamagui/web").StaticConfigPublic>;
 type ToggleGroupImplProps = GetProps<typeof ToggleGroupImplElementFrame> & GroupProps & {
     rovingFocus?: boolean;

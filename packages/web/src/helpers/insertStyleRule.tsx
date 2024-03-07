@@ -213,6 +213,7 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
     colorVarToVal = {}
     for (const key in tokens.color) {
       const token = tokens.color[key]
+      // @ts-expect-error need to double check why this type is off though
       colorVarToVal[token.name] = token.val
     }
   }
