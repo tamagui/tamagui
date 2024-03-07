@@ -118,7 +118,7 @@ type Tokenify<A extends GenericTokens> = Omit<{
     radius: TokenifyRecord<A['radius']>;
     zIndex: TokenifyRecord<A['zIndex']>;
 };
-type TokenifyRecord<A extends CreateTokens[keyof CreateTokens]> = {
+type TokenifyRecord<A extends Object> = {
     [Key in keyof A]: CoerceToVariable<A[Key]>;
 };
 type CoerceToVariable<A> = A extends Variable ? A : Variable<A>;
@@ -238,7 +238,7 @@ type TokenPrefixed<A extends {
 }> = {
     [key in Ensure$Prefix<keyof A>]: A[keyof A];
 };
-type Ensure$Prefix<A extends string | number | symbol> = A extends string ? A extends `$${string}` ? A : `$${A}` : never;
+type Ensure$Prefix<A extends string | number | symbol> = A extends string | number | boolean ? A extends `$${string}` ? A : `$${A}` : never;
 export type TokensMerged = TokensParsed & Tokens;
 export type Shorthands = TamaguiConfig['shorthands'];
 export type Media = TamaguiConfig['media'];

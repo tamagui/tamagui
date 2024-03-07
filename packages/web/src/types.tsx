@@ -172,7 +172,7 @@ type Tokenify<A extends GenericTokens> = Omit<
   zIndex: TokenifyRecord<A['zIndex']>
 }
 
-type TokenifyRecord<A extends CreateTokens[keyof CreateTokens]> = {
+type TokenifyRecord<A extends Object> = {
   [Key in keyof A]: CoerceToVariable<A[Key]>
 }
 
@@ -397,7 +397,10 @@ type TokenPrefixed<A extends { [key: string]: any }> = {
   [key in Ensure$Prefix<keyof A>]: A[keyof A]
 }
 
-type Ensure$Prefix<A extends string | number | symbol> = A extends string
+type Ensure$Prefix<A extends string | number | symbol> = A extends
+  | string
+  | number
+  | boolean
   ? A extends `$${string}`
     ? A
     : `$${A}`
