@@ -16,14 +16,14 @@ import {
   styled,
 } from 'tamagui'
 
+import { BentoIcon } from './BentoIcon'
 import { ContainerLarge } from './Container'
 import { DiscordIcon } from './DiscordIcon'
 import { InstallInput } from './InstallInput'
 import { seasons } from './SeasonToggleButton'
+import { TakeoutIcon } from './TakeoutIcon'
 import { TwitterIcon } from './TwitterIcon'
 import { useHeroHovered } from './heroState'
-import { TakeoutIcon } from './TakeoutIcon'
-import { BentoIcon } from './BentoIcon'
 
 export function Hero() {
   const { name } = useTint()
@@ -39,6 +39,7 @@ export function Hero() {
 
 const HeroSubTitle = memo(() => {
   const [hovered, setHovered] = useHeroHovered()
+
   return (
     <Subtitle>
       <NextLink prefetch={false} href="/docs/core/configuration">
