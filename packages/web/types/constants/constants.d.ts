@@ -1,5 +1,6 @@
 export declare const THEME_NAME_SEPARATOR = "_";
 export declare const THEME_CLASSNAME_PREFIX = "t_";
+export declare const CSS_VARIABLE_PREFIX = "";
 export declare const stackDefaultStyles: {};
 export declare const webViewFlexCompatStyles: {
     display: string;

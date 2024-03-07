@@ -1,6 +1,6 @@
 import { simpleHash } from '@tamagui/helpers'
 
-import { THEME_CLASSNAME_PREFIX } from '../constants/constants'
+import { CSS_VARIABLE_PREFIX, THEME_CLASSNAME_PREFIX } from '../constants/constants'
 import type { Variable } from '../createVariable'
 import { variableToString } from '../createVariable'
 import type { CreateTamaguiProps, ThemeParsed } from '../types'
@@ -35,6 +35,7 @@ export function getThemeCSSRules(props: {
 
     // themeToVariableToValueMap.set(theme, {})
     // const varToValMap = themeToVariableToValueMap.get(theme)
+    const _prefix = process.env.TAMAGUI_CSS_VARIABLE_PREFIX || CSS_VARIABLE_PREFIX
     for (const themeKey in theme) {
       const variable = theme[themeKey] as Variable
       let value: any = null
@@ -45,7 +46,7 @@ export function getThemeCSSRules(props: {
         value = tokensValueToVariable.get(variable.val)!.variable
       }
       // Hash themeKey in case it has invalid chars too
-      vars += `--${simpleHash(themeKey, 40)}:${value};`
+      vars += `--${_prefix}${simpleHash(themeKey, 40)}:${value};`
     }
 
     const isDarkBase = themeName === 'dark'
