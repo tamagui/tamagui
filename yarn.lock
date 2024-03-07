@@ -5958,6 +5958,8 @@ __metadata:
     "@ts-react/form": "npm:^1.8.3"
     "@welldone-software/why-did-you-render": "npm:^7.0.1"
     awesome-phonenumber: "npm:^6.4.0"
+    expo-document-picker: "npm:^11.10.1"
+    expo-image-picker: "npm:^14.7.1"
     html-webpack-plugin: "npm:^5.5.0"
     metro-runtime: "npm:*"
     mini-css-extract-plugin: "npm:^2.7.6"
@@ -14975,6 +14977,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"expo-document-picker@npm:^11.10.1":
+  version: 11.10.1
+  resolution: "expo-document-picker@npm:11.10.1"
+  peerDependencies:
+    expo: "*"
+  checksum: 10/0ecb48424df27838ecdb42e9ffea5ded8c65983ff6ff7a4b6d4a962278bffc8ea617f0257be0e5041a597242d14c00ef38557997d83adada4c55b5dc03362c69
+  languageName: node
+  linkType: hard
+
 "expo-file-system@npm:~16.0.0, expo-file-system@npm:~16.0.6":
   version: 16.0.6
   resolution: "expo-file-system@npm:16.0.6"
@@ -14992,6 +15003,26 @@ __metadata:
   peerDependencies:
     expo: "*"
   checksum: 10/6ac97223d820af1150dc5fa7ecc62035153b4ce35aae873e7a002b0bafdae25b9a99686ceb65db1130f8acab471b148e2c8ebdc96fd28f29a240def825914b17
+  languageName: node
+  linkType: hard
+
+"expo-image-loader@npm:~4.6.0":
+  version: 4.6.0
+  resolution: "expo-image-loader@npm:4.6.0"
+  peerDependencies:
+    expo: "*"
+  checksum: 10/02981667f03dc429cd9db37e0acc302e4a0c4bb5875dc087b1c26388ef64563481e52dddc1d42dd32794eb7051d1acf5bc0c078413469c29025a02d4d4af1154
+  languageName: node
+  linkType: hard
+
+"expo-image-picker@npm:^14.7.1":
+  version: 14.7.1
+  resolution: "expo-image-picker@npm:14.7.1"
+  dependencies:
+    expo-image-loader: "npm:~4.6.0"
+  peerDependencies:
+    expo: "*"
+  checksum: 10/43a139c2f52bc71ca9e5c520fe70ef3a2af229118d1cf4485947841f6e464440f974c9c07fc250fe7dd085fc63a812829c2f29e4ee98569af9be8dcecbd46162
   languageName: node
   linkType: hard
 
