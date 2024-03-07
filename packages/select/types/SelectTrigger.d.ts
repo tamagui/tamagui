@@ -1,4 +1,4 @@
-import type { TamaguiElement } from '@tamagui/core';
+import { type TamaguiElement } from '@tamagui/core';
 import type { ListItemProps } from '@tamagui/list-item';
 import * as React from 'react';
 export type SelectTriggerProps = ListItemProps;
