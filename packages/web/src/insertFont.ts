@@ -10,7 +10,7 @@ import type { GenericFont } from './types'
 /**
  * Runtime dynamic insert font
  */
-function insertFont<A extends GenericFont>(
+export function insertFont<A extends GenericFont>(
   name: string,
   fontIn: A
 ): DeepVariableObject<A> {
