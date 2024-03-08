@@ -1,4 +1,5 @@
 import { setConfigFont } from './config'
+import { FONT_DATA_ATTRIBUTE_NAME } from './constants/constants'
 import { createFont } from './createFont'
 import type { Variable } from './createVariable'
 import type { DeepVariableObject } from './createVariables'
@@ -13,21 +14,40 @@ export function insertFont<A extends GenericFont>(
   name: string,
   fontIn: A
 ): DeepVariableObject<A> {
+  const styleElement = document.createElement('style')
+  return processFont(name, fontIn, styleElement)
+}
+
+/**
+ * Runtime dynamic update font
+ */
+export function updateFont<A extends GenericFont>(
+  name: string,
+  fontIn: A
+): DeepVariableObject<A> {
+  const styleElement: HTMLStyleElement =
+    document.querySelector(`style[${FONT_DATA_ATTRIBUTE_NAME}="${name}"]`) ||
+    document.createElement('style')
+  return processFont(name, fontIn, styleElement)
+}
+
+function processFont<A extends GenericFont>(
+  name: string,
+  fontIn: A,
+  styleElement: HTMLStyleElement
+): DeepVariableObject<A> {
   const font = createFont(fontIn)
   const tokened = createVariables(font, name) as GenericFont
   const parsed = parseFont(tokened) as DeepVariableObject<A>
   if (process.env.TAMAGUI_TARGET === 'web' && typeof document !== 'undefined') {
     const fontVars = registerFontVariables(parsed)
-    const style = document.createElement('style')
-    style.innerText = `:root .font_${name} {${fontVars.join(';')}}`
-    style.setAttribute('data-tamagui-font', name)
-    document.head.appendChild(style)
+    styleElement.innerText = `:root .font_${name} {${fontVars.join(';')}}`
+    styleElement.setAttribute(FONT_DATA_ATTRIBUTE_NAME, name)
+    document.head.appendChild(styleElement)
   }
   setConfigFont(name, tokened, parsed)
   return parsed
 }
-
-export const updateFont = insertFont
 
 export function parseFont<A extends GenericFont>(definition: A): DeepVariableObject<A> {
   const parsed: any = {}
