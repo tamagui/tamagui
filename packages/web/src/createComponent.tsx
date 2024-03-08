@@ -334,7 +334,7 @@ export function createComponent<
     // [animated, inversed]
     // HOOK
     const stateRef = useRef<TamaguiComponentStateRef>({
-      handleFocusVisible: true,
+      handleFocusVisible: false,
     })
     if (process.env.NODE_ENV === 'development' && time) time`stateref`
 
@@ -936,13 +936,26 @@ export function createComponent<
       )
     const needsPressState = Boolean(groupName || runtimeHoverStyle)
 
+    if (isWeb) {
+      useEffect(() => {
+        if (runtimeFocusVisibleStyle) {
+          let listener = (e: KeyboardEvent) => {
+            stateRef.current.handleFocusVisible = true
+          }
+          document.addEventListener('keydown', listener)
+          return () => {
+            document.removeEventListener('keydown', listener)
+          }
+        }
+      }, [runtimeFocusVisibleStyle])
+    }
+
     if (process.env.NODE_ENV === 'development' && time) time`events-setup`
 
     const events: TamaguiComponentEvents | null = shouldAttach
       ? {
           onPressOut: attachPress
             ? (e) => {
-                stateRef.current.handleFocusVisible = true
                 unPress()
                 onPressOut?.(e)
                 onMouseUp?.(e)
@@ -982,7 +995,6 @@ export function createComponent<
           }),
           onPressIn: attachPress
             ? (e) => {
-                stateRef.current.handleFocusVisible = false
                 if (runtimePressStyle) {
                   setStateShallow({
                     press: true,
@@ -1033,7 +1045,7 @@ export function createComponent<
               onFocus?.(e)
             },
             onBlur: (e) => {
-              stateRef.current.handleFocusVisible = true
+              stateRef.current.handleFocusVisible = false
               setStateShallow({
                 focus: false,
                 focusVisible: false,
