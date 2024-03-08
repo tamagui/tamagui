@@ -10,36 +10,17 @@ import type { GenericFont } from './types'
 /**
  * Runtime dynamic insert font
  */
-export function insertFont<A extends GenericFont>(
+function insertFont<A extends GenericFont>(
   name: string,
   fontIn: A
-): DeepVariableObject<A> {
-  const styleElement = document.createElement('style')
-  return processFont(name, fontIn, styleElement)
-}
-
-/**
- * Runtime dynamic update font
- */
-export function updateFont<A extends GenericFont>(
-  name: string,
-  fontIn: A
-): DeepVariableObject<A> {
-  const styleElement: HTMLStyleElement =
-    document.querySelector(`style[${FONT_DATA_ATTRIBUTE_NAME}="${name}"]`) ||
-    document.createElement('style')
-  return processFont(name, fontIn, styleElement)
-}
-
-function processFont<A extends GenericFont>(
-  name: string,
-  fontIn: A,
-  styleElement: HTMLStyleElement
 ): DeepVariableObject<A> {
   const font = createFont(fontIn)
   const tokened = createVariables(font, name) as GenericFont
   const parsed = parseFont(tokened) as DeepVariableObject<A>
   if (process.env.TAMAGUI_TARGET === 'web' && typeof document !== 'undefined') {
+    const styleElement: HTMLStyleElement =
+      document.querySelector(`style[${FONT_DATA_ATTRIBUTE_NAME}="${name}"]`) ||
+      document.createElement('style')
     const fontVars = registerFontVariables(parsed)
     styleElement.innerText = `:root .font_${name} {${fontVars.join(';')}}`
     styleElement.setAttribute(FONT_DATA_ATTRIBUTE_NAME, name)
@@ -48,6 +29,8 @@ function processFont<A extends GenericFont>(
   setConfigFont(name, tokened, parsed)
   return parsed
 }
+
+export const updateFont = insertFont
 
 export function parseFont<A extends GenericFont>(definition: A): DeepVariableObject<A> {
   const parsed: any = {}
