@@ -322,7 +322,7 @@ function useButton<Props extends ButtonProps>(
           propsActive.accessibilityRole === 'link' || propsActive.role === 'link'
           ? 'a'
           : 'button'),
-    ...restProps,
+    ...propsIn,
     children: (
       <ButtonNestingContext.Provider value={true}>{inner}</ButtonNestingContext.Provider>
     ),
