@@ -333,9 +333,7 @@ export function createComponent<
     // conditional but if ever true stays true
     // [animated, inversed]
     // HOOK
-    const stateRef = useRef<TamaguiComponentStateRef>({
-      handleFocusVisible: false,
-    })
+    const stateRef = useRef<TamaguiComponentStateRef>({})
     if (process.env.NODE_ENV === 'development' && time) time`stateref`
 
     /**
@@ -936,7 +934,7 @@ export function createComponent<
       )
     const needsPressState = Boolean(groupName || runtimeHoverStyle)
 
-    if (isWeb) {
+    if (isWeb && runtimeFocusVisibleStyle) {
       useEffect(() => {
         if (runtimeFocusVisibleStyle) {
           let listener = (e: KeyboardEvent) => {
@@ -963,6 +961,7 @@ export function createComponent<
             : undefined,
           ...((attachHover || attachPress) && {
             onMouseEnter: (e) => {
+              stateRef.current.handleFocusVisible = false
               const next: Partial<typeof state> = {}
               if (needsHoverState) {
                 next.hover = true
@@ -995,6 +994,7 @@ export function createComponent<
           }),
           onPressIn: attachPress
             ? (e) => {
+                stateRef.current.handleFocusVisible = false
                 if (runtimePressStyle) {
                   setStateShallow({
                     press: true,
