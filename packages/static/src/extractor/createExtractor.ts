@@ -2000,8 +2000,6 @@ export function createExtractor(
             }
 
             try {
-              const beforeProcessUsedThemeKeys = usedThemeKeys.size
-
               const out = getSplitStyles(
                 props,
                 staticConfig,
@@ -2033,7 +2031,7 @@ export function createExtractor(
               }
 
               if (options.experimentalFlattenThemesOnNative) {
-                if (beforeProcessUsedThemeKeys < usedThemeKeys.size) {
+                if (usedThemeKeys.size) {
                   // we used a theme key
                   Object.entries(props).forEach(([key, value]) => {
                     if (usedThemeKeys.has(value)) {
@@ -2114,7 +2112,9 @@ export function createExtractor(
               }
             }
 
-            prev = cur
+            if (cur.type === 'style') {
+              prev = cur
+            }
             acc.push(cur)
             return acc
           }, [])
