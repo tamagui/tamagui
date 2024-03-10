@@ -1592,6 +1592,7 @@ export type GetStyleState = {
   fontFamily?: string
   debug?: DebugProp
   flatTransforms?: Record<string, any>
+  skipThemeTokenResolution?: boolean
 }
 
 export type StyleResolver<Response = PropMappedValue> = (

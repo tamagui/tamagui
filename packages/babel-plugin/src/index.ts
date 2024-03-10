@@ -346,17 +346,7 @@ export default declare(function tamaguiBabelPlugin(
                                         [],
                                         t.blockStatement([
                                           t.returnStatement(
-                                            t.callExpression(
-                                              t.memberExpression(
-                                                t.identifier('Object'),
-                                                t.identifier('assign')
-                                              ),
-                                              [
-                                                t.objectExpression([]),
-                                                ...hocStylesExpr.elements,
-                                                ...[],
-                                              ] as any[]
-                                            )
+                                            t.arrayExpression([...hocStylesExpr.elements])
                                           ),
                                         ])
                                       ),
