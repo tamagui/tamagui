@@ -697,7 +697,11 @@ function SectionCard({
           bg: 'rgba(255,255,255,0.075)',
           y: 1,
         }}
+        bg="rgba(255,255,255,0.05)"
+        mt="$3"
+        br="$6"
         $gtMd={{
+          bg: 'rgba(255,255,255,0)',
           w: 'calc(25% - 14px)',
           br: '$6',
           m: '$2',
