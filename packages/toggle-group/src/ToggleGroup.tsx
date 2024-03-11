@@ -49,6 +49,7 @@ type ToggleGroupItemProps = GetProps<typeof ToggleFrame> & {
 const ToggleGroupItem = ToggleFrame.extractable(
   React.forwardRef<ToggleGroupItemElement, ToggleGroupItemProps>(
     (props: ScopedProps<ToggleGroupItemProps>, forwardedRef) => {
+      const { disablePassStyles, ...rest } = props
       const valueContext = useToggleGroupValueContext(props.__scopeToggleGroup)
       const context = useToggleGroupContext(props.__scopeToggleGroup)
       const pressed = valueContext?.value.includes(props.value)
@@ -79,7 +80,7 @@ const ToggleGroupItem = ToggleFrame.extractable(
         return getThemedIcon(child)
       })
 
-      const commonProps = { pressed, disabled, ...sizeProps, ...props, children }
+      const commonProps = { pressed, disabled, ...sizeProps, ...rest, children }
 
       const inner = (
         <ToggleGroupItemImpl
@@ -294,6 +295,7 @@ interface ToggleGroupImplMultipleProps extends ToggleGroupImplProps {
    * The callback that fires when the state of the toggle group changes.
    */
   onValueChange?(value: string[]): void
+  disableDeactivation?: never
 }
 
 const ToggleGroupImplMultiple = React.forwardRef<
@@ -304,6 +306,7 @@ const ToggleGroupImplMultiple = React.forwardRef<
     value: valueProp,
     defaultValue,
     onValueChange = () => {},
+    disableDeactivation,
     ...toggleGroupMultipleProps
   } = props
 
