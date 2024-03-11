@@ -1,4 +1,4 @@
-import { isClient, isIos, isServer } from '@tamagui/constants'
+import { isClient, isIos, isServer, isWeb } from '@tamagui/constants'
 import { useContext, useEffect, useMemo, useRef, useState } from 'react'
 
 import { getConfig } from '../config'
@@ -447,7 +447,7 @@ export const useChangeThemeEffect = (
     }
   }
 
-  if (isInversingOnMount) {
+  if (isWeb && isInversingOnMount) {
     return {
       isNewTheme: false,
       inversed: false,
