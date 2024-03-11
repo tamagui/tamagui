@@ -298,7 +298,6 @@ export const PopperContent = React.forwardRef<
       animateOnly: needsMeasure ? ['none'] : rest.animateOnly,
       animatePresence: false,
     }),
-    ...(!isWeb && floatingStyles),
   }
 
   // outer frame because we explicitly don't want animation to apply to this
