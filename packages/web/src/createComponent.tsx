@@ -140,6 +140,19 @@ let BaseText: any
 let BaseView: any
 let hasSetupBaseViews = false
 
+const lastInteractionWasKeyboard = { value: false }
+if (isWeb && globalThis['document']) {
+  document.addEventListener('keydown', () => {
+    lastInteractionWasKeyboard.value = true
+  })
+  document.addEventListener('mousedown', () => {
+    lastInteractionWasKeyboard.value = false
+  })
+  document.addEventListener('mousemove', () => {
+    lastInteractionWasKeyboard.value = false
+  })
+}
+
 export function createComponent<
   ComponentPropTypes extends Record<string, any> = {},
   Ref extends TamaguiElement = TamaguiElement,
@@ -934,20 +947,6 @@ export function createComponent<
       )
     const needsPressState = Boolean(groupName || runtimeHoverStyle)
 
-    if (isWeb && runtimeFocusVisibleStyle) {
-      useEffect(() => {
-        if (runtimeFocusVisibleStyle) {
-          let listener = (e: KeyboardEvent) => {
-            stateRef.current.handleFocusVisible = true
-          }
-          document.addEventListener('keydown', listener)
-          return () => {
-            document.removeEventListener('keydown', listener)
-          }
-        }
-      }, [runtimeFocusVisibleStyle])
-    }
-
     if (process.env.NODE_ENV === 'development' && time) time`events-setup`
 
     const events: TamaguiComponentEvents | null = shouldAttach
@@ -961,7 +960,6 @@ export function createComponent<
             : undefined,
           ...((attachHover || attachPress) && {
             onMouseEnter: (e) => {
-              stateRef.current.handleFocusVisible = false
               const next: Partial<typeof state> = {}
               if (needsHoverState) {
                 next.hover = true
@@ -994,7 +992,6 @@ export function createComponent<
           }),
           onPressIn: attachPress
             ? (e) => {
-                stateRef.current.handleFocusVisible = false
                 if (runtimePressStyle) {
                   setStateShallow({
                     press: true,
@@ -1033,7 +1030,7 @@ export function createComponent<
                 setTimeout(() => {
                   setStateShallow({
                     focus: true,
-                    focusVisible: !!stateRef.current.handleFocusVisible,
+                    focusVisible: !!lastInteractionWasKeyboard.value,
                   })
                 }, 0)
               } else {
@@ -1045,7 +1042,6 @@ export function createComponent<
               onFocus?.(e)
             },
             onBlur: (e) => {
-              stateRef.current.handleFocusVisible = false
               setStateShallow({
                 focus: false,
                 focusVisible: false,
