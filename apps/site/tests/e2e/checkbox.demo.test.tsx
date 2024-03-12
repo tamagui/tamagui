@@ -1,16 +1,11 @@
 import { test, expect, Page } from '@playwright/test'
-import { sleep } from 'zx'
 
 let page: Page
 
 test.beforeAll(async ({ browser }) => {
   page = await browser.newPage()
   await page.goto('/docs/components/checkbox')
-  await sleep(8000)
-})
-
-test.afterAll(async () => {
-  await page.close()
+  await page.waitForSelector('#demo')
 })
 
 test('visually looks correct', async () => {
@@ -46,4 +41,8 @@ test('test labels', async () => {
   // reset
   await page.click('#checkbox-3')
   await page.click('#checkbox-4')
+})
+
+test.afterAll(async () => {
+  await page.close()
 })
