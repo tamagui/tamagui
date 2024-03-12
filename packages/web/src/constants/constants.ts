@@ -1,5 +1,6 @@
 export const THEME_NAME_SEPARATOR = '_'
 export const THEME_CLASSNAME_PREFIX = 't_'
+export const FONT_DATA_ATTRIBUTE_NAME = 'data-tamagui-font'
 
 export const stackDefaultStyles = {}
 
