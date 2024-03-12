@@ -154,16 +154,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
         ],
   })
 
-  useIsomorphicLayoutEffect(() => {
-    window.addEventListener('resize', update)
-    if (open) {
-      update()
-    }
-    return () => window.removeEventListener('resize', update)
-  }, [update, open])
-
   const floatingRef = refs.floating
-
   const showUpArrow = open && scrollTop > SCROLL_ARROW_THRESHOLD
   const showDownArrow =
     open &&
@@ -172,6 +163,16 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
       floatingRef.current.scrollHeight -
         floatingRef.current.clientHeight -
         SCROLL_ARROW_THRESHOLD
+
+  const shouldUpdate = showDownArrow || showUpArrow
+
+  useIsomorphicLayoutEffect(() => {
+    window.addEventListener('resize', update)
+    if (open || shouldUpdate) {
+      update()
+    }
+    return () => window.removeEventListener('resize', update)
+  }, [open, shouldUpdate])
 
   const onMatch = useEvent((index: number) => {
     const fn = open ? setActiveIndex : setSelectedIndex

@@ -99,8 +99,6 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraP
       context.floatingContext?.refs.setFloating
     )
 
-    const { scrollbarWidth, listStyleType, overflow, ...restStyle } = style
-
     return (
       <>
         {!disableScroll && !props.unstyled && (
@@ -114,18 +112,27 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraP
           {context.open ? (
             <FloatingFocusManager context={context.floatingContext!} modal={false}>
               <SelectViewportFrame
-                disableClassName
+                // disableClassName
                 key="select-viewport"
                 size={itemContext.size}
                 // @ts-ignore
                 role="presentation"
                 {...viewportProps}
-                {...floatingProps}
-                {...restStyle}
+                // {...floatingProps}
+                {...style}
                 {...(!props.unstyled && {
-                  overflow: disableScroll ? undefined : overflow ?? 'scroll',
+                  overflowY: disableScroll ? undefined : style.overflow ?? 'auto',
                 })}
+                // debug="verbose"
                 ref={composedRefs}
+                onScroll={(e) => {
+                  console.warn('??')
+                  const r = floatingProps.onScroll?.(e)
+                }}
+                // onWheel={(e) => {
+                //   debugger
+                //   const r = floatingProps.onWheel?.(e)
+                // }}
               >
                 {children}
               </SelectViewportFrame>

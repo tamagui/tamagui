@@ -3,7 +3,7 @@
 // import './wdyr'
 
 import { View as RNView } from 'react-native'
-import { View, styled, Square, Image, Tokens } from 'tamagui'
+import { View, styled, Square, Image, Tokens, YStack } from 'tamagui'
 
 import { useState } from 'react'
 import { TextInput } from 'react-native'
@@ -23,6 +23,20 @@ const StyledAnimatedWithStyleProp = styled(View, {
 
 export const Sandbox = () => {
   const [open, setOpen] = useState(false)
+
+  return (
+    <YStack
+      ov="auto"
+      h={200}
+      w={200}
+      bg="red"
+      onScroll={() => {
+        console.warn('>?')
+      }}
+    >
+      <YStack w={100} h={500} bg="green" />
+    </YStack>
+  )
 
   return (
     <RNView style={{ width: '100%', height: '100%', padding: 50 }}>

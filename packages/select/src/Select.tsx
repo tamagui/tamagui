@@ -376,16 +376,11 @@ export const Select = withStaticProperties(
     const forceUpdate = React.useReducer(() => ({}), {})[1]
     const [selectedItem, setSelectedItem] = React.useState<React.ReactNode>(null)
 
-    const [open, setOpen_] = useControllableState({
+    const [open, setOpen] = useControllableState({
       prop: openProp,
       defaultProp: defaultOpen || false,
       onChange: onOpenChange,
     })
-
-    const setOpen = (...next) => {
-      console.trace('setting open2', ...next)
-      return setOpen_(...next)
-    }
 
     const [value, setValue] = useControllableState({
       prop: valueProp,
