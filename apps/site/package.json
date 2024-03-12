@@ -15,7 +15,7 @@
     "dev:analyze": "ANALYZE=true yarn dev",
     "dev:next": "yarn next",
     "test": "./scripts/test.sh",
-    "test:run": "node -r esbuild-register ../../node_modules/.bin/playwright test integration.test.ts",
+    "test:run": "node -r esbuild-register ../../node_modules/.bin/playwright test",
     "test:dev": "yarn test:run",
     "test:prod": "RUN_ENV=production yarn test:run",
     "dev:inspect": "PORT=${PORT:-5005} NODE_OPTIONS='--no-deprecation' NODE_ENV=development node --inspect-brk ../../node_modules/next/dist/bin/next dev",
