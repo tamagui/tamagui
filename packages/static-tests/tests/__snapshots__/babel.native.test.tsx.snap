@@ -162,7 +162,7 @@ export function Test(props) {
 const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
   return React.useMemo(() => {
     return Object.assign({}, _sheet[\\"0\\"], {
-      \\"backgroundColor\\": theme.color
+      \\"backgroundColor\\": theme.color.val
     });
   }, [theme.color, ..._expressions]);
 });"
@@ -229,12 +229,12 @@ const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { Paragraph } from 'tamagui';
 export function Test() {
-  return <_ReactNativeTextWrapper>hello world</__ReactNativeText>;
+  return <_ReactNativeTextWrapper>hello world</_ReactNativeTextWrapper>;
 }
 const _ReactNativeTextWrapper = __withStableStyle(__ReactNativeText, (theme, _expressions) => {
   return React.useMemo(() => {
     return Object.assign({}, _sheet[\\"0\\"], {
-      \\"color\\": theme.color
+      \\"color\\": theme.color.val
     });
   }, [theme.color, ..._expressions]);
 });"

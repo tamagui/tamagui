@@ -135,6 +135,9 @@ const tokens = {
     ...config.tokens.color,
     testsomethingdifferent: '#ff0000',
   },
+  // size: {
+  //   0: 10,
+  // },
 }
 
 const tamaConf = createTamagui({

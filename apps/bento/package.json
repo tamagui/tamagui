@@ -52,6 +52,8 @@
     "@tanstack/react-table": "^8.11.2",
     "@ts-react/form": "^1.8.3",
     "awesome-phonenumber": "^6.4.0",
+    "expo-document-picker": "^11.10.1",
+    "expo-image-picker": "^14.7.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",

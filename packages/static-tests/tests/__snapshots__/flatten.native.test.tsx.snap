@@ -65,9 +65,9 @@ export function Test() {
 const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
   return React.useMemo(() => {
     return Object.assign({}, _sheet[\\"0\\"], _sheet[\\"1\\"], _expressions[0] ? {
-      \\"backgroundColor\\": theme.color1
+      \\"backgroundColor\\": theme.color1.val
     } : {
-      \\"backgroundColor\\": theme.color2
+      \\"backgroundColor\\": theme.color2.val
     });
   }, [theme.color1, theme.color2, ..._expressions]);
 });"
@@ -97,7 +97,7 @@ export function Test(isLoading) {
 const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
   return React.useMemo(() => {
     return Object.assign({}, _sheet[\\"0\\"], {
-      \\"backgroundColor\\": theme.background
+      \\"backgroundColor\\": theme.background.val
     });
   }, [theme.background, ..._expressions]);
 });"

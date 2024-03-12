@@ -208,7 +208,7 @@ export default declare(function tamaguiBabelPlugin(
                     if (prop.value.type === 'StringLiteral') {
                       prop.value = t.memberExpression(
                         t.identifier('theme'),
-                        t.identifier(prop.value.value.slice(1))
+                        t.identifier(prop.value.value.slice(1) + '.val')
                       )
                     }
                   })
@@ -381,6 +381,11 @@ export default declare(function tamaguiBabelPlugin(
 
                     // @ts-ignore
                     props.node.name = WrapperIdentifier
+                    if (props.jsxPath.node.closingElement) {
+                      // @ts-ignore
+                      props.jsxPath.node.closingElement.name = WrapperIdentifier
+                    }
+
                     if (expressions.length) {
                       props.node.attributes.push(
                         t.jsxAttribute(

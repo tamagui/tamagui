@@ -1,3 +1,6 @@
+- Animation + shadowOffset is causing crash in iOS due to object value
+  - "auto" too
+
 - Adapt needs public API to support any adaptation
 
 - v2-3 ListItem simplification esp for performance of Select

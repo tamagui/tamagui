@@ -1,4 +1,4 @@
-import { isClient, isIos, isServer } from '@tamagui/constants'
+import { isClient, isIos, isServer, isWeb } from '@tamagui/constants'
 import { useContext, useEffect, useMemo, useRef, useState } from 'react'
 
 import { getConfig } from '../config'
@@ -14,6 +14,7 @@ import type {
   ThemeParsed,
   ThemeProps,
   ThemeValueGet,
+  Tokens,
   UseThemeWithStateProps,
   VariableVal,
   VariableValGeneric,
@@ -66,9 +67,12 @@ export type ThemeGettable<Val> = Val & {
 }
 
 export type UseThemeResult = {
-  [Key in keyof ThemeParsed | (string & {})]: ThemeGettable<
+  [Key in keyof ThemeParsed | keyof Tokens['color']]: ThemeGettable<
     Key extends keyof ThemeParsed ? ThemeParsed[Key] : Variable<any>
   >
+} & {
+  // fallback to other tokens
+  [Key in string & {}]?: ThemeGettable<Variable<any>>
 }
 
 // not used by anything but its technically more correct type, but its annoying to have in intellisense so leaving it
@@ -443,7 +447,7 @@ export const useChangeThemeEffect = (
     }
   }
 
-  if (isInversingOnMount) {
+  if (isWeb && isInversingOnMount) {
     return {
       isNewTheme: false,
       inversed: false,

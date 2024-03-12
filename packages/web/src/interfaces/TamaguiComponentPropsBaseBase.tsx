@@ -193,7 +193,7 @@ export type TamaguiComponentPropsBaseBase = {
   /**
    * Forces the pseudo style state to be on
    */
-  forceStyle?: 'hover' | 'press' | 'focus'
+  forceStyle?: 'hover' | 'press' | 'focus' | 'focusVisible'
 
   /**
    * Disables className output of styles, instead using only inline styles

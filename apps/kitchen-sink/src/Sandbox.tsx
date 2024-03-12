@@ -3,13 +3,22 @@
 // import './wdyr'
 
 import { View as RNView } from 'react-native'
-import { View, styled, Square, Image } from 'tamagui'
+import { View, styled, Square, Image, Tokens } from 'tamagui'
 
 import { useState } from 'react'
 import { TextInput } from 'react-native'
 
 const StyledAnimatedWithStyleProp = styled(View, {
   backgroundColor: 'red',
+
+  variants: {
+    something: {
+      '...size': (val, { tokens }) => {
+        tokens.size[val]
+        return {}
+      },
+    },
+  },
 })
 
 export const Sandbox = () => {
