@@ -627,7 +627,7 @@ const Body = () => {
                 <ContainerLarge>
                   <Theme name="tan">
                     <XStack
-                      gap="$5"
+                      gap={parts.length === parts[parts.length - 1] ? '$0' : '$5'}
                       f={4}
                       fs={1}
                       $gtMd={{
