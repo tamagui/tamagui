@@ -59,6 +59,7 @@ import { unwrapText } from './unwrapText'
 import { Link } from './Link'
 import { CustomTabs } from './CustomTabs'
 import { useClipboard } from '../lib/useClipboard'
+import { WideTabs } from './WideTabs'
 
 const IntroParagraph = ({ children, large, disableUnwrapText, ...props }: any) => {
   return (
@@ -173,6 +174,7 @@ const TableHighlight = styled(YStack, {
 
 export const components = {
   Tabs: CustomTabs,
+  WideTabs: WideTabs,
 
   SocialLinksRow: () => (
     <YStack mt="$6" mx="$-4">
@@ -632,7 +634,7 @@ export const components = {
             </Card.Header>
 
             <Card.Footer p="$6" pt={0}>
-              <XStack gap="$4" f={1}>
+              <XStack ai="center" gap="$4" f={1}>
                 <Code f={1} bg="$color4" p="$3" br="$4" size="$5">
                   npm create tamagui@latest
                 </Code>
@@ -640,7 +642,6 @@ export const components = {
                   position="absolute"
                   aria-label="Copy code to clipboard"
                   size="$2"
-                  top="$3"
                   right="$3"
                   display="inline-flex"
                   icon={clipBoard.hasCopied ? CheckCircle : Copy}
