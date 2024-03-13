@@ -3,10 +3,12 @@
 // import './wdyr'
 
 import { View as RNView } from 'react-native'
-import { View, styled, Square, Image, Tokens } from 'tamagui'
+import { View, styled, Square, Image, Tokens, YStack, XStack, Button } from 'tamagui'
 
 import { useState } from 'react'
 import { TextInput } from 'react-native'
+import { ButtonDemo } from '@tamagui/demos'
+import { ChevronDown } from '@tamagui/lucide-icons'
 
 const StyledAnimatedWithStyleProp = styled(View, {
   backgroundColor: 'red',
@@ -23,6 +25,25 @@ const StyledAnimatedWithStyleProp = styled(View, {
 
 export const Sandbox = () => {
   const [open, setOpen] = useState(false)
+
+  return (
+    <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
+      <XStack onPress={() => setOpen(!open)}>
+        Accessiblity options
+        <Button
+          animation="bouncy"
+          debug="verbose"
+          transform={[
+            {
+              rotate: open ? '180deg' : '0deg',
+            },
+          ]}
+        >
+          <ChevronDown />
+        </Button>
+      </XStack>
+    </RNView>
+  )
 
   return (
     <RNView style={{ width: '100%', height: '100%', padding: 50 }}>

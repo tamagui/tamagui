@@ -225,7 +225,10 @@ function useButton<Props extends ButtonProps>(
   { Text = Button.Text }: { Text: any } = { Text: Button.Text }
 ) {
   const isNested = useContext(ButtonNestingContext)
-  const propsActive = useProps(propsIn) as any as ButtonProps
+  const propsActive = useProps(propsIn, {
+    noNormalize: true,
+    noExpand: true,
+  }) as any as ButtonProps
 
   // careful not to destructure and re-order props, order is important
   const {
@@ -245,7 +248,6 @@ function useButton<Props extends ButtonProps>(
     tag,
     ellipse,
     maxFontSizeMultiplier,
-    ...restProps
   } = propsActive
 
   const size = propsActive.size || (propsActive.unstyled ? undefined : '$true')
@@ -303,6 +305,7 @@ function useButton<Props extends ButtonProps>(
   })
 
   const props = {
+    ...propsIn,
     size,
     ...(propsIn.disabled && {
       // in rnw - false still has keyboard tabIndex, undefined = not actually focusable
@@ -322,7 +325,6 @@ function useButton<Props extends ButtonProps>(
           propsActive.accessibilityRole === 'link' || propsActive.role === 'link'
           ? 'a'
           : 'button'),
-    ...restProps,
     children: (
       <ButtonNestingContext.Provider value={true}>{inner}</ButtonNestingContext.Provider>
     ),
