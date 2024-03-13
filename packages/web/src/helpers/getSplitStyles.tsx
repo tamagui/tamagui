@@ -1106,6 +1106,7 @@ export const getSplitStyles: StyleSplitter = (
   // Button for example uses disableClassName: true but renders to a 'button' element, so needs this
   if (process.env.TAMAGUI_TARGET === 'web') {
     const shouldStringifyTransforms =
+      !styleProps.noNormalize &&
       !staticConfig.isReactNative &&
       !staticConfig.isHOC &&
       (!styleProps.isAnimated || conf.animations.supportsCSSVars)
