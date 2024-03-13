@@ -861,7 +861,11 @@ export function createComponent<
           media: {},
         } satisfies GroupState
 
-        disposeGroupsListener = componentContext.groups.subscribe(
+        if (process.env.NODE_ENV === 'development' && !componentContext.groups) {
+          console.debug(`No context group found`)
+        }
+
+        disposeGroupsListener = componentContext.groups?.subscribe(
           (name, { layout, pseudo }) => {
             if (pseudo && pseudoGroups?.has(name)) {
               // we emit a partial so merge it + change reference so mergeIfNotShallowEqual runs
