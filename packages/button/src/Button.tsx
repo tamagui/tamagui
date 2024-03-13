@@ -248,6 +248,8 @@ function useButton<Props extends ButtonProps>(
     tag,
     ellipse,
     maxFontSizeMultiplier,
+
+    ...restProps
   } = propsActive
 
   const size = propsActive.size || (propsActive.unstyled ? undefined : '$true')
@@ -305,7 +307,7 @@ function useButton<Props extends ButtonProps>(
   })
 
   const props = {
-    ...propsIn,
+    ...restProps,
     size,
     ...(propsIn.disabled && {
       // in rnw - false still has keyboard tabIndex, undefined = not actually focusable
