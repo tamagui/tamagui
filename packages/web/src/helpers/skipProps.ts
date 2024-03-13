@@ -21,13 +21,6 @@ if (process.env.NODE_ENV === 'test') {
   skipProps['data-test-renders'] = 1
 }
 
-if (process.env.TAMAGUI_TARGET === 'web') {
-  Object.assign(skipProps, {
-    hitSlop: 1,
-    onAccessibilityAction: 1,
-  })
-}
-
 // native only skips
 if (process.env.TAMAGUI_TARGET === 'native') {
   Object.assign(skipProps, {
@@ -60,6 +53,8 @@ if (process.env.TAMAGUI_TARGET === 'native') {
       elevationAndroid: 1,
       hapticFeedback: 1,
       hapticStyle: 1,
+      hitSlop: 1,
+      onAccessibilityAction: 1,
       importantForAccessibility: 1,
       lineBreakStrategyIOS: 1,
       maxFontSizeMultiplier: 1,
