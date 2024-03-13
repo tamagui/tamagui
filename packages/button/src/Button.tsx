@@ -307,7 +307,6 @@ function useButton<Props extends ButtonProps>(
   })
 
   const props = {
-    ...restProps,
     size,
     ...(propsIn.disabled && {
       // in rnw - false still has keyboard tabIndex, undefined = not actually focusable
@@ -327,6 +326,9 @@ function useButton<Props extends ButtonProps>(
           propsActive.accessibilityRole === 'link' || propsActive.role === 'link'
           ? 'a'
           : 'button'),
+
+    ...restProps,
+
     children: (
       <ButtonNestingContext.Provider value={true}>{inner}</ButtonNestingContext.Provider>
     ),
