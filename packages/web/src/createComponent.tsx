@@ -140,6 +140,19 @@ let BaseText: any
 let BaseView: any
 let hasSetupBaseViews = false
 
+const lastInteractionWasKeyboard = { value: false }
+if (isWeb && globalThis['document']) {
+  document.addEventListener('keydown', () => {
+    lastInteractionWasKeyboard.value = true
+  })
+  document.addEventListener('mousedown', () => {
+    lastInteractionWasKeyboard.value = false
+  })
+  document.addEventListener('mousemove', () => {
+    lastInteractionWasKeyboard.value = false
+  })
+}
+
 export function createComponent<
   ComponentPropTypes extends Record<string, any> = {},
   Ref extends TamaguiElement = TamaguiElement,
@@ -333,9 +346,7 @@ export function createComponent<
     // conditional but if ever true stays true
     // [animated, inversed]
     // HOOK
-    const stateRef = useRef<TamaguiComponentStateRef>({
-      handleFocusVisible: true,
-    })
+    const stateRef = useRef<TamaguiComponentStateRef>({})
     if (process.env.NODE_ENV === 'development' && time) time`stateref`
 
     /**
@@ -942,7 +953,6 @@ export function createComponent<
       ? {
           onPressOut: attachPress
             ? (e) => {
-                stateRef.current.handleFocusVisible = true
                 unPress()
                 onPressOut?.(e)
                 onMouseUp?.(e)
@@ -982,7 +992,6 @@ export function createComponent<
           }),
           onPressIn: attachPress
             ? (e) => {
-                stateRef.current.handleFocusVisible = false
                 if (runtimePressStyle) {
                   setStateShallow({
                     press: true,
@@ -1021,7 +1030,7 @@ export function createComponent<
                 setTimeout(() => {
                   setStateShallow({
                     focus: true,
-                    focusVisible: !!stateRef.current.handleFocusVisible,
+                    focusVisible: !!lastInteractionWasKeyboard.value,
                   })
                 }, 0)
               } else {
@@ -1033,7 +1042,6 @@ export function createComponent<
               onFocus?.(e)
             },
             onBlur: (e) => {
-              stateRef.current.handleFocusVisible = true
               setStateShallow({
                 focus: false,
                 focusVisible: false,
