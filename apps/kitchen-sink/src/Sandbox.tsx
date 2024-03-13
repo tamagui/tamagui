@@ -29,7 +29,6 @@ export const Sandbox = () => {
   return (
     <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
       <XStack onPress={() => setOpen(!open)}>
-        Accessiblity options
         <Button
           animation="bouncy"
           debug="verbose"
