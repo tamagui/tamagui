@@ -168,7 +168,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     componentName?: string | undefined;
     tabIndex?: string | number | undefined;
     disableOptimization?: boolean | undefined;
-    forceStyle?: "hover" | "press" | "focus" | undefined;
+    forceStyle?: "hover" | "press" | "focus" | "focusVisible" | undefined;
     disableClassName?: boolean | undefined;
     hitSlop?: ((number | import("@tamagui/core").Insets) & import("react-native").Insets) | undefined;
     removeClippedSubviews?: boolean | undefined;

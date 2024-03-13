@@ -39,7 +39,7 @@ function ToggleGroupComponent(props: {
       <ToggleGroup
         orientation={props.orientation}
         id={id}
-        type={props.type}
+        type={props.type as any} // since this demo switches between loosen types
         size={props.size}
         disableDeactivation={props.type === 'single' ? true : undefined}
       >
