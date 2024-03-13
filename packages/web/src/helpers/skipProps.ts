@@ -21,6 +21,13 @@ if (process.env.NODE_ENV === 'test') {
   skipProps['data-test-renders'] = 1
 }
 
+if (process.env.TAMAGUI_TARGET === 'web') {
+  Object.assign(skipProps, {
+    hitSlop: 1,
+    onAccessibilityAction: 1,
+  })
+}
+
 // native only skips
 if (process.env.TAMAGUI_TARGET === 'native') {
   Object.assign(skipProps, {
