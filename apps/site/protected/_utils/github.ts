@@ -172,6 +172,9 @@ export const whitelistGithubUsernames = [
 
   // callstack
   ...callstackusers,
+
+  // Triba
+  'Awelani-Triba',
 ]
 
 export const checkForSponsorship = async (
