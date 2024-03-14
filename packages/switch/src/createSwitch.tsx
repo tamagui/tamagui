@@ -183,6 +183,7 @@ export function createSwitch<
             ref={switchRef}
             tag="button"
             {...(isWeb && { type: 'button' })}
+            {...(switchProps as any)}
             {...(!disableActiveTheme && {
               theme: checked ? 'active' : null,
               themeShallow: true,
@@ -190,7 +191,6 @@ export function createSwitch<
             // expected variants
             checked={checked}
             disabled={switchProps.disabled}
-            {...(switchProps as any)}
           >
             <Stack
               alignSelf="stretch"
