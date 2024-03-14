@@ -2,6 +2,7 @@ import type {
   CheckedState,
   CheckboxExtraProps as HeadlessCheckboxExtraProps,
 } from '@tamagui/checkbox-headless'
+import { registerFocusable } from '@tamagui/focusable'
 import { isIndeterminate, useCheckbox } from '@tamagui/checkbox-headless'
 import type { NativeValue, SizeTokens, StackProps } from '@tamagui/core'
 import {
@@ -131,6 +132,20 @@ export function createCheckbox<
         [checked, setChecked],
         forwardedRef
       )
+
+      if (process.env.TAMAGUI_TARGET === 'native') {
+        React.useEffect(() => {
+          if (!props.id) return
+          if (props.disabled) return
+
+          return registerFocusable(props.id, {
+            focusAndSelect: () => {
+              setChecked?.((value) => !value)
+            },
+            focus: () => {},
+          })
+        }, [props.id, props.disabled])
+      }
 
       const renderNative = shouldRenderNativePlatform(native)
       if (renderNative === 'web') {
