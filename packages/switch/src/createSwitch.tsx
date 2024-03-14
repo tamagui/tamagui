@@ -154,12 +154,16 @@ export function createSwitch<
         resolveValues: 'none',
         forComponent: Frame,
       })
-      propsActive.size = styledContext.size ?? props.size ?? '$true'
-      propsActive.unstyled = styledContext.unstyled ?? props.unstyled ?? false
 
       const { switchProps, bubbleInput, switchRef } = useSwitch(
         // @ts-ignore
-        propsActive,
+        Object.assign(
+          {
+            size: styledContext.size ?? props.size ?? '$true',
+            unstyled: styledContext.unstyled ?? props.unstyled ?? false,
+          },
+          propsActive
+        ),
         [checked, setChecked],
         forwardedRef
       )
@@ -179,7 +183,6 @@ export function createSwitch<
             ref={switchRef}
             tag="button"
             {...(isWeb && { type: 'button' })}
-            {...(switchProps as any)}
             {...(!disableActiveTheme && {
               theme: checked ? 'active' : null,
               themeShallow: true,
@@ -187,6 +190,7 @@ export function createSwitch<
             // expected variants
             checked={checked}
             disabled={switchProps.disabled}
+            {...(switchProps as any)}
           >
             <Stack
               alignSelf="stretch"
