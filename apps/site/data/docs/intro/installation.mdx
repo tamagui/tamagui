@@ -87,73 +87,50 @@ Note that while Tamagui generally doesn't require any special bundler setup, Rea
 
 ## Guides
 
-We also have more in depth guides
-
-
 <WideTabs id="configs" defaultValue="vite">
 <WideTabs.List>
-  <TooltipSimple label="Set up Tamagui with Vite">
     <WideTabs.Tab value="vite">Vite</WideTabs.Tab>
-  </TooltipSimple>
-  <TooltipSimple label="Set up Tamagui with Expo">
     <WideTabs.Tab value="expo">Expo</WideTabs.Tab>
-  </TooltipSimple>
-  <TooltipSimple label="Set up Tamagui with Next.js">
     <WideTabs.Tab value="next">Next.js</WideTabs.Tab>
-  </TooltipSimple>
-  <TooltipSimple label="Set up Tamagui with Webpack">
     <WideTabs.Tab value="webpack">Webpack</WideTabs.Tab>
-  </TooltipSimple>
-  <TooltipSimple label="Set up Tamagui with Metro">
     <WideTabs.Tab value="metro">Metro</WideTabs.Tab>
-  </TooltipSimple>
 </WideTabs.List>
-
-{/* <WideTabs.Content value="vite" bw={0} px={0}>
-  #### How to set up Tamagui with Vite
-</WideTabs.Content>
-<WideTabs.Content value="expo" bw={0} px={0}>
-  #### How to set up Tamagui with Expo
-</WideTabs.Content>
-<WideTabs.Content value="next" bw={0} px={0}>
-  #### How to set up Tamagui with Next.js
-</WideTabs.Content>
-<WideTabs.Content value="webpack" bw={0} px={0}>
-  #### How to set up Tamagui with Webpack
-</WideTabs.Content>
-<WideTabs.Content value="metro" bw={0} px={0}>
-  #### How to set up Tamagui with Metro
-</WideTabs.Content> */}
-
 
 <WideTabs.Content value="vite">
     #### How to set up Tamagui with Vite
 
     Tamagui now has two plugins for Vite: one that sets up everything you need to get going, and a second that adds CSS compilation. Both are included in the `@tamagui/vite-plugin` package.
 
-    For a full-featured example, you can create a new app using `npm create tamagui@latest` and select the 'Simple Web' option which includes a Vite setup.
-
-
     #### Installation
 
-    1. Remove `"type": "module"` from your `package.json` if you have it. (The type module support was removed because it was breaking metro, webpack or something).
-    2. Add `@tamagui/vite-plugin`
-    3. And update your `vite.config.ts`:
+    <Notice>
+      For a full-featured example, you can create a new app using `npm create tamagui@latest` and select the 'Simple Web' option which includes a Vite setup.
+    </Notice>
 
-    {/* ```tsx
-    import { tamaguiExtractPlugin, tamaguiPlugin } from '@tamagui/vite-plugin'
- 
-    export default defineConfig({
-      plugins: [
-        tamaguiPlugin({
-          config: './src/tamagui.config.ts',
-          components: ['tamagui'],
-        }),
-        // optional, adds the optimizing compiler:
-        tamaguiExtractPlugin(tamaguiConfig),
-      ],
-    })
-    ``` */}
+    1. Create a new [Vite](https://vitejs.dev/guide/#scaffolding-your-first-vite-project) project:
+
+     ```bash
+    npm create vite@latest
+    ```
+
+    2. Remove `"type": "module"` from your `package.json` if you have it. (The type module support was removed because it was breaking metro, webpack or something).
+    3. Add `@tamagui/vite-plugin`
+    4. And update your `vite.config.ts`:
+
+    {    /* ```tsx
+        import { tamaguiExtractPlugin, tamaguiPlugin } from '@tamagui/vite-plugin'
+     
+        export default defineConfig({
+          plugins: [
+            tamaguiPlugin({
+              config: './src/tamagui.config.ts',
+              components: ['tamagui'],
+            }),
+            // optional, adds the optimizing compiler:
+            tamaguiExtractPlugin(tamaguiConfig),
+          ],
+        })
+        ``` */}
 
     ```tsx
     import { tamaguiExtractPlugin, tamaguiPlugin } from '@tamagui/vite-plugin'
@@ -169,7 +146,7 @@ We also have more in depth guides
       ].filter(Boolean),
     }
     ```
-
+    
     Or a minimal manual setup:
 
     ```tsx
@@ -206,23 +183,29 @@ We also have more in depth guides
 <WideTabs.Content value="expo">
     #### How to set up Tamagui with Expo
 
-    #### Native
+    The following steps are optional but useful for many apps, they enable the
+    optimizing compiler, reanimated, as well as using `process.env.XYZ` for
+    environment variables.
 
-    This guide assumes Expo is configured with TypeScript support.
+    #### Installation
+
+    <Notice>
+      This guide assumes Expo is configured with TypeScript support.
+    </Notice>
+
+    1. Create a new [Expo](https://docs.expo.dev/get-started/create-a-project/#initialize-a-new-project) project
 
     ```bash
     npx create-expo-app -t expo-template-blank-typescript
     ```
 
-    The following steps are optional but useful for many apps, they enable the
-    optimizing compiler, reanimated, as well as using `process.env.XYZ` for
-    environment variables.
+    2. Add `@tamagui/babel-plugin`:
 
     ```bash
     yarn add @tamagui/babel-plugin
     ```
-
-    Update your `babel.config.js` to include the optional `@tamagui/babel-plugin`:
+    
+    3. Update your `babel.config.js` to include the optional `@tamagui/babel-plugin`:
 
     ```js
     module.exports = function (api) {
@@ -239,6 +222,7 @@ We also have more in depth guides
               disableExtraction: process.env.NODE_ENV === 'development'
             },
           ],
+
           // NOTE: this is only necessary if you are using reanimated for animations
           "react-native-reanimated/plugin",
         ],
@@ -264,34 +248,100 @@ We also have more in depth guides
 
     module.exports = config;
     ```
+   
     #### Loading fonts
 
-    You need to load your fonts for React Native to recognize them. Typically this
-    looks something like if using Expo, (or you can
-    [follow a React Native guide here](https://stackoverflow.com/questions/35255645/how-to-set-default-font-family-in-react-native)):
+    1. Install the `expo-font` package:
 
-    ```tsx
-    import { useFonts } from 'expo-font'
-
-    function App() {
-      const [loaded] = useFonts({
-        Inter: require("@tamagui/font-inter/otf/Inter-Medium.otf"),
-        InterBold: require("@tamagui/font-inter/otf/Inter-Bold.otf"),
-      });
-
-      useEffect(() => {
-        if (loaded) {
-          // can hide splash screen here
-        }
-      }, [loaded])
-
-      if (!loaded) {
-        return null;
-      }
-
-      return <MyApp />
-    }
+    ```bash
+    npx expo install expo-font
     ```
+
+    2. Load your fonts for React Native to recognize them. There are several ways to do this:
+
+    <Spacer size="$6" />
+
+    <Tabs id="font" defaultValue="tamagui">
+    <Tabs.List>
+        <Tabs.Tab value="tamagui">Tamagui</Tabs.Tab>
+        <Tabs.Tab value="expo">Expo Google Fonts</Tabs.Tab>
+    </Tabs.List>
+    <Separator />
+
+    <Spacer size="$6" />
+
+    <Tabs.Content value="tamagui">
+      Using the `@tamagui/font-inter` package which is a pre-configured version of the Inter font that works with Tamagui:
+
+      Import the `useFonts` hook and load the fonts:
+
+      ```tsx
+      import { useFonts } from 'expo-font'
+
+      function App() {
+        const [loaded] = useFonts({
+          Inter: require("@tamagui/font-inter/otf/Inter-Medium.otf"),
+          InterBold: require("@tamagui/font-inter/otf/Inter-Bold.otf"),
+        });
+
+        useEffect(() => {
+          if (loaded) {
+            // can hide splash screen here
+          }
+        }, [loaded])
+
+        if (!loaded) {
+          return null;
+        }
+
+        return <MyApp />
+      }
+      ```
+    </Tabs.Content>
+
+    <Tabs.Content value="expo">
+      Using the `@expo-google-fonts` package which is a collection of Google Fonts that work with Expo:
+      
+      <Notice>
+        You can find the [full list of fonts](https://github.com/expo/google-fonts/tree/master/font-packages) and usage instructions in the [Expo documentation](https://github.com/expo/google-fonts).
+      </Notice>
+
+      Install the font package:
+
+      ```bash
+      npx expo install @expo-google-fonts/inter
+      ```
+
+      Import the `useFonts` hook and load the fonts:
+
+      ```tsx
+      import { useFonts, Inter_400Regular, Inter_900Black } from '@expo-google-fonts/inter';
+
+      function App() {
+        const [loaded] = useFonts({
+          Inter_400Regular,
+          Inter_900Black,
+        });
+
+        useEffect(() => {
+          if (loaded) {
+            // can hide splash screen here
+          }
+        }, [loaded])
+
+        if (!loaded) {
+          return null;
+        }
+
+        return <MyApp />
+      }
+      ```
+    </Tabs.Content>
+    </Tabs>
+
+    <Notice>
+      For more information on loading fonts in Expo, see the [Expo documentation](https://docs.expo.dev/develop/user-interface/fonts/).
+    </Notice>
 
     #### First time starting Expo
 
@@ -319,9 +369,19 @@ We also have more in depth guides
 <WideTabs.Content value="next">
     #### How to set up Tamagui with Next.js
 
-    Running `npm create tamagui` let's you choose the `starter-free` starter which is a very nicely configured Next.js app where you can take or leave whatever you want.
-
     Check out the [source for this site](https://github.com/tamagui/tamagui/tree/master/apps/site) to see a good example of a full featured Next.js website as well, especially the `next.config.js` and `tamagui.config.ts`.
+
+    #### Installation
+    
+    <Notice>
+          Running `npm create tamagui` let's you choose the `starter-free` starter which is a very nicely configured Next.js app where you can take or leave whatever you want.
+    </Notice>
+
+    1. Create a new [Next.js](https://nextjs.org/docs/getting-started/installation) project
+
+    ```bash
+    npx create-next-app@latest
+    ```
 
     #### next.config.js
 
@@ -586,7 +646,7 @@ We also have more in depth guides
 
 <WideTabs.Content value="metro">
     #### How to set up Tamagui with Metro
-    
+
     Early support for Metro web support is here with `@tamagui/metro-plugin`:
 
     ```tsx

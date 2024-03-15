@@ -118,7 +118,8 @@ const TabsContent = (props) => {
       ai="stretch"
       t="$-2"
       px="$6"
-      borderColor="$background"
+      pt="$4"
+      borderColor="$gray4"
       bw="$1"
       btw={0}
       bblr="$5"

@@ -49,7 +49,7 @@ const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
 
   return (
     <Tabs.Tab
-      disableActiveTheme
+      // disableActiveTheme
       size="$3"
       flex={1}
       ref={ref as any}
