@@ -2,6 +2,7 @@ import { apiRoute, postgresError } from '@lib/apiRoute'
 import { ClaimError, claimProductAccess } from '@lib/claim-product'
 import { protectApiRoute } from '@lib/protectApiRoute'
 import { getArray, getSingle } from '@lib/supabase-utils'
+import type { NextApiResponse } from 'next'
 
 export default apiRoute(async (req, res) => {
   const { supabase, user } = await protectApiRoute({ req, res })
@@ -67,7 +68,7 @@ export default apiRoute(async (req, res) => {
             console.info(`Claim: claiming ${product.id}`)
             console.info(`Claim: claim data: ${JSON.stringify(product)}`)
 
-            const { message } = await claimProductAccess({
+            const claimData = await claimProductAccess({
               type: 'subscription',
               product,
               user,
@@ -75,10 +76,7 @@ export default apiRoute(async (req, res) => {
             })
 
             console.info(`Claim: claimed access for product ${product.id}`)
-
-            res.json({
-              message,
-            })
+            handleClaimResponse(res, claimData)
           } catch (error) {
             if (error instanceof ClaimError) {
               res.json({
@@ -119,7 +117,7 @@ export default apiRoute(async (req, res) => {
           console.info(`Claim: claiming ${product.id}`)
           console.info(`Claim: claim data: ${JSON.stringify(product)}`)
 
-          const { message } = await claimProductAccess({
+          const claimData = await claimProductAccess({
             type: 'product_ownership',
             product,
             user,
@@ -128,9 +126,7 @@ export default apiRoute(async (req, res) => {
 
           console.info(`Claim: claimed access for product ${product.id}`)
 
-          res.json({
-            message,
-          })
+          handleClaimResponse(res, claimData)
         } catch (error) {
           if (error instanceof ClaimError) {
             res.json({
@@ -148,3 +144,20 @@ export default apiRoute(async (req, res) => {
 
   res.status(404).json({ error: 'no product matched' })
 })
+
+function handleClaimResponse(
+  res: NextApiResponse,
+  claimData: Awaited<ReturnType<typeof claimProductAccess>>
+) {
+  if (claimData.url) {
+    res.json({
+      url: claimData.url,
+    })
+  } else if (claimData.message) {
+    res.json({
+      message: claimData.message,
+    })
+  } else {
+    throw new Error('Nothing to send to the user.')
+  }
+}
