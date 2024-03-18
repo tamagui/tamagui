@@ -1,6 +1,6 @@
 import * as sections from '@tamagui/bento'
 
-import { Anchor, H1, SizableText, Theme, XStack, YStack } from 'tamagui'
+import { Anchor, H1, SizableText, Theme, View, XStack, YStack } from 'tamagui'
 import { BentoPageFrame } from '../../../components/BentoPageFrame'
 
 import type { GetStaticPaths } from 'next'
@@ -79,9 +79,9 @@ export const DetailHeader = (props: { children: string }) => {
 
           {/* <YStack zi={100} mb={-50} gap="$6" $sm={{ mb: 40 }}> */}
           <YStack zi={100} gap="$6" $sm={{ mb: 40 }}>
-            <XStack ai="flex-start">
+            <View $gtLg={{ right: '$-6' }}>
               <BentoLogo scale={0.3} />
-            </XStack>
+            </View>
             {/* <DropTamaguiConfig /> */}
           </YStack>
         </XStack>
