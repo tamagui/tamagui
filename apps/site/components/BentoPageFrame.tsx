@@ -16,6 +16,7 @@ export const BentoPageFrame = ({
       <Head>
         <LoadCherryBomb />
         <LoadMunro />
+        <script src="https://cdn.paritydeals.com/banner.js" />
       </Head>
 
       <NextSeo
