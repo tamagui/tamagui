@@ -35,7 +35,7 @@ export const BentoPageFrame = ({
         }}
       />
 
-      <YStack pt={85}>
+      <YStack pt={'$8'}>
         <Theme name="tan">
           <YStack
             className={simpler ? `mask-gradient-down` : ``}
