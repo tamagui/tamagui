@@ -300,13 +300,14 @@ export const useListItem = (
 
 const IconFrame = styled(View, {
   context: ListItemContext,
+
   variants: {
     after: {
       true: {
         marginLeft: 'auto',
       },
     },
-  },
+  } as const,
 })
 
 const ListItemIcon = IconFrame.styleable<{ scaleIcon?: number }>((props) => {
