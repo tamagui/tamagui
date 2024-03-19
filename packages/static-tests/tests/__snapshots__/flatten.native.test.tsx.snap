@@ -69,7 +69,7 @@ const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _ex
     } : {
       \\"backgroundColor\\": theme.color2.get()
     }];
-  }, [theme.color1.val, theme.color2.val, ..._expressions]);
+  }, [..._expressions]);
 });"
 `;
 
@@ -99,6 +99,6 @@ const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _ex
     return [_sheet[\\"0\\"], {
       \\"backgroundColor\\": theme.background.get()
     }];
-  }, [theme.background.val, ..._expressions]);
+  }, [..._expressions]);
 });"
 `;
