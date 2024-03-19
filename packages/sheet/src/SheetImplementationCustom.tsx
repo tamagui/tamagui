@@ -15,6 +15,7 @@ import { Portal } from '@tamagui/portal'
 import { useKeyboardVisible } from '@tamagui/use-keyboard-visible'
 import {
   forwardRef,
+  Fragment,
   useCallback,
   useContext,
   useEffect,
@@ -52,6 +53,7 @@ export const SheetImplementationCustom = themeable(
       moveOnKeyboardChange = false,
       unmountChildrenWhenHidden = false,
       portalProps,
+      containerComponent: ContainerComponent = Fragment,
     } = props
 
     const keyboardIsVisible = useKeyboardVisible()
@@ -471,11 +473,13 @@ export const SheetImplementationCustom = themeable(
       const modalContents = (
         <Portal zIndex={zIndex} {...portalProps}>
           {shouldMountChildren && (
-            <Theme forceClassName name={themeName}>
-              <AdaptParentContext.Provider value={adaptContext}>
-                {contents}
-              </AdaptParentContext.Provider>
-            </Theme>
+            <ContainerComponent>
+              <Theme forceClassName name={themeName}>
+                <AdaptParentContext.Provider value={adaptContext}>
+                  {contents}
+                </AdaptParentContext.Provider>
+              </Theme>
+            </ContainerComponent>
           )}
         </Portal>
       )
