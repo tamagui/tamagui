@@ -1221,6 +1221,8 @@ export function createComponent<
           <span
             className="_dsp_contents"
             {...(isHydrated && events && getWebEvents(events))}
+            // /** we passed these events to the content instead */
+            {...(events && { onFocus: undefined, onBlur: undefined })}
           >
             {content}
           </span>
