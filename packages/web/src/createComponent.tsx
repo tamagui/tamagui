@@ -434,9 +434,13 @@ export function createComponent<
       : states[0]
     const setState = states[1]
 
-    // immediately update disabled state
+    // immediately update disabled state and reset component state
     if (disabled !== state.disabled) {
-      setState({ ...state, disabled })
+      setState({
+        ...state,
+        ...defaultComponentState, // removes any stale press state etc
+        disabled,
+      })
     }
 
     let setStateShallow = createShallowSetState(setState, disabled, debugProp)
@@ -1246,6 +1250,7 @@ export function createComponent<
         const title = `render <${element} /> (${internalID}) with props`
         if (!isWeb) {
           log(title)
+          log(`state: `, state)
           if (isDevTools) {
             log('viewProps', viewProps)
           }
