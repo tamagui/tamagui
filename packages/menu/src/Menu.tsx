@@ -1,4 +1,4 @@
-import { styled, useMedia } from '@tamagui/core'
+import { styled, useMedia, Text } from '@tamagui/core'
 import { withStaticProperties } from '@tamagui/helpers'
 import { ThemeableStack } from '@tamagui/stacks'
 // import { Drawer, DrawerProvider } from '@tamagui/drawer'
