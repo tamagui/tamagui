@@ -6,7 +6,7 @@ import {
 } from '@tamagui/web'
 import type { MotiTransition } from 'moti'
 import { useMotify } from 'moti/author'
-import { CSSProperties, useContext, useMemo } from 'react'
+import { type CSSProperties, useContext, useMemo } from 'react'
 import type { SharedValue } from 'react-native-reanimated'
 import type { TextStyle } from 'react-native'
 import Animated, {
