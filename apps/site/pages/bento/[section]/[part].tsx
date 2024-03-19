@@ -1,6 +1,6 @@
 import * as sections from '@tamagui/bento'
 
-import { Anchor, H1, SizableText, Theme, XStack, YStack } from 'tamagui'
+import { Anchor, H1, SizableText, Theme, View, XStack, YStack } from 'tamagui'
 import { BentoPageFrame } from '../../../components/BentoPageFrame'
 
 import type { GetStaticPaths } from 'next'
@@ -31,7 +31,7 @@ export default function page() {
             {`${params.section[0].toUpperCase()}${params.section.slice(1)}`}
           </DetailHeader>
         </ContainerBento>
-        <YStack mt="$8">
+        <YStack>
           <YStack pe="none" fullscreen className="bg-grid" o={0.033} />
           <ContainerBento>
             <Comp />
@@ -68,7 +68,7 @@ export const DetailHeader = (props: { children: string }) => {
   const [category, subCategory] = asPath.split('bento/')[1].split('/')
 
   return (
-    <YStack pb="$6" gap="$4" $sm={{ px: '$4' }}>
+    <YStack gap="$4" $sm={{ px: '$4' }} pb="$11">
       <YStack gap="$4">
         <XStack ai="center" jc="space-between" $sm={{ fd: 'column-reverse' }}>
           <Theme name="gray">
@@ -77,10 +77,11 @@ export const DetailHeader = (props: { children: string }) => {
             </H1>
           </Theme>
 
-          <YStack zi={100} mb={-50} gap="$6" $sm={{ mb: 40 }}>
-            <XStack>
+          {/* <YStack zi={100} mb={-50} gap="$6" $sm={{ mb: 40 }}> */}
+          <YStack zi={100} gap="$6" $sm={{ mb: 40 }}>
+            <View $gtLg={{ right: '$-6' }}>
               <BentoLogo scale={0.3} />
-            </XStack>
+            </View>
             {/* <DropTamaguiConfig /> */}
           </YStack>
         </XStack>
