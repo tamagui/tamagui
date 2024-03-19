@@ -1,0 +1,137 @@
+---
+title: ListItem
+description: A component for showing columns of items.
+name: list-item
+component: ListItem
+package: list-item
+demoName: ListItem
+---
+
+# ListItem
+
+<Description>A simple, sizable list item.</Description>
+
+<HeroContainer>
+  <ListItemDemo />
+</HeroContainer>
+
+```tsx hero template=ListItem
+
+```
+
+<Highlights
+  features={[
+    'Accepts size prop that works on all styles.',
+    'Accepts color prop that will be passed to all inner Texts and Icons',
+    'Accept Icons, title, subtitle',
+    'Works with themes, animations, Group.',
+  ]}
+/>
+
+## Installation
+
+ListItem is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/list-item
+```
+
+## Anatomy
+
+```tsx
+import { Card } from 'tamagui' // or '@tamagui/card'
+
+export default () => (
+  <ListItem>
+    <ListItem.Icon>
+      <Moon/>
+    </ListItem.Icon>
+    <ListItem.TextContent>
+      <ListItem.Title>Title</ListItem.Title>
+      <ListItem.Subtitle>SubTitle</ListItem.Subtitle>
+    </ListItem.TextContent>
+    <ListItem.Icon>
+      <ChevronRight/>
+    </ListItem.Icon>
+  </ListItem>
+)
+```
+
+## API Reference
+
+### ListItem
+
+Frame of the ListItem, extends
+[ThemeableStack props](/docs/components/stacks#themeablestack)
+
+<PropsTable
+  data={[
+    {
+      name: 'size',
+      type: 'SizeTokens',
+      required: false,
+      description: `Passes size down too all sub-components when set for padding, arrow, borderRadius`,
+    },
+    {
+      name: 'color',
+      type: 'ColorTokens',
+      required: false,
+      default: '$color',
+      description: `Passes color down to Icons and Texts`,
+    },
+    {
+      name: 'unstyled',
+      required: false,
+      type: `boolean`,
+      description: `Removes all default Tamagui styles.`,
+    },
+  ]}
+/>
+
+### ListItem.Icon
+
+Wrapper of ListItem icon, extends [View props](/docs/core/stack-and-text#props)
+
+<PropsTable
+  data={[
+    {
+      name: 'size',
+      type: 'SizeTokens',
+      required: false,
+      description: `Passes size down too all sub-components when set for padding, arrow, borderRadius`,
+    },
+    {
+      name: 'color',
+      type: 'ColorToken',
+      required: false,
+      default: '$color',
+      description: `Passes color down to Icons and Texts`,
+    },
+    {
+      name: 'scaleIcon',
+      required: false,
+      type: 'number',
+      description: `Scale the icon more than usual by this number.`,
+    },
+  ]}
+/>
+
+### ListItem.TextContent
+
+Wrapper of `ListItem.Title` and `ListItem.Subtitle`, extends
+[View props](/docs/core/stack-and-text#props) `ListItem.Title` extends
+
+### ListItem.Title
+
+`ListItem.Title` extend `SizableText` inheriting all the
+[props](/docs/components/text#sizabletext).
+
+### ListItem.Subtitle
+
+`ListItem.Subtitle` extend `SizableText` inheriting all the
+[props](/docs/components/text#sizabletext).
+
+### ListItem.Text
+
+`ListItem.Text` extend `SizableText` inheriting all the
+[props](/docs/components/text#sizabletext).
