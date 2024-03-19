@@ -160,7 +160,7 @@ export function Test(props) {
 const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
   return React.useMemo(() => {
     return [_sheet[\\"0\\"], {
-      \\"backgroundColor\\": theme.color.val
+      \\"backgroundColor\\": theme.color.get()
     }];
   }, [theme.color.val, ..._expressions]);
 });"
@@ -232,7 +232,7 @@ export function Test() {
 const _ReactNativeTextWrapper = __withStableStyle(__ReactNativeText, (theme, _expressions) => {
   return React.useMemo(() => {
     return [_sheet[\\"0\\"], {
-      \\"color\\": theme.color.val
+      \\"color\\": theme.color.get()
     }];
   }, [theme.color.val, ..._expressions]);
 });"
