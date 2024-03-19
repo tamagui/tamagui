@@ -351,12 +351,6 @@ export default declare(function tamaguiBabelPlugin(
                                         ])
                                       ),
                                       t.arrayExpression([
-                                        ...[...themeKeysUsed].map((k) =>
-                                          t.memberExpression(
-                                            t.identifier('theme'),
-                                            t.identifier(k + '.val')
-                                          )
-                                        ),
                                         t.spreadElement(t.identifier('_expressions')),
                                       ]),
                                     ]
